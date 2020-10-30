@@ -1944,14 +1944,14 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
 
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
-    auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-    node->byteCodeFct = ByteCodeGenJob::emitIdentifier;
-
+    auto  node               = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
     auto  job                = context->job;
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
     auto& dependentSymbols   = job->cacheDependentSymbols;
     auto  identifierRef      = node->identifierRef;
+
+    node->byteCodeFct = ByteCodeGenJob::emitIdentifier;
 
     // Current private scope
     if (context->sourceFile && context->sourceFile->scopePrivate && node->name == context->sourceFile->scopePrivate->name)
@@ -1984,12 +1984,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         return true;
     }
 
+    // Patch the node name in case of 'Self'. Replace it with the structure name
     if (node->name == "Self")
     {
         SWAG_VERIFY(node->ownerStructScope, context->report({node, node->token, "type 'Self' cannot be used outside an 'impl', 'struct' or 'interface' block"}));
         node->name = node->ownerStructScope->name;
     }
 
+    // Compute dependencies if not already done
     if (node->semanticState == AstNodeResolveState::ProcessingChilds)
     {
         scopeHierarchy.clear();
@@ -1997,11 +1999,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         dependentSymbols.clear();
     }
 
-    // Compute dependencies if not already done
     if (dependentSymbols.empty())
-    {
         SWAG_CHECK(collectScopesToSolve(context, identifierRef, node));
-    }
 
     // If one of my dependent symbol is not fully solved, we need to wait
     for (auto symbol : dependentSymbols)
