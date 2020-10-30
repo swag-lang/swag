@@ -1738,6 +1738,70 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     return true;
 }
 
+bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam, AstNode** ufcsLastParam)
+{
+    auto symbol = overload->symbol;
+
+    bool canDoUfcs = false;
+    if (symbol->kind == SymbolKind::Function)
+        canDoUfcs = true;
+    if (symbol->kind == SymbolKind::Variable && overload->typeInfo->kind == TypeInfoKind::Lambda)
+        canDoUfcs = node->callParameters;
+
+    if (canDoUfcs)
+    {
+        // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
+        if (identifierRef->resolvedSymbolName)
+        {
+            if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable ||
+                identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
+            {
+                SWAG_ASSERT(identifierRef->previousResolvedNode);
+                *ufcsFirstParam = identifierRef->previousResolvedNode;
+
+                // If we do not have parenthesis (call parameters), then this must be a function marked with 'swag.property'
+                if (!node->callParameters)
+                {
+                    SWAG_VERIFY(symbol->kind == SymbolKind::Function, context->report({node, "missing function call parameters"}));
+                    SWAG_VERIFY(symbol->overloads.size() <= 2, context->report({node, "too many overloads for a property (only one set and one get should exist)"}));
+                    SWAG_VERIFY(symbol->overloads.front()->node->attributeFlags & ATTRIBUTE_PROPERTY, context->report({node, format("missing function call parameters because symbol '%s' is not marked as 'swag.property'", symbol->name.c_str())}));
+
+                    if (node->identifierRef->parent->kind == AstNodeKind::AffectOp &&
+                        node->identifierRef->parent->token.id == TokenId::SymEqual)
+                    {
+                        *ufcsLastParam = node->identifierRef->parent->childs[1];
+                    }
+                }
+            }
+        }
+    }
+
+    // We want to force the ufcs
+    if (!*ufcsFirstParam && !*ufcsLastParam && (node->flags & AST_FORCE_UFCS))
+    {
+        if (identifierRef->startScope)
+        {
+            auto displayName = identifierRef->startScope->getFullName();
+            if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
+                displayName = identifierRef->typeInfo->name;
+            if (!displayName.empty())
+                return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
+        }
+
+        return context->report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
+    }
+
+    if (canDoUfcs && (symbol->kind == SymbolKind::Variable))
+    {
+        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Struct)
+            return context->report({node, node->token, format("invalid lambda call, cannot reference structure member '%s'", symbol->name.c_str())});
+        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
+            return context->report({node, format("invalid lambda call because '%s' is not a variable", identifierRef->resolvedSymbolName->name.c_str())});
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
@@ -1880,63 +1944,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             AstNode* dependentVar = nullptr;
             SWAG_CHECK(getUsingVar(context, identifierRef, node, symbolOverload, &dependentVar));
 
+            // Get the ufcs first parameter, and last parameter, if we can
             AstNode* ufcsFirstParam = nullptr;
             AstNode* ufcsLastParam  = nullptr;
-            bool     canDoUfcs      = false;
-            if (symbol->kind == SymbolKind::Function)
-                canDoUfcs = true;
-            if (symbol->kind == SymbolKind::Variable && symbolOverload->typeInfo->kind == TypeInfoKind::Lambda)
-                canDoUfcs = node->callParameters;
-            if (canDoUfcs)
-            {
-                // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
-                if (identifierRef->resolvedSymbolName)
-                {
-                    if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable ||
-                        identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
-                    {
-                        SWAG_ASSERT(identifierRef->previousResolvedNode);
-                        ufcsFirstParam = identifierRef->previousResolvedNode;
-
-                        // If we do not have parenthesis (call parameters), then this must be a function marked with 'swag.property'
-                        if (!node->callParameters)
-                        {
-                            SWAG_VERIFY(symbol->kind == SymbolKind::Function, context->report({node, "missing function call parameters"}));
-                            SWAG_VERIFY(symbol->overloads.size() <= 2, context->report({node, "too many overloads for a property (only one set and one get should exist)"}));
-                            SWAG_VERIFY(symbol->overloads.front()->node->attributeFlags & ATTRIBUTE_PROPERTY, context->report({node, format("missing function call parameters because symbol '%s' is not marked as 'swag.property'", symbol->name.c_str())}));
-
-                            if (node->identifierRef->parent->kind == AstNodeKind::AffectOp &&
-                                node->identifierRef->parent->token.id == TokenId::SymEqual)
-                            {
-                                ufcsLastParam = node->identifierRef->parent->childs[1];
-                            }
-                        }
-                    }
-                }
-            }
-
-            // We want to force the ufcs
-            if (!ufcsFirstParam && !ufcsLastParam && (node->flags & AST_FORCE_UFCS))
-            {
-                if (identifierRef->startScope)
-                {
-                    auto displayName = identifierRef->startScope->getFullName();
-                    if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
-                        displayName = identifierRef->typeInfo->name;
-                    if (!displayName.empty())
-                        return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
-                }
-
-                return context->report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
-            }
-
-            if (canDoUfcs && (symbol->kind == SymbolKind::Variable))
-            {
-                if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Struct)
-                    return context->report({node, node->token, format("invalid lambda call, cannot reference structure member '%s'", symbol->name.c_str())});
-                if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
-                    return context->report({node, format("invalid lambda call because '%s' is not a variable", identifierRef->resolvedSymbolName->name.c_str())});
-            }
+            SWAG_CHECK(getUfcs(context, identifierRef, node, symbolOverload, &ufcsFirstParam, &ufcsLastParam));
 
             OneTryMatch tryMatch;
             auto&       symMatchContext = tryMatch.symMatchContext;
