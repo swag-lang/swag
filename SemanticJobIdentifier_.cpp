@@ -1961,43 +1961,26 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 node->doneFlags |= AST_DONE_LAST_PARAM_CODE;
 
                 // If last parameter is of type code, and the call last parameter is not, then take the next statement
-                if (symbol->overloads.size() > 0)
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+                if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->kind == TypeInfoKind::Code)
                 {
-                    bool lastIsCode = false;
-                    for (auto overload : symbol->overloads)
+                    if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
                     {
-                        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                        if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->kind == TypeInfoKind::Code)
-                            lastIsCode = true;
-                        else
+                        if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)
                         {
-                            lastIsCode = false;
-                            break;
-                        }
-                    }
-
-                    if (lastIsCode)
-                    {
-                        auto overload = symbol->overloads[0];
-                        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                        if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
-                        {
-                            if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)
+                            auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
+                            if (brother->kind == AstNodeKind::Statement)
                             {
-                                auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
-                                if (brother->kind == AstNodeKind::Statement)
-                                {
-                                    auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
-                                    auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
-                                    codeNode->flags |= AST_NO_BYTECODE;
-                                    Ast::removeFromParent(brother);
-                                    Ast::addChildBack(codeNode, brother);
-                                    auto typeCode     = g_Allocator.alloc<TypeInfoCode>();
-                                    typeCode->content = brother;
-                                    brother->flags |= AST_NO_SEMANTIC;
-                                    fctCallParam->typeInfo = typeCode;
-                                    codeNode->typeInfo     = typeCode;
-                                }
+                                auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
+                                auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
+                                codeNode->flags |= AST_NO_BYTECODE;
+                                Ast::removeFromParent(brother);
+                                Ast::addChildBack(codeNode, brother);
+                                auto typeCode     = g_Allocator.alloc<TypeInfoCode>();
+                                typeCode->content = brother;
+                                brother->flags |= AST_NO_SEMANTIC;
+                                fctCallParam->typeInfo = typeCode;
+                                codeNode->typeInfo     = typeCode;
                             }
                         }
                     }
