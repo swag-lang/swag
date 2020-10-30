@@ -2076,7 +2076,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             identifierRef->resolvedSymbolName     = orgResolvedSymbolName;
             identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
 
-            // If there a using variable associated with the resolved symbol ?
+            // Is there a using variable associated with the symbol to solve ?
             AstNode* dependentVar = nullptr;
             SWAG_CHECK(getUsingVar(context, identifierRef, node, symbolOverload, &dependentVar));
 
@@ -2121,12 +2121,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         context->result = ContextResult::Done;
     }
 
-    if (job->cacheMatches.size() == 0)
+    if (job->cacheMatches.empty())
         return false;
-    auto& match = job->cacheMatches[0];
 
     // Deal with ufcs. Now that the match is done, we will change the ast in order to
     // add the ufcs parameters to the function call parameters
+    auto& match = job->cacheMatches[0];
     if (match.ufcs)
     {
         // Do not change AST if this is code inside a generic function
