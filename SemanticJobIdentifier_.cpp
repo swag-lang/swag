@@ -2120,14 +2120,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     if (job->cacheMatches.size() == 0)
         return false;
-
-    // This is a match !
-    SWAG_ASSERT(job->cacheMatches.size());
     auto& match = job->cacheMatches[0];
-
-    // Alias
-    if (match.symbolName->kind == SymbolKind::Alias)
-        match.symbolName = match.symbolOverload->symbol;
 
     node->typeInfo = match.symbolOverload->typeInfo;
 
@@ -2135,6 +2128,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (match.symbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
         node->flags |= AST_PURE;
 
+    // Deal with ufcs. Now that the match is done, we will change the ast in order to
+    // add the ufcs parameters to the function call parameters
     if (match.ufcs)
     {
         // Do not change AST if this is code inside a generic function
