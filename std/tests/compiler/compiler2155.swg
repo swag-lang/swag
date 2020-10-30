@@ -1,4 +1,4 @@
-/*func(T) toto()
+func(T) toto()
 {
 
 }
@@ -16,5 +16,5 @@ func toto(x, y: s32)
 #test
 {
     toto's32()
-    toto(true)
-}*/
+    toto(0, true)
+}

@@ -965,94 +965,110 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
 bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node)
 {
-    auto         job               = context->job;
-    OneTryMatch& oneTry            = overloads[0];
-    auto         symbol            = oneTry.overload->symbol;
-    auto         genericParameters = oneTry.genericParameters;
-    auto         callParameters    = oneTry.callParameters;
+    AstIdentifier* identifier        = nullptr;
+    AstNode*       genericParameters = nullptr;
+    AstNode*       callParameters    = nullptr;
 
+    if (node)
+    {
+        identifier        = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        genericParameters = identifier->genericParameters;
+        callParameters    = identifier->callParameters;
+    }
+
+    // Take non generic errors in priority
+    {
+        vector<OneTryMatch> n;
+        for (auto& one : overloads)
+        {
+            switch (one.symMatchContext.result)
+            {
+            case MatchResult::BadSignature:
+            case MatchResult::DuplicatedNamedParameter:
+            case MatchResult::InvalidNamedParameter:
+            case MatchResult::MissingNamedParameter:
+            case MatchResult::MissingParameters:
+            case MatchResult::NotEnoughParameters:
+            case MatchResult::TooManyParameters:
+                n.push_back(one);
+                break;
+            }
+        }
+        if (!n.empty())
+            overloads = n;
+    }
+
+    // If we do not have generic parameters, then eliminate generic fail
+    if (!genericParameters)
+    {
+        vector<OneTryMatch> n;
+        for (auto& one : overloads)
+        {
+            if (!(one.overload->flags & OVERLOAD_GENERIC))
+                n.push_back(one);
+        }
+        if (!n.empty())
+            overloads = n;
+    }
+
+    // Take bad signature in priority
+    {
+        vector<OneTryMatch> n;
+        for (auto& one : overloads)
+        {
+            if (one.symMatchContext.result == MatchResult::BadGenericSignature || one.symMatchContext.result == MatchResult::BadSignature)
+                n.push_back(one);
+        }
+        if (!n.empty())
+            overloads = n;
+    }
+
+    // One single overload
     if (overloads.size() == 1)
     {
-        SymbolOverload* overload = oneTry.overload;
-
         // Be sure this is not because of an invalid special function signature
-        if (overload->node->kind == AstNodeKind::FuncDecl)
-            SWAG_CHECK(checkFuncPrototype(context, CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl)));
+        if (overloads[0].overload->node->kind == AstNodeKind::FuncDecl)
+            SWAG_CHECK(checkFuncPrototype(context, CastAst<AstFuncDecl>(overloads[0].overload->node, AstNodeKind::FuncDecl)));
 
-        vector<const Diagnostic*> errs, notes;
-        getDiagnosticForMatch(context, overloads[0], errs, notes);
-        return context->report(*errs[0], notes);
+        vector<const Diagnostic*> errs0, errs1;
+        getDiagnosticForMatch(context, overloads[0], errs0, errs1);
+        return context->report(*errs0[0], errs1);
     }
 
     // Multiple overloads
-    auto& badSignature = job->cacheBadSignature;
-    if (badSignature.size())
+    SWAG_ASSERT(node);
+    Diagnostic                diag{node, node->token, format("none of the %d overloads could match", overloads.size())};
+    vector<const Diagnostic*> notes;
+    for (auto& one : overloads)
     {
-        Diagnostic                diag{callParameters ? callParameters : node, format("none of the %d overloads could convert all the parameters types", overloads.size())};
-        vector<const Diagnostic*> notes;
-        for (auto& one : badSignature)
+        vector<const Diagnostic*> errs0, errs1;
+        getDiagnosticForMatch(context, one, errs0, errs1);
+
+        // Get the overload site
+        if (!errs1.empty())
         {
-            auto over                   = one.overload;
-            auto couldBe                = "cast has failed for: " + Ast::computeTypeDisplay(over->node->name, over->typeInfo);
-            auto note                   = new Diagnostic{over->node, over->node->token, couldBe, DiagnosticLevel::Note};
-            note->showRange             = false;
-            note->showMultipleCodeLines = false;
-            notes.push_back(note);
+            const_cast<Diagnostic*>(errs0[0])->startLocation = errs1[0]->startLocation;
+            const_cast<Diagnostic*>(errs0[0])->endLocation   = errs1[0]->startLocation;
         }
 
-        return context->report(diag, notes);
+        const_cast<Diagnostic*>(errs0[0])->errorLevel = DiagnosticLevel::Note;
+        notes.push_back(errs0[0]);
     }
 
-    auto& badGenericSignature = job->cacheBadGenericSignature;
-    if (badGenericSignature.size())
-    {
-        Diagnostic                diag{genericParameters ? genericParameters : node, format("none of the %d overloads could convert all the generic parameters types", overloads.size())};
-        vector<const Diagnostic*> notes;
-        for (auto& one : badGenericSignature)
-        {
-            auto over                   = one.overload;
-            auto couldBe                = "cast has failed for: " + Ast::computeTypeDisplay(over->node->name, over->typeInfo);
-            auto note                   = new Diagnostic{over->node, over->node->token, couldBe, DiagnosticLevel::Note};
-            note->showRange             = false;
-            note->showMultipleCodeLines = false;
-            notes.push_back(note);
-        }
-
-        return context->report(diag, notes);
-    }
-
-    if (job->matchHasGenericErrors)
-    {
-        int         numParams = genericParameters ? (int) genericParameters->childs.size() : 0;
-        const char* args      = numParams <= 1 ? "generic parameter" : "generic parameters";
-        Diagnostic  diag{genericParameters ? genericParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
-        return context->report(diag);
-    }
-    else
-    {
-        int         numParams = callParameters ? (int) callParameters->childs.size() : 0;
-        const char* args      = numParams <= 1 ? "parameter" : "parameters";
-        Diagnostic  diag{callParameters ? callParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
-        return context->report(diag);
-    }
+    return context->report(diag, notes);
 }
 
 bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node)
 {
-    auto  job                 = context->job;
-    auto& matches             = job->cacheMatches;
-    auto& genericMatches      = job->cacheGenericMatches;
-    auto& badSignature        = job->cacheBadSignature;
-    auto& badGenericSignature = job->cacheBadGenericSignature;
+    auto  job            = context->job;
+    auto& matches        = job->cacheMatches;
+    auto& genericMatches = job->cacheGenericMatches;
 
     matches.clear();
     genericMatches.clear();
-    badSignature.clear();
-    badGenericSignature.clear();
     job->bestSignatureInfos.clear();
 
-    bool forStruct             = false;
-    job->matchHasGenericErrors = false;
+    bool forStruct = false;
 
     for (auto& oneOverload : overloads)
     {
@@ -1198,9 +1214,8 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
             }
         }
 
-        switch (oneOverload.symMatchContext.result)
+        if (oneOverload.symMatchContext.result == MatchResult::Ok)
         {
-        case MatchResult::Ok:
             if (overload->flags & OVERLOAD_GENERIC)
             {
                 OneGenericMatch match;
@@ -1224,24 +1239,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
                 match.ufcs             = oneOverload.ufcs;
                 matches.emplace_back(match);
             }
-            break;
-
-        case MatchResult::BadGenericSignature:
-            if (overload->typeInfo->flags & TYPEINFO_GENERIC)
-            {
-                badGenericSignature.push_back(oneOverload);
-                job->matchHasGenericErrors = true;
-            }
-            break;
-
-        case MatchResult::BadSignature:
-            badSignature.push_back(oneOverload);
-            break;
-
-        case MatchResult::TooManyGenericParameters:
-        case MatchResult::NotEnoughGenericParameters:
-            job->matchHasGenericErrors = true;
-            break;
         }
     }
 

@@ -270,15 +270,12 @@ struct SemanticJob : public Job
     VectorNative<Scope*>           scopesHere;
     vector<OneMatch>               cacheMatches;
     vector<OneGenericMatch>        cacheGenericMatches;
-    vector<OneTryMatch>            cacheBadSignature;
-    vector<OneTryMatch>            cacheBadGenericSignature;
     SemanticContext                context;
     Concat                         tmpConcat;
 
     MatchResult       bestMatchResult;
     BadSignatureInfos bestSignatureInfos;
     SymbolOverload*   bestOverload;
-    bool              matchHasGenericErrors;
 
     void reset() override
     {
@@ -290,8 +287,6 @@ struct SemanticJob : public Job
         scopesHere.clear();
         cacheMatches.clear();
         cacheGenericMatches.clear();
-        cacheBadSignature.clear();
-        cacheBadGenericSignature.clear();
         context.reset();
     }
 

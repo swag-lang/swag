@@ -13,7 +13,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     // Solve unnamed parameters
     bool isAfterVariadic = false;
     int  numParams       = (int) context.parameters.size();
-    for (int i = 0; i < numParams && context.result != MatchResult::BadSignature; i++)
+    for (int i = 0; i < numParams; i++)
     {
         auto callParameter = context.parameters[i];
 
@@ -31,7 +31,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         if (i >= parameters.size() && !isAfterVariadic)
         {
             context.badSignatureInfos.badSignatureParameterIdx = i;
-            context.result = MatchResult::TooManyParameters;
+            context.result                                     = MatchResult::TooManyParameters;
             return;
         }
 
@@ -564,29 +564,22 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     }
 
     matchParameters(context, parameters);
-    if (context.result != MatchResult::Ok)
-        return;
-
-    matchNamedParameters(context, parameters);
-    if (context.result != MatchResult::Ok)
-        return;
+    if (context.result == MatchResult::Ok)
+        matchNamedParameters(context, parameters);
 
     // Not enough parameters
-    int firstDefault = firstDefaultValueIdx;
-    if (firstDefault == -1)
-        firstDefault = (int) parameters.size();
-    if (context.cptResolved < firstDefault)
+    int firstDefault = firstDefaultValueIdx == -1 ? (int) parameters.size() : firstDefaultValueIdx;
+    if (context.cptResolved < firstDefault && parameters.size())
     {
-        // We can have empty variadics
-        if (parameters.size())
+        if (parameters.back()->typeInfo->kind != TypeInfoKind::Variadic && parameters.back()->typeInfo->kind != TypeInfoKind::TypedVariadic)
         {
-            if (parameters.back()->typeInfo->kind != TypeInfoKind::Variadic && parameters.back()->typeInfo->kind != TypeInfoKind::TypedVariadic)
-            {
-                context.result = MatchResult::NotEnoughParameters;
-                return;
-            }
+            context.result = MatchResult::NotEnoughParameters;
+            return;
         }
     }
+
+    if (context.result != MatchResult::Ok)
+        return;
 
     matchGenericParameters(context, this, genericParameters);
     if (context.result != MatchResult::Ok)
