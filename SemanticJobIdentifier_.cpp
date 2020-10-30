@@ -1764,42 +1764,35 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     for (auto symbol : dependentSymbols)
     {
         scoped_lock lkn(symbol->mutex);
-        if (symbol->cptOverloads)
-        {
-            if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
-            {
-                // This is enough to resolve, as we just need parameters, and that case means that some functions
-                // do not know their return type yet (short lambdas)
-            }
-            else
-            {
-                // If a structure is referencing itself, we will match the incomplete symbol for now
-                if ((symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface || symbol->kind == SymbolKind::TypeSet) &&
-                    node->ownerMainNode &&
-                    (node->ownerMainNode->kind != AstNodeKind::Impl || (node->flags & AST_CAN_MATCH_INCOMPLETE)) &&
-                    node->ownerMainNode->name == symbol->name)
-                {
-                    SWAG_VERIFY(!node->callParameters, context->report({node->callParameters, "cannot auto reference a struct with parameters"}));
-                    SWAG_VERIFY(!node->genericParameters, context->report({node->genericParameters, "cannot auto reference a struct with generic parameters"}));
-                    if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
-                    {
-                        node->resolvedSymbolName     = symbol;
-                        node->resolvedSymbolOverload = symbol->overloads[0];
-                        node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
-                    }
-                    else
-                    {
-                        job->waitForSymbolNoLock(symbol);
-                    }
-                }
-                else
-                {
-                    job->waitForSymbolNoLock(symbol);
-                }
+        if (!symbol->cptOverloads)
+            continue;
 
-                return true;
+        // This is enough to resolve, as we just need parameters, and that case means that some functions
+        // do not know their return type yet (short lambdas)
+        if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
+            continue;
+
+        // If a structure is referencing itself, we will match the incomplete symbol for now
+        bool newToWait = true;
+        if ((symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface || symbol->kind == SymbolKind::TypeSet) &&
+            node->ownerMainNode &&
+            (node->ownerMainNode->kind != AstNodeKind::Impl || (node->flags & AST_CAN_MATCH_INCOMPLETE)) &&
+            node->ownerMainNode->name == symbol->name)
+        {
+            SWAG_VERIFY(!node->callParameters, context->report({node->callParameters, "cannot auto reference a struct with parameters"}));
+            SWAG_VERIFY(!node->genericParameters, context->report({node->genericParameters, "cannot auto reference a struct with generic parameters"}));
+            if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
+            {
+                newToWait                    = false;
+                node->resolvedSymbolName     = symbol;
+                node->resolvedSymbolOverload = symbol->overloads[0];
+                node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
             }
         }
+
+        if (newToWait)
+            job->waitForSymbolNoLock(symbol);
+        return true;
     }
 
     // Filter symbols
