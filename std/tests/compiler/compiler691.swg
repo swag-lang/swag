@@ -1,5 +1,5 @@
 #module "compiler691"
-
+#unittest error
 
 struct(T) Point
 {
@@ -10,8 +10,7 @@ struct(T) Point
 alias Point2f = Point'f32
 
 //#[swag.printbc]
-#unittest error
 #test
 {
-	var pt : Point2f(1.0, true)
+	var pt : Point2f(1.0, 1)
 }

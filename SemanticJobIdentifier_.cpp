@@ -491,7 +491,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
-            return context->report({identifier->callParameters, identifier->callParameters->token, format("struct '%s' must be initialized in place with '{}' and not parenthesis (this is reserved for function calls)", identifier->typeInfo->name.c_str())});
+            return context->report({identifier, identifier->token, format("struct '%s' must be initialized in place with '{}' and not parenthesis (this is reserved for function calls)", identifier->typeInfo->name.c_str())});
 
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters)
@@ -809,6 +809,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     else
         refNiceName = format("%s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str());
 
+    // Get parameters of destination symbol
+    AstFuncDecl* destFuncDecl = nullptr;
+    if (overload->node->kind == AstNodeKind::FuncDecl)
+        destFuncDecl = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+
     switch (match.result)
     {
     case MatchResult::MissingNamedParameter:
@@ -823,7 +828,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         SWAG_ASSERT(failedParam);
         auto diag = new Diagnostic{failedParam->namedParamNode ? failedParam->namedParamNode : failedParam, format("unknown named parameter '%s'", failedParam->namedParam.c_str())};
-        auto note = new Diagnostic{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+        auto note = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -840,7 +845,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::NotEnoughParameters:
     {
         auto diag = new Diagnostic{callParameters ? callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-        auto note = new Diagnostic{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+        auto note = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -849,7 +854,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::MissingParameters:
     {
         auto diag = new Diagnostic{callParameters ? callParameters : node, format("missing function call '()' to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-        auto note = new Diagnostic{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+        auto note = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -859,7 +864,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         SWAG_ASSERT(failedParam);
         auto diag = new Diagnostic{failedParam, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-        auto note = new Diagnostic{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+        auto note = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -869,7 +874,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         auto errNode = genericParameters ? genericParameters : node ? node : context->node;
         auto diag    = new Diagnostic{errNode, errNode->token, format("not enough generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-        auto note    = new Diagnostic{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+        auto note    = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -879,7 +884,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         auto errNode = genericParameters ? genericParameters : node ? node : context->node;
         auto diag    = new Diagnostic{errNode, errNode->token, format("too many generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-        auto note    = new Diagnostic{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+        auto note    = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -897,7 +902,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                           bi.badSignatureGivenType->name.c_str())};
         if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             diag->codeComment = format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str());
-        auto note = new Diagnostic{overload->node, overload->node->token, format("this is the definition of %s", refNiceName.c_str()), DiagnosticLevel::Note};
+        auto note = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -914,7 +919,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                           bi.badSignatureGivenType->name.c_str())};
         if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             diag->codeComment = format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str());
-        auto note = new Diagnostic{overload->node, overload->node->token, format("this is the definition of %s", refNiceName.c_str()), DiagnosticLevel::Note};
+        Diagnostic* note;
+        if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
+            note = new Diagnostic{destFuncDecl->parameters->childs[bi.badSignatureParameterIdx], format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
+        else
+            note = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -929,7 +938,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                        format("bad generic parameter '%d' for %s (type expected, value provided)",
                                               badParamIdx,
                                               refNiceName.c_str())};
-            auto note = new Diagnostic{overload->node, overload->node->token, format("this is the definition of %s", refNiceName.c_str()), DiagnosticLevel::Note};
+            auto note = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
             result0.push_back(diag);
             result1.push_back(note);
         }
@@ -939,7 +948,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                        format("bad generic parameter '%d' for %s (value expected, type provided)",
                                               badParamIdx,
                                               refNiceName.c_str())};
-            auto note = new Diagnostic{overload->node, overload->node->token, format("this is the definition of %s", refNiceName.c_str()), DiagnosticLevel::Note};
+            auto note = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
             result0.push_back(diag);
             result1.push_back(note);
         }
@@ -953,7 +962,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                               bi.badSignatureGivenType->name.c_str())};
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
                 diag->codeComment = format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str());
-            auto note = new Diagnostic{overload->node, overload->node->token, format("this is the definition of %s", refNiceName.c_str()), DiagnosticLevel::Note};
+            auto note = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
             result0.push_back(diag);
             result1.push_back(note);
         }
@@ -1891,13 +1900,13 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             if (symbolKind == SymbolKind::Variable)
             {
                 Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is a variable of type '%s' and not a function", node->name.c_str(), symbol->overloads[0]->typeInfo->name.c_str())};
-                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
             else
             {
                 Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
         }
@@ -1954,7 +1963,7 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
         symbolKind != SymbolKind::TypeAlias)
     {
         Diagnostic diag{callParameters, callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-        Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is '%s'", node->name.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
