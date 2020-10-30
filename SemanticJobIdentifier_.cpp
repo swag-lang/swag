@@ -1297,22 +1297,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
     if (matches.size() == 0)
         return cannotMatchIdentifierError(context, overloads, node);
 
-    // There is more than one possible match, but they are all foreign, this is fine
-    bool allForeign = true;
-    for (auto m : matches)
-    {
-        if (!(m.symbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN))
-        {
-            allForeign = false;
-            break;
-        }
-    }
-    if (allForeign)
-    {
-        while (matches.size() > 1)
-            matches.erase(matches.begin());
-    }
-
     // There is more than one possible match
     if (matches.size() > 1)
     {

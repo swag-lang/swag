@@ -1,20 +1,25 @@
-/*func(T, x: s32) toto()
+/*struct A
 {
 
 }
 
-func toto(x: s32)
+impl A
 {
+    func toto(using self, x: A)
+    {
+        @print("v1\n")
+    }
 
-}
-
-func toto(x, y: s32)
-{
-
+    func toto(x, y: A)->A
+    {
+        @print("v2\n")
+        var v: A
+        return v
+    }
 }
 
 #test
 {
-    //toto's32()
-    toto'(bool, 0)(0)
+    var a, b: A
+    c := A.toto(a, b)
 }*/
