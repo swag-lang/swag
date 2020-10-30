@@ -11,6 +11,9 @@ struct Rect
 
 impl Rect
 {
+    // Represents a rectangle with all coordinates to zero
+    const Zero: Rect{0, 0, 0, 0}
+
     #[swag.complete]
     func opAffect(using self, value: f32)
     {
@@ -48,9 +51,6 @@ impl Rect
             height = value - y
         }
     }
-
-    // Represents a rectangle with all coordinates to zero
-    const Zero: Rect{0, 0, 0, 0}
 
     // Set rectangle to (0, 0, 0, 0)
     func clear(using self)
@@ -116,7 +116,7 @@ impl Rect
         return math.isZeroEpsilon(width, eps) && math.isZeroEpsilon(height, eps)
     }
 
-    // Transform a RectF to a Rect
+    // Round all the rectangle values
     func round(using self)->Rect
     {
         x = acast math.round(x)
@@ -125,7 +125,7 @@ impl Rect
         height = acast math.round(height)
     }
 
-    // Transform a RectF to a Rect
+    // Truncate all the rectangle values
     func trunc(using self)
     {
         x = acast math.trunc(x)

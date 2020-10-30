@@ -9,6 +9,11 @@ struct Point
 
 impl Point
 {
+    // Represents a Point with all coordinates to zero
+    const Zero: Self{0, 0}
+    // Represents a Point with all coordinates to one
+    const One: Self{1, 1}
+
     #[swag.complete]
     func opAffect(using self, value: f32)
     {
@@ -52,11 +57,6 @@ impl Point
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
-    // Represents a Point with all coordinates to zero
-    const Zero: Self{0, 0}
-    // Represents a Point with all coordinates to one
-    const One: Self{1, 1}
-
     // Set PointPriv to (0, 0)
     func clear(using self)
     {
@@ -76,10 +76,10 @@ impl Point
     }
 
     // Offset this Point by a given value
-    func offset(using self, valueX, valueY: f32)
+    func offset(self, x, y: f32)
     {
-        x += valueX
-        y += valueY
+        self.x += x
+        self.y += y
     }
 
     // Check for zero with an epsilon
@@ -88,14 +88,14 @@ impl Point
         return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps)
     }
 
-    // Transform a PointF to a Point
+    // Round the point
     func round(using self)
     {
         x = acast math.round(x)
         y = acast math.round(y)
     }
 
-    // Transform a PointF to a Point
+    // Truncate the point
     func trunc(using self)
     {
         x = acast math.trunc(x)
