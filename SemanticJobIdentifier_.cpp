@@ -1906,6 +1906,38 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
     return true;
 }
 
+bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload)
+{
+    auto symbol            = overload->symbol;
+    auto symbolKind        = symbol->kind;
+    auto callParameters    = node->callParameters;
+    auto genericParameters = node->genericParameters;
+
+    if (!genericParameters)
+        return true;
+
+    node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
+    if (symbolKind != SymbolKind::Function &&
+        symbolKind != SymbolKind::Struct &&
+        symbolKind != SymbolKind::Interface &&
+        symbolKind != SymbolKind::TypeAlias)
+    {
+        Diagnostic diag{callParameters, callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
+        Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+        return context->report(diag, &note);
+    }
+
+    auto childCount = genericParameters->childs.size();
+    for (int i = 0; i < childCount; i++)
+    {
+        auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
+        symMatchContext.genericParameters.push_back(oneParam);
+        symMatchContext.genericParametersCallTypes.push_back(oneParam->typeInfo);
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
@@ -2037,10 +2069,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         uint32_t            idxOverload = 0;
         for (auto symbolOverload : toSolveOverload)
         {
-            auto symbol       = symbolOverload->symbol;
-            auto symbolKind   = symbol->kind;
-            auto cptOverloads = toSolveOverloadCpt[idxOverload++];
-
             identifierRef->resolvedSymbolOverload = orgResolvedSymbolOverload;
             identifierRef->resolvedSymbolName     = orgResolvedSymbolName;
             identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
@@ -2058,59 +2086,35 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             // then we take the next statement, after the function, and put it as the last parameter
             SWAG_CHECK(appendLastCodeStatement(context, node, symbolOverload));
 
-            auto genericParameters = node->genericParameters;
-            auto callParameters    = node->callParameters;
-
             OneTryMatch tryMatch;
             auto&       symMatchContext = tryMatch.symMatchContext;
-            tryMatch.genericParameters  = genericParameters;
-            tryMatch.callParameters     = callParameters;
-            tryMatch.dependentVar       = dependentVar;
-            tryMatch.overload           = symbolOverload;
 
-            // Fill specified parameters
-            if ((node->flags & AST_TAKE_ADDRESS) && !ufcsLastParam)
-                symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
+            tryMatch.genericParameters = node->genericParameters;
+            tryMatch.callParameters    = node->callParameters;
+            tryMatch.dependentVar      = dependentVar;
+            tryMatch.overload          = symbolOverload;
+            tryMatch.ufcs              = ufcsFirstParam || ufcsLastParam;
+            tryMatch.cptOverloads      = toSolveOverloadCpt[idxOverload++];
 
             SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, node, symbolOverload, ufcsFirstParam, ufcsLastParam));
             if (context->result == ContextResult::Pending)
                 return true;
+            SWAG_CHECK(fillMatchContextGenericParameters(context, symMatchContext, node, symbolOverload));
 
-            if (genericParameters)
-            {
-                node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
-                if (symbolKind != SymbolKind::Function &&
-                    symbolKind != SymbolKind::Struct &&
-                    symbolKind != SymbolKind::Interface &&
-                    symbolKind != SymbolKind::TypeAlias)
-                {
-                    Diagnostic diag{callParameters, callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-                    Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                    return context->report(diag, &note);
-                }
+            if ((node->flags & AST_TAKE_ADDRESS) && !ufcsLastParam)
+                symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
-                auto childCount = genericParameters->childs.size();
-                for (int i = 0; i < childCount; i++)
-                {
-                    auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
-                    symMatchContext.genericParameters.push_back(oneParam);
-                    symMatchContext.genericParametersCallTypes.push_back(oneParam->typeInfo);
-                }
-            }
-
-            tryMatch.ufcs         = ufcsFirstParam || ufcsLastParam;
-            tryMatch.cptOverloads = cptOverloads;
             listTryMatch.push_back(tryMatch);
         }
 
         SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node));
         if (context->result == ContextResult::Pending)
             return true;
-        if (context->result != ContextResult::NewChilds)
-            break;
 
         // The number of overloads for a given symbol has been changed by another thread, which
         // means that we need to restart everything...
+        if (context->result != ContextResult::NewChilds)
+            break;
         context->result = ContextResult::Done;
     }
 
