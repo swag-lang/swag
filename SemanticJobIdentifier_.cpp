@@ -1699,6 +1699,45 @@ bool SemanticJob::collectScopesToSolve(SemanticContext* context, AstIdentifierRe
     return true;
 }
 
+bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result)
+{
+    auto     job                = context->job;
+    auto     symbol             = overload->symbol;
+    auto&    scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    AstNode* dependentVar       = nullptr;
+
+    for (auto& dep : scopeHierarchyVars)
+    {
+        if (dep.scope->getFullName() == symbol->ownerTable->scope->getFullName())
+        {
+            if (dependentVar)
+            {
+                Diagnostic diag{dep.node, "cannot use 'using' on two variables with the same type"};
+                Diagnostic note{dependentVar, "this is the other definition", DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
+
+            dependentVar = dep.node;
+
+            // This way the ufcs can trigger for a function
+            if (symbol->kind == SymbolKind::Function)
+            {
+                // Be sure we have a missing parameter in order to try ufcs
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+                if (node->callParameters->childs.size() < typeFunc->parameters.size())
+                {
+                    identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
+                    identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
+                    identifierRef->previousResolvedNode   = dependentVar;
+                }
+            }
+        }
+    }
+
+    *result = dependentVar;
+    return true;
+}
+
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
@@ -1839,33 +1878,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
             // If there a using variable associated with the resolved symbol ?
             AstNode* dependentVar = nullptr;
-            for (auto& dep : scopeHierarchyVars)
-            {
-                if (dep.scope->getFullName() == symbol->ownerTable->scope->getFullName())
-                {
-                    if (dependentVar)
-                    {
-                        Diagnostic diag{dep.node, "cannot use 'using' on two variables with the same type"};
-                        Diagnostic note{dependentVar, "this is the other definition", DiagnosticLevel::Note};
-                        return context->report(diag, &note);
-                    }
-
-                    dependentVar = dep.node;
-
-                    // This way the ufcs can trigger for a function
-                    if (symbol->kind == SymbolKind::Function)
-                    {
-                        // Be sure we have a missing parameter in order to try ufcs
-                        auto typeFunc  = CastTypeInfo<TypeInfoFuncAttr>(symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
-                        if (node->callParameters->childs.size() < typeFunc->parameters.size())
-                        {
-                            identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
-                            identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
-                            identifierRef->previousResolvedNode   = dependentVar;
-                        }
-                    }
-                }
-            }
+            SWAG_CHECK(getUsingVar(context, identifierRef, node, symbolOverload, &dependentVar));
 
             AstNode* ufcsFirstParam = nullptr;
             AstNode* ufcsLastParam  = nullptr;
