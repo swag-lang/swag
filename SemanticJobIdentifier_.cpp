@@ -1971,6 +1971,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         for (auto symbolOverload : toSolveOverload)
         {
             auto symbol       = symbolOverload->symbol;
+            auto symbolKind   = symbol->kind;
             auto cptOverloads = toSolveOverloadCpt[idxOverload++];
 
             identifierRef->resolvedSymbolOverload = orgResolvedSymbolOverload;
@@ -2003,14 +2004,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             // Fill specified parameters
             if ((node->flags & AST_TAKE_ADDRESS) && !ufcsLastParam)
                 symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
-
-            // Alias
-            auto symbolKind = symbol->kind;
-            if (symbolKind == SymbolKind::Alias)
-            {
-                symbol     = symbol->overloads[0]->symbol;
-                symbolKind = symbol->kind;
-            }
 
             if (ufcsFirstParam)
                 symMatchContext.parameters.push_back(ufcsFirstParam);
