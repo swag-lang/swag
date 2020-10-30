@@ -306,11 +306,15 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
 
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, OneMatch& oneMatch)
 {
+    auto node         = context->node;
     auto symbol       = oneMatch.symbolName;
     auto overload     = oneMatch.symbolOverload;
     auto dependentVar = oneMatch.dependentVar;
+    auto sourceFile   = context->sourceFile;
 
-    auto sourceFile = context->sourceFile;
+    // Function parameters are pure
+    if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
+        node->flags |= AST_PURE;
 
     // Test x.toto with x not a struct (like a native type for example), but toto is known, so
     // no error was raised before
@@ -2122,12 +2126,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         return false;
     auto& match = job->cacheMatches[0];
 
-    node->typeInfo = match.symbolOverload->typeInfo;
-
-    // Function parameters are pure
-    if (match.symbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
-        node->flags |= AST_PURE;
-
     // Deal with ufcs. Now that the match is done, we will change the ast in order to
     // add the ufcs parameters to the function call parameters
     if (match.ufcs)
@@ -2147,6 +2145,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
+    node->typeInfo = match.symbolOverload->typeInfo;
     SWAG_CHECK(setSymbolMatch(context, identifierRef, node, match));
     return true;
 }
