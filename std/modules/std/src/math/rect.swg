@@ -116,22 +116,31 @@ impl Rect
         return math.isZeroEpsilon(width, eps) && math.isZeroEpsilon(height, eps)
     }
 
-    // Round all the rectangle values
+    // Perform a math.round operation on all the coordinates
     func round(using self)->Rect
     {
-        x = acast math.round(x)
-        y = acast math.round(y)
-        width = acast math.round(width)
-        height = acast math.round(height)
+        x = acast round(x)
+        y = acast round(y)
+        width = acast round(width)
+        height = acast round(height)
     }
 
-    // Truncate all the rectangle values
+    // Perform a math.trunc operation on all the coordinates
     func trunc(using self)
     {
-        x = acast math.trunc(x)
-        y = acast math.trunc(y)
-        width = acast math.trunc(width)
-        height = acast math.trunc(height)
+        x = acast trunc(x)
+        y = acast trunc(y)
+        width = acast trunc(width)
+        height = acast trunc(height)
+    }
+
+    // Perform a math.ceil operation on all the coordinates
+    func ceil(using self)
+    {
+        x = acast ceil(x)
+        y = acast ceil(y)
+        width = acast ceil(width)
+        height = acast ceil(height)
     }
 
     // Determines if the specfied point is contained within the rectangular region

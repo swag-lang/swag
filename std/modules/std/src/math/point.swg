@@ -88,17 +88,24 @@ impl Point
         return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps)
     }
 
-    // Round the point
+    // Perform a math.round operation on all the coordinates
     func round(using self)
     {
-        x = acast math.round(x)
-        y = acast math.round(y)
+        x = acast round(x)
+        y = acast round(y)
     }
 
-    // Truncate the point
+    // Perform a math.trunc operation on all the coordinates
     func trunc(using self)
     {
-        x = acast math.trunc(x)
-        y = acast math.trunc(y)
+        x = acast trunc(x)
+        y = acast trunc(y)
+    }
+
+    // Perform a math.ceil operation on all the coordinates
+    func ceil(using self)
+    {
+        x = acast ceil(x)
+        y = acast ceil(y)
     }
 }
