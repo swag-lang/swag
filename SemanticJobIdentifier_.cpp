@@ -1393,6 +1393,11 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
     return true;
 }
 
+/*bool SemanticJob::filterOverloads(SemanticContext* context, AstIdentifier* node)
+{
+    return true;
+}*/
+
 bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node)
 {
     auto             job                = context->job;
@@ -1444,78 +1449,64 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node)
         }
 
         // Priority to a concrete type versus a generic one
-        auto lastOverload = pickedSymbol->ownerTable->scope->owner->typeInfo;
-        auto newOverload  = oneSymbol->ownerTable->scope->owner->typeInfo;
-        if (lastOverload && newOverload)
+        auto lastOverloadType = pickedSymbol->ownerTable->scope->owner->typeInfo;
+        auto newOverloadType  = oneSymbol->ownerTable->scope->owner->typeInfo;
+        if (lastOverloadType && newOverloadType)
         {
-            if (!(lastOverload->flags & TYPEINFO_GENERIC) && (newOverload->flags & TYPEINFO_GENERIC))
+            if (!(lastOverloadType->flags & TYPEINFO_GENERIC) && (newOverloadType->flags & TYPEINFO_GENERIC))
                 continue;
-            if ((lastOverload->flags & TYPEINFO_GENERIC) && !(newOverload->flags & TYPEINFO_GENERIC))
+            if ((lastOverloadType->flags & TYPEINFO_GENERIC) && !(newOverloadType->flags & TYPEINFO_GENERIC))
             {
                 pickedSymbol = oneSymbol;
                 continue;
             }
         }
 
-        if (pickedSymbol->overloads.size() == 1 && oneSymbol->overloads.size() == 1)
+        auto oneOverload    = oneSymbol->overloads[0];
+        auto pickedOverload = pickedSymbol->overloads[0];
+
+        // Priority to a non IMPL symbol
+        if (!(pickedOverload->flags & OVERLOAD_IMPL) && (oneOverload->flags & OVERLOAD_IMPL))
+            continue;
+        if ((pickedOverload->flags & OVERLOAD_IMPL) && !(oneOverload->flags & OVERLOAD_IMPL))
         {
-            auto oneOverload    = oneSymbol->overloads[0];
-            auto pickedOverload = pickedSymbol->overloads[0];
+            pickedSymbol = oneSymbol;
+            continue;
+        }
 
-            // Priority to a non IMPL symbol
-            if (!(pickedOverload->flags & OVERLOAD_IMPL) && (oneOverload->flags & OVERLOAD_IMPL))
-                continue;
-            if ((pickedOverload->flags & OVERLOAD_IMPL) && !(oneOverload->flags & OVERLOAD_IMPL))
+        // Priority to a user generic parameters, instead of a copy one
+        if ((oneOverload->node->flags & AST_GENERATED_GENERIC_PARAM) && !(pickedOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
+            continue;
+        if (!(oneOverload->node->flags & AST_GENERATED_GENERIC_PARAM) && (pickedOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
+        {
+            pickedSymbol = oneSymbol;
+            continue;
+        }
+
+        // Priority to the same inline scope
+        if (node->ownerInline)
+        {
+            if ((!oneOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
+                (pickedOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
             {
-                pickedSymbol = oneSymbol;
                 continue;
             }
 
-            // Priority to a user generic parameters, instead of a copy one
-            if ((oneOverload->node->flags & AST_GENERATED_GENERIC_PARAM) && !(pickedOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
-                continue;
-            if (!(oneOverload->node->flags & AST_GENERATED_GENERIC_PARAM) && (pickedOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
-            {
-                pickedSymbol = oneSymbol;
-                continue;
-            }
-
-            // Priority to the same inline scope
-            if (node->ownerInline)
-            {
-                if ((!oneOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
-                    (pickedOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
-                {
-                    continue;
-                }
-
-                if ((oneOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
-                    (!pickedOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
-                {
-                    pickedSymbol = oneSymbol;
-                    continue;
-                }
-            }
-
-            // Priority to the same stack frame
-            if (node->isSameStackFrame(pickedOverload) && !node->isSameStackFrame(oneOverload))
-                continue;
-            if (!node->isSameStackFrame(pickedOverload) && node->isSameStackFrame(oneOverload))
+            if ((oneOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
+                (!pickedOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
             {
                 pickedSymbol = oneSymbol;
                 continue;
             }
         }
 
-        // Error this is ambiguous
-        if (pickedSymbol->kind != oneSymbol->kind ||
-            (oneSymbol->kind != SymbolKind::Function && oneSymbol->kind != SymbolKind::GenericType && oneSymbol->kind != SymbolKind::TypeAlias))
+        // Priority to the same stack frame
+        if (node->isSameStackFrame(pickedOverload) && !node->isSameStackFrame(oneOverload))
+            continue;
+        if (!node->isSameStackFrame(pickedOverload) && node->isSameStackFrame(oneOverload))
         {
-            Diagnostic diag{node, node->token, format("ambiguous resolution of '%s'", pickedSymbol->name.c_str())};
-            Diagnostic note1{pickedSymbol->overloads[0]->node, pickedSymbol->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
-            Diagnostic note2{oneSymbol->overloads[0]->node, oneSymbol->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
-            context->report(diag, &note1, &note2);
-            return false;
+            pickedSymbol = oneSymbol;
+            continue;
         }
 
         toAddSymbol.insert(oneSymbol);
@@ -2086,15 +2077,16 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         // case that number changes (other thread) during the resolution. Because if the number of overloads differs
         // at one point in the process (for a given symbol), then this will invalidate the resolution
         // (number of overloads can change when instantiating a generic)
-        VectorNative<SymbolOverload*> toSolveOverload;
-        VectorNative<uint32_t>        toSolveOverloadCpt;
+        VectorNative<OneOverload> toSolveOverload;
         for (auto symbol : dependentSymbols)
         {
             unique_lock lk(symbol->mutex);
             for (auto over : symbol->overloads)
             {
-                toSolveOverload.push_back(over);
-                toSolveOverloadCpt.push_back((uint32_t) symbol->overloads.size());
+                OneOverload t;
+                t.overload     = over;
+                t.cptOverloads = (uint32_t) symbol->overloads.size();
+                toSolveOverload.push_back(t);
             }
         }
 
@@ -2103,9 +2095,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             return context->report({node, node->token, format("cannot resolve identifier '%s'", node->name.c_str())});
 
         vector<OneTryMatch> listTryMatch;
-        uint32_t            idxOverload = 0;
-        for (auto symbolOverload : toSolveOverload)
+        for (auto& oneOver : toSolveOverload)
         {
+            auto symbolOverload                   = oneOver.overload;
             identifierRef->resolvedSymbolOverload = orgResolvedSymbolOverload;
             identifierRef->resolvedSymbolName     = orgResolvedSymbolName;
             identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
@@ -2131,7 +2123,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             tryMatch.dependentVar      = dependentVar;
             tryMatch.overload          = symbolOverload;
             tryMatch.ufcs              = ufcsFirstParam || ufcsLastParam;
-            tryMatch.cptOverloads      = toSolveOverloadCpt[idxOverload++];
+            tryMatch.cptOverloads      = oneOver.cptOverloads;
 
             SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, node, symbolOverload, ufcsFirstParam, ufcsLastParam));
             if (context->result == ContextResult::Pending)

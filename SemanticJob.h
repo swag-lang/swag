@@ -28,6 +28,12 @@ struct SemanticContext : public JobContext
     SemanticJob* job = nullptr;
 };
 
+struct OneOverload
+{
+    SymbolOverload* overload;
+    uint32_t        cptOverloads;
+};
+
 struct OneTryMatch
 {
     SymbolMatchContext symMatchContext;
