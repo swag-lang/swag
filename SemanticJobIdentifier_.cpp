@@ -1876,6 +1876,22 @@ bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matc
             }
         }
 
+        // Priority to the same inline scope
+        if (node->ownerInline)
+        {
+            if (!matches[i].symbolOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope))
+            {
+                for (int j = 0; j < matches.size(); j++)
+                {
+                    if (matches[j].symbolOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope))
+                    {
+                        matches[i].remove = true;
+                        break;
+                    }
+                }
+            }
+        }
+
         // Priority to the same stack frame
         if (!node->isSameStackFrame(matches[i].symbolOverload))
         {
@@ -1961,26 +1977,6 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node)
             if (!(lastOverloadType->flags & TYPEINFO_GENERIC) && (newOverloadType->flags & TYPEINFO_GENERIC))
                 continue;
             if ((lastOverloadType->flags & TYPEINFO_GENERIC) && !(newOverloadType->flags & TYPEINFO_GENERIC))
-            {
-                pickedSymbol = oneSymbol;
-                continue;
-            }
-        }
-
-        auto oneOverload    = oneSymbol->overloads[0];
-        auto pickedOverload = pickedSymbol->overloads[0];
-
-        // Priority to the same inline scope
-        if (node->ownerInline)
-        {
-            if ((!oneOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
-                (pickedOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
-            {
-                continue;
-            }
-
-            if ((oneOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
-                (!pickedOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
             {
                 pickedSymbol = oneSymbol;
                 continue;
