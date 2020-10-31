@@ -10,9 +10,9 @@ struct Point
 impl Point
 {
     // Represents a Point with all coordinates to zero
-    const Zero: Self{0, 0}
+    const Zero: Point{0, 0}
     // Represents a Point with all coordinates to one
-    const One: Self{1, 1}
+    const One:  Point{1, 1}
 
     #[swag.complete]
     func opAffect(using self, value: f32)
@@ -20,12 +20,12 @@ impl Point
         x, y = value
     }
 
-    func opEquals(using self, other: Self)->bool
+    func opEquals(using self, other: Point)->bool
     {
         return x == other.x && y == other.y
     }
 
-    func(op: string) opAssign(using self, other: Self)
+    func(op: string) opAssign(using self, other: Point)
     {
         #if   op == "+="    { x += other.x; y += other.y; }
         #elif op == "-="    { x -= other.x; y -= other.y; }
@@ -41,23 +41,23 @@ impl Point
         #else               #assert(false, "unsupported assign operation '" ~op~ "'")
     }
 
-    func(op: string) opBinary(using self, other: Self)->Self
+    func(op: string) opBinary(using self, other: Point)->Self
     {
-        #if   op == "+" return Self{x + other.x, y + other.y}
-        #elif op == "-" return Self{x - other.x, y - other.y}
-        #elif op == "*" return Self{x * other.x, y * other.y}
+        #if   op == "+" return Point{x + other.x, y + other.y}
+        #elif op == "-" return Point{x - other.x, y - other.y}
+        #elif op == "*" return Point{x * other.x, y * other.y}
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
     func(op: string) opBinary(using self, value: f32)->Self
     {
-        #if   op == "+" return Self{x + value, y + value}
-        #elif op == "-" return Self{x - value, y - value}
-        #elif op == "*" return Self{x * value, y * value}
+        #if   op == "+" return Point{x + value, y + value}
+        #elif op == "-" return Point{x - value, y - value}
+        #elif op == "*" return Point{x * value, y * value}
         #else           #assert(false, "unsupported binary operation '" ~op~ "'")
     }
 
-    // Set PointPriv to (0, 0)
+    // Set Point to (0, 0)
     func clear(using self)
     {
         x, y = 0
@@ -67,6 +67,12 @@ impl Point
     func isZero(using self)->bool
     {
         return x == y == 0
+    }
+
+    // Check for zero with an epsilon
+    func isZeroEpsilon(using self, eps = ConstF32.Epsilon)->bool
+    {
+        return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
     }
 
     // Offset this Point by a given value
@@ -80,12 +86,6 @@ impl Point
     {
         self.x += x
         self.y += y
-    }
-
-    // Check for zero with an epsilon
-    func isZeroEpsilon(using self, eps = ConstF32.Epsilon)->bool
-    {
-        return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
     }
 
     // Perform a math.round operation on all the coordinates

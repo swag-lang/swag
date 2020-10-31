@@ -14,7 +14,7 @@ impl Rect
     // Represents a rectangle with all coordinates to zero
     const Zero: Rect{0, 0, 0, 0}
 
-    func opEquals(using self, other: Self)->bool
+    func opEquals(using self, other: Rect)->bool
     {
         return x == other.x && y == other.y && width == other.width && height == other.height
     }
