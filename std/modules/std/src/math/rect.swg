@@ -152,10 +152,24 @@ impl Rect
         return (rect.x >= x && rect.right <= right) && (rect.y >= y && rect.bottom <= bottom)
     }
 
-    // Intersect this rectangle with 'a'
-    func intersect(using self, a: Rect)
+    // Intersect this rectangle with another one
+    func intersect(using self, with: Rect)
     {
-        @print("toto")
+        x1 := max(x, with.x);
+        x2 := min(x + width, with.x + with.width);
+        y1 := max(y, with.y);
+        y2 := min(y + height, with.y + with.height);
+        if x2 >= x1 && y2 >= y1
+        {
+            x = x1
+            y = y1
+            width = x2 - x1
+            height = y2 - y1
+        }
+        else
+        {
+            x, y, width, height = 0
+        }
     }
 
     // Creates a rectangle that represents the intersetion between 'a' and 'b'.

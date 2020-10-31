@@ -1918,6 +1918,48 @@ bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matc
                 }
             }
         }
+
+        // If we didn't match with ufcs, then priority to a match that do not start with 'self'
+        if (!matches[i].ufcs && matches[i].symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
+        {
+            auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(matches[i].symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+            if (!typeFunc0->parameters.empty() && typeFunc0->parameters[0]->typeInfo->flags & TYPEINFO_SELF)
+            {
+                for (int j = 0; j < matches.size(); j++)
+                {
+                    if (matches[j].symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
+                    {
+                        auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j].symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+                        if (typeFunc1->parameters.empty() || !(typeFunc1->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
+                        {
+                            matches[i].remove = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // If we did match with ufcs, then priority to a match that starts with 'self'
+        if (matches[i].ufcs && matches[i].symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
+        {
+            auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(matches[i].symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeFunc0->parameters.empty() || !(typeFunc0->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
+            {
+                for (int j = 0; j < matches.size(); j++)
+                {
+                    if (matches[j].symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
+                    {
+                        auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j].symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+                        if (!typeFunc1->parameters.empty() && (typeFunc1->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
+                        {
+                            matches[i].remove = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // Eliminate all matches tag as 'remove'

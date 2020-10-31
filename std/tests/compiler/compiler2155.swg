@@ -1,25 +1,25 @@
-/*struct A
+struct A
 {
 
 }
 
 impl A
 {
-    func toto(using self, x: A)
+    func toto(using self, x: A)->s32
     {
-        @print("v1\n")
+        return 1
     }
 
-    func toto(x, y: A)->A
+    func toto(x, y: A)->s32
     {
-        @print("v2\n")
-        var v: A
-        return v
+        return 2
     }
 }
 
 #test
 {
     var a, b: A
-    c := A.toto(a, b)
-}*/
+    @assert(a.toto(b) == 1)
+    @assert(A.toto(a, b) == 2)
+    //@assert(a.toto(a, b) == 1)
+}
