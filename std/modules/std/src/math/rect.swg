@@ -177,6 +177,12 @@ impl Rect
         return (rect.x < right) && (x < rect.right) && (rect.y < bottom) && (y < rect.bottom)
     }
 
+    // Creates a rectangle that represents the union
+    func union1(using self, with: Rect)
+    {
+        //:self = union(:self, with)
+    }
+
     // Creates a rectangle that represents the union between 'a' and 'b'.
     func union1(a, b: Rect)->Rect
     {

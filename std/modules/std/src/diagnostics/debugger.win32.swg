@@ -4,6 +4,6 @@ using win32
 #if std.WINDOWS
 {
     func isAttached()       => cast(bool) IsDebuggerPresent()
-    func break()            => DebugBreak()
+    func debugBreak()       => DebugBreak()
     func log(msg: string)   => OutputDebugStringA(cast(const *u8) msg)
 }

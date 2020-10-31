@@ -396,9 +396,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         {
             if (token.id != TokenId::Identifier &&
                 token.id != TokenId::IntrinsicInit &&
-                token.id != TokenId::IntrinsicDrop &&
-                token.id != TokenId::KwdBreak)
-                return syntaxError(token, format("missing name instead of '%s'", token.text.c_str()));
+                token.id != TokenId::IntrinsicDrop)
+                return syntaxError(token, format("missing function name instead of '%s'", token.text.c_str()));
             SWAG_VERIFY(token.text != "drop", syntaxError(token, "a function cannot be named 'drop' (reserved by the compiler)"));
         }
 
