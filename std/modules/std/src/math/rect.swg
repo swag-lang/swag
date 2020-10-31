@@ -180,11 +180,25 @@ impl Rect
         return Zero;
     }
 
+    // Determines if this rectangle intersets with 'rect'
     func intersectWith(using self, rect: Rect)->bool
     {
-        return  (rect.x < x + width) &&
-                (x < (rect.x + rect.width)) &&
-                (rect.y < y + height) &&
-                (y < rect.y + rect.height)
+        return (rect.x < right) && (x < rect.right) && (rect.y < bottom) && (y < rect.bottom)
+    }
+
+    // Creates a rectangle that represents the union between 'a' and 'b'.
+    func union1(a, b: Rect)->Rect
+    {
+        x1 := min(a.x, b.x);
+        x2 := max(a.right, b.right);
+        y1 := min(a.y, b.y);
+        y2 := max(a.bottom, b.bottom);
+
+        var result: Rect = ?
+        result.x = x1
+        result.y = y1
+        result.width = x2 - x1
+        result.height = y2 - y1
+        return result
     }
 }
