@@ -1936,10 +1936,9 @@ bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matc
 
 bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
 {
-    auto             job                = context->job;
-    auto             identifierRef      = node->identifierRef;
-    auto&            dependentSymbols   = job->cacheDependentSymbols;
-    auto&            scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    auto             job              = context->job;
+    auto             identifierRef    = node->identifierRef;
+    auto&            dependentSymbols = job->cacheDependentSymbols;
     set<SymbolName*> toAddSymbol;
 
     if (dependentSymbols.size() == 1)
@@ -1963,7 +1962,8 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
             oneSymbol->ownerTable->scope->kind == ScopeKind::Struct &&
             !identifierRef->startScope)
         {
-            isValid = false;
+            isValid                  = false;
+            auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
             for (auto& dep : scopeHierarchyVars)
             {
                 if (dep.scope->getFullName() == oneSymbol->ownerTable->scope->getFullName())
