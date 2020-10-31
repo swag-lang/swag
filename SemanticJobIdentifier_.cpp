@@ -862,8 +862,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::TooManyParameters:
     {
-        SWAG_ASSERT(failedParam);
-        auto diag = new Diagnostic{failedParam, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+        AstNode* site = failedParam;
+        if (!site)
+            site = callParameters;
+        SWAG_ASSERT(site);
+        auto diag = new Diagnostic{site, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
         auto note = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
