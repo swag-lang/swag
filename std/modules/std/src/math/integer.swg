@@ -36,6 +36,14 @@ func roundDownToPowerOf2(x: u32)->u32
 
 #[swag.constexpr, swag.inline]
 {
+    func sign(x: s8) => x < 0 ? -1 : 1
+    func sign(x: s16) => x < 0 ? -1 : 1
+    func sign(x: s32) => x < 0 ? -1 : 1
+    func sign(x: s64) => x < 0 ? -1 : 1
+}
+
+#[swag.constexpr, swag.inline]
+{
     func abs(x: s8) => @abs(x)
     func abs(x: s16) => @abs(x)
     func abs(x: s32) => @abs(x)

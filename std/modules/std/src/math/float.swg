@@ -26,6 +26,8 @@ alias ConstF64 = Const'f64
 
 #[swag.constexpr]
 {
+    func sign(x: f32) => x < 0 ? -1 : 1
+    func sign(x: f64) => x < 0 ? -1 : 1
     func saturate(x: f32) => clamp(x, 0, 1)
     func saturate(x: f64) => clamp(x, 0, 1)
     func lerp(x, y, factor: f32) => ((1 - factor) * x) + (factor * y)
