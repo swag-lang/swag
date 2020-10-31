@@ -7,6 +7,9 @@ using std.math
     {
         a := Rect{0, 0, 10, 8}
         b := Rect{5, 5, 15, 15}
+        @assert(a.intersectWith(b))
+        @assert(b.intersectWith(a))
+
         c := Rect.intersect(a, b)
         @assert(c.x == 5)
         @assert(c.y == 5)

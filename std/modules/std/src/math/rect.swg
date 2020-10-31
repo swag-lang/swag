@@ -155,21 +155,7 @@ impl Rect
     // Intersect this rectangle with another one
     func intersect(using self, with: Rect)
     {
-        x1 := max(x, with.x);
-        x2 := min(x + width, with.x + with.width);
-        y1 := max(y, with.y);
-        y2 := min(y + height, with.y + with.height);
-        if x2 >= x1 && y2 >= y1
-        {
-            x = x1
-            y = y1
-            width = x2 - x1
-            height = y2 - y1
-        }
-        else
-        {
-            x, y, width, height = 0
-        }
+        :self = intersect(:self, with)
     }
 
     // Creates a rectangle that represents the intersetion between 'a' and 'b'.
@@ -192,5 +178,13 @@ impl Rect
         }
 
         return Zero;
+    }
+
+    func intersectWith(using self, rect: Rect)->bool
+    {
+        return  (rect.x < x + width) &&
+                (x < (rect.x + rect.width)) &&
+                (rect.y < y + height) &&
+                (y < rect.y + rect.height)
     }
 }
