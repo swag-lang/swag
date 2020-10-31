@@ -1,6 +1,6 @@
-namespace std.math;
+public namespace std.math;
 
-public struct(T) Const
+struct(T) Const
 {
     const Pi: T           = 3.1415927410125732421875
     const E: T            = 2.71828174591064453125
@@ -21,11 +21,10 @@ public struct(T) Const
     const Epsilon: T      = 1e-06
 }
 
-public alias ConstF32 = Const'f32
-public alias ConstF64 = Const'f64
+alias ConstF32 = Const'f32
+alias ConstF64 = Const'f64
 
 #[swag.constexpr]
-public
 {
     func saturate(x: f32) => clamp(x, 0, 1)
     func saturate(x: f64) => clamp(x, 0, 1)
@@ -42,7 +41,6 @@ public
 }
 
 #[swag.constexpr, swag.inline]
-public
 {
     func sqrt(x: f32)->f32 => @sqrt(x)
     func sqrt(x: f64)->f64 => @sqrt(x)
