@@ -14,12 +14,6 @@ impl Rect
     // Represents a rectangle with all coordinates to zero
     const Zero: Rect{0, 0, 0, 0}
 
-    #[swag.complete]
-    func opAffect(using self, value: f32)
-    {
-        x, y, width, height = value
-    }
-
     func opEquals(using self, other: Self)->bool
     {
         return x == other.x && y == other.y && width == other.width && height == other.height
@@ -64,13 +58,13 @@ impl Rect
         return x == y == width == height == 0
     }
 
-    // Returns true if this instance has a surface of zero (width and heigth are null)
+    // Returns true if this instance has a surface of zero (width and height are null)
     func isEmpty(using self)->bool
     {
         return width == height == 0
     }
 
-    // Returns true if this instance has a positive surface (width and heigth greater than zero)
+    // Returns true if this instance has a positive surface (width and height greater than zero)
     func isNormalized(using self)->bool
     {
         return width >= 0 && height >= 0
@@ -110,7 +104,7 @@ impl Rect
         return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps) && isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
     }
 
-    // Returns true if this instance has a surface of zero (width and heigth are null)
+    // Returns true if this instance has a surface of zero (width and height are null)
     func isEmptyEpsilon(using self, eps = ConstF32.Epsilon)->bool
     {
         return isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
