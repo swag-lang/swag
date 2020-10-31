@@ -166,17 +166,8 @@ impl Rect
         x2 := min(a.x + a.width, b.x + b.width);
         y1 := max(a.y, b.y);
         y2 := min(a.y + a.height, b.y + b.height);
-
         if x2 >= x1 && y2 >= y1
-        {
-            var result: Rect = ?
-            result.x = x1
-            result.y = y1
-            result.width = x2 - x1
-            result.height = y2 - y1
-            return result
-        }
-
+            return Rect{x1, y1, x2 - x1, y2 - y1}
         return Zero;
     }
 
@@ -193,12 +184,6 @@ impl Rect
         x2 := max(a.right, b.right);
         y1 := min(a.y, b.y);
         y2 := max(a.bottom, b.bottom);
-
-        var result: Rect = ?
-        result.x = x1
-        result.y = y1
-        result.width = x2 - x1
-        result.height = y2 - y1
-        return result
+        return Rect{x1, y1, x2 - x1, y2 - y1}
     }
 }
