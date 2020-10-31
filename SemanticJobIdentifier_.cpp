@@ -1843,11 +1843,10 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
 
 bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matches)
 {
-    auto node = context->node;
-
     if (matches.size() == 1)
         return true;
 
+    auto node = context->node;
     for (int i = 0; i < matches.size(); i++)
     {
         // Priority to a concrete type versus a generic one
@@ -1921,6 +1920,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matc
         }
     }
 
+    // Eliminate all matches tag as 'remove'
     for (int i = 0; i < matches.size(); i++)
     {
         if (matches[i].remove)
@@ -1934,7 +1934,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matc
     return true;
 }
 
-bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node)
+bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
 {
     auto             job                = context->job;
     auto             identifierRef      = node->identifierRef;
@@ -1945,7 +1945,6 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node)
     if (dependentSymbols.size() == 1)
         return true;
 
-    SymbolName* pickedSymbol = nullptr;
     for (auto oneSymbol : dependentSymbols)
     {
         if (node->callParameters && oneSymbol->kind == SymbolKind::Variable)
@@ -1978,18 +1977,11 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node)
         if (!isValid)
             continue;
 
-        if (!pickedSymbol)
-        {
-            pickedSymbol = oneSymbol;
-            continue;
-        }
-
         toAddSymbol.insert(oneSymbol);
     }
 
     // Register back all valid symbols
     dependentSymbols.clear();
-    dependentSymbols.insert(pickedSymbol);
     for (auto s : toAddSymbol)
         dependentSymbols.insert(s);
 
@@ -2092,7 +2084,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     // Filter symbols
-    SWAG_CHECK(pickSymbol(context, node));
+    SWAG_CHECK(filterSymbols(context, node));
     if (dependentSymbols.empty())
         return context->report({node, node->token, format("cannot resolve identifier '%s'", node->name.c_str())});
 
