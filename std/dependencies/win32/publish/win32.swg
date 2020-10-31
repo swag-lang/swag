@@ -19,6 +19,7 @@ namespace win32
     alias UINT =			u32
     alias SHORT =			s16
     alias LARGE_INTEGER =	s64
+    alias PLONG =           *LONG
 
     const STD_INPUT_HANDLE 	= cast(DWORD) -10
     const STD_OUTPUT_HANDLE = cast(DWORD) -11
@@ -273,6 +274,53 @@ namespace win32
     const IDCONTINUE      	= 11
     const IDTIMEOUT 		= 32000
 
+    const FILE_SHARE_READ   = 0x00000001
+    const FILE_SHARE_WRITE  = 0x00000002
+    const FILE_SHARE_DELETE = 0x00000004
+
+    const FILE_ATTRIBUTE_READONLY              = 0x00000001
+    const FILE_ATTRIBUTE_HIDDEN                = 0x00000002
+    const FILE_ATTRIBUTE_SYSTEM                = 0x00000004
+    const FILE_ATTRIBUTE_DIRECTORY             = 0x00000010
+    const FILE_ATTRIBUTE_ARCHIVE               = 0x00000020
+    const FILE_ATTRIBUTE_DEVICE                = 0x00000040
+    const FILE_ATTRIBUTE_NORMAL                = 0x00000080
+    const FILE_ATTRIBUTE_TEMPORARY             = 0x00000100
+    const FILE_ATTRIBUTE_SPARSE_FILE           = 0x00000200
+    const FILE_ATTRIBUTE_REPARSE_POINT         = 0x00000400
+    const FILE_ATTRIBUTE_COMPRESSED            = 0x00000800
+    const FILE_ATTRIBUTE_OFFLINE               = 0x00001000
+    const FILE_ATTRIBUTE_NOT_CONTENT_INDEXED   = 0x00002000
+    const FILE_ATTRIBUTE_ENCRYPTED             = 0x00004000
+    const FILE_ATTRIBUTE_INTEGRITY_STREAM      = 0x00008000
+    const FILE_ATTRIBUTE_VIRTUAL               = 0x00010000
+    const FILE_ATTRIBUTE_NO_SCRUB_DATA         = 0x00020000
+    const FILE_ATTRIBUTE_EA                    = 0x00040000
+    const FILE_ATTRIBUTE_PINNED                = 0x00080000
+    const FILE_ATTRIBUTE_UNPINNED              = 0x00100000
+    const FILE_ATTRIBUTE_RECALL_ON_OPEN        = 0x00040000
+    const FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS = 0x00400000
+
+    const GENERIC_READ    = 0x80000000
+    const GENERIC_WRITE   = 0x40000000
+    const GENERIC_EXECUTE = 0x20000000
+    const GENERIC_ALL     = 0x10000000
+
+    const FILE_BEGIN   = 0'u32
+    const FILE_CURRENT = 1'u32
+    const FILE_END     = 2'u32
+    const INVALID_FILE_SIZE         = cast(DWORD) -1
+    const INVALID_SET_FILE_POINTER  = cast(DWORD) -1
+    const INVALID_FILE_ATTRIBUTES   = cast(DWORD) -1
+
+    const CREATE_NEW          = 1'u32
+    const CREATE_ALWAYS       = 2'u32
+    const OPEN_EXISTING       = 3'u32
+    const OPEN_ALWAYS         = 4'u32
+    const TRUNCATE_EXISTING   = 5'u32
+
+    const INVALID_HANDLE_VALUE = cast(HANDLE) cast(u64) -1
+
     struct COORD
     {
         x: WORD
@@ -328,11 +376,17 @@ namespace win32
         wMilliseconds:	WORD
     }
 
+    struct SECURITY_ATTRIBUTES
+    {
+        nLength:                DWORD
+        lpSecurityDescriptor:   LPVOID
+        bInheritHandle:         BOOL
+    }
+
     #[swag.foreign("kernel32")]
     {
         func GetStdHandle(nStdHandle: DWORD)->HANDLE;
         func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->BOOL;
-        func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
         func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
         func IsDebuggerPresent()->BOOL;
         func DebugBreak();
@@ -344,6 +398,14 @@ namespace win32
         func QueryPerformanceFrequency(lpFrequency: *LARGE_INTEGER);
         func GetLocalTime(lpSystemTime: *SYSTEMTIME);
         func SetConsoleOutputCP(codePage: UINT);
+
+        func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
+        func GetFileAttributesW(lpFileName: LPCWSTR)->DWORD;
+        func CreateFileA(lpFileName: LPCSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE;
+        func ReadFile(hFile: HANDLE, lpBuffer: LPVOID, nNumberOfBytesToRead: DWORD, lpNumberOfBytesRead: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
+        func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
+        func CloseHandle(handle: HANDLE);
+        func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
     }
 
     #[swag.foreign("user32")]

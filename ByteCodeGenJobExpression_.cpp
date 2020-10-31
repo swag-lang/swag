@@ -328,6 +328,10 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         emitInstruction(context, ByteCodeOp::SetImmediate32, regList[1], (uint32_t) node->computedValue.text.length());
         return true;
     }
+    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        emitInstruction(context, ByteCodeOp::SetImmediate64, regList)->b.u64 = node->computedValue.reg.u64;
+    }
     else
     {
         return internalError(context, format("emitLiteral, unsupported type '%s'", typeInfo->name.c_str()).c_str());
