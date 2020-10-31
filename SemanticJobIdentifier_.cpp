@@ -1850,6 +1850,21 @@ bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matc
 
     for (int i = 0; i < matches.size(); i++)
     {
+        // Priority to a concrete type versus a generic one
+        auto lastOverloadType = matches[i].symbolName->ownerTable->scope->owner->typeInfo;
+        if (lastOverloadType && lastOverloadType->flags & TYPEINFO_GENERIC)
+        {
+            for (int j = 0; j < matches.size(); j++)
+            {
+                auto newOverloadType = matches[j].symbolName->ownerTable->scope->owner->typeInfo;
+                if (newOverloadType && !(newOverloadType->flags & TYPEINFO_GENERIC))
+                {
+                    matches[i].remove = true;
+                    break;
+                }
+            }
+        }
+
         // Priority to a non IMPL symbol
         if (matches[i].symbolOverload->flags & OVERLOAD_IMPL)
         {
@@ -1967,20 +1982,6 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node)
         {
             pickedSymbol = oneSymbol;
             continue;
-        }
-
-        // Priority to a concrete type versus a generic one
-        auto lastOverloadType = pickedSymbol->ownerTable->scope->owner->typeInfo;
-        auto newOverloadType  = oneSymbol->ownerTable->scope->owner->typeInfo;
-        if (lastOverloadType && newOverloadType)
-        {
-            if (!(lastOverloadType->flags & TYPEINFO_GENERIC) && (newOverloadType->flags & TYPEINFO_GENERIC))
-                continue;
-            if ((lastOverloadType->flags & TYPEINFO_GENERIC) && !(newOverloadType->flags & TYPEINFO_GENERIC))
-            {
-                pickedSymbol = oneSymbol;
-                continue;
-            }
         }
 
         toAddSymbol.insert(oneSymbol);
