@@ -162,10 +162,10 @@ impl Rect
     // If there is no intersection, Zero is returned.
     func intersect(a, b: Rect)->Rect
     {
-        x1 := max(a.x, b.x);
-        x2 := min(a.x + a.width, b.x + b.width);
-        y1 := max(a.y, b.y);
-        y2 := min(a.y + a.height, b.y + b.height);
+        x1 := max(a.x, b.x)
+        x2 := min(a.x + a.width, b.x + b.width)
+        y1 := max(a.y, b.y)
+        y2 := min(a.y + a.height, b.y + b.height)
         if x2 >= x1 && y2 >= y1
             return Rect{x1, y1, x2 - x1, y2 - y1}
         return Zero;
@@ -180,10 +180,10 @@ impl Rect
     // Creates a rectangle that represents the union between 'a' and 'b'.
     func union1(a, b: Rect)->Rect
     {
-        x1 := min(a.x, b.x);
-        x2 := max(a.right, b.right);
-        y1 := min(a.y, b.y);
-        y2 := max(a.bottom, b.bottom);
+        x1 := min(a.x, b.x)
+        x2 := max(a.right, b.right)
+        y1 := min(a.y, b.y)
+        y2 := max(a.bottom, b.bottom)
         return Rect{x1, y1, x2 - x1, y2 - y1}
     }
 }
