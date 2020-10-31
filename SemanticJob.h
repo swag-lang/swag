@@ -53,6 +53,7 @@ struct OneMatch
     SymbolOverload* symbolOverload = nullptr;
     AstNode*        dependentVar   = nullptr;
     bool            ufcs           = false;
+    bool            remove         = false;
 };
 
 struct OneGenericMatch
@@ -205,6 +206,7 @@ struct SemanticJob : public Job
     static bool resolveImpl(SemanticContext* context);
     static bool resolveImplFor(SemanticContext* context);
     static bool instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
+    static bool filterMatches(SemanticContext* context, vector<OneMatch>& matches);
     static bool pickSymbol(SemanticContext* context, AstIdentifier* node);
     static bool preResolveStruct(SemanticContext* context);
     static void flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);

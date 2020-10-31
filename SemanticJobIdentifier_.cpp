@@ -1264,6 +1264,8 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
         }
     }
 
+    SWAG_CHECK(filterMatches(context, matches));
+
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
@@ -1389,134 +1391,6 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
     {
         SWAG_CHECK(Generic::instantiateFunction(context, genericParameters, firstMatch));
     }
-
-    return true;
-}
-
-/*bool SemanticJob::filterOverloads(SemanticContext* context, AstIdentifier* node)
-{
-    return true;
-}*/
-
-bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node)
-{
-    auto             job                = context->job;
-    auto             identifierRef      = node->identifierRef;
-    auto&            dependentSymbols   = job->cacheDependentSymbols;
-    auto&            scopeHierarchyVars = job->cacheScopeHierarchyVars;
-    set<SymbolName*> toAddSymbol;
-
-    if (dependentSymbols.size() == 1)
-        return true;
-
-    SymbolName* pickedSymbol = nullptr;
-    for (auto oneSymbol : dependentSymbols)
-    {
-        if (node->callParameters && oneSymbol->kind == SymbolKind::Variable)
-            continue;
-        if (!node->callParameters && oneSymbol->kind == SymbolKind::Function)
-            continue;
-
-        // Reference to a variable inside a struct, without a direct explicit reference
-        bool isValid = true;
-        if (oneSymbol->kind != SymbolKind::Function &&
-            oneSymbol->kind != SymbolKind::GenericType &&
-            oneSymbol->kind != SymbolKind::Struct &&
-            oneSymbol->kind != SymbolKind::Enum &&
-            oneSymbol->kind != SymbolKind::TypeSet &&
-            (oneSymbol->overloads.size() != 1 || !(oneSymbol->overloads[0]->flags & OVERLOAD_COMPUTED_VALUE)) &&
-            oneSymbol->ownerTable->scope->kind == ScopeKind::Struct &&
-            !identifierRef->startScope)
-        {
-            isValid = false;
-            for (auto& dep : scopeHierarchyVars)
-            {
-                if (dep.scope->getFullName() == oneSymbol->ownerTable->scope->getFullName())
-                {
-                    isValid = true;
-                    break;
-                }
-            }
-        }
-
-        if (!isValid)
-            continue;
-
-        if (!pickedSymbol)
-        {
-            pickedSymbol = oneSymbol;
-            continue;
-        }
-
-        // Priority to a concrete type versus a generic one
-        auto lastOverloadType = pickedSymbol->ownerTable->scope->owner->typeInfo;
-        auto newOverloadType  = oneSymbol->ownerTable->scope->owner->typeInfo;
-        if (lastOverloadType && newOverloadType)
-        {
-            if (!(lastOverloadType->flags & TYPEINFO_GENERIC) && (newOverloadType->flags & TYPEINFO_GENERIC))
-                continue;
-            if ((lastOverloadType->flags & TYPEINFO_GENERIC) && !(newOverloadType->flags & TYPEINFO_GENERIC))
-            {
-                pickedSymbol = oneSymbol;
-                continue;
-            }
-        }
-
-        auto oneOverload    = oneSymbol->overloads[0];
-        auto pickedOverload = pickedSymbol->overloads[0];
-
-        // Priority to a non IMPL symbol
-        if (!(pickedOverload->flags & OVERLOAD_IMPL) && (oneOverload->flags & OVERLOAD_IMPL))
-            continue;
-        if ((pickedOverload->flags & OVERLOAD_IMPL) && !(oneOverload->flags & OVERLOAD_IMPL))
-        {
-            pickedSymbol = oneSymbol;
-            continue;
-        }
-
-        // Priority to a user generic parameters, instead of a copy one
-        if ((oneOverload->node->flags & AST_GENERATED_GENERIC_PARAM) && !(pickedOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
-            continue;
-        if (!(oneOverload->node->flags & AST_GENERATED_GENERIC_PARAM) && (pickedOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
-        {
-            pickedSymbol = oneSymbol;
-            continue;
-        }
-
-        // Priority to the same inline scope
-        if (node->ownerInline)
-        {
-            if ((!oneOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
-                (pickedOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
-            {
-                continue;
-            }
-
-            if ((oneOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
-                (!pickedOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
-            {
-                pickedSymbol = oneSymbol;
-                continue;
-            }
-        }
-
-        // Priority to the same stack frame
-        if (node->isSameStackFrame(pickedOverload) && !node->isSameStackFrame(oneOverload))
-            continue;
-        if (!node->isSameStackFrame(pickedOverload) && node->isSameStackFrame(oneOverload))
-        {
-            pickedSymbol = oneSymbol;
-            continue;
-        }
-
-        toAddSymbol.insert(oneSymbol);
-    }
-
-    // Register back all valid symbols
-    dependentSymbols.clear();
-    dependentSymbols.insert(pickedSymbol);
-    for (auto s : toAddSymbol)
-        dependentSymbols.insert(s);
 
     return true;
 }
@@ -1963,6 +1837,164 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
         symMatchContext.genericParameters.push_back(oneParam);
         symMatchContext.genericParametersCallTypes.push_back(oneParam->typeInfo);
     }
+
+    return true;
+}
+
+bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matches)
+{
+    auto node = context->node;
+
+    if (matches.size() == 1)
+        return true;
+
+    for (int i = 0; i < matches.size(); i++)
+    {
+        // Priority to a non IMPL symbol
+        if (matches[i].symbolOverload->flags & OVERLOAD_IMPL)
+        {
+            for (int j = 0; j < matches.size(); j++)
+            {
+                if (!(matches[j].symbolOverload->flags & OVERLOAD_IMPL))
+                {
+                    matches[i].remove = true;
+                    break;
+                }
+            }
+        }
+
+        // Priority to a user generic parameters, instead of a copy one
+        if (matches[i].symbolOverload->node->flags & AST_GENERATED_GENERIC_PARAM)
+        {
+            for (int j = 0; j < matches.size(); j++)
+            {
+                if (!(matches[j].symbolOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
+                {
+                    matches[i].remove = true;
+                    break;
+                }
+            }
+        }
+
+        // Priority to the same stack frame
+        if (!node->isSameStackFrame(matches[i].symbolOverload))
+        {
+            for (int j = 0; j < matches.size(); j++)
+            {
+                if (node->isSameStackFrame(matches[j].symbolOverload))
+                {
+                    matches[i].remove = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < matches.size(); i++)
+    {
+        if (matches[i].remove)
+        {
+            matches[i] = matches.back();
+            matches.pop_back();
+            i--;
+        }
+    }
+
+    return true;
+}
+
+bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node)
+{
+    auto             job                = context->job;
+    auto             identifierRef      = node->identifierRef;
+    auto&            dependentSymbols   = job->cacheDependentSymbols;
+    auto&            scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    set<SymbolName*> toAddSymbol;
+
+    if (dependentSymbols.size() == 1)
+        return true;
+
+    SymbolName* pickedSymbol = nullptr;
+    for (auto oneSymbol : dependentSymbols)
+    {
+        if (node->callParameters && oneSymbol->kind == SymbolKind::Variable)
+            continue;
+        if (!node->callParameters && oneSymbol->kind == SymbolKind::Function)
+            continue;
+
+        // Reference to a variable inside a struct, without a direct explicit reference
+        bool isValid = true;
+        if (oneSymbol->kind != SymbolKind::Function &&
+            oneSymbol->kind != SymbolKind::GenericType &&
+            oneSymbol->kind != SymbolKind::Struct &&
+            oneSymbol->kind != SymbolKind::Enum &&
+            oneSymbol->kind != SymbolKind::TypeSet &&
+            (oneSymbol->overloads.size() != 1 || !(oneSymbol->overloads[0]->flags & OVERLOAD_COMPUTED_VALUE)) &&
+            oneSymbol->ownerTable->scope->kind == ScopeKind::Struct &&
+            !identifierRef->startScope)
+        {
+            isValid = false;
+            for (auto& dep : scopeHierarchyVars)
+            {
+                if (dep.scope->getFullName() == oneSymbol->ownerTable->scope->getFullName())
+                {
+                    isValid = true;
+                    break;
+                }
+            }
+        }
+
+        if (!isValid)
+            continue;
+
+        if (!pickedSymbol)
+        {
+            pickedSymbol = oneSymbol;
+            continue;
+        }
+
+        // Priority to a concrete type versus a generic one
+        auto lastOverloadType = pickedSymbol->ownerTable->scope->owner->typeInfo;
+        auto newOverloadType  = oneSymbol->ownerTable->scope->owner->typeInfo;
+        if (lastOverloadType && newOverloadType)
+        {
+            if (!(lastOverloadType->flags & TYPEINFO_GENERIC) && (newOverloadType->flags & TYPEINFO_GENERIC))
+                continue;
+            if ((lastOverloadType->flags & TYPEINFO_GENERIC) && !(newOverloadType->flags & TYPEINFO_GENERIC))
+            {
+                pickedSymbol = oneSymbol;
+                continue;
+            }
+        }
+
+        auto oneOverload    = oneSymbol->overloads[0];
+        auto pickedOverload = pickedSymbol->overloads[0];
+
+        // Priority to the same inline scope
+        if (node->ownerInline)
+        {
+            if ((!oneOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
+                (pickedOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
+            {
+                continue;
+            }
+
+            if ((oneOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)) &&
+                (!pickedOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope)))
+            {
+                pickedSymbol = oneSymbol;
+                continue;
+            }
+        }
+
+        toAddSymbol.insert(oneSymbol);
+    }
+
+    // Register back all valid symbols
+    dependentSymbols.clear();
+    dependentSymbols.insert(pickedSymbol);
+    for (auto s : toAddSymbol)
+        dependentSymbols.insert(s);
 
     return true;
 }
