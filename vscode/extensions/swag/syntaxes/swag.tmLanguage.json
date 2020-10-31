@@ -5,10 +5,10 @@
     { "include": "#one-line-comment" },
     { "include": "#multi-line-comment" },
     { "include": "#attributes" },
-    { "include": "#function-call" },
     { "include": "#keywords" },
     { "include": "#keywords-control" },
     { "include": "#keywords-decl" },
+    { "include": "#function-call" },
     { "include": "#intrinsics" },
     { "include": "#intrinsics-buildin" },
     { "include": "#intrinsics-alias" },
@@ -82,7 +82,7 @@
       "patterns": [
         {
           "name": "keyword.declaration",
-          "match": "\\b(enum|struct|impl|interface|union|typeset|func|namespace|alias|attr)\\b"
+          "match": "\\b(enum|struct|impl|interface|typeset|func|namespace|alias|attr)\\b"
         }
       ]
     },

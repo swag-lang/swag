@@ -107,13 +107,13 @@ impl Rect
     // Returns true if this instance is null with an epsilon
     func isZeroEpsilon(using self, eps = ConstF32.Epsilon)->bool
     {
-        return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps) && math.isZeroEpsilon(width, eps) && math.isZeroEpsilon(height, eps)
+        return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps) && isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
     }
 
     // Returns true if this instance has a surface of zero (width and heigth are null)
     func isEmptyEpsilon(using self, eps = ConstF32.Epsilon)->bool
     {
-        return math.isZeroEpsilon(width, eps) && math.isZeroEpsilon(height, eps)
+        return isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
     }
 
     // Perform a math.round operation on all the coordinates

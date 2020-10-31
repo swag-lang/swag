@@ -85,7 +85,7 @@ impl Point
     // Check for zero with an epsilon
     func isZeroEpsilon(using self, eps = ConstF32.Epsilon)->bool
     {
-        return math.isZeroEpsilon(x, eps) && math.isZeroEpsilon(y, eps)
+        return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
     }
 
     // Perform a math.round operation on all the coordinates
