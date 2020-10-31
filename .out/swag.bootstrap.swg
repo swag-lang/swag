@@ -70,7 +70,7 @@ namespace swag
     attr foreign(module: string, function: string = "");
 
     #[attributeUsage(AttributeUsage.Struct)]
-    attr pack()
+    attr pack(value: u8)
 
     #[attributeUsage(AttributeUsage.Field)]
     attr offset(name: string)

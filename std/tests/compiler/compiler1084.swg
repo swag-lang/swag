@@ -4,13 +4,14 @@ struct U
 	x: s32
 }
 
-union U1
+#[swag.pack(0)]
+struct U1
 {
 	y: bool
 	x: s32
 }
 
-#[swag.pack]
+#[swag.pack(1)]
 struct U2
 {
 	y: bool

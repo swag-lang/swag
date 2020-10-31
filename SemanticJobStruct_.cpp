@@ -419,8 +419,13 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     SWAG_ASSERT(typeInfo->declNode);
     SWAG_ASSERT(typeInfo->declNode == node);
 
-    if (node->attributeFlags & ATTRIBUTE_PACK)
-        node->packing = 1;
+    // Structure packing
+    if (node->parentAttributes)
+    {
+        ComputedValue value;
+        if (node->parentAttributes->attributes.getValue("swag.pack", "value", value))
+            node->packing = value.reg.u8;
+    }
 
     uint32_t storageOffset     = 0;
     uint32_t storageIndexField = 0;

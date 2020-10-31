@@ -79,7 +79,6 @@ bool Backend::emitAttributesFlags(AstNode* node, int indent, bool isFirst)
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_PROPERTY, "property");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_GLOBAL, "global");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_NORETURN, "noreturn");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_PACK, "pack");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_FLAGS, "enumflags");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_INDEX, "enumindex");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_SAFETY_ON, "safety(true)");
@@ -89,6 +88,17 @@ bool Backend::emitAttributesFlags(AstNode* node, int indent, bool isFirst)
     // Foot
     if (!first)
         CONCAT_FIXED_STR(bufferSwg, "]\n");
+
+    if (node->parentAttributes)
+    {
+        ComputedValue value;
+        if (node->parentAttributes->attributes.getValue("swag.pack", "value", value))
+        {
+            bufferSwg.addIndent(indent);
+            bufferSwg.addStringFormat("#[pack(\"%d\")]\n", value.reg.u8);
+        }
+    }
+
     return true;
 }
 

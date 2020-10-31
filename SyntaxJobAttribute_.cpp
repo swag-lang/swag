@@ -80,7 +80,6 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     case TokenId::KwdNamespace:
     case TokenId::KwdImpl:
     case TokenId::KwdInterface:
-    case TokenId::KwdUnion:
     case TokenId::KwdTypeSet:
     case TokenId::KwdAlias:
     case TokenId::KwdUsing:

@@ -145,8 +145,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_TEST_FUNC;
             else if (child->name == "compiler")
                 flags |= ATTRIBUTE_COMPILER;
-            else if (child->name == "pack")
-                flags |= ATTRIBUTE_PACK;
             else if (child->name == "enumflags")
                 flags |= ATTRIBUTE_FLAGS;
             else if (child->name == "enumindex")
@@ -176,6 +174,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.safety", "value", attrValue);
                 flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_ON : ATTRIBUTE_SAFETY_OFF;
+            }
+            else if (child->name == "pack")
+            {
+                ComputedValue attrValue;
+                curAttr->attributes.getValue("swag.pack", "value", attrValue);
+                SWAG_VERIFY(attrValue.reg.u8 <= 8, context->report({child, format("'swag.pack' value must be in the range [0, 8] ('%d' provided)", attrValue.reg.u8)}));
             }
         }
 

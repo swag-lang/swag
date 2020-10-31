@@ -157,11 +157,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
     // Special case
     SyntaxStructType structType = SyntaxStructType::Struct;
-    if (token.id == TokenId::KwdUnion)
-    {
-        structNode->packing = 0;
-    }
-    else if (token.id == TokenId::KwdInterface)
+    if (token.id == TokenId::KwdInterface)
     {
         structType              = SyntaxStructType::Interface;
         structNode->kind        = AstNodeKind::InterfaceDecl;

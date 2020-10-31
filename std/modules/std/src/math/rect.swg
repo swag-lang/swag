@@ -178,13 +178,13 @@ impl Rect
     }
 
     // Creates a rectangle that represents the union
-    func union1(using self, with: Rect)
+    func union(using self, with: Rect)
     {
-        //:self = union(:self, with)
+        :self = union(:self, with)
     }
 
     // Creates a rectangle that represents the union between 'a' and 'b'.
-    func union1(a, b: Rect)->Rect
+    func union(a, b: Rect)->Rect
     {
         x1 := min(a.x, b.x)
         x2 := max(a.right, b.right)

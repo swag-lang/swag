@@ -1,4 +1,5 @@
-union Union
+#[swag.pack(0)]
+struct Union
 {
 	x: s32
 	y: bool
