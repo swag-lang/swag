@@ -64,6 +64,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, context->report({left, "affect operation not allowed on type array"}));
+    SWAG_VERIFY(!rightTypeInfo->isNative(NativeTypeKind::Void), context->report({ right, "cannot affect an expression of type 'void'" }));
 
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isNative(NativeTypeKind::Any) && node->token.id != TokenId::SymEqual)
