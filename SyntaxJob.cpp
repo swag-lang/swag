@@ -255,9 +255,8 @@ JobResult SyntaxJob::execute()
     sourceFile->astRoot             = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
     sourceFile->scopePrivate->owner = sourceFile->astRoot;
 
-    bool ok   = tokenizer.getToken(token);
-    bool skip = false;
-    while (!skip)
+    bool ok = tokenizer.getToken(token);
+    while (true)
     {
         // Recover from last syntax error
         if (!ok)
@@ -279,9 +278,6 @@ JobResult SyntaxJob::execute()
             continue;
         case TokenId::CompilerModule:
             ok = doCompilerModule();
-            continue;
-        case TokenId::CompilerSkip:
-            skip = true;
             continue;
         }
 

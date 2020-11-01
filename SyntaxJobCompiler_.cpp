@@ -66,8 +66,21 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
         if (node->ownerCompilerIfBlock)
             node->ownerCompilerIfBlock->blocks.push_back(block);
 
+        // Global #if for the whole file
         ScopedCompilerIfBlock scopedIf(this, block);
-        SWAG_CHECK(doStatementFor(block, nullptr, kind));
+        if (token.id == TokenId::SymSemiColon)
+        {
+            while (token.id != TokenId::EndOfFile)
+            {
+                SWAG_CHECK(doTopLevelInstruction(block));
+            }
+        }
+
+        // Embedded if
+        else
+        {
+            SWAG_CHECK(doStatementFor(block, nullptr, kind));
+        }
     }
 
     if (token.id == TokenId::CompilerElse || token.id == TokenId::CompilerElseIf)

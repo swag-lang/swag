@@ -8,5 +8,5 @@ using std
     @assert(file.exists(loc.fileName))
 
     res := file.readAllText(loc.fileName)
-    console.print("%", res)
+    //console.print("%", res)
 }
