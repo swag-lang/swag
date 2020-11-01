@@ -3,20 +3,21 @@ using win32
 public namespace std.file;
 
 // Returns true if the given file exists
-func exists(path: string)->bool
+func exists(fullname: string)->bool
 {
-    return GetFileAttributesA(@dataof(path)) == 0xFFFFFFFF ? false : true
+    return GetFileAttributesA(@dataof(fullname)) == 0xFFFFFFFF ? false : true
 }
 
 // Creates a new file stream for reading
-func openRead(path: string)->Stream
+func openRead(fullname: string)->Stream
 {
     var stream: Stream
 
-    hFile := CreateFileA(@dataof(path), GENERIC_READ, FILE_SHARE_READ, null, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null);
+    hFile := CreateFileA(@dataof(fullname), GENERIC_READ, FILE_SHARE_READ, null, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null);
     if hFile == INVALID_HANDLE_VALUE
         return stream
 
+    stream.name = fullname
     stream.handle = cast(FileHandle) hFile
     stream.canRead = true
     stream.canSeek = true

@@ -4,6 +4,7 @@ alias FileHandle = *void
 
 struct Stream
 {
+    name:       String
     handle:     FileHandle;
     canRead:    bool
     canSeek:    bool

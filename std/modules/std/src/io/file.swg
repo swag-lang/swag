@@ -7,11 +7,11 @@ enum SeekOrigin
     End
 }
 
-func readAllText(path: string)->String
+func readAllText(fullname: string)->String
 {
     var result: String
 
-    stream := openRead(path)
+    stream := openRead(fullname)
     if !stream.isOpen() return result
 
     setPosition(stream, SeekOrigin.End, 0)
