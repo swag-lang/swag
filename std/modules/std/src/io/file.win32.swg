@@ -1,14 +1,15 @@
 #if std.WINDOWS;
-namespace std.file;
 using win32
+public namespace std.file;
 
 // Returns true if the given file exists
-public func exists(path: string)->bool
+func exists(path: string)->bool
 {
     return GetFileAttributesA(@dataof(path)) == 0xFFFFFFFF ? false : true
 }
 
-public func openRead(path: string)->Stream
+// Creates a new file stream for reading
+func openRead(path: string)->Stream
 {
     var stream: Stream
 
@@ -17,54 +18,51 @@ public func openRead(path: string)->Stream
         return stream
 
     stream.handle = cast(FileHandle) hFile
+    stream.canRead = true
+    stream.canSeek = true
+
     return stream
 }
 
-public func readAllText(path: string)->String
+// Read from the given file stream, and returns the number of bytes
+func read(stream: Stream, buffer: *void, length: u32)->u32
 {
-    var result: String
-
-    stream := openRead(path)
-    if !stream.isOpen() return result
-
-    setPosition(stream, SeekOrigin.End, 0)
-    len := cast(u32) getPosition(stream)
-    setPosition(stream, SeekOrigin.Begin, 0)
-
-    result.reserve(len)
-    result.length = len
+    debug.assert(stream.isOpen())
+    debug.assert(stream.canRead)
 
     var dwRead: DWORD = 0
-    ReadFile(stream.handle, result.buffer, len, &dwRead, null)
-
-    close(stream)
-    return result
+    ReadFile(stream.handle, buffer, length, &dwRead, null)
+    return dwRead
 }
 
-// Close the given stream
+// Close the given file stream
 func close(stream: Stream)
 {
     if stream.handle
         CloseHandle(stream.handle)
 }
 
+// Returns the current seek position of the given file stream
 func getPosition(stream: Stream)->u64
 {
     debug.assert(stream.isOpen())
+    debug.assert(stream.canSeek)
 
     hFile := cast(HANDLE) stream.handle
-    high := 0
-    low := SetFilePointer(hFile, 0, &high, FILE_CURRENT)
+    high  := 0
+    low   := SetFilePointer(hFile, 0, &high, FILE_CURRENT)
     return low + (cast(u64) high << 32)
 }
 
+// Set the current seek position of the given file stream
 func setPosition(stream: Stream, origin: SeekOrigin, seek: u64)->bool
 {
     debug.assert(stream.isOpen())
+    debug.assert(stream.canSeek)
 
     hFile := cast(HANDLE) stream.handle
-    low  := cast(LONG) (seek & 0xFFFFFFFF)
-    high := cast(LONG) (seek >> 32)
+    low   := cast(LONG) (seek & 0xFFFFFFFF)
+    high  := cast(LONG) (seek >> 32)
 
     var seekMode: DWORD
     switch origin

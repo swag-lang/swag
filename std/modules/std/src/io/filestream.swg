@@ -4,7 +4,10 @@ alias FileHandle = *void
 
 struct Stream
 {
-    handle: FileHandle;
+    handle:     FileHandle;
+    canRead:    bool
+    canSeek:    bool
+    canWrite:   bool
 }
 
 impl Stream
