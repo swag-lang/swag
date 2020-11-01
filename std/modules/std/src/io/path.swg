@@ -10,15 +10,16 @@ func getFileName(fullname: string)->string
     if(fullname == null) return null
     debug.assert(isValidPathName(fullname))
 
-    cpt := @countof(fullname)
+    countof := @countof(fullname)
+    cpt := countof
     while cpt
     {
         cpt -= 1
         c := fullname[cpt]
         if c == DirectorySeparatorChar || c == AltDirectorySeparatorChar || c == VolumeSeparatorChar
         {
-            if cpt == @countof(fullname) - 1 return null
-            return acast @mkslice(@dataof(fullname) + cpt + 1, (@countof(fullname) - cpt) - 1)
+            if cpt == countof - 1 return null
+            return acast @mkslice(@dataof(fullname) + cpt + 1, (countof - cpt) - 1)
         }
     }
 
