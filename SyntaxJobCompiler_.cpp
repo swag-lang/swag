@@ -56,7 +56,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, "missing #if expression before '{'"));
+    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, "missing #if expression"));
     SWAG_CHECK(doExpression(node, &node->boolExpression));
     node->boolExpression->semanticAfterFct = SemanticJob::resolveCompilerIf;
 
@@ -70,6 +70,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
         ScopedCompilerIfBlock scopedIf(this, block);
         if (token.id == TokenId::SymSemiColon)
         {
+            SWAG_CHECK(eatToken(TokenId::SymSemiColon));
             while (token.id != TokenId::EndOfFile)
             {
                 SWAG_CHECK(doTopLevelInstruction(block));

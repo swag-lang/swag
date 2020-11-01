@@ -57,8 +57,8 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     SWAG_CHECK(tokenizer.getToken(token));
 
     AstNode* namespaceNode;
-    Scope*   oldScope = currentScope;
-    Scope*   newScope = nullptr;
+    Scope*   oldScope  = currentScope;
+    Scope*   newScope  = nullptr;
 
     while (true)
     {
