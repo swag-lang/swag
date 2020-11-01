@@ -9,8 +9,7 @@ using std
     @assert(path.getExtension(loc.fileName) == ".swg")
     @assert(path.hasExtension(loc.fileName))
 
-    toto := path.getFileName(loc.fileName)
-    console.print("-%-\n", @countof(toto))
+    //console.print("-%-\n", @countof(path.getFileName(loc.fileName)))
 
     @assert(path.getFileName(loc.fileName) == "std160.swg")
 

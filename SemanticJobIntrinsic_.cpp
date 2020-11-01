@@ -95,6 +95,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
 
 bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
+    typeInfo = TypeManager::concreteReferenceType(typeInfo);
     if (typeInfo->isNative(NativeTypeKind::String))
     {
         auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
@@ -168,6 +169,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
 
 bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
+    typeInfo = TypeManager::concreteReferenceType(typeInfo);
     if (typeInfo->isNative(NativeTypeKind::String))
     {
         if (node->flags & AST_VALUE_COMPUTED)
@@ -217,7 +219,6 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else
     {
-        typeInfo = TypeManager::concreteType(typeInfo);
         SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({node, format("expression should be of type integer, but is '%s'", typeInfo->name.c_str())}));
         SWAG_VERIFY(typeInfo->sizeOf <= 4, context->report({node, format("expression should be a 32 bit integer, but is '%s'", typeInfo->name.c_str())}));
         if (node->flags & AST_VALUE_COMPUTED)
