@@ -1,0 +1,17 @@
+public namespace std.file;
+
+alias FileHandle = *void
+
+struct Stream
+{
+    handle: FileHandle;
+}
+
+impl Stream
+{
+    // Returns true if the stream is valid
+    func isOpen(using self)->bool
+    {
+        return handle != null
+    }
+}
