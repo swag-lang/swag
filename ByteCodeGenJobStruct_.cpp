@@ -684,6 +684,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                 emitInstruction(context, ByteCodeOp::CopyRBtoRA, r1, r0);
                 if (typeParam->offset)
                     emitInstruction(context, ByteCodeOp::Add32byVB32, r1)->b.u32 = typeParam->offset;
+                child->flags |= AST_NO_LEFT_DROP;
                 emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
                 freeRegisterRC(context, child);
             }

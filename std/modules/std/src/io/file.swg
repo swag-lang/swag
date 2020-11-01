@@ -7,12 +7,12 @@ enum SeekOrigin
     End
 }
 
-func readAllText(fullname: string) -> String
+func readAllText(fullname: string) -> {String, bool}
 {
     var result: String
 
     stream := openRead(fullname)
-    if !stream.isOpen() return result
+    if !stream.isOpen() return @{result, false}
 
     len := getSize(stream)
     debug.assert(len <= swag.MaxU32)
@@ -24,5 +24,5 @@ func readAllText(fullname: string) -> String
     read(stream, result.buffer, len32)
 
     close(&stream)
-    return result
+    return @{result, true}
 }

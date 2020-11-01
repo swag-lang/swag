@@ -20,5 +20,5 @@ using std
     @assert(ext.compare(".SWG", utf8.ComparisonType.AsciiNoCase) == 0)
 
     res := file.readAllText(loc.fileName)
-    console.print("%", res)
+    //console.print("%", res.item0)
 }
