@@ -248,9 +248,9 @@ func endsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonT
 public enum ComparisonType
 {
     Ascii
-    AsciiIgnoreCase
+    AsciiNoCase
     Latin1
-    Latin1IgnoreCase
+    Latin1NoCase
 }
 
 // Compare two utf8 buffers with the given algorithm
@@ -262,11 +262,11 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Ascii)->s3
     {
     case Ascii:
         return ascii.compare(src, dst)
-    case AsciiIgnoreCase:
+    case AsciiNoCase:
         return ascii.compare(src, dst, ignoreCase: true)
     case Latin1:
         return latin1.compare(src, dst)
-    case Latin1IgnoreCase:
+    case Latin1NoCase:
         return latin1.compare(src, dst, ignoreCase: true)
     }
 

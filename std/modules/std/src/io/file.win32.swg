@@ -17,8 +17,8 @@ func openRead(fullname: string)->Stream
     if hFile == INVALID_HANDLE_VALUE
         return stream
 
-    stream.name = fullname
-    stream.handle = cast(FileHandle) hFile
+    stream.name    = fullname
+    stream.handle  = cast(FileHandle) hFile
     stream.canRead = true
     stream.canSeek = true
 
