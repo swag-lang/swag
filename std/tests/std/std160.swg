@@ -4,6 +4,8 @@ using std
 //#[swag.printbc]
 #test
 {
+    @assert(path.getExtension("loc.fileName") == ".fileName")
+
     loc := #location
     @assert(file.exists(loc.fileName))
     @assert(path.getExtension(loc.fileName) == ".swg")

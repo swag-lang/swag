@@ -5,6 +5,7 @@ const AltDirectorySeparatorChar = "/"'u8
 const VolumeSeparatorChar       = ":"'u8
 
 // Returns the path file name, null if not found
+#[swag.constexpr]
 func getFileName(fullname: string)->string
 {
     if(fullname == null) return null
@@ -28,6 +29,7 @@ func getFileName(fullname: string)->string
 
 // Returns the file name extension, including the '.' character
 // Returns null if no extension was found
+#[swag.constexpr]
 func getExtension(fullname: string)->string
 {
     if(fullname == null) return null
@@ -48,6 +50,7 @@ func getExtension(fullname: string)->string
 }
 
 // Returns true if the file name contains an extension
+#[swag.constexpr]
 func hasExtension(fullname: string)->bool
 {
     if(fullname == null) return false
