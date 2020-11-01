@@ -198,7 +198,7 @@ struct SemanticJob : public Job
     static bool fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam, AstNode* ufcsLastParam);
     static bool fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload);
     static bool resolveIdentifier(SemanticContext* context);
-    static bool collectScopesToSolve(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
+    static bool findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* identifierRef, SymbolName* symbol);
     static bool ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     static bool resolveIdentifierRef(SemanticContext* context);

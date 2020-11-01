@@ -983,7 +983,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
 
     if (node)
     {
-        identifier        = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        identifier        = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
         genericParameters = identifier->genericParameters;
         callParameters    = identifier->callParameters;
     }
@@ -1471,6 +1471,8 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     }
     else
     {
+        // If ufcs comes from a using var, then we must make a reference to the using var in
+        // the first call parameter
         if (dependentVar == identifierRef->previousResolvedNode)
         {
             auto copyChild = Ast::newIdentifier(node->sourceFile, dependentVar->name, idRef, idRef);
@@ -1483,14 +1485,15 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
         }
         else
         {
-            // Move all previous references to the one we want to pass as parameter
-            // X.Y.call(...) => call(X.Y, ...)
-            while (identifierRef->childs.size())
+            // Copy all previous references to the one we want to pass as parameter
+            // X.Y.call(...) => X.Y.call(X.Y, ...)
+            // We copy instead of moving in case this will be evaluated another time (inline)
+            for (auto child : identifierRef->childs)
             {
-                auto copyChild = identifierRef->childs.front();
-                Ast::removeFromParent(copyChild);
+                auto copyChild = Ast::clone(child, idRef);
+                child->flags |= AST_NO_BYTECODE;
                 Ast::addChildBack(idRef, copyChild);
-                if (copyChild == identifierRef->previousResolvedNode)
+                if (child == identifierRef->previousResolvedNode)
                 {
                     copyChild->flags |= AST_TO_UFCS;
                     break;
@@ -1508,7 +1511,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     return true;
 }
 
-bool SemanticJob::collectScopesToSolve(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
+bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
     auto  job                = context->job;
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
@@ -1663,6 +1666,13 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                 identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
             {
                 SWAG_ASSERT(identifierRef->previousResolvedNode);
+
+                // Be sure the identifier we want to use in ufcs emits code, otherwise we cannot use it.
+                // This can happen if we have already changed the ast, but the nodes are reavaluated later
+                // (because of an inline for example)
+                if (identifierRef->previousResolvedNode->flags & AST_NO_BYTECODE)
+                    return true;
+
                 *ufcsFirstParam = identifierRef->previousResolvedNode;
 
                 // If we do not have parenthesis (call parameters), then this must be a function marked with 'swag.property'
@@ -2091,7 +2101,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     if (dependentSymbols.empty())
-        SWAG_CHECK(collectScopesToSolve(context, identifierRef, node));
+        SWAG_CHECK(findIdentifierInScopes(context, identifierRef, node));
 
     // If one of my dependent symbol is not fully solved, we need to wait
     for (auto symbol : dependentSymbols)

@@ -823,9 +823,9 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     newContent->byteCodeBeforeFct = nullptr;
     newContent->flags &= ~AST_NO_SEMANTIC;
 
-    // Need to reevaluate the identifier, if this is an identifier, cause the makeInline can be called
+    // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called
     // for something else, like a loop node for example (opCount). In that case, we let the specific node
-    // deal with th (re)evaluation.
+    // deal with the (re)evaluation.
     if (identifier->kind == AstNodeKind::Identifier)
     {
         identifier->semanticState = AstNodeResolveState::Enter;

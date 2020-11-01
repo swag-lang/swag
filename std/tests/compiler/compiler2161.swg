@@ -1,28 +1,18 @@
-namespace std.debug
+#[swag.inline]
+func assert(v: bool)
 {
-    func assert(v: bool)
-    {
-
-    }
 }
 
-namespace std.file
+struct S
 {
-    struct S
-    {
-
-    }
-
-    impl S
-    {
-        func titi(using self)=>true
-    }
 }
 
-namespace std.file
+impl S
 {
-    func tata(x: S)
-    {
-        debug.assert(x.titi())
-    }
+    func titi(using self)=>true
+}
+
+func tata(x: S)
+{
+    assert(x.titi())
 }
