@@ -37,10 +37,25 @@ func read(stream: Stream, buffer: *void, length: u32)->u32
 }
 
 // Close the given file stream
-func close(stream: Stream)
+func close(stream: *Stream)
 {
     if stream.handle
+    {
         CloseHandle(stream.handle)
+        stream.handle = null
+    }
+}
+
+// Returns the given file stream length on disk
+func getSize(stream: Stream)->u64
+{
+    debug.assert(stream.isOpen())
+    debug.assert(stream.canSeek)
+
+    hFile := cast(HANDLE) stream.handle
+    high  := 0'u32
+    low   := GetFileSize(hFile, &high)
+    return low + (cast(u64) high << 32)
 }
 
 // Returns the current seek position of the given file stream
