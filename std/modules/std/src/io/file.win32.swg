@@ -27,9 +27,9 @@ public func readAllText(path: string)->String
     stream := openRead(path)
     if !stream.isOpen() return result
 
-    setPosition(stream, FILE_END, 0)
+    setPosition(stream, SeekOrigin.End, 0)
     len := cast(u32) getPosition(stream)
-    setPosition(stream, FILE_BEGIN, 0)
+    setPosition(stream, SeekOrigin.Begin, 0)
 
     result.reserve(len)
     result.length = len
@@ -58,12 +58,21 @@ func getPosition(stream: Stream)->u64
     return low + (cast(u64) high << 32)
 }
 
-func setPosition(stream: Stream, seekMode: DWORD, seek: u64)->bool
+func setPosition(stream: Stream, origin: SeekOrigin, seek: u64)->bool
 {
     debug.assert(stream.isOpen())
 
     hFile := cast(HANDLE) stream.handle
     low  := cast(LONG) (seek & 0xFFFFFFFF)
     high := cast(LONG) (seek >> 32)
+
+    var seekMode: DWORD
+    switch origin
+    {
+        case SeekOrigin.Begin:      seekMode = FILE_BEGIN
+        case SeekOrigin.Current:    seekMode = FILE_CURRENT
+        case SeekOrigin.End:        seekMode = FILE_END
+    }
+
     return SetFilePointer(hFile, low, &high, seekMode) != INVALID_SET_FILE_POINTER
 }
