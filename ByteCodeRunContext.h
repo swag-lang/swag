@@ -63,13 +63,14 @@ struct ByteCodeRunContext : public JobContext
     ConcreteCompilerSourceLocation* errorLoc      = nullptr;
     JobContext*                     callerContext = nullptr;
 
-    AstNode*             node        = nullptr;
-    uint8_t*             stack       = nullptr;
-    uint8_t*             sp          = nullptr;
-    uint8_t*             bp          = nullptr;
-    ByteCode*            bc          = nullptr;
-    ByteCodeInstruction* ip          = nullptr;
-    Register*            registersRR = nullptr;
+    AstNode*             node         = nullptr;
+    uint8_t*             stack        = nullptr;
+    uint8_t*             sp           = nullptr;
+    uint8_t*             bp           = nullptr;
+    ByteCode*            bc           = nullptr;
+    ByteCodeInstruction* ip           = nullptr;
+    static const int     MAX_ALLOC_RR = 2;
+    Register*            registersRR  = nullptr;
 
     uint32_t stackSize = 0;
 

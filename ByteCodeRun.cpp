@@ -639,13 +639,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::PushRR:
     {
-        SWAG_ASSERT(ip->a.u32 < 4);
+        SWAG_ASSERT(ip->a.u32 < ByteCodeRunContext::MAX_ALLOC_RR);
         context->push(registersRR[ip->a.u32].u64);
         break;
     }
     case ByteCodeOp::PopRR:
     {
-        SWAG_ASSERT(ip->a.u32 < 4);
+        SWAG_ASSERT(ip->a.u32 < ByteCodeRunContext::MAX_ALLOC_RR);
         registersRR[ip->a.u32].u64 = context->pop<uint64_t>();
         break;
     }
@@ -653,14 +653,14 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::CopyRCtoRR:
     case ByteCodeOp::CopyRCtoRT:
     {
-        SWAG_ASSERT(ip->a.u32 < 4);
+        SWAG_ASSERT(ip->a.u32 < ByteCodeRunContext::MAX_ALLOC_RR);
         registersRR[ip->a.u32] = registersRC[ip->b.u32];
         break;
     }
     case ByteCodeOp::CopyRRtoRC:
     case ByteCodeOp::CopyRTtoRC:
     {
-        SWAG_ASSERT(ip->b.u32 < 4);
+        SWAG_ASSERT(ip->b.u32 < ByteCodeRunContext::MAX_ALLOC_RR);
         registersRC[ip->a.u32] = registersRR[ip->b.u32];
         break;
     }

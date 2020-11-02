@@ -7,9 +7,9 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t stackS)
 {
     if (!registersRR)
     {
-        registersRR = (Register*) malloc(4 * sizeof(Register));
+        registersRR = (Register*) malloc(MAX_ALLOC_RR * sizeof(Register));
         if (g_CommandLine.devMode)
-            memset(registersRR, 0xFE, 4 * sizeof(Register));
+            memset(registersRR, 0xFE, MAX_ALLOC_RR * sizeof(Register));
     }
 
     if (stackSize < stackS)
