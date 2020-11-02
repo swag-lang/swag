@@ -31,7 +31,6 @@ func fromUtf8(src: const [..] u8)->Array'u16
 {
     var result: Array'u16
     result.reserve(@countof(src))
-    result.count = @countof(src)
-    result.count = fromUtf8(result.toSlice(), src)
+    result.count = fromUtf8(@mkslice(result.buffer, @countof(src)), src)
     return result
 }

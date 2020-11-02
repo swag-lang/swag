@@ -7,7 +7,7 @@ enum SeekOrigin
     End
 }
 
-//#[swag.printbc]
+// Read a file, and store the result in an utf8 string
 func readAllText(fullname: string) -> {String, bool}
 {
     var result: String

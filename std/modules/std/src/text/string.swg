@@ -437,11 +437,7 @@ public impl String
     // Convert string to a 32 bits character array
     func toCharArray(using self)->Array'char
     {
-        var utf32: Array'char
-        utf32.reserve(length + 1)
-        count := unicode32.fromUtf8(@mkslice(utf32.buffer, length), @mkslice(buffer, length))
-        utf32.count = count
-        return utf32
+        return unicode32.fromUtf8(@mkslice(buffer, length))
     }
 
     // Convert a literal string to a String
