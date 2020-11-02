@@ -25,17 +25,15 @@ impl A
 }
 
 //#[swag.printbc]
-func toto() -> {A, bool}
+func toto() -> A
 {
     var x: A
     x.x = 555
-    return @{x, false}
+    return x
 }
 
-//#[swag.printbc, swag.nooptim]
+#[swag.printbc, swag.nooptim]
 #test
 {
     v := toto()
-    @assert(v.item0.x == 555)
-    @assert(G == 1)
 }
