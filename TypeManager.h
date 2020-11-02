@@ -20,6 +20,7 @@ static const uint32_t CASTFLAG_BIJECTIF      = 0x00000080;
 static const uint32_t CASTFLAG_STRICT        = 0x00000100;
 static const uint32_t CASTFLAG_FORCE_UNCONST = 0x00000200;
 static const uint32_t CASTFLAG_COMPARE       = 0x00000400;
+static const uint32_t CASTFLAG_UFCS          = 0x00000800;
 
 static const uint32_t CONCRETE_ALL     = 0xFFFFFFFF;
 static const uint32_t CONCRETE_ENUM    = 0x00000001;

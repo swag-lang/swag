@@ -43,9 +43,11 @@ public impl TextReader
     func close(using self)
     {
         debug.assert(stream.isOpen())
-        file.close(&stream)
+        stream.close()
     }
 
+    // Read one line of text.
+    // Returns a null string at the end
     func readLine(using self)->String
     {
         var result: String
@@ -75,6 +77,8 @@ public impl TextReader
             if buffer.count && buffer[charSeek] == "\n"'u8
                 charSeek += 1
 
+            // Result must be empty, not null, to differenciate an empty line
+            // from the end of file
             result.ensureNotNull()
             return result
         }

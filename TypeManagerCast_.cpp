@@ -1788,7 +1788,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     // Struct/Interface to pointer
     if (fromType->kind == TypeInfoKind::Struct || fromType->kind == TypeInfoKind::Interface || fromType->kind == TypeInfoKind::TypeSet)
     {
-        if ((castFlags & CASTFLAG_EXPLICIT) || (toTypePointer->flags & TYPEINFO_SELF) || toTypePointer->isConst())
+        if ((castFlags & CASTFLAG_EXPLICIT) || (toTypePointer->flags & TYPEINFO_SELF) || toTypePointer->isConst() || (castFlags & CASTFLAG_UFCS))
         {
             if (toTypePointer->ptrCount == 1)
             {

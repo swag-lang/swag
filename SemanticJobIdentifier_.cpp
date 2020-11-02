@@ -590,8 +590,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     if (nodeCall->typeInfo->kind == TypeInfoKind::Lambda && (nodeCall->typeInfo->declNode->flags & AST_PENDING_LAMBDA_TYPING))
                         resolvePendingLambdaTyping(nodeCall, &oneMatch, i);
 
+                    uint32_t castFlags = 0;
+                    if (i == 0 && oneMatch.ufcs)
+                        castFlags |= CASTFLAG_UFCS;
+
                     if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
-                        SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[i]->typeInfo, nullptr, nodeCall));
+                        SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[i]->typeInfo, nullptr, nodeCall, castFlags));
                     else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
                         SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters.back()->typeInfo, nullptr, nodeCall));
 
@@ -1154,6 +1158,10 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
             }
         }
 
+        // This way, a special cast can be done for the first parameter of a function
+        if(oneOverload.ufcs)
+            oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_UFCS;
+
         // We collect type replacements depending on where the identifier is
         setupContextualGenericTypeReplacement(context, oneOverload, overload);
 
@@ -1628,16 +1636,19 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             dependentVar = dep.node;
 
             // This way the ufcs can trigger for a function
-            if (symbol->kind == SymbolKind::Function)
+            if (!identifierRef->previousResolvedNode)
             {
-                // Be sure we have a missing parameter in order to try ufcs
-                auto typeFunc  = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                auto numParams = node->callParameters ? node->callParameters->childs.size() : 0;
-                if (numParams < typeFunc->parameters.size())
+                if (symbol->kind == SymbolKind::Function)
                 {
-                    identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
-                    identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
-                    identifierRef->previousResolvedNode   = dependentVar;
+                    // Be sure we have a missing parameter in order to try ufcs
+                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+                    auto numParams = node->callParameters ? node->callParameters->childs.size() : 0;
+                    if (numParams < typeFunc->parameters.size())
+                    {
+                        identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
+                        identifierRef->resolvedSymbolName = dependentVar->resolvedSymbolOverload->symbol;
+                        identifierRef->previousResolvedNode = dependentVar;
+                    }
                 }
             }
         }

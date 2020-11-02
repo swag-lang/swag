@@ -58,6 +58,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         uint32_t castFlags = CASTFLAG_NO_ERROR;
         if (context.flags & SymbolMatchContext::MATCH_UNCONST)
             castFlags |= CASTFLAG_UNCONST;
+        if (context.flags & SymbolMatchContext::MATCH_UFCS && i == 0)
+            castFlags |= CASTFLAG_UFCS;
 
         bool same = TypeManager::makeCompatibles(nullptr, symbolTypeInfo, typeInfo, nullptr, nullptr, castFlags);
         if (!same)
