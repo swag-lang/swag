@@ -2,6 +2,7 @@
 #include "ByteCodeOptimizer.h"
 #include "SourceFile.h"
 #include "AstNode.h"
+#include "TypeInfo.h"
 
 // When a function returns something by copy, this is first moved to a temporary place on the stack of the caller,
 // then this is moved back to the variable of the caller if there's an affectation.
@@ -48,7 +49,9 @@ void ByteCodeOptimizer::optimizePassRetCopy(ByteCodeOptContext* context)
                 bool hasDrop = false;
                 for (auto& toDrop : ipOrg->node->ownerScope->symTable.structVarsToDrop)
                 {
-                    if (toDrop.storageOffset == orgOffset && toDrop.typeStruct)
+                    if (!toDrop.typeStruct)
+                        continue;
+                    if (toDrop.storageOffset == orgOffset && toDrop.typeStruct->opDrop)
                     {
                         hasDrop = true;
                         break;
