@@ -608,6 +608,9 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
     for (int i = count; i >= 0; i--)
     {
         auto one = table.structVarsToDrop[i];
+        if (!one.typeStruct)
+            continue;
+
         waitStructGenerated(context, one.typeStruct);
         if (context->result == ContextResult::Pending)
             return true;
@@ -616,6 +619,8 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
     for (int i = count; i >= 0; i--)
     {
         auto one = table.structVarsToDrop[i];
+        if (!one.typeStruct)
+            continue;
 
         if (one.overload && forceNoDrop && forceNoDrop->contains(one.overload))
             continue;
