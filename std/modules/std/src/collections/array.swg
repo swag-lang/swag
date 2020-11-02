@@ -156,7 +156,7 @@ impl Array
     }
 
     // Returns a slice
-    func toSlice(using self)->const [..] T
+    func toSlice(using self)->[..] T
     {
         return @mkslice(buffer, count)
     }

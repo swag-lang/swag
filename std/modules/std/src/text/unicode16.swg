@@ -25,3 +25,13 @@ func fromUtf8(dest: [..] u16, src: const [..] u8)->u32
 
     return count
 }
+
+// Convert an utf8 buffer to a 16 bits unicode sequence
+func fromUtf8(src: const [..] u8)->Array'u16
+{
+    var result: Array'u16
+    result.reserve(@countof(src))
+    result.count = @countof(src)
+    result.count = fromUtf8(result.toSlice(), src)
+    return result
+}

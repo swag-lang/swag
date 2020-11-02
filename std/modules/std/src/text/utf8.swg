@@ -353,6 +353,7 @@ func fromChar(dest: [..] u8, src: char)->u32
 
 // Convert a unicode 32 array to an utf8 buffer
 // Returns the number of bytes written in the destination buffer
+// 'dest' must be at least 4 bytes long
 func fromCharArray(dest: [..] u8, src: const [..] char)->u32
 {
     dataof := @dataof(dest)

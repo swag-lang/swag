@@ -434,16 +434,6 @@ public impl String
         return c
     }
 
-    // Convert string to a 16 bits unicode array
-    func toUni16Array(using self)->Array'u16
-    {
-        var utf16: Array'u16
-        utf16.reserve(length + 1)
-        count := unicode16.fromUtf8(@mkslice(utf16.buffer, length), @mkslice(buffer, length))
-        utf16.count = count
-        return utf16
-    }
-
     // Convert string to a 32 bits character array
     func toCharArray(using self)->Array'char
     {

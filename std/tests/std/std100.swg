@@ -5,7 +5,7 @@ using std
 #test
 {
     var str: String = "toto"
-    u := str.toUni16Array()
+    u := unicode16.fromUtf8(str.toString())
 
     v := 0
     switch v
