@@ -7,7 +7,7 @@ enum SeekOrigin
     End
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 func readAllText(fullname: string) -> {String, bool}
 {
     var result: String
