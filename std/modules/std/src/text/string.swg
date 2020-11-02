@@ -119,9 +119,17 @@ public impl String
             #assert(false, "invalid binary operator '" ~ op ~ "'")
     }
 
+    func(op: string) opAssign(using self, value: u8)
+    {
+        #if op == "+="
+            append(value)
+        #else
+            #assert(false, "invalid binary operator '" ~ op ~ "'")
+    }
+
     func opPostMove(using self)
     {
-        if capacity <= SmallSize
+        if buffer && capacity <= SmallSize
             buffer = acast &allocator
     }
 
@@ -246,6 +254,22 @@ public impl String
     func isNullOrEmpty(using self)->bool
     {
         return buffer == null || length == 0
+    }
+
+    // Transform a null string in an empty one
+    func makeNotNull(using self)
+    {
+        if buffer return
+        buffer = acast &allocator
+    }
+
+    // Append a byte to the String
+    func append(using self, value: u8)
+    {
+        grow(length + 2)
+        buffer[length] = value
+        buffer[length + 1] = 0
+        length += 1
     }
 
     // Append a string to the String
