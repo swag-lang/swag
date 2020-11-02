@@ -32,6 +32,7 @@ struct AstBreakable;
 struct AstInline;
 struct AstStruct;
 struct TypeInfoStruct;
+struct AstReturn;
 enum class TypeInfoListKind;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
@@ -455,6 +456,7 @@ struct AstFuncCallParam : public AstNode
 
     Utf8 namedParam;
 
+    AstReturn*     autoTupleReturn;
     AstNode*       namedParamNode;
     TypeInfoParam* resolvedParameter;
 
@@ -737,8 +739,8 @@ struct AstReturn : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    SymbolOverload* forceNoDrop;
-    int             seekJump;
+    VectorNative<SymbolOverload*> forceNoDrop;
+    int                           seekJump;
 };
 
 struct AstCompilerInline : public AstNode

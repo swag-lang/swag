@@ -134,7 +134,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     Scope::collectScopeFromToExcluded(node->ownerScope, topScope->parentScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
-        SWAG_CHECK(emitLeaveScope(context, scope, node->forceNoDrop));
+        SWAG_CHECK(emitLeaveScope(context, scope, &node->forceNoDrop));
         if (context->result != ContextResult::Done)
             return true;
     }

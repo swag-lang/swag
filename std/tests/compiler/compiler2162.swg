@@ -3,27 +3,28 @@ struct A
     x: s64 = 1
 }
 
+var G = 0
+
 impl A
 {
     func opDrop(self)
     {
-        @print("drop\n")
-        //@assert(self.x == 1)
-        self.x = 666
+        //@print("drop\n")
     }
 
     func opPostMove(self)
     {
-        @print("postmove\n")
+        //@print("postmove\n")
+        G = 1
     }
 
     func opPostCopy(self)
     {
-        @print("postcpy\n")
+        @assert(false)
     }
 }
 
-#[swag.printbc, swag.nooptim]
+//#[swag.printbc]
 func toto() -> {A, bool}
 {
     var x: A
@@ -31,8 +32,10 @@ func toto() -> {A, bool}
     return @{x, false}
 }
 
+//#[swag.printbc, swag.nooptim]
 #test
 {
     v := toto()
-    @print(v.item0.x)
+    @assert(v.item0.x == 555)
+    @assert(G == 1)
 }

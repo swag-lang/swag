@@ -194,4 +194,15 @@ struct VectorNative
         memcpy(buffer + count, other.buffer, other.count * sizeof(T));
         count += other.count;
     }
+
+    bool contains(T value)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            if (buffer[i] == value)
+                return true;
+        }
+
+        return false;
+    }
 };

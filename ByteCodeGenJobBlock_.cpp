@@ -27,8 +27,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         if (returnType->kind == TypeInfoKind::Struct)
         {
             StructToDrop st;
-            st.overload = nullptr;
-            st.typeStruct = CastTypeInfo<TypeInfoStruct>(returnType, TypeInfoKind::Struct);
+            st.overload      = nullptr;
+            st.typeStruct    = CastTypeInfo<TypeInfoStruct>(returnType, TypeInfoKind::Struct);
             st.storageOffset = node->fctCallStorageOffset;
             node->ownerScope->symTable.structVarsToDrop.push_back(st);
         }
@@ -592,7 +592,7 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop)
+bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop)
 {
     if (!scope)
         return true;
@@ -616,8 +616,10 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
     for (int i = count; i >= 0; i--)
     {
         auto one = table.structVarsToDrop[i];
-        if (one.overload && one.overload == forceNoDrop)
+
+        if (one.overload && forceNoDrop && forceNoDrop->contains(one.overload))
             continue;
+
         if (one.typeStruct->opDrop)
         {
             auto r0 = reserveRegisterRC(context);
@@ -655,7 +657,7 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
     return true;
 }
 
-bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop)
+bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop)
 {
     auto node = context->node;
 

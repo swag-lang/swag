@@ -557,7 +557,7 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 
 bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 {
-    auto node      = context->node;
+    auto node      = CastAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
     auto child     = node->childs.front();
     node->typeInfo = child->typeInfo;
 
@@ -602,6 +602,18 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 
     node->resolvedSymbolName     = child->resolvedSymbolName;
     node->resolvedSymbolOverload = child->resolvedSymbolOverload;
+
+    // If the call has been generated because of a 'return tuple', then we force a move
+    // instead of a copy, in case the parameter to the tuple init is a local variable
+    if (node->autoTupleReturn)
+    {
+        if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
+        {
+            node->flags |= AST_FORCE_MOVE | AST_NO_RIGHT_DROP;
+            node->autoTupleReturn->forceNoDrop.push_back(child->resolvedSymbolOverload);
+        }
+    }
+
     return true;
 }
 
@@ -714,7 +726,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
     {
         child->flags |= AST_FORCE_MOVE | AST_NO_RIGHT_DROP;
-        node->forceNoDrop = child->resolvedSymbolOverload;
+        node->forceNoDrop.push_back(child->resolvedSymbolOverload);
     }
 
     // Propagate return

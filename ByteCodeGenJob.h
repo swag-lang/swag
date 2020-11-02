@@ -282,9 +282,9 @@ struct ByteCodeGenJob : public Job
     static bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr, bool freeRegisterParams = true);
     static bool emitLeaveScope(ByteCodeGenContext* context);
-    static bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop = nullptr);
+    static bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop = nullptr);
     static bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope);
-    static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope, SymbolOverload* forceNoDrop = nullptr);
+    static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop = nullptr);
     static bool emitConditionalOpAfterExpr(ByteCodeGenContext* context);
     static bool emitConditionalOpAfterIfTrue(ByteCodeGenContext* context);
     static bool emitConditionalOp(ByteCodeGenContext* context);

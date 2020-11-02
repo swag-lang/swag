@@ -2239,6 +2239,10 @@ bool TypeManager::convertLiteralTupleToStruct(SemanticContext* context, TypeInfo
         cloneContext.parent = oneParam;
         oneChild->clone(cloneContext);
         oneChild->flags |= AST_NO_BYTECODE | AST_NO_SEMANTIC;
+
+        // If this is for a return, remember it, in order to make a move or a copy
+        if ((typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE) && fromNode->parent->kind == AstNodeKind::Return)
+            oneParam->autoTupleReturn = CastAst<AstReturn>(fromNode->parent, AstNodeKind::Return);
     }
 
     // For a tuple initialization, every parameters must be covered
