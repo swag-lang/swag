@@ -257,7 +257,7 @@ public impl String
     }
 
     // Transform a null string in an empty one
-    func makeNotNull(using self)
+    func ensureNotNull(using self)
     {
         if buffer return
         buffer = acast &allocator

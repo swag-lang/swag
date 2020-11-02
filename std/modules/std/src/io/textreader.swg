@@ -75,7 +75,7 @@ public impl TextReader
             if buffer.count && buffer[charSeek] == "\n"'u8
                 charSeek += 1
 
-            result.makeNotNull()
+            result.ensureNotNull()
             return result
         }
 
