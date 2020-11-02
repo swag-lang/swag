@@ -40,7 +40,6 @@ public impl TextReader
     }
 
     // Close the reader
-    #[swag.printbc]
     func close(using self)
     {
         debug.assert(stream.isOpen())
