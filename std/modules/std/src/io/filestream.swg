@@ -13,6 +13,11 @@ struct Stream
 
 impl Stream
 {
+    func opDrop(using self)
+    {
+        file.close(self)
+    }
+
     // Returns true if the stream is valid
     func isOpen(using self)->bool
     {
