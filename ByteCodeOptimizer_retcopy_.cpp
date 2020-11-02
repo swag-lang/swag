@@ -32,6 +32,8 @@ void ByteCodeOptimizer::optimizePassRetCopy(ByteCodeOptContext* context)
                 ip++;
             if (ip->op == ByteCodeOp::IncSPPostCall)
                 ip++;
+            if (ip->op == ByteCodeOp::PopRR)
+                ip++;
 
             // This will copy the result in the real variable
             if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::MemCpy && ip[1].b.u32 == ipOrg->a.u32)
