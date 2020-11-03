@@ -334,7 +334,9 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty, Utf8* name)
             typeExpression = (AstTypeExpression*) expression;
             if (!typeExpression->identifier || typeExpression->identifier->kind != AstNodeKind::IdentifierRef || typeExpression->identifier->childs.size() != 1)
                 return sourceFile->report({expression, format("invalid named field '%s'", token.text.c_str())});
-            structFieldNode->name = typeExpression->identifier->childs.front()->name;
+            SWAG_CHECK(checkIsSingleIdentifier(typeExpression->identifier, "as a variable name"));
+            SWAG_CHECK(checkIsValidVarName(typeExpression->identifier->childs.back()));
+            structFieldNode->name = typeExpression->identifier->childs.back()->name;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
             expression = structFieldNode->type;

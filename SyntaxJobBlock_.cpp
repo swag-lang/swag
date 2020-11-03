@@ -208,14 +208,14 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymColon || token.id == TokenId::SymComma)
     {
         SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a variable name"));
-        SWAG_CHECK(isValidVarName(node->expression->childs.back()));
+        SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
         node->aliasNames.push_back(node->expression->childs.back()->name);
         while (token.id != TokenId::SymColon)
         {
             SWAG_CHECK(eatToken(TokenId::SymComma));
             SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
             SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a variable name"));
-            SWAG_CHECK(isValidVarName(node->expression->childs.back()));
+            SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
             node->aliasNames.push_back(node->expression->childs.back()->name);
         }
 
@@ -259,7 +259,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymColon)
     {
         SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a variable name"));
-        SWAG_CHECK(isValidVarName(node->expression->childs.back()));
+        SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
         name = node->expression->childs.back()->name;
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doExpression(node, &node->expression));

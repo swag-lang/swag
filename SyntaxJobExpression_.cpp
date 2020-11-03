@@ -845,10 +845,19 @@ bool SyntaxJob::isValidUserName(AstNode* node)
     return true;
 }
 
-bool SyntaxJob::isValidVarName(AstNode* node)
+bool SyntaxJob::checkIsValidVarName(AstNode* node)
 {
     if (!isValidUserName(node))
         return false;
+
+    if (node->kind == AstNodeKind::Identifier)
+    {
+        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        if (identifier->genericParameters)
+            return syntaxError(identifier->genericParameters, "variable name cannot have generic parameters");
+        if (identifier->callParameters)
+            return syntaxError(identifier->callParameters, "variable name cannot have call parameters");
+    }
 
     if (node->name[0] != '@')
         return true;
@@ -903,7 +912,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
-            SWAG_CHECK(isValidVarName(identifier));
+            SWAG_CHECK(checkIsValidVarName(identifier));
 
             ScopedLocation scopedLoc(this, &identifier->token);
             AstVarDecl*    varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
@@ -993,7 +1002,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             SWAG_CHECK(isValidUserName(child));
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
-            SWAG_CHECK(isValidVarName(identifier));
+            SWAG_CHECK(checkIsValidVarName(identifier));
 
             if (idx)
                 orgVarNode->publicName += ", ";
@@ -1019,7 +1028,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     {
         SWAG_CHECK(checkIsSingleIdentifier(leftNode, "as a variable name"));
         auto identifier = leftNode->childs.back();
-        SWAG_CHECK(isValidVarName(identifier));
+        SWAG_CHECK(checkIsValidVarName(identifier));
         AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->name, parent, this);
         varNode->kind       = kind;
         varNode->inheritTokenLocation(leftNode->token);
@@ -1155,7 +1164,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                     continue;
                 }
 
-                SWAG_CHECK(isValidVarName(child));
+                SWAG_CHECK(checkIsValidVarName(child));
 
                 auto affectNode   = Ast::newAffectOp(sourceFile, parentNode);
                 affectNode->token = savedtoken;
