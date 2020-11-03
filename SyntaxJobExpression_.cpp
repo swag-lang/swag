@@ -640,9 +640,10 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
             // Name
             if (token.id == TokenId::SymColon)
             {
-                if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                    return sourceFile->report({paramExpression, format("invalid named value '%s'", token.text.c_str())});
-                auto name = paramExpression->childs.front()->name;
+                SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, syntaxError(paramExpression, "identifier expected"));
+                SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
+                SWAG_CHECK(checkIsValidVarName(paramExpression->childs.back()));
+                auto name = paramExpression->childs.back()->name;
                 SWAG_CHECK(eatToken());
                 if (token.id == TokenId::SymLeftCurly)
                     SWAG_CHECK(doExpressionListTuple(initNode, &paramExpression));
