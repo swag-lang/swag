@@ -20,7 +20,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid enum name '%s'", token.text.c_str())));
     enumNode->inheritTokenName(token);
-    SWAG_CHECK(isValidUserName(enumNode));
+    SWAG_CHECK(checkIsValidUserName(enumNode));
 
     // Add enum type and scope
     Scope* newScope = nullptr;

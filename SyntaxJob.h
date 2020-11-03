@@ -89,7 +89,7 @@ struct SyntaxJob : public Job
     bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
     void forceTakeAddress(AstNode* node);
     bool doDefer(AstNode* parent, AstNode** result = nullptr);
-    bool isValidUserName(AstNode* node);
+    bool checkIsValidUserName(AstNode* node);
     bool checkIsValidVarName(AstNode* node);
     bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);

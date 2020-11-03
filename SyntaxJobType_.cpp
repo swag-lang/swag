@@ -21,7 +21,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid alias name '%s'", token.text.c_str())));
     node->inheritTokenName(token);
-    SWAG_CHECK(isValidUserName(node));
+    SWAG_CHECK(checkIsValidUserName(node));
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymEqual));

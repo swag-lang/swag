@@ -830,7 +830,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     }
 }
 
-bool SyntaxJob::isValidUserName(AstNode* node)
+bool SyntaxJob::checkIsValidUserName(AstNode* node)
 {
     if (node->parent && (node->parent->flags & AST_GENERATED))
         return true;
@@ -847,7 +847,7 @@ bool SyntaxJob::isValidUserName(AstNode* node)
 
 bool SyntaxJob::checkIsValidVarName(AstNode* node)
 {
-    if (!isValidUserName(node))
+    if (!checkIsValidUserName(node))
         return false;
 
     if (node->kind == AstNodeKind::Identifier)
@@ -999,7 +999,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
                 continue;
             }
 
-            SWAG_CHECK(isValidUserName(child));
+            SWAG_CHECK(checkIsValidUserName(child));
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             SWAG_CHECK(checkIsValidVarName(identifier));
