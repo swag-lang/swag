@@ -1,4 +1,4 @@
-#import "std"
+﻿#import "std"
 using std.file
 
 //#[swag.printbc]
@@ -23,7 +23,8 @@ using std.file
         while !res.isNull()
         {
             console.print("LINE: %\n", res)
-            res = reader.readLine()
+            break
+            //res = reader.readLine()
         }
     }
 }

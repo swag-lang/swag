@@ -1,20 +1,62 @@
-namespace std.file;
+﻿namespace std.file;
 
 public struct TextReader
 {
     stream:         Stream
     buffer:         Array'u8
+    decode:         Array'u8
     encodingType =  Encoding.Utf8
     byteSeek:       u32
+    checkPreamble:  bool
 }
 
 impl TextReader
 {
     func readBuffer(using self)
     {
-        buffer.reserve(1024)
-        buffer.count = file.read(stream, buffer.buffer, buffer.capacity)
         byteSeek = 0
+
+        // First init. Fill force 4 bytes of the decode buffer to be 0 to
+        // read the bom
+        if checkPreamble
+        {
+            buffer.reserve(1024)
+            decode.reserve(1024)
+            ptr := cast(*u32) decode.buffer
+            ptr[0] = 0
+        }
+
+        // In utf8 and ascii, just read to the buffer, as we do not have do decode
+        else if encodingType == Encoding.Ascii || encodingType == Encoding.Utf8
+        {
+            buffer.count = file.read(stream, buffer.buffer, buffer.capacity)
+            return
+        }
+
+        // Read raw bytes in the decode buffer
+        decode.count = file.read(stream, decode.buffer, decode.capacity)
+
+        // Decode the BOM
+        firstRawByte := 0'u32
+        if checkPreamble
+        {
+            // Utf8
+            if decode[0] == 0xEF && decode[1] == 0xBB && decode[2] == 0xBF
+            {
+                encodingType = Encoding.Utf8
+                firstRawByte = 3
+            }
+
+            checkPreamble = false
+        }
+
+        // Decode
+        switch encodingType
+        {
+        case Encoding.Ascii, Encoding.Utf8:
+            buffer.count = decode.count - firstRawByte
+            memory.copy(buffer.buffer, decode.buffer + firstRawByte, buffer.count)
+        }
     }
 }
 
@@ -35,6 +77,8 @@ public impl TextReader
         stream = openRead(fullname)
         if !stream.isOpen() return false
 
+        byteSeek = 0
+        checkPreamble = true
         encodingType = encoding;
         return true
     }
