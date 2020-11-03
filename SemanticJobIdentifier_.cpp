@@ -832,7 +832,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         SWAG_ASSERT(failedParam);
         auto diag = new Diagnostic{failedParam->namedParamNode ? failedParam->namedParamNode : failedParam, format("unknown named parameter '%s'", failedParam->namedParam.c_str())};
-        auto note = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+        auto note = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -848,8 +848,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::NotEnoughParameters:
     {
-        auto diag = new Diagnostic{callParameters ? callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-        auto note = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+        auto diag = new Diagnostic{callParameters ? callParameters : node, format("not enough parameters for %s", refNiceName.c_str())};
+        auto note = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -857,8 +857,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::MissingParameters:
     {
-        auto diag = new Diagnostic{callParameters ? callParameters : node, format("missing function call '()' to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-        auto note = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+        auto diag = new Diagnostic{callParameters ? callParameters : node, format("missing function call '()' to %s", refNiceName.c_str())};
+        auto note = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -870,8 +870,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         if (!site)
             site = callParameters;
         SWAG_ASSERT(site);
-        auto diag = new Diagnostic{site, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-        auto note = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+        auto diag = new Diagnostic{site, format("too many parameters for %s", refNiceName.c_str())};
+        auto note = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -880,8 +880,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::NotEnoughGenericParameters:
     {
         auto errNode = genericParameters ? genericParameters : node ? node : context->node;
-        auto diag    = new Diagnostic{errNode, errNode->token, format("not enough generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-        auto note    = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+        auto diag    = new Diagnostic{errNode, errNode->token, format("not enough generic parameters for %s", refNiceName.c_str())};
+        auto note    = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -891,7 +891,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         auto errNode = genericParameters ? genericParameters : node ? node : context->node;
         auto diag    = new Diagnostic{errNode, errNode->token, format("too many generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-        auto note    = new Diagnostic{overload->node, overload->node->token, format("this is '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+        auto note    = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -1159,7 +1159,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
         }
 
         // This way, a special cast can be done for the first parameter of a function
-        if(oneOverload.ufcs)
+        if (oneOverload.ufcs)
             oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_UFCS;
 
         // We collect type replacements depending on where the identifier is
@@ -1640,13 +1640,13 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
                 if (symbol->kind == SymbolKind::Function)
                 {
                     // Be sure we have a missing parameter in order to try ufcs
-                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+                    auto typeFunc  = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
                     auto numParams = node->callParameters ? node->callParameters->childs.size() : 0;
                     if (numParams < typeFunc->parameters.size())
                     {
                         identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
-                        identifierRef->resolvedSymbolName = dependentVar->resolvedSymbolOverload->symbol;
-                        identifierRef->previousResolvedNode = dependentVar;
+                        identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
+                        identifierRef->previousResolvedNode   = dependentVar;
                     }
                 }
             }
