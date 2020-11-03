@@ -841,7 +841,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::DuplicatedNamedParameter:
     {
         SWAG_ASSERT(failedParam);
-        auto diag = new Diagnostic{failedParam->namedParamNode, format("named parameter '%s' already used", failedParam->namedParam.c_str())};
+        auto diag = new Diagnostic{failedParam->namedParamNode ? failedParam->namedParamNode : failedParam, format("named parameter '%s' already used", failedParam->namedParam.c_str())};
         result0.push_back(diag);
         return;
     }

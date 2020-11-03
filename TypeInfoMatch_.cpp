@@ -320,11 +320,14 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
         }
 
         matchNamedParameter(context, param, i, parameters);
-        if (!param->resolvedParameter)
+        if (context.result != MatchResult::DuplicatedNamedParameter)
         {
-            context.badSignatureInfos.badSignatureParameterIdx = i;
-            context.result                                     = MatchResult::InvalidNamedParameter;
-            return;
+            if (!param->resolvedParameter)
+            {
+                context.badSignatureInfos.badSignatureParameterIdx = i;
+                context.result = MatchResult::InvalidNamedParameter;
+                return;
+            }
         }
     }
 }

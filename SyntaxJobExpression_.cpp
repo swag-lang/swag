@@ -643,13 +643,15 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
                 SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, syntaxError(paramExpression, "identifier expected"));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->childs.back()));
-                auto name = paramExpression->childs.back()->name;
+                auto name            = paramExpression->childs.back()->name;
+                auto namedExpression = paramExpression->childs.back();
                 SWAG_CHECK(eatToken());
                 if (token.id == TokenId::SymLeftCurly)
                     SWAG_CHECK(doExpressionListTuple(initNode, &paramExpression));
                 else
                     SWAG_CHECK(doExpression(initNode, &paramExpression));
-                paramExpression->name = name;
+                paramExpression->token.startLocation = namedExpression->token.startLocation;
+                paramExpression->name                = name;
                 paramExpression->flags |= AST_IS_NAMED;
             }
             else

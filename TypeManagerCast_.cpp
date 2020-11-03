@@ -2237,6 +2237,7 @@ bool TypeManager::convertLiteralTupleToStruct(SemanticContext* context, TypeInfo
         auto         oneParam = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
         CloneContext cloneContext;
         cloneContext.parent = oneParam;
+        oneParam->inheritTokenLocation(oneChild->token);
         oneChild->clone(cloneContext);
         oneChild->flags |= AST_NO_BYTECODE | AST_NO_SEMANTIC;
         if (oneChild->flags & AST_IS_NAMED)
