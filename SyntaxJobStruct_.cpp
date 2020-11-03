@@ -332,9 +332,9 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty, Utf8* name)
         if (token.id == TokenId::SymColon)
         {
             typeExpression = (AstTypeExpression*) expression;
-            if (!typeExpression->identifier || typeExpression->identifier->kind != AstNodeKind::IdentifierRef || typeExpression->identifier->childs.size() != 1)
-                return sourceFile->report({expression, format("invalid named field '%s'", token.text.c_str())});
-            SWAG_CHECK(checkIsSingleIdentifier(typeExpression->identifier, "as a variable name"));
+            if (!typeExpression->identifier || typeExpression->identifier->kind != AstNodeKind::IdentifierRef)
+                return sourceFile->report({expression, "identifier expected"});
+            SWAG_CHECK(checkIsSingleIdentifier(typeExpression->identifier, "as a tuple field name"));
             SWAG_CHECK(checkIsValidVarName(typeExpression->identifier->childs.back()));
             structFieldNode->name = typeExpression->identifier->childs.back()->name;
             SWAG_CHECK(eatToken());
