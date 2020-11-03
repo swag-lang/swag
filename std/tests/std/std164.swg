@@ -4,7 +4,7 @@ using std
 //#[swag.printbc]
 #test
 {
-    var x: Array's32
-    x.add(x)
+    var x164: Array's32
+    x164.add(x164)
     @print("what?!")
 }

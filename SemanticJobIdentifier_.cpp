@@ -2222,6 +2222,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             listTryMatch.push_back(tryMatch);
         }
 
+        if (node->name == "x164")
+            node = node;
+
         SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node));
         if (context->result == ContextResult::Pending)
             return true;

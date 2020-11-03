@@ -267,12 +267,16 @@ impl Array
     // Append another array to the end of this instance
     func add(using self, array: Array)
     {
+        debug.assert(array.buffer != buffer)
+
         add(@mkslice(array.buffer, array.count))
     }
 
     // Append a slice to the end of this instance
     func add(using self, values: const [..] T)
     {
+        debug.assert(@dataof(values) != buffer)
+
         sliceCount := @countof(values)
         if !sliceCount
             return
