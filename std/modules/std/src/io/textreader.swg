@@ -1,11 +1,17 @@
 ﻿namespace std.file;
 
+public enum TextEncoding
+{
+    Ascii
+    Utf8
+}
+
 public struct TextReader
 {
     stream:         Stream
     buffer:         Array'u8
     decode:         Array'u8
-    encodingType =  Encoding.Utf8
+    encodingType =  TextEncoding.Utf8
     byteSeek:       u32
     checkPreamble:  bool
 }
@@ -14,6 +20,7 @@ impl TextReader
 {
     func readBuffer(using self)
     {
+        using TextEncoding
         byteSeek = 0
 
         // First init. Fill force 4 bytes of the decode buffer to be 0 to
@@ -27,7 +34,7 @@ impl TextReader
         }
 
         // In utf8 and ascii, just read to the buffer, as we do not have do decode
-        else if encodingType == Encoding.Ascii || encodingType == Encoding.Utf8
+        else if encodingType == Ascii || encodingType == Utf8
         {
             buffer.count = file.read(stream, buffer.buffer, buffer.capacity)
             return
@@ -43,7 +50,7 @@ impl TextReader
             // Utf8
             if decode[0] == 0xEF && decode[1] == 0xBB && decode[2] == 0xBF
             {
-                encodingType = Encoding.Utf8
+                encodingType = Utf8
                 firstRawByte = 3
             }
 
@@ -53,7 +60,7 @@ impl TextReader
         // Decode
         switch encodingType
         {
-        case Encoding.Ascii, Encoding.Utf8:
+        case Ascii, Utf8:
             buffer.count = decode.count - firstRawByte
             memory.copy(buffer.buffer, decode.buffer + firstRawByte, buffer.count)
         }
@@ -62,15 +69,8 @@ impl TextReader
 
 public impl TextReader
 {
-    enum Encoding
-    {
-        Ascii
-        Utf8
-        Unicode
-    }
-
     // Open the reader
-    func open(using self, fullname: string, encoding = Encoding.Utf8)->bool
+    func open(using self, fullname: string, encoding = TextEncoding.Utf8)->bool
     {
         debug.assert(!stream.isOpen())
 
