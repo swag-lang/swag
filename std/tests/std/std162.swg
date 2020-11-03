@@ -22,9 +22,9 @@ using std.file
         res := reader.readLine()
         while !res.isNull()
         {
-            console.print("LINE: %\n", res)
-            break
-            //res = reader.readLine()
+            //console.print("LINE: %\n", res)
+            //break
+            res = reader.readLine()
         }
     }
 }

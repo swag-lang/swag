@@ -10,11 +10,29 @@ enum SeekOrigin
 // Read a file, and store the result in an utf8 string
 func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {text: String, success: bool}
 {
-    var result: String
+    var textReader: TextReader
+    if !textReader.open(fullname, encoding)
+        return @{String{}, false}
+    return @{textReader.readToEnd(), true}
+}
+
+// Read all the lines of a file
+func readAllLines(fullname: string, encoding = TextEncoding.Utf8) -> {lines: Array'String, success: bool}
+{
+    var result: Array'String
+
     var textReader: TextReader
     if !textReader.open(fullname, encoding)
         return @{result, false}
-    return @{textReader.readToEnd(), true}
+
+    res := textReader.readLine()
+    while !res.isNull()
+    {
+        result.add(res)
+        res = textReader.readLine()
+    }
+
+    return @{result, true}
 }
 
 // Read a file, and store the result in an array of bytes
