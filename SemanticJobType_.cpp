@@ -425,8 +425,10 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     node->typeInfo = typeNode->typeInfo;
 
     node->byteCodeFct = ByteCodeGenJob::emitExplicitCast;
-    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED);
+    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE);
     node->inheritComputedValue(exprNode);
+    node->resolvedSymbolName     = exprNode->resolvedSymbolName;
+    node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
 
     // Revert the implicit cast informations
     // Requested type will be stored in typeInfo of node, and previous type will be stored in typeInfo of exprNode

@@ -29,8 +29,7 @@ impl TextReader
         {
             buffer.reserve(1024)
             decode.reserve(1024)
-            ptr := cast(*u32) decode.buffer
-            ptr[0] = 0
+            :cast(*u32) decode.buffer = 0
         }
 
         // In utf8 and ascii, just read to the buffer, as we do not have do decode
