@@ -11,6 +11,7 @@
 // Pattern detected is :
 //
 // MakeStackPointer X
+// (IncPointer32)
 // CopyRCtoRT X
 // ...
 // Call
@@ -22,8 +23,14 @@ void ByteCodeOptimizer::optimizePassRetCopy(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        bool startOk = false;
+        if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::CopyRCtoRT && ip->a.u32 == ip[1].b.u32)           
+            startOk = true;
+        if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::IncPointer32 && ip[2].op == ByteCodeOp::CopyRCtoRT && ip->a.u32 == ip[2].b.u32)
+            startOk = true;
+
         // Detect pushing pointer to the stack for a return value
-        if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::CopyRCtoRT && ip->a.u32 == ip[1].b.u32)
+        if (startOk)
         {
             auto ipOrg = ip;
 
@@ -76,7 +83,7 @@ void ByteCodeOptimizer::optimizePassRetCopy(ByteCodeOptContext* context)
                 setNop(context, ip + 1);
                 // We need to remove every instructions related to the post move
                 ip += 2;
-                while (ip->flags & BCI_POST_MOVE)
+                while (ip->flags & BCI_POST_COPYMOVE)
                     setNop(context, ip++);
             }
             else

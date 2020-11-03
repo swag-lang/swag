@@ -8,8 +8,7 @@ enum SeekOrigin
 }
 
 // Read a file, and store the result in an utf8 string
-//#[swag.printbc]
-func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {String, bool}
+func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {text: String, success: bool}
 {
     var result: String
     var textReader: TextReader
@@ -19,7 +18,7 @@ func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {String, boo
 }
 
 // Read a file, and store the result in an array of bytes
-func readAllBytes(fullname: string) -> {Array'u8, bool}
+func readAllBytes(fullname: string) -> {bytes: Array'u8, success: bool}
 {
     var result: Array'u8
 

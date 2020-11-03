@@ -581,6 +581,7 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
     bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;
     if (mustCopy)
     {
+        PushICFlags sf(context, BCI_POST_COPYMOVE);
         if (typeInfoStruct->opPostCopy)
         {
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
@@ -591,7 +592,7 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
     // A move
     else
     {
-        PushICFlags sf(context, BCI_POST_MOVE);
+        PushICFlags sf(context, BCI_POST_COPYMOVE);
         if (typeInfoStruct->opPostMove)
         {
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
@@ -673,14 +674,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
 
     if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
     {
-        RegisterList r0   = reserveRegisterRC(context);
-        RegisterList r1   = reserveRegisterRC(context);
-        auto         inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
-        inst->b.s32       = resolved->storageOffset;
-
-        // Offset variable reference
-        if (regOffset != UINT32_MAX)
-            emitInstruction(context, ByteCodeOp::IncPointer32, r0, regOffset, r0);
+        RegisterList r0 = reserveRegisterRC(context);
 
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
@@ -692,17 +686,19 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                 auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
                 SWAG_ASSERT(param->resolvedParameter);
                 auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
-                emitInstruction(context, ByteCodeOp::CopyRBtoRA, r1, r0);
-                if (typeParam->offset)
-                    emitInstruction(context, ByteCodeOp::Add32byVB32, r1)->b.u32 = typeParam->offset;
+
+                auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
+                inst->b.s32 = resolved->storageOffset + typeParam->offset;
+                if (regOffset != UINT32_MAX)
+                    emitInstruction(context, ByteCodeOp::IncPointer32, r0, regOffset, r0);
+
                 child->flags |= AST_NO_LEFT_DROP;
-                emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
+                emitAffectEqual(context, r0, child->resultRegisterRC, child->typeInfo, child);
                 freeRegisterRC(context, child);
             }
         }
 
         freeRegisterRC(context, r0);
-        freeRegisterRC(context, r1);
     }
 }
 
