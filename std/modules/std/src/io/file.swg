@@ -8,9 +8,14 @@ enum SeekOrigin
 }
 
 // Read a file, and store the result in an utf8 string
-func readAllText(fullname: string) -> {String, bool}
+func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {String, bool}
 {
     var result: String
+
+    /*var textReader: TextReader
+    if !textReader.open(fullname, encoding)
+        return @{result, false}
+    return @{textReader.readToEnd(), true}*/
 
     stream := openRead(fullname)
     if !stream.isOpen() return @{result, false}
