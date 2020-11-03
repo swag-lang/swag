@@ -326,14 +326,15 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty, Utf8* name)
 
         AstTypeExpression* typeExpression = nullptr;
         AstNode*           expression;
+        Token              prevToken = token;
         SWAG_CHECK(doTypeExpression(nullptr, &expression));
 
         // Name followed by ':'
         if (token.id == TokenId::SymColon)
         {
             typeExpression = (AstTypeExpression*) expression;
-            if (!typeExpression->identifier || typeExpression->identifier->kind != AstNodeKind::IdentifierRef)
-                return sourceFile->report({expression, "identifier expected"});
+            SWAG_VERIFY(prevToken.id == TokenId::Identifier, syntaxError(prevToken, "identifier expected"));
+            SWAG_ASSERT(typeExpression->identifier);
             SWAG_CHECK(checkIsSingleIdentifier(typeExpression->identifier, "as a tuple field name"));
             SWAG_CHECK(checkIsValidVarName(typeExpression->identifier->childs.back()));
             structFieldNode->name = typeExpression->identifier->childs.back()->name;
