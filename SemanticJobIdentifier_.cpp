@@ -1500,7 +1500,6 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
             {
                 auto copyChild = Ast::clone(child, idRef);
                 child->flags |= AST_NO_BYTECODE;
-                Ast::addChildBack(idRef, copyChild);
                 if (child == identifierRef->previousResolvedNode)
                 {
                     copyChild->flags |= AST_TO_UFCS;
