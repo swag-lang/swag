@@ -2,10 +2,10 @@ namespace std.file;
 
 public struct TextReader
 {
-    stream: Stream
-    buffer: Array'u8
-    encodingType = Encoding.Utf8
-    charSeek: u32
+    stream:         Stream
+    buffer:         Array'u8
+    encodingType =  Encoding.Utf8
+    byteSeek:       u32
 }
 
 impl TextReader
@@ -14,7 +14,7 @@ impl TextReader
     {
         buffer.reserve(1024)
         buffer.count = file.read(stream, buffer.buffer, buffer.capacity)
-        charSeek = 0
+        byteSeek = 0
     }
 }
 
@@ -28,7 +28,7 @@ public impl TextReader
     }
 
     // Open the reader
-    func open(using self, fullname: string, encoding: Encoding)->bool
+    func open(using self, fullname: string, encoding = Encoding.Utf8)->bool
     {
         debug.assert(!stream.isOpen())
 
@@ -54,31 +54,31 @@ public impl TextReader
 
         while true
         {
-            if charSeek == buffer.count
+            if byteSeek == buffer.count
                 readBuffer()
             if buffer.count == 0
                 return result
 
-            while buffer[charSeek] != "\n"'u8 && buffer[charSeek] != "\r"'u8
+            while buffer[byteSeek] != "\n"'u8 && buffer[byteSeek] != "\r"'u8
             {
-                result += buffer[charSeek]
-                charSeek += 1
-                if charSeek == buffer.count
+                result += buffer[byteSeek]
+                byteSeek += 1
+                if byteSeek == buffer.count
                     break
             }
 
-            if charSeek == buffer.count
+            if byteSeek == buffer.count
                 continue
 
             // Eat end of line characters
-            charSeek += 1
-            if charSeek == buffer.count
+            byteSeek += 1
+            if byteSeek == buffer.count
                 readBuffer()
-            if buffer.count && buffer[charSeek] == "\n"'u8
-                charSeek += 1
+            if buffer.count && buffer[byteSeek] == "\n"'u8
+                byteSeek += 1
 
             // Result must be empty, not null, to differenciate an empty line
-            // from the end of file
+            // and the end of the file
             result.ensureNotNull()
             return result
         }
@@ -93,11 +93,11 @@ public impl TextReader
         var result: String
 
         // Append what remains valid in the current decoded buffer
-        if charSeek < buffer.count
+        if byteSeek < buffer.count
         {
-            remain := buffer.count - charSeek
+            remain := buffer.count - byteSeek
             result.grow(result.length + remain)
-            memory.copy(result.buffer + result.length, buffer.buffer + charSeek, remain)
+            memory.copy(result.buffer + result.length, buffer.buffer + byteSeek, remain)
             result.length += remain
         }
 
