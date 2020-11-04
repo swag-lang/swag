@@ -4,7 +4,13 @@ const DirectorySeparatorChar    = "\\"'u8
 const AltDirectorySeparatorChar = "/"'u8
 const VolumeSeparatorChar       = ":"'u8
 
-// Returns the path file name, null if not found
+// Returns true if the given character is a directory separator
+func isDirectorySeparator(c: u8)->bool
+{
+    return c == DirectorySeparatorChar || c == AltDirectorySeparatorChar
+}
+
+// Returns the file name part of the path, null if not found
 #[swag.constexpr]
 func getFileName(fullname: string)->string
 {
@@ -25,6 +31,36 @@ func getFileName(fullname: string)->string
     }
 
     return fullname
+}
+
+// Returns the directory part of the path, null if not found
+#[swag.constexpr]
+func getRootName(fullname: string)->string
+{
+    if(fullname == null) return null
+    debug.assert(isValidPathName(fullname))
+    rootLength := getRootLength(fullname)
+    return acast @mkslice(@dataof(fullname), rootLength)
+}
+
+// Returns the directory part of the path, null if not found
+#[swag.constexpr]
+func getDirectoryName(fullname: string)->string
+{
+    if(fullname == null) return null
+    debug.assert(isValidPathName(fullname))
+
+    countof := @countof(fullname)
+    cpt := countof
+    while cpt
+    {
+        cpt -= 1
+        c := fullname[cpt]
+        if c == DirectorySeparatorChar || c == AltDirectorySeparatorChar
+            return acast @mkslice(@dataof(fullname), cpt)
+    }
+
+    return null
 }
 
 // Returns the path file name, null if not found

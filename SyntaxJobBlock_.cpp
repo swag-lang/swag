@@ -140,7 +140,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
 {
-    auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
+    auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
     auto node               = Ast::newNode<AstFor>(this, AstNodeKind::For, sourceFile, parent, 4);
@@ -239,7 +239,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
 {
-    auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
+    auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
     auto node               = Ast::newNode<AstLoop>(this, AstNodeKind::Loop, sourceFile, parent, 2);

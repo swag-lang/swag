@@ -18,6 +18,7 @@
     { "include": "#compiler" },
     { "include": "#compiler-invalid" },
     { "include": "#types" },
+    { "include": "#raw-strings" },
     { "include": "#strings" },
     { "include": "#var-decl" },
     { "include": "#storage-modifier" },
@@ -263,6 +264,17 @@
         {
           "name": "constant.numeric.integer",
           "match": "(\\d[\\d_]*)"
+        }
+      ]
+    },
+    "raw-strings": {
+      "name": "string.quoted.double",
+      "begin": "#\"",
+      "end": "\"#",
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": ""
         }
       ]
     },

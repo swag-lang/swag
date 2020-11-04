@@ -233,8 +233,9 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeK
     auto newScope         = g_Allocator.alloc<Scope>();
     newScope->kind        = scopeKind;
     newScope->parentScope = this;
-    newScope->owner       = nodeOwner;
-    newScope->name        = scopeName;
+    SWAG_ASSERT(nodeOwner || scopeKind == ScopeKind::File);
+    newScope->owner = nodeOwner;
+    newScope->name  = scopeName;
 
     addChildNoLock(newScope);
 
