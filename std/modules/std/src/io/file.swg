@@ -7,6 +7,35 @@ enum SeekOrigin
     End
 }
 
+#[swag.enumflags]
+enum FileAccess
+{
+    Read
+    Write
+    ReadWrite = Read | Write
+}
+
+enum FileMode
+{
+    Append
+    Create
+    CreateNew
+    Open
+    OpenOrCreate
+    Truncate
+}
+
+#[swag.enumflags]
+enum FileShare
+{
+    None
+    Delete
+    Inheritable
+    Read
+    Write
+    ReadWrite = Read | Write
+}
+
 // Read a file, and store the result in an utf8 string
 func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {text: String, success: bool}
 {

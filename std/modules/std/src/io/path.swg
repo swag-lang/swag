@@ -149,7 +149,7 @@ func hasExtension(fullname: string)->bool
     return false
 }
 
-// Combine multiple paths into one, by adding directory separator
+// Combine multiple paths into one, by adding a directory separator
 // between them if necessary
 func combine(fullnames: string...)->String
 {

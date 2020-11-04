@@ -8,9 +8,62 @@ func exists(fullname: string)->bool
     return GetFileAttributesA(@dataof(fullname)) == 0xFFFFFFFF ? false : true
 }
 
+// Open a new file stream
+func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)->Stream
+{
+    var stream: Stream
+
+    // Open mode
+    var wMode: DWORD
+    using FileMode
+    switch mode
+    {
+        case Append:       wMode = OPEN_EXISTING
+        case Create:       wMode = CREATE_ALWAYS
+        case CreateNew:    wMode = CREATE_NEW
+        case Open:         wMode = OPEN_EXISTING
+        case OpenOrCreate: wMode = OPEN_ALWAYS
+        case Truncate:     wMode = TRUNCATE_EXISTING
+    }
+
+    // Read/Write mode
+    var wAccess: DWORD
+    if access & FileAccess.Read
+    {
+        stream.canRead = true
+        wAccess |= GENERIC_READ
+    }
+
+    if access & FileAccess.Write
+    {
+        stream.canWrite = true
+        wAccess |= GENERIC_WRITE
+    }
+
+    // Share mode
+    var wShare: DWORD
+    if share & FileShare.Read
+        wShare |= FILE_SHARE_READ
+    if share & FileShare.Write
+        wShare |= FILE_SHARE_WRITE
+    if share & FileShare.Delete
+        wShare |= FILE_SHARE_DELETE
+
+    hFile := CreateFileA(@dataof(fullname), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
+    if hFile == INVALID_HANDLE_VALUE
+        return stream
+
+    stream.name    = fullname
+    stream.handle  = cast(FileHandle) hFile
+    stream.canSeek = true
+
+    return stream
+}
+
 // Creates a new file stream for reading
 func openRead(fullname: string)->Stream
 {
+    //return open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
     var stream: Stream
 
     hFile := CreateFileA(@dataof(fullname), GENERIC_READ, FILE_SHARE_READ, null, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null);
