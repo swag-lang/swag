@@ -371,7 +371,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     }
 
     // The function wants to return something, but has the 'swag.noreturn' attribute
-    if (!typeNode->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NORETURN))
+    if (!typeNode->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
         return context->report({typeNode, "function cannot have a return type because it is flagged with the 'swag.noreturn' attribute"});
 
     // Register symbol with its type
@@ -648,7 +648,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // For a return inside an inline block, take the original function, except if it is flags with 'swag.noreturn'
     if (node->ownerInline)
     {
-        if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NORETURN))
+        if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NO_RETURN))
         {
             node->flags |= AST_EMBEDDED_RETURN;
             funcNode = node->ownerInline->func;

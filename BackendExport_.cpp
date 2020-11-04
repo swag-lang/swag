@@ -69,7 +69,7 @@ bool Backend::emitAttributesFlags(AstNode* node, int indent, bool isFirst)
     bool first = isFirst;
 
     ADD_ATTR(node->flags & AST_CONST_EXPR, "constexpr");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_PRINTBYTECODE, "printbc");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_PRINT_BC, "printbc");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_COMPILER, "compiler");
     ADD_ATTR((node->attributeFlags & ATTRIBUTE_INLINE) && !(node->attributeFlags & ATTRIBUTE_MIXIN) && !(node->attributeFlags & ATTRIBUTE_MACRO), "inline");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_MACRO, "macro");
@@ -78,12 +78,12 @@ bool Backend::emitAttributesFlags(AstNode* node, int indent, bool isFirst)
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_COMPLETE, "complete");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_PROPERTY, "property");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_GLOBAL, "global");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_NORETURN, "noreturn");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_FLAGS, "enumflags");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_NO_RETURN, "noreturn");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_ENUM_FLAGS, "enumflags");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_INDEX, "enumindex");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_SAFETY_ON, "safety(true)");
     ADD_ATTR(node->attributeFlags & ATTRIBUTE_SAFETY_OFF, "safety(false)");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_NOOPTIM, "nooptim");
+    ADD_ATTR(node->attributeFlags & ATTRIBUTE_NO_OPTIM, "nooptim");
 
     // Foot
     if (!first)

@@ -526,7 +526,7 @@ bool Module::mustOptimizeBC(AstNode* node)
 {
     if (!node)
         return buildCfg.byteCodeOptimize != 0;
-    if (node->attributeFlags & ATTRIBUTE_NOOPTIM)
+    if (node->attributeFlags & ATTRIBUTE_NO_OPTIM)
         return false;
     return true;
 }

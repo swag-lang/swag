@@ -583,7 +583,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
         }
-        else if (node->attributeFlags & ATTRIBUTE_NOBSS)
+        else if (node->attributeFlags & ATTRIBUTE_NO_BSS)
         {
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
         }

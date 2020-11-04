@@ -39,18 +39,18 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     if (context->sourceFile->isBootstrapFile)
     {
         if (enumNode->name == "AttributeUsage")
-            enumNode->attributeFlags |= ATTRIBUTE_FLAGS;
+            enumNode->attributeFlags |= ATTRIBUTE_ENUM_FLAGS;
     }
 
     // By default, raw type is s32, except for flags and index
-    TypeInfo* rawTypeInfo = (enumNode->attributeFlags & (ATTRIBUTE_FLAGS | ATTRIBUTE_INDEX)) ? g_TypeMgr.typeInfoU32 : g_TypeMgr.typeInfoS32;
+    TypeInfo* rawTypeInfo = (enumNode->attributeFlags & (ATTRIBUTE_ENUM_FLAGS | ATTRIBUTE_INDEX)) ? g_TypeMgr.typeInfoU32 : g_TypeMgr.typeInfoS32;
     if (!typeNode->childs.empty())
         rawTypeInfo = typeNode->childs[0]->typeInfo;
 
     typeInfo->rawType = rawTypeInfo;
     typeInfo->sizeOf  = rawTypeInfo->sizeOf;
 
-    if (enumNode->attributeFlags & ATTRIBUTE_FLAGS)
+    if (enumNode->attributeFlags & ATTRIBUTE_ENUM_FLAGS)
     {
         typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
 
@@ -127,7 +127,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     if (!assignNode && (valNode != firstEnumValue))
     {
         // Compute next value
-        bool isFlags = (enumNode->attributeFlags & ATTRIBUTE_FLAGS);
+        bool isFlags = (enumNode->attributeFlags & ATTRIBUTE_ENUM_FLAGS);
         switch (rawType->nativeType)
         {
         case NativeTypeKind::U8:

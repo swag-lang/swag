@@ -140,13 +140,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             if (child->name == "constexpr")
                 flags |= ATTRIBUTE_CONSTEXPR;
             else if (child->name == "printbc")
-                flags |= ATTRIBUTE_PRINTBYTECODE;
+                flags |= ATTRIBUTE_PRINT_BC;
             else if (child->name == "test")
                 flags |= ATTRIBUTE_TEST_FUNC;
             else if (child->name == "compiler")
                 flags |= ATTRIBUTE_COMPILER;
             else if (child->name == "enumflags")
-                flags |= ATTRIBUTE_FLAGS;
+                flags |= ATTRIBUTE_ENUM_FLAGS;
             else if (child->name == "enumindex")
                 flags |= ATTRIBUTE_INDEX;
             else if (child->name == "foreign")
@@ -162,13 +162,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             else if (child->name == "property")
                 flags |= ATTRIBUTE_PROPERTY;
             else if (child->name == "nobss")
-                flags |= ATTRIBUTE_NOBSS;
+                flags |= ATTRIBUTE_NO_BSS;
             else if (child->name == "noreturn")
-                flags |= ATTRIBUTE_NORETURN;
+                flags |= ATTRIBUTE_NO_RETURN;
             else if (child->name == "global")
                 flags |= ATTRIBUTE_GLOBAL;
             else if (child->name == "nooptim")
-                flags |= ATTRIBUTE_NOOPTIM;
+                flags |= ATTRIBUTE_NO_OPTIM;
             else if (child->name == "safety")
             {
                 ComputedValue attrValue;

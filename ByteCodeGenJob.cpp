@@ -547,7 +547,7 @@ JobResult ByteCodeGenJob::execute()
                     g_Stats.numInstructions += context.bc->numInstructions;
 
                 // Print resulting bytecode
-                if (originalNode && originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
+                if (originalNode && originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
                 {
                     unique_lock lk(module->mutexByteCode);
                     module->byteCodePrintBC.push_back(context.bc);
