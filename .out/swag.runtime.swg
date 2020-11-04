@@ -287,10 +287,10 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
     // Message to the user
     const title = "Swag Assertion Failed !"
     const info =
-    #"- Press Cancel to exit
+    @"- Press Cancel to exit
       - Press Retry to debug the application
       - Press Continue to ignore the assert
-      "#
+      "@
 
     @memcpy(&str[len], @dataof(info), @countof(info))
     len += @countof(info)

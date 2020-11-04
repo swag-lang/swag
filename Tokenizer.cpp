@@ -234,7 +234,7 @@ bool Tokenizer::getToken(Token& token)
             }
 
             // Raw string literal
-            if (c == '#' && nc == '"')
+            if (c == '@' && nc == '"')
             {
                 treatChar(nc, offset);
                 token.text.clear();

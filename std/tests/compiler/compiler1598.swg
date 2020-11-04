@@ -3,7 +3,7 @@ var G: s32
 #[swag.compiler, swag.constexpr]
 func toto()->string
 {
-    return #"G = 666"#
+    return @"G = 666"@
 }
 
 #test

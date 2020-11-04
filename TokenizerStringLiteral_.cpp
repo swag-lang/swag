@@ -202,7 +202,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             if (raw && c == '"')
             {
                 auto nc = getCharNoSeek(offset);
-                if (nc == '#')
+                if (nc == '@')
                 {
                     treatChar(nc, offset);
                     postProcessRawString(token.text);

@@ -76,22 +76,22 @@
     }
 
     // A raw string does not transform the escape sequences
-    // A raw string starts and ends with the character '#'
+    // A raw string starts and ends with the character '@'
     {
-        const a = #"\u2F46"#
+        const a = @"\u2F46"@
         @assert(a != "⽆")
-        @assert(a == #"\u2F46"#)
+        @assert(a == @"\u2F46"@)
     }
 
     // A raw string can be declared on several lines because <eol> is now
     // part of the string
     {
-        const a = #"this is
+        const a = @"this is
                     a
                     string
-                    "#
+                    "@
 
-        // Every blanks before the ending mark '"#' will be removed from every other lines,
+        // Every blanks before the ending mark '"@' will be removed from every other lines,
         // so the string before is equivalent to :
         //
         // this is

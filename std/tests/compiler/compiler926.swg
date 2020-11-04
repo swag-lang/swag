@@ -3,7 +3,7 @@
 //#[swag.printbc]
 #test
 {
-	tt := #"coucou
-	la foule"#
+	tt := @"coucou
+	la foule"@
 	//@print(tt)
 }

@@ -39,7 +39,7 @@ func init(x: string)
     @assert(g_Argv[1] == "b")
     @assert(g_Argv[2] == "cc")
 
-    init(#""this is" cc"#)
+    init(@""this is" cc"@)
     @assert(g_Argc == 2)
     @assert(g_Argv[0] == "this is")
 }
