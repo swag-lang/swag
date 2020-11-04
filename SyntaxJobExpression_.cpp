@@ -762,14 +762,14 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result, bool acceptParameters)
         SWAG_CHECK(eatToken());
         while (true)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, syntaxError(token, "variable name or '?' expected in tuple destructuring"));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, syntaxError(token, "variable name or '?' expected in tuple destructuration"));
             SWAG_CHECK(doIdentifierRef(multi, nullptr, acceptParameters));
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
         }
 
-        SWAG_CHECK(eatToken(TokenId::SymRightParen, "after tuple affectation"));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen, "after tuple destructuration"));
         break;
     }
 

@@ -1,7 +1,7 @@
 ﻿#import "std"
 using std.file
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     {
