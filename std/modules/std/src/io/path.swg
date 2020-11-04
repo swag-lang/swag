@@ -1,3 +1,4 @@
+using swag
 public namespace std.path;
 
 const DirectorySeparatorChar    = "\\"'u8
@@ -5,16 +6,17 @@ const AltDirectorySeparatorChar = "/"'u8
 const VolumeSeparatorChar       = ":"'u8
 
 // Returns true if the given character is a directory separator
+#[inline, constexpr]
 func isDirectorySeparator(c: u8)->bool
 {
     return c == DirectorySeparatorChar || c == AltDirectorySeparatorChar
 }
 
 // Returns the file name part of the path, null if not found
-#[swag.constexpr]
+#[constexpr]
 func getFileName(fullname: string)->string
 {
-    if(fullname == null) return null
+    if fullname == null return null
     debug.assert(isValidPathName(fullname))
 
     countof := @countof(fullname)
@@ -34,20 +36,33 @@ func getFileName(fullname: string)->string
 }
 
 // Returns the directory part of the path, null if not found
-#[swag.constexpr]
+#[constexpr]
 func getRootName(fullname: string)->string
 {
-    if(fullname == null) return null
+    if fullname == null return null
     debug.assert(isValidPathName(fullname))
     rootLength := getRootLength(fullname)
     return acast @mkslice(@dataof(fullname), rootLength)
 }
 
+#[constexpr]
+func isPathRooted(fullname: string)->bool
+{
+    if fullname == null return false
+    debug.assert(isValidPathName(fullname))
+    countof := @countof(fullname)
+    if countof >= 1 && isDirectorySeparator(fullname[0])
+        return true
+    if countof >= 2 && fullname[1] == VolumeSeparatorChar
+        return true
+    return false
+}
+
 // Returns the directory part of the path, null if not found
-#[swag.constexpr]
+#[constexpr]
 func getDirectoryName(fullname: string)->string
 {
-    if(fullname == null) return null
+    if fullname == null return null
     debug.assert(isValidPathName(fullname))
 
     countof := @countof(fullname)
@@ -64,7 +79,7 @@ func getDirectoryName(fullname: string)->string
 }
 
 // Returns the path file name, null if not found
-#[swag.constexpr]
+#[constexpr]
 func getFileNameWithoutExtension(fullname: string)->string
 {
     if(fullname == null) return null
@@ -91,7 +106,7 @@ func getFileNameWithoutExtension(fullname: string)->string
 
 // Returns the file name extension, including the '.' character
 // Returns null if no extension was found
-#[swag.constexpr]
+#[constexpr]
 func getExtension(fullname: string)->string
 {
     if(fullname == null) return null
@@ -112,7 +127,7 @@ func getExtension(fullname: string)->string
 }
 
 // Returns true if the file name contains an extension
-#[swag.constexpr]
+#[constexpr]
 func hasExtension(fullname: string)->bool
 {
     if(fullname == null) return false
