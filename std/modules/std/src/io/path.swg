@@ -148,3 +148,27 @@ func hasExtension(fullname: string)->bool
 
     return false
 }
+
+func combine(fullname1, fullname2: string)->String
+{
+    var result: String
+    if @countof(fullname1) == 0
+    {
+        result = fullname2
+        return result
+    }
+
+    if @countof(fullname2) == 0
+    {
+        result = fullname1
+        return result
+    }
+
+    result = fullname1
+    c := result[result.length - 1]
+    if !isDirectorySeparator(c) && c != VolumeSeparatorChar
+        result += AltDirectorySeparatorChar
+
+    result += fullname2
+    return result
+}

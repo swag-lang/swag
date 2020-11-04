@@ -15,4 +15,7 @@ using std.file
     @assert(path.isRooted("/"))
     @assert(path.isRooted("c:/"))
     @assert(path.isRooted(loc.fileName))
+
+    var t: String = loc.fileName
+    @assert(path.hasExtension(t.toString()))
 }

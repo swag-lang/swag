@@ -74,6 +74,13 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
             return syntaxError(token, "'#elif' without a corresponding '#if'");
         break;
+
+    case TokenId::SymRightParen:
+        return syntaxError(token, "')' without a corresponding opening '('");
+    case TokenId::SymRightCurly:
+        return syntaxError(token, "'}' without a corresponding opening '{'");
+    case TokenId::SymRightSquare:
+        return syntaxError(token, "']' without a corresponding opening '['");
     }
 
     Utf8 msg;

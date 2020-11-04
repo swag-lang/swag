@@ -762,7 +762,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result, bool acceptParameters)
         SWAG_CHECK(eatToken());
         while (true)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, syntaxError(token, "variable name or '?' expected"));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, syntaxError(token, "variable name or '?' expected in tuple destructuring"));
             SWAG_CHECK(doIdentifierRef(multi, nullptr, acceptParameters));
             if (token.id != TokenId::SymComma)
                 break;
