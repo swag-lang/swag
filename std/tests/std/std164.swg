@@ -11,4 +11,8 @@ using std.file
     res1 := path.getRootName(loc.fileName)
     //console.print("%\n", res1)
     @assert(@countof(res1) != 0)
+
+    @assert(path.isRooted("/"))
+    @assert(path.isRooted("c:/"))
+    @assert(path.isRooted(loc.fileName))
 }
