@@ -132,7 +132,7 @@ bool SemanticJob::resolveFor(SemanticContext* context)
 
 bool SemanticJob::resolveSwitch(SemanticContext* context)
 {
-    auto node = CastAst<AstSwitch>(context->node, AstNodeKind::Switch); 
+    auto node = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);
     SWAG_CHECK(checkIsConcrete(context, node->expression));
 
     node->typeInfo                     = node->expression->typeInfo;
@@ -144,7 +144,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     SWAG_CHECK(collectAttributes(context, attributes, node->parentAttributes, node, AstNodeKind::Switch, node->attributeFlags));
 
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
-    SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({ node->expression, "invalid switch type 'any', you need to cast to a concrete type" }));
+    SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, "invalid switch type 'any', you need to cast to a concrete type"}));
 
     // Collect constant expressions, to avoid double definitions
     set<uint64_t> val64;
@@ -329,24 +329,6 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
             content += format("var %s = __addr[@index]; ", alias0Name.c_str());
         content += format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
-        SyntaxJob syntaxJob;
-        syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction);
-
-        newExpression = node->childs.back();
-
-        // First child is the let in the statement, and first child of this is the loop node
-        auto loopNode = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
-        Ast::removeFromParent(node->block);
-        Ast::addChildBack(loopNode->block, node->block);
-        Ast::visit(node->block, [&](AstNode* x) { if (!x->ownerBreakable) x->ownerBreakable = loopNode; });
-        node->block->flags &= ~AST_NO_SEMANTIC;
-
-        // Re-root the parent scope of the user block so that it points to the scope of the loop block
-        node->block->ownerScope->parentScope = loopNode->block->childs.front()->ownerScope;
-
-        job->nodes.pop_back();
-        job->nodes.push_back(newExpression);
-        job->nodes.push_back(node);
     }
 
     // One dimensional array
@@ -360,30 +342,41 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
             content += format("var %s = __addr[@index]; ", alias0Name.c_str());
         content += format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
-        SyntaxJob syntaxJob;
-        syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction);
-
-        newExpression = node->childs.back();
-
-        // First child is the let in the statement, and first child of this is the loop node
-        auto loopNode = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
-        Ast::removeFromParent(node->block);
-        Ast::addChildBack(loopNode->block, node->block);
-        SWAG_ASSERT(node->block);
-        Ast::visit(node->block, [&](AstNode* x) { if(!x->ownerBreakable) x->ownerBreakable = loopNode; });
-        node->block->flags &= ~AST_NO_SEMANTIC;
-
-        // Re-root the parent scope of the user block so that it points to the scope of the loop block
-        node->block->ownerScope->parentScope = loopNode->block->childs.front()->ownerScope;
-
-        job->nodes.pop_back();
-        job->nodes.push_back(newExpression);
-        job->nodes.push_back(node);
     }
+
+    // Variadic
+    else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
+    {
+        content += format("{ loop %s { ", (const char*) concat.firstBucket->datas);
+        SWAG_VERIFY(!node->wantPointer, context->report({node, node->token, "cannot visit a type variadic by pointer"}));
+        content += format("var %s = %s[@index]; ", alias0Name.c_str(), (const char*) concat.firstBucket->datas);
+        content += format("var %s = @index; ", alias1Name.c_str());
+        content += "}} ";
+    }
+
     else
     {
         return context->report({node->expression, format("invalid type '%s' for visit", typeInfo->name.c_str())});
     }
+
+    SyntaxJob syntaxJob;
+    syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction);
+    newExpression = node->childs.back();
+
+    // First child is the let in the statement, and first child of this is the loop node
+    auto loopNode = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
+    Ast::removeFromParent(node->block);
+    Ast::addChildBack(loopNode->block, node->block);
+    SWAG_ASSERT(node->block);
+    Ast::visit(node->block, [&](AstNode* x) { if (!x->ownerBreakable) x->ownerBreakable = loopNode; });
+    node->block->flags &= ~AST_NO_SEMANTIC;
+
+    // Re-root the parent scope of the user block so that it points to the scope of the loop block
+    node->block->ownerScope->parentScope = loopNode->block->childs.front()->ownerScope;
+
+    job->nodes.pop_back();
+    job->nodes.push_back(newExpression);
+    job->nodes.push_back(node);
 
     return true;
 }

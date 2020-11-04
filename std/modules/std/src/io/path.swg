@@ -25,7 +25,7 @@ func getFileName(fullname: string)->string
     {
         cpt -= 1
         c := fullname[cpt]
-        if c == DirectorySeparatorChar || c == AltDirectorySeparatorChar || c == VolumeSeparatorChar
+        if isDirectorySeparator(c) || c == VolumeSeparatorChar
         {
             if cpt == countof - 1 return null
             return acast @mkslice(@dataof(fullname) + cpt + 1, (countof - cpt) - 1)
@@ -149,6 +149,7 @@ func hasExtension(fullname: string)->bool
     return false
 }
 
+// Combine two paths into one
 func combine(fullname1, fullname2: string)->String
 {
     var result: String
@@ -170,5 +171,35 @@ func combine(fullname1, fullname2: string)->String
         result += AltDirectorySeparatorChar
 
     result += fullname2
+    return result
+}
+
+// Combine two paths into one
+func combineAll(fullnames: string...)->String
+{
+    var result: String
+    /*visit one: fullnames
+    {
+    }*/
+
+/*
+    if @countof(fullname1) == 0
+    {
+        result = fullname2
+        return result
+    }
+
+    if @countof(fullname2) == 0
+    {
+        result = fullname1
+        return result
+    }
+
+    result = fullname1
+    c := result[result.length - 1]
+    if !isDirectorySeparator(c) && c != VolumeSeparatorChar
+        result += AltDirectorySeparatorChar
+
+    result += fullname2*/
     return result
 }
