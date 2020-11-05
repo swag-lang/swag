@@ -181,14 +181,9 @@ namespace Ast
 
     Scope* newPrivateScope(AstNode* owner, SourceFile* sourceFile, Scope* parentScope)
     {
-        Utf8 scopeName = "__" + sourceFile->name;
-        SWAG_ASSERT(scopeName.buffer[scopeName.length() - 4] == '.'); // ".swg"
-        scopeName.buffer[scopeName.length() - 4] = 0;
-        scopeName.count -= 4;
-        Ast::normalizeIdentifierName(scopeName);
-
         SWAG_ASSERT(parentScope);
-        return parentScope->getOrAddChild(owner, scopeName, ScopeKind::File, true, true);
+        sourceFile->computePrivateScopeName();
+        return parentScope->getOrAddChild(owner, sourceFile->scopeName, ScopeKind::File, true, true);
     }
 
     Scope* newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName)

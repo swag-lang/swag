@@ -35,11 +35,13 @@ struct SourceFile : public File
     char getPrivateChar();
     bool checkFormat();
     void setExternalBuffer(char* buf, uint32_t size);
+    void computePrivateScopeName();
 
     vector<string> allLines;
     Module*        module  = nullptr;
     AstNode*       astRoot = nullptr;
     Utf8           externalContent;
+    Utf8           scopeName;
     bool           isExternal = false;
 
     uint64_t  writeTime       = 0;

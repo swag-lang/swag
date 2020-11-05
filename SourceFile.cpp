@@ -8,6 +8,7 @@
 #include "Timer.h"
 #include "ByteCodeStack.h"
 #include "Context.h"
+#include "Ast.h"
 
 const auto BUF_SIZE = 2048;
 
@@ -367,4 +368,16 @@ void SourceFile::addCompilerPassNode(AstNode* node)
         SWAG_ASSERT(false);
         break;
     }
+}
+
+void SourceFile::computePrivateScopeName()
+{
+    unique_lock lk(mutexGetLine);
+    if (!scopeName.empty())
+        return;
+    scopeName = "__" + name;
+    SWAG_ASSERT(scopeName.buffer[scopeName.length() - 4] == '.'); // ".swg"
+    scopeName.buffer[scopeName.length() - 4] = 0;
+    scopeName.count -= 4;
+    Ast::normalizeIdentifierName(scopeName);
 }
