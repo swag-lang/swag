@@ -2,13 +2,43 @@
 using win32
 public namespace std.file;
 
-/*impl enum FileAttribute
+//impl enum FileAttribute
 {
     private func fromDWORD(attributes: DWORD)->FileAttribute
     {
+        using FileAttribute
+        var result: FileAttribute = acast 0
+        if attributes & FILE_ATTRIBUTE_READONLY
+            result |= ReadOnly
+        if attributes & FILE_ATTRIBUTE_HIDDEN
+            result |= Hidden
+        if attributes & FILE_ATTRIBUTE_SYSTEM
+            result |= System
+        if attributes & FILE_ATTRIBUTE_DIRECTORY
+            result |= Directory
+        if attributes & FILE_ATTRIBUTE_ARCHIVE
+            result |= Archive
+        if attributes & FILE_ATTRIBUTE_DEVICE
+            result |= Device
+        if attributes & FILE_ATTRIBUTE_NORMAL
+            result |= Normal
+        if attributes & FILE_ATTRIBUTE_TEMPORARY
+            result |= Temporary
+        if attributes & FILE_ATTRIBUTE_SPARSE_FILE
+            result |= SparseFile
+        if attributes & FILE_ATTRIBUTE_REPARSE_POINT
+            result |= ReparsePoint
+        if attributes & FILE_ATTRIBUTE_COMPRESSED
+            result |= Compressed
+        if attributes & FILE_ATTRIBUTE_OFFLINE
+            result |= Offline
+        if attributes & FILE_ATTRIBUTE_NOT_CONTENT_INDEXED
+            result |= NotContentIndexed
+        if attributes & FILE_ATTRIBUTE_ENCRYPTED
+            result |= Encrypted
         return FileAttribute.None
     }
-}*/
+}
 
 // Returns attributes associated to the given filename
 // Returns FileAttribute.None in case of error
@@ -17,38 +47,7 @@ func getAttribute(fullname: string)->FileAttribute
     using FileAttribute
     res := GetFileAttributesA(@dataof(fullname))
     if res == 0xFFFFFFFF return None
-
-    var result: FileAttribute = acast 0
-    if res & FILE_ATTRIBUTE_READONLY
-        result |= ReadOnly
-    if res & FILE_ATTRIBUTE_HIDDEN
-        result |= Hidden
-    if res & FILE_ATTRIBUTE_SYSTEM
-        result |= System
-    if res & FILE_ATTRIBUTE_DIRECTORY
-        result |= Directory
-    if res & FILE_ATTRIBUTE_ARCHIVE
-        result |= Archive
-    if res & FILE_ATTRIBUTE_DEVICE
-        result |= Device
-    if res & FILE_ATTRIBUTE_NORMAL
-        result |= Normal
-    if res & FILE_ATTRIBUTE_TEMPORARY
-        result |= Temporary
-    if res & FILE_ATTRIBUTE_SPARSE_FILE
-        result |= SparseFile
-    if res & FILE_ATTRIBUTE_REPARSE_POINT
-        result |= ReparsePoint
-    if res & FILE_ATTRIBUTE_COMPRESSED
-        result |= Compressed
-    if res & FILE_ATTRIBUTE_OFFLINE
-        result |= Offline
-    if res & FILE_ATTRIBUTE_NOT_CONTENT_INDEXED
-        result |= NotContentIndexed
-    if res & FILE_ATTRIBUTE_ENCRYPTED
-        result |= Encrypted
-
-    return result
+    return fromDWORD(res)
 }
 
 // Returns true if the given file exists

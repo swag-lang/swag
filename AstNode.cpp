@@ -105,7 +105,16 @@ void AstNode::inheritAttributes(AstNode* from)
 {
     if (from->kind == AstNodeKind::Statement)
         parentAttributes = from->parentAttributes;
-    attributeFlags |= from->attributeFlags;
+
+    auto fromAttributes = from->attributeFlags;
+
+    if (attributeFlags & ATTRIBUTE_PRIVATE)
+    {
+        fromAttributes &= ~ATTRIBUTE_PUBLIC;
+        attributeFlags &= ~ATTRIBUTE_PUBLIC;
+    }
+
+    attributeFlags |= fromAttributes;
 }
 
 void AstNode::inheritLocationFromChilds()
