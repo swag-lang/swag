@@ -54,6 +54,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 
         if (h == NULL)
         {
+            unique_lock lk(mutexLoaded);
             failedLoadedModules.insert(name);
             if (verbose)
                 g_Log.verbose(format("   load module '%s': FAIL\n", name.c_str()), false);

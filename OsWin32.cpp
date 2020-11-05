@@ -8,6 +8,7 @@
 #include "Utf8.h"
 #include "BuildParameters.h"
 #include "Workspace.h"
+#include "Profile.h"
 #include "ProfileWin32.h"
 
 namespace OS
@@ -140,19 +141,22 @@ namespace OS
         si.dwFlags    = STARTF_USESTDHANDLES;
         ::ZeroMemory(&pi, sizeof(pi));
 
-        if (!::CreateProcessA(nullptr,
-                              (LPSTR) cmdline.c_str(),
-                              nullptr,
-                              nullptr,
-                              TRUE,
-                              CREATE_NO_WINDOW,
-                              nullptr,
-                              currentDirectory.c_str(),
-                              &si,
-                              &pi))
         {
-            g_Log.error(format("cannot create '%s' process (::CreateProcess)", cmdline.c_str()));
-            return false;
+            SWAG_PROFILE(PRF_LOAD, format("create process %s", cmdline.c_str()));
+            if (!::CreateProcessA(nullptr,
+                                  (LPSTR) cmdline.c_str(),
+                                  nullptr,
+                                  nullptr,
+                                  TRUE,
+                                  CREATE_NO_WINDOW,
+                                  nullptr,
+                                  currentDirectory.c_str(),
+                                  &si,
+                                  &pi))
+            {
+                g_Log.error(format("cannot create '%s' process (::CreateProcess)", cmdline.c_str()));
+                return false;
+            }
         }
 
         // Wait until child process exits
