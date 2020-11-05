@@ -16,12 +16,19 @@ bool ModuleManager::isModuleLoaded(const Utf8& moduleName)
     return loadedModules.find(moduleName) != loadedModules.end();
 }
 
+bool ModuleManager::isModuleFailedLoaded(const Utf8& moduleName)
+{
+    shared_lock lk(mutexLoaded);
+    return failedLoadedModules.find(moduleName) != failedLoadedModules.end();
+}
+
 bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 {
     SWAG_PROFILE(PRF_LOAD, format("load module %s", name.c_str()));
-
     if (isModuleLoaded(name))
         return true;
+    if (isModuleFailedLoaded(name))
+        return false;
 
     bool verbose = g_CommandLine.verbose;
 
@@ -47,6 +54,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
 
         if (h == NULL)
         {
+            failedLoadedModules.insert(name);
             if (verbose)
                 g_Log.verbose(format("   load module '%s': FAIL\n", name.c_str()), false);
             return false;
