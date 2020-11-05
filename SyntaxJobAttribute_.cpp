@@ -48,8 +48,8 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     {
     case TokenId::KwdPrivate:
         attr = ATTRIBUTE_PRIVATE;
-        SWAG_VERIFY(!(parent->attributeFlags & ATTRIBUTE_PUBLIC), error(token, "'private' and 'public' attributes are mutually exclusive"));
-        SWAG_VERIFY(currentScope->isGlobal(), error(token, "a private definition must appear at file or namespace scope"));
+        //SWAG_VERIFY(!(parent->attributeFlags & ATTRIBUTE_PUBLIC), error(token, "'private' and 'public' attributes are mutually exclusive"));
+        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, "a private definition must appear at file or namespace scope"));
         newScope = sourceFile->scopePrivate;
         SWAG_CHECK(tokenizer.getToken(token));
         break;

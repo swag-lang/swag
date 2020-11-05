@@ -319,6 +319,7 @@ struct AstNode
     bool             isParentOf(AstNode* child);
     bool             isSameStackFrame(SymbolOverload* overload);
     void             setPassThrough();
+    void             inheritAttributes(AstNode* from);
     void             inheritLocationFromChilds();
     static Utf8      getArticleKindName(AstNode* node);
     static Utf8      getKindName(AstNode* node);

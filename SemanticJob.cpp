@@ -187,12 +187,7 @@ JobResult SemanticJob::execute()
                         auto child = node->childs[i];
                         if (child->flags & AST_NO_SEMANTIC)
                             continue;
-
-                        // Top to bottom inheritance
-                        if (node->kind == AstNodeKind::Statement)
-                            child->parentAttributes = node->parentAttributes;
-                        child->attributeFlags |= node->attributeFlags;
-
+                        child->inheritAttributes(node);
                         enterState(child);
                         nodes.push_back(child);
                     }
@@ -208,12 +203,7 @@ JobResult SemanticJob::execute()
                         if ((child->flags & AST_NO_SEMANTIC) &&
                             (originalNode->kind != AstNodeKind::File || child->kind != AstNodeKind::FuncDecl))
                             continue;
-
-                        // Top to bottom inheritance
-                        if (node->kind == AstNodeKind::Statement)
-                            child->parentAttributes = node->parentAttributes;
-                        child->attributeFlags |= node->attributeFlags;
-
+                        child->inheritAttributes(node);
                         enterState(child);
                         nodes.push_back(child);
                     }

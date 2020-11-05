@@ -383,6 +383,28 @@ namespace win32
         bInheritHandle:         BOOL
     }
 
+    struct FILETIME
+    {
+        dwLowDateTime:    DWORD
+        dwHighDateTime:   DWORD
+    }
+
+    struct WIN32_FILE_ATTRIBUTE_DATA
+    {
+        dwFileAttributes:  DWORD
+        ftCreationTime:    FILETIME
+        ftLastAccessTime:  FILETIME
+        ftLastWriteTime:   FILETIME
+        nFileSizeHigh:     DWORD
+        nFileSizeLow:      DWORD
+    }
+
+    enum GET_FILEEX_INFO_LEVELS
+    {
+        GetFileExInfoStandard
+        GetFileExMaxInfoLevel
+    }
+
     #[swag.foreign("kernel32")]
     {
         func GetStdHandle(nStdHandle: DWORD)->HANDLE;
@@ -400,12 +422,13 @@ namespace win32
         func SetConsoleOutputCP(codePage: UINT);
 
         func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
-        func GetFileAttributesW(lpFileName: LPCWSTR)->DWORD;
+        func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;
         func CreateFileA(lpFileName: LPCSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE;
         func ReadFile(hFile: HANDLE, lpBuffer: LPVOID, nNumberOfBytesToRead: DWORD, lpNumberOfBytesRead: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
         func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
         func CloseHandle(handle: HANDLE);
         func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
+        func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
     }
 
     #[swag.foreign("user32")]

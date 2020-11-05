@@ -101,6 +101,13 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
     return true;
 }
 
+void AstNode::inheritAttributes(AstNode* from)
+{
+    if (from->kind == AstNodeKind::Statement)
+        parentAttributes = from->parentAttributes;
+    attributeFlags |= from->attributeFlags;
+}
+
 void AstNode::inheritLocationFromChilds()
 {
     if (childs.empty())
@@ -272,7 +279,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     // This should not be copied. If will be recomputed if necessary.
     // This can cause some problems with inline functions and autocast, as inline functions are evaluated
     // as functions, and also each time they are inlined.
-    if(context.rawClone)
+    if (context.rawClone)
         castedTypeInfo = from->castedTypeInfo;
 
     resolvedSymbolName           = from->resolvedSymbolName;

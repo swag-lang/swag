@@ -2,6 +2,14 @@
 using win32
 public namespace std.file;
 
+/*impl enum FileAttribute
+{
+    private func fromDWORD(attributes: DWORD)->FileAttribute
+    {
+        return FileAttribute.None
+    }
+}*/
+
 // Returns attributes associated to the given filename
 // Returns FileAttribute.None in case of error
 func getAttribute(fullname: string)->FileAttribute
@@ -47,7 +55,10 @@ func getAttribute(fullname: string)->FileAttribute
 func exists(fullname: string)->bool
 {
     if fullname == null return false
-    return GetFileAttributesA(@dataof(fullname)) == 0xFFFFFFFF ? false : true
+    attributes := GetFileAttributesA(@dataof(fullname))
+    if attributes == 0xFFFFFFFF return false
+    if attributes & FILE_ATTRIBUTE_DIRECTORY return false
+    return true
 }
 
 // Open a new file stream
