@@ -4,7 +4,7 @@ public namespace std.file;
 
 impl enum FileAttribute
 {
-    private func fromDWORD(attributes: DWORD)->FileAttribute
+    protected func fromDWORD(attributes: DWORD)->FileAttribute
     {
         using FileAttribute
         var result: FileAttribute = acast 0

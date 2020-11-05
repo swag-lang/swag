@@ -107,9 +107,18 @@ void AstNode::inheritAttributes(uint64_t fromAttributes)
     {
         fromAttributes &= ~ATTRIBUTE_PUBLIC;
         fromAttributes &= ~ATTRIBUTE_PRIVATE;
+        fromAttributes &= ~ATTRIBUTE_PROTECTED;
     }
 
     if (attributeFlags & ATTRIBUTE_PRIVATE)
+    {
+        fromAttributes &= ~ATTRIBUTE_PUBLIC;
+        attributeFlags &= ~ATTRIBUTE_PUBLIC;
+        fromAttributes &= ~ATTRIBUTE_PROTECTED;
+        attributeFlags &= ~ATTRIBUTE_PROTECTED;
+    }
+
+    if (attributeFlags & ATTRIBUTE_PROTECTED)
     {
         fromAttributes &= ~ATTRIBUTE_PUBLIC;
         attributeFlags &= ~ATTRIBUTE_PUBLIC;
