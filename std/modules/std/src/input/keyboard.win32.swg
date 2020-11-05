@@ -1,6 +1,6 @@
 #if std.WINDOWS;
 using swag, win32
-namespace std.keyboard;
+public namespace std.keyboard;
 
 private
 {
@@ -208,23 +208,21 @@ private
     setupArray(Zoom,                cast(u8) VK_ZOOM)
 }
 
-public
+private func keyToVirtualKey(key: Key)->VirtualKey
 {
-    func keyToVirtualKey(key: Key)->VirtualKey
-    {
-        return cast(VirtualKey) g_mapKeyToVKey[key]
-    }
+    return cast(VirtualKey) g_mapKeyToVKey[key]
+}
 
-    func virtualKeyToKey(vkey: VirtualKey)->Key
-    {
-        if(vkey > 255) return Key.None
-        return cast(Key) g_mapVKeyToKey[vkey]
-    }
+private func virtualKeyToKey(vkey: VirtualKey)->Key
+{
+    if(vkey > 255) return Key.None
+    return cast(Key) g_mapVKeyToKey[vkey]
+}
 
-    func isKeyPressed(key: Key)->bool
-    {
-        vkey := g_mapKeyToVKey[key]
-        if vkey == 0 return false
-        return GetAsyncKeyState(cast(s32) vkey) < 0
-    }
+// Returns true if the given key is pressed
+func isKeyPressed(key: Key)->bool
+{
+    vkey := g_mapKeyToVKey[key]
+    if vkey == 0 return false
+    return GetAsyncKeyState(cast(s32) vkey) < 0
 }

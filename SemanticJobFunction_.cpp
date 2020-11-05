@@ -230,8 +230,6 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if (node->flags & AST_SPECIAL_COMPILER_FUNC)
         {
             SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, node->token, "compiler special function cannot have the 'swag.inline' attribute"}));
-            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({node, node->token, "compiler special function cannot have the 'swag.public' attribute"}));
-            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PRIVATE), context->report({node, node->token, "compiler special function cannot have the 'swag.private' attribute"}));
         }
 
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
@@ -243,7 +241,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
         if (node->attributeFlags & ATTRIBUTE_PUBLIC)
         {
-            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl() && !(node->flags & AST_SPECIAL_COMPILER_FUNC), context->report({node, node->token, format("%s cannot be public", node->getNameForMessage().c_str())}));
+            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl(), context->report({node, node->token, format("%s cannot be public", node->getNameForMessage().c_str())}));
         }
     }
 

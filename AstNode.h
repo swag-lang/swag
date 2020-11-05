@@ -278,7 +278,7 @@ struct AstNode
         ownerCompilerIfBlock = job->currentCompilerIfBlock;
 
         flags |= job->currentFlags;
-        attributeFlags |= job->currentAttributeFlags;
+        inheritAttributes(job->currentAttributeFlags);
     }
 
     bool hasComputedValue()
