@@ -2,7 +2,7 @@
 using win32
 public namespace std.file;
 
-//impl enum FileAttribute
+impl enum FileAttribute
 {
     private func fromDWORD(attributes: DWORD)->FileAttribute
     {
@@ -44,10 +44,9 @@ public namespace std.file;
 // Returns FileAttribute.None in case of error
 func getAttribute(fullname: string)->FileAttribute
 {
-    using FileAttribute
     res := GetFileAttributesA(@dataof(fullname))
-    if res == 0xFFFFFFFF return None
-    return fromDWORD(res)
+    if res == 0xFFFFFFFF return FileAttribute.None
+    return FileAttribute.fromDWORD(res)
 }
 
 // Returns true if the given file exists

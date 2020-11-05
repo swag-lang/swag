@@ -39,6 +39,7 @@ struct AlternativeScope
 
 static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
 static const uint32_t SCOPE_PRIVATE          = 0x00000002;
+static const uint32_t SCOPE_ROOT_PRIVATE     = 0x00000004;
 
 struct ScopePublicSet
 {

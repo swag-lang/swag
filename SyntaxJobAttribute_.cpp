@@ -49,7 +49,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     case TokenId::KwdPrivate:
         attr = ATTRIBUTE_PRIVATE;
         SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, "a private definition must appear at file or namespace scope"));
-        newScope = sourceFile->scopePrivate;
+        newScope = Ast::newPrivateScope(parent, parent->sourceFile, currentScope);
         SWAG_CHECK(tokenizer.getToken(token));
         break;
     case TokenId::KwdPublic:
