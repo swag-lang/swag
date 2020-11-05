@@ -1,6 +1,6 @@
 #if std.WINDOWS;
-namespace std.gamepad;
 using xinput, win32, std.gamepad
+public namespace std.gamepad;
 
 private var g_mapButtons: [@countof(Button)] Button = ?
 #run
@@ -23,14 +23,14 @@ private var g_mapButtons: [@countof(Button)] Button = ?
 }
 
 // Returns true if the corresponding 'padIndex' is connected
-public func isConnected(padIndex: u32)->bool
+func isConnected(padIndex: u32)->bool
 {
     var state: XINPUT_STATE = ?
     return XInputGetState(padIndex, &state) == ERROR_SUCCESS
 }
 
 // Set the left and right vibration of the given 'padIndex'
-public func setVibration(padIndex: u32, left, right: f32)->bool
+func setVibration(padIndex: u32, left, right: f32)->bool
 {
     var vibration: XINPUT_VIBRATION = ?
     vibration.wLeftMotorSpeed = cast(WORD) (0xFFFF * math.saturate(left))
@@ -38,7 +38,7 @@ public func setVibration(padIndex: u32, left, right: f32)->bool
     return XInputSetState(padIndex, &vibration) == ERROR_SUCCESS
 }
 
-public impl State
+impl State
 {
     // Compute the current state of the given pad index
     func update(using self, padIndex: u32)->bool
