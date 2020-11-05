@@ -1549,14 +1549,9 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             scopeHierarchy.insert(startScope);
 
             // Add private scope
-            for (auto p : startScope->childScopes)
-            {
-                if ((p->flags & SCOPE_ROOT_PRIVATE) && (p->owner->sourceFile == context->sourceFile))
-                {
-                    scopeHierarchy.insert(p);
-                    break;
-                }
-            }
+            auto it = startScope->privateScopes.find(context->sourceFile);
+            if (it != startScope->privateScopes.end())
+                scopeHierarchy.insert(it->second);
 
             // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
             // relevant and we should not use it
@@ -2343,16 +2338,11 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& s
         auto scope = here[i];
 
         // Add private scope
-        for (auto p : scope->childScopes)
+        auto it = scope->privateScopes.find(context->sourceFile);
+        if (it != scope->privateScopes.end())
         {
-            if ((p->flags & SCOPE_ROOT_PRIVATE) && (p->owner->sourceFile == sourceFile))
-            {
-                if (scopes.find(p) == scopes.end())
-                {
-                    scopes.insert(p);
-                    here.push_back(p);
-                }
-            }
+            scopes.insert(it->second);
+            here.push_back(it->second);
         }
 
         // For an inline scope, jump right to the function
