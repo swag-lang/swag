@@ -171,7 +171,7 @@
       "patterns": [
         {
           "name": "storage.modifier",
-          "match": "\\b(public|private|readwrite|readonly|internal)\\b"
+          "match": "\\b(public|private|protected)\\b"
         }
       ]
     },

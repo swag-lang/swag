@@ -2,16 +2,8 @@
 using win32
 namespace std.time;
 
-impl DateTime
+protected impl DateTime
 {
-    // Initialize the structure with the current local date and time
-    public func now(using self)
-    {
-        var systemTime: SYSTEMTIME = ?
-        GetLocalTime(&systemTime)
-        self.fromSYSTEMTIME(systemTime)
-    }
-
     func fromSYSTEMTIME(using self, systemTime: SYSTEMTIME)
     {
         using systemTime
@@ -23,5 +15,16 @@ impl DateTime
         minute      = wMinute
         second      = wSecond
         millisecond = wMilliseconds
+    }
+}
+
+public impl DateTime
+{
+    // Initialize the structure with the current local date and time
+    func now(using self)
+    {
+        var systemTime: SYSTEMTIME = ?
+        GetLocalTime(&systemTime)
+        self.fromSYSTEMTIME(systemTime)
     }
 }
