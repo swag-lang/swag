@@ -187,7 +187,8 @@ namespace Ast
         scopeName.count -= 4;
         Ast::normalizeIdentifierName(scopeName);
 
-        auto scope = Ast::newScope(owner, scopeName, ScopeKind::File, parentScope, true);
+        SWAG_ASSERT(parentScope);
+        auto scope = parentScope->getOrAddChild(owner, scopeName, ScopeKind::File, true);
         scope->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
         return scope;
     }
