@@ -36,6 +36,26 @@ enum FileShare
     ReadWrite = Read | Write
 }
 
+#[swag.enumflags]
+enum FileAttribute
+{
+    None
+    ReadOnly
+    Hidden
+    System
+    Directory
+    Archive
+    Device
+    Normal
+    Temporary
+    SparseFile
+    ReparsePoint
+    Compressed
+    Offline
+    NotContentIndexed
+    Encrypted
+}
+
 // Read a file, and store the result in an utf8 string
 func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {text: String, success: bool}
 {

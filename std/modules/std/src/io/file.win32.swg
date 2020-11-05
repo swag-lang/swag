@@ -2,9 +2,51 @@
 using win32
 public namespace std.file;
 
+// Returns attributes associated to the given filename
+// Returns FileAttribute.None in case of error
+func getAttribute(fullname: string)->FileAttribute
+{
+    using FileAttribute
+    res := GetFileAttributesA(@dataof(fullname))
+    if res == 0xFFFFFFFF return None
+
+    var result: FileAttribute = acast 0
+    if res & FILE_ATTRIBUTE_READONLY
+        result |= ReadOnly
+    if res & FILE_ATTRIBUTE_HIDDEN
+        result |= Hidden
+    if res & FILE_ATTRIBUTE_SYSTEM
+        result |= System
+    if res & FILE_ATTRIBUTE_DIRECTORY
+        result |= Directory
+    if res & FILE_ATTRIBUTE_ARCHIVE
+        result |= Archive
+    if res & FILE_ATTRIBUTE_DEVICE
+        result |= Device
+    if res & FILE_ATTRIBUTE_NORMAL
+        result |= Normal
+    if res & FILE_ATTRIBUTE_TEMPORARY
+        result |= Temporary
+    if res & FILE_ATTRIBUTE_SPARSE_FILE
+        result |= SparseFile
+    if res & FILE_ATTRIBUTE_REPARSE_POINT
+        result |= ReparsePoint
+    if res & FILE_ATTRIBUTE_COMPRESSED
+        result |= Compressed
+    if res & FILE_ATTRIBUTE_OFFLINE
+        result |= Offline
+    if res & FILE_ATTRIBUTE_NOT_CONTENT_INDEXED
+        result |= NotContentIndexed
+    if res & FILE_ATTRIBUTE_ENCRYPTED
+        result |= Encrypted
+
+    return result
+}
+
 // Returns true if the given file exists
 func exists(fullname: string)->bool
 {
+    if fullname == null return false
     return GetFileAttributesA(@dataof(fullname)) == 0xFFFFFFFF ? false : true
 }
 
@@ -122,11 +164,12 @@ func setPosition(stream: Stream, origin: SeekOrigin, seek: u64)->bool
     high  := cast(LONG) (seek >> 32)
 
     var seekMode: DWORD
+    using SeekOrigin
     switch origin
     {
-        case SeekOrigin.Begin:      seekMode = FILE_BEGIN
-        case SeekOrigin.Current:    seekMode = FILE_CURRENT
-        case SeekOrigin.End:        seekMode = FILE_END
+        case Begin:      seekMode = FILE_BEGIN
+        case Current:    seekMode = FILE_CURRENT
+        case End:        seekMode = FILE_END
     }
 
     return SetFilePointer(hFile, low, &high, seekMode) != INVALID_SET_FILE_POINTER
