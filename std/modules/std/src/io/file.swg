@@ -39,7 +39,7 @@ enum FileShare
 #[swag.enumflags]
 enum FileAttribute
 {
-    None
+    None = 0
     ReadOnly
     Hidden
     System
@@ -54,6 +54,15 @@ enum FileAttribute
     Offline
     NotContentIndexed
     Encrypted
+}
+
+struct FileInfo
+{
+    attributes =    FileAttribute.None
+    creationTime:   time.DateTime
+    lastAccessTime: time.DateTime
+    lastWriteTime:  time.DateTime
+    size:           u64
 }
 
 // Read a file, and store the result in an utf8 string

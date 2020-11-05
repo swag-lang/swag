@@ -1,6 +1,6 @@
 #if std.WINDOWS;
-namespace std.time;
 using win32
+namespace std.time;
 
 impl DateTime
 {
@@ -9,7 +9,11 @@ impl DateTime
     {
         var systemTime: SYSTEMTIME = ?
         GetLocalTime(&systemTime)
+        self.fromSYSTEMTIME(systemTime)
+    }
 
+    func fromSYSTEMTIME(using self, systemTime: SYSTEMTIME)
+    {
         using systemTime
         day         = wDay
         dayOfWeek   = wDayOfWeek
