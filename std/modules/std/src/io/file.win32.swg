@@ -63,19 +63,7 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
 // Creates a new file stream for reading
 func openRead(fullname: string)->Stream
 {
-    //return open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
-    var stream: Stream
-
-    hFile := CreateFileA(@dataof(fullname), GENERIC_READ, FILE_SHARE_READ, null, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null);
-    if hFile == INVALID_HANDLE_VALUE
-        return stream
-
-    stream.name    = fullname
-    stream.handle  = cast(FileHandle) hFile
-    stream.canRead = true
-    stream.canSeek = true
-
-    return stream
+    return open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
 }
 
 // Read from the given file stream, and returns the number of bytes

@@ -124,10 +124,10 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     SWAG_ASSERT(firstEnumValue);
 
     // Compute automatic value from previous
-    if (!assignNode && (valNode != firstEnumValue))
+    bool isFlags = (enumNode->attributeFlags & ATTRIBUTE_ENUM_FLAGS);
+    if (!assignNode && (isFlags || (valNode != firstEnumValue)))
     {
         // Compute next value
-        bool isFlags = (enumNode->attributeFlags & ATTRIBUTE_ENUM_FLAGS);
         switch (rawType->nativeType)
         {
         case NativeTypeKind::U8:

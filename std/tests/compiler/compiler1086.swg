@@ -10,8 +10,8 @@ enum TOTO
 #test
 {
 	using TOTO
-	@assert(F1 == 0)
-	@assert(F2 == 1)
-	@assert(F3 == 2)
-	@assert(F4 == 4)
+	@assert(F1 == 1)
+	@assert(F2 == 2)
+	@assert(F3 == 4)
+	@assert(F4 == 8)
 }
