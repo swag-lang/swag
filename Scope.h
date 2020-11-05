@@ -125,7 +125,7 @@ struct Scope
     uint32_t  flags          = 0;
     uint32_t  startStackSize = 0;
 
-    Scope* getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeKind scopeKind, bool matchName);
+    Scope* getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate);
     void   addChildNoLock(Scope* child);
     void   removeChildNoLock(Scope* child);
 };

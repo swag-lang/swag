@@ -188,15 +188,13 @@ namespace Ast
         Ast::normalizeIdentifierName(scopeName);
 
         SWAG_ASSERT(parentScope);
-        auto scope = parentScope->getOrAddChild(owner, scopeName, ScopeKind::File, true);
-        scope->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
-        return scope;
+        return parentScope->getOrAddChild(owner, scopeName, ScopeKind::File, true, true);
     }
 
     Scope* newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName)
     {
         if (parentScope)
-            return parentScope->getOrAddChild(owner, name, kind, matchName);
+            return parentScope->getOrAddChild(owner, name, kind, matchName, false);
 
         auto newScope         = g_Allocator.alloc<Scope>();
         newScope->kind        = kind;

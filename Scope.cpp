@@ -214,7 +214,7 @@ void Scope::removeChildNoLock(Scope* child)
     child->indexInParent                             = UINT32_MAX;
 }
 
-Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeKind scopeKind, bool matchName)
+Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate)
 {
     unique_lock lk(mutex);
 
@@ -236,8 +236,9 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeK
     SWAG_ASSERT(nodeOwner || scopeKind == ScopeKind::File || scopeKind == ScopeKind::Module);
     newScope->owner = nodeOwner;
     newScope->name  = scopeName;
+    if(isPrivate)
+        newScope->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
 
     addChildNoLock(newScope);
-
     return newScope;
 }
