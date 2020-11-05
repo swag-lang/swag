@@ -429,7 +429,7 @@ namespace win32
         func CloseHandle(handle: HANDLE);
         func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
         func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
-        func FileTimeToLocalFileTime(lpFileTime: const *FILETIME, lpLocalFileTime: LPFILETIME)->BOOL;
+        func FileTimeToLocalFileTime(lpFileTime: const *FILETIME, lpLocalFileTime: *FILETIME)->BOOL;
         func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME)->BOOL;
     }
 
