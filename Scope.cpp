@@ -204,6 +204,11 @@ void Scope::addChildNoLock(Scope* child)
     childScopes.push_back(child);
     child->parentScope = this;
     child->flags |= flags & SCOPE_PRIVATE;
+
+    if (child->flags & SCOPE_ROOT_PRIVATE)
+    {
+        privateScopes[child->owner->sourceFile] = child;
+    }
 }
 
 void Scope::removeChildNoLock(Scope* child)
@@ -212,6 +217,13 @@ void Scope::removeChildNoLock(Scope* child)
     childScopes[child->indexInParent]                = childScopes.back();
     childScopes[child->indexInParent]->indexInParent = child->indexInParent;
     child->indexInParent                             = UINT32_MAX;
+
+    if (child->flags & SCOPE_ROOT_PRIVATE)
+    {
+        auto it = privateScopes.find(child->owner->sourceFile);
+        SWAG_ASSERT(it != privateScopes.end());
+        privateScopes.erase(it);
+    }
 }
 
 Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate)
@@ -233,10 +245,10 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeK
     auto newScope         = g_Allocator.alloc<Scope>();
     newScope->kind        = scopeKind;
     newScope->parentScope = this;
-    SWAG_ASSERT(nodeOwner || scopeKind == ScopeKind::File || scopeKind == ScopeKind::Module);
+    SWAG_ASSERT(nodeOwner);
     newScope->owner = nodeOwner;
     newScope->name  = scopeName;
-    if(isPrivate)
+    if (isPrivate)
         newScope->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
 
     addChildNoLock(newScope);

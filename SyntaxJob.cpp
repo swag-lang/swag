@@ -241,19 +241,19 @@ JobResult SyntaxJob::execute()
 
     tokenizer.setFile(sourceFile);
 
+    // Setup root ast for file
+    module              = sourceFile->module;
+    sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
+
     // One named scope per file
-    module                   = sourceFile->module;
-    sourceFile->scopePrivate = Ast::newPrivateScope(nullptr, sourceFile, module->scopeRoot);
+    sourceFile->scopePrivate = Ast::newPrivateScope(sourceFile->astRoot, sourceFile, module->scopeRoot);
 
     // By default, everything is private if it comes from the test folder
     if (sourceFile->fromTests)
         currentScope = sourceFile->scopePrivate;
     else
         currentScope = module->scopeRoot;
-
-    // Setup root ast for file
-    sourceFile->astRoot             = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
-    sourceFile->scopePrivate->owner = sourceFile->astRoot;
+    sourceFile->astRoot->ownerScope = currentScope;
 
     bool ok = tokenizer.getToken(token);
     while (true)

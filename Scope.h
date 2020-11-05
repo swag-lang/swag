@@ -105,16 +105,17 @@ struct Scope
             publicSet = g_Allocator.alloc<ScopePublicSet>();
     }
 
-    SymTable               symTable;
-    Utf8Crc                name;
-    Utf8                   fullname;
-    VectorNative<Scope*>   childScopes;
-    VectorNative<AstNode*> deferredNodes;
-    set<AstNode*>          doneLeaveScopeDefer;
-    set<AstNode*>          doneLeaveScopeDrop;
-    RegisterList           registersToRelease;
-    DependentJobs          dependentJobs;
-    shared_mutex           mutex;
+    SymTable                 symTable;
+    Utf8Crc                  name;
+    Utf8                     fullname;
+    VectorNative<Scope*>     childScopes;
+    VectorNative<AstNode*>   deferredNodes;
+    map<SourceFile*, Scope*> privateScopes;
+    set<AstNode*>            doneLeaveScopeDefer;
+    set<AstNode*>            doneLeaveScopeDrop;
+    RegisterList             registersToRelease;
+    DependentJobs            dependentJobs;
+    shared_mutex             mutex;
 
     ScopePublicSet* publicSet   = nullptr;
     AstNode*        owner       = nullptr;

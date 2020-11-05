@@ -194,9 +194,8 @@ namespace Ast
         auto newScope         = g_Allocator.alloc<Scope>();
         newScope->kind        = kind;
         newScope->parentScope = parentScope;
-        SWAG_ASSERT(owner || kind == ScopeKind::Module);
-        newScope->owner = owner;
-        newScope->name  = name;
+        newScope->owner       = owner;
+        newScope->name        = name;
 
         return newScope;
     }
