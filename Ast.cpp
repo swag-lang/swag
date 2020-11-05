@@ -179,6 +179,19 @@ namespace Ast
             ((AstTypeExpression*) node)->typeFlags |= TYPEFLAG_FORCECONST;
     }
 
+    Scope* newPrivateScope(AstNode* owner, SourceFile* sourceFile, Scope* parentScope)
+    {
+        Utf8 scopeName = "__" + sourceFile->name;
+        SWAG_ASSERT(scopeName.buffer[scopeName.length() - 4] == '.'); // ".swg"
+        scopeName.buffer[scopeName.length() - 4] = 0;
+        scopeName.count -= 4;
+        Ast::normalizeIdentifierName(scopeName);
+
+        auto scope = Ast::newScope(owner, scopeName, ScopeKind::File, parentScope);
+        scope->flags |= SCOPE_PRIVATE;
+        return scope;
+    }
+
     Scope* newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName)
     {
         if (parentScope)

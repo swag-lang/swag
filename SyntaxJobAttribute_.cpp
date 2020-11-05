@@ -56,7 +56,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
         attr = ATTRIBUTE_PUBLIC;
         SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, "a public definition must appear at file or namespace scope"));
         SWAG_VERIFY(!sourceFile->forcedPublic, error(token, "'public' attribute cannot be used in a file marked with '#public', because the whole file is implicitly public"));
-        if (currentScope->kind == ScopeKind::File)
+        if (sourceFile->fromTests && currentScope->kind == ScopeKind::File)
             newScope = currentScope->parentScope;
         else
             SWAG_VERIFY(!(currentScope->flags & SCOPE_PRIVATE), error(token, "cannot declare a public symbol in a private scope"));
@@ -66,6 +66,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
         break;
     }
 
+    SWAG_ASSERT(newScope);
     switch (token.id)
     {
     case TokenId::SymLeftCurly:

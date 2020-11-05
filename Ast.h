@@ -59,6 +59,7 @@ namespace Ast
         return node;
     }
 
+    extern Scope*   newPrivateScope(AstNode* owner, SourceFile* file, Scope* parentScope);
     extern Scope*   newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
     extern void     removeFromParent(AstNode* child);
     extern void     insertChild(AstNode* parent, AstNode* child, uint32_t index);

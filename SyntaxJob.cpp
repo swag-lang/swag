@@ -242,15 +242,8 @@ JobResult SyntaxJob::execute()
     tokenizer.setFile(sourceFile);
 
     // One named scope per file
-    Utf8 scopeName = "__" + sourceFile->name;
-    SWAG_ASSERT(scopeName.buffer[scopeName.length() - 4] == '.'); // ".swg"
-    scopeName.buffer[scopeName.length() - 4] = 0;
-    scopeName.count -= 4;
-    Ast::normalizeIdentifierName(scopeName);
-
     module                   = sourceFile->module;
-    sourceFile->scopePrivate = Ast::newScope(nullptr, scopeName, ScopeKind::File, module->scopeRoot);
-    sourceFile->scopePrivate->flags |= SCOPE_PRIVATE;
+    sourceFile->scopePrivate = Ast::newPrivateScope(nullptr, sourceFile, module->scopeRoot);
 
     // By default, everything is private if it comes from the test folder
     if (sourceFile->fromTests)
