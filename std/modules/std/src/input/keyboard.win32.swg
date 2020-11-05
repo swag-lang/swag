@@ -1,6 +1,6 @@
 #if std.WINDOWS;
-namespace std.keyboard;
 using swag, win32
+namespace std.keyboard;
 
 private
 {

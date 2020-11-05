@@ -40,31 +40,6 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     return true;
 }
 
-bool SemanticJob::resolveCompilerBake(SemanticContext* context)
-{
-    auto node = context->node;
-    auto expr = node->childs.front();
-    auto type = expr->typeInfo;
-
-    SWAG_VERIFY(type->kind == TypeInfoKind::Struct, context->report({expr, expr->token, format("cannot bake type '%s'", type->name.c_str())}));
-    SWAG_VERIFY(type->declNode->flags & AST_FROM_GENERIC, context->report({expr, expr->token, format("cannot bake type '%s' because it's not generic", type->name.c_str())}));
-
-    // If flag AST_FROM_GENERIC is not set, that means that the generic has been instantiated by someone else, which is bad because if was
-    // not done here, and a generic with a given type can only be instantiated once !
-    if (!(node->flags & AST_FROM_GENERIC))
-    {
-        Diagnostic diag(expr, expr->token, format("fail to bake type '%s' because it's already instantiated", type->name.c_str()));
-        SWAG_ASSERT(type->kind == TypeInfoKind::Struct);
-        AstStruct* structNode = CastAst<AstStruct>(type->declNode, AstNodeKind::StructDecl);
-        Diagnostic note(structNode->ownerGeneric, structNode->ownerGeneric->token, "this is where it was instantiated", DiagnosticLevel::Note);
-        return context->report(diag, &note);
-    }
-
-    // Bake behave like a type alias when done
-    SWAG_CHECK(resolveTypeAlias(context));
-    return true;
-}
-
 bool SemanticJob::resolveCompilerForeignLib(SemanticContext* context)
 {
     auto node   = context->node;

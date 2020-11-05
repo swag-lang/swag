@@ -319,7 +319,7 @@ struct AstNode
     bool             isParentOf(AstNode* child);
     bool             isSameStackFrame(SymbolOverload* overload);
     void             setPassThrough();
-    void             inheritAttributes(AstNode* from);
+    void             inheritAttributes(uint64_t fromAttributes);
     void             inheritLocationFromChilds();
     static Utf8      getArticleKindName(AstNode* node);
     static Utf8      getKindName(AstNode* node);
@@ -697,7 +697,6 @@ struct AstStruct : public AstNode
     AstNode*                content;
     Scope*                  scope;
     AstNode*                ownerGeneric;
-    Utf8                    bakeName;
     map<Utf8Crc, TypeInfo*> replaceTypes;
 
     uint32_t packing = sizeof(uint64_t);

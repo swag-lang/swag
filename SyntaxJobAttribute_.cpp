@@ -82,7 +82,6 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     case TokenId::KwdTypeSet:
     case TokenId::KwdAlias:
     case TokenId::KwdUsing:
-    case TokenId::CompilerBake:
         break;
 
     default:

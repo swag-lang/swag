@@ -101,12 +101,13 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
     return true;
 }
 
-void AstNode::inheritAttributes(AstNode* from)
+void AstNode::inheritAttributes(uint64_t fromAttributes)
 {
-    if (from->kind == AstNodeKind::Statement)
-        parentAttributes = from->parentAttributes;
-
-    auto fromAttributes = from->attributeFlags;
+    if (kind == AstNodeKind::CompilerSpecialFunction)
+    {
+        fromAttributes &= ~ATTRIBUTE_PUBLIC;
+        fromAttributes &= ~ATTRIBUTE_PRIVATE;
+    }
 
     if (attributeFlags & ATTRIBUTE_PRIVATE)
     {
