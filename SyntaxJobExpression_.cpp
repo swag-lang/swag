@@ -130,10 +130,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerSpecialFunction(parent, result));
         break;
 
-    case TokenId::KwdRetVal:
-        SWAG_CHECK(doRetVal(parent, result));
-        break;
-
     case TokenId::CompilerHasTag:
     case TokenId::CompilerTagVal:
         SWAG_CHECK(doCompilerTag(parent, result));
@@ -715,7 +711,18 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
             parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
         if (result)
             *result = node;
-        SWAG_CHECK(eatToken(TokenId::SymQuestion));
+        SWAG_CHECK(eatToken());
+        return true;
+    }
+
+    // var x = retval
+    if (token.id == TokenId::KwdRetVal)
+    {
+        auto node         = Ast::newNode<AstNode>(this, AstNodeKind::RetVal, sourceFile, parent);
+        node->semanticFct = SemanticJob::resolveRetVal;
+        if (result)
+            *result = node;
+        SWAG_CHECK(eatToken());
         return true;
     }
 
