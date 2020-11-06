@@ -17,7 +17,7 @@ impl TimeSpan
     }
 
     #[swag.property]
-    func getDateTime(using self)->DateTime
+    func toDateTime(using self)->DateTime
     {
         var dateTime: DateTime = ?
         using dateTime
