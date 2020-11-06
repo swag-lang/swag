@@ -337,8 +337,9 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
 
 bool SemanticJob::resolveAlias(SemanticContext* context)
 {
-    auto node     = context->node;
-    auto back     = node->childs.back();
+    auto node = context->node;
+    auto back = node->childs.back();
+
     auto overload = back->resolvedSymbolOverload;
     SWAG_VERIFY(overload, context->report({back, "alias can only be used with a type or an identifier"}));
 

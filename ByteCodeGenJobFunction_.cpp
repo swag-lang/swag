@@ -48,80 +48,83 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     auto       returnType = funcNode->returnType->typeInfo;
 
     // Copy result to RR0... registers
-    if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED))
+    if (!node->typeInfo || !(node->typeInfo->flags & TYPEINFO_RETVAL))
     {
-        if (!node->childs.empty())
+        if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED))
         {
-            auto returnExpression = node->childs.front();
-            if (node->ownerInline && (node->flags & AST_EMBEDDED_RETURN))
+            if (!node->childs.empty())
             {
-                auto inlineReturnType = node->ownerInline->func->returnType->typeInfo;
-                if (inlineReturnType->flags & TYPEINFO_RETURN_BY_COPY)
+                auto returnExpression = node->childs.front();
+                if (node->ownerInline && (node->flags & AST_EMBEDDED_RETURN))
                 {
-                    auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
-                    waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
-                    if (context->result == ContextResult::Pending)
-                        return true;
-                    // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
-                    returnExpression->flags |= AST_NO_LEFT_DROP;
-                    SWAG_CHECK(emitStructCopyMoveCall(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, exprType, returnExpression));
-                    freeRegisterRC(context, returnExpression);
+                    auto inlineReturnType = node->ownerInline->func->returnType->typeInfo;
+                    if (inlineReturnType->flags & TYPEINFO_RETURN_BY_COPY)
+                    {
+                        auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
+                        waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
+                        if (context->result == ContextResult::Pending)
+                            return true;
+                        // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
+                        returnExpression->flags |= AST_NO_LEFT_DROP;
+                        SWAG_CHECK(emitStructCopyMoveCall(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, exprType, returnExpression));
+                        freeRegisterRC(context, returnExpression);
+                    }
+                    else
+                    {
+                        for (auto child : node->childs)
+                        {
+                            auto sizeChilds = child->resultRegisterRC.size();
+                            for (int r = 0; r < sizeChilds; r++)
+                                emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->ownerInline->resultRegisterRC[r], child->resultRegisterRC[r]);
+                            freeRegisterRC(context, child);
+                        }
+                    }
                 }
                 else
                 {
-                    for (auto child : node->childs)
+                    if (returnType->kind == TypeInfoKind::Struct)
                     {
-                        auto sizeChilds = child->resultRegisterRC.size();
-                        for (int r = 0; r < sizeChilds; r++)
-                            emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->ownerInline->resultRegisterRC[r], child->resultRegisterRC[r]);
-                        freeRegisterRC(context, child);
+                        auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
+                        waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
+                        if (context->result == ContextResult::Pending)
+                            return true;
+                        RegisterList r0 = reserveRegisterRC(context);
+                        emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
+                        // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
+                        returnExpression->flags |= AST_NO_LEFT_DROP;
+                        SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, exprType, returnExpression));
+                        freeRegisterRC(context, r0);
+                    }
+                    else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+                    {
+                        auto r0 = reserveRegisterRC(context);
+                        emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
+                        auto inst = emitInstruction(context, ByteCodeOp::MemCpy, r0, returnExpression->resultRegisterRC);
+                        inst->flags |= BCI_IMM_C;
+                        inst->c.u32 = returnExpression->typeInfo->sizeOf;
+                        freeRegisterRC(context, r0);
+                    }
+                    else if (returnType->isNative(NativeTypeKind::String))
+                    {
+                        auto child = node->childs.front();
+                        if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
+                            emitInstruction(context, ByteCodeOp::CloneString, child->resultRegisterRC[0], child->resultRegisterRC[1]);
+                        emitInstruction(context, ByteCodeOp::CopyRCtoRR, 0, child->resultRegisterRC[0]);
+                        emitInstruction(context, ByteCodeOp::CopyRCtoRR, 1, child->resultRegisterRC[1]);
+                    }
+                    else
+                    {
+                        SWAG_ASSERT(node->childs.size() == 1);
+                        auto child = node->childs.front();
+                        SWAG_ASSERT(child->resultRegisterRC.size() >= returnType->numRegisters());
+                        for (int r = 0; r < returnType->numRegisters(); r++)
+                            emitInstruction(context, ByteCodeOp::CopyRCtoRR, r, child->resultRegisterRC[r]);
                     }
                 }
             }
-            else
-            {
-                if (returnType->kind == TypeInfoKind::Struct)
-                {
-                    auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
-                    waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
-                    if (context->result == ContextResult::Pending)
-                        return true;
-                    RegisterList r0 = reserveRegisterRC(context);
-                    emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
-                    // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
-                    returnExpression->flags |= AST_NO_LEFT_DROP;
-                    SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, exprType, returnExpression));
-                    freeRegisterRC(context, r0);
-                }
-                else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
-                {
-                    auto r0 = reserveRegisterRC(context);
-                    emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
-                    auto inst = emitInstruction(context, ByteCodeOp::MemCpy, r0, returnExpression->resultRegisterRC);
-                    inst->flags |= BCI_IMM_C;
-                    inst->c.u32 = returnExpression->typeInfo->sizeOf;
-                    freeRegisterRC(context, r0);
-                }
-                else if (returnType->isNative(NativeTypeKind::String))
-                {
-                    auto child = node->childs.front();
-                    if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
-                        emitInstruction(context, ByteCodeOp::CloneString, child->resultRegisterRC[0], child->resultRegisterRC[1]);
-                    emitInstruction(context, ByteCodeOp::CopyRCtoRR, 0, child->resultRegisterRC[0]);
-                    emitInstruction(context, ByteCodeOp::CopyRCtoRR, 1, child->resultRegisterRC[1]);
-                }
-                else
-                {
-                    SWAG_ASSERT(node->childs.size() == 1);
-                    auto child = node->childs.front();
-                    SWAG_ASSERT(child->resultRegisterRC.size() >= returnType->numRegisters());
-                    for (int r = 0; r < returnType->numRegisters(); r++)
-                        emitInstruction(context, ByteCodeOp::CopyRCtoRR, r, child->resultRegisterRC[r]);
-                }
-            }
-        }
 
-        node->doneFlags |= AST_DONE_EMIT_DEFERRED;
+            node->doneFlags |= AST_DONE_EMIT_DEFERRED;
+        }
     }
 
     // Leave all scopes

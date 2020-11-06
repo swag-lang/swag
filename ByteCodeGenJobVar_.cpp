@@ -9,6 +9,18 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 {
     auto node     = static_cast<AstVarDecl*>(context->node);
     auto resolved = node->resolvedSymbolOverload;
+
+    // If this is a retval, then just copy the return pointer register to a computing register
+    if (resolved->typeInfo->flags & TYPEINFO_RETVAL)
+    {
+        RegisterList r0 = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
+        SWAG_ASSERT(resolved);
+        r0.canFree          = false;
+        resolved->registers = r0;
+        return true;
+    }
+
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
 
     // Debug

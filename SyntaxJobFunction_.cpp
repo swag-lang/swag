@@ -547,6 +547,16 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     return true;
 }
 
+bool SyntaxJob::doRetVal(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::RetVal, sourceFile, parent);
+    node->semanticFct = SemanticJob::resolveRetVal;
+    if (result)
+        *result = node;
+    SWAG_CHECK(eatToken());
+    return true;
+}
+
 bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, parent);

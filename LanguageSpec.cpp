@@ -62,6 +62,7 @@ void LanguageSpec::setup()
     keywords["null"]        = TokenId::KwdNull;
     keywords["attr"]        = TokenId::KwdAttr;
     keywords["return"]      = TokenId::KwdReturn;
+    keywords["retval"]      = TokenId::KwdRetVal;
     keywords["using"]       = TokenId::KwdUsing;
     keywords["cast"]        = TokenId::KwdCast;
     keywords["acast"]       = TokenId::KwdAutoCast;

@@ -35,6 +35,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     typeInfo        = TypeManager::concreteType(typeInfo);
     SWAG_VERIFY(typeInfo->kind != TypeInfoKind::Generic, internalError(context, "emitIdentifier, type is generic"));
 
+    // If this is a retval, then register is already store in the corresponding identifier
+    if (resolved->typeInfo->flags & TYPEINFO_RETVAL)
+    {
+        SWAG_ASSERT(resolved->registers.size() == 1);
+        identifier->resultRegisterRC                = resolved->registers;
+        identifier->identifierRef->resultRegisterRC = identifier->resultRegisterRC;
+        return true;
+    }
+
     // Will be done in the variable declaration
     if (typeInfo->kind == TypeInfoKind::Struct)
     {

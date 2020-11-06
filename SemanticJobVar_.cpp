@@ -623,11 +623,17 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         SWAG_ASSERT(node->ownerScope);
         SWAG_ASSERT(node->ownerFct);
-        storageOffset = node->ownerScope->startStackSize;
-        node->ownerScope->startStackSize += typeInfo->sizeOf;
-        node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
-        node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1); // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
-        node->byteCodeFct         = ByteCodeGenJob::emitLocalVarDecl;
+
+        // Do not allocate space on the stack for a 'retval' variable, because it's not really a variable
+        if (!(node->typeInfo->flags & TYPEINFO_RETVAL))
+        {
+            storageOffset = node->ownerScope->startStackSize;
+            node->ownerScope->startStackSize += typeInfo->sizeOf;
+            node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+            node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1); // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
+        }
+
+        node->byteCodeFct = ByteCodeGenJob::emitLocalVarDecl;
         node->flags |= AST_R_VALUE;
     }
     else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)

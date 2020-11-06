@@ -135,6 +135,7 @@ struct SyntaxJob : public Job
     bool doGlobalCurlyStatement(AstNode* parent, AstNode** result = nullptr);
     bool doCurlyStatement(AstNode* parent, AstNode** result = nullptr, Token* endToken = nullptr);
     bool doScopedCurlyStatement(AstNode* parent, AstNode** result = nullptr, ScopeKind scopeKind = ScopeKind::Statement);
+    bool doRetVal(AstNode* parent, AstNode** result = nullptr);
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
     bool doLambdaExpression(AstNode* parent, AstNode** result = nullptr);
     bool doUsing(AstNode* parent, AstNode** result = nullptr);

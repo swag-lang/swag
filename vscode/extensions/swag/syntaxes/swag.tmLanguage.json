@@ -67,7 +67,7 @@
       "patterns": [
         {
           "name": "keyword",
-          "match": "\\b(using|is|deref|cast|acast|move|nodrop)\\b"
+          "match": "\\b(using|is|deref|cast|acast|move|nodrop|retval)\\b"
         }
       ]
     },
@@ -91,7 +91,7 @@
       "patterns": [
         {
           "name": "keyword.declaration",
-          "match": "\\b(var|let|const)\\b"
+          "match": "\\b(var|const)\\b"
         }
       ]
     },

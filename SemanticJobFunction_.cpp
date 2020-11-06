@@ -636,14 +636,37 @@ bool SemanticJob::checkUnreachableCode(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveRetVal(SemanticContext* context)
+{
+    auto node = context->node;
+    SWAG_VERIFY(node->ownerFct, context->report({node, node->token, "'retval' can only be used inside a function"}));
+
+    auto fct     = CastAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
+    auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
+    SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, node->token, "'retval' cannot be used in a function that returns nothing"}));
+    SWAG_VERIFY(typeFct->returnType->kind == TypeInfoKind::Struct, context->report({node, node->token, "'retval' can only be used in a function that returns a struct"}));
+
+    // Make retval a pointer to the structure to return
+    auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
+    ptrType->ptrCount    = 1;
+    ptrType->finalType   = typeFct->returnType;
+    ptrType->pointedType = typeFct->returnType;
+    ptrType->sizeOf      = sizeof(void*);
+    ptrType->computeName();
+    ptrType->flags |= TYPEINFO_RETVAL;
+
+    node->typeInfo = ptrType;
+    return true;
+}
+
 bool SemanticJob::resolveReturn(SemanticContext* context)
 {
     SWAG_CHECK(checkUnreachableCode(context));
 
-    auto node     = CastAst<AstReturn>(context->node, AstNodeKind::Return);
-    auto funcNode = node->ownerFct;
+    auto node = CastAst<AstReturn>(context->node, AstNodeKind::Return);
 
     // For a return inside an inline block, take the original function, except if it is flags with 'swag.noreturn'
+    auto funcNode = node->ownerFct;
     if (node->ownerInline)
     {
         if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NO_RETURN))
@@ -710,7 +733,17 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (returnType->isNative(NativeTypeKind::Void) && !concreteType->isNative(NativeTypeKind::Void))
         return context->report({child, format("returning a value of type '%s', but the function does not declare a return type", concreteType->name.c_str())});
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, CASTFLAG_UNCONST));
+    // If returning retval, then returning nothing, as we will change the return parameter value in place
+    if (child->typeInfo->flags & TYPEINFO_RETVAL)
+    {
+        node->typeInfo = child->typeInfo;
+        if (!child->resolvedSymbolOverload || !(child->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
+            return context->report({child, "cannot resolve 'retval' variable"});
+    }
+    else
+    {
+        SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, CASTFLAG_UNCONST));
+    }
 
     // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
     if (returnType && returnType->kind == TypeInfoKind::Struct)

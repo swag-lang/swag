@@ -94,6 +94,7 @@ enum class AstNodeKind : uint8_t
     FuncCall,
     FuncContent,
     Return,
+    RetVal,
     EnumType,
     EnumValue,
     Literal,
