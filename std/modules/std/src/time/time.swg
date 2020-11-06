@@ -1,5 +1,21 @@
 public namespace std.time;
 
+private
+{
+    const TicksPerMilliSecond: u64 = 10000
+    const TicksPerSecond: u64 = TicksPerMilliSecond * 1000
+    const TicksPerMinute: u64 = TicksPerSecond * 60
+    const TicksPerHour: u64   = TicksPerMinute * 60
+    const TicksPerDay: u64    = TicksPerHour * 24
+    const DaysPerYear     = 365
+    const DaysPer4Years   = (DaysPerYear * 4) + 1
+    const DaysPer100Years = (DaysPer4Years * 25) - 1
+    const DaysPer400Years = (DaysPer100Years * 4) + 1
+    const DaysToMonth365 = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
+    const DaysToMonth366 = @[0'u16, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366]
+    const MaxMilliSeconds = swag.MaxU64 / TicksPerMilliSecond
+}
+
 // Returns the current time expressed in milliseconds
 func nowMilliseconds()->u32
 {
@@ -16,25 +32,16 @@ func nowMicroseconds()->u32
     return acast ticks
 }
 
-private const TicksPerMilliSecond: u64 = 10000
-private const TicksPerSecond: u64 = TicksPerMilliSecond * 1000
-private const TicksPerMinute: u64 = TicksPerSecond * 60
-private const TicksPerHour: u64   = TicksPerMinute * 60
-private const TicksPerDay: u64    = TicksPerHour * 24
-
-private const DaysPerYear     = 365
-private const DaysPer4Years   = (DaysPerYear * 4) + 1
-private const DaysPer100Years = (DaysPer4Years * 25) - 1
-private const DaysPer400Years = (DaysPer100Years * 4) + 1
-
-private const DaysToMonth365 = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
-private const DaysToMonth366 = @[0'u16, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366]
-
-private const MaxMilliSeconds = swag.MaxU64 / TicksPerMilliSecond
+alias Ticks = u64
 
 // Convert a time to a 64 bits value
-func timeToTicks(hour, minute, second, millisecond: u16)->u64
+func timeToTicks(hour, minute, second, millisecond: u16)->Ticks
 {
+    debug.assert(0 <= hour < 24)
+    debug.assert(0 <= minute < 60)
+    debug.assert(0 <= second < 60)
+    debug.assert(0 <= millisecond < 1000)
+
     // totalSeconds is bounded by 2^31 * 2^12 + 2^31 * 2^8 + 2^31,
     // which is less than 2^44, meaning we won't overflow totalSeconds.
     var totalMilli: u64 = ((hour * 3600) + (minute * 60) + second) * 1000'u64
@@ -44,7 +51,7 @@ func timeToTicks(hour, minute, second, millisecond: u16)->u64
 }
 
 // Convert a 64 bits tick value to a time
-func ticksToTime(ticks: u64) -> {hour: u16, minute: u16, second: u16, millisecond: u16}
+func ticksToTime(ticks: Ticks) -> {hour: u16, minute: u16, second: u16, millisecond: u16}
 {
     hour := (ticks / TicksPerHour) % 24
     minute := (ticks / TicksPerMinute) % 60
@@ -54,7 +61,7 @@ func ticksToTime(ticks: u64) -> {hour: u16, minute: u16, second: u16, millisecon
 }
 
 // Convert a date to a 64 bits value
-func dateToTicks(year, month, day: u16)->u64
+func dateToTicks(year, month, day: u16)->Ticks
 {
     debug.assert(1 <= year <= 9999)
     debug.assert(1 <= month <= 12)
@@ -67,7 +74,7 @@ func dateToTicks(year, month, day: u16)->u64
 }
 
 // Convert a 64 bits value to a date
-func ticksToDate(ticks: u64) -> {year: u16, month: u16, day: u16}
+func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
 {
     // n = number of days since 1/1/0001
     n := ticks / TicksPerDay
