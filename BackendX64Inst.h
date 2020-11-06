@@ -858,7 +858,10 @@ namespace BackendX64Inst
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             if (op == X64Op::MUL)
             {
-                pp.concat.addU16(0xAF0F);
+                // imul rcx, rax
+                pp.concat.addU8(0x48);
+                pp.concat.addU8(0x0F);
+                pp.concat.addU8(0xAF);
                 pp.concat.addU8(0xC8);
             }
             else
