@@ -90,7 +90,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint
     emitSafetyBoundCheckLower(context, r0, r1);
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfo)
+void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfoArray)
 {
     if (!mustEmitSafety(context))
         return;
@@ -100,7 +100,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint
     auto r1 = reserveRegisterRC(context);
 
     auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, r1);
-    inst->b.u32 = typeInfo->count;
+    inst->b.u32 = typeInfoArray->count;
     emitSafetyBoundCheckLower(context, r0, r1);
 
     freeRegisterRC(context, r1);

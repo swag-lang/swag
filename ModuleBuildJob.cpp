@@ -278,6 +278,7 @@ JobResult ModuleBuildJob::execute()
             if (g_CommandLine.stats || g_CommandLine.verbose)
                 timerRun.start();
             pass = ModuleBuildPass::Output;
+            module->printBC();
         }
         else
         {

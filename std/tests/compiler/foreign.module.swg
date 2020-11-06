@@ -209,3 +209,16 @@ public func tcf_join(values: s64...)
         }
     }
 }
+
+private const DaysToMonth365 = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
+
+//#[swag.printbc]
+public func tcf_toto20(a: u16)
+{
+//    @assert(a == 2020)
+//    @assert(b == 2)
+    res := DaysToMonth365[a]
+
+    //var slice: const [..] u16 = DaysToMonth365
+    //res1 := slice[a]
+}

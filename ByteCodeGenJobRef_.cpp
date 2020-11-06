@@ -43,13 +43,14 @@ bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 {
-    auto node      = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    int  sizeOf    = node->typeInfo->sizeOf;
-    auto typeArray = TypeManager::concreteType(node->array->typeInfo, CONCRETE_ALIAS);
-    auto typeInfo  = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
+    auto node          = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    int  sizeOf        = node->typeInfo->sizeOf;
+    auto typeArray     = TypeManager::concreteType(node->array->typeInfo, CONCRETE_ALIAS);
+    auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
 
+    SWAG_CHECK(emitCastToNativeU32(context, node->access, TypeManager::concreteReferenceType(node->access->typeInfo)));
     if (!node->access->hasComputedValue())
-        emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfo);
+        emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
 
     // Pointer increment
     if (sizeOf > 1)
@@ -267,6 +268,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         int  sizeOf        = typeInfoArray->pointedType->sizeOf;
 
+        SWAG_CHECK(emitCastToNativeU32(context, node->access, TypeManager::concreteReferenceType(node->access->typeInfo)));
         if (!node->access->hasComputedValue())
             emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
         truncRegisterRC(context, node->array->resultRegisterRC, 1);
