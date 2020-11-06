@@ -2,6 +2,6 @@
 
 #test
 {
-    using std.time   
-    ticks := nowTicks() / ticksFrequency()    
+    using std.time
+    ticks := nowPrecise() / preciseFrequency()
 }

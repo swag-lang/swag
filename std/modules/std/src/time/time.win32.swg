@@ -1,26 +1,23 @@
-#if std.WINDOWS
+#if std.WINDOWS;
+using win32
+public namespace std.time;
+
+private var g_perfCounterFreq: u64
+
+#init
 {
-    using win32
+    QueryPerformanceFrequency(acast &g_perfCounterFreq)
+}
 
-	private var g_perfCounterFreq: u64
 
-	#init
-	{
-		QueryPerformanceFrequency(acast &g_perfCounterFreq)
-	}
+func nowPrecise()->u64
+{
+    var counter: u64 = ?
+    QueryPerformanceCounter(acast &counter)
+    return counter
+}
 
-	public namespace std.time
-	{
-        func nowTicks()->u64
-        {
-            var counter: u64 = ?
-            QueryPerformanceCounter(acast &counter)
-            return counter
-        }
-
-        func ticksFrequency()->u64
-        {
-            return g_perfCounterFreq
-        }
-	}
+func preciseFrequency()->u64
+{
+    return g_perfCounterFreq
 }

@@ -19,16 +19,16 @@ private
 // Returns the current time expressed in milliseconds
 func nowMilliseconds()->u32
 {
-    ticks := nowTicks() * 1000
-    ticks /= ticksFrequency()
+    ticks := nowPrecise() * 1000
+    ticks /= preciseFrequency()
     return acast ticks
 }
 
 // Returns the current time expressed in microseconds
 func nowMicroseconds()->u32
 {
-    ticks := nowTicks() * 1000000
-    ticks /= ticksFrequency()
+    ticks := nowPrecise() * 1000000
+    ticks /= preciseFrequency()
     return acast ticks
 }
 

@@ -16,7 +16,7 @@ public impl Stopwatch
         if !isRunning
         {
             isRunning = true
-            startTimeStamp = nowTicks()
+            startTimeStamp = nowPrecise()
         }
     }
 
@@ -25,7 +25,7 @@ public impl Stopwatch
     {
         if isRunning
         {
-            endTimeStamp := nowTicks()
+            endTimeStamp := nowPrecise()
             elapsedTicksPeriod := endTimeStamp - startTimeStamp
             elapsedTicks += elapsedTicksPeriod
             isRunning = false
@@ -44,19 +44,19 @@ public impl Stopwatch
     func restart(using self)
     {
         elapsedTicks = 0
-        startTimeStamp = nowTicks()
+        startTimeStamp = nowPrecise()
         isRunning = true
     }
 
     // Gets the total elapsed time in milliseconds measured by the current instance
     func elapsedMilliseconds(using self)->u32
     {
-        return acast ((elapsedTicks * 1000) / ticksFrequency())
+        return acast ((elapsedTicks * 1000) / preciseFrequency())
     }
 
     // Gets the total elapsed time in microseconds measured by the current instance
     func elapsedMicroseconds(using self)->u32
     {
-        return acast ((elapsedTicks * 1000000) / ticksFrequency())
+        return acast ((elapsedTicks * 1000000) / preciseFrequency())
     }
 }
