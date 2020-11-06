@@ -1158,7 +1158,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 auto child = leftNode->childs.front();
 
                 // Ignore field if '?', otherwise check that this is a valid variable name
-                SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
                 if (child->childs.front()->name == "?")
                 {
                     idx++;
@@ -1166,8 +1165,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                     Ast::releaseNode(child);
                     continue;
                 }
-
-                SWAG_CHECK(checkIsValidVarName(child));
 
                 auto affectNode   = Ast::newAffectOp(sourceFile, parentNode);
                 affectNode->token = savedtoken;
