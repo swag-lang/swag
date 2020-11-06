@@ -7,10 +7,12 @@ struct TimeSpan
 
 impl TimeSpan
 {
-    func from(using self, dateTime: DateTime)
+    func from(dateTime: DateTime)->TimeSpan
     {
-        ticks = dateToTicks(dateTime.year, dateTime.month, dateTime.day)
-        ticks += timeToTicks(dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond)
+        var result: TimeSpan = ?
+        result.ticks = dateToTicks(dateTime.year, dateTime.month, dateTime.day)
+        result.ticks += timeToTicks(dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond)
+        return result
     }
 
     #[swag.property]

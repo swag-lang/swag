@@ -8,7 +8,6 @@ impl DateTime
     {
         using systemTime
         day         = wDay
-        dayOfWeek   = wDayOfWeek
         month       = wMonth
         year        = wYear
         hour        = wHour
@@ -20,8 +19,19 @@ impl DateTime
 
 public impl DateTime
 {
+    // Returns a DateTime containing the current date and time
+    func now()->DateTime
+    {
+        var systemTime: SYSTEMTIME = ?
+        GetLocalTime(&systemTime)
+
+        var result: DateTime = ?
+        result.fromSYSTEMTIME(systemTime)
+        return result
+    }
+
     // Initialize the structure with the current local date and time
-    func now(using self)
+    func setNow(using self)
     {
         var systemTime: SYSTEMTIME = ?
         GetLocalTime(&systemTime)
