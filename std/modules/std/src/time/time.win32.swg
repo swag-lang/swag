@@ -9,7 +9,7 @@ private var g_perfCounterFreq: u64
     QueryPerformanceFrequency(acast &g_perfCounterFreq)
 }
 
-
+// Get current time precise value
 func nowPrecise()->u64
 {
     var counter: u64 = ?
@@ -17,6 +17,7 @@ func nowPrecise()->u64
     return counter
 }
 
+// The frequency of the precise counter, in ticks per second
 func preciseFrequency()->u64
 {
     return g_perfCounterFreq
