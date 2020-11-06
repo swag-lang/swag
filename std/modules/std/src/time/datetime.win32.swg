@@ -2,7 +2,7 @@
 using win32
 namespace std.time;
 
-protected impl DateTime
+impl DateTime
 {
     func fromSYSTEMTIME(using self, systemTime: SYSTEMTIME)
     {
@@ -25,6 +25,6 @@ public impl DateTime
     {
         var systemTime: SYSTEMTIME = ?
         GetLocalTime(&systemTime)
-        self.fromSYSTEMTIME(systemTime)
+        fromSYSTEMTIME(systemTime)
     }
 }

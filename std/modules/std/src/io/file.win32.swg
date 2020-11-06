@@ -36,7 +36,7 @@ impl enum FileAttribute
             result |= NotContentIndexed
         if attributes & FILE_ATTRIBUTE_ENCRYPTED
             result |= Encrypted
-        return FileAttribute.None
+        return result
     }
 }
 

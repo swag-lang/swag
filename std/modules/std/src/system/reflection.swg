@@ -121,6 +121,7 @@ public
         }
 
         simpleName := scopedNameToName(type)
+
         visit it: typeEnum.values
         {
             // Get the enum value, as an 'u64' or a string
