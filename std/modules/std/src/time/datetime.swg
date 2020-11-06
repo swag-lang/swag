@@ -42,7 +42,7 @@ public impl DateTime
         return true
     }
 
-    // Compute the ticks part of the datatime
+    // Convert a date to a 64 bits value
     func dateToTicks(year, month, day: u16)->u64
     {
         debug.assert(1 <= year <= 9999)
@@ -52,19 +52,14 @@ public impl DateTime
         days := isLeapYear(year) ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
         y := cast(u64) (year - 1)
         n := ((y * 365) + (y / 4) + (y / 400) + days[month - 1] + (day - 1)) - (y / 100)
-/*
-console.print("n0: %\n", n)
-console.print("n1: %\n", n * TicksPerDay)
-console.print("n2: %\n", TicksPerDay)
-*/
         return n * TicksPerDay
     }
 
+    // Convert a 64 bits value to a date
     func ticksToDate(ticks: u64) -> {year: u16, month: u16, day: u16}
     {
         // n = number of days since 1/1/0001
         n := ticks / TicksPerDay
-
         // y400 = number of whole 400-year periods since 1/1/0001
         y400 := n / DaysPer400Years
         // n = day number within 400-year period
@@ -110,7 +105,7 @@ console.print("n2: %\n", TicksPerDay)
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)
     }
 
-    // Returns the numober of days of the given month, for the given year
+    // Returns the number of days of the given month, for the given year
     func daysInMonth(year, month: u16)->u16
     {
         debug.assert(1 <= month <= 12)
