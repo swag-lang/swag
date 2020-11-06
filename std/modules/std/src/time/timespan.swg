@@ -10,8 +10,9 @@ impl TimeSpan
     func from(dateTime: DateTime)->TimeSpan
     {
         var result: TimeSpan = ?
-        result.ticks = dateToTicks(dateTime.year, dateTime.month, dateTime.day)
-        result.ticks += timeToTicks(dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond)
+        using result, dateTime
+        ticks = dateToTicks(year, month, day)
+        ticks += timeToTicks(hour, minute, second, millisecond)
         return result
     }
 
