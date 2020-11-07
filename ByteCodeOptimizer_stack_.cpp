@@ -45,6 +45,18 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
             ip[1].b.u32                   = 1;
         }
 
+        // Testing if a pointer is not null is irrelevant if previous instruction has incremented the pointer.
+        if (ip[0].op == ByteCodeOp::IncPointer32 &&
+            ip[1].op == ByteCodeOp::TestNotZero64 &&
+            ip[0].c.u32 == ip[1].b.u32 &&
+            (ip[0].flags & BCI_IMM_B) &&
+            ip[0].b.u32)
+        {
+            context->passHasDoneSomething = true;
+            ip[1].op                      = ByteCodeOp::SetImmediate32;
+            ip[1].b.u32                   = 1;
+        }
+
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
 
         // Try to detect when we store a constant on the stack, followed by a get of the value. The get
