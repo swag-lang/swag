@@ -7,7 +7,7 @@ struct TimeSpan
 
 impl TimeSpan
 {
-    #[swag.printbc]
+    //#[swag.printbc]
     func from(dateTime: DateTime)->TimeSpan
     {
         result := retval

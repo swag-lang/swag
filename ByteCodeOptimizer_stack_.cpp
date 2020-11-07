@@ -36,7 +36,7 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
 
         // Testing if a stack pointer is not null is irrelevant. This can happen often because of
         // safety checks, when dereferencing a struct on the stack
-        if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+        if ((ip[0].op == ByteCodeOp::MakeStackPointer || ip[0].op == ByteCodeOp::GetFromStackParam64) &&
             ip[1].op == ByteCodeOp::TestNotZero64 &&
             ip[0].a.u32 == ip[1].b.u32)
         {
