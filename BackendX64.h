@@ -50,13 +50,12 @@ struct LabelToSolve
 
 struct CoffFunction
 {
-    uint32_t symbolIndex;
-    uint32_t startAddress;
-    uint32_t endAddress;
-    uint32_t xdataOffset = 0;
-    uint32_t sizeProlog  = 0;
-    uint16_t unwind0     = 0;
-    uint16_t unwind1     = 0;
+    uint32_t               symbolIndex;
+    uint32_t               startAddress;
+    uint32_t               endAddress;
+    uint32_t               xdataOffset = 0;
+    uint32_t               sizeProlog  = 0;
+    VectorNative<uint16_t> unwind;
 };
 
 struct X64PerThread
@@ -173,7 +172,8 @@ struct BackendX64 : public Backend
 
     uint32_t getOrCreateLabel(X64PerThread& pp, uint32_t ip);
     void     setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack);
-    void     computeUnwind(uint32_t sizeStack, uint32_t offsetSubRSP, uint16_t& unwind0, uint16_t& unwind1);
+    uint16_t computeUnwindPushRDI(uint32_t offsetSubRSP);
+    void     computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
     bool     emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc);
     bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
@@ -208,7 +208,7 @@ struct BackendX64 : public Backend
     bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
     bool emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams);
 
-    void registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, uint16_t unwind0 = 0, uint16_t unwind1 = 0);
+    void registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind);
 
     X64PerThread perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

@@ -404,15 +404,14 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
     return JobResult::ReleaseJob;
 }
 
-void BackendX64::registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, uint16_t unwind0, uint16_t unwind1)
+void BackendX64::registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
 {
     CoffFunction cf;
     cf.symbolIndex  = symbolIndex;
     cf.startAddress = startAddress;
     cf.endAddress   = endAddress;
     cf.sizeProlog   = sizeProlog;
-    cf.unwind0      = unwind0;
-    cf.unwind1      = unwind1;
+    cf.unwind       = move(unwind);
     pp.functions.push_back(cf);
 }
 
@@ -495,25 +494,26 @@ bool BackendX64::emitXData(const BuildParameters& buildParameters)
     {
         SWAG_ASSERT(f.sizeProlog <= 255);
 
-        concat.ensureSpace(8);
-
         f.xdataOffset = offset;
-        concat.addU8_safe(1);                      // Version
-        concat.addU8_safe((uint8_t) f.sizeProlog); // Size of prolog
+        concat.addU8(1);                         // Version | Flags
+        concat.addU8((uint8_t) f.sizeProlog);    // Size of prolog
+        concat.addU8((uint8_t) f.unwind.size()); // Count of unwind codes
+        concat.addU8(0);                         // Frame register | offset
+        offset += 4;
 
-        // Count of unwind codes
-        if (!f.unwind0 && !f.unwind1)
-            concat.addU8_safe(0);
-        else if (!f.unwind1)
-            concat.addU8_safe(1);
-        else
-            concat.addU8_safe(2);
+        // Unwind array
+        for (auto unwind : f.unwind)
+        {
+            concat.addU16(unwind);
+            offset += 2;
+        }
 
-        concat.addU8_safe(0); // Frame register | offset
-        concat.addU16_safe(f.unwind0);
-        concat.addU16_safe(f.unwind1);
-
-        offset += 8;
+        // Align
+        if (f.unwind.size() & 1)
+        {
+            concat.addU16(0);
+            offset += 2;
+        }
     }
 
     *pp.patchXDCount = concat.totalCount() - *pp.patchXDOffset;

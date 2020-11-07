@@ -8,6 +8,10 @@
 #include "Module.h"
 #include "TypeManager.h"
 
+#define UWOP_PUSH_NONVOL 0
+#define UWOP_ALLOC_LARGE 1
+#define UWOP_ALLOC_SMALL 2
+
 BackendFunctionBodyJob* BackendX64::newFunctionJob()
 {
     return g_Pool_backendX64FunctionBodyJob.alloc();
@@ -69,29 +73,45 @@ void BackendX64::setCalleeParameter(X64PerThread& pp, TypeInfo* typeParam, int c
     }
 }
 
-void BackendX64::computeUnwind(uint32_t sizeStack, uint32_t offsetSubRSP, uint16_t& unwind0, uint16_t& unwind1)
+uint16_t BackendX64::computeUnwindPushRDI(uint32_t offsetSubRSP)
 {
-#define UWOP_ALLOC_LARGE 1
-#define UWOP_ALLOC_SMALL 2
+    uint16_t unwind0 = 0;
+
+    unwind0 = (RDI << 12);
+    unwind0 |= (UWOP_PUSH_NONVOL << 8);
+    unwind0 |= (uint8_t) offsetSubRSP;
+    return unwind0;
+}
+
+void BackendX64::computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind)
+{
+    // UNWIND_CODE
+    // UBYTE:8: offset of the instruction after the "sub rsp"
+    // UBYTE:4: code (UWOP_ALLOC_LARGE or UWOP_ALLOC_SMALL)
+    // UBYTE:4: info (will code the size of the decrement of rsp)
 
     SWAG_ASSERT(offsetSubRSP <= 0xFF);
     SWAG_ASSERT((sizeStack & 7) == 0); // Must be aligned
 
     if (sizeStack <= 128)
     {
+        SWAG_ASSERT(sizeStack >= 8);
         sizeStack -= 8;
         sizeStack /= 8;
-        unwind0 = (uint16_t)(UWOP_ALLOC_SMALL | (sizeStack << 4));
+        auto unwind0 = (uint16_t)(UWOP_ALLOC_SMALL | (sizeStack << 4));
         unwind0 <<= 8;
         unwind0 |= (uint16_t) offsetSubRSP;
+        unwind.push_back(unwind0);
     }
     else
     {
         SWAG_ASSERT(sizeStack <= (512 * 1024) - 8);
-        unwind0 = (uint16_t)(UWOP_ALLOC_LARGE);
+        auto unwind0 = (uint16_t)(UWOP_ALLOC_LARGE);
         unwind0 <<= 8;
         unwind0 |= (uint16_t) offsetSubRSP;
-        unwind1 = (uint16_t)(sizeStack / 8);
+        unwind.push_back(unwind0);
+        unwind0 = (uint16_t)(sizeStack / 8);
+        unwind.push_back(unwind0);
     }
 }
 
@@ -174,26 +194,30 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     }
 
     // Prolog
-    uint16_t unwind0      = 0;
-    uint16_t unwind1      = 0;
-    auto     beforeProlog = concat.totalCount();
-    auto     sizeProlog   = 0;
+    VectorNative<uint16_t> unwind;
+    auto                   beforeProlog = concat.totalCount();
+    auto                   sizeProlog   = 0;
     if (sizeStack)
     {
         BackendX64Inst::emit_Push(pp, RDI);
+        sizeProlog       = concat.totalCount() - beforeProlog;
+        uint16_t unwind0 = computeUnwindPushRDI(sizeProlog);
+
         MK_ALIGN16(sizeStack);
         sizeStack += 4 * sizeof(Register);
         BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack);
         sizeProlog = concat.totalCount() - beforeProlog;
-        computeUnwind(sizeStack + 8, sizeProlog, unwind0, unwind1);
-
+        computeUnwindStack(sizeStack, sizeProlog, unwind);
         BackendX64Inst::emit_Copy64(pp, RSP, RDI);
+
+        // At the end because array must be sorted in 'offset in prolog' descending order
+        unwind.push_back(unwind0);
     }
     else
     {
         BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 5 * sizeof(Register));
         sizeProlog = concat.totalCount() - beforeProlog;
-        computeUnwind(5 * sizeof(Register), sizeProlog, unwind0, unwind1);
+        computeUnwindStack(5 * sizeof(Register), sizeProlog, unwind);
     }
 
     // Need to save return register if needed
@@ -284,7 +308,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     BackendX64Inst::emit_Ret(pp);
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind0, unwind1);
+    registerFunction(pp, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
@@ -324,20 +348,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     uint32_t sizeParamsStack = max(4 * sizeof(Register), bc->maxCallParams * sizeof(Register));
     MK_ALIGN16(sizeParamsStack);
 
-    auto beforeProlog = concat.totalCount();
+    auto     beforeProlog = concat.totalCount();
+    uint32_t sizeProlog   = 0;
 
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
+    VectorNative<uint16_t> unwind;
     BackendX64Inst::emit_Push(pp, RDI);
+    sizeProlog       = concat.totalCount() - beforeProlog;
+    uint16_t unwind0 = computeUnwindPushRDI(sizeProlog);
+
     MK_ALIGN16(sizeStack);
     // x64 calling convention, space for at least 4 parameters when calling a function
     // (should ideally be reserved only if we have a call)
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack + sizeParamsStack);
-    auto sizeProlog = concat.totalCount() - beforeProlog;
+    sizeProlog = concat.totalCount() - beforeProlog;
+    computeUnwindStack(sizeStack + sizeParamsStack, sizeProlog, unwind);
 
-    uint16_t unwind0 = 0;
-    uint16_t unwind1 = 0;
-    computeUnwind(sizeStack + sizeParamsStack + 8, sizeProlog, unwind0, unwind1);
+    // At the end because array must be sorted in 'offset in prolog' descending order
+    unwind.push_back(unwind0);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
     pp.concat.addString4("\x48\x8D\xBC\x24");
@@ -2230,7 +2259,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     }
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind0, unwind1);
+    registerFunction(pp, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
     return ok;
 }
 
