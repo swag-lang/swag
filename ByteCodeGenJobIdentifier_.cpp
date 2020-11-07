@@ -35,11 +35,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     typeInfo        = TypeManager::concreteType(typeInfo);
     SWAG_VERIFY(typeInfo->kind != TypeInfoKind::Generic, internalError(context, "emitIdentifier, type is generic"));
 
-    // If this is a retval, then register is already store in the corresponding identifier
+    // If this is a retval, then just copy the return pointer register to a computing register
     if (resolved->typeInfo->flags & TYPEINFO_RETVAL)
     {
-        SWAG_ASSERT(resolved->registers.size() == 1);
-        identifier->resultRegisterRC                = resolved->registers;
+        auto r0 = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
+        identifier->resultRegisterRC                = r0;
         identifier->identifierRef->resultRegisterRC = identifier->resultRegisterRC;
         return true;
     }

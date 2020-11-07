@@ -7,21 +7,23 @@ struct TimeSpan
 
 impl TimeSpan
 {
+    //#[swag.printbc]
     func from(dateTime: DateTime)->TimeSpan
     {
-        var result: TimeSpan = ?
+        result := retval
         using result, dateTime
         ticks = dateToTicks(year, month, day)
         ticks += timeToTicks(hour, minute, second, millisecond)
         return result
     }
 
-    #[swag.property]
+    //#[swag.printbc]
     func toDateTime(using self)->DateTime
     {
-        var dateTime: DateTime = ?
+        dateTime := retval
         using dateTime
         (year, month, day) = ticksToDate(ticks)
+        console.print("%\n", year)
         (hour, minute, second, millisecond) = ticksToTime(ticks)
         return dateTime
     }
