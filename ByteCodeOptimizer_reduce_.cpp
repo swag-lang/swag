@@ -30,13 +30,5 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             ip[1].op                      = ByteCodeOp::SetImmediate32;
             ip[1].b.u32                   = 1;
         }
-
-        /*if (ip[0].op == ByteCodeOp::DeRef16 &&
-            ip[1].op == ByteCodeOp::SetAtPointer16 &&
-            ip[0].a.u32 == ip[1].b.u32)
-        {
-            ip[0].a.u32 = ip[1].a.u32;
-            setNop(context, ip + 1);
-        }*/
     }
 }

@@ -17,7 +17,7 @@ impl TimeSpan
         return result
     }
 
-    #[swag.printbc]
+    //#[swag.printbc]
     func toDateTime(using self)->DateTime
     {
         dateTime := retval

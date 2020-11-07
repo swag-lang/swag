@@ -17,8 +17,6 @@ ca serait cool que les methods, en reflections, aient une value qui peut être ca
 -------------------------------------
 remerde assert en x64
 -------------------------------------
-check debug lines toDateTime 
--------------------------------------
 retval & inline
 -------------------------------------
 retval & var affectation (pass retval)
