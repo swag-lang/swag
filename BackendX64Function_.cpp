@@ -117,11 +117,13 @@ void BackendX64::computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, V
 
 bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc)
 {
-    int      ct              = buildParameters.compileType;
-    int      precompileIndex = buildParameters.precompileIndex;
-    auto&    pp              = perThread[ct][precompileIndex];
-    auto&    concat          = pp.concat;
-    uint32_t startAddress    = concat.totalCount();
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
+    alignConcat(concat, 16);
+    uint32_t startAddress = concat.totalCount();
 
     node->computeFullNameForeign(true);
 
@@ -318,13 +320,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
         return true;
 
-    int      ct              = buildParameters.compileType;
-    int      precompileIndex = buildParameters.precompileIndex;
-    auto&    pp              = perThread[ct][precompileIndex];
-    auto&    concat          = pp.concat;
-    auto     typeFunc        = bc->callType();
-    bool     ok              = true;
-    uint32_t startAddress    = concat.totalCount();
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+    auto  typeFunc        = bc->callType();
+    bool  ok              = true;
+
+    alignConcat(concat, 16);
+    uint32_t startAddress = concat.totalCount();
 
     pp.labels.clear();
     pp.labelsToSolve.clear();
@@ -346,6 +350,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     uint32_t offsetFLT       = offsetRR + 2 * sizeof(Register);
     uint32_t sizeStack       = offsetFLT + 8;
     uint32_t sizeParamsStack = max(4 * sizeof(Register), bc->maxCallParams * sizeof(Register));
+    MK_ALIGN16(sizeStack);
     MK_ALIGN16(sizeParamsStack);
 
     auto     beforeProlog = concat.totalCount();
@@ -358,7 +363,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     sizeProlog       = concat.totalCount() - beforeProlog;
     uint16_t unwind0 = computeUnwindPushRDI(sizeProlog);
 
-    MK_ALIGN16(sizeStack);
     // x64 calling convention, space for at least 4 parameters when calling a function
     // (should ideally be reserved only if we have a call)
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack + sizeParamsStack);

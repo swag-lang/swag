@@ -495,7 +495,7 @@ bool BackendX64::emitXData(const BuildParameters& buildParameters)
         SWAG_ASSERT(f.sizeProlog <= 255);
 
         f.xdataOffset = offset;
-        concat.addU8(1);                         // Version | Flags
+        concat.addU8(UNW_FLAG_EHANDLER);         // Version | Flags
         concat.addU8((uint8_t) f.sizeProlog);    // Size of prolog
         concat.addU8((uint8_t) f.unwind.size()); // Count of unwind codes
         concat.addU8(0);                         // Frame register | offset

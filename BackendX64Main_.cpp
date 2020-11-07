@@ -14,6 +14,8 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
+    alignConcat(concat, 16);
+
     if (g_CommandLine.os == BackendOs::Windows)
     {
         // int _DllMainCRTStartup(void*, int, void*)
@@ -37,6 +39,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     auto& concat          = pp.concat;
 
     SWAG_CHECK(emitOS(buildParameters));
+    alignConcat(concat, 16);
 
     const char* entryPoint = nullptr;
     switch (g_CommandLine.os)
@@ -166,6 +169,8 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
+    alignConcat(concat, 16);
+
     auto thisInit = format("%s_globalInit", module->nameDown.c_str());
     getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
     pp.directives += format("/EXPORT:%s ", thisInit.c_str());
@@ -225,6 +230,8 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
+
+    alignConcat(concat, 16);
 
     auto thisDrop = format("%s_globalDrop", module->nameDown.c_str());
     getOrAddSymbol(pp, thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
