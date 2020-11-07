@@ -137,7 +137,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     {
         if (safety)
             emitSafetyNullPointer(context, r0);
-        emitInstruction(context, ByteCodeOp::DeRef64, r0);
+        emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
         return true;
     }
 
@@ -174,16 +174,16 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     switch (typeInfo->sizeOf)
     {
     case 1:
-        emitInstruction(context, ByteCodeOp::DeRef8, r0);
+        emitInstruction(context, ByteCodeOp::DeRef8, r0, r0);
         break;
     case 2:
-        emitInstruction(context, ByteCodeOp::DeRef16, r0);
+        emitInstruction(context, ByteCodeOp::DeRef16, r0, r0);
         break;
     case 4:
-        emitInstruction(context, ByteCodeOp::DeRef32, r0);
+        emitInstruction(context, ByteCodeOp::DeRef32, r0, r0);
         break;
     case 8:
-        emitInstruction(context, ByteCodeOp::DeRef64, r0);
+        emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
         break;
     default:
         return internalError(context, "emitTypeDeRef, size not supported");
@@ -205,7 +205,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitSafetyBoundCheckString(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
         emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC, node->array->resultRegisterRC);
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access);
         truncRegisterRC(context, node->resultRegisterRC, 1);
@@ -298,7 +298,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitSafetyBoundCheckVariadic(context, node->access->resultRegisterRC, node->array->resultRegisterRC);
 
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::DeRef64, r0);
+        emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
         // Get total number of pushed arguments
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU64VB, r0)->b.u32 = 32;
         // Offset from variadic on top of stack to the list of 'any' (number of total pushed arguments * register)
@@ -327,7 +327,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         // Offset from variadic named parameter to the first parameter on the stack
         auto r0 = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::DeRef64, r0);
+        emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU64VB, r0)->b.u32 = 32;
         emitInstruction(context, ByteCodeOp::Mul64byVB32, r0)->b.u32          = sizeof(Register);
         emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, r0, node->array->resultRegisterRC);

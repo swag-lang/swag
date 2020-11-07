@@ -799,11 +799,11 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         RegisterList r0;
         reserveRegisterRC(context, r0, 2);
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], lastParam->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::DeRef64, r0[0]);
+        emitInstruction(context, ByteCodeOp::DeRef64, r0[0], r0[0]);
         emitInstruction(context, ByteCodeOp::SetImmediate32, r0[1])->b.u32 = 8;
         emitInstruction(context, ByteCodeOp::DecPointer32, lastParam->resultRegisterRC, r0[1], lastParam->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], lastParam->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::DeRef64, r0[1]);
+        emitInstruction(context, ByteCodeOp::DeRef64, r0[1], r0[1]);
         emitInstruction(context, ByteCodeOp::PushRAParam2, r0[0], r0[1]);
         toFree += r0;
         precallStack += 2 * sizeof(Register);

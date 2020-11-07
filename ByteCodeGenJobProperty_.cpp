@@ -84,7 +84,7 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
     if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
         node->resultRegisterRC = expr->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::DeRef32, node->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::DeRef32, node->resultRegisterRC, node->resultRegisterRC);
         return true;
     }
 

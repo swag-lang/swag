@@ -451,30 +451,34 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::DeRef8:
         {
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
             auto r1 = TO_PTR_I8(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r2 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(builder.CreateLoad(r1), r2);
             break;
         }
         case ByteCodeOp::DeRef16:
         {
-            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
+            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->b.u32));
             auto r1 = TO_PTR_I16(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r2 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(builder.CreateLoad(r1), r2);
             break;
         }
         case ByteCodeOp::DeRef32:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
+            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
             auto r1 = TO_PTR_I32(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r2 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(builder.CreateLoad(r1), r2);
             break;
         }
         case ByteCodeOp::DeRef64:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r0 = GEP_I32(allocR, ip->b.u32);
             auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
-            builder.CreateStore(builder.CreateLoad(r1), r0);
+            auto r2 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(builder.CreateLoad(r1), r2);
             break;
         }
         case ByteCodeOp::DeRefPointer:

@@ -115,8 +115,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckVariadic(ByteCodeGenContext* context, u
 
     auto r2 = reserveRegisterRC(context);
 
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1);
-    emitInstruction(context, ByteCodeOp::DeRef64, r2);
+    emitInstruction(context, ByteCodeOp::DeRef64, r2, r1);
     emitInstruction(context, ByteCodeOp::ClearMaskU64, r2)->b.u64 = 0x00000000'FFFFFFFF;
     emitSafetyBoundCheckLower(context, r0, r2);
 
