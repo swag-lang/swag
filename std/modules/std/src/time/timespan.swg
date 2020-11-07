@@ -23,7 +23,6 @@ impl TimeSpan
         dateTime := retval
         using dateTime
         (year, month, day) = ticksToDate(ticks)
-        console.print("%\n", year)
         (hour, minute, second, millisecond) = ticksToTime(ticks)
         return dateTime
     }
