@@ -928,37 +928,37 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_SignedExtend_AL_To_AX(pp);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            concat.addString2("\xf6\xfb"); // idiv al, bl
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
-            BackendX64Inst::emit_Store8_Indirect(pp, 0, RAX, RBX);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            concat.addString2("\xF6\xF9"); // idiv al, cl
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Store8_Indirect(pp, 0, RAX, RCX);
             break;
         case ByteCodeOp::AffectOpDivEqS16:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RAX);
             concat.addString2("\x66\x99"); // cwd
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            concat.addString3("\x66\xf7\xfb"); // idiv ax, bx
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
-            BackendX64Inst::emit_Store16_Indirect(pp, 0, RAX, RBX);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            concat.addString3("\x66\xF7\xF9"); // idiv ax, cx
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Store16_Indirect(pp, 0, RAX, RCX);
             break;
         case ByteCodeOp::AffectOpDivEqS32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RAX);
             concat.addString1("\x99"); // cdq
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            concat.addString2("\xf7\xfb"); // idiv eax, ebx
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
-            BackendX64Inst::emit_Store32_Indirect(pp, 0, RAX, RBX);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            concat.addString2("\xF7\xF9"); // idiv eax, ecx
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Store32_Indirect(pp, 0, RAX, RCX);
             break;
         case ByteCodeOp::AffectOpDivEqS64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             concat.addString2("\x48\x99"); // cqo
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            concat.addString3("\x48\xf7\xfb"); // idiv rax, rbx
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RBX);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            concat.addString3("\x48\xF7\xF9"); // idiv rax, rcx
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
             break;
 
         case ByteCodeOp::AffectOpDivEqU8:
@@ -997,6 +997,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RBX);
             break;
+
         case ByteCodeOp::AffectOpDivEqF32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_LoadF32_Indirect(pp, 0, XMM0, RAX);
