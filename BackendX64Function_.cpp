@@ -965,37 +965,37 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_SignedExtend_AL_To_AX(pp);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            concat.addString2("\xf6\xf3"); // div al, bl
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
-            BackendX64Inst::emit_Store8_Indirect(pp, 0, RAX, RBX);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            concat.addString2("\xF6\xF1"); // div al, cl
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Store8_Indirect(pp, 0, RAX, RCX);
             break;
         case ByteCodeOp::AffectOpDivEqU16:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Clear16(pp, RDX);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            concat.addString3("\x66\xf7\xf3"); // div ax, bx
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
-            BackendX64Inst::emit_Store16_Indirect(pp, 0, RAX, RBX);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            concat.addString3("\x66\xF7\xF1"); // div ax, cx
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Store16_Indirect(pp, 0, RAX, RCX);
             break;
         case ByteCodeOp::AffectOpDivEqU32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Clear32(pp, RDX);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            concat.addString2("\xf7\xf3"); // div eax, ebx
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
-            BackendX64Inst::emit_Store32_Indirect(pp, 0, RAX, RBX);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            concat.addString2("\xF7\xF1"); // div eax, ecx
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Store32_Indirect(pp, 0, RAX, RCX);
             break;
         case ByteCodeOp::AffectOpDivEqU64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Clear64(pp, RDX);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RBX, RDI);
-            concat.addString3("\x48\xf7\xf3"); // div rax, rbx
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RBX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RBX);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            concat.addString3("\x48\xF7\xF1"); // div rax, rcx
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
             break;
 
         case ByteCodeOp::AffectOpDivEqF32:
