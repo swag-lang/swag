@@ -1913,9 +1913,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Local lambda
             //////////////////
-            BackendX64Inst::emit_Copy64(pp, RAX, R12);
+            BackendX64Inst::emit_Copy64(pp, RAX, R10);
             emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams);
-            concat.addString3("\x41\xFF\xD4"); // call r12
+            concat.addString3("\x41\xFF\xD2"); // call r10
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
             concat.addU32(0);
@@ -1928,9 +1928,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             BackendX64Inst::emit_Load64_Immediate(pp, ~SWAG_LAMBDA_FOREIGN_MARKER, RCX);
             BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::AND);
-            BackendX64Inst::emit_Copy64(pp, RAX, R12);
+            BackendX64Inst::emit_Copy64(pp, RAX, R10);
             SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
-            concat.addString3("\x41\xFF\xD4"); // call r12
+            concat.addString3("\x41\xFF\xD2"); // call r10
             emitForeignCallResult(pp, typeFuncBC, offsetRT);
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
