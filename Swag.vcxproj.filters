@@ -437,6 +437,9 @@
     <ClCompile Include="ByteCodeOptimizer_retcopy_.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="ByteCodeOptimizer_reduce_.cpp">
+      <Filter>Backend\ByteCode\Optimize</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
