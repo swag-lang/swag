@@ -9,11 +9,25 @@ enumcrc
 crc value pour chaque field d'une structure en reflection ?
 -------------------------------------
 ca serait cool que les methods, en reflections, aient une value qui peut être castée en lambda, et donc appelées
+-------------------------------------
 
 
+
+
+-------------------------------------
 remerde assert en x64
 -------------------------------------
-check debug lines toDateTime llvm
+check debug lines toDateTime 
+-------------------------------------
+retval & inline
+-------------------------------------
+retval & var affectation (pass retval)
+-------------------------------------
+compile debug llvm
+-------------------------------------
+
+
+
 
 -------------------------------------
 shift left/right doit pas etre supérieur a 255 (a tester en compiler si constant, et safety en runtime)

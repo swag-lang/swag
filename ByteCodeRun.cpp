@@ -480,8 +480,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::ForeignCall:
     {
-        if (ip->node->name == "tcf_toto20")
-            ip=ip;
         ffiCall(context, ip);
         break;
     }
