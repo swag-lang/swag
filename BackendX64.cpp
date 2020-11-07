@@ -297,6 +297,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
             buildRelocTypeSegment(buildParameters, &module->typeSegment, pp.relocTableTSSection);
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
+            emitOS(buildParameters);
             emitMain(buildParameters);
         }
 

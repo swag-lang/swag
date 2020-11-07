@@ -26,7 +26,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        module->error(format("llvm backend unsupported os '%s'", g_Workspace.GetOsName().c_str()));
+        module->error(format("x64 backend unsupported os '%s'", g_Workspace.GetOsName().c_str()));
         return false;
     }
 }
@@ -38,8 +38,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    SWAG_CHECK(emitOS(buildParameters));
     alignConcat(concat, 16);
+    auto startAddress = concat.totalCount();
 
     const char* entryPoint = nullptr;
     switch (g_CommandLine.os)
@@ -52,8 +52,13 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         return false;
     }
 
-    getOrAddSymbol(pp, entryPoint, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    auto symbolFuncIndex = getOrAddSymbol(pp, entryPoint, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+
+    auto beforeProlog = concat.totalCount();
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+    auto                   sizeProlog = concat.totalCount() - beforeProlog;
+    VectorNative<uint16_t> unwind;
+    computeUnwindStack(40, sizeProlog, unwind);
 
     //static swag_allocator_t defaultAllocTable = &swag_SystemAllocator_alloc_6E46EF68;
     SWAG_ASSERT(g_defaultContext.allocator.itable);
@@ -159,6 +164,9 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Clear64(pp, RAX);
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
     BackendX64Inst::emit_Ret(pp);
+
+    uint32_t endAddress = concat.totalCount();
+    registerFunction(pp, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
@@ -170,12 +178,17 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     auto& concat          = pp.concat;
 
     alignConcat(concat, 16);
+    auto startAddress = concat.totalCount();
 
-    auto thisInit = format("%s_globalInit", module->nameDown.c_str());
-    getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    auto thisInit        = format("%s_globalInit", module->nameDown.c_str());
+    auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     pp.directives += format("/EXPORT:%s ", thisInit.c_str());
 
+    auto beforeProlog = concat.totalCount();
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+    auto                   sizeProlog = concat.totalCount() - beforeProlog;
+    VectorNative<uint16_t> unwind;
+    computeUnwindStack(40, sizeProlog, unwind);
 
     // Copy process infos
     BackendX64Inst::emit_Store64_Indirect(pp, 8, RCX, RSP);
@@ -221,6 +234,9 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
     BackendX64Inst::emit_Ret(pp);
+
+    uint32_t endAddress = concat.totalCount();
+    registerFunction(pp, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
@@ -232,12 +248,17 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
     auto& concat          = pp.concat;
 
     alignConcat(concat, 16);
+    auto startAddress = concat.totalCount();
 
-    auto thisDrop = format("%s_globalDrop", module->nameDown.c_str());
-    getOrAddSymbol(pp, thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+    auto thisDrop        = format("%s_globalDrop", module->nameDown.c_str());
+    auto symbolFuncIndex = getOrAddSymbol(pp, thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     pp.directives += format("/EXPORT:%s ", thisDrop.c_str());
 
+    auto beforeProlog = concat.totalCount();
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+    auto                   sizeProlog = concat.totalCount() - beforeProlog;
+    VectorNative<uint16_t> unwind;
+    computeUnwindStack(40, sizeProlog, unwind);
 
     // Call to #drop functions
     for (auto bc : module->byteCodeDropFunc)
@@ -250,5 +271,8 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
 
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
     BackendX64Inst::emit_Ret(pp);
+
+    uint32_t endAddress = concat.totalCount();
+    registerFunction(pp, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
