@@ -406,7 +406,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 auto child  = dependentVar->childs[i];
                 auto idNode = Ast::newIdentifier(sourceFile, child->name, idRef, nullptr);
-                idNode->inheritTokenLocation(child->token);
+                idNode->inheritTokenLocation(idRef->token);
                 Ast::addChildFront(idRef, idNode);
                 context->job->nodes.push_back(idNode);
 

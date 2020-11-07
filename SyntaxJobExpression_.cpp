@@ -1153,11 +1153,12 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             if (result)
                 *result = parentNode;
 
+            ScopedLocation lk(this, &token);
+
             // Generate an expression of the form "var __tmp_0 = assignment"
             auto        savedtoken = token;
             auto        tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
             AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
-            varNode->token         = savedtoken;
             varNode->flags |= AST_GENERATED;
             SWAG_CHECK(tokenizer.getToken(token));
             SWAG_CHECK(doExpression(varNode, &varNode->assignment));
@@ -1177,12 +1178,13 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                     continue;
                 }
 
-                auto affectNode   = Ast::newAffectOp(sourceFile, parentNode);
-                affectNode->token = savedtoken;
+                auto affectNode        = Ast::newAffectOp(sourceFile, parentNode);
+                affectNode->token.id   = savedtoken.id;
+                affectNode->token.text = savedtoken.text;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
                 forceTakeAddress(child);
-                Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), affectNode, this)->token = savedtoken;
+                Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), affectNode, this);
             }
         }
 
