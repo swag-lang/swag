@@ -53,11 +53,12 @@ func timeToTicks(hour, minute, second, millisecond: u16)->Ticks
 // Convert a 64 bits tick value to a time
 func ticksToTime(ticks: Ticks) -> {hour: u16, minute: u16, second: u16, millisecond: u16}
 {
-    hour := (ticks / TicksPerHour) % 24
-    minute := (ticks / TicksPerMinute) % 60
-    second := (ticks / TicksPerSecond) % 60
-    millisecond := (ticks / TicksPerMilliSecond) % 1000
-    return @{cast(u16) hour, cast(u16) minute, cast(u16) second, cast(u16) millisecond}
+    var result: retval = ?
+    result.hour = acast ((ticks / TicksPerHour) % 24)
+    result.minute = acast ((ticks / TicksPerMinute) % 60)
+    result.second = acast ((ticks / TicksPerSecond) % 60)
+    result.millisecond = acast ((ticks / TicksPerMilliSecond) % 1000)
+    return result
 }
 
 // Convert a date to a 64 bits value
