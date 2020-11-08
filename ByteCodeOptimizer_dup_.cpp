@@ -15,7 +15,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
 
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
 
-        if (ip[0].op == ByteCodeOp::CopyRBtoRA)
+        if (ip[0].op == ByteCodeOp::CopyRBtoRA || ip[0].op == ByteCodeOp::CopyRRtoRC)
         {
             auto it = mapCopyRBRA.find(ip->a.u32);
             if (it != mapCopyRBRA.end())
