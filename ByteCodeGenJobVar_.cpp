@@ -11,15 +11,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     auto resolved = node->resolvedSymbolOverload;
 
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
-
-    // If this is a retval, then do nothing
-    bool retVal = false;
-    if (resolved->typeInfo->flags & TYPEINFO_RETVAL)
-    {
-        auto typePtr = CastTypeInfo<TypeInfoPointer>(resolved->typeInfo, TypeInfoKind::Pointer);
-        typeInfo     = typePtr->finalType;
-        retVal       = true;
-    }
+    bool retVal   = resolved->typeInfo->flags & TYPEINFO_RETVAL;
 
     // Debug
     context->bc->localVars.push_back(context->node);

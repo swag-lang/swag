@@ -645,17 +645,8 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, node->token, "'retval' cannot be used in a function that returns nothing"}));
     SWAG_VERIFY(typeFct->returnType->kind == TypeInfoKind::Struct, context->report({node, node->token, "'retval' can only be used in a function that returns a struct"}));
-
-    // Make retval a pointer to the structure to return
-    auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
-    ptrType->ptrCount    = 1;
-    ptrType->finalType   = typeFct->returnType;
-    ptrType->pointedType = typeFct->returnType;
-    ptrType->sizeOf      = sizeof(void*);
-    ptrType->computeName();
-    ptrType->flags |= TYPEINFO_RETVAL;
-
-    node->typeInfo = ptrType;
+    node->typeInfo = typeFct->returnType->clone();
+    node->typeInfo->flags |= TYPEINFO_RETVAL;
     return true;
 }
 
