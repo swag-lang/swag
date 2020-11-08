@@ -77,6 +77,7 @@ func dateToTicks(year, month, day: u16)->Ticks
 // Convert a 64 bits value to a date
 func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
 {
+    var result: retval = ?
     // n = number of days since 1/1/0001
     n := ticks / TicksPerDay
     // y400 = number of whole 400-year periods since 1/1/0001
@@ -97,8 +98,6 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     y1 := n / DaysPerYear
     // Last year has an extra day, so decrement result if 4
     if y1 == 4 y1 = 3
-    // compute year
-    year := (y400 * 400) + (y100 * 100) + (y4 * 4) + (y1 + 1)
     // n = day number within year
     n -= y1 * DaysPerYear
     // dayOfYear = n + 1;
@@ -111,11 +110,11 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     m := (n >> 5) + 1
     // m = 1-based month number
     while (n >= days[m]) m += 1
-    // Compute month and day
-    month := m;
-    day := (n - days[m - 1]) + 1
 
-    return @{cast(u16) year, cast(u16) month, cast(u16) day}
+    result.year = acast ((y400 * 400) + (y100 * 100) + (y4 * 4) + (y1 + 1))
+    result.month = acast m
+    result.day = acast ((n - days[m - 1]) + 1)
+    return result
 }
 
 // Returns true if the given year is a leap year
