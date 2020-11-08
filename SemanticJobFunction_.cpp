@@ -638,10 +638,12 @@ bool SemanticJob::checkUnreachableCode(SemanticContext* context)
 
 bool SemanticJob::resolveRetVal(SemanticContext* context)
 {
-    auto node = context->node;
-    SWAG_VERIFY(node->ownerFct, context->report({node, node->token, "'retval' can only be used inside a function"}));
+    auto node    = context->node;
+    auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
 
-    auto fct     = CastAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
+    SWAG_VERIFY(fctDecl, context->report({node, node->token, "'retval' can only be used inside a function"}));
+
+    auto fct     = CastAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, node->token, "'retval' cannot be used in a function that returns nothing"}));
     SWAG_VERIFY(typeFct->returnType->kind == TypeInfoKind::Struct, context->report({node, node->token, "'retval' can only be used in a function that returns a struct"}));
