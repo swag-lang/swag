@@ -191,7 +191,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symCSIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
         pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
         pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Custom, 0, pp.sectionIndexTS)->index;
-        pp.symXDIndex = getOrAddSymbol(pp, "__xd", CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
+        pp.symXDIndex = getOrAddSymbol(pp, format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         // This should match the structure swag_context_t  declared in SwagRuntime.h
         auto offset                           = pp.globalSegment.reserve(8, true);
@@ -225,7 +225,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symCSIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern)->index;
         pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern)->index;
         pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Extern)->index;
-        pp.symXDIndex = getOrAddSymbol(pp, "__xd", CoffSymbolKind::Extern)->index;
+        pp.symXDIndex = getOrAddSymbol(pp, format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         pp.symPI_args_addr      = getOrAddSymbol(pp, "swag_process_infos_args_addr", CoffSymbolKind::Extern)->index;
         pp.symPI_args_count     = getOrAddSymbol(pp, "swag_process_infos_args_count", CoffSymbolKind::Extern)->index;
@@ -313,14 +313,14 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
 
         if (!pp.relocTableTextSection.table.empty())
         {
-            alignConcat(concat, 4);
+            alignConcat(concat, 16);
             *pp.patchTextSectionRelocTableOffset = concat.totalCount();
             emitRelocationTable(pp.concat, pp.relocTableTextSection, pp.patchTextSectionFlags, pp.patchTextSectionRelocTableCount);
         }
 
         if (!pp.relocTablePDSection.table.empty())
         {
-            alignConcat(concat, 4);
+            alignConcat(concat, 16);
             *pp.patchPDSectionRelocTableOffset = concat.totalCount();
             emitRelocationTable(pp.concat, pp.relocTablePDSection, pp.patchPDSectionFlags, pp.patchPDSectionRelocTableCount);
         }
@@ -486,7 +486,7 @@ bool BackendX64::emitXData(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    alignConcat(concat, 4);
+    alignConcat(concat, 16);
     *pp.patchXDOffset = concat.totalCount();
 
     // https://docs.microsoft.com/en-us/cpp/build/exception-handling-x64?view=vs-2019
@@ -496,7 +496,7 @@ bool BackendX64::emitXData(const BuildParameters& buildParameters)
         SWAG_ASSERT(f.sizeProlog <= 255);
 
         f.xdataOffset = offset;
-        concat.addU8(UNW_FLAG_EHANDLER);         // Version | Flags
+        concat.addU8(1);                         // Version
         concat.addU8((uint8_t) f.sizeProlog);    // Size of prolog
         concat.addU8((uint8_t) f.unwind.size()); // Count of unwind codes
         concat.addU8(0);                         // Frame register | offset
@@ -528,7 +528,7 @@ bool BackendX64::emitPData(const BuildParameters& buildParameters)
     auto& pp              = perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    alignConcat(concat, 4);
+    alignConcat(concat, 16);
     *pp.patchPDOffset = concat.totalCount();
 
     uint32_t offset = 0;
@@ -537,25 +537,24 @@ bool BackendX64::emitPData(const BuildParameters& buildParameters)
         SWAG_ASSERT(f.symbolIndex < pp.allSymbols.size());
         SWAG_ASSERT(f.endAddress > f.startAddress);
 
-        concat.ensureSpace(12);
-
         CoffRelocation reloc;
         reloc.type = IMAGE_REL_AMD64_ADDR32NB;
 
         reloc.virtualAddress = offset;
         reloc.symbolIndex    = f.symbolIndex;
         pp.relocTablePDSection.table.push_back(reloc);
-        concat.addU32_safe(0);
+        concat.addU32(0);
 
         reloc.virtualAddress = offset + 4;
         reloc.symbolIndex    = f.symbolIndex;
         pp.relocTablePDSection.table.push_back(reloc);
-        concat.addU32_safe(f.endAddress - f.startAddress);
+        concat.addU32(f.endAddress - f.startAddress);
 
         reloc.virtualAddress = offset + 8;
         reloc.symbolIndex    = pp.symXDIndex;
         pp.relocTablePDSection.table.push_back(reloc);
-        concat.addU32_safe(f.xdataOffset);
+        concat.addU32(f.xdataOffset);
+        SWAG_ASSERT(f.xdataOffset < *pp.patchXDCount);
 
         offset += 12;
     }

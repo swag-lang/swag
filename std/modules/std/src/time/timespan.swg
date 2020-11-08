@@ -10,7 +10,6 @@ impl TimeSpan
     //#[swag.printbc]
     func from(dateTime: DateTime)->TimeSpan
     {
-        //@error("toto",#location)
         result := retval
         using result, dateTime
         ticks = dateToTicks(year, month, day)

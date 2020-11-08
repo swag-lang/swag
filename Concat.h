@@ -64,6 +64,27 @@ struct Concat
         return totalCountBytes + (int) (currentSP - lastBucket->datas);
     }
 
+    uint8_t* getPtr(int seek)
+    {
+        SWAG_ASSERT(firstBucket);
+        auto ptr = firstBucket;
+        while (true)
+        {
+            if (ptr == lastBucket)
+            {
+                SWAG_ASSERT(seek < (int)(currentSP - lastBucket->datas));
+                return lastBucket->datas + seek;
+            }
+
+            if (seek < ptr->countBytes)
+                return ptr->datas + seek;            
+            seek -= ptr->countBytes;
+            ptr = ptr->nextBucket;
+        }
+
+        return nullptr;
+    }
+
     uint32_t bucketCount(ConcatBucket* b)
     {
         if (b != lastBucket)
