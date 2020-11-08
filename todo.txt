@@ -12,10 +12,6 @@ ca serait cool que les methods, en reflections, aient une value qui peut être ca
 -------------------------------------
 
 
-
-
--------------------------------------
-retval & inline
 -------------------------------------
 retval & var affectation (pass retval)
 -------------------------------------

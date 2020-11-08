@@ -641,7 +641,8 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     auto node    = context->node;
     auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
 
-    SWAG_VERIFY(fctDecl, context->report({node, node->token, "'retval' can only be used inside a function"}));
+    SWAG_VERIFY(fctDecl, context->report({node, node->token, "'retval' can only be used in a function body"}));
+    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, node->token, "'retval' can only be used in a function body"}));
 
     auto fct     = CastAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
