@@ -1,7 +1,7 @@
 ﻿#import "std"
 using std.time
 
-#[swag.printbc]
+//#[swag.printbc]
 func toto()->String
 {
     var res: retval

@@ -36,7 +36,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     SWAG_VERIFY(typeInfo->kind != TypeInfoKind::Generic, internalError(context, "emitIdentifier, type is generic"));
 
     // If this is a retval, then just copy the return pointer register to a computing register
-    if (resolved->typeInfo->flags & TYPEINFO_RETVAL)
+    if (resolved->flags & OVERLOAD_RETVAL)
     {
         auto r0 = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);

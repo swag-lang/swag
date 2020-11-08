@@ -33,6 +33,7 @@ static const uint32_t OVERLOAD_VAR_INLINE         = 0x00000200;
 static const uint32_t OVERLOAD_PUBLIC             = 0x00000400;
 static const uint32_t OVERLOAD_VAR_BSS            = 0x00000800;
 static const uint32_t OVERLOAD_IMPL               = 0x00001000;
+static const uint32_t OVERLOAD_RETVAL             = 0x00002000;
 
 struct SymbolOverload
 {

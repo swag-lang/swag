@@ -625,7 +625,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_ASSERT(node->ownerFct);
 
         // Do not allocate space on the stack for a 'retval' variable, because it's not really a variable
-        if (!(node->typeInfo->flags & TYPEINFO_RETVAL))
+        if (node->type && node->type->kind == AstNodeKind::TypeExpression)
+        {
+            auto typeExpr = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+            if (typeExpr->typeFlags & TYPEFLAG_RETVAL)
+                symbolFlags |= OVERLOAD_RETVAL;
+        }
+
+        if (!(symbolFlags & OVERLOAD_RETVAL))
         {
             storageOffset = node->ownerScope->startStackSize;
             node->ownerScope->startStackSize += typeInfo->sizeOf;

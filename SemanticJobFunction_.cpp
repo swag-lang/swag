@@ -645,8 +645,7 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, node->token, "'retval' cannot be used in a function that returns nothing"}));
     SWAG_VERIFY(typeFct->returnType->kind == TypeInfoKind::Struct, context->report({node, node->token, "'retval' can only be used in a function that returns a struct"}));
-    node->typeInfo = typeFct->returnType->clone();
-    node->typeInfo->flags |= TYPEINFO_RETVAL;
+    node->typeInfo = typeFct->returnType;
     return true;
 }
 
@@ -725,16 +724,10 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         return context->report({child, format("returning a value of type '%s', but the function does not declare a return type", concreteType->name.c_str())});
 
     // If returning retval, then returning nothing, as we will change the return parameter value in place
-    if (child->typeInfo->flags & TYPEINFO_RETVAL)
-    {
+    if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_RETVAL)
         node->typeInfo = child->typeInfo;
-        if (!child->resolvedSymbolOverload || !(child->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
-            return context->report({child, "cannot resolve 'retval' variable"});
-    }
     else
-    {
         SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, CASTFLAG_UNCONST));
-    }
 
     // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
     if (returnType && returnType->kind == TypeInfoKind::Struct)

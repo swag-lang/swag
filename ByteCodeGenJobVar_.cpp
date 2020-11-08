@@ -11,7 +11,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     auto resolved = node->resolvedSymbolOverload;
 
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
-    bool retVal   = resolved->typeInfo->flags & TYPEINFO_RETVAL;
+    bool retVal   = resolved->flags & OVERLOAD_RETVAL;
 
     // Debug
     context->bc->localVars.push_back(context->node);
