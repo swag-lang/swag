@@ -3,7 +3,7 @@ struct ST
     x: u32 = 10
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 func toto()->ST
 {
     var res: retval
