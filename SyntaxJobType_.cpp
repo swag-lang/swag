@@ -211,6 +211,19 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         return doTypeExpressionLambda(parent, result);
     }
 
+    // retval
+    if (token.id == TokenId::KwdRetVal)
+    {
+        auto node = Ast::newTypeExpression(sourceFile, parent, this);
+        if (result)
+            *result = node;
+        node->semanticFct = SemanticJob::resolveRetVal;
+        node->flags |= AST_NO_BYTECODE_CHILDS;
+        node->typeFlags |= TYPEFLAG_RETVAL;
+        SWAG_CHECK(eatToken());
+        return true;
+    }
+
     // Const keyword
     bool isConst = false;
     if (token.id == TokenId::KwdConst)

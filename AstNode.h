@@ -630,6 +630,7 @@ const uint16_t TYPEFLAG_ISTYPEOF   = 0x0010;
 const uint16_t TYPEFLAG_ISCODE     = 0x0020;
 const uint16_t TYPEFLAG_FORCECONST = 0x0040;
 const uint16_t TYPEFLAG_ISSELF     = 0x0080;
+const uint16_t TYPEFLAG_RETVAL     = 0x0100;
 
 struct AstTypeExpression : public AstNode
 {

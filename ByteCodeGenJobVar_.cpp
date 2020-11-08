@@ -10,11 +10,16 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     auto node     = static_cast<AstVarDecl*>(context->node);
     auto resolved = node->resolvedSymbolOverload;
 
-    // If this is a retval, then do nothing
-    if (resolved->typeInfo->flags & TYPEINFO_RETVAL)
-        return true;
-
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
+
+    // If this is a retval, then do nothing
+    bool retVal = false;
+    if (resolved->typeInfo->flags & TYPEINFO_RETVAL)
+    {
+        auto typePtr = CastTypeInfo<TypeInfoPointer>(resolved->typeInfo, TypeInfoKind::Pointer);
+        typeInfo     = typePtr->finalType;
+        retVal       = true;
+    }
 
     // Debug
     context->bc->localVars.push_back(context->node);
@@ -41,7 +46,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                     if (node->assignment && node->assignment->typeInfo == typeStruct)
                         node->assignment->flags |= AST_NO_LEFT_DROP;
                     else
-                        emitStructInit(context, typeStruct, UINT32_MAX);
+                        emitStructInit(context, typeStruct, UINT32_MAX, retVal);
                 }
 
                 emitStructParameters(context, UINT32_MAX);
@@ -110,7 +115,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                     auto seekJump = context->bc->numInstructions;
 
                     if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
-                        emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct), r0[1]);
+                        emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct), r0[1], false);
                     emitStructParameters(context, r0[1]);
 
                     emitInstruction(context, ByteCodeOp::DecrementRA32, r0[0]);

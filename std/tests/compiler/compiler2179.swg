@@ -6,7 +6,7 @@ struct A
 //#[swag.printbc]
 func toto()->A
 {
-    result := retval
+    var result: retval
     result.x = 10
     return result
 }

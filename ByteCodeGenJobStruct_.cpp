@@ -629,7 +629,7 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
     return true;
 }
 
-bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, uint32_t regOffset)
+bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)
 {
     auto node     = context->node;
     auto resolved = node->resolvedSymbolOverload;
@@ -641,16 +641,35 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     // Just clear the content of the structure
     if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
-        auto inst   = emitInstruction(context, ByteCodeOp::SetZeroStackX);
-        inst->a.u32 = resolved->storageOffset;
-        inst->b.u32 = typeInfoStruct->sizeOf;
+        if (retVal)
+        {
+            RegisterList r0 = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
+            auto inst   = emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r0);
+            inst->b.u32 = typeInfoStruct->sizeOf;
+            freeRegisterRC(context, r0);
+        }
+        else
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::SetZeroStackX);
+            inst->a.u32 = resolved->storageOffset;
+            inst->b.u32 = typeInfoStruct->sizeOf;
+        }
     }
     else
     {
         // Push self
-        RegisterList r0   = reserveRegisterRC(context);
-        auto         inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
-        inst->b.s32       = resolved->storageOffset;
+        RegisterList r0 = reserveRegisterRC(context);
+
+        if (retVal)
+        {
+            emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
+        }
+        else
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
+            inst->b.s32 = resolved->storageOffset;
+        }
 
         // Offset variable reference
         if (regOffset != UINT32_MAX)

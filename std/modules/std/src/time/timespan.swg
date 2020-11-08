@@ -10,7 +10,7 @@ impl TimeSpan
     // Creates a TimeSpan with the given DateTime
     func from(dateTime: DateTime)->TimeSpan
     {
-        result := retval
+        var result: retval = ?
         using result, dateTime
         ticks = dateToTicks(year, month, day)
         ticks += timeToTicks(hour, minute, second, millisecond)
@@ -20,7 +20,7 @@ impl TimeSpan
     // Converts a TimeSpan to a DateTime
     func toDateTime(using self)->DateTime
     {
-        dateTime := retval
+        var dateTime: retval = ?
         using dateTime
         (year, month, day) = ticksToDate(ticks)
         (hour, minute, second, millisecond) = ticksToTime(ticks)

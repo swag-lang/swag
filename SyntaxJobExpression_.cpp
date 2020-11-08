@@ -715,17 +715,6 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
         return true;
     }
 
-    // var x = retval
-    if (token.id == TokenId::KwdRetVal)
-    {
-        auto node         = Ast::newNode<AstNode>(this, AstNodeKind::RetVal, sourceFile, parent);
-        node->semanticFct = SemanticJob::resolveRetVal;
-        if (result)
-            *result = node;
-        SWAG_CHECK(eatToken());
-        return true;
-    }
-
     return doMoveExpression(parent, result);
 }
 
