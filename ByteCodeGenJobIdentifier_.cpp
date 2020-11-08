@@ -39,13 +39,18 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_RETVAL)
     {
         // In case of inlining, the inline block contains the register to store the return value
-        auto r0 = reserveRegisterRC(context);
         if (node->ownerInline)
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->ownerInline->resultRegisterRC);
+        {
+            identifier->resultRegisterRC = node->ownerInline->resultRegisterRC;
+            identifier->resultRegisterRC.canFree = false;
+        }
         else
+        {
+            auto r0 = reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
+            identifier->resultRegisterRC = r0;
+        }
 
-        identifier->resultRegisterRC = r0;
         identifier->identifierRef->resultRegisterRC = identifier->resultRegisterRC;
         return true;
     }
