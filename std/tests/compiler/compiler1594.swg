@@ -6,15 +6,15 @@ var G = 0
 
 impl B
 {
-    func opIndexAffect(using self, value: T, index: u32)
+    func opIndexAffect(using self, index: u32, value: T)
     {
         G = 1
     }
 
-    func(op: string) opIndexAssign(using self, value: T, index: u32)
+    func(op: string) opIndexAssign(using self, index: u32, value: T)
     {
         G = 2
-    }    
+    }
 }
 
 #test
@@ -23,5 +23,5 @@ impl B
     arr[0] = 0
     @assert(G == 1)
     arr[0] += 0
-    @assert(G == 2)    
+    @assert(G == 2)
 }

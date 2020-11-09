@@ -58,7 +58,7 @@ public impl BitArray
     }
 
     // Sets the value of the bit at a specific position
-    func opIndexAffect(using self, value: bool, index: u32)
+    func opIndexAffect(using self, index: u32, value: bool)
     {
         self.set(index, value)
     }

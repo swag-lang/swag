@@ -59,7 +59,7 @@ impl Array
         return buffer[index]
     }
 
-    func opIndexAffect(using self, value: T, index: u32)
+    func opIndexAffect(using self, index: u32, value: T)
     {
         debug.assert(index < count, "index out of range")
         buffer[index] = value

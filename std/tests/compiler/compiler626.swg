@@ -6,7 +6,7 @@ struct Point
 
 impl Point
 {
-	func(op: string) opIndexAssign(self, v: s32, i: u32)
+	func(op: string) opIndexAssign(self, i: u32, v: s32)
 	{
 		#if op == "+="
 		{
@@ -21,7 +21,7 @@ impl Point
 				self.x -= v;
 			else
 				self.y -= v;
-		}		
+		}
 	}
 }
 

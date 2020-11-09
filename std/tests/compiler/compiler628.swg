@@ -10,7 +10,7 @@ struct Point
 #unittest error
 impl Point
 {
-	func(op: string) opIndexAssign(self, v: s32, i: f32)
+	func(op: string) opIndexAssign(self, i: f32, v: s32)
 	{
 		#if op == "="
 		{

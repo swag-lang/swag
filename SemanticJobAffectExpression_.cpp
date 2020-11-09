@@ -81,7 +81,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         // Add self and value in list of parameters
         if (!(node->doneFlags & AST_DONE_FLAT_PARAMS))
         {
-            arrayNode->structFlatParams.push_front(right);
+            arrayNode->structFlatParams.push_back(right);
             arrayNode->structFlatParams.push_front(left);
             node->doneFlags |= AST_DONE_FLAT_PARAMS;
         }
