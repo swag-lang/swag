@@ -37,6 +37,33 @@ impl TimeSpan
             remove(cast(u32) -hours, MillisPerHour)
     }
 
+    // Add or remove the given amount of minutes to the TimeSpan
+    func addMinutes(using self, minutes: s32)
+    {
+        if minutes > 0
+            add(cast(u32) minutes, MillisPerMinute)
+        else
+            remove(cast(u32) -minutes, MillisPerMinute)
+    }
+
+    // Add or remove the given amount of minutes to the TimeSpan
+    func addSeconds(using self, seconds: s32)
+    {
+        if seconds > 0
+            add(cast(u32) seconds, MillisPerSecond)
+        else
+            remove(cast(u32) -seconds, MillisPerSecond)
+    }
+
+    // Add or remove the given amount of minutes to the TimeSpan
+    func addMilliSeconds(using self, milliSeconds: s32)
+    {
+        if milliSeconds > 0
+            add(cast(u32) milliSeconds, 1)
+        else
+            remove(cast(u32) -milliSeconds, 1)
+    }
+
     private func add(using self, value: u32, scale: u64)
     {
         millis := value * scale

@@ -10,4 +10,7 @@ using std.time
     @assert(sp.toDateTime().day == 9)
     sp.addHours(-24)
     @assert(sp.toDateTime().day == 8)
+    sp.addMinutes(65)
+    @assert(sp.toDateTime().hour == 2)
+    @assert(sp.toDateTime().minute == 5)
 }
