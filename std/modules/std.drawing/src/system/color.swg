@@ -73,11 +73,12 @@ public impl Color
         // Retreive all components as floating point values between 0 and 1.
         func toFloat(self) -> {a: f32, r: f32, g: f32, b: f32}
         {
-            _a := self.a / 255.0'f32
-            _r := self.r / 255.0'f32
-            _g := self.g / 255.0'f32
-            _b := self.b / 255.0'f32
-            return @{_a, _r, _g, _b}
+            var result: retval = ?
+            result.a = self.a / 255.0'f32
+            result.r = self.r / 255.0'f32
+            result.g = self.g / 255.0'f32
+            result.b = self.b / 255.0'f32
+            return result
         }
     }
 }
