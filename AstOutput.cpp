@@ -119,6 +119,10 @@ namespace Ast
 
         switch (node->kind)
         {
+        case AstNodeKind::ExplicitNoInit:
+            concat.addString("?");
+            break;
+
         case AstNodeKind::Index:
             concat.addString("@index");
             break;
@@ -757,6 +761,12 @@ namespace Ast
         case AstNodeKind::TypeExpression:
         {
             AstTypeExpression* typeNode = static_cast<AstTypeExpression*>(node);
+            if (typeNode->typeFlags & TYPEFLAG_RETVAL)
+            {
+                CONCAT_FIXED_STR(concat, "retval");
+                break;
+            }
+
             if (typeNode->typeFlags & TYPEFLAG_ISCONST)
                 CONCAT_FIXED_STR(concat, "const ");
             if (typeNode->typeFlags & TYPEFLAG_ISSLICE)
