@@ -12,10 +12,6 @@ ca serait cool que les methods, en reflections, aient une value qui peut être ca
 -------------------------------------
 
 
--------------------------------------
-retval & var affectation (pass retval)
--------------------------------------
-
 
 -------------------------------------
 shift left/right doit pas etre supérieur a 255 (a tester en compiler si constant, et safety en runtime)

@@ -11,8 +11,8 @@ private
     const DaysPer4Years   = (DaysPerYear * 4) + 1
     const DaysPer100Years = (DaysPer4Years * 25) - 1
     const DaysPer400Years = (DaysPer100Years * 4) + 1
-    const DaysToMonth365 = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
-    const DaysToMonth366 = @[0'u16, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366]
+    const DaysToMonth365  = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
+    const DaysToMonth366  = @[0'u16, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366]
     const MaxMilliSeconds = swag.MaxU64 / TicksPerMilliSecond
 }
 
@@ -77,7 +77,6 @@ func dateToTicks(year, month, day: u16)->Ticks
 // Convert a 64 bits value to a date
 func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
 {
-    var result: retval = ?
     // n = number of days since 1/1/0001
     n := ticks / TicksPerDay
     // y400 = number of whole 400-year periods since 1/1/0001
@@ -111,6 +110,7 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     // m = 1-based month number
     while (n >= days[m]) m += 1
 
+    var result: retval = ?
     result.year = acast ((y400 * 400) + (y100 * 100) + (y4 * 4) + (y1 + 1))
     result.month = acast m
     result.day = acast ((n - days[m - 1]) + 1)
