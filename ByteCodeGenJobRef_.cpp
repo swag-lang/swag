@@ -404,10 +404,28 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
-
-    int  sizeOf  = 1;
+    auto job     = context->job;
+    auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
     auto typeVar = node->array->typeInfo;
+
+    // Slicing of a structure, with a special function
+    if (typeVar->kind == TypeInfoKind::Struct)
+    {
+        if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
+        {
+            if (!job->allParamsTmp)
+                job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
+            job->allParamsTmp->childs = node->structFlatParams;
+            SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
+            if (context->result == ContextResult::Pending)
+                return true;
+            return true;
+        }
+
+        return internalError(context, "emitMakeSlice, type not supported");
+    }
+
+    int sizeOf = 1;
     if (typeVar->kind == TypeInfoKind::Array)
         sizeOf = ((TypeInfoArray*) typeVar)->finalType->sizeOf;
     else if (typeVar->isNative(NativeTypeKind::String))

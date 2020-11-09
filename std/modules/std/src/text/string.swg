@@ -75,6 +75,12 @@ public impl String
             #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
     }
 
+    func opSlice(using self, lower, upper: u32)->string
+    {
+        debug.assert(lower <= upper && lower < length && upper < length)
+        return cast(string) @mkslice(buffer + lower, (upper + 1) - lower)
+    }
+
     func opAffect(using self, value: string)
     {
         if @dataof(value) == null

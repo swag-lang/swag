@@ -47,6 +47,12 @@ impl Array
         }
     }
 
+    func opSlice(using self, lower, upper: u32)->[..] T
+    {
+        debug.assert(lower <= upper && lower < count && upper < count)
+        return @mkslice(buffer + lower, (upper + 1) - lower)
+    }
+
     func opIndex(using self, index: u32)->const &T
     {
         debug.assert(index < count, "index out of range")

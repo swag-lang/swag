@@ -143,6 +143,36 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     {
         node->typeInfo = typeVar;
     }
+
+    // Slicing of a struct with a special function
+    else if (typeVar->kind == TypeInfoKind::Struct)
+    {
+        // Flatten all operator parameters : self, then all indices
+        node->structFlatParams.clear();
+        node->structFlatParams.push_back(node->lowerBound);
+        node->structFlatParams.push_back(node->upperBound);
+
+        // Self in first position
+        node->structFlatParams.push_front(node->array);
+
+        // Resolve call
+        auto typeInfo = node->array->typeInfo;
+        if (!hasUserOp(context, "opSlice", node->array))
+        {
+            if (node->array->name.empty())
+            {
+                Utf8 msg = format("cannot slice because special function 'opSlice' cannot be found in type '%s'", typeInfo->name.c_str());
+                return context->report({node->array, msg});
+            }
+            else
+            {
+                Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", node->array->name.c_str(), typeInfo->name.c_str());
+                return context->report({node->array, msg});
+            }
+        }
+
+        SWAG_CHECK(resolveUserOp(context, "opSlice", nullptr, nullptr, node->array, node->structFlatParams, false));
+    }
     else
     {
         return context->report({node->array, format("slicing operator cannot be applied on type '%s'", node->array->typeInfo->name.c_str())});
