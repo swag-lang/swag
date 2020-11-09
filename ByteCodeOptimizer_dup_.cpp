@@ -74,8 +74,8 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
     }
 }
 
-// If a CopyRBRA is followed by the same CopyRRtoRC, and between them there's no write to RC,
-// then the second CopyRBRA is useless
+// If a CopyRRtoRC is followed by the same CopyRRtoRC, and between them there's no write to RC,
+// then the second CopyRRtoRC is useless
 void ByteCodeOptimizer::optimizePassDupCopyRRRC(ByteCodeOptContext* context)
 {
     map<uint32_t, uint32_t> mapCopyRBRA;
