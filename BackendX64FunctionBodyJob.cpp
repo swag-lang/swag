@@ -23,6 +23,8 @@ JobResult BackendX64FunctionBodyJob::execute()
 
         if (one->node)
         {
+            if (one->node->attributeFlags & ATTRIBUTE_INLINE)
+                continue;
             node     = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }

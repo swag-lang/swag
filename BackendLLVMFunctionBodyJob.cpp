@@ -18,6 +18,8 @@ JobResult BackendLLVMFunctionBodyJob::execute()
 
         if (one->node)
         {
+            if (one->node->attributeFlags & ATTRIBUTE_INLINE)
+                continue;
             node     = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
