@@ -76,12 +76,12 @@ impl Array
         grow(countof)
         #if reflection.hasPostCopy(@typeof(T))
         {
-            loop countof
-                buffer[count + @index] = nodrop dataof[@index]
+            loop i: countof
+                buffer[i] = nodrop dataof[i]
         }
         #else
         {
-            memory.copy(buffer + count, dataof, @sizeof(T) * countof)
+            memory.copy(buffer, dataof, @sizeof(T) * countof)
         }
 
         count += countof
