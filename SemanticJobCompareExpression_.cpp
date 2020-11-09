@@ -328,8 +328,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         node->typeInfo = g_TypeMgr.typeInfoBool;
     TypeManager::promote(left, right);
 
-    left->typeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_ENUM);
-    right->typeInfo = TypeManager::concreteReferenceType(right->typeInfo, CONCRETE_ENUM);
+    left->typeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);
+    right->typeInfo = TypeManager::concreteReferenceType(right->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);
 
     // Must not make types compatible for a struct, as we can compare a struct with whatever other type in
     // a opEquals function

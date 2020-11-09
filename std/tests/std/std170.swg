@@ -5,12 +5,14 @@ using std.time
 {
     {
         var x: DateTime{2020, 11, 8}
-        y := x.dayOfWeek()
-        console.print("%\n", y)
+        @assert(x.dayOfWeek() == DayOfWeek.Sunday)
     }
     {
         var x: DateTime{2019, 7, 3}
-        y := x.dayOfWeek()
-        console.print("%\n", y)
+        @assert(x.dayOfWeek() == DayOfWeek.Wednesday)
+    }
+    {
+        var x: DateTime{1971, 9, 5}
+        @assert(x.dayOfWeek() == DayOfWeek.Sunday)
     }
 }
