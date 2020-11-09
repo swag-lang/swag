@@ -25,7 +25,7 @@ public impl DateTime
         var systemTime: SYSTEMTIME = ?
         GetLocalTime(&systemTime)
 
-        var result: DateTime = ?
+        var result: retval = ?
         result.fromSYSTEMTIME(systemTime)
         return result
     }
