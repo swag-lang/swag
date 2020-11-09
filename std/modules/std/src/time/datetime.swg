@@ -43,6 +43,7 @@ impl DateTime
     }
 
     // Returns the day of week of the current date
+    #[swag.property]
     func dayOfWeek(using self)->DayOfWeek
     {
         m := (month + 9) % 12
