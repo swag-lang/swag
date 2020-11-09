@@ -35,6 +35,7 @@ impl DateTime
     {
         if year == 0 || year > 9999 return false
         if month == 0 || month > 12 return false
+        if day == 0 || day > daysInMonth(year, month) return false
         if hour >= 24 return false
         if minute >= 60 return false
         if second >= 60 return false

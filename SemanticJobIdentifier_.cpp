@@ -1626,9 +1626,20 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     auto&    scopeHierarchyVars = job->cacheScopeHierarchyVars;
     AstNode* dependentVar       = nullptr;
 
+    auto symScope = symbol->ownerTable->scope;
     for (auto& dep : scopeHierarchyVars)
     {
-        if (dep.scope->getFullName() == symbol->ownerTable->scope->getFullName())
+        bool getIt = false;
+
+        // Exact smae scope
+        if (dep.scope->getFullName() == symScope->getFullName())
+            getIt = true;
+
+        // From the normal scope, use something in the private scope
+        else if (symScope->parentScope && dep.scope->getFullName() == symScope->parentScope->getFullName() && symScope->flags & SCOPE_ROOT_PRIVATE)
+            getIt = true;
+
+        if (getIt)
         {
             if (dependentVar)
             {

@@ -27,4 +27,30 @@ impl TimeSpan
         (hour, minute, second, millisecond) = ticksToTime(ticks)
         return dateTime
     }
+
+    // Add or remove the given amount of hours to the TimeSpan
+    func addHours(using self, hours: s32)
+    {
+        if hours > 0
+            add(cast(u32) hours, MillisPerHour)
+    }
+
+    private func add(using self, value: u32, scale: u64)
+    {
+        millis := value * scale
+        debug.assert(millis <= MaxMillis, "overflow")
+        addTicks(millis * TicksPerMilliSecond)
+    }
+
+    private func addTicks(using self, value: u64)
+    {
+        debug.assert(value <= (MaxTicks - ticks), "overflow")
+        ticks += value
+    }
+
+    private func removeTicks(using self, value: u64)
+    {
+        debug.assert(value <= ticks, "ticks overflow")
+        ticks -= value
+    }
 }
