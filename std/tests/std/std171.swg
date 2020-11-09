@@ -8,4 +8,6 @@ using std.time
     @assert(sp.toDateTime().hour == 1)
     sp.addHours(24)
     @assert(sp.toDateTime().day == 9)
+    sp.addHours(-24)
+    @assert(sp.toDateTime().day == 8)
 }

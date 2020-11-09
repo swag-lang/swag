@@ -33,6 +33,8 @@ impl TimeSpan
     {
         if hours > 0
             add(cast(u32) hours, MillisPerHour)
+        else
+            remove(cast(u32) -hours, MillisPerHour)
     }
 
     private func add(using self, value: u32, scale: u64)
@@ -40,6 +42,13 @@ impl TimeSpan
         millis := value * scale
         debug.assert(millis <= MaxMillis, "overflow")
         addTicks(millis * TicksPerMilliSecond)
+    }
+
+    private func remove(using self, value: u32, scale: u64)
+    {
+        millis := value * scale
+        debug.assert(millis <= MaxMillis, "overflow")
+        removeTicks(millis * TicksPerMilliSecond)
     }
 
     private func addTicks(using self, value: u64)
