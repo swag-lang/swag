@@ -5,7 +5,7 @@ using std.time
 #test
 {
     dt := DateTime.now()
-    ts := TimeSpan.from(dt)
+    ts := TimeSpan.fromDateTime(dt)
     dt1 := ts.toDateTime()
     /*console.print("ticks: %\n", ts)
     console.print("dt: %\n", dt)

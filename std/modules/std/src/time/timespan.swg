@@ -8,8 +8,13 @@ struct TimeSpan
 
 impl TimeSpan
 {
+    func opCmp(using self, other: Self)->s32
+    {
+        return ticks <=> other.ticks
+    }
+
     // Creates a TimeSpan with the given DateTime
-    func from(dateTime: DateTime)->TimeSpan
+    func fromDateTime(dateTime: DateTime)->TimeSpan
     {
         var result: retval = ?
         using result, dateTime
