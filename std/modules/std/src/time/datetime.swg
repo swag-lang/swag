@@ -1,18 +1,18 @@
-namespace std.time;
+public namespace std.time;
 
 // Represents an instant in time, typically expressed as a date and time of day
-public struct DateTime
+struct DateTime
 {
-    day:			u16
-    month:			u16
     year:			u16
+    month:			u16
+    day:			u16
     hour:			u16
     minute:			u16
     second:			u16
     millisecond:	u16
 }
 
-public impl DateTime
+impl DateTime
 {
     func opEquals(self, other: Self)->bool
     {
