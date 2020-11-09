@@ -125,6 +125,7 @@ struct SemanticJob : public Job
     static bool matchIdentifierParameters(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t num, bool exact = true);
+    static bool checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncDecl* node, TypeInfo* wanted);
     static bool checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node);
     static bool checkFuncPrototypeProperty(SemanticContext* context, AstFuncDecl* node);
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
