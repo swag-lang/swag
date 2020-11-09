@@ -14,7 +14,7 @@ impl TimeSpan
     }
 
     // Creates a TimeSpan with the given DateTime
-    func fromDateTime(dateTime: DateTime)->TimeSpan
+    func from(dateTime: DateTime)->TimeSpan
     {
         var result: retval = ?
         using result, dateTime
