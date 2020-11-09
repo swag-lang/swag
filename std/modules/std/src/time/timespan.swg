@@ -1,5 +1,6 @@
 public namespace std.time;
 
+// Represents an interval of time, stored as a 64 bits integer
 struct TimeSpan
 {
     ticks: Ticks

@@ -1,5 +1,16 @@
 public namespace std.time;
 
+enum DayOfWeek
+{
+    Sunday = 0
+    Monday = 1
+    Tuesday = 2
+    Wednesday = 3
+    Thursday = 4
+    Friday = 5
+    Saturday = 6
+}
+
 // Represents an instant in time, typically expressed as a date and time of day
 struct DateTime
 {
@@ -29,5 +40,15 @@ impl DateTime
         if second >= 60 return false
         if millisecond >= 1000 return false
         return true
+    }
+
+    // Returns the day of week of the current date
+    func dayOfWeek(using self)->DayOfWeek
+    {
+        m := (month + 9) % 12
+        y := year - (m / 10)
+        dn := ((365 * y) + (y / 4) + (y / 400) + (((m * 306) + 5) / 10) + (day - 1)) - (y / 100)
+        dn += 3
+        return cast(DayOfWeek) (dn % 7)
     }
 }
