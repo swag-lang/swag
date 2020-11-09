@@ -28,6 +28,45 @@ impl TimeSpan
         return dateTime
     }
 
+    // Add or remove the given amount of years to the TimeSpan
+    func addYears(using self, years: s32)
+    {
+        debug.assert(-10000 <= years <= 10000, "overflow")
+        addMonths(years * 12)
+    }
+
+    // Add or remove the given amount of months to the TimeSpan
+    func addMonths(using self, months: s32)
+    {
+        debug.assert(-120000 <= months <= 120000, "overflow")
+        (y, m, d) := ticksToDate(ticks)
+        i := cast(s32) (m - 1) + months
+        if i >= 0
+        {
+            m = cast(u16) ((i % 12) + 1)
+            y += cast(u16) (i / 12)
+        }
+        else
+        {
+            m = cast(u16) (12 + ((i + 1) % 12))
+            y += cast(u16) ((i - 11) / 12)
+        }
+
+        debug.assert(1 <= y <= 9999, "overflow")
+        days := daysInMonth(y, m)
+        if (d > days) d = days
+        ticks = dateToTicks(y, m, d) + (ticks % TicksPerDay)
+    }
+
+    // Add or remove the given amount of days to the TimeSpan
+    func addDays(using self, days: s32)
+    {
+        if days > 0
+            add(cast(u32) days, MillisPerDay)
+        else
+            remove(cast(u32) -days, MillisPerDay)
+    }
+
     // Add or remove the given amount of hours to the TimeSpan
     func addHours(using self, hours: s32)
     {
@@ -68,25 +107,17 @@ impl TimeSpan
     {
         millis := value * scale
         debug.assert(millis <= MaxMillis, "overflow")
-        addTicks(millis * TicksPerMilliSecond)
+        millis *= TicksPerMilliSecond
+        debug.assert(millis <= (MaxTicks - ticks), "overflow")
+        ticks += millis
     }
 
     private func remove(using self, value: u32, scale: u64)
     {
         millis := value * scale
         debug.assert(millis <= MaxMillis, "overflow")
-        removeTicks(millis * TicksPerMilliSecond)
-    }
-
-    private func addTicks(using self, value: u64)
-    {
-        debug.assert(value <= (MaxTicks - ticks), "overflow")
-        ticks += value
-    }
-
-    private func removeTicks(using self, value: u64)
-    {
-        debug.assert(value <= ticks, "ticks overflow")
-        ticks -= value
+        millis *= TicksPerMilliSecond
+        debug.assert(millis <= ticks, "ticks overflow")
+        ticks -= millis
     }
 }
