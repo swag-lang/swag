@@ -4,27 +4,31 @@ struct CStr
     length:     u32
 }
 
-#[swag.macro]
-func cstr(x: string)->string
+var G: s64
+
+impl CStr
 {
-    countof := @countof(x)
-    dataof := @dataof(x)
-
-    var tmp: CStr
-    //tmp.allocator = @getcontext().allocator
-    tmp.length = countof
-    tmp.buffer = cast(*u8) @alloc(countof + 1)
-    @memcpy(tmp.buffer, dataof, countof)
-    tmp.buffer[countof] = 0
-
-    //defer @free(tmp.buffer)
-    //defer @print("release\n")
-    return cast(string) @mkslice(tmp.buffer, tmp.length)
+    func opDrop(using self)
+    {
+        G += 1
+    }
 }
 
-//#[swag.printbc]
-#test
+#[swag.inline]
+func cstr(x: string)->CStr
+{
+    var tmp: CStr
+    return tmp
+}
+
+//#[swag.printbc, swag.nooptim]
+func toto()
 {
     v := cstr("toto")
-    //@print(v)
+}
+
+#test
+{
+    toto()
+    @assert(G == 1)
 }

@@ -610,7 +610,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             st.overload      = node->resolvedSymbolOverload;
             st.typeStruct    = CastTypeInfo<TypeInfoStruct>(typeInfoFunc->returnType, TypeInfoKind::Struct);
             st.storageOffset = node->fctCallStorageOffset;
-            node->ownerScope->symTable.structVarsToDrop.push_back(st);
+            node->ownerScope->symTable.addVarToDrop(st);
         }
     }
 

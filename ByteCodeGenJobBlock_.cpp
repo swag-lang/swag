@@ -30,7 +30,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
             st.overload      = nullptr;
             st.typeStruct    = CastTypeInfo<TypeInfoStruct>(returnType, TypeInfoKind::Struct);
             st.storageOffset = node->fctCallStorageOffset;
-            node->ownerScope->symTable.structVarsToDrop.push_back(st);
+            node->ownerScope->symTable.addVarToDrop(st);
         }
     }
 
