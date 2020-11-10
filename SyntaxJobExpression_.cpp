@@ -332,7 +332,7 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
     return doPrimaryExpression(parent, result);
 }
 
-bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doFactorExpressionRec(AstNode* parent, AstNode** result)
 {
     AstNode* leftNode;
     SWAG_CHECK(doUnaryExpression(nullptr, &leftNode));
@@ -373,7 +373,7 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doFactorExpression(binaryNode));
+        SWAG_CHECK(doFactorExpressionRec(binaryNode));
         leftNode = binaryNode;
         isBinary = true;
     }
@@ -383,6 +383,23 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
     if (result)
         *result = leftNode;
 
+    return true;
+}
+
+AstNode* SyntaxJob::doOperatorPrecedence(AstNode* factor)
+{
+    if (factor->kind != AstNodeKind::FactorOp)
+        return factor;
+    return factor;
+}
+
+bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
+{
+    AstNode* factor;
+    SWAG_CHECK(doFactorExpressionRec(parent, &factor));
+    factor = doOperatorPrecedence(factor);
+    if (result)
+        *result = factor;
     return true;
 }
 
