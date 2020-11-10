@@ -737,16 +737,13 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::Defer, sourceFile, parent);
     if (result)
         *result = node;
+    node->semanticFct = SemanticJob::resolveDefer;
 
     SWAG_CHECK(eatToken());
     if (token.id == TokenId::SymLeftCurly)
         SWAG_CHECK(doScopedCurlyStatement(node, nullptr));
     else
         SWAG_CHECK(doAffectExpression(node, nullptr));
-
-    auto expr = node->childs.front();
-    node->ownerScope->deferredNodes.push_back(expr);
-    expr->flags |= AST_NO_BYTECODE;
 
     return true;
 }

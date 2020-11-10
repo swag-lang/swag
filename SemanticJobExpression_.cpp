@@ -201,3 +201,15 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     node->byteCodeFct = ByteCodeGenJob::emitNullConditionalOp;
     return true;
 }
+
+bool SemanticJob::resolveDefer(SemanticContext* context)
+{
+    auto node = context->node;
+    SWAG_ASSERT(node->childs.size() == 1);
+
+    auto expr = node->childs.front();
+    node->ownerScope->deferredNodes.push_back(expr);
+    expr->flags |= AST_NO_BYTECODE;
+
+    return true;
+}
