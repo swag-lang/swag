@@ -40,6 +40,8 @@ struct AlternativeScope
 static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
 static const uint32_t SCOPE_PRIVATE          = 0x00000002;
 static const uint32_t SCOPE_ROOT_PRIVATE     = 0x00000004;
+static const uint32_t SCOPE_DONE_DEFER       = 0x00000008;
+static const uint32_t SCOPE_DONE_DROP        = 0x00000010;
 
 struct ScopePublicSet
 {
@@ -111,8 +113,6 @@ struct Scope
     VectorNative<Scope*>     childScopes;
     VectorNative<AstNode*>   deferredNodes;
     map<SourceFile*, Scope*> privateScopes;
-    set<AstNode*>            doneLeaveScopeDefer;
-    set<AstNode*>            doneLeaveScopeDrop;
     RegisterList             registersToRelease;
     DependentJobs            dependentJobs;
     shared_mutex             mutex;
