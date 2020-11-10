@@ -1455,6 +1455,16 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
                 castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
         }
     }
+    else if (castFlags & CASTFLAG_COERCE_FULL)
+    {
+        if (toType->sizeOf >= fromType->sizeOf)
+        {
+            if ((toType->flags & TYPEINFO_INTEGER) && ((toType->flags & TYPEINFO_INTEGER) == (fromType->flags & TYPEINFO_INTEGER)))
+                castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
+            else if ((toType->flags & TYPEINFO_FLOAT) && (toType->flags & TYPEINFO_FLOAT) == (fromType->flags & TYPEINFO_FLOAT))
+                castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
+        }
+    }
 
     switch (toType->nativeType)
     {
