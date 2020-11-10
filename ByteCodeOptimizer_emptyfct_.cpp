@@ -49,7 +49,7 @@ void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
     }
 
     // Eliminate local calls to empty functions
-    /*for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
+    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         if (ip->op == ByteCodeOp::LocalCall)
         {
@@ -80,5 +80,5 @@ void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
                 backIp--;
             }
         }
-    }*/
+    }
 }

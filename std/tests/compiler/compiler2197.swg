@@ -9,13 +9,15 @@ impl CStr
     func opDrop(using self)
     {
         //@print("XXXXXdropXXXXX\n")
+        @assert(buffer != null)
+        @free(buffer)
     }
 }
 
 //#[swag.macro]
 func cstr(x: string)->CStr
 {
-    var tmp: CStr
+    var tmp: retval = ?
     countof := @countof(x)
     dataof := @dataof(x)
     tmp.length = countof
@@ -29,5 +31,5 @@ func cstr(x: string)->CStr
 #test
 {
     v := cstr("toto")
-    //@print(cast(string) @mkslice(v.buffer, v.length))
+    @assert(cast(string) @mkslice(v.buffer, v.length) == "toto")
 }

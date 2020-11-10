@@ -5,6 +5,7 @@ struct CStr
 
 impl CStr
 {
+    //#[swag.printbc]
     func opDrop(self)
     {
     }
@@ -22,7 +23,7 @@ func cstr(x: string)->CStr
     return tmp
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 //#[swag.nooptim]
 #test
 {
