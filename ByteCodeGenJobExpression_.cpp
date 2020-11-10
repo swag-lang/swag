@@ -141,7 +141,10 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     auto job      = context->job;
     auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
-    reserveLinearRegisterRC2(context, node->resultRegisterRC);
+    if (node->forTuple)
+        node->resultRegisterRC = reserveRegisterRC(context);
+    else
+        reserveLinearRegisterRC2(context, node->resultRegisterRC);
 
     if (!(node->flags & AST_CONST_EXPR))
     {
@@ -164,7 +167,8 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
         // Reference to the stack, and store the number of element in a register
         emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u32 = listNode->computedValue.reg.offset;
-        emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1])->b.u32   = (uint32_t) listNode->childs.size();
+        if (!node->forTuple)
+            emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1])->b.u32 = (uint32_t) listNode->childs.size();
     }
     else
     {
@@ -179,7 +183,8 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         }
 
         emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->computedValue.reg.offset;
-        emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1])->b.u32         = (uint32_t) typeList->subTypes.size();
+        if (!node->forTuple)
+            emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1])->b.u32 = (uint32_t) typeList->subTypes.size();
     }
 
     return true;
