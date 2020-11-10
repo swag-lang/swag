@@ -398,42 +398,75 @@ static int getPrecedence(TokenId id)
     {
     case TokenId::SymTilde:
         return 0;
+    case TokenId::SymGreaterGreater:
+    case TokenId::SymLowerLower:
+        return 1;
     case TokenId::SymAsterisk:
     case TokenId::SymSlash:
     case TokenId::SymPercent:
-        return 1;
+        return 2;
     case TokenId::SymPlus:
     case TokenId::SymMinus:
-        return 2;
-    case TokenId::SymGreaterGreater:
-    case TokenId::SymLowerLower:
         return 3;
     case TokenId::SymAmpersand:
-        return 8;
+        return 4;
     case TokenId::SymCircumflex:
-        return 9;
+        return 5;
     case TokenId::SymVertical:
-        return 10;
+        return 6;
     }
 
     SWAG_ASSERT(false);
     return -1;
 }
 
-AstNode* SyntaxJob::doOperatorPrecedence(AstNode* factor)
+static bool isAssociative(TokenId id)
 {
+    switch (id)
+    {
+    case TokenId::SymPlus:
+    case TokenId::SymAsterisk:
+    case TokenId::SymVertical:
+    case TokenId::SymCircumflex:
+    case TokenId::SymTilde:
+        return true;
+    }
+
+    return false;
+}
+
+bool SyntaxJob::doOperatorPrecedence(AstNode** result)
+{
+    int  x      = 1 << 2 - 1;
+    auto factor = *result;
     if (factor->kind != AstNodeKind::FactorOp)
-        return factor;
+        return true;
 
-    auto left  = factor->childs[0];
+    auto left = factor->childs[0];
+    SWAG_CHECK(doOperatorPrecedence(&left));
     auto right = factor->childs[1];
+    SWAG_CHECK(doOperatorPrecedence(&right));
 
-    if (right->kind == AstNodeKind::FactorOp)
+    if (right->kind == AstNodeKind::FactorOp && !(right->flags & AST_IN_ATOMIC_EXPR))
     {
         auto myPrecedence    = getPrecedence(factor->token.id);
         auto rightPrecedence = getPrecedence(right->token.id);
 
-        if ((myPrecedence < rightPrecedence) && !(right->flags & AST_IN_ATOMIC_EXPR))
+        bool shuffle = false;
+        if (myPrecedence < rightPrecedence)
+            shuffle = true;
+
+        // If operatation is not associative, then we need to shuffle
+        //
+        // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
+        //
+        else if (!isAssociative(factor->token.id))
+        {
+            //if (myPrecedence == rightPrecedence)
+                shuffle = true;
+        }
+
+        if (shuffle)
         {
             //   *
             //  / \
@@ -460,14 +493,15 @@ AstNode* SyntaxJob::doOperatorPrecedence(AstNode* factor)
         }
     }
 
-    return factor;
+    *result = factor;
+    return true;
 }
 
 bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
 {
     AstNode* factor;
     SWAG_CHECK(doFactorExpressionRec(parent, &factor));
-    factor = doOperatorPrecedence(factor);
+    SWAG_CHECK(doOperatorPrecedence(&factor));
     if (result)
         *result = factor;
     return true;
