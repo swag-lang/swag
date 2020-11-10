@@ -938,7 +938,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
 
     TypeManager::promote(left, right);
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right, CASTFLAG_COERCE_SAMESIGN));
     node->typeInfo = left->typeInfo;
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;

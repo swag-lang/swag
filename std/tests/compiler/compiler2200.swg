@@ -27,4 +27,13 @@
         z1 := 10'u32 * 2's8
         @assert(z1 == 20)
     }
+
+    {
+        var x: u32 = 10'u8
+        var y: u8 = 2
+        z := x << y
+        @assert(z == 40)
+        z1 := 10'u32 << 2'u8
+        @assert(z1 == 40)
+    }
 }
