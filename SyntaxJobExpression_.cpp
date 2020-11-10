@@ -437,7 +437,6 @@ static bool isAssociative(TokenId id)
 
 bool SyntaxJob::doOperatorPrecedence(AstNode** result)
 {
-    int  x      = 1 << 2 - 1;
     auto factor = *result;
     if (factor->kind != AstNodeKind::FactorOp)
         return true;
@@ -456,7 +455,7 @@ bool SyntaxJob::doOperatorPrecedence(AstNode** result)
         if (myPrecedence < rightPrecedence)
             shuffle = true;
 
-        // If operatation is not associative, then we need to shuffle
+        // If operation is not associative, then we need to shuffle
         //
         // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
         //
