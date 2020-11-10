@@ -6,6 +6,12 @@
 
 static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg, ByteCodeInstruction* ip)
 {
+    // If the second MakeStackPointer is the same as the first one (the parameter), then the
+    // return copy is totally useless, se we must not simulate a drop, because there's in fact
+    // only one variable, and not one variable copied to the other
+    // This happens when inlining a function that returns a struct
+    bool sameStackOffset = ipOrg->b.u32 == ip->b.u32;
+
     // Change the original stack pointer offset to reference the variable instead of the temporary
     // copy
     auto orgOffset = ipOrg->b.u32;
@@ -13,14 +19,17 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
 
     // Is there a corresponding drop in the scope ?
     bool hasDrop = false;
-    for (auto& toDrop : ipOrg->node->ownerScope->symTable.structVarsToDrop)
+    if (!sameStackOffset)
     {
-        if (!toDrop.typeStruct)
-            continue;
-        if (toDrop.storageOffset == orgOffset && toDrop.typeStruct->opDrop)
+        for (auto& toDrop : ipOrg->node->ownerScope->symTable.structVarsToDrop)
         {
-            hasDrop = true;
-            break;
+            if (!toDrop.typeStruct)
+                continue;
+            if (toDrop.storageOffset == orgOffset && toDrop.typeStruct->opDrop)
+            {
+                hasDrop = true;
+                break;
+            }
         }
     }
 

@@ -1,33 +1,31 @@
 struct CStr
 {
-    buffer:     *u8
-    length:     u32
+    length: u32
 }
 
 impl CStr
 {
-    func opDrop(using self)
+    func opDrop(self)
     {
-        //@print("XXXXXdropXXXXX\n")
+    }
+
+    func opPostMove(self)
+    {
     }
 }
 
-#[swag.macro]
+#[swag.inline]
 func cstr(x: string)->CStr
 {
     var tmp: CStr
-    countof := @countof(x)
-    dataof := @dataof(x)
-    tmp.length = countof
-    tmp.buffer = cast(*u8) @alloc(countof + 1)
-    @memcpy(tmp.buffer, dataof, countof)
-    tmp.buffer[countof] = 0
+    tmp.length = 666
     return tmp
 }
 
-//#[swag.printbc]
+#[swag.printbc]
+//#[swag.nooptim]
 #test
 {
     v := cstr("toto")
-    //@print(cast(string) @mkslice(v.buffer, v.length))
+    @assert(v.length == 666)
 }
