@@ -342,15 +342,15 @@ bool SyntaxJob::doFactorExpressionRec(AstNode* parent, AstNode** result)
         (token.id == TokenId::SymMinus) ||
         (token.id == TokenId::SymAsterisk) ||
         (token.id == TokenId::SymSlash) ||
-        (token.id == TokenId::SymVertical) ||
+        (token.id == TokenId::SymPercent) ||
         (token.id == TokenId::SymAmpersand) ||
+        (token.id == TokenId::SymVertical) ||
         (token.id == TokenId::SymGreaterGreater) ||
         (token.id == TokenId::SymLowerLower) ||
-        (token.id == TokenId::SymPercent) ||
         (token.id == TokenId::SymTilde) ||
         (token.id == TokenId::SymCircumflex))
     {
-        if (parent && parent->kind == AstNodeKind::FactorOp)
+        /*if (parent && parent->kind == AstNodeKind::FactorOp)
         {
             if (parent->token.id != token.id)
                 return syntaxError(token, "operator order ambiguity, please add parenthesis");
@@ -362,7 +362,7 @@ bool SyntaxJob::doFactorExpressionRec(AstNode* parent, AstNode** result)
                 token.id != TokenId::SymCircumflex &&
                 token.id != TokenId::SymTilde)
                 return syntaxError(token, "operator order ambiguity, please add parenthesis");
-        }
+        }*/
 
         auto binaryNode = Ast::newNode<AstNode>(this, AstNodeKind::FactorOp, sourceFile, parent, 2);
         if (token.id == TokenId::SymGreaterGreater || token.id == TokenId::SymLowerLower)
@@ -386,10 +386,77 @@ bool SyntaxJob::doFactorExpressionRec(AstNode* parent, AstNode** result)
     return true;
 }
 
+static int getPrecedence(TokenId id)
+{
+    switch (id)
+    {
+    case TokenId::SymTilde:
+        return 0;
+    case TokenId::SymAsterisk:
+    case TokenId::SymSlash:
+    case TokenId::SymPercent:
+        return 1;
+    case TokenId::SymPlus:
+    case TokenId::SymMinus:
+        return 2;
+    case TokenId::SymGreaterGreater:
+    case TokenId::SymLowerLower:
+        return 3;
+    case TokenId::SymAmpersand:
+        return 8;
+    case TokenId::SymCircumflex:
+        return 9;
+    case TokenId::SymVertical:
+        return 10;
+    }
+
+    SWAG_ASSERT(false);
+    return -1;
+}
+
 AstNode* SyntaxJob::doOperatorPrecedence(AstNode* factor)
 {
+    int x = 2 - 1 - 1;
+    return factor;
+
     if (factor->kind != AstNodeKind::FactorOp)
         return factor;
+
+    auto left  = factor->childs[0];
+    auto right = factor->childs[1];
+
+    if (right->kind == AstNodeKind::FactorOp)
+    {
+        auto myPrecedence    = getPrecedence(factor->token.id);
+        auto rightPrecedence = getPrecedence(right->token.id);
+
+        if (myPrecedence < rightPrecedence)
+        {
+            //   *
+            //  / \
+            // A   +
+            //    / \
+            //   B   C
+
+            //     +
+            //    / \
+            //   *   C
+            //  / \  
+            // A   B
+
+            auto leftRight = right->childs[0];
+            Ast::removeFromParent(right);
+            Ast::addChildBack(factor->parent, right);
+            Ast::removeFromParent(leftRight);
+            Ast::addChildBack(factor, leftRight);
+
+            Ast::removeFromParent(factor);
+            Ast::addChildFront(right, factor);
+
+            factor = right; // new root
+        }
+    }
+
     return factor;
 }
 

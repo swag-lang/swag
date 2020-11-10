@@ -1,8 +1,8 @@
-#module "compiler1242"
-#unittest error
+//#module "compiler1242"
+//#unittest error
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
-    @assert(2 - 1 - 1 == 0)
+    //@assert(2 - 1 - 1 == 0)
 }
