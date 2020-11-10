@@ -439,7 +439,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         Ast::visit(funcNode->genericParameters, [&](AstNode* n) {
             n->ownerFct   = funcNode;
             n->ownerScope = newScope;
-            n->flags |= AST_IN_FCT_PROTOTYPE;
         });
     }
 
@@ -448,7 +447,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     {
         Scoped      scoped(this, newScope);
         ScopedFct   scopedFct(this, funcNode);
-        ScopedFlags scopedFlags(this, AST_IN_FCT_PROTOTYPE);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
     }
@@ -474,7 +472,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             typeNode->flags |= AST_FUNC_RETURN_DEFINED;
             Scoped      scoped(this, newScope);
             ScopedFct   scopedFct(this, funcNode);
-            ScopedFlags scopedFlags(this, AST_IN_FCT_PROTOTYPE);
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
@@ -485,7 +482,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         typeNode->flags |= AST_FUNC_RETURN_DEFINED;
         Scoped      scoped(this, newScope);
         ScopedFct   scopedFct(this, funcNode);
-        ScopedFlags scopedFlags(this, AST_IN_FCT_PROTOTYPE);
         auto        typeExpression  = Ast::newTypeExpression(sourceFile, typeNode, this);
         typeExpression->literalType = g_TypeMgr.typeInfoString;
     }

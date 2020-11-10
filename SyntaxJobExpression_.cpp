@@ -136,11 +136,17 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         break;
 
     case TokenId::SymLeftParen:
+    {
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, "expression is empty"));
-        SWAG_CHECK(doExpression(parent, result));
+        AstNode* expr;
+        SWAG_CHECK(doExpression(parent, &expr));
+        expr->flags |= AST_IN_ATOMIC_EXPR;
+        if (result)
+            *result = expr;
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
         break;
+    }
 
     case TokenId::LiteralNumber:
     case TokenId::LiteralCharacter:
@@ -416,9 +422,6 @@ static int getPrecedence(TokenId id)
 
 AstNode* SyntaxJob::doOperatorPrecedence(AstNode* factor)
 {
-    int x = 2 - 1 - 1;
-    return factor;
-
     if (factor->kind != AstNodeKind::FactorOp)
         return factor;
 
@@ -430,7 +433,7 @@ AstNode* SyntaxJob::doOperatorPrecedence(AstNode* factor)
         auto myPrecedence    = getPrecedence(factor->token.id);
         auto rightPrecedence = getPrecedence(right->token.id);
 
-        if (myPrecedence < rightPrecedence)
+        if ((myPrecedence < rightPrecedence) && !(right->flags & AST_IN_ATOMIC_EXPR))
         {
             //   *
             //  / \
