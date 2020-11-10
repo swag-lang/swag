@@ -713,40 +713,40 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         break;
     case TokenId::SymAsterisk:
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_FULL));
         node->typeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBinaryOpMul(context, left, right));
         break;
     case TokenId::SymSlash:
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
         node->typeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBinaryOpDiv(context, left, right));
         break;
     case TokenId::SymPercent:
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_FULL));
         node->typeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBinaryOpModulo(context, left, right));
         break;
 
     case TokenId::SymVertical:
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
         node->typeInfo       = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(leftTypeInfoBeforePromote);
         node->castedTypeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBitmaskOr(context, left, right));
         break;
     case TokenId::SymAmpersand:
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
         node->typeInfo       = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(leftTypeInfoBeforePromote);
         node->castedTypeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBitmaskAnd(context, left, right));
         break;
     case TokenId::SymCircumflex:
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
         node->typeInfo       = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(leftTypeInfoBeforePromote);
         node->castedTypeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveXor(context, left, right));
