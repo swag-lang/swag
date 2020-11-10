@@ -70,6 +70,14 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
     return true;
 }
 
+bool SemanticJob::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t index, TypeInfo* wanted)
+{
+    auto typeParam = TypeManager::concreteType(parameters->childs[index]->typeInfo, CONCRETE_ALIAS);
+    if (!typeParam->isSame(wanted, ISSAME_CAST))
+        return context->report({parameters->childs[index], format("invalid parameter '%d' for special function '%s' ('%s' expected, '%s' provided)", index + 1, node->name.c_str(), wanted->name.c_str(), typeParam->name.c_str())});
+    return true;
+}
+
 bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
 {
     // Check operators
@@ -133,7 +141,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoVoid));
-        SWAG_VERIFY(parameters->childs[1]->typeInfo->isSame(g_TypeMgr.typeInfoCode, ISSAME_CAST), context->report({parameters->childs[1], format("invalid parameter '2' for special function '%s' ('code' expected, '%s' provided)", name.c_str(), parameters->childs[1]->typeInfo->name.c_str())}));
+        SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr.typeInfoCode));
     }
     else if (name == "opInit")
     {
@@ -189,29 +197,29 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
-        SWAG_VERIFY(parameters->childs[1]->typeInfo->isSame(g_TypeMgr.typeInfoU32, ISSAME_CAST), context->report({parameters->childs[1], format("invalid parameter '2' for special function '%s' ('u32' expected, '%s' provided)", name.c_str(), parameters->childs[1]->typeInfo->name.c_str())}));
-        SWAG_VERIFY(parameters->childs[2]->typeInfo->isSame(g_TypeMgr.typeInfoU32, ISSAME_CAST), context->report({parameters->childs[2], format("invalid parameter '3' for special function '%s' ('u32' expected, '%s' provided)", name.c_str(), parameters->childs[2]->typeInfo->name.c_str())}));
+        SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr.typeInfoU32));
+        SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 2, g_TypeMgr.typeInfoU32));
     }
     else if (name == "opIndex")
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2, false));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
         for (int i = 1; i < parameters->childs.size(); i++)
-            SWAG_VERIFY(parameters->childs[i]->typeInfo->isSame(g_TypeMgr.typeInfoU32, ISSAME_CAST), context->report({parameters->childs[i], format("invalid parameter '%d' for special function '%s' ('u32' expected, '%s' provided)", i + 1, name.c_str(), parameters->childs[i]->typeInfo->name.c_str())}));
+            SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr.typeInfoU32));
     }
     else if (name == "opIndexAssign")
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3, false));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoVoid));
         for (int i = 1; i < parameters->childs.size() - 1; i++)
-            SWAG_VERIFY(parameters->childs[i]->typeInfo->isSame(g_TypeMgr.typeInfoU32, ISSAME_CAST), context->report({parameters->childs[i], format("invalid parameter '%d' for special function '%s' ('u32' expected, '%s' provided)", i + 1, name.c_str(), parameters->childs[i]->typeInfo->name.c_str())}));
+            SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr.typeInfoU32));
     }
     else if (name == "opIndexAffect")
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3, false));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoVoid));
         for (int i = 1; i < parameters->childs.size() - 1; i++)
-            SWAG_VERIFY(parameters->childs[i]->typeInfo->isSame(g_TypeMgr.typeInfoU32, ISSAME_CAST), context->report({parameters->childs[i], format("invalid parameter '%d' for special function '%s' ('u32' expected, '%s' provided)", i + 1, name.c_str(), parameters->childs[i]->typeInfo->name.c_str())}));
+            SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr.typeInfoU32));
     }
     else
     {
