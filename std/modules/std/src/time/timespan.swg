@@ -48,12 +48,12 @@ impl TimeSpan
         i := cast(s32) (m - 1) + months
         if i >= 0
         {
-            m = cast(u16) ((i % 12) + 1)
+            m =  cast(u16) (i % 12 + 1)
             y += cast(u16) (i / 12)
         }
         else
         {
-            m = cast(u16) (12 + ((i + 1) % 12))
+            m =  cast(u16) (12 + (i + 1) % 12)
             y += cast(u16) ((i - 11) / 12)
         }
 

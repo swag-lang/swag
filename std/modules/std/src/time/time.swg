@@ -55,8 +55,8 @@ func timeToTicks(hour, minute, second, millisecond: u16)->Ticks
 
     // totalSeconds is bounded by 2^31 * 2^12 + 2^31 * 2^8 + 2^31,
     // which is less than 2^44, meaning we won't overflow totalSeconds.
-    var totalMilli: u64 = ((hour * 3600) + (minute * 60) + second) * 1000'u64
-    totalMilli += acast millisecond
+    totalMilli := (hour*3600 + minute*60 + second) * 1000'u64
+    totalMilli += millisecond
     debug.assert(totalMilli <= MaxMilliSeconds)
     return totalMilli * TicksPerMilliSecond
 }
@@ -81,7 +81,7 @@ func dateToTicks(year, month, day: u16)->Ticks
 
     days := isLeapYear(year) ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
     y := cast(u64) (year - 1)
-    n := ((y * 365) + (y / 4) + (y / 400) + days[month - 1] + (day - 1)) - (y / 100)
+    n := y*365 + y/4 + y/400 - y/100 + days[month-1] + day-1
     return n * TicksPerDay
 }
 
@@ -119,12 +119,12 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     // estimate for the month
     m := (n >> 5) + 1
     // m = 1-based month number
-    while (n >= days[m]) m += 1
+    while n >= days[m] m += 1
 
     var result: retval = ?
-    result.year = acast ((y400 * 400) + (y100 * 100) + (y4 * 4) + (y1 + 1))
-    result.month = acast m
-    result.day = acast ((n - days[m - 1]) + 1)
+    result.year  = acast (y400*400 + y100*100 + y4*4 + y1 + 1)
+    result.month = acast (m)
+    result.day   = acast (n - days[m-1] + 1)
     return result
 }
 
