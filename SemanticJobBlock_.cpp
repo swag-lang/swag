@@ -98,6 +98,24 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 
 bool SemanticJob::resolveInlineAfter(SemanticContext* context)
 {
+    auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
+    auto fct  = node->func;
+
+    // No need to check missing return for inline only, because the function has already been
+    // checked as a separated function
+    if (fct->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
+    {
+        if (fct->returnType && fct->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
+        {
+            if (!(node->flags & AST_SCOPE_HAS_RETURN))
+            {
+                if (node->flags & AST_FCT_HAS_RETURN)
+                    return context->report({ fct, fct->token, format("not all control paths of %s return a value", fct->getNameForMessage().c_str()) });
+                return context->report({ fct, fct->token, format("%s must return a value", fct->getNameForMessage().c_str()) });
+            }
+        }
+    }
+
     context->expansionNode.pop_back();
     return true;
 }
