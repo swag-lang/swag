@@ -104,7 +104,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         symbol->kind = kind;
 
     // Only add an inline parameter once in a given scope
-    else if (flags & OVERLOAD_VAR_INLINE)
+    else if ((flags & OVERLOAD_VAR_INLINE) && symbol->overloads.size())
     {
         if (resultName)
             *resultName = symbol;
