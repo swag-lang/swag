@@ -1444,37 +1444,74 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
 
 bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
+    // Fine if right type is of the same sign, and its sizeof is lower or equal
+    if (castFlags & CASTFLAG_COERCE_SAMESIGN)
+    {
+        if ((toType->sizeOf >= fromType->sizeOf) && (toType->flags & TYPEINFO_UNSIGNED) == (fromType->flags & TYPEINFO_UNSIGNED))
+        {
+            if ((toType->flags & TYPEINFO_INTEGER) && ((toType->flags & TYPEINFO_INTEGER) == (fromType->flags & TYPEINFO_INTEGER)))
+                castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
+            else if ((toType->flags & TYPEINFO_FLOAT) && (toType->flags & TYPEINFO_FLOAT) == (fromType->flags & TYPEINFO_FLOAT))
+                castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
+        }
+    }
+
     switch (toType->nativeType)
     {
     case NativeTypeKind::Bool:
-        return castToNativeBool(context, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToNativeBool(context, fromType, fromNode, castFlags));
+        break;
     case NativeTypeKind::U8:
-        return castToNativeU8(context, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToNativeU8(context, fromType, fromNode, castFlags));
+        break;
     case NativeTypeKind::U16:
-        return castToNativeU16(context, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToNativeU16(context, fromType, fromNode, castFlags));
+        break;
     case NativeTypeKind::U32:
-        return castToNativeU32(context, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToNativeU32(context, fromType, fromNode, castFlags));
+        break;
     case NativeTypeKind::Char:
-        return castToNativeChar(context, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToNativeChar(context, fromType, fromNode, castFlags));
+        break;
     case NativeTypeKind::U64:
-        return castToNativeU64(context, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToNativeU64(context, fromType, fromNode, castFlags));
+        break;
     case NativeTypeKind::S8:
-        return castToNativeS8(context, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToNativeS8(context, fromType, fromNode, castFlags));
+        break;
     case NativeTypeKind::S16:
-        return castToNativeS16(context, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToNativeS16(context, fromType, fromNode, castFlags));
+        break;
     case NativeTypeKind::S32:
-        return castToNativeS32(context, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToNativeS32(context, fromType, fromNode, castFlags));
+        break;
     case NativeTypeKind::S64:
-        return castToNativeS64(context, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToNativeS64(context, fromType, fromNode, castFlags));
+        break;
     case NativeTypeKind::F32:
-        return castToNativeF32(context, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToNativeF32(context, fromType, fromNode, castFlags));
+        break;
     case NativeTypeKind::F64:
-        return castToNativeF64(context, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToNativeF64(context, fromType, fromNode, castFlags));
+        break;
     case NativeTypeKind::String:
-        return castToString(context, toType, fromType, fromNode, castFlags);
+        SWAG_CHECK(castToString(context, toType, fromType, fromNode, castFlags));
+        break;
+    default:
+        return castError(context, toType, fromType, fromNode, castFlags);
     }
 
-    return castError(context, toType, fromType, fromNode, castFlags);
+    // Automatic cast has been done
+    if (castFlags & CASTFLAG_COERCE)
+    {
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            fromNode->typeInfo       = toType;
+            fromNode->castedTypeInfo = fromType;
+        }
+    }
+
+    return true;
 }
 
 bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* fromNode, uint32_t castFlags)
