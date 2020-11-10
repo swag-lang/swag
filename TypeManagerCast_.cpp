@@ -1516,8 +1516,11 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
-            fromNode->typeInfo       = toType;
-            fromNode->castedTypeInfo = fromType;
+            if (!fromNode->castedTypeInfo)
+            {
+                fromNode->typeInfo = toType;
+                fromNode->castedTypeInfo = fromType;
+            }
         }
     }
 
