@@ -460,11 +460,8 @@ bool SyntaxJob::doOperatorPrecedence(AstNode** result)
         //
         // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
         //
-        else if (!isAssociative(factor->token.id))
-        {
-            //if (myPrecedence == rightPrecedence)
-                shuffle = true;
-        }
+        else if (!isAssociative(factor->token.id) && (myPrecedence == rightPrecedence))
+            shuffle = true;
 
         if (shuffle)
         {
@@ -484,10 +481,12 @@ bool SyntaxJob::doOperatorPrecedence(AstNode** result)
             Ast::removeFromParent(right);
             Ast::addChildBack(factor->parent, right);
             Ast::removeFromParent(leftRight);
-            Ast::addChildBack(factor, leftRight);
 
             Ast::removeFromParent(factor);
+            Ast::addChildBack(factor, leftRight);
+
             Ast::addChildFront(right, factor);
+            SWAG_CHECK(doOperatorPrecedence(&right));
 
             factor = right; // new root
         }
