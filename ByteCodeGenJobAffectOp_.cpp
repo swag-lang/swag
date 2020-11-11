@@ -305,6 +305,7 @@ bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
+    case NativeTypeKind::Bool:
         emitInstruction(context, ByteCodeOp::AffectOpAndEqS8, r0, r1);
         return true;
     case NativeTypeKind::S16:
@@ -336,6 +337,7 @@ bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0,
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
+    case NativeTypeKind::Bool:
         emitInstruction(context, ByteCodeOp::AffectOpOrEqS8, r0, r1);
         return true;
     case NativeTypeKind::S16:

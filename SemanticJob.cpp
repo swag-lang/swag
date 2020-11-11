@@ -33,7 +33,7 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, Typ
 
 bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
-    return context->report({node, node->token, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())});
+    return context->report({node, node->token, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())});
 }
 
 SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run)
