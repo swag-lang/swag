@@ -36,26 +36,27 @@ impl ConcatBuffer
             ptr = nextPtr
         }
     }
-
-    func count(using self)->u32
-    {
-        if !lastBucket
-            return 0;
-        lastBucket.count = cast(u32) (currentSP - lastBucket.datas)
-        return totalCount + lastBucket.count
-    }
 }
 
 public impl ConcatBuffer
 {
     func opCount(using self)->u32
     {
-        return self.count()
+        return count()
     }
 
     func opDrop(using self)
     {
-        self.release()
+        release()
+    }
+
+    // Returns the number of bytes
+    func count(using self)->u32
+    {
+        if !lastBucket
+            return 0;
+        lastBucket.count = cast(u32) (currentSP - lastBucket.datas)
+        return totalCount + lastBucket.count
     }
 
     // Returns the number of elements in the given bucket
@@ -200,7 +201,7 @@ public impl ConcatBuffer
         if !firstBucket
             return result
 
-        result.reserve(self.count() + 1)
+        result.reserve(count() + 1)
 
         ptr := firstBucket
         while ptr != lastBucket.next

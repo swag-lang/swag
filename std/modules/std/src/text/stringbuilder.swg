@@ -2,7 +2,7 @@ public namespace std.strconv;
 
 struct StringBuilder
 {
-    buf: ConcatBuffer
+    buffer: ConcatBuffer
 }
 
 impl StringBuilder
@@ -10,48 +10,54 @@ impl StringBuilder
     // Clear the content of the builder
     func clear(using self)
     {
-        buf.clear()
+        buffer.clear()
+    }
+
+    // Returns the number of characters
+    func count(using self)->u32
+    {
+        return buffer.count()
     }
 
     // Set sizes of buckets of the string builder
     func setBucketSize(using self, size: u32)
     {
-        buf.setBucketSize(size)
+        buffer.setBucketSize(size)
     }
 
     // Append a string
     func append(using self, value: string)
     {
-        buf.addBytes(value)
+        buffer.addBytes(value)
     }
 
     // Append a string
     func append(using self, value: String)
     {
-        buf.addBytes(cast(string) value)
+        buffer.addBytes(cast(string) value)
     }
 
     // Append a character
     func append(using self, value: char)
     {
-        convertChar(&buf, value, null)
+        convertChar(&buffer, value, null)
     }
 
     // Append a value
     func appendAny(using self, value: any, strFormat: string = null)
     {
-        convertAny(&buf, value, strFormat)
+        convertAny(&buffer, value, strFormat)
     }
 
     // Append a formatted string
     func appendFormat(using self, fmt: string, values: ...)
     {
-        format.append(&buf, fmt, values);
+        format.append(&buffer, fmt, values);
     }
 
     // Return the content as a string
     func toString(using self)->String
     {
-        return buf.toString()
+        return buffer.toString()
     }
 }

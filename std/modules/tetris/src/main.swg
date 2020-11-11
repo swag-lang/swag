@@ -248,10 +248,9 @@ func main()
         }
 
         // Draw Score
-		//swprintf_s(&screen[2 * nScreenWidth + nFieldWidth + 6], 16, L"SCORE: %8d", nScore);
         builder.clear()
         builder.appendFormat("SCORE: %{D08}", nScore)
-        memory.copy(&screen[2 * nScreenWidth + nFieldWidth + 6], builder.buf.firstBucket.datas, builder.buf.bucketCount(builder.buf.firstBucket))
+        memory.copy(&screen[2 * nScreenWidth + nFieldWidth + 6], builder.buffer.firstBucket.datas, builder.count())
 
 		// Animate Line Completion
 		if !vLines.isEmpty()
@@ -280,7 +279,7 @@ func main()
     CloseHandle(hConsole)
 }
 
-#run main()
+//#run main()
 #main
 {
     main()
