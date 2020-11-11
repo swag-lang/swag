@@ -7,4 +7,8 @@
     c := arr1[1]
     arr1[c] = 1
     @assert(arr1[c] == 1)
+
+    ptr := @dataof(arr1)
+    ptr[c] = 2
+    @assert(arr1[c] == 2)
 }

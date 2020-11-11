@@ -11,6 +11,14 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     emitSafetyNullPointer(context, node->array->resultRegisterRC);
 
+    if (!(node->access->doneFlags & AST_DONE_CAST1))
+    {
+        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->access->doneFlags |= AST_DONE_CAST1;
+    }
+
     // In case of a deref, no need to increment pointer because we are sure that index is 0
     if (!node->isDeref)
     {
