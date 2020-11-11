@@ -665,22 +665,22 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
 bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop)
 {
     // Emit all 'defer' statements
-    if (!(scope->flags & SCOPE_DONE_DEFER))
+    if (scope->doneDefer.find(context->node) == scope->doneDefer.end())
     {
         SWAG_CHECK(emitDeferredStatements(context, scope));
         SWAG_ASSERT(context->result != ContextResult::Pending);
-        scope->flags |= SCOPE_DONE_DEFER;
+        scope->doneDefer.insert(context->node);
         if (context->result == ContextResult::NewChilds)
             return true;
     }
 
     // Emit all drops
-    if (!(scope->flags & SCOPE_DONE_DROP))
+    if (scope->doneDrop.find(context->node) == scope->doneDrop.end())
     {
         SWAG_CHECK(emitLeaveScopeDrop(context, scope, forceNoDrop));
         if (context->result == ContextResult::Pending)
             return true;
-        scope->flags |= SCOPE_DONE_DROP;
+        scope->doneDrop.insert(context->node);
     }
 
     return true;
