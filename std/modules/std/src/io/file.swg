@@ -58,6 +58,7 @@ enum FileAttribute
 
 struct FileInfo
 {
+    fullname:       String
     attributes =    FileAttribute.None
     creationTime:   time.DateTime
     lastAccessTime: time.DateTime

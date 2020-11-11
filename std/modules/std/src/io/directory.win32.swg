@@ -12,6 +12,13 @@ func exists(dirname: string)->bool
     return true
 }
 
+func strlen(value: const *u8)->u32
+{
+    idx := 0'u32
+    while value[idx] idx += 1
+    return idx
+}
+
 func enumerateFiles(dirname: string, searchPattern: string = "*.*")->Array'(file.FileInfo)
 {
     var result: retval
@@ -19,6 +26,28 @@ func enumerateFiles(dirname: string, searchPattern: string = "*.*")->Array'(file
     if searchPattern == null return result
 
     var findfile:   WIN32_FIND_DATAA
-    var searchPath: String = dirname
+    var searchPath: String = path.combine(dirname, searchPattern)
+
+    h := FindFirstFileA(searchPath.buffer, &findfile);
+    if h != INVALID_HANDLE_VALUE
+    {
+        while true
+        {
+            if findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
+                continue
+
+            var fi: file.FileInfo
+
+            dataof := cast(const *u8) @dataof(findfile.cFileName)
+            fi.fullname = cast(string) @mkslice(dataof, strlen(dataof))
+            result.add(fi)
+
+            if !FindNextFileA(h, &findfile)
+                break
+        }
+
+        FindClose(h)
+    }
+
     return result
 }
