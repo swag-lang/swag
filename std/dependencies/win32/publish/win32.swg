@@ -13,6 +13,7 @@ namespace win32
     alias LPCVOID =			const *void
     alias LPCSTR =			const *u8
     alias LPCWSTR =			const *u16
+    alias LPCTSTR =			const *u16
     alias LPDWORD =			*DWORD
     alias LPOVERLAPPED =	*DWORD
     alias DWORD_PTR =		u64
@@ -320,6 +321,7 @@ namespace win32
     const TRUNCATE_EXISTING   = 5'u32
 
     const INVALID_HANDLE_VALUE = cast(HANDLE) cast(u64) -1
+    const CONSOLE_TEXTMODE_BUFFER = 1'u32
 
     struct COORD
     {
@@ -407,9 +409,14 @@ namespace win32
 
     #[swag.foreign("kernel32")]
     {
+        func GetLastError()->DWORD;
         func GetStdHandle(nStdHandle: DWORD)->HANDLE;
         func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->BOOL;
         func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
+        func CreateConsoleScreenBuffer(dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: const *SECURITY_ATTRIBUTES, dwFlags: DWORD, lpScreenBufferData: LPVOID)->HANDLE;
+        func SetConsoleActiveScreenBuffer(hConsoleOutput: HANDLE);
+        func WriteConsoleOutputCharacterA(hConsoleOutput: HANDLE, lpCharacter: LPCSTR, nLength: DWORD, dwWriteCoord: DWORD, lpNumberOfCharsWritten: LPDWORD)->BOOL;
+        func WriteConsoleOutputCharacterW(hConsoleOutput: HANDLE, lpCharacter: LPCTSTR, nLength: DWORD, dwWriteCoord: DWORD, lpNumberOfCharsWritten: LPDWORD)->BOOL;
         func IsDebuggerPresent()->BOOL;
         func DebugBreak();
         func OutputDebugStringA(lpOutputString: LPCSTR);
@@ -420,6 +427,8 @@ namespace win32
         func QueryPerformanceFrequency(lpFrequency: *LARGE_INTEGER);
         func GetLocalTime(lpSystemTime: *SYSTEMTIME);
         func SetConsoleOutputCP(codePage: UINT);
+
+        func Sleep(dwMilliseconds: DWORD);
 
         func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
         func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;
