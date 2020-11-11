@@ -91,6 +91,20 @@ void Diagnostic::report(bool verboseMode) const
             lines.push_back(sourceFile->getLine(startLocation.line));
         }
 
+        // Remove blanks on the left, but keep indentation
+        uint32_t minBlanks = UINT32_MAX;
+        for (auto& line : lines)
+        {
+            const char* pz = line.c_str();
+            if (*pz && *pz != '\n' && *pz != '\r')
+            {
+                uint32_t countBlanks = 0;
+                while (isblank(*pz++))
+                    countBlanks++;
+                minBlanks = min(minBlanks, countBlanks);
+            }
+        }
+
         // Print all lines
         for (auto& line : lines)
         {
@@ -98,19 +112,19 @@ void Diagnostic::report(bool verboseMode) const
             if (*pz && *pz != '\n' && *pz != '\r')
             {
                 g_Log.print("   >  ");
-                g_Log.print(line);
+                g_Log.print(line.c_str() + minBlanks);
                 g_Log.eol();
             }
         }
 
         // Show "^^^^^^^"
-        if (showRange)
+        if (showRange && !lines.empty())
         {
             for (int i = 0; i < 6; i++)
                 g_Log.print(" ");
 
             auto backLine = lines.back();
-            for (uint32_t i = 0; i < startLocation.column; i++)
+            for (uint32_t i = minBlanks; i < startLocation.column; i++)
             {
                 if (backLine[i] == '\t')
                     g_Log.print("\t");

@@ -125,8 +125,8 @@ func main()
 	tetromino[6] = "..X...X..XX....."
 
     pField = @alloc(cast(u32)(nFieldWidth*nFieldHeight)) // Create play field buffer
-    loop x: cast(u32) nFieldWidth
-        loop y: cast(u32) nFieldHeight
+    loop x: acast nFieldWidth
+        loop y: acast nFieldHeight
 			pField[y*nFieldWidth + x] = (x == 0 || x == nFieldWidth - 1 || y == nFieldHeight - 1) ? 9 : 0;
 
     nCurrentPiece := 0
@@ -139,6 +139,7 @@ func main()
     bGameOver := false
     bForceDown := false
     nScore := 0
+    var vLines: Array's32
     var rand: random.Random
 
     var keyb: Keyboard
@@ -189,6 +190,25 @@ func main()
                     }
                 }
 
+				// Check for lines
+				for py := 0; py < 4; py += 1
+                {
+					if nCurrentY + py < nFieldHeight - 1
+					{
+						bLine := true
+						for px := 1; px < nFieldWidth - 1; px += 1
+							bLine &= (pField[(nCurrentY + py) * nFieldWidth + px]) != 0
+
+						if (bLine)
+						{
+							// Remove Line, set to =
+							for px := 1; px < nFieldWidth - 1; px += 1
+								pField[(nCurrentY + py) * nFieldWidth + px] = 8
+							vLines.add(nCurrentY + py)
+						}
+					}
+                }
+
                 nScore += 25
 
 				// Pick New Piece
@@ -217,8 +237,7 @@ func main()
 			for py := 0; py < 4; py += 1
             {
                 str := tetromino[nCurrentPiece]
-                rot := Rotate(cast(s32) px, cast(s32) py, nCurrentRotation)
-				if str[rot] != "."'u8
+				if str[Rotate(cast(s32) px, cast(s32) py, nCurrentRotation)] != "."'u8
 					screen[(nCurrentY + py + 2)*nScreenWidth + (nCurrentX + px + 2)] = acast (nCurrentPiece + 65)
             }
         }
@@ -231,7 +250,7 @@ func main()
     CloseHandle(hConsole)
 }
 
-//#run main()
+#run main()
 #main
 {
     main()
