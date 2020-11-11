@@ -280,7 +280,7 @@ func main()
     CloseHandle(hConsole)
 }
 
-#run main()
+//#run main()
 #main
 {
     main()
