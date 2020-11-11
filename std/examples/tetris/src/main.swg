@@ -164,10 +164,7 @@ func main()
 		nCurrentX += (keyb.isKeyPressed(Right) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX + 1, nCurrentY)) ? 1 : 0
 		nCurrentX -= (keyb.isKeyPressed(Left) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX - 1, nCurrentY)) ? 1 : 0
 		nCurrentY += (keyb.isKeyPressed(Down) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY + 1)) ? 1 : 0
-
-		// Rotate, but latch to stop wild spinning
-		if (keyb.isKeyJustPressed(Space))
-			nCurrentRotation += DoesPieceFit(nCurrentPiece, nCurrentRotation + 1, nCurrentX, nCurrentY) ? 1 : 0
+        nCurrentRotation += (keyb.isKeyJustPressed(Space) && DoesPieceFit(nCurrentPiece, nCurrentRotation + 1, nCurrentX, nCurrentY)) ? 1 : 0
 
 		// Force the piece down the playfield if it's time
 		if (bForceDown)
