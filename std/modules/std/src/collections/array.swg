@@ -161,6 +161,10 @@ impl Array
         capacity = newCapacity
     }
 
+    // Returns true if the array is empty
+    #[inline]
+    func isEmpty(using self) => count == 0
+
     // Returns a slice
     func toSlice(using self)->[..] T
     {

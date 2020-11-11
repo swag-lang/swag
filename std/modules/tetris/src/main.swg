@@ -210,12 +210,16 @@ func main()
                 }
 
                 nScore += 25
+                if !vLines.isEmpty() nScore += (1 << vLines.count) * 100
 
 				// Pick New Piece
 				nCurrentX = nFieldWidth / 2
 				nCurrentY = 0;
 				nCurrentRotation = 0
 				nCurrentPiece = acast (rand.nextU32() % 7)
+
+                // If piece does not fit straight away, game over!
+				bGameOver = !DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY)
             }
         }
 
@@ -242,6 +246,25 @@ func main()
             }
         }
 
+		// Animate Line Completion
+		if !vLines.isEmpty()
+		{
+			// Display Frame (cheekily to draw lines)
+			WriteConsoleOutputCharacterA(hConsole, screen, nScreenWidth * nScreenHeight, 0, &dwBytesWritten);
+			thread.sleep(400)
+
+			visit v: vLines
+            {
+				for px := 1; px < nFieldWidth - 1; px += 1
+				{
+					for py := v; py > 0; py -= 1
+						pField[py * nFieldWidth + px] = pField[(py - 1) * nFieldWidth + px]
+					pField[px] = 0
+				}
+            }
+
+			vLines.clear();
+		}
 
         // Display Frame
 		res := WriteConsoleOutputCharacterA(hConsole, screen, nScreenWidth * nScreenHeight, 0, &dwBytesWritten)
