@@ -5,5 +5,7 @@ using std
 {
     loc := #location
     dir := path.getDirectoryName(loc.fileName)
-    //res := directory.enumerateFiles(dir, "*.*")
+    res := directory.enumerateFiles(dir, "*.*")
+    visit *c: res
+        console.print("%\n", c.fullname)
 }

@@ -607,7 +607,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         if (returnType->kind == TypeInfoKind::Struct)
         {
             StructToDrop st;
-            st.overload      = node->resolvedSymbolOverload;
+            st.overload = node->resolvedSymbolOverload;
+            if (st.overload)
+                st.overload->flags |= OVERLOAD_EMITTED;
             st.typeStruct    = CastTypeInfo<TypeInfoStruct>(typeInfoFunc->returnType, TypeInfoKind::Struct);
             st.storageOffset = node->fctCallStorageOffset;
             node->ownerScope->symTable.addVarToDrop(st);

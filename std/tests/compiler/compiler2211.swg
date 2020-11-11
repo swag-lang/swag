@@ -19,11 +19,11 @@ impl A
     loop 4
     {
         if @index == 0
-            continue
+            continue // should not drop x !
         var x: A
         if @index == 2
             break
     }
 
-    @print(cast(s64) G)
+    @assert(G == 2)
 }

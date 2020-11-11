@@ -33,14 +33,13 @@ func enumerateFiles(dirname: string, searchPattern: string = "*.*")->Array'(file
     {
         while true
         {
-            if findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
-                continue
-
-            var fi: file.FileInfo
-
-            dataof := cast(const *u8) @dataof(findfile.cFileName)
-            fi.fullname = cast(string) @mkslice(dataof, strlen(dataof))
-            result.add(fi)
+            if !(findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            {
+                var fi: file.FileInfo
+                dataof := cast(const *u8) @dataof(findfile.cFileName)
+                fi.fullname = cast(string) @mkslice(dataof, strlen(dataof))
+                result.emplace(&fi)
+            }
 
             if !FindNextFileA(h, &findfile)
                 break

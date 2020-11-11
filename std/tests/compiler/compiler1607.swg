@@ -15,7 +15,7 @@ impl A
 func toto()->A
 {
     var x: A // Should not call opDrop, because we have a move optim
-    return x 
+    return x
 }
 
 //#[swag.printbc]
@@ -24,6 +24,6 @@ func toto()->A
     {
         toto()
     }
-    
+
     @assert(G == 1)
 }

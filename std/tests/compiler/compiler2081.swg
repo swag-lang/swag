@@ -25,5 +25,6 @@ func titi(x: AA) { }
     {
         titi(toto())
     }
+
     @assert(G == 1)
 }

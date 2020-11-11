@@ -10,6 +10,8 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     auto node     = static_cast<AstVarDecl*>(context->node);
     auto resolved = node->resolvedSymbolOverload;
 
+    resolved->flags |= OVERLOAD_EMITTED;
+
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
     bool retVal   = resolved->flags & OVERLOAD_RETVAL;
 

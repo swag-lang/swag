@@ -621,20 +621,23 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         auto one = table.structVarsToDrop[i];
         if (!one.typeStruct)
             continue;
+        if (!one.typeStruct->opDrop)
+            continue;
 
+        // Overload can be registered as "no drop", because of optimization and move semantic
         if (one.overload && forceNoDrop && forceNoDrop->contains(one.overload))
             continue;
 
-        if (one.typeStruct->opDrop)
-        {
-            auto r0 = reserveRegisterRC(context);
+        // Need to be sure that the variable is not emitted later, after the leave scope
+        if (one.overload && !(one.overload->flags & OVERLOAD_EMITTED))
+            continue;
 
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0)->b.u32 = one.storageOffset;
-            emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-            emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
-
-            freeRegisterRC(context, r0);
-        }
+        auto r0     = reserveRegisterRC(context);
+        auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
+        inst->b.u32 = one.storageOffset;
+        emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+        emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
+        freeRegisterRC(context, r0);
     }
 
     return true;
