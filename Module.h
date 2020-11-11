@@ -70,6 +70,7 @@ struct Module
     Backend*                  backend              = nullptr;
     uint64_t                  moreRecentSourceFile = 0;
     bool                      fromTestsFolder      = false;
+    bool                      fromExamplesFolder   = false;
     bool                      addedToBuild         = false;
     bool                      saveBssValues        = false;
     bool                      saveMutableValues    = false;

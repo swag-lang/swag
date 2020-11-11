@@ -51,7 +51,7 @@
 */
 
 #import "std"
-using win32, std.keyboard
+using std, win32
 
 var nScreenWidth = 120'u32			// Console Screen Size X (columns)
 var nScreenHeight = 30'u32			// Console Screen Size Y (rows)
@@ -139,11 +139,12 @@ func main()
     bGameOver := false
     bForceDown := false
     nScore := 0
+
     var vLines: Array's32
     var rand: random.Random
     var builder: strconv.StringBuilder
+    var keyb: keyboard.Keyboard
 
-    var keyb: Keyboard
     while !bGameOver
     {
 		// Timing =======================
@@ -152,19 +153,20 @@ func main()
 		bForceDown = (nSpeedCount == nSpeed)
 
         // Input ========================
+        using keyboard.Key
         keyb.update()
-        if keyb.isKeyPressed(Key.Escape)
+        if keyb.isKeyPressed(Escape)
             break
 
         // Game Logic ===================
 
         // Handle player movement
-		nCurrentX += (keyb.isKeyPressed(Key.Right) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX + 1, nCurrentY)) ? 1 : 0
-		nCurrentX -= (keyb.isKeyPressed(Key.Left) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX - 1, nCurrentY)) ? 1 : 0
-		nCurrentY += (keyb.isKeyPressed(Key.Down) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY + 1)) ? 1 : 0
+		nCurrentX += (keyb.isKeyPressed(Right) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX + 1, nCurrentY)) ? 1 : 0
+		nCurrentX -= (keyb.isKeyPressed(Left) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX - 1, nCurrentY)) ? 1 : 0
+		nCurrentY += (keyb.isKeyPressed(Down) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY + 1)) ? 1 : 0
 
 		// Rotate, but latch to stop wild spinning
-		if (keyb.isKeyJustPressed(Key.Space))
+		if (keyb.isKeyJustPressed(Space))
 			nCurrentRotation += DoesPieceFit(nCurrentPiece, nCurrentRotation + 1, nCurrentX, nCurrentY) ? 1 : 0
 
 		// Force the piece down the playfield if it's time

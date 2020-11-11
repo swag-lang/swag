@@ -23,7 +23,7 @@ Module* Workspace::getModuleByName(const Utf8& moduleName)
     return it->second;
 }
 
-Module* Workspace::createOrUseModule(const Utf8& moduleName, bool fromTestsFolder)
+Module* Workspace::createOrUseModule(const Utf8& moduleName, bool fromTestsFolder, bool fromExamplesFolder)
 {
     Module* module = nullptr;
 
@@ -42,7 +42,8 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, bool fromTestsFolde
         mapModulesNames[moduleName] = module;
     }
 
-    module->fromTestsFolder = fromTestsFolder;
+    module->fromExamplesFolder = fromExamplesFolder;
+    module->fromTestsFolder    = fromTestsFolder;
     module->setup(moduleName);
 
     // Is this the module we want to build ?
@@ -106,6 +107,8 @@ void Workspace::setupPaths()
     workspacePath = fs::absolute(g_CommandLine.workspacePath);
     testsPath     = workspacePath;
     testsPath.append("tests/");
+    examplesPath = workspacePath;
+    examplesPath.append("examples/");
     modulesPath = workspacePath;
     modulesPath.append("modules/");
     dependenciesPath = workspacePath;
@@ -250,6 +253,12 @@ void Workspace::createNew()
         exit(-1);
     }
 
+    if (!fs::create_directories(examplesPath, errorCode))
+    {
+        g_Log.error(format("fatal error: cannot create directory '%s'", examplesPath.string().c_str()));
+        exit(-1);
+    }
+
     if (!fs::create_directories(testsPath, errorCode))
     {
         g_Log.error(format("fatal error: cannot create directory '%s'", testsPath.string().c_str()));
@@ -315,6 +324,12 @@ void Workspace::setup()
     if (!fs::exists(workspacePath))
     {
         g_Log.error(format("fatal error: workspace folder '%s' does not exist", workspacePath.string().c_str()));
+        exit(-1);
+    }
+
+    if (!fs::exists(examplesPath))
+    {
+        g_Log.error(format("fatal error: invalid workspace '%s', subfolder 'examples/' does not exist", workspacePath.string().c_str()));
         exit(-1);
     }
 

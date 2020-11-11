@@ -88,7 +88,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     moduleName += cFileName;
 
     // Create theModule
-    auto theModule = g_Workspace.createOrUseModule(moduleName, parent == "tests");
+    auto theModule = g_Workspace.createOrUseModule(moduleName, parent == "tests", parent == "examples");
 
     // Parse all files in the "src" sub folder, except for tests where all the source code
     // is at the root folder
@@ -129,6 +129,7 @@ JobResult EnumerateModuleJob::execute()
 {
     enumerateModules(g_Workspace.dependenciesPath);
     enumerateModules(g_Workspace.modulesPath);
+    enumerateModules(g_Workspace.examplesPath);
     if (g_CommandLine.test)
         enumerateModules(g_Workspace.testsPath);
     return JobResult::ReleaseJob;

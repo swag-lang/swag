@@ -13,6 +13,7 @@ enum BackendCompileType
 {
     Normal,
     Test,
+    Example,
     Count,
 };
 

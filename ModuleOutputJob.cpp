@@ -81,6 +81,8 @@ JobResult ModuleOutputJob::execute()
                 preCompileJob->buildParameters.precompileIndex = i;
                 if (module->fromTestsFolder)
                     preCompileJob->buildParameters.compileType = BackendCompileType::Test;
+                else if (module->fromExamplesFolder)
+                    preCompileJob->buildParameters.compileType = BackendCompileType::Example;
                 else
                     preCompileJob->buildParameters.compileType = BackendCompileType::Normal;
                 jobsToAdd.push_back(preCompileJob);
@@ -143,6 +145,8 @@ JobResult ModuleOutputJob::execute()
             compileJob->buildParameters = module->buildParameters;
             if (module->fromTestsFolder)
                 compileJob->buildParameters.compileType = BackendCompileType::Test;
+            else if (module->fromExamplesFolder)
+                compileJob->buildParameters.compileType = BackendCompileType::Example;
             else
                 compileJob->buildParameters.compileType = BackendCompileType::Normal;
             if (module->byteCodeMainFunc)

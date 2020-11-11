@@ -20,7 +20,7 @@ struct Workspace
     void    checkPendingJobs();
     bool    buildTarget();
     bool    build();
-    Module* createOrUseModule(const Utf8& moduleName, bool fromTestsFolder);
+    Module* createOrUseModule(const Utf8& moduleName, bool fromTestsFolder, bool fromExamplesFolder);
 
     void    addBootstrap();
     void    addRuntime();
@@ -41,6 +41,7 @@ struct Workspace
     fs::path              targetPath;
     fs::path              cachePath;
     fs::path              testsPath;
+    fs::path              examplesPath;
     fs::path              modulesPath;
     fs::path              dependenciesPath;
     shared_mutex          mutexModules;

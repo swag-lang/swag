@@ -594,6 +594,22 @@ namespace OS
             allModules.push_back(p.path().string());
         }
 
+        // Examples modules
+        for (auto& p : fs::directory_iterator(g_Workspace.examplesPath))
+        {
+            HANDLE dwChangeHandle;
+            dwChangeHandle = FindFirstChangeNotificationA(p.path().string().c_str(), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE);
+            if (dwChangeHandle == INVALID_HANDLE_VALUE)
+            {
+                g_Log.error("fail to start watcher service !");
+                exit(-1);
+            }
+
+            g_Log.verbose(format("watching folder '%s'", p.path().string().c_str()));
+            allHandles.push_back(dwChangeHandle);
+            allModules.push_back(p.path().string());
+        }
+
         // Workspace modules
         for (auto& p : fs::directory_iterator(g_Workspace.modulesPath))
         {

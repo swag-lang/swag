@@ -493,13 +493,19 @@ void Module::printUserMessage(const BuildParameters& bp)
     {
         if (bp.compileType == BackendCompileType::Test)
             g_Log.messageHeaderCentered("Skipping build test", name.c_str(), LogColor::Gray);
+        else if (bp.compileType == BackendCompileType::Example)
+            g_Log.messageHeaderCentered("Skipping build example", name.c_str(), LogColor::Gray);
         else
             g_Log.messageHeaderCentered("Skipping build", name.c_str(), LogColor::Gray);
     }
     else
     {
-        const char* header = (bp.compileType == BackendCompileType::Test) ? "Building test" : "Building";
-        g_Log.messageHeaderCentered(header, name.c_str());
+        if (bp.compileType == BackendCompileType::Test)
+            g_Log.messageHeaderCentered("Building test", name.c_str());
+        else if (bp.compileType == BackendCompileType::Example)
+            g_Log.messageHeaderCentered("Building example", name.c_str());
+        else
+            g_Log.messageHeaderCentered("Building", name.c_str());
     }
 }
 
@@ -617,8 +623,8 @@ bool Module::compileString(const Utf8& text)
     SWAG_ASSERT(runContext.ip->node);
     SWAG_ASSERT(runContext.ip->node->sourceFile);
 
-    auto sourceFile = runContext.ip->node->sourceFile;
-    AstNode*  parent = Ast::newNode(files[0], AstNodeKind::StatementNoScope, sourceFile->astRoot);
+    auto      sourceFile = runContext.ip->node->sourceFile;
+    AstNode*  parent     = Ast::newNode(files[0], AstNodeKind::StatementNoScope, sourceFile->astRoot);
     SyntaxJob syntaxJob;
     if (!syntaxJob.constructEmbedded(text, parent, runContext.ip->node, CompilerAstKind::TopLevelInstruction))
         return false;
