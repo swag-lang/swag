@@ -22,9 +22,6 @@ loop i: nScreenWidth*nScreenHeight
 c := cast(u32) pField[y*nFieldWidth + x]        <= merde si y'a pas le cast
 screen[(y + 2)*nScreenWidth + (x + 2)] = charD[c]  <= ici
 -------------------------------------
-if str[Rotate(cast(s32) px, cast(s32) py, nCurrentRotation)] != "."'u8
-access array par function deconne, faut un concreteType
--------------------------------------
 
 
 

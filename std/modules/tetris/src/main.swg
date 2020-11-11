@@ -124,7 +124,7 @@ func main()
 	tetromino[5] = ".X...X...XX....."
 	tetromino[6] = "..X...X..XX....."
 
-    pField = acast @alloc(cast(u32)(nFieldWidth*nFieldHeight)) // Create play field buffer
+    pField = @alloc(cast(u32)(nFieldWidth*nFieldHeight)) // Create play field buffer
     loop x: cast(u32) nFieldWidth
         loop y: cast(u32) nFieldHeight
 			pField[y*nFieldWidth + x] = (x == 0 || x == cast(u32) nFieldWidth - 1 || y == cast(u32) nFieldHeight - 1) ? 9 : 0;

@@ -1791,6 +1791,11 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             if ((fromType->isPointerToTypeInfo()) && (toType->isPointerToTypeInfo()))
                 return true;
         }
+
+        // From *void
+        auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+        if (fromTypePointer->finalType->isNative(NativeTypeKind::Void))
+            return true;
     }
 
     // Array to pointer of the same type
