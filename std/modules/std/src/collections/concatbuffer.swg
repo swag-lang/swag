@@ -1,6 +1,6 @@
-namespace std;
+public namespace std;
 
-public struct ConcatBufferBucket
+struct ConcatBufferBucket
 {
     datas:  *u8
     next:   *ConcatBufferBucket
@@ -9,9 +9,9 @@ public struct ConcatBufferBucket
 
 // Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
 // the buffer needs to increase its size. This is the main difference with Array
-public struct ConcatBuffer
+struct ConcatBuffer
 {
-    allocator:      const swag.IAllocator
+    allocator:      swag.IAllocator
 
     firstBucket:    *ConcatBufferBucket
     lastBucket:     *ConcatBufferBucket
@@ -23,7 +23,7 @@ public struct ConcatBuffer
 
 impl ConcatBuffer
 {
-    func release(using self)
+    private func release(using self)
     {
         if !firstBucket
             return
@@ -36,10 +36,7 @@ impl ConcatBuffer
             ptr = nextPtr
         }
     }
-}
 
-public impl ConcatBuffer
-{
     func opCount(using self)->u32
     {
         return count()
@@ -103,7 +100,7 @@ public impl ConcatBuffer
             firstBucket = newBucket
         lastBucket = newBucket
 
-        lastBucket.datas = acast memory.alloc(&allocator, bucketSize)
+        lastBucket.datas = memory.alloc(&allocator, bucketSize)
         currentSP = lastBucket.datas
     }
 
@@ -111,7 +108,7 @@ public impl ConcatBuffer
     // The allocator can only be changed if the buffer has no pending buckets.
     func setAllocator(using self, alloc: swag.IAllocator)
     {
-        debug.assert(firstBucket == null, "bucket is not empty")
+        debug.assert(firstBucket == null, "buffer is not empty")
         allocator = alloc;
     }
 
@@ -147,7 +144,7 @@ public impl ConcatBuffer
     // Add one byte to the buffer
     func addByte(using self, byte: u8)
     {
-        self.grow(1)
+        grow(1)
         currentSP[0] = byte
         currentSP += 1
     }
@@ -164,7 +161,7 @@ public impl ConcatBuffer
 
         // Be sure we have a buffer
         if !lastBucket
-            self.grow(1)
+            grow(1)
 
         // Divide the slice in the given amount of buckets if necessary
         if !contiguous
@@ -179,13 +176,13 @@ public impl ConcatBuffer
                 currentSP += remain
                 if !num
                     return
-                self.grow(1) // Will alloc a new bucket as the current one is full
+                grow(1) // Will alloc a new bucket as the current one is full
                 remain = bucketSize
             }
         }
         else
         {
-            self.grow(num)
+            grow(num)
         }
 
         // We should have enough size in the last bucket to store the
@@ -197,7 +194,7 @@ public impl ConcatBuffer
     // Convert buffer to a String
     func toString(using self)->String
     {
-        var result: String
+        var result: retval
         if !firstBucket
             return result
 
@@ -211,5 +208,37 @@ public impl ConcatBuffer
         }
 
         return result
+    }
+
+    // Convert buffer to a String by moving the content if possible
+    // After the call, the buffer will be empty if the move can be done
+    // (otherwise, the result will contain a copy)
+    func moveToString(using self)->String
+    {
+        if !firstBucket
+        {
+            var result: retval
+            return result
+        }
+
+        if firstBucket == lastBucket
+        {
+            var result: retval
+
+            // Move buffer
+            result.allocator = allocator
+            result.buffer    = firstBucket.datas
+            result.capacity  = bucketSize
+            result.length    = cast(u32) (currentSP - lastBucket.datas)
+
+            // And clear me
+            firstBucket, lastBucket = null
+            currentSP = null
+            totalCount = 0
+
+            return result
+        }
+
+        return toString()
     }
 }

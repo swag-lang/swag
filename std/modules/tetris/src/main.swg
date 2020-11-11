@@ -250,7 +250,8 @@ func main()
         // Draw Score
         builder.clear()
         builder.appendFormat("SCORE: %{D08}", nScore)
-        memory.copy(&screen[2 * nScreenWidth + nFieldWidth + 6], builder.buffer.firstBucket.datas, builder.count())
+        strScore := builder.moveToString()
+        memory.copy(&screen[2 * nScreenWidth + nFieldWidth + 6], strScore.buffer, strScore.length)
 
 		// Animate Line Completion
 		if !vLines.isEmpty()
@@ -279,7 +280,7 @@ func main()
     CloseHandle(hConsole)
 }
 
-//#run main()
+#run main()
 #main
 {
     main()

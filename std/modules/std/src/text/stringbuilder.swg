@@ -60,4 +60,10 @@ impl StringBuilder
     {
         return buffer.toString()
     }
+
+    // Move the content as a string
+    func moveToString(using self)->String
+    {
+        return buffer.moveToString()
+    }
 }
