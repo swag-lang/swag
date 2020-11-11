@@ -8,4 +8,5 @@
 
     c := ptr[0]
     x := ptr[c]
+    @assert(x == 2)
 }

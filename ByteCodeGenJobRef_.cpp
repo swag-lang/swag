@@ -48,7 +48,14 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     auto typeArray     = TypeManager::concreteType(node->array->typeInfo, CONCRETE_ALIAS);
     auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
 
-    SWAG_CHECK(emitCastToNativeU32(context, node->access, TypeManager::concreteReferenceType(node->access->typeInfo)));
+    if (!(node->access->doneFlags & AST_DONE_CAST1))
+    {
+        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->access->doneFlags |= AST_DONE_CAST1;
+    }
+
     if (!node->access->hasComputedValue())
         emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
 

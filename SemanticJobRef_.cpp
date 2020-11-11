@@ -275,6 +275,9 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         SWAG_VERIFY(!arrayType->isConst(), context->report({arrayNode->access, format("type '%s' is immutable and cannot be changed", arrayType->name.c_str())}));
     }
 
+    // Promote to 32 or 64 bits
+    SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
+
     auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
     if (!(accessType->flags & TYPEINFO_INTEGER))
         return context->report({arrayNode->access, format("array access type should be integer ('%s' provided)", arrayNode->access->typeInfo->name.c_str())});
