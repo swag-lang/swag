@@ -198,6 +198,14 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     auto node     = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     auto typeInfo = TypeManager::concreteType(node->array->typeInfo);
 
+    if (!(node->access->doneFlags & AST_DONE_CAST1))
+    {
+        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->access->doneFlags |= AST_DONE_CAST1;
+    }
+
     // Dereference of a string constant
     if (typeInfo->isNative(NativeTypeKind::String))
     {
@@ -268,7 +276,6 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         int  sizeOf        = typeInfoArray->pointedType->sizeOf;
 
-        SWAG_CHECK(emitCastToNativeU32(context, node->access, TypeManager::concreteReferenceType(node->access->typeInfo)));
         if (!node->access->hasComputedValue())
             emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
         truncRegisterRC(context, node->array->resultRegisterRC, 1);

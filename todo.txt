@@ -15,10 +15,6 @@ ca serait cool que les methods, en reflections, aient une value qui peut être ca
 -------------------------------------
 arr[x][y] si arr = array de string
 -------------------------------------
-var screen: *u8 = acast @alloc(nScreenWidth*nScreenHeight)
-loop i: nScreenWidth*nScreenHeight
-    screen[i] = " "'u16   CAST !!!
--------------------------------------
 c := cast(u32) pField[y*nFieldWidth + x]        <= merde si y'a pas le cast
 screen[(y + 2)*nScreenWidth + (x + 2)] = charD[c]  <= ici
 -------------------------------------

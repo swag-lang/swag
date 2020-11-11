@@ -2121,6 +2121,26 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
     }
 }
 
+bool TypeManager::promoteOne(SemanticContext* context, AstNode* right)
+{
+    TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    if (rightTypeInfo->kind != TypeInfoKind::Native)
+        return true;
+    switch (rightTypeInfo->nativeType)
+    {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
+        SWAG_CHECK(makeCompatibles(context, g_TypeMgr.typeInfoS32, nullptr, right, CASTFLAG_COERCE_SAMESIGN));
+        break;
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
+        SWAG_CHECK(makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right, CASTFLAG_COERCE_SAMESIGN));
+        break;
+    }
+
+    return true;
+}
+
 void TypeManager::promoteOne(AstNode* left, AstNode* right)
 {
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);

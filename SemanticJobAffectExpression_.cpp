@@ -265,6 +265,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, "pointer arithmetic not allowed on 'TypeInfo'"}));
 
+            SWAG_CHECK(TypeManager::promoteOne(context, right));
+            rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+
             if (rightTypeInfo->nativeType != NativeTypeKind::S32 &&
                 rightTypeInfo->nativeType != NativeTypeKind::S64 &&
                 rightTypeInfo->nativeType != NativeTypeKind::U32 &&
