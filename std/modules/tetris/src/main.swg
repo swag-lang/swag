@@ -109,7 +109,7 @@ func DoesPieceFit(nTetromino, nRotation, nPosX, nPosY: s32)->bool
 
 func main()
 {
-    var screen: *u8 = acast @alloc(nScreenWidth*nScreenHeight)
+    var screen: *u8 = @alloc(nScreenWidth*nScreenHeight)
     loop i: nScreenWidth*nScreenHeight
         screen[i] = " "'u8
     hConsole := CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, null, CONSOLE_TEXTMODE_BUFFER, null)
@@ -157,9 +157,9 @@ func main()
         // Game Logic ===================
 
         // Handle player movement
-		nCurrentX += (keyb.isKeyPressed(Key.Right) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX + 1, nCurrentY)) ? 1 : 0;
-		nCurrentX -= (keyb.isKeyPressed(Key.Left) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX - 1, nCurrentY)) ? 1 : 0;
-		nCurrentY += (keyb.isKeyPressed(Key.Down) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY + 1)) ? 1 : 0;
+		nCurrentX += (keyb.isKeyPressed(Key.Right) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX + 1, nCurrentY)) ? 1 : 0
+		nCurrentX -= (keyb.isKeyPressed(Key.Left) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX - 1, nCurrentY)) ? 1 : 0
+		nCurrentY += (keyb.isKeyPressed(Key.Down) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY + 1)) ? 1 : 0
 
 		// Rotate, but latch to stop wild spinning
 		if (keyb.isKeyJustPressed(Key.Space))
@@ -170,8 +170,8 @@ func main()
 		{
             nSpeedCount = 0
 			nPieceCount += 1
-			if nPieceCount % 50 == 0
-				if (nSpeed >= 10) nSpeed -= 1
+			if nPieceCount % 50 == 0 && nSpeed >= 10
+				nSpeed -= 1
 
 			// Test if piece can be moved down
 			if DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY + 1)
@@ -184,8 +184,7 @@ func main()
 					for py := 0; py < 4; py += 1
                     {
                         str := tetromino[nCurrentPiece]
-                        rot := Rotate(px, py, nCurrentRotation)
-						if str[rot] != "."'u8
+						if str[Rotate(px, py, nCurrentRotation)] != "."'u8
 							pField[(nCurrentY + py) * nFieldWidth + (nCurrentX + px)] = acast (nCurrentPiece + 1)
                     }
                 }
@@ -208,8 +207,7 @@ func main()
         {
 			for y := 0; y < nFieldHeight; y += 1
             {
-                c := cast(u32) pField[y*nFieldWidth + x]
-				screen[(y + 2)*nScreenWidth + (x + 2)] = charD[c]
+				screen[(y + 2)*nScreenWidth + (x + 2)] = charD[pField[y*nFieldWidth + x]]
             }
         }
 
@@ -233,7 +231,7 @@ func main()
     CloseHandle(hConsole)
 }
 
-//#run main()
+#run main()
 #main
 {
     main()

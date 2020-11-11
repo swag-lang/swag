@@ -12,12 +12,9 @@ ca serait cool que les methods, en reflections, aient une value qui peut être ca
 -------------------------------------
 
 
+
+
 -------------------------------------
-arr[x][y] si arr = array de string
--------------------------------------
-
-
-
 shift left/right doit pas etre supérieur a 255 (a tester en compiler si constant, et safety en runtime)
 -------------------------------------
 int overflow safety (chiant)
