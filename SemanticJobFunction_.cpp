@@ -111,7 +111,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
                 SWAG_VERIFY(nodeParam->assignment->flags & AST_VALUE_COMPUTED, context->report({nodeParam->assignment, "cannot evaluate default value at compile time"}));
             }
         }
-        else
+        else if(nodeParam->typeInfo->kind != TypeInfoKind::Code)
         {
             SWAG_VERIFY(!defaultValueDone, context->report({nodeParam, format("parameter '%d', missing default value", index)}));
         }

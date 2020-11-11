@@ -21,6 +21,7 @@ namespace win32
     alias SHORT =			s16
     alias LARGE_INTEGER =	s64
     alias PLONG =           *LONG
+    alias CHAR =            char
 
     const STD_INPUT_HANDLE 	= cast(DWORD) -10
     const STD_OUTPUT_HANDLE = cast(DWORD) -11
@@ -322,6 +323,7 @@ namespace win32
 
     const INVALID_HANDLE_VALUE = cast(HANDLE) cast(u64) -1
     const CONSOLE_TEXTMODE_BUFFER = 1'u32
+    const MAX_PATH = 260
 
     struct COORD
     {
@@ -401,6 +403,23 @@ namespace win32
         nFileSizeLow:      DWORD
     }
 
+    struct WIN32_FIND_DATAA
+    {
+        dwFileAttributes: DWORD
+        ftCreationTime:   FILETIME
+        ftLastAccessTime: FILETIME
+        ftLastWriteTime:  FILETIME
+        nFileSizeHigh:    DWORD
+        nFileSizeLow:     DWORD
+        dwReserved0:      DWORD
+        dwReserved1:      DWORD
+        cFileName:        [MAX_PATH] CHAR
+        cAlternateFileName: [14] CHAR
+        dwFileType:        DWORD
+        dwCreatorType:     DWORD
+        wFinderFlags:      WORD
+    }
+
     enum GET_FILEEX_INFO_LEVELS
     {
         GetFileExInfoStandard
@@ -440,6 +459,9 @@ namespace win32
         func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
         func FileTimeToLocalFileTime(lpFileTime: const *FILETIME, lpLocalFileTime: *FILETIME)->BOOL;
         func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME)->BOOL;
+        func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE;
+        func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL;
+        func FindClose(hFindFile: HANDLE)->BOOL;
     }
 
     #[swag.foreign("user32")]

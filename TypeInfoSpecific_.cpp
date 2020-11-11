@@ -833,11 +833,46 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     return true;
 }
 
+void TypeInfoStruct::computeScopedName()
+{
+    unique_lock lk(mutexScopeName);
+    if (!scopedName.empty())
+        return;
+
+    if (declNode && declNode->ownerScope)
+    {
+        if (declNode->ownerScope->kind != ScopeKind::Function)
+        {
+            scopedName += declNode->ownerScope->getFullName();
+            if (!scopedName.empty())
+                scopedName += ".";
+        }
+    }
+
+    SWAG_ASSERT(!nakedName.empty());
+    scopedName += structName;
+
+    if (!genericParameters.empty())
+    {
+        scopedName += "'(";
+        for (int i = 0; i < genericParameters.size(); i++)
+        {
+            if (i)
+                scopedName += ", ";
+            genericParameters[i]->typeInfo->computeScopedName();
+            scopedName += genericParameters[i]->typeInfo->scopedName;
+        }
+
+        scopedName += ")";
+    }
+}
+
 void TypeInfoStruct::computeName()
 {
     unique_lock lk(mutex);
     if (!nakedName.empty())
         return;
+
     nakedName = structName;
     if (genericParameters.size() > 0)
     {

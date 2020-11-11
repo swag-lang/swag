@@ -91,6 +91,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
                 typeStruct->scope         = newScope;
                 typeStruct->nakedName     = structName;
                 typeStruct->name          = structName;
+                typeStruct->structName    = structName;
                 newScope->owner->typeInfo = typeStruct;
             }
         }
@@ -116,10 +117,12 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         Scope*      subScope = nullptr;
         if (!symbol)
         {
-            subScope        = Ast::newScope(implNode, itfName, ScopeKind::Impl, newScope, false);
-            auto typeInfo   = g_Allocator.alloc<TypeInfoStruct>();
-            typeInfo->name  = implNode->identifier->childs.back()->name;
-            typeInfo->scope = subScope;
+            subScope             = Ast::newScope(implNode, itfName, ScopeKind::Impl, newScope, false);
+            auto typeInfo        = g_Allocator.alloc<TypeInfoStruct>();
+            typeInfo->name       = implNode->identifier->childs.back()->name;
+            typeInfo->nakedName  = typeInfo->name;
+            typeInfo->structName = typeInfo->name;
+            typeInfo->scope      = subScope;
             newScope->symTable.addSymbolTypeInfoNoLock(&context, implNode, typeInfo, SymbolKind::Struct, nullptr, OVERLOAD_IMPL, nullptr, 0, &itfName);
         }
         else

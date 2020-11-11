@@ -9,8 +9,6 @@ struct BABA
 #test
 {
     var arr: Array'BABA
-    //@print(@typeof(arr).name)
-    @assert(@typeof(arr).name == "std.Array'(BABA)")
 
     var x: BABA
     arr.emplace(&x)

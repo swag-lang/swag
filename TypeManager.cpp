@@ -318,7 +318,8 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
         typeStruct->fields.push_back((TypeInfoParam*) one->clone());
     }
 
-    typeStruct->name = typeStruct->nakedName;
+    typeStruct->name       = typeStruct->nakedName;
+    typeStruct->structName = typeStruct->name;
 
     return typeStruct;
 }

@@ -12,7 +12,7 @@ impl BOUBOU
 {
     func opDrop(using self)
     {
-        @print("opDrop65 ")
+        @assert(false)
     }
 }
 
@@ -20,5 +20,4 @@ impl BOUBOU
 #test
 {
     var arr: Array'BOUBOU
-    @assert(@typeof(arr).name == "__compiler1562.Array'(BOUBOU)")
 }

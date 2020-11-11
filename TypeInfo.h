@@ -58,8 +58,8 @@ static const uint32_t TYPEINFO_STRUCT_TYPEINFO          = 0x00100000;
 static const uint32_t TYPEINFO_STRUCT_IS_TUPLE          = 0x00200000;
 static const uint32_t TYPEINFO_ENUM_FLAGS               = 0x00400000;
 //static const uint32_t TYPEINFO_RETVAL                   = 0x00800000;
-static const uint32_t TYPEINFO_UNDEFINED                = 0x01000000;
-static const uint32_t TYPEINFO_ENUM_INDEX               = 0x02000000;
+static const uint32_t TYPEINFO_UNDEFINED  = 0x01000000;
+static const uint32_t TYPEINFO_ENUM_INDEX = 0x02000000;
 
 static const uint32_t ISSAME_EXACT     = 0x00000001;
 static const uint32_t ISSAME_CAST      = 0x00000002;
@@ -508,6 +508,7 @@ struct TypeInfoStruct : public TypeInfo
 
     bool           isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo*      clone() override;
+    void           computeScopedName() override;
     void           computeName() override;
     void           match(SymbolMatchContext& context);
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName);

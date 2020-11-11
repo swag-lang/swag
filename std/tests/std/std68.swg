@@ -11,7 +11,7 @@ struct BABA
 {
     var arr: Array'BABA
     //@print(@typeof(arr).name)
-    @assert(@typeof(arr).name == "std.Array'(BABA)")
+    @assert(@typeof(arr).name == "std.Array'(__std68.BABA)")
 
     var x: BABA
     x.val = 666
