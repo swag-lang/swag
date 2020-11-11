@@ -74,6 +74,14 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     auto node   = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
 
+    if (!(node->access->doneFlags & AST_DONE_CAST1))
+    {
+        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->access->doneFlags |= AST_DONE_CAST1;
+    }
+
     SWAG_ASSERT(node->array->resultRegisterRC.size() != 2);
     node->array->resultRegisterRC += reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
