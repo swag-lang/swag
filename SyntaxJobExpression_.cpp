@@ -1069,7 +1069,8 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
                 varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
             }
 
-            SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
+            if (currentScope->isGlobalOrImpl())
+                SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
         }
     }
 
@@ -1102,7 +1103,8 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             orgVarNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
         }
 
-        SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, orgVarNode, SymbolKind::Variable));
+        if (currentScope->isGlobalOrImpl())
+            SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, orgVarNode, SymbolKind::Variable));
 
         // And reference that variable, in the form value = __tmp_0.item?
         orgVarNode->publicName = "(";
@@ -1164,7 +1166,9 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
         }
         varNode->flags |= AST_R_VALUE;
-        SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
+
+        if (currentScope->isGlobalOrImpl())
+            SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
     }
 
     return true;

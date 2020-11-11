@@ -1568,26 +1568,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         {
             auto symbol = scope->symTable.find(node->name);
             if (symbol)
-            {
-                // Do not register symbol if it's defined later, in a local scope
-                if (!scope->isGlobalOrImpl())
-                {
-                    if (!symbol->nodes.empty() && !(node->flags & AST_GENERATED) && node->ownerScope == scope && !node->ownerInline)
-                    {
-                        auto first = symbol->nodes.front();
-                        if (!(first->flags & AST_GENERATED))
-                        {
-                            if (first->token.startLocation.line > node->token.startLocation.line)
-                                symbol = nullptr;
-                            else if (first->token.startLocation.line == node->token.startLocation.line && first->token.startLocation.column > node->token.startLocation.column)
-                                symbol = nullptr;
-                        }
-                    }
-                }
-
-                if (symbol)
-                    dependentSymbols.insert(symbol);
-            }
+                dependentSymbols.insert(symbol);
         }
 
         if (!dependentSymbols.empty())
