@@ -38,8 +38,16 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-
     emitSafetyNullPointer(context, node->array->resultRegisterRC[0]);
+
+    if (!(node->access->doneFlags & AST_DONE_CAST1))
+    {
+        SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->access->doneFlags |= AST_DONE_CAST1;
+    }
+
     emitSafetyBoundCheckString(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
     emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);

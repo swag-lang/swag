@@ -11,4 +11,8 @@
     ptr := @dataof(arr1)
     ptr[c] = 2
     @assert(arr1[c] == 2)
+
+    str := "ABCD"
+    y := &str[c]
+    @assert(y[1] == "C"'u8)
 }
