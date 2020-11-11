@@ -141,6 +141,7 @@ func main()
     nScore := 0
     var vLines: Array's32
     var rand: random.Random
+    var builder: strconv.StringBuilder
 
     var keyb: Keyboard
     while !bGameOver
@@ -245,6 +246,12 @@ func main()
 					screen[(nCurrentY + py + 2)*nScreenWidth + (nCurrentX + px + 2)] = acast (nCurrentPiece + 65)
             }
         }
+
+        // Draw Score
+		//swprintf_s(&screen[2 * nScreenWidth + nFieldWidth + 6], 16, L"SCORE: %8d", nScore);
+        builder.clear()
+        builder.appendFormat("SCORE: %{D08}", nScore)
+        memory.copy(&screen[2 * nScreenWidth + nFieldWidth + 6], builder.buf.firstBucket.datas, builder.buf.bucketCount(builder.buf.firstBucket))
 
 		// Animate Line Completion
 		if !vLines.isEmpty()

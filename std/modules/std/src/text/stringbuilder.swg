@@ -7,6 +7,12 @@ struct StringBuilder
 
 impl StringBuilder
 {
+    // Clear the content of the builder
+    func clear(using self)
+    {
+        buf.clear()
+    }
+
     // Set sizes of buckets of the string builder
     func setBucketSize(using self, size: u32)
     {
