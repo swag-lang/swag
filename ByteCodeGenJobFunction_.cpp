@@ -611,10 +611,13 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         {
             node->resultRegisterRC = reserveRegisterRC(context);
             if (node->ownerInline)
-                emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC, node->ownerInline->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->ownerInline->resultRegisterRC);
             else
+            {
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC, 0);
-            emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
+            }
+
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
             node->parent->parent->doneFlags |= AST_DONE_RETVAL;
         }
