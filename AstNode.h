@@ -138,6 +138,8 @@ enum class AstNodeKind : uint8_t
     Defer,
     Init,
     Drop,
+    PostCopy,
+    PostMove,
 };
 
 struct CloneContext
@@ -729,7 +731,7 @@ struct AstInit : public AstNode
     AstNode* parameters;
 };
 
-struct AstDrop : public AstNode
+struct AstDropCopyMove : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 

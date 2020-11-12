@@ -945,9 +945,9 @@ AstNode* AstInit::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstDrop::clone(CloneContext& context)
+AstNode* AstDropCopyMove::clone(CloneContext& context)
 {
-    auto newNode = g_Allocator.alloc0<AstDrop>();
+    auto newNode = g_Allocator.alloc0<AstDropCopyMove>();
     newNode->copyFrom(context, this);
 
     newNode->expression = findChildRef(expression, newNode);

@@ -141,6 +141,8 @@ DEFINE_TOKEN_ID(KwdLabel)
 
 DEFINE_TOKEN_ID(IntrinsicInit)
 DEFINE_TOKEN_ID(IntrinsicDrop)
+DEFINE_TOKEN_ID(IntrinsicPostCopy)
+DEFINE_TOKEN_ID(IntrinsicPostMove)
 DEFINE_TOKEN_ID(IntrinsicIndex)
 DEFINE_TOKEN_ID(IntrinsicSizeOf)
 DEFINE_TOKEN_ID(IntrinsicTypeOf)

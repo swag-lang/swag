@@ -12,6 +12,13 @@ bool TypeTableJob::computeStruct()
     auto realType     = (TypeInfoStruct*) typeInfo;
     auto segment      = typeTable->getConstantSegment(module, cflags);
 
+    if (realType->opPostCopy || realType->opUserPostCopyFct)
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostCopy;
+    if (realType->opPostMove || realType->opUserPostMoveFct)
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostMove;
+    if (realType->opDrop || realType->opUserDropFct)
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasDrop;
+
     // First and main pass, by locking only the type segment
     {
         unique_lock lk1(segment->mutex);

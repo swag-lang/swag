@@ -103,6 +103,8 @@ void LanguageSpec::setup()
 
     keywords["@init"]        = TokenId::IntrinsicInit;
     keywords["@drop"]        = TokenId::IntrinsicDrop;
+    keywords["@postmove"]    = TokenId::IntrinsicPostMove;
+    keywords["@postcopy"]    = TokenId::IntrinsicPostCopy;
     keywords["@sizeof"]      = TokenId::IntrinsicSizeOf;
     keywords["@typeof"]      = TokenId::IntrinsicTypeOf;
     keywords["@kindof"]      = TokenId::IntrinsicKindOf;

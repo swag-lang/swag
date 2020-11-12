@@ -44,9 +44,10 @@ public
 
     // Helpers functions to know if a struct has a special function
     func hasMethod(type: typeinfo, name: string)->bool => getMethod(type, name) != null
-    func hasDrop(type: typeinfo)->bool => hasMethod(type, "opDrop")
-    func hasPostMove(type: typeinfo)->bool => hasMethod(type, "opPostMove")
-    func hasPostCopy(type: typeinfo)->bool => hasMethod(type, "opPostCopy")
+
+    func hasDrop(type: typeinfo)->bool     => (type.flags & TypeInfoFlags.HasDrop) ? true : false
+    func hasPostMove(type: typeinfo)->bool => (type.flags & TypeInfoFlags.HasPostMove) ? true : false
+    func hasPostCopy(type: typeinfo)->bool => (type.flags & TypeInfoFlags.HasPostCopy) ? true : false
 
     // Returns true if the interface 'itf' is implemented in the given structure type
     func hasInterface(type: typeinfo, itf: typeinfo)->bool

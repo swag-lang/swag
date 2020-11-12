@@ -136,6 +136,16 @@ namespace Ast
             SWAG_CHECK(output(context, concat, node->childs.front()));
             concat.addString(")");
             break;
+        case AstNodeKind::PostMove:
+            concat.addString("@postmove(");
+            SWAG_CHECK(output(context, concat, node->childs.front()));
+            concat.addString(")");
+            break;
+        case AstNodeKind::PostCopy:
+            concat.addString("@postcopy(");
+            SWAG_CHECK(output(context, concat, node->childs.front()));
+            concat.addString(")");
+            break;
 
         case AstNodeKind::Break:
         {

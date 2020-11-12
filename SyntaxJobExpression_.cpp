@@ -1341,8 +1341,46 @@ bool SyntaxJob::doInit(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doDrop(AstNode* parent, AstNode** result)
 {
-    AstDrop* node     = Ast::newNode<AstDrop>(this, AstNodeKind::Drop, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveDrop;
+    AstDropCopyMove* node = Ast::newNode<AstDropCopyMove>(this, AstNodeKind::Drop, sourceFile, parent);
+    node->semanticFct     = SemanticJob::resolveDrop;
+    SWAG_CHECK(eatToken());
+
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(doExpression(node, &node->expression));
+
+    if (token.id == TokenId::SymComma)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doExpression(node, &node->count));
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    return true;
+}
+
+bool SyntaxJob::doPostCopy(AstNode* parent, AstNode** result)
+{
+    AstDropCopyMove* node = Ast::newNode<AstDropCopyMove>(this, AstNodeKind::PostCopy, sourceFile, parent);
+    node->semanticFct     = SemanticJob::resolvePostCopy;
+    SWAG_CHECK(eatToken());
+
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(doExpression(node, &node->expression));
+
+    if (token.id == TokenId::SymComma)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doExpression(node, &node->count));
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    return true;
+}
+
+bool SyntaxJob::doPostMove(AstNode* parent, AstNode** result)
+{
+    AstDropCopyMove* node = Ast::newNode<AstDropCopyMove>(this, AstNodeKind::PostMove, sourceFile, parent);
+    node->semanticFct     = SemanticJob::resolvePostMove;
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
