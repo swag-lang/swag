@@ -12,15 +12,15 @@ func exists(dirname: string)->bool
     return true
 }
 
-func enumerateFiles(dirname: string, searchPattern: string = "*.*")->Array'(file.FileInfo)
+func enumerateFiles(dirname: string, searchPattern: string = "*")->Array'(file.FileInfo)
 {
     var options: EnumerateOptions
     options.searchPattern = searchPattern
-    options.onlyFiles = true
-    return enumerateFiles(dirname, options)
+    options.wantDirectories = false
+    return enumerate(dirname, options)
 }
 
-func enumerateFiles(dirname: string, options: EnumerateOptions)->Array'(file.FileInfo)
+func enumerate(dirname: string, options: EnumerateOptions)->Array'(file.FileInfo)
 {
     var result: retval
     if dirname == null return result
@@ -44,9 +44,26 @@ func enumerateFiles(dirname: string, options: EnumerateOptions)->Array'(file.Fil
         {
             while true
             {
-                if !(findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                filename := cast(string) @mkslice(dataof, @cstrlen(dataof))
+
+                mustAdd := false
+                if findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
                 {
-                    filename := cast(string) @mkslice(dataof, @cstrlen(dataof))
+                    if filename != "." && filename != ".."
+                    {
+                        mustAdd = options.wantDirectories
+                        if options.recurse
+                        {
+                            newPath := path.combine(toScan.toString(), filename)
+                            stackPath.add(newPath)
+                        }
+                    }
+                }
+                else
+                    mustAdd = options.wantFiles
+
+                if mustAdd
+                {
                     fi.fullname = path.combine(dirname, filename)
 
                     fi.attributes = file.FileAttribute.fromDWORD(findfile.dwFileAttributes)

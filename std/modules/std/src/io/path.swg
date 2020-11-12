@@ -153,7 +153,7 @@ func hasExtension(fullname: string)->bool
 // between them if necessary
 func combine(fullnames: string...)->String
 {
-    var result: String
+    var result: retval
     visit one: fullnames
     {
         if @countof(one) == 0
