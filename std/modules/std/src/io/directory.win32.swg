@@ -14,14 +14,13 @@ func exists(dirname: string)->bool
 
 func enumerateFiles(dirname: string, searchPattern: string = "*")->Array'(file.FileInfo)
 {
-    var options: EnumerateOptions
+    var options: EnumerationOptions
     options.searchPattern = searchPattern
-    options.wantFiles = false
-    options.recurse = true
+    options.wantDirectories = false
     return enumerate(dirname, options)
 }
 
-func enumerate(dirname: string, options: EnumerateOptions)->Array'(file.FileInfo)
+func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileInfo)
 {
     var result: retval
     if dirname == null return result

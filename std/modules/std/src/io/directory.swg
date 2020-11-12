@@ -1,6 +1,6 @@
 public namespace std.directory;
 
-struct EnumerateOptions
+struct EnumerationOptions
 {
     searchPattern:      string
     recurse:            bool
