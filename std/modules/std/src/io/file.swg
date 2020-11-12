@@ -36,16 +36,6 @@ enum FileShare
     ReadWrite = Read | Write
 }
 
-struct FileInfo
-{
-    fullname:       String
-    attributes =    FileAttribute.None
-    creationTime:   time.DateTime
-    lastAccessTime: time.DateTime
-    lastWriteTime:  time.DateTime
-    size:           u64
-}
-
 // Read a file, and store the result in an utf8 string
 func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {text: String, success: bool}
 {

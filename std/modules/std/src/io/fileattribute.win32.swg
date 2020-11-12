@@ -39,3 +39,12 @@ impl enum FileAttribute
         return result
     }
 }
+
+// Returns attributes associated to the given filename
+// Returns FileAttribute.None in case of error
+func getAttribute(fullname: string)->FileAttribute
+{
+    res := GetFileAttributesA(@dataof(fullname))
+    if res == 0xFFFFFFFF return FileAttribute.None
+    return FileAttribute.fromDWORD(res)
+}
