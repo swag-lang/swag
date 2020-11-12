@@ -93,7 +93,7 @@ public impl TextReader
     // Returns a null string at the end
     func readLine(using self)->String
     {
-        var result: String
+        var result: retval
 
         while true
         {
@@ -133,7 +133,7 @@ public impl TextReader
     // utf8 string
     func readToEnd(using self)->String
     {
-        var result: String
+        var result: retval
 
         // Append what remains valid in the current decoded buffer
         if byteSeek < buffer.count

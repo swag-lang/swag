@@ -334,6 +334,14 @@ impl Array
         }
     }
 
+    // Remove last element
+    func removeBack(using self)
+    {
+        debug.assert(count > 0)
+        @drop(&buffer[count - 1])
+        count -= 1
+    }
+
     // Returns 'true' if the array contains 'value'.
     // O(n)
     func contains(using self, value: T)->bool
@@ -352,6 +360,13 @@ impl Array
     {
         lambda := cb ?? @(x, y: T)->s32 => x <=> y
         sort.slice(@mkslice(buffer, count), lambda)
+    }
+
+    // Returns the frist element
+    func front(using self)->const &T
+    {
+        debug.assert(count > 0)
+        return buffer[0]
     }
 
     // Returns the last element
