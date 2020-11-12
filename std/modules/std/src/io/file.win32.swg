@@ -2,48 +2,10 @@
 using win32
 public namespace std.file;
 
-impl enum FileAttribute
-{
-    protected func fromDWORD(attributes: DWORD)->FileAttribute
-    {
-        using FileAttribute
-        var result: FileAttribute = acast 0
-        if attributes & FILE_ATTRIBUTE_READONLY
-            result |= ReadOnly
-        if attributes & FILE_ATTRIBUTE_HIDDEN
-            result |= Hidden
-        if attributes & FILE_ATTRIBUTE_SYSTEM
-            result |= System
-        if attributes & FILE_ATTRIBUTE_DIRECTORY
-            result |= Directory
-        if attributes & FILE_ATTRIBUTE_ARCHIVE
-            result |= Archive
-        if attributes & FILE_ATTRIBUTE_DEVICE
-            result |= Device
-        if attributes & FILE_ATTRIBUTE_NORMAL
-            result |= Normal
-        if attributes & FILE_ATTRIBUTE_TEMPORARY
-            result |= Temporary
-        if attributes & FILE_ATTRIBUTE_SPARSE_FILE
-            result |= SparseFile
-        if attributes & FILE_ATTRIBUTE_REPARSE_POINT
-            result |= ReparsePoint
-        if attributes & FILE_ATTRIBUTE_COMPRESSED
-            result |= Compressed
-        if attributes & FILE_ATTRIBUTE_OFFLINE
-            result |= Offline
-        if attributes & FILE_ATTRIBUTE_NOT_CONTENT_INDEXED
-            result |= NotContentIndexed
-        if attributes & FILE_ATTRIBUTE_ENCRYPTED
-            result |= Encrypted
-        return result
-    }
-}
-
 // Returns various file informations
 func getInfo(fullname: string)->FileInfo
 {
-    var result:     FileInfo
+    var result:     retval
     var attrDatas:  WIN32_FILE_ATTRIBUTE_DATA
     res := GetFileAttributesExA(@dataof(fullname), GET_FILEEX_INFO_LEVELS.GetFileExInfoStandard, &attrDatas)
     if res == 0 return result
