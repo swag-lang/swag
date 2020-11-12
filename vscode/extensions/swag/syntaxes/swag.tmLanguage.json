@@ -8,6 +8,8 @@
     { "include": "#keywords" },
     { "include": "#keywords-control" },
     { "include": "#keywords-decl" },
+    { "include": "#op" },
+    { "include": "#op-invalid" },
     { "include": "#function-call" },
     { "include": "#raw-strings" },
     { "include": "#intrinsics" },
@@ -22,8 +24,6 @@
     { "include": "#strings" },
     { "include": "#var-decl" },
     { "include": "#storage-modifier" },
-    { "include": "#op" },
-    { "include": "#op-invalid" },
     { "include": "#constant" },
     { "include": "#struct-name" },
     { "include": "#literal-binary" },
@@ -178,11 +178,11 @@
     "op": {
       "patterns": [
         {
-          "name": "entity.name.function.op",
-          "match": "\\b(opBinary|opUnary|opAssign|opIndexAssign|opIndexAffect|opCast|opCount|opData|opVisit|opInit|opEquals|opCmp|opPostCopy|opPostMove|opDrop|opCount|opAffect|opIndex|opIndexAssign)\\b"
+          "name": "entity.name.function.intrinsic",
+          "match": "\\b(opSlice|opBinary|opUnary|opAssign|opIndexAssign|opIndexAffect|opCast|opCount|opData|opVisit|opInit|opEquals|opCmp|opPostCopy|opPostMove|opDrop|opCount|opAffect|opIndex|opIndexAssign)\\b"
         },
         {
-          "name": "entity.name.function.op",
+          "name": "entity.name.function.intrinsic",
           "match": "\\b(opVisit\\w+)\\b"
         }
       ]
