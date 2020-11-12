@@ -14,12 +14,20 @@ func exists(dirname: string)->bool
 
 func enumerateFiles(dirname: string, searchPattern: string = "*.*")->Array'(file.FileInfo)
 {
+    var options: EnumerateOptions
+    options.searchPattern = searchPattern
+    options.onlyFiles = true
+    return enumerateFiles(dirname, options)
+}
+
+func enumerateFiles(dirname: string, options: EnumerateOptions)->Array'(file.FileInfo)
+{
     var result: retval
     if dirname == null return result
-    if searchPattern == null return result
+    if options.searchPattern == null return result
 
     var findfile:   WIN32_FIND_DATAA
-    var searchPath: String = path.combine(dirname, searchPattern)
+    var searchPath: String = path.combine(dirname, options.searchPattern)
     var fi:         file.FileInfo
     var fileTime:   SYSTEMTIME
 
