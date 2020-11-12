@@ -27,39 +27,46 @@ func enumerateFiles(dirname: string, options: EnumerateOptions)->Array'(file.Fil
     if options.searchPattern == null return result
 
     var findfile:   WIN32_FIND_DATAA
-    var searchPath: String = path.combine(dirname, options.searchPattern)
     var fi:         file.FileInfo
     var fileTime:   SYSTEMTIME
+    var stackPath:  Array'String
 
     dataof := cast(const *u8) @dataof(findfile.cFileName)
 
-    h := FindFirstFileA(searchPath.buffer, &findfile);
-    if h != INVALID_HANDLE_VALUE
+    stackPath.add(String.from(dirname))
+    while !stackPath.isEmpty()
     {
-        while true
+        toScan := stackPath.popMoveBack()
+        searchPath := path.combine(toScan.toString(), options.searchPattern)
+
+        h := FindFirstFileA(searchPath.buffer, &findfile);
+        if h != INVALID_HANDLE_VALUE
         {
-            if !(findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            while true
             {
-                filename := cast(string) @mkslice(dataof, @cstrlen(dataof))
-                fi.fullname = path.combine(dirname, filename)
+                if !(findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                {
+                    filename := cast(string) @mkslice(dataof, @cstrlen(dataof))
+                    fi.fullname = path.combine(dirname, filename)
 
-                fi.attributes = file.FileAttribute.fromDWORD(findfile.dwFileAttributes)
-                fi.size = findfile.nFileSizeLow + (cast(u64) findfile.nFileSizeHigh << 32)
-                FileTimeToSystemTime(&findfile.ftCreationTime, &fileTime)
-                fi.creationTime.fromSYSTEMTIME(fileTime)
-                FileTimeToSystemTime(&findfile.ftLastAccessTime, &fileTime)
-                fi.lastAccessTime.fromSYSTEMTIME(fileTime)
-                FileTimeToSystemTime(&findfile.ftLastWriteTime, &fileTime)
-                fi.lastWriteTime.fromSYSTEMTIME(fileTime)
+                    fi.attributes = file.FileAttribute.fromDWORD(findfile.dwFileAttributes)
+                    fi.size = findfile.nFileSizeLow + (cast(u64) findfile.nFileSizeHigh << 32)
+                    FileTimeToSystemTime(&findfile.ftCreationTime, &fileTime)
+                    fi.creationTime.fromSYSTEMTIME(fileTime)
+                    FileTimeToSystemTime(&findfile.ftLastAccessTime, &fileTime)
+                    fi.lastAccessTime.fromSYSTEMTIME(fileTime)
+                    FileTimeToSystemTime(&findfile.ftLastWriteTime, &fileTime)
+                    fi.lastWriteTime.fromSYSTEMTIME(fileTime)
 
-                result.emplace(&fi)
+                    result.emplace(&fi)
+                }
+
+                if !FindNextFileA(h, &findfile)
+                    break
             }
 
-            if !FindNextFileA(h, &findfile)
-                break
+            FindClose(h)
         }
-
-        FindClose(h)
     }
 
     return result

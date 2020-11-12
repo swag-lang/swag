@@ -353,6 +353,15 @@ impl Array
         lambda := cb ?? @(x, y: T)->s32 => x <=> y
         sort.slice(@mkslice(buffer, count), lambda)
     }
+
+    func popMoveBack(using self)->T
+    {
+        debug.assert(count > 0)
+        var result: retval = ?
+        result = nodrop move nodrop buffer[count - 1]
+        count -= 1
+        return result
+    }
 }
 
 impl strconv.IConvert for Array
