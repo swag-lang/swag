@@ -5,7 +5,7 @@ func toString(fmt: string, values: ...)->String
 {
     var buf: ConcatBuffer
     append(&buf, fmt, values)
-    return buf.toString()
+    return buf.moveToString()
 }
 
 // Format a string and put the result in a ConcatBuffer

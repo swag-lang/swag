@@ -31,7 +31,6 @@ func toto()->A
 }
 
 //#[swag.printbc]
-#[swag.inline]
 func titi()->A
 {
     return toto()
