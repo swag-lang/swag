@@ -336,7 +336,7 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     // If the left expression is false, then we copy the result to the && operator, and we jump right after it
     // (the jump offset will be updated later). That way, we do not evaluate B in 'A && B' if A is false.
     // left->additionalRegisterRC will be used as the result register for the '&&' operation in 'emitBinaryOp'
-    left->additionalRegisterRC     = left->resultRegisterRC[0];
+    left->additionalRegisterRC     = left->resultRegisterRC;
     left->resultRegisterRC.canFree = false;
     binNode->seekJumpExpression    = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfFalse, left->resultRegisterRC);
@@ -366,7 +366,7 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     // If the left expression is true, then we copy the result to the || operator, and we jump right after it
     // (the jump offset will be updated later). That way, we do not evaluate B in 'A || B' if B is true.
     // left->additionalRegisterRC will be used as the result register for the '||' operation in 'emitBinaryOp'
-    left->additionalRegisterRC     = left->resultRegisterRC[0];
+    left->additionalRegisterRC     = left->resultRegisterRC;
     left->resultRegisterRC.canFree = false;
     binNode->seekJumpExpression    = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfTrue, left->resultRegisterRC);
@@ -422,7 +422,6 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             // So we take it as the result register.
             if (node->token.id == TokenId::SymAmpersandAmpersand || node->token.id == TokenId::SymVerticalVertical)
             {
-                SWAG_ASSERT(node->childs[0]->additionalRegisterRC.size() == 1);
                 r2 = node->childs[0]->additionalRegisterRC;
                 node->childs[0]->additionalRegisterRC.clear();
             }
