@@ -480,7 +480,7 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
         }
     }
 
-    // Stuff (alias, using will go there)
+    // Stuff (alias)
     if (!publicSet->publicNodes.empty())
     {
         for (auto one : publicSet->publicNodes)

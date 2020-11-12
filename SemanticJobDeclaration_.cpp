@@ -98,10 +98,6 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         return job->error(context, format("'using' cannot be used on type %s", TypeInfo::getNakedKindName(typeResolved)));
     }
 
-    // Export using
-    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && node->ownerScope->isGlobalOrImpl())
-        node->ownerScope->addPublicNode(node);
-
     return true;
 }
 
