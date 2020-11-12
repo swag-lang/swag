@@ -35,57 +35,57 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
         searchPath := path.combine(toScan.toString(), options.matchPattern)
 
         h := FindFirstFileA(searchPath.buffer, &findfile);
-        if h != INVALID_HANDLE_VALUE
-        {
-            while true
-            {
-                filename := cast(string) @mkslice(dataof, @cstrlen(dataof))
+        if h == INVALID_HANDLE_VALUE
+            continue
 
-                // Filter by file/folder
-                mustAdd := false
-                if findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
+        while true
+        {
+            filename := cast(string) @mkslice(dataof, @cstrlen(dataof))
+
+            // Filter by file/folder
+            mustAdd := false
+            if findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
+            {
+                if filename != "." && filename != ".."
                 {
-                    if filename != "." && filename != ".."
+                    mustAdd = options.wantDirectories
+                    if options.recurse
                     {
-                        mustAdd = options.wantDirectories
-                        if options.recurse
-                        {
-                            newPath := path.combine(toScan.toString(), filename)
-                            stackPath.emplace(&newPath)
-                        }
+                        newPath := path.combine(toScan.toString(), filename)
+                        stackPath.emplace(&newPath)
                     }
-                    else
-                        mustAdd = options.wantSpecialDirectories
                 }
                 else
-                    mustAdd = options.wantFiles
+                    mustAdd = options.wantSpecialDirectories
+            }
+            else
+                mustAdd = options.wantFiles
 
-                // Add file/folder to the result
-                if mustAdd
+            // Add file/folder to the result
+            if mustAdd
+            {
+                fi.attributes = FileAttributes.fromDWORD(findfile.dwFileAttributes)
+                if !(fi.attributes & options.skipAttributes)
                 {
-                    fi.attributes = FileAttributes.fromDWORD(findfile.dwFileAttributes)
-                    if !(fi.attributes & options.skipAttributes)
-                    {
-                        fi.fullname = path.combine(toScan.toString(), filename)
+                    fi.fullname = path.combine(toScan.toString(), filename)
 
-                        fi.size = findfile.nFileSizeLow + (cast(u64) findfile.nFileSizeHigh << 32)
-                        FileTimeToSystemTime(&findfile.ftCreationTime, &fileTime)
-                        fi.creationTime.fromSYSTEMTIME(fileTime)
-                        FileTimeToSystemTime(&findfile.ftLastAccessTime, &fileTime)
-                        fi.lastAccessTime.fromSYSTEMTIME(fileTime)
-                        FileTimeToSystemTime(&findfile.ftLastWriteTime, &fileTime)
-                        fi.lastWriteTime.fromSYSTEMTIME(fileTime)
+                    fi.size = findfile.nFileSizeLow + (cast(u64) findfile.nFileSizeHigh << 32)
+                    FileTimeToSystemTime(&findfile.ftCreationTime, &fileTime)
+                    fi.creationTime.fromSYSTEMTIME(fileTime)
+                    FileTimeToSystemTime(&findfile.ftLastAccessTime, &fileTime)
+                    fi.lastAccessTime.fromSYSTEMTIME(fileTime)
+                    FileTimeToSystemTime(&findfile.ftLastWriteTime, &fileTime)
+                    fi.lastWriteTime.fromSYSTEMTIME(fileTime)
 
-                        result.emplace(&fi)
-                    }
+                    result.emplace(&fi)
                 }
-
-                if !FindNextFileA(h, &findfile)
-                    break
             }
 
-            FindClose(h)
+            if !FindNextFileA(h, &findfile)
+                break
         }
+
+        FindClose(h)
     }
 
     return result
