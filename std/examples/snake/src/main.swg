@@ -126,7 +126,7 @@ struct sSnakeSegment
 	x, y: s32
 }
 
-#run main()
+//#run main()
 
 #main
 {
