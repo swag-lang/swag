@@ -139,21 +139,16 @@ impl Array
         {
             #if reflection.hasPostMove(@typeof(T))
             {
-                loop count
-                    @postmove(newBuffer + @index)
+                @postmove(newBuffer, count)
             }
             #elif reflection.hasPostCopy(@typeof(T))
             {
-                loop count
-                {
-                    @postcopy(newBuffer + @index)
-                    @drop(buffer + @index)
-                }
+                @postcopy(newBuffer, count)
+                @drop(buffer, count)
             }
             #elif reflection.hasDrop(@typeof(T))
             {
-                loop count
-                    @drop(buffer + @index)
+                @drop(buffer, count)
             }
         }
 
