@@ -87,7 +87,7 @@ bool ByteCodeOptimizer::optimize(Module* module)
     passes.push_back(optimizePassImmediate);
     passes.push_back(optimizePassConst);
     passes.push_back(optimizePassDupCopyRBRA);
-    passes.push_back(optimizePassDupCopyRRRC);
+    passes.push_back(optimizePassDupCopyRA);
     passes.push_back(optimizePassRetCopy);
     passes.push_back(optimizePassRetCopyInline);
     passes.push_back(optimizePassReduce);

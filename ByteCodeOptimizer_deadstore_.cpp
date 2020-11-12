@@ -2,8 +2,8 @@
 #include "ByteCodeOptimizer.h"
 #include "Log.h"
 
-// If two instructions write in the same register in the same block (between jumps), then the
-// first write is useless and can be removed
+// If two instructions write in the same register in the same block (between jumps), and there's no
+// read of that register between them, then the first write is useless and can be removed
 void ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 {
     auto  maxReg = context->bc->maxReservedRegisterRC;
