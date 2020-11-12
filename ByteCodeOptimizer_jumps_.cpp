@@ -28,6 +28,28 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 setNop(context, ip);
         }
 
+        // Jump if false to a jump if false with the same register
+        if (ip->op == ByteCodeOp::JumpIfFalse)
+        {
+            destIp = ip + ip->b.s32 + 1;
+            if (destIp->op == ByteCodeOp::JumpIfFalse && destIp->a.u32 == ip->a.u32)
+            {
+                ip->b.s32 += destIp->b.s32 + 1;
+                context->passHasDoneSomething = true;
+            }
+        }
+
+        // Jump if true to a jump if true with the same register
+        if (ip->op == ByteCodeOp::JumpIfTrue)
+        {
+            destIp = ip + ip->b.s32 + 1;
+            if (destIp->op == ByteCodeOp::JumpIfTrue && destIp->a.u32 == ip->a.u32)
+            {
+                ip->b.s32 += destIp->b.s32 + 1;
+                context->passHasDoneSomething = true;
+            }
+        }
+
         // If we have :
         // 0: (jump if false) to 2
         // 1: (jump) to whatever

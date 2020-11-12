@@ -24,5 +24,5 @@ struct ST
     }
 
     visit *c: result
-        console.print("##%##\n", c.str)
+        @assert(c.str == "AB")
 }
