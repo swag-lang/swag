@@ -21,6 +21,7 @@ func enumerateFiles(dirname: string, searchPattern: string = "*.*")->Array'(file
     var findfile:   WIN32_FIND_DATAA
     var searchPath: String = path.combine(dirname, searchPattern)
     var fi:         file.FileInfo
+    var fileTime:   SYSTEMTIME
 
     dataof := cast(const *u8) @dataof(findfile.cFileName)
 
@@ -33,6 +34,16 @@ func enumerateFiles(dirname: string, searchPattern: string = "*.*")->Array'(file
             {
                 filename := cast(string) @mkslice(dataof, @cstrlen(dataof))
                 fi.fullname = path.combine(dirname, filename)
+
+                fi.attributes = file.FileAttribute.fromDWORD(findfile.dwFileAttributes)
+                fi.size = findfile.nFileSizeLow + (cast(u64) findfile.nFileSizeHigh << 32)
+                FileTimeToSystemTime(&findfile.ftCreationTime, &fileTime)
+                fi.creationTime.fromSYSTEMTIME(fileTime)
+                FileTimeToSystemTime(&findfile.ftLastAccessTime, &fileTime)
+                fi.lastAccessTime.fromSYSTEMTIME(fileTime)
+                FileTimeToSystemTime(&findfile.ftLastWriteTime, &fileTime)
+                fi.lastWriteTime.fromSYSTEMTIME(fileTime)
+
                 result.emplace(&fi)
             }
 
