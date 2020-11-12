@@ -53,7 +53,8 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         if (!node->childs.empty())
         {
             auto returnExpression = node->childs.front();
-            if (returnExpression->resolvedSymbolOverload && returnExpression->resolvedSymbolOverload->flags & OVERLOAD_RETVAL)
+            if ((node->doneFlags & AST_DONE_RETVAL) ||
+                (returnExpression->resolvedSymbolOverload && returnExpression->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
             {
                 // Do nothing if returning retval
             }
@@ -602,26 +603,41 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         rr0Saved = true;
     }
 
-    // Store in RR0 the address of the stack to store the result
     auto returnType = typeInfoFunc->returnType;
     if (returnType && (returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
-        node->resultRegisterRC = reserveRegisterRC(context);
-        auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-        inst->b.u32            = node->fctCallStorageOffset;
-        emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
-        context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-
-        // Need to drop the temporary variable
-        if (returnType->kind == TypeInfoKind::Struct)
+        // If in a return expression, just push the caller retval
+        if (node->parent && node->parent->parent->kind == AstNodeKind::Return)
         {
-            StructToDrop st;
-            st.overload = node->resolvedSymbolOverload;
-            if (st.overload)
-                st.overload->flags |= OVERLOAD_EMITTED;
-            st.typeStruct    = CastTypeInfo<TypeInfoStruct>(typeInfoFunc->returnType, TypeInfoKind::Struct);
-            st.storageOffset = node->fctCallStorageOffset;
-            node->ownerScope->symTable.addVarToDrop(st);
+            node->resultRegisterRC = reserveRegisterRC(context);
+            if (node->ownerInline)
+                emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC, node->ownerInline->resultRegisterRC);
+            else
+                emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC, 0);
+            emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
+            context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+            node->parent->parent->doneFlags |= AST_DONE_RETVAL;
+        }
+        else
+        {
+            // Store in RR0 the address of the stack to store the result
+            node->resultRegisterRC = reserveRegisterRC(context);
+            auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+            inst->b.u32            = node->fctCallStorageOffset;
+            emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
+            context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+
+            // Need to drop the temporary variable
+            if (returnType->kind == TypeInfoKind::Struct)
+            {
+                StructToDrop st;
+                st.overload = node->resolvedSymbolOverload;
+                if (st.overload)
+                    st.overload->flags |= OVERLOAD_EMITTED;
+                st.typeStruct    = CastTypeInfo<TypeInfoStruct>(typeInfoFunc->returnType, TypeInfoKind::Struct);
+                st.storageOffset = node->fctCallStorageOffset;
+                node->ownerScope->symTable.addVarToDrop(st);
+            }
         }
     }
 
