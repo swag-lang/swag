@@ -20,7 +20,7 @@ impl A
     {
         G = 0
         var x: A's32
-        x.opDrop()
+        @drop(&x)
         @assert(G == 1)
     }
 }
