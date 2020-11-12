@@ -1,6 +1,6 @@
 #if std.WINDOWS;
-using win32
 public namespace std.file;
+using win32
 
 impl enum FileAttributes
 {

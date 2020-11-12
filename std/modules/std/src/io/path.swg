@@ -1,5 +1,5 @@
-using swag
 public namespace std.path;
+using swag
 
 const DirectorySeparatorChar    = "\\"'u8
 const AltDirectorySeparatorChar = "/"'u8

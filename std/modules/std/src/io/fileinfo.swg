@@ -1,5 +1,5 @@
 public namespace std.file;
-using std.time
+using time
 
 struct FileInfo
 {

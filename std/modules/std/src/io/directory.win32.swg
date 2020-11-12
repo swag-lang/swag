@@ -1,6 +1,6 @@
 #if std.WINDOWS;
-using win32
 public namespace std.directory;
+using win32
 
 // Returns true if the given directory exists
 func exists(dirname: string)->bool
