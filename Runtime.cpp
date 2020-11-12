@@ -76,6 +76,15 @@ namespace Runtime
     }
 
     ////////////////////////////////////////////////////////////
+    uint32_t cstrlen(const char* str)
+    {
+        uint32_t count = 0;
+        while (*str++)
+            count++;
+        return count;
+    }
+
+    ////////////////////////////////////////////////////////////
     bool strcmp(const void* str1, uint32_t num1, const void* str2, uint32_t num2)
     {
         if (num1 != num2)
@@ -105,19 +114,19 @@ namespace Runtime
     {
         char buf[100];
         itoa(buf, value);
-        print(buf, (int) strlen(buf));
+        print(buf, (int) cstrlen(buf));
     }
 
     void print(double value)
     {
         char buf[100];
         ftoa(buf, value);
-        print(buf, (int) strlen(buf));
+        print(buf, (int) cstrlen(buf));
     }
 
     void print(const char* message)
     {
-        print(message, (int) strlen(message));
+        print(message, (int) cstrlen(message));
     }
 
     ////////////////////////////////////////////////////////////
@@ -238,7 +247,7 @@ namespace Runtime
 
         // Message to the user
         static auto info    = "- Press Cancel to exit\n- Press Retry to debug the application\n- Press Continue to ignore the assert";
-        auto        lenInfo = (uint32_t) strlen(info);
+        auto        lenInfo = (uint32_t) cstrlen(info);
         memcpy(&str[len], info, lenInfo);
         len += lenInfo;
 

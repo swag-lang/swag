@@ -590,6 +590,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].s32 = Runtime::memcmp(dst, src, size);
         break;
     }
+    case ByteCodeOp::IntrinsicCStrLen:
+    {
+        void* src                  = registersRC[ip->b.u32].pointer;
+        registersRC[ip->a.u32].u32 = Runtime::cstrlen((const char*) src);
+        break;
+    }
 
     case ByteCodeOp::CopyRBtoRA:
     {

@@ -281,6 +281,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     case ByteCodeOp::IntrinsicF32x1:
     case ByteCodeOp::IntrinsicF64x1:
     case ByteCodeOp::IntrinsicPrintString:
+    case ByteCodeOp::IntrinsicCStrLen:
         context->bc->maxCallParams = max(context->bc->maxCallParams, 2); // Runtime call
         break;
 

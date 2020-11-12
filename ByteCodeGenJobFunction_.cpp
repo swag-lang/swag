@@ -296,6 +296,15 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, childSize);
         break;
     }
+    case TokenId::IntrinsicCStrLen:
+    {
+        auto childSrc = callParams->childs[0];
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "pointer of '@cstrlen' is null");
+        node->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::IntrinsicCStrLen, node->resultRegisterRC, childSrc->resultRegisterRC);
+        freeRegisterRC(context, childSrc);
+        break;
+    }
     case TokenId::IntrinsicTypeCmp:
     {
         auto child0            = callParams->childs[0];

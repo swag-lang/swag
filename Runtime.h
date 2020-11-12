@@ -331,6 +331,7 @@ namespace Runtime
 {
     int      memcmp(const void* b1, const void* b2, size_t n);
     bool     strcmp(const void* str1, uint32_t num1, const void* str2, uint32_t num2);
+    uint32_t cstrlen(const char* str);
     float    abs(float value);
     void     print(const void* message, uint32_t len);
     void     print(int64_t value);

@@ -10,7 +10,7 @@ impl A
 {
     func opDrop(using self)
     {
-        G = 1
+        G += 1
     }
 }
 
@@ -23,4 +23,6 @@ impl A
         @drop(&x)
         @assert(G == 1)
     }
+
+    @assert(G == 2)
 }

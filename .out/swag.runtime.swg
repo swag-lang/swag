@@ -100,13 +100,6 @@ private func ftoa(result: *u8, value: f64)
     itoa(n, ipart)
 }
 
-private func strlen(value: const *u8)->u32
-{
-    idx := 0'u32
-    while value[idx] idx += 1
-    return idx
-}
-
 ////////////////////////////////////////////////////////////
 func @memcpy(dst: *void, src: const *void, size: u32)
 {
@@ -136,6 +129,14 @@ func @memcmp(dst, src: const *void, size: u32)->s32
 }
 
 ////////////////////////////////////////////////////////////
+func @cstrlen(value: const *u8)->u32
+{
+    idx := 0'u32
+    while value[idx] idx += 1
+    return idx
+}
+
+////////////////////////////////////////////////////////////
 func @strcmp(str1: string, str2: string)->bool
 {
     num1 := @countof(str1)
@@ -153,7 +154,7 @@ func @print(value: s64)
 {
     var buf: [100] u8
     itoa(&buf[0], value)
-    str := cast(string) @mkslice(&buf[0], strlen(&buf[0]))
+    str := cast(string) @mkslice(&buf[0], @cstrlen(&buf[0]))
     @print(str)
 }
 
@@ -161,7 +162,7 @@ func @print(value: f64)
 {
     var buf: [100] u8
     ftoa(&buf[0], value)
-    str := cast(string) @mkslice(&buf[0], strlen(&buf[0]))
+    str := cast(string) @mkslice(&buf[0], @cstrlen(&buf[0]))
     @print(str)
 }
 
@@ -367,11 +368,11 @@ private
         if expr return
 
         var loc: swag.CompilerSourceLocation
-        loc.fileName = cast(string) @mkslice(file, strlen(file))
+        loc.fileName = cast(string) @mkslice(file, @cstrlen(file))
         loc.lineStart, loc.lineEnd = line
         loc.colStart, loc.colEnd = col
 
-        var msg: string = message ? cast(string) @mkslice(message, strlen(message)) : "assertion failed"
+        var msg: string = message ? cast(string) @mkslice(message, @cstrlen(message)) : "assertion failed"
         @assertmsg(msg, loc)
     }
 

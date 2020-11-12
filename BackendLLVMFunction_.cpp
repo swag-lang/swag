@@ -697,6 +697,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateCall(modu.getOrInsertFunction("@memcmp", typeF), {rr, r0, r1, r2});
             break;
         }
+        case ByteCodeOp::IntrinsicCStrLen:
+        {
+            auto rr = GEP_I32(allocR, ip->a.u32);
+            auto r0 = GEP_I32(allocR, ip->b.u32);
+            auto typeF = createFunctionTypeInternal(buildParameters, 2);
+            builder.CreateCall(modu.getOrInsertFunction("@cstrlen", typeF), { rr, r0 });
+            break;
+        }
 
         case ByteCodeOp::IntrinsicInterfaceOf:
         {
