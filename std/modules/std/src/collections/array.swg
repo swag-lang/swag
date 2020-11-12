@@ -354,7 +354,15 @@ impl Array
         sort.slice(@mkslice(buffer, count), lambda)
     }
 
-    func popMoveBack(using self)->T
+    // Returns the last element
+    func back(using self)->const &T
+    {
+        debug.assert(count > 0)
+        return buffer[count - 1]
+    }
+
+    // Returns the last element, and remove it from the array
+    func popBack(using self)->T
     {
         debug.assert(count > 0)
         var result: retval = ?

@@ -1217,7 +1217,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
                     (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstIntrinsicProp>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicKindOf))
                 {
                     if (callParameters)
-                        return context->report({callParameters, "invalid function call (you should remove parenthesis)"});
+                        return context->report({callParameters, "cannot take the address of a function with call parameters"});
                     oneOverload.symMatchContext.result = MatchResult::Ok;
                     forcedFine                         = true;
                 }

@@ -16,7 +16,8 @@ func enumerateFiles(dirname: string, searchPattern: string = "*")->Array'(file.F
 {
     var options: EnumerateOptions
     options.searchPattern = searchPattern
-    options.wantDirectories = false
+    options.wantFiles = false
+    options.recurse = true
     return enumerate(dirname, options)
 }
 
@@ -36,7 +37,7 @@ func enumerate(dirname: string, options: EnumerateOptions)->Array'(file.FileInfo
     stackPath.add(String.from(dirname))
     while !stackPath.isEmpty()
     {
-        toScan := stackPath.popMoveBack()
+        toScan := stackPath.popBack()
         searchPath := path.combine(toScan.toString(), options.searchPattern)
 
         h := FindFirstFileA(searchPath.buffer, &findfile);
@@ -46,6 +47,7 @@ func enumerate(dirname: string, options: EnumerateOptions)->Array'(file.FileInfo
             {
                 filename := cast(string) @mkslice(dataof, @cstrlen(dataof))
 
+                // Filter by file/folder
                 mustAdd := false
                 if findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
                 {
@@ -55,16 +57,17 @@ func enumerate(dirname: string, options: EnumerateOptions)->Array'(file.FileInfo
                         if options.recurse
                         {
                             newPath := path.combine(toScan.toString(), filename)
-                            stackPath.add(newPath)
+                            stackPath.emplace(&newPath)
                         }
                     }
                 }
                 else
                     mustAdd = options.wantFiles
 
+                // Add file/folder to the result
                 if mustAdd
                 {
-                    fi.fullname = path.combine(dirname, filename)
+                    fi.fullname = path.combine(toScan.toString(), filename)
 
                     fi.attributes = file.FileAttribute.fromDWORD(findfile.dwFileAttributes)
                     fi.size = findfile.nFileSizeLow + (cast(u64) findfile.nFileSizeHigh << 32)
