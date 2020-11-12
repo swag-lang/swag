@@ -147,10 +147,6 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
 
-    SWAG_CHECK(emitLeaveScope(context, node->scope));
-    if (context->result != ContextResult::Done)
-        return true;
-
     // Update all returns to jump at the end of the inline block
     for (auto r : node->returnList)
         context->bc->out[r->seekJump].b.s32 = context->bc->numInstructions - r->seekJump - 1;
