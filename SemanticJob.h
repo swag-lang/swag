@@ -272,9 +272,7 @@ struct SemanticJob : public Job
     static bool resolveDefer(SemanticContext* context);
     static bool resolveNullConditionalOp(SemanticContext* context);
     static bool resolveInit(SemanticContext* context);
-    static bool resolveDrop(SemanticContext* context);
-    static bool resolvePostCopy(SemanticContext* context);
-    static bool resolvePostMove(SemanticContext* context);
+    static bool resolveDropCopyMove(SemanticContext* context);
     static bool resolveUserCast(SemanticContext* context);
 
     VectorNative<AstNode*>         tmpNodes;

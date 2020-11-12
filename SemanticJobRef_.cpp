@@ -599,57 +599,21 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveDrop(SemanticContext* context)
+bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
 {
-    auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop);
+    auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'@drop' first parameter should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'%s' first parameter should be a pointer to a struct, but is '%s'", node->name.c_str(), expressionTypeInfo->name.c_str())}));
 
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'@drop' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str())}));
-        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->report({node->count, "'@drop' count parameter should be 32 bits"}));
+        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'%s' count parameter should be an integer, but is '%s'", node->name.c_str(), countTypeInfo->name.c_str())}));
+        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->report({node->count, format("'%s' count parameter should be 32 bits", node->name.c_str())}));
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitDrop;
-    return true;
-}
-
-bool SemanticJob::resolvePostCopy(SemanticContext* context)
-{
-    auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::PostCopy);
-    auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
-
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'@postcopy' first parameter should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
-
-    if (node->count)
-    {
-        auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'@postcopy' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str())}));
-        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->report({node->count, "'@postcopy' count parameter should be 32 bits"}));
-    }
-
-    node->byteCodeFct = ByteCodeGenJob::emitPostCopy;
-    return true;
-}
-
-bool SemanticJob::resolvePostMove(SemanticContext* context)
-{
-    auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::PostMove);
-    auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
-
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'@postmove' first parameter should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
-
-    if (node->count)
-    {
-        auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'@postmove' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str())}));
-        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->report({node->count, "'@postmove' count parameter should be 32 bits"}));
-    }
-
-    node->byteCodeFct = ByteCodeGenJob::emitPostMove;
+    node->byteCodeFct = ByteCodeGenJob::emitDropCopyMove;
     return true;
 }
 

@@ -1339,48 +1339,25 @@ bool SyntaxJob::doInit(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doDrop(AstNode* parent, AstNode** result)
+bool SyntaxJob::doDropCopyMove(AstNode* parent, AstNode** result)
 {
     AstDropCopyMove* node = Ast::newNode<AstDropCopyMove>(this, AstNodeKind::Drop, sourceFile, parent);
-    node->semanticFct     = SemanticJob::resolveDrop;
-    SWAG_CHECK(eatToken());
-
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(doExpression(node, &node->expression));
-
-    if (token.id == TokenId::SymComma)
+    switch (token.id)
     {
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doExpression(node, &node->count));
+    case TokenId::IntrinsicDrop:
+        node->name = Utf8("@drop");
+        break;
+    case TokenId::IntrinsicPostCopy:
+        node->name = Utf8("@postCopy");
+        node->kind = AstNodeKind::PostCopy;
+        break;
+    case TokenId::IntrinsicPostMove:
+        node->name = Utf8("@postMove");
+        node->kind = AstNodeKind::PostMove;
+        break;
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
-    return true;
-}
-
-bool SyntaxJob::doPostCopy(AstNode* parent, AstNode** result)
-{
-    AstDropCopyMove* node = Ast::newNode<AstDropCopyMove>(this, AstNodeKind::PostCopy, sourceFile, parent);
-    node->semanticFct     = SemanticJob::resolvePostCopy;
-    SWAG_CHECK(eatToken());
-
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(doExpression(node, &node->expression));
-
-    if (token.id == TokenId::SymComma)
-    {
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doExpression(node, &node->count));
-    }
-
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
-    return true;
-}
-
-bool SyntaxJob::doPostMove(AstNode* parent, AstNode** result)
-{
-    AstDropCopyMove* node = Ast::newNode<AstDropCopyMove>(this, AstNodeKind::PostMove, sourceFile, parent);
-    node->semanticFct     = SemanticJob::resolvePostMove;
+    node->semanticFct = SemanticJob::resolveDropCopyMove;
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));

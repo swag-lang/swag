@@ -641,131 +641,75 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
 {
-    auto node           = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop);
+    auto node           = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
 
     if (typeExpression->pointedType->kind == TypeInfoKind::Struct)
     {
-        // Number of elements to drop. If 0, then this is dynamic
-        uint32_t numToDrop = 0;
+        // Number of elements to deal with. If 0, then this is dynamic
+        uint32_t numToDo = 0;
         if (!node->count)
-            numToDrop = 1;
+            numToDo = 1;
         else if (node->count->flags & AST_VALUE_COMPUTED)
-            numToDrop = node->count->computedValue.reg.u32;
+            numToDo = node->count->computedValue.reg.u32;
 
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
-        generateStruct_opDrop(context, typeStruct);
-        if (context->result == ContextResult::Pending)
-            return true;
+        auto typeStruct    = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
+        bool somethingToDo = false;
+        switch (node->kind)
+        {
+        case AstNodeKind::Drop:
+            generateStruct_opDrop(context, typeStruct);
+            if (context->result == ContextResult::Pending)
+                return true;
+            somethingToDo = typeStruct->opDrop;
+            break;
+        case AstNodeKind::PostCopy:
+            generateStruct_opPostCopy(context, typeStruct);
+            if (context->result == ContextResult::Pending)
+                return true;
+            somethingToDo = typeStruct->opPostCopy;
+            break;
+        case AstNodeKind::PostMove:
+            generateStruct_opPostMove(context, typeStruct);
+            if (context->result == ContextResult::Pending)
+                return true;
+            somethingToDo = typeStruct->opPostMove;
+            break;
+        }
 
-        if (typeStruct->opDrop)
+        if (somethingToDo)
         {
             auto startLoop = context->bc->numInstructions;
             emitInstruction(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
-            auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
-            inst->a.pointer = (uint8_t*) typeStruct->opDrop;
-            inst->b.pointer = (uint8_t*) typeStruct->opDrop->typeInfoFunc;
+            auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
+
+            switch (node->kind)
+            {
+            case AstNodeKind::Drop:
+                inst->a.pointer = (uint8_t*) typeStruct->opDrop;
+                inst->b.pointer = (uint8_t*) typeStruct->opDrop->typeInfoFunc;
+                break;
+            case AstNodeKind::PostCopy:
+                inst->a.pointer = (uint8_t*) typeStruct->opPostCopy;
+                inst->b.pointer = (uint8_t*) typeStruct->opPostCopy->typeInfoFunc;
+                break;
+            case AstNodeKind::PostMove:
+                inst->a.pointer = (uint8_t*) typeStruct->opPostMove;
+                inst->b.pointer = (uint8_t*) typeStruct->opPostMove->typeInfoFunc;
+                break;
+            }
+
             emitInstruction(context, ByteCodeOp::IncSPPostCall, 8);
 
-            if (numToDrop != 1)
+            if (numToDo != 1)
             {
                 inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
                 inst->flags |= BCI_IMM_B;
                 inst->b.u32 = typeExpression->pointedType->sizeOf;
                 emitInstruction(context, ByteCodeOp::DecrementRA32, node->count->resultRegisterRC);
                 auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero32, node->count->resultRegisterRC);
-                instJump->b.s32 = startLoop - context->bc->numInstructions;
-            }
-        }
-    }
-
-    freeRegisterRC(context, node->expression);
-    freeRegisterRC(context, node->count);
-    return true;
-}
-
-bool ByteCodeGenJob::emitPostCopy(ByteCodeGenContext* context)
-{
-    auto node = CastAst<AstDropCopyMove>(context->node, AstNodeKind::PostCopy);
-    auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
-
-    if (typeExpression->pointedType->kind == TypeInfoKind::Struct)
-    {
-        // Number of elements to init. If 0, then this is dynamic
-        uint32_t numToDrop = 0;
-        if (!node->count)
-            numToDrop = 1;
-        else if (node->count->flags & AST_VALUE_COMPUTED)
-            numToDrop = node->count->computedValue.reg.u32;
-
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
-        generateStruct_opPostCopy(context, typeStruct);
-        if (context->result == ContextResult::Pending)
-            return true;
-
-        if (typeStruct->opPostCopy)
-        {
-            auto startLoop = context->bc->numInstructions;
-            emitInstruction(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
-            auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-            inst->a.pointer = (uint8_t*)typeStruct->opPostCopy;
-            inst->b.pointer = (uint8_t*)typeStruct->opPostCopy->typeInfoFunc;
-            emitInstruction(context, ByteCodeOp::IncSPPostCall, 8);
-
-            if (numToDrop != 1)
-            {
-                inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
-                inst->flags |= BCI_IMM_B;
-                inst->b.u32 = typeExpression->pointedType->sizeOf;
-                emitInstruction(context, ByteCodeOp::DecrementRA32, node->count->resultRegisterRC);
-                auto instJump = emitInstruction(context, ByteCodeOp::JumpIfNotZero32, node->count->resultRegisterRC);
-                instJump->b.s32 = startLoop - context->bc->numInstructions;
-            }
-        }
-    }
-
-    freeRegisterRC(context, node->expression);
-    freeRegisterRC(context, node->count);
-    return true;
-}
-
-bool ByteCodeGenJob::emitPostMove(ByteCodeGenContext* context)
-{
-    auto node = CastAst<AstDropCopyMove>(context->node, AstNodeKind::PostMove);
-    auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
-
-    if (typeExpression->pointedType->kind == TypeInfoKind::Struct)
-    {
-        // Number of elements to init. If 0, then this is dynamic
-        uint32_t numToDrop = 0;
-        if (!node->count)
-            numToDrop = 1;
-        else if (node->count->flags & AST_VALUE_COMPUTED)
-            numToDrop = node->count->computedValue.reg.u32;
-
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
-        generateStruct_opPostMove(context, typeStruct);
-        if (context->result == ContextResult::Pending)
-            return true;
-
-        if (typeStruct->opPostMove)
-        {
-            auto startLoop = context->bc->numInstructions;
-            emitInstruction(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
-            auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-            inst->a.pointer = (uint8_t*)typeStruct->opPostMove;
-            inst->b.pointer = (uint8_t*)typeStruct->opPostMove->typeInfoFunc;
-            emitInstruction(context, ByteCodeOp::IncSPPostCall, 8);
-
-            if (numToDrop != 1)
-            {
-                inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
-                inst->flags |= BCI_IMM_B;
-                inst->b.u32 = typeExpression->pointedType->sizeOf;
-                emitInstruction(context, ByteCodeOp::DecrementRA32, node->count->resultRegisterRC);
-                auto instJump = emitInstruction(context, ByteCodeOp::JumpIfNotZero32, node->count->resultRegisterRC);
                 instJump->b.s32 = startLoop - context->bc->numInstructions;
             }
         }
