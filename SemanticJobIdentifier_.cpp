@@ -1450,9 +1450,10 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
         node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
 
     node->callParameters->childs.push_front(fctCallParam);
-    fctCallParam->parent      = node->callParameters;
-    fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
-    fctCallParam->token       = identifierRef->previousResolvedNode->token;
+    fctCallParam->parent   = node->callParameters;
+    fctCallParam->typeInfo = identifierRef->previousResolvedNode->typeInfo;
+    fctCallParam->token    = identifierRef->previousResolvedNode->token;
+    fctCallParam->inheritTokenLocation(node->token);
     fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
     fctCallParam->inheritOwners(node->callParameters);
     fctCallParam->flags |= AST_TO_UFCS;

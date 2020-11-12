@@ -663,6 +663,8 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
 
 bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop)
 {
+    PushNoLocation pl(context);
+
     // Emit all 'defer' statements
     if (scope->doneDefer.find(context->node) == scope->doneDefer.end())
     {

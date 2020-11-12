@@ -7,5 +7,5 @@ using std
     dir := path.getDirectoryName(loc.fileName)
     res := directory.enumerateFiles(dir, "*.*")
     //visit *c: res
-    //    console.print("%\n", c.fullname)
+    //    console.print("FF: %\n", c.fullname)
 }
