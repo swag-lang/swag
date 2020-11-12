@@ -1,7 +1,7 @@
 public namespace std.file;
 
 #[swag.enumflags]
-enum FileAttribute
+enum FileAttributes
 {
     None = 0
     ReadOnly

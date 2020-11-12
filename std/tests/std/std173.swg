@@ -5,7 +5,7 @@ using std
 {
     loc := #location
     dir := path.getDirectoryName(loc.fileName)
-    res := directory.enumerateFiles(@"F:\swag\std\output"@)
+    res := directory.enumerateDirectories(@"F:\swag\std\output"@, recurse: true)
     //@assert(res.count == 1)
     visit *c: res
         console.print("FF: % %\n", c.fullname, c.size)

@@ -2,12 +2,12 @@
 using win32
 public namespace std.file;
 
-impl enum FileAttribute
+impl enum FileAttributes
 {
-    protected func fromDWORD(attributes: DWORD)->FileAttribute
+    protected func fromDWORD(attributes: DWORD)->FileAttributes
     {
-        using FileAttribute
-        var result: FileAttribute = acast 0
+        using FileAttributes
+        var result: FileAttributes = acast 0
         if attributes & FILE_ATTRIBUTE_READONLY
             result |= ReadOnly
         if attributes & FILE_ATTRIBUTE_HIDDEN
@@ -42,9 +42,9 @@ impl enum FileAttribute
 
 // Returns attributes associated to the given filename
 // Returns FileAttribute.None in case of error
-func getAttribute(fullname: string)->FileAttribute
+func getAttribute(fullname: string)->FileAttributes
 {
     res := GetFileAttributesA(@dataof(fullname))
-    if res == 0xFFFFFFFF return FileAttribute.None
-    return FileAttribute.fromDWORD(res)
+    if res == 0xFFFFFFFF return FileAttributes.None
+    return FileAttributes.fromDWORD(res)
 }

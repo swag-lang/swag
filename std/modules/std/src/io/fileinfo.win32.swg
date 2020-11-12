@@ -11,7 +11,7 @@ func getInfo(fullname: string)->FileInfo
     if res == 0 return result
 
     result.fullname = fullname
-    result.attributes = FileAttribute.fromDWORD(attrDatas.dwFileAttributes)
+    result.attributes = FileAttributes.fromDWORD(attrDatas.dwFileAttributes)
     result.size = attrDatas.nFileSizeLow + (cast(u64) attrDatas.nFileSizeHigh << 32)
 
     var fileTime: SYSTEMTIME

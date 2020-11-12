@@ -12,22 +12,17 @@ func exists(dirname: string)->bool
     return true
 }
 
-func enumerateFiles(dirname: string, searchPattern: string = "*")->Array'(file.FileInfo)
-{
-    var options: EnumerationOptions
-    options.searchPattern = searchPattern
-    options.wantDirectories = false
-    return enumerate(dirname, options)
-}
-
+// Enumerate a directory
 func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileInfo)
 {
+    using file
+
     var result: retval
     if dirname == null return result
-    if options.searchPattern == null return result
+    if options.matchPattern == null return result
 
     var findfile:   WIN32_FIND_DATAA
-    var fi:         file.FileInfo
+    var fi:         FileInfo
     var fileTime:   SYSTEMTIME
     var stackPath:  Array'String
 
@@ -37,7 +32,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
     while !stackPath.isEmpty()
     {
         toScan := stackPath.popBack()
-        searchPath := path.combine(toScan.toString(), options.searchPattern)
+        searchPath := path.combine(toScan.toString(), options.matchPattern)
 
         h := FindFirstFileA(searchPath.buffer, &findfile);
         if h != INVALID_HANDLE_VALUE
@@ -59,6 +54,8 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
                             stackPath.emplace(&newPath)
                         }
                     }
+                    else
+                        mustAdd = options.wantSpecialDirectories
                 }
                 else
                     mustAdd = options.wantFiles
@@ -66,18 +63,21 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
                 // Add file/folder to the result
                 if mustAdd
                 {
-                    fi.fullname = path.combine(toScan.toString(), filename)
+                    fi.attributes = FileAttributes.fromDWORD(findfile.dwFileAttributes)
+                    if !(fi.attributes & options.skipAttributes)
+                    {
+                        fi.fullname = path.combine(toScan.toString(), filename)
 
-                    fi.attributes = file.FileAttribute.fromDWORD(findfile.dwFileAttributes)
-                    fi.size = findfile.nFileSizeLow + (cast(u64) findfile.nFileSizeHigh << 32)
-                    FileTimeToSystemTime(&findfile.ftCreationTime, &fileTime)
-                    fi.creationTime.fromSYSTEMTIME(fileTime)
-                    FileTimeToSystemTime(&findfile.ftLastAccessTime, &fileTime)
-                    fi.lastAccessTime.fromSYSTEMTIME(fileTime)
-                    FileTimeToSystemTime(&findfile.ftLastWriteTime, &fileTime)
-                    fi.lastWriteTime.fromSYSTEMTIME(fileTime)
+                        fi.size = findfile.nFileSizeLow + (cast(u64) findfile.nFileSizeHigh << 32)
+                        FileTimeToSystemTime(&findfile.ftCreationTime, &fileTime)
+                        fi.creationTime.fromSYSTEMTIME(fileTime)
+                        FileTimeToSystemTime(&findfile.ftLastAccessTime, &fileTime)
+                        fi.lastAccessTime.fromSYSTEMTIME(fileTime)
+                        FileTimeToSystemTime(&findfile.ftLastWriteTime, &fileTime)
+                        fi.lastWriteTime.fromSYSTEMTIME(fileTime)
 
-                    result.emplace(&fi)
+                        result.emplace(&fi)
+                    }
                 }
 
                 if !FindNextFileA(h, &findfile)
