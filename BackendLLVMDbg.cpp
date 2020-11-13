@@ -55,7 +55,7 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
         auto              v1      = dbgBuilder->createMemberType(mainFile->getScope(), "data", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
         auto              v2      = dbgBuilder->createMemberType(mainFile->getScope(), "sizeof", mainFile, 1, 32, 0, 64, llvm::DINode::DIFlags::FlagZero, u32Ty);
         llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
-        stringTy                  = dbgBuilder->createStructType(mainFile->getScope(), "string", mainFile, 0, 2 * sizeof(void*), 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
+        stringTy                  = dbgBuilder->createStructType(mainFile->getScope(), "string", mainFile, 0, 2 * sizeof(void*) * 8, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
     }
 
     // interface
@@ -63,7 +63,7 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
         auto              v1      = dbgBuilder->createMemberType(mainFile->getScope(), "data", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
         auto              v2      = dbgBuilder->createMemberType(mainFile->getScope(), "itable", mainFile, 1, 64, 0, 64, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
         llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
-        interfaceTy               = dbgBuilder->createStructType(mainFile->getScope(), "interface", mainFile, 0, 2 * sizeof(void*), 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
+        interfaceTy               = dbgBuilder->createStructType(mainFile->getScope(), "interface", mainFile, 0, 2 * sizeof(void*) * 8, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
     }
 }
 
@@ -173,7 +173,7 @@ llvm::DIType* BackendLLVMDbg::getSliceType(TypeInfo* typeInfo, llvm::DIFile* fil
     auto noFlag      = llvm::DINode::DIFlags::FlagZero;
     auto name        = "__autoslice_" + typeInfoPtr->name;
     Ast::normalizeIdentifierName(name);
-    auto result        = dbgBuilder->createStructType(fileScope, name.c_str(), file, 0, 2 * sizeof(void*), 0, noFlag, nullptr, llvm::DINodeArray());
+    auto result        = dbgBuilder->createStructType(fileScope, name.c_str(), file, 0, 2 * sizeof(void*) * 8, 0, noFlag, nullptr, llvm::DINodeArray());
     mapTypes[typeInfo] = result;
 
     auto realType = getPointerToType(typeInfoPtr->pointedType, file);
