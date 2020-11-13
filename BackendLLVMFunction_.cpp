@@ -395,6 +395,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         pp.dbg->setLocation(pp.builder, bc, nullptr);
     }
 
+    // Reserve room to pass parameters to embedded intrinsics
+    const int ALLOCT_NUM = 5;
+    auto      allocT     = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(ALLOCT_NUM)));
+
     // Generate bytecode
     auto                   ip = bc->out;
     VectorNative<uint32_t> pushRAParams;
@@ -662,9 +666,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1    = GEP_I32(allocR, ip->b.u32);
             if (ip->flags & BCI_IMM_C)
             {
-                auto allocT = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1)));
-                auto r2     = builder.getInt64(ip->c.u32);
-                auto p0     = GEP_I32(allocT, 0);
+                auto r2 = builder.getInt64(ip->c.u32);
+                auto p0 = GEP_I32(allocT, 0);
                 builder.CreateStore(r2, p0);
                 builder.CreateCall(modu.getOrInsertFunction("@memcpy", typeF), {r0, r1, p0});
             }
@@ -699,10 +702,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicCStrLen:
         {
-            auto rr = GEP_I32(allocR, ip->a.u32);
-            auto r0 = GEP_I32(allocR, ip->b.u32);
+            auto rr    = GEP_I32(allocR, ip->a.u32);
+            auto r0    = GEP_I32(allocR, ip->b.u32);
             auto typeF = createFunctionTypeInternal(buildParameters, 2);
-            builder.CreateCall(modu.getOrInsertFunction("@cstrlen", typeF), { rr, r0 });
+            builder.CreateCall(modu.getOrInsertFunction("@cstrlen", typeF), {rr, r0});
             break;
         }
 
@@ -1980,7 +1983,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
 
             // The intrinsic function needs pointers to u64 values, so we need to convert
-            auto allocT = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(5)));
             builder.CreateStore(builder.CreateIntCast(r0, builder.getInt64Ty(), false), GEP_I32(allocT, 0));
             builder.CreateStore(builder.CreatePtrToInt(r1, builder.getInt64Ty()), GEP_I32(allocT, 1));
             builder.CreateStore(r2, GEP_I32(allocT, 2));
