@@ -271,7 +271,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
 {
     auto         node = context->node;
-    PushLocation pl(context, &node->parent->token.startLocation);
+    PushLocation pl(context, &node->token.endLocation);
 
     SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
     if (context->result != ContextResult::Done)

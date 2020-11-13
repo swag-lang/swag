@@ -57,8 +57,8 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     SWAG_CHECK(tokenizer.getToken(token));
 
     AstNode* namespaceNode;
-    Scope*   oldScope  = currentScope;
-    Scope*   newScope  = nullptr;
+    Scope*   oldScope = currentScope;
+    Scope*   newScope = nullptr;
 
     while (true)
     {
@@ -164,7 +164,7 @@ bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result, Token* endToken)
+bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
     if (result)
@@ -187,8 +187,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result, Token* endTo
     }
 
     SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, "no corresponding '}' has been found"));
-    if (endToken)
-        *endToken = token;
+    node->token.endLocation = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }

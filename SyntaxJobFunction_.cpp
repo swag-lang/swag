@@ -445,8 +445,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     // Parameters
     if (!funcForCompiler)
     {
-        Scoped      scoped(this, newScope);
-        ScopedFct   scopedFct(this, funcNode);
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
     }
@@ -470,8 +470,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         if (token.id == TokenId::SymMinusGreat)
         {
             typeNode->flags |= AST_FUNC_RETURN_DEFINED;
-            Scoped      scoped(this, newScope);
-            ScopedFct   scopedFct(this, funcNode);
+            Scoped    scoped(this, newScope);
+            ScopedFct scopedFct(this, funcNode);
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
@@ -480,9 +480,9 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     else if (typeFuncId == TokenId::CompilerAst)
     {
         typeNode->flags |= AST_FUNC_RETURN_DEFINED;
-        Scoped      scoped(this, newScope);
-        ScopedFct   scopedFct(this, funcNode);
-        auto        typeExpression  = Ast::newTypeExpression(sourceFile, typeNode, this);
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        auto      typeExpression    = Ast::newTypeExpression(sourceFile, typeNode, this);
         typeExpression->literalType = g_TypeMgr.typeInfoString;
     }
 
@@ -515,7 +515,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->content       = returnNode;
             funcNode->flags |= AST_SHORT_LAMBDA;
             SWAG_CHECK(doExpression(returnNode));
-            funcNode->endToken = token;
+            funcNode->content->token.endLocation = token.startLocation;
         }
 
         // One single statement
@@ -526,14 +526,14 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             auto stmt         = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
             funcNode->content = stmt;
             SWAG_CHECK(doEmbeddedInstruction(stmt));
-            funcNode->endToken = token;
+            funcNode->content->token.endLocation = token.startLocation;
         }
 
         // Normal curly statement
         else
         {
             ScopedAttributeFlags scopedAccess(this, 0);
-            SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content, &funcNode->endToken));
+            SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
         }
 
         newScope->owner                     = funcNode->content;

@@ -340,12 +340,12 @@ struct AstNode
     VectorNative<AlternativeScope> alternativeScopesVars;
     VectorNative<AstNode*>         childs;
 
-    Token         token;
-    Utf8Crc       name;
-    shared_mutex  mutex;
-    ComputedValue computedValue;
-    RegisterList  resultRegisterRC;
-    RegisterList  additionalRegisterRC;
+    Token          token;
+    Utf8Crc        name;
+    shared_mutex   mutex;
+    ComputedValue  computedValue;
+    RegisterList   resultRegisterRC;
+    RegisterList   additionalRegisterRC;
 
     Scope*              ownerScope;
     AstBreakable*       ownerBreakable;
@@ -423,7 +423,6 @@ struct AstFuncDecl : public AstNode
     SymbolAttributes collectAttributes;
     DependentJobs    dependentJobs;
 
-    Token                   endToken;
     AstNode*                parameters;
     AstNode*                genericParameters;
     AstNode*                returnType;

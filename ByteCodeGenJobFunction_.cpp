@@ -12,7 +12,7 @@
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
     auto         funcDecl = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
-    PushLocation pl(context, &funcDecl->endToken.startLocation);
+    PushLocation pl(context, &funcDecl->content->token.endLocation);
     PushNode     pn(context, funcDecl->content);
 
     // No need to do the scope leave stuff if the function does return something, because

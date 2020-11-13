@@ -107,6 +107,7 @@ func DoesPieceFit(nTetromino, nRotation, nPosX, nPosY: s32)->bool
 	return true
 }
 
+//#[swag.printbc]
 func main()
 {
     var screen: *u8 = @alloc(nScreenWidth*nScreenHeight)
