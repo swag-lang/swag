@@ -388,7 +388,7 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
     for (auto localVar : bc->localVars)
     {
         SymbolOverload* overload = localVar->resolvedSymbolOverload;
-        auto            typeInfo = overload->typeInfo;
+        auto            typeInfo = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
 
         llvm::DIType*          type  = getType(typeInfo, file);
         auto                   scope = getOrCreateScope(file, localVar->ownerScope);
@@ -478,6 +478,11 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
     auto& modu            = *pp.module;
     auto  module          = llvm->module;
 
+    VectorNative<llvm::Value*> offset;
+    offset.reserve(2);
+    offset.push_back(builder.getInt32(0));
+    offset.push_back(builder.getInt32(0));
+
     auto& all = var == pp.bssSeg ? module->globalVarsBss : module->globalVarsMutable;
     for (auto node : all)
     {
@@ -488,11 +493,16 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
         if (!dbgType)
             continue;
 
-        VectorNative<llvm::Value*> offset;
-        offset.reserve(2);
-        offset.push_back(builder.getInt32(0));
-        offset.push_back(builder.getInt32(resolved->storageOffset));
+        // Segment is stored as an array of 64 bits elements. Get address of the first element
         auto constExpr = llvm::ConstantExpr::getGetElementPtr(type, var, {offset.begin(), offset.end()});
+        // Convert to a pointer to bytes
+        constExpr = llvm::ConstantExpr::getPointerCast(constExpr, builder.getInt8Ty()->getPointerTo());
+        // Convert to int, in order to make an Add
+        constExpr = llvm::ConstantExpr::getPtrToInt(constExpr, builder.getInt64Ty());
+        // Add the byte offset
+        constExpr = llvm::ConstantExpr::getAdd(constExpr, llvm::ConstantInt::get(llvm::Type::getInt64Ty(*pp.context), resolved->storageOffset));
+        // Convert back to a pointer to bytes
+        constExpr = llvm::ConstantExpr::getIntToPtr(constExpr, builder.getInt8Ty()->getPointerTo());
 
         // Cast to the correct type
         llvm::Type* varType = nullptr;

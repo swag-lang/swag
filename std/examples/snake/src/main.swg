@@ -9,6 +9,7 @@ struct SnakeSegment
 	x, y: s32
 };
 
+//#[swag.printbc]
 func main()
 {
     var screen: *u8 = @alloc(nScreenWidth*nScreenHeight)
