@@ -1,3 +1,40 @@
+/*
+OneLoneCoder.com - Command Line Snake
+"Give me a break, I'm on holiday..." - @Javidx9
+License
+~~~~~~~
+Copyright (C) 2018  Javidx9
+This program comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it
+under certain conditions; See license for details.
+Original works located at:
+https://www.github.com/onelonecoder
+https://www.onelonecoder.com
+https://www.youtube.com/javidx9
+GNU GPLv3
+https://github.com/OneLoneCoder/videos/blob/master/LICENSE
+From Javidx9 :)
+~~~~~~~~~~~~~~~
+Hello! Ultimately I don't care what you use this for. It's intended to be
+educational, and perhaps to the oddly minded - a little bit of fun.
+Please hack this, change it and use it in any way you see fit. You acknowledge
+that I am not responsible for anything bad that happens as a result of
+your actions. However this code is protected by GNU GPLv3, see the license in the
+github repo. This means you must attribute me if you use it. You can view this
+license here: https://github.com/OneLoneCoder/videos/blob/master/LICENSE
+Cheers!
+Background
+~~~~~~~~~~
+Classic Snake! Controls are Arrow keys Left & Right, eat food, grow larger, avoid self!
+Author
+~~~~~~
+Twitter: @javidx9
+Blog: www.onelonecoder.com
+Video:
+~~~~~~
+https://youtu.be/e8lYLYlrGLg
+Last Updated: 24/06/2017
+*/
 #import "std"
 using win32, std.keyboard
 
@@ -119,11 +156,6 @@ func main()
     }
 
     CloseHandle(hConsole)
-}
-
-struct sSnakeSegment
-{
-	x, y: s32
 }
 
 //#run main()
