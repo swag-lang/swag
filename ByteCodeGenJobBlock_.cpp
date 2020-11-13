@@ -204,7 +204,8 @@ bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
         return true;
 
     // This is the end of the if block. Need to jump after the else block, if there's one
-    auto ifNode             = CastAst<AstIf>(node->parent, AstNodeKind::If);
+    PushLocation pl(context, &node->token.endLocation);
+    auto         ifNode     = CastAst<AstIf>(node->parent, AstNodeKind::If);
     ifNode->seekJumpAfterIf = context->bc->numInstructions;
     if (ifNode->elseBlock)
         emitInstruction(context, ByteCodeOp::Jump);
