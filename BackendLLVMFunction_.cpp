@@ -1977,12 +1977,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicAssert:
         {
+            llvm::BasicBlock* brTrue  = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* brFalse = llvm::BasicBlock::Create(context, "", func);
+
             // Expr
             llvm::Value* r0;
             if (ip->flags & BCI_IMM_A)
                 r0 = builder.getInt8(ip->a.b);
             else
                 r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+
+            auto b0 = builder.CreateIsNotNull(r0);
+            builder.CreateCondBr(b0, brTrue, brFalse);
+            builder.SetInsertPoint(brFalse);
 
             // Filename
             llvm::Value* r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
@@ -2015,6 +2022,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto p4    = GEP_I32(allocT, 4);
             auto typeF = createFunctionTypeInternal(buildParameters, 5);
             builder.CreateCall(modu.getOrInsertFunction("__swag_runtime_assert", typeF), {p0, p1, p2, p3, p4});
+            builder.CreateBr(brTrue);
+
+            builder.SetInsertPoint(brTrue);
             break;
         }
         case ByteCodeOp::IntrinsicAlloc:

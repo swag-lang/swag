@@ -7,7 +7,6 @@ struct A
 
 impl A
 {
-    #[swag.printbc]
     func toto(using self, value: DWORD)->A
     {
         var result: retval
