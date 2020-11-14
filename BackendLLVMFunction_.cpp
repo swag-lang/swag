@@ -1919,13 +1919,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             // - parameters not used in the function body will be removed by llvm (even without optims activated !)
             // - a parameter will not be visible anymore ("optimized away") after it's last usage.
             // So we force a read/write of each parameter just before the "ret" to avoid that debug mess.
+            // RIDICULOUS !!
             bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
             if (isDebug && buildParameters.buildCfg->backendDebugInformations)
             {
                 auto r1 = GEP_I32(allocT, 0);
-                for (int iparam = 0; iparam < typeFunc->parameters.size(); iparam++)
+                for (int iparam = 0; iparam < typeFunc->parameters.size() + typeFunc->numReturnRegisters(); iparam++)
                 {
-                    auto r0 = builder.CreateLoad(func->getArg(iparam + typeFunc->numReturnRegisters()));
+                    auto r0 = builder.CreateLoad(func->getArg(iparam));
                     builder.CreateStore(r0, r1);
                 }
             }

@@ -7,9 +7,12 @@ struct A
 
 impl A
 {
-    func toto(using self, value: DWORD)
+    #[swag.printbc]
+    func toto(using self, value: DWORD)->A
     {
-        v := myX
+        var result: retval
+        result.myX = 0xAA's64
+        return result
         //@print(v)
     }
 }
