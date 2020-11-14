@@ -1,13 +1,15 @@
+alias DWORD = s32
+
 struct A
 {
-    x: s64 = 666
+    myX: s64 = 666
 }
 
 impl A
 {
-    func toto(using self, value: s32)
+    func toto(using self, value: DWORD)
     {
-        v := x
+        v := myX
         @print(v)
     }
 }
