@@ -146,7 +146,8 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     Ast::normalizeIdentifierName(name);
     auto result = dbgBuilder->createStructType(scope, name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, llvm::DINodeArray());
 
-    // This way, even it a struct references itself, this will work
+    // Register it right away, so that even if a struct is referencing itself, this will work
+    // and won't recurse forever
     mapTypes[typeInfo] = result;
 
     // Deal with the struct content now that the struct is registered
@@ -353,8 +354,15 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
     // Parameters
     if (decl && decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
     {
-        auto idxParam = typeFunc->numReturnRegisters();
-        for (int i = 0; i < decl->parameters->childs.size(); i++)
+        auto idxParam    = typeFunc->numReturnRegisters();
+        auto countParams = decl->parameters->childs.size();
+        if (typeFunc->flags & TYPEINFO_VARIADIC)
+        {
+            idxParam += 2;
+            countParams--;
+        }
+
+        for (int i = 0; i < countParams; i++)
         {
             auto        child     = decl->parameters->childs[i];
             const auto& loc       = child->token.startLocation;
