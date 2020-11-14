@@ -204,6 +204,7 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     if (!typeInfo)
         return s32Ty;
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
 
     auto it = mapTypes.find(typeInfo);
     if (it != mapTypes.end())
@@ -211,15 +212,6 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 
     switch (typeInfo->kind)
     {
-    case TypeInfoKind::Alias:
-    {
-        auto typeInfoAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
-        auto scope         = getOrCreateScope(file, typeInfoAlias->declNode->ownerScope);
-        auto retType       = dbgBuilder->createTypedef(getType(typeInfoAlias->rawType, file), typeInfoAlias->name.c_str(), file, typeInfoAlias->declNode->token.startLocation.line + 1, scope);
-        mapTypes[typeInfo] = retType;
-        return retType;
-    }
-
     case TypeInfoKind::Enum:
         return getEnumType(typeInfo, file);
     case TypeInfoKind::Struct:
@@ -326,15 +318,15 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
     return result;
 }
 
-void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
+llvm::DISubprogram* BackendLLVMDbg::startFunction(ByteCode* bc, AstFuncDecl** resultDecl)
 {
     SWAG_ASSERT(dbgBuilder);
 
-    Utf8         name = bc->name;
-    AstFuncDecl* decl = nullptr;
-
+    Utf8              name     = bc->name;
+    AstFuncDecl*      decl     = nullptr;
     int               line     = 0;
     TypeInfoFuncAttr* typeFunc = bc->typeInfoFunc;
+
     if (bc->node)
     {
         decl     = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
@@ -342,6 +334,14 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
         line     = decl->token.startLocation.line;
         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
     }
+
+    if (resultDecl)
+        *resultDecl = decl;
+
+    // Already created ?
+    auto it = mapScopes.find(decl->content->ownerScope);
+    if (it != mapScopes.end())
+        return (llvm::DISubprogram*) it->second;
 
     // Type
     llvm::DIFile*           file        = getOrCreateFile(bc->sourceFile);
@@ -359,9 +359,28 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
 
     // Register function
     llvm::DISubprogram* SP = dbgBuilder->createFunction(file, name.c_str(), llvm::StringRef(), file, lineNo, dbgFuncType, lineNo, diFlags, spFlags);
-    func->setSubprogram(SP);
     if (decl)
         mapScopes[decl->content->ownerScope] = SP;
+
+    return SP;
+}
+
+void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
+{
+    AstFuncDecl*        decl;
+    llvm::DISubprogram* SP = startFunction(bc, &decl);
+    func->setSubprogram(SP);
+
+    Utf8              name     = bc->name;
+    TypeInfoFuncAttr* typeFunc = bc->typeInfoFunc;
+    int               line     = 0;
+    llvm::DIFile*     file     = getOrCreateFile(bc->sourceFile);
+    if (decl)
+    {
+        name     = decl->name;
+        line     = decl->token.startLocation.line;
+        typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
+    }
 
     // Parameters
     if (decl && decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
@@ -409,13 +428,23 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
         SymbolOverload* overload = localVar->resolvedSymbolOverload;
         auto            typeInfo = overload->typeInfo;
 
-        llvm::DIType*          type  = getType(typeInfo, file);
-        auto                   scope = getOrCreateScope(file, localVar->ownerScope);
-        llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->name.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
-
         auto& loc = localVar->token.startLocation;
-        auto  v   = pp.builder->CreateInBoundsGEP(stack, pp.builder->getInt32(overload->storageOffset));
-        dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+        if (overload->flags & OVERLOAD_RETVAL)
+        {
+            /*llvm::DIType*          type  = getPointerToType(typeInfo, file);
+            auto                   scope = getOrCreateScope(file, localVar->ownerScope);
+            llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, localVar->name.c_str(), 1, file, loc.line + 1, type, !isOptimized);
+            auto                   v     = func->getArg(1);
+            dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());*/
+        }
+        else
+        {
+            llvm::DIType*          type  = getType(typeInfo, file);
+            auto                   scope = getOrCreateScope(file, localVar->ownerScope);
+            llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->name.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
+            auto                   v     = pp.builder->CreateInBoundsGEP(stack, pp.builder->getInt32(overload->storageOffset));
+            dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+        }
     }
 }
 
@@ -472,6 +501,15 @@ llvm::DIScope* BackendLLVMDbg::getOrCreateScope(llvm::DIFile* file, Scope* scope
         if (it != mapScopes.end())
         {
             parent = it->second;
+            break;
+        }
+
+        // If parent function has not yet been created, then create it now
+        if (scanScope->kind == ScopeKind::FunctionBody)
+        {
+            SWAG_ASSERT(scanScope->parentScope->kind == ScopeKind::Function);
+            auto decl = CastAst<AstFuncDecl>(scanScope->parentScope->owner, AstNodeKind::FuncDecl);
+            parent    = startFunction(decl->bc);
             break;
         }
 

@@ -1,6 +1,3 @@
-;
-;
-
 namespace A
 {
 	namespace B

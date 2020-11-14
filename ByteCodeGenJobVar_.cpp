@@ -16,8 +16,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     bool retVal   = resolved->flags & OVERLOAD_RETVAL;
 
     // Debug
-    if (!retVal)
-        context->bc->localVars.push_back(context->node);
+    context->bc->localVars.push_back(context->node);
 
     // Initialize the struct, whatever, before the assignment
     if (typeInfo->kind == TypeInfoKind::Struct)
