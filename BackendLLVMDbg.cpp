@@ -299,6 +299,8 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
 
     VectorNative<llvm::Metadata*> params;
 
+    params.push_back(getType(g_TypeMgr.typeInfoPVoid, file));
+
     if (typeFunc->returnType)
     {
         for (int r = 0; r < typeFunc->returnType->numRegisters(); r++)
@@ -431,11 +433,14 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
         auto& loc = localVar->token.startLocation;
         if (overload->flags & OVERLOAD_RETVAL)
         {
-            /*llvm::DIType*          type  = getPointerToType(typeInfo, file);
-            auto                   scope = getOrCreateScope(file, localVar->ownerScope);
-            llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, localVar->name.c_str(), 1, file, loc.line + 1, type, !isOptimized);
-            auto                   v     = func->getArg(1);
-            dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());*/
+            if (func->arg_size() > 0)
+            {
+                llvm::DIType* type = getPointerToType(typeInfo, file);
+                auto                   scope = getOrCreateScope(file, localVar->ownerScope);
+                llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, localVar->name.c_str(), 1, file, loc.line + 1, type, !isOptimized);
+                auto                   v = func->getArg(0);
+                dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+            }
         }
         else
         {
