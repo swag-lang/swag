@@ -13,6 +13,7 @@
 #include "TypeManager.h"
 #include "CommandLine.h"
 #include "BackendLLVM.h"
+#include "Workspace.h"
 
 void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
@@ -68,6 +69,15 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
         auto              v2      = dbgBuilder->createMemberType(mainFile->getScope(), "itable", mainFile, 1, 64, 0, 64, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
         llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
         interfaceTy               = dbgBuilder->createStructType(mainFile->getScope(), "interface", mainFile, 0, 2 * sizeof(void*) * 8, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
+    }
+
+    // any
+    {
+        auto              ptrType = getPointerToType(g_Workspace.swagScope.regTypeInfo, mainFile);
+        auto              v1      = dbgBuilder->createMemberType(mainFile->getScope(), "ptrvalue", mainFile, 0, 64, 0, 0, llvm::DINode::DIFlags::FlagZero, ptrU8Ty);
+        auto              v2      = dbgBuilder->createMemberType(mainFile->getScope(), "typeinfo", mainFile, 1, 64, 0, 64, llvm::DINode::DIFlags::FlagZero, ptrType);
+        llvm::DINodeArray content = dbgBuilder->getOrCreateArray({v1, v2});
+        anyTy                     = dbgBuilder->createStructType(mainFile->getScope(), "any", mainFile, 0, 2 * sizeof(void*) * 8, 0, llvm::DINode::DIFlags::FlagZero, nullptr, content);
     }
 }
 
@@ -278,6 +288,8 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
             return boolTy;
         case NativeTypeKind::String:
             return stringTy;
+        case NativeTypeKind::Any:
+            return anyTy;
         default:
             return s64Ty;
         }

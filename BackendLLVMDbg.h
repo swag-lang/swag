@@ -61,4 +61,5 @@ struct BackendLLVMDbg
     llvm::DIDerivedType*   ptrU8Ty;
     llvm::DICompositeType* stringTy;
     llvm::DICompositeType* interfaceTy;
+    llvm::DICompositeType* anyTy;
 };
