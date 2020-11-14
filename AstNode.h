@@ -340,12 +340,12 @@ struct AstNode
     VectorNative<AlternativeScope> alternativeScopesVars;
     VectorNative<AstNode*>         childs;
 
-    Token          token;
-    Utf8Crc        name;
-    shared_mutex   mutex;
-    ComputedValue  computedValue;
-    RegisterList   resultRegisterRC;
-    RegisterList   additionalRegisterRC;
+    Token         token;
+    Utf8Crc       name;
+    shared_mutex  mutex;
+    ComputedValue computedValue;
+    RegisterList  resultRegisterRC;
+    RegisterList  additionalRegisterRC;
 
     Scope*              ownerScope;
     AstBreakable*       ownerBreakable;
@@ -433,7 +433,8 @@ struct AstFuncDecl : public AstNode
     map<Utf8Crc, TypeInfo*> replaceTypes;
     VectorNative<AstNode*>  subFunctions;
 
-    uint32_t stackSize = 0;
+    uint32_t stackSize         = 0;
+    int      exportForeignLine = 0;
 
     Utf8 fullnameForeign;
     void computeFullNameForeign(bool forExport);

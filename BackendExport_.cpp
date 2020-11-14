@@ -41,7 +41,8 @@ bool Backend::emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent)
         ADD_ATTRUSAGE(AttributeUsage::Switch, "Switch");
     }
 
-    bufferSwg.addString(")]\n");
+    bufferSwg.addString(")]");
+    bufferSwg.addEol();
     return true;
 }
 
@@ -87,7 +88,10 @@ bool Backend::emitAttributesFlags(AstNode* node, int indent, bool isFirst)
 
     // Foot
     if (!first)
-        CONCAT_FIXED_STR(bufferSwg, "]\n");
+    {
+        CONCAT_FIXED_STR(bufferSwg, "]");
+        bufferSwg.addEol();
+    }
 
     if (node->parentAttributes)
     {
@@ -95,7 +99,8 @@ bool Backend::emitAttributesFlags(AstNode* node, int indent, bool isFirst)
         if (node->parentAttributes->attributes.getValue("swag.pack", "value", value))
         {
             bufferSwg.addIndent(indent);
-            bufferSwg.addStringFormat("#[pack(\"%d\")]\n", value.reg.u8);
+            bufferSwg.addStringFormat("#[pack(\"%d\")]", value.reg.u8);
+            bufferSwg.addEol();
         }
     }
 
@@ -108,7 +113,8 @@ bool Backend::emitAttributesParams(TypeInfoParam* param, int indent)
     if (param->attributes.getValue("swag.offset", "name", value))
     {
         bufferSwg.addIndent(indent);
-        bufferSwg.addStringFormat("#[offset(\"%s\")]\n", value.text.c_str());
+        bufferSwg.addStringFormat("#[offset(\"%s\")]", value.text.c_str());
+        bufferSwg.addEol();
     }
 
     return true;
@@ -268,7 +274,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     }
 
     CONCAT_FIXED_STR(bufferSwg, ";");
-    CONCAT_FIXED_STR(bufferSwg, "\n");
+    bufferSwg.addEol();
     return true;
 }
 
@@ -400,9 +406,10 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
 
     CONCAT_FIXED_STR(bufferSwg, " ");
     bufferSwg.addString(node->name.c_str());
-    CONCAT_FIXED_STR(bufferSwg, "\n");
+    bufferSwg.addEol();
     bufferSwg.addIndent(indent);
-    CONCAT_FIXED_STR(bufferSwg, "{\n");
+    CONCAT_FIXED_STR(bufferSwg, "{");
+    bufferSwg.addEol();
 
     for (auto p : typeStruct->fields)
     {
@@ -435,7 +442,9 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     }
 
     bufferSwg.addIndent(indent);
-    CONCAT_FIXED_STR(bufferSwg, "}\n\n");
+    CONCAT_FIXED_STR(bufferSwg, "}");
+    bufferSwg.addEol();
+    bufferSwg.addEol();
     return true;
 }
 
@@ -556,6 +565,7 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             SWAG_CHECK(emitAttributesFlags(node, indent, false));
             bufferSwg.addIndent(indent);
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
+            node->exportForeignLine = bufferSwg.eolCount;
         }
     }
 
@@ -587,9 +597,11 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
     if (scope->kind == ScopeKind::Namespace && !scope->name.empty())
     {
         bufferSwg.addIndent(indent);
-        bufferSwg.addStringFormat("namespace %s\n", scope->name.c_str());
+        bufferSwg.addStringFormat("namespace %s", scope->name.c_str());
+        bufferSwg.addEol();
         bufferSwg.addIndent(indent);
-        CONCAT_FIXED_STR(bufferSwg, "{\n");
+        CONCAT_FIXED_STR(bufferSwg, "{");
+        bufferSwg.addEol();
 
         SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent + 1));
         for (auto oneScope : scope->childScopes)
@@ -609,19 +621,23 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
         {
             auto nodeImpl = CastAst<AstImpl>(scope->owner, AstNodeKind::Impl);
             auto symbol   = nodeImpl->identifier->resolvedSymbolOverload;
-            bufferSwg.addStringFormat("impl %s for %s\n", symbol->node->computeScopedName().c_str(), scope->parentScope->name.c_str());
+            bufferSwg.addStringFormat("impl %s for %s", symbol->node->computeScopedName().c_str(), scope->parentScope->name.c_str());
+            bufferSwg.addEol();
         }
         else if (scope->kind == ScopeKind::Enum)
         {
-            bufferSwg.addStringFormat("impl enum %s\n", scope->name.c_str());
+            bufferSwg.addStringFormat("impl enum %s", scope->name.c_str());
+            bufferSwg.addEol();
         }
         else
         {
-            bufferSwg.addStringFormat("impl %s\n", scope->name.c_str());
+            bufferSwg.addStringFormat("impl %s", scope->name.c_str());
+            bufferSwg.addEol();
         }
 
         bufferSwg.addIndent(indent);
-        CONCAT_FIXED_STR(bufferSwg, "{\n");
+        CONCAT_FIXED_STR(bufferSwg, "{");
+        bufferSwg.addEol();
 
         SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent + 1));
         for (auto oneScope : scope->childScopes)
@@ -648,7 +664,8 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
     else if (!scope->name.empty())
     {
         bufferSwg.addIndent(indent);
-        CONCAT_FIXED_STR(bufferSwg, "{\n");
+        CONCAT_FIXED_STR(bufferSwg, "{");
+        bufferSwg.addEol();
 
         SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent + 1));
         for (auto oneScope : scope->childScopes)
@@ -703,11 +720,18 @@ JobResult Backend::generateExportFile(Job* ownerJob)
             return JobResult::ReleaseJob;
 
         bufferSwg.init(4 * 1024);
-        bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+        bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+        bufferSwg.addEol();
 
         for (const auto& dep : module->moduleDependencies)
-            bufferSwg.addStringFormat("#import \"%s\"\n", dep->name.c_str());
-        CONCAT_FIXED_STR(bufferSwg, "using swag\n\n");
+        {
+            bufferSwg.addStringFormat("#import \"%s\"", dep->name.c_str());
+            bufferSwg.addEol();
+        }
+
+        CONCAT_FIXED_STR(bufferSwg, "using swag");
+        bufferSwg.addEol();
+        bufferSwg.addEol();
 
         // Emit everything that's public
         if (!emitPublicScopeSwg(module, module->scopeRoot, 0))

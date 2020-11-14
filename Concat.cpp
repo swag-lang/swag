@@ -260,6 +260,7 @@ void Concat::addEol()
 {
     ensureSpace(1);
     *currentSP++ = '\n';
+    eolCount++;
 }
 
 void Concat::addIndent(int num)

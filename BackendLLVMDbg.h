@@ -36,6 +36,7 @@ struct BackendLLVMDbg
     llvm::DIBuilder*     dbgBuilder  = nullptr;
     llvm::DICompileUnit* compileUnit = nullptr;
     llvm::DIFile*        mainFile    = nullptr;
+    llvm::DIFile*        exportFile  = nullptr;
     bool                 isOptimized = false;
 
     unordered_map<string, llvm::DIFile*>              mapFiles;

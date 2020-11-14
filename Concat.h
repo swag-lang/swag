@@ -72,12 +72,12 @@ struct Concat
         {
             if (ptr == lastBucket)
             {
-                SWAG_ASSERT(seek < (int)(currentSP - lastBucket->datas));
+                SWAG_ASSERT(seek < (int) (currentSP - lastBucket->datas));
                 return lastBucket->datas + seek;
             }
 
             if (seek < ptr->countBytes)
-                return ptr->datas + seek;            
+                return ptr->datas + seek;
             seek -= ptr->countBytes;
             ptr = ptr->nextBucket;
         }
@@ -98,6 +98,7 @@ struct Concat
     ConcatBucket* lastBucket      = nullptr;
     uint8_t*      currentSP       = nullptr;
     int           bucketSize      = 0;
+    int           eolCount        = 0;
     uint32_t      totalCountBytes = 0;
 };
 

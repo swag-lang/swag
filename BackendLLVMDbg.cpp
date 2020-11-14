@@ -12,17 +12,20 @@
 #include "Version.h"
 #include "TypeManager.h"
 #include "CommandLine.h"
+#include "BackendLLVM.h"
 
 void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
-    llvm          = m;
-    isOptimized   = m->module->buildParameters.buildCfg->backendOptimizeSpeed || m->module->buildParameters.buildCfg->backendOptimizeSize;
-    dbgBuilder    = new llvm::DIBuilder(*modu, true);
-    llvmModule    = modu;
-    llvmContext   = &modu->getContext();
-    mainFile      = dbgBuilder->createFile("swag.bootstrap.swg", g_CommandLine.exePath.string().c_str());
-    Utf8 compiler = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-    compileUnit   = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
+    llvm             = m;
+    isOptimized      = m->module->buildParameters.buildCfg->backendOptimizeSpeed || m->module->buildParameters.buildCfg->backendOptimizeSize;
+    dbgBuilder       = new llvm::DIBuilder(*modu, true);
+    llvmModule       = modu;
+    llvmContext      = &modu->getContext();
+    mainFile         = dbgBuilder->createFile("<stdin>", "c:/");
+    fs::path expPath = m->bufferSwg.path;
+    exportFile       = dbgBuilder->createFile(m->bufferSwg.name.c_str(), expPath.parent_path().string().c_str());
+    Utf8 compiler    = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    compileUnit      = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
                                                 mainFile,
                                                 compiler.c_str(),
                                                 isOptimized,
@@ -398,9 +401,9 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
 
 void BackendLLVMDbg::startWrapperFunction(LLVMPerThread& pp, ByteCode* bc, AstFuncDecl* node, llvm::Function* func)
 {
-    auto                    file        = getOrCreateFile(bc->sourceFile);
+    auto                    file        = exportFile;
     Utf8                    name        = node->fullnameForeign;
-    auto                    lineNo      = node->token.startLocation.line + 1;
+    auto                    lineNo      = node->exportForeignLine;
     llvm::DISubroutineType* dbgFuncType = getFunctionType(bc->callType(), file);
 
     // Flags
