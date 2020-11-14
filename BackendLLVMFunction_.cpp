@@ -154,6 +154,21 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
     return moduleToGen->internalError(format("swagTypeToLLVMType, invalid type '%s'", typeInfo->name.c_str()));
 }
 
+llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int32_t ip)
+{
+    auto& context = *pp.context;
+
+    auto it = pp.labels.find(ip);
+    if (it == pp.labels.end())
+    {
+        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, format("%d", ip).c_str(), func);
+        pp.labels[ip]           = label;
+        return label;
+    }
+
+    return it->second;
+}
+
 bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc)
 {
     int   ct              = buildParameters.compileType;
@@ -169,16 +184,16 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 
     // Create function
     node->computeFullNameForeign(true);
-    llvm::Function* func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, node->fullnameForeign.c_str(), modu);
+    llvm::Function* func = (llvm::Function*) modu.getOrInsertFunction(node->fullnameForeign.c_str(), funcType).getCallee();
     func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
+
+    // Content
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", func);
     builder.SetInsertPoint(block);
 
+    // Debug infos
     if (pp.dbg)
-    {
         pp.dbg->startWrapperFunction(pp, bc, node, func);
-        builder.SetCurrentDebugLocation(llvm::DebugLoc::get(0, 0, func->getSubprogram()));
-    }
 
     // Total number of registers
     auto n = typeFunc->numReturnRegisters();
@@ -334,21 +349,6 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     return true;
 }
 
-llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int32_t ip)
-{
-    auto& context = *pp.context;
-
-    auto it = pp.labels.find(ip);
-    if (it == pp.labels.end())
-    {
-        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, format("%d", ip).c_str(), func);
-        pp.labels[ip]           = label;
-        return label;
-    }
-
-    return it->second;
-}
-
 bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
@@ -389,15 +389,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (typeFunc->stackSize)
         allocStack = builder.CreateAlloca(builder.getInt8Ty(), builder.getInt32(typeFunc->stackSize));
 
+    // Reserve room to pass parameters to embedded intrinsics
+    const int ALLOCT_NUM = 5;
+    auto      allocT     = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(ALLOCT_NUM)));
+
+    // Debug infos
     if (pp.dbg && bc->node)
     {
         pp.dbg->startFunction(pp, bc, func, allocStack);
         pp.dbg->setLocation(pp.builder, bc, nullptr);
     }
-
-    // Reserve room to pass parameters to embedded intrinsics
-    const int ALLOCT_NUM = 5;
-    auto      allocT     = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(ALLOCT_NUM)));
 
     // Generate bytecode
     auto                   ip = bc->out;

@@ -11,6 +11,7 @@
 #include "BuildParameters.h"
 #include "Version.h"
 #include "TypeManager.h"
+#include "CommandLine.h"
 
 void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
@@ -19,7 +20,7 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
     dbgBuilder    = new llvm::DIBuilder(*modu, true);
     llvmModule    = modu;
     llvmContext   = &modu->getContext();
-    auto mainFile = dbgBuilder->createFile("<stdin>", "f:/");
+    mainFile      = dbgBuilder->createFile("swag.bootstrap.swg", g_CommandLine.exePath.string().c_str());
     Utf8 compiler = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     compileUnit   = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
                                                 mainFile,
@@ -309,23 +310,6 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
     return result;
 }
 
-void BackendLLVMDbg::startWrapperFunction(LLVMPerThread& pp, ByteCode* bc, AstFuncDecl* node, llvm::Function* func)
-{
-    Utf8                    name        = node->fullnameForeign;
-    llvm::DIFile*           file        = compileUnit->getFile();
-    llvm::DISubroutineType* dbgFuncType = getFunctionType(bc->callType(), file);
-
-    llvm::DISubprogram::DISPFlags spFlags = llvm::DISubprogram::SPFlagDefinition;
-    if (isOptimized)
-        spFlags |= llvm::DISubprogram::SPFlagOptimized;
-
-    llvm::DINode::DIFlags diFlags = llvm::DINode::FlagPrototyped | llvm::DINode::FlagArtificial;
-
-    // Register function
-    llvm::DISubprogram* SP = dbgBuilder->createFunction(file, name.c_str(), llvm::StringRef(), file, 0, dbgFuncType, 0, diFlags, spFlags);
-    func->setSubprogram(SP);
-}
-
 void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
 {
     SWAG_ASSERT(dbgBuilder);
@@ -412,10 +396,25 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
     }
 }
 
-void BackendLLVMDbg::finalize()
+void BackendLLVMDbg::startWrapperFunction(LLVMPerThread& pp, ByteCode* bc, AstFuncDecl* node, llvm::Function* func)
 {
-    SWAG_ASSERT(dbgBuilder);
-    dbgBuilder->finalize();
+    auto                    file        = getOrCreateFile(bc->sourceFile);
+    Utf8                    name        = node->fullnameForeign;
+    auto                    lineNo      = node->token.startLocation.line + 1;
+    llvm::DISubroutineType* dbgFuncType = getFunctionType(bc->callType(), file);
+
+    // Flags
+    llvm::DISubprogram::DISPFlags spFlags = llvm::DISubprogram::SPFlagDefinition;
+    if (isOptimized)
+        spFlags |= llvm::DISubprogram::SPFlagOptimized;
+
+    llvm::DINode::DIFlags diFlags = llvm::DINode::FlagPrototyped | llvm::DINode::FlagStaticMember;
+
+    // Register function
+    llvm::DISubprogram* SP = dbgBuilder->createFunction(file, name.c_str(), llvm::StringRef(), file, lineNo, dbgFuncType, lineNo, diFlags, spFlags);
+    func->setSubprogram(SP);
+
+    pp.builder->SetCurrentDebugLocation(llvm::DebugLoc::get(lineNo, 0, SP));
 }
 
 void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip)
@@ -528,4 +527,10 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
         auto gve        = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, name, name, file, 0, dbgRefType, dbgType, true);
         g->addDebugInfo(gve);
     }
+}
+
+void BackendLLVMDbg::finalize()
+{
+    SWAG_ASSERT(dbgBuilder);
+    dbgBuilder->finalize();
 }

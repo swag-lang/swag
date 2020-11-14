@@ -10,7 +10,7 @@ impl A
     func toto(using self, value: DWORD)
     {
         v := myX
-        @print(v)
+        //@print(v)
     }
 }
 
