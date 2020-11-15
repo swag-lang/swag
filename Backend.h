@@ -49,8 +49,7 @@ struct Backend
     bool      saveExportFile();
     void      setupExportFile();
     bool      emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent);
-    bool      emitAttributesFlags(AstNode* node, int indent, bool isFirst = true);
-    bool      emitAttributesParams(TypeInfoParam* param, int indent);
+    bool      emitAttributes(TypeInfo* typeInfo, int indent);
     void      emitTypeTuple(TypeInfo* typeInfo, bool preprendStruct);
     void      emitType(TypeInfo* typeInfo);
     bool      emitGenericParameters(AstNode* node);

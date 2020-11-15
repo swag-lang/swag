@@ -43,79 +43,56 @@ bool Backend::emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent)
     return true;
 }
 
-bool Backend::emitAttributesFlags(AstNode* node, int indent, bool isFirst)
+bool Backend::emitAttributes(TypeInfo* typeInfo, int indent)
 {
-#define ADD_ATTR(__test, __name)                   \
-    {                                              \
-        if (__test)                                \
-        {                                          \
-            if (first)                             \
-            {                                      \
-                bufferSwg.addIndent(indent);       \
-                CONCAT_FIXED_STR(bufferSwg, "#["); \
-                first = false;                     \
-            }                                      \
-            else                                   \
-            {                                      \
-                CONCAT_FIXED_STR(bufferSwg, ", "); \
-            }                                      \
-            CONCAT_FIXED_STR(bufferSwg, __name);   \
-        }                                          \
-    }
-
-    // Head
-    bool first = isFirst;
-
-    ADD_ATTR(node->flags & AST_CONST_EXPR, "constexpr");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_PRINT_BC, "printbc");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_COMPILER, "compiler");
-    ADD_ATTR((node->attributeFlags & ATTRIBUTE_INLINE) && !(node->attributeFlags & ATTRIBUTE_MIXIN) && !(node->attributeFlags & ATTRIBUTE_MACRO), "inline");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_MACRO, "macro");
-    ADD_ATTR((node->attributeFlags & ATTRIBUTE_MIXIN) && !(node->attributeFlags & ATTRIBUTE_MACRO), "mixin");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_TEST_FUNC, "test");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_COMPLETE, "complete");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_PROPERTY, "property");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_GLOBAL, "global");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_NO_RETURN, "noreturn");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_ENUM_FLAGS, "enumflags");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_INDEX, "enumindex");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_SAFETY_ON, "safety(true)");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_SAFETY_OFF, "safety(false)");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_OPTIM_ON, "optim(true)");
-    ADD_ATTR(node->attributeFlags & ATTRIBUTE_OPTIM_OFF, "optim(false)");
-
-    // Foot
-    if (!first)
-    {
-        CONCAT_FIXED_STR(bufferSwg, "]");
-        bufferSwg.addEol();
-    }
-
     SymbolAttributes* attr = nullptr;
-    if (node->typeInfo->kind == TypeInfoKind::Struct)
-        attr = &((TypeInfoStruct*) node->typeInfo)->attributes;
-
-    if (attr)
+    switch (typeInfo->kind)
     {
-        ComputedValue value;
-        if (attr->getValue("swag.pack", "value", value))
-        {
-            bufferSwg.addIndent(indent);
-            bufferSwg.addStringFormat("#[pack(%d)]", value.reg.u8);
-            bufferSwg.addEol();
-        }
+    case TypeInfoKind::Struct:
+    case TypeInfoKind::TypeSet:
+    case TypeInfoKind::Interface:
+        attr = &((TypeInfoStruct*) typeInfo)->attributes;
+        break;
+    case TypeInfoKind::FuncAttr:
+        attr = &((TypeInfoFuncAttr*) typeInfo)->attributes;
+        break;
+    case TypeInfoKind::Enum:
+        attr = &((TypeInfoEnum*) typeInfo)->attributes;
+        break;
+    case TypeInfoKind::Param:
+        attr = &((TypeInfoParam*) typeInfo)->attributes;
+        break;
     }
 
-    return true;
-}
-
-bool Backend::emitAttributesParams(TypeInfoParam* param, int indent)
-{
-    ComputedValue value;
-    if (param->attributes.getValue("swag.offset", "name", value))
+    if (attr && !attr->empty())
     {
         bufferSwg.addIndent(indent);
-        bufferSwg.addStringFormat("#[offset(\"%s\")]", value.text.c_str());
+        CONCAT_FIXED_STR(bufferSwg, "#[");
+
+        for (int j = 0; j < attr->attributes.size(); j++)
+        {
+            auto& one = attr->attributes[j];
+            if (j)
+                CONCAT_FIXED_STR(bufferSwg, ", ");
+
+            bufferSwg.addString(one.name);
+            if (!one.parameters.empty())
+            {
+                bufferSwg.addChar('(');
+
+                for (int i = 0; i < one.parameters.size(); i++)
+                {
+                    auto& oneParam = one.parameters[i];
+                    if (i)
+                        CONCAT_FIXED_STR(bufferSwg, ", ");
+                    Ast::outputLiteral(outputContext, bufferSwg, one.node, oneParam.typeInfo, oneParam.value.text, oneParam.value.reg);
+                }
+
+                bufferSwg.addChar(')');
+            }
+        }
+
+        CONCAT_FIXED_STR(bufferSwg, "]");
         bufferSwg.addEol();
     }
 
@@ -282,7 +259,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
 
 bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent)
 {
-    SWAG_CHECK(emitAttributesFlags(node, indent));
+    SWAG_CHECK(emitAttributes(typeFunc, indent));
     bufferSwg.addIndent(indent);
     CONCAT_FIXED_STR(bufferSwg, "func");
 
@@ -363,7 +340,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
 
 bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent)
 {
-    SWAG_CHECK(emitAttributesFlags(node, indent));
+    SWAG_CHECK(emitAttributes(typeEnum, indent));
     bufferSwg.addIndent(indent);
     CONCAT_FIXED_STR(bufferSwg, "enum ");
     bufferSwg.addString(node->name.c_str());
@@ -392,7 +369,7 @@ bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int inden
 
 bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent)
 {
-    SWAG_CHECK(emitAttributesFlags(node, indent));
+    SWAG_CHECK(emitAttributes(typeStruct, indent));
     bufferSwg.addIndent(indent);
     if (node->kind == AstNodeKind::InterfaceDecl)
         CONCAT_FIXED_STR(bufferSwg, "interface");
@@ -416,7 +393,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
 
     for (auto p : typeStruct->fields)
     {
-        SWAG_CHECK(emitAttributesParams(p, indent + 1));
+        SWAG_CHECK(emitAttributes(p, indent + 1));
 
         // Struct/interface content
         if (p->node->kind == AstNodeKind::VarDecl)
@@ -440,7 +417,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     for (auto p : typeStruct->consts)
     {
         auto varDecl = CastAst<AstVarDecl>(p->node, AstNodeKind::ConstDecl);
-        SWAG_CHECK(emitAttributesParams(p, indent + 1));
+        SWAG_CHECK(emitAttributes(p, indent + 1));
         SWAG_CHECK(emitVarSwg("const ", varDecl, indent + 1));
     }
 
@@ -564,8 +541,9 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             node->computeFullNameForeign(true);
             bufferSwg.addIndent(indent);
-            bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")", module->name.c_str(), node->fullnameForeign.c_str());
-            SWAG_CHECK(emitAttributesFlags(node, indent, false));
+            bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")]", module->name.c_str(), node->fullnameForeign.c_str());
+            bufferSwg.addEol();
+            SWAG_CHECK(emitAttributes(typeFunc, indent));
             bufferSwg.addIndent(indent);
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
             node->exportForeignLine = bufferSwg.eolCount;
