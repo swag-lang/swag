@@ -73,6 +73,7 @@ struct CommandLine
     string      buildCfg           = "debug";
     string      buildCfgDebug      = "default";
     string      buildCfgSafety     = "default";
+    string      buildCfgInlineBC = "default";
     string      buildCfgOptimBC    = "default";
     string      buildCfgOptimSpeed = "default";
     string      buildCfgOptimSize  = "default";

@@ -5,6 +5,19 @@
 #include "TypeInfo.h"
 #include "Allocator.h"
 #include "Generic.h"
+#include "SourceFile.h"
+#include "Module.h"
+
+bool AstNode::mustInline()
+{
+    if (attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+        return true;
+    if (!(attributeFlags & ATTRIBUTE_INLINE))
+        return false;
+    if (sourceFile->module->buildCfg.byteCodeInline == false)
+        return false;
+    return true;
+}
 
 bool AstNode::isConstant0()
 {
