@@ -92,6 +92,22 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     // When type is a compound, we do substitution in the raw type
     switch (typeInfo->kind)
     {
+    case TypeInfoKind::TypedVariadic:
+    {
+        auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
+        auto newType      = doTypeSubstitution(cloneContext, typeVariadic->rawType);
+        if (newType != typeVariadic->rawType)
+        {
+            typeVariadic          = static_cast<TypeInfoVariadic*>(typeVariadic->clone());
+            typeVariadic->rawType = newType;
+            typeVariadic->flags &= ~TYPEINFO_GENERIC;
+            typeVariadic->computeName();
+            return typeVariadic;
+        }
+
+        break;
+    }
+
     case TypeInfoKind::Alias:
     {
         auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
