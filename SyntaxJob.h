@@ -129,6 +129,7 @@ struct SyntaxJob : public Job
     bool doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false);
     bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false);
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);
+    void setOwnerAttrUse(AstAttrUse* attrUse, AstNode* who);
     bool doAttrUse(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedStatement(AstNode* parent, AstNode** result = nullptr);
@@ -163,7 +164,6 @@ struct SyntaxJob : public Job
     Scope*              currentScope           = nullptr;
     AstFuncDecl*        currentFct             = nullptr;
     AstBreakable*       currentBreakable       = nullptr;
-    AstAttrUse*         currentAttrUse         = nullptr;
     Scope*              currentStructScope     = nullptr;
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
     Token*              currentTokenLocation   = nullptr;
@@ -182,7 +182,6 @@ struct SyntaxJob : public Job
         currentScope           = nullptr;
         currentFct             = nullptr;
         currentBreakable       = nullptr;
-        currentAttrUse         = nullptr;
         currentStructScope     = nullptr;
         currentCompilerIfBlock = nullptr;
         currentMainNode        = nullptr;

@@ -41,24 +41,6 @@ struct ScopedBreakable
     AstBreakable* savedNode;
 };
 
-struct ScopedAttrUse
-{
-    ScopedAttrUse(SyntaxJob* job, AstAttrUse* newNode)
-    {
-        savedJob            = job;
-        savedNode           = job->currentAttrUse;
-        job->currentAttrUse = newNode;
-    }
-
-    ~ScopedAttrUse()
-    {
-        savedJob->currentAttrUse = savedNode;
-    }
-
-    SyntaxJob*  savedJob;
-    AstAttrUse* savedNode;
-};
-
 struct ScopedFct
 {
     ScopedFct(SyntaxJob* job, AstFuncDecl* newFct)

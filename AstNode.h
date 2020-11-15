@@ -268,7 +268,6 @@ struct AstNode
         ownerScope           = op->ownerScope;
         ownerFct             = op->ownerFct;
         ownerBreakable       = op->ownerBreakable;
-        ownerAttrUse         = op->ownerAttrUse;
         ownerInline          = op->ownerInline;
         ownerCompilerIfBlock = op->ownerCompilerIfBlock;
     }
@@ -280,7 +279,6 @@ struct AstNode
         ownerScope           = job->currentScope;
         ownerFct             = job->currentFct;
         ownerBreakable       = job->currentBreakable;
-        ownerAttrUse         = job->currentAttrUse;
         ownerCompilerIfBlock = job->currentCompilerIfBlock;
 
         flags |= job->currentFlags;

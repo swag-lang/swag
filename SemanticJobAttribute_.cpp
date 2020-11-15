@@ -6,6 +6,9 @@
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
 {
+    if (!checkNode)
+        return true;
+
     if (checkNode->kind == AstNodeKind::Statement)
     {
         for (auto s : checkNode->childs)
@@ -100,10 +103,17 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
     ComputedValue value;
     while (curAttr)
     {
-        flags |= curAttr->attributeFlags;
+        // Inherit flags
+        auto curFlags = curAttr->attributeFlags;
+        if (flags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_PRIVATE | ATTRIBUTE_PROTECTED))
+            curFlags &= ~(ATTRIBUTE_PUBLIC | ATTRIBUTE_PRIVATE | ATTRIBUTE_PROTECTED);
+        flags |= curFlags;
+
         for (auto child : curAttr->childs)
         {
             if (child == curAttr->content)
+                continue;
+            if (!child->typeInfo || child->typeInfo->kind != TypeInfoKind::FuncAttr)
                 continue;
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);

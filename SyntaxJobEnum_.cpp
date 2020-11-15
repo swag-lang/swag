@@ -121,8 +121,8 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
     {
         AstAttrUse* attrUse;
         SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
-        ScopedAttrUse sk(this, attrUse);
         SWAG_CHECK(doEnumContent(attrUse, &attrUse->content));
+        setOwnerAttrUse(attrUse, attrUse->content);
         break;
     }
 

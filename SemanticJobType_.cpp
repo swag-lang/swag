@@ -352,6 +352,10 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
         return true;
     }
 
+    // Collect all attributes for the variable
+    SymbolAttributes attributes;
+    SWAG_CHECK(collectAttributes(context, node, attributes));
+
     node->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Alias));
     if (context->result == ContextResult::Pending)
@@ -381,6 +385,10 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::TypeAlias));
     if (context->result == ContextResult::Pending)
         return true;
+
+    // Collect all attributes for the variable
+    SymbolAttributes attributes;
+    SWAG_CHECK(collectAttributes(context, node, attributes));
 
     auto typeInfo       = g_Allocator.alloc<TypeInfoAlias>();
     typeInfo->declNode  = node;

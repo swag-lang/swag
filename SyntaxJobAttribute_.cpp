@@ -86,11 +86,11 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     case TokenId::KwdConst:
     case TokenId::KwdEnum:
     case TokenId::KwdStruct:
-    case TokenId::KwdNamespace:
     case TokenId::KwdImpl:
     case TokenId::KwdInterface:
     case TokenId::KwdTypeSet:
     case TokenId::KwdAlias:
+    case TokenId::KwdNamespace:
         break;
 
     default:
@@ -99,15 +99,17 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
         return syntaxError(token, format("unexpected token '%s' after 'public' attribute", token.text.c_str()));
     }
 
-    AstNode* topStmt = nullptr;
+    Scoped scoped(this, newScope);
+    auto   attrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
+    if (result)
+        *result = attrUse;
 
-    {
-        Scoped               scoped(this, newScope);
-        ScopedAttributeFlags scopedAttributes(this, attr);
-        SWAG_CHECK(doTopLevelInstruction(parent, &topStmt));
-        if (result)
-            *result = topStmt;
-    }
+    AstNode* topStmt = nullptr;
+    SWAG_CHECK(doTopLevelInstruction(attrUse, &topStmt));
+
+    attrUse->content        = topStmt;
+    attrUse->attributeFlags = attr;
+    setOwnerAttrUse(attrUse, attrUse->content);
 
     // Add original scope
     if (topStmt)
@@ -117,6 +119,27 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     }
 
     return true;
+}
+
+void SyntaxJob::setOwnerAttrUse(AstAttrUse* attrUse, AstNode* who)
+{
+    if (!who)
+        return;
+
+    switch (who->kind)
+    {
+    case AstNodeKind::Statement:
+    case AstNodeKind::Namespace:
+    case AstNodeKind::Impl:
+    case AstNodeKind::CompilerIf:
+    case AstNodeKind::CompilerIfBlock:
+        for (auto s : who->childs)
+            setOwnerAttrUse(attrUse, s);
+        break;
+    default:
+        who->ownerAttrUse = attrUse;
+        break;
+    }
 }
 
 bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)

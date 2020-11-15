@@ -381,8 +381,8 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
         if (result)
             *result = attrUse;
-        ScopedAttrUse sk(this, attrUse);
         SWAG_CHECK(doEmbeddedInstruction(attrUse, &attrUse->content));
+        setOwnerAttrUse(attrUse, attrUse->content);
         break;
     }
 
@@ -480,7 +480,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doGlobalAttributeExpose(parent, result));
         break;
     case TokenId::KwdNamespace:
-        SWAG_CHECK(doNamespace(parent));
+        SWAG_CHECK(doNamespace(parent, result));
         break;
     case TokenId::KwdEnum:
         SWAG_CHECK(doEnum(parent, result));
@@ -505,8 +505,8 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
         if (result)
             *result = attrUse;
-        ScopedAttrUse sk(this, attrUse);
         SWAG_CHECK(doTopLevelInstruction(attrUse, &attrUse->content));
+        setOwnerAttrUse(attrUse, attrUse->content);
         break;
     }
     case TokenId::CompilerAst:
