@@ -90,6 +90,14 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
     auto attrUse = forNode->ownerAttrUse;
     if (!attrUse)
         return true;
+    SWAG_CHECK(collectAttributes(context, forNode, result, attrUse));
+    return true;
+}
+
+bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes& result, AstAttrUse* attrUse)
+{
+    if (!attrUse)
+        return true;
 
     // Already done
     if (!result.empty())
@@ -298,5 +306,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         node->attributes.attributes.emplace_back(move(oneAttribute));
     }
 
+    SymbolAttributes attributes;
+    SWAG_CHECK(collectAttributes(context, node, attributes, node));
     return true;
 }

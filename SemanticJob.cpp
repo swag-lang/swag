@@ -100,6 +100,10 @@ JobResult SemanticJob::execute()
             continue;
         }
 
+        // Some attribute flags must propagate from parent to childs, whatever
+        if (node->parent)
+            node->attributeFlags |= node->parent->attributeFlags & (ATTRIBUTE_SAFETY_OFF | ATTRIBUTE_SAFETY_ON);
+
         switch (node->semanticState)
         {
         case AstNodeResolveState::Enter:
