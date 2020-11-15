@@ -1,5 +1,5 @@
 //#[swag.printbc]
-#[swag.nooptim]
+#[swag.optim(false)]
 #test
 {
     {

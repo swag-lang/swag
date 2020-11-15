@@ -85,7 +85,7 @@ struct BuildCfg
     // Bytecode
     uint32_t byteCodeMaxRecurse = 1024;
     uint32_t byteCodeStackSize  = 16 * 1024;
-    uint32_t byteCodeOptimize   = 1;
+    bool     byteCodeOptimize   = true;
 
     // Backend common
     bool backendDebugInformations = false;

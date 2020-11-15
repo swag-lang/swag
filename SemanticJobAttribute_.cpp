@@ -168,13 +168,17 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_NO_RETURN;
             else if (child->name == "global")
                 flags |= ATTRIBUTE_GLOBAL;
-            else if (child->name == "nooptim")
-                flags |= ATTRIBUTE_NO_OPTIM;
             else if (child->name == "safety")
             {
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.safety", "value", attrValue);
                 flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_ON : ATTRIBUTE_SAFETY_OFF;
+            }
+            else if (child->name == "optim")
+            {
+                ComputedValue attrValue;
+                curAttr->attributes.getValue("swag.optim", "value", attrValue);
+                flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_ON : ATTRIBUTE_OPTIM_OFF;
             }
             else if (child->name == "pack")
             {
@@ -183,10 +187,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 SWAG_VERIFY(attrValue.reg.u8 <= 8, context->report({child, format("'swag.pack' value must be in the range [0, 8] ('%d' provided)", attrValue.reg.u8)}));
             }
         }
-
-        // No inlining in bc optim 0
-        if (context->sourceFile->module->buildCfg.byteCodeOptimize == 0)
-            flags &= ~ATTRIBUTE_INLINE;
 
         // Merge the result
         for (auto& oneAttr : curAttr->attributes.attributes)

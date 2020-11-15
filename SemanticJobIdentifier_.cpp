@@ -727,7 +727,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             identifier->flags |= AST_TRANSIENT;
             identifier->fctCallStorageOffset = identifier->ownerScope->startStackSize;
             identifier->ownerScope->startStackSize += returnType->sizeOf;
-            identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
+            if (identifier->ownerFct)
+                identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
         }
 
         break;

@@ -23,6 +23,7 @@ impl A
     }
 }
 
+//#[swag.optim(true)]
 func toto()->A
 {
     var res: retval
@@ -31,12 +32,14 @@ func toto()->A
 }
 
 //#[swag.printbc]
+//#[swag.optim(true)]
 func titi()->A
 {
     return toto()
 }
 
 //#[swag.printbc]
+#[swag.optim(true)]
 #test
 {
     {

@@ -70,8 +70,6 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
 
 bool ByteCodeOptimizer::optimize(Module* module)
 {
-    if (module->buildCfg.byteCodeOptimize == 0)
-        return true;
     if (module->hasUnittestError || module->numErrors)
         return true;
 
@@ -127,7 +125,7 @@ bool ByteCodeOptimizer::optimize(Module* module)
         }
 
         // Restart everything if something has been done during this pass
-        if (!restart || module->buildCfg.byteCodeOptimize == 1)
+        if (!restart)
             break;
     }
 

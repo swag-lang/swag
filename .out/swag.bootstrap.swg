@@ -84,8 +84,8 @@ namespace swag
     #[attributeUsage(AttributeUsage.All)]
     attr safety(value: bool)
 
-    #[attributeUsage(AttributeUsage.All)]
-    attr nooptim()
+    #[attributeUsage(AttributeUsage.Function)]
+    attr optim(value: bool)
 
     // #########################################################
     // Constants
@@ -373,7 +373,7 @@ namespace swag
         // Bytecode
         byteCodeMaxRecurse: u32 = 1024
         byteCodeStackSize: u32  = 16 * 1024
-        byteCodeOptimize: u32 = 1
+        byteCodeOptimize: bool  = true
 
         // Backend common
         backendDebugInformations: bool  = false
