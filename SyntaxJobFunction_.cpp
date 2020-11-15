@@ -521,7 +521,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         // One single statement
         else if (token.id == TokenId::SymEqual)
         {
-            ScopedAttributeFlags scopedAccess(this, 0);
             SWAG_CHECK(eatToken());
             auto stmt         = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
             funcNode->content = stmt;
@@ -532,7 +531,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         // Normal curly statement
         else
         {
-            ScopedAttributeFlags scopedAccess(this, 0);
             SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
         }
 

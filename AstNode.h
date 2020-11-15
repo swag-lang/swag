@@ -279,9 +279,7 @@ struct AstNode
         ownerFct             = job->currentFct;
         ownerBreakable       = job->currentBreakable;
         ownerCompilerIfBlock = job->currentCompilerIfBlock;
-
         flags |= job->currentFlags;
-        inheritAttributes(job->currentAttributeFlags);
     }
 
     bool hasComputedValue()
@@ -322,7 +320,6 @@ struct AstNode
     bool             isParentOf(AstNode* child);
     bool             isSameStackFrame(SymbolOverload* overload);
     void             setPassThrough();
-    void             inheritAttributes(uint64_t fromAttributes);
     void             inheritLocationFromChilds();
     static Utf8      getArticleKindName(AstNode* node);
     static Utf8      getKindName(AstNode* node);
