@@ -37,7 +37,7 @@ func titi()->A
     return toto()
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #[swag.optim(true)]
 #test
 {
