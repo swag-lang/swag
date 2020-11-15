@@ -94,15 +94,12 @@ bool Backend::emitAttributesFlags(AstNode* node, int indent, bool isFirst)
         bufferSwg.addEol();
     }
 
-    if (node->parentAttributes)
+    ComputedValue value;
+    if (node->attributes.getValue("swag.pack", "value", value))
     {
-        ComputedValue value;
-        if (node->parentAttributes->attributes.getValue("swag.pack", "value", value))
-        {
-            bufferSwg.addIndent(indent);
-            bufferSwg.addStringFormat("#[pack(\"%d\")]", value.reg.u8);
-            bufferSwg.addEol();
-        }
+        bufferSwg.addIndent(indent);
+        bufferSwg.addStringFormat("#[pack(\"%d\")]", value.reg.u8);
+        bufferSwg.addEol();
     }
 
     return true;

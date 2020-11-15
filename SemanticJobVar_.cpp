@@ -268,8 +268,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // Collect all attributes for the variable
     SymbolAttributes attributes;
-    if (node->parentAttributes)
-        SWAG_CHECK(collectAttributes(context, attributes, node->parentAttributes, node, AstNodeKind::VarDecl, node->attributeFlags));
+    SWAG_CHECK(collectAttributes(context, node, attributes));
 
     bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
     bool isLocalConstant    = false;

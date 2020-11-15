@@ -46,12 +46,9 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         return context->report(diag, &note);
     }
 
-    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->childs;
-    if (node->flags & AST_STRUCT_COMPOUND)
-    {
-        job->tmpNodes.clear();
-        flattenStructChilds(context, node, job->tmpNodes);
-    }
+    VectorNative<AstNode*>& childs = job->tmpNodes;
+    job->tmpNodes.clear();
+    flattenStructChilds(context, node, job->tmpNodes);
 
     SWAG_ASSERT(node->childs[0]->kind == AstNodeKind::IdentifierRef);
     SWAG_ASSERT(node->childs[1]->kind == AstNodeKind::IdentifierRef);
@@ -345,8 +342,8 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
     }
 
     // Attributes
-    if (node->parentAttributes && !(node->flags & AST_FROM_GENERIC))
-        SWAG_CHECK(collectAttributes(context, typeInfo->attributes, node->parentAttributes, node, node->kind, node->attributeFlags));
+    if (!(node->flags & AST_FROM_GENERIC))
+        SWAG_CHECK(collectAttributes(context, node, typeInfo->attributes));
 
     // Register symbol with its type
     SymbolKind symbolKind = SymbolKind::Struct;
@@ -374,10 +371,6 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
 
 void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result)
 {
-#ifdef SWAG_HAS_ASSERT
-    auto node = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
-#endif
-
     for (auto child : parent->childs)
     {
         switch (child->kind)
@@ -386,13 +379,11 @@ void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent,
         case AstNodeKind::CompilerIfBlock:
         case AstNodeKind::CompilerAst:
         case AstNodeKind::CompilerAssert:
-            SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
             flattenStructChilds(context, child, result);
             continue;
 
         case AstNodeKind::CompilerIf:
         {
-            SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
             AstIf* compilerIf = CastAst<AstIf>(child, AstNodeKind::CompilerIf);
             if (!(compilerIf->ifBlock->flags & AST_NO_SEMANTIC))
                 flattenStructChilds(context, compilerIf->ifBlock, result);
@@ -402,7 +393,14 @@ void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent,
         }
 
         case AstNodeKind::AttrUse:
+        {
+            AstAttrUse* attrUse = CastAst<AstAttrUse>(child, AstNodeKind::AttrUse);
+            if (attrUse->content->kind == AstNodeKind::Statement)
+                flattenStructChilds(context, attrUse->content, result);
+            else
+                result.push_back(attrUse->content);
             continue;
+        }
         }
 
         result.push_back(child);
@@ -420,12 +418,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     SWAG_ASSERT(typeInfo->declNode == node);
 
     // Structure packing
-    if (node->parentAttributes)
-    {
-        ComputedValue value;
-        if (node->parentAttributes->attributes.getValue("swag.pack", "value", value))
-            node->packing = value.reg.u8;
-    }
+    SWAG_CHECK(collectAttributes(context, node, typeInfo->attributes));
+    ComputedValue value;
+    if (typeInfo->attributes.getValue("swag.pack", "value", value))
+        node->packing = value.reg.u8;
 
     uint32_t storageOffset     = 0;
     uint32_t storageIndexField = 0;
@@ -464,8 +460,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
             typeParam->hasUsing   = varDecl->flags & AST_DECL_USING;
-            if (child->parentAttributes)
-                SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
+            SWAG_CHECK(collectAttributes(context, child, typeParam->attributes));
             if (child->kind == AstNodeKind::VarDecl)
                 typeInfo->fields.push_back(typeParam);
             else
@@ -739,8 +734,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
             typeParam->node       = child;
-            if (child->parentAttributes)
-                SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
+            SWAG_CHECK(collectAttributes(context, child, typeParam->attributes));
             typeITable->fields.push_back(typeParam);
 
             // Verify signature
@@ -880,8 +874,7 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
             typeParam->name       = child->typeInfo->name;
             typeParam->sizeOf     = 0;
             typeParam->node       = child;
-            if (child->parentAttributes)
-                SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
+            SWAG_CHECK(collectAttributes(context, child, typeParam->attributes));
             typeSet->fields.push_back(typeParam);
         }
 

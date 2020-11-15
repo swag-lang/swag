@@ -298,7 +298,12 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         if (structType == SyntaxStructType::Tuple)
             SWAG_CHECK(doStructBodyTuple(contentNode, true, nullptr));
         else
-            SWAG_CHECK(doStructBody(contentNode, structType));
+        {
+            SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+            while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
+                SWAG_CHECK(doStructBody(contentNode, structType));
+            SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+        }
     }
 
     return true;
@@ -383,120 +388,117 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty, Utf8* name)
     return true;
 }
 
-bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType)
+bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result)
 {
-    bool waitCurly = false;
     if (token.id == TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-        waitCurly = true;
+        auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        if (result)
+            *result = stmt;
+        SWAG_CHECK(eatToken());
+        while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
+            SWAG_CHECK(doStructBody(stmt, structType));
+        SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        return true;
     }
 
-    while (true)
+    switch (token.id)
     {
-        if (token.id == TokenId::EndOfFile)
-            return syntaxError(token, "no matching '}' found in declaration");
+    case TokenId::CompilerAssert:
+        SWAG_CHECK(doCompilerAssert(parent, result));
+        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        break;
+    case TokenId::CompilerRun:
+        SWAG_CHECK(doCompilerRunEmbedded(parent, result));
+        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        break;
+    case TokenId::CompilerPrint:
+        SWAG_CHECK(doCompilerPrint(parent, result));
+        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        break;
+    case TokenId::CompilerAst:
+        SWAG_CHECK(doCompilerAst(parent, result, CompilerAstKind::StructVarDecl));
+        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        break;
+    case TokenId::CompilerIf:
+        SWAG_CHECK(doCompilerIfFor(parent, result, AstNodeKind::StructDecl));
+        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        break;
 
-        switch (token.id)
+    case TokenId::SymLeftCurly:
+        SWAG_CHECK(doStructBody(parent, structType));
+        break;
+
+    case TokenId::SymAttrStart:
+    {
+        AstAttrUse* attrUse;
+        SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
+        ScopedAttrUse sk(this, attrUse);
+        SWAG_CHECK(doStructBody(attrUse, structType, &attrUse->content));
+        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        break;
+    }
+
+    // Sub definitions
+    case TokenId::KwdEnum:
+        SWAG_CHECK(doEnum(parent, result));
+        break;
+    case TokenId::KwdStruct:
+    case TokenId::KwdTypeSet:
+    case TokenId::KwdInterface:
+        SWAG_CHECK(doStruct(parent, result));
+        break;
+
+    // A user alias
+    case TokenId::KwdAlias:
+        SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, "'alias' is invalid in a typeset definition"}));
+        SWAG_CHECK(doAlias(parent, result));
+        break;
+
+    // Using on a struct member
+    case TokenId::KwdUsing:
+    {
+        SWAG_VERIFY(structType != SyntaxStructType::Interface, sourceFile->report({parent, token, "'using' on a member is invalid in an interface definition"}));
+        SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, "'using' on a member is invalid in a typeset definition"}));
+        SWAG_CHECK(eatToken());
+
+        auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        if (result)
+            *result = stmt;
+
+        AstNode* varDecl;
+        SWAG_CHECK(doVarDecl(stmt, &varDecl, AstNodeKind::VarDecl));
+        varDecl->flags |= AST_DECL_USING;
+        break;
+    }
+
+    case TokenId::KwdConst:
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::ConstDecl));
+        break;
+
+    case TokenId::KwdVar:
+        return sourceFile->report({parent, token, "'var' is not necessary to declare a field"});
+
+    // A normal declaration
+    default:
+        if (structType == SyntaxStructType::TypeSet)
         {
-        case TokenId::CompilerAssert:
-            SWAG_CHECK(doCompilerAssert(parent, nullptr));
-            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
-            break;
-        case TokenId::CompilerRun:
-            SWAG_CHECK(doCompilerRunEmbedded(parent, nullptr));
-            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
-            break;
-        case TokenId::CompilerPrint:
-            SWAG_CHECK(doCompilerPrint(parent, nullptr));
-            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
-            break;
-        case TokenId::CompilerAst:
-            SWAG_CHECK(doCompilerAst(parent, nullptr, CompilerAstKind::StructVarDecl));
-            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
-            break;
-        case TokenId::CompilerIf:
-            SWAG_CHECK(doCompilerIfFor(parent, nullptr, AstNodeKind::StructDecl));
-            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
-            break;
-
-        case TokenId::SymLeftCurly:
+            auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
+            structNode->semanticFct = SemanticJob::resolveStruct;
+            SWAG_CHECK(doStructContent(structNode, SyntaxStructType::Tuple));
+            structNode->typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
+            if (result)
+                *result = structNode;
+        }
+        else
         {
-            auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-            SWAG_CHECK(doStructBody(stmt, structType));
-            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
-            break;
-        }
-        case TokenId::SymRightCurly:
-            SWAG_CHECK(eatToken());
-            return true;
-
-        case TokenId::SymAttrStart:
-            SWAG_CHECK(doAttrUse(parent));
-            break;
-
-        // Sub definitions
-        case TokenId::KwdEnum:
-            SWAG_CHECK(doEnum(parent));
-            break;
-        case TokenId::KwdStruct:
-        case TokenId::KwdTypeSet:
-        case TokenId::KwdInterface:
-            SWAG_CHECK(doStruct(parent));
-            break;
-
-        // A user alias
-        case TokenId::KwdAlias:
-            SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, "'alias' is invalid in a typeset definition"}));
-            SWAG_CHECK(doAlias(parent));
-            break;
-
-        // Using on a struct member
-        case TokenId::KwdUsing:
-        {
-            SWAG_VERIFY(structType != SyntaxStructType::Interface, sourceFile->report({parent, token, "'using' on a member is invalid in an interface definition"}));
-            SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, "'using' on a member is invalid in a typeset definition"}));
-            SWAG_CHECK(eatToken());
-
-            auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
-
-            AstNode* varDecl;
-            SWAG_CHECK(doVarDecl(stmt, &varDecl, AstNodeKind::VarDecl));
-            varDecl->flags |= AST_DECL_USING;
-            if (!waitCurly)
-                return true;
-            break;
+            SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl));
         }
 
-        case TokenId::KwdConst:
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::ConstDecl));
-            if (!waitCurly)
-                return true;
-            break;
-
-        case TokenId::KwdVar:
-            return sourceFile->report({parent, token, "'var' is not necessary to declare a field"});
-
-        // A normal declaration
-        default:
-            if (structType == SyntaxStructType::TypeSet)
-            {
-                auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
-                structNode->semanticFct = SemanticJob::resolveStruct;
-                SWAG_CHECK(doStructContent(structNode, SyntaxStructType::Tuple));
-                structNode->typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
-            }
-            else
-            {
-                SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
-            }
-
-            if (!waitCurly)
-                return true;
-            break;
-        }
+        break;
     }
 
     return true;

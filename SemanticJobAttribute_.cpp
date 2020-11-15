@@ -4,65 +4,61 @@
 #include "SourceFile.h"
 #include "Module.h"
 
-bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
+bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
 {
-    if (kind == AstNodeKind::Statement)
+    if (checkNode->kind == AstNodeKind::Statement)
+    {
+        for (auto s : checkNode->childs)
+            SWAG_CHECK(checkAttribute(context, oneAttribute, s));
         return true;
+    }
+
+    if (checkNode->kind == AstNodeKind::AttrUse)
+    {
+        auto attrUse = CastAst<AstAttrUse>(checkNode, AstNodeKind::AttrUse);
+        SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content));
+        return true;
+    }
+
+    SWAG_ASSERT(oneAttribute->typeInfo);
     if (oneAttribute->typeInfo->kind != TypeInfoKind::FuncAttr)
         return context->report({oneAttribute, format("'%s' is not a valid attribute, it's %s", oneAttribute->typeInfo->name.c_str(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
 
+    auto kind     = checkNode->kind;
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(checkNode);
     if (typeInfo->attributeUsage == AttributeUsage::All)
         return true;
 
     if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
-    {
         return true;
-    }
 
     if ((typeInfo->attributeUsage & AttributeUsage::Attribute) && (kind == AstNodeKind::AttrDecl))
-    {
         return true;
-    }
 
     if ((typeInfo->attributeUsage & AttributeUsage::Struct) && (kind == AstNodeKind::StructDecl))
-    {
         return true;
-    }
 
     if ((typeInfo->attributeUsage & AttributeUsage::Enum) && (kind == AstNodeKind::EnumDecl))
-    {
         return true;
-    }
 
     if ((typeInfo->attributeUsage & AttributeUsage::EnumValue) && (kind == AstNodeKind::EnumValue))
-    {
         return true;
-    }
 
     if ((typeInfo->attributeUsage & AttributeUsage::Switch) && (kind == AstNodeKind::Switch))
-    {
         return true;
-    }
 
     if ((typeInfo->attributeUsage & AttributeUsage::Field) && (kind == AstNodeKind::VarDecl))
-    {
         if (checkNode->ownerMainNode && checkNode->ownerMainNode->kind == AstNodeKind::StructDecl)
             return true;
-    }
 
     if ((typeInfo->attributeUsage & AttributeUsage::GlobalVariable) && (kind == AstNodeKind::VarDecl))
-    {
         if (checkNode->ownerScope->isGlobal())
             return true;
-    }
 
     if ((typeInfo->attributeUsage & AttributeUsage::LocalVariable) && (kind == AstNodeKind::VarDecl))
-    {
         if (!checkNode->ownerScope->isGlobal())
             return true;
-    }
 
     auto nakedName = AstNode::getArticleKindName(checkNode);
     if (nakedName == "<node>")
@@ -80,10 +76,10 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     }
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags)
+bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes& result)
 {
     // Predefined attributes
-    if (kind == AstNodeKind::AttrDecl && context->sourceFile->isBootstrapFile)
+    if (forNode->kind == AstNodeKind::AttrDecl && context->sourceFile->isBootstrapFile)
     {
         if (forNode->name == "attributeUsage" || forNode->name == "attributeMulti")
         {
@@ -93,9 +89,18 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
         }
     }
 
+    auto attrUse = forNode->ownerAttrUse;
     if (!attrUse)
         return true;
 
+    // Already done
+    if (!forNode->attributes.empty())
+    {
+        result = forNode->attributes;
+        return true;
+    }
+
+    auto&         flags   = forNode->attributeFlags;
     auto          curAttr = attrUse;
     ComputedValue value;
     while (curAttr)
@@ -103,9 +108,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
         flags |= curAttr->attributeFlags;
         for (auto child : curAttr->childs)
         {
-            // Check that the attribute matches the following declaration
-            if (kind != AstNodeKind::AttrUse)
-                SWAG_CHECK(checkAttribute(context, child, forNode, kind));
+            if (child == curAttr->content)
+                continue;
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeInfo->attributes.hasAttribute("swag.attributeMulti"))
@@ -122,7 +126,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             result.isHere.insert(typeInfo);
 
             // Attribute on an attribute : usage
-            if (kind == AstNodeKind::AttrDecl)
+            if (forNode->kind == AstNodeKind::AttrDecl)
             {
                 if (curAttr->attributes.getValue("swag.attributeUsage", "usage", value))
                 {
@@ -192,13 +196,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
         for (auto& oneAttr : curAttr->attributes.attributes)
             result.attributes.push_back(oneAttr);
 
-        // No hierarchy
-        if (kind == AstNodeKind::Switch)
-            break;
-
-        curAttr = curAttr->parentAttributes;
+        curAttr = curAttr->ownerAttrUse;
     }
 
+    forNode->attributes = result;
     return true;
 }
 
@@ -211,7 +212,7 @@ bool SemanticJob::preResolveAttrDecl(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    SWAG_CHECK(collectAttributes(context, typeInfo->attributes, node->parentAttributes, node, AstNodeKind::AttrDecl, node->attributeFlags));
+    SWAG_CHECK(collectAttributes(context, node, typeInfo->attributes));
     return true;
 }
 
@@ -230,31 +231,15 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 
 bool SemanticJob::resolveAttrUse(SemanticContext* context)
 {
-    auto node = CastAst<AstAttrUse>(context->node, AstNodeKind::AttrUse);
-
-    // Attribute use must not be the last one, because we need a valid statement after it
-    if (node->childParentIdx >= node->parent->childs.size() - 1)
-    {
-        context->report({node, "attribute belongs to nothing (no valid statement after)"});
-        return false;
-    }
-
-    // Collect all attributes next to this one
-    auto idx           = node->childParentIdx + 1;
-    auto nextStatement = node->parent->childs[idx];
-    while (nextStatement->kind == AstNodeKind::AttrUse)
-    {
-        idx++;
-        if (idx >= node->parent->childs.size())
-            return context->report({node, "attribute belongs to nothing (no valid statement after)"});
-        nextStatement = node->parent->childs[idx];
-    }
-
-    AstNodeKind kind = nextStatement ? nextStatement->kind : AstNodeKind::Module;
+    auto node = CastAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
+    SWAG_VERIFY(node->content, context->report({node, "invalid attribute usage"}));
 
     for (auto child : node->childs)
     {
-        SWAG_CHECK(checkAttribute(context, child, nextStatement, kind));
+        if (child == node->content)
+            continue;
+
+        SWAG_CHECK(checkAttribute(context, child, node->content));
 
         // Collect parameters
         auto identifierRef = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
@@ -312,10 +297,5 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         node->attributes.attributes.emplace_back(move(oneAttribute));
     }
 
-    if (nextStatement)
-        nextStatement->parentAttributes = node;
-
-    SymbolAttributes attributes;
-    SWAG_CHECK(collectAttributes(context, attributes, node, node, AstNodeKind::AttrUse, node->attributeFlags));
     return true;
 }

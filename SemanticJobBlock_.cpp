@@ -159,7 +159,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
 
     // Deal with complete
     SymbolAttributes attributes;
-    SWAG_CHECK(collectAttributes(context, attributes, node->parentAttributes, node, AstNodeKind::Switch, node->attributeFlags));
+    SWAG_CHECK(collectAttributes(context, node, attributes));
 
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
     SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, "invalid switch type 'any', you need to cast to a concrete type"}));

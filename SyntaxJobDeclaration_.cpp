@@ -51,7 +51,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doNamespace(AstNode* parent)
+bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isGlobal(), error(token, "a namespace definition must appear either at file scope or immediately within another namespace definition"));
     SWAG_CHECK(tokenizer.getToken(token));
@@ -59,11 +59,15 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     AstNode* namespaceNode;
     Scope*   oldScope = currentScope;
     Scope*   newScope = nullptr;
+    bool     first    = true;
 
     while (true)
     {
         namespaceNode              = Ast::newNode<AstNode>(this, AstNodeKind::Namespace, sourceFile, parent);
         namespaceNode->semanticFct = SemanticJob::resolveNamespace;
+        if (first && result)
+            *result = namespaceNode;
+        first = false;
 
         switch (token.id)
         {
@@ -277,9 +281,6 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
-    case TokenId::KwdEnum:
-        SWAG_CHECK(doEnum(parent));
-        break;
     case TokenId::SymLeftCurly:
         SWAG_CHECK(doScopedCurlyStatement(parent, result, ScopeKind::EmptyStatement));
         break;
@@ -345,7 +346,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doBreak(parent, result));
         break;
     case TokenId::KwdFallThrough:
-        SWAG_CHECK(doFallThrough(parent));
+        SWAG_CHECK(doFallThrough(parent, result));
         break;
     case TokenId::KwdContinue:
         SWAG_CHECK(doContinue(parent, result));
@@ -375,28 +376,55 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerAst(parent, result, CompilerAstKind::EmbeddedInstruction));
         break;
     case TokenId::SymAttrStart:
-        SWAG_CHECK(doAttrUse(parent));
+    {
+        AstAttrUse* attrUse;
+        SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
+        if (result)
+            *result = attrUse;
+        ScopedAttrUse sk(this, attrUse);
+        SWAG_CHECK(doEmbeddedInstruction(attrUse, &attrUse->content));
         break;
+    }
 
     case TokenId::KwdFunc:
     {
         SWAG_ASSERT(parent && parent->ownerFct);
-        moveAttributes(parent, sourceFile->astRoot);
         AstNode* subFunc;
-        SWAG_CHECK(doFuncDecl(sourceFile->astRoot, &subFunc));
+        SWAG_CHECK(doFuncDecl(parent, &subFunc));
         if (result)
             *result = subFunc;
         subFunc->flags |= AST_NO_SEMANTIC;
         parent->ownerFct->subFunctions.push_back(subFunc);
+
+        // Move to the root
+        if (subFunc->parent->kind == AstNodeKind::AttrUse)
+            subFunc = subFunc->parent;
+        Ast::removeFromParent(subFunc);
+        Ast::addChildBack(sourceFile->astRoot, subFunc);
+
         break;
     }
 
+    case TokenId::KwdEnum:
+        SWAG_CHECK(doEnum(parent, result));
+        break;
     case TokenId::KwdStruct:
     case TokenId::KwdTypeSet:
     case TokenId::KwdInterface:
-        moveAttributes(parent, sourceFile->astRoot);
-        SWAG_CHECK(doStruct(sourceFile->astRoot, result));
+    {
+        AstNode* subFunc;
+        SWAG_CHECK(doStruct(parent, &subFunc));
+        if (result)
+            *result = subFunc;
+
+        // Move to the root
+        if (subFunc->parent->kind == AstNodeKind::AttrUse)
+            subFunc = subFunc->parent;
+        Ast::removeFromParent(subFunc);
+        Ast::addChildBack(sourceFile->astRoot, subFunc);
         break;
+    }
+
     case TokenId::KwdLabel:
         SWAG_CHECK(doLabel(parent, result));
         break;
@@ -429,68 +457,58 @@ bool SyntaxJob::doLabel(AstNode* parent, AstNode** result)
     return true;
 }
 
-void SyntaxJob::moveAttributes(AstNode* from, AstNode* to)
-{
-    VectorNative<AstNode*> attrs;
-    for (int i = (int) from->childs.size() - 1; i >= 0; i--)
-    {
-        if (from->childs[i]->kind != AstNodeKind::AttrUse)
-            break;
-        attrs.push_back(from->childs[i]);
-    }
-
-    for (auto p : attrs)
-    {
-        Ast::removeFromParent(p);
-        Ast::addChildBack(to, p);
-    }
-}
-
 bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
     case TokenId::SymLeftCurly:
-        SWAG_CHECK(doGlobalCurlyStatement(parent));
+        SWAG_CHECK(doGlobalCurlyStatement(parent, result));
         break;
     case TokenId::SymSemiColon:
         SWAG_CHECK(tokenizer.getToken(token));
         break;
     case TokenId::KwdVar:
     case TokenId::KwdConst:
-        SWAG_CHECK(doVarDecl(parent));
+        SWAG_CHECK(doVarDecl(parent, result));
         break;
     case TokenId::KwdAlias:
-        SWAG_CHECK(doAlias(parent));
+        SWAG_CHECK(doAlias(parent, result));
         break;
     case TokenId::KwdPublic:
     case TokenId::KwdProtected:
     case TokenId::KwdPrivate:
-        SWAG_CHECK(doGlobalAttributeExpose(parent));
+        SWAG_CHECK(doGlobalAttributeExpose(parent, result));
         break;
     case TokenId::KwdNamespace:
         SWAG_CHECK(doNamespace(parent));
         break;
     case TokenId::KwdEnum:
-        SWAG_CHECK(doEnum(parent));
+        SWAG_CHECK(doEnum(parent, result));
         break;
     case TokenId::KwdImpl:
-        SWAG_CHECK(doImpl(parent));
+        SWAG_CHECK(doImpl(parent, result));
         break;
     case TokenId::KwdStruct:
     case TokenId::KwdTypeSet:
     case TokenId::KwdInterface:
-        SWAG_CHECK(doStruct(parent));
+        SWAG_CHECK(doStruct(parent, result));
         break;
     case TokenId::KwdAttr:
-        SWAG_CHECK(doAttrDecl(parent));
+        SWAG_CHECK(doAttrDecl(parent, result));
         break;
     case TokenId::KwdUsing:
-        SWAG_CHECK(doUsing(parent));
+        SWAG_CHECK(doUsing(parent, result));
         break;
     case TokenId::SymAttrStart:
-        SWAG_CHECK(doAttrUse(parent));
+    {
+        AstAttrUse* attrUse;
+        SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
+        if (result)
+            *result = attrUse;
+        ScopedAttrUse sk(this, attrUse);
+        SWAG_CHECK(doTopLevelInstruction(attrUse, &attrUse->content));
         break;
+    }
     case TokenId::CompilerAst:
         SWAG_CHECK(doCompilerAst(parent, result, CompilerAstKind::TopLevelInstruction));
         break;
@@ -506,10 +524,10 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerRunTopLevel(parent, result));
         break;
     case TokenId::CompilerForeignLib:
-        SWAG_CHECK(doCompilerForeignLib(parent));
+        SWAG_CHECK(doCompilerForeignLib(parent, result));
         break;
     case TokenId::CompilerIf:
-        SWAG_CHECK(doCompilerIf(parent));
+        SWAG_CHECK(doCompilerIf(parent, result));
         break;
     case TokenId::CompilerUnitTest:
         SWAG_CHECK(doCompilerUnitTest());
@@ -518,10 +536,10 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerModule());
         break;
     case TokenId::CompilerAssert:
-        SWAG_CHECK(doCompilerAssert(parent));
+        SWAG_CHECK(doCompilerAssert(parent, result));
         break;
     case TokenId::CompilerPrint:
-        SWAG_CHECK(doCompilerPrint(parent));
+        SWAG_CHECK(doCompilerPrint(parent, result));
         break;
     case TokenId::CompilerImport:
         SWAG_CHECK(doCompilerImport(parent));

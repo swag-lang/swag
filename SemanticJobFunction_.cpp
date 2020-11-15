@@ -337,7 +337,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // Collect function attributes
     SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChilds);
-    SWAG_CHECK(collectAttributes(context, funcNode->collectAttributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
+    SymbolAttributes symAttributes;
+    SWAG_CHECK(collectAttributes(context, funcNode, symAttributes));
 
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR | AST_PURE;
@@ -499,7 +500,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         symbolFlags |= OVERLOAD_GENERIC;
 
     auto typeFunc                    = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-    typeFunc->attributes             = move(funcNode->collectAttributes);
+    typeFunc->attributes             = funcNode->attributes;
     funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable.addSymbolTypeInfo(context, funcNode, funcNode->typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
 

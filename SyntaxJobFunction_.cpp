@@ -370,7 +370,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         case TokenId::CompilerFuncCompiler:
             funcNode->token.text = "#compiler";
             funcNode->name       = "__compiler" + to_string(id);
-            funcNode->attributeFlags |= ATTRIBUTE_COMPILER_FUNC;
+            funcNode->attributeFlags |= ATTRIBUTE_COMPILER_FUNC | ATTRIBUTE_COMPILER;
             sourceFile->addCompilerPassNode(funcNode);
             break;
         case TokenId::CompilerAst:

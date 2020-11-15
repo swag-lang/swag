@@ -96,8 +96,8 @@ struct SemanticJob : public Job
     static SymbolName*  waitUserOp(SemanticContext* context, const char* name, AstNode* left);
 
     static void enterState(AstNode* node);
-    static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
-    static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags);
+    static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
+    static bool collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes& result);
     static void collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode);
     static bool collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);

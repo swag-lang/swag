@@ -21,8 +21,9 @@ struct JobContext;
 template<typename T>
 inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
 {
+    SWAG_ASSERT(ptr);
     T* casted = static_cast<T*>(ptr);
-    SWAG_ASSERT(casted && casted->kind == kind);
+    SWAG_ASSERT(casted->kind == kind);
     return casted;
 }
 

@@ -172,6 +172,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
         structNode->inheritOwners(sourceFile->astRoot);
 
         Ast::visit(structNode->content, [&](AstNode* n) {
+            n->inheritOwners(structNode);
             n->ownerStructScope = newScope;
             n->ownerScope       = newScope;
         });
@@ -179,6 +180,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
         if (structNode->genericParameters)
         {
             Ast::visit(structNode->genericParameters, [&](AstNode* n) {
+                n->inheritOwners(structNode);
                 n->ownerStructScope = newScope;
                 n->ownerScope       = newScope;
                 n->flags |= AST_IS_GENERIC;

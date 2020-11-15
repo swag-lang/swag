@@ -84,71 +84,66 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     // Content of enum
     Scoped         scoped(this, newScope);
     ScopedMainNode scopedMainNode(this, enumNode);
-    SWAG_CHECK(doEnumContent(enumNode));
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+    while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
+        SWAG_CHECK(doEnumContent(enumNode));
+    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
 
-bool SyntaxJob::doEnumContent(AstNode* parent)
+bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
 {
-    bool waitCurly = false;
     if (token.id == TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-        waitCurly = true;
+        auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        if (result)
+            *result = stmt;
+        SWAG_CHECK(eatToken());
+        while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
+            SWAG_CHECK(doEnumContent(stmt));
+        SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+        return true;
     }
 
-    while (true)
+    switch (token.id)
     {
-        if (token.id == TokenId::EndOfFile)
-        {
-            SWAG_CHECK(syntaxError(token, "no matching '}' found in enum declaration"));
-            break;
-        }
+    case TokenId::CompilerAst:
+        SWAG_CHECK(doCompilerAst(parent, result, CompilerAstKind::EnumValue));
+        break;
+    case TokenId::CompilerAssert:
+        SWAG_CHECK(doCompilerAssert(parent, result));
+        break;
+    case TokenId::CompilerIf:
+        SWAG_CHECK(doCompilerIfFor(parent, result, AstNodeKind::EnumDecl));
+        break;
 
-        if (token.id == TokenId::SymRightCurly)
-        {
-            SWAG_CHECK(eatToken());
-            break;
-        }
+    case TokenId::SymAttrStart:
+    {
+        AstAttrUse* attrUse;
+        SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
+        ScopedAttrUse sk(this, attrUse);
+        SWAG_CHECK(doEnumContent(attrUse, &attrUse->content));
+        break;
+    }
 
-        switch (token.id)
-        {
-        case TokenId::CompilerAst:
-            SWAG_CHECK(doCompilerAst(parent, nullptr, CompilerAstKind::EnumValue));
-            break;
-        case TokenId::CompilerAssert:
-            SWAG_CHECK(doCompilerAssert(parent, nullptr));
-            break;
-        case TokenId::CompilerIf:
-            SWAG_CHECK(doCompilerIfFor(parent, nullptr, AstNodeKind::EnumDecl));
-            break;
+    case TokenId::SymLeftCurly:
+        SWAG_CHECK(doEnumContent(parent));
+        break;
 
-        case TokenId::SymAttrStart:
-            SWAG_CHECK(doAttrUse(parent));
-            break;
-        case TokenId::SymLeftCurly:
-        {
-            auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-            SWAG_CHECK(doEnumContent(stmt));
-            break;
-        }
-
-        default:
-            SWAG_CHECK(doEnumValue(parent));
-            break;
-        }
-
-        if (!waitCurly)
-            break;
+    default:
+        SWAG_CHECK(doEnumValue(parent, result));
+        break;
     }
 
     return true;
 }
 
-bool SyntaxJob::doEnumValue(AstNode* parent)
+bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
     auto enumValue = Ast::newNode<AstNode>(this, AstNodeKind::EnumValue, sourceFile, parent);
+    if (result)
+        *result = enumValue;
     enumValue->inheritTokenName(token);
     enumValue->semanticFct = SemanticJob::resolveEnumValue;
     currentScope->symTable.registerSymbolName(&context, enumValue, SymbolKind::EnumValue);

@@ -148,17 +148,17 @@ struct CloneContext
     map<TokenId, AstNode*>  replaceTokens;
     map<Utf8Crc, Utf8>      replaceNames;
 
-    AstInline*    ownerInline         = nullptr;
-    AstBreakable* ownerBreakable      = nullptr;
-    AstFuncDecl*  ownerFct            = nullptr;
-    AstNode*      parent              = nullptr;
-    Scope*        parentScope         = nullptr;
-    Scope*        ownerStructScope    = nullptr;
-    AstNode*      ownerMainNode       = nullptr;
-    uint64_t      forceFlags          = 0;
-    uint64_t      removeFlags         = 0;
-    uint64_t      forceAttributeFlags = 0;
-    bool          rawClone            = false;
+    AstInline*    ownerInline      = nullptr;
+    AstBreakable* ownerBreakable   = nullptr;
+    AstAttrUse*   ownerAttrUse     = nullptr;
+    AstFuncDecl*  ownerFct         = nullptr;
+    AstNode*      parent           = nullptr;
+    Scope*        parentScope      = nullptr;
+    Scope*        ownerStructScope = nullptr;
+    AstNode*      ownerMainNode    = nullptr;
+    uint64_t      forceFlags       = 0;
+    uint64_t      removeFlags      = 0;
+    bool          rawClone         = false;
 };
 
 struct AstNode
@@ -268,6 +268,7 @@ struct AstNode
         ownerScope           = op->ownerScope;
         ownerFct             = op->ownerFct;
         ownerBreakable       = op->ownerBreakable;
+        ownerAttrUse         = op->ownerAttrUse;
         ownerInline          = op->ownerInline;
         ownerCompilerIfBlock = op->ownerCompilerIfBlock;
     }
@@ -279,6 +280,7 @@ struct AstNode
         ownerScope           = job->currentScope;
         ownerFct             = job->currentFct;
         ownerBreakable       = job->currentBreakable;
+        ownerAttrUse         = job->currentAttrUse;
         ownerCompilerIfBlock = job->currentCompilerIfBlock;
 
         flags |= job->currentFlags;
@@ -342,15 +344,17 @@ struct AstNode
     VectorNative<AlternativeScope> alternativeScopesVars;
     VectorNative<AstNode*>         childs;
 
-    Token         token;
-    Utf8Crc       name;
-    shared_mutex  mutex;
-    ComputedValue computedValue;
-    RegisterList  resultRegisterRC;
-    RegisterList  additionalRegisterRC;
+    Token            token;
+    Utf8Crc          name;
+    shared_mutex     mutex;
+    ComputedValue    computedValue;
+    RegisterList     resultRegisterRC;
+    RegisterList     additionalRegisterRC;
+    SymbolAttributes attributes;
 
     Scope*              ownerScope;
     AstBreakable*       ownerBreakable;
+    AstAttrUse*         ownerAttrUse;
     AstInline*          ownerInline;
     AstFuncDecl*        ownerFct;
     Scope*              ownerStructScope;
@@ -364,7 +368,6 @@ struct AstNode
     SymbolOverload*     resolvedUserOpSymbolOverload;
     ByteCodeGenJob*     byteCodeJob;
     AstNode*            parent;
-    AstAttrUse*         parentAttributes;
     SemanticFct         semanticFct;
     SemanticFct         semanticBeforeFct;
     SemanticFct         semanticAfterFct;
@@ -422,8 +425,7 @@ struct AstFuncDecl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    SymbolAttributes collectAttributes;
-    DependentJobs    dependentJobs;
+    DependentJobs dependentJobs;
 
     AstNode*                parameters;
     AstNode*                genericParameters;
@@ -453,6 +455,7 @@ struct AstAttrDecl : public AstNode
 struct AstAttrUse : public AstNode
 {
     AstNode*         clone(CloneContext& context) override;
+    AstNode*         content;
     SymbolAttributes attributes;
 };
 

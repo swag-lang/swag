@@ -15,6 +15,7 @@ struct AstFuncDecl;
 struct AstStruct;
 struct AstCompilerIfBlock;
 struct SyntaxJob;
+struct AstAttrUse;
 enum class AstNodeKind : uint8_t;
 
 enum class InvalidTokenError
@@ -56,7 +57,6 @@ struct SyntaxJob : public Job
     bool eatToken(TokenId id, const char* msg = nullptr);
     bool eatSemiCol(const char* msg = nullptr);
     bool checkIsSingleIdentifier(AstNode* node, const char* msg);
-    void moveAttributes(AstNode* from, AstNode* to);
 
     bool doLabel(AstNode* parent, AstNode** result = nullptr);
     bool doGenericFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
@@ -96,12 +96,12 @@ struct SyntaxJob : public Job
     bool doIdentifier(AstNode* parent, bool acceptParameters = true);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, bool acceptParameters = true);
     bool doGlobalAttributeExpose(AstNode* parent, AstNode** result = nullptr);
-    bool doNamespace(AstNode* parent);
-    bool doEnumContent(AstNode* parent);
-    bool doEnumValue(AstNode* parent);
+    bool doNamespace(AstNode* parent, AstNode** result = nullptr);
+    bool doEnumContent(AstNode* parent, AstNode** result = nullptr);
+    bool doEnumValue(AstNode* parent, AstNode** result = nullptr);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
     bool doStructBodyTuple(AstNode* parent, bool acceptEmpty, Utf8* name);
-    bool doStructBody(AstNode* parent, SyntaxStructType structType);
+    bool doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result = nullptr);
     bool doStruct(AstNode* parent, AstNode** result = nullptr);
     bool doStructContent(AstStruct* structNode, SyntaxStructType structType);
     bool doImpl(AstNode* parent, AstNode** result = nullptr);
@@ -163,6 +163,7 @@ struct SyntaxJob : public Job
     Scope*              currentScope           = nullptr;
     AstFuncDecl*        currentFct             = nullptr;
     AstBreakable*       currentBreakable       = nullptr;
+    AstAttrUse*         currentAttrUse         = nullptr;
     Scope*              currentStructScope     = nullptr;
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
     Token*              currentTokenLocation   = nullptr;
@@ -181,6 +182,7 @@ struct SyntaxJob : public Job
         currentScope           = nullptr;
         currentFct             = nullptr;
         currentBreakable       = nullptr;
+        currentAttrUse         = nullptr;
         currentStructScope     = nullptr;
         currentCompilerIfBlock = nullptr;
         currentMainNode        = nullptr;

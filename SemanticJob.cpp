@@ -175,9 +175,6 @@ JobResult SemanticJob::execute()
             if (node->semanticBeforeFct && !node->semanticBeforeFct(&context))
                 return JobResult::ReleaseJob;
 
-            if (node->parentAttributes)
-                node->attributeFlags |= node->parentAttributes->attributeFlags;
-
             if (!node->childs.empty() && !(node->flags & AST_NO_SEMANTIC))
             {
                 if (node->flags & AST_REVERSE_SEMANTIC)
@@ -187,10 +184,6 @@ JobResult SemanticJob::execute()
                         auto child = node->childs[i];
                         if (child->flags & AST_NO_SEMANTIC)
                             continue;
-
-                        if (node->kind == AstNodeKind::Statement)
-                            child->parentAttributes = node->parentAttributes;
-                        child->inheritAttributes(node->attributeFlags);
 
                         enterState(child);
                         nodes.push_back(child);
@@ -207,10 +200,6 @@ JobResult SemanticJob::execute()
                         if ((child->flags & AST_NO_SEMANTIC) &&
                             (originalNode->kind != AstNodeKind::File || child->kind != AstNodeKind::FuncDecl))
                             continue;
-
-                        if (node->kind == AstNodeKind::Statement)
-                            child->parentAttributes = node->parentAttributes;
-                        child->inheritAttributes(node->attributeFlags);
 
                         enterState(child);
                         nodes.push_back(child);
