@@ -11,9 +11,8 @@ enum AttributeUsage
     EnumValue      = 0x00000002,
     Field          = 0x00000004,
     GlobalVariable = 0x00000008,
-    LocalVariable  = 0x00000010,
-    Struct         = 0x00000020,
-    Function       = 0x00000040,
+    Struct         = 0x00000010,
+    Function       = 0x00000020,
     All            = 0x0FFFFFFF,
     // Flags
     Multi = 0x80000000,

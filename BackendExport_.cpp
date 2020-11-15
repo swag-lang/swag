@@ -34,7 +34,6 @@ bool Backend::emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent)
         ADD_ATTRUSAGE(AttributeUsage::EnumValue, "EnumValue");
         ADD_ATTRUSAGE(AttributeUsage::Field, "Field");
         ADD_ATTRUSAGE(AttributeUsage::GlobalVariable, "GlobalVariable");
-        ADD_ATTRUSAGE(AttributeUsage::LocalVariable, "LocalVariable");
         ADD_ATTRUSAGE(AttributeUsage::Struct, "Struct");
         ADD_ATTRUSAGE(AttributeUsage::Function, "Function");
     }

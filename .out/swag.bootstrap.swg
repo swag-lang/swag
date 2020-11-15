@@ -17,9 +17,8 @@ namespace swag
         EnumValue       = 0x00000002
         Field           = 0x00000004
         GlobalVariable  = 0x00000008
-        LocalVariable   = 0x00000010
-        Struct          = 0x00000020
-        Function        = 0x00000040
+        Struct          = 0x00000010
+        Function        = 0x00000020
         All             = 0x0FFFFFFF
     }
 
@@ -52,14 +51,14 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr test()
 
-    // Works also for a switch (compiler hardcoded)
+    // Hardcoded also for switch
     #[attributeUsage(AttributeUsage.Function)]
     attr complete()
 
     #[attributeUsage(AttributeUsage.Function)]
     attr property()
 
-    #[attributeUsage(AttributeUsage.LocalVariable)]
+    // Hardcoded for local variables
     attr global()
 
     #[attributeUsage(AttributeUsage.Function)]

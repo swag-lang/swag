@@ -41,6 +41,9 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
         if (oneAttribute->name == "attributeMulti" && kind == AstNodeKind::AttrDecl)
             return true;
+        if (oneAttribute->name == "global" && kind == AstNodeKind::VarDecl)
+            if (!checkNode->ownerScope->isGlobalOrImpl())
+                return true;
     }
 
     if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
@@ -60,11 +63,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
 
     if ((typeInfo->attributeUsage & AttributeUsage::GlobalVariable) && (kind == AstNodeKind::VarDecl))
-        if (checkNode->ownerScope->isGlobal())
-            return true;
-
-    if ((typeInfo->attributeUsage & AttributeUsage::LocalVariable) && (kind == AstNodeKind::VarDecl))
-        if (!checkNode->ownerScope->isGlobal())
+        if (checkNode->ownerScope->isGlobalOrImpl())
             return true;
 
     auto nakedName = AstNode::getArticleKindName(checkNode);
