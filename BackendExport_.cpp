@@ -38,7 +38,6 @@ bool Backend::emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent)
         ADD_ATTRUSAGE(AttributeUsage::Struct, "Struct");
         ADD_ATTRUSAGE(AttributeUsage::Function, "Function");
         ADD_ATTRUSAGE(AttributeUsage::Attribute, "Attribute");
-        ADD_ATTRUSAGE(AttributeUsage::Switch, "Switch");
     }
 
     bufferSwg.addString(")]");

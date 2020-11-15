@@ -27,8 +27,17 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     auto kind     = checkNode->kind;
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(checkNode);
+
     if (typeInfo->attributeUsage == AttributeUsage::All)
         return true;
+
+    // Check specific hard coded attributes
+    SWAG_ASSERT(oneAttribute->typeInfo->declNode);
+    if (oneAttribute->typeInfo->declNode->sourceFile->isBootstrapFile)
+    {
+        if (oneAttribute->name == "complete" && kind == AstNodeKind::Switch)
+            return true;
+    }
 
     if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
         return true;
@@ -43,9 +52,6 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         return true;
 
     if ((typeInfo->attributeUsage & AttributeUsage::EnumValue) && (kind == AstNodeKind::EnumValue))
-        return true;
-
-    if ((typeInfo->attributeUsage & AttributeUsage::Switch) && (kind == AstNodeKind::Switch))
         return true;
 
     if ((typeInfo->attributeUsage & AttributeUsage::Field) && (kind == AstNodeKind::VarDecl))

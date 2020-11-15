@@ -21,7 +21,6 @@ namespace swag
         Struct          = 0x00000020
         Function        = 0x00000040
         Attribute       = 0x00000080
-        Switch          = 0x00000100
         All             = 0x0FFFFFFF
     }
 
@@ -54,7 +53,8 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr test()
 
-    #[attributeUsage(AttributeUsage.Function | AttributeUsage.Switch)]
+    // Works also for a switch (compiler hardcoded)
+    #[attributeUsage(AttributeUsage.Function)]
     attr complete()
 
     #[attributeUsage(AttributeUsage.Function)]
