@@ -301,7 +301,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     ownerMainNode    = context.ownerMainNode ? context.ownerMainNode : from->ownerMainNode;
     ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;
     ownerBreakable   = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
-    ownerAttrUse     = context.ownerAttrUse ? context.ownerAttrUse : from->ownerAttrUse;
     ownerInline      = context.ownerInline ? context.ownerInline : from->ownerInline;
     ownerFct         = context.ownerFct ? context.ownerFct : from->ownerFct;
 
@@ -340,7 +339,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     concreteTypeInfoStorage = from->concreteTypeInfoStorage;
 
     attributeFlags = from->attributeFlags;
-    attributes     = from->attributes;
 
     parent = context.parent;
     if (parent)
@@ -593,13 +591,12 @@ AstNode* AstAttrDecl::clone(CloneContext& context)
 
 AstNode* AstAttrUse::clone(CloneContext& context)
 {
-    auto newNode              = g_Allocator.alloc0<AstAttrUse>();
-    auto cloneContext         = context;
-    cloneContext.ownerAttrUse = newNode;
-    newNode->copyFrom(cloneContext, this);
+    auto newNode = g_Allocator.alloc0<AstAttrUse>();
+    newNode->copyFrom(context, this);
 
     newNode->attributes = attributes;
     newNode->content    = findChildRef(content, newNode);
+
     return newNode;
 }
 

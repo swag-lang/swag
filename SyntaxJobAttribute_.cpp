@@ -136,6 +136,7 @@ void SyntaxJob::setOwnerAttrUse(AstAttrUse* attrUse, AstNode* who)
         for (auto s : who->childs)
             setOwnerAttrUse(attrUse, s);
         break;
+
     default:
         who->ownerAttrUse = attrUse;
         break;

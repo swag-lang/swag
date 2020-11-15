@@ -92,11 +92,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         return true;
 
     // Already done
-    if (!forNode->attributes.empty())
-    {
-        result = forNode->attributes;
+    if (!result.empty())
         return true;
-    }
 
     auto&         flags   = forNode->attributeFlags;
     auto          curAttr = attrUse;
@@ -204,7 +201,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         curAttr = curAttr->ownerAttrUse;
     }
 
-    forNode->attributes = result;
     return true;
 }
 

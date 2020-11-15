@@ -150,7 +150,6 @@ struct CloneContext
 
     AstInline*    ownerInline      = nullptr;
     AstBreakable* ownerBreakable   = nullptr;
-    AstAttrUse*   ownerAttrUse     = nullptr;
     AstFuncDecl*  ownerFct         = nullptr;
     AstNode*      parent           = nullptr;
     Scope*        parentScope      = nullptr;
@@ -342,13 +341,12 @@ struct AstNode
     VectorNative<AlternativeScope> alternativeScopesVars;
     VectorNative<AstNode*>         childs;
 
-    Token            token;
-    Utf8Crc          name;
-    shared_mutex     mutex;
-    ComputedValue    computedValue;
-    RegisterList     resultRegisterRC;
-    RegisterList     additionalRegisterRC;
-    SymbolAttributes attributes;
+    Token         token;
+    Utf8Crc       name;
+    shared_mutex  mutex;
+    ComputedValue computedValue;
+    RegisterList  resultRegisterRC;
+    RegisterList  additionalRegisterRC;
 
     Scope*              ownerScope;
     AstBreakable*       ownerBreakable;

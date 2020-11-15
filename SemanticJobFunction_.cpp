@@ -336,9 +336,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     }
 
     // Collect function attributes
+    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChilds);
-    SymbolAttributes symAttributes;
-    SWAG_CHECK(collectAttributes(context, funcNode, symAttributes));
+    SWAG_CHECK(collectAttributes(context, funcNode, typeInfo->attributes));
 
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR | AST_PURE;
@@ -371,9 +371,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // The function wants to return something, but has the 'swag.noreturn' attribute
     if (!typeNode->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
         return context->report({typeNode, "function cannot have a return type because it is flagged with the 'swag.noreturn' attribute"});
-
-    // Register symbol with its type
-    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
@@ -500,7 +497,6 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         symbolFlags |= OVERLOAD_GENERIC;
 
     auto typeFunc                    = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-    typeFunc->attributes             = funcNode->attributes;
     funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable.addSymbolTypeInfo(context, funcNode, funcNode->typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
 

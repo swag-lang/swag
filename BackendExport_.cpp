@@ -91,12 +91,19 @@ bool Backend::emitAttributesFlags(AstNode* node, int indent, bool isFirst)
         bufferSwg.addEol();
     }
 
-    ComputedValue value;
-    if (node->attributes.getValue("swag.pack", "value", value))
+    SymbolAttributes* attr = nullptr;
+    if (node->typeInfo->kind == TypeInfoKind::Struct)
+        attr = &((TypeInfoStruct*) node->typeInfo)->attributes;
+
+    if (attr)
     {
-        bufferSwg.addIndent(indent);
-        bufferSwg.addStringFormat("#[pack(\"%d\")]", value.reg.u8);
-        bufferSwg.addEol();
+        ComputedValue value;
+        if (attr->getValue("swag.pack", "value", value))
+        {
+            bufferSwg.addIndent(indent);
+            bufferSwg.addStringFormat("#[pack(%d)]", value.reg.u8);
+            bufferSwg.addEol();
+        }
     }
 
     return true;
@@ -385,6 +392,7 @@ bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int inden
 
 bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent)
 {
+    SWAG_CHECK(emitAttributesFlags(node, indent));
     bufferSwg.addIndent(indent);
     if (node->kind == AstNodeKind::InterfaceDecl)
         CONCAT_FIXED_STR(bufferSwg, "interface");
