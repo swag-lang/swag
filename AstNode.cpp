@@ -450,10 +450,10 @@ Utf8 AstFuncDecl::getNameForMessage()
 {
     if (flags & AST_SPECIAL_COMPILER_FUNC)
         return format("'%s' block", token.text.c_str());
-    if (attributeFlags & ATTRIBUTE_MACRO)
-        return format("macro '%s'", name.c_str());
     if (attributeFlags & ATTRIBUTE_MIXIN)
         return format("mixin '%s'", name.c_str());
+    if (attributeFlags & ATTRIBUTE_MACRO)
+        return format("macro '%s'", name.c_str());
     return format("function '%s'", name.c_str());
 }
 
