@@ -37,12 +37,13 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     {
         if (oneAttribute->name == "complete" && kind == AstNodeKind::Switch)
             return true;
+        if (oneAttribute->name == "attributeUsage" && kind == AstNodeKind::AttrDecl)
+            return true;
+        if (oneAttribute->name == "attributeMulti" && kind == AstNodeKind::AttrDecl)
+            return true;
     }
 
     if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
-        return true;
-
-    if ((typeInfo->attributeUsage & AttributeUsage::Attribute) && (kind == AstNodeKind::AttrDecl))
         return true;
 
     if ((typeInfo->attributeUsage & AttributeUsage::Struct) && (kind == AstNodeKind::StructDecl))
@@ -84,17 +85,6 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
 bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes& result)
 {
-    // Predefined attributes
-    if (forNode->kind == AstNodeKind::AttrDecl && context->sourceFile->isBootstrapFile)
-    {
-        if (forNode->name == "attributeUsage" || forNode->name == "attributeMulti")
-        {
-            auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
-            typeAttr->attributeUsage = AttributeUsage::Attribute;
-            return true;
-        }
-    }
-
     auto attrUse = forNode->ownerAttrUse;
     if (!attrUse)
         return true;

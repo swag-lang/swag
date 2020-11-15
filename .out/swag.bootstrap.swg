@@ -20,7 +20,6 @@ namespace swag
         LocalVariable   = 0x00000010
         Struct          = 0x00000020
         Function        = 0x00000040
-        Attribute       = 0x00000080
         All             = 0x0FFFFFFF
     }
 
