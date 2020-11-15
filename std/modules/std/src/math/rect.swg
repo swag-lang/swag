@@ -111,7 +111,7 @@ impl Rect
     }
 
     // Perform a math.round operation on all the coordinates
-    func round(using self)->Rect
+    func round(using self)
     {
         x = acast round(x)
         y = acast round(y)

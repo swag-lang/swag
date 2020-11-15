@@ -156,6 +156,7 @@ struct CloneContext
     Scope*        ownerStructScope    = nullptr;
     AstNode*      ownerMainNode       = nullptr;
     uint64_t      forceFlags          = 0;
+    uint64_t      removeFlags         = 0;
     uint64_t      forceAttributeFlags = 0;
     bool          rawClone            = false;
 };

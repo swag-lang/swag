@@ -2,6 +2,7 @@
 #include "SemanticJob.h"
 #include "Ast.h"
 #include "SourceFile.h"
+#include "Module.h"
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {
@@ -182,6 +183,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 SWAG_VERIFY(attrValue.reg.u8 <= 8, context->report({child, format("'swag.pack' value must be in the range [0, 8] ('%d' provided)", attrValue.reg.u8)}));
             }
         }
+
+        // No inlining in bc optim 0
+        if (context->sourceFile->module->buildCfg.byteCodeOptimize == 0)
+            flags &= ~ATTRIBUTE_INLINE;
 
         // Merge the result
         for (auto& oneAttr : curAttr->attributes.attributes)

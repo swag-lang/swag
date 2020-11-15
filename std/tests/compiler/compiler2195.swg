@@ -1,5 +1,5 @@
-#module "compiler2195"
-#unittest error
+//#module "compiler2195"
+//#unittest error
 
 var G = 0
 
@@ -7,12 +7,13 @@ var G = 0
 func cstr(x: string)->string
 {
     defer G = 1
+    return "toto"
 }
 
 //#[swag.printbc]
 #test
 {
     v := cstr("toto")
-    @print(v)
     @assert(G == 1)
+    @assert(v == "toto")
 }

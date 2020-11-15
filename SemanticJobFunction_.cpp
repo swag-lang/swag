@@ -655,7 +655,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     auto node = CastAst<AstReturn>(context->node, AstNodeKind::Return);
 
-    // For a return inside an inline block, take the original function, except if it is flags with 'swag.noreturn'
+    // For a return inside an inline block, take the original function, except if it is flagged with 'swag.noreturn'
     auto funcNode = node->ownerFct;
     if (node->ownerInline)
     {
@@ -745,8 +745,12 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     }
 
     // Propagate return
+    auto stopFct = node->ownerFct->parent;
+    if (node->flags & AST_EMBEDDED_RETURN)
+        stopFct = node->ownerInline->parent;
+
     AstNode* scanNode = node;
-    while (scanNode && scanNode != node->ownerFct->parent)
+    while (scanNode && scanNode != stopFct)
     {
         scanNode->flags |= AST_SCOPE_HAS_RETURN;
         if (scanNode->parent->kind == AstNodeKind::If)
@@ -768,7 +772,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         scanNode = scanNode->parent;
     }
 
-    while (scanNode && scanNode != node->ownerFct->parent)
+    while (scanNode && scanNode != stopFct)
     {
         scanNode->flags |= AST_FCT_HAS_RETURN;
         scanNode = scanNode->parent;
@@ -831,6 +835,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     cloneContext.ownerFct       = identifier->ownerFct;
     cloneContext.ownerBreakable = identifier->ownerBreakable;
     cloneContext.parentScope    = newScope;
+    cloneContext.removeFlags    = AST_FCT_HAS_RETURN | AST_SCOPE_HAS_RETURN;
 
     // Register all aliases
     if (identifier->kind == AstNodeKind::Identifier)
