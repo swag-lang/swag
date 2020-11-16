@@ -660,7 +660,8 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         }
         else
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::SetZeroStackX);
+            auto inst = emitInstruction(context, ByteCodeOp::SetZeroStackX);
+            SWAG_ASSERT(resolved->storageOffset != UINT32_MAX);
             inst->a.u32 = resolved->storageOffset;
             inst->b.u32 = typeInfoStruct->sizeOf;
         }
@@ -676,7 +677,8 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         }
         else
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
+            auto inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
+            SWAG_ASSERT(resolved->storageOffset != UINT32_MAX);
             inst->b.s32 = resolved->storageOffset;
         }
 
