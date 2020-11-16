@@ -90,3 +90,19 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
 
     return result
 }
+
+// Returns the current directory
+func getCurrent()->String
+{
+    length := GetCurrentDirectoryA(0, null)
+    var result: retval
+    result.reserve(length + 1)
+    result.length = GetCurrentDirectoryA(length + 1, result.buffer)
+    return result
+}
+
+// Set the current directory
+func setCurrent(dirname: string)->bool
+{
+    return SetCurrentDirectoryA(@dataof(dirname))
+}

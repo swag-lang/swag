@@ -462,6 +462,8 @@ namespace win32
         func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE;
         func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL;
         func FindClose(hFindFile: HANDLE)->BOOL;
+        func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
+        func SetCurrentDirectoryA(lpPathName: LPCSTR)->bool;
     }
 
     #[swag.foreign("user32")]
