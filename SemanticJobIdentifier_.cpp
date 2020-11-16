@@ -283,6 +283,10 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     back->flags &= ~AST_NO_BYTECODE;
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
+    // If this is in a return expression, then force the identifier type to be retval
+    if (context->node->parent && context->node->parent->parent && context->node->parent->parent->kind == AstNodeKind::Return)
+        typeNode->typeFlags |= TYPEFLAG_RETVAL;
+
     // And make a reference to that variable
     auto identifierRef = identifier->identifierRef;
     identifierRef->childs.clear();

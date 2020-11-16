@@ -1518,7 +1518,7 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
         {
             if (!fromNode->castedTypeInfo)
             {
-                fromNode->typeInfo = toType;
+                fromNode->typeInfo       = toType;
                 fromNode->castedTypeInfo = fromType;
             }
         }
@@ -2292,6 +2292,10 @@ bool TypeManager::convertLiteralTupleToStruct(SemanticContext* context, TypeInfo
     auto back = typeNode->identifier->childs.back();
     back->flags &= ~AST_NO_BYTECODE;
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
+
+    // If this is in a return expression, then force the identifier type to be retval
+    if (fromNode->parent->kind == AstNodeKind::Return)
+        typeNode->typeFlags |= TYPEFLAG_RETVAL;
 
     // And make a reference to that variable
     auto identifierRef = Ast::newIdentifierRef(sourceFile, varNode->name, parentForRef);

@@ -53,8 +53,10 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         if (!node->childs.empty())
         {
             auto returnExpression = node->childs.front();
+            auto backExpression   = node->childs.back();
+
             if ((node->doneFlags & AST_DONE_RETVAL) ||
-                (returnExpression->resolvedSymbolOverload && returnExpression->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
+                (backExpression->resolvedSymbolOverload && backExpression->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
             {
                 // Do nothing if returning retval
             }
