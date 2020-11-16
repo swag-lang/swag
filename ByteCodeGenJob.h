@@ -274,9 +274,10 @@ struct ByteCodeGenJob : public Job
     static bool emitAffectShiftRightEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffect(ByteCodeGenContext* context);
     static bool emitBeforeFuncDeclContent(ByteCodeGenContext* context);
-    static void emitStructParameters(ByteCodeGenContext* context, uint32_t regOffset);
+    static void emitStructParameters(ByteCodeGenContext* context, uint32_t regOffset, bool retVal);
     static void freeStructParametersRegisters(ByteCodeGenContext* context);
     static bool emitLocalVarDecl(ByteCodeGenContext* context);
+    static void emitRetValRef(ByteCodeGenContext* context, RegisterList& r0);
     static bool emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo, uint32_t regOffset, bool retVal);
     static bool emitBreak(ByteCodeGenContext* context);
     static bool emitFallThrough(ByteCodeGenContext* context);

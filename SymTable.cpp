@@ -103,8 +103,8 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
     else if (symbol->kind == SymbolKind::PlaceHolder && kind != SymbolKind::PlaceHolder)
         symbol->kind = kind;
 
-    // Only add an inline parameter once in a given scope
-    else if ((flags & OVERLOAD_VAR_INLINE) && symbol->overloads.size())
+    // Only add an inline parameter/retval once in a given scope
+    else if ((flags & (OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)) && symbol->overloads.size())
     {
         if (resultName)
             *resultName = symbol;
@@ -139,7 +139,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         if (!result)
         {
             // No ghosting check for an inline parameter
-            if (!(flags & OVERLOAD_VAR_INLINE))
+            if (!(flags & OVERLOAD_VAR_INLINE) && !(flags & OVERLOAD_RETVAL))
             {
                 if (!checkHiddenSymbolNoLock(context, node, typeInfo, kind, symbol))
                     return nullptr;

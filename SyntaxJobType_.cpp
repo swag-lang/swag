@@ -222,7 +222,23 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         node->semanticFct = SemanticJob::resolveRetVal;
         node->flags |= AST_NO_BYTECODE_CHILDS;
         node->typeFlags |= TYPEFLAG_RETVAL;
+
+        // retval type can be followed by structure initializer, like a normal struct
+        // In that case, we want the identifier pipeline to be called on it (to check
+        // parameters like a normal struct).
+        // So we create an identifier, that will be matched with the type alias automatically
+        // created in the function.
         SWAG_CHECK(eatToken());
+        if (token.id == TokenId::SymLeftCurly)
+        {
+            node->identifier = Ast::newIdentifierRef(sourceFile, "retval", node, this);
+            auto id          = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
+            id->flags |= AST_IN_TYPE_VAR_DECLARATION;
+            id->callParameters->flags |= AST_CALL_FOR_STRUCT;
+        }
+
         return true;
     }
 

@@ -43,7 +43,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                         emitStructInit(context, typeStruct, UINT32_MAX, retVal);
                 }
 
-                emitStructParameters(context, UINT32_MAX);
+                emitStructParameters(context, UINT32_MAX, retVal);
                 node->doneFlags |= AST_DONE_VARDECL_STRUCT_PARAMETERS;
             }
         }
@@ -110,7 +110,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 
                     if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
                         emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct), r0[1], false);
-                    emitStructParameters(context, r0[1]);
+                    emitStructParameters(context, r0[1], false);
 
                     emitInstruction(context, ByteCodeOp::DecrementRA32, r0[0]);
                     if (typeArray->finalType->sizeOf)

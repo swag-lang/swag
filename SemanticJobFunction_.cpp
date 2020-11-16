@@ -500,6 +500,18 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable.addSymbolTypeInfo(context, funcNode, funcNode->typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
 
+    // If the function returns a struct, register a type alias "retval". This way we can resolve an identifier
+    // named retval for "var result: retval{xx, xxx}" syntax
+    if (funcNode->returnType && funcNode->returnType->typeInfo)
+    {
+        auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
+        if (returnType->kind == TypeInfoKind::Struct)
+        {
+            Utf8Crc retVal = "retval";
+            funcNode->ownerScope->symTable.addSymbolTypeInfo(context, funcNode->returnType, returnType, SymbolKind::TypeAlias, nullptr, symbolFlags | OVERLOAD_RETVAL, nullptr, 0, &retVal);
+        }
+    }
+
     // Register method
     if (!(symbolFlags & OVERLOAD_INCOMPLETE) &&
         funcNode->ownerStructScope &&
@@ -738,6 +750,12 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
     {
         child->flags |= AST_FORCE_MOVE | AST_NO_RIGHT_DROP;
+        node->forceNoDrop.push_back(child->resolvedSymbolOverload);
+    }
+
+    if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
+    {
+        child->flags |= AST_NO_BYTECODE;
         node->forceNoDrop.push_back(child->resolvedSymbolOverload);
     }
 

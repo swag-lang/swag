@@ -38,14 +38,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // If this is a retval, then just copy the return pointer register to a computing register
     if (resolved->flags & OVERLOAD_RETVAL)
     {
-        auto r0 = reserveRegisterRC(context);
-
-        // In case of inlining, the inline block contains the register to store the return value
-        if (node->ownerInline)
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->ownerInline->resultRegisterRC);
-        else
-            emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
-
+        RegisterList r0 = reserveRegisterRC(context);
+        emitRetValRef(context, r0);
         identifier->resultRegisterRC                = r0;
         identifier->identifierRef->resultRegisterRC = identifier->resultRegisterRC;
         return true;
