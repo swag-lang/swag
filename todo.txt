@@ -12,6 +12,11 @@ ca serait cool que les methods, en reflections, aient une value qui peut être ca
 -------------------------------------
 
 
+-------------------------------------
+return retval array de struct
+-------------------------------------
+return array de struct, drop ???
+-------------------------------------
 
 
 -------------------------------------

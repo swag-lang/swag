@@ -61,7 +61,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         else if (node->ownerInline && (node->flags & AST_EMBEDDED_RETURN))
         {
             auto inlineReturnType = node->ownerInline->func->returnType->typeInfo;
-            if (inlineReturnType->flags & TYPEINFO_RETURN_BY_COPY)
+            if (inlineReturnType->kind == TypeInfoKind::Struct)
             {
                 auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
                 waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
@@ -70,6 +70,13 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
                 SWAG_CHECK(emitStructCopyMoveCall(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, exprType, returnExpression));
+                freeRegisterRC(context, returnExpression);
+            }
+            else if (inlineReturnType->flags & TYPEINFO_RETURN_BY_COPY)
+            {
+                auto inst = emitInstruction(context, ByteCodeOp::MemCpy, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC);
+                inst->flags |= BCI_IMM_C;
+                inst->c.u32 = returnExpression->typeInfo->sizeOf;
                 freeRegisterRC(context, returnExpression);
             }
             else
