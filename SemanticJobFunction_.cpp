@@ -653,7 +653,7 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     auto fct     = CastAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, node->token, "'retval' cannot be used in a function that returns nothing"}));
-    SWAG_VERIFY(typeFct->returnType->kind == TypeInfoKind::Struct, context->report({node, node->token, "'retval' can only be used in a function that returns a struct"}));
+    SWAG_VERIFY(typeFct->returnType->flags & TYPEINFO_RETURN_BY_COPY, context->report({node, node->token, "'retval' can only be used in a function that returns something by copy"}));
     node->typeInfo = typeFct->returnType;
     return true;
 }

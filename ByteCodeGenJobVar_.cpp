@@ -132,27 +132,56 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 
     if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
-        switch (typeInfo->sizeOf)
+        if (retVal)
         {
-        case 1:
-            emitInstruction(context, ByteCodeOp::SetZeroStack8)->a.u32 = resolved->storageOffset;
-            break;
-        case 2:
-            emitInstruction(context, ByteCodeOp::SetZeroStack16)->a.u32 = resolved->storageOffset;
-            break;
-        case 4:
-            emitInstruction(context, ByteCodeOp::SetZeroStack32)->a.u32 = resolved->storageOffset;
-            break;
-        case 8:
-            emitInstruction(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->storageOffset;
-            break;
-        default:
-        {
-            auto inst   = emitInstruction(context, ByteCodeOp::SetZeroStackX);
-            inst->a.u32 = resolved->storageOffset;
-            inst->b.u32 = typeInfo->sizeOf;
-            break;
+            RegisterList r0 = reserveRegisterRC(context);
+            emitRetValRef(context, r0);
+            switch (typeInfo->sizeOf)
+            {
+            case 1:
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointer8, r0);
+                break;
+            case 2:
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointer16, r0);
+                break;
+            case 4:
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointer32, r0);
+                break;
+            case 8:
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
+                break;
+            default:
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r0)->b.u32 = typeInfo->sizeOf;
+                break;
+            }
+
+            freeRegisterRC(context, r0);
         }
+        else
+        {
+            SWAG_ASSERT(resolved->storageOffset != UINT32_MAX);
+            switch (typeInfo->sizeOf)
+            {
+            case 1:
+                emitInstruction(context, ByteCodeOp::SetZeroStack8)->a.u32 = resolved->storageOffset;
+                break;
+            case 2:
+                emitInstruction(context, ByteCodeOp::SetZeroStack16)->a.u32 = resolved->storageOffset;
+                break;
+            case 4:
+                emitInstruction(context, ByteCodeOp::SetZeroStack32)->a.u32 = resolved->storageOffset;
+                break;
+            case 8:
+                emitInstruction(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->storageOffset;
+                break;
+            default:
+            {
+                auto inst   = emitInstruction(context, ByteCodeOp::SetZeroStackX);
+                inst->a.u32 = resolved->storageOffset;
+                inst->b.u32 = typeInfo->sizeOf;
+                break;
+            }
+            }
         }
     }
 
