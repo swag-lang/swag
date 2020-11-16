@@ -64,6 +64,7 @@ bool Backend::emitAttributes(TypeInfo* typeInfo, int indent)
         break;
     }
 
+    outputContext.indent = indent;
     SWAG_CHECK(Ast::outputAttributes(outputContext, bufferSwg, *attr));
     return true;
 }

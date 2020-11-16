@@ -89,29 +89,28 @@ public impl BitArray
     }
 
     // Visit all the booleans
-    #[macro, noreturn]
+    #[macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         #assert(ptr == false, "pointer visit not supported for BitArray")
-        if count
+        if !count return
+        remainingBits := count
+        countBits := 0'u32
+        loop idx: math.max(count >> 5, 1)
         {
-            remainingBits := count
-            countBits := 0'u32
-            loop idx: math.max(count >> 5, 1)
+            var shift: u32 = 1
+            loop math.min(remainingBits, 32)
             {
-                var shift: u32 = 1
-                loop math.min(remainingBits, 32)
+                #macro
                 {
-                    #macro
-                    {
-                        var @alias0 = cast(bool) (buffer[`idx] & `shift)
-                        var @alias1 = `countBits
-                        #mixin `stmt
-                    }
-
-                    countBits += 1
-                    shift <<= 1
+                    var @alias0 = cast(bool) (buffer[`idx] & `shift)
+                    var @alias1 = `countBits
+                    #[swag.noreturn]
+                    #mixin `stmt
                 }
+
+                countBits += 1
+                shift <<= 1
             }
         }
     }

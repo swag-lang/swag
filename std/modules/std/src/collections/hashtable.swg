@@ -30,36 +30,35 @@ impl HashTable
         free()
     }
 
-    #[macro, noreturn]
+    #[macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        if count
+        if !count return
+        remain := count
+        loop capacity
         {
-            remain := count
-            loop capacity
+            if table[@index].hash < HASH_FIRST
+                continue
+            #macro
             {
-                if table[@index].hash < HASH_FIRST
-                    continue
-                #macro
+                #if ptr
                 {
-                    #if ptr
-                    {
-                        var @alias0 = &table[@index].key
-                        var @alias1 = &table[@index].value
-                    }
-                    #else
-                    {
-                        var @alias0 = table[@index].key
-                        var @alias1 = table[@index].value
-                    }
-
-                    #mixin `stmt
+                    var @alias0 = &table[@index].key
+                    var @alias1 = &table[@index].value
+                }
+                #else
+                {
+                    var @alias0 = table[@index].key
+                    var @alias1 = table[@index].value
                 }
 
-                remain -= 1
-                if !remain
-                    break
+                #[swag.noreturn]
+                #mixin `stmt
             }
+
+            remain -= 1
+            if !remain
+                break
         }
     }
 

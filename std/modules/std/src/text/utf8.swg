@@ -277,34 +277,34 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Ascii)->s3
 // @alias0 will contain the character
 // @alias1 will contain the byte index of that character within the utf8 sequence
 // @alias2 will contain the character index
-#[swag.macro, swag.noreturn]
+#[swag.macro]
 func visitChars(buffer: const [..] u8, stmt: code)
 {
     count := @countof(buffer)
-    if count
-    {
-        byteIdx := 0'u32
-        charIdx := 0'u32
-        scan := @dataof(buffer)
-        while count
-        {
-            slice := @mkslice(scan, count)
-            var (c, eat) = firstChar(slice)
-            if eat == 0
-                break
-            #macro
-            {
-                @alias0 := `c
-                @alias1 := `byteIdx
-                @alias2 := `charIdx
-                #mixin `stmt
-            }
+    if !count return
 
-            charIdx += 1
-            byteIdx += eat
-            scan += eat
-            count -= eat
+    byteIdx := 0'u32
+    charIdx := 0'u32
+    scan := @dataof(buffer)
+    while count
+    {
+        slice := @mkslice(scan, count)
+        var (c, eat) = firstChar(slice)
+        if eat == 0
+            break
+        #macro
+        {
+            @alias0 := `c
+            @alias1 := `byteIdx
+            @alias2 := `charIdx
+            #[swag.noreturn]
+            #mixin `stmt
         }
+
+        charIdx += 1
+        byteIdx += eat
+        scan += eat
+        count -= eat
     }
 }
 
