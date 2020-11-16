@@ -307,7 +307,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     name                    = from->name;
     sourceFile              = from->sourceFile;
     bc                      = from->bc;
-    resultRegisterRC        = from->resultRegisterRC;
     fctCallStorageOffset    = from->fctCallStorageOffset;
     castOffset              = from->castOffset;
     concreteTypeInfoStorage = from->concreteTypeInfoStorage;

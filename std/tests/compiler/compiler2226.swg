@@ -1,7 +1,7 @@
-//#[swag.printbc]
+/*#[swag.inline]
 func toto1()->[2] s32
 {
-    var result: retval = @[1, 2]
+    result := @[1, 2]
     return result
 }
 
@@ -10,4 +10,4 @@ func toto1()->[2] s32
     res := toto1()
     @assert(res[0] == 1)
     @assert(res[1] == 2)
-}
+}*/

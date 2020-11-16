@@ -74,8 +74,18 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         {
             node->additionalRegisterRC = reserveRegisterRC(context);
             node->doneFlags |= AST_DONE_PRE_CAST;
-            auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->additionalRegisterRC);
-            inst->b.s32            = resolved->storageOffset;
+
+            if (retVal)
+            {
+                emitRetValRef(context, node->additionalRegisterRC);
+            }
+            else
+            {
+                auto inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->additionalRegisterRC);
+                SWAG_ASSERT(resolved->storageOffset != UINT32_MAX);
+                inst->b.s32 = resolved->storageOffset;
+            }
+
             node->resultRegisterRC = node->assignment->resultRegisterRC;
         }
 
