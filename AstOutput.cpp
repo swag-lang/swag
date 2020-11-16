@@ -22,6 +22,44 @@ namespace Ast
             indent--;
     }
 
+    bool outputAttributes(OutputContext& context, Concat& concat, SymbolAttributes& attributes)
+    {
+        auto attr = &attributes;
+        if (attr && !attr->empty())
+        {
+            concat.addIndent(context.indent);
+            CONCAT_FIXED_STR(concat, "#[");
+
+            for (int j = 0; j < attr->attributes.size(); j++)
+            {
+                auto& one = attr->attributes[j];
+                if (j)
+                    CONCAT_FIXED_STR(concat, ", ");
+
+                concat.addString(one.name);
+                if (!one.parameters.empty())
+                {
+                    concat.addChar('(');
+
+                    for (int i = 0; i < one.parameters.size(); i++)
+                    {
+                        auto& oneParam = one.parameters[i];
+                        if (i)
+                            CONCAT_FIXED_STR(concat, ", ");
+                        Ast::outputLiteral(context, concat, one.node, oneParam.typeInfo, oneParam.value.text, oneParam.value.reg);
+                    }
+
+                    concat.addChar(')');
+                }
+            }
+
+            CONCAT_FIXED_STR(concat, "]");
+            concat.addEol();
+        }
+
+        return true;
+    }
+
     bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const Utf8& text, Register& reg)
     {
         if (typeInfo == g_TypeMgr.typeInfoNull)
@@ -119,6 +157,28 @@ namespace Ast
 
         switch (node->kind)
         {
+        case AstNodeKind::AttrUse:
+        {
+            auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
+            bool first    = true;
+            concat.addString("#[");
+            for (auto s : nodeAttr->childs)
+            {
+                if (s == nodeAttr->content)
+                    continue;
+                if (!first)
+                    concat.addString(", ");
+                first = false;
+                SWAG_CHECK(output(context, concat, s));
+            }
+
+            concat.addChar(']');
+            concat.addEol();
+            concat.addIndent(context.indent);
+            SWAG_CHECK(output(context, concat, nodeAttr->content));
+            break;
+        }
+
         case AstNodeKind::ExplicitNoInit:
             concat.addString("?");
             break;

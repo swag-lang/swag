@@ -88,26 +88,26 @@ impl Array
     }
 
     // Vist every elements of the array
-    #[macro, noreturn]
+    #[macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        if count
+        if !count return
+        scan := buffer
+        loop count
         {
-            scan := buffer
-            loop count
+            #macro
             {
-                #macro
-                {
-                    #if ptr
-                        var @alias0 = `scan
-                    #else
-                        var @alias0 = :`scan
-                    var @alias1 = @index
-                    #mixin `stmt
-                }
+                #if ptr
+                    var @alias0 = `scan
+                #else
+                    var @alias0 = :`scan
+                var @alias1 = @index
 
-                scan += 1
+                #[swag.noreturn]
+                #mixin `stmt
             }
+
+            scan += 1
         }
     }
 

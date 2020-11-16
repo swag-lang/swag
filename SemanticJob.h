@@ -96,6 +96,7 @@ struct SemanticJob : public Job
     static SymbolName*  waitUserOp(SemanticContext* context, const char* name, AstNode* left);
 
     static void enterState(AstNode* node);
+    static void propagateAttributes(AstNode* child);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
     static bool collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes& result);
     static bool collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes& result, AstAttrUse* attrUse);

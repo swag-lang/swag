@@ -64,38 +64,7 @@ bool Backend::emitAttributes(TypeInfo* typeInfo, int indent)
         break;
     }
 
-    if (attr && !attr->empty())
-    {
-        bufferSwg.addIndent(indent);
-        CONCAT_FIXED_STR(bufferSwg, "#[");
-
-        for (int j = 0; j < attr->attributes.size(); j++)
-        {
-            auto& one = attr->attributes[j];
-            if (j)
-                CONCAT_FIXED_STR(bufferSwg, ", ");
-
-            bufferSwg.addString(one.name);
-            if (!one.parameters.empty())
-            {
-                bufferSwg.addChar('(');
-
-                for (int i = 0; i < one.parameters.size(); i++)
-                {
-                    auto& oneParam = one.parameters[i];
-                    if (i)
-                        CONCAT_FIXED_STR(bufferSwg, ", ");
-                    Ast::outputLiteral(outputContext, bufferSwg, one.node, oneParam.typeInfo, oneParam.value.text, oneParam.value.reg);
-                }
-
-                bufferSwg.addChar(')');
-            }
-        }
-
-        CONCAT_FIXED_STR(bufferSwg, "]");
-        bufferSwg.addEol();
-    }
-
+    SWAG_CHECK(Ast::outputAttributes(outputContext, bufferSwg, *attr));
     return true;
 }
 

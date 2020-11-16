@@ -4,6 +4,13 @@
 #include "SourceFile.h"
 #include "Module.h"
 
+void SemanticJob::propagateAttributes(AstNode* child)
+{
+    if (!child->parent)
+        return;
+    child->attributeFlags |= child->parent->attributeFlags & (ATTRIBUTE_SAFETY_OFF | ATTRIBUTE_SAFETY_ON | ATTRIBUTE_NO_RETURN);
+}
+
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
 {
     if (!checkNode)
@@ -43,6 +50,8 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         if (oneAttribute->name == "attributeUsage" && kind == AstNodeKind::AttrDecl)
             return true;
         if (oneAttribute->name == "attributeMulti" && kind == AstNodeKind::AttrDecl)
+            return true;
+        if (oneAttribute->name == "noreturn" && kind == AstNodeKind::CompilerMixin)
             return true;
         if (oneAttribute->name == "global" && kind == AstNodeKind::VarDecl)
             if (!checkNode->ownerScope->isGlobalOrImpl())

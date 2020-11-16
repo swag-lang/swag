@@ -93,6 +93,7 @@ namespace Ast
         bool forExport = false;
     };
 
+    extern bool outputAttributes(OutputContext& context, Concat& concat, SymbolAttributes& attributes);
     extern bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const Utf8& text, Register& reg);
     extern bool output(OutputContext& context, Concat& concat, AstNode* node);
 }; // namespace Ast

@@ -171,26 +171,26 @@ public impl String
     // Visit the String utf8 bytes
     // @alias0 will contain the byte or the pointer to the byte
     // @alias1 will contain the byte index
-    #[macro, noreturn]
+    #[macro]
     func(ptr: bool) opVisitBytes(using self, stmt: code)
     {
-        if length
+        if !length return
+        scan := buffer
+        loop length
         {
-            scan := buffer
-            loop length
+            #macro
             {
-                #macro
-                {
-                    #if ptr
-                        var @alias0 = `scan
-                    #else
-                        var @alias0 = :`scan
-                    var @alias1 = @index
-                    #mixin `stmt
-                }
+                #if ptr
+                    var @alias0 = `scan
+                #else
+                    var @alias0 = :`scan
+                var @alias1 = @index
 
-                scan += 1
+                #[swag.noreturn]
+                #mixin `stmt
             }
+
+            scan += 1
         }
     }
 
@@ -198,37 +198,38 @@ public impl String
     // @alias0 will contain the character or the pointer to the character
     // @alias1 will contain the byte index of that character within the utf8 sequence
     // @alias2 will contain the character index
-    #[macro, noreturn]
+    #[macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        if length
-        {
-            byteIdx := 0'u32
-            charIdx := 0'u32
-            count := length
-            scan := buffer
-            while true
-            {
-                slice := @mkslice(scan, count)
-                var (c, eat) = utf8.firstChar(slice)
-                if eat == 0
-                    break
-                #macro
-                {
-                    #if ptr
-                        var @alias0 = `scan
-                    #else
-                        var @alias0 = `c
-                    var @alias1 = `byteIdx
-                    var @alias2 = `charIdx
-                    #mixin `stmt
-                }
+        if !length return
 
-                byteIdx += eat
-                charIdx += 1
-                scan += eat
-                count -= eat
+        byteIdx := 0'u32
+        charIdx := 0'u32
+        count := length
+        scan := buffer
+        while true
+        {
+            slice := @mkslice(scan, count)
+            var (c, eat) = utf8.firstChar(slice)
+            if eat == 0
+                break
+            #macro
+            {
+                #if ptr
+                    var @alias0 = `scan
+                #else
+                    var @alias0 = `c
+                var @alias1 = `byteIdx
+                var @alias2 = `charIdx
+
+                #[swag.noreturn]
+                #mixin `stmt
             }
+
+            byteIdx += eat
+            charIdx += 1
+            scan += eat
+            count -= eat
         }
     }
 

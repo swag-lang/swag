@@ -6,5 +6,5 @@ using std
 #test
 {
     res := directory.getCurrent()
-    console.print("%\n", res)
+    //console.print("%\n", res)
 }
