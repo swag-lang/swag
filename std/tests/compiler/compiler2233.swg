@@ -35,7 +35,7 @@ func toto1()->TOTO
     return resultXX
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     res := toto1()

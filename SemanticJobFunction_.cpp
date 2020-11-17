@@ -670,7 +670,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     {
         if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NO_RETURN))
         {
-            node->flags |= AST_EMBEDDED_RETURN;
+            node->semFlags |= AST_SEM_EMBEDDED_RETURN;
             funcNode = node->ownerInline->func;
         }
     }
@@ -761,7 +761,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     // Propagate return
     auto stopFct = node->ownerFct->parent;
-    if (node->flags & AST_EMBEDDED_RETURN)
+    if (node->semFlags & AST_SEM_EMBEDDED_RETURN)
         stopFct = node->ownerInline->parent;
 
     AstNode* scanNode = node;
