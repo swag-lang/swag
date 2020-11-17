@@ -269,7 +269,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         if (typeInfoSlice->pointedType->isNative(NativeTypeKind::String))
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoSlice->pointedType, false));
-        else if (!(node->flags & AST_TAKE_ADDRESS) || typeInfoSlice->pointedType->kind == TypeInfoKind::Pointer)
+        else if (!(node->forceTakeAddress()) || typeInfoSlice->pointedType->kind == TypeInfoKind::Pointer)
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoSlice->pointedType, false));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
@@ -294,7 +294,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         if (typeInfoPointer->finalType->isNative(NativeTypeKind::String))
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoPointer->finalType, false));
-        else if (!(node->flags & AST_TAKE_ADDRESS))
+        else if (!(node->forceTakeAddress()))
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoPointer->pointedType, false));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
@@ -321,7 +321,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         if (typeInfoArray->pointedType->isNative(NativeTypeKind::String))
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType, false));
-        else if ((!(node->flags & AST_TAKE_ADDRESS) && typeInfoArray->pointedType->kind != TypeInfoKind::Array) || (typeInfoArray->pointedType->kind == TypeInfoKind::Pointer))
+        else if ((!(node->forceTakeAddress()) && typeInfoArray->pointedType->kind != TypeInfoKind::Array) || (typeInfoArray->pointedType->kind == TypeInfoKind::Pointer))
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType, false));
 
         node->resultRegisterRC = node->array->resultRegisterRC;

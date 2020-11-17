@@ -25,16 +25,17 @@ impl A
 
 alias TOTO = [3] A
 
-//#[swag.printbc]
+#[swag.inline]
 func toto1()->TOTO
 {
-    var result: TOTO
-    result[0].x = 10
-    result[1].x = 20
-    result[2].x = 30
-    return result
+    var resultXX: TOTO
+    resultXX[0].x = 10
+    resultXX[1].x = 20
+    resultXX[2].x = 30
+    return resultXX
 }
 
+#[swag.printbc]
 #test
 {
     res := toto1()

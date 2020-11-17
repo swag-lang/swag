@@ -101,7 +101,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         SWAG_CHECK(sameStackFrame(context, resolved));
         node->resultRegisterRC = reserveRegisterRC(context);
-        if ((node->flags & AST_TAKE_ADDRESS) && typeInfo->kind != TypeInfoKind::Lambda && typeInfo->kind != TypeInfoKind::Array)
+        if ((node->forceTakeAddress()) && typeInfo->kind != TypeInfoKind::Lambda && typeInfo->kind != TypeInfoKind::Array)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointerParam, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
@@ -174,10 +174,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             else
                 inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
-            if (node->flags & AST_TAKE_ADDRESS)
+            if (node->forceTakeAddress())
                 inst->c.pointer = (uint8_t*) resolved;
         }
-        else if ((node->flags & AST_TAKE_ADDRESS) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        else if ((node->forceTakeAddress()) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             ByteCodeInstruction* inst;
             if (resolved->flags & OVERLOAD_VAR_BSS)
@@ -243,7 +243,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         if (resolved->typeInfo->kind == TypeInfoKind::Reference)
         {
-            if (node->flags & AST_TAKE_ADDRESS)
+            if (node->forceTakeAddress())
                 emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
             else
             {
@@ -259,7 +259,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
         }
-        else if ((node->flags & AST_TAKE_ADDRESS) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        else if ((node->forceTakeAddress()) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
@@ -314,7 +314,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
         }
 
-        if (!(node->flags & AST_TAKE_ADDRESS))
+        if (!(node->forceTakeAddress()))
             emitStructDeRef(context);
         else if (node->parent->flags & AST_ARRAY_POINTER_REF)
             emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);

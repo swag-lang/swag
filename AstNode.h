@@ -314,6 +314,15 @@ struct AstNode
         return (flags & AST_VALUE_COMPUTED) && !computedValue.reg.b;
     }
 
+    bool forceTakeAddress()
+    {
+        if ((flags & AST_TAKE_ADDRESS) && !(semFlags & AST_SEM_FORCE_NO_TAKE_ADDRESS))
+            return true;
+        if (semFlags & AST_SEM_FORCE_TAKE_ADDRESS)
+            return true;
+        return false;
+    }
+
     bool isConstant0();
     bool isConstant1();
 
@@ -374,6 +383,7 @@ struct AstNode
     uint64_t attributeFlags;
 
     uint32_t doneFlags;
+    uint32_t semFlags;
     uint32_t fctCallStorageOffset;
     uint32_t castOffset;
     uint32_t concreteTypeInfoStorage = UINT32_MAX;

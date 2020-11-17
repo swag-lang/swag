@@ -63,6 +63,9 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
         node->flags |= AST_IS_CONST_ASSIGN;
 
+    if (node->name == "resultXX")
+        node = node; // @remove
+
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
 
@@ -635,7 +638,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // This is for a lambda
-        if (identifier->flags & AST_TAKE_ADDRESS)
+        if (identifier->forceTakeAddress())
         {
             // The makePointer will deal with the real make lambda thing
             identifier->flags |= AST_NO_BYTECODE;
@@ -1442,7 +1445,7 @@ bool SemanticJob::ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* i
     Ast::removeFromParent(rightAffect);
     Ast::addChildBack(fctCallParam, rightAffect);
 
-    node->flags &= ~AST_TAKE_ADDRESS;
+    node->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
     node->identifierRef->parent->byteCodeFct = &ByteCodeGenJob::emitPassThrough;
     node->identifierRef->parent->semanticFct = nullptr;
 
@@ -2224,7 +2227,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 return true;
             SWAG_CHECK(fillMatchContextGenericParameters(context, symMatchContext, node, symbolOverload));
 
-            if ((node->flags & AST_TAKE_ADDRESS) && !ufcsLastParam)
+            if ((node->forceTakeAddress()) && !ufcsLastParam)
                 symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
             listTryMatch.push_back(tryMatch);

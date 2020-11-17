@@ -45,16 +45,22 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 {
     AstReturn* node       = CastAst<AstReturn>(context->node, AstNodeKind::Return);
     auto       funcNode   = node->ownerFct;
-    auto       returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
+    TypeInfo*  returnType = nullptr;
+
+    // Get the function return type. In case of an emmbedded return, this is the type of the original function to inline
+    if (node->ownerInline && (node->flags & AST_EMBEDDED_RETURN))
+        returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_ALIAS);
+    else
+        returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
 
     // Copy result to RR0... registers
     if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED) && !node->childs.empty())
     {
         auto returnExpression = node->childs.front();
         auto backExpression   = node->childs.back();
+        auto exprType         = TypeManager::concreteReference(returnExpression->typeInfo);
 
-        // If this is an array of struct, we will have too loop
-        auto            exprType        = TypeManager::concreteReference(returnExpression->typeInfo);
+        // If this is an array of struct, we will have to loop
         TypeInfoArray*  typeArray       = nullptr;
         TypeInfoStruct* typeArrayStruct = nullptr;
         if (returnType->kind == TypeInfoKind::Array)
@@ -69,15 +75,21 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             }
         }
 
+        //
+        // RETVAL
+        //
         if ((node->doneFlags & AST_DONE_RETVAL) ||
             (backExpression->resolvedSymbolOverload && backExpression->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
         {
             // Do nothing if returning retval
         }
+
+        //
+        // INLINE
+        //
         else if (node->ownerInline && (node->flags & AST_EMBEDDED_RETURN))
         {
-            auto inlineReturnType = node->ownerInline->func->returnType->typeInfo;
-            if (inlineReturnType->kind == TypeInfoKind::Struct)
+            if (returnType->kind == TypeInfoKind::Struct)
             {
                 waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
                 if (context->result == ContextResult::Pending)
@@ -87,7 +99,30 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 SWAG_CHECK(emitStructCopyMoveCall(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, exprType, returnExpression));
                 freeRegisterRC(context, returnExpression);
             }
-            else if (inlineReturnType->flags & TYPEINFO_RETURN_BY_COPY)
+            else if (typeArrayStruct && typeArrayStruct->opPostMove)
+            {
+                // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
+                returnExpression->flags |= AST_NO_LEFT_DROP;
+
+                // Need to loop on every element of the array in order to initialize them
+                RegisterList r0 = reserveRegisterRC(context);
+
+                emitInstruction(context, ByteCodeOp::SetImmediate32, r0)->b.u32 = typeArray->totalCount;
+                auto seekJump                                                   = context->bc->numInstructions;
+
+                SWAG_CHECK(emitStructCopyMoveCall(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, typeArrayStruct, returnExpression));
+
+                auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->ownerInline->resultRegisterRC, typeArrayStruct->sizeOf, node->ownerInline->resultRegisterRC);
+                inst->flags |= BCI_IMM_B;
+                inst = emitInstruction(context, ByteCodeOp::IncPointer32, returnExpression->resultRegisterRC, typeArrayStruct->sizeOf, returnExpression->resultRegisterRC);
+                inst->flags |= BCI_IMM_B;
+
+                emitInstruction(context, ByteCodeOp::DecrementRA32, r0);
+                emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+
+                freeRegisterRC(context, r0);
+            }
+            else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
             {
                 auto inst = emitInstruction(context, ByteCodeOp::MemCpy, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC);
                 inst->flags |= BCI_IMM_C;
@@ -105,6 +140,10 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 }
             }
         }
+
+        //
+        // NORMAL
+        //
         else
         {
             if (returnType->kind == TypeInfoKind::Struct)
