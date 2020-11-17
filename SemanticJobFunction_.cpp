@@ -690,6 +690,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
         {
             typeInfoFunc->returnType = TypeManager::concreteType(node->childs.front()->typeInfo, CONCRETE_FUNC);
+            typeInfoFunc->returnType = TypeManager::promoteUntyped(typeInfoFunc->returnType);
             auto concreteReturn      = TypeManager::concreteType(typeInfoFunc->returnType);
             if (concreteReturn->kind == TypeInfoKind::TypeListTuple)
             {

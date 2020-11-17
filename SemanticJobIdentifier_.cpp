@@ -277,9 +277,10 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     varNode->flags |= AST_GENERATED;
     varNode->type        = typeNode;
     typeNode->identifier = Ast::clone(identifier->identifierRef, typeNode);
-    auto back            = typeNode->identifier->childs.back();
+    auto back            = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
     back->flags &= ~AST_NO_BYTECODE;
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
+    identifier->callParameters = back->callParameters;
 
     // If this is in a return expression, then force the identifier type to be retval
     if (context->node->parent && context->node->parent->parent && context->node->parent->parent->kind == AstNodeKind::Return)

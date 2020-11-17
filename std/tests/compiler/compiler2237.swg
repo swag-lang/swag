@@ -9,7 +9,7 @@ func toto(x: Pt)
 }
 
 #[swag.printbc]
-func offset() => 555
+func offset()->s64 => 555
 
 #[swag.printbc, swag.optim(false)]
 #test

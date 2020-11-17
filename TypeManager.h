@@ -78,6 +78,7 @@ struct TypeManager
     static void      promote(AstNode* left, AstNode* right);
     static void      promoteOne(AstNode* left, AstNode* right);
     static bool      promoteOne(SemanticContext* context, AstNode* right);
+    static TypeInfo* promoteUntyped(TypeInfo* typeInfo);
     static void      promoteUntypedInteger(AstNode* left, AstNode* right);
     static TypeInfo* concreteReferenceType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* concreteReference(TypeInfo* typeInfo);

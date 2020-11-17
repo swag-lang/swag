@@ -2083,6 +2083,17 @@ void TypeManager::promote(AstNode* left, AstNode* right)
     promoteOne(right, left);
 }
 
+TypeInfo* TypeManager::promoteUntyped(TypeInfo* typeInfo)
+{
+    if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+        return g_TypeMgr.typeInfoS32;
+    if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+        return g_TypeMgr.typeInfoF32;
+    if (typeInfo->flags & TYPEINFO_UNTYPED_BINHEXA)
+        return g_TypeMgr.typeInfoU32;
+    return typeInfo;
+}
+
 void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
 {
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
