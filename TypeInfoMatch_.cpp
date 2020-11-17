@@ -3,7 +3,7 @@
 #include "Ast.h"
 #include "SemanticJob.h"
 
-static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters)
+static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint32_t forceCastFlags = 0)
 {
     // One boolean per used parameter
     context.doneParameters.set_size_clear((int) parameters.size());
@@ -60,6 +60,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             castFlags |= CASTFLAG_UNCONST;
         if (context.flags & SymbolMatchContext::MATCH_UFCS && i == 0)
             castFlags |= CASTFLAG_UFCS;
+        castFlags |= forceCastFlags;
 
         bool same = TypeManager::makeCompatibles(nullptr, symbolTypeInfo, typeInfo, nullptr, nullptr, castFlags);
         if (!same)
@@ -252,7 +253,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     }
 }
 
-static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* callParameter, int parameterIndex, VectorNative<TypeInfoParam*>& parameters)
+static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* callParameter, int parameterIndex, VectorNative<TypeInfoParam*>& parameters, uint32_t forceCastFlags = 0)
 {
     for (int j = 0; j < parameters.size(); j++)
     {
@@ -266,8 +267,10 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
                 return;
             }
 
-            auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
-            bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR);
+            auto     typeInfo  = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
+            uint32_t castFlags = CASTFLAG_NO_ERROR;
+            castFlags |= forceCastFlags;
+            bool same = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, castFlags);
             if (!same)
             {
                 context.badSignatureInfos.badSignatureParameterIdx  = parameterIndex;
@@ -289,14 +292,14 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
         if (parameters[j]->typeInfo->kind == TypeInfoKind::Struct && parameters[j]->node->flags & AST_DECL_USING)
         {
             auto subStruct = CastTypeInfo<TypeInfoStruct>(parameters[j]->typeInfo, TypeInfoKind::Struct);
-            matchNamedParameter(context, callParameter, parameterIndex, subStruct->fields);
+            matchNamedParameter(context, callParameter, parameterIndex, subStruct->fields, forceCastFlags);
             if (callParameter->resolvedParameter)
                 return;
         }
     }
 }
 
-static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters)
+static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint32_t forceCastFlags = 0)
 {
     if (!context.hasNamedParameters)
         return;
@@ -319,13 +322,13 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
             return;
         }
 
-        matchNamedParameter(context, param, i, parameters);
+        matchNamedParameter(context, param, i, parameters, forceCastFlags);
         if (context.result != MatchResult::DuplicatedNamedParameter)
         {
             if (!param->resolvedParameter)
             {
                 context.badSignatureInfos.badSignatureParameterIdx = i;
-                context.result = MatchResult::InvalidNamedParameter;
+                context.result                                     = MatchResult::InvalidNamedParameter;
                 return;
             }
         }
@@ -599,11 +602,11 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     if (context.result != MatchResult::Ok)
         return;
 
-    matchParameters(context, fields);
+    matchParameters(context, fields, CASTFLAG_COERCE_FULL);
     if (context.result != MatchResult::Ok)
         return;
 
-    matchNamedParameters(context, fields);
+    matchNamedParameters(context, fields, CASTFLAG_COERCE_FULL);
     if (context.result != MatchResult::Ok)
         return;
 

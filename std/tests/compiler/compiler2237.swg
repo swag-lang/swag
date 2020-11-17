@@ -5,13 +5,11 @@ struct Pt
 
 func toto(x: Pt)
 {
-    //@assert(x.x == 555)
+    @assert(x.x == 555)
 }
 
-#[swag.printbc]
-func offset()->s64 => 555
+func offset() => 555
 
-#[swag.printbc, swag.optim(false)]
 #test
 {
     toto(Pt{offset()})

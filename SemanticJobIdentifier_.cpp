@@ -303,7 +303,8 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     context->job->nodes.pop_back();
     context->job->nodes.push_back(idNode);
     context->job->nodes.push_back(varNode);
-    context->job->nodes.push_back(identifier);
+    context->result = ContextResult::NewChilds;
+
     return true;
 }
 
@@ -485,7 +486,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // A struct with parameters is in fact the creation of a temporary variable
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION))
+        {
             SWAG_CHECK(createTmpVarStruct(context, identifier));
+            return true;
+        }
 
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
@@ -501,7 +505,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
                 int  idx      = nodeCall->index;
                 if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, CASTFLAG_COERCE_FULL));
             }
         }
 
