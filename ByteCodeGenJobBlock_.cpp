@@ -588,11 +588,11 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
     auto&       table = scope->symTable;
     scoped_lock lock(table.mutex);
 
-    // Need to wait for the structure to be ok, in order to call the opDrop function
     auto count = (int) table.structVarsToDrop.size() - 1;
     if (count == -1)
         return true;
 
+    // Need to wait for all the structures to be ok, in order to call the opDrop function
     for (int i = count; i >= 0; i--)
     {
         auto one = table.structVarsToDrop[i];

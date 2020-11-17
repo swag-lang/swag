@@ -181,10 +181,19 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
 void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset)
 {
     StructToDrop st;
+    st.typeStruct = nullptr;
+
+    // A struct
     if (typeInfo->kind == TypeInfoKind::Struct)
         st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-    else
-        st.typeStruct = nullptr;
+
+    // An array of structs
+    else if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        if (typeArr->finalType->kind == TypeInfoKind::Struct)
+            st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeArr->finalType, TypeInfoKind::Struct);
+    }
 
     if (!st.typeStruct)
         return;
