@@ -696,7 +696,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     auto leftTypeInfoBeforePromote = left->typeInfo;
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
-    node->inheritAndFlag3(AST_CONST_EXPR, AST_PURE, AST_R_VALUE);
+    node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
     TypeManager::promote(left, right);
 
     // Must do move and not copy
@@ -942,7 +942,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     node->typeInfo = left->typeInfo;
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
-    node->inheritAndFlag3(AST_CONST_EXPR, AST_PURE, AST_R_VALUE);
+    node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
 
     switch (node->token.id)
     {
@@ -1002,7 +1002,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         break;
     }
 
-    node->inheritAndFlag3(AST_CONST_EXPR, AST_PURE, AST_R_VALUE);
+    node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {

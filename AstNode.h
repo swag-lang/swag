@@ -288,7 +288,7 @@ struct AstNode
 
     void setFlagsValueIsComputed()
     {
-        flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_PURE | AST_R_VALUE;
+        flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE;
     }
 
     void inheritComputedValue(AstNode* from)
@@ -298,7 +298,7 @@ struct AstNode
         inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO);
         if (flags & AST_VALUE_COMPUTED)
         {
-            flags |= AST_CONST_EXPR | AST_PURE | AST_R_VALUE;
+            flags |= AST_CONST_EXPR | AST_R_VALUE;
             computedValue = move(from->computedValue);
         }
     }

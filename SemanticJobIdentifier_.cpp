@@ -19,13 +19,11 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->byteCodeFct            = ByteCodeGenJob::emitIdentifierRef;
 
     // Flag inheritance
-    node->flags |= AST_CONST_EXPR | AST_PURE | AST_FROM_GENERIC_REPLACE;
+    node->flags |= AST_CONST_EXPR | AST_FROM_GENERIC_REPLACE;
     for (auto child : node->childs)
     {
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
-        if (!(child->flags & AST_PURE))
-            node->flags &= ~AST_PURE;
         if (!(child->flags & AST_FROM_GENERIC_REPLACE))
             node->flags &= ~AST_FROM_GENERIC_REPLACE;
         if (child->flags & AST_IS_GENERIC)
@@ -310,15 +308,10 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
 
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, OneMatch& oneMatch)
 {
-    auto node         = context->node;
     auto symbol       = oneMatch.symbolName;
     auto overload     = oneMatch.symbolOverload;
     auto dependentVar = oneMatch.dependentVar;
     auto sourceFile   = context->sourceFile;
-
-    // Function parameters are pure
-    if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
-        node->flags |= AST_PURE;
 
     // Test x.toto with x not a struct (like a native type for example), but toto is known, so
     // no error was raised before
@@ -693,15 +686,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 identifier->inheritAndFlag1(identifier->callParameters, AST_CONST_EXPR);
             else
                 identifier->flags |= AST_CONST_EXPR;
-        }
-
-        // The function call is pure if the function is, and all parameters are
-        if (identifier->resolvedSymbolOverload->node->flags & AST_PURE)
-        {
-            if (identifier->callParameters)
-                identifier->inheritAndFlag1(identifier->callParameters, AST_PURE);
-            else
-                identifier->flags |= AST_PURE;
         }
 
         if (identifier->name[0] == '@')

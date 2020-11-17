@@ -341,7 +341,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_CHECK(collectAttributes(context, funcNode, typeInfo->attributes));
 
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
-        funcNode->flags |= AST_CONST_EXPR | AST_PURE;
+        funcNode->flags |= AST_CONST_EXPR;
 
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
@@ -555,7 +555,7 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 {
     auto node = context->node;
     node->inheritOrFlag(AST_IS_GENERIC);
-    node->inheritAndFlag2(AST_CONST_EXPR, AST_PURE);
+    node->inheritAndFlag1(AST_CONST_EXPR);
     return true;
 }
 
@@ -591,7 +591,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     }
 
     node->inheritComputedValue(child);
-    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO | AST_PURE);
+    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO);
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
     if (node->flags & AST_VALUE_COMPUTED)
@@ -700,13 +700,6 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
                 context->result = ContextResult::NewChilds;
                 return true;
             }
-
-            // Pure function automatic detection just in case of short lambdas, because we need to parse the full content
-            // of the function to know if it's pure or not. In case of normal function, we emit its type before parsing
-            // the content
-            funcNode->content->inheritAndFlag1(AST_PURE);
-            if (funcNode->content->flags & AST_PURE)
-                funcNode->flags |= AST_CONST_EXPR | AST_PURE;
 
             typeInfoFunc->computeName();
             funcNode->returnType->typeInfo = typeInfoFunc->returnType;

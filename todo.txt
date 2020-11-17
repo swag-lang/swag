@@ -12,6 +12,11 @@ ca serait cool que les methods, en reflections, aient une value qui peut être ca
 -------------------------------------
 
 
+-------------------------------------
+func offset() => 555 PURE
+func offset()->s32 => 555 PAS PURE
+-------------------------------------
+
 
 -------------------------------------
 shift left/right doit pas etre supérieur a 255 (a tester en compiler si constant, et safety en runtime)

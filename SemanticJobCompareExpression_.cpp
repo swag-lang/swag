@@ -339,7 +339,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitCompareOp;
-    node->inheritAndFlag3(AST_CONST_EXPR, AST_PURE, AST_R_VALUE);
+    node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
 
     switch (node->token.id)
     {

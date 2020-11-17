@@ -1,5 +1,8 @@
+#[swag.constexpr]
 func toto(x: f32)=> 0'f32
+#[swag.constexpr]
 func toto(x: f64)=> 0'f64
+
 struct(T) A
 {
     const X = toto(cast(T) 0)
