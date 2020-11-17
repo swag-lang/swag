@@ -50,6 +50,16 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
         }
 
+        // Remove empty loop
+        if (ip->op == ByteCodeOp::JumpIfNotZero32 && ip->b.s32 == -2)
+        {
+            if (ip[-1].op == ByteCodeOp::DecrementRA32 && ip[-1].a.u32 == ip->a.u32)
+            {
+                setNop(context, ip);
+                setNop(context, ip - 1);
+            }
+        }
+
         // If we have :
         // 0: (jump if false) to 2
         // 1: (jump) to whatever
