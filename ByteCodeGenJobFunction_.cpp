@@ -716,17 +716,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
-            // Need to drop the temporary variable
-            if (returnType->kind == TypeInfoKind::Struct)
-            {
-                StructToDrop st;
-                st.overload = node->resolvedSymbolOverload;
-                if (st.overload)
-                    st.overload->flags |= OVERLOAD_EMITTED;
-                st.typeStruct    = CastTypeInfo<TypeInfoStruct>(typeInfoFunc->returnType, TypeInfoKind::Struct);
-                st.storageOffset = node->fctCallStorageOffset;
-                node->ownerScope->symTable.addVarToDrop(st);
-            }
+            if (node->resolvedSymbolOverload)
+                node->resolvedSymbolOverload->flags |= OVERLOAD_EMITTED;
+
+            node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->fctCallStorageOffset);
         }
     }
 

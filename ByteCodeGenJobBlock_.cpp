@@ -22,16 +22,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
         inst->b.u32 = node->fctCallStorageOffset;
-
-        // Need to drop the temporary variable
-        if (returnType->kind == TypeInfoKind::Struct)
-        {
-            StructToDrop st;
-            st.overload      = nullptr;
-            st.typeStruct    = CastTypeInfo<TypeInfoStruct>(returnType, TypeInfoKind::Struct);
-            st.storageOffset = node->fctCallStorageOffset;
-            node->ownerScope->symTable.addVarToDrop(st);
-        }
+        node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->fctCallStorageOffset);
     }
 
     AstNode* allParams     = nullptr;

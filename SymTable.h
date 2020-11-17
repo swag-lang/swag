@@ -112,6 +112,7 @@ struct SymTableHash
 struct StructToDrop
 {
     SymbolOverload* overload;
+    TypeInfo*       typeInfo;
     TypeInfoStruct* typeStruct;
     uint32_t        storageOffset;
 };
@@ -126,6 +127,7 @@ struct SymTable
     bool            checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
     SymbolName*     find(const Utf8Crc& name);
     SymbolName*     findNoLock(const Utf8Crc& name);
+    void            addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
     void            addVarToDrop(StructToDrop& st);
     static void     decreaseOverloadNoLock(SymbolName* symbol);
     bool            registerUsingAliasOverload(JobContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload);

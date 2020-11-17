@@ -148,15 +148,9 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
             result = symbol->addOverloadNoLock(node, typeInfo, computedValue);
             result->flags |= flags;
 
-            // Remember all variables of type struct, to drop them when leaving the scope
-            if (!(flags & OVERLOAD_VAR_FUNC_PARAM) && symbol->kind == SymbolKind::Variable && typeInfo->kind == TypeInfoKind::Struct)
-            {
-                StructToDrop st;
-                st.overload      = result;
-                st.typeStruct    = CastTypeInfo<TypeInfoStruct>(result->typeInfo, TypeInfoKind::Struct);
-                st.storageOffset = storageOffset;
-                addVarToDrop(st);
-            }
+            // Register for dropping in end of scope, if necessary
+            if (!(flags & OVERLOAD_VAR_FUNC_PARAM) && symbol->kind == SymbolKind::Variable)
+                addVarToDrop(result, result->typeInfo, storageOffset);
         }
 
         result->flags |= flags;
@@ -182,6 +176,23 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
 
         return result;
     }
+}
+
+void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset)
+{
+    StructToDrop st;
+    if (typeInfo->kind == TypeInfoKind::Struct)
+        st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    else
+        st.typeStruct = nullptr;
+
+    if (!st.typeStruct)
+        return;
+
+    st.overload      = overload;
+    st.typeInfo      = typeInfo;
+    st.storageOffset = storageOffset;
+    addVarToDrop(st);
 }
 
 void SymTable::addVarToDrop(StructToDrop& st)
