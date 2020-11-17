@@ -1,10 +1,10 @@
 #pragma once
-static const uint64_t AST_CONST_EXPR                 = 0x00000000'00000001;
-static const uint64_t AST_VALUE_COMPUTED             = 0x00000000'00000002;
-static const uint64_t AST_BYTECODE_GENERATED         = 0x00000000'00000004;
-static const uint64_t AST_FULL_RESOLVE               = 0x00000000'00000008;
-static const uint64_t AST_SCOPE_HAS_RETURN           = 0x00000000'00000010;
-static const uint64_t AST_FCT_HAS_RETURN             = 0x00000000'00000020;
+static const uint64_t AST_CONST_EXPR         = 0x00000000'00000001;
+static const uint64_t AST_VALUE_COMPUTED     = 0x00000000'00000002;
+static const uint64_t AST_BYTECODE_GENERATED = 0x00000000'00000004;
+static const uint64_t AST_FULL_RESOLVE       = 0x00000000'00000008;
+//static const uint64_t AST_SCOPE_HAS_RETURN           = 0x00000000'00000010;
+//static const uint64_t AST_FCT_HAS_RETURN             = 0x00000000'00000020;
 static const uint64_t AST_TAKE_ADDRESS               = 0x00000000'00000040;
 static const uint64_t AST_NO_BYTECODE_CHILDS         = 0x00000000'00000080;
 static const uint64_t AST_BYTECODE_RESOLVED          = 0x00000000'00000100;
@@ -86,3 +86,5 @@ static const uint32_t AST_DONE_ASSIGN_COMPUTED           = 0x00020000;
 static const uint32_t AST_SEM_FORCE_TAKE_ADDRESS    = 0x00000001;
 static const uint32_t AST_SEM_FORCE_NO_TAKE_ADDRESS = 0x00000002;
 static const uint32_t AST_SEM_EMBEDDED_RETURN       = 0x00000004;
+static const uint32_t AST_SEM_SCOPE_HAS_RETURN      = 0x00000008;
+static const uint32_t AST_SEM_FCT_HAS_RETURN        = 0x00000010;

@@ -252,9 +252,9 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     // Do we have a return value
     if (node->content && node->returnType && node->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
     {
-        if (!(node->flags & AST_SCOPE_HAS_RETURN))
+        if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
         {
-            if (node->flags & AST_FCT_HAS_RETURN)
+            if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
                 return context->report({node, node->token, format("not all control paths of %s return a value", node->getNameForMessage().c_str())});
             return context->report({node, node->token, format("%s must return a value", node->getNameForMessage().c_str())});
         }
@@ -767,13 +767,13 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     AstNode* scanNode = node;
     while (scanNode && scanNode != stopFct)
     {
-        scanNode->flags |= AST_SCOPE_HAS_RETURN;
+        scanNode->semFlags |= AST_SEM_SCOPE_HAS_RETURN;
         if (scanNode->parent->kind == AstNodeKind::If)
         {
             auto ifNode = CastAst<AstIf>(scanNode->parent, AstNodeKind::If);
             if (ifNode->elseBlock != scanNode)
                 break;
-            if (!(ifNode->ifBlock->flags & AST_SCOPE_HAS_RETURN))
+            if (!(ifNode->ifBlock->semFlags & AST_SEM_SCOPE_HAS_RETURN))
                 break;
         }
         else if (scanNode->kind == AstNodeKind::While ||
@@ -789,7 +789,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     while (scanNode && scanNode != stopFct)
     {
-        scanNode->flags |= AST_FCT_HAS_RETURN;
+        scanNode->semFlags |= AST_SEM_FCT_HAS_RETURN;
         scanNode = scanNode->parent;
     }
 
@@ -850,7 +850,6 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     cloneContext.ownerFct       = identifier->ownerFct;
     cloneContext.ownerBreakable = identifier->ownerBreakable;
     cloneContext.parentScope    = newScope;
-    cloneContext.removeFlags    = AST_FCT_HAS_RETURN | AST_SCOPE_HAS_RETURN;
 
     // Register all aliases
     if (identifier->kind == AstNodeKind::Identifier)

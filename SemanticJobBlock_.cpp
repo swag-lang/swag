@@ -107,11 +107,11 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
     {
         if (fct->returnType && fct->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
         {
-            if (!(node->flags & AST_SCOPE_HAS_RETURN))
+            if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
-                if (node->flags & AST_FCT_HAS_RETURN)
-                    return context->report({ fct, fct->token, format("not all control paths of %s return a value", fct->getNameForMessage().c_str()) });
-                return context->report({ fct, fct->token, format("%s must return a value", fct->getNameForMessage().c_str()) });
+                if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
+                    return context->report({fct, fct->token, format("not all control paths of %s return a value", fct->getNameForMessage().c_str())});
+                return context->report({fct, fct->token, format("%s must return a value", fct->getNameForMessage().c_str())});
             }
         }
     }

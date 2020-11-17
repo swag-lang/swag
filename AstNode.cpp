@@ -269,7 +269,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     flags = from->flags;
     flags &= ~AST_IS_GENERIC;
     flags |= context.forceFlags;
-    flags &= ~context.removeFlags;
 
     ownerStructScope = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
     ownerMainNode    = context.ownerMainNode ? context.ownerMainNode : from->ownerMainNode;
