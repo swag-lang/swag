@@ -45,13 +45,29 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 {
     AstReturn* node       = CastAst<AstReturn>(context->node, AstNodeKind::Return);
     auto       funcNode   = node->ownerFct;
-    auto       returnType = funcNode->returnType->typeInfo;
+    auto       returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
 
     // Copy result to RR0... registers
     if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED) && !node->childs.empty())
     {
         auto returnExpression = node->childs.front();
         auto backExpression   = node->childs.back();
+
+        // If this is an array of struct, we will have too loop
+        auto            exprType        = TypeManager::concreteReference(returnExpression->typeInfo);
+        TypeInfoArray*  typeArray       = nullptr;
+        TypeInfoStruct* typeArrayStruct = nullptr;
+        if (returnType->kind == TypeInfoKind::Array)
+        {
+            typeArray = CastTypeInfo<TypeInfoArray>(returnType, TypeInfoKind::Array);
+            if (typeArray->finalType->kind == TypeInfoKind::Struct)
+            {
+                typeArrayStruct = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
+                waitStructGenerated(context, typeArrayStruct);
+                if (context->result == ContextResult::Pending)
+                    return true;
+            }
+        }
 
         if ((node->doneFlags & AST_DONE_RETVAL) ||
             (backExpression->resolvedSymbolOverload && backExpression->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
@@ -63,7 +79,6 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             auto inlineReturnType = node->ownerInline->func->returnType->typeInfo;
             if (inlineReturnType->kind == TypeInfoKind::Struct)
             {
-                auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
                 waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
                 if (context->result == ContextResult::Pending)
                     return true;
@@ -94,15 +109,42 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         {
             if (returnType->kind == TypeInfoKind::Struct)
             {
-                auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
                 waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
                 if (context->result == ContextResult::Pending)
                     return true;
-                RegisterList r0 = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
+
+                RegisterList r0 = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
                 SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, exprType, returnExpression));
+                freeRegisterRC(context, r0);
+            }
+            else if (typeArrayStruct && typeArrayStruct->opPostMove)
+            {
+                // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
+                returnExpression->flags |= AST_NO_LEFT_DROP;
+
+                // Need to loop on every element of the array in order to initialize them
+                RegisterList r0;
+                reserveRegisterRC(context, r0, 2);
+                emitInstruction(context, ByteCodeOp::SetImmediate32, r0[0])->b.u32 = typeArray->totalCount;
+                emitInstruction(context, ByteCodeOp::ClearRA, r0[1]);
+                auto seekJump = context->bc->numInstructions;
+
+                RegisterList r1 = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r1, 0);
+                emitInstruction(context, ByteCodeOp::IncPointer32, r1, r0[1], r1);
+                SWAG_CHECK(emitStructCopyMoveCall(context, r1, returnExpression->resultRegisterRC, typeArrayStruct, returnExpression));
+                freeRegisterRC(context, r1);
+
+                auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, returnExpression->resultRegisterRC, typeArrayStruct->sizeOf, returnExpression->resultRegisterRC);
+                inst->flags |= BCI_IMM_B;
+
+                emitInstruction(context, ByteCodeOp::DecrementRA32, r0[0]);
+                emitInstruction(context, ByteCodeOp::Add32byVB32, r0[1])->b.u32     = typeArrayStruct->sizeOf;
+                emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
+
                 freeRegisterRC(context, r0);
             }
             else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
