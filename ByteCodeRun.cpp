@@ -1907,6 +1907,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     }
 
     // Hardware exception
+    if (g_CommandLine.devMode)
+        OS::errorBox("[Developer Mode]", "Exception raised !");
+
     auto       ip = runContext->ip - 1;
     Diagnostic diag{ip->node, ip->node->token, "exception during bytecode execution !"};
     diag.exceptionError = true;

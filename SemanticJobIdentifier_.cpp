@@ -63,9 +63,6 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
         node->flags |= AST_IS_CONST_ASSIGN;
 
-    if (node->name == "resultXX")
-        node = node; // @remove
-
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
 
@@ -1295,6 +1292,26 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
     {
         SWAG_CHECK(instantiateGenericSymbol(context, genericMatches[0], forStruct));
         return true;
+    }
+
+    // Ambiguity with generics
+    if (genericMatches.size() > 1)
+    {
+        auto                      symbol = overloads[0].overload->symbol;
+        Diagnostic                diag{node, node->token, format("ambiguous resolution of generic %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+        vector<const Diagnostic*> notes;
+        for (auto match : genericMatches)
+        {
+            auto overload               = match.symbolOverload;
+            auto couldBe                = "could be: " + Ast::computeTypeDisplay(overload->node->name, overload->typeInfo);
+            auto note                   = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+            note->showRange             = false;
+            note->showMultipleCodeLines = false;
+            notes.push_back(note);
+        }
+
+        context->report(diag, notes);
+        return false;
     }
 
     // Done !!!
