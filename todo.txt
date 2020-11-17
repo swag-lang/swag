@@ -38,3 +38,5 @@ x64: ByteCodeOp::LambdaCall, mettre des jump 8 bits
 calling convention local call, passer les registres plutot que les adresses des registres, tabarnac
 probablement grosse modif (variadics ?)
 -------------------------------------
+loop sur array de struct (init, drop...), optim si totalcount == 1
+-------------------------------------
