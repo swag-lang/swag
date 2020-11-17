@@ -64,20 +64,24 @@ void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
 
             // Then we can eliminate some instructions related to the function call parameters
             auto backIp = ip;
-            while (backIp != context->bc->out &&
-                   !(backIp->flags & BCI_START_STMT) &&
-                   backIp->op != ByteCodeOp::LocalCall &&
-                   backIp->op != ByteCodeOp::ForeignCall &&
-                   backIp->op != ByteCodeOp::LambdaCall)
+            if (!(backIp->flags & BCI_START_STMT))
             {
-                if (backIp->op == ByteCodeOp::PushRAParam ||
-                    backIp->op == ByteCodeOp::PushRAParam2 ||
-                    backIp->op == ByteCodeOp::PushRAParam3 ||
-                    backIp->op == ByteCodeOp::PushRAParam4 ||
-                    backIp->op == ByteCodeOp::CopySPVaargs ||
-                    backIp->op == ByteCodeOp::CopySP)
-                    setNop(context, backIp);
-                backIp--;
+                while (backIp != context->bc->out &&
+                       backIp->op != ByteCodeOp::LocalCall &&
+                       backIp->op != ByteCodeOp::ForeignCall &&
+                       backIp->op != ByteCodeOp::LambdaCall)
+                {
+                    if (backIp->op == ByteCodeOp::PushRAParam ||
+                        backIp->op == ByteCodeOp::PushRAParam2 ||
+                        backIp->op == ByteCodeOp::PushRAParam3 ||
+                        backIp->op == ByteCodeOp::PushRAParam4 ||
+                        backIp->op == ByteCodeOp::CopySPVaargs ||
+                        backIp->op == ByteCodeOp::CopySP)
+                        setNop(context, backIp);
+                    if (backIp->flags & BCI_START_STMT)
+                        break;
+                    backIp--;
+                }
             }
         }
     }

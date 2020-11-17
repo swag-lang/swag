@@ -9,7 +9,7 @@ impl A
 {
     func opDrop(using self)
     {
-        @print("drop\n")
+        //@print("drop\n")
     }
 
     func opPostMove(using self)

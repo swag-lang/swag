@@ -9,7 +9,7 @@ impl A
 {
     func opDrop(using self)
     {
-        @print("drop\n")
+        //@print("drop\n")
     }
 
     func opPostMove(using self)
@@ -35,6 +35,8 @@ func toto1()->TOTO
     return result
 }
 
+#[swag.printbc]
+#[swag.optim(false)]
 #test
 {
     res := toto1()

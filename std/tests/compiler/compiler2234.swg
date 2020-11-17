@@ -9,12 +9,11 @@ impl A
 {
     func opDrop(using self)
     {
-        @print("drop\n")
+        G += 1
     }
 
     func opPostMove(using self)
     {
-        G += 1
     }
 
     func opPostCopy(using self)
@@ -23,8 +22,11 @@ impl A
     }
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
-    var resultXX: [3] A
+    {
+        var resultXX: [3] A
+    }
+    @assert(G == 3)
 }

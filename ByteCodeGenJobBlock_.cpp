@@ -620,12 +620,41 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         if (one.overload && !(one.overload->flags & OVERLOAD_EMITTED))
             continue;
 
-        auto r0     = reserveRegisterRC(context);
-        auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
-        inst->b.u32 = one.storageOffset;
-        emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-        emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
-        freeRegisterRC(context, r0);
+        if (one.typeInfo->kind == TypeInfoKind::Array)
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(one.typeInfo, TypeInfoKind::Array);
+
+            // Need to loop on every element of the array in order to initialize them
+            RegisterList r0 = reserveRegisterRC(context);
+            RegisterList r1 = reserveRegisterRC(context);
+
+            emitInstruction(context, ByteCodeOp::SetImmediate32, r0[0])->b.u32 = typeArray->totalCount;
+
+            auto inst     = emitInstruction(context, ByteCodeOp::MakeStackPointer, r1);
+            inst->b.u32   = one.storageOffset;
+            auto seekJump = context->bc->numInstructions;
+
+            emitInstruction(context, ByteCodeOp::PushRAParam, r1);
+            emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
+
+            inst = emitInstruction(context, ByteCodeOp::IncPointer32, r1, one.typeStruct->sizeOf, r1);
+            inst->flags |= BCI_IMM_B;
+
+            emitInstruction(context, ByteCodeOp::DecrementRA32, r0[0]);
+            emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
+
+            freeRegisterRC(context, r0);
+            freeRegisterRC(context, r1);
+        }
+        else
+        {
+            auto r0     = reserveRegisterRC(context);
+            auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
+            inst->b.u32 = one.storageOffset;
+            emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
+            freeRegisterRC(context, r0);
+        }
     }
 
     return true;
