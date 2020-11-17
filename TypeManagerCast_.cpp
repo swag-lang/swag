@@ -2365,10 +2365,26 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     // convert {...} expression list to a structure : this will create a variable, with parameters
     SWAG_ASSERT(fromNode->typeInfo);
     auto fromType = concreteType(fromNode->typeInfo, CONCRETE_ALIAS);
-    if (fromType->kind == TypeInfoKind::TypeListTuple && toType->kind == TypeInfoKind::Struct)
+    if (fromType->kind == TypeInfoKind::TypeListTuple)
     {
-        SWAG_CHECK(convertLiteralTupleToStruct(context, toType, fromNode));
-        return true;
+        bool convert = false;
+        if (toType->kind == TypeInfoKind::Struct)
+            convert = true;
+        if (toType->kind == TypeInfoKind::Reference && toType->isConst())
+        {
+            auto ptrRef = CastTypeInfo<TypeInfoReference>(toType, TypeInfoKind::Reference);
+            if (ptrRef->pointedType->kind == TypeInfoKind::Struct)
+            {
+                toType = ptrRef->pointedType;
+                convert = true;
+            }
+        }
+
+        if (convert)
+        {
+            SWAG_CHECK(convertLiteralTupleToStruct(context, toType, fromNode));
+            return true;
+        }
     }
 
     SWAG_CHECK(makeCompatibles(context, toType, fromNode->typeInfo, toNode, fromNode, castFlags));

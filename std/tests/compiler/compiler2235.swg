@@ -1,3 +1,6 @@
+#module "compiler2235"
+#unittest error
+
 struct Pt
 {
     x: s64 = 1
@@ -5,10 +8,11 @@ struct Pt
 
 func toto(x: Pt)
 {
-    //@print(x.x)
+    @print(x.x)
 }
 
+//#[swag.printbc]
 #test
 {
-    toto(@{"true"})
+    toto(@{true})
 }
