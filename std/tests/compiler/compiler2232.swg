@@ -36,7 +36,7 @@ func toto1()->TOTO
 }
 
 #[swag.printbc]
-#[swag.optim(false)]
+//#[swag.optim(false)]
 #test
 {
     res := toto1()

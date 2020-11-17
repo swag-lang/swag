@@ -34,11 +34,19 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
             for (auto nop : context->nops)
             {
                 auto idxNop = (int) (nop - context->bc->out);
+
+                // If this is a ordered jump, and there's a nop between the destination jump
+                // and the jump, then we need to remove one jump instruction
+                // If we jump on a nop, we must NOT decrease by 1 to jump to the following instruction
                 if (srcJump < dstJump && idxNop > srcJump && idxNop < dstJump)
                 {
                     ip->b.s32--;
                 }
-                else if (srcJump > dstJump && idxNop > dstJump && idxNop < srcJump)
+
+                // If this is a back jump, and there's a nop between the destination jump
+                // and the jump, then we need to remove one jump instruction
+                // If we jump on a nop, we MUST decrease also by 1 to jump to the following instruction
+                else if (srcJump > dstJump && idxNop >= dstJump && idxNop < srcJump)
                 {
                     ip->b.s32++;
                 }
