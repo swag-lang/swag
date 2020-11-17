@@ -5,7 +5,7 @@ struct Pt
 
 func toto(x: Pt)
 {
-    @print(x.x)
+    //@print(x.x)
 }
 
 #test

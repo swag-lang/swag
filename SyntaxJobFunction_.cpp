@@ -95,7 +95,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result, TokenId 
 
             if (token.id == closeToken)
                 break;
-            if (param->flags & AST_CALL_FOR_STRUCT)
+            if (callParams->flags & AST_CALL_FOR_STRUCT)
                 SWAG_CHECK(eatToken(TokenId::SymComma, "in struct initialization parameters"));
             else
                 SWAG_CHECK(eatToken(TokenId::SymComma, "in function call parameters"));

@@ -57,9 +57,9 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
             }
             else if (!tokenizer.lastTokenIsBlank && token.id == TokenId::SymLeftCurly)
             {
-                ScopedFlags sk(this, AST_CALL_FOR_STRUCT);
                 SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
                 SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightCurly));
+                identifier->callParameters->flags |= AST_CALL_FOR_STRUCT;
             }
         }
     }
