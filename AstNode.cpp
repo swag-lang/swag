@@ -389,6 +389,11 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     auto newNode = g_Allocator.alloc0<AstIdentifier>();
     newNode->copyFrom(context, this);
 
+    // Is there an alias ?
+    auto itn = context.replaceNames.find(newNode->name);
+    if (itn != context.replaceNames.end())
+        newNode->name = itn->second;
+
     auto idRef = context.parent;
     while (idRef->kind != AstNodeKind::IdentifierRef)
         idRef = idRef->parent;

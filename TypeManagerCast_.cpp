@@ -2526,6 +2526,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
             return true;
     }
 
+    // Can cast to name alias, can be anything
+    if (toType->kind == TypeInfoKind::NameAlias)
+        return true;
+
     if (fromType->isSame(toType, ISSAME_CAST))
         return true;
 

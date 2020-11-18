@@ -119,6 +119,7 @@ enum class TypeInfoKind : uint16_t
     Struct,
     Generic,
     Alias,
+    NameAlias,
     Code,
     Interface,
     TypeSet,

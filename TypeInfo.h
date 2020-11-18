@@ -568,3 +568,16 @@ struct TypeInfoCode : public TypeInfo
 
     AstNode* content = nullptr;
 };
+
+struct TypeInfoNameAlias : public TypeInfo
+{
+    TypeInfoNameAlias()
+    {
+        name      = "alias";
+        nakedName = "alias";
+        kind      = TypeInfoKind::NameAlias;
+    }
+
+    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
+    TypeInfo* clone() override;
+};

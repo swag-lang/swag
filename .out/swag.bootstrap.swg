@@ -199,6 +199,7 @@ namespace swag
         Struct
         Generic
         Alias
+        NameAlias
         Code
         Interface
         TypeSet

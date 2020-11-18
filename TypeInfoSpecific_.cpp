@@ -62,6 +62,24 @@ bool TypeInfoCode::isSame(TypeInfo* to, uint32_t isSameFlags)
     return false;
 }
 
+TypeInfo* TypeInfoNameAlias::clone()
+{
+    auto newType = g_Allocator.alloc<TypeInfoNameAlias>();
+    newType->copyFrom(this);
+    return newType;
+}
+
+bool TypeInfoNameAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+    if (isSameFlags & ISSAME_CAST)
+        return true;
+    return false;
+}
+
 void TypeInfoAlias::computeScopedName()
 {
     unique_lock lk(mutexScopeName);

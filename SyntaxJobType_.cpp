@@ -206,6 +206,19 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         return true;
     }
 
+    // Alias
+    if (token.id == TokenId::KwdAlias)
+    {
+        auto node = Ast::newTypeExpression(sourceFile, parent, this);
+        if (result)
+            *result = node;
+        node->flags |= AST_NO_BYTECODE_CHILDS;
+        node->typeInfo = g_TypeMgr.typeInfoNameAlias;
+        node->typeFlags |= TYPEFLAG_ISNAMEALIAS;
+        SWAG_CHECK(eatToken());
+        return true;
+    }
+
     // This is a function
     if (token.id == TokenId::KwdFunc)
     {

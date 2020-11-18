@@ -61,7 +61,8 @@ void TypeManager::setup()
     typeInfoConstPVoid->setConst();
     typeInfoConstPVoid->sizeOf = sizeof(Register);
 
-    typeInfoCode = new TypeInfoCode();
+    typeInfoCode      = new TypeInfoCode();
+    typeInfoNameAlias = new TypeInfoNameAlias();
 
     typeInfoOpCall             = new TypeInfoFuncAttr();
     typeInfoOpCall->returnType = typeInfoVoid;

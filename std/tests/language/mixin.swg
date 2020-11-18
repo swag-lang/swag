@@ -73,4 +73,18 @@
 
         @assert(a == 12)
     }
+
+    // You can use special type 'alias' to create a named alias
+    {
+        #[swag.mixin]
+        func inc10(variable: alias)
+        {
+            variable += 10
+        }
+
+        a, b := 0
+        inc10(a)
+        inc10(b)
+        @assert(a == b == 10)
+    }
 }

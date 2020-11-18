@@ -42,9 +42,9 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Code is only valid for a macro or mixin
         auto paramType = nodeParam->typeInfo;
         if (paramType->kind == TypeInfoKind::Code)
-        {
             SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({nodeParam, "type 'code' is only valid in a 'swag.macro' or 'swag.mixin' function"}));
-        }
+        if (paramType->kind == TypeInfoKind::NameAlias)
+            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({nodeParam, "type 'alias' is only valid in a 'swag.macro' or 'swag.mixin' function"}));
 
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
@@ -853,6 +853,20 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         for (const auto& alias : id->aliasNames)
         {
             cloneContext.replaceNames[format("@alias%d", idx++)] = alias;
+        }
+
+        for (auto child : id->callParameters->childs)
+        {
+            auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+            SWAG_ASSERT(param->resolvedParameter);
+            if (param->resolvedParameter->typeInfo->kind == TypeInfoKind::NameAlias)
+            {
+                SWAG_VERIFY(child->kind == AstNodeKind::FuncCallParam, context->report({child, "invalid alias"}));
+                SWAG_VERIFY(child->childs.back()->kind == AstNodeKind::IdentifierRef, context->report({child, "invalid alias, should be an identifier"}));
+                auto idRef = CastAst<AstIdentifierRef>(child->childs.back(), AstNodeKind::IdentifierRef);
+                SWAG_VERIFY(idRef->childs.size() == 1, context->report({child, "invalid alias, should be a single identifier"}));
+                cloneContext.replaceNames[param->resolvedParameter->namedParam] = idRef->childs.back()->name;
+            }
         }
     }
 
