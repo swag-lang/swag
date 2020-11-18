@@ -474,7 +474,7 @@ public impl String
     // Convert a literal string to a String
     func from(value: string)->String
     {
-        var val: String = value
+        var val: retval = value
         return val
     }
 
