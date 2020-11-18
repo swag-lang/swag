@@ -9,7 +9,7 @@ using std
     arr1.addAny("1")
     arr2.addAny("2")
     arr2.addAny("3")
-    arr1.add(arr2)
+    arr1.add(arr2.toSlice())
     @assert(arr1.count == 4)
     @assert(arr1[2] == "2")
     @assert(arr1[3] == "3")

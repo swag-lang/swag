@@ -269,15 +269,6 @@ impl Array
         buffer[index] = nodrop move :value
     }
 
-    // Append another array to the end of this instance
-    func add(using self, array: Array)
-    {
-        // Do not add myself !
-        debug.assert(array.buffer != buffer)
-
-        add(@mkslice(array.buffer, array.count))
-    }
-
     // Append a slice to the end of this instance
     func add(using self, values: const [..] T)
     {

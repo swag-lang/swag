@@ -111,7 +111,7 @@ func main()
             }
 
             for i := 0; i < 5; i += 1
-                snake.add(SnakeSegment{snake.back().x, snake.back().y})
+                snake.add(@{snake.back().x, snake.back().y})
         }
 
         // Collision Detect Snake V World
