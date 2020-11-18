@@ -861,6 +861,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
+    if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN)
+        newContent->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
     newContent->flags &= ~AST_NO_SEMANTIC;
 
     // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called

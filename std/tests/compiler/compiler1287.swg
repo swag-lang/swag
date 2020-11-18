@@ -9,7 +9,7 @@ func toto(x: code)
     }
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     total := 0

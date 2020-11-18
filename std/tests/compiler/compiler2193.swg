@@ -9,6 +9,9 @@ func cstr(x: string)
 //#[swag.printbc]
 #test
 {
-    cstr("toto")
+    {
+        cstr("toto")
+    }
+
     @assert(G == 1)
 }
