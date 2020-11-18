@@ -283,10 +283,18 @@ impl Array
         oldCount := count
         count += sliceCount
 
-        loop sliceCount
+        #if reflection.hasPostCopy(@typeof(T))
         {
-            buffer[oldCount] = nodrop values[@index]
-            oldCount += 1
+            destPtr := buffer + oldCount
+            loop sliceCount
+            {
+                :destPtr = nodrop values[@index]
+                destPtr += 1
+            }
+        }
+        #else
+        {
+            memory.copy(buffer + oldCount, @dataof(values), sliceCount * @sizeof(T))
         }
     }
 
