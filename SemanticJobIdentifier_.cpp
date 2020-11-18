@@ -922,12 +922,27 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::BadSignature:
     {
         SWAG_ASSERT(callParameters);
-        auto diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
-                                   format("bad type of parameter '%d' for %s ('%s' expected, '%s' provided)",
-                                          badParamIdx,
-                                          refNiceName.c_str(),
-                                          bi.badSignatureRequestedType->name.c_str(),
-                                          bi.badSignatureGivenType->name.c_str())};
+        Diagnostic* diag = nullptr;
+        if (overload->typeInfo->kind == TypeInfoKind::Struct)
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
+            diag            = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+                                  format("bad type of parameter '%d' for %s ('%s' is expected for field '%s', '%s' provided)",
+                                         badParamIdx,
+                                         refNiceName.c_str(),
+                                         bi.badSignatureRequestedType->name.c_str(),
+                                         typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
+                                         bi.badSignatureGivenType->name.c_str())};
+        }
+        else
+        {
+            diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+                                  format("bad type of parameter '%d' for %s ('%s' expected, '%s' provided)",
+                                         badParamIdx,
+                                         refNiceName.c_str(),
+                                         bi.badSignatureRequestedType->name.c_str(),
+                                         bi.badSignatureGivenType->name.c_str())};
+        }
         if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             diag->codeComment = format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str());
         Diagnostic* note;

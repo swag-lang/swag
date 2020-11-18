@@ -771,7 +771,6 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymComma));
     }
 
-    initNode->childs.back()->token.endLocation = token.endLocation;
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
@@ -800,9 +799,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymComma));
     }
 
-    initNode->childs.back()->token.endLocation = token.endLocation;
     SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-
     return true;
 }
 
