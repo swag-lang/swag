@@ -26,7 +26,7 @@ void Log::messageHeaderCentered(const Utf8& header, const Utf8& message, LogColo
     lock();
     setColor(headerColor);
     auto size = header.length();
-    while (size != CENTER_COLUMN)
+    while (size < CENTER_COLUMN)
     {
         print(" ");
         size++;
@@ -52,7 +52,7 @@ void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor hea
     print(header);
 
     auto size = header.length();
-    while (size != CENTER_COLUMN)
+    while (size < CENTER_COLUMN)
     {
         print(".");
         size++;

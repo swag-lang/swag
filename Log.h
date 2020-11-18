@@ -30,7 +30,7 @@ enum class LogPassType
     Info,
 };
 
-static const int CENTER_COLUMN = 20;
+static const int CENTER_COLUMN = 24;
 
 struct Log
 {
