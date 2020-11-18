@@ -848,23 +848,22 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Register all aliases
     if (identifier->kind == AstNodeKind::Identifier)
     {
+        // Replace user aliases of the form @alias?
         auto id  = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
         int  idx = 0;
         for (const auto& alias : id->aliasNames)
-        {
             cloneContext.replaceNames[format("@alias%d", idx++)] = alias;
-        }
 
+        // Replace named aliases
         for (auto child : id->callParameters->childs)
         {
             auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-            SWAG_ASSERT(param->resolvedParameter);
-            if (param->resolvedParameter->typeInfo->kind == TypeInfoKind::NameAlias)
+            if (param->resolvedParameter && param->resolvedParameter->typeInfo->kind == TypeInfoKind::NameAlias)
             {
-                SWAG_VERIFY(child->kind == AstNodeKind::FuncCallParam, context->report({child, "invalid alias"}));
-                SWAG_VERIFY(child->childs.back()->kind == AstNodeKind::IdentifierRef, context->report({child, "invalid alias, should be an identifier"}));
+                SWAG_VERIFY(child->kind == AstNodeKind::FuncCallParam, context->report({child, "invalid name alias"}));
+                SWAG_VERIFY(child->childs.back()->kind == AstNodeKind::IdentifierRef, context->report({child, "invalid name alias, should be an identifier"}));
                 auto idRef = CastAst<AstIdentifierRef>(child->childs.back(), AstNodeKind::IdentifierRef);
-                SWAG_VERIFY(idRef->childs.size() == 1, context->report({child, "invalid alias, should be a single identifier"}));
+                SWAG_VERIFY(idRef->childs.size() == 1, context->report({child, "invalid name alias, should be a single identifier"}));
                 cloneContext.replaceNames[param->resolvedParameter->namedParam] = idRef->childs.back()->name;
             }
         }
