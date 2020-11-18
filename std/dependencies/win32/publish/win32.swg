@@ -21,7 +21,7 @@ namespace win32
     alias SHORT =			s16
     alias LARGE_INTEGER =	s64
     alias PLONG =           *LONG
-    alias CHAR =            char
+    alias CHAR =            u8
 
     const STD_INPUT_HANDLE 	= cast(DWORD) -10
     const STD_OUTPUT_HANDLE = cast(DWORD) -11
@@ -405,19 +405,19 @@ namespace win32
 
     struct WIN32_FIND_DATAA
     {
-        dwFileAttributes: DWORD
-        ftCreationTime:   FILETIME
-        ftLastAccessTime: FILETIME
-        ftLastWriteTime:  FILETIME
-        nFileSizeHigh:    DWORD
-        nFileSizeLow:     DWORD
-        dwReserved0:      DWORD
-        dwReserved1:      DWORD
-        cFileName:        [MAX_PATH] CHAR
+        dwFileAttributes:   DWORD
+        ftCreationTime:     FILETIME
+        ftLastAccessTime:   FILETIME
+        ftLastWriteTime:    FILETIME
+        nFileSizeHigh:      DWORD
+        nFileSizeLow:       DWORD
+        dwReserved0:        DWORD
+        dwReserved1:        DWORD
+        cFileName:          [MAX_PATH] CHAR
         cAlternateFileName: [14] CHAR
-        dwFileType:        DWORD
-        dwCreatorType:     DWORD
-        wFinderFlags:      WORD
+        dwFileType:         DWORD
+        dwCreatorType:      DWORD
+        wFinderFlags:       WORD
     }
 
     enum GET_FILEEX_INFO_LEVELS
