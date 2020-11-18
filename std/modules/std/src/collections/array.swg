@@ -273,7 +273,7 @@ impl Array
     func add(using self, values: const [..] T)
     {
         // Do not add myself !
-        debug.assert(@dataof(values) != buffer)
+        debug.assert(@dataof(values) < buffer || @dataof(values) > buffer + capacity)
 
         sliceCount := @countof(values)
         if !sliceCount
