@@ -9,15 +9,15 @@ func toto(x: code)
     }
 }
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
     total := 0
-    
+
     toto()
     {
         total += cpt
     }
-    
+
     @assert(total == 55)
 }

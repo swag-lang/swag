@@ -29,7 +29,8 @@ SourceFile* ByteCodeInstruction::getFileLocation(ByteCode* bc)
 {
     if (!node)
         return bc->sourceFile;
-    if (node->ownerInline)
+
+    if (node->ownerInline && !(node->flags & AST_IN_MIXIN))
     {
         auto inlineNode = CastAst<AstInline>(node->ownerInline, AstNodeKind::Inline);
         return inlineNode->func->sourceFile;

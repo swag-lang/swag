@@ -186,6 +186,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
             cloneContext.ownerBreakable = node->ownerBreakable;
             cloneContext.ownerInline    = node->ownerInline;
             cloneContext.replaceTokens  = node->replaceTokens;
+            cloneContext.forceFlags     = AST_IN_MIXIN;
             auto cloneContent           = typeCode->content->clone(cloneContext);
             cloneContent->flags &= ~AST_NO_SEMANTIC;
             node->typeInfo = cloneContent->typeInfo;
@@ -205,7 +206,7 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
 
     if (!(node->flags & AST_FROM_GENERIC))
     {
-        // If we are inside a generic structure, do not evaluate the instruction. 
+        // If we are inside a generic structure, do not evaluate the instruction.
         // Will be done during instantiation
         if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
             node->flags |= AST_IS_GENERIC;
