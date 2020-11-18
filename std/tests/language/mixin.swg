@@ -75,6 +75,7 @@
     }
 
     // You can use special type 'alias' to create a named alias
+    // for an identifier
     {
         #[swag.mixin]
         func inc10(variable: alias)
@@ -86,5 +87,20 @@
         inc10(a)
         inc10(b)
         @assert(a == b == 10)
+    }
+
+    // You can also use special type 'alias' and '#code' to create a named alias
+    // for a variable declaration
+    {
+        #[swag.mixin]
+        func setVar(variable: alias, value: s32)
+        {
+            variable := value
+        }
+
+        setVar(#code a, 10)
+        setVar(#code b, 20)
+        @assert(a == 10)
+        @assert(b == 20)
     }
 }

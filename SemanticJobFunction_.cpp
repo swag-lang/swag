@@ -861,8 +861,12 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
             if (param->resolvedParameter && param->resolvedParameter->typeInfo->kind == TypeInfoKind::NameAlias)
             {
                 SWAG_VERIFY(child->kind == AstNodeKind::FuncCallParam, context->report({child, "invalid name alias"}));
-                SWAG_VERIFY(child->childs.back()->kind == AstNodeKind::IdentifierRef, context->report({child, "invalid name alias, should be an identifier"}));
-                auto idRef = CastAst<AstIdentifierRef>(child->childs.back(), AstNodeKind::IdentifierRef);
+                auto back = child->childs.back();
+                if (back->kind == AstNodeKind::CompilerCode)
+                    back = back->childs.front();
+                SWAG_VERIFY(back->kind == AstNodeKind::IdentifierRef, context->report({child, "invalid name alias, should be an identifier"}));
+
+                auto idRef = CastAst<AstIdentifierRef>(back, AstNodeKind::IdentifierRef);
                 SWAG_VERIFY(idRef->childs.size() == 1, context->report({child, "invalid name alias, should be a single identifier"}));
                 cloneContext.replaceNames[param->resolvedParameter->namedParam] = idRef->childs.back()->name;
             }
