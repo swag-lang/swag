@@ -1898,7 +1898,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             reloc.type           = IMAGE_REL_AMD64_ADDR64;
             pp.relocTableTextSection.table.push_back(reloc);
 
-            if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+            if (funcNode->attributeFlags & (ATTRIBUTE_FOREIGN | ATTRIBUTE_CALLBACK))
             {
                 BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RCX);
                 BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::OR);

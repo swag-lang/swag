@@ -2437,17 +2437,32 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
             SWAG_ASSERT(funcNode);
+            TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
             if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
             {
-                TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-                ComputedValue     foreignValue;
+                ComputedValue foreignValue;
                 typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
                 SWAG_ASSERT(!foreignValue.text.empty());
 
                 llvm::FunctionType* T;
                 SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncNode, &T));
                 auto F = (llvm::Function*) modu.getOrInsertFunction(foreignValue.text.c_str(), T).getCallee();
+
+                auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+                builder.CreateStore(TO_PTR_I8(F), r0);
+
+                auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+                auto v1 = builder.CreateOr(v0, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
+                builder.CreateStore(v1, GEP_I32(allocR, ip->a.u32));
+            }
+            else if (funcNode->attributeFlags & ATTRIBUTE_CALLBACK)
+            {
+                funcNode->computeFullNameForeign(true);
+
+                llvm::FunctionType* T;
+                SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncNode, &T));
+                auto F = (llvm::Function*) modu.getOrInsertFunction(funcNode->fullnameForeign.c_str(), T).getCallee();
 
                 auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
                 builder.CreateStore(TO_PTR_I8(F), r0);
