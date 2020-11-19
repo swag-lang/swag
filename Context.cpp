@@ -63,6 +63,12 @@ static void byteCodeRun(void* byteCodePtr, ...)
     module->runner.run(&runContext);
 }
 
+static void threadRun(void* param)
+{
+    void** arr = (void**) param;
+    byteCodeRun(arr[0], &arr[1]);
+}
+
 void initDefaultContext()
 {
     g_tlsContextId = OS::tlsAlloc();
@@ -73,6 +79,7 @@ void initDefaultContext()
     g_processInfos.contextTlsId    = g_tlsContextId;
     g_processInfos.defaultContext  = &g_defaultContext;
     g_processInfos.byteCodeRun     = byteCodeRun;
+    g_processInfos.threadRun       = threadRun;
 }
 
 uint64_t getDefaultContextFlags(Module* module)

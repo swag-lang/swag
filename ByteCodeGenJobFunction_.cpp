@@ -429,6 +429,15 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicSetContext, childDest->resultRegisterRC);
         freeRegisterRC(context, childDest);
     }
+    case TokenId::IntrinsicThreadRunPtr:
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        SWAG_ASSERT(node->identifierRef == node->parent);
+        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC        = node->resultRegisterRC;
+        emitInstruction(context, ByteCodeOp::IntrinsicThreadRunPtr, node->resultRegisterRC);
+        break;
+    }
     case TokenId::IntrinsicArguments:
     {
         reserveLinearRegisterRC2(context, node->resultRegisterRC);

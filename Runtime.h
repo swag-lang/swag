@@ -48,6 +48,7 @@ typedef struct SwagSlice
 } SwagSlice;
 
 typedef void (*SwagBytecodeRun)(void*, ...);
+typedef void (*SwagThreadRun)(void*);
 
 typedef struct SwagProcessInfos
 {
@@ -55,6 +56,7 @@ typedef struct SwagProcessInfos
     uint64_t        contextTlsId;
     SwagContext*    defaultContext;
     SwagBytecodeRun byteCodeRun;
+    SwagThreadRun   threadRun;
 } SwagProcessInfos;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -206,7 +206,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         offset                  = pp.globalSegment.reserve(8, true);
         pp.symDefaultAllocTable = getOrAddSymbol(pp, "swag_default_alloc_table", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
-        // This should match the structure swag_process_infos_t declared in SwagRuntime.h
+        // This should match the structure swag_process_infos_t declared in Runtime.h
         offset                  = pp.globalSegment.reserve(8, true);
         pp.symPI_processInfos   = getOrAddSymbol(pp, "swag_process_infos", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         pp.symPI_args_addr      = getOrAddSymbol(pp, "swag_process_infos_args_addr", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
@@ -218,6 +218,8 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symPI_defaultContext = getOrAddSymbol(pp, "swag_process_infos_defaultContext", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, true);
         pp.symPI_byteCodeRun    = getOrAddSymbol(pp, "swag_process_infos_byteCodeRun", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        offset                  = pp.globalSegment.reserve(8, true);
+        pp.symPI_threadRun      = getOrAddSymbol(pp, "swag_process_infos_threadRun", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
     }
     else
     {
@@ -232,6 +234,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symPI_contextTlsId   = getOrAddSymbol(pp, "swag_process_infos_contextTlsId", CoffSymbolKind::Extern)->index;
         pp.symPI_defaultContext = getOrAddSymbol(pp, "swag_process_infos_defaultContext", CoffSymbolKind::Extern)->index;
         pp.symPI_byteCodeRun    = getOrAddSymbol(pp, "swag_process_infos_byteCodeRun", CoffSymbolKind::Extern)->index;
+        pp.symPI_threadRun      = getOrAddSymbol(pp, "swag_process_infos_threadRun", CoffSymbolKind::Extern)->index;
     }
 
     return true;

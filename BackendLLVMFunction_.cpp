@@ -2052,6 +2052,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateCall(pp.fn_free, {v0});
             break;
         }
+        case ByteCodeOp::IntrinsicThreadRunPtr:
+        {
+            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, { pp.cst0_i32, pp.cst4_i32 })));
+            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(r0, r1);
+            break;
+        }
         case ByteCodeOp::IntrinsicGetContext:
         {
             auto rr    = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));

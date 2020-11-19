@@ -1705,6 +1705,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Immediate(pp, 0, 0, RAX);
             break;
+        case ByteCodeOp::IntrinsicThreadRunPtr:
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_threadRun, 0);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
         case ByteCodeOp::IntrinsicIsByteCode:
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store32_Immediate(pp, 0, 0, RAX);

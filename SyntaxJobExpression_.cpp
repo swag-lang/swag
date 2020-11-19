@@ -183,6 +183,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicCStrLen:
     case TokenId::IntrinsicStrCmp:
     case TokenId::IntrinsicTypeCmp:
+    case TokenId::IntrinsicThreadRunPtr:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 

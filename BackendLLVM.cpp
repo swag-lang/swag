@@ -51,7 +51,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         pp.allocatorTy = llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, false);
     }
 
-    // swag_alloctor_t
+    // byteCodeRun
     {
         llvm::Type* params[] = {
             llvm::Type::getInt8PtrTy(context),
@@ -66,6 +66,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::Type::getInt64Ty(context),
             pp.contextTy->getPointerTo(),
             pp.bytecodeRunTy->getPointerTo(),
+            llvm::Type::getInt8Ty(context)->getPointerTo(),
         };
         pp.processInfosTy = llvm::StructType::create(context, members, "swag_process_infos_t");
         SWAG_ASSERT(pp.processInfosTy->isSized());
@@ -119,6 +120,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     pp.cst1_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 1);
     pp.cst2_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 2);
     pp.cst3_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 3);
+    pp.cst4_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 4);
     pp.cst0_i64 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0);
     pp.cst0_f32 = llvm::ConstantFP::get(llvm::Type::getFloatTy(context), 0);
     pp.cst0_f64 = llvm::ConstantFP::get(llvm::Type::getDoubleTy(context), 0);

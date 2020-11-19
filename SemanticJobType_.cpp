@@ -481,14 +481,6 @@ bool SemanticJob::resolveExplicitAutoCast(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveTypeList(SemanticContext* context)
-{
-    auto node = context->node;
-    if (node->childs.size() == 1)
-        node->typeInfo = node->childs.front()->typeInfo;
-    return true;
-}
-
 bool SemanticJob::resolveUserCast(SemanticContext* context)
 {
     auto node = context->node;
@@ -500,6 +492,14 @@ bool SemanticJob::resolveUserCast(SemanticContext* context)
     node->parent->typeInfo                     = node->typeInfo;
     node->parent->resolvedUserOpSymbolName     = node->resolvedUserOpSymbolName;
     node->parent->resolvedUserOpSymbolOverload = node->resolvedUserOpSymbolOverload;
+    return true;
+}
+
+bool SemanticJob::resolveTypeList(SemanticContext* context)
+{
+    auto node = context->node;
+    if (node->childs.size() == 1)
+        node->typeInfo = node->childs.front()->typeInfo;
     return true;
 }
 

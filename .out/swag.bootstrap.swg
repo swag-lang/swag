@@ -6,6 +6,7 @@ func @memset(dst: *void, value: u8, size: u32);
 func @getcontext()->const *swag.Context;
 func @setcontext(context: const *swag.Context);
 func @isbytecode()->bool;
+func @thrunptr()->const *void;
 func @compiler()->swag.ICompiler;
 
 namespace swag

@@ -692,7 +692,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
     if (fromType->nativeType == NativeTypeKind::U64)
         return true;
 
-    if (fromType->kind == TypeInfoKind::Pointer)
+    if (fromType->kind == TypeInfoKind::Pointer || fromType->kind == TypeInfoKind::Lambda)
     {
         if (castFlags & CASTFLAG_EXPLICIT)
         {
@@ -1779,6 +1779,17 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
+    // Lambda to *void
+    if (fromType->kind == TypeInfoKind::Lambda)
+    {
+        if (castFlags & CASTFLAG_EXPLICIT && toType->isPointerVoid())
+        {
+            if (!(castFlags & CASTFLAG_JUST_CHECK))
+                fromNode->typeInfo = g_TypeMgr.typeInfoConstPVoid;
+            return true;
+        }
+    }
+
     // Pointer to pointer
     if (fromType->kind == TypeInfoKind::Pointer)
     {
@@ -2375,7 +2386,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
             auto ptrRef = CastTypeInfo<TypeInfoReference>(toType, TypeInfoKind::Reference);
             if (ptrRef->pointedType->kind == TypeInfoKind::Struct)
             {
-                toType = ptrRef->pointedType;
+                toType  = ptrRef->pointedType;
                 convert = true;
             }
         }

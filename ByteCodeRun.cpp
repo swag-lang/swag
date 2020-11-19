@@ -1157,6 +1157,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Runtime::tlsSetValue(g_tlsContextId, registersRC[ip->a.u32].pointer);
         break;
     }
+    case ByteCodeOp::IntrinsicThreadRunPtr:
+    {
+        registersRC[ip->a.u32].pointer = (uint8_t*) g_processInfos.threadRun;
+        break;
+    }
     case ByteCodeOp::IntrinsicPrintF64:
     {
         g_Log.lock();

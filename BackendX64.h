@@ -139,6 +139,7 @@ struct X64PerThread
     uint32_t symPI_contextTlsId                 = 0;
     uint32_t symPI_defaultContext               = 0;
     uint32_t symPI_byteCodeRun                  = 0;
+    uint32_t symPI_threadRun                    = 0;
 
     uint32_t textSectionOffset = 0;
     uint32_t stringTableOffset = 0;

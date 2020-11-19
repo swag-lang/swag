@@ -257,6 +257,9 @@ bool ByteCodeGenJob::emitCastToNativeU32(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGenJob::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+        return true;
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitCast, expression type not native", exprNode);
 
@@ -738,6 +741,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             fromTypeInfo->kind == TypeInfoKind::Interface ||
             fromTypeInfo->kind == TypeInfoKind::Slice ||
             fromTypeInfo->kind == TypeInfoKind::Reference ||
+            fromTypeInfo->kind == TypeInfoKind::Lambda ||
             fromTypeInfo->isNative(NativeTypeKind::U64))
         {
             truncRegisterRC(context, exprNode->resultRegisterRC, 1);

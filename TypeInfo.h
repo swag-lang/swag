@@ -90,6 +90,8 @@ struct TypeInfo
 
     bool isPointer1();
     bool isPointerTo(TypeInfoKind pointerKind);
+    bool isPointerVoid();
+    bool isPointerConstVoid();
     bool isPointerToTypeInfo();
     bool isInitializerList();
 
