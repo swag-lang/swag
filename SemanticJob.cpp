@@ -88,7 +88,7 @@ JobResult SemanticJob::execute()
     context.sourceFile = sourceFile;
     context.result     = ContextResult::Done;
 
-    while (!nodes.empty() && !module->numErrors)
+    while (!nodes.empty())
     {
         auto node    = nodes.back();
         context.node = node;

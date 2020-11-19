@@ -1,6 +1,6 @@
 public namespace std.file;
 
-alias FileHandle = *void
+alias FileHandle = const *void
 
 struct Stream
 {

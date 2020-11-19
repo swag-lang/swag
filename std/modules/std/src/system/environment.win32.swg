@@ -26,16 +26,16 @@ protected func getLastErrorString()->String
 
     var messageBuffer: LPCSTR
     FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                    NULL,
+                    null,
                     errorMessageID,
                     MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
                     cast(LPCSTR) &messageBuffer,
                     0,
-                    NULL);
+                    null);
 
     //std::string message(messageBuffer, size);
 
     //Free the buffer.
-    LocalFree(messageBuffer);
+    LocalFree(cast(HLOCAL) messageBuffer);
     return result
 }
