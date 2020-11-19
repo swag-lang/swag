@@ -191,6 +191,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_NO_RETURN;
             else if (child->name == "global")
                 flags |= ATTRIBUTE_GLOBAL;
+            else if (child->name == "callback")
+                flags |= ATTRIBUTE_CALLBACK;
             else if (child->name == "safety")
             {
                 ComputedValue attrValue;

@@ -458,24 +458,27 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
         break;
     }
-    case ByteCodeOp::MakeLambdaForeign:
+    case ByteCodeOp::MakeLambda:
     {
         auto funcNode = (AstFuncDecl*) ip->b.pointer;
         SWAG_ASSERT(funcNode);
-        auto funcPtr = ffiGetFuncAddress(context, funcNode);
-        SWAG_ASSERT(funcPtr);
 
-        // If this assert, then Houston we have a problem. At one point in time, i was using the lower bit to determine if a lambda is bytecode or native.
-        // But thanks to clang, it seems that the function pointer could have it's lower bit set (optim level 1).
-        // So now its the highest bit.
-        SWAG_ASSERT(!isByteCodeLambda(funcPtr));
+        if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+        {
+            auto funcPtr = ffiGetFuncAddress(context, funcNode);
+            SWAG_ASSERT(funcPtr);
 
-        registersRC[ip->a.u32].pointer = (uint8_t*) doForeignLambda(funcPtr);
-        break;
-    }
-    case ByteCodeOp::MakeLambda:
-    {
-        registersRC[ip->a.u32].u64 = (uint64_t) doByteCodeLambda((void*) ip->b.pointer);
+            // If this assert, then Houston we have a problem. At one point in time, i was using the lower bit to determine if a lambda is bytecode or native.
+            // But thanks to clang, it seems that the function pointer could have it's lower bit set (optim level 1).
+            // So now its the highest bit.
+            SWAG_ASSERT(!isByteCodeLambda(funcPtr));
+
+            registersRC[ip->a.u32].pointer = (uint8_t*) doForeignLambda(funcPtr);
+        }
+        else
+        {
+            registersRC[ip->a.u32].pointer = (uint8_t*) doByteCodeLambda((void*) ip->c.pointer);
+        }
         break;
     }
     case ByteCodeOp::ForeignCall:

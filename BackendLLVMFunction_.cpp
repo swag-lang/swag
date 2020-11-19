@@ -2054,7 +2054,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicThreadRunPtr:
         {
-            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, { pp.cst0_i32, pp.cst4_i32 })));
+            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst4_i32})));
             auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(r0, r1);
             break;
@@ -2435,36 +2435,38 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::MakeLambda:
         {
-            auto funcBC = (ByteCode*) ip->b.pointer;
-            SWAG_ASSERT(funcBC);
-            auto typeFuncLambda = CastTypeInfo<TypeInfoFuncAttr>(funcBC->node->typeInfo, TypeInfoKind::FuncAttr);
-
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto T  = createFunctionTypeInternal(buildParameters, typeFuncLambda);
-            auto F  = (llvm::Function*) modu.getOrInsertFunction(funcBC->callName().c_str(), T).getCallee();
-            builder.CreateStore(TO_PTR_I8(F), r0);
-            break;
-        }
-        case ByteCodeOp::MakeLambdaForeign:
-        {
             auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
             SWAG_ASSERT(funcNode);
-            SWAG_ASSERT(funcNode->attributeFlags & ATTRIBUTE_FOREIGN);
-            TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-            ComputedValue     foreignValue;
-            typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
-            SWAG_ASSERT(!foreignValue.text.empty());
 
-            llvm::FunctionType* T;
-            SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncNode, &T));
-            auto F = (llvm::Function*) modu.getOrInsertFunction(foreignValue.text.c_str(), T).getCallee();
+            if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+            {
+                TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+                ComputedValue     foreignValue;
+                typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
+                SWAG_ASSERT(!foreignValue.text.empty());
 
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            builder.CreateStore(TO_PTR_I8(F), r0);
+                llvm::FunctionType* T;
+                SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncNode, &T));
+                auto F = (llvm::Function*) modu.getOrInsertFunction(foreignValue.text.c_str(), T).getCallee();
 
-            auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
-            auto v1 = builder.CreateOr(v0, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
-            builder.CreateStore(v1, GEP_I32(allocR, ip->a.u32));
+                auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+                builder.CreateStore(TO_PTR_I8(F), r0);
+
+                auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+                auto v1 = builder.CreateOr(v0, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
+                builder.CreateStore(v1, GEP_I32(allocR, ip->a.u32));
+            }
+            else
+            {
+                auto funcBC = (ByteCode*) ip->c.pointer;
+                SWAG_ASSERT(funcBC);
+                auto typeFuncLambda = CastTypeInfo<TypeInfoFuncAttr>(funcBC->node->typeInfo, TypeInfoKind::FuncAttr);
+
+                auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+                auto T  = createFunctionTypeInternal(buildParameters, typeFuncLambda);
+                auto F  = (llvm::Function*) modu.getOrInsertFunction(funcBC->callName().c_str(), T).getCallee();
+                builder.CreateStore(TO_PTR_I8(F), r0);
+            }
             break;
         }
 

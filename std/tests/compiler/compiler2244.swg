@@ -6,7 +6,7 @@
 
 const INFINITE = 0xFFFFFFFF
 
-#[swag.printbc]
+#[swag.printbc, swag.callback]
 func entry(param: *void)
 {
     @print("tititititti\n")

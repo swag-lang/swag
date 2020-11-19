@@ -986,7 +986,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
         inst->a.pointer = (uint8_t*) funcNode;
         inst->b.pointer = (uint8_t*) typeInfoFunc;
-        funcNode->flags |= AST_USED_FOREIGN;
     }
     else if (funcNode)
     {

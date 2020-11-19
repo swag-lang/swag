@@ -1862,43 +1862,47 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
-        case ByteCodeOp::MakeLambdaForeign:
+        case ByteCodeOp::MakeLambda:
         {
             auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
             SWAG_ASSERT(funcNode);
-            SWAG_ASSERT(funcNode->attributeFlags & ATTRIBUTE_FOREIGN);
-            TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-            ComputedValue     foreignValue;
-            typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
-            SWAG_ASSERT(!foreignValue.text.empty());
+
+            Utf8 name;
+
+            if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+            {
+                TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+                ComputedValue     foreignValue;
+                typeFuncNode->attributes.getValue("swag.foreign", "function", foreignValue);
+                SWAG_ASSERT(!foreignValue.text.empty());
+                name = foreignValue.text;
+            }
+            else if (funcNode->attributeFlags & ATTRIBUTE_CALLBACK)
+            {
+                funcNode->computeFullNameForeign(true);
+                name = funcNode->fullnameForeign;
+            }
+            else
+            {
+                auto funcBC = (ByteCode*) ip->c.pointer;
+                SWAG_ASSERT(funcBC);
+                name = funcBC->callName();
+            }
 
             BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
 
             CoffRelocation reloc;
             reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
-            auto callSym         = getOrAddSymbol(pp, foreignValue.text, CoffSymbolKind::Extern);
+            auto callSym         = getOrAddSymbol(pp, name, CoffSymbolKind::Extern);
             reloc.symbolIndex    = callSym->index;
             reloc.type           = IMAGE_REL_AMD64_ADDR64;
             pp.relocTableTextSection.table.push_back(reloc);
 
-            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RCX);
-            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::OR);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
-        }
-
-        case ByteCodeOp::MakeLambda:
-        {
-            auto funcBC = (ByteCode*) ip->b.pointer;
-            SWAG_ASSERT(funcBC);
-            BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
-
-            CoffRelocation reloc;
-            reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
-            auto callSym         = getOrAddSymbol(pp, funcBC->callName(), CoffSymbolKind::Extern);
-            reloc.symbolIndex    = callSym->index;
-            reloc.type           = IMAGE_REL_AMD64_ADDR64;
-            pp.relocTableTextSection.table.push_back(reloc);
+            if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RCX);
+                BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::OR);
+            }
 
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;

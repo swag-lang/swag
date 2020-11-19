@@ -86,6 +86,9 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr optim(value: bool)
 
+    #[attributeUsage(AttributeUsage.Function)]
+    attr callback()
+
     // #########################################################
     // Constants
     // #########################################################

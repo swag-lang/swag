@@ -217,7 +217,6 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
         inst->a.pointer = (uint8_t*) funcDecl;
         inst->b.pointer = (uint8_t*) funcDecl->typeInfo;
-        funcDecl->flags |= AST_USED_FOREIGN;
         SWAG_ASSERT(inst->a.pointer);
     }
     else

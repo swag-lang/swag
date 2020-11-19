@@ -201,23 +201,13 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
         wprintf(bcNum, ip->b.s32 + i + 1);
         break;
 
-    case ByteCodeOp::MakeLambdaForeign:
+    case ByteCodeOp::MakeLambda:
     {
         auto func = (AstFuncDecl*) ip->b.pointer;
         SWAG_ASSERT(func);
         g_Log.print(func->sourceFile->path);
         g_Log.print(" ");
         g_Log.print(func->name);
-        break;
-    }
-
-    case ByteCodeOp::MakeLambda:
-    {
-        auto bc = (ByteCode*) ip->b.pointer;
-        SWAG_ASSERT(bc);
-        g_Log.print(bc->sourceFile->path);
-        g_Log.print(" ");
-        g_Log.print(bc->node->name);
         break;
     }
 
