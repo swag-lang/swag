@@ -70,7 +70,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             }
 
             SWAG_CHECK(emitUserOp(context, nullptr, node));
-            if (context->result == ContextResult::Pending)
+            if (context->result != ContextResult::Done)
                 return true;
 
             return true;

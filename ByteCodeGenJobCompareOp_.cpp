@@ -249,7 +249,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
 
         auto r2 = node->resultRegisterRC;

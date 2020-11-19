@@ -590,13 +590,13 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
                 job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
             job->allParamsTmp->childs = arrayNode->structFlatParams;
             SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
-            if (context->result == ContextResult::Pending)
+            if (context->result != ContextResult::Done)
                 return true;
         }
         else
         {
             SWAG_CHECK(emitUserOp(context));
-            if (context->result == ContextResult::Pending)
+            if (context->result != ContextResult::Done)
                 return true;
         }
 

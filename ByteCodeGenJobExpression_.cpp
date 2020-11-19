@@ -17,7 +17,7 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
     if (!(child0->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, child0, child0->typeInfo, child0->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         child0->doneFlags |= AST_DONE_CAST1;
     }
@@ -25,7 +25,7 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
     if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context, child0, nullptr, false));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         emitInstruction(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRC)->b.s32 = child0->resultRegisterRC.size() + 1; // After the "if not null"
         freeRegisterRC(context, node->resultRegisterRC);

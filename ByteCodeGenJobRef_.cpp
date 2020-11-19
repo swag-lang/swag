@@ -389,7 +389,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
                 job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
             job->allParamsTmp->childs = node->structFlatParams;
             SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
-            if (context->result == ContextResult::Pending)
+            if (context->result != ContextResult::Done)
                 return true;
         }
     }
@@ -455,7 +455,7 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
                 job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
             job->allParamsTmp->childs = node->structFlatParams;
             SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
-            if (context->result == ContextResult::Pending)
+            if (context->result != ContextResult::Done)
                 return true;
             return true;
         }

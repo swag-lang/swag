@@ -70,6 +70,8 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
     if (node->resolvedUserOpSymbolName)
     {
         SWAG_CHECK(emitUserOp(context));
+        if (context->result != ContextResult::Done)
+            return true;
         return true;
     }
 
@@ -100,6 +102,8 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
     if (node->resolvedUserOpSymbolName)
     {
         SWAG_CHECK(emitUserOp(context));
+        if (context->result != ContextResult::Done)
+            return true;
         return true;
     }
 

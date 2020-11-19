@@ -410,7 +410,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
         if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
         {
             SWAG_CHECK(emitUserOp(context));
-            if (context->result == ContextResult::Pending)
+            if (context->result != ContextResult::Done)
                 return true;
             node->doneFlags |= AST_DONE_EMIT_BINOP;
         }
@@ -498,9 +498,10 @@ bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDe
     // Create a semantic job to resolve the inline part, and wait for that to be finished
     context->job->setPending(nullptr, "MAKE_INLINE", funcDecl, nullptr);
     auto inlineNode = identifier->childs.back();
-    auto job        = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, inlineNode, false);
+    SWAG_ASSERT(inlineNode->kind == AstNodeKind::Inline);
+    auto job = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, inlineNode, false);
     job->addDependentJob(context->job);
-    g_ThreadMgr.addJob(job);
+    context->job->jobsToAdd.push_back(job);
     return true;
 }
 
