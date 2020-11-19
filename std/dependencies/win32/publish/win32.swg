@@ -2,8 +2,9 @@
 
 namespace win32
 {
-    alias HANDLE = 			*void
-    alias HWND = 			*void
+    alias HANDLE = 			const *void
+    alias HLOCAL = 			HANDLE
+    alias HWND = 			const *void
     alias WORD = 			u16
     alias DWORD =           u32
     alias BOOL = 	        s32
@@ -22,6 +23,8 @@ namespace win32
     alias LARGE_INTEGER =	s64
     alias PLONG =           *LONG
     alias CHAR =            u8
+    alias SIZE_T =          u64
+    alias va_list =         *u8
 
     const STD_INPUT_HANDLE 	= cast(DWORD) -10
     const STD_OUTPUT_HANDLE = cast(DWORD) -11
@@ -324,6 +327,19 @@ namespace win32
     const INVALID_HANDLE_VALUE = cast(HANDLE) cast(u64) -1
     const CONSOLE_TEXTMODE_BUFFER = 1'u32
     const MAX_PATH = 260
+    const INFINITE = 0xFFFFFFFF
+
+    const FORMAT_MESSAGE_ALLOCATE_BUFFER = 0x00000100
+    const FORMAT_MESSAGE_IGNORE_INSERTS  = 0x00000200
+    const FORMAT_MESSAGE_FROM_STRING     = 0x00000400
+    const FORMAT_MESSAGE_FROM_HMODULE    = 0x00000800
+    const FORMAT_MESSAGE_FROM_SYSTEM     = 0x00001000
+    const FORMAT_MESSAGE_ARGUMENT_ARRAY  = 0x00002000
+    const FORMAT_MESSAGE_MAX_WIDTH_MASK  = 0x000000FF
+
+    const LANG_ENGLISH      = 0x09
+    const SUBLANG_DEFAULT   = 0x01
+    func MAKELANGID(p, s: WORD) => (s << 10) | p
 
     struct COORD
     {
@@ -429,6 +445,12 @@ namespace win32
     #[swag.foreign("kernel32")]
     {
         func GetLastError()->DWORD;
+        func FormatMessageA(dwFlags : DWORD, lpSource : LPCVOID, dwMessageId : DWORD, dwLanguageId : DWORD, lpBuffer: LPCSTR, nSize: DWORD, Arguments: *va_list)->DWORD;
+        func IsDebuggerPresent()->BOOL;
+        func DebugBreak();
+        func OutputDebugStringA(lpOutputString: LPCSTR);
+        func OutputDebugStringW(lpOutputString: LPCWSTR);
+
         func GetStdHandle(nStdHandle: DWORD)->HANDLE;
         func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->BOOL;
         func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
@@ -436,18 +458,19 @@ namespace win32
         func SetConsoleActiveScreenBuffer(hConsoleOutput: HANDLE);
         func WriteConsoleOutputCharacterA(hConsoleOutput: HANDLE, lpCharacter: LPCSTR, nLength: DWORD, dwWriteCoord: DWORD, lpNumberOfCharsWritten: LPDWORD)->BOOL;
         func WriteConsoleOutputCharacterW(hConsoleOutput: HANDLE, lpCharacter: LPCTSTR, nLength: DWORD, dwWriteCoord: DWORD, lpNumberOfCharsWritten: LPDWORD)->BOOL;
-        func IsDebuggerPresent()->BOOL;
-        func DebugBreak();
-        func OutputDebugStringA(lpOutputString: LPCSTR);
-        func OutputDebugStringW(lpOutputString: LPCWSTR);
+        func SetConsoleOutputCP(codePage: UINT);
+
         func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO);
-        func ExitProcess(uExitCode: UINT);
+        func LocalFree(hLocal: HLOCAL)->HLOCAL;
+
         func QueryPerformanceCounter(lpPerformanceCount: *LARGE_INTEGER);
         func QueryPerformanceFrequency(lpFrequency: *LARGE_INTEGER);
         func GetLocalTime(lpSystemTime: *SYSTEMTIME);
-        func SetConsoleOutputCP(codePage: UINT);
 
         func Sleep(dwMilliseconds: DWORD);
+        func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE;
+        func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD;
+        func ExitProcess(uExitCode: UINT);
 
         func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
         func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;

@@ -326,6 +326,9 @@ struct ConcreteCompilerSourceLocation
     uint32_t      lineEnd, colEnd;
 };
 
+static const uint64_t SWAG_LAMBDA_BC_MARKER      = 0x8000000000000000;
+static const uint64_t SWAG_LAMBDA_FOREIGN_MARKER = 0x0400000000000000;
+
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 namespace Runtime

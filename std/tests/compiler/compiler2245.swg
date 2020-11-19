@@ -1,3 +1,5 @@
+#if #os == "windows";
+
 #[swag.foreign("kernel32")]
 {
     func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
@@ -16,25 +18,22 @@ func entry(param: *void)
     //@print("tititititti\n")
 }
 
-const SWAG_LAMBDA_BC_MARKER      = 0x8000000000000000
-const SWAG_LAMBDA_FOREIGN_MARKER = 0x0400000000000000
-
 func create(lambda: func(*void), userParam: u64)
 {
     var paramBC: [2] *void
     param := userParam
 
     var l64 = cast(u64) lambda
-    if l64 & SWAG_LAMBDA_BC_MARKER
+    if l64 & swag.LambdaBcMarker
     {
         paramBC[0] = acast lambda
         paramBC[1] = acast userParam
         param = acast &paramBC[0]
-        l64 = cast(u64) @thrunptr()
+        l64 = acast @thrunptr()
     }
     else
     {
-        l64 &= ~SWAG_LAMBDA_FOREIGN_MARKER
+        l64 &= ~swag.LambdaForeignMarker
     }
 
     id := 0'u32

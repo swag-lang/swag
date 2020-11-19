@@ -8,9 +8,6 @@ struct Global
     atomic<int> uniqueID = 0;
 };
 
-static const uint64_t SWAG_LAMBDA_BC_MARKER      = 0x8000000000000000;
-static const uint64_t SWAG_LAMBDA_FOREIGN_MARKER = 0x0400000000000000;
-
 extern Utf8   format(const char* format, ...);
 extern string normalizePath(const fs::path& path);
 extern void   tokenize(const char* str, char c, vector<Utf8>& tokens);
