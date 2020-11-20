@@ -171,7 +171,7 @@ namespace swag
     struct Context
     {
         allocator:  IAllocator
-        flags:      ContextFlags = ContextFlags.None
+        flags =     ContextFlags.None
     }
 
     // #########################################################

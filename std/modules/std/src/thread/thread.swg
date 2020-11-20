@@ -8,6 +8,7 @@ struct Thread
     // Must be first, for Context.cpp/threadRun
     userLambda: func(Thread)
 
+    context:    swag.Context
     userParam:  *void
     handle:     ThreadHandle
     id:         u32

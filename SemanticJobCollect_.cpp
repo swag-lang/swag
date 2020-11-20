@@ -167,13 +167,12 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
     auto numFields = typeStruct->fields.size();
     for (auto field : typeStruct->fields)
     {
-        auto child   = field->node;
-        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+        auto child    = field->node;
+        auto varDecl  = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+        auto typeInfo = TypeManager::concreteType(varDecl->typeInfo);
         if (varDecl->assignment)
         {
-            auto  typeInfo = child->typeInfo;
-            auto& value    = varDecl->assignment->computedValue;
-
+            auto& value = varDecl->assignment->computedValue;
             if (typeInfo->isNative(NativeTypeKind::String))
             {
                 Register* storedV  = (Register*) ptrDest;
@@ -213,9 +212,9 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
                 return internalError(context, "collectStructLiterals, invalid type");
             }
         }
-        else if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
+        else if (typeInfo->kind == TypeInfoKind::Struct)
         {
-            auto typeSub = CastTypeInfo<TypeInfoStruct>(varDecl->typeInfo, TypeInfoKind::Struct);
+            auto typeSub = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
             SWAG_CHECK(collectStructLiteralsNoLock(context, sourceFile, offset, typeSub->declNode, segment));
             if (cptField != numFields - 1)
                 ptrDest = segment->addressNoLock(offset);

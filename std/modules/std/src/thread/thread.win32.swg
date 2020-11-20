@@ -19,6 +19,7 @@ private func threadEntry(param: *void)
 {
     th := cast(*Thread) param
     th.userLambda(:th)
+    //debug.assert(false)
 }
 
 // Creates a new thread
