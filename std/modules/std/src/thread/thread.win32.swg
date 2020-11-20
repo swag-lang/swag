@@ -54,13 +54,14 @@ func create(lambda: func(Thread), userParam: *void = null)->Thread
 impl Thread
 {
     // Resume the given thread, if it was paused
-    func resume(using self)->bool
+    func start(using self)->bool
     {
         debug.assert(isValid())
         return ResumeThread(handle) != cast(DWORD) -1
     }
 
-    // Wait for the given thread to be done
+    // Wait for the given thread to be done, and close it
+    // After that call, isValid() will return false
     func wait(using self)
     {
         debug.assert(isValid())

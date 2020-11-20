@@ -3,13 +3,15 @@ using std
 
 func entry(th: thread.Thread)
 {
-    loop 10 @print("toto\n")
+    //loop 10 @print("toto\n")
 }
 
 //#[swag.printbc]
 #test
 {
     th := thread.create(&entry)
-    th.resume()
+    th.start()
+    //while !th.isDone()
+    //    @print("titi\n")
     th.wait()
 }
