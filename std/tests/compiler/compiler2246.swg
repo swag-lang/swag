@@ -11,23 +11,37 @@ const INFINITE = 0xFFFFFFFF
 
 var G: u64
 
+struct Thread
+{
+    lambda: func(*Thread)
+    param:  u64
+}
+
 #[swag.callback]
 func entry(param: *void)
 {
-    G = cast(u64) param
-    //@print("tititititti\n")
+    th := cast(*Thread) param
+    th.lambda()
 }
 
-func create(lambda: func(*void), userParam: u64)
+func userEntry(param: *Thread)
 {
-    var paramBC: [2] *void
-    param := userParam
+    G = param.param
+}
 
-    var l64 = cast(u64) lambda
+func create(lambda: func(*Thread), userParam: u64)
+{
+    var th: Thread
+    th.lambda = lambda
+    th.param  = userParam
+
+    param := &th
+    var paramBC: [2] *void
+    var l64 = cast(u64) &entry
     if l64 & swag.LambdaBcMarker
     {
         paramBC[0] = acast lambda
-        paramBC[1] = acast userParam
+        paramBC[1] = acast &th
         param = acast &paramBC[0]
         l64 = acast @thrunptr()
     }
@@ -37,12 +51,12 @@ func create(lambda: func(*void), userParam: u64)
     }
 
     id := 0'u32
-    h := CreateThread(null, 0, cast(*void) l64, cast(*void) param, 0, &id)
+    h := CreateThread(null, 0, cast(*void) l64, param, 0, &id)
     WaitForSingleObject(h, INFINITE);
 }
 
 #test
 {
-    create(&entry, 0x12345678AABBCCDD)
+    create(&userEntry, 0x12345678AABBCCDD)
     @assert(G == 0x12345678AABBCCDD)
 }
