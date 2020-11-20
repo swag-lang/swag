@@ -70,7 +70,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
 // MakeStackPointer Y
 // MemCpy X to Y
 // ... post move stuff
-void ByteCodeOptimizer::optimizePassRetCopy(ByteCodeOptContext* context)
+void ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
@@ -135,6 +135,68 @@ void ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
             if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::MemCpy && ip[1].b.u32 == ipOrg->a.u32)
             {
                 optimRetCopy(context, ipOrg, ip);
+            }
+            else
+            {
+                ip = ipOrg;
+            }
+        }
+    }
+}
+
+void ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
+{
+    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
+    {
+        bool startOk = false;
+        if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::CopyRCtoRT && ip->a.u32 == ip[1].b.u32)
+            startOk = true;
+        if (ip->op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::IncPointer32 &&
+            ip[2].op == ByteCodeOp::CopyRCtoRT &&
+            ip->a.u32 == ip[2].b.u32 && ip[1].a.u32 == ip[1].c.u32)
+            startOk = true;
+
+        // Detect pushing pointer to the stack for a return value
+        if (startOk)
+        {
+            auto ipOrg = ip;
+
+            // Find the following call
+            while (ip->op != ByteCodeOp::End && ip->op != ByteCodeOp::LocalCall && ip->op != ByteCodeOp::ForeignCall && ip->op != ByteCodeOp::LambdaCall)
+                ip++;
+            if (ip->op != ByteCodeOp::End)
+                ip++;
+            if (ip->op == ByteCodeOp::IncSPPostCall)
+                ip++;
+            if (ip->op == ByteCodeOp::PopRR)
+                ip++;
+
+            // This will copy the result in the real variable
+            if (ip->op == ByteCodeOp::MemCpy && ip->b.u32 == ipOrg->a.u32)
+            {
+                // Make CopyRCtoRT point to the MemCpy destination register
+                if (ipOrg[1].op == ByteCodeOp::CopyRCtoRT)
+                    ipOrg[1].b.u32 = ip->a.u32;
+                else
+                {
+                    SWAG_ASSERT(ipOrg[1].op == ByteCodeOp::IncPointer32);
+                    ipOrg[1].a.u32 = ip->a.u32;
+                    ipOrg[1].c.u32 = ip->a.u32;
+
+                    SWAG_ASSERT(ipOrg[2].op == ByteCodeOp::CopyRCtoRT);
+                    ipOrg[2].b.u32 = ip->a.u32;
+                }
+
+                // Remove the original MakeStackPointer
+                setNop(context, ipOrg);
+
+                // Remove the memcpy
+                ByteCodeOptimizer::setNop(context, ip);
+                // We need to remove every instructions related to the post move
+                ip += 1;
+                while (ip->flags & BCI_POST_COPYMOVE)
+                    ByteCodeOptimizer::setNop(context, ip++);
             }
             else
             {
