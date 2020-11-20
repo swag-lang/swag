@@ -67,16 +67,21 @@ struct DataSegment
     uint32_t                     totalCount = 0;
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 
-    typedef struct Seek
+    struct Seek
     {
         uint32_t seekRead   = 0;
         uint32_t seekBucket = 0;
-    } Seek;
+    };
     bool readU64(Seek& seek, uint64_t& result);
 
-    map<void*, pair<void*, uint32_t>> savedValues;
+    struct SaveValue
+    {
+        void*    ptr;
+        uint32_t size;
+    };
+    map<void*, SaveValue> savedValues;
 
-    void saveValue(void* address, uint32_t size);
+    void saveValue(void* address, uint32_t size, bool zero);
     void restoreAllValues();
 
     bool compilerOnly = false;

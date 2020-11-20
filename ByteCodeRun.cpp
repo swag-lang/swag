@@ -766,7 +766,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             if (module->saveMutableValues && ip->c.pointer)
             {
                 SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                module->mutableSegment.saveValue(ip->d.pointer, over->typeInfo->sizeOf);
+                module->mutableSegment.saveValue(ip->d.pointer, over->typeInfo->sizeOf, false);
             }
         }
 
@@ -784,7 +784,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                 if (module->saveBssValues)
                 {
                     SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                    module->mutableSegment.saveValue(ip->d.pointer, over->typeInfo->sizeOf);
+                    module->mutableSegment.saveValue(ip->d.pointer, over->typeInfo->sizeOf, true);
                 }
                 else if (module->bssCannotChange)
                 {

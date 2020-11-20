@@ -294,11 +294,17 @@ bool DataSegment::readU64(Seek& seek, uint64_t& result)
     return true;
 }
 
-void DataSegment::saveValue(void* address, uint32_t size)
+void DataSegment::saveValue(void* address, uint32_t size, bool zero)
 {
     auto it = savedValues.find(address);
     if (it != savedValues.end())
         return;
+
+    if (zero)
+    {
+        savedValues[address] = {nullptr, size};
+        return;
+    }
 
     switch (size)
     {
@@ -315,7 +321,7 @@ void DataSegment::saveValue(void* address, uint32_t size)
         savedValues[address] = {(void*) (size_t) * (uint64_t*) address, size};
         break;
     default:
-        auto buf = g_Allocator.alloc(size);
+        auto buf = g_Allocator.alloc(g_Allocator.alignSize(size));
         Memcpy(buf, address, size);
         savedValues[address] = {buf, size};
         break;
@@ -326,22 +332,29 @@ void DataSegment::restoreAllValues()
 {
     for (auto& one : savedValues)
     {
-        switch (one.second.second)
+        if (one.second.ptr == nullptr)
+        {
+            memset(one.first, 0, one.second.size);
+            continue;
+        }
+
+        switch (one.second.size)
         {
         case 1:
-            *(uint8_t*) one.first = (uint8_t) * (uint8_t*) &one.second.first;
+            *(uint8_t*) one.first = (uint8_t) * (uint8_t*) &one.second.ptr;
             break;
         case 2:
-            *(uint16_t*) one.first = (uint16_t) * (uint16_t*) &one.second.first;
+            *(uint16_t*) one.first = (uint16_t) * (uint16_t*) &one.second.ptr;
             break;
         case 4:
-            *(uint32_t*) one.first = (uint32_t) * (uint32_t*) &one.second.first;
+            *(uint32_t*) one.first = (uint32_t) * (uint32_t*) &one.second.ptr;
             break;
         case 8:
-            *(uint64_t*) one.first = (uint64_t) * (uint64_t*) &one.second.first;
+            *(uint64_t*) one.first = (uint64_t) * (uint64_t*) &one.second.ptr;
             break;
         default:
-            Memcpy(one.first, one.second.first, one.second.second);
+            Memcpy(one.first, one.second.ptr, one.second.size);
+            g_Allocator.free(one.second.ptr, g_Allocator.alignSize(one.second.size));
             break;
         }
     }
