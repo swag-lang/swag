@@ -191,7 +191,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
-            emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            ByteCodeInstruction* inst;
+            if (resolved->flags & OVERLOAD_VAR_BSS)
+                inst = emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC);
+            else
+                inst = emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC);
+            inst->b.u32 = resolved->storageOffset;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
                 emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
             else if (node->flags & AST_TO_UFCS) // Get the struct pointer
@@ -199,7 +204,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
-            emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            ByteCodeInstruction* inst;
+            if (resolved->flags & OVERLOAD_VAR_BSS)
+                inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
+            else
+                inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
+            inst->b.u32 = resolved->storageOffset;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
                 emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
             else if (node->flags & AST_TO_UFCS) // Get the struct pointer

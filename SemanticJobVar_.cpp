@@ -596,6 +596,15 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             symbolFlags |= OVERLOAD_VAR_BSS;
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
         }
+        else if (!node->assignment &&
+                 !(node->flags & AST_HAS_STRUCT_PARAMETERS) &&
+                 !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS) &&
+                 (node->typeInfo->kind == TypeInfoKind::Struct || node->typeInfo->kind == TypeInfoKind::TypeSet || node->typeInfo->kind == TypeInfoKind::Interface) &&
+                 !(node->typeInfo->flags & (TYPEINFO_STRUCT_HAS_INIT_VALUES)))
+        {
+            symbolFlags |= OVERLOAD_VAR_BSS;
+            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->bssSegment));
+        }
         else
         {
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
