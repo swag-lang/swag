@@ -121,23 +121,33 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             {
                 if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
                 {
-                    // Need to loop on every element of the array in order to initialize them
-                    RegisterList r0;
-                    reserveRegisterRC(context, r0, 2);
-                    emitInstruction(context, ByteCodeOp::SetImmediate32, r0[0])->b.u32 = typeArray->totalCount;
-                    emitInstruction(context, ByteCodeOp::ClearRA, r0[1]);
-                    auto seekJump = context->bc->numInstructions;
+                    if (typeArray->totalCount == 1)
+                    {
+                        if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+                            emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct), UINT32_MAX, retVal);
+                        emitStructParameters(context, UINT32_MAX, retVal);
+                    }
+                    else
+                    {
+                        // Need to loop on every element of the array in order to initialize them
+                        RegisterList r0;
+                        reserveRegisterRC(context, r0, 2);
+                        emitInstruction(context, ByteCodeOp::SetImmediate32, r0[0])->b.u32 = typeArray->totalCount;
+                        emitInstruction(context, ByteCodeOp::ClearRA, r0[1]);
+                        auto seekJump = context->bc->numInstructions;
 
-                    if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
-                        emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct), r0[1], retVal);
-                    emitStructParameters(context, r0[1], retVal);
+                        if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+                            emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct), r0[1], retVal);
+                        emitStructParameters(context, r0[1], retVal);
 
-                    emitInstruction(context, ByteCodeOp::DecrementRA32, r0[0]);
-                    if (typeArray->finalType->sizeOf)
-                        emitInstruction(context, ByteCodeOp::Add32byVB32, r0[1])->b.u32 = typeArray->finalType->sizeOf;
-                    emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
+                        emitInstruction(context, ByteCodeOp::DecrementRA32, r0[0]);
+                        if (typeArray->finalType->sizeOf)
+                            emitInstruction(context, ByteCodeOp::Add32byVB32, r0[1])->b.u32 = typeArray->finalType->sizeOf;
+                        emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
 
-                    freeRegisterRC(context, r0);
+                        freeRegisterRC(context, r0);
+                    }
+
                     freeStructParametersRegisters(context);
                 }
 

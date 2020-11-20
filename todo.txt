@@ -13,11 +13,6 @@ ca serait cool que les methods, en reflections, aient une value qui peut être ca
 
 
 
--------------------------------------
-en bytecode run, toutes les instructions qui modifient les instructions elles-memes (cache) posent pb en multithread
-si le meme bytecode est exécuté par plusieurs threads => atomic
--------------------------------------
-
 
 
 -------------------------------------

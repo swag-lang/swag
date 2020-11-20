@@ -153,21 +153,28 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             if (typeInVar->kind == TypeInfoKind::Struct && (typeInVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {
                 auto typeInVarStruct = CastTypeInfo<TypeInfoStruct>(typeInVar, TypeInfoKind::Struct);
+                if (typeArray->totalCount == 1)
+                {
+                    emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
+                    emitOpCallUser(&cxt, nullptr, typeInVarStruct->opInit, false);
+                }
+                else
+                {
+                    // Need to loop on every element of the array in order to initialize them
+                    RegisterList r0 = reserveRegisterRC(&cxt);
 
-                // Need to loop on every element of the array in order to initialize them
-                RegisterList r0 = reserveRegisterRC(&cxt);
+                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, r0)->b.u32 = typeArray->totalCount;
+                    auto seekJump                                                = cxt.bc->numInstructions;
 
-                emitInstruction(&cxt, ByteCodeOp::SetImmediate32, r0)->b.u32 = typeArray->totalCount;
-                auto seekJump                                                = cxt.bc->numInstructions;
+                    emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
+                    emitOpCallUser(&cxt, nullptr, typeInVarStruct->opInit, false);
 
-                emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-                emitOpCallUser(&cxt, nullptr, typeInVarStruct->opInit, false);
+                    emitInstruction(&cxt, ByteCodeOp::DecrementRA32, r0);
+                    emitInstruction(&cxt, ByteCodeOp::Add32byVB32, 0)->b.u32      = typeInVarStruct->sizeOf;
+                    emitInstruction(&cxt, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - cxt.bc->numInstructions - 1;
 
-                emitInstruction(&cxt, ByteCodeOp::DecrementRA32, r0);
-                emitInstruction(&cxt, ByteCodeOp::Add32byVB32, 0)->b.u32      = typeInVarStruct->sizeOf;
-                emitInstruction(&cxt, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - cxt.bc->numInstructions - 1;
-
-                freeRegisterRC(&cxt, r0);
+                    freeRegisterRC(&cxt, r0);
+                }
             }
             else
             {
