@@ -66,7 +66,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
 static void threadRun(void* param)
 {
     void** arr = (void**) param;
-    byteCodeRun(arr[0], &arr[1]);
+    byteCodeRun(arr[0], &param);
 }
 
 void initDefaultContext()

@@ -14,30 +14,25 @@ var G: u64
 #[swag.callback]
 func entry(param: *void)
 {
-    G = cast(u64) param
+    ptr := cast(*u64) param
+    G = ptr[1]
     //@print("tititititti\n")
 }
 
 func create(lambda: func(*void), userParam: u64)
 {
     var paramBC: [2] *void
-    param := userParam
+    paramBC[0] = acast lambda
+    paramBC[1] = acast userParam
 
     var l64 = cast(u64) lambda
     if l64 & swag.LambdaBcMarker
-    {
-        paramBC[0] = acast lambda
-        paramBC[1] = acast userParam
-        param = acast &paramBC[0]
         l64 = acast @thrunptr()
-    }
     else
-    {
         l64 &= ~swag.LambdaForeignMarker
-    }
 
     id := 0'u32
-    h := CreateThread(null, 0, cast(*void) l64, cast(*void) param, 0, &id)
+    h := CreateThread(null, 0, cast(*void) l64, cast(*void) &paramBC[0], 0, &id)
     WaitForSingleObject(h, INFINITE);
 }
 

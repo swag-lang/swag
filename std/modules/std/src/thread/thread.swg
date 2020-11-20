@@ -5,10 +5,12 @@ alias ThreadHandle = const *void
 
 struct Thread
 {
+    // Must be first, for Context.cpp/threadRun
+    userLambda: func(Thread)
+
+    userParam:  *void
     handle:     ThreadHandle
     id:         u32
-    userLambda: func(Thread)
-    userParam:  *void
 }
 
 impl Thread

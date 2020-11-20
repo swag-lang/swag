@@ -35,23 +35,14 @@ func create(lambda: func(*Thread), userParam: u64)
     th.lambda = lambda
     th.param  = userParam
 
-    param := &th
-    var paramBC: [2] *void
     var l64 = cast(u64) &entry
     if l64 & swag.LambdaBcMarker
-    {
-        paramBC[0] = acast lambda
-        paramBC[1] = acast &th
-        param = acast &paramBC[0]
         l64 = acast @thrunptr()
-    }
     else
-    {
         l64 &= ~swag.LambdaForeignMarker
-    }
 
     id := 0'u32
-    h := CreateThread(null, 0, cast(*void) l64, param, 0, &id)
+    h := CreateThread(null, 0, cast(*void) l64, &th, 0, &id)
     WaitForSingleObject(h, INFINITE);
 }
 

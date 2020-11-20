@@ -21,33 +21,24 @@ func create(lambda: func(Thread), userParam: *void = null)->Thread
     debug.assert(lambda != null, "lambda parameter is null")
 
     var result: retval
-    param := &result
 
     // As the threadEntry will be called by the os, need to be sure
     // we have a valid function pointer whatever the case is :
     // - we are running bytecode, and threadEntry should be run by the compiler
     // - we are native, and threadEntry is like a foreign function (native, i.e. callback)
-    var paramBC: [2] *void
     var l64 = cast(u64) &threadEntry
     if l64 & swag.LambdaBcMarker
-    {
-        paramBC[0] = acast lambda
-        paramBC[1] = acast &result
-        param = acast &paramBC[0]
         l64 = acast @thrunptr()
-    }
     else
-    {
         l64 &= ~swag.LambdaForeignMarker
-    }
 
-    h := CreateThread(null, 0, cast(*void) l64, cast(*void) param, CREATE_SUSPENDED, &result.id)
+    h := CreateThread(null, 0, cast(*void) l64, &result, CREATE_SUSPENDED, &result.id)
     if h == INVALID_HANDLE_VALUE
         return result
 
-    result.handle = h
     result.userLambda = lambda
     result.userParam = userParam
+    result.handle = h
     return result
 }
 
