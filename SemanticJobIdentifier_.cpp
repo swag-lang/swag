@@ -1671,7 +1671,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
 
             dependentVar = dep.node;
 
-            // This way the ufcs can trigger for a function
+            // This way the ufcs can trigger even with an implicit 'using' var (typically for a 'using self')
             if (!identifierRef->previousResolvedNode)
             {
                 if (symbol->kind == SymbolKind::Function)
@@ -1720,7 +1720,13 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                 if (identifierRef->previousResolvedNode->flags & AST_NO_BYTECODE)
                     return true;
 
-                *ufcsFirstParam = identifierRef->previousResolvedNode;
+                // Be sure we have a missing parameter in order to try ufcs
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                auto numParams = node->callParameters ? node->callParameters->childs.size() : 0;
+                if (numParams < typeFunc->parameters.size())
+                {
+                    *ufcsFirstParam = identifierRef->previousResolvedNode;
+                }
 
                 // If we do not have parenthesis (call parameters), then this must be a function marked with 'swag.property'
                 if (!node->callParameters)
@@ -1729,6 +1735,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                     SWAG_VERIFY(symbol->overloads.size() <= 2, context->report({node, "too many overloads for a property (only one set and one get should exist)"}));
                     SWAG_VERIFY(symbol->overloads.front()->node->attributeFlags & ATTRIBUTE_PROPERTY, context->report({node, format("missing function call parameters because symbol '%s' is not marked as 'swag.property'", symbol->name.c_str())}));
 
+                    // Affectation of a property is in fact a function call, with the last parameter being the right sight of the affectation
                     if (node->identifierRef->parent->kind == AstNodeKind::AffectOp &&
                         node->identifierRef->parent->token.id == TokenId::SymEqual)
                     {
