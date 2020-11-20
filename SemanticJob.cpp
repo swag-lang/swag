@@ -77,6 +77,8 @@ void SemanticJob::enterState(AstNode* node)
 JobResult SemanticJob::execute()
 {
     scoped_lock lkExecute(executeMutex);
+    if (sourceFile->module->numErrors)
+        return JobResult::ReleaseJob;
 
     if (!originalNode)
         originalNode = nodes.front();

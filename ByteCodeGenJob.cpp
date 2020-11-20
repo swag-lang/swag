@@ -429,6 +429,8 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
 JobResult ByteCodeGenJob::execute()
 {
     scoped_lock lkExecute(executeMutex);
+    if (sourceFile->module->numErrors)
+        return JobResult::ReleaseJob;
 
     if (!originalNode)
     {

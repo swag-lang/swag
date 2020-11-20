@@ -3,7 +3,6 @@ using std
 
 func entry(th: thread.Thread)
 {
-    //loop 10 @print("toto\n")
 }
 
 //#[swag.printbc]
@@ -12,7 +11,5 @@ func entry(th: thread.Thread)
     var th: thread.Thread
     thread.create(&th, &entry)
     th.start()
-    //while !th.isDone()
-    //    @print("titi\n")
     th.wait()
 }
