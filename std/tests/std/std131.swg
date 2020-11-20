@@ -3,7 +3,7 @@ using std
 
 #test
 {
-    var rand: random.Random
+    var rand: random.Rng
     var arr: Array's32
 
     rand.seed(0)

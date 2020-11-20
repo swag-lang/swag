@@ -4,7 +4,7 @@ using std.random
 //#[swag.printbc]
 #test
 {
-	var rng: Random
+	var rng: Rng
 	loop 100
 	{
 		v := rng.nextS32(10, 50)

@@ -1,11 +1,11 @@
 namespace std.random;
 
-public struct(T = Mwc) Random
+public struct(T = Mwc) Rng
 {
     rng: T
 }
 
-public impl Random
+public impl Rng
 {
     func seed(using self, value: u32) => rng.seed(value)
 

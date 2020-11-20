@@ -4,6 +4,6 @@ using std.random
 //#[swag.printbc]
 #test
 {
-	var rng: Random
+	var rng: Rng
 	rng.seed(0)
 }
