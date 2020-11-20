@@ -18,8 +18,9 @@ func yield()->bool
 private func threadEntry(param: *void)
 {
     th := cast(*Thread) param
+    @setcontext(th.context)
+
     th.userLambda(:th)
-    //debug.assert(false)
 }
 
 // Creates a new thread
@@ -27,6 +28,7 @@ func create(th: *Thread, lambda: func(Thread), userParam: *void = null)
 {
     debug.assert(!th.isValid(), "thread already created")
     debug.assert(lambda != null, "lambda parameter is null")
+    th.context = :@getcontext()
 
     // As the threadEntry will be called by the os, need to be sure
     // we have a valid function pointer whatever the case is :
@@ -36,11 +38,15 @@ func create(th: *Thread, lambda: func(Thread), userParam: *void = null)
     if l64 & swag.LambdaBcMarker
         l64 = acast @thrunptr()
     else
+    {
+        th.context.flags &= ~swag.ContextFlags.ByteCode
         l64 &= ~swag.LambdaForeignMarker
+    }
 
     h := CreateThread(null, 0, cast(*void) l64, th, CREATE_SUSPENDED, &th.id)
     if h == INVALID_HANDLE_VALUE
         return
+
     th.userLambda = lambda
     th.userParam = userParam
     th.handle = h
