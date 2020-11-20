@@ -1,40 +1,48 @@
 #if #os == "windows";
-public namespace thread;
 using win32
 
-// Sleep the current thread for a given amount of milliseconds
-func sleep(ms: u32)
+public impl Thread
 {
-    Sleep(ms)
-}
-
-#[swag.callback]
-private func threadEntry(param: *void)
-{
-    th := cast(*Thread) param
-    th.lambda()
-}
-
-func create(lambda: func(*void))->Thread
-{
-    var result: retval
-
-    /*var paramBC: [2] *void
-    //param := userParam
-
-    var l64 = cast(u64) lambda
-    if l64 & swag.LambdaBcMarker
+    // Sleep the current thread for a given amount of milliseconds
+    func sleep(ms: u32)
     {
-        paramBC[0] = acast lambda
-        paramBC[1] = acast userParam
-        param = acast &paramBC[0]
-        l64 = acast @thrunptr()
+        Sleep(ms)
     }
-    else
-    {
-        l64 &= ~swag.LambdaForeignMarker
-    }*/
 
-    result.handle = CreateThread(null, 0, cast(*void) &threadEntry, cast(*void) &result, 0, &result.id)
-    return result
+    #[swag.callback]
+    private func threadEntry(param: *void)
+    {
+        th := cast(*Thread) param
+        th.userLambda(:th)
+    }
+
+    // Creates a new thread
+    func create(lambda: func(Thread), userParam: *void = null)->Thread
+    {
+        var result: retval
+        result.userLambda = lambda
+        result.userParam = userParam
+        param := &result
+
+        // As the threadEntry will be called by the os, need to be sure
+        // we have a valid function pointer whatever the case is :
+        // - we are running bytecode, and threadEntry should be run by the compiler
+        // - we are native, and threadEntry is like a foreign function (native, i.e. callback)
+        var paramBC: [2] *void
+        var l64 = cast(u64) &threadEntry
+        if l64 & swag.LambdaBcMarker
+        {
+            paramBC[0] = acast lambda
+            paramBC[1] = acast &result
+            param = acast &paramBC[0]
+            l64 = acast @thrunptr()
+        }
+        else
+        {
+            l64 &= ~swag.LambdaForeignMarker
+        }
+
+        result.handle = CreateThread(null, 0, cast(*void) l64, cast(*void) param, CREATE_SUSPENDED, &result.id)
+        return result
+    }
 }
