@@ -12,11 +12,11 @@ impl B
 {
     func opDrop(using self)
     {
-        @print("drop")
+        //@print("drop")
     }
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     var res: [1] B
