@@ -16,11 +16,10 @@ private func threadEntry(param: *void)
 }
 
 // Creates a new thread
-func create(lambda: func(Thread), userParam: *void = null)->Thread
+func create(th: *Thread, lambda: func(Thread), userParam: *void = null)
 {
+    debug.assert(!th.isValid(), "thread already created")
     debug.assert(lambda != null, "lambda parameter is null")
-
-    var result: retval
 
     // As the threadEntry will be called by the os, need to be sure
     // we have a valid function pointer whatever the case is :
@@ -32,14 +31,12 @@ func create(lambda: func(Thread), userParam: *void = null)->Thread
     else
         l64 &= ~swag.LambdaForeignMarker
 
-    h := CreateThread(null, 0, cast(*void) l64, &result, CREATE_SUSPENDED, &result.id)
+    h := CreateThread(null, 0, cast(*void) l64, th, CREATE_SUSPENDED, &th.id)
     if h == INVALID_HANDLE_VALUE
-        return result
-
-    result.userLambda = lambda
-    result.userParam = userParam
-    result.handle = h
-    return result
+        return
+    th.userLambda = lambda
+    th.userParam = userParam
+    th.handle = h
 }
 
 impl Thread

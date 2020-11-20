@@ -1,25 +1,27 @@
-﻿/*#import "std"
+﻿#import "std"
 using std
 
 var th1, th2: thread.Thread
 
 func entry1(th: thread.Thread)
 {
+    //@print("entry1\n")
 }
 
 func entry2(th: thread.Thread)
 {
-    //th1.wait()
+    //@print("entry2\n")
+    th1.wait()
+    //@print("end entry2\n")
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
-    th1 = thread.create(&entry1)
-    //th2 = thread.create(&entry2)
+    thread.create(&th1, &entry1)
+    thread.create(&th2, &entry2)
     th1.start()
-    //th2.start()
-    //th2.wait()
-    th1.wait()
+    th2.start()
+    th2.wait()
+    //@print("end\n")
 }
-*/
