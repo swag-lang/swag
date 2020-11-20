@@ -654,6 +654,16 @@ namespace OS
         return "";
     }
 
+    bool atomicTestNull(void** ptr)
+    {
+        return InterlockedCompareExchangePointer(ptr, *ptr, nullptr) == nullptr;
+    }
+
+    void atomicSetIfNotNull(void** ptr, void* what)
+    {
+        InterlockedCompareExchangePointer(ptr, what, nullptr);
+    }
+
 }; // namespace OS
 
 #endif

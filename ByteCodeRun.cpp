@@ -453,7 +453,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         else
         {
             auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::Lambda);
-            ffiCall(context, registersRC[ip->a.u32].pointer, typeInfoFunc);
+            ffiCall(context, (void*) registersRC[ip->a.u32].pointer, typeInfoFunc);
         }
 
         break;
@@ -570,15 +570,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::MemCpy:
     {
-        void*    dst  = registersRC[ip->a.u32].pointer;
-        void*    src  = registersRC[ip->b.u32].pointer;
+        void*    dst  = (void*) registersRC[ip->a.u32].pointer;
+        void*    src  = (void*) registersRC[ip->b.u32].pointer;
         uint32_t size = IMMC_U32(ip);
         memcpy(dst, src, size);
         break;
     }
     case ByteCodeOp::MemSet:
     {
-        void*    dst   = registersRC[ip->a.u32].pointer;
+        void*    dst   = (void*) registersRC[ip->a.u32].pointer;
         uint32_t value = registersRC[ip->b.u32].u8;
         uint32_t size  = registersRC[ip->c.u32].u32;
         memset(dst, value, size);
@@ -587,15 +587,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IntrinsicMemCmp:
     {
-        void*    dst               = registersRC[ip->b.u32].pointer;
-        void*    src               = registersRC[ip->c.u32].pointer;
+        void*    dst               = (void*) registersRC[ip->b.u32].pointer;
+        void*    src               = (void*) registersRC[ip->c.u32].pointer;
         uint32_t size              = registersRC[ip->d.u32].u32;
         registersRC[ip->a.u32].s32 = Runtime::memcmp(dst, src, size);
         break;
     }
     case ByteCodeOp::IntrinsicCStrLen:
     {
-        void* src                  = registersRC[ip->b.u32].pointer;
+        void* src                  = (void*) registersRC[ip->b.u32].pointer;
         registersRC[ip->a.u32].u32 = Runtime::cstrlen((const char*) src);
         break;
     }
@@ -734,25 +734,25 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
     case ByteCodeOp::SetZeroAtPointerX:
-        memset(registersRC[ip->a.u32].pointer, 0, ip->b.u32);
+        memset((void*) registersRC[ip->a.u32].pointer, 0, ip->b.u32);
         break;
     case ByteCodeOp::SetZeroAtPointerXRB:
-        memset(registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u32 * ip->c.u32);
+        memset((void*) registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u32 * ip->c.u32);
         break;
 
     case ByteCodeOp::GetFromMutableSeg64:
     {
         auto module = context->sourceFile->module;
-        if (!ip->d.pointer)
-            ip->d.pointer = module->mutableSegment.address(ip->b.u32);
+        if (OS::atomicTestNull((void**) &ip->d.pointer))
+            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->mutableSegment.address(ip->b.u32));
         registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
         break;
     }
     case ByteCodeOp::GetFromBssSeg64:
     {
         auto module = context->sourceFile->module;
-        if (!ip->d.pointer)
-            ip->d.pointer = module->bssSegment.address(ip->b.u32);
+        if (OS::atomicTestNull((void**) &ip->d.pointer))
+            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->bssSegment.address(ip->b.u32));
         registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
         break;
     }
@@ -760,13 +760,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::MakeMutableSegPointer:
     {
         auto module = context->sourceFile->module;
-        if (!ip->d.pointer)
+        if (OS::atomicTestNull((void**) &ip->d.pointer))
         {
-            ip->d.pointer = module->mutableSegment.address(ip->b.u32);
+            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->mutableSegment.address(ip->b.u32));
             if (module->saveMutableValues && ip->c.pointer)
             {
                 SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                module->mutableSegment.saveValue(ip->d.pointer, over->typeInfo->sizeOf, false);
+                module->mutableSegment.saveValue((void*) ip->d.pointer, over->typeInfo->sizeOf, false);
             }
         }
 
@@ -776,15 +776,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::MakeBssSegPointer:
     {
         auto module = context->sourceFile->module;
-        if (!ip->d.pointer)
+        if (OS::atomicTestNull((void**) &ip->d.pointer))
         {
-            ip->d.pointer = module->bssSegment.address(ip->b.u32);
+            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->bssSegment.address(ip->b.u32));
             if (ip->c.pointer)
             {
                 if (module->saveBssValues)
                 {
                     SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                    module->mutableSegment.saveValue(ip->d.pointer, over->typeInfo->sizeOf, true);
+                    module->mutableSegment.saveValue((void*) ip->d.pointer, over->typeInfo->sizeOf, true);
                 }
                 else if (module->bssCannotChange)
                 {
@@ -801,8 +801,8 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         auto module = context->sourceFile->module;
         auto offset = ip->b.u32;
-        if (!ip->d.pointer)
-            ip->d.pointer = module->constantSegment.address(offset);
+        if (OS::atomicTestNull((void**) &ip->d.pointer))
+            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->constantSegment.address(offset));
         registersRC[ip->a.u32].pointer = ip->d.pointer;
         break;
     }
@@ -810,8 +810,8 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         auto module = context->sourceFile->module;
         auto offset = ip->b.u32;
-        if (!ip->d.pointer)
-            ip->d.pointer = module->typeSegment.address(offset);
+        if (OS::atomicTestNull((void**) &ip->d.pointer))
+            OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->typeSegment.address(offset));
         registersRC[ip->a.u32].pointer = ip->d.pointer;
         break;
     }
@@ -1142,12 +1142,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicRealloc:
     {
-        registersRC[ip->a.u32].pointer = (uint8_t*) realloc(registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32);
+        registersRC[ip->a.u32].pointer = (uint8_t*) realloc((void*) registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32);
         break;
     }
     case ByteCodeOp::IntrinsicFree:
     {
-        free(registersRC[ip->a.u32].pointer);
+        free((void*) registersRC[ip->a.u32].pointer);
         break;
     }
     case ByteCodeOp::IntrinsicGetContext:
@@ -1157,7 +1157,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicSetContext:
     {
-        Runtime::tlsSetValue(g_tlsContextId, registersRC[ip->a.u32].pointer);
+        Runtime::tlsSetValue(g_tlsContextId, (void*) registersRC[ip->a.u32].pointer);
         break;
     }
     case ByteCodeOp::IntrinsicThreadRunPtr:
@@ -1182,13 +1182,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicPrintString:
     {
         g_Log.lock();
-        Runtime::print(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
+        Runtime::print((void*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
         g_Log.unlock();
         break;
     }
     case ByteCodeOp::IntrinsicInterfaceOf:
     {
-        registersRC[ip->c.u32].pointer = (uint8_t*) Runtime::interfaceOf(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer);
+        registersRC[ip->c.u32].pointer = (uint8_t*) Runtime::interfaceOf((void*) registersRC[ip->a.u32].pointer, (void*) registersRC[ip->b.u32].pointer);
         break;
     }
 
@@ -1239,12 +1239,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicStrCmp:
     {
-        registersRC[ip->d.u32].b = Runtime::strcmp(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32, registersRC[ip->c.u32].pointer, registersRC[ip->d.u32].u32);
+        registersRC[ip->d.u32].b = Runtime::strcmp((void*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32, (void*) registersRC[ip->c.u32].pointer, registersRC[ip->d.u32].u32);
         break;
     }
     case ByteCodeOp::IntrinsicTypeCmp:
     {
-        registersRC[ip->d.u32].b = Runtime::compareType(registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].pointer, ip->c.u32);
+        registersRC[ip->d.u32].b = Runtime::compareType((void*) registersRC[ip->a.u32].pointer, (void*) registersRC[ip->b.u32].pointer, ip->c.u32);
         break;
     }
     case ByteCodeOp::CloneString:
@@ -1252,8 +1252,8 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         char*    ptr                   = (char*) registersRC[ip->a.u32].pointer;
         uint32_t count                 = registersRC[ip->b.u32].u32;
         registersRC[ip->a.u32].pointer = (uint8_t*) malloc(count + 1);
-        context->bc->autoFree.push_back(registersRC[ip->a.u32].pointer);
-        memcpy(registersRC[ip->a.u32].pointer, ptr, count + 1);
+        context->bc->autoFree.push_back((void*) registersRC[ip->a.u32].pointer);
+        memcpy((void*) registersRC[ip->a.u32].pointer, ptr, count + 1);
         break;
     }
 
