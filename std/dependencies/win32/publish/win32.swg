@@ -342,6 +342,8 @@ namespace win32
     const SUBLANG_DEFAULT   = 0x01
     func MAKELANGID(p, s: WORD) => (s << 10) | p
 
+    const WAIT_TIMEOUT = 258
+
     struct COORD
     {
         x: WORD
@@ -472,6 +474,7 @@ namespace win32
         func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE;
         func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD;
         func ExitProcess(uExitCode: UINT);
+        func ResumeThread(hThread: HANDLE)->DWORD;
 
         func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
         func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;

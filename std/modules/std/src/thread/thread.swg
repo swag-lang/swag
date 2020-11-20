@@ -1,8 +1,9 @@
+public namespace std.thread;
 using std;
 
-public alias ThreadHandle = const *void
+alias ThreadHandle = const *void
 
-public struct Thread
+struct Thread
 {
     handle:     ThreadHandle
     id:         u32
@@ -10,7 +11,7 @@ public struct Thread
     userParam:  *void
 }
 
-public impl Thread
+impl Thread
 {
     func opDrop(using self)
     {
@@ -20,6 +21,6 @@ public impl Thread
     // Returns true if the thread is valid
     func isValid(using self)->bool
     {
-        return handle != null
+        return userLambda != null
     }
 }

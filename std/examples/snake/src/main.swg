@@ -67,7 +67,7 @@ func main()
     bDead := false
     while !bDead
     {
-        Thread.sleep((nSnakeDirection % 2 == 1) ? 120 : 200)
+        thread.sleep((nSnakeDirection % 2 == 1) ? 120 : 200)
 
         // Input ========================
         using keyboard.Key

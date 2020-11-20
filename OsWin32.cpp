@@ -340,6 +340,7 @@ namespace OS
         return ::GetProcAddress((HMODULE) handle, name);
     }
 
+    WAIT_TIMEOUT
     uint64_t getFileWriteTime(const char* fileName)
     {
         auto hFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
