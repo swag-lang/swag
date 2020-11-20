@@ -296,7 +296,8 @@ bool DataSegment::readU64(Seek& seek, uint64_t& result)
 
 void DataSegment::saveValue(void* address, uint32_t size, bool zero)
 {
-    auto it = savedValues.find(address);
+    unique_lock lk(mutex);
+    auto        it = savedValues.find(address);
     if (it != savedValues.end())
         return;
 
@@ -330,6 +331,7 @@ void DataSegment::saveValue(void* address, uint32_t size, bool zero)
 
 void DataSegment::restoreAllValues()
 {
+    unique_lock lk(mutex);
     for (auto& one : savedValues)
     {
         if (one.second.ptr == nullptr)
