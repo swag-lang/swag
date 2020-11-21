@@ -290,6 +290,10 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     case ByteCodeOp::IntrinsicInterfaceOf:
     case ByteCodeOp::IntrinsicError:
     case ByteCodeOp::IntrinsicAssertMsg:
+    case ByteCodeOp::IntrinsicAtomicAddS8:
+    case ByteCodeOp::IntrinsicAtomicAddS16:
+    case ByteCodeOp::IntrinsicAtomicAddS32:
+    case ByteCodeOp::IntrinsicAtomicAddS64:
         context->bc->maxCallParams = max(context->bc->maxCallParams, 3); // Runtime call
         break;
 
