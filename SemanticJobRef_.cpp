@@ -333,6 +333,9 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     }
 
     case TypeInfoKind::Struct:
+        if (arrayType->flags & TYPEINFO_STRUCT_IS_TUPLE)
+            return context->report({arrayNode->array, "cannot dereference a tuple type"});
+
         // Only the top level ArrayPointerIndex node will deal with the call
         if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)
         {
