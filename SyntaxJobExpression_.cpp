@@ -224,6 +224,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::KwdCode:
     case TokenId::KwdFunc:
     case TokenId::KwdStruct:
+    case TokenId::KwdUnion:
     case TokenId::NativeType:
     case TokenId::SymAsterisk:
     case TokenId::SymLeftSquare:

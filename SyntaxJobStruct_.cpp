@@ -172,6 +172,10 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         structNode->kind        = AstNodeKind::TypeSet;
         structNode->semanticFct = SemanticJob::resolveTypeSet;
     }
+    else if (token.id == TokenId::KwdUnion)
+    {
+        structNode->flags |= AST_UNION;
+    }
 
     SWAG_CHECK(tokenizer.getToken(token));
 
@@ -296,7 +300,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
         if (structType == SyntaxStructType::Tuple)
-            SWAG_CHECK(doStructBodyTuple(contentNode, true, nullptr));
+            SWAG_CHECK(doStructBodyTuple(contentNode, true));
         else
         {
             SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
@@ -309,7 +313,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
     return true;
 }
 
-bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty, Utf8* name)
+bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
 {
     auto curly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
@@ -349,12 +353,6 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty, Utf8* name)
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
             expression = structFieldNode->type;
-
-            if (name)
-            {
-                *name += structFieldNode->name;
-                *name += "_";
-            }
         }
         else
         {
@@ -365,18 +363,6 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty, Utf8* name)
         }
 
         idx++;
-
-        // Name
-        if (name)
-        {
-            typeExpression = (AstTypeExpression*) expression;
-            for (int i = 0; i < typeExpression->ptrCount; i++)
-                *name += "*";
-            *name += typeExpression->token.text;
-            if (typeExpression->identifier)
-                *name += typeExpression->identifier->childs.back()->name;
-            Ast::normalizeIdentifierName(*name);
-        }
 
         SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, syntaxError(token, format("invalid token '%s' in tuple type, ',' or '}' are expected here", token.text.c_str())));
         if (token.id == TokenId::SymRightCurly)
@@ -445,6 +431,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         SWAG_CHECK(doEnum(parent, result));
         break;
     case TokenId::KwdStruct:
+    case TokenId::KwdUnion:
     case TokenId::KwdTypeSet:
     case TokenId::KwdInterface:
         SWAG_CHECK(doStruct(parent, result));

@@ -414,6 +414,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doEnum(parent, result));
         break;
     case TokenId::KwdStruct:
+    case TokenId::KwdUnion:
     case TokenId::KwdTypeSet:
     case TokenId::KwdInterface:
     {
@@ -494,6 +495,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doImpl(parent, result));
         break;
     case TokenId::KwdStruct:
+    case TokenId::KwdUnion:
     case TokenId::KwdTypeSet:
     case TokenId::KwdInterface:
         SWAG_CHECK(doStruct(parent, result));

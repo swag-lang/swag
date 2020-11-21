@@ -99,11 +99,14 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool forStruct)
+bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion)
 {
     auto structNode = Ast::newStructDecl(sourceFile, nullptr, this);
-    if (forStruct)
+
+    if (anonymousStruct)
         structNode->flags |= AST_ANONYMOUS_STRUCT;
+    if (anonymousUnion)
+        structNode->flags |= AST_UNION;
 
     // We convert the {...} expression to a structure. As the structure can contain generic parameters,
     // we need to copy them. But from the function or the structure ?
@@ -133,29 +136,10 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     structNode->content            = contentNode;
     contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
-    // Content
+    // Name
     Utf8 name = sourceFile->scopePrivate->name + "_tuple_";
-
-    if (forStruct)
-    {
-        name += format("%d", token.startLocation);
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-        while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
-            SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct));
-        SWAG_CHECK(eatToken(TokenId::SymRightCurly));
-    }
-    else
-    {
-        SWAG_CHECK(doStructBodyTuple(contentNode, false, &name));
-    }
-
-    // Compute structure name
+    name += format("%d", token.startLocation);
     structNode->name = move(name);
-
-    // Reference to that struct
-    auto identifier = Ast::newIdentifierRef(sourceFile, structNode->name, parent, this);
-    if (result)
-        *result = identifier;
 
     // Add struct type and scope
     Scope* rootScope;
@@ -164,42 +148,60 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     else
         rootScope = sourceFile->module->scopeRoot;
     structNode->alternativeScopes.push_back(currentScope);
+    auto newScope     = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
+    structNode->scope = newScope;
 
-    scoped_lock lk(rootScope->symTable.mutex);
-    auto        symbol = rootScope->symTable.findNoLock(structNode->name);
-    if (!symbol)
     {
-        auto typeInfo        = g_Allocator.alloc<TypeInfoStruct>();
-        auto newScope        = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
-        typeInfo->declNode   = structNode;
-        typeInfo->name       = structNode->name;
-        typeInfo->nakedName  = structNode->name;
-        typeInfo->structName = structNode->name;
-        typeInfo->scope      = newScope;
-        typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
-        structNode->typeInfo   = typeInfo;
-        structNode->scope      = newScope;
-        structNode->ownerScope = newScope->parentScope;
-        rootScope->symTable.registerSymbolNameNoLock(&context, structNode, SymbolKind::Struct);
+        Scoped       sc(this, structNode->scope);
+        ScopedStruct ss(this, structNode->scope);
 
-        Ast::addChildBack(sourceFile->astRoot, structNode);
-        structNode->inheritOwners(sourceFile->astRoot);
+        // Content
+        if (anonymousStruct)
+        {
+            SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+            while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
+                SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct));
+            SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+        }
+        else
+        {
+            SWAG_CHECK(doStructBodyTuple(contentNode, false));
+        }
+    }
 
-        Ast::visit(structNode->content, [&](AstNode* n) {
+    // Reference to that struct
+    auto identifier = Ast::newIdentifierRef(sourceFile, structNode->name, parent, this);
+    if (result)
+        *result = identifier;
+
+    auto typeInfo        = g_Allocator.alloc<TypeInfoStruct>();
+    typeInfo->declNode   = structNode;
+    typeInfo->name       = structNode->name;
+    typeInfo->nakedName  = structNode->name;
+    typeInfo->structName = structNode->name;
+    typeInfo->scope      = newScope;
+    typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
+    structNode->typeInfo   = typeInfo;
+    structNode->ownerScope = newScope->parentScope;
+    rootScope->symTable.registerSymbolName(&context, structNode, SymbolKind::Struct);
+
+    Ast::addChildBack(sourceFile->astRoot, structNode);
+    structNode->inheritOwners(sourceFile->astRoot);
+
+    Ast::visit(structNode->content, [&](AstNode* n) {
+        n->inheritOwners(structNode);
+        n->ownerStructScope = newScope;
+        n->ownerScope       = newScope;
+    });
+
+    if (structNode->genericParameters)
+    {
+        Ast::visit(structNode->genericParameters, [&](AstNode* n) {
             n->inheritOwners(structNode);
             n->ownerStructScope = newScope;
             n->ownerScope       = newScope;
+            n->flags |= AST_IS_GENERIC;
         });
-
-        if (structNode->genericParameters)
-        {
-            Ast::visit(structNode->genericParameters, [&](AstNode* n) {
-                n->inheritOwners(structNode);
-                n->ownerStructScope = newScope;
-                n->ownerScope       = newScope;
-                n->flags |= AST_IS_GENERIC;
-            });
-        }
     }
 
     return true;
@@ -373,12 +375,18 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     else if (token.id == TokenId::KwdStruct)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst, true));
+        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst, true, false));
+        return true;
+    }
+    else if (token.id == TokenId::KwdUnion)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst, true, true));
         return true;
     }
     else if (token.id == TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst, false));
+        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst, false, false));
         return true;
     }
 

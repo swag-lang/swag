@@ -84,7 +84,7 @@ struct SyntaxJob : public Job
     bool doVarDecl(AstNode* parent, AstNode** result = nullptr);
     bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doAlias(AstNode* parent, AstNode** result = nullptr);
-    bool convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool forStruct);
+    bool convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr, bool inTypeVarDecl = false);
     bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
     void forceTakeAddress(AstNode* node);
@@ -100,7 +100,7 @@ struct SyntaxJob : public Job
     bool doEnumContent(AstNode* parent, AstNode** result = nullptr);
     bool doEnumValue(AstNode* parent, AstNode** result = nullptr);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
-    bool doStructBodyTuple(AstNode* parent, bool acceptEmpty, Utf8* name);
+    bool doStructBodyTuple(AstNode* parent, bool acceptEmpty);
     bool doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result = nullptr);
     bool doStruct(AstNode* parent, AstNode** result = nullptr);
     bool doStructContent(AstStruct* structNode, SyntaxStructType structType);

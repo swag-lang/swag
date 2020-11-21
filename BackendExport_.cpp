@@ -355,7 +355,10 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     else
     {
         SWAG_ASSERT(node->kind == AstNodeKind::StructDecl)
-        CONCAT_FIXED_STR(bufferSwg, "struct");
+        if (node->flags & AST_UNION)
+            CONCAT_FIXED_STR(bufferSwg, "union");
+        else
+            CONCAT_FIXED_STR(bufferSwg, "struct");
     }
 
     if (node->genericParameters)

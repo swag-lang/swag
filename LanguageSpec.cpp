@@ -54,6 +54,7 @@ void LanguageSpec::setup()
     keywords["enumvalue"]   = TokenId::KwdEnumValue;
     keywords["impl"]        = TokenId::KwdImpl;
     keywords["struct"]      = TokenId::KwdStruct;
+    keywords["union"]       = TokenId::KwdUnion;
     keywords["interface"]   = TokenId::KwdInterface;
     keywords["typeset"]     = TokenId::KwdTypeSet;
     keywords["func"]        = TokenId::KwdFunc;
