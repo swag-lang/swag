@@ -99,9 +99,11 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst)
+bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool forStruct)
 {
     auto structNode = Ast::newStructDecl(sourceFile, nullptr, this);
+    if (forStruct)
+        structNode->flags |= AST_ANONYMOUS_STRUCT;
 
     // We convert the {...} expression to a structure. As the structure can contain generic parameters,
     // we need to copy them. But from the function or the structure ?
@@ -133,7 +135,19 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
 
     // Content
     Utf8 name = sourceFile->scopePrivate->name + "_tuple_";
-    SWAG_CHECK(doStructBodyTuple(contentNode, false, &name));
+
+    if (forStruct)
+    {
+        name += format("%d", token.startLocation);
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+        while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
+            SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct));
+        SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+    }
+    else
+    {
+        SWAG_CHECK(doStructBodyTuple(contentNode, false, &name));
+    }
 
     // Compute structure name
     structNode->name = move(name);
@@ -359,12 +373,12 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     else if (token.id == TokenId::KwdStruct)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst));
+        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst, true));
         return true;
     }
     else if (token.id == TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst));
+        SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst, false));
         return true;
     }
 

@@ -11,7 +11,7 @@
 }
 
 //#[swag.printbc]
-func T()-> struct{bool,s32,bool}
+func T()-> {bool,s32,bool}
 {
 	return @{true,2,false}
 }

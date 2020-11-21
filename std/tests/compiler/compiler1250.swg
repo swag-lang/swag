@@ -1,4 +1,4 @@
-func getChar(buffer: const *u8)->struct{const *u8, char}
+func getChar(buffer: const *u8)->{const *u8, char}
 {
 	ptr := buffer
 	c := cast(char) :ptr

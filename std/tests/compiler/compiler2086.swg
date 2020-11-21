@@ -1,7 +1,7 @@
 struct BB
 {
-    alias x = struct{u32}
-    alias y = struct{u32, u32}
+    alias x = {u32}
+    alias y = {u32, u32}
 }
 
 #test
@@ -12,9 +12,9 @@ struct BB
     switch @kindof(v)
     {
     case BB.x:
-        vv := cast(BB.x) v           
+        vv := cast(BB.x) v
         @assert(vv.item0 == 5)
-    default:    
+    default:
         @assert(false)
     }
 
@@ -23,11 +23,10 @@ struct BB
     switch @kindof(v)
     {
     case BB.y:
-        vv := cast(BB.y) v   
+        vv := cast(BB.y) v
         @assert(vv.item0 == 5)
         @assert(vv.item1 == 10)
-    default:    
+    default:
         @assert(false)
     }
 }
-

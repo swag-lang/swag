@@ -1,1 +1,1 @@
-alias ret = struct{s32, s32}
+alias ret = {s32, s32}

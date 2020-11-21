@@ -1,4 +1,4 @@
-func toto() -> struct{x: s32, y: s32}
+func toto() -> {x: s32, y: s32}
 {
 	return @{1, 2}
 }

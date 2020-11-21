@@ -1,7 +1,7 @@
 //#[swag.printbc]
 #test
 {
-	var a : struct{s32, s32}
+	var a : {s32, s32}
 	a.item0 = 1
 	a.item1 = 2
 	@assert(a.item0 == 1)

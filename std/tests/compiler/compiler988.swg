@@ -1,4 +1,4 @@
-alias pair = struct{string, any}
+alias pair = {string, any}
 
 //#[swag.printbc]
 #test

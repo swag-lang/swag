@@ -1,4 +1,4 @@
-func toto(x: struct{f32})
+func toto(x: {f32})
 {
 	@assert(x.item0 == 1.0)
 }

@@ -7,7 +7,7 @@ struct pt
 //#unittest error
 #test
 {
-	var x: struct{s32, s32} = @{666}
+	var x: {s32, s32} = @{666}
     @assert(x.item0 == 666)
     @assert(x.item1 == 0)
 }

@@ -2,5 +2,5 @@
 #test
 {
     alias T = s32
-    alias y = struct{T, T}
+    alias y = {T, T}
 }

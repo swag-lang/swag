@@ -69,14 +69,18 @@ bool Backend::emitAttributes(TypeInfo* typeInfo, int indent)
     return true;
 }
 
-void Backend::emitTypeTuple(TypeInfo* typeInfo, bool preprendStruct)
+void Backend::emitTypeTuple(TypeInfo* typeInfo, int indent)
 {
     SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-    if (preprendStruct)
-        bufferSwg.addString("struct{");
-    else
-        bufferSwg.addString("{");
+
+    if (typeStruct->declNode->flags & AST_ANONYMOUS_STRUCT)
+    {
+        emitPublicStructSwg(typeStruct, (AstStruct*) typeStruct->declNode, indent);
+        return;
+    }
+
+    bufferSwg.addString("{");
     int idx = 0;
     for (auto field : typeStruct->fields)
     {
@@ -87,13 +91,13 @@ void Backend::emitTypeTuple(TypeInfo* typeInfo, bool preprendStruct)
             bufferSwg.addString(field->namedParam);
             bufferSwg.addString(":");
         }
-        emitType(field->typeInfo);
+        emitType(field->typeInfo, indent);
         idx++;
     }
     bufferSwg.addString("}");
 }
 
-void Backend::emitType(TypeInfo* typeInfo)
+void Backend::emitType(TypeInfo* typeInfo, int indent)
 {
     if (typeInfo->kind == TypeInfoKind::Lambda)
     {
@@ -103,17 +107,17 @@ void Backend::emitType(TypeInfo* typeInfo)
         {
             if (p != typeFunc->parameters[0])
                 bufferSwg.addString(", ");
-            emitType(p->typeInfo);
+            emitType(p->typeInfo, indent);
         }
 
         bufferSwg.addString(")->");
-        emitType(typeFunc->returnType);
+        emitType(typeFunc->returnType, indent);
     }
     else
     {
         if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
         {
-            emitTypeTuple(typeInfo, true);
+            emitTypeTuple(typeInfo, indent);
             return;
         }
 
@@ -172,7 +176,7 @@ bool Backend::emitGenericParameters(AstNode* node)
     return true;
 }
 
-bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent)
 {
     if (node->kind == AstNodeKind::AttrDecl)
         CONCAT_FIXED_STR(bufferSwg, "attr ");
@@ -198,7 +202,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
             if (varDecl->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
-                emitType(p->typeInfo);
+                emitType(p->typeInfo, indent);
             }
 
             // Assignment
@@ -219,7 +223,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         CONCAT_FIXED_STR(bufferSwg, "->");
-        emitType(typeFunc->returnType);
+        emitType(typeFunc->returnType, indent);
     }
 
     CONCAT_FIXED_STR(bufferSwg, ";");
@@ -260,7 +264,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
-                emitType(p->typeInfo);
+                emitType(p->typeInfo, indent);
             }
 
             auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
@@ -281,7 +285,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         CONCAT_FIXED_STR(bufferSwg, "->");
-        emitType(typeFunc->returnType);
+        emitType(typeFunc->returnType, indent);
     }
 
     if (node->content->kind != AstNodeKind::Statement)
@@ -340,7 +344,10 @@ bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int inden
 bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent)
 {
     SWAG_CHECK(emitAttributes(typeStruct, indent));
-    bufferSwg.addIndent(indent);
+
+    if (!(node->flags & AST_ANONYMOUS_STRUCT))
+        bufferSwg.addIndent(indent);
+
     if (node->kind == AstNodeKind::InterfaceDecl)
         CONCAT_FIXED_STR(bufferSwg, "interface");
     else if (node->kind == AstNodeKind::TypeSet)
@@ -354,8 +361,12 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     if (node->genericParameters)
         SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
-    CONCAT_FIXED_STR(bufferSwg, " ");
-    bufferSwg.addString(node->name.c_str());
+    if (!(node->flags & AST_ANONYMOUS_STRUCT))
+    {
+        CONCAT_FIXED_STR(bufferSwg, " ");
+        bufferSwg.addString(node->name.c_str());
+    }
+
     bufferSwg.addEol();
     bufferSwg.addIndent(indent);
     CONCAT_FIXED_STR(bufferSwg, "{");
@@ -379,7 +390,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
             SWAG_ASSERT(node->kind == AstNodeKind::TypeSet);
             bufferSwg.addIndent(indent + 1);
             bufferSwg.addString(p->namedParam);
-            emitTypeTuple(p->typeInfo, false);
+            emitTypeTuple(p->typeInfo, indent);
             bufferSwg.addEol();
         }
     }
@@ -393,8 +404,11 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
 
     bufferSwg.addIndent(indent);
     CONCAT_FIXED_STR(bufferSwg, "}");
+
+    if (!(node->flags & AST_ANONYMOUS_STRUCT))
+        bufferSwg.addEol();
     bufferSwg.addEol();
-    bufferSwg.addEol();
+
     return true;
 }
 
@@ -410,7 +424,7 @@ bool Backend::emitVarSwg(const char* kindName, AstVarDecl* node, int indent)
     if (node->type)
     {
         CONCAT_FIXED_STR(bufferSwg, ": ");
-        emitType(node->typeInfo);
+        emitType(node->typeInfo, indent);
     }
 
     if (node->assignment)
@@ -515,7 +529,7 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             bufferSwg.addEol();
             SWAG_CHECK(emitAttributes(typeFunc, indent));
             bufferSwg.addIndent(indent);
-            SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
+            SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node, indent));
             node->exportForeignLine = bufferSwg.eolCount;
         }
     }
@@ -529,7 +543,7 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             emitAttributesUsage(typeFunc, indent);
             bufferSwg.addIndent(indent);
-            SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
+            SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node, indent));
         }
     }
 

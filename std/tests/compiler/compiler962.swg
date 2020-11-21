@@ -1,7 +1,7 @@
 //#[swag.printbc]
 #test
 {
-	var t: [2] struct{rank: s32, value: string}
+	var t: [2] {rank: s32, value: string}
 	t[0].rank = 1
 	t[1].rank = 10
 	@assert(t[0].rank == 1)
