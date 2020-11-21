@@ -119,6 +119,7 @@ struct Module
     VectorNative<AstFuncDecl*> allForeign;
     ByteCodeRunContext         runContext;
     ByteCodeRun                runner;
+    mutex                      mutexExecuteNode;
 
     ByteCode* byteCodeMainFunc = nullptr;
     AstNode*  mainIsDefined    = nullptr;
