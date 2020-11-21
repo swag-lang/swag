@@ -64,7 +64,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, context->report({left, "affect operation not allowed on type array"}));
-    SWAG_VERIFY(!rightTypeInfo->isNative(NativeTypeKind::Void), context->report({ right, "cannot affect an expression of type 'void'" }));
+    SWAG_VERIFY(!rightTypeInfo->isNative(NativeTypeKind::Void), context->report({right, "cannot affect an expression of type 'void'"}));
 
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isNative(NativeTypeKind::Any) && node->token.id != TokenId::SymEqual)
@@ -175,6 +175,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 }
                 else
                 {
+                    if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+                        return context->report({node, "affect to tuple is not possible because right expression is not compatible"});
+
                     if (!hasUserOp(context, "opAffect", left))
                     {
                         Utf8 msg = format("'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'", leftTypeInfo->name.c_str(), rightTypeInfo->name.c_str(), leftTypeInfo->name.c_str());

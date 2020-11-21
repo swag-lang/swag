@@ -23,25 +23,14 @@
         @assert(tuple.item1 == 2.0)
     }
 
-    // An anonymous struct is a tuple, but is declared like a struct, not
-    // an expression
-    {
-        var tuple: struct{
-            x: f32
-            y: f32
-        }
-
-        tuple.x = 1.0
-        tuple.y = 2.0
-        @assert(tuple.x == 1.0)
-        @assert(tuple.y == 2.0)
-    }
-
-    // A tuple is an expression, where names of fields can be omitted
+    // A tuple is an expression, where names of fields can be omitted.
+    // An automatic name 'item?' is always valid
     {
         var tuple: {x: f32, f32}
         tuple.x = 1.0
         @assert(tuple.x == 1.0)
+        @assert(tuple.item0 == 1.0)
+        @assert(tuple.item1 == 0.0)
     }
 
     // You can dereference a tuple field by field
