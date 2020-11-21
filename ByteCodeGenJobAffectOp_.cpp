@@ -358,34 +358,34 @@ bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0,
     }
 }
 
-bool ByteCodeGenJob::emitAffectXOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitAffectXOrEqual, type not native");
+        return internalError(context, "emitAffectXorEqual, type not native");
 
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::AffectOpXOrEqS8, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpXorEqS8, r0, r1);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOpXOrEqS16, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpXorEqS16, r0, r1);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::AffectOpXOrEqS32, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpXorEqS32, r0, r1);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
-        emitInstruction(context, ByteCodeOp::AffectOpXOrEqS64, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpXorEqS64, r0, r1);
         return true;
     default:
-        return internalError(context, "emitAffectXOrEqual, type not supported");
+        return internalError(context, "emitAffectXorEqual, type not supported");
     }
 }
 
@@ -632,7 +632,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
         SWAG_CHECK(emitAffectOrEqual(context, r0, r1));
         break;
     case TokenId::SymCircumflexEqual:
-        SWAG_CHECK(emitAffectXOrEqual(context, r0, r1));
+        SWAG_CHECK(emitAffectXorEqual(context, r0, r1));
         break;
     case TokenId::SymLowerLowerEqual:
         SWAG_CHECK(emitAffectShiftLeftEqual(context, r0, r1));

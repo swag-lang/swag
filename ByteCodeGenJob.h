@@ -269,7 +269,7 @@ struct ByteCodeGenJob : public Job
     static bool emitAffectPercentEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-    static bool emitAffectXOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static bool emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectShiftRightEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffect(ByteCodeGenContext* context);

@@ -1681,22 +1681,22 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::AffectOpXOrEqS8:
+    case ByteCodeOp::AffectOpXorEqS8:
     {
         *(int8_t*) registersRC[ip->a.u32].pointer ^= IMMB_S8(ip);
         break;
     }
-    case ByteCodeOp::AffectOpXOrEqS16:
+    case ByteCodeOp::AffectOpXorEqS16:
     {
         *(int16_t*) registersRC[ip->a.u32].pointer ^= IMMB_S16(ip);
         break;
     }
-    case ByteCodeOp::AffectOpXOrEqS32:
+    case ByteCodeOp::AffectOpXorEqS32:
     {
         *(int32_t*) registersRC[ip->a.u32].pointer ^= IMMB_S32(ip);
         break;
     }
-    case ByteCodeOp::AffectOpXOrEqS64:
+    case ByteCodeOp::AffectOpXorEqS64:
     {
         *(int64_t*) registersRC[ip->a.u32].pointer ^= IMMB_S64(ip);
         break;
@@ -1854,17 +1854,17 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicAtomicOrS64:
         registersRC[ip->c.u32].s64 = OS::atomicOr((int64_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s64);
         break;
-    case ByteCodeOp::IntrinsicAtomicXOrS8:
-        registersRC[ip->c.u32].s8 = OS::atomicXOr((int8_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s8);
+    case ByteCodeOp::IntrinsicAtomicXorS8:
+        registersRC[ip->c.u32].s8 = OS::atomicXor((int8_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s8);
         break;
-    case ByteCodeOp::IntrinsicAtomicXOrS16:
-        registersRC[ip->c.u32].s16 = OS::atomicXOr((int16_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s16);
+    case ByteCodeOp::IntrinsicAtomicXorS16:
+        registersRC[ip->c.u32].s16 = OS::atomicXor((int16_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s16);
         break;
-    case ByteCodeOp::IntrinsicAtomicXOrS32:
-        registersRC[ip->c.u32].s32 = OS::atomicXOr((int32_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s32);
+    case ByteCodeOp::IntrinsicAtomicXorS32:
+        registersRC[ip->c.u32].s32 = OS::atomicXor((int32_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s32);
         break;
-    case ByteCodeOp::IntrinsicAtomicXOrS64:
-        registersRC[ip->c.u32].s64 = OS::atomicXOr((int64_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s64);
+    case ByteCodeOp::IntrinsicAtomicXorS64:
+        registersRC[ip->c.u32].s64 = OS::atomicXor((int64_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s64);
         break;
 
     default:

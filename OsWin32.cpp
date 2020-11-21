@@ -724,22 +724,22 @@ namespace OS
         return _InterlockedOr64((int64_t*) addr, value);
     }
 
-    int8_t atomicXOr(int8_t* addr, int8_t value)
+    int8_t atomicXor(int8_t* addr, int8_t value)
     {
         return _InterlockedXor8((char*) addr, value);
     }
 
-    int16_t atomicXOr(int16_t* addr, int16_t value)
+    int16_t atomicXor(int16_t* addr, int16_t value)
     {
         return _InterlockedXor16((int16_t*) addr, value);
     }
 
-    int32_t atomicXOr(int32_t* addr, int32_t value)
+    int32_t atomicXor(int32_t* addr, int32_t value)
     {
         return _InterlockedXor((LONG*) addr, value);
     }
 
-    int64_t atomicXOr(int64_t* addr, int64_t value)
+    int64_t atomicXor(int64_t* addr, int64_t value)
     {
         return _InterlockedXor64((int64_t*) addr, value);
     }

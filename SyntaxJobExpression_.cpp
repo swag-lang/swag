@@ -187,7 +187,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicAtomicAdd:
     case TokenId::IntrinsicAtomicAnd:
     case TokenId::IntrinsicAtomicOr:
-    case TokenId::IntrinsicAtomicXOr:
+    case TokenId::IntrinsicAtomicXor:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
@@ -924,7 +924,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     case TokenId::IntrinsicAtomicAdd:
     case TokenId::IntrinsicAtomicAnd:
     case TokenId::IntrinsicAtomicOr:
-    case TokenId::IntrinsicAtomicXOr:
+    case TokenId::IntrinsicAtomicXor:
         SWAG_CHECK(doIdentifierRef(nullptr, result));
         return true;
     case TokenId::SymLeftParen:

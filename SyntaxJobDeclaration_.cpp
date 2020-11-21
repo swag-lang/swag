@@ -333,7 +333,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicAtomicAdd:
     case TokenId::IntrinsicAtomicAnd:
     case TokenId::IntrinsicAtomicOr:
-    case TokenId::IntrinsicAtomicXOr:
+    case TokenId::IntrinsicAtomicXor:
     case TokenId::SymLeftParen:
     case TokenId::SymColon:
         SWAG_CHECK(doAffectExpression(parent, result));

@@ -766,16 +766,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
-        case ByteCodeOp::AffectOpXOrEqS8:
+        case ByteCodeOp::AffectOpXorEqS8:
             MK_BINOPEQ8_CAB(X64Op::XOR);
             break;
-        case ByteCodeOp::AffectOpXOrEqS16:
+        case ByteCodeOp::AffectOpXorEqS16:
             MK_BINOPEQ16_CAB(X64Op::XOR);
             break;
-        case ByteCodeOp::AffectOpXOrEqS32:
+        case ByteCodeOp::AffectOpXorEqS32:
             MK_BINOPEQ32_CAB(X64Op::XOR);
             break;
-        case ByteCodeOp::AffectOpXOrEqS64:
+        case ByteCodeOp::AffectOpXorEqS64:
             MK_BINOPEQ64_CAB(X64Op::XOR);
             break;
 
@@ -2099,25 +2099,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
             break;
 
-        case ByteCodeOp::IntrinsicAtomicXOrS8:
+        case ByteCodeOp::IntrinsicAtomicXorS8:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RDX, RDI);
             BackendX64Inst::emit_Load8_Indirect(pp, 0, RDX, RDX);
             MK_BINOPEQ8_LOCK_CAB(X64Op::XOR);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
             break;
-        case ByteCodeOp::IntrinsicAtomicXOrS16:
+        case ByteCodeOp::IntrinsicAtomicXorS16:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RDX, RDI);
             BackendX64Inst::emit_Load16_Indirect(pp, 0, RDX, RDX);
             MK_BINOPEQ16_LOCK_CAB(X64Op::XOR);
             BackendX64Inst::emit_Store16_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
             break;
-        case ByteCodeOp::IntrinsicAtomicXOrS32:
+        case ByteCodeOp::IntrinsicAtomicXorS32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RDX, RDI);
             BackendX64Inst::emit_Load32_Indirect(pp, 0, RDX, RDX);
             MK_BINOPEQ32_LOCK_CAB(X64Op::XOR);
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
             break;
-        case ByteCodeOp::IntrinsicAtomicXOrS64:
+        case ByteCodeOp::IntrinsicAtomicXorS64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RDX, RDX);
             MK_BINOPEQ64_LOCK_CAB(X64Op::XOR);

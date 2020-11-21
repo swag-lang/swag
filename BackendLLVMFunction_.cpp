@@ -536,7 +536,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::IntrinsicAtomicXOrS8:
+        case ByteCodeOp::IntrinsicAtomicXorS8:
         {
             MK_BINOPEQ8_CAB();
             auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xor, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
@@ -544,7 +544,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r3);
             break;
         }
-        case ByteCodeOp::IntrinsicAtomicXOrS16:
+        case ByteCodeOp::IntrinsicAtomicXorS16:
         {
             MK_BINOPEQ16_CAB();
             auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xor, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
@@ -552,7 +552,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r3);
             break;
         }
-        case ByteCodeOp::IntrinsicAtomicXOrS32:
+        case ByteCodeOp::IntrinsicAtomicXorS32:
         {
             MK_BINOPEQ32_CAB();
             auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xor, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
@@ -560,7 +560,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r3);
             break;
         }
-        case ByteCodeOp::IntrinsicAtomicXOrS64:
+        case ByteCodeOp::IntrinsicAtomicXorS64:
         {
             MK_BINOPEQ64_CAB();
             auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Xor, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
@@ -1701,28 +1701,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::AffectOpXOrEqS8:
+        case ByteCodeOp::AffectOpXorEqS8:
         {
             MK_BINOPEQ8_CAB();
             auto v0 = builder.CreateXor(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpXOrEqS16:
+        case ByteCodeOp::AffectOpXorEqS16:
         {
             MK_BINOPEQ16_CAB();
             auto v0 = builder.CreateXor(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpXOrEqS32:
+        case ByteCodeOp::AffectOpXorEqS32:
         {
             MK_BINOPEQ32_CAB();
             auto v0 = builder.CreateXor(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpXOrEqS64:
+        case ByteCodeOp::AffectOpXorEqS64:
         {
             MK_BINOPEQ64_CAB();
             auto v0 = builder.CreateXor(builder.CreateLoad(r1), r2);
