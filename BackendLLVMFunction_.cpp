@@ -569,6 +569,67 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::IntrinsicAtomicCmpXchgS8:
+        {
+            auto r0   = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto ptr0 = builder.CreateLoad(r0);
+
+            llvm::Value* r1 = MK_IMMB_8();
+            llvm::Value* r2 = MK_IMMC_8();
+            auto         v0 = builder.CreateAtomicCmpXchg(ptr0, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent, llvm::AtomicOrdering::SequentiallyConsistent);
+            v0->setVolatile(true);
+            auto v1 = builder.CreateExtractValue(v0, 0);
+
+            auto r4 = TO_PTR_I8(GEP_I32(allocR, ip->d.u32));
+            builder.CreateStore(v1, r4);
+            break;
+        }
+        case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
+        {
+            auto r0 = TO_PTR_PTR_I16(GEP_I32(allocR, ip->a.u32));
+            auto ptr0 = builder.CreateLoad(r0);
+
+            llvm::Value* r1 = MK_IMMB_16();
+            llvm::Value* r2 = MK_IMMC_16();
+            auto         v0 = builder.CreateAtomicCmpXchg(ptr0, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent, llvm::AtomicOrdering::SequentiallyConsistent);
+            v0->setVolatile(true);
+            auto v1 = builder.CreateExtractValue(v0, 0);
+
+            auto r4 = TO_PTR_I16(GEP_I32(allocR, ip->d.u32));
+            builder.CreateStore(v1, r4);
+            break;
+        }
+        case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
+        {
+            auto r0 = TO_PTR_PTR_I32(GEP_I32(allocR, ip->a.u32));
+            auto ptr0 = builder.CreateLoad(r0);
+
+            llvm::Value* r1 = MK_IMMB_32();
+            llvm::Value* r2 = MK_IMMC_32();
+            auto         v0 = builder.CreateAtomicCmpXchg(ptr0, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent, llvm::AtomicOrdering::SequentiallyConsistent);
+            v0->setVolatile(true);
+            auto v1 = builder.CreateExtractValue(v0, 0);
+
+            auto r4 = TO_PTR_I32(GEP_I32(allocR, ip->d.u32));
+            builder.CreateStore(v1, r4);
+            break;
+        }
+        case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
+        {
+            auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
+            auto ptr0 = builder.CreateLoad(r0);
+
+            llvm::Value* r1 = MK_IMMB_64();
+            llvm::Value* r2 = MK_IMMC_64();
+            auto         v0 = builder.CreateAtomicCmpXchg(ptr0, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent, llvm::AtomicOrdering::SequentiallyConsistent);
+            v0->setVolatile(true);
+            auto v1 = builder.CreateExtractValue(v0, 0);
+
+            auto r4 = GEP_I32(allocR, ip->d.u32);
+            builder.CreateStore(v1, r4);
+            break;
+        }
+
         case ByteCodeOp::IncPointer32:
         case ByteCodeOp::DecPointer32:
         {

@@ -462,10 +462,10 @@ func @atomxor(addr: *s8, value: s8)->s8;
 func @atomxor(addr: *s16, value: s16)->s16;
 func @atomxor(addr: *s32, value: s32)->s32;
 func @atomxor(addr: *s64, value: s64)->s64;
-func @atomcmpxchg(addr: *s8, exchangeWith: s8, compareTo: s8)->s8;
-func @atomcmpxchg(addr: *s16, exchangeWith: s16, compareTo: s16)->s16;
-func @atomcmpxchg(addr: *s32, exchangeWith: s32, compareTo: s32)->s32;
-func @atomcmpxchg(addr: *s64, exchangeWith: s64, compareTo: s64)->s64;
+func @atomcmpxchg(addr: *s8,  compareTo, exchangeWith: s8)->s8;
+func @atomcmpxchg(addr: *s16, compareTo, exchangeWith: s16)->s16;
+func @atomcmpxchg(addr: *s32, compareTo, exchangeWith: s32)->s32;
+func @atomcmpxchg(addr: *s64, compareTo, exchangeWith: s64)->s64;
 
 // Constant intrinsics
 #[swag.constexpr]

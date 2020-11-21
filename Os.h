@@ -55,8 +55,8 @@ namespace OS
     extern int16_t atomicXor(int16_t* addr, int16_t value);
     extern int32_t atomicXor(int32_t* addr, int32_t value);
     extern int64_t atomicXor(int64_t* addr, int64_t value);
-    extern int8_t  atomicCmpXchg(int8_t* addr, int8_t replaceWith, int8_t compareTo);
-    extern int16_t atomicCmpXchg(int16_t* addr, int16_t replaceWith, int16_t compareTo);
-    extern int32_t atomicCmpXchg(int32_t* addr, int32_t replaceWith, int32_t compareTo);
-    extern int64_t atomicCmpXchg(int64_t* addr, int64_t replaceWith, int64_t compareTo);
+    extern int8_t  atomicCmpXchg(int8_t* addr, int8_t compareTo, int8_t replaceWith);
+    extern int16_t atomicCmpXchg(int16_t* addr, int16_t compareTo, int16_t replaceWith);
+    extern int32_t atomicCmpXchg(int32_t* addr, int32_t compareTo, int32_t replaceWith);
+    extern int64_t atomicCmpXchg(int64_t* addr, int64_t compareTo, int64_t replaceWith);
 } // namespace OS

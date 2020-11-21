@@ -2126,29 +2126,29 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicAtomicCmpXchgS8:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            MK_IMMB_8(RDX);
-            MK_IMMC_8(RAX);
+            MK_IMMB_8(RAX);
+            MK_IMMC_8(RDX);
             pp.concat.addString4("\xF0\x0F\xB0\x11"); // lock CMPXCHG [rcx], dl
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            MK_IMMB_16(RDX);
-            MK_IMMC_16(RAX);
+            MK_IMMB_16(RAX);
+            MK_IMMC_16(RDX);
             pp.concat.addString5("\x66\xF0\x0F\xB1\x11"); // lock CMPXCHG [rcx], dx
             BackendX64Inst::emit_Store16_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            MK_IMMB_32(RDX);
-            MK_IMMC_32(RAX);
+            MK_IMMB_32(RAX);
+            MK_IMMC_32(RDX);
             pp.concat.addString4("\xF0\x0F\xB1\x11"); // lock CMPXCHG [rcx], edx
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            MK_IMMB_64(RDX);
-            MK_IMMC_64(RAX);
+            MK_IMMB_64(RAX);
+            MK_IMMC_64(RDX);
             pp.concat.addString5("\xF0\x48\x0F\xB1\x11"); // lock CMPXCHG [rcx], rdx
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             break;

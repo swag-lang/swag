@@ -744,22 +744,22 @@ namespace OS
         return _InterlockedXor64(addr, value);
     }
 
-    int8_t atomicCmpXchg(int8_t* addr, int8_t replaceWith, int8_t compareTo)
+    int8_t atomicCmpXchg(int8_t* addr, int8_t compareTo, int8_t replaceWith)
     {
         return _InterlockedCompareExchange8((char*) addr, replaceWith, compareTo);
     }
 
-    int16_t atomicCmpXchg(int16_t* addr, int16_t replaceWith, int16_t compareTo)
+    int16_t atomicCmpXchg(int16_t* addr, int16_t compareTo, int16_t replaceWith)
     {
         return _InterlockedCompareExchange16(addr, replaceWith, compareTo);
     }
 
-    int32_t atomicCmpXchg(int32_t* addr, int32_t replaceWith, int32_t compareTo)
+    int32_t atomicCmpXchg(int32_t* addr, int32_t compareTo, int32_t replaceWith)
     {
         return _InterlockedCompareExchange((LONG*) addr, (LONG) replaceWith, (LONG) compareTo);
     }
 
-    int64_t atomicCmpXchg(int64_t* addr, int64_t replaceWith, int64_t compareTo)
+    int64_t atomicCmpXchg(int64_t* addr, int64_t compareTo, int64_t replaceWith)
     {
         return _InterlockedCompareExchange64(addr, replaceWith, compareTo);
     }

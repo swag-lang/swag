@@ -12,6 +12,10 @@
 #define MK_IMMB_F32() (ip->flags & BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(llvm::Type::getFloatTy(context), ip->b.f32) : (llvm::Value*) builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->b.u32)))
 #define MK_IMMB_F64() (ip->flags & BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(llvm::Type::getDoubleTy(context), ip->b.f64) : (llvm::Value*) builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->b.u32)))
 
+#define MK_IMMC_8() (ip->flags & BCI_IMM_C) ? (llvm::Value*) builder.getInt8(ip->c.u8) : (llvm::Value*) builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->c.u32)))
+#define MK_IMMC_16() (ip->flags & BCI_IMM_C) ? (llvm::Value*) builder.getInt16(ip->c.u16) : (llvm::Value*) builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->c.u32)))
+#define MK_IMMC_32() (ip->flags & BCI_IMM_C) ? (llvm::Value*) builder.getInt32(ip->c.u32) : (llvm::Value*) builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->c.u32)))
+#define MK_IMMC_64() (ip->flags & BCI_IMM_C) ? (llvm::Value*) builder.getInt64(ip->c.u64) : (llvm::Value*) builder.CreateLoad(TO_PTR_I64(GEP_I32(allocR, ip->c.u32)))
 #define MK_IMMC_F32() (ip->flags & BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(llvm::Type::getFloatTy(context), ip->c.f32) : (llvm::Value*) builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->c.u32)))
 #define MK_IMMC_F64() (ip->flags & BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(llvm::Type::getDoubleTy(context), ip->c.f64) : (llvm::Value*) builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->c.u32)))
 
