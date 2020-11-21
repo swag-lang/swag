@@ -437,6 +437,39 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         switch (ip->op)
         {
+        case ByteCodeOp::IntrinsicAtomicAddS8:
+        {
+            MK_BINOPEQ8_CAB();
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
+            builder.CreateStore(v0, r3);
+            break;
+        }
+        case ByteCodeOp::IntrinsicAtomicAddS16:
+        {
+            MK_BINOPEQ16_CAB();
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = TO_PTR_I16(GEP_I32(allocR, ip->c.u32));
+            builder.CreateStore(v0, r3);
+            break;
+        }
+        case ByteCodeOp::IntrinsicAtomicAddS32:
+        {
+            MK_BINOPEQ32_CAB();
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
+            builder.CreateStore(v0, r3);
+            break;
+        }
+        case ByteCodeOp::IntrinsicAtomicAddS64:
+        {
+            MK_BINOPEQ64_CAB();
+            auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, llvm::AtomicOrdering::SequentiallyConsistent);
+            auto r3 = GEP_I32(allocR, ip->c.u32);
+            builder.CreateStore(v0, r3);
+            break;
+        }
+
         case ByteCodeOp::IncPointer32:
         case ByteCodeOp::DecPointer32:
         {
