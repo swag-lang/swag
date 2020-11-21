@@ -27,6 +27,9 @@ struct ByteCodeOptimizer
             return;
         if (context->semContext && ip->op == ByteCodeOp::IncPointer32)
             return;
+        auto flags = g_ByteCodeOpFlags[(int) ip->op];
+        if (flags & OPFLAG_UNPURE)
+            return;
         SWAG_ASSERT(ip->op != ByteCodeOp::End);
         context->passHasDoneSomething = true;
         ip->op                        = ByteCodeOp::Nop;

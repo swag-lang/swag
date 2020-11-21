@@ -133,6 +133,7 @@ void LanguageSpec::setup()
     keywords["@isbytecode"]  = TokenId::IntrinsicIsByteCode;
     keywords["@compiler"]    = TokenId::IntrinsicCompiler;
     keywords["@thrunptr"]    = TokenId::IntrinsicThreadRunPtr;
+    keywords["@atomadd"]     = TokenId::IntrinsicAtomicAdd;
 
     keywords["@sqrt"]  = TokenId::IntrinsicSqrt;
     keywords["@sin"]   = TokenId::IntrinsicSin;

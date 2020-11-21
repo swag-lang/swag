@@ -2024,6 +2024,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Ret(pp);
             break;
 
+        case ByteCodeOp::IntrinsicAtomicAddS8:
+            MK_BINOPEQ8_LOCK_CAB(X64Op::ADD);
+            break;
+        case ByteCodeOp::IntrinsicAtomicAddS16:
+            MK_BINOPEQ16_LOCK_CAB(X64Op::ADD);
+            break;
+        case ByteCodeOp::IntrinsicAtomicAddS32:
+            MK_BINOPEQ32_LOCK_CAB(X64Op::ADD);
+            break;
+        case ByteCodeOp::IntrinsicAtomicAddS64:
+            MK_BINOPEQ64_LOCK_CAB(X64Op::ADD);
+            break;
+
         case ByteCodeOp::IntrinsicS8x1:
         {
             MK_IMMB_8(RAX);

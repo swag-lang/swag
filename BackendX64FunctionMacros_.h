@@ -255,3 +255,23 @@
     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
     MK_IMMB_F64(XMM1);                                                        \
     BackendX64Inst::emit_OpF64_Indirect(pp, XMM1, RCX, __op);
+
+#define MK_BINOPEQ8_LOCK_CAB(__op)                                            \
+    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
+    MK_IMMB_8(RAX);                                                           \
+    BackendX64Inst::emit_Op8_Indirect(pp, 0, RAX, RCX, __op, true);
+
+#define MK_BINOPEQ16_LOCK_CAB(__op)                                           \
+    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
+    MK_IMMB_16(RAX);                                                          \
+    BackendX64Inst::emit_Op16_Indirect(pp, 0, RAX, RCX, __op, true);
+
+#define MK_BINOPEQ32_LOCK_CAB(__op)                                           \
+    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
+    MK_IMMB_32(RAX);                                                          \
+    BackendX64Inst::emit_Op32_Indirect(pp, 0, RAX, RCX, __op, true);
+
+#define MK_BINOPEQ64_LOCK_CAB(__op)                                           \
+    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
+    MK_IMMB_64(RAX);                                                          \
+    BackendX64Inst::emit_Op64_Indirect(pp, 0, RAX, RCX, __op, true);

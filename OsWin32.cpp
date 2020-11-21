@@ -664,6 +664,26 @@ namespace OS
         InterlockedCompareExchangePointer(ptr, what, nullptr);
     }
 
+    int8_t atomicAdd(int8_t* addr, int8_t value)
+    {
+        return _InterlockedExchangeAdd8((char*) addr, value);
+    }
+
+    int16_t atomicAdd(int16_t* addr, int16_t value)
+    {
+        return _InterlockedExchangeAdd16((int16_t*) addr, value);
+    }
+
+    int32_t atomicAdd(int32_t* addr, int32_t value)
+    {
+        return _InterlockedExchangeAdd((LONG*) addr, value);
+    }
+
+    int64_t atomicAdd(int64_t* addr, int64_t value)
+    {
+        return _InterlockedExchangeAdd64((int64_t*) addr, value);
+    }
+
 }; // namespace OS
 
 #endif

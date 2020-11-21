@@ -477,6 +477,31 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicIsByteCode, node->resultRegisterRC);
         break;
     }
+    case TokenId::IntrinsicAtomicAdd:
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        auto child0   = callParams->childs[0];
+        auto child1   = callParams->childs[1];
+        auto typeInfo = TypeManager::concreteReferenceType(child1->typeInfo);
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::S8:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S16:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S32:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S64:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        default:
+            return internalError(context, "emitIntrinsic, @atomadd invalid type");
+        }
+        break;
+    }
 
     case TokenId::IntrinsicPow:
     {

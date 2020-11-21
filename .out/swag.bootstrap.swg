@@ -1,14 +1,3 @@
-func @assert(value: bool);
-func @alloc(size: u32)->*void;
-func @realloc(ptr: *void, size: u32)->*void;
-func @free(ptr: *void);
-func @memset(dst: *void, value: u8, size: u32);
-func @getcontext()->const *swag.Context;
-func @setcontext(context: const *swag.Context);
-func @isbytecode()->bool;
-func @thrunptr()->const *void;
-func @compiler()->swag.ICompiler;
-
 namespace swag
 {
     // #[flags] is forced by the compiler
@@ -441,6 +430,26 @@ namespace swag
         lineEnd, colEnd:        u32
     }
 }
+
+//
+// Intrinsic
+//
+
+func @assert(value: bool);
+func @alloc(size: u32)->*void;
+func @realloc(ptr: *void, size: u32)->*void;
+func @free(ptr: *void);
+func @memset(dst: *void, value: u8, size: u32);
+func @getcontext()->const *swag.Context;
+func @setcontext(context: const *swag.Context);
+func @isbytecode()->bool;
+func @thrunptr()->const *void;
+func @compiler()->swag.ICompiler;
+
+func @atomadd(addr: *s8, value: s8)->s8;
+func @atomadd(addr: *s16, value: s16)->s16;
+func @atomadd(addr: *s32, value: s32)->s32;
+func @atomadd(addr: *s64, value: s64)->s64;
 
 // Constant intrinsics
 #[swag.constexpr]

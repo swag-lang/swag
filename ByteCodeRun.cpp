@@ -1818,6 +1818,19 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 >= 0 ? true : false;
         break;
 
+    case ByteCodeOp::IntrinsicAtomicAddS8:
+        registersRC[ip->c.u32].s8 = OS::atomicAdd((int8_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s8);
+        break;
+    case ByteCodeOp::IntrinsicAtomicAddS16:
+        registersRC[ip->c.u32].s16 = OS::atomicAdd((int16_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s16);
+        break;
+    case ByteCodeOp::IntrinsicAtomicAddS32:
+        registersRC[ip->c.u32].s32 = OS::atomicAdd((int32_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s32);
+        break;
+    case ByteCodeOp::IntrinsicAtomicAddS64:
+        registersRC[ip->c.u32].s64 = OS::atomicAdd((int64_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s64);
+        break;
+
     default:
         if (ip->op < ByteCodeOp::End)
             context->error(format("unknown bytecode instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));

@@ -6,18 +6,18 @@
 
 enum Reg
 {
-    RAX  = 0b0000,
+    RAX = 0b0000,
     //RBX  = 0b0011,
-    RCX  = 0b0001,
-    RDX  = 0b0010,
-    RSP  = 0b0100,
+    RCX = 0b0001,
+    RDX = 0b0010,
+    RSP = 0b0100,
     //RBP  = 0b0101,
     //RSI  = 0b0110,
-    RDI  = 0b0111,
-    R8   = 0b1000,
-    R9   = 0b1001,
-    R10  = 0b1010,
-    R11  = 0b1011,
+    RDI = 0b0111,
+    R8  = 0b1000,
+    R9  = 0b1001,
+    R10 = 0b1010,
+    R11 = 0b1011,
     //R12  = 0b1100,
     //R13  = 0b1101,
     //R14  = 0b1110,
@@ -536,32 +536,40 @@ namespace BackendX64Inst
         emit_ModRM(pp, stackOffset, 1, reg);
     }
 
-    inline void emit_Op8_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction)
+    inline void emit_Op8_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction, bool lock = false)
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);
+        if (lock)
+            pp.concat.addU8(0xF0);
         pp.concat.addU8((uint8_t) instruction & ~1);
         emit_ModRM(pp, offsetStack, reg & 0b111, memReg & 0b111);
     }
 
-    inline void emit_Op16_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction)
+    inline void emit_Op16_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction, bool lock = false)
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);
+        if (lock)
+            pp.concat.addU8(0xF0);
         pp.concat.addU8(0x66);
         pp.concat.addU8((uint8_t) instruction);
         emit_ModRM(pp, offsetStack, reg & 0b111, memReg & 0b111);
     }
 
-    inline void emit_Op32_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction)
+    inline void emit_Op32_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction, bool lock = false)
     {
         SWAG_ASSERT(memReg < R8);
+        if (lock)
+            pp.concat.addU8(0xF0);
         if (reg >= R8)
             pp.concat.addU8(0x44);
         pp.concat.addU8((uint8_t) instruction);
         emit_ModRM(pp, offsetStack, reg & 0b111, memReg & 0b111);
     }
 
-    inline void emit_Op64_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction)
+    inline void emit_Op64_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg, X64Op instruction, bool lock = false)
     {
+        if (lock)
+            pp.concat.addU8(0xF0);
         pp.concat.addU8(0x48 | ((memReg & 0b1000) >> 3) | ((reg & 0b1000) >> 1));
         pp.concat.addU8((uint8_t) instruction);
         emit_ModRM(pp, offsetStack, reg & 0b111, memReg & 0b111);
