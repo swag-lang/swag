@@ -502,6 +502,81 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         }
         break;
     }
+    case TokenId::IntrinsicAtomicAnd:
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        auto child0 = callParams->childs[0];
+        auto child1 = callParams->childs[1];
+        auto typeInfo = TypeManager::concreteReferenceType(child1->typeInfo);
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::S8:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S16:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S32:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S64:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        default:
+            return internalError(context, "emitIntrinsic, @atomand invalid type");
+        }
+        break;
+    }
+    case TokenId::IntrinsicAtomicOr:
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        auto child0 = callParams->childs[0];
+        auto child1 = callParams->childs[1];
+        auto typeInfo = TypeManager::concreteReferenceType(child1->typeInfo);
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::S8:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S16:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S32:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S64:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        default:
+            return internalError(context, "emitIntrinsic, @atomor invalid type");
+        }
+        break;
+    }
+    case TokenId::IntrinsicAtomicXOr:
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        auto child0 = callParams->childs[0];
+        auto child1 = callParams->childs[1];
+        auto typeInfo = TypeManager::concreteReferenceType(child1->typeInfo);
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::S8:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXOrS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S16:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXOrS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S32:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXOrS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S64:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXOrS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        default:
+            return internalError(context, "emitIntrinsic, @atomxor invalid type");
+        }
+        break;
+    }
 
     case TokenId::IntrinsicPow:
     {

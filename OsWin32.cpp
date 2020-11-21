@@ -684,6 +684,66 @@ namespace OS
         return _InterlockedExchangeAdd64((int64_t*) addr, value);
     }
 
+    int8_t atomicAnd(int8_t* addr, int8_t value)
+    {
+        return _InterlockedAnd8((char*) addr, value);
+    }
+
+    int16_t atomicAnd(int16_t* addr, int16_t value)
+    {
+        return _InterlockedAnd16((int16_t*) addr, value);
+    }
+
+    int32_t atomicAnd(int32_t* addr, int32_t value)
+    {
+        return _InterlockedAnd((LONG*) addr, value);
+    }
+
+    int64_t atomicAnd(int64_t* addr, int64_t value)
+    {
+        return _InterlockedAnd64((int64_t*) addr, value);
+    }
+
+    int8_t atomicOr(int8_t* addr, int8_t value)
+    {
+        return _InterlockedOr8((char*) addr, value);
+    }
+
+    int16_t atomicOr(int16_t* addr, int16_t value)
+    {
+        return _InterlockedOr16((int16_t*) addr, value);
+    }
+
+    int32_t atomicOr(int32_t* addr, int32_t value)
+    {
+        return _InterlockedOr((LONG*) addr, value);
+    }
+
+    int64_t atomicOr(int64_t* addr, int64_t value)
+    {
+        return _InterlockedOr64((int64_t*) addr, value);
+    }
+
+    int8_t atomicXOr(int8_t* addr, int8_t value)
+    {
+        return _InterlockedXor8((char*) addr, value);
+    }
+
+    int16_t atomicXOr(int16_t* addr, int16_t value)
+    {
+        return _InterlockedXor16((int16_t*) addr, value);
+    }
+
+    int32_t atomicXOr(int32_t* addr, int32_t value)
+    {
+        return _InterlockedXor((LONG*) addr, value);
+    }
+
+    int64_t atomicXOr(int64_t* addr, int64_t value)
+    {
+        return _InterlockedXor64((int64_t*) addr, value);
+    }
+
 }; // namespace OS
 
 #endif

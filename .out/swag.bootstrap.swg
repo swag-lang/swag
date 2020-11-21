@@ -450,6 +450,18 @@ func @atomadd(addr: *s8, value: s8)->s8;
 func @atomadd(addr: *s16, value: s16)->s16;
 func @atomadd(addr: *s32, value: s32)->s32;
 func @atomadd(addr: *s64, value: s64)->s64;
+func @atomand(addr: *s8, value: s8)->s8;
+func @atomand(addr: *s16, value: s16)->s16;
+func @atomand(addr: *s32, value: s32)->s32;
+func @atomand(addr: *s64, value: s64)->s64;
+func @atomor(addr: *s8, value: s8)->s8;
+func @atomor(addr: *s16, value: s16)->s16;
+func @atomor(addr: *s32, value: s32)->s32;
+func @atomor(addr: *s64, value: s64)->s64;
+func @atomxor(addr: *s8, value: s8)->s8;
+func @atomxor(addr: *s16, value: s16)->s16;
+func @atomxor(addr: *s32, value: s32)->s32;
+func @atomxor(addr: *s64, value: s64)->s64;
 
 // Constant intrinsics
 #[swag.constexpr]

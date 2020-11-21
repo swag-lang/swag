@@ -134,6 +134,9 @@ void LanguageSpec::setup()
     keywords["@compiler"]    = TokenId::IntrinsicCompiler;
     keywords["@thrunptr"]    = TokenId::IntrinsicThreadRunPtr;
     keywords["@atomadd"]     = TokenId::IntrinsicAtomicAdd;
+    keywords["@atomand"]     = TokenId::IntrinsicAtomicAnd;
+    keywords["@atomor"]      = TokenId::IntrinsicAtomicOr;
+    keywords["@atomxor"]     = TokenId::IntrinsicAtomicXOr;
 
     keywords["@sqrt"]  = TokenId::IntrinsicSqrt;
     keywords["@sin"]   = TokenId::IntrinsicSin;

@@ -38,8 +38,21 @@ namespace OS
 
     extern bool    atomicTestNull(void** ptr);
     extern void    atomicSetIfNotNull(void** ptr, void* what);
+
     extern int8_t  atomicAdd(int8_t* addr, int8_t value);
     extern int16_t atomicAdd(int16_t* addr, int16_t value);
     extern int32_t atomicAdd(int32_t* addr, int32_t value);
     extern int64_t atomicAdd(int64_t* addr, int64_t value);
+    extern int8_t  atomicAnd(int8_t* addr, int8_t value);
+    extern int16_t atomicAnd(int16_t* addr, int16_t value);
+    extern int32_t atomicAnd(int32_t* addr, int32_t value);
+    extern int64_t atomicAnd(int64_t* addr, int64_t value);
+    extern int8_t  atomicOr(int8_t* addr, int8_t value);
+    extern int16_t atomicOr(int16_t* addr, int16_t value);
+    extern int32_t atomicOr(int32_t* addr, int32_t value);
+    extern int64_t atomicOr(int64_t* addr, int64_t value);
+    extern int8_t  atomicXOr(int8_t* addr, int8_t value);
+    extern int16_t atomicXOr(int16_t* addr, int16_t value);
+    extern int32_t atomicXOr(int32_t* addr, int32_t value);
+    extern int64_t atomicXOr(int64_t* addr, int64_t value);
 } // namespace OS

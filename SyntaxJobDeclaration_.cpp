@@ -331,6 +331,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicSetContext:
     case TokenId::IntrinsicGetContext:
     case TokenId::IntrinsicAtomicAdd:
+    case TokenId::IntrinsicAtomicAnd:
+    case TokenId::IntrinsicAtomicOr:
+    case TokenId::IntrinsicAtomicXOr:
     case TokenId::SymLeftParen:
     case TokenId::SymColon:
         SWAG_CHECK(doAffectExpression(parent, result));
