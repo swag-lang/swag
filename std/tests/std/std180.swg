@@ -4,7 +4,7 @@ using std.thread
 var G = 0's64
 const ITER = 50000
 
-func entry(th: thread.Thread)
+func entry(th: Thread)
 {
     loop ITER
     {
