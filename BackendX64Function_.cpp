@@ -2124,6 +2124,39 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
             break;
 
+        case ByteCodeOp::IntrinsicAtomicCmpXchgS8:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RCX);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
+            MK_IMMB_8(RDX);
+            MK_IMMC_8(RAX);
+            pp.concat.addString4("\xF0\x0F\xB0\x11"); // lock CMPXCHG [rcx], dl
+            break;
+        case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RCX);
+            BackendX64Inst::emit_Store16_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
+            MK_IMMB_16(RDX);
+            MK_IMMC_16(RAX);
+            pp.concat.addString5("\x66\xF0\x0F\xB1\x11"); // lock CMPXCHG [rcx], dx
+            break;
+        case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RCX);
+            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
+            MK_IMMB_32(RDX);
+            MK_IMMC_32(RAX);
+            pp.concat.addString4("\xF0\x0F\xB1\x11"); // lock CMPXCHG [rcx], edx
+            break;
+        case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RCX);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
+            MK_IMMB_64(RDX);
+            MK_IMMC_64(RAX);
+            pp.concat.addString5("\xF0\x48\x0F\xB1\x11"); // lock CMPXCHG [rcx], rdx
+            break;
+
         case ByteCodeOp::IntrinsicS8x1:
         {
             MK_IMMB_8(RAX);
