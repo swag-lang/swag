@@ -1,5 +1,4 @@
-﻿/*
-#import "std"
+﻿#import "std"
 using std.thread
 
 var G = 0's64
@@ -25,4 +24,3 @@ func entry(th: thread.Thread)
     visit *t: th t.wait()
     @assert(G == 3 * ITER)
 }
-*/
