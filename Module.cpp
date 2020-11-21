@@ -254,7 +254,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     node->bc->enterByteCode(&runContext);
     auto module = sourceFile->module;
     bool result = module->runner.run(&runContext);
-    node->bc->leaveByteCode(false);
+    node->bc->leaveByteCode(&runContext, false);
     g_byteCodeStack.clear();
 
     if (!result)
@@ -267,8 +267,8 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
         if (node->typeInfo->isNative(NativeTypeKind::String))
         {
             SWAG_ASSERT(node->resultRegisterRC.size() == 2);
-            const char* pz  = (const char*) node->bc->registersRC[0][node->resultRegisterRC[0]].pointer;
-            uint32_t    len = node->bc->registersRC[0][node->resultRegisterRC[1]].u32;
+            const char* pz  = (const char*) runContext.registersRC[0][node->resultRegisterRC[0]].pointer;
+            uint32_t    len = runContext.registersRC[0][node->resultRegisterRC[1]].u32;
             node->computedValue.text.reserve(len + 1);
             node->computedValue.text.count = len;
             memcpy(node->computedValue.text.buffer, pz, len);
@@ -276,7 +276,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
         }
         else
         {
-            node->computedValue.reg = node->bc->registersRC[0][node->resultRegisterRC[0]];
+            node->computedValue.reg = runContext.registersRC[0][node->resultRegisterRC[0]];
         }
 
         node->setFlagsValueIsComputed();
@@ -378,8 +378,8 @@ void Module::addByteCodeFunc(ByteCode* bc)
             numConcreteBC++;
 
         // Register for export
-        if ((attributeFlags & ATTRIBUTE_PUBLIC) && 
-            !(attributeFlags & ATTRIBUTE_INLINE) && 
+        if ((attributeFlags & ATTRIBUTE_PUBLIC) &&
+            !(attributeFlags & ATTRIBUTE_INLINE) &&
             !(attributeFlags & ATTRIBUTE_COMPILER) &&
             !(flags & AST_FROM_GENERIC))
             bc->node->ownerScope->addPublicFunc(bc->node);

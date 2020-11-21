@@ -24,6 +24,7 @@ struct ByteCodeRunContext : public JobContext
 {
     void setup(SourceFile* sf, AstNode* node, uint32_t stackS);
     void error(const Utf8& msg, ConcreteCompilerSourceLocation* loc = nullptr);
+    void addCallStack();
 
     template<typename T>
     inline T pop()
@@ -57,9 +58,11 @@ struct ByteCodeRunContext : public JobContext
         sp -= offset;
     }
 
-    VectorNative<ffi_type*>         ffiArgs;
-    VectorNative<void*>             ffiArgsValues;
-    Utf8                            errorMsg;
+    VectorNative<ffi_type*>        ffiArgs;
+    VectorNative<void*>            ffiArgsValues;
+    Utf8                           errorMsg;
+    vector<VectorNative<Register>> registersRC;
+
     ConcreteCompilerSourceLocation* errorLoc      = nullptr;
     JobContext*                     callerContext = nullptr;
 
@@ -73,8 +76,8 @@ struct ByteCodeRunContext : public JobContext
     Register*            registersRR  = nullptr;
 
     uint32_t stackSize = 0;
-
-    bool hasError = false;
+    int32_t  curRC     = -1;
+    bool     hasError  = false;
 
     const ConcreteCompilerMessage* currentCompilerMessage  = nullptr;
     Job*                           currentCompilerJob      = nullptr;

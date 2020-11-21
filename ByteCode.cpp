@@ -90,26 +90,29 @@ void ByteCode::addCallStack(ByteCodeRunContext* context)
 void ByteCode::enterByteCode(ByteCodeRunContext* context)
 {
     auto module = context->sourceFile->module;
-    if (curRC == (int) module->buildParameters.buildCfg->byteCodeMaxRecurse)
+    if (context->curRC == (int) module->buildParameters.buildCfg->byteCodeMaxRecurse)
     {
         context->hasError = true;
         context->errorMsg = format("recursive overflow during bytecode execution (max recursion is '--bc-max-recurse:%d')", module->buildParameters.buildCfg->byteCodeMaxRecurse);
         return;
     }
 
-    curRC++;
-    if (curRC >= registersRC.size())
+    context->curRC++;
+    if (context->curRC >= context->registersRC.size())
     {
-        auto rc = maxReservedRegisterRC ? (Register*) g_Allocator.alloc(maxReservedRegisterRC * sizeof(Register)) : nullptr;
-        registersRC.push_back(rc);
+        VectorNative<Register> rc;
+        context->registersRC.emplace_back(rc);
     }
+
+    context->registersRC[context->curRC].reserve(maxReservedRegisterRC, false);
+    context->registersRC[context->curRC].count = maxReservedRegisterRC;
 }
 
-void ByteCode::leaveByteCode(bool popCallStack)
+void ByteCode::leaveByteCode(ByteCodeRunContext* context, bool popCallStack)
 {
     if (popCallStack)
         g_byteCodeStack.pop();
-    curRC--;
+    context->curRC--;
 }
 
 void ByteCode::printInstruction(ByteCodeInstruction* ip)

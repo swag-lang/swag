@@ -306,7 +306,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
 
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    auto registersRC = context->bc->registersRC[context->bc->curRC];
+    auto registersRC = context->registersRC[context->curRC].buffer;
     auto registersRR = context->registersRR;
 
     switch (ip->op)
@@ -401,7 +401,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         if (context->sp == context->stack + context->stackSize)
             return false;
-        context->bc->leaveByteCode();
+        context->bc->leaveByteCode(context);
         context->ip = context->pop<ByteCodeInstruction*>();
         context->bc = context->pop<ByteCode*>();
         context->bp = context->pop<uint8_t*>();
