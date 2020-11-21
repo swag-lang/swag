@@ -36,8 +36,8 @@ namespace OS
     extern bool     compile(const BuildParameters& buildParameters, Module* module, const vector<string>& cFiles);
     extern bool     link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles);
 
-    extern bool    atomicTestNull(void** ptr);
-    extern void    atomicSetIfNotNull(void** ptr, void* what);
+    extern bool atomicTestNull(void** ptr);
+    extern void atomicSetIfNotNull(void** ptr, void* what);
 
     extern int8_t  atomicAdd(int8_t* addr, int8_t value);
     extern int16_t atomicAdd(int16_t* addr, int16_t value);
@@ -55,4 +55,8 @@ namespace OS
     extern int16_t atomicXor(int16_t* addr, int16_t value);
     extern int32_t atomicXor(int32_t* addr, int32_t value);
     extern int64_t atomicXor(int64_t* addr, int64_t value);
+    extern int8_t  atomicCmpXchg(int8_t* addr, int8_t replaceWith, int8_t compareTo);
+    extern int16_t atomicCmpXchg(int16_t* addr, int16_t replaceWith, int16_t compareTo);
+    extern int32_t atomicCmpXchg(int32_t* addr, int32_t replaceWith, int32_t compareTo);
+    extern int64_t atomicCmpXchg(int64_t* addr, int64_t replaceWith, int64_t compareTo);
 } // namespace OS

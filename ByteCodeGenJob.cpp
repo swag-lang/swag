@@ -311,6 +311,10 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
 
     case ByteCodeOp::IntrinsicTypeCmp:
     case ByteCodeOp::IntrinsicMemCmp:
+    case ByteCodeOp::IntrinsicAtomicCmpXchgS8:
+    case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
+    case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
+    case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
         context->bc->maxCallParams = max(context->bc->maxCallParams, 4); // Runtime call
         break;
     case ByteCodeOp::IntrinsicAssert:

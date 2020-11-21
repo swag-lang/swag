@@ -671,7 +671,7 @@ namespace OS
 
     int16_t atomicAdd(int16_t* addr, int16_t value)
     {
-        return _InterlockedExchangeAdd16((int16_t*) addr, value);
+        return _InterlockedExchangeAdd16(addr, value);
     }
 
     int32_t atomicAdd(int32_t* addr, int32_t value)
@@ -681,7 +681,7 @@ namespace OS
 
     int64_t atomicAdd(int64_t* addr, int64_t value)
     {
-        return _InterlockedExchangeAdd64((int64_t*) addr, value);
+        return _InterlockedExchangeAdd64(addr, value);
     }
 
     int8_t atomicAnd(int8_t* addr, int8_t value)
@@ -691,7 +691,7 @@ namespace OS
 
     int16_t atomicAnd(int16_t* addr, int16_t value)
     {
-        return _InterlockedAnd16((int16_t*) addr, value);
+        return _InterlockedAnd16(addr, value);
     }
 
     int32_t atomicAnd(int32_t* addr, int32_t value)
@@ -701,7 +701,7 @@ namespace OS
 
     int64_t atomicAnd(int64_t* addr, int64_t value)
     {
-        return _InterlockedAnd64((int64_t*) addr, value);
+        return _InterlockedAnd64(addr, value);
     }
 
     int8_t atomicOr(int8_t* addr, int8_t value)
@@ -711,7 +711,7 @@ namespace OS
 
     int16_t atomicOr(int16_t* addr, int16_t value)
     {
-        return _InterlockedOr16((int16_t*) addr, value);
+        return _InterlockedOr16(addr, value);
     }
 
     int32_t atomicOr(int32_t* addr, int32_t value)
@@ -721,7 +721,7 @@ namespace OS
 
     int64_t atomicOr(int64_t* addr, int64_t value)
     {
-        return _InterlockedOr64((int64_t*) addr, value);
+        return _InterlockedOr64(addr, value);
     }
 
     int8_t atomicXor(int8_t* addr, int8_t value)
@@ -731,7 +731,7 @@ namespace OS
 
     int16_t atomicXor(int16_t* addr, int16_t value)
     {
-        return _InterlockedXor16((int16_t*) addr, value);
+        return _InterlockedXor16(addr, value);
     }
 
     int32_t atomicXor(int32_t* addr, int32_t value)
@@ -741,7 +741,27 @@ namespace OS
 
     int64_t atomicXor(int64_t* addr, int64_t value)
     {
-        return _InterlockedXor64((int64_t*) addr, value);
+        return _InterlockedXor64(addr, value);
+    }
+
+    int8_t atomicCmpXchg(int8_t* addr, int8_t replaceWith, int8_t compareTo)
+    {
+        return _InterlockedCompareExchange8((char*) addr, replaceWith, compareTo);
+    }
+
+    int16_t atomicCmpXchg(int16_t* addr, int16_t replaceWith, int16_t compareTo)
+    {
+        return _InterlockedCompareExchange16(addr, replaceWith, compareTo);
+    }
+
+    int32_t atomicCmpXchg(int32_t* addr, int32_t replaceWith, int32_t compareTo)
+    {
+        return _InterlockedCompareExchange((LONG*) addr, (LONG) replaceWith, (LONG) compareTo);
+    }
+
+    int64_t atomicCmpXchg(int64_t* addr, int64_t replaceWith, int64_t compareTo)
+    {
+        return _InterlockedCompareExchange64(addr, replaceWith, compareTo);
     }
 
 }; // namespace OS

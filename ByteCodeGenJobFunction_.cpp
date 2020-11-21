@@ -480,9 +480,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicAtomicAdd:
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        auto child0   = callParams->childs[0];
-        auto child1   = callParams->childs[1];
-        auto typeInfo = TypeManager::concreteReferenceType(child1->typeInfo);
+        auto child0            = callParams->childs[0];
+        auto child1            = callParams->childs[1];
+        auto typeInfo          = TypeManager::concreteReferenceType(child1->typeInfo);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -505,9 +505,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicAtomicAnd:
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        auto child0 = callParams->childs[0];
-        auto child1 = callParams->childs[1];
-        auto typeInfo = TypeManager::concreteReferenceType(child1->typeInfo);
+        auto child0            = callParams->childs[0];
+        auto child1            = callParams->childs[1];
+        auto typeInfo          = TypeManager::concreteReferenceType(child1->typeInfo);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -530,9 +530,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicAtomicOr:
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        auto child0 = callParams->childs[0];
-        auto child1 = callParams->childs[1];
-        auto typeInfo = TypeManager::concreteReferenceType(child1->typeInfo);
+        auto child0            = callParams->childs[0];
+        auto child1            = callParams->childs[1];
+        auto typeInfo          = TypeManager::concreteReferenceType(child1->typeInfo);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -555,9 +555,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicAtomicXor:
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        auto child0 = callParams->childs[0];
-        auto child1 = callParams->childs[1];
-        auto typeInfo = TypeManager::concreteReferenceType(child1->typeInfo);
+        auto child0            = callParams->childs[0];
+        auto child1            = callParams->childs[1];
+        auto typeInfo          = TypeManager::concreteReferenceType(child1->typeInfo);
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -574,6 +574,33 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         default:
             return internalError(context, "emitIntrinsic, @atomxor invalid type");
+        }
+        break;
+    }
+
+    case TokenId::IntrinsicAtomicCmpXchg:
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        auto child0            = callParams->childs[0];
+        auto child1            = callParams->childs[1];
+        auto child2            = callParams->childs[2];
+        auto typeInfo          = TypeManager::concreteReferenceType(child1->typeInfo);
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::S8:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS8, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S16:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS16, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S32:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS32, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S64:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
+            break;
+        default:
+            return internalError(context, "emitIntrinsic, @atomcmpxchg invalid type");
         }
         break;
     }

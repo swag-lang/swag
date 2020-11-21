@@ -176,6 +176,7 @@ DEFINE_TOKEN_ID(IntrinsicAtomicAdd)
 DEFINE_TOKEN_ID(IntrinsicAtomicAnd)
 DEFINE_TOKEN_ID(IntrinsicAtomicOr)
 DEFINE_TOKEN_ID(IntrinsicAtomicXor)
+DEFINE_TOKEN_ID(IntrinsicAtomicCmpXchg)
 
 DEFINE_TOKEN_ID(IntrinsicSqrt)
 DEFINE_TOKEN_ID(IntrinsicSin)
