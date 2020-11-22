@@ -13,8 +13,6 @@ crc value pour chaque field d'une structure en reflection ?
 -------------------------------------
 ca serait cool que les methods, en reflections, aient une value qui peut être castée en lambda, et donc appelées
 -------------------------------------
-var x: [2] s32[1, 2] ?
--------------------------------------
 where pour mettre des contraintes sur les parametres (et les generics, pour faire un choix d'overload par ex)
 
 
@@ -23,6 +21,9 @@ where pour mettre des contraintes sur les parametres (et les generics, pour fair
 TODO
 ****************************************
 
+-------------------------------------
+align alloc
+-------------------------------------
 passer memset en @memset dans runtime
 -------------------------------------
 shift left/right doit pas etre supérieur a 255 (a tester en compiler si constant, et safety en runtime)

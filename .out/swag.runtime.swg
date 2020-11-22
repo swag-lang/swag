@@ -24,6 +24,7 @@
             func TlsSetValue(dwTlsIndex: u32, lpTlsValue: *void);
             func TlsGetValue(dwTlsIndex: u32)->*void;
             func RtlCopyMemory(destination: *void, source: const *void, length: u64);
+            func RtlFillMemory(destination: *void, length: u64, fill: u32);
         }
     }
 }
@@ -113,6 +114,21 @@ func @memcpy(dst: *void, src: const *void, size: u32)
         loop i: size
         {
             p1[i] = p2[i]
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////
+func @memset(dst: *void, value: u8, size: u32)
+{
+    #if #os == "windows"
+        RtlFillMemory(dst, cast(u64) size, cast(u32) value)
+    #else
+    {
+        p1 := cast(*u8) dst
+        loop i: size
+        {
+            p1[i] = value
         }
     }
 }

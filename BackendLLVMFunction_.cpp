@@ -875,13 +875,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::MemSet:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            r0      = builder.CreateLoad(r0);
-            r1      = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt8Ty(), false);
-            r2      = builder.CreateIntCast(builder.CreateLoad(r2), builder.getInt64Ty(), false);
-            builder.CreateMemSet(r0, r1, r2, llvm::MaybeAlign(0));
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto r2 = GEP_I32(allocR, ip->c.u32);
+            auto typeF = createFunctionTypeInternal(buildParameters, 3);
+            builder.CreateCall(modu.getOrInsertFunction("@memset", typeF), { r0, r1, r2 });
             break;
         }
         case ByteCodeOp::IntrinsicMemCmp:
