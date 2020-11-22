@@ -961,6 +961,8 @@ bool SyntaxJob::checkIsValidUserName(AstNode* node)
 {
     if (node->parent && (node->parent->flags & AST_GENERATED))
         return true;
+    if (node->flags & AST_GENERATED)
+        return true;
 
     // An identifier that starts with '__' is reserved for internal usage !
     if (!sourceFile->generated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)

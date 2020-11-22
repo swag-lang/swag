@@ -12,6 +12,6 @@ struct AA
         r += 1
     @assert(r == 4)
 
-    var xx: __compiler1965.AA
+    var xx: AA
     @assert(xx.p == 55)
 }

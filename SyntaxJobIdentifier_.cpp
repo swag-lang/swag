@@ -37,6 +37,8 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
         identifier->flags |= AST_IDENTIFIER_BACKTICK;
     SWAG_CHECK(tokenizer.getToken(token));
 
+    SWAG_CHECK(checkIsValidUserName(identifier));
+
     if (acceptParameters && !tokenizer.lastTokenIsEOL)
     {
         // Generic arguments
