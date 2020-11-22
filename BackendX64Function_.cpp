@@ -1443,10 +1443,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->b.u32), 0, RAX);
             break;
         case ByteCodeOp::SetZeroAtPointerX:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Clear64(pp, RDX);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, R8);
-            emitCall(pp, "memset");
+            SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RAX);
+            BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
+            BackendX64Inst::emit_Clear64(pp, RAX);
+            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+            emitCall(pp, "@memset");
             break;
         case ByteCodeOp::SetZeroAtPointerXRB:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);

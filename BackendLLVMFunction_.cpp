@@ -793,9 +793,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetZeroAtPointerX:
         {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateLoad(r0);
-            builder.CreateMemSet(r1, pp.cst0_i8, ip->b.u32, llvm::MaybeAlign(0));
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+
+            auto r1 = pp.cst0_i8;
+            auto p1 = GEP_I32(allocT, 0);
+            builder.CreateStore(r1, p1);
+
+            auto r2 = builder.getInt32(ip->b.u32);
+            auto p2 = GEP_I32(allocT, 1);
+            builder.CreateStore(r2, p2);
+
+            auto typeF = createFunctionTypeInternal(buildParameters, 3);
+            builder.CreateCall(modu.getOrInsertFunction("@memset", typeF), { r0, p1, p2 });
             break;
         }
         case ByteCodeOp::SetZeroAtPointerXRB:
