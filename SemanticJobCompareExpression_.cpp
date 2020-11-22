@@ -83,6 +83,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
+        node->typeInfo = g_TypeMgr.typeInfoS32;
         node->setFlagsValueIsComputed();
         switch (leftTypeInfo->nativeType)
         {

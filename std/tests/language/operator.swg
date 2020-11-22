@@ -67,6 +67,18 @@
         a = 1 > 1 ? true : false
     }
 
+    // Two ways comparison operator, which returns a s32 of -1, 0 or 1
+    // A <=> B == -1 if A < B
+    // A <=> B == 0  if A == B
+    // A <=> B == 1  if A > B
+    {
+        a := -1.5 <=> 2.31
+        @assert(@typeof(a) == s32)
+        @assert((-1 <=> 1) == -1)
+        @assert((1 <=> -1) == 1)
+        @assert((1 <=> 1) == 0)
+    }
+
     // Logic operator
     {
         a := false
