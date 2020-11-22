@@ -23,6 +23,7 @@
             func TlsAlloc()->u32;
             func TlsSetValue(dwTlsIndex: u32, lpTlsValue: *void);
             func TlsGetValue(dwTlsIndex: u32)->*void;
+            func RtlCopyMemory(destination: *void, source: const *void, length: u64);
         }
     }
 }
@@ -103,11 +104,16 @@ private func ftoa(result: *u8, value: f64)
 ////////////////////////////////////////////////////////////
 func @memcpy(dst: *void, src: const *void, size: u32)
 {
-    p1 := cast(*s8) dst
-    p2 := cast(const *s8) src
-    loop i: size
+    #if #os == "windows"
+        RtlCopyMemory(dst, src, cast(u64) size)
+    #else
     {
-        p1[i] = p2[i]
+        p1 := cast(*s8) dst
+        p2 := cast(const *s8) src
+        loop i: size
+        {
+            p1[i] = p2[i]
+        }
     }
 }
 

@@ -1,4 +1,7 @@
--------------------------------------
+****************************************
+LANGUAGE
+****************************************
+
 if expression/switch expression ?
 var a: s32 = if b == 0 6 else 5
 -------------------------------------
@@ -10,11 +13,25 @@ crc value pour chaque field d'une structure en reflection ?
 -------------------------------------
 ca serait cool que les methods, en reflections, aient une value qui peut être castée en lambda, et donc appelées
 -------------------------------------
+switch { case a == 1: }
+-------------------------------------
+var x: [2] s32[1, 2] ?
+-------------------------------------
+transmute équivalent de bitcast, équivalent de a = *(int*) (&v)
+-------------------------------------
+#load(file) -> array de u8
+-------------------------------------
+#defined(b) => true si le symbol b existe
+-------------------------------------
+where pour mettre des contraintes sur les parametres (et les generics, pour faire un choix d'overload par ex)
 
 
 
+****************************************
+TODO
+****************************************
 
-
+passer memset en @memset dans runtime
 -------------------------------------
 shift left/right doit pas etre supérieur a 255 (a tester en compiler si constant, et safety en runtime)
 -------------------------------------
@@ -26,15 +43,17 @@ y'a forcement des merdes avec les typeinfo compiler dans leur propre segment
 (si on les compare avec un type non compiler, si on les met dans une var any...)
 -------------------------------------
 slice, strings & co, passer le count en 64 bits une bonne fois pour toute
--------------------------------------
 
 
--------------------------------------
+
+
+****************************************
 OPTIMS
--------------------------------------
+****************************************
+
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?
 rc[0] = r12 etc...
 -------------------------------------
 calling convention local call, passer les registres plutot que les adresses des registres, tabarnac
 probablement grosse modif (variadics ?)
--------------------------------------
+
