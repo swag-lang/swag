@@ -1618,6 +1618,9 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         // from the previous symbol
         if (oneTry || !identifierRef->startScope)
         {
+            if (identifierRef->flags & AST_SILENT_CHECK)
+                return true;
+
             if (identifierRef->startScope)
             {
                 if (identifierRef->typeInfo && identifierRef->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
@@ -1721,7 +1724,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                     return true;
 
                 // Be sure we have a missing parameter in order to try ufcs
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                auto typeFunc  = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
                 auto numParams = node->callParameters ? node->callParameters->childs.size() : 0;
                 if (numParams < typeFunc->parameters.size())
                 {
@@ -2155,7 +2158,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     if (dependentSymbols.empty())
+    {
         SWAG_CHECK(findIdentifierInScopes(context, identifierRef, node));
+        if (dependentSymbols.empty())
+        {
+            SWAG_ASSERT(identifierRef->flags & AST_SILENT_CHECK);
+            return true;
+        }
+    }
 
     // If one of my dependent symbol is not fully solved, we need to wait
     for (auto symbol : dependentSymbols)

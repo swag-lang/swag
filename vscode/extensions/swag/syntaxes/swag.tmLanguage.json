@@ -18,6 +18,7 @@
     { "include": "#intrinsics-invalid" },
     { "include": "#intrinsics-literal" },
     { "include": "#compiler-function" },
+    { "include": "#compiler-statement" },
     { "include": "#compiler" },
     { "include": "#compiler-invalid" },
     { "include": "#types" },
@@ -139,15 +140,23 @@
       "patterns": [
         {
           "name": "entity.name.function",
-          "match": "(#)\\b(run|test|init|drop|main|compiler)\\b"
+          "match": "(#)\\b(run|test|init|drop|main|compiler|ast)\\b"
+        }
+      ]
+    },
+    "compiler-statement": {
+      "patterns": [
+        {
+          "name": "meta.preprocessor",
+          "match": "(#)\\b(public|module|unittest|assert|print|import|mixin|macro|foreignlib|placeholder|if|else|elif)\\b"
         }
       ]
     },
     "compiler": {
       "patterns": [
         {
-          "name": "meta.preprocessor",
-          "match": "(#)\\b(ast|skip|public|module|unittest|assert|print|run|file|line|hastag|tagval|cfg|arch|os|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|import|test|init|drop|main|if|else|elif|code|mixin|macro|foreignlib|placeholder)"
+          "name": "entity.name.function.intrinsic",
+          "match": "(#)\\b(defined|file|line|hastag|tagval|cfg|arch|os|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|code)"
         }
       ]
     },

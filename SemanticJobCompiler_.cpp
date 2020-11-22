@@ -344,6 +344,15 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveCompilerDefined(SemanticContext* context)
+{
+    auto node                 = context->node;
+    node->computedValue.reg.b = node->childs.back()->resolvedSymbolOverload != nullptr;
+    node->typeInfo            = g_TypeMgr.typeInfoBool;
+    node->setFlagsValueIsComputed();
+    return true;
+}
+
 bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 {
     auto node = context->node;

@@ -19,9 +19,7 @@ var x: [2] s32[1, 2] ?
 -------------------------------------
 transmute équivalent de bitcast, équivalent de a = *(int*) (&v)
 -------------------------------------
-#load(file) -> array de u8
--------------------------------------
-#defined(b) => true si le symbol b existe
+var x: [] u8 = #load(file) -> array de u8
 -------------------------------------
 where pour mettre des contraintes sur les parametres (et les generics, pour faire un choix d'overload par ex)
 
