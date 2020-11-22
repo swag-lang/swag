@@ -35,6 +35,7 @@ func __itoa(result: *u8, value: s64)->*u8
     return retVal
 }
 
+////////////////////////////////////////////////////////////
 func __ftoa(result: *u8, value: f64)
 {
     ipart := cast(s64) value
@@ -118,6 +119,7 @@ func @print(value: s64)
     @print(str)
 }
 
+////////////////////////////////////////////////////////////
 func @print(value: f64)
 {
     var buf: [100] u8
@@ -169,8 +171,105 @@ func @interfaceof(structType, itfType: const *swag.TypeInfoStruct)->const *void
     return null
 }
 
+
 ////////////////////////////////////////////////////////////
-// Privates functions called by the runtime/compiler
+private const MAX_ARGUMENTS = 512
+private var g_Argv: [MAX_ARGUMENTS] string
+private var g_Argc = 0'u32
+
+private func convertArgcArgv()
+{
+    cmdLine := __getCommandLine()
+
+    g_Argc = 0
+    while :cmdLine
+    {
+        while :cmdLine == " "'u8 cmdLine += 1
+        if :cmdLine == 0 break
+
+        if :cmdLine == "\""'u8
+        {
+            cmdLine += 1
+            start := cmdLine
+            while :cmdLine && :cmdLine != "\""'u8 cmdLine += 1
+            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(u32) cast(u64) (cmdLine - start))
+            if :cmdLine cmdLine += 1
+        }
+        else
+        {
+            start := cmdLine
+            while :cmdLine && :cmdLine != " "'u8 cmdLine += 1
+            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(u32) cast(u64) (cmdLine - start))
+        }
+
+        g_Argc += 1
+        if g_Argc == MAX_ARGUMENTS
+            return
+        while :cmdLine && :cmdLine == " "'u8 cmdLine += 1
+    }
+}
+
+func @args()->[..] string
+{
+    if g_Argc == 0
+        convertArgcArgv()
+    return @mkslice(&g_Argv[0], g_Argc)
+}
+
+////////////////////////////////////////////////////////////
+func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
+{
+    contextFlags := @getcontext().flags
+    // If we are running bytecode, then just let the runner deal with the assertion,
+    // we will have more usefull information
+    if(contextFlags & swag.ContextFlags.ByteCode)
+        @error(message, loc)
+    // During tests, and if not in devmode, then just raise an error without
+    // a dialog box
+    else if((contextFlags & swag.ContextFlags.Test) && !(contextFlags & swag.ContextFlags.DevMode))
+        @error(message, loc)
+
+    // Build message
+    var str: [1024] u8
+    var len: u32
+
+    if message != null
+    {
+        len = @countof(message)
+        if(len > 512) len = 512
+        @memcpy(&str[0], @dataof(message), len)
+        str[len]     = "\n"'u8
+        str[len + 1] = "\n"'u8
+        len += 2;
+    }
+
+    // Source location
+    @memcpy(&str[len], @dataof(loc.fileName), @countof(loc.fileName))
+    len += @countof(loc.fileName)
+    @memcpy(&str[len], @dataof(", line "), 7);
+    len += 7;
+    dstLine := &str[len]
+    cptLine := cast(u32) (__itoa(dstLine, cast(s64) loc.lineStart + 1) - dstLine)
+    len += cptLine
+    @memcpy(&str[len], @dataof("\n\n"), 2)
+    len += 2
+
+    // Message to the user
+    const title = "Swag Assertion Failed !"
+    const info =
+    @"- Press Cancel to exit
+      - Press Retry to debug the application
+      - Press Continue to ignore the assert
+      "@
+
+    @memcpy(&str[len], @dataof(info), @countof(info))
+    len += @countof(info)
+
+    str[len] = 0
+
+    __assertBox(cast(string) str, title)
+}
+
 ////////////////////////////////////////////////////////////
 func __assert(expr: bool, file: const *u8, line: u32, col: u32, message: const *u8)
 {

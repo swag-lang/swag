@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////
 private
 {
-    const STD_OUTPUT_HANDLE: u32 = cast(u32) -11
+    const STD_OUTPUT_HANDLE     = cast(u32) -11
     const MB_CANCELTRYCONTINUE  = 0x00000006
     const MB_ICONERROR          = 0x00000010
     const IDCANCEL    = 2
@@ -75,57 +75,16 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
 }
 
 ////////////////////////////////////////////////////////////
-func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
+func __getCommandLine()                     => GetCommandLineA()
+func __loaddll(name: string)                => LoadLibraryA(@dataof(name))
+func __exit()                               => ExitProcess(0)
+func __tlsAlloc()                           => cast(u64) TlsAlloc()
+func __tlsSetValue(id: u64, value: *void)   => TlsSetValue(cast(u32) id, value)
+func __tlsGetValue(id: u64)->*void          => TlsGetValue(cast(u32) id)
+
+func __assertBox(msg, title: string)
 {
-    contextFlags := @getcontext().flags
-    // If we are running bytecode, then just let the runner deal with the assertion,
-    // we will have more usefull information
-    if(contextFlags & swag.ContextFlags.ByteCode)
-        @error(message, loc)
-    // During tests, and if not in devmode, then just raise an error without
-    // a dialog box
-    else if((contextFlags & swag.ContextFlags.Test) && !(contextFlags & swag.ContextFlags.DevMode))
-        @error(message, loc)
-
-    // Build message
-    var str: [1024] u8
-    var len: u32
-
-    if message != null
-    {
-        len = @countof(message)
-        if(len > 512) len = 512
-        @memcpy(&str[0], @dataof(message), len)
-        str[len]     = "\n"'u8
-        str[len + 1] = "\n"'u8
-        len += 2;
-    }
-
-    // Source location
-    @memcpy(&str[len], @dataof(loc.fileName), @countof(loc.fileName))
-    len += @countof(loc.fileName)
-    @memcpy(&str[len], @dataof(", line "), 7);
-    len += 7;
-    dstLine := &str[len]
-    cptLine := cast(u32) (__itoa(dstLine, cast(s64) loc.lineStart + 1) - dstLine)
-    len += cptLine
-    @memcpy(&str[len], @dataof("\n\n"), 2)
-    len += 2
-
-    // Message to the user
-    const title = "Swag Assertion Failed !"
-    const info =
-    @"- Press Cancel to exit
-      - Press Retry to debug the application
-      - Press Continue to ignore the assert
-      "@
-
-    @memcpy(&str[len], @dataof(info), @countof(info))
-    len += @countof(info)
-
-    str[len] = 0
-
-    result := MessageBoxA(null, @dataof(str), @dataof(title), MB_ICONERROR | MB_CANCELTRYCONTINUE)
+    result := MessageBoxA(null, @dataof(msg), @dataof(title), MB_ICONERROR | MB_CANCELTRYCONTINUE)
     switch result
     {
         case IDCANCEL:
@@ -136,56 +95,3 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
             break
     }
 }
-
-////////////////////////////////////////////////////////////
-private const MAX_ARGUMENTS = 512
-private var g_Argv: [MAX_ARGUMENTS] string
-private var g_Argc = 0'u32
-
-private func convertArgcArgv()
-{
-    cmdLine := GetCommandLineA()
-
-    g_Argc = 0
-    while :cmdLine
-    {
-        while :cmdLine == " "'u8 cmdLine += 1
-        if :cmdLine == 0 break
-
-        if :cmdLine == "\""'u8
-        {
-            cmdLine += 1
-            start := cmdLine
-            while :cmdLine && :cmdLine != "\""'u8 cmdLine += 1
-            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(u32) cast(u64) (cmdLine - start))
-            if :cmdLine cmdLine += 1
-        }
-        else
-        {
-            start := cmdLine
-            while :cmdLine && :cmdLine != " "'u8 cmdLine += 1
-            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(u32) cast(u64) (cmdLine - start))
-        }
-
-        g_Argc += 1
-        if g_Argc == MAX_ARGUMENTS
-            return
-        while :cmdLine && :cmdLine == " "'u8 cmdLine += 1
-    }
-}
-
-func @args()->[..] string
-{
-    if g_Argc == 0
-        convertArgcArgv()
-    return @mkslice(&g_Argv[0], g_Argc)
-}
-
-////////////////////////////////////////////////////////////
-// Privates functions called by the runtime/compiler
-////////////////////////////////////////////////////////////
-func __loaddll(name: string)                => LoadLibraryA(@dataof(name))
-func __exit()                               => ExitProcess(0)
-func __tlsAlloc()                           => cast(u64) TlsAlloc()
-func __tlsSetValue(id: u64, value: *void)   => TlsSetValue(cast(u32) id, value)
-func __tlsGetValue(id: u64)->*void          => TlsGetValue(cast(u32) id)
