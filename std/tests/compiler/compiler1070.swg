@@ -20,9 +20,9 @@ func toto(v: string)
 #test
 {
 	var t: titi
-	t.buf[0] = acast "1"'char
-	t.buf[1] = acast "2"'char
-	t.buf[2] = acast "3"'char
+	t.buf[0] = autocast "1"'char
+	t.buf[1] = autocast "2"'char
+	t.buf[2] = autocast "3"'char
 	t.buf[3] = 0
 
 	var x = t.toString()

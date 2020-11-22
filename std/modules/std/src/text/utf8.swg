@@ -63,7 +63,7 @@ func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
     countof := @countof(buffer)
     if countof == 0
-        return @{acast 0, 0}
+        return @{autocast 0, 0}
 
     dataof := @dataof(buffer)
     ptr := dataof + (countof - 1)
@@ -74,7 +74,7 @@ func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
         if c >> 6 != 2
             break
         if ptr == dataof
-            return @{acast 0, 0}
+            return @{autocast 0, 0}
         ptr -= 1
         eat += 1
     }
@@ -87,7 +87,7 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
     countof := @countof(buffer)
     if countof == 0
-        return @{acast 0, 0}
+        return @{autocast 0, 0}
 
     dataof := @dataof(buffer)
     c := cast(char) :dataof
@@ -148,7 +148,7 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
         return @{wc, 1}
     }
 
-    return @{acast c, 1}
+    return @{autocast c, 1}
 }
 
 // Find one of the characters in 'what', and returns the byte index of it

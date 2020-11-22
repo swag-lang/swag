@@ -37,7 +37,7 @@ func create(lambda: func(*Thread), userParam: u64)
 
     var l64 = cast(u64) &entry
     if l64 & swag.LambdaBcMarker
-        l64 = acast @thrunptr()
+        l64 = autocast @thrunptr()
     else
         l64 &= ~swag.LambdaForeignMarker
 

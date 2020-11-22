@@ -1,8 +1,7 @@
-namespace std.reflection;
+public namespace std.reflection;
 using swag
 
 #[constexpr]
-public
 {
     // Type names are scoped (i.e. "A.B.C"). This function will return the last
     // part, which is in fact the real simple name

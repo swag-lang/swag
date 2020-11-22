@@ -126,8 +126,8 @@ func main()
 	tetromino[6] = "..X...X..XX....."
 
     pField = @alloc(cast(u32)(nFieldWidth*nFieldHeight)) // Create play field buffer
-    loop x: acast nFieldWidth
-        loop y: acast nFieldHeight
+    loop x: autocast nFieldWidth
+        loop y: autocast nFieldHeight
 			pField[y*nFieldWidth + x] = (x == 0 || x == nFieldWidth - 1 || y == nFieldHeight - 1) ? 9 : 0;
 
     nCurrentPiece := 0
@@ -187,7 +187,7 @@ func main()
                     {
                         str := tetromino[nCurrentPiece]
 						if str[Rotate(px, py, nCurrentRotation)] != "."'u8
-							pField[(nCurrentY + py) * nFieldWidth + (nCurrentX + px)] = acast (nCurrentPiece + 1)
+							pField[(nCurrentY + py) * nFieldWidth + (nCurrentX + px)] = autocast (nCurrentPiece + 1)
                     }
                 }
 
@@ -217,7 +217,7 @@ func main()
 				nCurrentX = nFieldWidth / 2
 				nCurrentY = 0;
 				nCurrentRotation = 0
-				nCurrentPiece = acast (rand.nextU32() % 7)
+				nCurrentPiece = autocast (rand.nextU32() % 7)
 
                 // If piece does not fit straight away, game over!
 				bGameOver = !DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY)
@@ -243,7 +243,7 @@ func main()
             {
                 str := tetromino[nCurrentPiece]
 				if str[Rotate(cast(s32) px, cast(s32) py, nCurrentRotation)] != "."'u8
-					screen[(nCurrentY + py + 2)*nScreenWidth + (nCurrentX + px + 2)] = acast (nCurrentPiece + 65)
+					screen[(nCurrentY + py + 2)*nScreenWidth + (nCurrentX + px + 2)] = autocast (nCurrentPiece + 65)
             }
         }
 

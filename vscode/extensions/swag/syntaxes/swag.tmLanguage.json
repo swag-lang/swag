@@ -68,7 +68,7 @@
       "patterns": [
         {
           "name": "keyword",
-          "match": "\\b(using|is|deref|cast|acast|move|nodrop|retval)\\b"
+          "match": "\\b(using|is|deref|cast|autocast|bitcast|move|nodrop|retval)\\b"
         }
       ]
     },

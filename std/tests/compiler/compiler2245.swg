@@ -22,12 +22,12 @@ func entry(param: *void)
 func create(lambda: func(*void), userParam: u64)
 {
     var paramBC: [2] *void
-    paramBC[0] = acast lambda
-    paramBC[1] = acast userParam
+    paramBC[0] = autocast lambda
+    paramBC[1] = autocast userParam
 
     var l64 = cast(u64) lambda
     if l64 & swag.LambdaBcMarker
-        l64 = acast @thrunptr()
+        l64 = autocast @thrunptr()
     else
         l64 &= ~swag.LambdaForeignMarker
 

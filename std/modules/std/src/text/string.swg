@@ -31,7 +31,7 @@ impl String
     {
         if allocator == null
             allocator = @getcontext().allocator
-        buffer = acast memory.realloc(&allocator, buffer, newCapacity)
+        buffer = autocast memory.realloc(&allocator, buffer, newCapacity)
     }
 }
 
@@ -136,7 +136,7 @@ public impl String
     func opPostMove(using self)
     {
         if buffer && capacity <= SmallSize
-            buffer = acast &allocator
+            buffer = autocast &allocator
     }
 
     func opPostCopy(using self)
@@ -145,7 +145,7 @@ public impl String
             return
 
         if capacity <= SmallSize
-            buffer = acast &allocator
+            buffer = autocast &allocator
         else
         {
             oldBuffer := buffer
@@ -158,7 +158,7 @@ public impl String
 
     func opDrop(using self)
     {
-        if buffer && buffer != acast &allocator
+        if buffer && buffer != autocast &allocator
             free()
     }
 
@@ -267,7 +267,7 @@ public impl String
     func ensureNotNull(using self)
     {
         if buffer return
-        buffer = acast &allocator
+        buffer = autocast &allocator
     }
 
     // Append a byte to the String
@@ -361,7 +361,7 @@ public impl String
             {
                 if !buffer
                     return
-                if buffer != acast &allocator
+                if buffer != autocast &allocator
                     free()
                 buffer = null
                 length, capacity = 0
@@ -370,7 +370,7 @@ public impl String
 
             capacity = SmallSize
             if !buffer
-                buffer = acast &allocator
+                buffer = autocast &allocator
             return
         }
 
@@ -379,11 +379,11 @@ public impl String
             return
 
         // We were in small size mode, and we are no more
-        if buffer == acast &allocator
+        if buffer == autocast &allocator
         {
             oldBuffer := buffer
             newAllocator := @getcontext().allocator
-            buffer = acast memory.alloc(&newAllocator, newCapacity)
+            buffer = autocast memory.alloc(&newAllocator, newCapacity)
             memory.copy(buffer, oldBuffer, length + 1)
             allocator = newAllocator
         }

@@ -51,12 +51,12 @@ public impl Stopwatch
     // Gets the total elapsed time in milliseconds measured by the current instance
     func elapsedMilliseconds(using self)->u32
     {
-        return acast ((elapsedTicks * 1000) / preciseFrequency())
+        return autocast ((elapsedTicks * 1000) / preciseFrequency())
     }
 
     // Gets the total elapsed time in microseconds measured by the current instance
     func elapsedMicroseconds(using self)->u32
     {
-        return acast ((elapsedTicks * 1000000) / preciseFrequency())
+        return autocast ((elapsedTicks * 1000000) / preciseFrequency())
     }
 }

@@ -283,7 +283,7 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
     if precision
         buf.addByte(cast(u8) g_CultureInfo.numberFormat.decimalSeparator);
 
-    loop acast precision
+    loop autocast precision
     {
         value *= 10
         c := cast(u32) value

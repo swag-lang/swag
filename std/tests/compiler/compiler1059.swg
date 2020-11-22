@@ -12,31 +12,31 @@ impl Array
 	func validateCount(using self, newCount: u32)
 	{
 		using swag
-		
+
 		if(newCount < size)
 			return;
-		
+
 		size = size * 2
 		if size < 8
 			size = 8
-			
+
 		context := @getcontext()
-		
+
 		var request: AllocatorRequest
 		request.size = size * @sizeof(T)
 		context.allocator.alloc(&request)
 		newBuffer := request.address
-		
+
 		if buffer
 			@memcpy(newBuffer, buffer, count * @sizeof(T))
-		
+
 		request.mode = AllocatorMode.Free
 		request.address = buffer
 		context.allocator.alloc(&request)
-		
-		buffer = acast newBuffer
+
+		buffer = autocast newBuffer
 	}
-	
+
 	func add(using self, value: T)
 	{
 		validateCount(self, count + 1)

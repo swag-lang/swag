@@ -36,7 +36,7 @@ func create(th: *Thread, lambda: func(Thread), userParam: *void = null)
     // - we are native, and threadEntry is like a foreign function (native, i.e. callback)
     var l64 = cast(u64) &threadEntry
     if l64 & swag.LambdaBcMarker
-        l64 = acast @thrunptr()
+        l64 = autocast @thrunptr()
     else
     {
         th.context.flags &= ~swag.ContextFlags.ByteCode

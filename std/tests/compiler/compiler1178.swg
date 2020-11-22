@@ -10,5 +10,5 @@ enum TOTO : s64
     x := TOTO.A
     y := TOTO.B
     ptr := &x
-    y = acast ptr[0]
+    y = autocast ptr[0]
 }

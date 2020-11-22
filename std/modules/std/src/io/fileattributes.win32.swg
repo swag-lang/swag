@@ -7,7 +7,7 @@ impl enum FileAttributes
     protected func fromDWORD(attributes: DWORD)->FileAttributes
     {
         using FileAttributes
-        var result: FileAttributes = acast 0
+        var result: FileAttributes = autocast 0
         if attributes & FILE_ATTRIBUTE_READONLY
             result |= ReadOnly
         if attributes & FILE_ATTRIBUTE_HIDDEN

@@ -13,7 +13,7 @@ func fromUtf8(dest: [..] u16, src: const [..] u8)->u32
     while eat != 0
     {
         debug.assert(count != @countof(dest), "destination buffer is too small")
-        debug.assert(c <= acast swag.MaxU16, "utf8 character overflow")
+        debug.assert(c <= autocast swag.MaxU16, "utf8 character overflow")
 
         :destPtr = cast(u16) c
         destPtr, count += 1

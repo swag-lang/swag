@@ -13,15 +13,15 @@ impl Utf8
 	{
 		if(size >= newSize)
 			return;
-			
+
 		newPtr := @alloc(newSize)
 		if buffer
 			@memcpy(newPtr, buffer, size)
 		size = newSize
 		@free(buffer)
-		buffer = acast newPtr
+		buffer = autocast newPtr
 	}
-	
+
 	func opAffect(using self, from: string)
 	{
 		length = @countof(from)

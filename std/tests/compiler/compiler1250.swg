@@ -3,12 +3,12 @@ func getChar(buffer: const *u8)->{const *u8, char}
 	ptr := buffer
 	c := cast(char) :ptr
 	if c == 0
-		return @{ptr, acast 0}
+		return @{ptr, autocast 0}
 
 	ptr += 1
 	if ((c & 0x80) == 0)
 	{
-		return @{ptr, acast c}
+		return @{ptr, autocast c}
 	}
 
 	var wc: char = ?
@@ -61,7 +61,7 @@ func getChar(buffer: const *u8)->{const *u8, char}
 		return @{ptr, wc}
 	}
 
-	return @{ptr, acast 0}
+	return @{ptr, autocast 0}
 }
 
 #test

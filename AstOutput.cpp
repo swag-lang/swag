@@ -817,7 +817,7 @@ namespace Ast
             break;
 
         case AstNodeKind::AutoCast:
-            CONCAT_FIXED_STR(concat, "acast ");
+            CONCAT_FIXED_STR(concat, "autocast ");
             SWAG_CHECK(output(context, concat, node->childs[0]));
             break;
 

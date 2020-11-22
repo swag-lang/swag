@@ -44,10 +44,10 @@ public impl Color
         // Set all components with floats in the range [0 1]
         func setArgb(self, a, r, g, b: f32)
         {
-            self.a = acast (math.clamp(a, 0, 1) * 255)
-            self.r = acast (math.clamp(r, 0, 1) * 255)
-            self.g = acast (math.clamp(g, 0, 1) * 255)
-            self.b = acast (math.clamp(b, 0, 1) * 255)
+            self.a = autocast (math.clamp(a, 0, 1) * 255)
+            self.r = autocast (math.clamp(r, 0, 1) * 255)
+            self.g = autocast (math.clamp(g, 0, 1) * 255)
+            self.b = autocast (math.clamp(b, 0, 1) * 255)
         }
 
         // Just set r, g and b components.
@@ -65,9 +65,9 @@ public impl Color
         func setRgb(self, r, g, b: f32)
         {
             self.a = 255
-            self.r = acast (math.clamp(r, 0, 1) * 255)
-            self.g = acast (math.clamp(g, 0, 1) * 255)
-            self.b = acast (math.clamp(b, 0, 1) * 255)
+            self.r = autocast (math.clamp(r, 0, 1) * 255)
+            self.g = autocast (math.clamp(g, 0, 1) * 255)
+            self.b = autocast (math.clamp(b, 0, 1) * 255)
         }
 
         // Retreive all components as floating point values between 0 and 1.

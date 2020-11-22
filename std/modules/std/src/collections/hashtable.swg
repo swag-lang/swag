@@ -116,7 +116,7 @@ impl HashTable
 
         if allocator == null
             allocator = @getcontext().allocator
-        table = acast memory.alloc(&allocator, newCapacityBytes)
+        table = autocast memory.alloc(&allocator, newCapacityBytes)
 
         // Be sure hash entry is 0
         memory.clear(table, newCapacityBytes)

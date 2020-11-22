@@ -28,7 +28,7 @@ func getFileName(fullname: string)->string
         if isDirectorySeparator(c) || c == VolumeSeparatorChar
         {
             if cpt == countof - 1 return null
-            return acast @mkslice(@dataof(fullname) + cpt + 1, (countof - cpt) - 1)
+            return autocast @mkslice(@dataof(fullname) + cpt + 1, (countof - cpt) - 1)
         }
     }
 
@@ -42,7 +42,7 @@ func getRootName(fullname: string)->string
     if fullname == null return null
     debug.assert(isValidPathName(fullname))
     rootLength := getRootLength(fullname)
-    return acast @mkslice(@dataof(fullname), rootLength)
+    return autocast @mkslice(@dataof(fullname), rootLength)
 }
 
 // Tests if the given path contains a root. A path is considered rooted
@@ -74,7 +74,7 @@ func getDirectoryName(fullname: string)->string
         cpt -= 1
         c := fullname[cpt]
         if isDirectorySeparator(c)
-            return acast @mkslice(@dataof(fullname), cpt)
+            return autocast @mkslice(@dataof(fullname), cpt)
     }
 
     return null
@@ -99,7 +99,7 @@ func getFileNameWithoutExtension(fullname: string)->string
         else if isDirectorySeparator(c) || c == VolumeSeparatorChar
         {
             if cpt == countof - 1 return null
-            return acast @mkslice(@dataof(fullname) + cpt + 1, (last - cpt) - 1)
+            return autocast @mkslice(@dataof(fullname) + cpt + 1, (last - cpt) - 1)
         }
     }
 
@@ -120,7 +120,7 @@ func getExtension(fullname: string)->string
         cpt -= 1
         c := fullname[cpt]
         if c == "."'u8
-            return acast @mkslice(@dataof(fullname) + cpt, @countof(fullname) - cpt)
+            return autocast @mkslice(@dataof(fullname) + cpt, @countof(fullname) - cpt)
         if isDirectorySeparator(c) || c == VolumeSeparatorChar
             break
     }
