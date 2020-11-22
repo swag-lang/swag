@@ -43,6 +43,7 @@ void LanguageSpec::setup()
     keywords["#macro"]          = TokenId::CompilerMacro;
     keywords["#foreignlib"]     = TokenId::CompilerForeignLib;
     keywords["#defined"]        = TokenId::CompilerDefined;
+    keywords["#load"]           = TokenId::CompilerLoad;
 
     keywords["var"]         = TokenId::KwdVar;
     keywords["const"]       = TokenId::KwdConst;

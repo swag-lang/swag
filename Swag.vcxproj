@@ -180,6 +180,7 @@
     <ClInclude Include="ByteCodeOptimizer.h" />
     <ClInclude Include="CompilerItf.h" />
     <ClInclude Include="LLVMSetup.h" />
+    <ClInclude Include="LoadFileJob.h" />
     <ClInclude Include="ModuleManager.h" />
     <ClInclude Include="ByteCodeOp.h" />
     <ClInclude Include="ByteCodeOpList.h" />
@@ -302,6 +303,7 @@
     <ClCompile Include="ByteCodeOptimizer_stack_.cpp" />
     <ClCompile Include="CompilerItf.cpp" />
     <ClCompile Include="LLVMSetup.cpp" />
+    <ClCompile Include="LoadFileJob.cpp" />
     <ClCompile Include="Memcpy.cpp" />
     <ClCompile Include="ModuleManager.cpp" />
     <ClCompile Include="ByteCodeRun.cpp" />

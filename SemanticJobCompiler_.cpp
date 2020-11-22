@@ -8,6 +8,7 @@
 #include "ByteCodeGenJob.h"
 #include "Workspace.h"
 #include "SyntaxJob.h"
+#include "LoadFileJob.h"
 
 bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
@@ -341,6 +342,56 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
         disableCompilerIfBlock(context, (AstCompilerIfBlock*) node->ifBlock);
     }
 
+    return true;
+}
+
+bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
+{
+    auto job    = context->job;
+    auto node   = context->node;
+    auto module = context->sourceFile->module;
+    auto back   = node->childs[0];
+
+    SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, "filename cannot be evaluated at compile time"}));
+    SWAG_VERIFY(back->typeInfo == g_TypeMgr.typeInfoString, context->report({back, format("#load parameter should be of type string ('%s' provided)", back->typeInfo->name.c_str())}));
+
+    if (!(node->doneFlags & AST_DONE_LOAD))
+    {
+        node->doneFlags |= AST_DONE_LOAD;
+
+        auto filename = back->computedValue.text.c_str();
+        SWAG_VERIFY(fs::exists(filename), context->report({back, format("cannot find file '%s'", back->computedValue.text.c_str())}));
+
+        struct stat stat_buf;
+        int         rc = stat(filename, &stat_buf);
+        SWAG_VERIFY(rc == 0, context->report({back, format("cannot open file '%s'", back->computedValue.text.c_str())}));
+
+        auto newJob                    = g_Pool_loadFileJob.alloc();
+        node->computedValue.reg.offset = module->constantSegment.reserve(stat_buf.st_size);
+        newJob->destBuffer             = module->constantSegment.address(node->computedValue.reg.u32);
+        newJob->sizeBuffer             = stat_buf.st_size;
+
+        newJob->module       = module;
+        newJob->sourcePath   = back->computedValue.text;
+        newJob->dependentJob = job->dependentJob;
+        newJob->addDependentJob(job);
+        job->jobsToAdd.push_back(newJob);
+        job->setPending(nullptr, "LOAD_FILE", node, nullptr);
+
+        // Creates return type
+        auto ptrArray         = g_Allocator.alloc<TypeInfoArray>();
+        ptrArray->count       = stat_buf.st_size;
+        ptrArray->pointedType = g_TypeMgr.typeInfoU8;
+        ptrArray->finalType   = g_TypeMgr.typeInfoU8;
+        ptrArray->sizeOf      = ptrArray->count;
+        ptrArray->totalCount  = stat_buf.st_size;
+        ptrArray->computeName();
+        node->typeInfo = ptrArray;
+
+        return true;
+    }
+
+    node->setFlagsValueIsComputed();
     return true;
 }
 

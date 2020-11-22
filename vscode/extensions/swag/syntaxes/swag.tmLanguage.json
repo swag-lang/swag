@@ -156,7 +156,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(#)\\b(defined|file|line|hastag|tagval|cfg|arch|os|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|code)"
+          "match": "(#)\\b(load|defined|file|line|hastag|tagval|cfg|arch|os|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|code)"
         }
       ]
     },

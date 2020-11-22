@@ -96,6 +96,7 @@ DEFINE_TOKEN_ID(CompilerInline)
 DEFINE_TOKEN_ID(CompilerMacro)
 DEFINE_TOKEN_ID(CompilerForeignLib)
 DEFINE_TOKEN_ID(CompilerDefined)
+DEFINE_TOKEN_ID(CompilerLoad)
 
 DEFINE_TOKEN_ID(DocComment)
 

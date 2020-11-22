@@ -440,6 +440,9 @@
     <ClCompile Include="ByteCodeOptimizer_reduce_.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="LoadFileJob.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -724,6 +727,9 @@
     </ClInclude>
     <ClInclude Include="Runtime.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadFileJob.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

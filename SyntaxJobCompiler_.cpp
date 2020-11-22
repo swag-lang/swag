@@ -447,6 +447,25 @@ bool SyntaxJob::doCompilerDefined(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doCompilerLoad(AstNode* parent, AstNode** result)
+{
+    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerLoad, sourceFile, parent);
+    if (result)
+        *result = exprNode;
+    exprNode->flags |= AST_NO_BYTECODE;
+    exprNode->name = token.text;
+    exprNode->inheritTokenLocation(token);
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+
+    ScopedFlags sc(this, AST_SILENT_CHECK);
+    SWAG_CHECK(doExpression(exprNode, nullptr));
+
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    exprNode->semanticFct = SemanticJob::resolveCompilerLoad;
+    return true;
+}
+
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#import can only be declared in the top level scope"}));

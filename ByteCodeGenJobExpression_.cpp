@@ -199,7 +199,8 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeInfo* toType, RegisterList& regList)
 {
-    auto typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto typeInfo = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
+    typeInfo      = TypeManager::concreteType(typeInfo);
 
     // If we need a cast to an any, then first resolve literal with its real type
     if (typeInfo->isNative(NativeTypeKind::Any))

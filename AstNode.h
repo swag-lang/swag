@@ -135,6 +135,7 @@ enum class AstNodeKind : uint8_t
     CompilerSpecialFunction,
     CompilerForeignLib,
     CompilerDefined,
+    CompilerLoad,
     ConditionalExpression,
     NullConditionalExpression,
     Defer,

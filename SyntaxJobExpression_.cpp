@@ -134,6 +134,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerDefined(parent, result));
         break;
 
+    case TokenId::CompilerLoad:
+        SWAG_CHECK(doCompilerLoad(parent, result));
+        break;
+
     case TokenId::CompilerHasTag:
     case TokenId::CompilerTagVal:
         SWAG_CHECK(doCompilerTag(parent, result));

@@ -260,6 +260,29 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
     if (typeInfo->sizeOf == 0)
         return true;
 
+    // Already computed in the constant segment for an array
+    if (node->typeInfo->kind == TypeInfoKind::Array)
+    {
+        if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
+        {
+            SWAG_ASSERT(node->assignment->computedValue.reg.offset != UINT32_MAX);
+            auto module = context->sourceFile->module;
+            if (seg == &module->constantSegment)
+            {
+                storageOffset = node->assignment->computedValue.reg.offset;
+                return true;
+            }
+            else
+            {
+                storageOffset = seg->reserve(typeInfo->sizeOf);
+                auto addrDst = seg->address(storageOffset);
+                auto addrSrc = node->sourceFile->module->constantSegment.address(node->assignment->computedValue.reg.offset);
+                memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
+                return true;
+            }
+        }
+    }
+
     if (node->typeInfo->kind == TypeInfoKind::Struct)
     {
         if (node->assignment && node->assignment->kind == AstNodeKind::IdentifierRef && node->assignment->resolvedSymbolOverload)
