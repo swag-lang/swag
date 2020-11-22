@@ -322,28 +322,20 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
 {
-    // Cast
-    if (token.id == TokenId::KwdCast)
+    switch (token.id)
     {
+    case TokenId::KwdCast:
         SWAG_CHECK(doCast(parent, result));
         return true;
-    }
-
-    // Cast
-    if (token.id == TokenId::KwdAutoCast)
-    {
+    case TokenId::KwdAutoCast:
         SWAG_CHECK(doAutoCast(parent, result));
         return true;
-    }
-
-    // Cast
-    if (token.id == TokenId::KwdBitCast)
-    {
+    case TokenId::KwdBitCast:
         SWAG_CHECK(doBitCast(parent, result));
         return true;
-    }
-
-    if (token.id == TokenId::SymMinus || token.id == TokenId::SymExclam || token.id == TokenId::SymTilde)
+    case TokenId::SymMinus:
+    case TokenId::SymExclam:
+    case TokenId::SymTilde:
     {
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::SingleOp, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveUnaryOp;
@@ -352,6 +344,7 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
             *result = node;
         SWAG_CHECK(tokenizer.getToken(token));
         return doPrimaryExpression(node);
+    }
     }
 
     return doPrimaryExpression(parent, result);
@@ -495,9 +488,9 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
     }
     else if (token.id == TokenId::SymLowerEqualGreater)
     {
-        auto binaryNode = Ast::newNode<AstNode>(this, AstNodeKind::BinaryOp, sourceFile, parent, 2);
+        auto binaryNode         = Ast::newNode<AstNode>(this, AstNodeKind::BinaryOp, sourceFile, parent, 2);
         binaryNode->semanticFct = SemanticJob::resolveCompareExpression;
-        binaryNode->token = move(token);
+        binaryNode->token       = move(token);
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
