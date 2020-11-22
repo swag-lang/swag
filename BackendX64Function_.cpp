@@ -1458,7 +1458,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             if (ip->c.u32 <= 0x7F)
             {
                 concat.addString2("\x6b\xc0"); // imul eax, ??
-                concat.addU8((uint8_t)ip->c.u32);
+                concat.addU8((uint8_t) ip->c.u32);
             }
             else
             {
@@ -1702,18 +1702,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicAlloc:
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            emitCall(pp, "malloc");
+            BackendX64Inst::emit_Load64_Immediate(pp, 8, RDX);
+            emitCall(pp, "_aligned_malloc");
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicRealloc:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
-            emitCall(pp, "realloc");
+            BackendX64Inst::emit_Load64_Immediate(pp, 8, R8);
+            emitCall(pp, "_aligned_realloc");
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicFree:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            emitCall(pp, "free");
+            emitCall(pp, "_aligned_free");
             break;
 
         case ByteCodeOp::IntrinsicCompiler:

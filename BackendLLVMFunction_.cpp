@@ -771,7 +771,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r2, p2);
 
             auto typeF = createFunctionTypeInternal(buildParameters, 3);
-            builder.CreateCall(modu.getOrInsertFunction("@memset", typeF), { p0, p1, p2 });
+            builder.CreateCall(modu.getOrInsertFunction("@memset", typeF), {p0, p1, p2});
             break;
         }
 
@@ -2251,7 +2251,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
             auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt64Ty(), false);
-            auto a0 = builder.CreateCall(pp.fn_malloc, {v0});
+            auto a0 = builder.CreateCall(pp.fn_malloc, {v0, builder.getInt64(8)});
             auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(a0, r1);
             break;
@@ -2261,7 +2261,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
             auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
             auto v1 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
-            auto a0 = builder.CreateCall(pp.fn_realloc, {v0, v1});
+            auto a0 = builder.CreateCall(pp.fn_realloc, {v0, v1, builder.getInt64(8)});
             auto r2 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             builder.CreateStore(a0, r2);
             break;
