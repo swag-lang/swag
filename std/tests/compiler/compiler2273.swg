@@ -1,4 +1,5 @@
-const g = #load(#file)
+const F = #file
+const g = #load(F)
 
 #test
 {
