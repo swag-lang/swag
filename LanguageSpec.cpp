@@ -67,6 +67,7 @@ void LanguageSpec::setup()
     keywords["retval"]      = TokenId::KwdRetVal;
     keywords["using"]       = TokenId::KwdUsing;
     keywords["cast"]        = TokenId::KwdCast;
+    keywords["bitcast"]     = TokenId::KwdBitCast;
     keywords["autocast"]    = TokenId::KwdAutoCast;
     keywords["if"]          = TokenId::KwdIf;
     keywords["else"]        = TokenId::KwdElse;

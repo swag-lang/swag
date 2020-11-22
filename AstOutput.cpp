@@ -828,6 +828,13 @@ namespace Ast
             SWAG_CHECK(output(context, concat, node->childs[1]));
             break;
 
+        case AstNodeKind::BitCast:
+            CONCAT_FIXED_STR(concat, "bitcast(");
+            SWAG_CHECK(output(context, concat, node->childs[0]));
+            CONCAT_FIXED_STR(concat, ") ");
+            SWAG_CHECK(output(context, concat, node->childs[1]));
+            break;
+
         case AstNodeKind::TypeExpression:
         {
             AstTypeExpression* typeNode = static_cast<AstTypeExpression*>(node);

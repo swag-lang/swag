@@ -467,6 +467,31 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
+{
+    auto node     = context->node;
+    auto typeNode = node->childs[0];
+    auto exprNode = node->childs[1];
+
+    SWAG_CHECK(checkIsConcrete(context, exprNode));
+
+    auto typeInfo     = TypeManager::concreteType(typeNode->typeInfo);
+    auto exprTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
+
+    SWAG_VERIFY(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT), context->report({typeNode, format("invalid bitcast type '%s' (should be native integer or float)", typeInfo->name.c_str())}));
+    SWAG_VERIFY(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT), context->report({exprNode, format("cannot bitcast from type '%s' (should be native integer or float)", exprTypeInfo->name.c_str())}));
+    SWAG_VERIFY(typeInfo->sizeOf == exprTypeInfo->sizeOf, context->report({exprNode, format("cannot bitcast two types of different sizes ('%s' and '%s')", typeInfo->name.c_str(), exprTypeInfo->name.c_str())}));
+
+    node->typeInfo = typeNode->typeInfo;
+    node->setPassThrough();
+    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE);
+    node->inheritComputedValue(exprNode);
+    node->resolvedSymbolName     = exprNode->resolvedSymbolName;
+    node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
+
+    return true;
+}
+
 bool SemanticJob::resolveExplicitAutoCast(SemanticContext* context)
 {
     auto node      = context->node;

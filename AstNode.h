@@ -103,6 +103,7 @@ enum class AstNodeKind : uint8_t
     Index,
     AutoCast,
     Cast,
+    BitCast,
     TypeList,
     SingleOp,
     MakePointer,

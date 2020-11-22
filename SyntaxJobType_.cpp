@@ -409,6 +409,22 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doBitCast(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::BitCast, sourceFile, parent);
+    node->semanticFct = SemanticJob::resolveExplicitBitCast;
+    if (result)
+        *result = node;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'bitcast'"));
+    SWAG_CHECK(doTypeExpression(node));
+    SWAG_CHECK(eatToken(TokenId::SymRightParen, "after type expression"));
+
+    SWAG_CHECK(doUnaryExpression(node));
+    return true;
+}
+
 bool SyntaxJob::doAutoCast(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::AutoCast, sourceFile, parent);

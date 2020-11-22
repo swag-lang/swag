@@ -143,6 +143,7 @@ struct SyntaxJob : public Job
     bool doLambdaExpression(AstNode* parent, AstNode** result = nullptr);
     bool doUsing(AstNode* parent, AstNode** result = nullptr);
     bool doCast(AstNode* parent, AstNode** result = nullptr);
+    bool doBitCast(AstNode* parent, AstNode** result = nullptr);
     bool doAutoCast(AstNode* parent, AstNode** result = nullptr);
     bool doIf(AstNode* parent, AstNode** result = nullptr);
     bool doWhile(AstNode* parent, AstNode** result = nullptr);
