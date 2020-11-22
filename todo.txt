@@ -15,8 +15,6 @@ ca serait cool que les methods, en reflections, aient une value qui peut être ca
 -------------------------------------
 var x: [2] s32[1, 2] ?
 -------------------------------------
-var x: [] u8 = #load(file) -> array de u8
--------------------------------------
 where pour mettre des contraintes sur les parametres (et les generics, pour faire un choix d'overload par ex)
 
 
