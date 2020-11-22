@@ -367,8 +367,8 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
         SWAG_VERIFY(rc == 0, context->report({back, format("cannot open file '%s'", back->computedValue.text.c_str())}));
 
         auto newJob                    = g_Pool_loadFileJob.alloc();
-        node->computedValue.reg.offset = module->constantSegment.reserve(stat_buf.st_size);
-        newJob->destBuffer             = module->constantSegment.address(node->computedValue.reg.u32);
+        node->computedValue.reg.offset = module->tempSegment.reserve(stat_buf.st_size);
+        newJob->destBuffer             = module->tempSegment.address(node->computedValue.reg.u32);
         newJob->sizeBuffer             = stat_buf.st_size;
 
         newJob->module       = module;

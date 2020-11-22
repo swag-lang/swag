@@ -85,6 +85,7 @@ struct Module
     DataSegment constantSegment;
     DataSegment constantSegmentCompiler;
     DataSegment bssSegment;
+    DataSegment tempSegment;
 
     void setBuildPass(BuildPass buildP);
 
