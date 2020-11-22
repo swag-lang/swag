@@ -6,3 +6,11 @@ var G = 0
 {
     #assert(false)
 }
+
+#if #defined(Value)
+{
+    const Value1 = Value
+}
+
+const Value = 1
+#assert Value1 == 1
