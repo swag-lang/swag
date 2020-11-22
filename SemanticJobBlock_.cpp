@@ -151,15 +151,23 @@ bool SemanticJob::resolveFor(SemanticContext* context)
 bool SemanticJob::resolveSwitch(SemanticContext* context)
 {
     auto node = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);
-    SWAG_CHECK(checkIsConcrete(context, node->expression));
-
-    node->typeInfo                     = node->expression->typeInfo;
-    node->byteCodeFct                  = ByteCodeGenJob::emitSwitch;
-    node->expression->byteCodeAfterFct = ByteCodeGenJob::emitSwitchAfterExpr;
 
     // Deal with complete
     SymbolAttributes attributes;
     SWAG_CHECK(collectAttributes(context, node, attributes));
+    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_COMPLETE) || node->expression, context->report({node, node->token, "a switch without an expression cannot be marked as 'swag.complete'"}));
+
+    node->byteCodeFct = ByteCodeGenJob::emitSwitch;
+    if (!node->expression)
+    {
+        node->byteCodeBeforeFct = ByteCodeGenJob::emitBeforeSwitch;
+        return true;
+    }
+
+    node->expression->byteCodeAfterFct = ByteCodeGenJob::emitSwitchAfterExpr;
+
+    SWAG_CHECK(checkIsConcrete(context, node->expression));
+    node->typeInfo = node->expression->typeInfo;
 
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
     SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, "invalid switch type 'any', you need to cast to a concrete type"}));
@@ -242,10 +250,14 @@ bool SemanticJob::resolveCase(SemanticContext* context)
         SWAG_CHECK(checkIsConcreteOrType(context, oneExpression));
         if (context->result != ContextResult::Done)
             return true;
-        SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
+        if (node->ownerSwitch->expression)
+            SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
+        else
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_COMPARE));
     }
 
-    node->typeInfo                 = node->ownerSwitch->expression->typeInfo;
+    if (node->ownerSwitch->expression)
+        node->typeInfo = node->ownerSwitch->expression->typeInfo;
     node->block->byteCodeBeforeFct = ByteCodeGenJob::emitSwitchCaseBeforeBlock;
     node->block->byteCodeAfterFct  = ByteCodeGenJob::emitSwitchCaseAfterBlock;
     return true;

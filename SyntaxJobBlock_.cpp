@@ -52,9 +52,10 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
     if (result)
         *result = switchNode;
 
+    // switch can have no expression
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(verifyError(switchNode->token, token.id != TokenId::SymLeftCurly, "missing 'switch' expression before '{'"));
-    SWAG_CHECK(doExpression(switchNode, &switchNode->expression));
+    if (token.id != TokenId::SymLeftCurly)
+        SWAG_CHECK(doExpression(switchNode, &switchNode->expression));
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     AstSwitchCase*      defaultCase      = nullptr;
