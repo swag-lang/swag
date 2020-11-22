@@ -13,8 +13,6 @@ crc value pour chaque field d'une structure en reflection ?
 -------------------------------------
 ca serait cool que les methods, en reflections, aient une value qui peut être castée en lambda, et donc appelées
 -------------------------------------
-switch { case a == 1: }
--------------------------------------
 var x: [2] s32[1, 2] ?
 -------------------------------------
 transmute équivalent de bitcast, équivalent de a = *(int*) (&v)

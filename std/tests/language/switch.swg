@@ -1,6 +1,6 @@
 #test
 {
-    // 'switch' works like in C++, except that no 'break' is necessary
+    // 'switch' works like in C, except that no 'break' is necessary
     {
         value := 6
         switch value
@@ -50,7 +50,7 @@
         }
     }
 
-    // If you want to pass from one case to another like in c++, use 'fallthrough'
+    // If you want to pass from one case to another like in C, use 'fallthrough'
     {
         value := 6
         switch value
@@ -86,6 +86,37 @@
             case 5:     @assert(false)
             case 6:     break
             default:    @assert(false)
+        }
+    }
+
+    // switch can be marked with 'swag.complete' to force all cases to be covered
+    {
+        enum Color { Red; Green; Blue; }
+        color := Color.Red
+
+        #[swag.complete]
+        switch color
+        {
+            case Color.Red:     break
+            case Color.Green:   @assert(false)
+            case Color.Blue:    @assert(false)
+        }
+    }
+
+    // If the switch expression is omitted, then it will behave like a serie of if/else,
+    // resolved in order
+    {
+        value := 6
+        value1 := "true"
+        switch
+        {
+            case value == 6 || value == 7:
+                @assert(true)
+                fallthrough
+            case value1 == "true":
+                @assert(true)
+            default:
+                @assert(false)
         }
     }
 }
