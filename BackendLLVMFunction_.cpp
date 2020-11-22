@@ -759,7 +759,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetZeroStackX:
         {
             auto r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
-            builder.CreateMemSet(r0, pp.cst0_i8, ip->b.u32, llvm::MaybeAlign(0));
+            auto p0 = GEP_I32(allocT, 0);
+            builder.CreateStore(r0, p0);
+
+            auto r1 = pp.cst0_i8;
+            auto p1 = GEP_I32(allocT, 1);
+            builder.CreateStore(r1, p1);
+
+            auto r2 = builder.getInt32(ip->b.u32);
+            auto p2 = GEP_I32(allocT, 2);
+            builder.CreateStore(r2, p2);
+
+            auto typeF = createFunctionTypeInternal(buildParameters, 3);
+            builder.CreateCall(modu.getOrInsertFunction("@memset", typeF), { p0, p1, p2 });
             break;
         }
 
