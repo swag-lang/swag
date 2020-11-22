@@ -81,7 +81,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_contextTlsId, 0);
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-    emitCall(pp, "__swag_runtime_tlsAlloc");
+    emitCall(pp, "__tlsAlloc");
 
     //__process_infos.defaultContext = &mainContext;
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symMC_mainContext, 0);
@@ -93,7 +93,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
     BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symPI_defaultContext, 0);
     BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-    emitCall(pp, "__swag_runtime_tlsSetValue");
+    emitCall(pp, "__tlsSetValue");
 
     // Load all dependencies
     for (const auto& dep : module->moduleDependencies)
@@ -105,7 +105,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
         BackendX64Inst::emit_Load64_Immediate(pp, nameLib.length(), RAX);
         BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-        emitCall(pp, "__swag_runtime_loaddll");
+        emitCall(pp, "__loaddll");
     }
 
     // Call to global init of all dependencies
@@ -159,7 +159,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         emitCall(pp, funcDrop);
     }
 
-    emitCall(pp, "__swag_runtime_exit");
+    emitCall(pp, "__exit");
 
     BackendX64Inst::emit_Clear64(pp, RAX);
     BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);

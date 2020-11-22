@@ -2241,7 +2241,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto p3    = GEP_I32(allocT, 3);
             auto p4    = GEP_I32(allocT, 4);
             auto typeF = createFunctionTypeInternal(buildParameters, 5);
-            builder.CreateCall(modu.getOrInsertFunction("__swag_runtime_assert", typeF), {p0, p1, p2, p3, p4});
+            builder.CreateCall(modu.getOrInsertFunction("__assert", typeF), {p0, p1, p2, p3, p4});
             builder.CreateBr(brTrue);
 
             builder.SetInsertPoint(brTrue);
@@ -2284,7 +2284,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto rr    = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
             auto v0    = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
             auto typeF = createFunctionTypeInternal(buildParameters, 2);
-            builder.CreateCall(modu.getOrInsertFunction("__swag_runtime_tlsGetValue", typeF), {rr, v0});
+            builder.CreateCall(modu.getOrInsertFunction("__tlsGetValue", typeF), {rr, v0});
             break;
         }
         case ByteCodeOp::IntrinsicSetContext:
@@ -2292,7 +2292,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto v0    = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
             auto v1    = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
             auto typeF = createFunctionTypeInternal(buildParameters, 2);
-            builder.CreateCall(modu.getOrInsertFunction("__swag_runtime_tlsSetValue", typeF), {v0, v1});
+            builder.CreateCall(modu.getOrInsertFunction("__tlsSetValue", typeF), {v0, v1});
             break;
         }
         case ByteCodeOp::IntrinsicArguments:

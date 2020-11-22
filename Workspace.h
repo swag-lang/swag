@@ -24,6 +24,7 @@ struct Workspace
 
     void    addBootstrap();
     void    addRuntime();
+    void    addRuntimeFile(const char* fileName);
     void    setupPaths();
     void    setupInternalTags();
     void    setupUserTags();

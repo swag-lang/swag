@@ -108,7 +108,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     {
         auto typeF   = createFunctionTypeInternal(buildParameters, 1);
         auto toTlsId = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32});
-        builder.CreateCall(modu.getOrInsertFunction("__swag_runtime_tlsAlloc", typeF), {toTlsId});
+        builder.CreateCall(modu.getOrInsertFunction("__tlsAlloc", typeF), {toTlsId});
     }
 
     // __process_infos.defaultContext = &mainContext
@@ -124,7 +124,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         auto toContext = builder.CreatePtrToInt(builder.CreatePointerCast(pp.mainContext, llvm::Type::getInt64PtrTy(context)), builder.getInt64Ty());
         builder.CreateStore(toContext, GEP_I32(allocT, 0));
         auto p0 = GEP_I32(allocT, 0);
-        builder.CreateCall(modu.getOrInsertFunction("__swag_runtime_tlsSetValue", typeF), {toTlsId, p0});
+        builder.CreateCall(modu.getOrInsertFunction("__tlsSetValue", typeF), {toTlsId, p0});
     }
 
     // Load all dependencies
@@ -140,7 +140,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         auto typeF = createFunctionTypeInternal(buildParameters, 2);
         auto p0    = GEP_I32(allocT, 0);
         auto p1    = GEP_I32(allocT, 1);
-        builder.CreateCall(modu.getOrInsertFunction("__swag_runtime_loaddll", typeF), {p0, p1});
+        builder.CreateCall(modu.getOrInsertFunction("__loaddll", typeF), {p0, p1});
     }
 
     // Call to global init of all dependencies
@@ -202,7 +202,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // Call exit
     auto typeF = createFunctionTypeInternal(buildParameters, 0);
-    builder.CreateCall(modu.getOrInsertFunction("__swag_runtime_exit", typeF), {});
+    builder.CreateCall(modu.getOrInsertFunction("__exit", typeF), {});
 
     uint32_t value  = 0;
     auto     retVal = llvm::ConstantInt::get(context, llvm::APInt(32, value));

@@ -412,6 +412,8 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
             node->bc->sourceFile = node->sourceFile;
             if (node->flags & AST_DEFINED_INTRINSIC)
                 node->bc->name = node->name;
+            else if (node->sourceFile->isRuntimeFile)
+                node->bc->name = node->name.c_str();
             else
                 node->bc->name = node->ownerScope->getFullName() + "_" + node->name.c_str();
             node->bc->name.replaceAll('.', '_');

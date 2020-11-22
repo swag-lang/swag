@@ -1673,7 +1673,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Clear64(pp, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, 32, RAX, RSP);
-            emitCall(pp, "__swag_runtime_assert");
+            emitCall(pp, "__assert");
             break;
         }
 
@@ -1682,14 +1682,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, "__swag_runtime_tlsGetValue");
+            emitCall(pp, "__tlsGetValue");
             break;
         case ByteCodeOp::IntrinsicSetContext:
             BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symPI_contextTlsId, 0);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            emitCall(pp, "__swag_runtime_tlsSetValue");
+            emitCall(pp, "__tlsSetValue");
             break;
 
         case ByteCodeOp::IntrinsicArguments:

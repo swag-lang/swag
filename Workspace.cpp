@@ -79,6 +79,21 @@ void Workspace::addBootstrap()
     g_ThreadMgr.addJob(job);
 }
 
+void Workspace::addRuntimeFile(const char* fileName)
+{
+    auto     file       = g_Allocator.alloc<SourceFile>();
+    fs::path p          = g_CommandLine.exePath;
+    file->name          = fileName;
+    file->path          = p.parent_path().string() + "/" + fileName;
+    file->module        = runtimeModule;
+    file->isRuntimeFile = true;
+    runtimeModule->addFile(file);
+
+    auto job        = g_Pool_syntaxJob.alloc();
+    job->sourceFile = file;
+    g_ThreadMgr.addJob(job);
+}
+
 void Workspace::addRuntime()
 {
     // Runtime will be compiled in the workspace scope, in order to be defined once
@@ -89,17 +104,8 @@ void Workspace::addRuntime()
         exit(-1);
     modules.push_back(runtimeModule);
 
-    auto     file       = g_Allocator.alloc<SourceFile>();
-    fs::path p          = g_CommandLine.exePath;
-    file->name          = "swag.runtime.swg";
-    file->path          = p.parent_path().string() + "/swag.runtime.swg";
-    file->module        = runtimeModule;
-    file->isRuntimeFile = true;
-    runtimeModule->addFile(file);
-
-    auto job        = g_Pool_syntaxJob.alloc();
-    job->sourceFile = file;
-    g_ThreadMgr.addJob(job);
+    addRuntimeFile("swag.runtime.swg");
+    addRuntimeFile("swag.runtime.win32.swg");
 }
 
 void Workspace::setupPaths()
