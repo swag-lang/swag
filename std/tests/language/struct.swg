@@ -3,6 +3,7 @@
     // ...
 
     // A struct can be anonymous when declared as a variable type
+    // Unlike tuples, syntax should be the same as for named structs
     {
         var tuple: struct
         {
