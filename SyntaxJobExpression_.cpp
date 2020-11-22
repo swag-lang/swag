@@ -357,46 +357,6 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
     return doPrimaryExpression(parent, result);
 }
 
-bool SyntaxJob::doFactorExpressionRec(AstNode* parent, AstNode** result)
-{
-    AstNode* leftNode;
-    SWAG_CHECK(doUnaryExpression(nullptr, &leftNode));
-
-    bool isBinary = false;
-    if ((token.id == TokenId::SymPlus) ||
-        (token.id == TokenId::SymMinus) ||
-        (token.id == TokenId::SymAsterisk) ||
-        (token.id == TokenId::SymSlash) ||
-        (token.id == TokenId::SymPercent) ||
-        (token.id == TokenId::SymAmpersand) ||
-        (token.id == TokenId::SymVertical) ||
-        (token.id == TokenId::SymGreaterGreater) ||
-        (token.id == TokenId::SymLowerLower) ||
-        (token.id == TokenId::SymTilde) ||
-        (token.id == TokenId::SymCircumflex))
-    {
-        auto binaryNode = Ast::newNode<AstNode>(this, AstNodeKind::FactorOp, sourceFile, parent, 2);
-        if (token.id == TokenId::SymGreaterGreater || token.id == TokenId::SymLowerLower)
-            binaryNode->semanticFct = SemanticJob::resolveShiftExpression;
-        else
-            binaryNode->semanticFct = SemanticJob::resolveFactorExpression;
-        binaryNode->token = move(token);
-
-        Ast::addChildBack(binaryNode, leftNode);
-        SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doFactorExpressionRec(binaryNode));
-        leftNode = binaryNode;
-        isBinary = true;
-    }
-
-    if (!isBinary)
-        Ast::addChildBack(parent, leftNode);
-    if (result)
-        *result = leftNode;
-
-    return true;
-}
-
 static int getPrecedence(TokenId id)
 {
     switch (id)
@@ -419,6 +379,8 @@ static int getPrecedence(TokenId id)
         return 5;
     case TokenId::SymVertical:
         return 6;
+    case TokenId::SymLowerEqualGreater:
+        return 7;
     }
 
     SWAG_ASSERT(false);
@@ -502,11 +464,54 @@ bool SyntaxJob::doOperatorPrecedence(AstNode** result)
 
 bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
 {
-    AstNode* factor;
-    SWAG_CHECK(doFactorExpressionRec(parent, &factor));
-    SWAG_CHECK(doOperatorPrecedence(&factor));
+    AstNode* leftNode;
+    SWAG_CHECK(doUnaryExpression(nullptr, &leftNode));
+
+    bool isBinary = false;
+    if ((token.id == TokenId::SymPlus) ||
+        (token.id == TokenId::SymMinus) ||
+        (token.id == TokenId::SymAsterisk) ||
+        (token.id == TokenId::SymSlash) ||
+        (token.id == TokenId::SymPercent) ||
+        (token.id == TokenId::SymAmpersand) ||
+        (token.id == TokenId::SymVertical) ||
+        (token.id == TokenId::SymGreaterGreater) ||
+        (token.id == TokenId::SymLowerLower) ||
+        (token.id == TokenId::SymTilde) ||
+        (token.id == TokenId::SymCircumflex))
+    {
+        auto binaryNode = Ast::newNode<AstNode>(this, AstNodeKind::FactorOp, sourceFile, parent, 2);
+        if (token.id == TokenId::SymGreaterGreater || token.id == TokenId::SymLowerLower)
+            binaryNode->semanticFct = SemanticJob::resolveShiftExpression;
+        else
+            binaryNode->semanticFct = SemanticJob::resolveFactorExpression;
+        binaryNode->token = move(token);
+
+        Ast::addChildBack(binaryNode, leftNode);
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doFactorExpression(binaryNode));
+        leftNode = binaryNode;
+        isBinary = true;
+    }
+    else if (token.id == TokenId::SymLowerEqualGreater)
+    {
+        auto binaryNode = Ast::newNode<AstNode>(this, AstNodeKind::BinaryOp, sourceFile, parent, 2);
+        binaryNode->semanticFct = SemanticJob::resolveCompareExpression;
+        binaryNode->token = move(token);
+
+        Ast::addChildBack(binaryNode, leftNode);
+        SWAG_CHECK(tokenizer.getToken(token));
+        AstNode* rightNode;
+        SWAG_CHECK(doFactorExpression(binaryNode, &rightNode));
+        leftNode = binaryNode;
+        isBinary = true;
+    }
+
+    if (!isBinary)
+        Ast::addChildBack(parent, leftNode);
     if (result)
-        *result = factor;
+        *result = leftNode;
+
     return true;
 }
 
@@ -514,11 +519,11 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
 {
     AstNode* leftNode;
     SWAG_CHECK(doFactorExpression(nullptr, &leftNode));
+    SWAG_CHECK(doOperatorPrecedence(&leftNode));
 
     if ((token.id == TokenId::SymEqualEqual) ||
         (token.id == TokenId::SymExclamEqual) ||
         (token.id == TokenId::SymLowerEqual) ||
-        (token.id == TokenId::SymLowerEqualGreater) ||
         (token.id == TokenId::SymGreaterEqual) ||
         (token.id == TokenId::SymLower) ||
         (token.id == TokenId::SymGreater))
@@ -527,7 +532,6 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
         while ((token.id == TokenId::SymEqualEqual) ||
                (token.id == TokenId::SymExclamEqual) ||
                (token.id == TokenId::SymLowerEqual) ||
-               (token.id == TokenId::SymLowerEqualGreater) ||
                (token.id == TokenId::SymGreaterEqual) ||
                (token.id == TokenId::SymLower) ||
                (token.id == TokenId::SymGreater))
