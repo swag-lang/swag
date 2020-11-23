@@ -54,7 +54,7 @@ bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
 {
     auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto front = node->childs.front();
-    SWAG_ASSERT(front->resultRegisterRC.size() <= 2);
+    SWAG_ASSERT(front->resultRegisterRC.size() == 2);
     node->resultRegisterRC         = front->resultRegisterRC[1];
     node->parent->resultRegisterRC = node->resultRegisterRC;
     freeRegisterRC(context, front->resultRegisterRC[0]);

@@ -499,7 +499,6 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfoStruct()
     {
         kind = TypeInfoKind::Struct;
-        flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
     int numRegisters() override

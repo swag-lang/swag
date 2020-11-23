@@ -351,13 +351,14 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
     {
     case AstNodeKind::StructDecl:
         symbolKind = SymbolKind::Struct;
+        typeInfo->flags |= TYPEINFO_RETURN_BY_COPY;
         break;
     case AstNodeKind::InterfaceDecl:
         symbolKind     = SymbolKind::Interface;
         typeInfo->kind = TypeInfoKind::Interface;
         break;
     case AstNodeKind::TypeSet:
-        symbolKind     = SymbolKind::TypeSet;
+        symbolKind = SymbolKind::TypeSet;
         typeInfo->kind = TypeInfoKind::TypeSet;
         break;
     default:

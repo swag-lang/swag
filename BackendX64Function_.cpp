@@ -2455,6 +2455,8 @@ void BackendX64::emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeF
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
         if ((returnType->kind == TypeInfoKind::Slice) ||
+            (returnType->kind == TypeInfoKind::Interface) ||
+            (returnType->kind == TypeInfoKind::TypeSet) ||
             (returnType->isNative(NativeTypeKind::Any)) ||
             (returnType->isNative(NativeTypeKind::String)) ||
             (returnType->flags & TYPEINFO_RETURN_BY_COPY))
@@ -2540,7 +2542,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU32);
         }
-        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface)
+        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface || typeParam->kind == TypeInfoKind::TypeSet)
         {
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU64);
@@ -2561,6 +2563,8 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
     auto returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     bool returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnType->kind == TypeInfoKind::Slice ||
+        returnType->kind == TypeInfoKind::Interface ||
+        returnType->kind == TypeInfoKind::TypeSet ||
         returnType->isNative(NativeTypeKind::Any) ||
         returnType->isNative(NativeTypeKind::String))
     {

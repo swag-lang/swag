@@ -106,6 +106,7 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
         typeInfo->kind == TypeInfoKind::Array ||
         typeInfo->kind == TypeInfoKind::Struct ||
         typeInfo->kind == TypeInfoKind::Interface ||
+        typeInfo->kind == TypeInfoKind::TypeSet ||
         typeInfo->kind == TypeInfoKind::Lambda ||
         typeInfo->isNative(NativeTypeKind::Any) ||
         typeInfo->isNative(NativeTypeKind::String) ||
@@ -263,7 +264,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             auto rr1 = TO_PTR_I32(GEP_I32(allocRR, idx + 1));
             builder.CreateStore(func->getArg(argIdx + 1), rr1);
         }
-        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface)
+        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface || typeParam->kind == TypeInfoKind::TypeSet)
         {
             auto cst0 = TO_PTR_I8(func->getArg(argIdx));
             builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
@@ -306,6 +307,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 
         if (returnType->kind == TypeInfoKind::Slice ||
             returnType->kind == TypeInfoKind::Interface ||
+            returnType->kind == TypeInfoKind::TypeSet ||
             returnType->isNative(NativeTypeKind::Any) ||
             returnType->isNative(NativeTypeKind::String))
         {
@@ -3134,10 +3136,17 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
             params.push_back(cType);
 
             // Additional parameter
-            if (param->typeInfo->kind == TypeInfoKind::Slice || param->typeInfo->isNative(NativeTypeKind::String))
+            if (param->typeInfo->kind == TypeInfoKind::Slice ||
+                param->typeInfo->isNative(NativeTypeKind::String))
+            {
                 params.push_back(builder.getInt32Ty());
-            else if (param->typeInfo->isNative(NativeTypeKind::Any) || param->typeInfo->kind == TypeInfoKind::Interface)
+            }
+            else if (param->typeInfo->isNative(NativeTypeKind::Any) ||
+                     param->typeInfo->kind == TypeInfoKind::Interface ||
+                     param->typeInfo->kind == TypeInfoKind::TypeSet)
+            {
                 params.push_back(builder.getInt8Ty()->getPointerTo());
+            }
         }
     }
 
@@ -3218,7 +3227,7 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
             auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r1));
         }
-        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface)
+        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface || typeParam->kind == TypeInfoKind::TypeSet)
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));
@@ -3244,6 +3253,8 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
     // Return by parameter
     auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     if (returnType->kind == TypeInfoKind::Slice ||
+        returnType->kind == TypeInfoKind::Interface ||
+        returnType->kind == TypeInfoKind::TypeSet ||
         returnType->isNative(NativeTypeKind::Any) ||
         returnType->isNative(NativeTypeKind::String))
     {
@@ -3275,6 +3286,8 @@ bool BackendLLVM::getForeignCallReturnValue(const BuildParameters& buildParamete
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
         if ((returnType->kind == TypeInfoKind::Slice) ||
+            (returnType->kind == TypeInfoKind::Interface) ||
+            (returnType->kind == TypeInfoKind::TypeSet) ||
             (returnType->isNative(NativeTypeKind::Any)) ||
             (returnType->isNative(NativeTypeKind::String)) ||
             (returnType->flags & TYPEINFO_RETURN_BY_COPY))
