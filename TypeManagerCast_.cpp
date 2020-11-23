@@ -1752,7 +1752,9 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             TypeInfoParam* done = nullptr;
             for (auto field : fromStruct->fields)
             {
-                if (field->typeInfo != toStruct || !field->hasUsing)
+                if (!field->hasUsing)
+                    continue;
+                if (field->typeInfo != toStruct && !field->typeInfo->isPointerTo(toStruct))
                     continue;
 
                 if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -1765,6 +1767,11 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
                         Diagnostic note2{field->node, "this is another", DiagnosticLevel::Note};
                         return context->report(diag, &note1, &note2);
                     }
+
+                    // We will have to dereference the pointer to get the real thing
+                    if (field->typeInfo->kind == TypeInfoKind::Pointer)
+                        fromNode->semFlags |= AST_SEM_DEREF_USING;
+                    fromNode->semFlags |= AST_SEM_USING;
 
                     fromNode->castOffset     = field->offset;
                     fromNode->castedTypeInfo = fromNode->typeInfo;

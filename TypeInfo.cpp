@@ -186,6 +186,18 @@ bool TypeInfo::isPointerTo(TypeInfoKind pointerKind)
     return true;
 }
 
+bool TypeInfo::isPointerTo(TypeInfo* finalType)
+{
+    if (kind != TypeInfoKind::Pointer)
+        return false;
+    auto ptr = (TypeInfoPointer*) this;
+    if (ptr->ptrCount != 1)
+        return false;
+    if (ptr->finalType != finalType)
+        return false;
+    return true;
+}
+
 bool TypeInfo::isPointerToTypeInfo()
 {
     if (kind != TypeInfoKind::Pointer)

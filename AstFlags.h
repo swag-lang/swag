@@ -89,3 +89,5 @@ static const uint32_t AST_SEM_FORCE_NO_TAKE_ADDRESS = 0x00000002;
 static const uint32_t AST_SEM_EMBEDDED_RETURN       = 0x00000004;
 static const uint32_t AST_SEM_SCOPE_HAS_RETURN      = 0x00000008;
 static const uint32_t AST_SEM_FCT_HAS_RETURN        = 0x00000010;
+static const uint32_t AST_SEM_DEREF_USING           = 0x00000020;
+static const uint32_t AST_SEM_USING                 = 0x00000040;

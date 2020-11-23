@@ -723,15 +723,25 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         // Cast with to a pointer with an offset
-        if (exprNode->castOffset)
+        // When casting from one struct to another, with a 'using' on a field
+        if (exprNode->semFlags & AST_SEM_USING)
         {
             SWAG_ASSERT(fromTypeInfo->kind == TypeInfoKind::Pointer);
             truncRegisterRC(context, exprNode->resultRegisterRC, 1);
             node->resultRegisterRC   = exprNode->resultRegisterRC;
             exprNode->castedTypeInfo = nullptr;
-            auto inst                = emitInstruction(context, ByteCodeOp::IncPointer32, node->resultRegisterRC, 0, node->resultRegisterRC);
-            inst->flags |= BCI_IMM_B;
-            inst->b.u32 = exprNode->castOffset;
+
+            if (exprNode->castOffset)
+            {
+                auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->resultRegisterRC, 0, node->resultRegisterRC);
+                inst->flags |= BCI_IMM_B;
+                inst->b.u32 = exprNode->castOffset;
+            }
+
+            // The field is a pointer : need to dereference it
+            if (exprNode->semFlags & AST_SEM_DEREF_USING)
+                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+
             return true;
         }
 
