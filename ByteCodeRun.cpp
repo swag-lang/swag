@@ -489,12 +489,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IncPointer32:
     {
-        registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer + IMMB_U32(ip);
+        registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer + IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::DecPointer32:
     {
-        registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer - IMMB_U32(ip);
+        registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer - IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::DeRef8:

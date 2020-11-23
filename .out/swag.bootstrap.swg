@@ -146,6 +146,40 @@ namespace swag
                     @free(request.address)
                 case AllocatorMode.Realloc:
                     request.address = @realloc(request.address, request.size)
+
+                /*case AllocatorMode.Free:
+                    if !request.address break
+                    ptr := cast(**void) request.address
+                    @free(ptr[-1])
+
+                case AllocatorMode.Realloc:
+                    if !request.address fallthrough
+                    size := request.size
+                    size += @sizeof(*void)
+
+                    storePtr := cast(**void) request.address
+                    realPtr := cast(*u8) @realloc(storePtr[-1], size)
+
+                    userPtr := realPtr + @sizeof(*void)
+                    //userPtr += lml align correctly
+                    storePtr = cast(**void) userPtr
+                    storePtr -= 1
+                    :storePtr = realPtr
+                    request.address = userPtr
+
+                case AllocatorMode.Alloc:
+                    size := request.size
+                    if !size break
+                    size += @sizeof(*void)
+
+                    realPtr := cast(*u8) @alloc(size)
+
+                    userPtr := realPtr + @sizeof(*void)
+                    //userPtr += lml align correctly
+                    storePtr := cast(**void) userPtr
+                    storePtr -= 1
+                    :storePtr = realPtr
+                    request.address = userPtr*/
             }
         }
     }
