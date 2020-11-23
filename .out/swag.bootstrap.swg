@@ -138,7 +138,7 @@ namespace swag
     {
         func alloc(self, request: *AllocatorRequest)
         {
-            // The default system heap alloc aligned only on a pointer size
+            // We are considering that the default system heap alloc does not align
             // So we need to trick it to respect the user wanted alignement.
             // -> store the real system alloc returned pointer before the user (aligned) pointer
             // -> allocate more space to be able to store that pointer, and to respect the alignement
