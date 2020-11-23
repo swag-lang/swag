@@ -1708,34 +1708,6 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
     return true;
 }
 
-bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
-{
-    auto toTypeReference = CastTypeInfo<TypeInfoReference>(toType, TypeInfoKind::Reference);
-
-    // Same referenced type
-    if (toTypeReference->pointedType->isSame(fromType, ISSAME_CAST))
-        return true;
-
-    // Structure to interface reference
-    if (fromType->kind == TypeInfoKind::Struct && toTypeReference->pointedType->kind == TypeInfoKind::Interface)
-    {
-        auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toTypeReference->pointedType, TypeInfoKind::Interface);
-        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
-        if (!fromTypeStruct->hasInterface(toTypeItf))
-            return castError(context, toType, fromType, fromNode, castFlags);
-
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            fromNode->castedTypeInfo = fromType;
-            fromNode->typeInfo       = toTypeItf;
-        }
-
-        return true;
-    }
-
-    return castError(context, toType, fromType, fromNode, castFlags);
-}
-
 bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* toStruct, TypeInfoStruct* fromStruct, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags, bool& ok)
 {
     ok = false;
@@ -1774,6 +1746,45 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
 
     ok = done ? true : false;
     return true;
+}
+
+bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    auto toTypeReference = CastTypeInfo<TypeInfoReference>(toType, TypeInfoKind::Reference);
+
+    // Same referenced type
+    if (toTypeReference->pointedType->isSame(fromType, ISSAME_CAST))
+        return true;
+
+    // Structure to interface reference
+    if (fromType->kind == TypeInfoKind::Struct && toTypeReference->pointedType->kind == TypeInfoKind::Interface)
+    {
+        auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toTypeReference->pointedType, TypeInfoKind::Interface);
+        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        if (!fromTypeStruct->hasInterface(toTypeItf))
+            return castError(context, toType, fromType, fromNode, castFlags);
+
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfo       = toTypeItf;
+        }
+
+        return true;
+    }
+
+    // Struct to struct
+    if (fromType->kind == TypeInfoKind::Struct && toTypeReference->pointedType->kind == TypeInfoKind::Struct)
+    {
+        auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypeReference->pointedType, TypeInfoKind::Struct);
+        bool ok         = false;
+        SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
+        if (ok)
+            return true;
+    }
+
+    return castError(context, toType, fromType, fromNode, castFlags);
 }
 
 bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)

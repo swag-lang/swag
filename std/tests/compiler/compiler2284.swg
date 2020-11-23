@@ -1,4 +1,4 @@
-/*using swag
+using swag
 
 struct Entity
 {
@@ -7,6 +7,7 @@ struct Entity
 
 struct Monster
 {
+    gg: bool
     using entity: *Entity
 }
 
@@ -24,4 +25,4 @@ func set(entity: Entity)
 
     e.position[0] = 666
     set(v)
-}*/
+}

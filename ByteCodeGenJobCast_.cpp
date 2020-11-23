@@ -720,31 +720,30 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Pointer)
+    // Cast with to a pointer with an offset
+    // When casting from one struct to another, with a 'using' on a field
+    if (exprNode->semFlags & AST_SEM_USING)
     {
-        // Cast with to a pointer with an offset
-        // When casting from one struct to another, with a 'using' on a field
-        if (exprNode->semFlags & AST_SEM_USING)
+        truncRegisterRC(context, exprNode->resultRegisterRC, 1);
+        node->resultRegisterRC   = exprNode->resultRegisterRC;
+        exprNode->castedTypeInfo = nullptr;
+
+        if (exprNode->castOffset)
         {
-            SWAG_ASSERT(fromTypeInfo->kind == TypeInfoKind::Pointer);
-            truncRegisterRC(context, exprNode->resultRegisterRC, 1);
-            node->resultRegisterRC   = exprNode->resultRegisterRC;
-            exprNode->castedTypeInfo = nullptr;
-
-            if (exprNode->castOffset)
-            {
-                auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->resultRegisterRC, 0, node->resultRegisterRC);
-                inst->flags |= BCI_IMM_B;
-                inst->b.u32 = exprNode->castOffset;
-            }
-
-            // The field is a pointer : need to dereference it
-            if (exprNode->semFlags & AST_SEM_DEREF_USING)
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
-
-            return true;
+            auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->resultRegisterRC, 0, node->resultRegisterRC);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u32 = exprNode->castOffset;
         }
 
+        // The field is a pointer : need to dereference it
+        if (exprNode->semFlags & AST_SEM_DEREF_USING)
+            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
         if (fromTypeInfo->kind == TypeInfoKind::Array ||
             fromTypeInfo->kind == TypeInfoKind::Pointer ||
             fromTypeInfo->kind == TypeInfoKind::Struct ||
