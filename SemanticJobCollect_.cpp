@@ -266,7 +266,6 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
         if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
         {
             SWAG_ASSERT(node->assignment->computedValue.reg.offset != UINT32_MAX);
-            auto module = context->sourceFile->module;
 
             // Should be stored in the temp segment !
             storageOffset = seg->reserve(typeInfo->sizeOf);

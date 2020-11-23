@@ -1137,17 +1137,17 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicAlloc:
     {
-        registersRC[ip->a.u32].pointer = (uint8_t*) malloc(registersRC[ip->b.u32].u32);
+        registersRC[ip->a.u32].pointer = (uint8_t*) Runtime::alloc(registersRC[ip->b.u32].u32);
         break;
     }
     case ByteCodeOp::IntrinsicRealloc:
     {
-        registersRC[ip->a.u32].pointer = (uint8_t*) realloc((void*) registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32);
+        registersRC[ip->a.u32].pointer = (uint8_t*) Runtime::realloc((void*) registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32);
         break;
     }
     case ByteCodeOp::IntrinsicFree:
     {
-        free((void*) registersRC[ip->a.u32].pointer);
+        Runtime::free((void*) registersRC[ip->a.u32].pointer);
         break;
     }
     case ByteCodeOp::IntrinsicGetContext:

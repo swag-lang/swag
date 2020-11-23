@@ -35,6 +35,9 @@ namespace OS
     extern void     setupBackend();
     extern bool     compile(const BuildParameters& buildParameters, Module* module, const vector<string>& cFiles);
     extern bool     link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles);
+    extern void*    alloc(uint32_t size);
+    extern void*    realloc(void* ptr, uint32_t size);
+    extern void     free(void* ptr);
 
     extern bool atomicTestNull(void** ptr);
     extern void atomicSetIfNotNull(void** ptr, void* what);

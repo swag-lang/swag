@@ -299,4 +299,20 @@ namespace Runtime
 #endif
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    void* alloc(uint32_t size)
+    {
+        return OS::alloc(size);
+    }
+
+    void* realloc(void* ptr, uint32_t size)
+    {
+        return OS::realloc(ptr, size);
+    }
+
+    void free(void* ptr)
+    {
+        return OS::free(ptr);
+    }
+
 } // namespace Runtime

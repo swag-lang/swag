@@ -654,6 +654,27 @@ namespace OS
         return "";
     }
 
+    void* alloc(uint32_t size)
+    {
+        if (!size)
+            return nullptr;
+        return HeapAlloc(GetProcessHeap(), 0, size);
+    }
+
+    void* realloc(void* ptr, uint32_t size)
+    {
+        if (!ptr)
+            return alloc(size);
+        return HeapReAlloc(GetProcessHeap(), 0, ptr, size);
+    }
+
+    void free(void* ptr)
+    {
+        if (!ptr)
+            return;
+        HeapFree(GetProcessHeap(), 0, ptr);
+    }
+
     bool atomicTestNull(void** ptr)
     {
         return InterlockedCompareExchangePointer(ptr, *ptr, nullptr) == nullptr;
