@@ -429,7 +429,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             auto idNode = Ast::newIdentifier(sourceFile, dependentVar->name, idRef, nullptr);
             idNode->inheritTokenLocation(identifier->token);
-            Ast::insertChild(idRef, idNode, identifier->childParentIdx);
+
+            // We need to insert at the right place, but the identifier 'childParentIdx' can be the wrong one
+            // if it's not a direct child of 'idRef'. So we need to find the direct child of 'idRef', which is
+            // also a parent if 'identifier', in order to get the right child index, and insert the 'using'
+            // just before.
+            AstNode* newParent = identifier;
+            while (newParent->parent != idRef)
+                newParent = newParent->parent;
+
+            Ast::insertChild(idRef, idNode, newParent->childParentIdx);
             context->job->nodes.push_back(idNode);
 
             // Determine if the added identifier is out scope, and must be backticked to be retrieved in the
@@ -2110,9 +2119,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto  identifierRef      = node->identifierRef;
 
     node->byteCodeFct = ByteCodeGenJob::emitIdentifier;
-
-    if (node->name == "position")
-        node = node;
 
     // Current private scope
     if (context->sourceFile && context->sourceFile->scopePrivate && node->name == context->sourceFile->scopePrivate->name)
