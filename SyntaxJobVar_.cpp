@@ -32,7 +32,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
     {
         SWAG_CHECK(doLeftExpressionVar(&leftNode, false));
 
-        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid compare operator '==', do you mean '=' ?"));
+        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid affect operator '==', did you mean '=' ?"));
         SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, syntaxError(token, format("invalid token '%s' in variable declaration, ':' or '=' are expected here", token.text.c_str())));
 
         AstNode* type = nullptr;
@@ -43,7 +43,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         }
 
         AstNode* assign = nullptr;
-        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid compare operator '==', do you mean '=' ?"));
+        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid affect operator '==', did you mean '=' ?"));
         if (token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());

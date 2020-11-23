@@ -573,10 +573,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
         return true;
     }
 
-    if (token.id == TokenId::SymEqual)
-    {
-        return syntaxError(token, "invalid compare operator '=', do you mean '==' ?");
-    }
+    SWAG_VERIFY(token.id != TokenId::SymEqual, syntaxError(token, "invalid compare operator '=', did you mean '==' ?"));
 
     Ast::addChildBack(parent, leftNode);
     if (result)
@@ -1331,6 +1328,8 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         if (result)
             *result = leftNode;
     }
+
+    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid affect operator '==', did you mean '=' ?"));
 
     if (token.id != TokenId::SymLeftCurly)
         SWAG_CHECK(eatSemiCol("after left expression"));
