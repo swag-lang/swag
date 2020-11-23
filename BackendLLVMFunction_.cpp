@@ -3203,7 +3203,6 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
             params.push_back(builder.CreateLoad(r));
         }
         else if (typeParam->kind == TypeInfoKind::Struct ||
-                 typeParam->kind == TypeInfoKind::Interface ||
                  typeParam->kind == TypeInfoKind::Lambda ||
                  typeParam->kind == TypeInfoKind::Array)
         {
@@ -3219,7 +3218,7 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
             auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r1));
         }
-        else if (typeParam->isNative(NativeTypeKind::Any))
+        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface)
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));

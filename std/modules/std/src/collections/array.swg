@@ -4,7 +4,7 @@ using swag
 
 struct(T) Array
 {
-    allocator:  const IAllocator
+    allocator:  IAllocator
     buffer:     *T
     count:      u32
     capacity:   u32
@@ -123,7 +123,7 @@ impl Array
                 @drop(buffer + @index)
         }
 
-        memory.free(buffer, &allocator)
+        memory.free(buffer, allocator)
     }
 
     func realloc(using self, newCapacity: u32)
@@ -131,7 +131,7 @@ impl Array
         if allocator == null
             allocator = @getcontext().allocator
 
-        newBuffer := cast(*T) memory.realloc(buffer, newCapacity * @sizeof(T), &allocator)
+        newBuffer := cast(*T) memory.realloc(buffer, newCapacity * @sizeof(T), allocator)
 
         // Need to call opPostMove/opPostCopy on every existing element if the buffer has not been reallocated
         // in place

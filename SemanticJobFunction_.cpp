@@ -74,7 +74,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         }
 
         // A struct/interface is forced to be a const reference
-        else if (paramType->kind == TypeInfoKind::Struct || paramType->kind == TypeInfoKind::Interface)
+        else if (paramType->kind == TypeInfoKind::Struct)
         {
             auto typeRef          = g_Allocator.alloc<TypeInfoReference>();
             typeRef->flags        = paramType->flags | TYPEINFO_CONST;

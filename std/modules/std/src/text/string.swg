@@ -24,14 +24,14 @@ impl String
 {
     func free(using self)
     {
-        memory.free(buffer, &allocator)
+        memory.free(buffer, allocator)
     }
 
     func realloc(using self, newCapacity: u32)
     {
         if allocator == null
             allocator = @getcontext().allocator
-        buffer = autocast memory.realloc(buffer, newCapacity, &allocator)
+        buffer = autocast memory.realloc(buffer, newCapacity, allocator)
     }
 }
 
@@ -383,7 +383,7 @@ public impl String
         {
             oldBuffer := buffer
             newAllocator := @getcontext().allocator
-            buffer = autocast memory.alloc(newCapacity, &newAllocator)
+            buffer = autocast memory.alloc(newCapacity, newAllocator)
             memory.copy(buffer, oldBuffer, length + 1)
             allocator = newAllocator
         }

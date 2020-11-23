@@ -31,8 +31,8 @@ impl ConcatBuffer
         while ptr
         {
             nextPtr := ptr.next
-            memory.free(ptr.datas, &allocator)
-            memory.free(ptr, &allocator)
+            memory.free(ptr.datas, allocator)
+            memory.free(ptr, allocator)
             ptr = nextPtr
         }
     }
@@ -92,7 +92,7 @@ impl ConcatBuffer
         // Need to allocate a new bucket
         if allocator == null
             allocator = @getcontext().allocator
-        newBucket := cast(*ConcatBufferBucket) memory.alloc(@sizeof(ConcatBufferBucket), &allocator)
+        newBucket := cast(*ConcatBufferBucket) memory.alloc(@sizeof(ConcatBufferBucket), allocator)
         @init(newBucket)
         if lastBucket
             lastBucket.next = newBucket
@@ -100,7 +100,7 @@ impl ConcatBuffer
             firstBucket = newBucket
         lastBucket = newBucket
 
-        lastBucket.datas = memory.alloc(bucketSize, &allocator)
+        lastBucket.datas = memory.alloc(bucketSize, allocator)
         currentSP = lastBucket.datas
     }
 

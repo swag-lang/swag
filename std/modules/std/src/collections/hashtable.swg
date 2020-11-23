@@ -16,7 +16,7 @@ struct(K, V) HashTable
     const HASH_DELETED = 1'u32
     const HASH_FIRST = 2'u32
 
-    allocator:  const IAllocator
+    allocator:  IAllocator
     table:      *HashTableEntry
     count:      u32 // Number of valid entries
     capacity:   u32 // Number of total entries the table can hold
@@ -89,7 +89,7 @@ impl HashTable
             }
         }
 
-        memory.free(table, &allocator)
+        memory.free(table, allocator)
     }
 
     func grow(using self)
@@ -116,7 +116,7 @@ impl HashTable
 
         if allocator == null
             allocator = @getcontext().allocator
-        table = autocast memory.alloc(newCapacityBytes, &allocator)
+        table = autocast memory.alloc(newCapacityBytes, allocator)
 
         // Be sure hash entry is 0
         memory.clear(table, newCapacityBytes)

@@ -6,7 +6,7 @@ using swag
 public struct BitArray
 {
     buffer:     *u32
-    allocator:  const IAllocator
+    allocator:  IAllocator
     count:      u32
     capacity:   u32
 }
@@ -17,14 +17,14 @@ impl BitArray
     {
         if !buffer
             return
-        memory.free(buffer, &allocator)
+        memory.free(buffer, allocator)
     }
 
     func realloc(using self, newCapacity: u32)
     {
         if allocator == null
             allocator = @getcontext().allocator
-        buffer = autocast memory.realloc(buffer, newCapacity, &allocator)
+        buffer = autocast memory.realloc(buffer, newCapacity, allocator)
     }
 }
 

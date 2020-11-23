@@ -658,7 +658,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // A struct/interface is forced to be a const reference
         if (!(node->typeInfo->flags & TYPEINFO_GENERIC))
         {
-            if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface)
+            if (typeInfo->kind == TypeInfoKind::Struct)
             {
                 auto typeRef          = g_Allocator.alloc<TypeInfoReference>();
                 typeRef->flags        = typeInfo->flags | TYPEINFO_CONST;
