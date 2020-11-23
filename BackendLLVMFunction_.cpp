@@ -2249,27 +2249,26 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicAlloc:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt64Ty(), false);
-            auto a0 = builder.CreateCall(pp.fn_malloc, {v0, builder.getInt64(8)});
-            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            builder.CreateStore(a0, r1);
+            auto rr    = GEP_I32(allocR, ip->a.u32);
+            auto r0    = GEP_I32(allocR, ip->b.u32);
+            auto typeF = createFunctionTypeInternal(buildParameters, 2);
+            builder.CreateCall(modu.getOrInsertFunction("__alloc", typeF), {rr, r0});
             break;
         }
         case ByteCodeOp::IntrinsicRealloc:
         {
-            auto v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->c.u32));
-            auto v1 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
-            auto a0 = builder.CreateCall(pp.fn_realloc, {v0, v1, builder.getInt64(8)});
-            auto r2 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            builder.CreateStore(a0, r2);
+            auto rr    = GEP_I32(allocR, ip->a.u32);
+            auto r0    = GEP_I32(allocR, ip->b.u32);
+            auto r1    = GEP_I32(allocR, ip->c.u32);
+            auto typeF = createFunctionTypeInternal(buildParameters, 3);
+            builder.CreateCall(modu.getOrInsertFunction("__realloc", typeF), {rr, r0, r1});
             break;
         }
         case ByteCodeOp::IntrinsicFree:
         {
-            auto v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            builder.CreateCall(pp.fn_free, {v0});
+            auto r0    = GEP_I32(allocR, ip->a.u32);
+            auto typeF = createFunctionTypeInternal(buildParameters, 1);
+            builder.CreateCall(modu.getOrInsertFunction("__free", typeF), {r0});
             break;
         }
         case ByteCodeOp::IntrinsicThreadRunPtr:

@@ -3,6 +3,8 @@
 ////////////////////////////////////////////////////////////
 private
 {
+    alias HANDLE = *void
+    alias DWORD  = u32
     const STD_OUTPUT_HANDLE     = cast(u32) -11
     const MB_CANCELTRYCONTINUE  = 0x00000006
     const MB_ICONERROR          = 0x00000010
@@ -12,8 +14,8 @@ private
 
     #[swag.foreign("kernel32")]
     {
-        func GetStdHandle(nStdHandle: u32)->*void;
-        func WriteFile(hFile: *void, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
+        func GetStdHandle(nStdHandle: u32)->HANDLE;
+        func WriteFile(hFile: HANDLE, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
         func ExitProcess(uExitCode: u32);
         func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: const **void);
         func MessageBoxA(hWnd: const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
@@ -25,6 +27,10 @@ private
         func TlsGetValue(dwTlsIndex: u32)->*void;
         func RtlCopyMemory(destination: *void, source: const *void, length: u64);
         func RtlFillMemory(destination: *void, length: u64, fill: u32);
+        func HeapAlloc(hHeap: HANDLE, dwFlags: DWORD, dwBytes: u64)->*void;
+        func HeapReAlloc(hHeap: HANDLE, dwFlags: DWORD, mem: *void, dwBytes: u64)->*void;
+        func HeapFree(hHeap: HANDLE, dwFlags: DWORD, mem: *void);
+        func GetProcessHeap()->HANDLE;
     }
 }
 
@@ -75,6 +81,25 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
 }
 
 ////////////////////////////////////////////////////////////
+func __alloc(size: u32)->*void
+{
+    if !size return null
+    return HeapAlloc(GetProcessHeap(), 0, cast(u64) size)
+}
+
+func __realloc(ptr: *void, size: u32)->*void
+{
+    if !ptr return __alloc(size)
+    return HeapReAlloc(GetProcessHeap(), 0, ptr, cast(u64) size)
+}
+
+func __free(ptr: *void)
+{
+    if !ptr return
+    HeapFree(GetProcessHeap(), 0, ptr)
+}
+
+////////////////////////////////////////////////////////////
 func __getCommandLine()                     => GetCommandLineA()
 func __loaddll(name: string)                => LoadLibraryA(@dataof(name))
 func __exit()                               => ExitProcess(0)
@@ -82,6 +107,7 @@ func __tlsAlloc()                           => cast(u64) TlsAlloc()
 func __tlsSetValue(id: u64, value: *void)   => TlsSetValue(cast(u32) id, value)
 func __tlsGetValue(id: u64)->*void          => TlsGetValue(cast(u32) id)
 
+////////////////////////////////////////////////////////////
 func __assertBox(msg, title: string)
 {
     result := MessageBoxA(null, @dataof(msg), @dataof(title), MB_ICONERROR | MB_CANCELTRYCONTINUE)
