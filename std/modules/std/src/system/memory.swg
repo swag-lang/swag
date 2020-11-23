@@ -27,7 +27,7 @@ func set(dest: *void, value: u8, size: u32)
 }
 
 // Free the specified memory block
-func free(allocator: *IAllocator, buffer: *void)
+func free(buffer: *void, allocator: *IAllocator)
 {
     if !buffer
         return
@@ -37,7 +37,7 @@ func free(allocator: *IAllocator, buffer: *void)
 }
 
 // Reallocate/allocate a given amount of bytes
-func realloc(allocator: *IAllocator, buffer: *void, sizeInBytes: u32)->*void
+func realloc(buffer: *void, sizeInBytes: u32, allocator: *IAllocator)->*void
 {
     debug.assert(allocator != null)
     req := AllocatorRequest{mode: AllocatorMode.Realloc, size: sizeInBytes, address: buffer}
@@ -46,7 +46,7 @@ func realloc(allocator: *IAllocator, buffer: *void, sizeInBytes: u32)->*void
 }
 
 // Allocate a given amount of bytes
-func alloc(allocator: *IAllocator, sizeInBytes: u32)->*void
+func alloc(sizeInBytes: u32, allocator: *IAllocator)->*void
 {
     debug.assert(allocator != null)
     req := AllocatorRequest{mode: AllocatorMode.Alloc, size: sizeInBytes}

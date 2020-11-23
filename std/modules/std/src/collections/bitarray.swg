@@ -17,14 +17,14 @@ impl BitArray
     {
         if !buffer
             return
-        memory.free(&allocator, buffer)
+        memory.free(buffer, &allocator)
     }
 
     func realloc(using self, newCapacity: u32)
     {
         if allocator == null
             allocator = @getcontext().allocator
-        buffer = autocast memory.realloc(&allocator, buffer, newCapacity)
+        buffer = autocast memory.realloc(buffer, newCapacity, &allocator)
     }
 }
 

@@ -123,7 +123,7 @@ impl Array
                 @drop(buffer + @index)
         }
 
-        memory.free(&allocator, buffer)
+        memory.free(buffer, &allocator)
     }
 
     func realloc(using self, newCapacity: u32)
@@ -131,7 +131,7 @@ impl Array
         if allocator == null
             allocator = @getcontext().allocator
 
-        newBuffer := cast(*T) memory.realloc(&allocator, buffer, newCapacity * @sizeof(T))
+        newBuffer := cast(*T) memory.realloc(buffer, newCapacity * @sizeof(T), &allocator)
 
         // Need to call opPostMove/opPostCopy on every existing element if the buffer has not been reallocated
         // in place
