@@ -1,4 +1,5 @@
 #module "tests.compiler.foreign"
+using swag
 
 public func tcf_tuple()->{s32, s32}
 {
@@ -221,4 +222,32 @@ public func tcf_toto20(a: u16)
 
     //var slice: const [..] u16 = DaysToMonth365
     //res1 := slice[a]
+}
+
+struct TT
+{
+    x: IAllocator
+}
+
+func all(itf: IAllocator)
+{
+    var req: AllocatorRequest
+    req.mode = AllocatorMode.Alloc
+    req.size = 10
+
+    itf.alloc(&req)
+    @assert(req.address != null)
+    req.mode = AllocatorMode.Realloc
+    itf.alloc(&req)
+    req.mode = AllocatorMode.Free
+    itf.alloc(&req)
+    @assert(req.address == null)
+}
+
+public func tcf_alloc(size: u32)
+{
+    var vv: TT
+    if vv.x == null
+        vv.x = @getcontext().allocator
+    all(vv.x)
 }
