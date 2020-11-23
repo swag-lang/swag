@@ -27,7 +27,7 @@ func set(dest: *void, value: u8, size: u32)
 }
 
 // Free the specified memory block
-func free(buffer: *void, allocator: IAllocator)
+func free(buffer: *void, allocator: IAllocator = null)
 {
     if !buffer return
     debug.assert(allocator != null)
@@ -41,7 +41,7 @@ func free(buffer: *void, allocator: IAllocator)
 }
 
 // Reallocate/allocate a given amount of bytes
-func realloc(buffer: *void, sizeInBytes: u32, allocator: IAllocator, alignement: u16 = 0)->*void
+func realloc(buffer: *void, sizeInBytes: u32, allocator: IAllocator = null, alignement: u16 = 0)->*void
 {
     debug.assert(allocator != null)
 
@@ -58,7 +58,7 @@ func realloc(buffer: *void, sizeInBytes: u32, allocator: IAllocator, alignement:
 }
 
 // Allocate a given amount of bytes
-func alloc(sizeInBytes: u32, allocator: IAllocator, alignement: u16 = 0)->*void
+func alloc(sizeInBytes: u32, allocator: IAllocator = null, alignement: u16 = 0)->*void
 {
     debug.assert(allocator != null)
 
