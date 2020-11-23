@@ -190,7 +190,12 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
         if (context->result == ContextResult::Pending)
             return true;
     }
-    else if (!typeInfo->isNative(NativeTypeKind::String) && typeInfo->kind != TypeInfoKind::Pointer && typeInfo->kind != TypeInfoKind::Lambda)
+    else if (!typeInfo->isNative(NativeTypeKind::String) &&
+             !typeInfo->isNative(NativeTypeKind::Char) &&
+             typeInfo->kind != TypeInfoKind::Pointer &&
+             !(typeInfo->flags & TYPEINFO_INTEGER) &&
+             !(typeInfo->flags & TYPEINFO_FLOAT) &&
+             typeInfo->kind != TypeInfoKind::Lambda)
     {
         return context->report({expression, format("cannot use operator '??' on type '%s'", typeInfo->name.c_str())});
     }

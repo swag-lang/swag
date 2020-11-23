@@ -10,13 +10,14 @@
 
 bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
 {
-    auto node   = context->node;
-    auto child0 = node->childs[0];
-    auto child1 = node->childs[1];
+    auto node     = context->node;
+    auto child0   = node->childs[0];
+    auto child1   = node->childs[1];
+    auto typeInfo = child0->typeInfo;
 
     if (!(child0->doneFlags & AST_DONE_CAST1))
     {
-        SWAG_CHECK(emitCast(context, child0, child0->typeInfo, child0->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, child0, typeInfo, child0->castedTypeInfo));
         if (context->result != ContextResult::Done)
             return true;
         child0->doneFlags |= AST_DONE_CAST1;
@@ -34,7 +35,28 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
     else
     {
         reserveRegisterRC(context, node->resultRegisterRC, child0->resultRegisterRC.size());
-        emitInstruction(context, ByteCodeOp::JumpIfZero64, child0->resultRegisterRC)->b.s32 = child0->resultRegisterRC.size() + 1; // After the "if not null"
+        ByteCodeInstruction* inst = nullptr;
+        switch (typeInfo->sizeOf)
+        {
+        case 1:
+            inst        = emitInstruction(context, ByteCodeOp::ClearMaskU32, child0->resultRegisterRC);
+            inst->b.u32 = 0x000000FF;
+            inst        = emitInstruction(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRC);
+            break;
+        case 2:
+            inst        = emitInstruction(context, ByteCodeOp::ClearMaskU32, child0->resultRegisterRC);
+            inst->b.u32 = 0x0000FFFF;
+            inst        = emitInstruction(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRC);
+            break;
+        case 4:
+            inst = emitInstruction(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRC);
+            break;
+        default:
+            inst = emitInstruction(context, ByteCodeOp::JumpIfZero64, child0->resultRegisterRC);
+            break;
+        }
+
+        inst->b.s32 = child0->resultRegisterRC.size() + 1; // After the "if not null"
     }
 
     // If not null
