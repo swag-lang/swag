@@ -138,19 +138,18 @@ namespace swag
     {
         func alloc(self, request: *AllocatorRequest)
         {
+            // The default system heap alloc aligned only on a pointer size
+            // So we need to trick it to respect the user wanted alignement.
+            // -> store the real system alloc returned pointer before the user (aligned) pointer
+            // -> allocate more space to be able to store that pointer, and to respect the alignement
+            // So this involves extra space !
             switch request.mode
             {
-                case AllocatorMode.Alloc:
-                    request.address = @alloc(request.size)
                 case AllocatorMode.Free:
-                    @free(request.address)
-                case AllocatorMode.Realloc:
-                    request.address = @realloc(request.address, request.size)
-
-                /*case AllocatorMode.Free:
                     if !request.address break
                     ptr := cast(**void) request.address
                     @free(ptr[-1])
+                    request.address = null
 
                 case AllocatorMode.Realloc:
                     if !request.address fallthrough
@@ -163,23 +162,22 @@ namespace swag
                     userPtr := realPtr + @sizeof(*void)
                     //userPtr += lml align correctly
                     storePtr = cast(**void) userPtr
-                    storePtr -= 1
-                    :storePtr = realPtr
+                    storePtr[-1] = realPtr
                     request.address = userPtr
 
                 case AllocatorMode.Alloc:
                     size := request.size
+                    request.address = null
                     if !size break
+
                     size += @sizeof(*void)
 
                     realPtr := cast(*u8) @alloc(size)
-
                     userPtr := realPtr + @sizeof(*void)
                     //userPtr += lml align correctly
                     storePtr := cast(**void) userPtr
-                    storePtr -= 1
-                    :storePtr = realPtr
-                    request.address = userPtr*/
+                    storePtr[-1] = realPtr
+                    request.address = userPtr
             }
         }
     }
