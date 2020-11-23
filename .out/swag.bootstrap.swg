@@ -109,18 +109,20 @@ namespace swag
     // Context & allocators
     // #########################################################
 
-    enum AllocatorMode
+    enum AllocatorMode: u16
     {
         Alloc
         Free
         Realloc
+        FreeAll
     }
 
     struct AllocatorRequest
     {
-        mode:		AllocatorMode = AllocatorMode.Alloc
-        size:		u32
         address:	*void
+        size:		u32
+        mode =		AllocatorMode.Alloc
+        alignement: u16
     }
 
     interface IAllocator
