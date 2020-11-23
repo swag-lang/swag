@@ -1736,6 +1736,46 @@ bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, Ty
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
+bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* toStruct, TypeInfoStruct* fromStruct, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags, bool& ok)
+{
+    ok = false;
+
+    TypeInfoParam* done = nullptr;
+    for (auto field : fromStruct->fields)
+    {
+        if (!field->hasUsing)
+            continue;
+        if (field->typeInfo != toStruct && !field->typeInfo->isPointerTo(toStruct))
+            continue;
+
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            // Ambiguous ! Two fields with a 'using' on the same struct
+            if (done)
+            {
+                Diagnostic diag{fromNode, fromNode->token, format("cannot cast from '%s' to '%s' because structure '%s' has multiple fields of type '%s' with 'using'", fromType->name.c_str(), toType->name.c_str(), fromStruct->name.c_str(), toStruct->name.c_str())};
+                Diagnostic note1{done->node, "this is one", DiagnosticLevel::Note};
+                Diagnostic note2{field->node, "this is another", DiagnosticLevel::Note};
+                return context->report(diag, &note1, &note2);
+            }
+
+            // We will have to dereference the pointer to get the real thing
+            if (field->typeInfo->kind == TypeInfoKind::Pointer)
+                fromNode->semFlags |= AST_SEM_DEREF_USING;
+            fromNode->semFlags |= AST_SEM_USING;
+
+            fromNode->castOffset     = field->offset;
+            fromNode->castedTypeInfo = fromNode->typeInfo;
+            fromNode->typeInfo       = toType;
+        }
+
+        done = field;
+    }
+
+    ok = done ? true : false;
+    return true;
+}
+
 bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
@@ -1748,40 +1788,9 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         {
             auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromTypePointer->finalType, TypeInfoKind::Struct);
             auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->finalType, TypeInfoKind::Struct);
-
-            TypeInfoParam* done = nullptr;
-            for (auto field : fromStruct->fields)
-            {
-                if (!field->hasUsing)
-                    continue;
-                if (field->typeInfo != toStruct && !field->typeInfo->isPointerTo(toStruct))
-                    continue;
-
-                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    // Ambiguous ! Two fields with a 'using' on the same struct
-                    if (done)
-                    {
-                        Diagnostic diag{fromNode, fromNode->token, format("cannot cast from '%s' to '%s' because structure '%s' has multiple fields of type '%s' with 'using'", fromType->name.c_str(), toType->name.c_str(), fromStruct->name.c_str(), toStruct->name.c_str())};
-                        Diagnostic note1{done->node, "this is one", DiagnosticLevel::Note};
-                        Diagnostic note2{field->node, "this is another", DiagnosticLevel::Note};
-                        return context->report(diag, &note1, &note2);
-                    }
-
-                    // We will have to dereference the pointer to get the real thing
-                    if (field->typeInfo->kind == TypeInfoKind::Pointer)
-                        fromNode->semFlags |= AST_SEM_DEREF_USING;
-                    fromNode->semFlags |= AST_SEM_USING;
-
-                    fromNode->castOffset     = field->offset;
-                    fromNode->castedTypeInfo = fromNode->typeInfo;
-                    fromNode->typeInfo       = toType;
-                }
-
-                done = field;
-            }
-
-            if (done)
+            bool ok         = false;
+            SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
+            if (ok)
                 return true;
         }
     }
