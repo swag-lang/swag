@@ -151,40 +151,24 @@ namespace swag
                     @free(ptr[-1])
                     request.address = null
 
-                case AllocatorMode.Realloc:
-                    if !request.address fallthrough
+                case AllocatorMode.Alloc:
+                    request.address = null
+                    fallthrough
 
+                case AllocatorMode.Realloc:
                     size := request.size
                     size += @sizeof(*void)
                     alignement := request.alignement ?? @sizeof(*void)
                     size += alignement - 1
 
                     storePtr := cast(**void) request.address
-                    realPtr := cast(*u8) @realloc(storePtr[-1], size)
+                    realPtr := cast(*u8) @realloc(storePtr ? storePtr[-1] : null, size)
 
                     userPtr := cast(*u8) (cast(u64) realPtr & ~(cast(u64) alignement - 1))
                     if userPtr != realPtr userPtr += alignement
                     userPtr += @sizeof(*void)
 
                     storePtr = cast(**void) userPtr
-                    storePtr[-1] = realPtr
-                    request.address = userPtr
-
-                case AllocatorMode.Alloc:
-                    request.address = null
-
-                    size := request.size
-                    if !size break
-                    size += @sizeof(*void)
-                    alignement := request.alignement ?? @sizeof(*void)
-                    size += alignement - 1
-
-                    realPtr := cast(*u8) @alloc(size)
-                    userPtr := cast(*u8) (cast(u64) realPtr & ~(cast(u64) alignement - 1))
-                    if userPtr != realPtr userPtr += alignement
-                    userPtr += @sizeof(*void)
-
-                    storePtr := cast(**void) userPtr
                     storePtr[-1] = realPtr
                     request.address = userPtr
             }
