@@ -1543,7 +1543,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
             else
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            concat.addString3("\x48\x63\xC9"); // movsx rcx, ecx
+            BackendX64Inst::emit_SignedExtend_ECX_To_RCX(pp);
             if (ip->a.u32 == ip->c.u32)
                 BackendX64Inst::emit_Op64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI, X64Op::ADD);
             else
@@ -1558,7 +1558,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
             else
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            concat.addString3("\x48\x63\xC9"); // movsx rcx, ecx
+            BackendX64Inst::emit_SignedExtend_ECX_To_RCX(pp);
             if (ip->a.u32 == ip->c.u32)
                 BackendX64Inst::emit_Op64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI, X64Op::SUB);
             else

@@ -1,4 +1,4 @@
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     var tt: [2] *void
