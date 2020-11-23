@@ -36,7 +36,8 @@ func free(buffer: *void, allocator: IAllocator)
     req.mode    = AllocatorMode.Free
     req.address = buffer
 
-    allocator.alloc(&req)
+    talloc := allocator ?? @getcontext().allocator
+    talloc.alloc(&req)
 }
 
 // Reallocate/allocate a given amount of bytes
@@ -50,7 +51,9 @@ func realloc(buffer: *void, sizeInBytes: u32, allocator: IAllocator, alignement:
     req.size       = sizeInBytes
     req.alignement = alignement
 
-    allocator.alloc(&req)
+    talloc := allocator ?? @getcontext().allocator
+    talloc.alloc(&req)
+
     return req.address
 }
 
@@ -63,7 +66,9 @@ func alloc(sizeInBytes: u32, allocator: IAllocator, alignement: u16 = 0)->*void
     req.mode       = AllocatorMode.Alloc
     req.size       = sizeInBytes
     req.alignement = alignement
-    allocator.alloc(&req)
+
+    talloc := allocator ?? @getcontext().allocator
+    talloc.alloc(&req)
 
     return req.address
 }

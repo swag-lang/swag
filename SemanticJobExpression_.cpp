@@ -193,6 +193,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     else if (!typeInfo->isNative(NativeTypeKind::String) &&
              !typeInfo->isNative(NativeTypeKind::Char) &&
              typeInfo->kind != TypeInfoKind::Pointer &&
+             typeInfo->kind != TypeInfoKind::Interface &&
              !(typeInfo->flags & TYPEINFO_INTEGER) &&
              !(typeInfo->flags & TYPEINFO_FLOAT) &&
              typeInfo->kind != TypeInfoKind::Lambda)
