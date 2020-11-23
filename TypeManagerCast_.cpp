@@ -1784,6 +1784,17 @@ bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, Ty
             return true;
     }
 
+    if (fromType->isPointerTo(TypeInfoKind::Struct) && toTypeReference->pointedType->kind == TypeInfoKind::Struct)
+    {
+        auto fromPtr    = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+        auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromPtr->finalType, TypeInfoKind::Struct);
+        auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypeReference->pointedType, TypeInfoKind::Struct);
+        bool ok         = false;
+        SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
+        if (ok)
+            return true;
+    }
+
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
@@ -2503,7 +2514,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         auto typeRef = CastTypeInfo<TypeInfoReference>(fromType, TypeInfoKind::Reference);
         fromType     = typeRef->pointedType;
     }
-    if (toType->kind == TypeInfoKind::Reference && fromType->kind != TypeInfoKind::Struct)
+    if (toType->kind == TypeInfoKind::Reference && fromType->kind != TypeInfoKind::Struct && !fromType->isPointerTo(TypeInfoKind::Struct))
     {
         auto typeRef = CastTypeInfo<TypeInfoReference>(toType, TypeInfoKind::Reference);
         toType       = typeRef->pointedType;
