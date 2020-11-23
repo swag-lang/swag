@@ -358,7 +358,7 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
         typeInfo->kind = TypeInfoKind::Interface;
         break;
     case AstNodeKind::TypeSet:
-        symbolKind = SymbolKind::TypeSet;
+        symbolKind     = SymbolKind::TypeSet;
         typeInfo->kind = TypeInfoKind::TypeSet;
         break;
     default:
@@ -450,7 +450,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Using can only be used on a structure
         if (child->flags & AST_DECL_USING && child->kind == AstNodeKind::ConstDecl)
             return context->report({child, "'using' is invalid on a constant"});
-        if (child->flags & AST_DECL_USING && child->typeInfo->kind != TypeInfoKind::Struct)
+        if (child->flags & AST_DECL_USING && child->typeInfo->kind != TypeInfoKind::Struct && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
             return context->report({child, format("'using' on a field is only valid for a struct type ('%s' provided)", child->typeInfo->name.c_str())});
 
         TypeInfoParam* typeParam = nullptr;

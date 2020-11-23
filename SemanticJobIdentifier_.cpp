@@ -2111,6 +2111,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     node->byteCodeFct = ByteCodeGenJob::emitIdentifier;
 
+    if (node->name == "position")
+        node = node;
+
     // Current private scope
     if (context->sourceFile && context->sourceFile->scopePrivate && node->name == context->sourceFile->scopePrivate->name)
     {
