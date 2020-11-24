@@ -8,7 +8,8 @@ using std.file
     loc := #location
 
     {
-        @assert(reader.open(loc.fileName))
+        f := reader.open(loc.fileName)
+        @assert(f == error.Ok)
         defer reader.close()
 
         res := reader.readToEnd()
@@ -16,7 +17,7 @@ using std.file
     }
 
     {
-        @assert(reader.open(loc.fileName))
+        @assert(reader.open(loc.fileName) == error.Ok)
         defer reader.close()
 
         res := reader.readLine()

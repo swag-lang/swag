@@ -101,8 +101,11 @@ func @cstrlen(value: const *u8)->u32
 func @strcmp(str1: string, str2: string)->bool
 {
     num1 := @countof(str1)
-    if num1 != @countof(str2)
+    num2 := @countof(str2)
+    if num1 != num2
         return false
+    if num1 == num2 == 0
+        return true
     data1 := @dataof(str1)
     data2 := @dataof(str2)
     if data1 == null || data2 == null

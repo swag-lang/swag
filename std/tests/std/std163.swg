@@ -6,7 +6,7 @@ using std.file
 {
     loc := #location
     res := readAllLines(loc.fileName)
-    @assert(res.success)
+    @assert(res.errorId == error.Ok)
     @assert(res.lines.count > 5)
 
     visit l: res.lines

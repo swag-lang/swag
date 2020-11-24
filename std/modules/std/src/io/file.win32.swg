@@ -13,9 +13,9 @@ func exists(fullname: string)->bool
 }
 
 // Open a new file stream
-func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)->Stream
+func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)-> {stream: Stream, errorId: error.ErrorId}
 {
-    var stream: retval
+    var result: retval
 
     // Open mode
     var wMode: DWORD
@@ -34,13 +34,13 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     var wAccess: DWORD
     if access & FileAccess.Read
     {
-        stream.canRead = true
+        result.stream.canRead = true
         wAccess |= GENERIC_READ
     }
 
     if access & FileAccess.Write
     {
-        stream.canWrite = true
+        result.stream.canWrite = true
         wAccess |= GENERIC_WRITE
     }
 
@@ -57,18 +57,19 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     if hFile == INVALID_HANDLE_VALUE
     {
         error.setLastErrorId()
-        return stream
+        result.errorId = error.last()
+        return result
     }
 
-    stream.name    = fullname
-    stream.handle  = cast(FileHandle) hFile
-    stream.canSeek = true
+    result.stream.name    = fullname
+    result.stream.handle  = cast(FileHandle) hFile
+    result.stream.canSeek = true
 
-    return stream
+    return result
 }
 
 // Creates a new file stream for reading
-func openRead(fullname: string)->Stream
+func openRead(fullname: string)-> {stream: Stream, errorId: error.ErrorId}
 {
     return open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
 }

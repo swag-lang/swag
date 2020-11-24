@@ -7,6 +7,7 @@ const Ok: ErrorId = null
 func last()->ErrorId
 {
     cxt := @getcontext()
+    if cxt.errorMsgLen == 0 return null
     return cast(string) @mkslice(&cxt.errorMsg[0], cxt.errorMsgLen)
 }
 

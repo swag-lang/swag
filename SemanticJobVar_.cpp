@@ -266,6 +266,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
+    if (node->name == "xxx")
+        node = node;
+
     // Collect all attributes for the variable
     SymbolAttributes attributes;
     SWAG_CHECK(collectAttributes(context, node, attributes));
