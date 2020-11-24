@@ -3,12 +3,14 @@ public namespace std.error;
 using win32
 
 // Fill the context error message
-func setLastErrorString()
+func setLastErrorId()
 {
+    // Should be called first, before @getcontext(), which can reset
+    // the last error id
+    errorMessageID := GetLastError()
+
     cxt := @getcontext()
     cxt.errorMsgLen = 0
-
-    errorMessageID := GetLastError()
     if errorMessageID == 0 return
 
     messageBuffer := &cxt.errorMsg[0]

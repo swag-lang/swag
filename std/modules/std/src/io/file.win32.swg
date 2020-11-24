@@ -15,7 +15,7 @@ func exists(fullname: string)->bool
 // Open a new file stream
 func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)->Stream
 {
-    var stream: Stream
+    var stream: retval
 
     // Open mode
     var wMode: DWORD
@@ -55,7 +55,10 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
 
     hFile := CreateFileA(@dataof(fullname), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
     if hFile == INVALID_HANDLE_VALUE
+    {
+        error.setLastErrorId()
         return stream
+    }
 
     stream.name    = fullname
     stream.handle  = cast(FileHandle) hFile

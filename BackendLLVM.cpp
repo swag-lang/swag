@@ -27,6 +27,8 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         llvm::Type* members[] = {
             pp.interfaceTy,
             llvm::Type::getInt64Ty(context),
+            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_LEN_ERROR_MSG),
+            llvm::Type::getInt32Ty(context),
         };
         pp.contextTy = llvm::StructType::create(context, members, "swag_context_t");
         SWAG_ASSERT(pp.contextTy->isSized());
