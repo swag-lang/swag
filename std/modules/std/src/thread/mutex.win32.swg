@@ -12,6 +12,18 @@ func createMutex()->Mutex
 
 impl Mutex
 {
+    func opDrop(using self)
+    {
+        if handle CloseHandle(handle)
+    }
+
+    // Try to lock the mutex, and return 'true' if it's the case
+    func tryLock(using self)->bool
+    {
+        debug.assert(isValid())
+        return WaitForSingleObject(handle, 0) == WAIT_TIMEOUT
+    }
+
     // Lock mutex
     func lock(using self)
     {
