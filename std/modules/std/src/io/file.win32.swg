@@ -16,6 +16,7 @@ func exists(fullname: string)->bool
 func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)-> {stream: Stream, err: ErrorId}
 {
     var result: retval
+    using result
 
     // Open mode
     var wMode: DWORD
@@ -34,13 +35,13 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     var wAccess: DWORD
     if access & FileAccess.Read
     {
-        result.stream.canRead = true
+        stream.canRead = true
         wAccess |= GENERIC_READ
     }
 
     if access & FileAccess.Write
     {
-        result.stream.canWrite = true
+        stream.canWrite = true
         wAccess |= GENERIC_WRITE
     }
 
@@ -57,13 +58,13 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     if hFile == INVALID_HANDLE_VALUE
     {
         error.setLastErrorId()
-        result.err = error.last()
+        err = error.last()
         return result
     }
 
-    result.stream.name    = fullname
-    result.stream.handle  = cast(FileHandle) hFile
-    result.stream.canSeek = true
+    stream.name    = fullname
+    stream.handle  = cast(FileHandle) hFile
+    stream.canSeek = true
 
     return result
 }
