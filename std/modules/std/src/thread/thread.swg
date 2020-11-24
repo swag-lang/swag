@@ -24,6 +24,6 @@ impl Thread
     // Returns true if the thread is valid
     func isValid(using self)->bool
     {
-        return userLambda != null
+        return handle != null
     }
 }

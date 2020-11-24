@@ -476,6 +476,8 @@ namespace win32
         func ExitProcess(uExitCode: UINT);
         func ResumeThread(hThread: HANDLE)->DWORD;
         func SwitchToThread()->BOOL;
+        func GetCurrentThreadId()->DWORD;
+        func GetCurrentThread()->HANDLE;
 
         func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
         func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;
