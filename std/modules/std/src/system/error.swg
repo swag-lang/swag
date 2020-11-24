@@ -6,6 +6,8 @@ public namespace std
 public namespace std.error
 {
     // Returns the error string associated with the current thread
+    // The returned string is valid until a new error is raised (in that
+    // case the string will be changed to the new error)
     func last()->ErrorId
     {
         cxt := @getcontext()
