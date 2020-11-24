@@ -50,7 +50,7 @@ struct Backend
     void      setupExportFile();
     bool      emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent);
     bool      emitAttributes(TypeInfo* typeInfo, int indent);
-    void      emitTypeTuple(TypeInfo* typeInfo, int indent);
+    bool      emitTypeTuple(TypeInfo* typeInfo, int indent);
     void      emitType(TypeInfo* typeInfo, int indent);
     bool      emitGenericParameters(AstNode* node);
     bool      emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent);

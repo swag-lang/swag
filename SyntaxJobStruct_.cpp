@@ -362,6 +362,12 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
             structFieldNode->flags |= AST_AUTO_NAME;
         }
 
+        if (token.id == TokenId::SymEqual)
+        {
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doExpression(structFieldNode, &structFieldNode->assignment));
+        }
+
         idx++;
 
         SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, syntaxError(token, format("invalid token '%s' in tuple type, ',' or '}' are expected here", token.text.c_str())));

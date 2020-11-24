@@ -69,15 +69,15 @@ bool Backend::emitAttributes(TypeInfo* typeInfo, int indent)
     return true;
 }
 
-void Backend::emitTypeTuple(TypeInfo* typeInfo, int indent)
+bool Backend::emitTypeTuple(TypeInfo* typeInfo, int indent)
 {
     SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
     if (typeStruct->declNode->flags & AST_ANONYMOUS_STRUCT)
     {
-        emitPublicStructSwg(typeStruct, (AstStruct*) typeStruct->declNode, indent);
-        return;
+        SWAG_CHECK(emitPublicStructSwg(typeStruct, (AstStruct*) typeStruct->declNode, indent));
+        return true;
     }
 
     bufferSwg.addString("{");
@@ -86,15 +86,27 @@ void Backend::emitTypeTuple(TypeInfo* typeInfo, int indent)
     {
         if (idx)
             bufferSwg.addString(", ");
-        if (!field->namedParam.empty() && field->namedParam.find("item") != 0)
+
+        if (field->node && field->node->kind == AstNodeKind::VarDecl)
         {
-            bufferSwg.addString(field->namedParam);
-            bufferSwg.addString(":");
+            auto varDecl = CastAst<AstVarDecl>(field->node, AstNodeKind::VarDecl);
+            SWAG_CHECK(emitVarSwg(nullptr, varDecl, 0));
         }
-        emitType(field->typeInfo, indent);
+        else
+        {
+            if (!field->namedParam.empty() && field->namedParam.find("item") != 0)
+            {
+                bufferSwg.addString(field->namedParam);
+                bufferSwg.addString(":");
+            }
+            emitType(field->typeInfo, indent);
+        }
+
         idx++;
     }
+
     bufferSwg.addString("}");
+    return true;
 }
 
 void Backend::emitType(TypeInfo* typeInfo, int indent)
@@ -383,6 +395,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
         {
             auto varDecl = CastAst<AstVarDecl>(p->node, AstNodeKind::VarDecl);
             SWAG_CHECK(emitVarSwg(nullptr, varDecl, indent + 1));
+            bufferSwg.addEol();
         }
 
         // Typeset content
@@ -402,6 +415,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
         auto varDecl = CastAst<AstVarDecl>(p->node, AstNodeKind::ConstDecl);
         SWAG_CHECK(emitAttributes(p, indent + 1));
         SWAG_CHECK(emitVarSwg("const ", varDecl, indent + 1));
+        bufferSwg.addEol();
     }
 
     bufferSwg.addIndent(indent);
@@ -421,11 +435,18 @@ bool Backend::emitVarSwg(const char* kindName, AstVarDecl* node, int indent)
         CONCAT_FIXED_STR(bufferSwg, "using ");
     if (kindName)
         bufferSwg.addString(kindName);
-    bufferSwg.addString(node->name.c_str());
 
-    if (node->type)
+    if (!(node->flags & AST_AUTO_NAME))
     {
-        CONCAT_FIXED_STR(bufferSwg, ": ");
+        bufferSwg.addString(node->name.c_str());
+        if (node->type)
+        {
+            CONCAT_FIXED_STR(bufferSwg, ": ");
+            emitType(node->typeInfo, indent);
+        }
+    }
+    else
+    {
         emitType(node->typeInfo, indent);
     }
 
@@ -435,7 +456,6 @@ bool Backend::emitVarSwg(const char* kindName, AstVarDecl* node, int indent)
         SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->assignment));
     }
 
-    bufferSwg.addEol();
     return true;
 }
 
@@ -452,6 +472,7 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
         {
             AstVarDecl* node = CastAst<AstVarDecl>(one, AstNodeKind::ConstDecl);
             SWAG_CHECK(emitVarSwg("const ", node, indent));
+            bufferSwg.addEol();
         }
     }
 
