@@ -42,6 +42,7 @@ typedef struct SwagContext
     uint64_t      flags;
     uint8_t       errorMsg[MAX_LEN_ERROR_MSG];
     uint32_t      errorMsgLen;
+    uint32_t      padding;
 } SwagContext;
 
 typedef struct SwagSlice
