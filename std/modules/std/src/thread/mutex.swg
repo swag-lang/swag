@@ -1,4 +1,4 @@
-public namespace std.thread;
+public namespace std.sync;
 using std;
 
 alias MutexHandle = const *void

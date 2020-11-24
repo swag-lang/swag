@@ -1,5 +1,5 @@
 #if #os == "windows";
-public namespace std.thread;
+public namespace std.sync;
 using win32
 
 // Creates a new mutex
@@ -10,11 +10,19 @@ func createMutex()->Mutex
     return result
 }
 
+// Destroy an existing mutex
+func destroyMutex(mutex: *Mutex)
+{
+    if !mutex.handle return
+    CloseHandle(mutex.handle)
+    mutex.handle = null
+}
+
 impl Mutex
 {
     func opDrop(using self)
     {
-        if handle CloseHandle(handle)
+        destroyMutex(self)
     }
 
     // Try to lock the mutex, and return 'true' if it's the case
@@ -36,6 +44,5 @@ impl Mutex
     {
         debug.assert(isValid())
         ReleaseMutex(handle)
-        handle = null
     }
 }
