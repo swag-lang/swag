@@ -13,7 +13,7 @@ func exists(fullname: string)->bool
 }
 
 // Open a new file stream
-func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)-> {stream: Stream, err: error.ErrorId}
+func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)-> {stream: Stream, err: ErrorId}
 {
     var result: retval
 
@@ -69,7 +69,7 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
 }
 
 // Creates a new file stream for reading
-func openRead(fullname: string)-> {stream: Stream, err: error.ErrorId}
+func openRead(fullname: string) -> {stream: Stream, err: ErrorId}
 {
     return open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
 }
@@ -96,31 +96,49 @@ func close(stream: *Stream)
 }
 
 // Returns the given file stream length on disk
-func getSize(stream: Stream)->u64
+func getSize(stream: Stream) -> {size: u64, err: ErrorId}
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)
 
+    var result: retval
     hFile := cast(HANDLE) stream.handle
     high  := 0'u32
     low   := GetFileSize(hFile, &high)
-    return low + (cast(u64) high << 32)
+    if low == INVALID_FILE_SIZE
+    {
+        error.setLastErrorId()
+        result.err = error.last()
+        return result
+    }
+
+    result.size = low + (cast(u64) high << 32)
+    return result
 }
 
 // Returns the current seek position of the given file stream
-func getPosition(stream: Stream)->u64
+func getPosition(stream: Stream) -> {position: u64, err: ErrorId}
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)
 
+    var result: retval
     hFile := cast(HANDLE) stream.handle
     high  := 0
     low   := SetFilePointer(hFile, 0, &high, FILE_CURRENT)
-    return low + (cast(u64) high << 32)
+    if low == INVALID_SET_FILE_POINTER
+    {
+        error.setLastErrorId()
+        result.err = error.last()
+        return result
+    }
+
+    result.position = low + (cast(u64) high << 32)
+    return result
 }
 
 // Set the current seek position of the given file stream
-func setPosition(stream: Stream, origin: SeekOrigin, seek: u64) -> error.ErrorId
+func setPosition(stream: Stream, origin: SeekOrigin, seek: u64) -> ErrorId
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)

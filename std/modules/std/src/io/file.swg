@@ -37,7 +37,7 @@ enum FileShare
 }
 
 // Read a file, and store the result in an utf8 string
-func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {text: String, err: error.ErrorId}
+func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {text: String, err: ErrorId}
 {
     var result:     retval
     var textReader: TextReader
@@ -50,7 +50,7 @@ func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {text: Strin
 }
 
 // Read all the lines of a file
-func readAllLines(fullname: string, encoding = TextEncoding.Utf8) -> {lines: Array'String, err: error.ErrorId}
+func readAllLines(fullname: string, encoding = TextEncoding.Utf8) -> {lines: Array'String, err: ErrorId}
 {
     var result:     retval
     var textReader: TextReader
@@ -69,7 +69,7 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8) -> {lines: Arr
 }
 
 // Read a file, and store the result in an array of bytes
-func readAllBytes(fullname: string) -> {bytes: Array'u8, err: error.ErrorId}
+func readAllBytes(fullname: string) -> {bytes: Array'u8, err: ErrorId}
 {
     var result: retval
 
@@ -82,7 +82,13 @@ func readAllBytes(fullname: string) -> {bytes: Array'u8, err: error.ErrorId}
 
     debug.assert(stream.isOpen())
 
-    len := getSize(stream)
+    (len, err1) := getSize(stream)
+    if err1
+    {
+        result.err = err1
+        return result
+    }
+
     debug.assert(len <= swag.MaxU32)
     len32 := cast(u32) len
 

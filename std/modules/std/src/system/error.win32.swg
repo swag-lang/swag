@@ -3,7 +3,7 @@ public namespace std.error;
 using win32
 
 // Fill the context error message
-func setLastErrorId()
+protected func setLastErrorId()
 {
     // Should be called first, before @getcontext(), which can reset
     // the last error id

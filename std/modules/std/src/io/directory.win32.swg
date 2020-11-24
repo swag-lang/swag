@@ -102,7 +102,13 @@ func getCurrent()->String
 }
 
 // Set the current directory
-func setCurrent(dirname: string)->bool
+func setCurrent(dirname: string)->ErrorId
 {
-    return SetCurrentDirectoryA(@dataof(dirname))
+    if !SetCurrentDirectoryA(@dataof(dirname))
+    {
+        error.setLastErrorId()
+        return error.last()
+    }
+
+    return null
 }
