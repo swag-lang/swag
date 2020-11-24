@@ -184,10 +184,16 @@ namespace swag
         ByteCode = 0x00000000_00000004
     }
 
+    const MaxLenErrorMsg = 128
     struct Context
     {
-        allocator:  IAllocator
-        flags =     ContextFlags.None
+        // Must stay first, in that order, for backend generation
+        allocator:      IAllocator
+        flags =         ContextFlags.None
+
+        // Other fields, can be in any order
+        errorMsg:       [MaxLenErrorMsg] u8
+        errorMsgLen:    u32
     }
 
     // #########################################################
@@ -466,7 +472,7 @@ func @assert(value: bool);
 func @alloc(size: u32)->*void;
 func @realloc(ptr: *void, size: u32)->*void;
 func @free(ptr: *void);
-func @getcontext()->const *swag.Context;
+func @getcontext()->*swag.Context;
 func @setcontext(context: const *swag.Context);
 func @isbytecode()->bool;
 func @thrunptr()->const *void;

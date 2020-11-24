@@ -193,7 +193,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Custom, 0, pp.sectionIndexTS)->index;
         pp.symXDIndex = getOrAddSymbol(pp, format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
-        // This should match the structure swag_context_t  declared in SwagRuntime.h
+        // This should match the structure SwagContext  declared in Runtime.h
         auto offset                           = pp.globalSegment.reserve(8, true);
         pp.symMC_mainContext                  = getOrAddSymbol(pp, "swag_main_context", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         pp.symMC_mainContext_allocator_addr   = getOrAddSymbol(pp, "swag_main_context_allocator_addr", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;

@@ -35,10 +35,13 @@ typedef struct SwagInterface
     void* itable;
 } SwagInterface;
 
+static const auto MAX_LEN_ERROR_MSG = 128;
 typedef struct SwagContext
 {
     SwagInterface allocator;
     uint64_t      flags;
+    uint8_t       errorMsg[MAX_LEN_ERROR_MSG];
+    uint32_t      errorMsgLen;
 } SwagContext;
 
 typedef struct SwagSlice

@@ -15,27 +15,16 @@ private var g_sysInfo: SYSTEM_INFO
     GetSystemInfo(&g_sysInfo)
 }
 
-protected func getLastErrorString()->String
+// Fill the context error message
+protected func setLastErrorString()
 {
-    var result: retval
+    cxt := @getcontext()
+    cxt.errorMsgLen = 0
 
-    // Get the error message, if any.
     errorMessageID := GetLastError()
-    if (errorMessageID == 0)
-        return result
+    if errorMessageID == 0 return
 
-    var messageBuffer: LPCSTR
-    FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                    null,
-                    errorMessageID,
-                    MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
-                    cast(LPCSTR) &messageBuffer,
-                    0,
-                    null);
-
-    //std::string message(messageBuffer, size);
-
-    //Free the buffer.
-    LocalFree(cast(HLOCAL) messageBuffer);
-    return result
+    messageBuffer := &cxt.errorMsg[0]
+    lang := MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)
+    cxt.errorMsgLen = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, null, errorMessageID, lang, cast(LPCSTR) messageBuffer, cast(DWORD) swag.MaxLenErrorMsg, null);
 }
