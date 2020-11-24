@@ -549,7 +549,6 @@ struct TypeInfoAlias : public TypeInfo
         kind = TypeInfoKind::Alias;
     }
 
-    void      computeScopedName() override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 

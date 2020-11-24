@@ -80,15 +80,6 @@ bool TypeInfoNameAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
     return false;
 }
 
-void TypeInfoAlias::computeScopedName()
-{
-    unique_lock lk(mutexScopeName);
-    if (rawType->kind == TypeInfoKind::Native)
-        scopedName = name;
-    else
-        TypeInfo::computeScopedNameNoLock();
-}
-
 TypeInfo* TypeInfoAlias::clone()
 {
     auto newType     = g_Allocator.alloc<TypeInfoAlias>();

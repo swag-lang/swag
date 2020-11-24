@@ -139,7 +139,6 @@ void Backend::emitType(TypeInfo* typeInfo, int indent)
         }
         else
         {
-            //typeInfo = TypeManager::concreteReference(typeInfo);
             typeInfo->computeScopedName();
             bufferSwg.addString(typeInfo->scopedName);
         }

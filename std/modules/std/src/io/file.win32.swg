@@ -1,6 +1,6 @@
 #if std.WINDOWS;
-using win32
 public namespace std.file;
+using win32
 
 // Returns true if the given file exists
 func exists(fullname: string)->bool
@@ -119,7 +119,7 @@ func getPosition(stream: Stream)->u64
 }
 
 // Set the current seek position of the given file stream
-func setPosition(stream: Stream, origin: SeekOrigin, seek: u64)->bool
+func setPosition(stream: Stream, origin: SeekOrigin, seek: u64) -> error.ErrorId
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)
@@ -137,5 +137,12 @@ func setPosition(stream: Stream, origin: SeekOrigin, seek: u64)->bool
         case End:        seekMode = FILE_END
     }
 
-    return SetFilePointer(hFile, low, &high, seekMode) != INVALID_SET_FILE_POINTER
+    success := SetFilePointer(hFile, low, &high, seekMode)
+    if success == INVALID_SET_FILE_POINTER
+    {
+        error.setLastErrorId()
+        return error.last()
+    }
+
+    return error.Ok
 }
