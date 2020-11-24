@@ -478,6 +478,8 @@ namespace win32
         func SwitchToThread()->BOOL;
         func GetCurrentThreadId()->DWORD;
         func GetCurrentThread()->HANDLE;
+        func CreateMutexA(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCSTR)->HANDLE;
+        func ReleaseMutex(hMutex: HANDLE)->BOOL;
 
         func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
         func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;

@@ -44,7 +44,7 @@ func create(th: *Thread, lambda: func(Thread), userParam: *void = null)
     }
 
     h := CreateThread(null, 0, cast(*void) l64, th, CREATE_SUSPENDED, &th.id)
-    if h == INVALID_HANDLE_VALUE
+    if h == null
         return
 
     th.userLambda = lambda
