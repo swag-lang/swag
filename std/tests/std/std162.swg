@@ -9,7 +9,7 @@ using std.file
 
     {
         f := reader.open(loc.fileName)
-        @assert(f == error.Ok)
+        @assert(f == null)
         defer reader.close()
 
         res := reader.readToEnd()
@@ -17,7 +17,7 @@ using std.file
     }
 
     {
-        @assert(reader.open(loc.fileName) == error.Ok)
+        @assert(reader.open(loc.fileName) == null)
         defer reader.close()
 
         res := reader.readLine()

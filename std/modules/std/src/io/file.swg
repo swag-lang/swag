@@ -37,26 +37,26 @@ enum FileShare
 }
 
 // Read a file, and store the result in an utf8 string
-func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {text: String, errorId: error.ErrorId}
+func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {text: String, err: error.ErrorId}
 {
     var result:     retval
     var textReader: TextReader
 
-    result.errorId = textReader.open(fullname, encoding)
-    if result.errorId != error.Ok return result
+    result.err = textReader.open(fullname, encoding)
+    if result.err return result
 
     result.text = textReader.readToEnd()
     return result
 }
 
 // Read all the lines of a file
-func readAllLines(fullname: string, encoding = TextEncoding.Utf8) -> {lines: Array'String, errorId: error.ErrorId}
+func readAllLines(fullname: string, encoding = TextEncoding.Utf8) -> {lines: Array'String, err: error.ErrorId}
 {
     var result:     retval
     var textReader: TextReader
 
-    result.errorId = textReader.open(fullname, encoding)
-    if result.errorId != error.Ok return result
+    result.err = textReader.open(fullname, encoding)
+    if result.err return result
 
     res := textReader.readLine()
     while !res.isNull()
@@ -69,14 +69,14 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8) -> {lines: Arr
 }
 
 // Read a file, and store the result in an array of bytes
-func readAllBytes(fullname: string) -> {bytes: Array'u8, errorId: error.ErrorId}
+func readAllBytes(fullname: string) -> {bytes: Array'u8, err: error.ErrorId}
 {
     var result: retval
 
-    (stream, errorId) := openRead(fullname)
-    if errorId != error.Ok
+    (stream, err) := openRead(fullname)
+    if err
     {
-        result.errorId = errorId
+        result.err = err
         return result
     }
 

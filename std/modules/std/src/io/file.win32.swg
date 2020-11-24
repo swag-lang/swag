@@ -13,7 +13,7 @@ func exists(fullname: string)->bool
 }
 
 // Open a new file stream
-func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)-> {stream: Stream, errorId: error.ErrorId}
+func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)-> {stream: Stream, err: error.ErrorId}
 {
     var result: retval
 
@@ -57,7 +57,7 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     if hFile == INVALID_HANDLE_VALUE
     {
         error.setLastErrorId()
-        result.errorId = error.last()
+        result.err = error.last()
         return result
     }
 
@@ -69,7 +69,7 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
 }
 
 // Creates a new file stream for reading
-func openRead(fullname: string)-> {stream: Stream, errorId: error.ErrorId}
+func openRead(fullname: string)-> {stream: Stream, err: error.ErrorId}
 {
     return open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
 }
@@ -145,5 +145,5 @@ func setPosition(stream: Stream, origin: SeekOrigin, seek: u64) -> error.ErrorId
         return error.last()
     }
 
-    return error.Ok
+    return null
 }

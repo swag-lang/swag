@@ -4,6 +4,6 @@ using std
 //#[swag.printbc]
 #test
 {
-    f := file.openRead("toto")
-    //@print(error.last())
+    (stream, err) := file.openRead("tolklkjlkjk:jto")
+    @assert(err != null)
 }

@@ -74,7 +74,7 @@ public impl TextReader
         debug.assert(!stream.isOpen())
 
         f := openRead(fullname)
-        if f.errorId != error.Ok return f.errorId
+        if f.err return f.err
 
         stream = f.stream
         debug.assert(stream.isOpen())
@@ -82,7 +82,7 @@ public impl TextReader
         byteSeek = 0
         checkPreamble = true
         encodingType = encoding;
-        return error.Ok
+        return null
     }
 
     // Close the reader

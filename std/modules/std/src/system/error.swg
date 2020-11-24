@@ -1,7 +1,6 @@
 public namespace std.error;
 
 alias ErrorId = string
-const Ok: ErrorId = null
 
 // Returns the error string associated with the current thread
 func last()->ErrorId
