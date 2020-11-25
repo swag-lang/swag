@@ -278,6 +278,9 @@ JobResult ModuleBuildJob::execute()
             if (g_CommandLine.stats || g_CommandLine.verbose)
                 timerRun.start();
             pass = ModuleBuildPass::Output;
+
+            if (!ByteCodeOptimizer::optimize(module))
+                return JobResult::ReleaseJob;
             module->printBC();
         }
         else
