@@ -8,9 +8,10 @@ using std.file
     res := readAllLines(loc.fileName)
     @assert(res.err == null)
     @assert(res.lines.count > 5)
+    @assert(res.lines[0] == @"#import "std""@)
 
-    visit l: res.lines
+    /*visit l: res.lines
     {
-        //console.print("LINE: %\n", l)
-    }
+        console.print("LINE: %\n", l)
+    }*/
 }
