@@ -76,7 +76,7 @@ public impl TextReader
         f := openRead(fullname)
         if f.err return f.err
 
-        stream = f.stream
+        stream = move f.stream
         debug.assert(stream.isOpen())
 
         byteSeek = 0

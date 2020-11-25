@@ -1104,6 +1104,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         orgVarNode->type = type;
         Ast::addChildBack(orgVarNode, assign);
         orgVarNode->assignment = assign;
+        orgVarNode->assignment->flags |= AST_NO_LEFT_DROP;
         if (assign)
         {
             orgVarNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBeforeAssign;
@@ -1140,12 +1141,13 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             auto           varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
             varNode->kind          = kind;
             varNode->token         = identifier->token;
-            varNode->flags |= AST_R_VALUE | AST_GENERATED;
+            varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
             SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
             identifier                            = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
             varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBeforeAssign;
             varNode->assignment                   = identifier;
             varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+            varNode->assignment->flags |= AST_NO_LEFT_DROP;
         }
 
         orgVarNode->publicName += ")";

@@ -540,21 +540,19 @@ bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)
 {
     AstStruct*      node           = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_IS_TUPLE))
-    {
-        SWAG_CHECK(generateStruct_opInit(context, typeInfoStruct));
-        if (context->result == ContextResult::Pending)
-            return true;
-        SWAG_CHECK(generateStruct_opDrop(context, typeInfoStruct));
-        if (context->result == ContextResult::Pending)
-            return true;
-        SWAG_CHECK(generateStruct_opPostCopy(context, typeInfoStruct));
-        if (context->result == ContextResult::Pending)
-            return true;
-        SWAG_CHECK(generateStruct_opPostMove(context, typeInfoStruct));
-        if (context->result == ContextResult::Pending)
-            return true;
-    }
+
+    SWAG_CHECK(generateStruct_opInit(context, typeInfoStruct));
+    if (context->result == ContextResult::Pending)
+        return true;
+    SWAG_CHECK(generateStruct_opDrop(context, typeInfoStruct));
+    if (context->result == ContextResult::Pending)
+        return true;
+    SWAG_CHECK(generateStruct_opPostCopy(context, typeInfoStruct));
+    if (context->result == ContextResult::Pending)
+        return true;
+    SWAG_CHECK(generateStruct_opPostMove(context, typeInfoStruct));
+    if (context->result == ContextResult::Pending)
+        return true;
 
     auto        structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     scoped_lock lk(structNode->mutex);
