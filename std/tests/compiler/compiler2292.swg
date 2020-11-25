@@ -33,7 +33,7 @@ func toto()-> {x: AA}
     return result
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     {

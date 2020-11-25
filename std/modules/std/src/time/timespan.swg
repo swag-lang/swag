@@ -13,6 +13,22 @@ impl TimeSpan
         return ticks <=> other.ticks
     }
 
+    // Returns the current date and time
+    func now()->TimeSpan
+    {
+        var result: retval
+        return result.from(DateTime.now())
+    }
+
+    // Initialize the TimeSpan with the current date and time
+    func setNow(using self)
+    {
+        dateTime := DateTime.now()
+        using dateTime
+        ticks = dateToTicks(year, month, day)
+        ticks += timeToTicks(hour, minute, second, millisecond)
+    }
+
     // Creates a TimeSpan with the given DateTime
     func from(dateTime: DateTime)->TimeSpan
     {
@@ -107,6 +123,12 @@ impl TimeSpan
         else
             remove(cast(u32) -milliSeconds, 1)
     }
+
+    func totalDays(using self)         => ticks * (1.0'f64 / TicksPerDay)
+    func totalHours(using self)        => ticks * (1.0'f64 / TicksPerHour)
+    func totalMinutes(using self)      => ticks * (1.0'f64 / TicksPerMinute)
+    func totalSeconds(using self)      => ticks * (1.0'f64 / TicksPerSecond)
+    func totalMilliSeconds(using self) => ticks * (1.0'f64 / TicksPerMilliSecond)
 
     private func add(using self, value: u32, scale: u64)
     {
