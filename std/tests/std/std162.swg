@@ -13,7 +13,9 @@ using std.file
         defer reader.close()
 
         res := reader.readToEnd()
-        //console.print("%\n", res)
+        @assert(res.length > 10)
+        @assert(res[0] == "#"'u8)
+        @assert(res[1] == "i"'u8)
     }
 
     {
@@ -21,6 +23,8 @@ using std.file
         defer reader.close()
 
         res := reader.readLine()
+        @assert(res == @"#import "std""@)
+
         while !res.isNull()
         {
             //console.print("LINE: %\n", res)
