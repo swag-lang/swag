@@ -1147,7 +1147,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBeforeAssign;
             varNode->assignment                   = identifier;
             varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
-            varNode->assignment->flags |= AST_NO_LEFT_DROP;
+            varNode->assignment->flags |= AST_NO_LEFT_DROP | AST_FORCE_MOVE;
         }
 
         orgVarNode->publicName += ")";

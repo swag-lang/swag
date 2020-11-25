@@ -36,7 +36,7 @@ func toto()-> {x: AA}
 //#[swag.printbc]
 #test
 {
-    var x: AA
-    (x) = toto()
+    //var x: AA
+    (x) := toto()
     @assert(G == 1)
 }
