@@ -33,10 +33,12 @@ func toto()-> {x: AA}
     return result
 }
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
-    //var x: AA
-    (x) := toto()
-    @assert(G == 1)
+    {
+        //var x: AA
+        (x) := toto()
+        @assert(G == 1)
+    }
 }
