@@ -73,10 +73,10 @@ public impl TextReader
     {
         debug.assert(!stream.isOpen())
 
-        f := openRead(fullname)
-        if f.err return f.err
+        var err: ErrorId
+        (stream, err) = openRead(fullname)
+        if err return err
 
-        stream = move f.stream
         debug.assert(stream.isOpen())
 
         byteSeek = 0
