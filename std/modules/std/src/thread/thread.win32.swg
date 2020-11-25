@@ -9,9 +9,9 @@ func sleep(ms: u32)
 }
 
 // Sleep the current thread for a given amount of milliseconds
-func yield()->bool
+func yield()
 {
-    return SwitchToThread() ? true : false
+    SwitchToThread()
 }
 
 #[swag.callback]
