@@ -24,7 +24,7 @@ private func threadEntry(param: *void)
 }
 
 // Creates a new thread
-func create(th: *Thread, lambda: func(Thread), userParam: *void = null)
+func create(th: *Thread, lambda: func(Thread), userParam: *void = null) -> ErrorId
 {
     debug.assert(!th.isValid(), "thread already created")
     debug.assert(lambda != null, "lambda parameter is null")
@@ -45,20 +45,30 @@ func create(th: *Thread, lambda: func(Thread), userParam: *void = null)
 
     h := CreateThread(null, 0, cast(*void) l64, th, CREATE_SUSPENDED, &th.id)
     if h == null
-        return
+    {
+        error.setLastErrorId()
+        return error.last()
+    }
 
     th.userLambda = lambda
     th.userParam = userParam
     th.handle = h
+    return null
 }
 
 impl Thread
 {
     // Resume the given thread, if it was paused
-    func start(using self)->bool
+    func start(using self)->ErrorId
     {
         debug.assert(isValid())
-        return ResumeThread(handle) != cast(DWORD) -1
+        if ResumeThread(handle) == cast(DWORD) -1
+        {
+            error.setLastErrorId()
+            return error.last()
+        }
+
+        return null
     }
 
     // Wait for the given thread to be done, and close it
