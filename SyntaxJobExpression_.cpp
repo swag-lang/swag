@@ -1277,9 +1277,10 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             auto        savedtoken = token;
             auto        tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
             AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
-            varNode->flags |= AST_GENERATED;
+            varNode->flags |= AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
             SWAG_CHECK(tokenizer.getToken(token));
             SWAG_CHECK(doExpression(varNode, &varNode->assignment));
+            varNode->assignment->flags |= AST_NO_LEFT_DROP;
 
             // And reference that variable, in the form value = __tmp_0.item?
             int idx = 0;
@@ -1302,7 +1303,10 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
                 forceTakeAddress(child);
-                Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), affectNode, this);
+                auto idRef = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), affectNode, this);
+
+                // Force a move between the generated temporary variable and the real var
+                idRef->flags |= AST_FORCE_MOVE;
             }
         }
 
