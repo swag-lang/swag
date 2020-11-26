@@ -1007,6 +1007,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // Push missing default parameters
     uint64_t numPushParams = 0;
     int      numTypeParams = (int) typeInfoFunc->parameters.size();
+    int      addCallParams = 0;
     if (numCallParams < numTypeParams)
     {
         // Push all parameters, from end to start
@@ -1077,11 +1078,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         VectorNative<uint32_t> accParams;
         for (int i = numCallParams - 1; i >= 0; i--)
         {
-            auto              param     = allParams->childs[i];
-            AstFuncCallParam* callParam = nullptr;
-            if (param->kind == AstNodeKind::FuncCallParam)
-                callParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
-
+            auto param = allParams->childs[i];
             if (param->resultRegisterRC.size() == 0)
                 continue;
             if (!param->typeInfo)
@@ -1099,11 +1096,21 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     numPushParams++;
                     maxCallParams++;
                 }
+
+                // If we are spreading, then the param contains all registers of all spread parameters, se
+                // we need to adapt the count of parameters
+                if (param->typeInfo->flags & TYPEINFO_SPREAD)
+                {
+                    addCallParams = param->resultRegisterRC.size() / param->typeInfo->numRegisters();
+                    addCallParams -= 1; // because the @spread itself count os one
+                }
             }
         }
 
         emitPushRAParams(context, accParams);
     }
+
+    numCallParams += addCallParams;
 
     // Pass a variadic parameter to another function
     auto lastParam = allParams && !allParams->childs.empty() ? allParams->childs.back() : nullptr;
@@ -1300,5 +1307,40 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
     auto     allParams = node->childs.empty() ? nullptr : node->childs.front();
 
     emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRC, true);
+    return true;
+}
+
+bool ByteCodeGenJob::emitSpread(ByteCodeGenContext* context)
+{
+    auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto expr     = node->childs.front();
+    auto typeInfo = expr->typeInfo;
+
+    if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+
+        for (uint32_t i = 0; i < typeArr->count; i++)
+        {
+            RegisterList r0;
+            reserveRegisterRC(context, r0, typeArr->pointedType->numRegisters());
+
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, expr->resultRegisterRC);
+            if (i)
+            {
+                auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, r0, 0, r0);
+                inst->flags |= BCI_IMM_B;
+                inst->b.u32 = i * typeArr->pointedType->sizeOf;
+            }
+
+            SWAG_CHECK(emitTypeDeRef(context, r0, typeArr->pointedType, false));
+            node->resultRegisterRC += r0;
+        }
+    }
+    else
+    {
+        return internalError(context, "emitSpread, invalid type");
+    }
+
     return true;
 }

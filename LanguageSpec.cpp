@@ -137,6 +137,7 @@ void LanguageSpec::setup()
     keywords["@isbytecode"]  = TokenId::IntrinsicIsByteCode;
     keywords["@compiler"]    = TokenId::IntrinsicCompiler;
     keywords["@thrunptr"]    = TokenId::IntrinsicThreadRunPtr;
+    keywords["@spread"]      = TokenId::IntrinsicSpread;
     keywords["@atomadd"]     = TokenId::IntrinsicAtomicAdd;
     keywords["@atomand"]     = TokenId::IntrinsicAtomicAnd;
     keywords["@atomor"]      = TokenId::IntrinsicAtomicOr;
