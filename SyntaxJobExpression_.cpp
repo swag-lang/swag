@@ -192,7 +192,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicStrCmp:
     case TokenId::IntrinsicTypeCmp:
     case TokenId::IntrinsicThreadRunPtr:
-    case TokenId::IntrinsicSpread:
     case TokenId::IntrinsicAtomicAdd:
     case TokenId::IntrinsicAtomicAnd:
     case TokenId::IntrinsicAtomicOr:
