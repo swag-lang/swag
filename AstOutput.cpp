@@ -189,21 +189,41 @@ namespace Ast
         case AstNodeKind::Init:
             concat.addString("@init(");
             SWAG_CHECK(output(context, concat, node->childs.front()));
+            if (node->childs.size() == 2)
+            {
+                concat.addString2(", ");
+                SWAG_CHECK(output(context, concat, node->childs.back()));
+            }
             concat.addString(")");
             break;
         case AstNodeKind::Drop:
             concat.addString("@drop(");
             SWAG_CHECK(output(context, concat, node->childs.front()));
+            if (node->childs.size() == 2)
+            {
+                concat.addString2(", ");
+                SWAG_CHECK(output(context, concat, node->childs.back()));
+            }
             concat.addString(")");
             break;
         case AstNodeKind::PostMove:
             concat.addString("@postmove(");
             SWAG_CHECK(output(context, concat, node->childs.front()));
+            if (node->childs.size() == 2)
+            {
+                concat.addString2(", ");
+                SWAG_CHECK(output(context, concat, node->childs.back()));
+            }
             concat.addString(")");
             break;
         case AstNodeKind::PostCopy:
             concat.addString("@postcopy(");
             SWAG_CHECK(output(context, concat, node->childs.front()));
+            if (node->childs.size() == 2)
+            {
+                concat.addString2(", ");
+                SWAG_CHECK(output(context, concat, node->childs.back()));
+            }
             concat.addString(")");
             break;
 

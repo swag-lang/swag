@@ -13,7 +13,7 @@ func free(buffer: *void, allocator: IAllocator = null, loc = #callerlocation)
     talloc.alloc(&req)
 }
 
-// Free all allocated memory if possible
+// Free all allocated memory of the given allocator if possible
 func freeAll(allocator: IAllocator, loc = #callerlocation)
 {
     var req: AllocatorRequest
@@ -55,6 +55,7 @@ func alloc(sizeInBytes: u32, allocator: IAllocator = null, alignement: u16 = 0, 
     return req.address
 }
 
+// Allocate and initialize the given type
 func(T) new(allocator: IAllocator = null, alignement: u16 = 0, loc = #callerlocation)->*T
 {
     ptr := cast(*T) alloc(@sizeof(T), allocator, alignement, loc)
@@ -62,8 +63,26 @@ func(T) new(allocator: IAllocator = null, alignement: u16 = 0, loc = #callerloca
     return ptr
 }
 
+// Drop and release memory of the given type
 func(T) delete(ptr: *T, allocator: IAllocator = null, loc = #callerlocation)
 {
+    if !ptr return
     @drop(ptr)
+    free(ptr, allocator, loc)
+}
+
+// Allocate and initialize the given type
+func(T) newArr(num: u32, allocator: IAllocator = null, alignement: u16 = 0, loc = #callerlocation)->*T
+{
+    ptr := cast(*T) alloc(@sizeof(T) * num, allocator, alignement, loc)
+    @init(ptr, num)
+    return ptr
+}
+
+// Drop and release memory of the given type
+func(T) deleteArr(ptr: *T, num: u32, allocator: IAllocator = null, loc = #callerlocation)
+{
+    if !ptr return
+    @drop(ptr, num)
     free(ptr, allocator, loc)
 }
