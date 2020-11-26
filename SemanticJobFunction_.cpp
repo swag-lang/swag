@@ -887,6 +887,11 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // deal with the (re)evaluation.
     if (identifier->kind == AstNodeKind::Identifier)
     {
+        // Do not reevaluate function parameters
+        auto castId = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+        if (castId->callParameters)
+            castId->callParameters->flags |= AST_NO_SEMANTIC;
+
         identifier->semanticState = AstNodeResolveState::Enter;
         identifier->bytecodeState = AstNodeResolveState::Enter;
     }

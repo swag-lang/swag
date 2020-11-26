@@ -472,6 +472,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         auto typeVariadic   = static_cast<TypeInfoVariadic*>(arrayType);
         arrayNode->typeInfo = typeVariadic->rawType;
+        setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
         break;
     }
 

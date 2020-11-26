@@ -70,8 +70,8 @@ func wait(threads: *Thread...)
         toTreat := math.min(BATCH_COUNT, total)
         loop i: toTreat
         {
-            //debug.assert(threads[i].isValid())
-            //handles[i] = threads[i].handle
+            debug.assert(threads[i].isValid())
+            handles[i] = threads[i].handle
         }
 
         WaitForMultipleObjects(toTreat, &handles[0], TRUE, INFINITE)
