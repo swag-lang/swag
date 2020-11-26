@@ -111,11 +111,11 @@ namespace Ast
             for (auto p : funcDecl->parameters->childs)
             {
                 if (p != funcDecl->parameters->childs.front())
-                    concat.addString2(", ");
+                    CONCAT_FIXED_STR(concat, ", ");
                 concat.addString(p->name);
                 if (!p->childs.empty())
                 {
-                    concat.addString(": ");
+                    CONCAT_FIXED_STR(concat, ": ");
                     SWAG_CHECK(output(context, concat, p->childs.front()));
                 }
 
@@ -132,7 +132,7 @@ namespace Ast
 
         if (funcDecl->flags & AST_SHORT_LAMBDA)
         {
-            concat.addString(" => ");
+            CONCAT_FIXED_STR(concat, " => ");
             SWAG_ASSERT(funcDecl->content->kind == AstNodeKind::Return);
             SWAG_CHECK(output(context, concat, funcDecl->content->childs.front()));
         }
@@ -161,13 +161,13 @@ namespace Ast
         {
             auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
             bool first    = true;
-            concat.addString2("#[");
+            CONCAT_FIXED_STR(concat, "#[");
             for (auto s : nodeAttr->childs)
             {
                 if (s == nodeAttr->content)
                     continue;
                 if (!first)
-                    concat.addString2(", ");
+                    CONCAT_FIXED_STR(concat, ", ");
                 first = false;
                 SWAG_CHECK(output(context, concat, s));
             }
@@ -184,44 +184,44 @@ namespace Ast
             break;
 
         case AstNodeKind::Index:
-            concat.addString("@index");
+            CONCAT_FIXED_STR(concat, "@index");
             break;
         case AstNodeKind::Init:
-            concat.addString("@init(");
+            CONCAT_FIXED_STR(concat, "@init(");
             SWAG_CHECK(output(context, concat, node->childs.front()));
             if (node->childs.size() == 2)
             {
-                concat.addString2(", ");
+                CONCAT_FIXED_STR(concat, ", ");
                 SWAG_CHECK(output(context, concat, node->childs.back()));
             }
             concat.addChar(')');
             break;
         case AstNodeKind::Drop:
-            concat.addString("@drop(");
+            CONCAT_FIXED_STR(concat, "@drop(");
             SWAG_CHECK(output(context, concat, node->childs.front()));
             if (node->childs.size() == 2)
             {
-                concat.addString2(", ");
+                CONCAT_FIXED_STR(concat, ", ");
                 SWAG_CHECK(output(context, concat, node->childs.back()));
             }
             concat.addChar(')');
             break;
         case AstNodeKind::PostMove:
-            concat.addString("@postmove(");
+            CONCAT_FIXED_STR(concat, "@postmove(");
             SWAG_CHECK(output(context, concat, node->childs.front()));
             if (node->childs.size() == 2)
             {
-                concat.addString2(", ");
+                CONCAT_FIXED_STR(concat, ", ");
                 SWAG_CHECK(output(context, concat, node->childs.back()));
             }
             concat.addChar(')');
             break;
         case AstNodeKind::PostCopy:
-            concat.addString("@postcopy(");
+            CONCAT_FIXED_STR(concat, "@postcopy(");
             SWAG_CHECK(output(context, concat, node->childs.front()));
             if (node->childs.size() == 2)
             {
-                concat.addString2(", ");
+                CONCAT_FIXED_STR(concat, ", ");
                 SWAG_CHECK(output(context, concat, node->childs.back()));
             }
             concat.addChar(')');
@@ -230,7 +230,7 @@ namespace Ast
         case AstNodeKind::Break:
         {
             auto nodeBreak = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
-            concat.addString("break ");
+            CONCAT_FIXED_STR(concat, "break ");
             concat.addString(nodeBreak->label);
             break;
         }
@@ -238,7 +238,7 @@ namespace Ast
         case AstNodeKind::Continue:
         {
             auto nodeContinue = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
-            concat.addString("continue ");
+            CONCAT_FIXED_STR(concat, "continue ");
             concat.addString(nodeContinue->label);
             break;
         }
@@ -257,12 +257,12 @@ namespace Ast
         }
 
         case AstNodeKind::NoDrop:
-            concat.addString("nodrop ");
+            CONCAT_FIXED_STR(concat, "nodrop ");
             SWAG_CHECK(output(context, concat, node->childs.front()));
             break;
 
         case AstNodeKind::Move:
-            concat.addString("move ");
+            CONCAT_FIXED_STR(concat, "move ");
             SWAG_CHECK(output(context, concat, node->childs.front()));
             break;
 
@@ -288,9 +288,9 @@ namespace Ast
         {
             auto exprNode = CastAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
             if (exprNode->forTuple)
-                concat.addString("@{");
+                concat.addString2("@{");
             else
-                concat.addString("@[");
+                concat.addString2("@[");
 
             int idx = 0;
             for (auto child : exprNode->childs)
@@ -298,7 +298,7 @@ namespace Ast
                 if (child->flags & AST_GENERATED)
                     continue;
                 if (idx++)
-                    concat.addString2(", ");
+                    CONCAT_FIXED_STR(concat, ", ");
                 SWAG_CHECK(output(context, concat, child));
             }
 
@@ -798,7 +798,7 @@ namespace Ast
             for (auto child : node->childs)
             {
                 if (idx)
-                    concat.addString2(", ");
+                    CONCAT_FIXED_STR(concat, ", ");
                 SWAG_CHECK(output(context, concat, child));
                 idx++;
             }
