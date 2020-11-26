@@ -58,6 +58,34 @@ func create(th: *Thread, lambda: func(Thread), userParam: *void = null, priority
     return null
 }
 
+// Wait multiple threads
+func wait(threads: *Thread...)
+{
+    const BATCH_COUNT = 64'u32
+    var handles: [BATCH_COUNT] HANDLE
+
+    total := @countof(threads)
+    while total > 0
+    {
+        toTreat := math.min(BATCH_COUNT, total)
+        loop i: toTreat
+        {
+            //debug.assert(threads[i].isValid())
+            //handles[i] = threads[i].handle
+        }
+
+        WaitForMultipleObjects(toTreat, &handles[0], TRUE, INFINITE)
+        total -= toTreat
+    }
+
+    // Close all
+    visit th: threads
+    {
+        CloseHandle(th.handle)
+        th.handle = null
+    }
+}
+
 impl Thread
 {
     // Resume the given thread, if it was paused
@@ -101,7 +129,7 @@ impl Thread
         debug.assert(isValid())
         WaitForSingleObject(handle, INFINITE)
         CloseHandle(handle)
-        @init(self)
+        handle = null
     }
 
     // Returns true if the thread has finished

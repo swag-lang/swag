@@ -30,6 +30,8 @@ namespace win32
     const STD_OUTPUT_HANDLE = cast(DWORD) -11
 
     const ERROR_SUCCESS = 0
+    const FALSE = 0
+    const TRUE  = 1
 
     const FOREGROUND_BLUE      = 0x0001
     const FOREGROUND_GREEN     = 0x0002
@@ -480,6 +482,7 @@ namespace win32
         func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE;
         func SetThreadPriority(hThread: HANDLE, nPriority: s32)->BOOL;
         func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD;
+        func WaitForMultipleObjects(nCount: DWORD, lpHandles: const *HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD;
         func ExitProcess(uExitCode: UINT);
         func ResumeThread(hThread: HANDLE)->DWORD;
         func SwitchToThread()->BOOL;
@@ -502,7 +505,7 @@ namespace win32
         func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL;
         func FindClose(hFindFile: HANDLE)->BOOL;
         func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
-        func SetCurrentDirectoryA(lpPathName: LPCSTR)->bool;
+        func SetCurrentDirectoryA(lpPathName: LPCSTR)->BOOL;
     }
 
     #[swag.foreign("user32")]
