@@ -46,6 +46,7 @@ namespace OS
     extern int16_t atomicAdd(int16_t* addr, int16_t value);
     extern int32_t atomicAdd(int32_t* addr, int32_t value);
     extern int64_t atomicAdd(int64_t* addr, int64_t value);
+
     extern int8_t  atomicAnd(int8_t* addr, int8_t value);
     extern int16_t atomicAnd(int16_t* addr, int16_t value);
     extern int32_t atomicAnd(int32_t* addr, int32_t value);
@@ -58,6 +59,11 @@ namespace OS
     extern int16_t atomicXor(int16_t* addr, int16_t value);
     extern int32_t atomicXor(int32_t* addr, int32_t value);
     extern int64_t atomicXor(int64_t* addr, int64_t value);
+
+    extern int8_t  atomicXchg(int8_t* addr, int8_t value);
+    extern int16_t atomicXchg(int16_t* addr, int16_t value);
+    extern int32_t atomicXchg(int32_t* addr, int32_t value);
+    extern int64_t atomicXchg(int64_t* addr, int64_t value);
     extern int8_t  atomicCmpXchg(int8_t* addr, int8_t compareTo, int8_t replaceWith);
     extern int16_t atomicCmpXchg(int16_t* addr, int16_t compareTo, int16_t replaceWith);
     extern int32_t atomicCmpXchg(int32_t* addr, int32_t compareTo, int32_t replaceWith);

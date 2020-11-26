@@ -765,6 +765,26 @@ namespace OS
         return _InterlockedXor64(addr, value);
     }
 
+    int8_t atomicXchg(int8_t* addr, int8_t replaceWith)
+    {
+        return InterlockedExchange8((char*)addr, replaceWith);
+    }
+
+    int16_t atomicXchg(int16_t* addr, int16_t replaceWith)
+    {
+        return InterlockedExchange16(addr, replaceWith);
+    }
+
+    int32_t atomicXchg(int32_t* addr, int32_t replaceWith)
+    {
+        return InterlockedExchange((LONG*)addr, (LONG)replaceWith);
+    }
+
+    int64_t atomicXchg(int64_t* addr, int64_t replaceWith)
+    {
+        return InterlockedExchange64(addr, replaceWith);
+    }
+
     int8_t atomicCmpXchg(int8_t* addr, int8_t compareTo, int8_t replaceWith)
     {
         return _InterlockedCompareExchange8((char*) addr, replaceWith, compareTo);

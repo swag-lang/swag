@@ -41,6 +41,7 @@ enum class X64Op : uint8_t
     FSUB = 0x5C,
     FMUL = 0x59,
     FDIV = 0x5E,
+    XCHG = 0x87
 };
 
 namespace BackendX64Inst

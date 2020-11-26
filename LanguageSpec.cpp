@@ -141,6 +141,7 @@ void LanguageSpec::setup()
     keywords["@atomand"]     = TokenId::IntrinsicAtomicAnd;
     keywords["@atomor"]      = TokenId::IntrinsicAtomicOr;
     keywords["@atomxor"]     = TokenId::IntrinsicAtomicXor;
+    keywords["@atomxchg"]    = TokenId::IntrinsicAtomicXchg;
     keywords["@atomcmpxchg"] = TokenId::IntrinsicAtomicCmpXchg;
 
     keywords["@sqrt"]  = TokenId::IntrinsicSqrt;

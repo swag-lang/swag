@@ -2,29 +2,29 @@
 #test
 {
     {
-        x := -1's8
-        @assert(@atomand(&x, 3) == -1)
+        x := 0xFF'u8
+        @assert(@atomand(&x, 3) == 0xFF)
         @assert(@atomand(&x, 2) == 3)
         @assert(x == 2)
     }
 
     {
-        x := -1's16
-        @assert(@atomand(&x, 3) == -1)
+        x := 0xFF'u16
+        @assert(@atomand(&x, 3) == 0xFF)
         @assert(@atomand(&x, 2) == 3)
         @assert(x == 2)
     }
 
     {
-        x := -1's32
-        @assert(@atomand(&x, 3) == -1)
+        x := 0xFF'u32
+        @assert(@atomand(&x, 3) == 0xFF)
         @assert(@atomand(&x, 2) == 3)
         @assert(x == 2)
     }
 
     {
-        x := -1's64
-        @assert(@atomand(&x, 3) == -1)
+        x := 0xFF'u64
+        @assert(@atomand(&x, 3) == 0xFF)
         @assert(@atomand(&x, 2) == 3)
         @assert(x == 2)
     }

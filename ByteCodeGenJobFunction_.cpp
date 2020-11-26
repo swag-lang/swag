@@ -486,15 +486,19 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
@@ -511,15 +515,19 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
@@ -536,15 +544,19 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
@@ -561,16 +573,50 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicXorS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicXorS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicXorS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicXorS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        default:
+            return internalError(context, "emitIntrinsic, @atomxor invalid type");
+        }
+        break;
+    }
+
+    case TokenId::IntrinsicAtomicXchg:
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        auto child0            = callParams->childs[0];
+        auto child1            = callParams->childs[1];
+        auto typeInfo          = TypeManager::concreteReferenceType(child1->typeInfo);
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXchgS8, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXchgS16, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXchgS32, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+            break;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
+            emitInstruction(context, ByteCodeOp::IntrinsicAtomicXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
             return internalError(context, "emitIntrinsic, @atomxor invalid type");
@@ -588,15 +634,19 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS8, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS16, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS32, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
             break;
         default:

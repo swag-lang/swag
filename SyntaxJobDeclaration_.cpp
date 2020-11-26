@@ -334,6 +334,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicAtomicAnd:
     case TokenId::IntrinsicAtomicOr:
     case TokenId::IntrinsicAtomicXor:
+    case TokenId::IntrinsicAtomicXchg:
     case TokenId::IntrinsicAtomicCmpXchg:
     case TokenId::SymLeftParen:
     case TokenId::SymColon:

@@ -482,22 +482,55 @@ func @atomadd(addr: *s8, value: s8)->s8;
 func @atomadd(addr: *s16, value: s16)->s16;
 func @atomadd(addr: *s32, value: s32)->s32;
 func @atomadd(addr: *s64, value: s64)->s64;
+func @atomadd(addr: *u8, value: u8)->u8;
+func @atomadd(addr: *u16, value: u16)->u16;
+func @atomadd(addr: *u32, value: u32)->u32;
+func @atomadd(addr: *u64, value: u64)->u64;
+
 func @atomand(addr: *s8, value: s8)->s8;
 func @atomand(addr: *s16, value: s16)->s16;
 func @atomand(addr: *s32, value: s32)->s32;
 func @atomand(addr: *s64, value: s64)->s64;
+func @atomand(addr: *u8, value: u8)->u8;
+func @atomand(addr: *u16, value: u16)->u16;
+func @atomand(addr: *u32, value: u32)->u32;
+func @atomand(addr: *u64, value: u64)->u64;
+
 func @atomor(addr: *s8, value: s8)->s8;
 func @atomor(addr: *s16, value: s16)->s16;
 func @atomor(addr: *s32, value: s32)->s32;
 func @atomor(addr: *s64, value: s64)->s64;
+func @atomor(addr: *u8, value: u8)->u8;
+func @atomor(addr: *u16, value: u16)->u16;
+func @atomor(addr: *u32, value: u32)->u32;
+func @atomor(addr: *u64, value: u64)->u64;
+
 func @atomxor(addr: *s8, value: s8)->s8;
 func @atomxor(addr: *s16, value: s16)->s16;
 func @atomxor(addr: *s32, value: s32)->s32;
 func @atomxor(addr: *s64, value: s64)->s64;
+func @atomxor(addr: *u8, value: u8)->u8;
+func @atomxor(addr: *u16, value: u16)->u16;
+func @atomxor(addr: *u32, value: u32)->u32;
+func @atomxor(addr: *u64, value: u64)->u64;
+
+func @atomxchg(addr: *s8,  exchangeWith: s8)->s8;
+func @atomxchg(addr: *s16, exchangeWith: s16)->s16;
+func @atomxchg(addr: *s32, exchangeWith: s32)->s32;
+func @atomxchg(addr: *s64, exchangeWith: s64)->s64;
+func @atomxchg(addr: *u8,  exchangeWith: u8)->u8;
+func @atomxchg(addr: *u16, exchangeWith: u16)->u16;
+func @atomxchg(addr: *u32, exchangeWith: u32)->u32;
+func @atomxchg(addr: *u64, exchangeWith: u64)->u64;
+
 func @atomcmpxchg(addr: *s8,  compareTo, exchangeWith: s8)->s8;
 func @atomcmpxchg(addr: *s16, compareTo, exchangeWith: s16)->s16;
 func @atomcmpxchg(addr: *s32, compareTo, exchangeWith: s32)->s32;
 func @atomcmpxchg(addr: *s64, compareTo, exchangeWith: s64)->s64;
+func @atomcmpxchg(addr: *u8,  compareTo, exchangeWith: u8)->u8;
+func @atomcmpxchg(addr: *u16, compareTo, exchangeWith: u16)->u16;
+func @atomcmpxchg(addr: *u32, compareTo, exchangeWith: u32)->u32;
+func @atomcmpxchg(addr: *u64, compareTo, exchangeWith: u64)->u64;
 
 // Constant intrinsics
 #[swag.constexpr]

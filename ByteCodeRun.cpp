@@ -1870,6 +1870,19 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->c.u32].s64 = OS::atomicXor((int64_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s64);
         break;
 
+    case ByteCodeOp::IntrinsicAtomicXchgS8:
+        registersRC[ip->c.u32].s8 = OS::atomicXchg((int8_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s8);
+        break;
+    case ByteCodeOp::IntrinsicAtomicXchgS16:
+        registersRC[ip->c.u32].s16 = OS::atomicXchg((int16_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s16);
+        break;
+    case ByteCodeOp::IntrinsicAtomicXchgS32:
+        registersRC[ip->c.u32].s32 = OS::atomicXchg((int32_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s32);
+        break;
+    case ByteCodeOp::IntrinsicAtomicXchgS64:
+        registersRC[ip->c.u32].s64 = OS::atomicXchg((int64_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s64);
+        break;
+
     case ByteCodeOp::IntrinsicAtomicCmpXchgS8:
         registersRC[ip->d.u32].s8 = OS::atomicCmpXchg((int8_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s8, registersRC[ip->c.u32].s8);
         break;
