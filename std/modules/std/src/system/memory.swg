@@ -65,3 +65,16 @@ func alloc(sizeInBytes: u32, allocator: IAllocator = null, alignement: u16 = 0)-
 
     return req.address
 }
+
+func(T) new(allocator: IAllocator = null, alignement: u16 = 0)->*T
+{
+    ptr := cast(*T) alloc(@sizeof(T), allocator, alignement)
+    @init(ptr)
+    return ptr
+}
+
+func(T) delete(ptr: *T, allocator: IAllocator = null)
+{
+    @drop(ptr)
+    free(ptr, allocator)
+}

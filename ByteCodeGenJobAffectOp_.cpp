@@ -583,7 +583,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
 
     if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
-        if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.back()->kind == AstNodeKind::ArrayPointerIndex)
+        if (node->doneFlags & AST_DONE_FLAT_PARAMS)
         {
             auto arrayNode = CastAst<AstArrayPointerIndex>(leftNode->childs.back(), AstNodeKind::ArrayPointerIndex);
             if (!job->allParamsTmp)

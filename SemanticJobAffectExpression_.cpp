@@ -77,13 +77,18 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     if (left->kind == AstNodeKind::IdentifierRef && left->childs.back()->kind == AstNodeKind::ArrayPointerIndex)
     {
         arrayNode = CastAst<AstArrayPointerIndex>(left->childs.back(), AstNodeKind::ArrayPointerIndex);
+        if (arrayNode->array->typeInfo->kind != TypeInfoKind::Struct)
+            arrayNode = nullptr;
 
         // Add self and value in list of parameters
-        if (!(node->doneFlags & AST_DONE_FLAT_PARAMS))
+        if (arrayNode)
         {
-            arrayNode->structFlatParams.push_back(right);
-            arrayNode->structFlatParams.push_front(left);
-            node->doneFlags |= AST_DONE_FLAT_PARAMS;
+            if (!(node->doneFlags & AST_DONE_FLAT_PARAMS))
+            {
+                arrayNode->structFlatParams.push_back(right);
+                arrayNode->structFlatParams.push_front(left);
+                node->doneFlags |= AST_DONE_FLAT_PARAMS;
+            }
         }
     }
 
