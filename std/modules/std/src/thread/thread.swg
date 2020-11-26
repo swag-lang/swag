@@ -3,6 +3,15 @@ using std;
 
 alias ThreadHandle = const *void
 
+enum ThreadPriority
+{
+    Lowest
+    BelowNormal
+    Normal
+    AboveNormal
+    Highest
+}
+
 struct Thread
 {
     // Must be first, for Context.cpp/threadRun
@@ -10,6 +19,8 @@ struct Thread
 
     context:    swag.Context
     userParam:  *void
+
+    priority =  ThreadPriority.Normal
     handle:     ThreadHandle
     id:         u32
 }

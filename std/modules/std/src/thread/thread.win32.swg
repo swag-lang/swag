@@ -24,7 +24,7 @@ private func threadEntry(param: *void)
 }
 
 // Creates a new thread
-func create(th: *Thread, lambda: func(Thread), userParam: *void = null) -> ErrorId
+func create(th: *Thread, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal) -> ErrorId
 {
     debug.assert(!th.isValid(), "thread already created")
     debug.assert(lambda != null, "lambda parameter is null")
@@ -53,6 +53,8 @@ func create(th: *Thread, lambda: func(Thread), userParam: *void = null) -> Error
     th.userLambda = lambda
     th.userParam = userParam
     th.handle = h
+    th.setPriority(priority)
+
     return null
 }
 
@@ -69,6 +71,27 @@ impl Thread
         }
 
         return null
+    }
+
+    // Set the thread priority
+    func setPriority(using self, newPriority: ThreadPriority)
+    {
+        debug.assert(isValid())
+
+        if priority == newPriority
+            return
+        priority = newPriority
+
+        using ThreadPriority
+        #[swag.complete]
+        switch priority
+        {
+            case Lowest:        SetThreadPriority(handle, THREAD_PRIORITY_LOWEST)
+            case BelowNormal:   SetThreadPriority(handle, THREAD_PRIORITY_BELOW_NORMAL)
+            case Normal:        SetThreadPriority(handle, THREAD_PRIORITY_NORMAL)
+            case AboveNormal:   SetThreadPriority(handle, THREAD_PRIORITY_ABOVE_NORMAL)
+            case Highest:       SetThreadPriority(handle, THREAD_PRIORITY_HIGHEST)
+        }
     }
 
     // Wait for the given thread to be done, and close it
