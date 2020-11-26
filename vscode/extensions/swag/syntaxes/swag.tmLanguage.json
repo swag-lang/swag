@@ -11,6 +11,7 @@
     { "include": "#op" },
     { "include": "#op-invalid" },
     { "include": "#function-call" },
+    { "include": "#function-call1" },
     { "include": "#raw-strings" },
     { "include": "#intrinsics" },
     { "include": "#intrinsics-buildin" },
@@ -219,6 +220,21 @@
           "captures": {
             "1": {
               "name": "entity.name.function"
+            }
+          }
+        }
+      ]
+    },
+    "function-call1": {
+      "patterns": [
+        {
+          "match": "([A-Za-z_][A-Za-z_0-9]*)\\s*\\b(')\\s*([A-Za-z_][A-Za-z_0-9]*)\\s*\\(",
+          "captures": {
+            "1": {
+              "name": "entity.name.function"
+            },
+            "3": {
+              "name": "entity.name.class"
             }
           }
         }

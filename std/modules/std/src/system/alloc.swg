@@ -72,7 +72,7 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, loc = #callerlocation)
 }
 
 // Allocate and initialize the given type
-func(T) newArr(num: u32, allocator: IAllocator = null, alignement: u16 = 0, loc = #callerlocation)->*T
+func(T) new(num: u32, allocator: IAllocator = null, alignement: u16 = 0, loc = #callerlocation)->*T
 {
     ptr := cast(*T) alloc(@sizeof(T) * num, allocator, alignement, loc)
     @init(ptr, num)
@@ -80,7 +80,7 @@ func(T) newArr(num: u32, allocator: IAllocator = null, alignement: u16 = 0, loc 
 }
 
 // Drop and release memory of the given type
-func(T) deleteArr(ptr: *T, num: u32, allocator: IAllocator = null, loc = #callerlocation)
+func(T) delete(ptr: *T, num: u32, allocator: IAllocator = null, loc = #callerlocation)
 {
     if !ptr return
     @drop(ptr, num)

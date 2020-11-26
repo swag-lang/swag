@@ -12,8 +12,8 @@ using std.memory
     }
 
     {
-        ptr := newArr'String(10)
+        ptr := new'String(10)
         loop 10 ptr[@index] = "toto"
-        deleteArr(ptr, 10)
+        delete(ptr, 10)
     }
 }
