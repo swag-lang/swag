@@ -119,6 +119,7 @@ namespace swag
 
     struct AllocatorRequest
     {
+        callerLoc:  CompilerSourceLocation
         address:	*void
         size:		u32
         mode =		AllocatorMode.Alloc

@@ -1,11 +1,12 @@
 ﻿#import "std"
-using std
+using std.memory
 
 //#[swag.printbc]
 #test
 {
-    ptr := memory.new'String()
-    ptr[0] = "toto"
-    console.print("%", ptr[0])
-    memory.delete(ptr)
+    ptr := new'String()
+    :ptr = "toto"
+    //console.print("%", ptr[0])
+    @assert(:ptr == "toto")
+    delete(ptr)
 }
