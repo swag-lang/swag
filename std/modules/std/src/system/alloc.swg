@@ -71,18 +71,20 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, loc = #callerlocation)
     free(ptr, allocator, loc)
 }
 
-// Allocate and initialize the given type
+// Allocate and initialize an array of the given type
 func(T) new(num: u32, allocator: IAllocator = null, alignement: u16 = 0, loc = #callerlocation)->*T
 {
+    debug.assert(num > 0)
     ptr := cast(*T) alloc(@sizeof(T) * num, allocator, alignement, loc)
     @init(ptr, num)
     return ptr
 }
 
-// Drop and release memory of the given type
+// Drop and release memory an array of of the given type
 func(T) delete(ptr: *T, num: u32, allocator: IAllocator = null, loc = #callerlocation)
 {
     if !ptr return
+    debug.assert(num > 0)
     @drop(ptr, num)
     free(ptr, allocator, loc)
 }
