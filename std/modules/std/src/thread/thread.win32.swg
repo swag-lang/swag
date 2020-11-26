@@ -61,13 +61,12 @@ func create(th: *Thread, lambda: func(Thread), userParam: *void = null, priority
 // Wait multiple threads
 func wait(threads: *Thread...)
 {
-    const BATCH_COUNT = 64'u32
-    var handles: [BATCH_COUNT] HANDLE
+    var handles: [MAXIMUM_WAIT_OBJECTS] HANDLE
 
     total := @countof(threads)
     while total > 0
     {
-        toTreat := math.min(BATCH_COUNT, total)
+        toTreat := math.min(MAXIMUM_WAIT_OBJECTS, total)
         loop i: toTreat
         {
             debug.assert(threads[i].isValid())
