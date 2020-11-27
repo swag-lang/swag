@@ -95,13 +95,6 @@ JobResult SemanticJob::execute()
         auto node    = nodes.back();
         context.node = node;
 
-        // Already done by the #compiler pass
-        if (!(flags & JOB_COMPILER_PASS) && node->flags & AST_DONE_COMPILER_PASS)
-        {
-            nodes.pop_back();
-            continue;
-        }
-
         // Some attribute flags must propagate from parent to childs, whatever
         propagateAttributes(node);
 
@@ -237,8 +230,6 @@ JobResult SemanticJob::execute()
                     continue;
             }
 
-            if (flags & JOB_COMPILER_PASS)
-                node->flags |= AST_DONE_COMPILER_PASS;
             nodes.pop_back();
             break;
         }

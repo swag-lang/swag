@@ -371,7 +371,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->token.text = "#compiler";
             funcNode->name       = "__compiler" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_COMPILER_FUNC | ATTRIBUTE_COMPILER;
-            sourceFile->addCompilerPassNode(funcNode);
+            SWAG_VERIFY(sourceFile->compilerPass, syntaxError(token, "'#compiler' function can only be declared in a file marked with '#compilerpass'"));
             break;
         case TokenId::CompilerAst:
             funcNode->token.text = "#ast";

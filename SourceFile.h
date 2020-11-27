@@ -57,11 +57,6 @@ struct SourceFile : public File
     Scope*   scopePrivate = nullptr;
     AstNode* sourceNode   = nullptr;
 
-    VectorNative<AstNode*> compilerPassFunctions;
-    VectorNative<AstNode*> compilerPassUsing;
-    shared_mutex           mutexCompilerPass;
-    void                   addCompilerPassNode(AstNode* node);
-
     int          headerSize    = 0;
     long         fileSeek      = 0;
     long         bufferCurSeek = 0;
@@ -72,6 +67,7 @@ struct SourceFile : public File
     bool         fromTests     = false;
     bool         generated     = false;
     bool         forcedPublic  = false;
+    bool         compilerPass  = false;
     bool         imported      = false;
     shared_mutex mutexGetLine;
 };

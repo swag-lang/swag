@@ -161,6 +161,12 @@ void Module::addPublicSourceFile(SourceFile* file)
     publicSourceFiles.insert(file);
 }
 
+void Module::addCompilerPassSourceFile(SourceFile* file)
+{
+    scoped_lock lk(mutexCompilerPass);
+    filesForCompilerPass.insert(file);
+}
+
 void Module::addFileNoLock(SourceFile* file)
 {
     file->module        = this;
@@ -172,14 +178,8 @@ void Module::addFileNoLock(SourceFile* file)
     moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);
 
     // If the file has nodes for the compiler pass, then we need to register it in the module
-    {
-        unique_lock lk1(file->mutexCompilerPass);
-        if (!file->compilerPassFunctions.empty())
-        {
-            unique_lock lk2(mutexCompilerPass);
-            filesForCompilerPass.insert(file);
-        }
-    }
+    if (file->compilerPass)
+        filesForCompilerPass.insert(file);
 
     // If the file is flagged as #public, register it
     if (file->forcedPublic)
@@ -211,17 +211,14 @@ void Module::removeFile(SourceFile* file)
     scopeRoot->removeChildNoLock(file->scopePrivate);
 
     // If the file has compiler functions, then we need to unregister it from the module
-    {
-        unique_lock lk2(mutexCompilerPass);
-        auto        it = filesForCompilerPass.find(file);
-        if (it != filesForCompilerPass.end())
-            filesForCompilerPass.erase(it);
-    }
+    auto it = filesForCompilerPass.find(file);
+    if (it != filesForCompilerPass.end())
+        filesForCompilerPass.erase(it);
 
     // If the file is flagged as #public, unregister it
-    auto it = publicSourceFiles.find(file);
-    if (it != publicSourceFiles.end())
-        publicSourceFiles.erase(it);
+    auto it1 = publicSourceFiles.find(file);
+    if (it1 != publicSourceFiles.end())
+        publicSourceFiles.erase(it1);
 }
 
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)

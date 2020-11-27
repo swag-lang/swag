@@ -9,12 +9,14 @@ thread_local Pool<ModuleSemanticJob> g_Pool_moduleSemanticJob;
 
 JobResult ModuleSemanticJob::execute()
 {
-    if(!module)
+    if (!module)
         return JobResult::ReleaseJob;
 
     for (auto file : module->files)
     {
         if (file->buildPass < BuildPass::Semantic)
+            continue;
+        if (file->compilerPass)
             continue;
 
         auto job          = g_Pool_semanticJob.alloc();

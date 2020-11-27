@@ -1,4 +1,4 @@
-/*using CharAttribute
+//using CharAttribute
 
 #[swag.enumflags]
 enum CharAttribute
@@ -16,4 +16,4 @@ enum CharAttribute
     Printable
     Graphical  = Printable | Spacing
     UpperLower = Lower | Upper
-}*/
+}

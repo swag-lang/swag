@@ -59,6 +59,7 @@ DEFINE_TOKEN_ID(SymLiteralCurly)
 DEFINE_TOKEN_ID(SymLiteralParen)
 
 DEFINE_TOKEN_ID(CompilerPublic)
+DEFINE_TOKEN_ID(CompilerPass)
 DEFINE_TOKEN_ID(CompilerModule)
 DEFINE_TOKEN_ID(CompilerUnitTest)
 DEFINE_TOKEN_ID(CompilerAssert)

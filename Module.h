@@ -43,6 +43,7 @@ struct Module
     bool setup(const Utf8& moduleName);
     void allocateBackend();
     void addPublicSourceFile(SourceFile* file);
+    void addCompilerPassSourceFile(SourceFile* file);
     void addFileNoLock(SourceFile* file);
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);

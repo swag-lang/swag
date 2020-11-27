@@ -345,31 +345,6 @@ void SourceFile::load(LoadRequest* request)
         close();
 }
 
-void SourceFile::addCompilerPassNode(AstNode* node)
-{
-    unique_lock lk(mutexCompilerPass);
-    unique_lock lk1(module->mutexCompilerPass);
-    module->filesForCompilerPass.insert(this);
-    switch (node->kind)
-    {
-    case AstNodeKind::FuncDecl:
-        compilerPassFunctions.push_back(node);
-        for (int i = node->childParentIdx - 1; i >= 0; i--)
-        {
-            if (node->parent->childs[i]->kind != AstNodeKind::AttrUse)
-                break;
-            compilerPassFunctions.push_back(node->parent->childs[i]);
-        }
-        break;
-    case AstNodeKind::Using:
-        compilerPassUsing.push_back(node);
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-}
-
 void SourceFile::computePrivateScopeName()
 {
     unique_lock lk(mutexGetLine);

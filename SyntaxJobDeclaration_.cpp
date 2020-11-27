@@ -34,8 +34,6 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                     return error(node->token, "global 'using' must be defined at the top of the file");
                 }
             }
-
-            sourceFile->addCompilerPassNode(node);
         }
 
         if (token.id == TokenId::SymComma)
@@ -557,6 +555,9 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::CompilerPublic:
         SWAG_CHECK(doCompilerPublic());
+        break;
+    case TokenId::CompilerPass:
+        SWAG_CHECK(doCompilerPass());
         break;
 
     default:

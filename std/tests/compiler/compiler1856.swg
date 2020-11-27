@@ -1,3 +1,5 @@
+#compilerpass
+
 #compiler(swag.CompilerMsgMask.PassBeforeOutput)
 {
     itf := @compiler()

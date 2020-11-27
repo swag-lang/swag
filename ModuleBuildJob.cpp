@@ -180,13 +180,9 @@ JobResult ModuleBuildJob::execute()
                 semanticJob->sourceFile   = itfile;
                 semanticJob->module       = module;
                 semanticJob->dependentJob = this;
+                semanticJob->nodes.push_back(itfile->astRoot);
                 semanticJob->flags |= JOB_COMPILER_PASS;
                 jobsToAdd.push_back(semanticJob);
-
-                for (auto itfunc : itfile->compilerPassFunctions)
-                    semanticJob->nodes.push_back(itfunc);
-                for (auto itusing : itfile->compilerPassUsing)
-                    semanticJob->nodes.push_back(itusing);
             }
 
             return JobResult::KeepJobAlive;

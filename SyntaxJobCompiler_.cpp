@@ -404,7 +404,7 @@ bool SyntaxJob::doCompilerModule()
 
 bool SyntaxJob::doCompilerPublic()
 {
-    SWAG_VERIFY(!sourceFile->forcedPublic, sourceFile->report({sourceFile, token, "#public can only be specified once per file"}));
+    SWAG_VERIFY(!sourceFile->forcedPublic, sourceFile->report({sourceFile, token, "'#public' can only be specified once per file"}));
     if (!sourceFile->imported)
     {
         sourceFile->forcedPublic = true;
@@ -412,7 +412,18 @@ bool SyntaxJob::doCompilerPublic()
     }
 
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatSemiCol("after #public"));
+    SWAG_CHECK(eatSemiCol("after '#public'"));
+    return true;
+}
+
+bool SyntaxJob::doCompilerPass()
+{
+    SWAG_VERIFY(!sourceFile->compilerPass, sourceFile->report({sourceFile, token, "'#compilerpass' can only be specified once per file"}));
+    sourceFile->compilerPass = true;
+    sourceFile->module->addCompilerPassSourceFile(sourceFile);
+
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(eatSemiCol("after '#compilerpass'"));
     return true;
 }
 

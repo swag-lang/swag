@@ -1,3 +1,4 @@
+#compilerpass
 using swag
 
 #[attributeUsage(AttributeUsage.Function)]
