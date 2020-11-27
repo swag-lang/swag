@@ -141,6 +141,33 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     return true;
 }
 
+void SemanticJob::setVarDeclResolve(AstVarDecl* varNode)
+{
+    if (varNode->assignment)
+    {
+        varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBefore;
+        varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+    }
+
+    if (varNode->type)
+    {
+        varNode->type->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+    }
+}
+
+bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
+{
+    auto job = context->job;
+
+    auto parent = context->node->parent;
+    while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl)
+        parent = parent->parent;
+    SWAG_ASSERT(parent);
+    auto varDecl = (AstVarDecl*) parent;
+
+    return true;
+}
+
 bool SemanticJob::resolveVarDeclBefore(SemanticContext* context)
 {
     auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);

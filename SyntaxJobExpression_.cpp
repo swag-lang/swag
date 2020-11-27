@@ -1072,11 +1072,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
                 varNode->assignment = Ast::newIdentifierRef(sourceFile, front->name, varNode, this);
             }
 
-            if (varNode->assignment)
-            {
-                varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBefore;
-                varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
-            }
+            SemanticJob::setVarDeclResolve(varNode);
 
             if (currentScope->isGlobalOrImpl())
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
@@ -1107,11 +1103,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         Ast::addChildBack(orgVarNode, assign);
         orgVarNode->assignment = assign;
         orgVarNode->assignment->flags |= AST_NO_LEFT_DROP;
-        if (assign)
-        {
-            orgVarNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBefore;
-            orgVarNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
-        }
+        SemanticJob::setVarDeclResolve(orgVarNode);
 
         if (currentScope->isGlobalOrImpl())
             SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, orgVarNode, SymbolKind::Variable));
@@ -1145,10 +1137,9 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             varNode->token         = identifier->token;
             varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
             SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
-            identifier                            = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
-            varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBefore;
-            varNode->assignment                   = identifier;
-            varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+            identifier          = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
+            varNode->assignment = identifier;
+            SemanticJob::setVarDeclResolve(varNode);
             varNode->assignment->flags |= AST_NO_LEFT_DROP | AST_FORCE_MOVE;
         }
 
@@ -1171,11 +1162,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         varNode->type = type;
         Ast::addChildBack(varNode, assign);
         varNode->assignment = assign;
-        if (assign)
-        {
-            varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBefore;
-            varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
-        }
+        SemanticJob::setVarDeclResolve(varNode);
         varNode->flags |= AST_R_VALUE;
 
         if (currentScope->isGlobalOrImpl())
