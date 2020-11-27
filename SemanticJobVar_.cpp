@@ -141,7 +141,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     return true;
 }
 
-bool SemanticJob::resolveVarDeclBeforeAssign(SemanticContext* context)
+bool SemanticJob::resolveVarDeclBefore(SemanticContext* context)
 {
     auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
     SWAG_ASSERT(node->assignment);

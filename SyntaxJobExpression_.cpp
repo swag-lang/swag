@@ -1074,7 +1074,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
 
             if (varNode->assignment)
             {
-                varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBeforeAssign;
+                varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBefore;
                 varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
             }
 
@@ -1109,7 +1109,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         orgVarNode->assignment->flags |= AST_NO_LEFT_DROP;
         if (assign)
         {
-            orgVarNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBeforeAssign;
+            orgVarNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBefore;
             orgVarNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
         }
 
@@ -1146,7 +1146,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
             SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
             identifier                            = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
-            varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBeforeAssign;
+            varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBefore;
             varNode->assignment                   = identifier;
             varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
             varNode->assignment->flags |= AST_NO_LEFT_DROP | AST_FORCE_MOVE;
@@ -1173,7 +1173,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         varNode->assignment = assign;
         if (assign)
         {
-            varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBeforeAssign;
+            varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBefore;
             varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
         }
         varNode->flags |= AST_R_VALUE;
