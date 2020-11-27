@@ -25,10 +25,8 @@ bool SemanticJob::resolveExplicitNoInit(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
+bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNode* node)
 {
-    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
-
     auto typeInfo       = g_Allocator.alloc<TypeInfoList>();
     typeInfo->kind      = TypeInfoKind::TypeListTuple;
     typeInfo->nakedName = "{";
@@ -67,10 +65,17 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
 
     typeInfo->nakedName += "}";
     typeInfo->name = typeInfo->nakedName;
+    node->typeInfo = typeInfo;
+    return true;
+}
+
+bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
+{
+    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    SWAG_CHECK(computeExpressionListTupleType(context, node));
 
     node->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
     node->byteCodeFct       = ByteCodeGenJob::emitExpressionList;
-    node->typeInfo          = typeInfo;
 
     // If the literal tuple is not constant, then we need to reserve some space in the
     // stack in order to store it.

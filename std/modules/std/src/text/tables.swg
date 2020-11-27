@@ -280,3 +280,56 @@ public namespace std.latin1
         Lower | Printable, // 'ÿ'
     ]
 }
+
+namespace std.unicode32
+{
+    func isInTable(ranges: const [..] Range, r: char)->bool
+    {
+        // linear search for a small array or a latin1 character
+        const LinearLimit = 18
+        if @countof(ranges) <= LinearLimit || r <= 255
+        {
+            visit *range: ranges
+            {
+                if r < range.lo  return false
+                if r <= range.hi return range.stride == 1 || (r - range.lo) % range.stride == 0
+            }
+
+            return false
+        }
+
+        // binary search over ranges
+        lo := 0'u32
+        hi := @countof(ranges)
+        while lo < hi
+        {
+            m := lo + (hi-lo)/2
+            range := &ranges[m]
+            if range.lo <= r <= range.hi
+                return range.stride == 1 || (r-range.lo) % range.stride == 0
+            if r < range.lo
+                hi = m
+            else
+                lo = m + 1
+        }
+
+        return false
+    }
+
+    struct Range
+    {
+        lo, hi: char
+        stride: u32
+    }
+
+    const TableWhiteSpace: [] Range =
+	@[
+		{0x0009, 0x000d, 1},
+		{0x0020, 0x0085, 101},
+		{0x00a0, 0x1680, 5600},
+		{0x2000, 0x200a, 1},
+		{0x2028, 0x2029, 1},
+		{0x202f, 0x205f, 48},
+		{0x3000, 0x3000, 1},
+    ]
+}

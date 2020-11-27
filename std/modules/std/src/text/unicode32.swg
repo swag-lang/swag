@@ -12,29 +12,25 @@ public
 {
     func isDigit(c: char)->bool
     {
-        if isLatin1(c)
-            return latin1.isDigit(cast(u8) c)
+        if isLatin1(c) return latin1.isDigit(cast(u8) c)
         return false
     }
 
     func isWhiteSpace(c: char)->bool
     {
-        if isLatin1(c)
-            return latin1.isWhiteSpace(cast(u8) c)
-        return false
+        if isLatin1(c) return latin1.isWhiteSpace(cast(u8) c)
+        return isInTable(TableWhiteSpace, c)
     }
 
     func isLetter(c: char)->bool
     {
-        if isLatin1(c)
-            return latin1.isLetter(cast(u8) c)
+        if isLatin1(c) return latin1.isLetter(cast(u8) c)
         return false
     }
 
     func isLetterOrDigit(c: char)->bool
     {
-        if isLatin1(c)
-            return latin1.isLetterOrDigit(cast(u8) c)
+        if isLatin1(c) return latin1.isLetterOrDigit(cast(u8) c)
         return false
     }
 }

@@ -808,6 +808,8 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
     {
         if (token.id == TokenId::SymLeftSquare)
             SWAG_CHECK(doExpressionListArray(initNode));
+        else if (token.id == TokenId::SymLeftCurly)
+            SWAG_CHECK(doExpressionListTuple(initNode));
         else
             SWAG_CHECK(doExpression(initNode));
 

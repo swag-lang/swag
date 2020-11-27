@@ -1549,6 +1549,30 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     {
         auto child     = fromNode ? fromNode->childs[i] : nullptr;
         auto convertTo = toTypeList ? toTypeList->subTypes[i]->typeInfo : toType;
+
+        // Expression list inside another expression list (like a struct inside an array)
+        if (child && child->kind == AstNodeKind::ExpressionList && convertTo->kind == TypeInfoKind::Struct)
+        {
+            auto toTypeStruct = CastTypeInfo<TypeInfoStruct>(convertTo, TypeInfoKind::Struct);
+            bool hasChanged   = false;
+
+            if (toTypeStruct->fields.size() > child->childs.size())
+                return context->report({child, format("not enough initializers for '%s' ('%d' requested, '%d' provided)", toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
+            if (toTypeStruct->fields.size() < child->childs.size())
+                return context->report({ child, format("too many initializers for '%s' ('%d' requested, '%d' provided)", toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size()) });
+
+            for (int j = 0; j < toTypeStruct->fields.size(); j++)
+            {
+                auto oldType = child->childs[j]->typeInfo;
+                SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeStruct->fields[j]->typeInfo, child->childs[j]->typeInfo, nullptr, child->childs[j], castFlags));
+                if (child->childs[j]->typeInfo != oldType)
+                    hasChanged = true;
+            }
+
+            if (hasChanged)
+                SemanticJob::computeExpressionListTupleType(context, child);
+        }
+
         SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags));
         if (child)
         {
