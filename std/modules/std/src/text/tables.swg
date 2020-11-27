@@ -1,4 +1,4 @@
-/*public namespace std.latin1;
+public namespace std.latin1;
 
 #[swag.enumflags]
 enum CharAttribute
@@ -277,4 +277,3 @@ const CharProperties: [256] CharAttribute =
     Lower | Printable, // 'þ'
     Lower | Printable, // 'ÿ'
 ]
-*/

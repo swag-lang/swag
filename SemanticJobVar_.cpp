@@ -149,7 +149,7 @@ void SemanticJob::setVarDeclResolve(AstVarDecl* varNode)
         varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
     }
 
-    if (varNode->type)
+    if (varNode->assignment && varNode->type)
     {
         varNode->type->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
     }
@@ -157,13 +157,31 @@ void SemanticJob::setVarDeclResolve(AstVarDecl* varNode)
 
 bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
 {
-    auto job = context->job;
-
     auto parent = context->node->parent;
     while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl)
         parent = parent->parent;
     SWAG_ASSERT(parent);
     auto varDecl = (AstVarDecl*) parent;
+    if (!varDecl->type || !varDecl->assignment)
+        return true;
+
+    // Resolution of an affectation to an enum, without having to specific the enum name before
+    // 'using', but just for affectation
+    auto typeInfo = TypeManager::concreteType(varDecl->type->typeInfo, CONCRETE_ALIAS);
+    if (typeInfo->kind == TypeInfoKind::Enum)
+    {
+        auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        varDecl->assignment->alternativeScopes.push_front(typeEnum->scope);
+    }
+    else if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        if (typeArr->finalType->kind == TypeInfoKind::Enum)
+        {
+            auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeArr->finalType, TypeInfoKind::Enum);
+            varDecl->assignment->alternativeScopes.push_front(typeEnum->scope);
+        }
+    }
 
     return true;
 }

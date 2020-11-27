@@ -1,6 +1,6 @@
-/*enum CharAttribute
+enum CharAttribute
 {
     None
 }
 
-var xx: CharAttribute = None*/
+var xx: CharAttribute = None
