@@ -155,7 +155,7 @@ public namespace std.latin1
         Control | UpperUtf8, // '\u0082'
         Control | UpperUtf8, // '\u0083'
         Control | UpperUtf8, // '\u0084'
-        Control | UpperUtf8, // '\u0085'
+        Spacing | UpperUtf8, // '\u0085'
         Control | UpperUtf8, // '\u0086'
         Control | UpperUtf8, // '\u0087'
         Control | UpperUtf8, // '\u0088'
