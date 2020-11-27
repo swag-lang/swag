@@ -1,3 +1,5 @@
+//https://golang.org/src/unicode/tables.go
+
 public namespace std.latin1
 {
     #[swag.enumflags]

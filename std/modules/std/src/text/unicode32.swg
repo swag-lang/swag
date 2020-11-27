@@ -63,7 +63,7 @@ public func fromUtf8(dest: [..] char, src: const [..] u8)->u32
 // Convert an utf8 buffer to a character sequence
 public func fromUtf8(src: const [..] u8)->Array'char
 {
-    var result: Array'char
+    var result: retval
     result.reserve(@countof(src))
     result.count = fromUtf8(@mkslice(result.buffer, @countof(src)), src)
     return result
