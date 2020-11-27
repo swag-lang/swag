@@ -165,6 +165,8 @@ bool SemanticJob::resolveVarDeclBefore(SemanticContext* context)
 
 bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
 {
+    auto job = context->job;
+
     auto parent = context->node->parent;
     while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl)
         parent = parent->parent;
@@ -179,18 +181,19 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     if (!exprList->forTuple)
         return true;
 
+    // If there's an assignment, but no type, then we need to deduce/generate the type with
+    // the assignement, then do the semmantic on that type
     if (!varDecl->type)
     {
         SWAG_CHECK(convertAssignementToStruct(context, varDecl, assign, &varDecl->type));
         varDecl->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
-
-        auto job        = context->job;
         context->result = ContextResult::Done;
         job->nodes.pop_back();
         job->nodes.push_back(varDecl->type);
         job->nodes.push_back(context->node);
     }
 
+    // Here we will transform the struct literal to a type initialization
     auto typeExpression = CastAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
     if (!typeExpression->identifier)
         return true;
@@ -222,11 +225,18 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     identifier->callParameters->inheritOrFlag(varDecl->assignment, AST_CONST_EXPR);
     identifier->callParameters->flags |= AST_CALL_FOR_STRUCT;
     identifier->flags |= AST_IN_TYPE_VAR_DECLARATION;
-    varDecl->type->flags &= ~AST_NO_BYTECODE_CHILDS;
-    varDecl->type->flags |= AST_HAS_STRUCT_PARAMETERS;
+    typeExpression->flags &= ~AST_NO_BYTECODE;
+    typeExpression->flags &= ~AST_NO_BYTECODE_CHILDS;
+    typeExpression->flags &= ~AST_VALUE_COMPUTED;
+    typeExpression->flags |= AST_HAS_STRUCT_PARAMETERS;
 
     Ast::removeFromParent(varDecl->assignment);
     varDecl->assignment = nullptr;
+
+    job->nodes.pop_back();
+    typeExpression->semanticState = AstNodeResolveState::Enter;
+    job->nodes.push_back(typeExpression);
+    job->nodes.push_back(context->node);
 
     return true;
 }
