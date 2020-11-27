@@ -1,5 +1,4 @@
 /*public namespace std.latin1;
-using CharAttribute
 
 #[swag.enumflags]
 enum CharAttribute

@@ -165,8 +165,7 @@ bool SemanticJob::resolveVarDeclBeforeAssign(SemanticContext* context)
 
 bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
 {
-    auto savedNode = context->node;
-    auto parent    = context->node->parent;
+    auto parent = context->node->parent;
     while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl)
         parent = parent->parent;
     SWAG_ASSERT(parent);
@@ -217,17 +216,9 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
         param->inheritTokenLocation(child->token);
-
-        context->node = param;
-        SWAG_CHECK(resolveFuncCallParam(context));
     }
 
     identifier->callParameters->inheritTokenLocation(varDecl->assignment->token);
-
-    context->node = identifier->callParameters;
-    SWAG_CHECK(resolveFuncCallParams(context));
-    context->node = savedNode;
-
     identifier->callParameters->inheritOrFlag(varDecl->assignment, AST_CONST_EXPR);
     identifier->callParameters->flags |= AST_CALL_FOR_STRUCT;
     identifier->flags |= AST_IN_TYPE_VAR_DECLARATION;
