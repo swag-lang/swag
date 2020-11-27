@@ -7,7 +7,6 @@ private const SmallSizeInternal = SmallSize - @sizeof(IAllocator)
 
 public enum CharacterSet
 {
-    Ascii
     Latin1
 }
 
@@ -114,7 +113,7 @@ public impl String
 
     func opCmp(using self, other: Self)->s32
     {
-        return compare(other.toString(), utf8.ComparisonType.Ascii)
+        return compare(other.toString(), utf8.ComparisonType.Latin1)
     }
 
     func(op: string) opAssign(using self, value: string)
@@ -486,15 +485,13 @@ public impl String
 
     // Convert the string inplace to upper case.
     // Only deal with latin1 (not unicode)
-    func makeUpper(using self, set = CharacterSet.Ascii)
+    func makeUpper(using self, set = CharacterSet.Latin1)
     {
         sl := @mkslice(buffer, length)
 
         using CharacterSet
         switch set
         {
-            case Ascii:
-                ascii.makeUpper(sl)
             case Latin1:
                 latin1.makeUpper(sl)
         }
@@ -502,22 +499,20 @@ public impl String
 
     // Convert the string inplace to lower case.
     // Only deal with latin1 (not unicode)
-    func makeLower(using self, set = CharacterSet.Ascii)
+    func makeLower(using self, set = CharacterSet.Latin1)
     {
         sl := @mkslice(buffer, length)
 
         using CharacterSet
         switch set
         {
-            case Ascii:
-                ascii.makeLower(sl)
             case Latin1:
                 latin1.makeLower(sl)
         }
     }
 
     // Returns a new String in upper case
-    func toUpper(using self, set = CharacterSet.Ascii)->String
+    func toUpper(using self, set = CharacterSet.Latin1)->String
     {
         result := :self
         result.makeUpper(set)
@@ -525,7 +520,7 @@ public impl String
     }
 
     // Returns a new String in lower case
-    func toLower(using self, set = CharacterSet.Ascii)->String
+    func toLower(using self, set = CharacterSet.Latin1)->String
     {
         result := :self
         result.makeLower(set)
@@ -557,31 +552,31 @@ public impl String
     }
 
     // Find the given string, and returns the byte index of it
-    func indexOf(using self, what: string, startByteIndex = 0'u32, comparisonType = utf8.ComparisonType.Ascii) -> {index: u32, success: bool}
+    func indexOf(using self, what: string, startByteIndex = 0'u32, comparisonType = utf8.ComparisonType.Latin1) -> {index: u32, success: bool}
     {
         return utf8.indexOf(@mkslice(buffer, length), what, startByteIndex, comparisonType)
     }
 
     // Return true if the string starts with 'str'
-    func startsWith(using self, what: string, comparisonType = utf8.ComparisonType.Ascii)->bool
+    func startsWith(using self, what: string, comparisonType = utf8.ComparisonType.Latin1)->bool
     {
         return utf8.startsWith(@mkslice(buffer, length), what, comparisonType)
     }
 
     // Return true if the string ends with 'str'
-    func endsWith(using self, what: string, comparisonType = utf8.ComparisonType.Ascii)->bool
+    func endsWith(using self, what: string, comparisonType = utf8.ComparisonType.Latin1)->bool
     {
         return utf8.endsWith(@mkslice(buffer, length), what, comparisonType)
     }
 
     // Compare with another string
-    func compare(using self, other: string, comparisonType = utf8.ComparisonType.Ascii)->s32
+    func compare(using self, other: string, comparisonType = utf8.ComparisonType.Latin1)->s32
     {
         return utf8.compare(@mkslice(buffer, length), other, comparisonType)
     }
 
     // Compare two strings
-    func compare(src, dst: string, comparisonType = utf8.ComparisonType.Ascii)->s32
+    func compare(src, dst: string, comparisonType = utf8.ComparisonType.Latin1)->s32
     {
         return utf8.compare(src, dst, comparisonType)
     }

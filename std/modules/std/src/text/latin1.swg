@@ -71,9 +71,9 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
         loop i: minLen
         {
             c1 := src[i]
-            c1 += (isUpperUtf8(c1) ? 0x20 : 0)
+            c1 += isUpperUtf8(c1) ? 0x20 : 0
             c2 := dst[i]
-            c2 += (isUpperUtf8(c2) ? 0x20 : 0)
+            c2 += isUpperUtf8(c2) ? 0x20 : 0
             result = cast(s32) c1 - cast(s32) c2
             if result != 0 return result
         }

@@ -5,8 +5,8 @@ using std.strconv
 //#[swag.nooptim]
 #test
 {
-    res := ascii.compare("toto", "TOTO")
+    res := latin1.compare("toto", "TOTO")
     @assert(res > 0)
-    res1 := ascii.compare("toto", "TOTO", true)
+    res1 := latin1.compare("toto", "TOTO", true)
     @assert(res1 == 0)
 }

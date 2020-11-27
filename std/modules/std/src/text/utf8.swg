@@ -202,7 +202,7 @@ func lastIndexOf(src: const [..] u8, what: const [..] char) -> {index: u32, succ
 }
 
 // Find the given string, and returns the byte index of it
-func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u32, comparisonType = ComparisonType.Ascii) -> {index: u32, success: bool}
+func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u32, comparisonType = ComparisonType.Latin1) -> {index: u32, success: bool}
 {
     length := @countof(src)
     if !length return @{0'u32, false}
@@ -226,7 +226,7 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u32, compariso
 }
 
 // Return true if the string starts with 'str'
-func startsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonType.Ascii)->bool
+func startsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonType.Latin1)->bool
 {
     length := @countof(src)
     countof := @countof(str)
@@ -236,7 +236,7 @@ func startsWith(src: const [..] u8, str: string, comparisonType = utf8.Compariso
 }
 
 // Return true if the string ends with 'str'
-func endsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonType.Ascii)->bool
+func endsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonType.Latin1)->bool
 {
     length := @countof(src)
     countof := @countof(str)
@@ -247,23 +247,17 @@ func endsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonT
 
 public enum ComparisonType
 {
-    Ascii
-    AsciiNoCase
     Latin1
     Latin1NoCase
 }
 
 // Compare two utf8 buffers with the given algorithm
-func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Ascii)->s32
+func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s32
 {
     using ComparisonType
     #[swag.complete]
     switch comparisonType
     {
-    case Ascii:
-        return ascii.compare(src, dst)
-    case AsciiNoCase:
-        return ascii.compare(src, dst, ignoreCase: true)
     case Latin1:
         return latin1.compare(src, dst)
     case Latin1NoCase:
