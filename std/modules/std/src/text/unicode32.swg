@@ -89,8 +89,8 @@ public
 
     func getCategory(c: char)->UnicodeCategory
     {
-        if isLatin1(c)
-            return latin1.charCategory[cast(u8) c]
+        //if isLatin1(c)
+        //    return latin1.charCategory[cast(u8) c]
         return UnicodeCategory.OtherNotAssigned // @todo
     }
 

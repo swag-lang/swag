@@ -1,56 +1,35 @@
 using swag
 public namespace std.latin1;
 
-const charCategory: [] unicode32.UnicodeCategory =
-@[
-    unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control,    // 0000 - 0007
-    unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control,    // 0008 - 000F
-    unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control,    // 0010 - 0017
-    unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control,    // 0018 - 001F
-    unicode32.UnicodeCategory.SpaceSeparator, unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.CurrencySymbol, unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.OtherPunctuation,    // 0020 - 0027
-    unicode32.UnicodeCategory.OpenPunctuation, unicode32.UnicodeCategory.ClosePunctuation, unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.MathSymbol, unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.DashPunctuation, unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.OtherPunctuation,    // 0028 - 002F
-    unicode32.UnicodeCategory.DecimalDigitNumber, unicode32.UnicodeCategory.DecimalDigitNumber, unicode32.UnicodeCategory.DecimalDigitNumber, unicode32.UnicodeCategory.DecimalDigitNumber, unicode32.UnicodeCategory.DecimalDigitNumber, unicode32.UnicodeCategory.DecimalDigitNumber, unicode32.UnicodeCategory.DecimalDigitNumber, unicode32.UnicodeCategory.DecimalDigitNumber,    // 0030 - 0037
-    unicode32.UnicodeCategory.DecimalDigitNumber, unicode32.UnicodeCategory.DecimalDigitNumber, unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.MathSymbol, unicode32.UnicodeCategory.MathSymbol, unicode32.UnicodeCategory.MathSymbol, unicode32.UnicodeCategory.OtherPunctuation,    // 0038 - 003F
-    unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter,    // 0040 - 0047
-    unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter,    // 0048 - 004F
-    unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter,    // 0050 - 0057
-    unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.OpenPunctuation, unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.ClosePunctuation, unicode32.UnicodeCategory.ModifierSymbol, unicode32.UnicodeCategory.ConnectorPunctuation,    // 0058 - 005F
-    unicode32.UnicodeCategory.ModifierSymbol, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter,    // 0060 - 0067
-    unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter,    // 0068 - 006F
-    unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter,    // 0070 - 0077
-    unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.OpenPunctuation, unicode32.UnicodeCategory.MathSymbol, unicode32.UnicodeCategory.ClosePunctuation, unicode32.UnicodeCategory.MathSymbol, unicode32.UnicodeCategory.Control,    // 0078 - 007F
-    unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control,    // 0080 - 0087
-    unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control,    // 0088 - 008F
-    unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control,    // 0090 - 0097
-    unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control, unicode32.UnicodeCategory.Control,    // 0098 - 009F
-    unicode32.UnicodeCategory.SpaceSeparator, unicode32.UnicodeCategory.OtherPunctuation, unicode32.UnicodeCategory.CurrencySymbol, unicode32.UnicodeCategory.CurrencySymbol, unicode32.UnicodeCategory.CurrencySymbol, unicode32.UnicodeCategory.CurrencySymbol, unicode32.UnicodeCategory.OtherSymbol, unicode32.UnicodeCategory.OtherSymbol,    // 00A0 - 00A7
-    unicode32.UnicodeCategory.ModifierSymbol, unicode32.UnicodeCategory.OtherSymbol, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.InitialQuotePunctuation, unicode32.UnicodeCategory.MathSymbol, unicode32.UnicodeCategory.DashPunctuation, unicode32.UnicodeCategory.OtherSymbol, unicode32.UnicodeCategory.ModifierSymbol,    // 00A8 - 00AF
-    unicode32.UnicodeCategory.OtherSymbol, unicode32.UnicodeCategory.MathSymbol, unicode32.UnicodeCategory.OtherNumber, unicode32.UnicodeCategory.OtherNumber, unicode32.UnicodeCategory.ModifierSymbol, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.OtherSymbol, unicode32.UnicodeCategory.OtherPunctuation,    // 00B0 - 00B7
-    unicode32.UnicodeCategory.ModifierSymbol, unicode32.UnicodeCategory.OtherNumber, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.FinalQuotePunctuation, unicode32.UnicodeCategory.OtherNumber, unicode32.UnicodeCategory.OtherNumber, unicode32.UnicodeCategory.OtherNumber, unicode32.UnicodeCategory.OtherPunctuation,    // 00B8 - 00BF
-    unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter,    // 00C0 - 00C7
-    unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter,    // 00C8 - 00CF
-    unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.MathSymbol,    // 00D0 - 00D7
-    unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.UppercaseLetter, unicode32.UnicodeCategory.LowercaseLetter,    // 00D8 - 00DF
-    unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter,    // 00E0 - 00E7
-    unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter,    // 00E8 - 00EF
-    unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.MathSymbol,    // 00F0 - 00F7
-    unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter, unicode32.UnicodeCategory.LowercaseLetter,    // 00F8 - 00FF
-]
-
 #[inline, constexpr]
 {
     func isAscii(c: u8)         => c <= 0x7F
-    func isDigit(c: u8)         => ascii.isDigit(c)
-    func isBinDigit(c: u8)      => ascii.isBinDigit(c)
-    func isHexDigit(c: u8)      => ascii.isHexDigit(c)
-    func isUpper(c: u8)         => (0x41 <= c <= 0x5A) || ((0x80 <= c <= 0x9E) && c != 0x97)
-    func isLower(c: u8)         => (0x61 <= c <= 0x7A) || ((0xA0 <= c <= 0xBE) && c != 0xB7)
-    func isPunctuation(c: u8)   => unicode32.isPunctuation(charCategory[c])
-    func isLetter(c: u8)        => ascii.isLetter(c) || unicode32.isLetter(charCategory[c])
-    func isLetterOrDigit(c: u8) => ascii.isLetterOrDigit(c) || unicode32.isLetterOrDigit(charCategory[c])
-    func isWhiteSpace(c: u8)    => ascii.isWhiteSpace(c) || (c == "\x85"'u8) || (c == "\xa0"'u8)
+    func isDigit(c: u8)         => cast(bool) (CharProperties[c] & CharAttribute.Digit)
+    func isBinDigit(c: u8)      => cast(bool) (CharProperties[c] & CharAttribute.BinDigit)
+    func isHexDigit(c: u8)      => cast(bool) (CharProperties[c] & CharAttribute.HexDigit)
+    func isUpper(c: u8)         => cast(bool) (CharProperties[c] & CharAttribute.Upper)
+    func isLower(c: u8)         => cast(bool) (CharProperties[c] & CharAttribute.Lower)
+    func isPunctuation(c: u8)   => cast(bool) (CharProperties[c] & CharAttribute.Punctuation)
+    func isLetter(c: u8)        => cast(bool) (CharProperties[c] & CharAttribute.Letter)
+    func isLetterOrDigit(c: u8) => cast(bool) (CharProperties[c] & (CharAttribute.Letter | CharAttribute.Digit))
+    func isWhiteSpace(c: u8)    => cast(bool) (CharProperties[c] & CharAttribute.Spacing)
     func toLower(c: u8)         => isUpper(c) ? (c | 0x20'u8) : c
     func toUpper(c: u8)         => isLower(c) ? (c & ~0x20'u8) : c
+}
+
+#[inline, constexpr]
+{
+    private func isLowerUtf8(c: u8)->bool
+    {
+        if isAscii(c) && isLower(c) return true
+        return cast(bool) (CharProperties[c] & CharAttribute.LowerUtf8)
+    }
+
+    private func isUpperUtf8(c: u8)->bool
+    {
+        if isAscii(c) && isUpper(c) return true
+        return cast(bool) (CharProperties[c] & CharAttribute.UpperUtf8)
+    }
 }
 
 // Make an utf8 buffer upper case, dealing only with latin1 table
@@ -60,7 +39,8 @@ func makeUpper(buffer: [..] u8)
     loop @countof(buffer)
     {
         c := :p
-        if isLower(c) :p -= 0x20
+        if isLowerUtf8(c)
+            :p -= 0x20
         p += 1
     }
 }
@@ -72,7 +52,8 @@ func makeLower(buffer: [..] u8)
     loop @countof(buffer)
     {
         c := :p
-        if isUpper(c) :p += 0x20
+        if isUpperUtf8(c)
+            :p += 0x20
         p += 1
     }
 }
@@ -89,8 +70,10 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
     {
         loop i: minLen
         {
-            c1 := toLower(src[i])
-            c2 := toLower(dst[i])
+            c1 := src[i]
+            c1 += (isUpperUtf8(c1) ? 0x20 : 0)
+            c2 := dst[i]
+            c2 += (isUpperUtf8(c2) ? 0x20 : 0)
             result = cast(s32) c1 - cast(s32) c2
             if result != 0 return result
         }
