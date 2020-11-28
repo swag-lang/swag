@@ -63,6 +63,30 @@ public
         if isLatin1(c) return latin1.isUpper(cast(u8) c)
         return isInTable(TableUpper, c)
     }
+
+    func toLower(c: char)->char
+    {
+        if isLatin1(c) return autocast latin1.toLower(cast(u8) c)
+        res := to(WantedCase.LowerCase, c, TableCaseRanges)
+        if !res.foundMapping return c
+        return res.mappedRune
+    }
+
+    func toUpper(c: char)->char
+    {
+        if isLatin1(c) return autocast latin1.toUpper(cast(u8) c)
+        res := to(WantedCase.UpperCase, c, TableCaseRanges)
+        if !res.foundMapping return c
+        return res.mappedRune
+    }
+
+    func toTitle(c: char)->char
+    {
+        if isLatin1(c) return autocast latin1.toUpper(cast(u8) c)
+        res := to(WantedCase.TitleCase, c, TableCaseRanges)
+        if !res.foundMapping return c
+        return res.mappedRune
+    }
 }
 
 // Convert an utf8 buffer to a character sequence, and returns the
@@ -101,6 +125,28 @@ public func fromUtf8(src: const [..] u8)->Array'char
 
 ////////// TABLE ////////
 
+struct Range
+{
+    lo, hi: char
+    stride: u32
+}
+
+struct CaseRange
+{
+    lo, hi: char
+    delta:  [3] s32
+}
+
+const UpperLower = swag.MaxS32
+
+#[swag.enumindex]
+enum WantedCase
+{
+	UpperCase
+	LowerCase
+	TitleCase
+}
+
 func isInTable(ranges: const [..] Range, r: char)->bool
 {
     // linear search for a small array or a latin1 character
@@ -134,21 +180,47 @@ func isInTable(ranges: const [..] Range, r: char)->bool
     return false
 }
 
-struct Range
+func to(wCase: WantedCase, r: char, caseRange: const [..] CaseRange) -> {mappedRune: char, foundMapping: bool}
 {
-    lo, hi: char
-    stride: u32
-}
+    var result: retval
 
-struct CaseRangeDelta
-{
-    x, y, z: s32
-}
+	// binary search over ranges
+	lo := 0'u32
+	hi := @countof(caseRange)
+	while lo < hi
+    {
+		m := lo + (hi-lo) / 2
+		cr := caseRange[m]
+		if cr.lo <= r && r <= cr.hi
+        {
+			delta := cr.delta[wCase]
+			if delta == swag.MaxS32
+            {
+				// In an Upper-Lower sequence, which always starts with
+				// an UpperCase letter, the real deltas always look like:
+				//	{0, 1, 0}    UpperCase (Lower is next)
+				//	{-1, 0, -1}  LowerCase (Upper, Title are previous)
+				// The characters at even offsets from the beginning of the
+				// sequence are upper case; the ones at odd offsets are lower.
+				// The correct mapping can be done by clearing or setting the low
+				// bit in the sequence offset.
+				// The constants UpperCase and TitleCase are even while LowerCase
+				// is odd so we take the low bit from _case.
+				result.mappedRune = cr.lo + ((r - cr.lo) & ~1 | (cast(char) wCase & 1))
+                result.foundMapping = true
+                return result
+			}
 
-struct CaseRange
-{
-    lo, hi: u32
-    d:      CaseRangeDelta
-}
+            result.mappedRune = r + cast(char) delta
+            result.foundMapping = true
+            return result
+		}
 
-const UpperLower = swag.MaxS32
+		if r < cr.lo
+			hi = m
+		else
+			lo = m + 1
+	}
+
+	return result
+}

@@ -755,6 +755,8 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
     {
         if (token.id == TokenId::SymLeftCurly)
             SWAG_CHECK(doExpressionListTuple(initNode));
+        else if (token.id == TokenId::SymLeftSquare)
+            SWAG_CHECK(doExpressionListArray(initNode));
         else
         {
             AstNode* paramExpression;
