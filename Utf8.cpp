@@ -2,6 +2,7 @@
 #include "Utf8.h"
 #include "Allocator.h"
 #include "Runtime.h"
+#include "CommandLine.h"
 
 void Utf8::reserve(int newSize)
 {
@@ -20,9 +21,16 @@ void Utf8::reserve(int newSize)
     auto newBuffer = (char*) g_Allocator.alloc(allocated);
     if (count)
         Memcpy(newBuffer, buffer, count + 1);
+    if (g_CommandLine.stats)
+        g_Stats.memUtf8 += allocated;
 
     if (lastAllocated != UTF8_SMALL_SIZE)
+    {
         g_Allocator.free(buffer, lastAllocated);
+        if (g_CommandLine.stats)
+            g_Stats.memUtf8 -= lastAllocated;
+    }
+
     buffer = newBuffer;
 }
 
