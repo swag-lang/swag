@@ -269,20 +269,9 @@ JobResult ModuleBuildJob::execute()
         // If we will not run some stuff, then no need to wait for dependencies, because we do not
         // have to load the dlls
         if (!module->hasBytecodeToRun())
-        {
-            // Timing...
-            if (g_CommandLine.stats || g_CommandLine.verbose)
-                timerRun.start();
-            pass = ModuleBuildPass::Output;
-
-            if (!ByteCodeOptimizer::optimize(module))
-                return JobResult::ReleaseJob;
-            module->printBC();
-        }
+            pass = ModuleBuildPass::OptimizeBc;
         else
-        {
             pass = ModuleBuildPass::WaitForDependenciesEffective;
-        }
     }
 
     //////////////////////////////////////////////////
@@ -290,122 +279,132 @@ JobResult ModuleBuildJob::execute()
     {
         if (!module->WaitForDependenciesDone(this))
             return JobResult::KeepJobAlive;
-        pass = ModuleBuildPass::RunByteCode;
+        pass = ModuleBuildPass::OptimizeBc;
     }
 
     //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::RunByteCode)
+    if (pass == ModuleBuildPass::OptimizeBc)
     {
         if (!ByteCodeOptimizer::optimize(module))
             return JobResult::ReleaseJob;
+
         module->printBC();
+
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
 
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
             timerRun.start();
 
+        if (!module->hasBytecodeToRun())
+            pass = ModuleBuildPass::Output;
+        else
+            pass = ModuleBuildPass::RunByteCode;
+    }
+
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::RunByteCode)
+    {
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        if (module->hasBytecodeToRun())
+        SWAG_PROFILE(PRF_GFCT, format("run bc %s", module->name.c_str()));
+
+        module->sendCompilerMessage(CompilerMsgKind::PassBeforeRun, this);
+
+        // #init functions are only executed in script mode, if the module has a #main
+        if (!module->byteCodeInitFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)
         {
-            SWAG_PROFILE(PRF_GFCT, format("run bc %s", module->name.c_str()));
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #init)", module->name.c_str(), module->byteCodeInitFunc.size()));
 
-            module->sendCompilerMessage(CompilerMsgKind::PassBeforeRun, this);
-
-            // #init functions are only executed in script mode, if the module has a #main
-            if (!module->byteCodeInitFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)
+            for (auto func : module->byteCodeInitFunc)
             {
-                if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                    g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #init)", module->name.c_str(), module->byteCodeInitFunc.size()));
-
-                for (auto func : module->byteCodeInitFunc)
-                {
-                    module->executeNode(func->node->sourceFile, func->node, baseContext);
-                    if (module->criticalErrors)
-                        return JobResult::ReleaseJob;
-                }
+                module->executeNode(func->node->sourceFile, func->node, baseContext);
+                if (module->criticalErrors)
+                    return JobResult::ReleaseJob;
             }
+        }
 
-            if (module->numErrors)
-                return JobResult::ReleaseJob;
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
 
-            // #run functions are always executed
-            if (!module->byteCodeRunFunc.empty())
+        // #run functions are always executed
+        if (!module->byteCodeRunFunc.empty())
+        {
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #run)", module->name.c_str(), module->byteCodeRunFunc.size()));
+
+            // A #run pass cannot modify a bss variable
+            module->bssCannotChange = true;
+
+            for (auto func : module->byteCodeRunFunc)
             {
-                if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                    g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #run)", module->name.c_str(), module->byteCodeRunFunc.size()));
-
-                // A #run pass cannot modify a bss variable
-                module->bssCannotChange = true;
-
-                for (auto func : module->byteCodeRunFunc)
-                {
-                    g_Stats.runFunctions++;
-                    module->executeNode(func->node->sourceFile, func->node, baseContext);
-                    if (module->criticalErrors)
-                        return JobResult::ReleaseJob;
-                }
-
-                module->bssCannotChange = false;
-            }
-
-            if (module->numErrors)
-                return JobResult::ReleaseJob;
-
-            // #test functions are only executed in test mode
-            if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
-            {
-                if (!module->byteCodeTestFunc.empty())
-                {
-                    if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                        g_Log.verbosePass(LogPassType::Info, "Test", format("%s (%d #test)", module->name.c_str(), module->byteCodeTestFunc.size()));
-
-                    // Modified global variables during test will be restored after
-                    module->saveBssValues     = true;
-                    module->saveMutableValues = true;
-
-                    for (auto func : module->byteCodeTestFunc)
-                    {
-                        g_Stats.testFunctions++;
-                        module->executeNode(func->node->sourceFile, func->node, baseContext);
-                        if (module->criticalErrors)
-                            return JobResult::ReleaseJob;
-                    }
-
-                    module->bssSegment.restoreAllValues();
-                    module->mutableSegment.restoreAllValues();
-                    module->saveBssValues     = false;
-                    module->saveMutableValues = false;
-                }
-            }
-
-            if (module->numErrors)
-                return JobResult::ReleaseJob;
-
-            // #main function, in script mode
-            if (module->byteCodeMainFunc && g_CommandLine.script)
-            {
-                module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext);
+                g_Stats.runFunctions++;
+                module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
             }
 
-            if (module->numErrors)
-                return JobResult::ReleaseJob;
+            module->bssCannotChange = false;
+        }
 
-            // #drop functions are only executed in script mode, if the module has a #main
-            if (!module->byteCodeDropFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
+        // #test functions are only executed in test mode
+        if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
+        {
+            if (!module->byteCodeTestFunc.empty())
             {
                 if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                    g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #drop)", module->name.c_str(), module->byteCodeDropFunc.size()));
+                    g_Log.verbosePass(LogPassType::Info, "Test", format("%s (%d #test)", module->name.c_str(), module->byteCodeTestFunc.size()));
 
-                for (auto func : module->byteCodeDropFunc)
+                // Modified global variables during test will be restored after
+                module->saveBssValues     = true;
+                module->saveMutableValues = true;
+
+                for (auto func : module->byteCodeTestFunc)
                 {
+                    g_Stats.testFunctions++;
                     module->executeNode(func->node->sourceFile, func->node, baseContext);
                     if (module->criticalErrors)
                         return JobResult::ReleaseJob;
                 }
+
+                module->bssSegment.restoreAllValues();
+                module->mutableSegment.restoreAllValues();
+                module->saveBssValues     = false;
+                module->saveMutableValues = false;
+            }
+        }
+
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
+        // #main function, in script mode
+        if (module->byteCodeMainFunc && g_CommandLine.script)
+        {
+            module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext);
+            if (module->criticalErrors)
+                return JobResult::ReleaseJob;
+        }
+
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
+        // #drop functions are only executed in script mode, if the module has a #main
+        if (!module->byteCodeDropFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)
+        {
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #drop)", module->name.c_str(), module->byteCodeDropFunc.size()));
+
+            for (auto func : module->byteCodeDropFunc)
+            {
+                module->executeNode(func->node->sourceFile, func->node, baseContext);
+                if (module->criticalErrors)
+                    return JobResult::ReleaseJob;
             }
         }
 
@@ -471,6 +470,8 @@ JobResult ModuleBuildJob::execute()
         }
     }
 
+    // Run pass
+    //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::RunNative)
     {
         pass = ModuleBuildPass::Done;
