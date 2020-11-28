@@ -6,6 +6,7 @@
 #include "Attribute.h"
 #include "VectorNative.h"
 #include "Runtime.h"
+#include "CommandLine.h"
 
 struct Scope;
 struct TypeInfo;
@@ -59,8 +60,8 @@ static const uint32_t TYPEINFO_STRUCT_TYPEINFO          = 0x00100000;
 static const uint32_t TYPEINFO_STRUCT_IS_TUPLE          = 0x00200000;
 static const uint32_t TYPEINFO_ENUM_FLAGS               = 0x00400000;
 //static const uint32_t TYPEINFO_SPREAD                   = 0x00800000;
-static const uint32_t TYPEINFO_UNDEFINED                = 0x01000000;
-static const uint32_t TYPEINFO_ENUM_INDEX               = 0x02000000;
+static const uint32_t TYPEINFO_UNDEFINED  = 0x01000000;
+static const uint32_t TYPEINFO_ENUM_INDEX = 0x02000000;
 
 static const uint32_t ISSAME_EXACT     = 0x00000001;
 static const uint32_t ISSAME_CAST      = 0x00000002;
@@ -582,3 +583,12 @@ struct TypeInfoNameAlias : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 };
+
+template<typename T>
+T* allocType()
+{
+    auto newType = g_Allocator.alloc<T>();
+    if (g_CommandLine.stats)
+        g_Stats.memTypes += sizeof(T);
+    return newType;
+}

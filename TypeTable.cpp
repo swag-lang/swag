@@ -317,7 +317,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     // Register type and value
     // Do it now to break recursive references
-    auto typePtr        = g_Allocator.alloc<TypeInfoPointer>();
+    auto typePtr        = allocType<TypeInfoPointer>();
     storedMap[typeName] = {typePtr, storageOffset};
 
     // Build pointer type to structure

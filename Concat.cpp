@@ -2,6 +2,7 @@
 #include "Concat.h"
 #include "Allocator.h"
 #include "Runtime.h"
+#include "CommandLine.h"
 
 void Concat::init(int size)
 {
@@ -16,8 +17,15 @@ void Concat::init(int size)
     bucketSize         = size;
     firstBucket        = g_Allocator.alloc<ConcatBucket>();
     firstBucket->datas = (uint8_t*) g_Allocator.alloc(bucketSize);
-    lastBucket         = firstBucket;
-    currentSP          = lastBucket->datas;
+
+    if (g_CommandLine.stats)
+    {
+        g_Stats.memConcat += sizeof(ConcatBucket);
+        g_Stats.memConcat += bucketSize;
+    }
+
+    lastBucket = firstBucket;
+    currentSP  = lastBucket->datas;
 }
 
 void Concat::clear()
@@ -59,7 +67,14 @@ void Concat::ensureSpace(int numBytes)
 
     SWAG_ASSERT(numBytes < bucketSize);
     lastBucket->datas = (uint8_t*) g_Allocator.alloc(bucketSize);
-    currentSP         = lastBucket->datas;
+
+    if (g_CommandLine.stats)
+    {
+        g_Stats.memConcat += sizeof(ConcatBucket);
+        g_Stats.memConcat += bucketSize;
+    }
+
+    currentSP = lastBucket->datas;
 }
 
 void Concat::addBool(bool v)
@@ -231,7 +246,7 @@ void Concat::addString5(const char* v)
 {
     ensureSpace(5);
     *(uint32_t*) currentSP = *(uint32_t*) v;
-    currentSP[4] = v[4];
+    currentSP[4]           = v[4];
     currentSP += 5;
 }
 

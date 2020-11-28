@@ -174,7 +174,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     if (result)
         *result = identifier;
 
-    auto typeInfo        = g_Allocator.alloc<TypeInfoStruct>();
+    auto typeInfo        = allocType<TypeInfoStruct>();
     typeInfo->declNode   = structNode;
     typeInfo->name       = structNode->name;
     typeInfo->nakedName  = structNode->name;
@@ -411,7 +411,7 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doBitCast(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::BitCast, sourceFile, parent);
+    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::BitCast, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveExplicitBitCast;
     if (result)
         *result = node;

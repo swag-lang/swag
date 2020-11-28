@@ -61,6 +61,8 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, bool setZero)
     DataSegmentHeader bucket;
     bucket.size   = max(size, BUCKET_SIZE);
     bucket.buffer = (uint8_t*) g_Allocator.alloc(bucket.size);
+    if (g_CommandLine.stats)
+        g_Stats.memSeg += bucket.size;
     memset(bucket.buffer, 0, bucket.size);
     bucket.count            = size;
     bucket.totalCountBefore = last ? last->totalCountBefore + last->count : 0;

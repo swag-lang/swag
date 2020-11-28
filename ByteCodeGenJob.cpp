@@ -234,6 +234,12 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
         auto newInstuctions = (ByteCodeInstruction*) g_Allocator.alloc(bc->maxInstructions * sizeof(ByteCodeInstruction));
         memcpy(newInstuctions, bc->out, bc->numInstructions * sizeof(ByteCodeInstruction));
         g_Allocator.free(bc->out, oldSize);
+        if (g_CommandLine.stats)
+        {
+            g_Stats.memInstructions -= oldSize;
+            g_Stats.memInstructions += bc->maxInstructions * sizeof(ByteCodeInstruction);
+        }
+
         bc->out = newInstuctions;
     }
 

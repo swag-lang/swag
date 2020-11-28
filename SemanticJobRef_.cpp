@@ -62,7 +62,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         // Else new pointer
         else
         {
-            ptrType           = g_Allocator.alloc<TypeInfoPointer>();
+            ptrType           = allocType<TypeInfoPointer>();
             ptrType->ptrCount = 1;
 
             // If this is an array, then this is legit, the pointer will address the first
@@ -109,7 +109,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         if (typeInfoArray->totalCount != typeInfoArray->count)
             return context->report({node->array, format("slicing operator cannot be applied on an array with multiple dimensions", node->array->typeInfo->name.c_str())});
 
-        auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
+        auto ptrSlice         = allocType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoArray->finalType;
         if (typeInfoArray->isConst())
             ptrSlice->flags |= TYPEINFO_CONST;
@@ -130,7 +130,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     else if (typeVar->kind == TypeInfoKind::Pointer)
     {
         auto typeInfoPointer  = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
-        auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
+        auto ptrSlice         = allocType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoPointer->pointedType;
         if (typeInfoPointer->isConst())
             ptrSlice->flags |= TYPEINFO_CONST;

@@ -270,7 +270,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
 
 TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
 {
-    auto      typeArray    = g_Allocator.alloc<TypeInfoArray>();
+    auto      typeArray    = allocType<TypeInfoArray>();
     auto      orgTypeArray = typeArray;
     TypeInfo* finalType    = nullptr;
 
@@ -286,7 +286,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
         if (typeArray->pointedType->kind != TypeInfoKind::TypeListArray)
             break;
         typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
-        typeArray->pointedType = g_Allocator.alloc<TypeInfoArray>();
+        typeArray->pointedType = allocType<TypeInfoArray>();
         typeArray              = (TypeInfoArray*) typeArray->pointedType;
     }
 
@@ -307,7 +307,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 
 TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
 {
-    auto typeStruct       = g_Allocator.alloc<TypeInfoStruct>();
+    auto typeStruct       = allocType<TypeInfoStruct>();
     typeStruct->nakedName = typeList->computeTupleName(context);
 
     typeStruct->fields.reserve((int) typeList->subTypes.size());
@@ -388,7 +388,7 @@ TypeInfo* TypeManager::makeUntypedType(TypeInfo* typeInfo, uint32_t value)
 void TypeManager::registerTypeType()
 {
     // Generate the alias for 'const *TypeInfo'
-    typeInfoTypeType = g_Allocator.alloc<TypeInfoPointer>();
+    typeInfoTypeType = allocType<TypeInfoPointer>();
     typeInfoTypeType->flags |= TYPEINFO_CONST;
     typeInfoTypeType->ptrCount    = 1;
     typeInfoTypeType->finalType   = g_Workspace.swagScope.regTypeInfo;

@@ -45,7 +45,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             TypeInfoEnum* typeInfo = (TypeInfoEnum*) newScope->owner->typeInfo;
             if (!typeInfo)
             {
-                typeInfo                  = g_Allocator.alloc<TypeInfoEnum>();
+                typeInfo                  = allocType<TypeInfoEnum>();
                 newScope->owner->typeInfo = typeInfo;
             }
 

@@ -27,7 +27,7 @@ bool SemanticJob::resolveExplicitNoInit(SemanticContext* context)
 
 bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNode* node)
 {
-    auto typeInfo       = g_Allocator.alloc<TypeInfoList>();
+    auto typeInfo       = allocType<TypeInfoList>();
     typeInfo->kind      = TypeInfoKind::TypeListTuple;
     typeInfo->nakedName = "{";
 
@@ -40,7 +40,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
         if (!typeInfo->subTypes.empty())
             typeInfo->nakedName += ", ";
 
-        auto typeParam      = g_Allocator.alloc<TypeInfoParam>();
+        auto typeParam      = allocType<TypeInfoParam>();
         typeParam->typeInfo = child->typeInfo;
         typeInfo->subTypes.push_back(typeParam);
 
@@ -94,7 +94,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
-    auto typeInfo  = g_Allocator.alloc<TypeInfoList>();
+    auto typeInfo  = allocType<TypeInfoList>();
     typeInfo->kind = TypeInfoKind::TypeListArray;
     SWAG_ASSERT(node->childs.size());
     typeInfo->nakedName = format("[%u] %s", node->childs.size(), node->childs.front()->typeInfo->name.c_str());
@@ -104,7 +104,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     for (auto child : node->childs)
     {
         SWAG_CHECK(checkIsConcrete(context, child));
-        auto typeParam      = g_Allocator.alloc<TypeInfoParam>();
+        auto typeParam      = allocType<TypeInfoParam>();
         typeParam->typeInfo = child->typeInfo;
         typeInfo->subTypes.push_back(typeParam);
         typeInfo->sizeOf += child->typeInfo->sizeOf;

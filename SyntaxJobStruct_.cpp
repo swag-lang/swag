@@ -79,7 +79,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         {
             if (scopeKind == ScopeKind::Enum)
             {
-                auto typeEnum             = g_Allocator.alloc<TypeInfoEnum>();
+                auto typeEnum             = allocType<TypeInfoEnum>();
                 typeEnum->scope           = newScope;
                 typeEnum->nakedName       = structName;
                 typeEnum->name            = structName;
@@ -87,7 +87,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             }
             else
             {
-                auto typeStruct           = g_Allocator.alloc<TypeInfoStruct>();
+                auto typeStruct           = allocType<TypeInfoStruct>();
                 typeStruct->scope         = newScope;
                 typeStruct->nakedName     = structName;
                 typeStruct->name          = structName;
@@ -118,7 +118,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         if (!symbol)
         {
             subScope             = Ast::newScope(implNode, itfName, ScopeKind::Impl, newScope, false);
-            auto typeInfo        = g_Allocator.alloc<TypeInfoStruct>();
+            auto typeInfo        = allocType<TypeInfoStruct>();
             typeInfo->name       = implNode->identifier->childs.back()->name;
             typeInfo->nakedName  = typeInfo->name;
             typeInfo->structName = typeInfo->name;
@@ -235,7 +235,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
             TypeInfoStruct* typeInfo = (TypeInfoStruct*) newScope->owner->typeInfo;
             if (!typeInfo)
             {
-                typeInfo                  = g_Allocator.alloc<TypeInfoStruct>();
+                typeInfo                  = allocType<TypeInfoStruct>();
                 newScope->owner->typeInfo = typeInfo;
             }
 

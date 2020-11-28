@@ -34,6 +34,12 @@ void printStats()
     float pc = (g_Stats.totalOptimsBC.load() * 100.0f) / (g_Stats.numInstructions.load());
     g_Log.messageHeaderDot("kicked", format("%d %.1f%%", g_Stats.totalOptimsBC.load(), pc));
     g_Log.messageHeaderDot("allocator memory", format("%dMb", g_Stats.allocatorMemory.load() / (1024 * 1024)));
+    g_Log.messageHeaderDot("mem nodes", format("%dMb", g_Stats.memNodes.load() / (1024 * 1024)));
+    g_Log.messageHeaderDot("mem scopes", format("%dMb", g_Stats.memScopes.load() / (1024 * 1024)));
+    g_Log.messageHeaderDot("mem seg", format("%dMb", g_Stats.memSeg.load() / (1024 * 1024)));
+    g_Log.messageHeaderDot("mem concat", format("%dMb", g_Stats.memConcat.load() / (1024 * 1024)));
+    g_Log.messageHeaderDot("mem types", format("%dMb", g_Stats.memTypes.load() / (1024 * 1024)));
+    g_Log.messageHeaderDot("mem instr", format("%dMb", g_Stats.memInstructions.load() / (1024 * 1024)));
     if (g_CommandLine.output)
         g_Log.messageHeaderDot("output modules", format("%d", g_Stats.numGenModules.load()));
     if (g_CommandLine.test)

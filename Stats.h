@@ -25,6 +25,12 @@ struct Stats
     atomic<double> prepOutputTimeJob    = 0;
     atomic<double> genOutputTime        = 0;
     atomic<double> optimBCTime          = 0;
+    atomic<int>    memNodes             = 0;
+    atomic<int>    memScopes            = 0;
+    atomic<int>    memSeg               = 0;
+    atomic<int>    memConcat            = 0;
+    atomic<int>    memTypes             = 0;
+    atomic<int>    memInstructions      = 0;
 };
 
 extern Stats g_Stats;

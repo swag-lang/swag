@@ -7,7 +7,7 @@
 
 TypeInfo* TypeInfoNative::clone()
 {
-    auto newType = g_Allocator.alloc<TypeInfoNative>();
+    auto newType = allocType<TypeInfoNative>();
     newType->copyFrom(this);
     return newType;
 }
@@ -38,7 +38,7 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoNamespace::clone()
 {
-    auto newType   = g_Allocator.alloc<TypeInfoNamespace>();
+    auto newType   = allocType<TypeInfoNamespace>();
     newType->scope = scope;
     newType->copyFrom(this);
     return newType;
@@ -46,7 +46,7 @@ TypeInfo* TypeInfoNamespace::clone()
 
 TypeInfo* TypeInfoCode::clone()
 {
-    auto newType = g_Allocator.alloc<TypeInfoCode>();
+    auto newType = allocType<TypeInfoCode>();
     newType->copyFrom(this);
     return newType;
 }
@@ -64,7 +64,7 @@ bool TypeInfoCode::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoNameAlias::clone()
 {
-    auto newType = g_Allocator.alloc<TypeInfoNameAlias>();
+    auto newType = allocType<TypeInfoNameAlias>();
     newType->copyFrom(this);
     return newType;
 }
@@ -82,7 +82,7 @@ bool TypeInfoNameAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoAlias::clone()
 {
-    auto newType     = g_Allocator.alloc<TypeInfoAlias>();
+    auto newType     = allocType<TypeInfoAlias>();
     newType->rawType = rawType;
     newType->copyFrom(this);
     return newType;
@@ -100,7 +100,7 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoParam::clone()
 {
-    auto newType        = g_Allocator.alloc<TypeInfoParam>();
+    auto newType        = allocType<TypeInfoParam>();
     newType->namedParam = namedParam;
     newType->typeInfo   = typeInfo;
     newType->index      = index;
@@ -124,7 +124,7 @@ bool TypeInfoParam::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoReference::clone()
 {
-    auto newType          = g_Allocator.alloc<TypeInfoReference>();
+    auto newType          = allocType<TypeInfoReference>();
     newType->pointedType  = pointedType;
     newType->originalType = originalType;
     newType->copyFrom(this);
@@ -173,7 +173,7 @@ bool TypeInfoReference::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoPointer::clone()
 {
-    auto newType         = g_Allocator.alloc<TypeInfoPointer>();
+    auto newType         = allocType<TypeInfoPointer>();
     newType->finalType   = finalType;
     newType->pointedType = pointedType;
     newType->ptrCount    = ptrCount;
@@ -266,7 +266,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoArray::clone()
 {
-    auto newType         = g_Allocator.alloc<TypeInfoArray>();
+    auto newType         = allocType<TypeInfoArray>();
     newType->pointedType = pointedType;
     newType->finalType   = finalType;
     newType->count       = count;
@@ -354,7 +354,7 @@ void TypeInfoSlice::computeName()
 
 TypeInfo* TypeInfoSlice::clone()
 {
-    auto newType         = g_Allocator.alloc<TypeInfoSlice>();
+    auto newType         = allocType<TypeInfoSlice>();
     newType->pointedType = pointedType;
     newType->copyFrom(this);
     return newType;
@@ -395,7 +395,7 @@ Utf8 TypeInfoList::computeTupleName(JobContext* context)
 
 TypeInfo* TypeInfoList::clone()
 {
-    auto newType = g_Allocator.alloc<TypeInfoList>();
+    auto newType = allocType<TypeInfoList>();
 
     int size = (int) subTypes.size();
     newType->subTypes.reserve(size);
@@ -447,7 +447,7 @@ bool TypeInfoList::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoVariadic::clone()
 {
-    auto newType = g_Allocator.alloc<TypeInfoVariadic>();
+    auto newType = allocType<TypeInfoVariadic>();
     newType->copyFrom(this);
     newType->rawType = rawType;
     return newType;
@@ -484,7 +484,7 @@ bool TypeInfoVariadic::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoGeneric::clone()
 {
-    auto newType = g_Allocator.alloc<TypeInfoGeneric>();
+    auto newType = allocType<TypeInfoGeneric>();
     newType->copyFrom(this);
     newType->rawType = rawType;
     return newType;
@@ -503,7 +503,7 @@ bool TypeInfoGeneric::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoFuncAttr::clone()
 {
-    auto newType                  = g_Allocator.alloc<TypeInfoFuncAttr>();
+    auto newType                  = allocType<TypeInfoFuncAttr>();
     newType->firstDefaultValueIdx = firstDefaultValueIdx;
     newType->returnType           = returnType;
     newType->stackSize            = stackSize;
@@ -662,7 +662,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoEnum::clone()
 {
-    auto newType        = g_Allocator.alloc<TypeInfoEnum>();
+    auto newType        = allocType<TypeInfoEnum>();
     newType->scope      = scope;
     newType->rawType    = rawType;
     newType->attributes = attributes;
@@ -707,7 +707,7 @@ bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoStruct::clone()
 {
-    auto newType               = g_Allocator.alloc<TypeInfoStruct>();
+    auto newType               = allocType<TypeInfoStruct>();
     newType->scope             = scope;
     newType->opInit            = opInit;
     newType->opUserPostCopyFct = opUserPostCopyFct;

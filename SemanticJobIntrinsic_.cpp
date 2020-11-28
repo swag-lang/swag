@@ -22,7 +22,7 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, second->typeInfo, nullptr, second));
 
     // Create slice type
-    auto ptrSlice         = g_Allocator.alloc<TypeInfoSlice>();
+    auto ptrSlice         = allocType<TypeInfoSlice>();
     ptrSlice->pointedType = ptrPointer->finalType;
     if (ptrPointer->isConst())
         ptrSlice->flags |= TYPEINFO_CONST;
@@ -98,7 +98,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     typeInfo = TypeManager::concreteReferenceType(typeInfo);
     if (typeInfo->isNative(NativeTypeKind::String))
     {
-        auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
+        auto ptrType         = allocType<TypeInfoPointer>();
         ptrType->ptrCount    = 1;
         ptrType->finalType   = g_TypeMgr.typeInfoU8;
         ptrType->pointedType = g_TypeMgr.typeInfoU8;
@@ -111,7 +111,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
         auto ptrSlice        = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
+        auto ptrType         = allocType<TypeInfoPointer>();
         ptrType->ptrCount    = 1;
         ptrType->finalType   = ptrSlice->pointedType;
         ptrType->pointedType = ptrSlice->pointedType;
@@ -125,7 +125,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
         auto ptrArray        = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
+        auto ptrType         = allocType<TypeInfoPointer>();
         ptrType->ptrCount    = 1;
         ptrType->finalType   = ptrArray->pointedType;
         ptrType->pointedType = ptrArray->pointedType;
@@ -138,7 +138,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->isNative(NativeTypeKind::Any))
     {
-        auto ptrType         = g_Allocator.alloc<TypeInfoPointer>();
+        auto ptrType         = allocType<TypeInfoPointer>();
         ptrType->ptrCount    = 1;
         ptrType->finalType   = g_TypeMgr.typeInfoVoid;
         ptrType->pointedType = g_TypeMgr.typeInfoVoid;

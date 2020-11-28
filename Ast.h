@@ -3,6 +3,7 @@
 #include "AstNode.h"
 #include "Allocator.h"
 #include "SourceFile.h"
+#include "CommandLine.h"
 struct Utf8Crc;
 struct Scope;
 struct Concat;
@@ -13,9 +14,18 @@ namespace Ast
     extern thread_local AstNode* lastGeneratedNode;
 
     template<typename T>
+    T* newNode()
+    {
+        auto node = g_Allocator.alloc0<T>();
+        if (g_CommandLine.stats)
+            g_Stats.memNodes += sizeof(T);
+        return node;
+    }
+
+    template<typename T>
     T* newNode(SyntaxJob* job, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent, uint32_t allocChilds = 0)
     {
-        auto node        = g_Allocator.alloc0<T>();
+        auto node        = newNode<T>();
         node->kind       = kind;
         node->parent     = parent;
         node->sourceFile = sourceFile;

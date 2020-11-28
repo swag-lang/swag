@@ -1807,7 +1807,7 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
                         codeNode->flags |= AST_NO_BYTECODE;
                         Ast::removeFromParent(brother);
                         Ast::addChildBack(codeNode, brother);
-                        auto typeCode     = g_Allocator.alloc<TypeInfoCode>();
+                        auto typeCode     = allocType<TypeInfoCode>();
                         typeCode->content = brother;
                         brother->flags |= AST_NO_SEMANTIC;
                         fctCallParam->typeInfo = typeCode;
