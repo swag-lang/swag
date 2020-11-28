@@ -25,7 +25,6 @@ struct Stats
     atomic<double> prepOutputTimeJob    = 0;
     atomic<double> genOutputTime        = 0;
     atomic<double> optimBCTime          = 0;
-    atomic<double> tmpTime              = 0;
 };
 
 extern Stats g_Stats;
