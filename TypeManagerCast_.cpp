@@ -1557,9 +1557,9 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             bool hasChanged   = false;
 
             if (toTypeStruct->fields.size() > child->childs.size())
-                return context->report({child, format("not enough initializers for '%s' ('%d' requested, '%d' provided)", toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
+                return context->report({child, format("not enough initializers for '%s' ('%d' expected, '%d' provided)", toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
             if (toTypeStruct->fields.size() < child->childs.size())
-                return context->report({ child, format("too many initializers for '%s' ('%d' requested, '%d' provided)", toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size()) });
+                return context->report({ child, format("too many initializers for '%s' ('%d' expected, '%d' provided)", toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size()) });
 
             for (int j = 0; j < toTypeStruct->fields.size(); j++)
             {
@@ -2037,9 +2037,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!(castFlags & CASTFLAG_NO_ERROR))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, format("cannot cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->subTypes.size(), toTypeArray->count)});
+                    context->report({fromNode, format("cannot cast, not enough initializers ('%d' expected, '%d' provided)", toTypeArray->count, fromTypeList->subTypes.size())});
                 else
-                    context->report({fromNode, format("cannot cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->subTypes.size(), toTypeArray->count)});
+                    context->report({fromNode, format("cannot cast, too many initializers ('%d' expected, '%d' provided)", toTypeArray->count, fromTypeList->subTypes.size())});
             }
 
             return false;
