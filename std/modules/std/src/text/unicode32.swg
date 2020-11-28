@@ -16,9 +16,9 @@ public
         return false
     }
 
-    func isWhiteSpace(c: char)->bool
+    func isSpace(c: char)->bool
     {
-        if isLatin1(c) return latin1.isWhiteSpace(cast(u8) c)
+        if isLatin1(c) return latin1.isSpace(cast(u8) c)
         return isInTable(TableWhiteSpace, c)
     }
 

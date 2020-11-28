@@ -220,7 +220,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
             if (varDecl->assignment)
             {
                 CONCAT_FIXED_STR(bufferSwg, " = ");
-                Ast::output(outputContext, bufferSwg, varDecl->assignment);
+                SWAG_CHECK(Ast::output(outputContext, bufferSwg, varDecl->assignment));
             }
 
             if (idx != node->parameters->childs.size() - 1)
@@ -308,7 +308,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
 
     bufferSwg.addEolIndent(indent);
     outputContext.indent = indent;
-    Ast::output(outputContext, bufferSwg, node->content);
+    SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->content));
 
     if (node->content->kind != AstNodeKind::Statement)
     {

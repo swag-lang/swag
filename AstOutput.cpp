@@ -684,19 +684,23 @@ namespace Ast
             auto symbol     = identifier->resolvedSymbolName;
             auto overload   = identifier->resolvedSymbolOverload;
 
-            if (symbol &&
-                overload &&
-                symbol->name[0] != '@' &&
-                overload->node->ownerScope->isGlobalOrImpl() &&
-                !overload->node->sourceFile->isBootstrapFile &&
-                !overload->node->sourceFile->isRuntimeFile)
+            // Check public, if this is for export
+            if (context.forExport)
             {
-                if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
-                    (symbol->kind == SymbolKind::Function) ||
-                    (symbol->kind == SymbolKind::Alias) ||
-                    (symbol->kind == SymbolKind::TypeAlias))
+                if (symbol &&
+                    overload &&
+                    symbol->name[0] != '@' &&
+                    overload->node->ownerScope->isGlobalOrImpl() &&
+                    !overload->node->sourceFile->isBootstrapFile &&
+                    !overload->node->sourceFile->isRuntimeFile)
                 {
-                    SWAG_VERIFY(overload->flags & OVERLOAD_PUBLIC, identifier->sourceFile->report({identifier, identifier->token, format("identifier '%s' should be public", identifier->name.c_str())}));
+                    if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
+                        (symbol->kind == SymbolKind::Function) ||
+                        (symbol->kind == SymbolKind::Alias) ||
+                        (symbol->kind == SymbolKind::TypeAlias))
+                    {
+                        SWAG_VERIFY(overload->flags & OVERLOAD_PUBLIC, identifier->sourceFile->report({identifier, identifier->token, format("identifier '%s' should be public", identifier->name.c_str())}));
+                    }
                 }
             }
 

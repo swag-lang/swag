@@ -4,7 +4,7 @@
 #include "Diagnostic.h"
 #include "SourceFile.h"
 
-bool Tokenizer::getDigitHexa(Token& token, int& result)
+bool Tokenizer::getDigitHexa(Token& token, int& result, const char* errMsg)
 {
     auto locationBefore = location;
     auto c              = getChar();
@@ -12,7 +12,10 @@ bool Tokenizer::getDigitHexa(Token& token, int& result)
     {
         token.startLocation = locationBefore;
         token.text          = c;
-        return error(token, format("invalid hexadecimal digit '%s'", token.text.c_str()));
+        if (c == '"')
+            return error(token, format("not enough hexadecimal digit, %s", errMsg));
+        else
+            return error(token, format("invalid hexadecimal digit '%s', %s", token.text.c_str(), errMsg));
     }
 
     if (c >= 'a' && c <= 'z')
@@ -65,33 +68,36 @@ bool Tokenizer::isEscape(char32_t& c, Token& token)
         return true;
     case 'x':
     {
-        int c1, c2;
-        SWAG_CHECK(getDigitHexa(token, c1));
-        SWAG_CHECK(getDigitHexa(token, c2));
+        int         c1, c2;
+        const char* msg = "'\\x' escape code needs 2 of them";
+        SWAG_CHECK(getDigitHexa(token, c1, msg));
+        SWAG_CHECK(getDigitHexa(token, c2, msg));
         c = (c1 << 4) + c2;
         return true;
     }
     case 'u':
     {
-        int c1, c2, c3, c4;
-        SWAG_CHECK(getDigitHexa(token, c1));
-        SWAG_CHECK(getDigitHexa(token, c2));
-        SWAG_CHECK(getDigitHexa(token, c3));
-        SWAG_CHECK(getDigitHexa(token, c4));
+        int         c1, c2, c3, c4;
+        const char* msg = "'\\u' escape code needs 4 of them";
+        SWAG_CHECK(getDigitHexa(token, c1, msg));
+        SWAG_CHECK(getDigitHexa(token, c2, msg));
+        SWAG_CHECK(getDigitHexa(token, c3, msg));
+        SWAG_CHECK(getDigitHexa(token, c4, msg));
         c = (c1 << 12) + (c2 << 8) + (c3 << 4) + c4;
         return true;
     }
     case 'U':
     {
-        int c1, c2, c3, c4, c5, c6, c7, c8;
-        SWAG_CHECK(getDigitHexa(token, c1));
-        SWAG_CHECK(getDigitHexa(token, c2));
-        SWAG_CHECK(getDigitHexa(token, c3));
-        SWAG_CHECK(getDigitHexa(token, c4));
-        SWAG_CHECK(getDigitHexa(token, c5));
-        SWAG_CHECK(getDigitHexa(token, c6));
-        SWAG_CHECK(getDigitHexa(token, c7));
-        SWAG_CHECK(getDigitHexa(token, c8));
+        int         c1, c2, c3, c4, c5, c6, c7, c8;
+        const char* msg = "'\\U' escape code needs 8 of them";
+        SWAG_CHECK(getDigitHexa(token, c1, msg));
+        SWAG_CHECK(getDigitHexa(token, c2, msg));
+        SWAG_CHECK(getDigitHexa(token, c3, msg));
+        SWAG_CHECK(getDigitHexa(token, c4, msg));
+        SWAG_CHECK(getDigitHexa(token, c5, msg));
+        SWAG_CHECK(getDigitHexa(token, c6, msg));
+        SWAG_CHECK(getDigitHexa(token, c7, msg));
+        SWAG_CHECK(getDigitHexa(token, c8, msg));
         c = (c1 << 28) + (c2 << 24) + (c3 << 20) + (c4 << 16) + (c5 << 12) + (c6 << 8) + (c7 << 4) + c8;
         return true;
     }

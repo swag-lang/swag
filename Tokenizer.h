@@ -72,7 +72,7 @@ struct Tokenizer
     void     postProcessRawString(Utf8& text);
     bool     doStringLiteral(Token& token, bool raw);
     bool     isEscape(char32_t& c, Token& token);
-    bool     getDigitHexa(Token& token, int& result);
+    bool     getDigitHexa(Token& token, int& result, const char* errMsg);
     bool     doCharLiteral(Token& token);
 
     SourceFile*    sourceFile         = nullptr;

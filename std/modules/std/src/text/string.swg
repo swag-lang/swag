@@ -405,7 +405,7 @@ public impl String
         {
             slice := @mkslice(ptr, length)
             (c, eat) := utf8.firstChar(slice)
-            if !unicode32.isWhiteSpace(c)
+            if !unicode32.isSpace(c)
                 break
             length -= eat
             ptr += eat
@@ -425,7 +425,7 @@ public impl String
         {
             slice := @mkslice(buffer, length)
             (c, eat) := utf8.lastChar(slice)
-            if !unicode32.isWhiteSpace(c)
+            if !unicode32.isSpace(c)
                 break
             length -= eat
         }

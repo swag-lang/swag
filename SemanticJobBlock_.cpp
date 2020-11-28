@@ -342,7 +342,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     auto& concat = context->job->tmpConcat;
     concat.init(1024);
     Ast::OutputContext outputContext;
-    Ast::output(outputContext, concat, node->expression);
+    SWAG_CHECK(Ast::output(outputContext, concat, node->expression));
     concat.addU8(0);
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
 

@@ -12,7 +12,7 @@ public namespace std.latin1;
     func isPunctuation(c: u8)   => cast(bool) (CharProperties[c] & CharAttribute.Punctuation)
     func isLetter(c: u8)        => cast(bool) (CharProperties[c] & CharAttribute.Letter)
     func isLetterOrDigit(c: u8) => cast(bool) (CharProperties[c] & (CharAttribute.Letter | CharAttribute.Digit))
-    func isWhiteSpace(c: u8)    => cast(bool) (CharProperties[c] & CharAttribute.Spacing)
+    func isSpace(c: u8)         => cast(bool) (CharProperties[c] & CharAttribute.Spacing)
     func toLower(c: u8)         => isUpper(c) ? (c | 0x20'u8) : c
     func toUpper(c: u8)         => isLower(c) ? (c & ~0x20'u8) : c
 }
