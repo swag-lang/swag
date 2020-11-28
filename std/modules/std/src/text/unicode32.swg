@@ -98,3 +98,57 @@ public func fromUtf8(src: const [..] u8)->Array'char
     result.count = fromUtf8(@mkslice(result.buffer, @countof(src)), src)
     return result
 }
+
+////////// TABLE ////////
+
+func isInTable(ranges: const [..] Range, r: char)->bool
+{
+    // linear search for a small array or a latin1 character
+    const LinearLimit = 18
+    if @countof(ranges) <= LinearLimit || r <= 255
+    {
+        visit *range: ranges
+        {
+            if r < range.lo  return false
+            if r <= range.hi return range.stride == 1 || (r - range.lo) % range.stride == 0
+        }
+
+        return false
+    }
+
+    // binary search over ranges
+    lo := 0'u32
+    hi := @countof(ranges)
+    while lo < hi
+    {
+        m := lo + (hi-lo)/2
+        range := &ranges[m]
+        if range.lo <= r <= range.hi
+            return range.stride == 1 || (r-range.lo) % range.stride == 0
+        if r < range.lo
+            hi = m
+        else
+            lo = m + 1
+    }
+
+    return false
+}
+
+struct Range
+{
+    lo, hi: char
+    stride: u32
+}
+
+struct CaseRangeDelta
+{
+    x, y, z: s32
+}
+
+struct CaseRange
+{
+    lo, hi: u32
+    d:      CaseRangeDelta
+}
+
+const UpperLower = swag.MaxS32
