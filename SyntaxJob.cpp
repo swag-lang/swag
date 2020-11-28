@@ -5,6 +5,7 @@
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Scoped.h"
+#include "Timer.h"
 
 thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
 
@@ -233,6 +234,9 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
 
 JobResult SyntaxJob::execute()
 {
+    Timer timer(g_Stats.syntaxTime);
+    timer.start();
+
     baseContext        = &context;
     context.job        = this;
     context.sourceFile = sourceFile;
@@ -292,5 +296,6 @@ JobResult SyntaxJob::execute()
         ok              = doTopLevelInstruction(sourceFile->astRoot);
     }
 
+    timer.stop();
     return JobResult::ReleaseJob;
 }

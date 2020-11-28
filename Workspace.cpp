@@ -587,12 +587,9 @@ bool Workspace::buildTarget()
         g_Log.verbosePass(LogPassType::PassBegin, "Syntax", "");
 
     {
-        Timer timer(g_Stats.syntaxTime);
-        timer.start();
         auto enumJob = new EnumerateModuleJob;
         g_ThreadMgr.addJob(enumJob);
         g_ThreadMgr.waitEndJobs();
-        timer.stop();
     }
 
     if (g_CommandLine.verbose)
