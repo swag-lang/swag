@@ -25,13 +25,13 @@ public
     func isLetter(c: char)->bool
     {
         if isLatin1(c) return latin1.isLetter(cast(u8) c)
-        return false
+        return isInTable(TableLetter, c)
     }
 
     func isLetterOrDigit(c: char)->bool
     {
         if isLatin1(c) return latin1.isLetterOrDigit(cast(u8) c)
-        return false
+        return isDigit(c) || isLetter(c)
     }
 }
 
