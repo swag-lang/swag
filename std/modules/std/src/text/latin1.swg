@@ -78,7 +78,7 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
             c2 := dst[i]
             c2 += isUpperUtf8(c2) ? 0x20 : 0
             result = cast(s32) c1 - cast(s32) c2
-            if result != 0 return result
+            if result != 0 return math.sign(result)
         }
     }
     else
@@ -86,7 +86,6 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
         result = memory.compare(@dataof(src), @dataof(dst), minLen)
     }
 
-    if result != 0 || length == otherLength return result
-    if length < otherLength return -1
-    return 1
+    if result != 0 return math.sign(result)
+    return length <=> otherLength
 }

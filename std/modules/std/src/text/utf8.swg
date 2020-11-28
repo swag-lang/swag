@@ -249,6 +249,8 @@ public enum ComparisonType
 {
     Latin1
     Latin1NoCase
+    Unicode
+    UnicodeNoCase
 }
 
 // Compare two utf8 buffers with the given algorithm
@@ -259,9 +261,44 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
     switch comparisonType
     {
     case Latin1:
-        return latin1.compare(src, dst)
+        return latin1.compare(src, dst) // bytes compare
     case Latin1NoCase:
         return latin1.compare(src, dst, ignoreCase: true)
+    case Unicode:
+        return latin1.compare(src, dst) // bytes compare
+
+    case UnicodeNoCase:
+        length := @countof(src)
+        otherLength := @countof(dst)
+        data := @dataof(src)
+        otherData := @dataof(dst)
+
+        var result: s32
+        var c1, c2: char
+        var eat1, eat2: u32
+        while true
+        {
+            (c1, eat1) = firstChar(@mkslice(data, length))
+            (c2, eat2) = firstChar(@mkslice(otherData, otherLength))
+            if eat1 == 0 break
+            if eat2 == 0 break
+
+            if c1 != c2
+            {
+                c1 = unicode32.toLower(c1)
+                c2 = unicode32.toLower(c2)
+                result = cast(s32) c1 - cast(s32) c2
+                if result != 0 return math.sign(result)
+            }
+
+            length -= eat1
+            otherLength -= eat2
+            data += eat1
+            otherData += eat2
+        }
+
+        if result != 0 return math.sign(result)
+        return length <=> otherLength
     }
 
     return 0

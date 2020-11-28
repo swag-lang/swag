@@ -162,6 +162,34 @@ public func makeLower(buffer: [..] char)
     }
 }
 
+// Compare two unicode strings, and returns -1, 0 or 1
+func compare(src, dst: const [..] char, ignoreCase = false)->s32
+{
+    length := @countof(src)
+    otherLength := @countof(dst)
+    minLen := math.min(length, otherLength)
+
+    var result: s32
+    if ignoreCase
+    {
+        loop i: minLen
+        {
+            c1 := toLower(src[i])
+            c2 := toLower(dst[i])
+            result = math.sign(cast(s32) c1 - cast(s32) c2)
+            if result != 0 return result
+        }
+    }
+    else
+    {
+        result = memory.compare(@dataof(src), @dataof(dst), minLen)
+    }
+
+    if result != 0 || length == otherLength return result
+    if length < otherLength return -1
+    return 1
+}
+
 ////////// TABLE ////////
 
 struct Range
