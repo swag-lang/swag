@@ -52,6 +52,12 @@ public
         return isDigit(c) || isLetter(c)
     }
 
+    func isTitle(c: char)->bool
+    {
+        if isLatin1(c) return false
+        return isInTable(TableTitle, c)
+    }
+
     func isLower(c: char)->bool
     {
         if isLatin1(c) return latin1.isLower(cast(u8) c)
@@ -67,7 +73,10 @@ public
     func toLower(c: char)->char
     {
         if isLatin1(c) return autocast latin1.toLower(cast(u8) c)
-        res := to(WantedCase.LowerCase, c, TableCaseRanges)
+
+        res := caseChangeTo(WantedCase.LowerCase, c, TableSpecialCaseRanges)
+        if res.foundMapping return res.mappedRune
+        res = caseChangeTo(WantedCase.LowerCase, c, TableCaseRanges)
         if !res.foundMapping return c
         return res.mappedRune
     }
@@ -75,16 +84,24 @@ public
     func toUpper(c: char)->char
     {
         if isLatin1(c) return autocast latin1.toUpper(cast(u8) c)
-        res := to(WantedCase.UpperCase, c, TableCaseRanges)
+
+        res := caseChangeTo(WantedCase.UpperCase, c, TableSpecialCaseRanges)
+        if res.foundMapping return res.mappedRune
+        res = caseChangeTo(WantedCase.UpperCase, c, TableCaseRanges)
         if !res.foundMapping return c
+
         return res.mappedRune
     }
 
     func toTitle(c: char)->char
     {
         if isLatin1(c) return autocast latin1.toUpper(cast(u8) c)
-        res := to(WantedCase.TitleCase, c, TableCaseRanges)
+
+        res := caseChangeTo(WantedCase.TitleCase, c, TableSpecialCaseRanges)
+        if res.foundMapping return res.mappedRune
+        res = caseChangeTo(WantedCase.TitleCase, c, TableCaseRanges)
         if !res.foundMapping return c
+
         return res.mappedRune
     }
 }
@@ -147,6 +164,7 @@ enum WantedCase
 	TitleCase
 }
 
+// https://golang.org/src/unicode/letter.go
 func isInTable(ranges: const [..] Range, r: char)->bool
 {
     // linear search for a small array or a latin1 character
@@ -180,7 +198,8 @@ func isInTable(ranges: const [..] Range, r: char)->bool
     return false
 }
 
-func to(wCase: WantedCase, r: char, caseRange: const [..] CaseRange) -> {mappedRune: char, foundMapping: bool}
+// https://golang.org/src/unicode/letter.go
+func caseChangeTo(wCase: WantedCase, r: char, caseRange: const [..] CaseRange) -> {mappedRune: char, foundMapping: bool}
 {
     var result: retval
 

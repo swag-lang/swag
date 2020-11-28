@@ -1292,6 +1292,16 @@ var TableUpper: [] Range = @[
     {0x1e901, 0x1e921, 1},
 ]
 
+var TableTitle: [] Range = @[
+    {0x01c5, 0x01cb, 3},
+    {0x01f2, 0x1f88, 7574},
+    {0x1f89, 0x1f8f, 1},
+    {0x1f98, 0x1f9f, 1},
+    {0x1fa8, 0x1faf, 1},
+    {0x1fbc, 0x1fcc, 16},
+    {0x1ffc, 0x1ffc, 1},
+]
+
 var TableCaseRanges: [] CaseRange = @[
     {0x0041, 0x005A, [0, 32, 0]},
     {0x0061, 0x007A, [-32, 0, -32]},
@@ -1610,4 +1620,11 @@ var TableCaseRanges: [] CaseRange = @[
     {0x16E60, 0x16E7F, [-32, 0, -32]},
     {0x1E900, 0x1E921, [0, 34, 0]},
     {0x1E922, 0x1E943, [-34, 0, -34]},
+]
+
+var TableSpecialCaseRanges: [] CaseRange = @[
+	{0x0049, 0x0049, [0, cast(s32) 0x131 - cast(s32) 0x49, 0]},
+	{0x0069, 0x0069, [cast(s32) 0x130 - cast(s32) 0x69, 0, cast(s32) 0x130 - cast(s32) 0x69]},
+	{0x0130, 0x0130, [0, cast(s32) 0x69 - cast(s32) 0x130, 0]},
+	{0x0131, 0x0131, [cast(s32) 0x49 - cast(s32) 0x131, 0, cast(s32) 0x49 - cast(s32) 0x131]},
 ]
