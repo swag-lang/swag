@@ -5,6 +5,7 @@ public namespace std.latin1;
 {
     func isAscii(c: u8)         => c <= 0x7F
     func isDigit(c: u8)         => cast(bool) (CharProperties[c] & CharAttribute.Digit)
+    func isNumber(c: u8)        => cast(bool) (CharProperties[c] & CharAttribute.Digit)
     func isBinDigit(c: u8)      => cast(bool) (CharProperties[c] & CharAttribute.BinDigit)
     func isHexDigit(c: u8)      => cast(bool) (CharProperties[c] & CharAttribute.HexDigit)
     func isUpper(c: u8)         => cast(bool) (CharProperties[c] & CharAttribute.Upper)
@@ -13,6 +14,8 @@ public namespace std.latin1;
     func isLetter(c: u8)        => cast(bool) (CharProperties[c] & CharAttribute.Letter)
     func isLetterOrDigit(c: u8) => cast(bool) (CharProperties[c] & (CharAttribute.Letter | CharAttribute.Digit))
     func isSpace(c: u8)         => cast(bool) (CharProperties[c] & CharAttribute.Spacing)
+    func isControl(c: u8)       => cast(bool) (CharProperties[c] & CharAttribute.Control)
+    func isSymbol(c: u8)        => cast(bool) (CharProperties[c] & CharAttribute.Symbol)
     func toLower(c: u8)         => isUpper(c) ? (c | 0x20'u8) : c
     func toUpper(c: u8)         => isLower(c) ? (c & ~0x20'u8) : c
 }

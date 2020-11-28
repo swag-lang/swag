@@ -69,4 +69,8 @@ var notletterTest: []char = @[
     visit c: notletterTest  @assert(!unicode32.isLetter(c))
     @assert(unicode32.isLetter("是"'char))
     @assert(!unicode32.isLetter("‼"'char))
+
+    @assert(unicode32.isNumber("௧"'char))
+    @assert(unicode32.isNumber("൧"'char))
+    @assert(unicode32.isNumber("𑄷"'char))
 }

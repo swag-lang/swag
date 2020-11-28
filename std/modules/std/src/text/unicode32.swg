@@ -13,6 +13,18 @@ public
     func isDigit(c: char)->bool
     {
         if isLatin1(c) return latin1.isDigit(cast(u8) c)
+        return isInTable(TableDigit, c)
+    }
+
+    func isNumber(c: char)->bool
+    {
+        if isLatin1(c) return latin1.isNumber(cast(u8) c)
+        return isInTable(TableNumber, c)
+    }
+
+    func isControl(c: char)->bool
+    {
+        if isLatin1(c) return latin1.isControl(cast(u8) c)
         return false
     }
 
@@ -26,6 +38,12 @@ public
     {
         if isLatin1(c) return latin1.isLetter(cast(u8) c)
         return isInTable(TableLetter, c)
+    }
+
+    func isSymbol(c: char)->bool
+    {
+        if isLatin1(c) return latin1.isSymbol(cast(u8) c)
+        return isInTable(TableSymbol, c)
     }
 
     func isLetterOrDigit(c: char)->bool
