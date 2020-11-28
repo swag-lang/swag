@@ -612,7 +612,12 @@ bool Workspace::buildTarget()
         g_ThreadMgr.addJob(job);
         g_ThreadMgr.waitEndJobs();
         checkPendingJobs();
-        ByteCodeOptimizerJob::optimize(bootstrapModule, 0, (int) bootstrapModule->byteCodeFunc.size(), false);
+
+        ByteCodeOptimizerJob opt;
+        opt.module     = bootstrapModule;
+        opt.startIndex = 0;
+        opt.endIndex   = (int) bootstrapModule->byteCodeFunc.size();
+        opt.optimize(false);
 
         // Errors !!!
         if (bootstrapModule->numErrors)
@@ -640,7 +645,12 @@ bool Workspace::buildTarget()
         g_ThreadMgr.addJob(job);
         g_ThreadMgr.waitEndJobs();
         checkPendingJobs();
-        ByteCodeOptimizerJob::optimize(runtimeModule, 0, (int) runtimeModule->byteCodeFunc.size(), false);
+
+        ByteCodeOptimizerJob opt;
+        opt.module     = runtimeModule;
+        opt.startIndex = 0;
+        opt.endIndex   = (int) runtimeModule->byteCodeFunc.size();
+        opt.optimize(false);
 
         // Errors !!!
         if (runtimeModule->numErrors)

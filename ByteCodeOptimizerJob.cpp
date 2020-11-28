@@ -4,12 +4,12 @@
 #include "ByteCode.h"
 #include "ByteCodeOptimizerJob.h"
 #include "Module.h"
+#include "Timer.h"
 
 thread_local Pool<ByteCodeOptimizerJob> g_Pool_byteCodeOptimizerJob;
 
-bool ByteCodeOptimizerJob::optimize(Module* module, int startIndex, int endIndex, bool isAsync)
+ByteCodeOptimizerJob::ByteCodeOptimizerJob()
 {
-    vector<function<void(ByteCodeOptContext*)>> passes;
     passes.push_back(ByteCodeOptimizer::optimizePassJumps);
     passes.push_back(ByteCodeOptimizer::optimizePassEmptyFct);
     passes.push_back(ByteCodeOptimizer::optimizePassDeadStore);
@@ -23,8 +23,13 @@ bool ByteCodeOptimizerJob::optimize(Module* module, int startIndex, int endIndex
     passes.push_back(ByteCodeOptimizer::optimizePassRetCopyInline);
     passes.push_back(ByteCodeOptimizer::optimizePassRetCopyGlobal);
     passes.push_back(ByteCodeOptimizer::optimizePassReduce);
+}
 
+bool ByteCodeOptimizerJob::optimize(bool isAsync)
+{
     ByteCodeOptContext optContext;
+    Timer              tm(g_Stats.optimBCTime);
+    tm.start();
 
     while (true)
     {
@@ -61,19 +66,19 @@ bool ByteCodeOptimizerJob::optimize(Module* module, int startIndex, int endIndex
         }
 
         // Restart everything if something has been done during this pass
-        if (restart)
-            module->optimNeedRestart++;
-        else
+        if (!restart)
             break;
+        module->optimNeedRestart = module->optimNeedRestart + 1;
         if (isAsync)
             break;
     }
 
+    tm.stop();
     return true;
 }
 
 JobResult ByteCodeOptimizerJob::execute()
 {
-    optimize(module, startIndex, endIndex, true);
+    optimize(true);
     return JobResult::ReleaseJob;
 }

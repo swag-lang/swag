@@ -30,7 +30,6 @@ struct ModuleBuildJob : public Job
         , timerSemanticModule{g_Stats.semanticModuleTime}
         , timerRun{g_Stats.runTime}
         , timerOutput{g_Stats.outputTime}
-        , timerOptimizeBc{g_Stats.optimBCTime}
     {
         affinity = AFFINITY_ALL ^ AFFINITY_EXECBC;
     }

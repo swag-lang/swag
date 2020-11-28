@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "Stats.h"
 #include "Timer.h"
+#include "Profile.h"
 
 void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 {
@@ -86,6 +87,8 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     done = false;
     if (module->numErrors)
         return false;
+
+    SWAG_PROFILE(PRF_OPT, format("optim BC %s", module->name.c_str()));
 
     // Determin if we need to restart the whole optim pass because something has been done
     if (module->optimPass == 1)
