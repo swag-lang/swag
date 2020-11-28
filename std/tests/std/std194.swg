@@ -6,12 +6,15 @@ using std.utf8
     {
         res := compare("как поживаешь", "КАК ПОЖИВАЕШЬ", ComparisonType.UnicodeNoCase)
         @assert(res == 0)
-        //console.print("%", res)
     }
 
     {
         res := compare("как поживаешь", "КАК ПОЖИВАЕШЬ", ComparisonType.Unicode)
-        @assert(res > 0)
-        //console.print("%", res)
+        @assert(res == 1)
+    }
+
+    {
+        res := compare("КАК ПОЖИВАЕШЬ", "как поживаешь", ComparisonType.Unicode)
+        @assert(res == -1)
     }
 }

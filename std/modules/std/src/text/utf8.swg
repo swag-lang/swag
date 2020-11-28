@@ -280,8 +280,7 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
         {
             (c1, eat1) = firstChar(@mkslice(data, length))
             (c2, eat2) = firstChar(@mkslice(otherData, otherLength))
-            if eat1 == 0 break
-            if eat2 == 0 break
+            if eat1 == 0 || eat2 == 0 break
 
             if c1 != c2
             {
@@ -297,8 +296,9 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
             otherData += eat2
         }
 
-        if result != 0 return math.sign(result)
-        return length <=> otherLength
+        if !eat1 && eat2 return -1
+        if eat1 && !eat2 return 1
+        return 0
     }
 
     return 0
