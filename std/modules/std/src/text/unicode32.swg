@@ -140,6 +140,28 @@ public func fromUtf8(src: const [..] u8)->Array'char
     return result
 }
 
+// Make a char buffer upper case
+public func makeUpper(buffer: [..] char)
+{
+    p := @dataof(buffer)
+    loop @countof(buffer)
+    {
+        :p = toUpper(:p)
+        p += 1
+    }
+}
+
+// Make a char buffer lower case
+public func makeLower(buffer: [..] char)
+{
+    p := @dataof(buffer)
+    loop @countof(buffer)
+    {
+        :p = toLower(:p)
+        p += 1
+    }
+}
+
 ////////// TABLE ////////
 
 struct Range
