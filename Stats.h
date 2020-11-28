@@ -31,6 +31,9 @@ struct Stats
     atomic<int>    memConcat            = 0;
     atomic<int>    memTypes             = 0;
     atomic<int>    memInstructions      = 0;
+    atomic<int>    memSymName           = 0;
+    atomic<int>    memSymOver           = 0;
+    atomic<int>    memSymTable          = 0;
 };
 
 extern Stats g_Stats;

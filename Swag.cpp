@@ -40,6 +40,9 @@ void printStats()
     g_Log.messageHeaderDot("mem concat", format("%dMb", g_Stats.memConcat.load() / (1024 * 1024)));
     g_Log.messageHeaderDot("mem types", format("%dMb", g_Stats.memTypes.load() / (1024 * 1024)));
     g_Log.messageHeaderDot("mem instr", format("%dMb", g_Stats.memInstructions.load() / (1024 * 1024)));
+    g_Log.messageHeaderDot("mem symname", format("%dMb", g_Stats.memSymName.load() / (1024 * 1024)));
+    g_Log.messageHeaderDot("mem symover", format("%dMb", g_Stats.memSymOver.load() / (1024 * 1024)));
+    g_Log.messageHeaderDot("mem symtable", format("%dMb", g_Stats.memSymTable.load() / (1024 * 1024)));
     if (g_CommandLine.output)
         g_Log.messageHeaderDot("output modules", format("%d", g_Stats.numGenModules.load()));
     if (g_CommandLine.test)
