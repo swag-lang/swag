@@ -5,6 +5,7 @@ struct ByteCode;
 struct ByteCodeGenContext;
 struct ByteCodeInstruction;
 struct Module;
+struct Job;
 
 struct ByteCodeOptContext
 {
@@ -68,5 +69,5 @@ struct ByteCodeOptimizer
     static void setJumps(ByteCodeOptContext* context);
     static void removeNops(ByteCodeOptContext* context);
 
-    static bool optimize(Module* module);
+    static bool optimize(Job* job, Module* module, bool& done);
 };

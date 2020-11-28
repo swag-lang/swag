@@ -10,7 +10,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
-#include "ByteCodeOptimizer.h"
+#include "ByteCodeOptimizerJob.h"
 
 Workspace g_Workspace;
 
@@ -603,7 +603,7 @@ bool Workspace::buildTarget()
     {
         if (bootstrapModule->numErrors)
         {
-            g_Log.error("some errors have been found in 'swag.bootstrap.swg' ! exiting...");
+            g_Log.error("some errors have been found in compiler bootstrap !!! exiting...");
             return false;
         }
 
@@ -612,12 +612,12 @@ bool Workspace::buildTarget()
         g_ThreadMgr.addJob(job);
         g_ThreadMgr.waitEndJobs();
         checkPendingJobs();
-        ByteCodeOptimizer::optimize(bootstrapModule);
+        ByteCodeOptimizerJob::optimize(bootstrapModule, 0, (int) bootstrapModule->byteCodeFunc.size(), false);
 
-        // Errors in swag.swg !!!
+        // Errors !!!
         if (bootstrapModule->numErrors)
         {
-            g_Log.error("some errors have been found in 'swag.bootstrap.swg' ! exiting...");
+            g_Log.error("some errors have been found in compiler bootstrap !!! exiting...");
             return false;
         }
     }
@@ -627,7 +627,7 @@ bool Workspace::buildTarget()
     {
         if (runtimeModule->numErrors)
         {
-            g_Log.error("some errors have been found in 'swag.runtime.swg' ! exiting...");
+            g_Log.error("some errors have been found in compiler runtime !!! exiting...");
             return false;
         }
 
@@ -640,12 +640,12 @@ bool Workspace::buildTarget()
         g_ThreadMgr.addJob(job);
         g_ThreadMgr.waitEndJobs();
         checkPendingJobs();
-        ByteCodeOptimizer::optimize(runtimeModule);
+        ByteCodeOptimizerJob::optimize(runtimeModule, 0, (int) runtimeModule->byteCodeFunc.size(), false);
 
-        // Errors in swag.swg !!!
+        // Errors !!!
         if (runtimeModule->numErrors)
         {
-            g_Log.error("some errors have been found in 'swag.runtime.swg' ! exiting...");
+            g_Log.error("some errors have been found in compiler runtime !!! exiting...");
             return false;
         }
     }

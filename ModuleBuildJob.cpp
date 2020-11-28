@@ -266,27 +266,47 @@ JobResult ModuleBuildJob::execute()
                 g_Log.verbosePass(LogPassType::PassEnd, "SemanticModule", module->name, timerSemanticModule.elapsed.count());
         }
 
-        // If we will not run some stuff, then no need to wait for dependencies, because we do not
-        // have to load the dlls
-        if (!module->hasBytecodeToRun())
-            pass = ModuleBuildPass::OptimizeBc;
-        else
-            pass = ModuleBuildPass::WaitForDependenciesEffective;
+        pass = ModuleBuildPass::WaitForDependenciesEffective;
     }
 
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::WaitForDependenciesEffective)
     {
-        if (!module->WaitForDependenciesDone(this))
-            return JobResult::KeepJobAlive;
+        // If we will not run some stuff, then no need to wait for dependencies, because we do not
+        // have to load the dlls
+        if (module->hasBytecodeToRun())
+        {
+            if (!module->WaitForDependenciesDone(this))
+                return JobResult::KeepJobAlive;
+        }
+
         pass = ModuleBuildPass::OptimizeBc;
+
+        // Timing...
+        if (g_CommandLine.stats || g_CommandLine.verbose)
+        {
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbosePass(LogPassType::PassBegin, "OptimizeBc", module->name);
+            timerOptimizeBc.start();
+        }
     }
 
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::OptimizeBc)
     {
-        if (!ByteCodeOptimizer::optimize(module))
+        bool done = false;
+        if (!ByteCodeOptimizer::optimize(this, module, done))
             return JobResult::ReleaseJob;
+        if (!done)
+            return JobResult::KeepJobAlive;
+
+        // Timing...
+        if (g_CommandLine.stats || g_CommandLine.verbose)
+        {
+            timerOptimizeBc.stop();
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbosePass(LogPassType::PassEnd, "OptimizeBc", module->name, timerOptimizeBc.elapsed.count());
+        }
 
         module->printBC();
 

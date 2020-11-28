@@ -178,6 +178,7 @@
     <ClInclude Include="ByteCode.h" />
     <ClInclude Include="ByteCodeGenJob.h" />
     <ClInclude Include="ByteCodeOptimizer.h" />
+    <ClInclude Include="ByteCodeOptimizerJob.h" />
     <ClInclude Include="CompilerItf.h" />
     <ClInclude Include="LLVMSetup.h" />
     <ClInclude Include="LoadFileJob.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="ByteCodeGenJobUnaryOp_.cpp" />
     <ClCompile Include="ByteCodeGenJobVar_.cpp" />
     <ClCompile Include="ByteCodeGenJobSafety_.cpp" />
+    <ClCompile Include="ByteCodeOptimizerJob.cpp" />
     <ClCompile Include="ByteCodeOptimizer_const_.cpp" />
     <ClCompile Include="ByteCodeOptimizer_deadcode_.cpp" />
     <ClCompile Include="ByteCodeOptimizer_deadstore_.cpp" />

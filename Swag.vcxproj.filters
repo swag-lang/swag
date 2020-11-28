@@ -443,6 +443,9 @@
     <ClCompile Include="LoadFileJob.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="ByteCodeOptimizerJob.cpp">
+      <Filter>Backend\ByteCode\Optimize</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -730,6 +733,9 @@
     </ClInclude>
     <ClInclude Include="LoadFileJob.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="ByteCodeOptimizerJob.h">
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

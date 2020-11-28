@@ -149,4 +149,7 @@ struct Module
     VectorNative<AstNode*> globalVarsBss;
     VectorNative<AstNode*> globalVarsMutable;
     void                   addGlobalVar(AstNode* node, bool bss);
+
+    atomic<int> optimNeedRestart;
+    int         optimPass = 0;
 };

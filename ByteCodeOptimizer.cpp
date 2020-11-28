@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
 #include "ByteCodeOptimizer.h"
+#include "ByteCodeOptimizerJob.h"
 #include "ByteCode.h"
 #include "Diagnostic.h"
 #include "ByteCodeOp.h"
@@ -76,68 +77,49 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
         jump[jump->b.s32 + 1].flags |= BCI_START_STMT;
 }
 
-bool ByteCodeOptimizer::optimize(Module* module)
+bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
 {
-    if (module->hasUnittestError || module->numErrors)
+    done = true;
+    if (module->hasUnittestError || module->byteCodeFunc.empty())
         return true;
 
-    Timer tm(g_Stats.optimBCTime);
-    tm.start();
+    done = false;
+    if (module->numErrors)
+        return false;
 
-    vector<function<void(ByteCodeOptContext*)>> passes;
-    passes.push_back(optimizePassJumps);
-    passes.push_back(optimizePassEmptyFct);
-    passes.push_back(optimizePassDeadStore);
-    passes.push_back(optimizePassDeadCode);
-    passes.push_back(optimizePassStack);
-    passes.push_back(optimizePassImmediate);
-    passes.push_back(optimizePassConst);
-    passes.push_back(optimizePassDupCopyRBRA);
-    passes.push_back(optimizePassDupCopyRA);
-    passes.push_back(optimizePassRetCopyLocal);
-    passes.push_back(optimizePassRetCopyInline);
-    passes.push_back(optimizePassRetCopyGlobal);
-    passes.push_back(optimizePassReduce);
-
-    ByteCodeOptContext optContext;
-
-    while (true)
+    // Determin if we need to restart the whole optim pass because something has been done
+    if (module->optimPass == 1)
     {
-        bool restart = false;
-        for (auto bc : module->byteCodeFunc)
+        if (module->optimNeedRestart.load() > 0)
+            module->optimPass = 0;
+        else
         {
-            if (!module->mustOptimizeBC(bc->node))
-                continue;
-            optContext.bc = bc;
-
-            // Get all jumps
-            setJumps(&optContext);
-
-            while (true)
-            {
-                if (optContext.hasError)
-                    return false;
-                optContext.allPassesHaveDoneSomething = false;
-                for (auto pass : passes)
-                {
-                    optContext.passHasDoneSomething = false;
-                    pass(&optContext);
-                    optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
-                }
-
-                removeNops(&optContext);
-                if (!optContext.allPassesHaveDoneSomething)
-                    break;
-
-                restart = true;
-            }
+            done = true;
+            return true;
         }
-
-        // Restart everything if something has been done during this pass
-        if (!restart)
-            break;
     }
 
-    tm.stop();
+    if (module->optimPass == 0)
+    {
+        module->optimNeedRestart.store(0);
+        auto count     = (int) module->byteCodeFunc.size() / g_Stats.numWorkers;
+        count          = min(count, (int) module->byteCodeFunc.size());
+        int startIndex = 0;
+        while (startIndex < module->byteCodeFunc.size())
+        {
+            auto newJob          = g_Pool_byteCodeOptimizerJob.alloc();
+            newJob->module       = module;
+            newJob->startIndex   = startIndex;
+            newJob->endIndex     = min(startIndex + count, (int) module->byteCodeFunc.size());
+            newJob->dependentJob = job;
+            startIndex += count;
+            job->jobsToAdd.push_back(newJob);
+        }
+
+        module->optimPass = 1;
+        done              = false;
+        return true;
+    }
+
     return true;
 }
