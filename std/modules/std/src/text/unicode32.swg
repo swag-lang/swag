@@ -172,12 +172,13 @@ func compare(src, dst: const [..] char, ignoreCase = false)->s32
     var result: s32
     if ignoreCase
     {
+        #[swag.safety(false)]
         loop i: minLen
         {
             c1 := toLower(src[i])
             c2 := toLower(dst[i])
-            result = math.sign(cast(s32) c1 - cast(s32) c2)
-            if result != 0 return result
+            result = cast(s32) c1 - cast(s32) c2
+            if result != 0 return math.sign(result)
         }
     }
     else
@@ -185,12 +186,12 @@ func compare(src, dst: const [..] char, ignoreCase = false)->s32
         result = memory.compare(@dataof(src), @dataof(dst), minLen)
     }
 
-    if result != 0 || length == otherLength return result
-    if length < otherLength return -1
-    return 1
+    if result != 0 return math.sign(result)
+    return length <=> otherLength
 }
 
-////////// TABLE ////////
+////////// TABLES ////////
+const UpperLower = swag.MaxS32
 
 struct Range
 {
@@ -203,8 +204,6 @@ struct CaseRange
     lo, hi: char
     delta:  [3] s32
 }
-
-const UpperLower = swag.MaxS32
 
 #[swag.enumindex]
 enum WantedCase
