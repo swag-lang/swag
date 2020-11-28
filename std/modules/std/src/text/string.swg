@@ -8,6 +8,7 @@ private const SmallSizeInternal = SmallSize - @sizeof(IAllocator)
 public enum CharacterSet
 {
     Latin1
+    Unicode
 }
 
 public struct String
@@ -484,7 +485,6 @@ public impl String
     }
 
     // Convert the string inplace to upper case.
-    // Only deal with latin1 (not unicode)
     func makeUpper(using self, set = CharacterSet.Latin1)
     {
         sl := @mkslice(buffer, length)
@@ -494,11 +494,16 @@ public impl String
         {
             case Latin1:
                 latin1.makeUpper(sl)
+
+            case Unicode:
+                uni32 := unicode32.fromUtf8(toString())
+                unicode32.makeUpper(uni32.toSlice())
+                reserve(uni32.count * 4)
+                length = utf8.fromCharArray(@mkslice(buffer, capacity), uni32.toSlice())
         }
     }
 
     // Convert the string inplace to lower case.
-    // Only deal with latin1 (not unicode)
     func makeLower(using self, set = CharacterSet.Latin1)
     {
         sl := @mkslice(buffer, length)
@@ -508,6 +513,12 @@ public impl String
         {
             case Latin1:
                 latin1.makeLower(sl)
+
+            case Unicode:
+                uni32 := unicode32.fromUtf8(toString())
+                unicode32.makeLower(uni32.toSlice())
+                reserve(uni32.count * 4)
+                length = utf8.fromCharArray(@mkslice(buffer, capacity), uni32.toSlice())
         }
     }
 
