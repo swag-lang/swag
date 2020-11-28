@@ -51,6 +51,18 @@ public
         if isLatin1(c) return latin1.isLetterOrDigit(cast(u8) c)
         return isDigit(c) || isLetter(c)
     }
+
+    func isLower(c: char)->bool
+    {
+        if isLatin1(c) return latin1.isLower(cast(u8) c)
+        return isInTable(TableLower, c)
+    }
+
+    func isUpper(c: char)->bool
+    {
+        if isLatin1(c) return latin1.isUpper(cast(u8) c)
+        return isInTable(TableUpper, c)
+    }
 }
 
 // Convert an utf8 buffer to a character sequence, and returns the
