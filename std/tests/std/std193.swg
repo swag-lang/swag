@@ -16,4 +16,10 @@ using std
         @assert(res == "как поживаешь")
         //console.print("%", res)
     }
+
+    {
+        res := String.from("КАК ПОЖИВАЕШЬ")
+        @assert(res.toLower(CharacterSet.Unicode) == "как поживаешь")
+        //console.print("%", res)
+    }
 }

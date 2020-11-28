@@ -525,7 +525,7 @@ public impl String
     // Returns a new String in upper case
     func toUpper(using self, set = CharacterSet.Latin1)->String
     {
-        result := :self
+        var result: retval = :self
         result.makeUpper(set)
         return result
     }
@@ -533,7 +533,7 @@ public impl String
     // Returns a new String in lower case
     func toLower(using self, set = CharacterSet.Latin1)->String
     {
-        result := :self
+        var result: retval = :self
         result.makeLower(set)
         return result
     }
