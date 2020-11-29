@@ -9,7 +9,6 @@ struct AllocatorBucket
     uint8_t* data      = nullptr;
     int      maxUsed   = 0;
     int      allocated = 0;
-    bool     isReused  = false;
 };
 
 struct Allocator
