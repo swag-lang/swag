@@ -361,6 +361,23 @@ struct ByteCodeGenJob : public Job
     AstNode*               allParamsTmp = nullptr;
     Pass                   pass         = Pass::Generate;
     VectorNative<AstNode*> dependentNodesTmp;
+
+    void reset() override
+    {
+        Job::reset();
+        context.reset();
+        collectChilds.clear();
+        collectScopes.clear();
+        allParamsTmp = nullptr;
+        pass         = Pass::Generate;
+        dependentNodesTmp.clear();
+    }
+
+    void release() override
+    {
+        extern thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
+        g_Pool_byteCodeGenJob.release(this);
+    }
 };
 
 extern thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
