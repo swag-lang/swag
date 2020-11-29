@@ -230,7 +230,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     {
         auto oldSize        = (int) (bc->maxInstructions * sizeof(ByteCodeInstruction));
         bc->maxInstructions = bc->maxInstructions * 2;
-        bc->maxInstructions = max(bc->maxInstructions, 32);
+        bc->maxInstructions = max(bc->maxInstructions, 8);
         auto newInstuctions = (ByteCodeInstruction*) g_Allocator.alloc(bc->maxInstructions * sizeof(ByteCodeInstruction));
         memcpy(newInstuctions, bc->out, bc->numInstructions * sizeof(ByteCodeInstruction));
         g_Allocator.free(bc->out, oldSize);
