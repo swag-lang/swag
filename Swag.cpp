@@ -31,12 +31,12 @@ void printStats()
     g_Log.messageHeaderDot("executed #run", format("%d", g_Stats.runFunctions.load()));
     if (g_Workspace.numErrors)
         g_Log.messageHeaderDot("errors", format("%d", g_Workspace.numErrors.load()), LogColor::Red);
-    g_Log.messageHeaderDot("concrete types", format("%d", g_Stats.totalConcreteTypes.load()));
     g_Log.print("\n");
 
     g_Log.messageHeaderDot("instructions", format("%d", g_Stats.numInstructions.load()));
     float pc = (g_Stats.totalOptimsBC.load() * 100.0f) / (g_Stats.numInstructions.load());
     g_Log.messageHeaderDot("kicked", format("%d %.1f%%", g_Stats.totalOptimsBC.load(), pc));
+    g_Log.messageHeaderDot("concrete types", format("%d", g_Stats.totalConcreteTypes.load()));
     g_Log.print("\n");
 
     g_Log.messageHeaderDot("syntax time", format("%.3fs", g_Stats.syntaxTime.load()));
