@@ -155,6 +155,15 @@ void Module::allocateBackend()
     }
 }
 
+void Module::release()
+{
+    constantSegment.release();
+    constantSegmentCompiler.release();
+    mutableSegment.release();
+    typeSegment.release();
+    bssSegment.release();
+}
+
 void Module::addPublicSourceFile(SourceFile* file)
 {
     scoped_lock lk(mutexFile);

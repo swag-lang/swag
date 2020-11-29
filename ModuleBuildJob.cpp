@@ -531,11 +531,7 @@ JobResult ModuleBuildJob::execute()
         }
     }
 
-    // This will wake up dependencies
-    module->constantSegment.release();
-    module->constantSegmentCompiler.release();
-    module->mutableSegment.release();
-
+    module->release();
     module->sendCompilerMessage(CompilerMsgKind::PassAllDone, this);
     module->setHasBeenBuilt(BUILDRES_FULL);
 
