@@ -106,8 +106,10 @@ void* Allocator::tryBucket(uint32_t bucket, int size)
         auto ptr                  = (int8_t*) freeBuckets[bucket] + size;
         *(void**) ptr             = freeBuckets[wastedBucket];
         freeBuckets[wastedBucket] = ptr;
-        freeBucketsCpt[wastedBucket]--;
+        freeBucketsCpt[wastedBucket]++;
     }
+    else if (wasted)
+        return nullptr;
 
     g_Stats.wastedMemory -= bucket * 8;
     auto result         = freeBuckets[bucket];
@@ -130,6 +132,10 @@ void* Allocator::alloc(int size)
         auto result = tryBucket(bucket, size);
         if (result)
             return result;
+        // Try to split the biggest bucket
+        result = tryBucket(MAX_FREE_BUCKETS - 1, size);
+        if (result)
+            return result;
     }
 
     // Try the first free block
@@ -144,6 +150,14 @@ void* Allocator::alloc(int size)
     // Do we need to allocate a new data block ?
     if (!lastBucket || lastBucket->maxUsed + size >= lastBucket->allocated)
     {
+        // Try other big buckets
+        for (int i = MAX_FREE_BUCKETS - 2; i > bucket + 4; i--)
+        {
+            result = tryBucket(i, size);
+            if (result)
+                return result;
+        }
+
         // Magic number
         result = tryFreeBlock(8, size);
         if (result)
