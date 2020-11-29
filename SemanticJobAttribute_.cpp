@@ -133,7 +133,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeInfo->attributes.hasAttribute("swag.attributeMulti"))
             {
-                if (result.isHere.find(typeInfo) != result.isHere.end())
+                if (result.isHere.contains(typeInfo))
                 {
                     Diagnostic diag{forNode, forNode->token, format("attribute '%s' assigned twice to '%s' ('swag.attributeMulti' is not present in the declaration of '%s')", child->name.c_str(), forNode->name.c_str(), child->name.c_str())};
                     Diagnostic note{child, child->token, "this is the faulty attribute", DiagnosticLevel::Note};

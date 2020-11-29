@@ -54,8 +54,8 @@ struct OneAttribute
 
 struct SymbolAttributes
 {
-    set<TypeInfoFuncAttr*> isHere;
-    vector<OneAttribute>   attributes;
+    VectorNative<TypeInfoFuncAttr*> isHere;
+    vector<OneAttribute>            attributes;
 
     OneAttribute* getAttribute(const Utf8& fullName);
     bool          getValue(const Utf8& fullName, const Utf8& parameter, ComputedValue& value);
