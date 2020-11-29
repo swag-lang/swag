@@ -7,12 +7,12 @@
 void ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 {
     auto  maxReg = context->bc->maxReservedRegisterRC;
-    auto& regs   = context->tmpBufInst;
+    auto& regs   = context->vecInst;
     regs.reserve(maxReg);
     regs.count = maxReg;
     memset(regs.buffer, 0, maxReg * sizeof(void*));
 
-    auto& regsRW = context->tmpBufU64;
+    auto& regsRW = context->vecU64;
     regsRW.reserve(maxReg);
     regsRW.count = maxReg;
     memset(regsRW.buffer, 0, maxReg * sizeof(uint64_t));

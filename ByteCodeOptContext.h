@@ -12,20 +12,30 @@ struct ByteCodeOptContext
     ByteCode*                          bc;
     VectorNative<ByteCodeInstruction*> jumps;
     VectorNative<ByteCodeInstruction*> nops;
-    VectorNative<ByteCodeInstruction*> tmpBufInst;
-    VectorNative<uint64_t>             tmpBufU64;
-    bool                               allPassesHaveDoneSomething = false;
-    bool                               passHasDoneSomething       = false;
-    bool                               hasError                   = false;
-    ByteCodeGenContext*                semContext                 = nullptr;
+
+    VectorNative<ByteCodeInstruction*>                  vecInst;
+    VectorNative<uint64_t>                              vecU64;
+    map<uint32_t, uint32_t>                             mapU32U32;
+    map<uint32_t, ByteCodeInstruction*>                 mapU32InstA;
+    map<uint32_t, ByteCodeInstruction*>                 mapU32InstB;
+    map<uint32_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
+
+    bool                allPassesHaveDoneSomething = false;
+    bool                passHasDoneSomething       = false;
+    bool                hasError                   = false;
+    ByteCodeGenContext* semContext                 = nullptr;
 
     void reset()
     {
         bc = nullptr;
         jumps.clear();
         nops.clear();
-        tmpBufInst.clear();
-        tmpBufU64.clear();
+        vecInst.clear();
+        vecU64.clear();
+        mapU32U32.clear();
+        mapU32InstA.clear();
+        mapU32InstB.clear();
+        mapCst.clear();
         allPassesHaveDoneSomething = false;
         passHasDoneSomething       = false;
         hasError                   = false;

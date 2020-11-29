@@ -6,8 +6,10 @@
 
 void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
 {
-    map<uint32_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
-    map<uint32_t, uint32_t>                             mapCstReg;
+    auto& mapCst = context->mapCst;
+    mapCst.clear();
+    auto& mapCstReg = context->mapU32U32;
+    mapCstReg.clear();
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {

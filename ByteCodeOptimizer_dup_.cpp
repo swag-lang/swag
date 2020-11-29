@@ -7,8 +7,11 @@
 // then the second CopyRBRA is useless
 void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
 {
-    map<uint32_t, ByteCodeInstruction*> mapCopyRA;
-    map<uint32_t, ByteCodeInstruction*> mapCopyRB;
+    auto& mapCopyRA = context->mapU32InstA;
+    auto& mapCopyRB = context->mapU32InstB;
+    mapCopyRA.clear();
+    mapCopyRB.clear();
+
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         if (ip->flags & BCI_START_STMT || isJump(ip))
