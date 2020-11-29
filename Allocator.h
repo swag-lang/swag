@@ -1,7 +1,7 @@
 #pragma once
 #include "Assert.h"
 #include "Stats.h"
-#define ALLOCATOR_BUCKET_SIZE 128 * 1024
+#define ALLOCATOR_BUCKET_SIZE 1024 * 1024
 #define MAX_FREE_BUCKETS 256 / 8
 
 struct AllocatorBucket
