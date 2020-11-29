@@ -205,4 +205,10 @@ struct VectorNative
 
         return false;
     }
+
+    void insert(T value)
+    {
+        if (!contains(value))
+            push_back(value);
+    }
 };

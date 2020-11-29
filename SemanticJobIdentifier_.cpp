@@ -2333,7 +2333,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, unordered_set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode)
+void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode)
 {
     if (!startNode->alternativeScopes.empty())
     {
@@ -2344,9 +2344,9 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, uno
             SWAG_RACE_CONDITION_READ(startNode->raceConditionAlternativeScopes);
             for (auto p : startNode->alternativeScopes)
             {
-                if (scopes.find(p) == scopes.end())
+                if (!scopes.contains(p))
                 {
-                    scopes.insert(p);
+                    scopes.push_back(p);
                     here.push_back(p);
                 }
             }
@@ -2368,7 +2368,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, uno
     }
 }
 
-bool SemanticJob::collectScopeHierarchy(SemanticContext* context, unordered_set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
+bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
     auto& here       = job->scopesHere;
@@ -2442,9 +2442,9 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, unordered_set<
             if (scope->parentScope->kind == ScopeKind::Struct && (flags & COLLECT_NO_STRUCT))
                 continue;
 
-            if (scopes.find(scope->parentScope) == scopes.end())
+            if (!scopes.contains(scope->parentScope))
             {
-                scopes.insert(scope->parentScope);
+                scopes.push_back(scope->parentScope);
                 here.push_back(scope->parentScope);
             }
         }

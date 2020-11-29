@@ -111,8 +111,8 @@ struct SemanticJob : public Job
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
     static bool collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes& result);
     static bool collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes& result, AstAttrUse* attrUse);
-    static void collectAlternativeScopeHierarchy(SemanticContext* context, unordered_set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode);
-    static bool collectScopeHierarchy(SemanticContext* context, unordered_set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
+    static void collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode);
+    static bool collectScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr);
     static bool derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload, DataSegment* segment);
@@ -312,14 +312,14 @@ struct SemanticJob : public Job
     }
 
     VectorNative<AstNode*>         tmpNodes;
-    unordered_set<SymbolName*>     cacheDependentSymbols;
-    unordered_set<SymbolName*>     cacheToAddSymbols;
-    unordered_set<Scope*>          cacheScopeHierarchy;
+    VectorNative<SymbolName*>      cacheDependentSymbols;
+    VectorNative<SymbolName*>      cacheToAddSymbols;
+    VectorNative<Scope*>           cacheScopeHierarchy;
     VectorNative<AlternativeScope> cacheScopeHierarchyVars;
     VectorNative<Scope*>           scopesHere;
+    VectorNative<OneOverload>      cacheToSolveOverload;
     vector<OneMatch>               cacheMatches;
     vector<OneGenericMatch>        cacheGenericMatches;
-    VectorNative<OneOverload>      cacheToSolveOverload;
     vector<OneTryMatch*>           cacheListTryMatch;
     vector<OneTryMatch*>           cacheFreeTryMatch;
     SemanticContext                context;
