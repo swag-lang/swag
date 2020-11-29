@@ -2226,7 +2226,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         // case that number changes (other thread) during the resolution. Because if the number of overloads differs
         // at one point in the process (for a given symbol), then this will invalidate the resolution
         // (number of overloads can change when instantiating a generic)
-        VectorNative<OneOverload> toSolveOverload;
+        auto& toSolveOverload = job->cacheToSolveOverload;
+        toSolveOverload.clear();
         for (auto symbol : dependentSymbols)
         {
             unique_lock lk(symbol->mutex);
@@ -2243,7 +2244,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (toSolveOverload.empty())
             return context->report({node, node->token, format("cannot resolve identifier '%s'", node->name.c_str())});
 
-        vector<OneTryMatch> listTryMatch;
+        auto& listTryMatch = job->cacheListTryMatch;
+        listTryMatch.clear();
         for (auto& oneOver : toSolveOverload)
         {
             auto symbolOverload                   = oneOver.overload;

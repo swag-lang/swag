@@ -47,6 +47,7 @@ void* Allocator::tryFreeBlock(uint32_t maxCount, int size)
                     auto next                     = freeBuckets[bucket];
                     freeBuckets[bucket]           = split;
                     *(void**) freeBuckets[bucket] = next;
+                    freeBucketsCpt[bucket]++;
 
                     if (prevBlock)
                         prevBlock->next = tryBlock->next;
@@ -89,24 +90,46 @@ void* Allocator::tryFreeBlock(uint32_t maxCount, int size)
     return nullptr;
 }
 
+void* Allocator::tryBucket(uint32_t bucket, int size)
+{
+    if (bucket >= MAX_FREE_BUCKETS)
+        return nullptr;
+    if (!freeBuckets[bucket])
+        return nullptr;
+
+    // If the bucket size is greater than the real size, then put the remaining
+    // memory size in the corresponding bucket
+    auto wasted = (bucket * 8) - size;
+    if (wasted > 32)
+    {
+        auto wastedBucket         = wasted / 8;
+        auto ptr                  = (int8_t*) freeBuckets[bucket] + size;
+        *(void**) ptr             = freeBuckets[wastedBucket];
+        freeBuckets[wastedBucket] = ptr;
+        freeBucketsCpt[wastedBucket]--;
+    }
+
+    g_Stats.wastedMemory -= bucket * 8;
+    auto result         = freeBuckets[bucket];
+    freeBuckets[bucket] = *(void**) result;
+    if (g_CommandLine.devMode)
+        memset(result, 0xCC, size);
+    freeBucketsCpt[bucket]--;
+
+    return result;
+}
+
 void* Allocator::alloc(int size)
 {
     SWAG_ASSERT((size & 7) == 0);
 
     int bucket = size / 8;
-
-    // Try in the list of free blocks, per bucket
     if (bucket < MAX_FREE_BUCKETS)
     {
-        if (freeBuckets[bucket])
-        {
-            g_Stats.wastedMemory -= bucket * 8;
-            auto result         = freeBuckets[bucket];
-            freeBuckets[bucket] = *(void**) result;
-            if (g_CommandLine.devMode)
-                memset(result, 0xCC, size);
+        // Try in the list of free blocks, per bucket
+        auto result = tryBucket(bucket, size);
+        if (result)
             return result;
-        }
     }
 
     // Try the first free block
@@ -140,8 +163,9 @@ void* Allocator::alloc(int size)
             bucket = remain / 8;
             if (bucket < MAX_FREE_BUCKETS)
             {
-                auto next                     = freeBuckets[bucket];
-                freeBuckets[bucket]           = lastBucket->data + lastBucket->maxUsed;
+                auto next           = freeBuckets[bucket];
+                freeBuckets[bucket] = lastBucket->data + lastBucket->maxUsed;
+                freeBucketsCpt[bucket]++;
                 *(void**) freeBuckets[bucket] = next;
             }
             else
@@ -194,6 +218,7 @@ void Allocator::free(void* ptr, int size)
     {
         *(void**) ptr      = freeBuckets[bsize];
         freeBuckets[bsize] = ptr;
+        freeBucketsCpt[bsize]++;
         return;
     }
 

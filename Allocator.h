@@ -16,6 +16,7 @@ struct Allocator
     Allocator()
     {
         memset(freeBuckets, 0, sizeof(freeBuckets));
+        memset(freeBucketsCpt, 0, sizeof(freeBucketsCpt));
     }
 
     template<typename T>
@@ -41,6 +42,7 @@ struct Allocator
     void  free(void*, int size);
     void* alloc(int size);
 
+    void* tryBucket(uint32_t bucket, int size);
     void* tryFreeBlock(uint32_t maxCount, int size);
 
     typedef struct FreeBlock
@@ -53,6 +55,7 @@ struct Allocator
     AllocatorBucket* lastBucket     = nullptr;
     uint8_t*         currentData    = nullptr;
     void*            freeBuckets[MAX_FREE_BUCKETS];
+    int              freeBucketsCpt[MAX_FREE_BUCKETS];
 };
 
 extern thread_local Allocator g_Allocator;
