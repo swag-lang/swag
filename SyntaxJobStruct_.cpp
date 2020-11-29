@@ -391,7 +391,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(stmt, structType));
         SWAG_CHECK(eatToken(TokenId::SymRightCurly));
-        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         return true;
     }
 
@@ -399,23 +399,23 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
     {
     case TokenId::CompilerAssert:
         SWAG_CHECK(doCompilerAssert(parent, result));
-        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         break;
     case TokenId::CompilerRun:
         SWAG_CHECK(doCompilerRunEmbedded(parent, result));
-        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         break;
     case TokenId::CompilerPrint:
         SWAG_CHECK(doCompilerPrint(parent, result));
-        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         break;
     case TokenId::CompilerAst:
         SWAG_CHECK(doCompilerAst(parent, result, CompilerAstKind::StructVarDecl));
-        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         break;
     case TokenId::CompilerIf:
         SWAG_CHECK(doCompilerIfFor(parent, result, AstNodeKind::StructDecl));
-        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         break;
 
     case TokenId::SymLeftCurly:
@@ -427,7 +427,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         AstAttrUse* attrUse;
         SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
         SWAG_CHECK(doStructBody(attrUse, structType, &attrUse->content));
-        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         setOwnerAttrUse(attrUse, attrUse->content);
         break;
     }
@@ -457,7 +457,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         SWAG_CHECK(eatToken());
 
         auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-        parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         if (result)
             *result = stmt;
 
