@@ -560,7 +560,7 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = llvm->perThread[ct][precompileIndex];
+    auto& pp              = *llvm->perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
     auto  module          = llvm->module;

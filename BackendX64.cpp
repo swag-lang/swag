@@ -10,7 +10,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
     // Coff header
@@ -183,7 +183,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
 
     if (precompileIndex == 0)
     {
@@ -248,10 +248,13 @@ void BackendX64::alignConcat(Concat& concat, uint32_t align)
 
 JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+    if (!perThread[ct][precompileIndex])
+        perThread[ct][precompileIndex] = new X64PerThread;
+
+    auto& pp     = *perThread[ct][precompileIndex];
+    auto& concat = pp.concat;
 
     // Message
     if (pp.pass == BackendPreCompilePass::Init && buildParameters.precompileIndex == 0)
@@ -269,7 +272,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         pp.filename += ".obj";
 
         if (g_CommandLine.verbose)
-            g_Log.verbosePass(LogPassType::Info, "X64 precompile", perThread[ct][precompileIndex].filename);
+            g_Log.verbosePass(LogPassType::Info, "X64 precompile", pp.filename);
 
         emitHeader(buildParameters);
         createRuntime(buildParameters);
@@ -486,7 +489,7 @@ bool BackendX64::emitXData(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
     alignConcat(concat, 16);
@@ -528,7 +531,7 @@ bool BackendX64::emitPData(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
     alignConcat(concat, 16);
@@ -570,7 +573,7 @@ bool BackendX64::emitDirectives(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
     if (pp.directives.empty())
@@ -585,7 +588,7 @@ bool BackendX64::emitSymbolTable(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
     *pp.patchSymbolTableOffset = concat.totalCount();
@@ -654,7 +657,7 @@ bool BackendX64::emitStringTable(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
     concat.addU32(pp.stringTableOffset); // .Size of table in bytes + 4
@@ -735,7 +738,7 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
 
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
 
     auto targetPath = Backend::getCacheFolder(buildParameters);
     auto path       = targetPath + "/" + pp.filename;
@@ -848,7 +851,7 @@ bool BackendX64::generateOutput(const BuildParameters& buildParameters)
     vector<string> files;
     files.reserve(numPreCompileBuffers);
     for (auto i = 0; i < numPreCompileBuffers; i++)
-        files.push_back(perThread[buildParameters.compileType][i].filename);
+        files.push_back(perThread[buildParameters.compileType][i]->filename);
     auto result = OS::link(buildParameters, module, files);
     return result;
 }

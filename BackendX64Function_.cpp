@@ -119,7 +119,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
     alignConcat(concat, 16);
@@ -322,7 +322,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
     auto  typeFunc        = bc->callType();
     bool  ok              = true;

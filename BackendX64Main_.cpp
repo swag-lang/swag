@@ -11,7 +11,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
     alignConcat(concat, 16);
@@ -35,7 +35,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
     alignConcat(concat, 16);
@@ -174,7 +174,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
     alignConcat(concat, 16);
@@ -244,7 +244,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
     alignConcat(concat, 16);

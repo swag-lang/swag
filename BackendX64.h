@@ -163,6 +163,7 @@ struct BackendX64 : public Backend
     BackendX64(Module* mdl)
         : Backend{mdl}
     {
+        memset(perThread, 0, sizeof(perThread));
     }
 
     bool                    createRuntime(const BuildParameters& buildParameters);
@@ -211,5 +212,5 @@ struct BackendX64 : public Backend
 
     void registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind);
 
-    X64PerThread perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
+    X64PerThread* perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

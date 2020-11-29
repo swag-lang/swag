@@ -79,7 +79,8 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& context         = *perThread[ct][precompileIndex].context;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
 
     typeInfo  = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
     *llvmType = nullptr;
@@ -174,7 +175,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& context         = *pp.context;
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
@@ -360,7 +361,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& pp       = perThread[ct][precompileIndex];
+    auto& pp       = *perThread[ct][precompileIndex];
     auto& context  = *pp.context;
     auto& builder  = *pp.builder;
     auto& modu     = *pp.module;
@@ -3064,7 +3065,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
 
     for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
@@ -3092,7 +3093,8 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& context         = *perThread[ct][precompileIndex].context;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
 
     VectorNative<llvm::Type*> params;
     for (int i = 0; i < numParams; i++)
@@ -3105,7 +3107,8 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& context         = *perThread[ct][precompileIndex].context;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
 
     VectorNative<llvm::Type*> params;
 
@@ -3128,7 +3131,7 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
 
     VectorNative<llvm::Type*> params;
@@ -3203,7 +3206,7 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& context         = *pp.context;
     auto& builder         = *pp.builder;
 
@@ -3311,7 +3314,7 @@ bool BackendLLVM::getForeignCallReturnValue(const BuildParameters& buildParamete
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& context         = *pp.context;
     auto& builder         = *pp.builder;
 
@@ -3356,7 +3359,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
 

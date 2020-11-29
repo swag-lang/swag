@@ -13,7 +13,7 @@ bool BackendX64::buildRelocMutableSegment(const BuildParameters& buildParameters
 
     int            ct              = buildParameters.compileType;
     int            precompileIndex = buildParameters.precompileIndex;
-    auto&          pp              = perThread[ct][precompileIndex];
+    auto&          pp              = *perThread[ct][precompileIndex];
     CoffRelocation reloc;
 
     SWAG_ASSERT(precompileIndex == 0);
@@ -49,7 +49,7 @@ bool BackendX64::buildRelocTypeSegment(const BuildParameters& buildParameters, D
 
     int            ct              = buildParameters.compileType;
     int            precompileIndex = buildParameters.precompileIndex;
-    auto&          pp              = perThread[ct][precompileIndex];
+    auto&          pp              = *perThread[ct][precompileIndex];
     CoffRelocation reloc;
 
     SWAG_ASSERT(precompileIndex == 0);
@@ -85,7 +85,7 @@ bool BackendX64::buildRelocConstantSegment(const BuildParameters& buildParameter
 
     int            ct              = buildParameters.compileType;
     int            precompileIndex = buildParameters.precompileIndex;
-    auto&          pp              = perThread[ct][precompileIndex];
+    auto&          pp              = *perThread[ct][precompileIndex];
     CoffRelocation reloc;
 
     SWAG_ASSERT(precompileIndex == 0);

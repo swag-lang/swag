@@ -11,7 +11,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& context         = *pp.context;
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
@@ -56,7 +56,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& context         = *pp.context;
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
@@ -216,7 +216,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& pp      = perThread[ct][precompileIndex];
+    auto& pp      = *perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
@@ -268,7 +268,7 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
 
-    auto& pp      = perThread[ct][precompileIndex];
+    auto& pp      = *perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
     auto  modu    = pp.module;

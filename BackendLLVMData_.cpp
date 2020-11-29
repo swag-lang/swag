@@ -14,7 +14,7 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
 
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& context         = *pp.context;
     auto& modu            = *pp.module;
 
@@ -88,7 +88,7 @@ bool BackendLLVM::emitInitMutableSeg(const BuildParameters& buildParameters)
     int precompileIndex = buildParameters.precompileIndex;
     SWAG_ASSERT(precompileIndex == 0);
 
-    auto& pp      = perThread[ct][precompileIndex];
+    auto& pp      = *perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
@@ -133,7 +133,7 @@ bool BackendLLVM::emitInitTypeSeg(const BuildParameters& buildParameters)
     int precompileIndex = buildParameters.precompileIndex;
     SWAG_ASSERT(precompileIndex == 0);
 
-    auto& pp      = perThread[ct][precompileIndex];
+    auto& pp      = *perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
@@ -177,7 +177,7 @@ bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
     int precompileIndex = buildParameters.precompileIndex;
     SWAG_ASSERT(precompileIndex == 0);
 
-    auto& pp      = perThread[ct][precompileIndex];
+    auto& pp      = *perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;

@@ -9,8 +9,10 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
+    if (!perThread[ct][precompileIndex])
+        perThread[ct][precompileIndex] = new LLVMPerThread;
 
-    auto& pp      = perThread[ct][precompileIndex];
+    auto& pp      = *perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& modu    = *pp.module;
 
@@ -136,9 +138,11 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 
 JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+    if (!perThread[ct][precompileIndex])
+        perThread[ct][precompileIndex] = new LLVMPerThread;
+    auto& pp = *perThread[ct][precompileIndex];
 
     // Message
     if (pp.pass == BackendPreCompilePass::Init && buildParameters.precompileIndex == 0)
@@ -166,7 +170,7 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
         }
 
         if (g_CommandLine.verbose)
-            g_Log.verbosePass(LogPassType::Info, "LLVM precompile", perThread[ct][precompileIndex].filename);
+            g_Log.verbosePass(LogPassType::Info, "LLVM precompile", pp.filename);
 
         createRuntime(buildParameters);
         emitDataSegment(buildParameters, &module->bssSegment);
@@ -210,7 +214,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = perThread[ct][precompileIndex];
+    auto& pp              = *perThread[ct][precompileIndex];
     auto& modu            = *pp.module;
 
     // Debug infos
@@ -297,6 +301,6 @@ bool BackendLLVM::generateOutput(const BuildParameters& buildParameters)
     vector<string> files;
     files.reserve(numPreCompileBuffers);
     for (auto i = 0; i < numPreCompileBuffers; i++)
-        files.push_back(perThread[buildParameters.compileType][i].filename);
+        files.push_back(perThread[buildParameters.compileType][i]->filename);
     return OS::link(buildParameters, module, files);
 }

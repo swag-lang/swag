@@ -103,6 +103,7 @@ struct BackendLLVM : public Backend
     BackendLLVM(Module* mdl)
         : Backend{mdl}
     {
+        memset(perThread, 0, sizeof(perThread));
     }
 
     JobResult               prepareOutput(const BuildParameters& buildParameters, Job* ownerJob) override;
@@ -136,5 +137,5 @@ struct BackendLLVM : public Backend
 
     llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int32_t ip);
 
-    LLVMPerThread perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
+    LLVMPerThread* perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };
