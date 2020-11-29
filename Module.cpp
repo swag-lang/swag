@@ -133,7 +133,7 @@ void Module::allocateBackend()
 
     // Allocate backend, even if we do not want to output, because the backend can be used
     // to know if a build is necessary
-    if (!hasUnittestError && buildPass >= BuildPass::Backend)
+    if (!hasUnittestError && buildPass >= BuildPass::Backend && !isRuntime && !isBootStrap)
     {
         switch (g_CommandLine.backendType)
         {
