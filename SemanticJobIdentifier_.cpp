@@ -1125,8 +1125,8 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     auto& matches        = job->cacheMatches;
     auto& genericMatches = job->cacheGenericMatches;
 
-    matches.clear();
-    genericMatches.clear();
+    job->clearMatch();
+    job->clearGenericMatch();
     job->bestSignatureInfos.clear();
 
     bool forStruct = false;
@@ -1155,13 +1155,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             {
                 SWAG_ASSERT(symbol->overloads.size() == 1);
 
-                OneMatch match;
-                match.symbolName       = symbol;
-                match.symbolOverload   = overload;
-                match.solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
-                match.dependentVar     = dependentVar;
-                match.ufcs             = oneOverload.ufcs;
-                matches.emplace_back(match);
+                auto match              = job->getOneMatch();
+                match->symbolName       = symbol;
+                match->symbolOverload   = overload;
+                match->solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
+                match->dependentVar     = dependentVar;
+                match->ufcs             = oneOverload.ufcs;
+                matches.push_back(match);
                 continue;
             }
         }
@@ -1284,26 +1284,26 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         {
             if (overload->flags & OVERLOAD_GENERIC)
             {
-                OneGenericMatch match;
-                match.flags                        = oneOverload.symMatchContext.flags;
-                match.symbolName                   = symbol;
-                match.symbolOverload               = overload;
-                match.genericParametersCallTypes   = move(oneOverload.symMatchContext.genericParametersCallTypes);
-                match.genericParametersGenTypes    = move(oneOverload.symMatchContext.genericParametersGenTypes);
-                match.genericReplaceTypes          = move(oneOverload.symMatchContext.genericReplaceTypes);
-                match.genericParameters            = genericParameters;
-                match.matchNumOverloadsWhenChecked = oneOverload.cptOverloads;
-                genericMatches.emplace_back(match);
+                auto* match                         = job->getOneGenericMatch();
+                match->flags                        = oneOverload.symMatchContext.flags;
+                match->symbolName                   = symbol;
+                match->symbolOverload               = overload;
+                match->genericParametersCallTypes   = move(oneOverload.symMatchContext.genericParametersCallTypes);
+                match->genericParametersGenTypes    = move(oneOverload.symMatchContext.genericParametersGenTypes);
+                match->genericReplaceTypes          = move(oneOverload.symMatchContext.genericReplaceTypes);
+                match->genericParameters            = genericParameters;
+                match->matchNumOverloadsWhenChecked = oneOverload.cptOverloads;
+                genericMatches.push_back(match);
             }
             else
             {
-                OneMatch match;
-                match.symbolName       = symbol;
-                match.symbolOverload   = overload;
-                match.solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
-                match.dependentVar     = dependentVar;
-                match.ufcs             = oneOverload.ufcs;
-                matches.emplace_back(match);
+                auto match              = job->getOneMatch();
+                match->symbolName       = symbol;
+                match->symbolOverload   = overload;
+                match->solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
+                match->dependentVar     = dependentVar;
+                match->ufcs             = oneOverload.ufcs;
+                matches.push_back(match);
             }
         }
     }
@@ -1313,7 +1313,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
-        SWAG_CHECK(instantiateGenericSymbol(context, genericMatches[0], forStruct));
+        SWAG_CHECK(instantiateGenericSymbol(context, *genericMatches[0], forStruct));
         return true;
     }
 
@@ -1325,7 +1325,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         vector<const Diagnostic*> notes;
         for (auto match : genericMatches)
         {
-            auto overload               = match.symbolOverload;
+            auto overload               = match->symbolOverload;
             auto couldBe                = "could be: " + Ast::computeTypeDisplay(overload->node->token.text, overload->typeInfo);
             auto note                   = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
             note->showRange             = false;
@@ -1371,7 +1371,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         vector<const Diagnostic*> notes;
         for (auto match : matches)
         {
-            auto overload               = match.symbolOverload;
+            auto overload               = match->symbolOverload;
             auto couldBe                = "could be: " + Ast::computeTypeDisplay(overload->node->token.text, overload->typeInfo);
             auto note                   = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
             note->showRange             = false;
@@ -1444,10 +1444,10 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
         }
         else
         {
-            OneMatch oneMatch;
-            oneMatch.symbolName     = firstMatch.symbolName;
-            oneMatch.symbolOverload = firstMatch.symbolOverload;
-            matches.emplace_back(oneMatch);
+            auto oneMatch            = job->getOneMatch();
+            oneMatch->symbolName     = firstMatch.symbolName;
+            oneMatch->symbolOverload = firstMatch.symbolOverload;
+            matches.push_back(oneMatch);
             node->flags |= AST_IS_GENERIC;
         }
     }
@@ -1925,7 +1925,7 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
     return true;
 }
 
-bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matches)
+bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
     if (matches.size() == 1)
         return true;
@@ -1934,41 +1934,41 @@ bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matc
     for (int i = 0; i < matches.size(); i++)
     {
         // Priority to a concrete type versus a generic one
-        auto lastOverloadType = matches[i].symbolName->ownerTable->scope->owner->typeInfo;
+        auto lastOverloadType = matches[i]->symbolName->ownerTable->scope->owner->typeInfo;
         if (lastOverloadType && lastOverloadType->flags & TYPEINFO_GENERIC)
         {
             for (int j = 0; j < matches.size(); j++)
             {
-                auto newOverloadType = matches[j].symbolName->ownerTable->scope->owner->typeInfo;
+                auto newOverloadType = matches[j]->symbolName->ownerTable->scope->owner->typeInfo;
                 if (newOverloadType && !(newOverloadType->flags & TYPEINFO_GENERIC))
                 {
-                    matches[i].remove = true;
+                    matches[i]->remove = true;
                     break;
                 }
             }
         }
 
         // Priority to a non IMPL symbol
-        if (matches[i].symbolOverload->flags & OVERLOAD_IMPL)
+        if (matches[i]->symbolOverload->flags & OVERLOAD_IMPL)
         {
             for (int j = 0; j < matches.size(); j++)
             {
-                if (!(matches[j].symbolOverload->flags & OVERLOAD_IMPL))
+                if (!(matches[j]->symbolOverload->flags & OVERLOAD_IMPL))
                 {
-                    matches[i].remove = true;
+                    matches[i]->remove = true;
                     break;
                 }
             }
         }
 
         // Priority to a user generic parameters, instead of a copy one
-        if (matches[i].symbolOverload->node->flags & AST_GENERATED_GENERIC_PARAM)
+        if (matches[i]->symbolOverload->node->flags & AST_GENERATED_GENERIC_PARAM)
         {
             for (int j = 0; j < matches.size(); j++)
             {
-                if (!(matches[j].symbolOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
+                if (!(matches[j]->symbolOverload->node->flags & AST_GENERATED_GENERIC_PARAM))
                 {
-                    matches[i].remove = true;
+                    matches[i]->remove = true;
                     break;
                 }
             }
@@ -1977,13 +1977,13 @@ bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matc
         // Priority to the same inline scope
         if (node->ownerInline)
         {
-            if (!matches[i].symbolOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope))
+            if (!matches[i]->symbolOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope))
             {
                 for (int j = 0; j < matches.size(); j++)
                 {
-                    if (matches[j].symbolOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope))
+                    if (matches[j]->symbolOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope))
                     {
-                        matches[i].remove = true;
+                        matches[i]->remove = true;
                         break;
                     }
                 }
@@ -1991,32 +1991,32 @@ bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matc
         }
 
         // Priority to the same stack frame
-        if (!node->isSameStackFrame(matches[i].symbolOverload))
+        if (!node->isSameStackFrame(matches[i]->symbolOverload))
         {
             for (int j = 0; j < matches.size(); j++)
             {
-                if (node->isSameStackFrame(matches[j].symbolOverload))
+                if (node->isSameStackFrame(matches[j]->symbolOverload))
                 {
-                    matches[i].remove = true;
+                    matches[i]->remove = true;
                     break;
                 }
             }
         }
 
         // If we didn't match with ufcs, then priority to a match that do not start with 'self'
-        if (!matches[i].ufcs && matches[i].symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
+        if (!matches[i]->ufcs && matches[i]->symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
         {
-            auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(matches[i].symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+            auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(matches[i]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeFunc0->parameters.empty() && typeFunc0->parameters[0]->typeInfo->flags & TYPEINFO_SELF)
             {
                 for (int j = 0; j < matches.size(); j++)
                 {
-                    if (matches[j].symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
+                    if (matches[j]->symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
                     {
-                        auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j].symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+                        auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
                         if (typeFunc1->parameters.empty() || !(typeFunc1->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
                         {
-                            matches[i].remove = true;
+                            matches[i]->remove = true;
                             break;
                         }
                     }
@@ -2025,19 +2025,19 @@ bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matc
         }
 
         // If we did match with ufcs, then priority to a match that starts with 'self'
-        if (matches[i].ufcs && matches[i].symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
+        if (matches[i]->ufcs && matches[i]->symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
         {
-            auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(matches[i].symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+            auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(matches[i]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc0->parameters.empty() || !(typeFunc0->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
             {
                 for (int j = 0; j < matches.size(); j++)
                 {
-                    if (matches[j].symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
+                    if (matches[j]->symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
                     {
-                        auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j].symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+                        auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
                         if (!typeFunc1->parameters.empty() && (typeFunc1->parameters[0]->typeInfo->flags & TYPEINFO_SELF))
                         {
-                            matches[i].remove = true;
+                            matches[i]->remove = true;
                             break;
                         }
                     }
@@ -2049,7 +2049,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matc
     // Eliminate all matches tag as 'remove'
     for (int i = 0; i < matches.size(); i++)
     {
-        if (matches[i].remove)
+        if (matches[i]->remove)
         {
             matches[i] = matches.back();
             matches.pop_back();
@@ -2311,25 +2311,25 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     // Deal with ufcs. Now that the match is done, we will change the ast in order to
     // add the ufcs parameters to the function call parameters
     auto& match = job->cacheMatches[0];
-    if (match.ufcs)
+    if (match->ufcs)
     {
         // Do not change AST if this is code inside a generic function
         if (!node->ownerFct || !(node->ownerFct->flags & AST_IS_GENERIC))
         {
-            if (match.dependentVar)
+            if (match->dependentVar)
             {
-                identifierRef->resolvedSymbolOverload = match.dependentVar->resolvedSymbolOverload;
-                identifierRef->resolvedSymbolName     = match.dependentVar->resolvedSymbolOverload->symbol;
-                identifierRef->previousResolvedNode   = match.dependentVar;
+                identifierRef->resolvedSymbolOverload = match->dependentVar->resolvedSymbolOverload;
+                identifierRef->resolvedSymbolName     = match->dependentVar->resolvedSymbolOverload->symbol;
+                identifierRef->previousResolvedNode   = match->dependentVar;
             }
 
-            SWAG_CHECK(ufcsSetLastParam(context, identifierRef, match.symbolName));
-            SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, match));
+            SWAG_CHECK(ufcsSetLastParam(context, identifierRef, match->symbolName));
+            SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, *match));
         }
     }
 
-    node->typeInfo = match.symbolOverload->typeInfo;
-    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, match));
+    node->typeInfo = match->symbolOverload->typeInfo;
+    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, *match));
     return true;
 }
 

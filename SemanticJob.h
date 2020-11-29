@@ -63,8 +63,19 @@ struct OneMatch
     SymbolName*     symbolName     = nullptr;
     SymbolOverload* symbolOverload = nullptr;
     AstNode*        dependentVar   = nullptr;
-    bool            ufcs           = false;
-    bool            remove         = false;
+
+    bool ufcs   = false;
+    bool remove = false;
+
+    void reset()
+    {
+        solvedParameters.clear();
+        symbolName     = nullptr;
+        symbolOverload = nullptr;
+        dependentVar   = nullptr;
+        ufcs           = false;
+        remove         = false;
+    }
 };
 
 struct OneGenericMatch
@@ -79,6 +90,18 @@ struct OneGenericMatch
 
     uint32_t matchNumOverloadsWhenChecked = 0;
     uint32_t flags                        = 0;
+
+    void reset()
+    {
+        genericParametersCallTypes.clear();
+        genericParametersGenTypes.clear();
+        genericReplaceTypes.clear();
+        symbolName                   = nullptr;
+        symbolOverload               = nullptr;
+        genericParameters            = nullptr;
+        matchNumOverloadsWhenChecked = 0;
+        flags                        = 0;
+    }
 };
 
 static const uint32_t COLLECT_ALL         = 0x00000000;
@@ -226,7 +249,7 @@ struct SemanticJob : public Job
     static bool resolveImpl(SemanticContext* context);
     static bool resolveImplFor(SemanticContext* context);
     static bool instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
-    static bool filterMatches(SemanticContext* context, vector<OneMatch>& matches);
+    static bool filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches);
     static bool filterSymbols(SemanticContext* context, AstIdentifier* node);
     static bool preResolveStruct(SemanticContext* context);
     static void flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);
@@ -311,6 +334,40 @@ struct SemanticJob : public Job
         return res;
     }
 
+    void clearMatch()
+    {
+        for (auto p : cacheMatches)
+            cacheFreeMatches.push_back(p);
+        cacheMatches.clear();
+    }
+
+    OneMatch* getOneMatch()
+    {
+        if (cacheFreeMatches.empty())
+            return new OneMatch;
+        auto res = cacheFreeMatches.back();
+        cacheFreeMatches.pop_back();
+        res->reset();
+        return res;
+    }
+
+    void clearGenericMatch()
+    {
+        for (auto p : cacheGenericMatches)
+            cacheFreeGenericMatches.push_back(p);
+        cacheGenericMatches.clear();
+    }
+
+    OneGenericMatch* getOneGenericMatch()
+    {
+        if (cacheFreeGenericMatches.empty())
+            return new OneGenericMatch;
+        auto res = cacheFreeGenericMatches.back();
+        cacheFreeGenericMatches.pop_back();
+        res->reset();
+        return res;
+    }
+
     VectorNative<AstNode*>         tmpNodes;
     VectorNative<SymbolName*>      cacheDependentSymbols;
     VectorNative<SymbolName*>      cacheToAddSymbols;
@@ -318,8 +375,10 @@ struct SemanticJob : public Job
     VectorNative<AlternativeScope> cacheScopeHierarchyVars;
     VectorNative<Scope*>           scopesHere;
     VectorNative<OneOverload>      cacheToSolveOverload;
-    vector<OneMatch>               cacheMatches;
-    vector<OneGenericMatch>        cacheGenericMatches;
+    VectorNative<OneMatch*>        cacheMatches;
+    VectorNative<OneMatch*>        cacheFreeMatches;
+    VectorNative<OneGenericMatch*> cacheGenericMatches;
+    VectorNative<OneGenericMatch*> cacheFreeGenericMatches;
     VectorNative<OneTryMatch*>     cacheListTryMatch;
     VectorNative<OneTryMatch*>     cacheFreeTryMatch;
     SemanticContext                context;
@@ -338,9 +397,10 @@ struct SemanticJob : public Job
         cacheScopeHierarchyVars.clear();
         cacheToAddSymbols.clear();
         scopesHere.clear();
-        cacheMatches.clear();
-        cacheGenericMatches.clear();
         context.reset();
+        clearTryMatch();
+        clearMatch();
+        clearGenericMatch();
     }
 
     void release() override

@@ -338,14 +338,14 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     }
 
     // Make the real cast for all the call parameters
-    auto& oneMatch = job->cacheMatches[0];
+    auto oneMatch = job->cacheMatches[0];
     for (int i = 0; i < params.size(); i++)
     {
-        if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
-            SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[i]->typeInfo, nullptr, params[i], CASTFLAG_UNCONST));
+        if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
+            SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, params[i], CASTFLAG_UNCONST));
     }
 
-    auto overload = oneMatch.symbolOverload;
+    auto overload = oneMatch->symbolOverload;
     if (!optionnal)
     {
         node->typeInfo                     = overload->typeInfo;
