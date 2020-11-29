@@ -416,11 +416,11 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
             node->bc->node       = node;
             node->bc->sourceFile = node->sourceFile;
             if (node->flags & AST_DEFINED_INTRINSIC)
-                node->bc->name = node->name;
+                node->bc->name = node->token.text;
             else if (node->sourceFile->isRuntimeFile)
-                node->bc->name = node->name.c_str();
+                node->bc->name = node->token.text.c_str();
             else
-                node->bc->name = node->ownerScope->getFullName() + "_" + node->name.c_str();
+                node->bc->name = node->ownerScope->getFullName() + "_" + node->token.text.c_str();
             node->bc->name.replaceAll('.', '_');
             if (node->kind == AstNodeKind::FuncDecl)
                 sourceFile->module->addByteCodeFunc(node->bc);
@@ -475,7 +475,7 @@ JobResult ByteCodeGenJob::execute()
     if (pass == Pass::Generate)
     {
         // Register SystemAllocator interface to the default bytecode context
-        if (sourceFile->isBootstrapFile && (originalNode->name == "SystemAllocator"))
+        if (sourceFile->isBootstrapFile && (originalNode->token.text == "SystemAllocator"))
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
             context.result  = ContextResult::Done;

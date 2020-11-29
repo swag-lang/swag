@@ -514,7 +514,7 @@ void Workspace::checkPendingJobs()
             if (pendingJob->waitingIdNode->typeInfo)
                 id += pendingJob->waitingIdNode->typeInfo->name;
             else
-                id += pendingJob->waitingIdNode->name;
+                id += pendingJob->waitingIdNode->token.text;
         }
 
         if (pendingJob->waitingIdType)
@@ -533,9 +533,9 @@ void Workspace::checkPendingJobs()
 
         // Job is not done, and we do not wait for a specific identifier
         auto toSolve = pendingJob->waitingSymbolSolved;
-        if (!toSolve && !node->name.empty())
+        if (!toSolve && !node->token.text.empty())
         {
-            Diagnostic diag{node, node->token, format("cannot resolve %s '%s'", AstNode::getKindName(node).c_str(), node->name.c_str())};
+            Diagnostic diag{node, node->token, format("cannot resolve %s '%s'", AstNode::getKindName(node).c_str(), node->token.text.c_str())};
             diag.codeComment = id;
             sourceFile->report(diag);
         }

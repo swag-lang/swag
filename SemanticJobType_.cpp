@@ -200,7 +200,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::TypeSet &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type (it's %s)", child->name.c_str(), SymTable::getArticleKindName(symName->kind))};
+                    Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type (it's %s)", child->token.text.c_str(), SymTable::getArticleKindName(symName->kind))};
                     Diagnostic note{symOver->node, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }
@@ -331,7 +331,7 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
             auto overload = back->resolvedSymbolOverload;
             if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
             {
-                Diagnostic diag(back, back->token, format("alias is public but '%s' is not", back->name.c_str()));
+                Diagnostic diag(back, back->token, format("alias is public but '%s' is not", back->token.text.c_str()));
                 Diagnostic note(overload->node, overload->node->token, format("this is the definition of '%s'", node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
                 return context->report(diag, &note);
             }
@@ -401,8 +401,8 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     auto typeInfo       = allocType<TypeInfoAlias>();
     typeInfo->declNode  = node;
     typeInfo->rawType   = node->childs.front()->typeInfo;
-    typeInfo->nakedName = node->name;
-    typeInfo->name      = node->name;
+    typeInfo->nakedName = node->token.text;
+    typeInfo->name      = node->token.text;
     typeInfo->sizeOf    = typeInfo->rawType->sizeOf;
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_RETURN_BY_COPY);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);

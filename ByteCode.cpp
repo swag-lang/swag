@@ -206,18 +206,18 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
 
     case ByteCodeOp::MakeLambda:
     {
-        auto func = (AstFuncDecl*) ip->b.pointer;
-        SWAG_ASSERT(func);
-        g_Log.print(func->sourceFile->path);
+        auto funcNode = (AstFuncDecl*) ip->b.pointer;
+        SWAG_ASSERT(funcNode);
+        g_Log.print(funcNode->sourceFile->path);
         g_Log.print(" ");
-        g_Log.print(func->name);
+        g_Log.print(funcNode->token.text);
         break;
     }
 
     case ByteCodeOp::ForeignCall:
     {
         auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-        g_Log.print(funcNode->name);
+        g_Log.print(funcNode->token.text);
         break;
     }
 
@@ -225,7 +225,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     {
         auto bc = (ByteCode*) ip->a.pointer;
         SWAG_ASSERT(bc);
-        g_Log.print(bc->node ? bc->node->name : bc->name);
+        g_Log.print(bc->node ? bc->node->token.text : bc->name);
         if (bc->node && bc->node->typeInfo)
             g_Log.print(bc->node->typeInfo->name);
         break;
@@ -260,7 +260,7 @@ void ByteCode::print()
     {
         g_Log.print(AstNode::getKindName(node).c_str());
         g_Log.print(" ");
-        g_Log.print(node->name.c_str());
+        g_Log.print(node->token.text.c_str());
     }
     else
     {

@@ -26,15 +26,15 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     Scope* newScope = nullptr;
     {
         scoped_lock lk(currentScope->symTable.mutex);
-        auto        symbol = currentScope->symTable.findNoLock(enumNode->name);
+        auto        symbol = currentScope->symTable.findNoLock(enumNode->token.text);
         if (!symbol)
         {
-            newScope = Ast::newScope(enumNode, enumNode->name, ScopeKind::Enum, currentScope, true);
+            newScope = Ast::newScope(enumNode, enumNode->token.text, ScopeKind::Enum, currentScope, true);
             if (newScope->kind != ScopeKind::Enum)
             {
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->name.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
-                Diagnostic note{enumNode, enumNode->token, format("this is the declaration of '%s'", implNode->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
+                Diagnostic note{enumNode, enumNode->token, format("this is the declaration of '%s'", implNode->token.text.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
 
@@ -51,8 +51,8 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 
             SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Enum);
             typeInfo->declNode  = enumNode;
-            typeInfo->name      = enumNode->name;
-            typeInfo->nakedName = enumNode->name;
+            typeInfo->name      = enumNode->token.text;
+            typeInfo->nakedName = enumNode->token.text;
             typeInfo->scope     = newScope;
             enumNode->typeInfo  = typeInfo;
             typeInfo->computeName();

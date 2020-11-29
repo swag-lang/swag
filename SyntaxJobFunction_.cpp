@@ -84,7 +84,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result, TokenId 
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
                     return sourceFile->report({paramExpression, format("invalid named parameter '%s'", token.text.c_str())});
                 param->namedParamNode = paramExpression->childs.front();
-                param->namedParam     = param->namedParamNode->name;
+                param->namedParam     = param->namedParamNode->token.text;
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(doExpression(param));
             }
@@ -121,10 +121,10 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
     }
 
     SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
-    paramNode->inheritTokenName(token);
+    paramNode->token.text = move(token.text);
 
     // 'self'
-    if (token.id == TokenId::KwdConst || paramNode->name == "self")
+    if (token.id == TokenId::KwdConst || paramNode->token.text == "self")
     {
         bool isConst = false;
         if (token.id == TokenId::KwdConst)
@@ -242,7 +242,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
 bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType)
 {
     SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, "missing function parameters before '{'"));
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen, format("to declare function parameters of '%s'", parent->name.c_str())));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, format("to declare function parameters of '%s'", parent->token.text.c_str())));
     if (token.id != TokenId::SymRightParen)
     {
         auto allParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
@@ -338,44 +338,44 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         {
         case TokenId::CompilerFuncTest:
             funcNode->token.text = "#test";
-            funcNode->name       = "__test" + to_string(id);
+            funcNode->token.text = "__test" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_TEST_FUNC;
             break;
         case TokenId::CompilerFuncInit:
             funcNode->token.text = "#init";
-            funcNode->name       = "__init" + to_string(id);
+            funcNode->token.text = "__init" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_INIT_FUNC;
             break;
         case TokenId::CompilerFuncDrop:
             funcNode->token.text = "#drop";
-            funcNode->name       = "__drop" + to_string(id);
+            funcNode->token.text = "__drop" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_DROP_FUNC;
             break;
         case TokenId::CompilerRun:
             funcNode->token.text = "#run";
-            funcNode->name       = "__run" + to_string(id);
+            funcNode->token.text = "__run" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER;
             break;
         case TokenId::CompilerGeneratedRun:
             funcNode->token.text = "#run";
-            funcNode->name       = "__run" + to_string(id);
+            funcNode->token.text = "__run" + to_string(id);
             funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER;
             break;
         case TokenId::CompilerFuncMain:
             funcNode->token.text = "#main";
-            funcNode->name       = "__main" + to_string(id);
+            funcNode->token.text = "__main" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_MAIN_FUNC;
             break;
         case TokenId::CompilerFuncCompiler:
             funcNode->token.text = "#compiler";
-            funcNode->name       = "__compiler" + to_string(id);
+            funcNode->token.text = "__compiler" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_COMPILER_FUNC | ATTRIBUTE_COMPILER;
             SWAG_VERIFY(sourceFile->compilerPass, syntaxError(token, "'#compiler' function can only be declared in a file marked with '#compilerpass'"));
             break;
         case TokenId::CompilerAst:
             funcNode->token.text = "#ast";
-            funcNode->name       = "__ast" + to_string(id);
+            funcNode->token.text = "__ast" + to_string(id);
             funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC;
             break;
@@ -409,7 +409,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         auto        typeInfo = allocType<TypeInfoFuncAttr>();
         typeInfo->declNode   = funcNode;
 
-        newScope           = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
+        newScope           = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
         funcNode->typeInfo = typeInfo;
         funcNode->scope    = newScope;
         auto symbolName    = currentScope->symTable.registerSymbolNameNoLock(&context, funcNode, SymbolKind::Function);
@@ -422,7 +422,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     {
         auto typeStruct       = CastTypeInfo<TypeInfoStruct>(currentScope->owner->typeInfo, TypeInfoKind::Struct);
         auto typeParam        = allocType<TypeInfoParam>();
-        typeParam->namedParam = funcNode->name;
+        typeParam->namedParam = funcNode->token.text;
         typeParam->typeInfo   = funcNode->typeInfo;
         typeParam->node       = funcNode;
         funcNode->methodParam = typeParam;
@@ -501,7 +501,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
     // Content of function
     {
-        newScope = Ast::newScope(funcNode, funcNode->name, ScopeKind::FunctionBody, newScope);
+        newScope = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::FunctionBody, newScope);
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
 
@@ -565,13 +565,13 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     funcNode->flags |= AST_GENERATED;
     if (result)
         *result = funcNode;
-    int id         = g_Global.uniqueID.fetch_add(1);
-    funcNode->name = "__lambda" + to_string(id);
+    int id               = g_Global.uniqueID.fetch_add(1);
+    funcNode->token.text = "__lambda" + to_string(id);
 
     auto typeInfo      = allocType<TypeInfoFuncAttr>();
     typeInfo->declNode = funcNode;
 
-    auto newScope      = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
+    auto newScope      = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
     funcNode->typeInfo = typeInfo;
     funcNode->scope    = newScope;
     currentScope->symTable.registerSymbolName(&context, funcNode, SymbolKind::Function);
@@ -600,7 +600,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
 
     // Body
     {
-        newScope = Ast::newScope(funcNode, funcNode->name, ScopeKind::FunctionBody, newScope);
+        newScope = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::FunctionBody, newScope);
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
 
@@ -649,7 +649,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     exprNode->inheritTokenLocation(lambda->token);
     exprNode->ownerMainNode = lambda;
     exprNode->semanticFct   = SemanticJob::resolveMakePointer;
-    AstNode* identifierRef  = Ast::newIdentifierRef(sourceFile, lambda->name, exprNode, this);
+    AstNode* identifierRef  = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
     identifierRef->inheritTokenLocation(lambda->token);
     forceTakeAddress(identifierRef);
 

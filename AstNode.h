@@ -252,7 +252,7 @@ struct AstNode
     void inheritTokenName(Token& tkn)
     {
         SWAG_ASSERT(!tkn.text.empty());
-        name = move(tkn.text);
+        token.text = move(tkn.text);
     }
 
     void inheritTokenLocation(Token& tkn)
@@ -351,7 +351,6 @@ struct AstNode
     VectorNative<AstNode*>         childs;
 
     Token         token;
-    Utf8Crc       name;
     shared_mutex  mutex;
     ComputedValue computedValue;
     RegisterList  resultRegisterRC;

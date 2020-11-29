@@ -45,15 +45,15 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     SWAG_ASSERT(oneAttribute->typeInfo->declNode);
     if (oneAttribute->typeInfo->declNode->sourceFile->isBootstrapFile)
     {
-        if (oneAttribute->name == "complete" && kind == AstNodeKind::Switch)
+        if (oneAttribute->token.text == "complete" && kind == AstNodeKind::Switch)
             return true;
-        if (oneAttribute->name == "attributeUsage" && kind == AstNodeKind::AttrDecl)
+        if (oneAttribute->token.text == "attributeUsage" && kind == AstNodeKind::AttrDecl)
             return true;
-        if (oneAttribute->name == "attributeMulti" && kind == AstNodeKind::AttrDecl)
+        if (oneAttribute->token.text == "attributeMulti" && kind == AstNodeKind::AttrDecl)
             return true;
-        if (oneAttribute->name == "noreturn" && kind == AstNodeKind::CompilerMixin)
+        if (oneAttribute->token.text == "noreturn" && kind == AstNodeKind::CompilerMixin)
             return true;
-        if (oneAttribute->name == "global" && kind == AstNodeKind::VarDecl)
+        if (oneAttribute->token.text == "global" && kind == AstNodeKind::VarDecl)
             if (!checkNode->ownerScope->isGlobalOrImpl())
                 return true;
     }
@@ -81,15 +81,15 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     auto nakedName = AstNode::getArticleKindName(checkNode);
     if (nakedName == "<node>")
     {
-        Diagnostic diag{oneAttribute, format("attribute '%s' cannot be used in that context", oneAttribute->name.c_str())};
-        Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{oneAttribute, format("attribute '%s' cannot be used in that context", oneAttribute->token.text.c_str())};
+        Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note1);
     }
     else
     {
-        Diagnostic diag{oneAttribute, format("attribute '%s' cannot be applied to %s", oneAttribute->name.c_str(), nakedName.c_str())};
+        Diagnostic diag{oneAttribute, format("attribute '%s' cannot be applied to %s", oneAttribute->token.text.c_str(), nakedName.c_str())};
         Diagnostic note1{checkNode, checkNode->token, format("this is the %s", nakedName.c_str()), DiagnosticLevel::Note};
-        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note1, &note2);
     }
 }
@@ -135,7 +135,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 if (result.isHere.contains(typeInfo))
                 {
-                    Diagnostic diag{forNode, forNode->token, format("attribute '%s' assigned twice to '%s' ('swag.attributeMulti' is not present in the declaration of '%s')", child->name.c_str(), forNode->name.c_str(), child->name.c_str())};
+                    Diagnostic diag{forNode, forNode->token, format("attribute '%s' assigned twice to '%s' ('swag.attributeMulti' is not present in the declaration of '%s')", child->token.text.c_str(), forNode->token.text.c_str(), child->token.text.c_str())};
                     Diagnostic note{child, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }
@@ -161,51 +161,51 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             }
 
             // Predefined attributes will mark some flags (to speed up detection)
-            if (child->name == "constexpr")
+            if (child->token.text == "constexpr")
                 flags |= ATTRIBUTE_CONSTEXPR;
-            else if (child->name == "printbc")
+            else if (child->token.text == "printbc")
                 flags |= ATTRIBUTE_PRINT_BC;
-            else if (child->name == "test")
+            else if (child->token.text == "test")
                 flags |= ATTRIBUTE_TEST_FUNC;
-            else if (child->name == "compiler")
+            else if (child->token.text == "compiler")
                 flags |= ATTRIBUTE_COMPILER;
-            else if (child->name == "enumflags")
+            else if (child->token.text == "enumflags")
                 flags |= ATTRIBUTE_ENUM_FLAGS;
-            else if (child->name == "enumindex")
+            else if (child->token.text == "enumindex")
                 flags |= ATTRIBUTE_INDEX;
-            else if (child->name == "foreign")
+            else if (child->token.text == "foreign")
                 flags |= ATTRIBUTE_FOREIGN;
-            else if (child->name == "inline")
+            else if (child->token.text == "inline")
                 flags |= ATTRIBUTE_INLINE;
-            else if (child->name == "macro")
+            else if (child->token.text == "macro")
                 flags |= ATTRIBUTE_MACRO;
-            else if (child->name == "mixin")
+            else if (child->token.text == "mixin")
                 flags |= ATTRIBUTE_MIXIN;
-            else if (child->name == "complete")
+            else if (child->token.text == "complete")
                 flags |= ATTRIBUTE_COMPLETE;
-            else if (child->name == "property")
+            else if (child->token.text == "property")
                 flags |= ATTRIBUTE_PROPERTY;
-            else if (child->name == "nobss")
+            else if (child->token.text == "nobss")
                 flags |= ATTRIBUTE_NO_BSS;
-            else if (child->name == "noreturn")
+            else if (child->token.text == "noreturn")
                 flags |= ATTRIBUTE_NO_RETURN;
-            else if (child->name == "global")
+            else if (child->token.text == "global")
                 flags |= ATTRIBUTE_GLOBAL;
-            else if (child->name == "callback")
+            else if (child->token.text == "callback")
                 flags |= ATTRIBUTE_CALLBACK;
-            else if (child->name == "safety")
+            else if (child->token.text == "safety")
             {
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.safety", "value", attrValue);
                 flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_ON : ATTRIBUTE_SAFETY_OFF;
             }
-            else if (child->name == "optim")
+            else if (child->token.text == "optim")
             {
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.optim", "value", attrValue);
                 flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_ON : ATTRIBUTE_OPTIM_OFF;
             }
-            else if (child->name == "pack")
+            else if (child->token.text == "pack")
             {
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.pack", "value", attrValue);
@@ -308,7 +308,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             SWAG_ASSERT(param->assignment);
 
             AttributeParameter attrParam;
-            attrParam.name     = param->name;
+            attrParam.name     = param->token.text;
             attrParam.typeInfo = param->typeInfo;
             attrParam.value    = param->assignment->computedValue;
             oneAttribute.parameters.emplace_back(move(attrParam));

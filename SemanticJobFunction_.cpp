@@ -32,7 +32,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
     {
         auto nodeParam        = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
         auto funcParam        = allocType<TypeInfoParam>();
-        funcParam->namedParam = param->name;
+        funcParam->namedParam = param->token.text;
         funcParam->name       = param->typeInfo->name;
         funcParam->typeInfo   = param->typeInfo;
         funcParam->sizeOf     = param->typeInfo->sizeOf;
@@ -102,7 +102,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
                     break;
 
                 default:
-                    context->report({nodeParam->assignment, format("compiler instruction '%s' is invalid as a default parameter value", nodeParam->assignment->name.c_str())});
+                    context->report({nodeParam->assignment, format("compiler instruction '%s' is invalid as a default parameter value", nodeParam->assignment->token.text.c_str())});
                     break;
                 }
             }
@@ -157,8 +157,8 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
 
     ConcreteCompilerMessage msg;
     msg.kind        = CompilerMsgKind::SemanticFunc;
-    msg.name.buffer = (void*) node->name.c_str();
-    msg.name.count  = node->name.length();
+    msg.name.buffer = (void*) node->token.text.c_str();
+    msg.name.count  = node->token.text.length();
 
     uint32_t storageOffset;
     auto&    typeTable = module->typeTable;
@@ -267,7 +267,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     bool genByteCode = true;
     if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
         genByteCode = false;
-    if (node->name[0] == '@' && !(node->flags & AST_DEFINED_INTRINSIC))
+    if (node->token.text[0] == '@' && !(node->flags & AST_DEFINED_INTRINSIC))
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_FOREIGN)
         genByteCode = false;
@@ -347,15 +347,15 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.macro' and 'swag.inline' attributes at the same time", funcNode->name.c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.macro' and 'swag.mixin' attributes at the same time", funcNode->name.c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.macro' and 'swag.inline' attributes at the same time", funcNode->token.text.c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.macro' and 'swag.mixin' attributes at the same time", funcNode->token.text.c_str())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
         }
 
         if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.mixin' and 'swag.inline' attributes at the same time", funcNode->name.c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.mixin' and 'swag.macro' attributes at the same time", funcNode->name.c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.mixin' and 'swag.inline' attributes at the same time", funcNode->token.text.c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.mixin' and 'swag.macro' attributes at the same time", funcNode->token.text.c_str())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
             funcNode->attributeFlags |= ATTRIBUTE_MACRO;
         }
@@ -447,21 +447,21 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // Special functions registration
     if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
     {
-        if (funcNode->name == "opPostCopy")
+        if (funcNode->token.text == "opPostCopy")
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
             scoped_lock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
         }
-        else if (funcNode->name == "opPostMove")
+        else if (funcNode->token.text == "opPostMove")
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
             scoped_lock lk(typeStruct->mutex);
             typeStruct->opUserPostMoveFct = funcNode;
         }
-        else if (funcNode->name == "opDrop")
+        else if (funcNode->token.text == "opDrop")
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
@@ -868,7 +868,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 
                 auto idRef = CastAst<AstIdentifierRef>(back, AstNodeKind::IdentifierRef);
                 SWAG_VERIFY(idRef->childs.size() == 1, context->report({child, "invalid name alias, should be a single identifier"}));
-                cloneContext.replaceNames[param->resolvedParameter->namedParam] = idRef->childs.back()->name;
+                cloneContext.replaceNames[param->resolvedParameter->namedParam] = idRef->childs.back()->token.text;
             }
         }
     }

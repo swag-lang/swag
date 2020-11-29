@@ -76,7 +76,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         {
             AstStruct* inStructNode;
             SWAG_CHECK(convertAssignementToStruct(context, assignment->childs[idx], &inStructNode));
-            typeExpression->identifier = Ast::newIdentifierRef(sourceFile, inStructNode->name, typeExpression);
+            typeExpression->identifier = Ast::newIdentifierRef(sourceFile, inStructNode->token.text, typeExpression);
             break;
         }
         default:
@@ -85,7 +85,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     }
 
     // Compute structure name
-    structNode->name = move(typeList->computeTupleName(context));
+    structNode->token.text = move(typeList->computeTupleName(context));
 
     // Add struct type and scope
     Scope* rootScope;
@@ -94,7 +94,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     else
         rootScope = sourceFile->module->scopeRoot;
     scoped_lock lk(rootScope->symTable.mutex);
-    auto        symbol = rootScope->symTable.findNoLock(structNode->name);
+    auto        symbol = rootScope->symTable.findNoLock(structNode->token.text);
     if (symbol)
     {
         // Must release struct node, it's useless
@@ -102,11 +102,11 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     else
     {
         auto typeInfo        = allocType<TypeInfoStruct>();
-        auto newScope        = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
+        auto newScope        = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
         typeInfo->declNode   = structNode;
-        typeInfo->name       = structNode->name;
-        typeInfo->nakedName  = structNode->name;
-        typeInfo->structName = structNode->name;
+        typeInfo->name       = structNode->token.text;
+        typeInfo->nakedName  = structNode->token.text;
+        typeInfo->structName = structNode->token.text;
         typeInfo->scope      = newScope;
         typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
         structNode->typeInfo = typeInfo;
@@ -136,7 +136,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     // Reference to that generated structure
     auto typeExpression = Ast::newTypeExpression(sourceFile, parent);
     typeExpression->flags |= AST_NO_BYTECODE_CHILDS | AST_GENERATED;
-    typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->name, typeExpression);
+    typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->token.text, typeExpression);
     *result                    = typeExpression;
     return true;
 }
@@ -259,8 +259,8 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
             continue;
 
         auto param = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
-        if (child->kind == AstNodeKind::Literal)
-            param->namedParam = move(child->name);
+        //if (child->kind == AstNodeKind::Literal)
+        //    param->namedParam = move(child->token.text);
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
         param->inheritTokenLocation(child->token);
@@ -312,7 +312,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    if (node->name == "xxx")
+    if (node->token.text == "xxx")
         node = node;
 
     // Collect all attributes for the variable
@@ -514,16 +514,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (genericType && node->assignment)
         {
             auto typeGeneric       = allocType<TypeInfoGeneric>();
-            typeGeneric->name      = node->name;
-            typeGeneric->nakedName = node->name;
+            typeGeneric->name      = node->token.text;
+            typeGeneric->nakedName = node->token.text;
             typeGeneric->rawType   = node->typeInfo;
             node->typeInfo         = typeGeneric;
         }
         else if (!node->typeInfo)
         {
             node->typeInfo            = allocType<TypeInfoGeneric>();
-            node->typeInfo->name      = node->name;
-            node->typeInfo->nakedName = node->name;
+            node->typeInfo->name      = node->token.text;
+            node->typeInfo->nakedName = node->token.text;
         }
     }
 
@@ -546,7 +546,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoNull, context->report({node, node->token, "cannot deduce type from 'null'"}));
 
     // We should have a type here !
-    SWAG_VERIFY(node->typeInfo, context->report({node, node->token, format("unable to deduce type of %s '%s'", AstNode::getKindName(node).c_str(), node->name.c_str())}));
+    SWAG_VERIFY(node->typeInfo, context->report({node, node->token, format("unable to deduce type of %s '%s'", AstNode::getKindName(node).c_str(), node->token.text.c_str())}));
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS

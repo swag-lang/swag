@@ -45,11 +45,11 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
         typeInfo->subTypes.push_back(typeParam);
 
         // Value has been named
-        if (!child->name.empty() && (child->flags & AST_IS_NAMED))
+        if (!child->token.text.empty() && (child->flags & AST_IS_NAMED))
         {
-            typeInfo->nakedName += child->name;
+            typeInfo->nakedName += child->token.text;
             typeInfo->nakedName += ": ";
-            typeParam->namedParam = child->name;
+            typeParam->namedParam = child->token.text;
         }
 
         typeInfo->nakedName += child->typeInfo->name;

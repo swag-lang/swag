@@ -159,14 +159,14 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         auto typeInfo = node->array->typeInfo;
         if (!hasUserOp(context, "opSlice", node->array))
         {
-            if (node->array->name.empty())
+            if (node->array->token.text.empty())
             {
                 Utf8 msg = format("cannot slice because special function 'opSlice' cannot be found in type '%s'", typeInfo->name.c_str());
                 return context->report({node->array, msg});
             }
             else
             {
-                Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", node->array->name.c_str(), typeInfo->name.c_str());
+                Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", node->array->token.text.c_str(), typeInfo->name.c_str());
                 return context->report({node->array, msg});
             }
         }
@@ -503,14 +503,14 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             auto typeInfo = arrayNode->array->typeInfo;
             if (!hasUserOp(context, "opIndex", arrayNode->array))
             {
-                if (arrayNode->array->name.empty())
+                if (arrayNode->array->token.text.empty())
                 {
                     Utf8 msg = format("cannot access by index because special function 'opIndex' cannot be found in type '%s'", typeInfo->name.c_str());
                     return context->report({arrayNode->access, msg});
                 }
                 else
                 {
-                    Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", arrayNode->array->name.c_str(), typeInfo->name.c_str());
+                    Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", arrayNode->array->token.text.c_str(), typeInfo->name.c_str());
                     return context->report({arrayNode->access, msg});
                 }
             }
@@ -605,13 +605,13 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'%s' first parameter should be a pointer to a struct, but is '%s'", node->name.c_str(), expressionTypeInfo->name.c_str())}));
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'%s' first parameter should be a pointer to a struct, but is '%s'", node->token.text.c_str(), expressionTypeInfo->name.c_str())}));
 
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'%s' count parameter should be an integer, but is '%s'", node->name.c_str(), countTypeInfo->name.c_str())}));
-        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->report({node->count, format("'%s' count parameter should be 32 bits", node->name.c_str())}));
+        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'%s' count parameter should be an integer, but is '%s'", node->token.text.c_str(), countTypeInfo->name.c_str())}));
+        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->report({node->count, format("'%s' count parameter should be 32 bits", node->token.text.c_str())}));
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitDropCopyMove;

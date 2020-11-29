@@ -177,7 +177,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     {
         auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
         SWAG_ASSERT(param->resolvedParameter);
-        if (param->resolvedParameter->namedParam == expr->name)
+        if (param->resolvedParameter->namedParam == expr->token.text)
         {
             auto typeCode = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
 
@@ -198,7 +198,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
         }
     }
 
-    return context->report({expr, format("unknown user code identifier '%s' (did you forget a back tick ?)", expr->name.c_str())});
+    return context->report({expr, format("unknown user code identifier '%s' (did you forget a back tick ?)", expr->token.text.c_str())});
 }
 
 bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
@@ -412,7 +412,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     {
     case TokenId::CompilerFunction:
         SWAG_VERIFY(node->ownerFct, context->report({node, "'#function' can only be called inside a function"}));
-        node->computedValue.text = node->ownerFct->name;
+        node->computedValue.text = node->ownerFct->token.text;
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
         return true;

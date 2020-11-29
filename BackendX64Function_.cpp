@@ -2506,7 +2506,7 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
     if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
         funcName = foreignValue.text;
     else
-        funcName = nodeFunc->name;
+        funcName = nodeFunc->token.text;
 
     // Push parameters
     SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));

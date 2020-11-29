@@ -139,7 +139,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     // Name
     Utf8 name = sourceFile->scopePrivate->name + "_tuple_";
     name += format("%d", token.startLocation);
-    structNode->name = move(name);
+    structNode->token.text = move(name);
 
     // Add struct type and scope
     Scope* rootScope;
@@ -148,7 +148,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     else
         rootScope = sourceFile->module->scopeRoot;
     structNode->alternativeScopes.push_back(currentScope);
-    auto newScope     = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
+    auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
     structNode->scope = newScope;
 
     {
@@ -170,15 +170,15 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     }
 
     // Reference to that struct
-    auto identifier = Ast::newIdentifierRef(sourceFile, structNode->name, parent, this);
+    auto identifier = Ast::newIdentifierRef(sourceFile, structNode->token.text, parent, this);
     if (result)
         *result = identifier;
 
     auto typeInfo        = allocType<TypeInfoStruct>();
     typeInfo->declNode   = structNode;
-    typeInfo->name       = structNode->name;
-    typeInfo->nakedName  = structNode->name;
-    typeInfo->structName = structNode->name;
+    typeInfo->name       = structNode->token.text;
+    typeInfo->nakedName  = structNode->token.text;
+    typeInfo->structName = structNode->token.text;
     typeInfo->scope      = newScope;
     typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
     structNode->typeInfo   = typeInfo;

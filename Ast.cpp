@@ -303,7 +303,7 @@ namespace Ast
     AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob, AstNodeKind kind)
     {
         AstVarDecl* node  = Ast::newNode<AstVarDecl>(syntaxJob, kind, sourceFile, parent, 2);
-        node->name        = name;
+        node->token.text  = name;
         node->semanticFct = SemanticJob::resolveVarDecl;
         return node;
     }
@@ -318,7 +318,7 @@ namespace Ast
     AstIdentifier* newIdentifier(SourceFile* sourceFile, const Utf8Crc& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob)
     {
         AstIdentifier* node = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, parent);
-        node->name          = name;
+        node->token.text    = name;
         node->identifierRef = identifierRef;
         node->semanticFct   = SemanticJob::resolveIdentifier;
         if (identifierRef)
@@ -337,7 +337,7 @@ namespace Ast
     AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob)
     {
         AstIdentifierRef* node = Ast::newIdentifierRef(sourceFile, parent, syntaxJob);
-        node->name             = name;
+        node->token.text       = name;
         if (syntaxJob && !syntaxJob->currentTokenLocation)
             node->inheritTokenLocation(syntaxJob->token);
 
@@ -349,7 +349,7 @@ namespace Ast
         {
             auto id         = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, node);
             id->semanticFct = SemanticJob::resolveIdentifier;
-            id->name        = subNames[i];
+            id->token.text  = subNames[i];
             id->token.id    = TokenId::Identifier;
             if (syntaxJob && !syntaxJob->currentTokenLocation)
                 id->inheritTokenLocation(syntaxJob->token);

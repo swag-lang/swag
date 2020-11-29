@@ -112,7 +112,7 @@ namespace Ast
             {
                 if (p != funcDecl->parameters->childs.front())
                     CONCAT_FIXED_STR(concat, ", ");
-                concat.addString(p->name);
+                concat.addString(p->token.text);
                 if (!p->childs.empty())
                 {
                     CONCAT_FIXED_STR(concat, ": ");
@@ -468,7 +468,7 @@ namespace Ast
             CONCAT_FIXED_STR(concat, "loop ");
             if (loopNode->specificName)
             {
-                concat.addString(loopNode->specificName->name);
+                concat.addString(loopNode->specificName->token.text);
                 CONCAT_FIXED_STR(concat, ": ");
             }
 
@@ -541,7 +541,7 @@ namespace Ast
         case AstNodeKind::Alias:
         {
             CONCAT_FIXED_STR(concat, "alias ");
-            concat.addString(node->name.c_str());
+            concat.addString(node->token.text.c_str());
             CONCAT_FIXED_STR(concat, " = ");
             SWAG_CHECK(output(context, concat, node->childs.front()));
             break;
@@ -557,7 +557,7 @@ namespace Ast
                 if (!varDecl->publicName.empty())
                     concat.addString(varDecl->publicName);
                 else
-                    concat.addString(varDecl->name);
+                    concat.addString(varDecl->token.text);
                 CONCAT_FIXED_STR(concat, ": ");
                 SWAG_CHECK(output(context, concat, varDecl->type));
                 if (varDecl->assignment)
@@ -571,7 +571,7 @@ namespace Ast
                 if (!varDecl->publicName.empty())
                     concat.addString(varDecl->publicName);
                 else
-                    concat.addString(varDecl->name);
+                    concat.addString(varDecl->token.text);
                 CONCAT_FIXED_STR(concat, " := ");
                 if (varDecl->assignment)
                     SWAG_CHECK(output(context, concat, varDecl->assignment));
@@ -588,7 +588,7 @@ namespace Ast
             if (!varDecl->publicName.empty())
                 concat.addString(varDecl->publicName);
             else
-                concat.addString(varDecl->name);
+                concat.addString(varDecl->token.text);
 
             if (varDecl->type)
             {
@@ -630,7 +630,7 @@ namespace Ast
         case AstNodeKind::IntrinsicProp:
         {
             auto propertyNode = CastAst<AstIntrinsicProp>(node, AstNodeKind::IntrinsicProp);
-            concat.addString(propertyNode->name);
+            concat.addString(propertyNode->token.text);
             concat.addChar('(');
             int idx = 0;
             for (auto child : node->childs)
@@ -699,7 +699,7 @@ namespace Ast
                         (symbol->kind == SymbolKind::Alias) ||
                         (symbol->kind == SymbolKind::TypeAlias))
                     {
-                        SWAG_VERIFY(overload->flags & OVERLOAD_PUBLIC, identifier->sourceFile->report({identifier, identifier->token, format("identifier '%s' should be public", identifier->name.c_str())}));
+                        SWAG_VERIFY(overload->flags & OVERLOAD_PUBLIC, identifier->sourceFile->report({identifier, identifier->token, format("identifier '%s' should be public", identifier->token.text.c_str())}));
                     }
                 }
             }
@@ -707,7 +707,7 @@ namespace Ast
             if (symbol && symbol->ownerTable->scope->isGlobal())
                 concat.addString(symbol->getFullName());
             else
-                concat.addString(node->name);
+                concat.addString(node->token.text);
 
             if (identifier->genericParameters)
             {

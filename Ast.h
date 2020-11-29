@@ -37,6 +37,7 @@ namespace Ast
             node->token.id            = job->token.id;
             node->token.startLocation = job->token.startLocation;
             node->token.endLocation   = job->token.endLocation;
+            node->token.text          = job->token.text;
 
             if (job->currentTokenLocation)
             {

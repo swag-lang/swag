@@ -59,13 +59,13 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     // Get existing scope or create a new one
-    auto& structName = identifierStruct->childs.back()->name;
-    implNode->name   = structName;
-    auto newScope    = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
+    auto& structName     = identifierStruct->childs.back()->token.text;
+    implNode->token.text = structName;
+    auto newScope        = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
-        Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(scopeKind), implNode->name.c_str(), Scope::getNakedKindName(newScope->kind))};
-        Diagnostic note{newScope->owner, newScope->owner->token, format("this is the declaration of '%s'", implNode->name.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(scopeKind), implNode->token.text.c_str(), Scope::getNakedKindName(newScope->kind))};
+        Diagnostic note{newScope->owner, newScope->owner->token, format("this is the declaration of '%s'", implNode->token.text.c_str()), DiagnosticLevel::Note};
         return sourceFile->report(diag, &note);
     }
 
@@ -112,14 +112,14 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     if (implInterface)
     {
         scoped_lock lk(newScope->symTable.mutex);
-        auto&       itfName  = implNode->identifier->childs.back()->name;
+        Utf8Crc     itfName  = implNode->identifier->childs.back()->token.text;
         auto        symbol   = newScope->symTable.findNoLock(itfName);
         Scope*      subScope = nullptr;
         if (!symbol)
         {
             subScope             = Ast::newScope(implNode, itfName, ScopeKind::Impl, newScope, false);
             auto typeInfo        = allocType<TypeInfoStruct>();
-            typeInfo->name       = implNode->identifier->childs.back()->name;
+            typeInfo->name       = implNode->identifier->childs.back()->token.text;
             typeInfo->nakedName  = typeInfo->name;
             typeInfo->structName = typeInfo->name;
             typeInfo->scope      = subScope;
@@ -208,23 +208,23 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
 
     // If name starts with "__", then this is generated, as a user identifier cannot start with those
     // two characters
-    if (structNode->name.length() > 2 && structNode->name[0] == '_' && structNode->name[1] == '_')
+    if (structNode->token.text.length() > 2 && structNode->token.text[0] == '_' && structNode->token.text[1] == '_')
         structNode->flags |= AST_GENERATED;
 
     // Add struct type and scope
     Scope* newScope = nullptr;
     {
         scoped_lock lk(currentScope->symTable.mutex);
-        auto        symbol = currentScope->symTable.findNoLock(structNode->name);
+        auto        symbol = currentScope->symTable.findNoLock(structNode->token.text);
         if (!symbol)
         {
             auto scopeKind = structType == SyntaxStructType::TypeSet ? ScopeKind::TypeSet : ScopeKind::Struct;
-            newScope       = Ast::newScope(structNode, structNode->name, scopeKind, currentScope, true);
+            newScope       = Ast::newScope(structNode, structNode->token.text, scopeKind, currentScope, true);
             if (newScope->kind != scopeKind)
             {
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->name.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
-                Diagnostic note{structNode, structNode->token, format("this is the declaration of '%s'", implNode->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
+                Diagnostic note{structNode, structNode->token, format("this is the declaration of '%s'", implNode->token.text.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
 
@@ -243,9 +243,9 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
             structNode->typeInfo = newScope->owner->typeInfo;
             typeInfo->declNode   = structNode;
             newScope->owner      = structNode;
-            typeInfo->name       = structNode->name;
-            typeInfo->nakedName  = structNode->name;
-            typeInfo->structName = structNode->name;
+            typeInfo->name       = structNode->token.text;
+            typeInfo->nakedName  = structNode->token.text;
+            typeInfo->structName = structNode->token.text;
             typeInfo->scope      = newScope;
 
             SymbolKind symbolKind = SymbolKind::Struct;
@@ -349,7 +349,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
             SWAG_ASSERT(typeExpression->identifier);
             SWAG_CHECK(checkIsSingleIdentifier(typeExpression->identifier, "as a tuple field name"));
             SWAG_CHECK(checkIsValidVarName(typeExpression->identifier->childs.back()));
-            structFieldNode->name = typeExpression->identifier->childs.back()->name;
+            structFieldNode->token.text = typeExpression->identifier->childs.back()->token.text;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
             expression = structFieldNode->type;
@@ -357,8 +357,8 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         else
         {
             Ast::addChildBack(structFieldNode, expression);
-            structFieldNode->type = expression;
-            structFieldNode->name = format("item%u", idx);
+            structFieldNode->type       = expression;
+            structFieldNode->token.text = format("item%u", idx);
             structFieldNode->flags |= AST_AUTO_NAME;
         }
 

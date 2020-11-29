@@ -307,7 +307,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto identifierRef     = Ast::clone(node->expression, node);
         auto identifier        = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraNameToken.text.c_str()), (AstIdentifierRef*) identifierRef, identifierRef);
         identifier->aliasNames = node->aliasNames;
-        identifier->token      = node->token;
+        identifier->inheritTokenLocation(node->token);
 
         // Generic parameters
         identifier->genericParameters = Ast::newFuncCallParams(sourceFile, identifier);
@@ -431,7 +431,7 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
     if (!node->label.empty())
     {
         auto breakable = node->ownerBreakable;
-        while (breakable && (breakable->kind != AstNodeKind::LabelBreakable || breakable->name != node->label))
+        while (breakable && (breakable->kind != AstNodeKind::LabelBreakable || breakable->token.text != node->label))
             breakable = breakable->ownerBreakable;
         SWAG_VERIFY(breakable, context->report({node, format("unknown label '%s'", node->label.c_str())}));
         node->ownerBreakable = breakable;
@@ -477,7 +477,7 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
     if (!node->label.empty())
     {
         auto breakable = node->ownerBreakable;
-        while (breakable && (breakable->kind != AstNodeKind::LabelBreakable || breakable->name != node->label))
+        while (breakable && (breakable->kind != AstNodeKind::LabelBreakable || breakable->token.text != node->label))
         {
             if (breakable->kind != AstNodeKind::LabelBreakable)
                 lastBreakable = breakable;
@@ -506,9 +506,9 @@ bool SemanticJob::resolveLabel(SemanticContext* context)
     {
         if (check->kind == AstNodeKind::LabelBreakable)
         {
-            if (check->name == node->name)
+            if (check->token.text == node->token.text)
             {
-                Diagnostic diag(node, node->token, format("label name '%s' already defined in the hierarchy", node->name.c_str()));
+                Diagnostic diag(node, node->token, format("label name '%s' already defined in the hierarchy", node->token.text.c_str()));
                 Diagnostic note(check, check->token, "this is the other definition", DiagnosticLevel::Note);
                 context->report(diag, &note);
             }

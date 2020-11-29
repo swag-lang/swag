@@ -15,7 +15,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->resolvedSymbolName     = childBack->resolvedSymbolName;
     node->resolvedSymbolOverload = childBack->resolvedSymbolOverload;
     node->typeInfo               = childBack->typeInfo;
-    node->name                   = childBack->name;
+    node->token.text             = childBack->token.text;
     node->byteCodeFct            = ByteCodeGenJob::emitIdentifierRef;
 
     // Flag inheritance
@@ -225,10 +225,10 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
 
     // Replace every types inside the function
     Ast::visit(funcDecl, [&](AstNode* p) {
-        auto it = typeDefinedFct->replaceTypes.find(p->name);
+        auto it = typeDefinedFct->replaceTypes.find(p->token.text);
         if (it == typeDefinedFct->replaceTypes.end())
             return;
-        p->name = it->second->name;
+        p->token.text = it->second->name;
         if (p->resolvedSymbolOverload)
             p->resolvedSymbolOverload->typeInfo = it->second;
         p->typeInfo = it->second;
@@ -294,7 +294,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     // And make a reference to that variable
     auto identifierRef = identifier->identifierRef;
     identifierRef->childs.clear();
-    auto idNode = Ast::newIdentifier(sourceFile, varNode->name, identifierRef, identifierRef);
+    auto idNode = Ast::newIdentifier(sourceFile, varNode->token.text, identifierRef, identifierRef);
     idNode->flags |= AST_R_VALUE | AST_TRANSIENT;
 
     // Reset parsing
@@ -330,7 +330,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Pointer &&
         parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Struct)
     {
-        return context->report({parent->previousResolvedNode, format("identifier '%s' cannot be dereferenced like a struct (type is '%s')", parent->previousResolvedNode->name.c_str(), parent->previousResolvedNode->typeInfo->name.c_str())});
+        return context->report({parent->previousResolvedNode, format("identifier '%s' cannot be dereferenced like a struct (type is '%s')", parent->previousResolvedNode->token.text.c_str(), parent->previousResolvedNode->typeInfo->name.c_str())});
     }
 
     // Direct reference to a constexpr typeinfo
@@ -409,7 +409,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             for (int i = (int) dependentVar->childs.size() - 1; i >= 0; i--)
             {
                 auto child  = dependentVar->childs[i];
-                auto idNode = Ast::newIdentifier(sourceFile, child->name, idRef, nullptr);
+                auto idNode = Ast::newIdentifier(sourceFile, child->token.text, idRef, nullptr);
                 idNode->inheritTokenLocation(idRef->token);
                 Ast::addChildFront(idRef, idNode);
                 context->job->nodes.push_back(idNode);
@@ -427,7 +427,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
         else
         {
-            auto idNode = Ast::newIdentifier(sourceFile, dependentVar->name, idRef, nullptr);
+            auto idNode = Ast::newIdentifier(sourceFile, dependentVar->token.text, idRef, nullptr);
             idNode->inheritTokenLocation(identifier->token);
 
             // We need to insert at the right place, but the identifier 'childParentIdx' can be the wrong one
@@ -573,7 +573,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     {
         // Be sure it's () and not {}
         if (identifier->callParameters && (identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
-            return context->report({identifier->callParameters, identifier->callParameters->token, format("function '%s' must be called with '()' and not curlies (this is reserved for struct initialization)", identifier->name.c_str())});
+            return context->report({identifier->callParameters, identifier->callParameters->token, format("function '%s' must be called with '()' and not curlies (this is reserved for struct initialization)", identifier->token.text.c_str())});
 
         // Now we need to be sure that the function is now complete
         // If not, we need to wait for it
@@ -586,11 +586,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
         }
 
-        if (identifier->name == "opDrop")
+        if (identifier->token.text == "opDrop")
             return context->report({identifier, identifier->token, "cannot reference 'opDrop' special function (use '@drop' instead)"});
-        if (identifier->name == "opPostCopy")
+        if (identifier->token.text == "opPostCopy")
             return context->report({identifier, identifier->token, "cannot reference 'opPostCopy' special function (use '@postcopy' instead)"});
-        if (identifier->name == "opPostMove")
+        if (identifier->token.text == "opPostMove")
             return context->report({identifier, identifier->token, "cannot reference 'opPostMove' special function (use '@postmove' instead)"});
 
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
@@ -632,7 +632,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // Be sure the call is valid
-        if ((identifier->name[0] != '@') && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN))
+        if ((identifier->token.text[0] != '@') && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN))
         {
             auto ownerFct = identifier->ownerFct;
             if (ownerFct)
@@ -640,9 +640,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 auto fctAttributes = ownerFct->attributeFlags;
 
                 if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_RUN_BLOCK))
-                    return context->report({identifier, identifier->token, format("cannot reference 'swag.compiler' function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+                    return context->report({identifier, identifier->token, format("cannot reference 'swag.compiler' function '%s' from '%s'", overload->node->token.text.c_str(), ownerFct->token.text.c_str())});
                 if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
-                    return context->report({identifier, identifier->token, format("cannot reference 'swag.test' function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+                    return context->report({identifier, identifier->token, format("cannot reference 'swag.test' function '%s' from '%s'", overload->node->token.text.c_str(), ownerFct->token.text.c_str())});
             }
         }
 
@@ -707,7 +707,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 identifier->flags |= AST_CONST_EXPR;
         }
 
-        if (identifier->name[0] == '@')
+        if (identifier->token.text[0] == '@')
         {
             dealWithIntrinsic(context, identifier);
             identifier->byteCodeFct = ByteCodeGenJob::emitIntrinsic;
@@ -1326,7 +1326,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         for (auto match : genericMatches)
         {
             auto overload               = match.symbolOverload;
-            auto couldBe                = "could be: " + Ast::computeTypeDisplay(overload->node->name, overload->typeInfo);
+            auto couldBe                = "could be: " + Ast::computeTypeDisplay(overload->node->token.text, overload->typeInfo);
             auto note                   = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
             note->showRange             = false;
             note->showMultipleCodeLines = false;
@@ -1372,7 +1372,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         for (auto match : matches)
         {
             auto overload               = match.symbolOverload;
-            auto couldBe                = "could be: " + Ast::computeTypeDisplay(overload->node->name, overload->typeInfo);
+            auto couldBe                = "could be: " + Ast::computeTypeDisplay(overload->node->token.text, overload->typeInfo);
             auto note                   = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
             note->showRange             = false;
             note->showMultipleCodeLines = false;
@@ -1537,7 +1537,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
         // the first call parameter
         if (dependentVar == identifierRef->previousResolvedNode)
         {
-            auto copyChild = Ast::newIdentifier(node->sourceFile, dependentVar->name, idRef, idRef);
+            auto copyChild = Ast::newIdentifier(node->sourceFile, dependentVar->token.text, idRef, idRef);
             copyChild->inheritOwners(fctCallParam);
             copyChild->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
             copyChild->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
@@ -1620,7 +1620,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         // Search symbol in all the scopes of the hierarchy
         for (auto scope : scopeHierarchy)
         {
-            auto symbol = scope->symTable.find(node->name);
+            auto symbol = scope->symTable.find(node->token.text);
             if (symbol)
                 dependentSymbols.insert(symbol);
         }
@@ -1638,17 +1638,17 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             if (identifierRef->startScope)
             {
                 if (identifierRef->typeInfo && identifierRef->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-                    return context->report({node, node->token, format("identifier '%s' cannot be found in tuple", node->name.c_str())});
+                    return context->report({node, node->token, format("identifier '%s' cannot be found in tuple", node->token.text.c_str())});
                 Utf8 displayName;
                 if (!(identifierRef->startScope->flags & SCOPE_PRIVATE))
                     displayName = identifierRef->startScope->getFullName();
                 if (displayName.empty() && identifierRef->typeInfo)
                     displayName = identifierRef->typeInfo->name;
                 if (!displayName.empty())
-                    return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
+                    return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
             }
 
-            return context->report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
+            return context->report({node, node->token, format("unknown identifier '%s'", node->token.text.c_str())});
         }
 
         node->flags |= AST_FORCE_UFCS;
@@ -1772,10 +1772,10 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
             if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
                 displayName = identifierRef->typeInfo->name;
             if (!displayName.empty())
-                return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
+                return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
         }
 
-        return context->report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
+        return context->report({node, node->token, format("unknown identifier '%s'", node->token.text.c_str())});
     }
 
     if (canDoUfcs && (symbol->kind == SymbolKind::Variable))
@@ -1846,14 +1846,14 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
         {
             if (symbolKind == SymbolKind::Variable)
             {
-                Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is a variable of type '%s' and not a function", node->name.c_str(), symbol->overloads[0]->typeInfo->name.c_str())};
-                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is a variable of type '%s' and not a function", node->token.text.c_str(), symbol->overloads[0]->typeInfo->name.c_str())};
+                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is '%s'", node->token.text.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
             else
             {
-                Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is %s and not a function", node->token.text.c_str(), SymTable::getArticleKindName(symbol->kind))};
+                Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is '%s'", node->token.text.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
         }
@@ -1909,8 +1909,8 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
         symbolKind != SymbolKind::Interface &&
         symbolKind != SymbolKind::TypeAlias)
     {
-        Diagnostic diag{callParameters, callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-        Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is '%s'", node->name.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{callParameters, callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->token.text.c_str(), SymTable::getArticleKindName(symbol->kind))};
+        Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is '%s'", node->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -2127,7 +2127,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     node->byteCodeFct = ByteCodeGenJob::emitIdentifier;
 
     // Current private scope
-    if (context->sourceFile && context->sourceFile->scopePrivate && node->name == context->sourceFile->scopePrivate->name)
+    if (context->sourceFile && context->sourceFile->scopePrivate && node->token.text == context->sourceFile->scopePrivate->name)
     {
         SWAG_VERIFY(node == identifierRef->childs.front(), context->report({node, node->token, "invalid reference to private scope"}));
         identifierRef->startScope = context->sourceFile->scopePrivate;
@@ -2158,10 +2158,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     // Patch the node name in case of 'Self'. Replace it with the structure name
-    if (node->name == "Self")
+    if (node->token.text == "Self")
     {
         SWAG_VERIFY(node->ownerStructScope, context->report({node, node->token, "type 'Self' cannot be used outside an 'impl', 'struct' or 'interface' block"}));
-        node->name = node->ownerStructScope->name;
+        node->token.text = node->ownerStructScope->name;
     }
 
     // Compute dependencies if not already done
@@ -2199,7 +2199,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if ((symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface || symbol->kind == SymbolKind::TypeSet) &&
             node->ownerMainNode &&
             (node->ownerMainNode->kind != AstNodeKind::Impl || (node->flags & AST_CAN_MATCH_INCOMPLETE)) &&
-            node->ownerMainNode->name == symbol->name)
+            node->ownerMainNode->token.text == symbol->name)
         {
             SWAG_VERIFY(!node->callParameters, context->report({node->callParameters, "cannot auto reference a struct with parameters"}));
             SWAG_VERIFY(!node->genericParameters, context->report({node->genericParameters, "cannot auto reference a struct with generic parameters"}));
@@ -2220,7 +2220,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     // Filter symbols
     SWAG_CHECK(filterSymbols(context, node));
     if (dependentSymbols.empty())
-        return context->report({node, node->token, format("cannot resolve identifier '%s'", node->name.c_str())});
+        return context->report({node, node->token, format("cannot resolve identifier '%s'", node->token.text.c_str())});
 
     auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload;
     auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName;
@@ -2248,7 +2248,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         // Can happen if a symbol is inside a disabled #if for example
         if (toSolveOverload.empty())
-            return context->report({node, node->token, format("cannot resolve identifier '%s'", node->name.c_str())});
+            return context->report({node, node->token, format("cannot resolve identifier '%s'", node->token.text.c_str())});
 
         auto& listTryMatch = job->cacheListTryMatch;
         job->clearTryMatch();
@@ -2480,7 +2480,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
 
         // Be sure that symbol is fully resolved, otherwise we cannot check for a ghosting
         {
-            auto symbol = scope->symTable.find(node->name);
+            auto symbol = scope->symTable.find(node->token.text);
             if (!symbol)
                 continue;
 

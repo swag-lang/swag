@@ -87,12 +87,12 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
         namespaceNode->inheritTokenName(token);
         {
             scoped_lock lk(currentScope->symTable.mutex);
-            auto        symbol = currentScope->symTable.findNoLock(namespaceNode->name);
+            auto        symbol = currentScope->symTable.findNoLock(namespaceNode->token.text);
             if (!symbol)
             {
                 auto typeInfo           = allocType<TypeInfoNamespace>();
-                typeInfo->name          = namespaceNode->name;
-                newScope                = Ast::newScope(namespaceNode, namespaceNode->name, ScopeKind::Namespace, currentScope);
+                typeInfo->name          = namespaceNode->token.text;
+                newScope                = Ast::newScope(namespaceNode, namespaceNode->token.text, ScopeKind::Namespace, currentScope);
                 typeInfo->scope         = newScope;
                 namespaceNode->typeInfo = typeInfo;
                 currentScope->symTable.addSymbolTypeInfoNoLock(&context, namespaceNode, typeInfo, SymbolKind::Namespace);

@@ -136,8 +136,8 @@ Utf8 AstNode::computeScopedName()
 {
     auto& fullName = ownerScope->getFullName();
     if (fullName.empty())
-        return name;
-    return fullName + "." + name.c_str();
+        return token.text;
+    return fullName + "." + token.text.c_str();
 }
 
 Utf8 AstNode::getArticleKindName(AstNode* node)
@@ -219,7 +219,7 @@ AstNode* AstNode::clone(CloneContext& context)
     if (flags & AST_NEED_SCOPE)
     {
         auto cloneContext        = context;
-        cloneContext.parentScope = Ast::newScope(newNode, newNode->name, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
+        cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
         newNode->copyFrom(cloneContext, this);
     }
     else
@@ -303,7 +303,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     byteCodeAfterFct  = from->byteCodeAfterFct;
 
     computedValue           = from->computedValue;
-    name                    = from->name;
+    token.text              = from->token.text;
     sourceFile              = from->sourceFile;
     bc                      = from->bc;
     fctCallStorageOffset    = from->fctCallStorageOffset;
@@ -356,9 +356,9 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     newNode->assignment = findChildRef(assignment, newNode);
 
     // Is there an alias ?
-    auto it = context.replaceNames.find(newNode->name);
+    auto it = context.replaceNames.find(newNode->token.text);
     if (it != context.replaceNames.end())
-        newNode->name = it->second;
+        newNode->token.text = it->second;
 
     return newNode;
 }
@@ -372,15 +372,13 @@ AstNode* AstIdentifierRef::clone(CloneContext& context)
 
 void AstIdentifierRef::computeName()
 {
-    name.clear();
+    token.text.clear();
     for (auto child : childs)
     {
-        if (!name.empty())
-            name += ".";
-        name += child->name;
+        if (!token.text.empty())
+            token.text += ".";
+        token.text += child->token.text;
     }
-
-    name.computeCrc();
 }
 
 AstNode* AstIdentifier::clone(CloneContext& context)
@@ -389,9 +387,9 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     newNode->copyFrom(context, this);
 
     // Is there an alias ?
-    auto itn = context.replaceNames.find(newNode->name);
+    auto itn = context.replaceNames.find(newNode->token.text);
     if (itn != context.replaceNames.end())
-        newNode->name = itn->second;
+        newNode->token.text = itn->second;
 
     auto idRef = context.parent;
     while (idRef->kind != AstNodeKind::IdentifierRef)
@@ -401,13 +399,13 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     newNode->genericParameters = findChildRef(genericParameters, newNode);
     newNode->aliasNames        = aliasNames;
 
-    // Check if we need to replace the name with a type substitution
+    // Check if we need to replace the token.text with a type substitution
     // That way the new resolveIdentifier will just try to keep the typeinfo
-    auto it = context.replaceTypes.find(newNode->name);
+    auto it = context.replaceTypes.find(newNode->token.text);
     if (it != context.replaceTypes.end())
     {
         if (!it->second->isNative(NativeTypeKind::Undefined))
-            newNode->name = it->second->name;
+            newNode->token.text = it->second->name;
         newNode->typeInfo = it->second;
         if (newNode->typeInfo->declNode)
         {
@@ -427,10 +425,10 @@ Utf8 AstFuncDecl::getNameForMessage()
     if (flags & AST_SPECIAL_COMPILER_FUNC)
         return format("'%s' block", token.text.c_str());
     if (attributeFlags & ATTRIBUTE_MIXIN)
-        return format("mixin '%s'", name.c_str());
+        return format("mixin '%s'", token.text.c_str());
     if (attributeFlags & ATTRIBUTE_MACRO)
-        return format("macro '%s'", name.c_str());
-    return format("function '%s'", name.c_str());
+        return format("macro '%s'", token.text.c_str());
+    return format("function '%s'", token.text.c_str());
 }
 
 void AstFuncDecl::computeFullNameForeign(bool forExport)
@@ -446,7 +444,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
         if (typeFunc->attributes.getValue("swag.foreign", "function", value) && !value.text.empty())
             fullnameForeign = value.text;
         else
-            fullnameForeign = name;
+            fullnameForeign = token.text;
         return;
     }
 
@@ -464,7 +462,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
 
     fullnameForeign = nameForeign;
 
-    // Normalize name
+    // Normalize token.text
     auto len = nameForeign.length();
     auto pz  = nameForeign.buffer;
     auto pzd = fullnameForeign.buffer;
@@ -502,7 +500,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     auto cloneContext     = context;
     cloneContext.ownerFct = newNode;
     cloneContext.parent   = newNode;
-    auto functionScope    = Ast::newScope(newNode, newNode->name, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
+    auto functionScope    = Ast::newScope(newNode, newNode->token.text, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
     newNode->scope        = functionScope;
 
     cloneContext.parentScope   = functionScope;
@@ -516,7 +514,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 
     if (content)
     {
-        auto bodyScope           = Ast::newScope(newNode, newNode->name, ScopeKind::FunctionBody, functionScope);
+        auto bodyScope           = Ast::newScope(newNode, newNode->token.text, ScopeKind::FunctionBody, functionScope);
         cloneContext.parentScope = bodyScope;
         newNode->content         = content->clone(cloneContext);
         bodyScope->owner         = newNode->content;
@@ -834,7 +832,7 @@ AstNode* AstStruct::clone(CloneContext& context)
 
     auto cloneContext             = context;
     cloneContext.parent           = newNode;
-    cloneContext.parentScope      = Ast::newScope(newNode, newNode->name, ScopeKind::Struct, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.parentScope      = Ast::newScope(newNode, newNode->token.text, ScopeKind::Struct, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.ownerStructScope = cloneContext.parentScope;
     cloneContext.ownerMainNode    = newNode;
 
@@ -864,7 +862,7 @@ AstNode* AstImpl::clone(CloneContext& context)
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
-    cloneContext.parentScope = Ast::newScope(newNode, newNode->name, ScopeKind::Impl, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Impl, context.parentScope ? context.parentScope : ownerScope);
     SWAG_ASSERT(cloneContext.ownerStructScope); // Should be setup in generic instantiation
     cloneContext.ownerMainNode = newNode;
     newNode->scope             = cloneContext.parentScope;
@@ -911,7 +909,7 @@ AstNode* AstEnum::clone(CloneContext& context)
 
     auto cloneContext             = context;
     cloneContext.parent           = newNode;
-    cloneContext.parentScope      = Ast::newScope(newNode, newNode->name, ScopeKind::Enum, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.parentScope      = Ast::newScope(newNode, newNode->token.text, ScopeKind::Enum, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.ownerStructScope = cloneContext.parentScope;
     cloneContext.ownerMainNode    = newNode;
     newNode->cloneChilds(cloneContext, this);

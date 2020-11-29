@@ -28,8 +28,12 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
 {
     SWAG_RACE_CONDITION_WRITE(raceCondition);
 
+    Utf8Crc alName;
     if (!aliasName)
-        aliasName = &node->name;
+    {
+        alName    = node->token.text;
+        aliasName = &alName;
+    }
 
     SWAG_ASSERT(!aliasName->empty());
     bool wasPlaceHolder = false;
@@ -94,8 +98,12 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
 {
     SWAG_RACE_CONDITION_WRITE(raceCondition);
 
+    Utf8Crc alName;
     if (!aliasName)
-        aliasName = &node->name;
+    {
+        alName    = node->token.text;
+        aliasName = &alName;
+    }
 
     auto symbol = findNoLock(*aliasName);
 
@@ -244,7 +252,7 @@ bool SymTable::checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* t
 bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName)
 {
     auto& token = node->token;
-    auto& name  = node->name;
+    auto& name  = node->token.text;
 
     if (!symbol)
         symbol = findNoLock(name);

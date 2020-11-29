@@ -18,7 +18,7 @@ bool SemanticJob::checkFuncPrototypeProperty(SemanticContext* context, AstFuncDe
     if (!(node->attributeFlags & ATTRIBUTE_PROPERTY))
         return true;
 
-    const auto& name       = node->name;
+    const auto& name       = node->token.text;
     auto        parameters = node->parameters;
     auto        numParams  = parameters ? parameters->childs.size() : 0;
     auto        returnType = node->returnType ? node->returnType->typeInfo : nullptr;
@@ -45,9 +45,9 @@ bool SemanticJob::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFun
 {
     auto numCur = parameters->childs.size();
     if (exact && (numCur != numWanted))
-        return context->report({parameters, format("invalid number of arguments for special function '%s' ('%d' expected, '%d' provided)", node->name.c_str(), numWanted, numCur)});
+        return context->report({parameters, format("invalid number of arguments for special function '%s' ('%d' expected, '%d' provided)", node->token.text.c_str(), numWanted, numCur)});
     if (!exact && (numCur < numWanted))
-        return context->report({parameters, format("too few arguments for special function '%s' (at least '%d' expected, only '%d' provided)", node->name.c_str(), numWanted, numCur)});
+        return context->report({parameters, format("too few arguments for special function '%s' (at least '%d' expected, only '%d' provided)", node->token.text.c_str(), numWanted, numCur)});
     return true;
 }
 
@@ -59,14 +59,14 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
     if (wanted == nullptr)
     {
         if (returnType == g_TypeMgr.typeInfoVoid)
-            return context->report({node, node->token, format("missing return type for special function '%s'", node->name.c_str())});
+            return context->report({node, node->token, format("missing return type for special function '%s'", node->token.text.c_str())});
         return true;
     }
 
     if (wanted != g_TypeMgr.typeInfoVoid && returnType == g_TypeMgr.typeInfoVoid)
-        return context->report({node, node->token, format("missing return type for special function '%s' ('%s' expected)", node->name.c_str(), wanted->name.c_str())});
+        return context->report({node, node->token, format("missing return type for special function '%s' ('%s' expected)", node->token.text.c_str(), wanted->name.c_str())});
     if (!returnType->isSame(wanted, ISSAME_CAST))
-        return context->report({node->returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", node->name.c_str(), wanted->name.c_str(), returnType->name.c_str())});
+        return context->report({node->returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", node->token.text.c_str(), wanted->name.c_str(), returnType->name.c_str())});
     return true;
 }
 
@@ -74,14 +74,14 @@ bool SemanticJob::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDec
 {
     auto typeParam = TypeManager::concreteType(parameters->childs[index]->typeInfo, CONCRETE_ALIAS);
     if (!typeParam->isSame(wanted, ISSAME_CAST))
-        return context->report({parameters->childs[index], format("invalid parameter '%d' for special function '%s' ('%s' expected, '%s' provided)", index + 1, node->name.c_str(), wanted->name.c_str(), typeParam->name.c_str())});
+        return context->report({parameters->childs[index], format("invalid parameter '%d' for special function '%s' ('%s' expected, '%s' provided)", index + 1, node->token.text.c_str(), wanted->name.c_str(), typeParam->name.c_str())});
     return true;
 }
 
 bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
 {
     // Check operators
-    const auto& name = node->name;
+    const auto& name = node->token.text;
     if (name.length() < 3)
         return true;
 
@@ -118,13 +118,13 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     {
         SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString, ISSAME_CAST), context->report({firstGen, format("invalid generic parameter for special function '%s' ('string' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString, ISSAME_CAST), context->report({firstGen, format("invalid generic parameter for special function '%s' ('string' expected, '%s' provided)", name.c_str(), firstGen->token.text.c_str())}));
     }
     else if (isOpVisit)
     {
         SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoBool, ISSAME_CAST), context->report({firstGen, format("invalid generic parameter for special function '%s' ('bool' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoBool, ISSAME_CAST), context->report({firstGen, format("invalid generic parameter for special function '%s' ('bool' expected, '%s' provided)", name.c_str(), firstGen->token.text.c_str())}));
         SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report({node, node->token, "'opVisit' must have the 'swag.macro' attribute"}));
     }
     else if (name == "opCast")

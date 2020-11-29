@@ -165,7 +165,7 @@ bool Backend::emitGenericParameters(AstNode* node)
     {
         if (idx)
             CONCAT_FIXED_STR(bufferSwg, ", ");
-        bufferSwg.addString(p->name);
+        bufferSwg.addString(p->token.text);
 
         AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
         if (varDecl->type)
@@ -193,7 +193,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
         CONCAT_FIXED_STR(bufferSwg, "attr ");
     else
         CONCAT_FIXED_STR(bufferSwg, "func ");
-    bufferSwg.addString(node->name.c_str());
+    bufferSwg.addString(node->token.text.c_str());
     CONCAT_FIXED_STR(bufferSwg, "(");
 
     if (node->parameters)
@@ -204,13 +204,13 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
             AstVarDecl* varDecl = CastAst<AstVarDecl>(node->parameters->childs[idx], AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
 
             // Name
-            if (varDecl->name == "self" && p->typeInfo->isConst())
+            if (varDecl->token.text == "self" && p->typeInfo->isConst())
                 bufferSwg.addString("const ");
 
-            bufferSwg.addString(varDecl->name);
+            bufferSwg.addString(varDecl->token.text);
 
             // Type
-            if (varDecl->name != "self")
+            if (varDecl->token.text != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
                 emitType(p->typeInfo, indent);
@@ -256,7 +256,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
     }
 
     CONCAT_FIXED_STR(bufferSwg, " ");
-    bufferSwg.addString(node->name.c_str());
+    bufferSwg.addString(node->token.text.c_str());
     CONCAT_FIXED_STR(bufferSwg, "(");
 
     uint32_t idx = 0;
@@ -267,12 +267,12 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
             if (p->flags & AST_DECL_USING)
                 CONCAT_FIXED_STR(bufferSwg, "using ");
 
-            if (p->name == "self" && p->typeInfo->isConst())
+            if (p->token.text == "self" && p->typeInfo->isConst())
                 bufferSwg.addString("const ");
 
-            bufferSwg.addString(p->name);
+            bufferSwg.addString(p->token.text);
 
-            if (p->name != "self")
+            if (p->token.text != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
                 emitType(p->typeInfo, indent);
@@ -328,7 +328,7 @@ bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int inden
     SWAG_CHECK(emitAttributes(typeEnum, indent));
     bufferSwg.addIndent(indent);
     CONCAT_FIXED_STR(bufferSwg, "enum ");
-    bufferSwg.addString(node->name.c_str());
+    bufferSwg.addString(node->token.text.c_str());
     CONCAT_FIXED_STR(bufferSwg, " : ");
     bufferSwg.addString(typeEnum->rawType->name);
 
@@ -378,7 +378,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     if (!(node->flags & AST_ANONYMOUS_STRUCT))
     {
         CONCAT_FIXED_STR(bufferSwg, " ");
-        bufferSwg.addString(node->name.c_str());
+        bufferSwg.addString(node->token.text.c_str());
     }
 
     bufferSwg.addEol();
@@ -438,7 +438,7 @@ bool Backend::emitVarSwg(const char* kindName, AstVarDecl* node, int indent)
 
     if (!(node->flags & AST_AUTO_NAME))
     {
-        bufferSwg.addString(node->name.c_str());
+        bufferSwg.addString(node->token.text.c_str());
         if (node->type)
         {
             CONCAT_FIXED_STR(bufferSwg, ": ");

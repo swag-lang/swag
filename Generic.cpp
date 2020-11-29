@@ -250,7 +250,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
 bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     auto node = context->node;
-    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, node->token, format("cannot instantiate generic struct '%s', missing contextual types replacements", node->name.c_str())}));
+    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, node->token, format("cannot instantiate generic struct '%s', missing contextual types replacements", node->token.text.c_str())}));
 
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
@@ -273,7 +273,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // In that case, we need to retrieve the real struct
     auto genericStructType = static_cast<TypeInfoStruct*>(overload->typeInfo);
     auto sourceSymbol      = match.symbolName;
-    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, node->token, format("partial type alias for generic struct instantation is not supported", node->name.c_str())}));
+    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, node->token, format("partial type alias for generic struct instantation is not supported", node->token.text.c_str())}));
 
     // Make a new type
     auto newType = static_cast<TypeInfoStruct*>(genericStructType->clone());
@@ -417,9 +417,9 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         if (!parent)
         {
             if (contextualNode)
-                return context->report({contextualNode, contextualNode->token, format("cannot instantiate generic function '%s', missing generic parameters", node->name.c_str())});
+                return context->report({contextualNode, contextualNode->token, format("cannot instantiate generic function '%s', missing generic parameters", node->token.text.c_str())});
             else
-                return context->report({node, node->token, format("cannot instantiate generic function '%s', missing contextual types replacements", node->name.c_str())});
+                return context->report({node, node->token, format("cannot instantiate generic function '%s', missing contextual types replacements", node->token.text.c_str())});
         }
     }
 

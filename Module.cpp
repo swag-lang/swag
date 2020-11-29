@@ -436,13 +436,13 @@ void Module::addDependency(AstNode* importNode)
     scoped_lock lk(mutexDependency);
     for (auto& dep : moduleDependencies)
     {
-        if (dep->name == importNode->name)
+        if (dep->name == importNode->token.text)
             return;
     }
 
     ModuleDependency* dep = g_Allocator.alloc<ModuleDependency>();
     dep->node             = importNode;
-    dep->name             = importNode->name;
+    dep->name             = importNode->token.text;
     moduleDependencies.push_front(dep);
 }
 

@@ -233,7 +233,7 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
     {
         AstNode* funcNode;
         SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerAst));
-        auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->name, node, this);
+        auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
         idRef->token.startLocation      = node->token.startLocation;
         idRef->token.endLocation        = node->token.endLocation;
         auto identifier                 = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
@@ -286,7 +286,7 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     {
         AstNode* funcNode;
         SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRun));
-        auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->name, node, this);
+        auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
         idRef->token.startLocation      = node->token.startLocation;
         idRef->token.endLocation        = node->token.endLocation;
         auto identifier                 = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
@@ -432,8 +432,6 @@ bool SyntaxJob::doCompilerSpecialFunction(AstNode* parent, AstNode** result)
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
     if (result)
         *result = exprNode;
-    exprNode->name = token.text;
-    exprNode->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
     exprNode->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
     return true;
@@ -445,8 +443,6 @@ bool SyntaxJob::doCompilerDefined(AstNode* parent, AstNode** result)
     if (result)
         *result = exprNode;
     exprNode->flags |= AST_NO_BYTECODE;
-    exprNode->name = token.text;
-    exprNode->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
 
@@ -464,8 +460,6 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent, AstNode** result)
     if (result)
         *result = exprNode;
     exprNode->flags |= AST_NO_BYTECODE;
-    exprNode->name = token.text;
-    exprNode->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
 

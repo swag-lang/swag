@@ -768,7 +768,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
                 SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, syntaxError(paramExpression, "identifier expected"));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->childs.back()));
-                auto name            = paramExpression->childs.back()->name;
+                auto name            = paramExpression->childs.back()->token.text;
                 auto namedExpression = paramExpression->childs.back();
                 SWAG_CHECK(eatToken());
                 if (token.id == TokenId::SymLeftCurly)
@@ -776,7 +776,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
                 else
                     SWAG_CHECK(doExpression(initNode, &paramExpression));
                 paramExpression->token.startLocation = namedExpression->token.startLocation;
-                paramExpression->name                = name;
+                paramExpression->token.text          = name;
                 paramExpression->flags |= AST_IS_NAMED;
             }
             else
@@ -970,8 +970,8 @@ bool SyntaxJob::checkIsValidUserName(AstNode* node)
     // An identifier that starts with '__' is reserved for internal usage !
     if (!sourceFile->generated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
     {
-        if (node->name.length() > 1 && node->name[0] == '_' && node->name[1] == '_')
-            return syntaxError(node->token, format("identifier '%s' starts with '__', and this is reserved by the language", node->name.c_str()));
+        if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
+            return syntaxError(node->token, format("identifier '%s' starts with '__', and this is reserved by the language", node->token.text.c_str()));
     }
 
     return true;
@@ -991,22 +991,22 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
             return syntaxError(identifier->callParameters, "variable name cannot have call parameters");
     }
 
-    if (node->name[0] != '@')
+    if (node->token.text[0] != '@')
         return true;
 
     // @alias must be of the form @aliasNUM
-    if (node->name.length() >= 6)
+    if (node->token.text.length() >= 6)
     {
-        if (node->name == "@alias")
+        if (node->token.text == "@alias")
             return syntaxError(node->token, "@alias variable name must be followed by a number");
 
-        if (node->name.find("@alias") == 0)
+        if (node->token.text.find("@alias") == 0)
         {
-            const char* pz = node->name.c_str() + 6;
+            const char* pz = node->token.text.c_str() + 6;
             while (*pz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return syntaxError(node->token, format("invalid @alias variable name '%s', '%s' is not a valid number", node->name.c_str(), node->name.c_str() + 6));
+                    return syntaxError(node->token, format("invalid @alias variable name '%s', '%s' is not a valid number", node->token.text.c_str(), node->token.text.c_str() + 6));
                 pz++;
             }
 
@@ -1014,7 +1014,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
         }
     }
 
-    return syntaxError(node->token, format("invalid variable name '%s', cannot start with '@'", node->name.c_str()));
+    return syntaxError(node->token, format("invalid variable name '%s', cannot start with '@'", node->token.text.c_str()));
 }
 
 bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result)
@@ -1047,7 +1047,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             SWAG_CHECK(checkIsValidVarName(identifier));
 
             ScopedLocation scopedLoc(this, &identifier->token);
-            AstVarDecl*    varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
+            AstVarDecl*    varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
             varNode->kind          = kind;
             varNode->token         = identifier->token;
             varNode->flags |= AST_R_VALUE;
@@ -1073,7 +1073,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             else
             {
                 ScopedFlags lk(this, AST_GENERATED);
-                varNode->assignment = Ast::newIdentifierRef(sourceFile, front->name, varNode, this);
+                varNode->assignment = Ast::newIdentifierRef(sourceFile, front->token.text, varNode, this);
             }
 
             SemanticJob::setVarDeclResolve(varNode);
@@ -1120,7 +1120,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         {
             // Ignore field if '?', otherwise check that this is a valid variable name
             SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
-            if (child->childs.front()->name == "?")
+            if (child->childs.front()->token.text == "?")
             {
                 idx++;
                 continue;
@@ -1133,10 +1133,10 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
 
             if (idx)
                 orgVarNode->publicName += ", ";
-            orgVarNode->publicName += identifier->name;
+            orgVarNode->publicName += identifier->token.text;
 
             ScopedLocation scopedLoc1(this, &identifier->token);
-            auto           varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
+            auto           varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
             varNode->kind          = kind;
             varNode->token         = identifier->token;
             varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
@@ -1156,7 +1156,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         SWAG_CHECK(checkIsSingleIdentifier(leftNode, "as a variable name"));
         auto identifier = leftNode->childs.back();
         SWAG_CHECK(checkIsValidVarName(identifier));
-        AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->name, parent, this);
+        AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parent, this);
         varNode->kind       = kind;
         varNode->inheritTokenLocation(leftNode->token);
 
@@ -1252,7 +1252,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 // In case of an affectation, create 'otherVar = firstVar'
                 else
                 {
-                    Ast::newIdentifierRef(sourceFile, front->name, affectNode, this)->token = savedtoken;
+                    Ast::newIdentifierRef(sourceFile, front->token.text, affectNode, this)->token = savedtoken;
                 }
             }
         }
@@ -1282,7 +1282,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 auto child = leftNode->childs.front();
 
                 // Ignore field if '?', otherwise check that this is a valid variable name
-                if (child->childs.front()->name == "?")
+                if (child->childs.front()->token.text == "?")
                 {
                     idx++;
                     Ast::removeFromParent(child);
@@ -1367,15 +1367,15 @@ bool SyntaxJob::doDropCopyMove(AstNode* parent, AstNode** result)
     switch (token.id)
     {
     case TokenId::IntrinsicDrop:
-        node->name = Utf8("@drop");
+        node->token.text = Utf8("@drop");
         break;
     case TokenId::IntrinsicPostCopy:
-        node->name = Utf8("@postCopy");
-        node->kind = AstNodeKind::PostCopy;
+        node->token.text = Utf8("@postCopy");
+        node->kind       = AstNodeKind::PostCopy;
         break;
     case TokenId::IntrinsicPostMove:
-        node->name = Utf8("@postMove");
-        node->kind = AstNodeKind::PostMove;
+        node->token.text = Utf8("@postMove");
+        node->kind       = AstNodeKind::PostMove;
         break;
     }
 

@@ -35,7 +35,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     ByteCode* opInit     = g_Allocator.alloc<ByteCode>();
     opInit->sourceFile   = context->sourceFile;
     opInit->typeInfoFunc = g_TypeMgr.typeInfoOpCall;
-    opInit->name         = structNode->ownerScope->getFullName() + "_" + structNode->name.c_str() + "_opInit";
+    opInit->name         = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opInit";
     opInit->name.replaceAll('.', '_');
     opInit->maxReservedRegisterRC = 3;
     opInit->compilerGenerated     = true;
@@ -307,7 +307,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     opDrop->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
     typeInfoStruct->opDrop = opDrop;
     opDrop->sourceFile     = sourceFile;
-    opDrop->name           = structNode->ownerScope->getFullName() + "_" + structNode->name.c_str() + "_opDropGenerated";
+    opDrop->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opDropGenerated";
     opDrop->name.replaceAll('.', '_');
     opDrop->maxReservedRegisterRC = 3;
     opDrop->compilerGenerated     = true;
@@ -402,7 +402,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     opPostMove->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
     typeInfoStruct->opPostMove = opPostMove;
     opPostMove->sourceFile     = sourceFile;
-    opPostMove->name           = structNode->ownerScope->getFullName() + "_" + structNode->name.c_str() + "_opPostMoveGenerated";
+    opPostMove->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opPostMoveGenerated";
     opPostMove->name.replaceAll('.', '_');
     opPostMove->maxReservedRegisterRC = 3;
     opPostMove->compilerGenerated     = true;
@@ -496,7 +496,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     opPostCopy->typeInfoFunc   = g_TypeMgr.typeInfoOpCall;
     typeInfoStruct->opPostCopy = opPostCopy;
     opPostCopy->sourceFile     = sourceFile;
-    opPostCopy->name           = structNode->ownerScope->getFullName() + "_" + structNode->name.c_str() + "_opPostCopyGenerated";
+    opPostCopy->name           = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opPostCopyGenerated";
     opPostCopy->name.replaceAll('.', '_');
     opPostCopy->maxReservedRegisterRC = 3;
     opPostCopy->compilerGenerated     = true;

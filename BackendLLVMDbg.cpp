@@ -332,7 +332,7 @@ llvm::DISubprogram* BackendLLVMDbg::startFunction(ByteCode* bc, AstFuncDecl** re
     if (bc->node)
     {
         decl     = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
-        name     = decl->name;
+        name     = decl->token.text;
         line     = decl->token.startLocation.line;
         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
     }
@@ -379,7 +379,7 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
     llvm::DIFile*     file     = getOrCreateFile(bc->sourceFile);
     if (decl)
     {
-        name     = decl->name;
+        name     = decl->token.text;
         line     = decl->token.startLocation.line;
         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
     }
@@ -418,7 +418,7 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
                 break;
             }
 
-            llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, child->name.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
+            llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, child->token.text.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
             dbgBuilder->insertDeclare(func->getArg(idxParam), var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
             idxParam += typeParam->numRegisters();
         }
@@ -437,7 +437,7 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
             {
                 llvm::DIType*          type  = getPointerToType(typeInfo, file);
                 auto                   scope = getOrCreateScope(file, localVar->ownerScope);
-                llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, localVar->name.c_str(), 1, file, loc.line + 1, type, !isOptimized);
+                llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, localVar->token.text.c_str(), 1, file, loc.line + 1, type, !isOptimized);
                 auto                   v     = func->getArg(0);
                 vector<int64_t>        expr;
                 //expr.push_back(llvm::dwarf::DW_OP_deref);
@@ -448,7 +448,7 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
         {
             llvm::DIType*          type  = getType(typeInfo, file);
             auto                   scope = getOrCreateScope(file, localVar->ownerScope);
-            llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->name.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
+            llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.text.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
             auto                   v     = pp.builder->CreateInBoundsGEP(stack, pp.builder->getInt32(overload->storageOffset));
             dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
         }
@@ -598,7 +598,7 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
 
         varType         = varType->getPointerTo();
         constExpr       = llvm::ConstantExpr::getPointerCast(constExpr, varType);
-        auto name       = node->name.c_str();
+        auto name       = node->token.text.c_str();
         auto g          = new llvm::GlobalVariable(modu, varType, false, llvm::GlobalValue::ExternalLinkage, constExpr, name);
         auto dbgRefType = getReferenceToType(typeInfo, file);
         auto gve        = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, name, name, file, 0, dbgRefType, dbgType, true);

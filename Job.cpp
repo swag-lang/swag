@@ -81,7 +81,7 @@ bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     if (expansionNode.size())
     {
         auto  first = expansionNode[0];
-        auto& name  = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->name;
+        auto& name  = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->token.text;
         if (name.empty())
             name = first->token.text;
         if (!name.empty())

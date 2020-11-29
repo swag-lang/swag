@@ -21,7 +21,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, AstFuncDecl* n
     SWAG_ASSERT(nodeFunc->resolvedSymbolOverload);
     SWAG_ASSERT(nodeFunc->resolvedSymbolOverload->typeInfo);
     auto  typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->resolvedSymbolOverload->typeInfo, TypeInfoKind::FuncAttr);
-    auto& funcName = nodeFunc->name;
+    auto& funcName = nodeFunc->token.text;
 
     // Load module if specified
     ComputedValue moduleName;

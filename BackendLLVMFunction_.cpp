@@ -3369,7 +3369,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     if (typeFuncBC->attributes.getValue("swag.foreign", "function", foreignValue) && !foreignValue.text.empty())
         funcName = foreignValue.text;
     else
-        funcName = nodeFunc->name;
+        funcName = nodeFunc->token.text;
 
     // Get parameters
     VectorNative<llvm::Value*> params;

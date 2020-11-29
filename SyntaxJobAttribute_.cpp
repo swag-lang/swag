@@ -22,7 +22,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     auto        typeInfo = allocType<TypeInfoFuncAttr>();
     typeInfo->declNode   = attrNode;
 
-    auto newScope      = Ast::newScope(attrNode, attrNode->name, ScopeKind::Attribute, currentScope);
+    auto newScope      = Ast::newScope(attrNode, attrNode->token.text, ScopeKind::Attribute, currentScope);
     attrNode->typeInfo = typeInfo;
     currentScope->symTable.registerSymbolNameNoLock(&context, attrNode, SymbolKind::Attribute);
 

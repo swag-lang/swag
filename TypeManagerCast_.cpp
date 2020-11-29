@@ -21,7 +21,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
                 {
                     auto node         = Ast::newNode(context->sourceFile, AstNodeKind::Cast, fromNode);
                     node->semanticFct = SemanticJob::resolveUserCast;
-                    node->name        = Utf8Crc("opCast");
+                    node->token.text        = Utf8Crc("opCast");
 
                     auto lastNode = context->job->nodes.back();
                     context->job->nodes.pop_back();
@@ -2371,7 +2371,7 @@ bool TypeManager::convertLiteralTupleToStruct(SemanticContext* context, TypeInfo
     typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
     varNode->type = typeNode;
 
-    typeNode->identifier = Ast::newIdentifierRef(sourceFile, typeStruct->declNode->name, typeNode);
+    typeNode->identifier = Ast::newIdentifierRef(sourceFile, typeStruct->declNode->token.text, typeNode);
     typeNode->identifier->flags |= AST_GENERATED;
     typeNode->identifier->inheritTokenLocation(fromNode->token);
 
@@ -2384,7 +2384,7 @@ bool TypeManager::convertLiteralTupleToStruct(SemanticContext* context, TypeInfo
         typeNode->typeFlags |= TYPEFLAG_RETVAL;
 
     // And make a reference to that variable
-    auto identifierRef = Ast::newIdentifierRef(sourceFile, varNode->name, parentForRef);
+    auto identifierRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, parentForRef);
     identifierRef->flags |= AST_R_VALUE | AST_TRANSIENT | AST_GENERATED;
 
     // Make parameters
@@ -2406,7 +2406,7 @@ bool TypeManager::convertLiteralTupleToStruct(SemanticContext* context, TypeInfo
         oneChild->clone(cloneContext);
         oneChild->flags |= AST_NO_BYTECODE | AST_NO_SEMANTIC;
         if (oneChild->flags & AST_IS_NAMED)
-            oneParam->namedParam = oneChild->name;
+            oneParam->namedParam = oneChild->token.text;
 
         // If this is for a return, remember it, in order to make a move or a copy
         if ((typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE) && fromNode->parent->kind == AstNodeKind::Return)
