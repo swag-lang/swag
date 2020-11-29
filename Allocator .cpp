@@ -100,7 +100,7 @@ void* Allocator::tryBucket(uint32_t bucket, int size)
     // If the bucket size is greater than the real size, then put the remaining
     // memory size in the corresponding bucket
     auto wasted = (bucket * 8) - size;
-    if (wasted > 32)
+    if (wasted)
     {
         auto wastedBucket         = wasted / 8;
         auto ptr                  = (int8_t*) freeBuckets[bucket] + size;
@@ -108,8 +108,6 @@ void* Allocator::tryBucket(uint32_t bucket, int size)
         freeBuckets[wastedBucket] = ptr;
         freeBucketsCpt[wastedBucket]++;
     }
-    else if (wasted)
-        return nullptr;
 
     g_Stats.wastedMemory -= bucket * 8;
     auto result         = freeBuckets[bucket];
@@ -151,7 +149,7 @@ void* Allocator::alloc(int size)
     if (!lastBucket || lastBucket->maxUsed + size >= lastBucket->allocated)
     {
         // Try other big buckets
-        for (int i = MAX_FREE_BUCKETS - 2; i > bucket + 4; i--)
+        for (int i = MAX_FREE_BUCKETS - 2; i > bucket; i--)
         {
             result = tryBucket(i, size);
             if (result)

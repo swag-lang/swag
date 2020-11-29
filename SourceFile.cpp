@@ -14,7 +14,6 @@ const auto BUF_SIZE = 2048;
 
 SourceFile::SourceFile()
 {
-    buffer = new char[BUF_SIZE];
     cleanCache();
 }
 
@@ -70,6 +69,8 @@ void SourceFile::seekTo(long seek)
 
 long SourceFile::readTo()
 {
+    if (!buffer)
+        buffer = new char[BUF_SIZE];
     return (long) fread(buffer, 1, BUF_SIZE, fileHandle);
 }
 
@@ -138,6 +139,8 @@ char SourceFile::loadAndGetPrivateChar()
     // Be sure there's something in the current buffer
     if (bufferCurSeek >= bufferSize)
     {
+        if (!isExternal)
+            delete buffer;
         close();
         return 0;
     }
