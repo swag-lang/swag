@@ -111,7 +111,7 @@ struct Scope
     VectorNative<Scope*>     childScopes;
     VectorNative<AstNode*>   deferredNodes;
     map<SourceFile*, Scope*> privateScopes;
-    RegisterList             registersToRelease;
+    VectorNative<uint32_t>   registersToRelease;
     DependentJobs            dependentJobs;
     shared_mutex             mutex;
     set<AstNode*>            doneDefer;

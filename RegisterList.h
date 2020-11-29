@@ -6,11 +6,9 @@
 struct RegisterList
 {
     static const int MAX_STATIC = 2;
-
-    uint32_t               oneResult[MAX_STATIC];
-    VectorNative<uint32_t> registers;
-    int                    countResults = 0;
-    bool                   canFree      = true;
+    uint32_t         oneResult[MAX_STATIC];
+    uint8_t          countResults = 0;
+    bool             canFree      = true;
 
     RegisterList()
     {
@@ -29,10 +27,8 @@ struct RegisterList
 
     uint32_t operator[](int index) const
     {
-        SWAG_ASSERT(index < countResults);
-        if (index < MAX_STATIC)
-            return oneResult[index];
-        return registers[index - MAX_STATIC];
+        SWAG_ASSERT(index < MAX_STATIC);
+        return oneResult[index];
     }
 
     void operator=(uint32_t r)
@@ -49,17 +45,13 @@ struct RegisterList
 
     void operator+=(uint32_t r)
     {
-        if (countResults >= MAX_STATIC)
-            registers.push_back(r);
-        else
-            oneResult[countResults] = r;
-        countResults++;
+        SWAG_ASSERT(countResults < MAX_STATIC);
+        oneResult[countResults++] = r;
     }
 
     void clear()
     {
         countResults = 0;
-        registers.clear();
     }
 
     operator uint32_t()

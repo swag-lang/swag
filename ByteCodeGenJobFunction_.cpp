@@ -939,7 +939,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // For a untyped variadic, we need to store all parameters as 'any'
-    RegisterList toFree;
+    VectorNative<uint32_t> toFree;
     if (allParams && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
     {
         auto numFuncParams = (int) typeInfoFunc->parameters.size();
@@ -955,7 +955,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
             // Store concrete type info
             auto r0 = reserveRegisterRC(context);
-            toFree += r0;
+            toFree.push_back(r0);
             SWAG_ASSERT(child->concreteTypeInfoStorage != UINT32_MAX);
 
             // If this is a reference, then we push the type pointed by it, so that the user will receive a real type,
@@ -986,7 +986,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             else
             {
                 auto r1 = reserveRegisterRC(context);
-                toFree += r1;
+                toFree.push_back(r1);
 
                 // The value will be stored on the stack (1 or 2 registers max). So we push now the address
                 // of that value on that stack. This is the data part of the 'any'
@@ -1020,10 +1020,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 auto param = static_cast<AstFuncCallParam*>(allParams->childs[j]);
                 if (param->index == i)
                 {
-                    if (freeRegistersParams)
-                        toFree += param->resultRegisterRC;
                     for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
                     {
+                        if (freeRegistersParams)
+                            toFree.push_back(param->resultRegisterRC[r]);
                         accParams.push_back(param->resultRegisterRC[r]);
                         maxCallParams++;
                         precallStack += sizeof(Register);
@@ -1056,9 +1056,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     RegisterList regList;
                     SWAG_CHECK(emitDefaultParamValue(context, defaultParam, regList));
 
-                    toFree += regList;
                     for (int r = regList.size() - 1; r >= 0;)
                     {
+                        toFree.push_back(regList[r]);
                         accParams.push_back(regList[r--]);
                         precallStack += sizeof(Register);
                         numPushParams++;
@@ -1085,11 +1085,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
             if (param->typeInfo->kind != TypeInfoKind::Variadic && param->typeInfo->kind != TypeInfoKind::TypedVariadic)
             {
-                if (freeRegistersParams)
-                    toFree += param->resultRegisterRC;
-
                 for (int r = param->resultRegisterRC.size() - 1; r >= 0;)
                 {
+                    if (freeRegistersParams)
+                        toFree.push_back(param->resultRegisterRC[r]);
                     accParams.push_back(param->resultRegisterRC[r--]);
                     precallStack += sizeof(Register);
                     numPushParams++;
@@ -1114,7 +1113,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], lastParam->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0[1], r0[1]);
         emitInstruction(context, ByteCodeOp::PushRAParam2, r0[0], r0[1]);
-        toFree += r0;
+        toFree.push_back(r0[0]);
+        toFree.push_back(r0[1]);
         precallStack += 2 * sizeof(Register);
         numPushParams += 2;
         maxCallParams += 2;
@@ -1127,14 +1127,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
         // Store number of extra parameters
         auto r0 = reserveRegisterRC(context);
-        toFree += r0;
+        toFree.push_back(r0);
         emitInstruction(context, ByteCodeOp::SetImmediate64, r0)->b.u64 = numVariadic | ((numPushParams + 1) << 32);
         emitInstruction(context, ByteCodeOp::PushRAParam, r0);
         maxCallParams++;
 
         // Store address on the stack of those parameters. This must be the last push
         auto r1 = reserveRegisterRC(context);
-        toFree += r1;
+        toFree.push_back(r1);
         auto inst       = emitInstruction(context, ByteCodeOp::CopySPVaargs, r1);
         inst->c.b       = foreign;
         inst->d.pointer = (uint8_t*) typeInfoFunc;
@@ -1151,14 +1151,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
         // Store number of extra parameters
         auto r0 = reserveRegisterRC(context);
-        toFree += r0;
+        toFree.push_back(r0);
         emitInstruction(context, ByteCodeOp::SetImmediate64, r0)->b.u64 = numVariadic | (offset << 32);
         emitInstruction(context, ByteCodeOp::PushRAParam, r0);
         maxCallParams++;
 
         // Store address on the stack of those parameters. This must be the last push
         auto r1 = reserveRegisterRC(context);
-        toFree += r1;
+        toFree.push_back(r1);
         auto inst       = emitInstruction(context, ByteCodeOp::CopySPVaargs, r1);
         inst->c.b       = foreign;
         inst->d.pointer = (uint8_t*) typeInfoFunc;
@@ -1190,7 +1190,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // Free all registers now that the call can really be done
-    freeRegisterRC(context, toFree);
+    for (auto r : toFree)
+        freeRegisterRC(context, r);
 
     // Copy result in a computing register
     if (typeInfoFunc->returnType && typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)

@@ -72,7 +72,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     {
                         overload->registers         = callParam->resultRegisterRC;
                         overload->registers.canFree = false;
-                        node->scope->registersToRelease += overload->registers;
+                        for (int r = 0; r < overload->registers.size(); r++)
+                            node->scope->registersToRelease.push_back(overload->registers[r]);
                         break;
                     }
                 }
@@ -98,7 +99,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                             {
                                 overload->registers         = callParam->resultRegisterRC;
                                 overload->registers.canFree = false;
-                                node->scope->registersToRelease += overload->registers;
+                                for (int r = 0; r < overload->registers.size(); r++)
+                                    node->scope->registersToRelease.push_back(overload->registers[r]);
                                 covered = true;
                                 break;
                             }
@@ -122,7 +124,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                         {
                             SWAG_CHECK(emitDefaultParamValue(context, defaultParam, overload->registers));
                             overload->registers.canFree = false;
-                            node->scope->registersToRelease += overload->registers;
+                            for (int r = 0; r < overload->registers.size(); r++)
+                                node->scope->registersToRelease.push_back(overload->registers[r]);
                             break;
                         }
                     }
@@ -143,7 +146,9 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
         context->bc->out[r->seekJump].b.s32 = context->bc->numInstructions - r->seekJump - 1;
 
     // Release persistent list of registers
-    freeRegisterRC(context, node->scope->registersToRelease);
+    for (auto r : node->scope->registersToRelease)
+        freeRegisterRC(context, r);
+    node->scope->registersToRelease.clear();
 
     // Be sure this is done only once
     node->flags |= AST_NO_BYTECODE;
