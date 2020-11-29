@@ -222,7 +222,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     auto node     = context->node;
     auto loopNode = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
 
-    if (loopNode->resolvedUserOpSymbolName && loopNode->resolvedUserOpSymbolName->kind == SymbolKind::Function)
+    if (loopNode->resolvedUserOpSymbolOverload && loopNode->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context, nullptr, loopNode));
         if (context->result != ContextResult::Done)

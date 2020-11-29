@@ -407,7 +407,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
         auto r0 = node->childs[0]->resultRegisterRC;
         auto r1 = node->childs[1]->resultRegisterRC;
 
-        if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
+        if (node->resolvedUserOpSymbolOverload && node->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
         {
             SWAG_CHECK(emitUserOp(context));
             if (context->result != ContextResult::Done)

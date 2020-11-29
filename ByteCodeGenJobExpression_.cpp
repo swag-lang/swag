@@ -23,7 +23,7 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
         child0->doneFlags |= AST_DONE_CAST1;
     }
 
-    if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
+    if (node->resolvedUserOpSymbolOverload && node->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context, child0, nullptr, false));
         if (context->result != ContextResult::Done)

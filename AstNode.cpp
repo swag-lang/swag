@@ -291,7 +291,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     resolvedSymbolName           = from->resolvedSymbolName;
     resolvedSymbolOverload       = from->resolvedSymbolOverload;
-    resolvedUserOpSymbolName     = from->resolvedUserOpSymbolName;
     resolvedUserOpSymbolOverload = from->resolvedUserOpSymbolOverload;
 
     token = from->token;

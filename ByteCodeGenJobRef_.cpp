@@ -383,7 +383,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference a struct
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
+        if (node->resolvedUserOpSymbolOverload && node->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
         {
             if (!job->allParamsTmp)
                 job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
@@ -445,7 +445,7 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
     // Slicing of a structure, with a special function
     if (typeVar->kind == TypeInfoKind::Struct)
     {
-        if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
+        if (node->resolvedUserOpSymbolOverload && node->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
         {
             if (!job->allParamsTmp)
                 job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);

@@ -348,9 +348,8 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     if (!optionnal)
     {
         node->typeInfo                     = overload->typeInfo;
-        node->resolvedUserOpSymbolName     = symbol;
         node->resolvedUserOpSymbolOverload = overload;
-        SWAG_ASSERT(node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function);
+        SWAG_ASSERT(symbol && symbol->kind == SymbolKind::Function);
     }
 
     // Allocate room on the stack to store the result of the function call

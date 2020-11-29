@@ -515,7 +515,6 @@ bool SemanticJob::resolveUserCast(SemanticContext* context)
 
     node->parent->castedTypeInfo               = node->castedTypeInfo;
     node->parent->typeInfo                     = node->typeInfo;
-    node->parent->resolvedUserOpSymbolName     = node->resolvedUserOpSymbolName;
     node->parent->resolvedUserOpSymbolOverload = node->resolvedUserOpSymbolOverload;
     return true;
 }

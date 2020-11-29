@@ -369,7 +369,6 @@ struct AstNode
     TypeInfo*           castedTypeInfo;
     SymbolName*         resolvedSymbolName;
     SymbolOverload*     resolvedSymbolOverload;
-    SymbolName*         resolvedUserOpSymbolName;
     SymbolOverload*     resolvedUserOpSymbolOverload;
     ByteCodeGenJob*     byteCodeJob;
     AstNode*            parent;
