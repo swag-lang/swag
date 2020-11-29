@@ -338,7 +338,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // Collect function attributes
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChilds);
-    SWAG_CHECK(collectAttributes(context, funcNode, typeInfo->attributes));
+    SWAG_CHECK(collectAttributes(context, funcNode, &typeInfo->attributes));
 
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;

@@ -343,7 +343,7 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
 
     // Attributes
     if (!(node->flags & AST_FROM_GENERIC))
-        SWAG_CHECK(collectAttributes(context, node, typeInfo->attributes));
+        SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
 
     // Register symbol with its type
     SymbolKind symbolKind = SymbolKind::Struct;
@@ -419,7 +419,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     SWAG_ASSERT(typeInfo->declNode == node);
 
     // Structure packing
-    SWAG_CHECK(collectAttributes(context, node, typeInfo->attributes));
+    SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
     ComputedValue value;
     if (node->flags & AST_UNION)
         node->packing = 0;
@@ -463,7 +463,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
             typeParam->hasUsing   = varDecl->flags & AST_DECL_USING;
-            SWAG_CHECK(collectAttributes(context, child, typeParam->attributes));
+            SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
             if (child->kind == AstNodeKind::VarDecl)
                 typeInfo->fields.push_back(typeParam);
             else
@@ -737,7 +737,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
             typeParam->node       = child;
-            SWAG_CHECK(collectAttributes(context, child, typeParam->attributes));
+            SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
             typeITable->fields.push_back(typeParam);
 
             // Verify signature
@@ -877,7 +877,7 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
             typeParam->name       = child->typeInfo->name;
             typeParam->sizeOf     = 0;
             typeParam->node       = child;
-            SWAG_CHECK(collectAttributes(context, child, typeParam->attributes));
+            SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
             typeSet->fields.push_back(typeParam);
         }
 

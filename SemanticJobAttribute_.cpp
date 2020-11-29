@@ -94,7 +94,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     }
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes& result)
+bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes* result)
 {
     auto attrUse = forNode->ownerAttrUse;
     if (!attrUse)
@@ -103,13 +103,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
     return true;
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes& result, AstAttrUse* attrUse)
+bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes* result, AstAttrUse* attrUse)
 {
     if (!attrUse)
         return true;
 
     // Already done
-    if (!result.empty())
+    if (result && !result->empty())
         return true;
 
     auto&         flags   = forNode->attributeFlags;
@@ -133,7 +133,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeInfo->attributes.hasAttribute("swag.attributeMulti"))
             {
-                if (result.isHere.contains(typeInfo))
+                if (result && result->isHere.contains(typeInfo))
                 {
                     Diagnostic diag{forNode, forNode->token, format("attribute '%s' assigned twice to '%s' ('swag.attributeMulti' is not present in the declaration of '%s')", child->token.text.c_str(), forNode->token.text.c_str(), child->token.text.c_str())};
                     Diagnostic note{child, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
@@ -142,7 +142,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             }
 
             // Append attributes
-            result.isHere.insert(typeInfo);
+            if (result)
+                result->isHere.insert(typeInfo);
 
             // Attribute on an attribute : usage
             if (forNode->kind == AstNodeKind::AttrDecl)
@@ -214,8 +215,11 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         }
 
         // Merge the result
-        for (auto& oneAttr : curAttr->attributes.attributes)
-            result.attributes.push_back(oneAttr);
+        if (result)
+        {
+            for (auto& oneAttr : curAttr->attributes.attributes)
+                result->attributes.push_back(oneAttr);
+        }
 
         curAttr = curAttr->ownerAttrUse;
     }
@@ -232,7 +236,7 @@ bool SemanticJob::preResolveAttrDecl(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    SWAG_CHECK(collectAttributes(context, node, typeInfo->attributes));
+    SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
     return true;
 }
 
@@ -317,7 +321,6 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         node->attributes.attributes.emplace_back(move(oneAttribute));
     }
 
-    SymbolAttributes attributes;
-    SWAG_CHECK(collectAttributes(context, node, attributes, node));
+    SWAG_CHECK(collectAttributes(context, node, nullptr, node));
     return true;
 }

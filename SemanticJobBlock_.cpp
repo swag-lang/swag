@@ -153,8 +153,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     auto node = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);
 
     // Deal with complete
-    SymbolAttributes attributes;
-    SWAG_CHECK(collectAttributes(context, node, attributes));
+    SWAG_CHECK(collectAttributes(context, node, nullptr));
     SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_COMPLETE) || node->expression, context->report({node, node->token, "a switch without an expression cannot be marked as 'swag.complete'"}));
 
     node->byteCodeFct = ByteCodeGenJob::emitSwitch;

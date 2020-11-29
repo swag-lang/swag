@@ -30,7 +30,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     auto enumNode = context->node->parent;
 
     auto typeInfo = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
-    SWAG_CHECK(collectAttributes(context, enumNode, typeInfo->attributes));
+    SWAG_CHECK(collectAttributes(context, enumNode, &typeInfo->attributes));
 
     // Hardcoded swag enums
     if (context->sourceFile->isBootstrapFile)
@@ -210,7 +210,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     typeParam->value      = enumNode->computedValue;
     typeParam->index      = (uint32_t) typeEnum->values.size();
     typeParam->node       = valNode;
-    SWAG_CHECK(collectAttributes(context, valNode, typeParam->attributes));
+    SWAG_CHECK(collectAttributes(context, valNode, &typeParam->attributes));
     typeEnum->values.push_back(typeParam);
 
     return true;
