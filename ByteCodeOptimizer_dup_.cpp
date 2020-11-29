@@ -79,7 +79,9 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
 
 void ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context, ByteCodeOp op)
 {
-    map<uint32_t, ByteCodeInstruction*> mapRA;
+    auto& mapRA = context->mapU32InstA;
+    mapRA.clear();
+
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         if (ip->flags & BCI_START_STMT || isJump(ip))
