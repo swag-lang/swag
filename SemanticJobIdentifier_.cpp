@@ -1007,7 +1007,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     }
 }
 
-bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<OneTryMatch*>& overloads, AstNode* node)
+bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node)
 {
     AstIdentifier* identifier        = nullptr;
     AstNode*       genericParameters = nullptr;
@@ -1119,7 +1119,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
     return context->report(diag, notes);
 }
 
-bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<OneTryMatch*>& overloads, AstNode* node)
+bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node)
 {
     auto  job            = context->job;
     auto& matches        = job->cacheMatches;
@@ -2291,7 +2291,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             if ((node->forceTakeAddress()) && !ufcsLastParam)
                 symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
-            listTryMatch.emplace_back(tryMatch);
+            listTryMatch.push_back(tryMatch);
         }
 
         SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node));

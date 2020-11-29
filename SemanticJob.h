@@ -134,8 +134,8 @@ struct SemanticJob : public Job
     static bool collectStructLiteralsNoLock(JobContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment);
     static void setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload);
     static void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
-    static bool cannotMatchIdentifierError(SemanticContext* context, vector<OneTryMatch*>& overloads, AstNode* node);
-    static bool matchIdentifierParameters(SemanticContext* context, vector<OneTryMatch*>& overloads, AstNode* node);
+    static bool cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node);
+    static bool matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t num, bool exact = true);
     static bool checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncDecl* node, TypeInfo* wanted);
@@ -320,8 +320,8 @@ struct SemanticJob : public Job
     VectorNative<OneOverload>      cacheToSolveOverload;
     vector<OneMatch>               cacheMatches;
     vector<OneGenericMatch>        cacheGenericMatches;
-    vector<OneTryMatch*>           cacheListTryMatch;
-    vector<OneTryMatch*>           cacheFreeTryMatch;
+    VectorNative<OneTryMatch*>     cacheListTryMatch;
+    VectorNative<OneTryMatch*>     cacheFreeTryMatch;
     SemanticContext                context;
     Concat                         tmpConcat;
 
