@@ -830,6 +830,12 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
     }
 
     destFile.close();
+
+    pp.concat.release();
+    pp.postConcat.release();
+    pp.globalSegment.release();
+    pp.stringSegment.release();
+
     return true;
 }
 

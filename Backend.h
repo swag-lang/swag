@@ -17,7 +17,7 @@ struct Job;
 struct BackendFunctionBodyJob;
 enum class JobResult;
 
-static const int MAX_PRECOMPILE_BUFFERS = 128;
+static const int MAX_PRECOMPILE_BUFFERS = 16;
 enum class BackendPreCompilePass
 {
     Init,

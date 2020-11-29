@@ -36,7 +36,24 @@ void Concat::clear()
     lastBucket->countBytes = 0;
 }
 
-bool Concat::hasEnoughtSpace(uint32_t numBytes)
+void Concat::release()
+{
+    auto p = firstBucket;
+    while (p)
+    {
+        g_Allocator.free(p->datas, bucketSize);
+        auto n = p->nextBucket;
+        g_Allocator.free(p, sizeof(ConcatBucket));
+        p = n;
+    }
+
+    firstBucket     = nullptr;
+    lastBucket      = nullptr;
+    currentSP       = nullptr;
+    totalCountBytes = 0;
+}
+
+bool Concat::hasEnoughSpace(uint32_t numBytes)
 {
     auto count = (int) (currentSP - lastBucket->datas);
     return bucketSize - count >= (int) numBytes;
@@ -93,7 +110,7 @@ void Concat::addU8(uint8_t v)
 
 void Concat::addU8_safe(uint8_t v)
 {
-    SWAG_ASSERT(hasEnoughtSpace(1));
+    SWAG_ASSERT(hasEnoughSpace(1));
     *(uint8_t*) currentSP = v;
     currentSP += sizeof(uint8_t);
 }
@@ -107,7 +124,7 @@ void Concat::addU16(uint16_t v)
 
 void Concat::addU16_safe(uint16_t v)
 {
-    SWAG_ASSERT(hasEnoughtSpace(2));
+    SWAG_ASSERT(hasEnoughSpace(2));
     *(uint16_t*) currentSP = v;
     currentSP += sizeof(uint16_t);
 }
@@ -121,7 +138,7 @@ void Concat::addU32(uint32_t v)
 
 void Concat::addU32_safe(uint32_t v)
 {
-    SWAG_ASSERT(hasEnoughtSpace(4));
+    SWAG_ASSERT(hasEnoughSpace(4));
     *(uint32_t*) currentSP = v;
     currentSP += sizeof(uint32_t);
 }
@@ -135,7 +152,7 @@ void Concat::addU64(uint64_t v)
 
 void Concat::addU64_safe(uint64_t v)
 {
-    SWAG_ASSERT(hasEnoughtSpace(8));
+    SWAG_ASSERT(hasEnoughSpace(8));
     *(uint64_t*) currentSP = v;
     currentSP += sizeof(uint64_t);
 }

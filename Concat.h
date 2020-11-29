@@ -14,7 +14,8 @@ struct Concat
 {
     void init(int size = 32 * 1024);
     void clear();
-    bool hasEnoughtSpace(uint32_t numBytes);
+    void release();
+    bool hasEnoughSpace(uint32_t numBytes);
     void ensureSpace(int numBytes);
 
     void addU8_safe(uint8_t v);
