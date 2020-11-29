@@ -79,7 +79,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
     if (func->returnType && func->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
     {
         node->flags |= AST_TRANSIENT;
-        node->fctCallStorageOffset = node->scope->startStackSize;
+        node->concreteTypeInfoStorage = node->scope->startStackSize;
         node->scope->startStackSize += func->returnType->typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->scope->startStackSize);
     }

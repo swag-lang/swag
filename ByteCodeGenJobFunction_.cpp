@@ -915,14 +915,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Store in RR0 the address of the stack to store the result
             node->resultRegisterRC = reserveRegisterRC(context);
             auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u32            = node->fctCallStorageOffset;
+            inst->b.u32            = node->concreteTypeInfoStorage;
             emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
             if (node->resolvedSymbolOverload)
                 node->resolvedSymbolOverload->flags |= OVERLOAD_EMITTED;
 
-            node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->fctCallStorageOffset);
+            node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->concreteTypeInfoStorage);
         }
     }
 

@@ -21,8 +21,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-        inst->b.u32 = node->fctCallStorageOffset;
-        node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->fctCallStorageOffset);
+        inst->b.u32 = node->concreteTypeInfoStorage;
+        node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->concreteTypeInfoStorage);
     }
 
     AstNode* allParams     = nullptr;

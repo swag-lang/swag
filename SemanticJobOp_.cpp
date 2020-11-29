@@ -357,7 +357,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
     if (typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
-        node->fctCallStorageOffset = node->ownerScope->startStackSize;
+        node->concreteTypeInfoStorage = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += typeFunc->returnType->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
     }
