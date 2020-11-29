@@ -100,8 +100,8 @@ struct SemanticJob : public Job
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
     static bool collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes& result);
     static bool collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes& result, AstAttrUse* attrUse);
-    static void collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode);
-    static bool collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
+    static void collectAlternativeScopeHierarchy(SemanticContext* context, unordered_set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode);
+    static bool collectScopeHierarchy(SemanticContext* context, unordered_set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr);
     static bool derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload, DataSegment* segment);
@@ -284,8 +284,9 @@ struct SemanticJob : public Job
     static bool resolveUserCast(SemanticContext* context);
 
     VectorNative<AstNode*>         tmpNodes;
-    set<SymbolName*>               cacheDependentSymbols;
-    set<Scope*>                    cacheScopeHierarchy;
+    unordered_set<SymbolName*>     cacheDependentSymbols;
+    unordered_set<SymbolName*>     cacheToAddSymbols;
+    unordered_set<Scope*>          cacheScopeHierarchy;
     VectorNative<AlternativeScope> cacheScopeHierarchyVars;
     VectorNative<Scope*>           scopesHere;
     vector<OneMatch>               cacheMatches;
@@ -306,6 +307,7 @@ struct SemanticJob : public Job
         cacheDependentSymbols.clear();
         cacheScopeHierarchy.clear();
         cacheScopeHierarchyVars.clear();
+        cacheToAddSymbols.clear();
         scopesHere.clear();
         cacheMatches.clear();
         cacheGenericMatches.clear();

@@ -2057,14 +2057,15 @@ bool SemanticJob::filterMatches(SemanticContext* context, vector<OneMatch>& matc
 
 bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
 {
-    auto             job              = context->job;
-    auto             identifierRef    = node->identifierRef;
-    auto&            dependentSymbols = job->cacheDependentSymbols;
-    set<SymbolName*> toAddSymbol;
+    auto  job              = context->job;
+    auto  identifierRef    = node->identifierRef;
+    auto& dependentSymbols = job->cacheDependentSymbols;
 
     if (dependentSymbols.size() == 1)
         return true;
 
+    auto& toAddSymbol = job->cacheToAddSymbols;
+    toAddSymbol.clear();
     for (auto oneSymbol : dependentSymbols)
     {
         if (node->callParameters && oneSymbol->kind == SymbolKind::Variable)
@@ -2326,7 +2327,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode)
+void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, unordered_set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode)
 {
     if (!startNode->alternativeScopes.empty())
     {
@@ -2361,7 +2362,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set
     }
 }
 
-bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
+bool SemanticJob::collectScopeHierarchy(SemanticContext* context, unordered_set<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
     auto& here       = job->scopesHere;

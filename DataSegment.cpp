@@ -229,10 +229,13 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
     ref.fromSegment = seg;
 
 #ifdef SWAG_HAS_ASSERT
-    // We must have at least one pointer difference with all other offsets, otherwise we will
-    // have a weird memory overwrite
-    for (int i = 0; i < initPtr.size(); i++)
-        SWAG_ASSERT(abs((int) initPtr[i].patchOffset - (int) patchOffset) >= 8);
+    if (g_CommandLine.devMode)
+    {
+        // We must have at least one pointer difference with all other offsets, otherwise we will
+        // have a weird memory overwrite
+        for (int i = 0; i < initPtr.size(); i++)
+            SWAG_ASSERT(abs((int) initPtr[i].patchOffset - (int) patchOffset) >= 8);
+    }
 #endif
 
     scoped_lock lk(mutexPtr);
