@@ -1,24 +1,12 @@
 #pragma once
 #include "ByteCode.h"
 #include "ByteCodeOp.h"
+#include "ByteCodeOptContext.h"
 struct ByteCode;
 struct ByteCodeGenContext;
 struct ByteCodeInstruction;
 struct Module;
 struct Job;
-
-struct ByteCodeOptContext
-{
-    ByteCode*                          bc;
-    VectorNative<ByteCodeInstruction*> jumps;
-    VectorNative<ByteCodeInstruction*> nops;
-    VectorNative<ByteCodeInstruction*> tmpBufInst;
-    VectorNative<uint64_t>             tmpBufU64;
-    bool                               allPassesHaveDoneSomething = false;
-    bool                               passHasDoneSomething       = false;
-    bool                               hasError                   = false;
-    ByteCodeGenContext*                semContext                 = nullptr;
-};
 
 struct ByteCodeOptimizer
 {

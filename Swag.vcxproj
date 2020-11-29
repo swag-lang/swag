@@ -177,6 +177,7 @@
     <ClInclude Include="BuildPass.h" />
     <ClInclude Include="ByteCode.h" />
     <ClInclude Include="ByteCodeGenJob.h" />
+    <ClInclude Include="ByteCodeOptContext.h" />
     <ClInclude Include="ByteCodeOptimizer.h" />
     <ClInclude Include="ByteCodeOptimizerJob.h" />
     <ClInclude Include="CompilerItf.h" />

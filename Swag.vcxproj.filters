@@ -737,6 +737,9 @@
     <ClInclude Include="ByteCodeOptimizerJob.h">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClInclude>
+    <ClInclude Include="ByteCodeOptContext.h">
+      <Filter>Backend\ByteCode\Optimize</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

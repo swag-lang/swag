@@ -1,7 +1,7 @@
 #pragma once
 #include "Job.h"
+#include "ByteCodeOptContext.h"
 struct ByteCode;
-struct ByteCodeOptContext;
 
 struct ByteCodeOptimizerJob : public Job
 {
@@ -11,10 +11,12 @@ struct ByteCodeOptimizerJob : public Job
 
     vector<function<void(ByteCodeOptContext*)>> passes;
     int                                         startIndex, endIndex;
+    ByteCodeOptContext                          optContext;
 
     void reset() override
     {
         Job::reset();
+        optContext.reset();
         startIndex = 0;
         endIndex   = 0;
     }
