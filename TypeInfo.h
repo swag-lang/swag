@@ -298,16 +298,19 @@ struct SymbolMatchContext
 
     void reset()
     {
-        result = MatchResult::Ok;
-        badSignatureInfos.clear();
         genericParameters.clear();
         parameters.clear();
+        solvedParameters.clear();
         doneParameters.clear();
         genericParametersCallTypes.clear();
         genericParametersGenTypes.clear();
-        solvedParameters.clear();
-        flags = 0;
-        resetTmp();
+        genericReplaceTypes.clear();
+        mapGenericTypesIndex.clear();
+        badSignatureInfos.clear();
+        flags              = 0;
+        result             = MatchResult::Ok;
+        cptResolved        = 0;
+        hasNamedParameters = false;
     }
 
     void resetTmp()
@@ -324,11 +327,11 @@ struct SymbolMatchContext
     VectorNative<TypeInfo*>      genericParametersGenTypes;
     map<Utf8Crc, TypeInfo*>      genericReplaceTypes;
     map<Utf8Crc, uint32_t>       mapGenericTypesIndex;
-    MatchResult                  result;
     BadSignatureInfos            badSignatureInfos;
 
-    uint32_t flags;
-    int      cptResolved;
+    uint32_t    flags;
+    MatchResult result;
+    int         cptResolved;
 
     bool hasNamedParameters;
 };

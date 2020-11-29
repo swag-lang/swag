@@ -309,21 +309,22 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         Ast::addChildBack(&parameters, &literal);
     }
 
+    auto& listTryMatch = job->cacheListTryMatch;
     while (true)
     {
-        vector<OneTryMatch> listTryMatch;
+        job->clearTryMatch();
 
         {
             unique_lock lk(symbol->mutex);
             for (auto overload : symbol->overloads)
             {
-                OneTryMatch t;
-                t.symMatchContext   = symMatchContext;
-                t.overload          = overload;
-                t.genericParameters = genericParameters;
-                t.callParameters    = left->parent;
-                t.dependentVar      = nullptr;
-                t.cptOverloads      = (uint32_t) symbol->overloads.size();
+                auto t               = job->getTryMatch();
+                t->symMatchContext   = symMatchContext;
+                t->overload          = overload;
+                t->genericParameters = genericParameters;
+                t->callParameters    = left->parent;
+                t->dependentVar      = nullptr;
+                t->cptOverloads      = (uint32_t) symbol->overloads.size();
                 listTryMatch.push_back(t);
             }
         }

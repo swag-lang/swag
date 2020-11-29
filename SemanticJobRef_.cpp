@@ -528,6 +528,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
 bool SemanticJob::resolveInit(SemanticContext* context)
 {
+    auto job                = context->job;
     auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
@@ -560,22 +561,23 @@ bool SemanticJob::resolveInit(SemanticContext* context)
             for (auto child : node->parameters->childs)
                 symMatchContext.parameters.push_back(child);
 
+            auto& listTryMatch = job->cacheListTryMatch;
             while (true)
             {
-                vector<OneTryMatch> listTryMatch;
-                auto                symbol = typeStruct->declNode->resolvedSymbolName;
+                job->clearTryMatch();
+                auto symbol = typeStruct->declNode->resolvedSymbolName;
 
                 {
                     unique_lock lk(symbol->mutex);
                     for (auto overload : symbol->overloads)
                     {
-                        OneTryMatch t;
-                        t.symMatchContext   = symMatchContext;
-                        t.overload          = overload;
-                        t.genericParameters = nullptr;
-                        t.callParameters    = node->parameters;
-                        t.dependentVar      = nullptr;
-                        t.cptOverloads      = (uint32_t) symbol->overloads.size();
+                        auto t               = job->getTryMatch();
+                        t->symMatchContext   = symMatchContext;
+                        t->overload          = overload;
+                        t->genericParameters = nullptr;
+                        t->callParameters    = node->parameters;
+                        t->dependentVar      = nullptr;
+                        t->cptOverloads      = (uint32_t) symbol->overloads.size();
                         listTryMatch.push_back(t);
                     }
                 }

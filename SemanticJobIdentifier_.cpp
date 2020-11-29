@@ -1007,7 +1007,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     }
 }
 
-bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node)
+bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<OneTryMatch*>& overloads, AstNode* node)
 {
     AstIdentifier* identifier        = nullptr;
     AstNode*       genericParameters = nullptr;
@@ -1022,9 +1022,10 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
 
     // Take non generic errors in priority
     {
-        vector<OneTryMatch> n;
-        for (auto& one : overloads)
+        vector<OneTryMatch*> n;
+        for (auto oneMatch : overloads)
         {
+            auto& one = *oneMatch;
             switch (one.symMatchContext.result)
             {
             case MatchResult::BadSignature:
@@ -1034,7 +1035,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
             case MatchResult::MissingParameters:
             case MatchResult::NotEnoughParameters:
             case MatchResult::TooManyParameters:
-                n.push_back(one);
+                n.push_back(oneMatch);
                 break;
             }
         }
@@ -1045,11 +1046,12 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
     // If we do not have generic parameters, then eliminate generic fail
     if (!genericParameters)
     {
-        vector<OneTryMatch> n;
-        for (auto& one : overloads)
+        vector<OneTryMatch*> n;
+        for (auto oneMatch : overloads)
         {
+            auto& one = *oneMatch;
             if (!(one.overload->flags & OVERLOAD_GENERIC))
-                n.push_back(one);
+                n.push_back(oneMatch);
         }
         if (!n.empty())
             overloads = n;
@@ -1058,11 +1060,12 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
     // If we have generic parameters, then eliminate non generic fail
     if (genericParameters)
     {
-        vector<OneTryMatch> n;
-        for (auto& one : overloads)
+        vector<OneTryMatch*> n;
+        for (auto oneMatch : overloads)
         {
+            auto& one = *oneMatch;
             if (one.overload->flags & OVERLOAD_GENERIC)
-                n.push_back(one);
+                n.push_back(oneMatch);
         }
         if (!n.empty())
             overloads = n;
@@ -1070,11 +1073,12 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
 
     // Take bad signature in priority
     {
-        vector<OneTryMatch> n;
-        for (auto& one : overloads)
+        vector<OneTryMatch*> n;
+        for (auto oneMatch : overloads)
         {
+            auto& one = *oneMatch;
             if (one.symMatchContext.result == MatchResult::BadGenericSignature || one.symMatchContext.result == MatchResult::BadSignature)
-                n.push_back(one);
+                n.push_back(oneMatch);
         }
         if (!n.empty())
             overloads = n;
@@ -1084,11 +1088,11 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
     if (overloads.size() == 1)
     {
         // Be sure this is not because of an invalid special function signature
-        if (overloads[0].overload->node->kind == AstNodeKind::FuncDecl)
-            SWAG_CHECK(checkFuncPrototype(context, CastAst<AstFuncDecl>(overloads[0].overload->node, AstNodeKind::FuncDecl)));
+        if (overloads[0]->overload->node->kind == AstNodeKind::FuncDecl)
+            SWAG_CHECK(checkFuncPrototype(context, CastAst<AstFuncDecl>(overloads[0]->overload->node, AstNodeKind::FuncDecl)));
 
         vector<const Diagnostic*> errs0, errs1;
-        getDiagnosticForMatch(context, overloads[0], errs0, errs1);
+        getDiagnosticForMatch(context, *overloads[0], errs0, errs1);
         return context->report(*errs0[0], errs1);
     }
 
@@ -1099,7 +1103,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
     for (auto& one : overloads)
     {
         vector<const Diagnostic*> errs0, errs1;
-        getDiagnosticForMatch(context, one, errs0, errs1);
+        getDiagnosticForMatch(context, *one, errs0, errs1);
 
         // Get the overload site
         if (!errs1.empty())
@@ -1115,7 +1119,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, vector<On
     return context->report(diag, notes);
 }
 
-bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node)
+bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<OneTryMatch*>& overloads, AstNode* node)
 {
     auto  job            = context->job;
     auto& matches        = job->cacheMatches;
@@ -1127,8 +1131,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
 
     bool forStruct = false;
 
-    for (auto& oneOverload : overloads)
+    for (auto oneMatch : overloads)
     {
+        auto&       oneOverload       = *oneMatch;
         auto        genericParameters = oneOverload.genericParameters;
         auto        callParameters    = oneOverload.callParameters;
         auto        dependentVar      = oneOverload.dependentVar;
@@ -1315,7 +1320,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
     // Ambiguity with generics
     if (genericMatches.size() > 1)
     {
-        auto                      symbol = overloads[0].overload->symbol;
+        auto                      symbol = overloads[0]->overload->symbol;
         Diagnostic                diag{node, node->token, format("ambiguous resolution of generic %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
         vector<const Diagnostic*> notes;
         for (auto match : genericMatches)
@@ -1338,10 +1343,10 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
 
     // We remove all generated nodes, because if they exist, they do not participate to the
     // error
-    OneTryMatch oneTry = overloads[0];
+    auto oneTry = overloads[0];
     for (int i = 0; i < overloads.size(); i++)
     {
-        if (overloads[i].overload->node->flags & AST_FROM_GENERIC)
+        if (overloads[i]->overload->node->flags & AST_FROM_GENERIC)
         {
             overloads[i] = overloads.back();
             overloads.pop_back();
@@ -1361,7 +1366,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, vector<One
     // There is more than one possible match
     if (matches.size() > 1)
     {
-        auto                      symbol = overloads[0].overload->symbol;
+        auto                      symbol = overloads[0]->overload->symbol;
         Diagnostic                diag{node, node->token, format("ambiguous resolution of %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
         vector<const Diagnostic*> notes;
         for (auto match : matches)
@@ -2246,7 +2251,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             return context->report({node, node->token, format("cannot resolve identifier '%s'", node->name.c_str())});
 
         auto& listTryMatch = job->cacheListTryMatch;
-        listTryMatch.clear();
+        job->clearTryMatch();
+
         for (auto& oneOver : toSolveOverload)
         {
             auto symbolOverload                   = oneOver.overload;
@@ -2267,15 +2273,15 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             // then we take the next statement, after the function, and put it as the last parameter
             SWAG_CHECK(appendLastCodeStatement(context, node, symbolOverload));
 
-            OneTryMatch tryMatch;
-            auto&       symMatchContext = tryMatch.symMatchContext;
+            auto  tryMatch        = job->getTryMatch();
+            auto& symMatchContext = tryMatch->symMatchContext;
 
-            tryMatch.genericParameters = node->genericParameters;
-            tryMatch.callParameters    = node->callParameters;
-            tryMatch.dependentVar      = dependentVar;
-            tryMatch.overload          = symbolOverload;
-            tryMatch.ufcs              = ufcsFirstParam || ufcsLastParam;
-            tryMatch.cptOverloads      = oneOver.cptOverloads;
+            tryMatch->genericParameters = node->genericParameters;
+            tryMatch->callParameters    = node->callParameters;
+            tryMatch->dependentVar      = dependentVar;
+            tryMatch->overload          = symbolOverload;
+            tryMatch->ufcs              = ufcsFirstParam || ufcsLastParam;
+            tryMatch->cptOverloads      = oneOver.cptOverloads;
 
             SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, node, symbolOverload, ufcsFirstParam, ufcsLastParam));
             if (context->result == ContextResult::Pending)
@@ -2285,7 +2291,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             if ((node->forceTakeAddress()) && !ufcsLastParam)
                 symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
-            listTryMatch.push_back(tryMatch);
+            listTryMatch.emplace_back(tryMatch);
         }
 
         SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node));

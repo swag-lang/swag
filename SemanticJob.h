@@ -43,6 +43,17 @@ struct OneTryMatch
     AstNode*           genericParameters = nullptr;
     uint32_t           cptOverloads      = 0;
     bool               ufcs              = false;
+
+    void reset()
+    {
+        symMatchContext.reset();
+        overload          = nullptr;
+        dependentVar      = nullptr;
+        callParameters    = nullptr;
+        genericParameters = nullptr;
+        cptOverloads      = 0;
+        ufcs              = false;
+    }
 };
 
 struct OneMatch
@@ -123,8 +134,8 @@ struct SemanticJob : public Job
     static bool collectStructLiteralsNoLock(JobContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment);
     static void setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload);
     static void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
-    static bool cannotMatchIdentifierError(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node);
-    static bool matchIdentifierParameters(SemanticContext* context, vector<OneTryMatch>& overloads, AstNode* node);
+    static bool cannotMatchIdentifierError(SemanticContext* context, vector<OneTryMatch*>& overloads, AstNode* node);
+    static bool matchIdentifierParameters(SemanticContext* context, vector<OneTryMatch*>& overloads, AstNode* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t num, bool exact = true);
     static bool checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncDecl* node, TypeInfo* wanted);
@@ -283,6 +294,23 @@ struct SemanticJob : public Job
     static bool resolveDropCopyMove(SemanticContext* context);
     static bool resolveUserCast(SemanticContext* context);
 
+    void clearTryMatch()
+    {
+        for (auto p : cacheListTryMatch)
+            cacheFreeTryMatch.push_back(p);
+        cacheListTryMatch.clear();
+    }
+
+    OneTryMatch* getTryMatch()
+    {
+        if (cacheFreeTryMatch.empty())
+            return new OneTryMatch;
+        auto res = cacheFreeTryMatch.back();
+        cacheFreeTryMatch.pop_back();
+        res->reset();
+        return res;
+    }
+
     VectorNative<AstNode*>         tmpNodes;
     unordered_set<SymbolName*>     cacheDependentSymbols;
     unordered_set<SymbolName*>     cacheToAddSymbols;
@@ -292,7 +320,8 @@ struct SemanticJob : public Job
     vector<OneMatch>               cacheMatches;
     vector<OneGenericMatch>        cacheGenericMatches;
     VectorNative<OneOverload>      cacheToSolveOverload;
-    vector<OneTryMatch>            cacheListTryMatch;
+    vector<OneTryMatch*>           cacheListTryMatch;
+    vector<OneTryMatch*>           cacheFreeTryMatch;
     SemanticContext                context;
     Concat                         tmpConcat;
 
