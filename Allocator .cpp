@@ -37,6 +37,7 @@ void* Allocator::tryFreeBlock(uint32_t maxCount, int size)
             auto remainSize = tryBlock->size - size;
             if (remainSize > 32)
             {
+                g_Stats.wastedMemory -= size;
                 auto bucket = remainSize / 8;
                 auto split  = (uint8_t*) tryBlock + size;
                 auto result = tryBlock;
@@ -68,6 +69,8 @@ void* Allocator::tryFreeBlock(uint32_t maxCount, int size)
             }
             else
             {
+                g_Stats.wastedMemory -= tryBlock->size;
+
                 auto result = tryBlock;
                 if (prevBlock)
                     prevBlock->next = tryBlock->next;
@@ -97,6 +100,7 @@ void* Allocator::alloc(int size)
     {
         if (freeBuckets[bucket])
         {
+            g_Stats.wastedMemory -= bucket * 8;
             auto result         = freeBuckets[bucket];
             freeBuckets[bucket] = *(void**) result;
             if (g_CommandLine.devMode)
@@ -131,6 +135,7 @@ void* Allocator::alloc(int size)
         if (lastBucket)
         {
             auto remain = lastBucket->allocated - lastBucket->maxUsed;
+            g_Stats.wastedMemory += remain;
 
             bucket = remain / 8;
             if (bucket < MAX_FREE_BUCKETS)
@@ -181,6 +186,8 @@ void Allocator::free(void* ptr, int size)
 
     if (g_CommandLine.devMode)
         memset(ptr, 0xFE, size);
+
+    g_Stats.wastedMemory += size;
 
     auto bsize = size / 8;
     if (bsize < MAX_FREE_BUCKETS)

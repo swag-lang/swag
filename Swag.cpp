@@ -52,6 +52,7 @@ void printStats()
     g_Log.print("\n");
 
     g_Log.messageHeaderDot("allocator memory", format("%dMb", g_Stats.allocatorMemory.load() / (1024 * 1024)));
+    g_Log.messageHeaderDot("mem wasted", format("%dMb", g_Stats.wastedMemory.load() / (1024 * 1024)));
     g_Log.messageHeaderDot("mem nodes", format("%dMb", g_Stats.memNodes.load() / (1024 * 1024)));
     g_Log.messageHeaderDot("mem scopes", format("%dMb", g_Stats.memScopes.load() / (1024 * 1024)));
     g_Log.messageHeaderDot("mem seg", format("%dMb", g_Stats.memSeg.load() / (1024 * 1024)));
