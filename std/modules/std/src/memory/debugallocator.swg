@@ -5,10 +5,10 @@ public struct DebugAllocator
 {
     allocator:  IAllocator
 
-    first:      *void
-    nextId:     u32
-    numAlloc:   u32
-    totalSize:  u32
+    first:  *void
+    nextId: u32
+    count:  u32     // Number of allocated block
+    size:   u32     // Total user size, in bytes
 }
 
 // This will be address before and after each allocated block
@@ -49,7 +49,7 @@ public impl DebugAllocator
     func printAllocated(using self)
     {
         scan := cast(*Header) first
-        console.print("% block(s), % byte(s)\n", numAlloc, totalSize)
+        console.print("% block(s), % byte(s)\n", count, size)
         while scan
         {
             console.print("id: % size: % hint: % loc: %:%\n", scan.allocId, scan.userSize, scan.hint, scan.locFilename, scan.locLine)
@@ -127,7 +127,7 @@ public impl IAllocator for DebugAllocator
 
             case AllocatorMode.Realloc:
                 assertIsAllocated(request.address)
-                if request.address self.numAlloc -= 1
+                if request.address self.count -= 1
                 fallthrough
 
             case AllocatorMode.Alloc:
@@ -178,9 +178,9 @@ public impl IAllocator for DebugAllocator
                     memory.set(userAddr + prevSize, AllocByte, request.size - prevSize)
 
                 // Stats
-                self.numAlloc += 1
-                self.totalSize -= prevSize
-                self.totalSize += request.size
+                self.count += 1
+                self.size -= prevSize
+                self.size += request.size
 
                 // And set the new user address
                 request.address = userAddr
