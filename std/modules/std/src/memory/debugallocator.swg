@@ -62,13 +62,15 @@ public impl DebugAllocator
     func assertIsAllocated(using self, addr: *void)
     {
         if !addr return
-        orgAddr := cast(*u8) addr
 
+        orgAddr := cast(*u8) addr
         ptrHeader := cast(*Header) (orgAddr - @sizeof(Header))
         ptrFooter := cast(*Footer) (orgAddr + ptrHeader.userSize)
 
         debug.assert(ptrHeader.magic == MagicAlloc)
         debug.assert(ptrFooter.magic == MagicAlloc)
+        debug.assert(ptrHeader.allocId != 0)
+        debug.assert(ptrHeader.userSize != 0)
         debug.assert(ptrHeader.prev || first == ptrHeader)
         debug.assert(!ptrHeader.prev || ptrHeader.prev.next == ptrHeader)
         debug.assert(!ptrHeader.next || ptrHeader.next.prev == ptrHeader)
@@ -93,21 +95,17 @@ public impl IAllocator for DebugAllocator
 
                 // Unlink from allocated list
                 if !ptrHeader.prev
-                {
-                    debug.assert(self.first == ptrHeader)
                     self.first = ptrHeader.next
-                }
                 else
-                {
-                    debug.assert(ptrHeader.prev.next == ptrHeader)
                     ptrHeader.prev.next = ptrHeader.next
-                }
-
                 if ptrHeader.next
-                {
-                    debug.assert(ptrHeader.next.prev == ptrHeader)
                     ptrHeader.next.prev = ptrHeader.prev
-                }
+
+                // Stats
+                debug.assert(self.count > 0)
+                self.count -= 1
+                debug.assert(self.size >= ptrHeader.userSize)
+                self.size -= ptrHeader.userSize
 
                 // Set block as free
                 ptrHeader.magic = MagicFree
@@ -123,7 +121,8 @@ public impl IAllocator for DebugAllocator
 
             case AllocatorMode.FreeAll:
                 allocator.alloc(request)
-                self.first = null
+                first = null
+                count, size = 0
 
             case AllocatorMode.Realloc:
                 assertIsAllocated(request.address)
