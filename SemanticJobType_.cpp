@@ -14,8 +14,19 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 
     if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
         return context->report({node, "cannot reference a type expression"});
+
     if (node->resolvedSymbolName)
-        return context->report({node, format("cannot reference %s", SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
+    {
+        Diagnostic  diag{node, format("%s '%s' cannot be referenced in that context because it's not an rvalue", SymTable::getNakedKindName(node->resolvedSymbolName->kind), node->resolvedSymbolName->name.c_str())};
+        Diagnostic* note = nullptr;
+
+        // Missing self ?
+        if (node->ownerStructScope && node->ownerStructScope == context->node->ownerStructScope && node->ownerFct)
+            if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
+                note = new Diagnostic{node, "is there a missing 'self' ?", DiagnosticLevel::Note};
+
+        return context->report(diag, note);
+    }
 
     return true;
 }

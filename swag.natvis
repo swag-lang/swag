@@ -30,7 +30,7 @@
     <DisplayString>{{ kind={kind}, name={name} }}</DisplayString>
     <Expand>
       <Item Name="[kind]">kind</Item>
-      <Item Name="[name]">name</Item>
+      <Item Name="[name]">token.text</Item>
       <Item Name="[childs]">childs</Item>
       <Item Name="[ownerScope]">ownerScope</Item>
       <Item Name="[typeinfo]">typeInfo</Item>

@@ -1502,6 +1502,8 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     if (!node->callParameters)
         node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
 
+    SWAG_CHECK(checkIsConcrete(context, identifierRef->previousResolvedNode));
+
     node->callParameters->childs.push_front(fctCallParam);
     fctCallParam->parent   = node->callParameters;
     fctCallParam->typeInfo = identifierRef->previousResolvedNode->typeInfo;
