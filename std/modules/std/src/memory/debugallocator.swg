@@ -89,9 +89,9 @@ public impl IAllocator for DebugAllocator
                 if !request.address return
                 assertIsAllocated(request.address)
 
-                orgAddr := cast(*u8) request.address
-                ptrHeader := cast(*Header) (orgAddr - @sizeof(Header))
-                ptrFooter := cast(*Footer) (orgAddr + ptrHeader.userSize)
+                userAddr := cast(*u8) request.address
+                ptrHeader := cast(*Header) (userAddr - @sizeof(Header))
+                ptrFooter := cast(*Footer) (userAddr + ptrHeader.userSize)
 
                 // Unlink from allocated list
                 if !ptrHeader.prev
@@ -105,19 +105,20 @@ public impl IAllocator for DebugAllocator
                 debug.assert(self.count > 0)
                 self.count -= 1
                 debug.assert(self.size >= ptrHeader.userSize)
-                self.size -= ptrHeader.userSize
-
-                // Set block as free
-                ptrHeader.magic = MagicFree
-                ptrFooter.magic = MagicFree
+                userSize := ptrHeader.userSize
+                self.size -= userSize
 
                 // Really free the memory
                 copyReq := :request
                 copyReq.address = ptrHeader.allocAddr
                 allocator.alloc(&copyReq)
 
-                // Fill the memory with garbage
-                memory.set(orgAddr, FreeByte, ptrHeader.userSize)
+                // Set block as free
+                ptrHeader.magic = MagicFree
+                ptrFooter.magic = MagicFree
+
+                // Fill the user memory area with garbage
+                memory.set(userAddr, FreeByte, userSize)
 
             case AllocatorMode.FreeAll:
                 allocator.alloc(request)
@@ -139,15 +140,17 @@ public impl IAllocator for DebugAllocator
 
                 // In case of a reallocation, get the previous allocated user size
                 // This will be used to fill with garbage the difference
+                copyReq := :request
                 prevSize := 0'u32
+                prevHeader := cast(*Header) request.address
                 if request.mode == AllocatorMode.Realloc && request.address
                 {
-                    prevHeader := cast(*Header) request.address
-                    prevSize = prevHeader[-1].userSize
+                    prevHeader -= 1
+                    copyReq.address = prevHeader.allocAddr
+                    prevSize = prevHeader.userSize
                 }
 
                 // Make the real allocation
-                copyReq := :request
                 copyReq.size += toAddAlign
                 allocator.alloc(&copyReq)
 
@@ -162,7 +165,7 @@ public impl IAllocator for DebugAllocator
                 header.allocAddr = copyReq.address
                 header.userSize = request.size
                 header.locFilename = copyReq.callerLoc.fileName
-                header.locLine = copyReq.callerLoc.lineStart
+                header.locLine = copyReq.callerLoc.lineStart + 1
                 header.hint = copyReq.hint
 
                 // Setup footer
@@ -186,6 +189,17 @@ public impl IAllocator for DebugAllocator
                 // Set a unique id
                 self.nextId += 1
                 header.allocId = self.nextId
+
+                // Unlink previous (realloc) header
+                if prevHeader
+                {
+                    if !prevHeader.prev
+                        self.first = prevHeader.next
+                    else
+                        prevHeader.prev.next = prevHeader.next
+                    if prevHeader.next
+                        prevHeader.next.prev = prevHeader.prev
+                }
 
                 // Link to list of allocated blocks
                 header.prev = null
