@@ -219,7 +219,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         emitInstruction(context, ByteCodeOp::PushRAParam, 0);
     }
 
-    if (funcDecl && funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
+    if (funcDecl && !bc && funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
     {
         auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
         inst->a.pointer = (uint8_t*) funcDecl;
