@@ -126,7 +126,6 @@ public impl IAllocator for DebugAllocator
 
             case AllocatorMode.Realloc:
                 assertIsAllocated(request.address)
-                if request.address self.count -= 1
                 fallthrough
 
             case AllocatorMode.Alloc:
@@ -177,7 +176,7 @@ public impl IAllocator for DebugAllocator
                     memory.set(userAddr + prevSize, AllocByte, request.size - prevSize)
 
                 // Stats
-                self.count += 1
+                if !prevSize self.count += 1
                 self.size -= prevSize
                 self.size += request.size
 
