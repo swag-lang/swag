@@ -647,7 +647,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     // Check public
     if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE))
     {
-        if (!node->ownerScope->isGlobal())
+        if (!node->ownerScope->isGlobalOrImpl())
             return context->report({node, node->token, format("embedded struct '%s' cannot be public", node->token.text.c_str())});
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicStruct(node);
