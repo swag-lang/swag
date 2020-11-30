@@ -399,6 +399,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SWAG_ASSERT(node->block);
     Ast::visit(node->block, [&](AstNode* x) { if (!x->ownerBreakable) x->ownerBreakable = loopNode; });
     node->block->flags &= ~AST_NO_SEMANTIC;
+    loopNode->block->token.endLocation = node->block->token.endLocation;
 
     // Re-root the parent scope of the user block so that it points to the scope of the loop block
     node->block->ownerScope->parentScope = loopNode->block->childs.front()->ownerScope;
