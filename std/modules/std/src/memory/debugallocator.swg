@@ -17,11 +17,12 @@ private
 
     struct Header
     {
-        magic:  u32
-        size:   u32
-        loc:    CompilerSourceLocation
-        prev:   *Header
-        next:   *Header
+        magic:      u32
+        size:       u32
+        userAddr:   *void
+        loc:        CompilerSourceLocation
+        prev:       *Header
+        next:       *Header
     }
 
     struct Footer
@@ -83,7 +84,7 @@ public impl IAllocator for DebugAllocator
                 ptrFooter.magic = MagicFree
 
                 // Really free the memory
-                copyReq.address = ptrHeader
+                copyReq.address = ptrHeader.userAddr
                 allocator.alloc(&copyReq)
 
                 // Fill the memory with garbage
@@ -91,6 +92,7 @@ public impl IAllocator for DebugAllocator
 
             case AllocatorMode.FreeAll:
                 allocator.alloc(request)
+                self.first = null
 
             case AllocatorMode.Realloc:
                 assertIsAllocated(request.address)
@@ -98,17 +100,29 @@ public impl IAllocator for DebugAllocator
 
             case AllocatorMode.Alloc:
                 copyReq := :request
-                copyReq.size += @sizeof(Header) + @sizeof(Footer)
+
+                // Adapt size to be able to store additional informations
+                // Take care of alignement request, because we need to be sure
+                // that the returned memory block is well aligned
+                alignement := request.alignement ?? @sizeof(*void)
+                toAdd := @sizeof(Header) + @sizeof(Footer)
+                addAlign := toAdd & ~(alignement - 1)
+                if addAlign < toAdd
+                    addAlign += alignement
+                copyReq.size += addAlign
                 allocator.alloc(&copyReq)
 
                 orgAddr := cast(*u8) copyReq.address
+                orgAddr += addAlign
+                request.address = orgAddr // This is the aligned returned user address
 
-                header := cast(*Header) copyReq.address
+                header := cast(*Header) (orgAddr - @sizeof(Header))
                 header.magic = MagicAlloc
+                header.userAddr = copyReq.address
                 header.size = request.size
                 header.loc = copyReq.callerLoc
 
-                footer := cast(*Footer) orgAddr + request.size
+                footer := cast(*Footer) (orgAddr + request.size)
                 footer.magic = MagicAlloc
 
                 // Link list
