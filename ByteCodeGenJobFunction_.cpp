@@ -69,7 +69,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             if (typeArray->finalType->kind == TypeInfoKind::Struct)
             {
                 typeArrayStruct = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
-                waitStructGenerated(context, typeArrayStruct);
+                context->job->waitStructGenerated(typeArrayStruct);
                 if (context->result == ContextResult::Pending)
                     return true;
             }
@@ -91,7 +91,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         {
             if (returnType->kind == TypeInfoKind::Struct)
             {
-                waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
+                context->job->waitStructGenerated(exprType);
                 if (context->result == ContextResult::Pending)
                     return true;
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
@@ -155,7 +155,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         {
             if (returnType->kind == TypeInfoKind::Struct)
             {
-                waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(exprType, TypeInfoKind::Struct));
+                context->job->waitStructGenerated(exprType);
                 if (context->result == ContextResult::Pending)
                     return true;
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized

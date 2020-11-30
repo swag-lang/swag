@@ -21,7 +21,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        waitStructGenerated(context, typeStructVar);
+        context->job->waitStructGenerated(typeStructVar);
         if (context->result == ContextResult::Pending)
             return true;
         generateStruct_opInit(context, typeStructVar);
@@ -286,7 +286,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
             if (typeVar->kind != TypeInfoKind::Struct)
                 continue;
             auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-            waitStructGenerated(context, typeStructVar);
+            context->job->waitStructGenerated(typeStructVar);
             if (context->result == ContextResult::Pending)
                 return true;
             generateStruct_opDrop(context, typeStructVar);
@@ -381,7 +381,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
             if (typeVar->kind != TypeInfoKind::Struct)
                 continue;
             auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-            waitStructGenerated(context, typeStructVar);
+            context->job->waitStructGenerated(typeStructVar);
             if (context->result == ContextResult::Pending)
                 return true;
             generateStruct_opPostMove(context, typeStructVar);
@@ -475,7 +475,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
             if (typeVar->kind != TypeInfoKind::Struct)
                 continue;
             auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-            waitStructGenerated(context, typeStructVar);
+            context->job->waitStructGenerated(typeStructVar);
             if (context->result == ContextResult::Pending)
                 return true;
             generateStruct_opPostCopy(context, typeStructVar);
@@ -520,20 +520,6 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
     return true;
-}
-
-void ByteCodeGenJob::waitStructGenerated(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
-{
-    if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
-        return;
-
-    auto        structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
-    scoped_lock lk(structNode->mutex);
-    if (!(structNode->flags & AST_BYTECODE_GENERATED))
-    {
-        structNode->dependentJobs.add(context->job);
-        context->job->setPending(structNode->resolvedSymbolName, "AST_BYTECODE_GENERATED", structNode, nullptr);
-    }
 }
 
 bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)

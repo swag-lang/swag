@@ -69,6 +69,7 @@ impl TextReader
 public impl TextReader
 {
     // Open the reader
+    #[swag.printbc]
     func open(using self, fullname: string, encoding = TextEncoding.Utf8) -> ErrorId
     {
         debug.assert(!stream.isOpen())

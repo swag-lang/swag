@@ -22,7 +22,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        waitStructGenerated(context, typeStruct);
+        context->job->waitStructGenerated(typeStruct);
         if (context->result == ContextResult::Pending)
             return true;
 
@@ -113,7 +113,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         if (typeArray->finalType->kind == TypeInfoKind::Struct)
         {
-            waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct));
+            context->job->waitStructGenerated(typeArray->finalType);
             if (context->result == ContextResult::Pending)
                 return true;
 

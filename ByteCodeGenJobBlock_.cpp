@@ -636,7 +636,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         if (!one.typeStruct)
             continue;
 
-        waitStructGenerated(context, one.typeStruct);
+        context->job->waitStructGenerated(one.typeStruct);
         if (context->result == ContextResult::Pending)
             return true;
     }

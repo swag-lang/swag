@@ -5,6 +5,7 @@
 #include "Diagnostic.h"
 #include "Module.h"
 #include "SemanticJob.h"
+#include "Ast.h"
 
 void Job::addDependentJob(Job* job)
 {
@@ -52,6 +53,32 @@ void Job::waitForAllStructMethods(TypeInfo* typeInfo)
     scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
     typeInfoStruct->scope->dependentJobs.add(this);
     setPending(nullptr, "WAIT_METHODS", nullptr, typeInfoStruct);
+}
+
+void Job::waitStructGenerated(TypeInfo* typeInfo)
+{
+    if (typeInfo->isPointerTo(TypeInfoKind::Struct))
+        typeInfo = ((TypeInfoPointer*) typeInfo)->finalType;
+    if (typeInfo->kind != TypeInfoKind::Struct)
+        return;
+    if (typeInfo->flags & TYPEINFO_GENERIC)
+        return;
+
+    auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    if (!typeInfoStruct->declNode)
+        return;
+    if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
+        return;
+    if (typeInfoStruct->declNode->kind == AstNodeKind::TypeSet)
+        return;
+
+    auto        structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    scoped_lock lk(structNode->mutex);
+    if (!(structNode->flags & AST_BYTECODE_GENERATED))
+    {
+        structNode->dependentJobs.add(this);
+        setPending(structNode->resolvedSymbolName, "AST_BYTECODE_GENERATED", structNode, nullptr);
+    }
 }
 
 void Job::setPending(SymbolName* symbolToWait, const char* id, AstNode* node, TypeInfo* typeInfo)

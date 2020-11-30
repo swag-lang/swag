@@ -14,8 +14,7 @@ public struct DebugAllocator
 // This will be address before and after each allocated block
 private
 {
-    const MagicAlloc = 0x12345678   // Before and after the user memory
-    const MagicFree  = 0x87654321   // Before and after the user memory
+    const MagicAlloc = 0xC0DEC0DE   // Before and after the user memory
     const AllocByte  = 0xAB         // Fill memory when allocated
     const FreeByte   = 0xFB         // Fill memory when deleted
 
@@ -108,17 +107,13 @@ public impl IAllocator for DebugAllocator
                 userSize := ptrHeader.userSize
                 self.size -= userSize
 
+                // Fill the user memory area with garbage
+                memory.set(userAddr, FreeByte, userSize)
+
                 // Really free the memory
                 copyReq := :request
                 copyReq.address = ptrHeader.allocAddr
                 allocator.alloc(&copyReq)
-
-                // Set block as free
-                ptrHeader.magic = MagicFree
-                ptrFooter.magic = MagicFree
-
-                // Fill the user memory area with garbage
-                memory.set(userAddr, FreeByte, userSize)
 
             case AllocatorMode.FreeAll:
                 allocator.alloc(request)

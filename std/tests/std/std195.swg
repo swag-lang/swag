@@ -6,10 +6,10 @@ var g_cxt: swag.Context
 
 #init
 {
-    /*g_cxt = :@getcontext()
+    g_cxt = :@getcontext()
     g_dbg.allocator = @getcontext().allocator
     g_cxt.allocator = g_dbg
-    @setcontext(g_cxt)*/
+    @setcontext(g_cxt)
 }
 
 #drop
@@ -19,6 +19,8 @@ var g_cxt: swag.Context
 
 #test
 {
+    //#assert reflection.hasDrop(std.file.FileInfo)
+
     var dbg: memory.DebugAllocator
     dbg.allocator = @getcontext().allocator
 

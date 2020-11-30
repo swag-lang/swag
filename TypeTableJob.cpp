@@ -142,6 +142,9 @@ JobResult TypeTableJob::execute()
         waitForAllStructMethods(realType);
         if (baseContext->result == ContextResult::Pending)
             return JobResult::KeepJobAlive;
+        waitStructGenerated(realType);
+        if (baseContext->result == ContextResult::Pending)
+            return JobResult::KeepJobAlive;
         computeStruct();
     }
     else

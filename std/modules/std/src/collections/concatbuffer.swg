@@ -232,6 +232,7 @@ impl ConcatBuffer
             result.length    = cast(u32) (currentSP - lastBucket.datas)
 
             // And clear me
+            memory.free(firstBucket, allocator)
             firstBucket, lastBucket = null
             currentSP = null
             totalCount = 0
