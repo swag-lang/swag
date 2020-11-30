@@ -18,7 +18,7 @@ private
     struct Header
     {
         magic:      u32
-        size:       u32
+        userSize:   u32
         userAddr:   *void
         loc:        CompilerSourceLocation
         prev:       *Header
@@ -41,7 +41,7 @@ public impl DebugAllocator
         ptrHeader := cast(*Header) (orgAddr - @sizeof(Header))
         debug.assert(ptrHeader.magic == MagicAlloc)
 
-        ptrFooter := cast(*Footer) (orgAddr + ptrHeader.size)
+        ptrFooter := cast(*Footer) (orgAddr + ptrHeader.userSize)
         debug.assert(ptrFooter.magic == MagicAlloc)
     }
 }
@@ -58,15 +58,16 @@ public impl IAllocator for DebugAllocator
                 if !request.address return
                 assertIsAllocated(request.address)
 
-                copyReq := :request
-                orgAddr := cast(*u8) copyReq.address
+                orgAddr := cast(*u8) request.address
                 ptrHeader := cast(*Header) (orgAddr - @sizeof(Header))
-                ptrFooter := cast(*Footer) (orgAddr + ptrHeader.size)
+                ptrFooter := cast(*Footer) (orgAddr + ptrHeader.userSize)
 
                 // Unlink from allocated list
-                debug.assert(ptrHeader.prev || self.first == ptrHeader)
                 if !ptrHeader.prev
+                {
+                    debug.assert(self.first == ptrHeader)
                     self.first = ptrHeader.next
+                }
                 else
                 {
                     debug.assert(ptrHeader.prev.next == ptrHeader)
@@ -84,11 +85,12 @@ public impl IAllocator for DebugAllocator
                 ptrFooter.magic = MagicFree
 
                 // Really free the memory
+                copyReq := :request
                 copyReq.address = ptrHeader.userAddr
                 allocator.alloc(&copyReq)
 
                 // Fill the memory with garbage
-                memory.set(orgAddr, FreeByte, request.size)
+                memory.set(orgAddr, FreeByte, ptrHeader.userSize)
 
             case AllocatorMode.FreeAll:
                 allocator.alloc(request)
@@ -99,33 +101,54 @@ public impl IAllocator for DebugAllocator
                 fallthrough
 
             case AllocatorMode.Alloc:
-                copyReq := :request
-
                 // Adapt size to be able to store additional informations
                 // Take care of alignement request, because we need to be sure
                 // that the returned memory block is well aligned
                 alignement := request.alignement ?? @sizeof(*void)
                 toAdd := @sizeof(Header) + @sizeof(Footer)
-                addAlign := toAdd & ~(alignement - 1)
-                if addAlign < toAdd
-                    addAlign += alignement
-                copyReq.size += addAlign
+                toAddAlign := toAdd & ~(alignement - 1)
+                if toAddAlign < toAdd toAddAlign += alignement
+
+                // In case of a reallocation, get the previous allocated user size
+                // This will be used to fill with garbage the difference
+                prevSize := 0'u32
+                if request.mode == AllocatorMode.Realloc && request.address
+                {
+                    prevHeader := cast(*Header) request.address
+                    prevSize = prevHeader[-1].userSize
+                }
+
+                // Make the real allocation
+                copyReq := :request
+                copyReq.size += toAddAlign
                 allocator.alloc(&copyReq)
 
+                // This is the aligned returned user address
                 orgAddr := cast(*u8) copyReq.address
-                orgAddr += addAlign
-                request.address = orgAddr // This is the aligned returned user address
+                orgAddr += toAddAlign
+                userAddr := orgAddr
 
+                // Setup header
                 header := cast(*Header) (orgAddr - @sizeof(Header))
                 header.magic = MagicAlloc
                 header.userAddr = copyReq.address
-                header.size = request.size
+                header.userSize = request.size
                 header.loc = copyReq.callerLoc
 
+                // Setup footer
                 footer := cast(*Footer) (orgAddr + request.size)
                 footer.magic = MagicAlloc
 
-                // Link list
+                // Fill with garbage
+                if request.mode == AllocatorMode.Alloc || !request.address
+                    memory.set(userAddr, AllocByte, request.size)
+                else if prevSize < request.size
+                    memory.set(userAddr + prevSize, AllocByte, request.size - prevSize)
+
+                // And set the new user address
+                request.address = userAddr
+
+                // Link to list of allocated blocks
                 header.prev = null
                 header.next = self.first
                 if header.next
