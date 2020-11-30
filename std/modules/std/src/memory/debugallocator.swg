@@ -4,27 +4,32 @@ using swag
 public struct DebugAllocator
 {
     allocator:  IAllocator
+
     first:      *void
+    nextId:     u32
 }
 
 // This will be address before and after each allocated block
 private
 {
-    const MagicAlloc = 0x12345678
-    const MagicFree  = 0x87654321
-    const AllocByte  = 0xAB
-    const FreeByte   = 0xFB
+    const MagicAlloc = 0x12345678   // Before and after the user memory
+    const MagicFree  = 0x87654321   // Before and after the user memory
+    const AllocByte  = 0xAB         // Fill memory when allocated
+    const FreeByte   = 0xFB         // Fill memory when deleted
 
+    // Will be put just before the returned address
     struct Header
     {
         magic:      u32
         userSize:   u32
-        userAddr:   *void
+        allocId:    u32
+        allocAddr:  *void
         loc:        CompilerSourceLocation
         prev:       *Header
         next:       *Header
     }
 
+    // Will be put just after the returned address
     struct Footer
     {
         magic:  u32
@@ -33,16 +38,35 @@ private
 
 public impl DebugAllocator
 {
-    func assertIsAllocated(addr: *void)
+    // Returns true if there are some remaining allocations
+    func isEmpty(using self) => first == null
+
+    // Output to the console the list of all allocated blocks (leaks)
+    func printAllocated(using self)
     {
-        if( !addr) return
+        scan := cast(*Header) first
+        while scan
+        {
+            console.print("id: % size: % loc: %\n", scan.allocId, scan.userSize, scan.loc)
+            scan = scan.next
+        }
+    }
+
+    // This function will assert if the given address is not conform
+    // to an allocated block
+    func assertIsAllocated(using self, addr: *void)
+    {
+        if !addr return
         orgAddr := cast(*u8) addr
 
         ptrHeader := cast(*Header) (orgAddr - @sizeof(Header))
-        debug.assert(ptrHeader.magic == MagicAlloc)
-
         ptrFooter := cast(*Footer) (orgAddr + ptrHeader.userSize)
+
+        debug.assert(ptrHeader.magic == MagicAlloc)
         debug.assert(ptrFooter.magic == MagicAlloc)
+        debug.assert(ptrHeader.prev || first == ptrHeader)
+        debug.assert(!ptrHeader.prev || ptrHeader.prev.next == ptrHeader)
+        debug.assert(!ptrHeader.next || ptrHeader.next.prev == ptrHeader)
     }
 }
 
@@ -86,7 +110,7 @@ public impl IAllocator for DebugAllocator
 
                 // Really free the memory
                 copyReq := :request
-                copyReq.address = ptrHeader.userAddr
+                copyReq.address = ptrHeader.allocAddr
                 allocator.alloc(&copyReq)
 
                 // Fill the memory with garbage
@@ -131,7 +155,7 @@ public impl IAllocator for DebugAllocator
                 // Setup header
                 header := cast(*Header) (orgAddr - @sizeof(Header))
                 header.magic = MagicAlloc
-                header.userAddr = copyReq.address
+                header.allocAddr = copyReq.address
                 header.userSize = request.size
                 header.loc = copyReq.callerLoc
 
@@ -150,6 +174,9 @@ public impl IAllocator for DebugAllocator
 
                 // Link to list of allocated blocks
                 header.prev = null
+
+                self.nextId += 1
+                header.allocId = self.nextId
                 header.next = self.first
                 if header.next
                     header.next.prev = header
