@@ -22,8 +22,6 @@ TODO
 ****************************************
 
 -------------------------------------
-path.combine llvm debug line en vrac (1 !)
--------------------------------------
 shift left/right doit pas etre supérieur a 255 (a tester en compiler si constant, et safety en runtime)
 -------------------------------------
 int overflow safety (chiant)
