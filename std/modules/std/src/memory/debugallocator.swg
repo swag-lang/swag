@@ -20,13 +20,15 @@ private
     // Will be put just before the returned address
     struct Header
     {
-        magic:      u32
-        userSize:   u32
-        allocId:    u32
-        allocAddr:  *void
-        loc:        CompilerSourceLocation
-        prev:       *Header
-        next:       *Header
+        allocAddr:      *void
+        locFilename:    string
+        hint:           string
+        prev:           *Header
+        next:           *Header
+        magic:          u32
+        userSize:       u32
+        allocId:        u32
+        locLine:        u32
     }
 
     // Will be put just after the returned address
@@ -47,7 +49,7 @@ public impl DebugAllocator
         scan := cast(*Header) first
         while scan
         {
-            console.print("id: % size: % loc: %\n", scan.allocId, scan.userSize, scan.loc)
+            console.print("id: % size: % hint: % loc: %:%\n", scan.allocId, scan.userSize, scan.hint, scan.locFilename, scan.locLine)
             scan = scan.next
         }
     }
@@ -157,7 +159,9 @@ public impl IAllocator for DebugAllocator
                 header.magic = MagicAlloc
                 header.allocAddr = copyReq.address
                 header.userSize = request.size
-                header.loc = copyReq.callerLoc
+                header.locFilename = copyReq.callerLoc.fileName
+                header.locLine = copyReq.callerLoc.lineStart
+                header.hint = copyReq.hint
 
                 // Setup footer
                 footer := cast(*Footer) (orgAddr + request.size)
@@ -172,16 +176,16 @@ public impl IAllocator for DebugAllocator
                 // And set the new user address
                 request.address = userAddr
 
-                // Link to list of allocated blocks
-                header.prev = null
-
+                // Set a unique id
                 self.nextId += 1
                 header.allocId = self.nextId
+
+                // Link to list of allocated blocks
+                header.prev = null
                 header.next = self.first
                 if header.next
                     header.next.prev = header
-                else
-                    self.first = header
+                self.first = header
                 break
         }
     }
