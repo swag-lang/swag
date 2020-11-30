@@ -106,6 +106,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     {
         module->optimNeedRestart.store(0);
         auto count     = (int) module->byteCodeFunc.size() / g_Stats.numWorkers;
+        count          = max(count, 1);
         count          = min(count, (int) module->byteCodeFunc.size());
         int startIndex = 0;
         while (startIndex < module->byteCodeFunc.size())
