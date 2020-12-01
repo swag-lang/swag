@@ -7,6 +7,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "Version.h"
 
 void BackendX64::setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
 {
@@ -46,45 +47,92 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
     const uint32_t SUBSECTION_LINES         = 0xF2;
     const uint32_t SUBSECTION_STRING_TABLE  = 0xF3;
     const uint32_t SUBSECTION_FILE_CHECKSUM = 0xF4;
+    const uint16_t S_COMPILE3               = 0x113c;
+    const uint16_t S_GPROC32_ID             = 0x1147;
 
     map<Utf8, uint32_t> mapFileNames;
     vector<uint32_t>    arrFileNames;
     Utf8                stringTable;
+
+    // Compiler flags
+    {
+        auto patchSectionOffset = concat.totalCount();
+        concat.addU32(SUBSECTION_SYMBOL);
+        auto patchSCount  = concat.addU32Addr(0); // Size of sub section
+        auto patchSOffset = concat.totalCount();
+
+        auto patchRecordCount  = concat.addU16Addr(0); //ulittle16_t RecordLen;  // Record length, starting from &RecordKind.
+        auto patchRecordOffset = concat.totalCount();
+        concat.addU16(S_COMPILE3); //ulittle16_t RecordKind; // Record kind enum (SymRecordKind or TypeRecordKind)
+
+        concat.addU32(0);    // Flags/Language (C)
+        concat.addU16(0xD0); // CPU Type (X64)
+
+        // Front end version
+        concat.addU16(SWAG_BUILD_VERSION);
+        concat.addU16(SWAG_BUILD_REVISION);
+        concat.addU16(SWAG_BUILD_NUM);
+        concat.addU16(0);
+
+        // Backend end version
+        concat.addU16(SWAG_BUILD_VERSION);
+        concat.addU16(SWAG_BUILD_REVISION);
+        concat.addU16(SWAG_BUILD_NUM);
+        concat.addU16(0);
+
+        // Compiler version
+        Utf8 version = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+        concat.addString(version.c_str(), version.length() + 1);
+
+        while (concat.totalCount() & 3)
+            concat.addChar(0);
+        *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
+
+        *patchSCount = concat.totalCount() - patchSOffset;
+        offset += concat.totalCount() - patchSectionOffset;
+    }
 
     for (auto& f : pp.functions)
     {
         if (!f.node)
             continue;
 
-        /*// Symbols table
+        // Symbols table
         /////////////////////////////////
+        auto patchSectionOffset = concat.totalCount();
         concat.addU32(SUBSECTION_SYMBOL);
-        concat.addU32(4 + 4); // Size of sub section
-        offset += 8;
+        auto patchSCount  = concat.addU32Addr(0); // Size of sub section
+        auto patchSOffset = concat.totalCount();
 
-        //ulittle16_t RecordLen;  // Record length, starting from &RecordKind.
-        //ulittle16_t RecordKind; // Record kind enum (SymRecordKind or TypeRecordKind)
-        concat.addU16(2+4);
-        offset += 2;
-        concat.addU16(0x1147); // SymbolRecordKind S_GPROC32_ID (0x1147)
-        offset += 2;
+        auto patchRecordCount  = concat.addU16Addr(0); //ulittle16_t RecordLen;  // Record length, starting from &RecordKind.
+        auto patchRecordOffset = concat.totalCount();
+        concat.addU16(S_GPROC32_ID); //ulittle16_t RecordKind; // Record kind enum (SymRecordKind or TypeRecordKind)
 
-        concat.addU32(0);
-        offset += 4;
+        concat.addU32(0);                             // uint32_t Parent = 0;
+        concat.addU32(0);                             // uint32_t End = 0;
+        concat.addU32(0);                             // uint32_t Next = 0;
+        concat.addU32(f.endAddress - f.startAddress); // uint32_t CodeSize = 0;
+        concat.addU32(f.sizeProlog);                  // uint32_t DbgStart = 0;
+        concat.addU32(0);                             // uint32_t DbgEnd = 0;
+        concat.addU32(0);                             // TypeIndex FunctionType;
 
-        concat.addU32(0); // uint32_t Parent = 0;
-        concat.addU32(0); // uint32_t End = 0;
-        concat.addU32(0); // uint32_t Next = 0;
-        concat.addU32(0); // uint32_t CodeSize = 0;
-        concat.addU32(0); // uint32_t DbgStart = 0;
-        concat.addU32(0); // uint32_t DbgEnd = 0;
-        concat.addU32(0); // TypeIndex FunctionType;
+        // Function symbol index
+        CoffRelocation reloc;
+        reloc.type           = IMAGE_REL_AMD64_SECREL;
+        reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+        reloc.symbolIndex    = f.symbolIndex;
+        pp.relocTableDBGSSection.table.push_back(reloc);
         concat.addU32(0); // uint32_t CodeOffset = 0;
+
         concat.addU16(0); // uint16_t Segment = 0;
-        concat.addU16(0); // ProcSymFlags Flags = ProcSymFlags::None;
-        concat.addU16(0); // StringRef Name;
-        concat.addU32(0); // RecordOffset = 0;
-        offset += 9 * 4 + 4 * 2;*/
+        concat.addU8(0);  // ProcSymFlags Flags = ProcSymFlags::None;
+        concat.addString(f.node->token.text.c_str(), f.node->token.text.length() + 1);
+        while (concat.totalCount() & 3)
+            concat.addChar(0);
+        *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
+
+        *patchSCount = concat.totalCount() - patchSOffset;
+        offset += concat.totalCount() - patchSectionOffset;
 
         // Lines table
         /////////////////////////////////
@@ -94,7 +142,6 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
         offset += 8;
 
         // Function symbol index
-        CoffRelocation reloc;
         reloc.type           = IMAGE_REL_AMD64_ADDR32NB;
         reloc.virtualAddress = offset;
         reloc.symbolIndex    = f.symbolIndex;
@@ -115,7 +162,16 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
             checkSymIndex = (uint32_t) arrFileNames.size();
             arrFileNames.push_back((uint32_t) stringTable.length());
             mapFileNames[name] = checkSymIndex;
-            stringTable += name;
+
+            // Normalize path name
+            auto cpyName = name;
+            for (auto& c : cpyName)
+            {
+                if (c == '/')
+                    c = '\\';
+            }
+
+            stringTable += cpyName;
             stringTable.append((char) 0);
         }
         else
