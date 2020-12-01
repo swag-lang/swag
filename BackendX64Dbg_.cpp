@@ -25,8 +25,15 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
     const uint32_t SUBSECTION_STRING_TABLE  = 0xF3;
     const uint32_t SUBSECTION_FILE_CHECKSUM = 0xF4;
 
+    map<Utf8, uint32_t> mapFileNames;
+    vector<uint32_t>    arrFileNames;
+    Utf8                stringTable;
+
     for (auto& f : pp.functions)
     {
+        if (!f.node)
+            continue;
+
         concat.addU32(SUBSECTION_LINES);
         concat.addU32(12 + 12); // Size of sub section
         offset += 8;
@@ -44,35 +51,47 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
         concat.addU32(f.endAddress - f.startAddress); // Code size
         offset += 12;
 
-        // Line
-        concat.addU32(0);  // File NameIndex in checksum buffer
-        concat.addU32(0);  // NumLines
-        concat.addU32(12); // Code size block in bytes
-        offset += 12;
+        // Compute file name index in the checksum table
+        auto  checkSymIndex = 0;
+        auto& name          = f.node->sourceFile->path;
+        auto  it            = mapFileNames.find(name);
+        if (it == mapFileNames.end())
+        {
+            checkSymIndex = (uint32_t) arrFileNames.size();
+            arrFileNames.push_back((uint32_t) stringTable.length());
+            mapFileNames[name] = checkSymIndex;
+            stringTable += name;
+            stringTable.append((char) 0);
+        }
+        else
+        {
+            checkSymIndex = it->second;
+        }
 
-        //break;
+        concat.addU32(checkSymIndex * 8); // File index in checksum buffer (in bytes!)
+        concat.addU32(0);                 // NumLines
+        concat.addU32(12);                // Code size block in bytes
+        offset += 12;
     }
 
     // File checksum table
     concat.addU32(SUBSECTION_FILE_CHECKSUM);
-    concat.addU32(8 + 8); // Size of sub section
-    offset += 2 * 4;
-
-    concat.addU32(0); // Offset of file name in string table
-    concat.addU32(0);
-    offset += 2 * 4;
-
-    concat.addU32(1); // Offset of file name in string table
-    concat.addU32(0);
-    offset += 2 * 4;
+    concat.addU32((int) arrFileNames.size() * 8); // Size of sub section
+    for (auto& p : arrFileNames)
+    {
+        concat.addU32(p); // Offset of file name in string table
+        concat.addU32(0);
+    }
 
     // String table
     concat.addU32(SUBSECTION_STRING_TABLE);
-    concat.addU32(4); // Size of sub section
-    concat.addString("ABC", 4);
-    offset += 3 * 4;
+    while (stringTable.length() & 3) // Align to 4 bytes
+        stringTable.append((char) 0);
+    concat.addU32(stringTable.length());
+    concat.addString(stringTable);
 
     *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;
+
     return true;
 }
 

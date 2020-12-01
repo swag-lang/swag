@@ -166,7 +166,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Ret(pp);
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(pp, nullptr, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
@@ -236,7 +236,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Ret(pp);
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(pp, nullptr, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
@@ -273,6 +273,6 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Ret(pp);
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(pp, nullptr, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }

@@ -310,7 +310,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     BackendX64Inst::emit_Ret(pp);
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(pp, node, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
@@ -2441,7 +2441,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     }
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(pp, bc->node, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
     return ok;
 }
 

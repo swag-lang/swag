@@ -430,9 +430,10 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
     return JobResult::ReleaseJob;
 }
 
-void BackendX64::registerFunction(X64PerThread& pp, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
+void BackendX64::registerFunction(X64PerThread& pp, AstNode* node, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
 {
     CoffFunction cf;
+    cf.node         = node;
     cf.symbolIndex  = symbolIndex;
     cf.startAddress = startAddress;
     cf.endAddress   = endAddress;
