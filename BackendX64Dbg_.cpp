@@ -36,13 +36,11 @@ void BackendX64::setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeI
 
 bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
-
-    concat.addU32(4); // DEBUG_SECTION_MAGIC
-    uint32_t offset = 4;
+    int      ct              = buildParameters.compileType;
+    int      precompileIndex = buildParameters.precompileIndex;
+    auto&    pp              = *perThread[ct][precompileIndex];
+    auto&    concat          = pp.concat;
+    uint32_t offset          = 4;
 
     const uint32_t SUBSECTION_SYMBOL        = 0xF1;
     const uint32_t SUBSECTION_LINES         = 0xF2;
@@ -172,6 +170,7 @@ bool BackendX64::emitDebugData(const BuildParameters& buildParameters)
     // .debug$S
     alignConcat(concat, 16);
     *pp.patchDBGSOffset = concat.totalCount();
+    concat.addU32(4); // DEBUG_SECTION_MAGIC
     if (buildParameters.buildCfg->backendDebugInformations)
         emitDBGSData(buildParameters);
     *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;
@@ -179,7 +178,8 @@ bool BackendX64::emitDebugData(const BuildParameters& buildParameters)
     // .debug$T
     alignConcat(concat, 16);
     *pp.patchDBGTOffset = concat.totalCount();
-    *pp.patchDBGTCount  = concat.totalCount() - *pp.patchDBGTOffset;
+    concat.addU32(4); // DEBUG_SECTION_MAGIC
+    *pp.patchDBGTCount = concat.totalCount() - *pp.patchDBGTOffset;
 
     // Reloc table
     if (!pp.relocTableDBGSSection.table.empty())
