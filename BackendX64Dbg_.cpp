@@ -15,12 +15,10 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    alignConcat(concat, 16);
-    *pp.patchDBGSOffset = concat.totalCount();
-
     concat.addU32(4); // DEBUG_SECTION_MAGIC
     uint32_t offset = 4;
 
+    const uint32_t SUBSECTION_SYMBOL        = 0xF1;
     const uint32_t SUBSECTION_LINES         = 0xF2;
     const uint32_t SUBSECTION_STRING_TABLE  = 0xF3;
     const uint32_t SUBSECTION_FILE_CHECKSUM = 0xF4;
@@ -34,6 +32,38 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
         if (!f.node)
             continue;
 
+        /*// Symbols table
+        /////////////////////////////////
+        concat.addU32(SUBSECTION_SYMBOL);
+        concat.addU32(4 + 4); // Size of sub section
+        offset += 8;
+
+        //ulittle16_t RecordLen;  // Record length, starting from &RecordKind.
+        //ulittle16_t RecordKind; // Record kind enum (SymRecordKind or TypeRecordKind)
+        concat.addU16(2+4);
+        offset += 2;
+        concat.addU16(0x1147); // SymbolRecordKind S_GPROC32_ID (0x1147)
+        offset += 2;
+
+        concat.addU32(0);
+        offset += 4;
+
+        concat.addU32(0); // uint32_t Parent = 0;
+        concat.addU32(0); // uint32_t End = 0;
+        concat.addU32(0); // uint32_t Next = 0;
+        concat.addU32(0); // uint32_t CodeSize = 0;
+        concat.addU32(0); // uint32_t DbgStart = 0;
+        concat.addU32(0); // uint32_t DbgEnd = 0;
+        concat.addU32(0); // TypeIndex FunctionType;
+        concat.addU32(0); // uint32_t CodeOffset = 0;
+        concat.addU16(0); // uint16_t Segment = 0;
+        concat.addU16(0); // ProcSymFlags Flags = ProcSymFlags::None;
+        concat.addU16(0); // StringRef Name;
+        concat.addU32(0); // RecordOffset = 0;
+        offset += 9 * 4 + 4 * 2;*/
+
+        // Lines table
+        /////////////////////////////////
         concat.addU32(SUBSECTION_LINES);
         concat.addU32(12 + 12 + 8); // Size of sub section
         offset += 8;
@@ -70,7 +100,7 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
 
         concat.addU32(checkSymIndex * 8); // File index in checksum buffer (in bytes!)
         concat.addU32(1);                 // NumLines
-        concat.addU32(12 + 8);            // Code size block in bytes
+        concat.addU32(12 + 8);            // Code size block in bytes (12 + number of lines * 8)
         offset += 12;
 
         concat.addU32(0);                                    // Offset in bytes
@@ -79,6 +109,7 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
     }
 
     // File checksum table
+    /////////////////////////////////
     concat.addU32(SUBSECTION_FILE_CHECKSUM);
     concat.addU32((int) arrFileNames.size() * 8); // Size of sub section
     for (auto& p : arrFileNames)
@@ -88,13 +119,12 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
     }
 
     // String table
+    /////////////////////////////////
     concat.addU32(SUBSECTION_STRING_TABLE);
     while (stringTable.length() & 3) // Align to 4 bytes
         stringTable.append((char) 0);
     concat.addU32(stringTable.length());
     concat.addString(stringTable);
-
-    *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;
 
     return true;
 }
@@ -106,8 +136,14 @@ bool BackendX64::emitDebugData(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    emitDBGSData(buildParameters);
+    // .debug$S
+    alignConcat(concat, 16);
+    *pp.patchDBGSOffset = concat.totalCount();
+    if (buildParameters.buildCfg->backendDebugInformations)
+        emitDBGSData(buildParameters);
+    *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;
 
+    // Reloc table
     if (!pp.relocTableDBGSSection.table.empty())
     {
         alignConcat(concat, 16);
