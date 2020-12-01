@@ -48,15 +48,22 @@ struct LabelToSolve
     uint8_t* patch;
 };
 
+struct CoffDbgLine
+{
+    uint32_t line;
+    uint32_t byteOffset;
+};
+
 struct CoffFunction
 {
-    AstNode*               node;
-    uint32_t               symbolIndex;
-    uint32_t               startAddress;
-    uint32_t               endAddress;
-    uint32_t               xdataOffset = 0;
-    uint32_t               sizeProlog  = 0;
-    VectorNative<uint16_t> unwind;
+    AstNode*                  node;
+    uint32_t                  symbolIndex;
+    uint32_t                  startAddress;
+    uint32_t                  endAddress;
+    uint32_t                  xdataOffset = 0;
+    uint32_t                  sizeProlog  = 0;
+    VectorNative<uint16_t>    unwind;
+    VectorNative<CoffDbgLine> dbgLines;
 };
 
 struct X64PerThread
@@ -200,6 +207,7 @@ struct BackendX64 : public Backend
     bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     bool emitHeader(const BuildParameters& buildParameters);
 
+    void setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
     bool emitDBGSData(const BuildParameters& buildParameters);
     bool emitDebugData(const BuildParameters& buildParameters);
 

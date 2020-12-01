@@ -115,7 +115,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.addU32(0);                                           // .PointerToLinenumbers
     pp.patchDBGSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
     concat.addU16(0);                                           // .NumberOfLinenumbers
-    pp.patchDBGSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4BYTES);
+    pp.patchDBGSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_DISCARDABLE | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4BYTES);
 
     if (precompileIndex == 0)
     {

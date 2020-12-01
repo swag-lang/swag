@@ -327,6 +327,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     auto& concat          = pp.concat;
     auto  typeFunc        = bc->callType();
     bool  ok              = true;
+    bool  debug           = buildParameters.buildCfg->backendDebugInformations;
 
     alignConcat(concat, 16);
     uint32_t startAddress = concat.totalCount();
@@ -338,6 +339,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // Symbol
     auto symbolFuncIndex = getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, bc->node, symbolFuncIndex);
+    if (debug)
+        setDebugLocation(coffFct, bc, nullptr, 0);
 
     // For float load
     // (should be reserved only if we have floating point operations in that function)
@@ -384,6 +387,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     {
         if (ip->node->flags & AST_NO_BACKEND)
             continue;
+
+        if (debug)
+            setDebugLocation(coffFct, bc, ip, concat.totalCount() - beforeProlog);
 
         if (ip->flags & BCI_JUMP_DEST)
             getOrCreateLabel(pp, i);

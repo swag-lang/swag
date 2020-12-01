@@ -8,6 +8,32 @@
 #include "Module.h"
 #include "TypeManager.h"
 
+void BackendX64::setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
+{
+    if (!coffFct->node)
+        return;
+
+    if (!ip)
+    {
+        coffFct->dbgLines.push_back({coffFct->node->token.startLocation.line + 1, byteOffset});
+    }
+    else if (ip && ip->node && ip->node->ownerScope && ip->node->kind != AstNodeKind::FuncDecl && !(ip->flags & BCI_SAFETY))
+    {
+        auto location = ip->getLocation(bc);
+        if (!location)
+            return;
+        SWAG_ASSERT(!coffFct->dbgLines.empty());
+
+        if (coffFct->dbgLines.back().line != location->line + 1)
+        {
+            if (coffFct->dbgLines.back().byteOffset == byteOffset)
+                coffFct->dbgLines.back().line = location->line + 1;
+            else
+                coffFct->dbgLines.push_back({location->line + 1, byteOffset});
+        }
+    }
+}
+
 bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
@@ -100,13 +126,18 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
         }
 
         concat.addU32(checkSymIndex * 8); // File index in checksum buffer (in bytes!)
-        concat.addU32(1);                 // NumLines
-        concat.addU32(12 + 8);            // Code size block in bytes (12 + number of lines * 8)
+        auto numDbgLines = (uint32_t) f.dbgLines.size();
+        concat.addU32(numDbgLines);          // NumLines
+        concat.addU32(12 + numDbgLines * 8); // Code size block in bytes (12 + number of lines * 8)
         offset += 12;
 
-        concat.addU32(0);                                    // Offset in bytes
-        concat.addU32(f.node->token.startLocation.line + 1); // Line number
-        offset += 8;
+        for (auto& line : f.dbgLines)
+        {
+            concat.addU32(line.byteOffset); // Offset in bytes
+            concat.addU32(line.line);       // Line number
+        }
+
+        offset += numDbgLines * 8;
         *patchLTCount = concat.totalCount() - patchLTOffset;
     }
 
