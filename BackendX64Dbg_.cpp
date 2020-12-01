@@ -176,6 +176,11 @@ bool BackendX64::emitDebugData(const BuildParameters& buildParameters)
         emitDBGSData(buildParameters);
     *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;
 
+    // .debug$T
+    alignConcat(concat, 16);
+    *pp.patchDBGTOffset = concat.totalCount();
+    *pp.patchDBGTCount  = concat.totalCount() - *pp.patchDBGTOffset;
+
     // Reloc table
     if (!pp.relocTableDBGSSection.table.empty())
     {

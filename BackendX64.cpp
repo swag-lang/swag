@@ -12,8 +12,8 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     int       precompileIndex = buildParameters.precompileIndex;
     auto&     pp              = *perThread[ct][precompileIndex];
     auto&     concat          = pp.concat;
-    const int NUM_SECTIONS_0  = 11;
-    const int NUM_SECTIONS_X  = 6;
+    const int NUM_SECTIONS_0  = 12;
+    const int NUM_SECTIONS_X  = 7;
 
     // Coff header
     /////////////////////////////////////////////
@@ -116,6 +116,19 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     pp.patchDBGSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
     concat.addU16(0);                                           // .NumberOfLinenumbers
     pp.patchDBGSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_DISCARDABLE | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4BYTES);
+
+    // .debug$T section
+    pp.sectionIndexDBGT = secIndex++;
+    concat.addString(".debug$T", 8);           // .Name
+    concat.addU32(0);                          // .VirtualSize
+    concat.addU32(0);                          // .VirtualAddress
+    pp.patchDBGTCount  = concat.addU32Addr(0); // .SizeOfRawData
+    pp.patchDBGTOffset = concat.addU32Addr(0); // .PointerToRawData
+    concat.addU32(0);                          // .PointerToRelocations
+    concat.addU32(0);                          // .PointerToLinenumbers
+    concat.addU16(0);                          // .NumberOfRelocations
+    concat.addU16(0);                          // .NumberOfLinenumbers
+    concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_DISCARDABLE | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4BYTES);
 
     if (precompileIndex == 0)
     {
