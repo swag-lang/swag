@@ -211,6 +211,7 @@ struct BackendX64 : public Backend
     bool emitHeader(const BuildParameters& buildParameters);
 
     void setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
+    void emitDBGSCompilerFlags(Concat& concat);
     bool emitDBGSData(const BuildParameters& buildParameters);
     bool emitDebugData(const BuildParameters& buildParameters);
 

@@ -9,6 +9,13 @@
 #include "TypeManager.h"
 #include "Version.h"
 
+const uint32_t SUBSECTION_SYMBOL        = 0xF1;
+const uint32_t SUBSECTION_LINES         = 0xF2;
+const uint32_t SUBSECTION_STRING_TABLE  = 0xF3;
+const uint32_t SUBSECTION_FILE_CHECKSUM = 0xF4;
+const uint16_t S_COMPILE3               = 0x113c;
+const uint16_t S_GPROC32_ID             = 0x1147;
+
 void BackendX64::setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
 {
     if (!coffFct->node)
@@ -35,63 +42,54 @@ void BackendX64::setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeI
     }
 }
 
+void BackendX64::emitDBGSCompilerFlags(Concat& concat)
+{
+    concat.addU32(SUBSECTION_SYMBOL);
+    auto patchSCount  = concat.addU32Addr(0); // Size of sub section
+    auto patchSOffset = concat.totalCount();
+
+    auto patchRecordCount  = concat.addU16Addr(0); // Record length, starting from &RecordKind.
+    auto patchRecordOffset = concat.totalCount();
+    concat.addU16(S_COMPILE3); // Record kind enum (SymRecordKind or TypeRecordKind)
+
+    concat.addU32(0);    // Flags/Language (C)
+    concat.addU16(0xD0); // CPU Type (X64)
+
+    // Front end version
+    concat.addU16(SWAG_BUILD_VERSION);
+    concat.addU16(SWAG_BUILD_REVISION);
+    concat.addU16(SWAG_BUILD_NUM);
+    concat.addU16(0);
+
+    // Backend end version
+    concat.addU16(SWAG_BUILD_VERSION);
+    concat.addU16(SWAG_BUILD_REVISION);
+    concat.addU16(SWAG_BUILD_NUM);
+    concat.addU16(0);
+
+    // Compiler version
+    Utf8 version = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    concat.addString(version.c_str(), version.length() + 1);
+
+    while (concat.totalCount() & 3)
+        concat.addChar(0);
+    *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
+
+    *patchSCount = concat.totalCount() - patchSOffset;
+}
+
 bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
 {
-    int      ct              = buildParameters.compileType;
-    int      precompileIndex = buildParameters.precompileIndex;
-    auto&    pp              = *perThread[ct][precompileIndex];
-    auto&    concat          = pp.concat;
-    uint32_t offset          = 4;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
 
-    const uint32_t SUBSECTION_SYMBOL        = 0xF1;
-    const uint32_t SUBSECTION_LINES         = 0xF2;
-    const uint32_t SUBSECTION_STRING_TABLE  = 0xF3;
-    const uint32_t SUBSECTION_FILE_CHECKSUM = 0xF4;
-    const uint16_t S_COMPILE3               = 0x113c;
-    const uint16_t S_GPROC32_ID             = 0x1147;
+    emitDBGSCompilerFlags(concat);
 
     map<Utf8, uint32_t> mapFileNames;
     vector<uint32_t>    arrFileNames;
     Utf8                stringTable;
-
-    // Compiler flags
-    {
-        auto patchSectionOffset = concat.totalCount();
-        concat.addU32(SUBSECTION_SYMBOL);
-        auto patchSCount  = concat.addU32Addr(0); // Size of sub section
-        auto patchSOffset = concat.totalCount();
-
-        auto patchRecordCount  = concat.addU16Addr(0); //ulittle16_t RecordLen;  // Record length, starting from &RecordKind.
-        auto patchRecordOffset = concat.totalCount();
-        concat.addU16(S_COMPILE3); //ulittle16_t RecordKind; // Record kind enum (SymRecordKind or TypeRecordKind)
-
-        concat.addU32(0);    // Flags/Language (C)
-        concat.addU16(0xD0); // CPU Type (X64)
-
-        // Front end version
-        concat.addU16(SWAG_BUILD_VERSION);
-        concat.addU16(SWAG_BUILD_REVISION);
-        concat.addU16(SWAG_BUILD_NUM);
-        concat.addU16(0);
-
-        // Backend end version
-        concat.addU16(SWAG_BUILD_VERSION);
-        concat.addU16(SWAG_BUILD_REVISION);
-        concat.addU16(SWAG_BUILD_NUM);
-        concat.addU16(0);
-
-        // Compiler version
-        Utf8 version = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-        concat.addString(version.c_str(), version.length() + 1);
-
-        while (concat.totalCount() & 3)
-            concat.addChar(0);
-        *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
-
-        *patchSCount = concat.totalCount() - patchSOffset;
-        offset += concat.totalCount() - patchSectionOffset;
-    }
-
     for (auto& f : pp.functions)
     {
         if (!f.node)
@@ -99,7 +97,6 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
 
         // Symbols table
         /////////////////////////////////
-        auto patchSectionOffset = concat.totalCount();
         concat.addU32(SUBSECTION_SYMBOL);
         auto patchSCount  = concat.addU32Addr(0); // Size of sub section
         auto patchSOffset = concat.totalCount();
@@ -132,18 +129,16 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
         *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
 
         *patchSCount = concat.totalCount() - patchSOffset;
-        offset += concat.totalCount() - patchSectionOffset;
 
         // Lines table
         /////////////////////////////////
         concat.addU32(SUBSECTION_LINES);
         auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
         auto patchLTOffset = concat.totalCount();
-        offset += 8;
 
         // Function symbol index
         reloc.type           = IMAGE_REL_AMD64_ADDR32NB;
-        reloc.virtualAddress = offset;
+        reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
         reloc.symbolIndex    = f.symbolIndex;
         pp.relocTableDBGSSection.table.push_back(reloc);
         concat.addU32(0);
@@ -151,7 +146,6 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
         concat.addU16(0);                             // RelocSegment
         concat.addU16(0);                             // Flags
         concat.addU32(f.endAddress - f.startAddress); // Code size
-        offset += 12;
 
         // Compute file name index in the checksum table
         auto  checkSymIndex = 0;
@@ -183,7 +177,6 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
         auto numDbgLines = (uint32_t) f.dbgLines.size();
         concat.addU32(numDbgLines);          // NumLines
         concat.addU32(12 + numDbgLines * 8); // Code size block in bytes (12 + number of lines * 8)
-        offset += 12;
 
         for (auto& line : f.dbgLines)
         {
@@ -191,7 +184,6 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
             concat.addU32(line.line);       // Line number
         }
 
-        offset += numDbgLines * 8;
         *patchLTCount = concat.totalCount() - patchLTOffset;
     }
 
