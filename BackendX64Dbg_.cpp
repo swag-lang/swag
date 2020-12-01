@@ -13,7 +13,9 @@ const uint32_t SUBSECTION_SYMBOL        = 0xF1;
 const uint32_t SUBSECTION_LINES         = 0xF2;
 const uint32_t SUBSECTION_STRING_TABLE  = 0xF3;
 const uint32_t SUBSECTION_FILE_CHECKSUM = 0xF4;
+const uint16_t S_FRAMEPROC              = 0x1012;
 const uint16_t S_COMPILE3               = 0x113c;
+const uint16_t S_LPROC32_ID             = 0x1146;
 const uint16_t S_GPROC32_ID             = 0x1147;
 
 void BackendX64::setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
@@ -70,9 +72,7 @@ void BackendX64::emitDBGSCompilerFlags(Concat& concat)
     // Compiler version
     Utf8 version = format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     concat.addString(version.c_str(), version.length() + 1);
-
-    while (concat.totalCount() & 3)
-        concat.addChar(0);
+    alignConcat(concat, 4);
     *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
 
     *patchSCount = concat.totalCount() - patchSOffset;
@@ -95,96 +95,124 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
         if (!f.node)
             continue;
 
-        // Symbols table
+        // Symbol
         /////////////////////////////////
-        concat.addU32(SUBSECTION_SYMBOL);
-        auto patchSCount  = concat.addU32Addr(0); // Size of sub section
-        auto patchSOffset = concat.totalCount();
+        {
+            concat.addU32(SUBSECTION_SYMBOL);
+            auto patchSCount  = concat.addU32Addr(0);
+            auto patchSOffset = concat.totalCount();
 
-        auto patchRecordCount  = concat.addU16Addr(0); //ulittle16_t RecordLen;  // Record length, starting from &RecordKind.
-        auto patchRecordOffset = concat.totalCount();
-        concat.addU16(S_GPROC32_ID); //ulittle16_t RecordKind; // Record kind enum (SymRecordKind or TypeRecordKind)
+            auto patchRecordCount  = concat.addU16Addr(0);
+            auto patchRecordOffset = concat.totalCount();
+            concat.addU16(S_GPROC32_ID);
 
-        concat.addU32(0);                             // uint32_t Parent = 0;
-        concat.addU32(0);                             // uint32_t End = 0;
-        concat.addU32(0);                             // uint32_t Next = 0;
-        concat.addU32(f.endAddress - f.startAddress); // uint32_t CodeSize = 0;
-        concat.addU32(f.sizeProlog);                  // uint32_t DbgStart = 0;
-        concat.addU32(0);                             // uint32_t DbgEnd = 0;
-        concat.addU32(0);                             // TypeIndex FunctionType;
+            concat.addU32(0);                             // Parent = 0;
+            concat.addU32(0);                             // End = 0;
+            concat.addU32(0);                             // Next = 0;
+            concat.addU32(f.endAddress - f.startAddress); // CodeSize = 0;
+            concat.addU32(f.sizeProlog);                  // DbgStart = 0;
+            concat.addU32(0);                             // DbgEnd = 0;
+            concat.addU32(0);                             // @FunctionType; TODO
 
-        // Function symbol index
-        CoffRelocation reloc;
-        reloc.type           = IMAGE_REL_AMD64_SECREL;
-        reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-        reloc.symbolIndex    = f.symbolIndex;
-        pp.relocTableDBGSSection.table.push_back(reloc);
-        concat.addU32(0); // uint32_t CodeOffset = 0;
+            // Function symbol index
+            CoffRelocation reloc;
+            reloc.type           = IMAGE_REL_AMD64_SECREL;
+            reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+            reloc.symbolIndex    = f.symbolIndex;
+            pp.relocTableDBGSSection.table.push_back(reloc);
+            concat.addU32(0); // uint32_t CodeOffset = 0;
 
-        concat.addU16(0); // uint16_t Segment = 0;
-        concat.addU8(0);  // ProcSymFlags Flags = ProcSymFlags::None;
-        concat.addString(f.node->token.text.c_str(), f.node->token.text.length() + 1);
-        while (concat.totalCount() & 3)
-            concat.addChar(0);
-        *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
+            concat.addU16(0); // Segment
+            concat.addU8(0);  // ProcSymFlags Flags = ProcSymFlags::None;
+            concat.addString(f.node->token.text.c_str(), f.node->token.text.length() + 1);
 
-        *patchSCount = concat.totalCount() - patchSOffset;
+            alignConcat(concat, 4);
+            *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
+            *patchSCount = concat.totalCount() - patchSOffset;
+        }
+
+        // Frame Proc
+        /////////////////////////////////
+        {
+            concat.addU32(SUBSECTION_SYMBOL);
+            auto patchSCount  = concat.addU32Addr(0);
+            auto patchSOffset = concat.totalCount();
+
+            auto patchRecordCount  = concat.addU16Addr(0);
+            auto patchRecordOffset = concat.totalCount();
+            concat.addU16(S_FRAMEPROC);
+
+            concat.addU32(0); // FrameSize
+            concat.addU32(0); // Padding
+            concat.addU32(0); // Offset of padding
+            concat.addU32(0); // Bytes of callee saved registers
+            concat.addU32(0); // Exception handler offset
+            concat.addU32(0); // Exception handler section
+            concat.addU32(0); // Flags (defines frame register)
+
+            alignConcat(concat, 4);
+            *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
+            *patchSCount = concat.totalCount() - patchSOffset;
+        }
 
         // Lines table
         /////////////////////////////////
-        concat.addU32(SUBSECTION_LINES);
-        auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
-        auto patchLTOffset = concat.totalCount();
-
-        // Function symbol index
-        reloc.type           = IMAGE_REL_AMD64_ADDR32NB;
-        reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-        reloc.symbolIndex    = f.symbolIndex;
-        pp.relocTableDBGSSection.table.push_back(reloc);
-        concat.addU32(0);
-
-        concat.addU16(0);                             // RelocSegment
-        concat.addU16(0);                             // Flags
-        concat.addU32(f.endAddress - f.startAddress); // Code size
-
-        // Compute file name index in the checksum table
-        auto  checkSymIndex = 0;
-        auto& name          = f.node->sourceFile->path;
-        auto  it            = mapFileNames.find(name);
-        if (it == mapFileNames.end())
         {
-            checkSymIndex = (uint32_t) arrFileNames.size();
-            arrFileNames.push_back((uint32_t) stringTable.length());
-            mapFileNames[name] = checkSymIndex;
+            concat.addU32(SUBSECTION_LINES);
+            auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
+            auto patchLTOffset = concat.totalCount();
 
-            // Normalize path name
-            auto cpyName = name;
-            for (auto& c : cpyName)
+            // Function symbol index
+            CoffRelocation reloc;
+            reloc.type           = IMAGE_REL_AMD64_SECREL;
+            reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+            reloc.symbolIndex    = f.symbolIndex;
+            pp.relocTableDBGSSection.table.push_back(reloc);
+            concat.addU32(0);
+
+            concat.addU16(0);                             // RelocSegment
+            concat.addU16(0);                             // Flags
+            concat.addU32(f.endAddress - f.startAddress); // Code size
+
+            // Compute file name index in the checksum table
+            auto  checkSymIndex = 0;
+            auto& name          = f.node->sourceFile->path;
+            auto  it            = mapFileNames.find(name);
+            if (it == mapFileNames.end())
             {
-                if (c == '/')
-                    c = '\\';
+                checkSymIndex = (uint32_t) arrFileNames.size();
+                arrFileNames.push_back((uint32_t) stringTable.length());
+                mapFileNames[name] = checkSymIndex;
+
+                // Normalize path name
+                auto cpyName = name;
+                for (auto& c : cpyName)
+                {
+                    if (c == '/')
+                        c = '\\';
+                }
+
+                stringTable += cpyName;
+                stringTable.append((char) 0);
+            }
+            else
+            {
+                checkSymIndex = it->second;
             }
 
-            stringTable += cpyName;
-            stringTable.append((char) 0);
-        }
-        else
-        {
-            checkSymIndex = it->second;
-        }
+            concat.addU32(checkSymIndex * 8); // File index in checksum buffer (in bytes!)
+            auto numDbgLines = (uint32_t) f.dbgLines.size();
+            concat.addU32(numDbgLines);          // NumLines
+            concat.addU32(12 + numDbgLines * 8); // Code size block in bytes (12 + number of lines * 8)
 
-        concat.addU32(checkSymIndex * 8); // File index in checksum buffer (in bytes!)
-        auto numDbgLines = (uint32_t) f.dbgLines.size();
-        concat.addU32(numDbgLines);          // NumLines
-        concat.addU32(12 + numDbgLines * 8); // Code size block in bytes (12 + number of lines * 8)
+            for (auto& line : f.dbgLines)
+            {
+                concat.addU32(line.byteOffset); // Offset in bytes
+                concat.addU32(line.line);       // Line number
+            }
 
-        for (auto& line : f.dbgLines)
-        {
-            concat.addU32(line.byteOffset); // Offset in bytes
-            concat.addU32(line.line);       // Line number
+            *patchLTCount = concat.totalCount() - patchLTOffset;
         }
-
-        *patchLTCount = concat.totalCount() - patchLTOffset;
     }
 
     // File checksum table
