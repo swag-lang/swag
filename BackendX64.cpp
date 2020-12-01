@@ -430,16 +430,21 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
     return JobResult::ReleaseJob;
 }
 
-void BackendX64::registerFunction(X64PerThread& pp, AstNode* node, uint32_t symbolIndex, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
+CoffFunction* BackendX64::registerFunction(X64PerThread& pp, AstNode* node, uint32_t symbolIndex)
 {
     CoffFunction cf;
-    cf.node         = node;
-    cf.symbolIndex  = symbolIndex;
-    cf.startAddress = startAddress;
-    cf.endAddress   = endAddress;
-    cf.sizeProlog   = sizeProlog;
-    cf.unwind       = move(unwind);
+    cf.node        = node;
+    cf.symbolIndex = symbolIndex;
     pp.functions.push_back(cf);
+    return &pp.functions.back();
+}
+
+void BackendX64::registerFunction(CoffFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
+{
+    fct->startAddress = startAddress;
+    fct->endAddress   = endAddress;
+    fct->sizeProlog   = sizeProlog;
+    fct->unwind       = move(unwind);
 }
 
 CoffSymbol* BackendX64::getSymbol(X64PerThread& pp, const Utf8Crc& name)

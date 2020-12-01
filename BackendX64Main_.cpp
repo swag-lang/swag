@@ -53,6 +53,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     }
 
     auto symbolFuncIndex = getOrAddSymbol(pp, entryPoint, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     auto beforeProlog = concat.totalCount();
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
@@ -166,7 +167,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Ret(pp);
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, nullptr, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
@@ -182,6 +183,8 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 
     auto thisInit        = format("%s_globalInit", module->nameDown.c_str());
     auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
+
     pp.directives += format("/EXPORT:%s ", thisInit.c_str());
 
     auto beforeProlog = concat.totalCount();
@@ -236,7 +239,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Ret(pp);
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, nullptr, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
@@ -252,6 +255,8 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
 
     auto thisDrop        = format("%s_globalDrop", module->nameDown.c_str());
     auto symbolFuncIndex = getOrAddSymbol(pp, thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
+
     pp.directives += format("/EXPORT:%s ", thisDrop.c_str());
 
     auto beforeProlog = concat.totalCount();
@@ -273,6 +278,6 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Ret(pp);
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, nullptr, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }

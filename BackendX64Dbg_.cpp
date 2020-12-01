@@ -65,7 +65,8 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
         // Lines table
         /////////////////////////////////
         concat.addU32(SUBSECTION_LINES);
-        concat.addU32(12 + 12 + 8); // Size of sub section
+        auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
+        auto patchLTOffset = concat.totalCount();
         offset += 8;
 
         // Function symbol index
@@ -106,6 +107,7 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
         concat.addU32(0);                                    // Offset in bytes
         concat.addU32(f.node->token.startLocation.line + 1); // Line number
         offset += 8;
+        *patchLTCount = concat.totalCount() - patchLTOffset;
     }
 
     // File checksum table

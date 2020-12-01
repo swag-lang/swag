@@ -130,6 +130,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     // Symbol
     uint32_t symbolFuncIndex = getOrAddSymbol(pp, node->fullnameForeign, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     pp.directives += format("/EXPORT:%s ", node->fullnameForeign.c_str());
+    auto coffFct = registerFunction(pp, node, symbolFuncIndex);
 
     VectorNative<TypeInfo*> pushRAParams;
 
@@ -310,7 +311,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     BackendX64Inst::emit_Ret(pp);
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, node, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
@@ -336,6 +337,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     // Symbol
     auto symbolFuncIndex = getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto coffFct         = registerFunction(pp, bc->node, symbolFuncIndex);
 
     // For float load
     // (should be reserved only if we have floating point operations in that function)
@@ -2441,7 +2443,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     }
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(pp, bc->node, symbolFuncIndex, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
     return ok;
 }
 
