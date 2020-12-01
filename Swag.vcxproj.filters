@@ -446,6 +446,9 @@
     <ClCompile Include="ByteCodeOptimizerJob.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="BackendX64Dbg_.cpp">
+      <Filter>Backend\X64</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

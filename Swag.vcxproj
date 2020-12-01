@@ -272,6 +272,7 @@
     <ClCompile Include="BackendLLVM.cpp" />
     <ClCompile Include="BackendX64.cpp" />
     <ClCompile Include="BackendX64Data_.cpp" />
+    <ClCompile Include="BackendX64Dbg_.cpp" />
     <ClCompile Include="BackendX64FunctionBodyJob.cpp" />
     <ClCompile Include="BackendX64Function_.cpp" />
     <ClCompile Include="BackendX64SaveObjJob.cpp" />

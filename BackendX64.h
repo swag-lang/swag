@@ -70,6 +70,7 @@ struct X64PerThread
     CoffRelocationTable        relocTableMSSection;
     CoffRelocationTable        relocTableTSSection;
     CoffRelocationTable        relocTablePDSection;
+    CoffRelocationTable        relocTableDBGSSection;
     vector<CoffSymbol>         allSymbols;
     map<Utf8Crc, uint32_t>     mapSymbols;
     map<Utf8Crc, uint32_t>     globalStrings;
@@ -105,22 +106,28 @@ struct X64PerThread
     uint16_t* patchPDSectionRelocTableCount  = nullptr;
     uint32_t* patchPDSectionFlags            = nullptr;
 
-    uint32_t* patchCSOffset = nullptr;
-    uint32_t* patchCSCount  = nullptr;
-    uint32_t* patchSSOffset = nullptr;
-    uint32_t* patchSSCount  = nullptr;
-    uint32_t* patchGSOffset = nullptr;
-    uint32_t* patchGSCount  = nullptr;
-    uint32_t* patchMSOffset = nullptr;
-    uint32_t* patchMSCount  = nullptr;
-    uint32_t* patchTSOffset = nullptr;
-    uint32_t* patchTSCount  = nullptr;
-    uint32_t* patchDRCount  = nullptr;
-    uint32_t* patchDROffset = nullptr;
-    uint32_t* patchPDCount  = nullptr;
-    uint32_t* patchPDOffset = nullptr;
-    uint32_t* patchXDCount  = nullptr;
-    uint32_t* patchXDOffset = nullptr;
+    uint32_t* patchDBGSSectionRelocTableOffset = nullptr;
+    uint16_t* patchDBGSSectionRelocTableCount  = nullptr;
+    uint32_t* patchDBGSSectionFlags            = nullptr;
+
+    uint32_t* patchCSOffset   = nullptr;
+    uint32_t* patchCSCount    = nullptr;
+    uint32_t* patchSSOffset   = nullptr;
+    uint32_t* patchSSCount    = nullptr;
+    uint32_t* patchGSOffset   = nullptr;
+    uint32_t* patchGSCount    = nullptr;
+    uint32_t* patchMSOffset   = nullptr;
+    uint32_t* patchMSCount    = nullptr;
+    uint32_t* patchTSOffset   = nullptr;
+    uint32_t* patchTSCount    = nullptr;
+    uint32_t* patchDRCount    = nullptr;
+    uint32_t* patchDROffset   = nullptr;
+    uint32_t* patchPDCount    = nullptr;
+    uint32_t* patchPDOffset   = nullptr;
+    uint32_t* patchXDCount    = nullptr;
+    uint32_t* patchXDOffset   = nullptr;
+    uint32_t* patchDBGSCount  = nullptr;
+    uint32_t* patchDBGSOffset = nullptr;
 
     uint32_t symBSIndex = 0;
     uint32_t symMSIndex = 0;
@@ -154,6 +161,7 @@ struct X64PerThread
     uint16_t sectionIndexDR   = 0;
     uint16_t sectionIndexPD   = 0;
     uint16_t sectionIndexXD   = 0;
+    uint16_t sectionIndexDBGS = 0;
 
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 };
@@ -190,6 +198,9 @@ struct BackendX64 : public Backend
     bool emitStringTable(const BuildParameters& buildParameters);
     bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     bool emitHeader(const BuildParameters& buildParameters);
+
+    bool emitDBGSData(const BuildParameters& buildParameters);
+    bool emitDebugData(const BuildParameters& buildParameters);
 
     bool saveObjFile(const BuildParameters& buildParameters);
 

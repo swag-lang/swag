@@ -8,19 +8,21 @@
 
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
+    int       ct              = buildParameters.compileType;
+    int       precompileIndex = buildParameters.precompileIndex;
+    auto&     pp              = *perThread[ct][precompileIndex];
+    auto&     concat          = pp.concat;
+    const int NUM_SECTIONS_0  = 11;
+    const int NUM_SECTIONS_X  = 6;
 
     // Coff header
     /////////////////////////////////////////////
     concat.init();
     concat.addU16(IMAGE_FILE_MACHINE_AMD64); // .Machine
     if (precompileIndex == 0)
-        concat.addU16(10); // .NumberOfSections
+        concat.addU16(NUM_SECTIONS_0); // .NumberOfSections
     else
-        concat.addU16(5); // .NumberOfSections
+        concat.addU16(NUM_SECTIONS_X); // .NumberOfSections
 
     time_t now;
     time(&now);
@@ -102,6 +104,19 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     concat.addU16(0);                        // .NumberOfLinenumbers
     concat.addU32(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4BYTES);
 
+    // .debug$S section
+    pp.sectionIndexDBGS = secIndex++;
+    concat.addString(".debug$S", 8);                            // .Name
+    concat.addU32(0);                                           // .VirtualSize
+    concat.addU32(0);                                           // .VirtualAddress
+    pp.patchDBGSCount                   = concat.addU32Addr(0); // .SizeOfRawData
+    pp.patchDBGSOffset                  = concat.addU32Addr(0); // .PointerToRawData
+    pp.patchDBGSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
+    concat.addU32(0);                                           // .PointerToLinenumbers
+    pp.patchDBGSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
+    concat.addU16(0);                                           // .NumberOfLinenumbers
+    pp.patchDBGSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_4BYTES);
+
     if (precompileIndex == 0)
     {
         // constant section
@@ -175,6 +190,9 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         concat.addU16(0);                                         // .NumberOfLinenumbers
         pp.patchTSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES);
     }
+
+    SWAG_ASSERT(precompileIndex != 0 || secIndex == NUM_SECTIONS_0 + 1);
+    SWAG_ASSERT(precompileIndex == 0 || secIndex == NUM_SECTIONS_X + 1);
 
     return true;
 }
@@ -316,6 +334,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         emitDirectives(buildParameters);
         emitXData(buildParameters);
         emitPData(buildParameters);
+        emitDebugData(buildParameters);
 
         if (!pp.relocTableTextSection.table.empty())
         {
