@@ -35,7 +35,7 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
             continue;
 
         concat.addU32(SUBSECTION_LINES);
-        concat.addU32(12 + 12); // Size of sub section
+        concat.addU32(12 + 12 + 8); // Size of sub section
         offset += 8;
 
         // Function symbol index
@@ -69,9 +69,13 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
         }
 
         concat.addU32(checkSymIndex * 8); // File index in checksum buffer (in bytes!)
-        concat.addU32(0);                 // NumLines
-        concat.addU32(12);                // Code size block in bytes
+        concat.addU32(1);                 // NumLines
+        concat.addU32(12 + 8);            // Code size block in bytes
         offset += 12;
+
+        concat.addU32(0);                                    // Offset in bytes
+        concat.addU32(f.node->token.startLocation.line + 1); // Line number
+        offset += 8;
     }
 
     // File checksum table
