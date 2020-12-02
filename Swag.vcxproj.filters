@@ -263,9 +263,6 @@
     <ClCompile Include="File.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="Allocator .cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleManager.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
@@ -445,6 +442,9 @@
     </ClCompile>
     <ClCompile Include="ByteCodeOptimizerJob.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
+    </ClCompile>
+    <ClCompile Include="Allocator.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="BackendX64Dbg_.cpp">
       <Filter>Backend\X64</Filter>

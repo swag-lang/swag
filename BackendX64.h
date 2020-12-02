@@ -48,23 +48,50 @@ struct LabelToSolve
     uint8_t* patch;
 };
 
-struct CoffDbgLine
+struct DbgLine
 {
     uint32_t line;
     uint32_t byteOffset;
 };
 
+struct DbgTypeRecordArgList
+{
+    uint32_t         count;
+    vector<uint16_t> args;
+};
+
+struct DbgTypeRecordProcedure
+{
+    uint16_t returnType;
+    uint16_t numArgs;
+    uint16_t argsType;
+};
+
+struct DbgTypeRecordFuncId
+{
+    uint16_t type;
+};
+
+struct DbgTypeRecord
+{
+    uint16_t               index;
+    uint16_t               kind;
+    AstNode*               node;
+    DbgTypeRecordArgList   LF_ArgList;
+    DbgTypeRecordProcedure LF_Procedure;
+    DbgTypeRecordFuncId    LF_FuncId;
+};
+
 struct CoffFunction
 {
-    AstNode*                  node;
-    uint32_t                  symbolIndex;
-    uint32_t                  startAddress;
-    uint32_t                  endAddress;
-    uint32_t                  xdataOffset = 0;
-    uint32_t                  sizeProlog  = 0;
-    VectorNative<uint16_t>    unwind;
-    uint32_t                  dbgTypeId = 0;
-    VectorNative<CoffDbgLine> dbgLines;
+    AstNode*               node;
+    uint32_t               symbolIndex;
+    uint32_t               startAddress;
+    uint32_t               endAddress;
+    uint32_t               xdataOffset = 0;
+    uint32_t               sizeProlog  = 0;
+    VectorNative<uint16_t> unwind;
+    VectorNative<DbgLine>  dbgLines;
 };
 
 struct X64PerThread
@@ -178,8 +205,11 @@ struct X64PerThread
 
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
-    uint16_t* startTypeRecordPtr;
-    uint32_t  startTypeRecordOffset;
+    // Debug infos
+    uint16_t*                dbgStartTypeRecordPtr;
+    uint32_t                 dbgStartTypeRecordOffset;
+    vector<DbgTypeRecord>    dbgTypeRecords;
+    map<TypeInfo*, uint32_t> dbgMapTypes;
 };
 
 struct BackendX64 : public Backend
@@ -219,6 +249,7 @@ struct BackendX64 : public Backend
     void endTypeRecord(X64PerThread& pp, Concat& concat);
     void emitTruncatedString(Concat& concat, const Utf8& str);
 
+    void addTypeRecord(X64PerThread& pp, DbgTypeRecord& tr);
     void setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
     void emitDBGSCompilerFlags(Concat& concat);
     bool emitDBGTData(const BuildParameters& buildParameters);

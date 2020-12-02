@@ -86,15 +86,15 @@ void BackendX64::emitDBGSCompilerFlags(Concat& concat)
 
 void BackendX64::startTypeRecord(X64PerThread& pp, Concat& concat, uint16_t what)
 {
-    pp.startTypeRecordPtr    = concat.addU16Addr(0);
-    pp.startTypeRecordOffset = concat.totalCount();
+    pp.dbgStartTypeRecordPtr    = concat.addU16Addr(0);
+    pp.dbgStartTypeRecordOffset = concat.totalCount();
     concat.addU16(what);
 }
 
 void BackendX64::endTypeRecord(X64PerThread& pp, Concat& concat)
 {
     alignConcat(concat, 4);
-    *pp.startTypeRecordPtr = (uint16_t)(concat.totalCount() - pp.startTypeRecordOffset);
+    *pp.dbgStartTypeRecordPtr = (uint16_t)(concat.totalCount() - pp.dbgStartTypeRecordOffset);
 }
 
 void BackendX64::emitTruncatedString(Concat& concat, const Utf8& str)
@@ -110,40 +110,44 @@ bool BackendX64::emitDBGTData(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    uint16_t typeId = 0x1000;
-    for (auto& f : pp.functions)
+    for (auto& f : pp.dbgTypeRecords)
     {
-        if (!f.node)
-            continue;
+        startTypeRecord(pp, concat, f.kind);
+        switch (f.kind)
+        {
+        case LF_ARGLIST:
+            concat.addU32(f.LF_ArgList.count);
+            for (int i = 0; i < f.LF_ArgList.args.size(); i++)
+                concat.addU32(f.LF_ArgList.args[i]);
+            break;
 
-        startTypeRecord(pp, concat, LF_ARGLIST);
-        concat.addU32(2);     // #params
-        concat.addU32(0x613); // param 1
-        concat.addU32(0x613); // param 2
-        endTypeRecord(pp, concat);
-        typeId++;
+        case LF_PROCEDURE:
+            concat.addU16(f.LF_Procedure.returnType);
+            concat.addU16(0);                       // calling convention
+            concat.addU16(0);                       // padding
+            concat.addU16(f.LF_Procedure.numArgs);  // #params
+            concat.addU16(f.LF_Procedure.argsType); // @argstype
+            concat.addU16(0);                       // align
+            break;
 
-        startTypeRecord(pp, concat, LF_PROCEDURE);
-        concat.addU16(0x613);      // @returntype
-        concat.addU16(0);          // calling convention
-        concat.addU16(0);          // padding
-        concat.addU16(2);          // #params
-        concat.addU16(typeId - 1); // @argstype
-        concat.addU16(0);          // align
-        endTypeRecord(pp, concat);
-        typeId++;
+        case LF_FUNC_ID:
+            concat.addU32(0);                // ParentScope
+            concat.addU16(f.LF_FuncId.type); // @type
+            concat.addU16(0);                // padding
+            emitTruncatedString(concat, f.node->token.text);
+            break;
+        }
 
-        startTypeRecord(pp, concat, LF_FUNC_ID);
-        concat.addU32(0);          // ParentScope
-        concat.addU16(typeId - 1); // @type
-        concat.addU16(0);          // padding
-        emitTruncatedString(concat, f.node->token.text);
         endTypeRecord(pp, concat);
-        f.dbgTypeId = typeId;
-        typeId++;
     }
 
     return true;
+}
+
+void BackendX64::addTypeRecord(X64PerThread& pp, DbgTypeRecord& tr)
+{
+    tr.index = (uint16_t) pp.dbgTypeRecords.size() + 0x1000;
+    pp.dbgTypeRecords.push_back(tr);
 }
 
 bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
@@ -155,6 +159,21 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
 
     emitDBGSCompilerFlags(concat);
 
+    /// TEMP ///////////////
+    DbgTypeRecord tr;
+    tr.kind             = LF_ARGLIST;
+    tr.LF_ArgList.count = 2;
+    tr.LF_ArgList.args.push_back(0x613);
+    tr.LF_ArgList.args.push_back(0x613);
+    addTypeRecord(pp, tr);
+
+    tr.kind                    = LF_PROCEDURE;
+    tr.LF_Procedure.returnType = 0x613;
+    tr.LF_Procedure.numArgs    = 2;
+    tr.LF_Procedure.argsType   = tr.index;
+    addTypeRecord(pp, tr);
+    /// TEMP ///////////////
+
     map<Utf8, uint32_t> mapFileNames;
     vector<uint32_t>    arrFileNames;
     Utf8                stringTable;
@@ -164,6 +183,12 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
     {
         if (!f.node)
             continue;
+
+        // Add a func id type record
+        tr.kind           = LF_FUNC_ID;
+        tr.node           = f.node;
+        tr.LF_FuncId.type = 0x1001;
+        pp.dbgTypeRecords.push_back(tr);
 
         // Symbol
         /////////////////////////////////
@@ -183,7 +208,7 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
             concat.addU32(f.endAddress - f.startAddress); // CodeSize = 0;
             concat.addU32(0);                             // DbgStart = 0;
             concat.addU32(0);                             // DbgEnd = 0;
-            concat.addU32(f.dbgTypeId);                   // @FunctionType; TODO
+            concat.addU32(tr.index);                      // @FunctionType; TODO
 
             // Function symbol index relocation
             reloc.type           = IMAGE_REL_AMD64_SECREL;
@@ -321,14 +346,6 @@ bool BackendX64::emitDebugData(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    // .debug$T
-    alignConcat(concat, 16);
-    *pp.patchDBGTOffset = concat.totalCount();
-    concat.addU32(4); // DEBUG_SECTION_MAGIC
-    if (buildParameters.buildCfg->backendDebugInformations)
-        emitDBGTData(buildParameters);
-    *pp.patchDBGTCount = concat.totalCount() - *pp.patchDBGTOffset;
-
     // .debug$S
     alignConcat(concat, 16);
     *pp.patchDBGSOffset = concat.totalCount();
@@ -337,7 +354,15 @@ bool BackendX64::emitDebugData(const BuildParameters& buildParameters)
         emitDBGSData(buildParameters);
     *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;
 
-    // Reloc table
+    // .debug$T
+    alignConcat(concat, 16);
+    *pp.patchDBGTOffset = concat.totalCount();
+    concat.addU32(4); // DEBUG_SECTION_MAGIC
+    if (buildParameters.buildCfg->backendDebugInformations)
+        emitDBGTData(buildParameters);
+    *pp.patchDBGTCount = concat.totalCount() - *pp.patchDBGTOffset;
+
+    // Reloc table .debug$S
     if (!pp.relocTableDBGSSection.table.empty())
     {
         alignConcat(concat, 16);

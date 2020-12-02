@@ -253,7 +253,7 @@
     <ClInclude Include="Workspace.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Allocator .cpp" />
+    <ClCompile Include="Allocator.cpp" />
     <ClCompile Include="Assert.cpp" />
     <ClCompile Include="Ast.cpp" />
     <ClCompile Include="AstNode.cpp" />
