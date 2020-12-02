@@ -177,6 +177,9 @@ struct X64PerThread
     uint16_t sectionIndexDBGT = 0;
 
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
+
+    uint16_t* startTypeRecordPtr;
+    uint32_t  startTypeRecordOffset;
 };
 
 struct BackendX64 : public Backend
@@ -212,11 +215,9 @@ struct BackendX64 : public Backend
     bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     bool emitHeader(const BuildParameters& buildParameters);
 
-    uint16_t* startTypeRecordPtr;
-    uint32_t  startTypeRecordOffset;
-    void      startTypeRecord(Concat& concat, uint16_t what);
-    void      endTypeRecord(Concat& concat);
-    void      emitTruncatedString(Concat& concat, const Utf8& str);
+    void startTypeRecord(X64PerThread& pp, Concat& concat, uint16_t what);
+    void endTypeRecord(X64PerThread& pp, Concat& concat);
+    void emitTruncatedString(Concat& concat, const Utf8& str);
 
     void setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
     void emitDBGSCompilerFlags(Concat& concat);

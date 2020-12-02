@@ -13,11 +13,16 @@ const uint32_t SUBSECTION_SYMBOL        = 0xF1;
 const uint32_t SUBSECTION_LINES         = 0xF2;
 const uint32_t SUBSECTION_STRING_TABLE  = 0xF3;
 const uint32_t SUBSECTION_FILE_CHECKSUM = 0xF4;
-const uint16_t S_FRAMEPROC              = 0x1012;
-const uint16_t S_COMPILE3               = 0x113c;
-const uint16_t S_LPROC32_ID             = 0x1146;
-const uint16_t S_GPROC32_ID             = 0x1147;
-const uint16_t S_PROC_ID_END            = 0x114F;
+
+const uint16_t S_FRAMEPROC   = 0x1012;
+const uint16_t S_COMPILE3    = 0x113c;
+const uint16_t S_LPROC32_ID  = 0x1146;
+const uint16_t S_GPROC32_ID  = 0x1147;
+const uint16_t S_PROC_ID_END = 0x114F;
+
+const uint16_t LF_ARGLIST   = 0x1201;
+const uint16_t LF_PROCEDURE = 0x1008;
+const uint16_t LF_FUNC_ID   = 0x1601;
 
 void BackendX64::setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
 {
@@ -79,16 +84,17 @@ void BackendX64::emitDBGSCompilerFlags(Concat& concat)
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
-void BackendX64::startTypeRecord(Concat& concat, uint16_t what)
+void BackendX64::startTypeRecord(X64PerThread& pp, Concat& concat, uint16_t what)
 {
-    startTypeRecordPtr    = concat.addU16Addr(0);
-    startTypeRecordOffset = concat.totalCount();
+    pp.startTypeRecordPtr    = concat.addU16Addr(0);
+    pp.startTypeRecordOffset = concat.totalCount();
     concat.addU16(what);
 }
 
-void BackendX64::endTypeRecord(Concat& concat)
+void BackendX64::endTypeRecord(X64PerThread& pp, Concat& concat)
 {
-    *startTypeRecordPtr = (uint16_t)(concat.totalCount() - startTypeRecordOffset);
+    alignConcat(concat, 4);
+    *pp.startTypeRecordPtr = (uint16_t)(concat.totalCount() - pp.startTypeRecordOffset);
 }
 
 void BackendX64::emitTruncatedString(Concat& concat, const Utf8& str)
@@ -110,32 +116,29 @@ bool BackendX64::emitDBGTData(const BuildParameters& buildParameters)
         if (!f.node)
             continue;
 
-        const uint16_t LF_ARGLIST = 0x1201;
-        startTypeRecord(concat, LF_ARGLIST);
+        startTypeRecord(pp, concat, LF_ARGLIST);
         concat.addU32(2);     // #params
         concat.addU32(0x613); // param 1
         concat.addU32(0x613); // param 2
-        endTypeRecord(concat);
+        endTypeRecord(pp, concat);
         typeId++;
 
-        const uint16_t LF_PROCEDURE = 0x1008;
-        startTypeRecord(concat, LF_PROCEDURE);
+        startTypeRecord(pp, concat, LF_PROCEDURE);
         concat.addU16(0x613);      // @returntype
         concat.addU16(0);          // calling convention
         concat.addU16(0);          // padding
         concat.addU16(2);          // #params
         concat.addU16(typeId - 1); // @argstype
         concat.addU16(0);          // align
-        endTypeRecord(concat);
+        endTypeRecord(pp, concat);
         typeId++;
 
-        const uint16_t LF_FUNC_ID = 0x1601;
-        startTypeRecord(concat, LF_FUNC_ID);
+        startTypeRecord(pp, concat, LF_FUNC_ID);
         concat.addU32(0);          // ParentScope
         concat.addU16(typeId - 1); // @type
         concat.addU16(0);          // padding
         emitTruncatedString(concat, f.node->token.text);
-        endTypeRecord(concat);
+        endTypeRecord(pp, concat);
         f.dbgTypeId = typeId;
         typeId++;
     }
@@ -182,17 +185,19 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
             concat.addU32(0);                             // DbgEnd = 0;
             concat.addU32(f.dbgTypeId);                   // @FunctionType; TODO
 
+            // Function symbol index relocation
             reloc.type           = IMAGE_REL_AMD64_SECREL;
             reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
             reloc.symbolIndex    = f.symbolIndex;
             pp.relocTableDBGSSection.table.push_back(reloc);
-            concat.addU32(0); // uint32_t CodeOffset = 0;
+            concat.addU32(0);
 
+            // .text relocation
             reloc.type           = IMAGE_REL_AMD64_SECTION;
             reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
             reloc.symbolIndex    = pp.symCOIndex;
             pp.relocTableDBGSSection.table.push_back(reloc);
-            concat.addU16(0); // Segment
+            concat.addU16(0);
 
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None;
             emitTruncatedString(concat, f.node->token.text);
@@ -231,18 +236,19 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
             auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
             auto patchLTOffset = concat.totalCount();
 
-            // Function symbol index
+            // Function symbol index relocation
             reloc.type           = IMAGE_REL_AMD64_SECREL;
             reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
             reloc.symbolIndex    = f.symbolIndex;
             pp.relocTableDBGSSection.table.push_back(reloc);
             concat.addU32(0);
 
+            // .text relocation
             reloc.type           = IMAGE_REL_AMD64_SECTION;
             reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
             reloc.symbolIndex    = pp.symCOIndex;
             pp.relocTableDBGSSection.table.push_back(reloc);
-            concat.addU16(0); // Segment
+            concat.addU16(0);
 
             concat.addU16(0);                             // Flags
             concat.addU32(f.endAddress - f.startAddress); // Code size
@@ -273,11 +279,10 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
                 checkSymIndex = it->second;
             }
 
-            concat.addU32(checkSymIndex * 8); // File index in checksum buffer (in bytes!)
             auto numDbgLines = (uint32_t) f.dbgLines.size();
+            concat.addU32(checkSymIndex * 8);    // File index in checksum buffer (in bytes!)
             concat.addU32(numDbgLines);          // NumLines
             concat.addU32(12 + numDbgLines * 8); // Code size block in bytes (12 + number of lines * 8)
-
             for (auto& line : f.dbgLines)
             {
                 concat.addU32(line.byteOffset); // Offset in bytes
