@@ -17,6 +17,7 @@ const uint16_t S_FRAMEPROC              = 0x1012;
 const uint16_t S_COMPILE3               = 0x113c;
 const uint16_t S_LPROC32_ID             = 0x1146;
 const uint16_t S_GPROC32_ID             = 0x1147;
+const uint16_t S_PROC_ID_END            = 0x114F;
 
 void BackendX64::setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
 {
@@ -166,6 +167,7 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
             auto patchSCount  = concat.addU32Addr(0);
             auto patchSOffset = concat.totalCount();
 
+            // Proc ID
             auto patchRecordCount  = concat.addU16Addr(0);
             auto patchRecordOffset = concat.totalCount();
             concat.addU16(S_GPROC32_ID);
@@ -178,7 +180,6 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
             concat.addU32(0);                             // DbgEnd = 0;
             concat.addU32(f.dbgTypeId);                   // @FunctionType; TODO
 
-            // Function symbol index
             CoffRelocation reloc;
             reloc.type           = IMAGE_REL_AMD64_SECREL;
             reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
@@ -192,18 +193,11 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
 
             alignConcat(concat, 4);
             *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
-            *patchSCount      = concat.totalCount() - patchSOffset;
-        }
 
-        // Frame Proc
-        /////////////////////////////////
-        {
-            concat.addU32(SUBSECTION_SYMBOL);
-            auto patchSCount  = concat.addU32Addr(0);
-            auto patchSOffset = concat.totalCount();
-
-            auto patchRecordCount  = concat.addU16Addr(0);
-            auto patchRecordOffset = concat.totalCount();
+            // Frame Proc
+            /////////////////////////////////
+            patchRecordCount  = concat.addU16Addr(0);
+            patchRecordOffset = concat.totalCount();
             concat.addU16(S_FRAMEPROC);
 
             concat.addU32(0); // FrameSize
@@ -216,7 +210,12 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
 
             alignConcat(concat, 4);
             *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
-            *patchSCount      = concat.totalCount() - patchSOffset;
+
+            // End
+            /////////////////////////////////
+            concat.addU16(2);
+            concat.addU16(S_PROC_ID_END);
+            *patchSCount = concat.totalCount() - patchSOffset;
         }
 
         // Lines table
