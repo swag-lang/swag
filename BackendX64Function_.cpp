@@ -340,7 +340,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     auto symbolFuncIndex = getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, bc->node, symbolFuncIndex);
     if (debug)
-        setDebugLocation(coffFct, bc, nullptr, 0);
+        dbgSetLocation(coffFct, bc, nullptr, 0);
 
     // For float load
     // (should be reserved only if we have floating point operations in that function)
@@ -389,7 +389,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             continue;
 
         if (debug)
-            setDebugLocation(coffFct, bc, ip, concat.totalCount() - beforeProlog);
+            dbgSetLocation(coffFct, bc, ip, concat.totalCount() - beforeProlog);
 
         if (ip->flags & BCI_JUMP_DEST)
             getOrCreateLabel(pp, i);

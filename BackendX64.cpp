@@ -349,7 +349,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         emitDirectives(buildParameters);
         emitXData(buildParameters);
         emitPData(buildParameters);
-        emitDebugData(buildParameters);
+        dbgEmit(buildParameters);
 
         if (!pp.relocTableTextSection.table.empty())
         {

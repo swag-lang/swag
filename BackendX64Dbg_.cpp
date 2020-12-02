@@ -24,7 +24,75 @@ const uint16_t LF_ARGLIST   = 0x1201;
 const uint16_t LF_PROCEDURE = 0x1008;
 const uint16_t LF_FUNC_ID   = 0x1601;
 
-void BackendX64::setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
+enum SimpleTypeKind : uint32_t
+{
+    None          = 0x0000, // uncharacterized type (no type)
+    Void          = 0x0003, // void
+    NotTranslated = 0x0007, // type not translated by cvpack
+    HResult       = 0x0008, // OLE/COM HRESULT
+
+    SignedCharacter   = 0x0010, // 8 bit signed
+    UnsignedCharacter = 0x0020, // 8 bit unsigned
+    NarrowCharacter   = 0x0070, // really a char
+    WideCharacter     = 0x0071, // wide char
+    Character16       = 0x007a, // char16_t
+    Character32       = 0x007b, // char32_t
+
+    SByte       = 0x0068, // 8 bit signed int
+    Byte        = 0x0069, // 8 bit unsigned int
+    Int16Short  = 0x0011, // 16 bit signed
+    UInt16Short = 0x0021, // 16 bit unsigned
+    Int16       = 0x0072, // 16 bit signed int
+    UInt16      = 0x0073, // 16 bit unsigned int
+    Int32Long   = 0x0012, // 32 bit signed
+    UInt32Long  = 0x0022, // 32 bit unsigned
+    Int32       = 0x0074, // 32 bit signed int
+    UInt32      = 0x0075, // 32 bit unsigned int
+    Int64Quad   = 0x0013, // 64 bit signed
+    UInt64Quad  = 0x0023, // 64 bit unsigned
+    Int64       = 0x0076, // 64 bit signed int
+    UInt64      = 0x0077, // 64 bit unsigned int
+    Int128Oct   = 0x0014, // 128 bit signed int
+    UInt128Oct  = 0x0024, // 128 bit unsigned int
+    Int128      = 0x0078, // 128 bit signed int
+    UInt128     = 0x0079, // 128 bit unsigned int
+
+    Float16                 = 0x0046, // 16 bit real
+    Float32                 = 0x0040, // 32 bit real
+    Float32PartialPrecision = 0x0045, // 32 bit PP real
+    Float48                 = 0x0044, // 48 bit real
+    Float64                 = 0x0041, // 64 bit real
+    Float80                 = 0x0042, // 80 bit real
+    Float128                = 0x0043, // 128 bit real
+
+    Complex16                 = 0x0056, // 16 bit complex
+    Complex32                 = 0x0050, // 32 bit complex
+    Complex32PartialPrecision = 0x0055, // 32 bit PP complex
+    Complex48                 = 0x0054, // 48 bit complex
+    Complex64                 = 0x0051, // 64 bit complex
+    Complex80                 = 0x0052, // 80 bit complex
+    Complex128                = 0x0053, // 128 bit complex
+
+    Boolean8   = 0x0030, // 8 bit boolean
+    Boolean16  = 0x0031, // 16 bit boolean
+    Boolean32  = 0x0032, // 32 bit boolean
+    Boolean64  = 0x0033, // 64 bit boolean
+    Boolean128 = 0x0034, // 128 bit boolean
+};
+
+enum class SimpleTypeMode : uint32_t
+{
+    Direct         = 0, // Not a pointer
+    NearPointer    = 1, // Near pointer
+    FarPointer     = 2, // Far pointer
+    HugePointer    = 3, // Huge pointer
+    NearPointer32  = 4, // 32 bit near pointer
+    FarPointer32   = 5, // 32 bit far pointer
+    NearPointer64  = 6, // 64 bit near pointer
+    NearPointer128 = 7  // 128 bit near pointer
+};
+
+void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
 {
     if (!coffFct->node)
         return;
@@ -50,7 +118,7 @@ void BackendX64::setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeI
     }
 }
 
-void BackendX64::emitDBGSCompilerFlags(Concat& concat)
+void BackendX64::dbgEmitCompilerFlagsDebugS(Concat& concat)
 {
     concat.addU32(SUBSECTION_SYMBOL);
     auto patchSCount  = concat.addU32Addr(0); // Size of sub section
@@ -84,26 +152,31 @@ void BackendX64::emitDBGSCompilerFlags(Concat& concat)
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
-void BackendX64::startTypeRecord(X64PerThread& pp, Concat& concat, uint16_t what)
+void BackendX64::dbgStartTypeRecord(X64PerThread& pp, Concat& concat, uint16_t what)
 {
     pp.dbgStartTypeRecordPtr    = concat.addU16Addr(0);
     pp.dbgStartTypeRecordOffset = concat.totalCount();
     concat.addU16(what);
 }
 
-void BackendX64::endTypeRecord(X64PerThread& pp, Concat& concat)
+void BackendX64::dbgEndTypeRecord(X64PerThread& pp, Concat& concat)
 {
     alignConcat(concat, 4);
     *pp.dbgStartTypeRecordPtr = (uint16_t)(concat.totalCount() - pp.dbgStartTypeRecordOffset);
 }
 
-void BackendX64::emitTruncatedString(Concat& concat, const Utf8& str)
+void BackendX64::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
 {
     SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeviewdebug (should truncate)
     concat.addString(str.c_str(), str.length() + 1);
 }
 
-bool BackendX64::emitDBGTData(const BuildParameters& buildParameters)
+DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo)
+{
+    return 0;
+}
+
+bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -112,7 +185,7 @@ bool BackendX64::emitDBGTData(const BuildParameters& buildParameters)
 
     for (auto& f : pp.dbgTypeRecords)
     {
-        startTypeRecord(pp, concat, f.kind);
+        dbgStartTypeRecord(pp, concat, f.kind);
         switch (f.kind)
         {
         case LF_ARGLIST:
@@ -134,44 +207,44 @@ bool BackendX64::emitDBGTData(const BuildParameters& buildParameters)
             concat.addU32(0);                // ParentScope
             concat.addU16(f.LF_FuncId.type); // @type
             concat.addU16(0);                // padding
-            emitTruncatedString(concat, f.node->token.text);
+            dbgEmitTruncatedString(concat, f.node->token.text);
             break;
         }
 
-        endTypeRecord(pp, concat);
+        dbgEndTypeRecord(pp, concat);
     }
 
     return true;
 }
 
-void BackendX64::addTypeRecord(X64PerThread& pp, DbgTypeRecord& tr)
+void BackendX64::dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr)
 {
     tr.index = (uint16_t) pp.dbgTypeRecords.size() + 0x1000;
     pp.dbgTypeRecords.push_back(tr);
 }
 
-bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
+bool BackendX64::dbgEmitDataDebugS(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    emitDBGSCompilerFlags(concat);
+    dbgEmitCompilerFlagsDebugS(concat);
 
     /// TEMP ///////////////
     DbgTypeRecord tr;
     tr.kind             = LF_ARGLIST;
     tr.LF_ArgList.count = 2;
+    tr.LF_ArgList.args.push_back(0x603);
     tr.LF_ArgList.args.push_back(0x613);
-    tr.LF_ArgList.args.push_back(0x613);
-    addTypeRecord(pp, tr);
+    dbgAddTypeRecord(pp, tr);
 
     tr.kind                    = LF_PROCEDURE;
     tr.LF_Procedure.returnType = 0x613;
     tr.LF_Procedure.numArgs    = 2;
     tr.LF_Procedure.argsType   = tr.index;
-    addTypeRecord(pp, tr);
+    dbgAddTypeRecord(pp, tr);
     /// TEMP ///////////////
 
     map<Utf8, uint32_t> mapFileNames;
@@ -225,7 +298,7 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
             concat.addU16(0);
 
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None;
-            emitTruncatedString(concat, f.node->token.text);
+            dbgEmitTruncatedString(concat, f.node->token.text);
 
             alignConcat(concat, 4);
             *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
@@ -339,7 +412,7 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendX64::emitDebugData(const BuildParameters& buildParameters)
+bool BackendX64::dbgEmit(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -351,7 +424,7 @@ bool BackendX64::emitDebugData(const BuildParameters& buildParameters)
     *pp.patchDBGSOffset = concat.totalCount();
     concat.addU32(4); // DEBUG_SECTION_MAGIC
     if (buildParameters.buildCfg->backendDebugInformations)
-        emitDBGSData(buildParameters);
+        dbgEmitDataDebugS(buildParameters);
     *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;
 
     // .debug$T
@@ -359,7 +432,7 @@ bool BackendX64::emitDebugData(const BuildParameters& buildParameters)
     *pp.patchDBGTOffset = concat.totalCount();
     concat.addU32(4); // DEBUG_SECTION_MAGIC
     if (buildParameters.buildCfg->backendDebugInformations)
-        emitDBGTData(buildParameters);
+        dbgEmitDataDebugT(buildParameters);
     *pp.patchDBGTCount = concat.totalCount() - *pp.patchDBGTOffset;
 
     // Reloc table .debug$S

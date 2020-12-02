@@ -54,22 +54,23 @@ struct DbgLine
     uint32_t byteOffset;
 };
 
+using DbgTypeIndex = uint16_t;
 struct DbgTypeRecordArgList
 {
-    uint32_t         count;
-    vector<uint16_t> args;
+    uint32_t             count;
+    vector<DbgTypeIndex> args;
 };
 
 struct DbgTypeRecordProcedure
 {
-    uint16_t returnType;
-    uint16_t numArgs;
-    uint16_t argsType;
+    DbgTypeIndex returnType;
+    uint16_t     numArgs;
+    DbgTypeIndex argsType;
 };
 
 struct DbgTypeRecordFuncId
 {
-    uint16_t type;
+    DbgTypeIndex type;
 };
 
 struct DbgTypeRecord
@@ -245,16 +246,16 @@ struct BackendX64 : public Backend
     bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     bool emitHeader(const BuildParameters& buildParameters);
 
-    void startTypeRecord(X64PerThread& pp, Concat& concat, uint16_t what);
-    void endTypeRecord(X64PerThread& pp, Concat& concat);
-    void emitTruncatedString(Concat& concat, const Utf8& str);
-
-    void addTypeRecord(X64PerThread& pp, DbgTypeRecord& tr);
-    void setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
-    void emitDBGSCompilerFlags(Concat& concat);
-    bool emitDBGTData(const BuildParameters& buildParameters);
-    bool emitDBGSData(const BuildParameters& buildParameters);
-    bool emitDebugData(const BuildParameters& buildParameters);
+    void         dbgStartTypeRecord(X64PerThread& pp, Concat& concat, uint16_t what);
+    void         dbgEndTypeRecord(X64PerThread& pp, Concat& concat);
+    void         dbgEmitTruncatedString(Concat& concat, const Utf8& str);
+    DbgTypeIndex dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo);
+    void         dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr);
+    void         dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
+    void         dbgEmitCompilerFlagsDebugS(Concat& concat);
+    bool         dbgEmitDataDebugT(const BuildParameters& buildParameters);
+    bool         dbgEmitDataDebugS(const BuildParameters& buildParameters);
+    bool         dbgEmit(const BuildParameters& buildParameters);
 
     bool saveObjFile(const BuildParameters& buildParameters);
 
