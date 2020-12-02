@@ -78,6 +78,70 @@ void BackendX64::emitDBGSCompilerFlags(Concat& concat)
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
+void BackendX64::startTypeRecord(Concat& concat, uint16_t what)
+{
+    startTypeRecordPtr    = concat.addU16Addr(0);
+    startTypeRecordOffset = concat.totalCount();
+    concat.addU16(what);
+}
+
+void BackendX64::endTypeRecord(Concat& concat)
+{
+    *startTypeRecordPtr = (uint16_t)(concat.totalCount() - startTypeRecordOffset);
+}
+
+void BackendX64::emitTruncatedString(Concat& concat, const Utf8& str)
+{
+    SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeviewdebug (should truncate)
+    concat.addString(str.c_str(), str.length() + 1);
+}
+
+bool BackendX64::emitDBGTData(const BuildParameters& buildParameters)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
+    uint16_t typeId = 0x1000;
+    for (auto& f : pp.functions)
+    {
+        if (!f.node)
+            continue;
+
+        const uint16_t LF_ARGLIST = 0x1201;
+        startTypeRecord(concat, LF_ARGLIST);
+        concat.addU32(2);     // #params
+        concat.addU32(0x613); // param 1
+        concat.addU32(0x613); // param 2
+        endTypeRecord(concat);
+        typeId++;
+
+        const uint16_t LF_PROCEDURE = 0x1008;
+        startTypeRecord(concat, LF_PROCEDURE);
+        concat.addU16(0x613);      // @returntype
+        concat.addU16(0);          // calling convention
+        concat.addU16(0);          // padding
+        concat.addU16(2);          // #params
+        concat.addU16(typeId - 1); // @argstype
+        concat.addU16(0);          // align
+        endTypeRecord(concat);
+        typeId++;
+
+        const uint16_t LF_FUNC_ID = 0x1601;
+        startTypeRecord(concat, LF_FUNC_ID);
+        concat.addU32(0);          // ParentScope
+        concat.addU16(typeId - 1); // @type
+        concat.addU16(0);          // padding
+        emitTruncatedString(concat, f.node->token.text);
+        endTypeRecord(concat);
+        f.dbgTypeId = typeId;
+        typeId++;
+    }
+
+    return true;
+}
+
 bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
@@ -110,9 +174,9 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
             concat.addU32(0);                             // End = 0;
             concat.addU32(0);                             // Next = 0;
             concat.addU32(f.endAddress - f.startAddress); // CodeSize = 0;
-            concat.addU32(f.sizeProlog);                  // DbgStart = 0;
+            concat.addU32(0);                             // DbgStart = 0;
             concat.addU32(0);                             // DbgEnd = 0;
-            concat.addU32(0);                             // @FunctionType; TODO
+            concat.addU32(f.dbgTypeId);                   // @FunctionType; TODO
 
             // Function symbol index
             CoffRelocation reloc;
@@ -124,11 +188,11 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
 
             concat.addU16(0); // Segment
             concat.addU8(0);  // ProcSymFlags Flags = ProcSymFlags::None;
-            concat.addString(f.node->token.text.c_str(), f.node->token.text.length() + 1);
+            emitTruncatedString(concat, f.node->token.text);
 
             alignConcat(concat, 4);
             *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
-            *patchSCount = concat.totalCount() - patchSOffset;
+            *patchSCount      = concat.totalCount() - patchSOffset;
         }
 
         // Frame Proc
@@ -152,7 +216,7 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
 
             alignConcat(concat, 4);
             *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
-            *patchSCount = concat.totalCount() - patchSOffset;
+            *patchSCount      = concat.totalCount() - patchSOffset;
         }
 
         // Lines table
@@ -243,6 +307,14 @@ bool BackendX64::emitDebugData(const BuildParameters& buildParameters)
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
+    // .debug$T
+    alignConcat(concat, 16);
+    *pp.patchDBGTOffset = concat.totalCount();
+    concat.addU32(4); // DEBUG_SECTION_MAGIC
+    if (buildParameters.buildCfg->backendDebugInformations)
+        emitDBGTData(buildParameters);
+    *pp.patchDBGTCount = concat.totalCount() - *pp.patchDBGTOffset;
+
     // .debug$S
     alignConcat(concat, 16);
     *pp.patchDBGSOffset = concat.totalCount();
@@ -250,12 +322,6 @@ bool BackendX64::emitDebugData(const BuildParameters& buildParameters)
     if (buildParameters.buildCfg->backendDebugInformations)
         emitDBGSData(buildParameters);
     *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;
-
-    // .debug$T
-    alignConcat(concat, 16);
-    *pp.patchDBGTOffset = concat.totalCount();
-    concat.addU32(4); // DEBUG_SECTION_MAGIC
-    *pp.patchDBGTCount = concat.totalCount() - *pp.patchDBGTOffset;
 
     // Reloc table
     if (!pp.relocTableDBGSSection.table.empty())

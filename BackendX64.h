@@ -63,6 +63,7 @@ struct CoffFunction
     uint32_t                  xdataOffset = 0;
     uint32_t                  sizeProlog  = 0;
     VectorNative<uint16_t>    unwind;
+    uint32_t                  dbgTypeId = 0;
     VectorNative<CoffDbgLine> dbgLines;
 };
 
@@ -210,8 +211,15 @@ struct BackendX64 : public Backend
     bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     bool emitHeader(const BuildParameters& buildParameters);
 
+    uint16_t* startTypeRecordPtr;
+    uint32_t  startTypeRecordOffset;
+    void      startTypeRecord(Concat& concat, uint16_t what);
+    void      endTypeRecord(Concat& concat);
+    void      emitTruncatedString(Concat& concat, const Utf8& str);
+
     void setDebugLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
     void emitDBGSCompilerFlags(Concat& concat);
+    bool emitDBGTData(const BuildParameters& buildParameters);
     bool emitDBGSData(const BuildParameters& buildParameters);
     bool emitDebugData(const BuildParameters& buildParameters);
 
