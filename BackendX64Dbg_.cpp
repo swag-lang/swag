@@ -155,6 +155,8 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
     map<Utf8, uint32_t> mapFileNames;
     vector<uint32_t>    arrFileNames;
     Utf8                stringTable;
+    CoffRelocation      reloc;
+
     for (auto& f : pp.functions)
     {
         if (!f.node)
@@ -180,15 +182,19 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
             concat.addU32(0);                             // DbgEnd = 0;
             concat.addU32(f.dbgTypeId);                   // @FunctionType; TODO
 
-            CoffRelocation reloc;
             reloc.type           = IMAGE_REL_AMD64_SECREL;
             reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
             reloc.symbolIndex    = f.symbolIndex;
             pp.relocTableDBGSSection.table.push_back(reloc);
             concat.addU32(0); // uint32_t CodeOffset = 0;
 
+            reloc.type           = IMAGE_REL_AMD64_SECTION;
+            reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+            reloc.symbolIndex    = pp.symCOIndex;
+            pp.relocTableDBGSSection.table.push_back(reloc);
             concat.addU16(0); // Segment
-            concat.addU8(0);  // ProcSymFlags Flags = ProcSymFlags::None;
+
+            concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None;
             emitTruncatedString(concat, f.node->token.text);
 
             alignConcat(concat, 4);
@@ -226,14 +232,18 @@ bool BackendX64::emitDBGSData(const BuildParameters& buildParameters)
             auto patchLTOffset = concat.totalCount();
 
             // Function symbol index
-            CoffRelocation reloc;
             reloc.type           = IMAGE_REL_AMD64_SECREL;
             reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
             reloc.symbolIndex    = f.symbolIndex;
             pp.relocTableDBGSSection.table.push_back(reloc);
             concat.addU32(0);
 
-            concat.addU16(0);                             // RelocSegment
+            reloc.type           = IMAGE_REL_AMD64_SECTION;
+            reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+            reloc.symbolIndex    = pp.symCOIndex;
+            pp.relocTableDBGSSection.table.push_back(reloc);
+            concat.addU16(0); // Segment
+
             concat.addU16(0);                             // Flags
             concat.addU32(f.endAddress - f.startAddress); // Code size
 

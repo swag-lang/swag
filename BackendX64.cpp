@@ -222,6 +222,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symCSIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
         pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
         pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Custom, 0, pp.sectionIndexTS)->index;
+        pp.symCOIndex = getOrAddSymbol(pp, format("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
         pp.symXDIndex = getOrAddSymbol(pp, format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         // This should match the structure SwagContext declared in Runtime.h
@@ -258,6 +259,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symCSIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern)->index;
         pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern)->index;
         pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Extern)->index;
+        pp.symCOIndex = getOrAddSymbol(pp, format("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
         pp.symXDIndex = getOrAddSymbol(pp, format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         pp.symPI_args_addr      = getOrAddSymbol(pp, "swag_process_infos_args_addr", CoffSymbolKind::Extern)->index;

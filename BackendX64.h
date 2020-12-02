@@ -140,6 +140,7 @@ struct X64PerThread
     uint32_t* patchDBGTCount  = nullptr;
     uint32_t* patchDBGTOffset = nullptr;
 
+    uint32_t symCOIndex = 0;
     uint32_t symBSIndex = 0;
     uint32_t symMSIndex = 0;
     uint32_t symCSIndex = 0;
