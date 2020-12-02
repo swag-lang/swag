@@ -24,7 +24,7 @@ const uint16_t LF_ARGLIST   = 0x1201;
 const uint16_t LF_PROCEDURE = 0x1008;
 const uint16_t LF_FUNC_ID   = 0x1601;
 
-enum SimpleTypeKind : uint32_t
+enum class SimpleTypeKind : DbgTypeIndex
 {
     None          = 0x0000, // uncharacterized type (no type)
     Void          = 0x0003, // void
@@ -80,7 +80,7 @@ enum SimpleTypeKind : uint32_t
     Boolean128 = 0x0034, // 128 bit boolean
 };
 
-enum class SimpleTypeMode : uint32_t
+enum class SimpleTypeMode : DbgTypeIndex
 {
     Direct         = 0, // Not a pointer
     NearPointer    = 1, // Near pointer
@@ -171,11 +171,6 @@ void BackendX64::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
     concat.addString(str.c_str(), str.length() + 1);
 }
 
-DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo)
-{
-    return 0;
-}
-
 bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
@@ -223,30 +218,93 @@ void BackendX64::dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr)
     pp.dbgTypeRecords.push_back(tr);
 }
 
-bool BackendX64::dbgEmitDataDebugS(const BuildParameters& buildParameters)
+DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo)
+{
+    // Simple type
+    if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::Void:
+            return (DbgTypeIndex) SimpleTypeKind::Void;
+        case NativeTypeKind::Bool:
+            return (DbgTypeIndex) SimpleTypeKind::Boolean8;
+        case NativeTypeKind::S8:
+            return (DbgTypeIndex) SimpleTypeKind::SByte;
+        case NativeTypeKind::S16:
+            return (DbgTypeIndex) SimpleTypeKind::Int16;
+        case NativeTypeKind::S32:
+            return (DbgTypeIndex) SimpleTypeKind::Int32;
+        case NativeTypeKind::S64:
+            return (DbgTypeIndex) SimpleTypeKind::Int64;
+        case NativeTypeKind::U8:
+            return (DbgTypeIndex) SimpleTypeKind::Byte;
+        case NativeTypeKind::U16:
+            return (DbgTypeIndex) SimpleTypeKind::UInt16;
+        case NativeTypeKind::U32:
+            return (DbgTypeIndex) SimpleTypeKind::UInt32;
+        case NativeTypeKind::U64:
+            return (DbgTypeIndex) SimpleTypeKind::UInt64;
+        case NativeTypeKind::F32:
+            return (DbgTypeIndex) SimpleTypeKind::Float32;
+        case NativeTypeKind::F64:
+            return (DbgTypeIndex) SimpleTypeKind::Float64;
+        case NativeTypeKind::Char:
+            return (DbgTypeIndex) SimpleTypeKind::Character32;
+        }
+    }
+
+    // In the cache of pointers
+    auto it = pp.dbgMapTypes.find(typeInfo);
+    if (it != pp.dbgMapTypes.end())
+        return it->second;
+
+    DbgTypeRecord tr;
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::FuncAttr:
+    {
+        TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+        tr.kind                    = LF_PROCEDURE;
+        tr.LF_Procedure.returnType = dbgGetOrCreateType(pp, typeFunc->returnType);
+        tr.LF_Procedure.numArgs    = (uint16_t) typeFunc->parameters.size();
+
+        // Get the arg list type. We construct a string with all parameters to be able to
+        // store something in the cache
+        Utf8 args;
+        for (auto& p : typeFunc->parameters)
+            args += p->typeInfo->name;
+        auto itn = pp.dbgMapTypesNames.find(args);
+        if (itn == pp.dbgMapTypesNames.end())
+        {
+            DbgTypeRecord tr1;
+            tr1.kind             = LF_ARGLIST;
+            tr1.LF_ArgList.count = tr.LF_Procedure.numArgs;
+            for (auto& p : typeFunc->parameters)
+                tr1.LF_ArgList.args.push_back(dbgGetOrCreateType(pp, p->typeInfo));
+            dbgAddTypeRecord(pp, tr1);
+            tr.LF_Procedure.argsType  = tr1.index;
+            pp.dbgMapTypesNames[args] = tr1.index;
+        }
+        else
+            tr.LF_Procedure.argsType = itn->second;
+
+        dbgAddTypeRecord(pp, tr);
+        return tr.index;
+    }
+    }
+
+    return (DbgTypeIndex) SimpleTypeKind::Void;
+}
+
+bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
-    dbgEmitCompilerFlagsDebugS(concat);
-
-    /// TEMP ///////////////
-    DbgTypeRecord tr;
-    tr.kind             = LF_ARGLIST;
-    tr.LF_ArgList.count = 2;
-    tr.LF_ArgList.args.push_back(0x603);
-    tr.LF_ArgList.args.push_back(0x613);
-    dbgAddTypeRecord(pp, tr);
-
-    tr.kind                    = LF_PROCEDURE;
-    tr.LF_Procedure.returnType = 0x613;
-    tr.LF_Procedure.numArgs    = 2;
-    tr.LF_Procedure.argsType   = tr.index;
-    dbgAddTypeRecord(pp, tr);
-    /// TEMP ///////////////
-
+    DbgTypeRecord       tr;
     map<Utf8, uint32_t> mapFileNames;
     vector<uint32_t>    arrFileNames;
     Utf8                stringTable;
@@ -258,9 +316,10 @@ bool BackendX64::dbgEmitDataDebugS(const BuildParameters& buildParameters)
             continue;
 
         // Add a func id type record
+        /////////////////////////////////
         tr.kind           = LF_FUNC_ID;
         tr.node           = f.node;
-        tr.LF_FuncId.type = 0x1001;
+        tr.LF_FuncId.type = dbgGetOrCreateType(pp, f.node->typeInfo);
         pp.dbgTypeRecords.push_back(tr);
 
         // Symbol
@@ -424,7 +483,10 @@ bool BackendX64::dbgEmit(const BuildParameters& buildParameters)
     *pp.patchDBGSOffset = concat.totalCount();
     concat.addU32(4); // DEBUG_SECTION_MAGIC
     if (buildParameters.buildCfg->backendDebugInformations)
-        dbgEmitDataDebugS(buildParameters);
+    {
+        dbgEmitCompilerFlagsDebugS(concat);
+        dbgEmitFctDebugS(buildParameters);
+    }
     *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;
 
     // .debug$T

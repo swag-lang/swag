@@ -207,10 +207,11 @@ struct X64PerThread
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
     // Debug infos
-    uint16_t*                dbgStartTypeRecordPtr;
-    uint32_t                 dbgStartTypeRecordOffset;
-    vector<DbgTypeRecord>    dbgTypeRecords;
-    map<TypeInfo*, uint32_t> dbgMapTypes;
+    uint16_t*                    dbgStartTypeRecordPtr;
+    uint32_t                     dbgStartTypeRecordOffset;
+    vector<DbgTypeRecord>        dbgTypeRecords;
+    map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
+    map<Utf8, DbgTypeIndex>      dbgMapTypesNames;
 };
 
 struct BackendX64 : public Backend
@@ -254,7 +255,7 @@ struct BackendX64 : public Backend
     void         dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
     void         dbgEmitCompilerFlagsDebugS(Concat& concat);
     bool         dbgEmitDataDebugT(const BuildParameters& buildParameters);
-    bool         dbgEmitDataDebugS(const BuildParameters& buildParameters);
+    bool         dbgEmitFctDebugS(const BuildParameters& buildParameters);
     bool         dbgEmit(const BuildParameters& buildParameters);
 
     bool saveObjFile(const BuildParameters& buildParameters);
