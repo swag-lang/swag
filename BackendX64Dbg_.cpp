@@ -25,6 +25,7 @@ const uint16_t S_LOCAL                     = 0x113E;
 const uint16_t S_DEFRANGE_REGISTER         = 0x1141;
 const uint16_t S_DEFRANGE_FRAMEPOINTER_REL = 0x1142;
 const uint16_t S_DEFRANGE_REGISTER_REL     = 0x1145;
+const uint16_t S_LDATA32                   = 0x110C;
 
 const uint16_t LF_ARGLIST   = 0x1201;
 const uint16_t LF_PROCEDURE = 0x1008;
@@ -190,7 +191,7 @@ void BackendX64::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
     concat.addString(str.c_str(), str.length() + 1);
 }
 
-void BackendX64::dbgEmitSecRel(X64PerThread& pp, Concat& concat, int symbolIndex)
+void BackendX64::dbgEmitSecRel(X64PerThread& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex)
 {
     CoffRelocation reloc;
 
@@ -204,7 +205,7 @@ void BackendX64::dbgEmitSecRel(X64PerThread& pp, Concat& concat, int symbolIndex
     // .text relocation
     reloc.type           = IMAGE_REL_AMD64_SECTION;
     reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-    reloc.symbolIndex    = pp.symCOIndex;
+    reloc.symbolIndex    = segIndex;
     pp.relocTableDBGSSection.table.push_back(reloc);
     concat.addU16(0);
 }
@@ -433,6 +434,40 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     return (DbgTypeIndex) SimpleTypeKind::Void;
 }
 
+void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
+{
+    concat.addU32(SUBSECTION_SYMBOL);
+    auto patchSCount  = concat.addU32Addr(0);
+    auto patchSOffset = concat.totalCount();
+
+    for (auto& p : gVars)
+    {
+        dbgStartRecord(pp, concat, S_LDATA32);
+        concat.addU32(dbgGetOrCreateType(pp, p->typeInfo));
+
+        CoffRelocation reloc;
+
+        // Function symbol index relocation
+        reloc.type = IMAGE_REL_AMD64_SECREL;
+        reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+        reloc.symbolIndex = segSymIndex;
+        pp.relocTableDBGSSection.table.push_back(reloc);
+        concat.addU32(p->resolvedSymbolOverload->storageOffset);
+
+        // .text relocation
+        reloc.type = IMAGE_REL_AMD64_SECTION;
+        reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+        reloc.symbolIndex = segSymIndex;
+        pp.relocTableDBGSSection.table.push_back(reloc);
+        concat.addU16(0);
+
+        dbgEmitTruncatedString(concat, p->token.text);
+        dbgEndRecord(pp, concat);
+    }
+
+    *patchSCount = concat.totalCount() - patchSOffset;
+}
+
 bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
@@ -474,7 +509,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             concat.addU32(0);                             // DbgStart = 0;
             concat.addU32(0);                             // DbgEnd = 0;
             concat.addU32(tr.index);                      // @FunctionType; TODO
-            dbgEmitSecRel(pp, concat, f.symbolIndex);
+            dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None;
             dbgEmitTruncatedString(concat, f.node->token.text);
             dbgEndRecord(pp, concat);
@@ -510,7 +545,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                 concat.addU16(R_RDI); // Register
                 concat.addU16(0);     // Flags
                 concat.addU32(overload->storageOffset + f.offsetStack);
-                dbgEmitSecRel(pp, concat, f.symbolIndex);
+                dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
                 concat.addU16((uint16_t)(f.endAddress - f.startAddress)); // Range
                 dbgEndRecord(pp, concat);
             }
@@ -531,7 +566,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             auto patchLTOffset = concat.totalCount();
 
             // Function symbol index relocation
-            dbgEmitSecRel(pp, concat, f.symbolIndex);
+            dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
             concat.addU16(0);                             // Flags
             concat.addU32(f.endAddress - f.startAddress); // Code size
 
@@ -613,6 +648,8 @@ bool BackendX64::dbgEmit(const BuildParameters& buildParameters)
     if (buildParameters.buildCfg->backendDebugInformations)
     {
         dbgEmitCompilerFlagsDebugS(concat);
+        dbgEmitGlobalDebugS(pp, concat, module->globalVarsMutable, pp.symMSIndex);
+        dbgEmitGlobalDebugS(pp, concat, module->globalVarsBss, pp.symBSIndex);
         dbgEmitFctDebugS(buildParameters);
     }
     *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;

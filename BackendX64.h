@@ -277,13 +277,14 @@ struct BackendX64 : public Backend
 
     void         dbgStartRecord(X64PerThread& pp, Concat& concat, uint16_t what);
     void         dbgEndRecord(X64PerThread& pp, Concat& concat, bool align = true);
-    void         dbgEmitSecRel(X64PerThread& pp, Concat& concat, int symbolIndex);
+    void         dbgEmitSecRel(X64PerThread& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex);
     void         dbgEmitTruncatedString(Concat& concat, const Utf8& str);
     DbgTypeIndex dbgGetSimpleType(TypeInfo* typeInfo);
     DbgTypeIndex dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo);
     void         dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr);
     void         dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
     void         dbgEmitCompilerFlagsDebugS(Concat& concat);
+    void         dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
     bool         dbgEmitDataDebugT(const BuildParameters& buildParameters);
     bool         dbgEmitFctDebugS(const BuildParameters& buildParameters);
     bool         dbgEmit(const BuildParameters& buildParameters);
