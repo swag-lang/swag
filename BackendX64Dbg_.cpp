@@ -179,6 +179,25 @@ void BackendX64::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
     concat.addString(str.c_str(), str.length() + 1);
 }
 
+void BackendX64::dbgEmitSecRel(X64PerThread& pp, Concat& concat, int symbolIndex)
+{
+    CoffRelocation reloc;
+
+    // Function symbol index relocation
+    reloc.type           = IMAGE_REL_AMD64_SECREL;
+    reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+    reloc.symbolIndex    = symbolIndex;
+    pp.relocTableDBGSSection.table.push_back(reloc);
+    concat.addU32(0);
+
+    // .text relocation
+    reloc.type           = IMAGE_REL_AMD64_SECTION;
+    reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+    reloc.symbolIndex    = pp.symCOIndex;
+    pp.relocTableDBGSSection.table.push_back(reloc);
+    concat.addU16(0);
+}
+
 bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
@@ -316,7 +335,6 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
     map<Utf8, uint32_t> mapFileNames;
     vector<uint32_t>    arrFileNames;
     Utf8                stringTable;
-    CoffRelocation      reloc;
 
     for (auto& f : pp.functions)
     {
@@ -347,21 +365,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             concat.addU32(0);                             // DbgStart = 0;
             concat.addU32(0);                             // DbgEnd = 0;
             concat.addU32(tr.index);                      // @FunctionType; TODO
-
-            // Function symbol index relocation
-            reloc.type           = IMAGE_REL_AMD64_SECREL;
-            reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-            reloc.symbolIndex    = f.symbolIndex;
-            pp.relocTableDBGSSection.table.push_back(reloc);
-            concat.addU32(0);
-
-            // .text relocation
-            reloc.type           = IMAGE_REL_AMD64_SECTION;
-            reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-            reloc.symbolIndex    = pp.symCOIndex;
-            pp.relocTableDBGSSection.table.push_back(reloc);
-            concat.addU16(0);
-
+            dbgEmitSecRel(pp, concat, f.symbolIndex);
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None;
             dbgEmitTruncatedString(concat, f.node->token.text);
             dbgEndRecord(pp, concat);
@@ -397,21 +401,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                 concat.addU16(R_RDI); // Register
                 concat.addU16(0);     // Flags
                 concat.addU32(overload->storageOffset + f.offsetStack);
-
-                // Function symbol index relocation
-                reloc.type           = IMAGE_REL_AMD64_SECREL;
-                reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-                reloc.symbolIndex    = f.symbolIndex;
-                pp.relocTableDBGSSection.table.push_back(reloc);
-                concat.addU32(0);
-
-                // .text relocation
-                reloc.type           = IMAGE_REL_AMD64_SECTION;
-                reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-                reloc.symbolIndex    = pp.symCOIndex;
-                pp.relocTableDBGSSection.table.push_back(reloc);
-                concat.addU16(0);
-
+                dbgEmitSecRel(pp, concat, f.symbolIndex);
                 concat.addU16(f.endAddress - f.startAddress); // Range
                 dbgEndRecord(pp, concat);
 
@@ -475,19 +465,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             auto patchLTOffset = concat.totalCount();
 
             // Function symbol index relocation
-            reloc.type           = IMAGE_REL_AMD64_SECREL;
-            reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-            reloc.symbolIndex    = f.symbolIndex;
-            pp.relocTableDBGSSection.table.push_back(reloc);
-            concat.addU32(0);
-
-            // .text relocation
-            reloc.type           = IMAGE_REL_AMD64_SECTION;
-            reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-            reloc.symbolIndex    = pp.symCOIndex;
-            pp.relocTableDBGSSection.table.push_back(reloc);
-            concat.addU16(0);
-
+            dbgEmitSecRel(pp, concat, f.symbolIndex);
             concat.addU16(0);                             // Flags
             concat.addU32(f.endAddress - f.startAddress); // Code size
 
