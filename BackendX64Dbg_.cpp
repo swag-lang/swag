@@ -331,7 +331,18 @@ DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
 
 DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo)
 {
-    // Simple type pointer
+    // Simple type
+    auto simpleType = dbgGetSimpleType(typeInfo);
+    if (simpleType != SimpleTypeKind::None)
+        return simpleType;
+
+    // In the cache of pointers
+    auto it = pp.dbgMapTypes.find(typeInfo);
+    if (it != pp.dbgMapTypes.end())
+        return it->second;
+
+    // Pointer
+    /////////////////////////////////
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typePtr    = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
@@ -349,6 +360,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     }
 
     // Static array
+    /////////////////////////////////
     if (typeInfo->kind == TypeInfoKind::Array)
     {
         auto          typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
@@ -361,16 +373,6 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         pp.dbgMapTypes[typeInfo] = tr.index;
         return tr.index;
     }
-
-    // Simple type
-    auto simpleType = dbgGetSimpleType(typeInfo);
-    if (simpleType != SimpleTypeKind::None)
-        return simpleType;
-
-    // In the cache of pointers
-    auto it = pp.dbgMapTypes.find(typeInfo);
-    if (it != pp.dbgMapTypes.end())
-        return it->second;
 
     // Native string
     /////////////////////////////////
