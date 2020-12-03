@@ -404,49 +404,6 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                 dbgEmitSecRel(pp, concat, f.symbolIndex);
                 concat.addU16(f.endAddress - f.startAddress); // Range
                 dbgEndRecord(pp, concat);
-
-                //////////
-                /*dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER);
-                concat.addU16(R_RDI); // Register
-                concat.addU16(0);     // MayHaveNoName
-
-                // Function symbol index relocation
-                reloc.type = IMAGE_REL_AMD64_SECREL;
-                reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-                reloc.symbolIndex = f.symbolIndex;
-                pp.relocTableDBGSSection.table.push_back(reloc);
-                concat.addU32(0);
-
-                // .text relocation
-                reloc.type = IMAGE_REL_AMD64_SECTION;
-                reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-                reloc.symbolIndex = pp.symCOIndex;
-                pp.relocTableDBGSSection.table.push_back(reloc);
-                concat.addU16(0);
-
-                concat.addU16(f.endAddress - f.startAddress); // Range
-                dbgEndRecord(pp, concat);*/
-
-                //////////
-                /*dbgStartRecord(pp, concat, S_DEFRANGE_FRAMEPOINTER_REL);
-                concat.addU32(overload->storageOffset);
-
-                // Function symbol index relocation
-                reloc.type           = IMAGE_REL_AMD64_SECREL;
-                reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-                reloc.symbolIndex    = f.symbolIndex;
-                pp.relocTableDBGSSection.table.push_back(reloc);
-                concat.addU32(0);
-
-                // .text relocation
-                reloc.type           = IMAGE_REL_AMD64_SECTION;
-                reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-                reloc.symbolIndex    = pp.symCOIndex;
-                pp.relocTableDBGSSection.table.push_back(reloc);
-                concat.addU16(0);
-
-                concat.addU16(f.endAddress - f.startAddress); // Range
-                dbgEndRecord(pp, concat);*/
             }
 
             // End
