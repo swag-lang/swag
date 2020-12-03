@@ -244,6 +244,14 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
             dbgEmitTruncatedString(concat, f.node->token.text);
             break;
 
+        case LF_ARRAY:
+            concat.addU32(f.LF_Array.elementType);
+            concat.addU32(f.LF_Array.indexType);
+            concat.addU16(0x8004); // LF_ULONG
+            concat.addU32(f.LF_Array.sizeOf);
+            dbgEmitTruncatedString(concat, "");
+            break;
+
         case LF_FIELDLIST:
             for (auto& p : f.LF_FieldList.fields)
             {
@@ -262,7 +270,8 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
             concat.addU32(f.LF_Structure.fieldList);
             concat.addU32(0); // derivedFrom
             concat.addU32(0); // vTableShape
-            concat.addU16(f.LF_Structure.sizeOf);
+            concat.addU16(0x8004); // LF_ULONG
+            concat.addU32(f.LF_Structure.sizeOf);
             dbgEmitTruncatedString(concat, f.name);
             break;
         }
@@ -326,6 +335,20 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         auto simpleType = dbgGetSimpleType(typePtr->pointedType);
         if (simpleType != SimpleTypeKind::None)
             return (DbgTypeIndex)(simpleType | (NearPointer64 << 8));
+    }
+
+    // Static array
+    if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto          typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        DbgTypeRecord tr;
+        tr.kind                 = LF_ARRAY;
+        tr.LF_Array.elementType = dbgGetOrCreateType(pp, typeArr->pointedType);
+        tr.LF_Array.indexType   = SimpleTypeKind::UInt32;
+        tr.LF_Array.sizeOf      = typeArr->sizeOf;
+        dbgAddTypeRecord(pp, tr);
+        pp.dbgMapTypes[typeInfo] = tr.index;
+        return tr.index;
     }
 
     // Simple type
@@ -452,16 +475,16 @@ void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNat
         CoffRelocation reloc;
 
         // Function symbol index relocation
-        reloc.type = IMAGE_REL_AMD64_SECREL;
+        reloc.type           = IMAGE_REL_AMD64_SECREL;
         reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-        reloc.symbolIndex = segSymIndex;
+        reloc.symbolIndex    = segSymIndex;
         pp.relocTableDBGSSection.table.push_back(reloc);
         concat.addU32(p->resolvedSymbolOverload->storageOffset);
 
         // .text relocation
-        reloc.type = IMAGE_REL_AMD64_SECTION;
+        reloc.type           = IMAGE_REL_AMD64_SECTION;
         reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-        reloc.symbolIndex = segSymIndex;
+        reloc.symbolIndex    = segSymIndex;
         pp.relocTableDBGSSection.table.push_back(reloc);
         concat.addU16(0);
 

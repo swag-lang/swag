@@ -93,6 +93,13 @@ struct DbgTypeRecordStructure
     uint16_t     sizeOf;
 };
 
+struct DbgTypeRecordArray
+{
+    DbgTypeIndex elementType;
+    DbgTypeIndex indexType;
+    uint16_t     sizeOf;
+};
+
 struct DbgTypeRecord
 {
     uint16_t               index = 0;
@@ -104,6 +111,7 @@ struct DbgTypeRecord
     DbgTypeRecordFuncId    LF_FuncId;
     DbgTypeRecordFieldList LF_FieldList;
     DbgTypeRecordStructure LF_Structure;
+    DbgTypeRecordArray     LF_Array;
 };
 
 struct CoffFunction
