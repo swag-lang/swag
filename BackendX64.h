@@ -57,28 +57,28 @@ struct DbgLine
 using DbgTypeIndex = uint32_t;
 struct DbgTypeRecordArgList
 {
-    uint32_t             count;
     vector<DbgTypeIndex> args;
+    uint32_t             count = 0;
 };
 
 struct DbgTypeRecordProcedure
 {
-    DbgTypeIndex returnType;
-    uint16_t     numArgs;
-    DbgTypeIndex argsType;
+    DbgTypeIndex returnType = 0;
+    DbgTypeIndex argsType   = 0;
+    uint16_t     numArgs    = 0;
 };
 
 struct DbgTypeRecordFuncId
 {
-    DbgTypeIndex type;
+    DbgTypeIndex type = 0;
 };
 
 struct DbgTypeField
 {
-    uint16_t     accessSpecifier;
-    DbgTypeIndex type;
-    uint32_t     offset;
-    const char*  name;
+    const char*  name            = nullptr;
+    DbgTypeIndex type            = 0;
+    uint32_t     offset          = 0;
+    uint16_t     accessSpecifier = 0;
 };
 
 struct DbgTypeRecordFieldList
@@ -88,34 +88,43 @@ struct DbgTypeRecordFieldList
 
 struct DbgTypeRecordStructure
 {
-    uint16_t     memberCount;
-    DbgTypeIndex fieldList;
-    uint32_t     sizeOf;
+    DbgTypeIndex fieldList   = 0;
+    uint32_t     sizeOf      = 0;
+    uint16_t     memberCount = 0;
+    bool         forward     = false;
 };
 
 struct DbgTypeRecordArray
 {
-    DbgTypeIndex elementType;
-    DbgTypeIndex indexType;
-    uint32_t     sizeOf;
+    DbgTypeIndex elementType = 0;
+    DbgTypeIndex indexType   = 0;
+    uint32_t     sizeOf      = 0;
+};
+
+struct DbgTypeRecordPointer
+{
+    DbgTypeIndex pointeeType;
 };
 
 struct DbgTypeRecord
 {
-    DbgTypeIndex           index = 0;
-    uint16_t               kind  = 0;
-    AstNode*               node  = nullptr;
-    const char*            name  = nullptr;
+    AstNode*               node = nullptr;
+    const char*            name = nullptr;
     DbgTypeRecordArgList   LF_ArgList;
     DbgTypeRecordProcedure LF_Procedure;
     DbgTypeRecordFuncId    LF_FuncId;
     DbgTypeRecordFieldList LF_FieldList;
     DbgTypeRecordStructure LF_Structure;
     DbgTypeRecordArray     LF_Array;
+    DbgTypeRecordPointer   LF_Pointer;
+    DbgTypeIndex           index = 0;
+    uint16_t               kind  = 0;
 };
 
 struct CoffFunction
 {
+    VectorNative<uint16_t> unwind;
+    VectorNative<DbgLine>  dbgLines;
     AstNode*               node         = nullptr;
     uint32_t               symbolIndex  = 0;
     uint32_t               startAddress = 0;
@@ -124,9 +133,7 @@ struct CoffFunction
     uint32_t               sizeProlog   = 0;
     uint32_t               offsetStack  = 0;
     uint32_t               frameSize    = 0;
-    VectorNative<uint16_t> unwind;
-    VectorNative<DbgLine>  dbgLines;
-    bool                   wrapper = false;
+    bool                   wrapper      = false;
 };
 
 struct X64PerThread

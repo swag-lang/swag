@@ -27,13 +27,14 @@ const uint16_t S_DEFRANGE_FRAMEPOINTER_REL = 0x1142;
 const uint16_t S_DEFRANGE_REGISTER_REL     = 0x1145;
 const uint16_t S_LDATA32                   = 0x110C;
 
-const uint16_t LF_ARGLIST   = 0x1201;
+const uint16_t LF_POINTER   = 0x1002;
 const uint16_t LF_PROCEDURE = 0x1008;
-const uint16_t LF_FUNC_ID   = 0x1601;
-const uint16_t LF_STRUCTURE = 0x1505;
+const uint16_t LF_ARGLIST   = 0x1201;
 const uint16_t LF_FIELDLIST = 0x1203;
 const uint16_t LF_ARRAY     = 0x1503;
+const uint16_t LF_STRUCTURE = 0x1505;
 const uint16_t LF_MEMBER    = 0x150d;
+const uint16_t LF_FUNC_ID   = 0x1601;
 
 const uint16_t R_RDX = 331;
 const uint16_t R_RDI = 333;
@@ -261,9 +262,14 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
             }
             break;
 
+        case LF_POINTER:
+            concat.addU32(f.LF_Pointer.pointeeType);
+            concat.addU32(0x1000C); // attributes (Near64)
+            break;
+
         case LF_STRUCTURE:
             concat.addU16(f.LF_Structure.memberCount);
-            concat.addU16(0); // properties
+            concat.addU16(f.LF_Structure.forward ? 0x80 : 0); // properties
             concat.addU32(f.LF_Structure.fieldList);
             concat.addU32(0);      // derivedFrom
             concat.addU32(0);      // vTableShape
@@ -332,6 +338,14 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         auto simpleType = dbgGetSimpleType(typePtr->pointedType);
         if (simpleType != SimpleTypeKind::None)
             return (DbgTypeIndex)(simpleType | (NearPointer64 << 8));
+
+        // Pointer to something complex
+        DbgTypeRecord tr;
+        tr.kind                   = LF_POINTER;
+        tr.LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typePtr->pointedType);
+        dbgAddTypeRecord(pp, tr);
+        pp.dbgMapTypes[typeInfo] = tr.index;
+        return tr.index;
     }
 
     // Static array
@@ -393,6 +407,14 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     {
         TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
+        // Create a forward reference, in case a field points to the struct itself
+        DbgTypeRecord tr2;
+        tr2.kind                 = LF_STRUCTURE;
+        tr2.LF_Structure.forward = true;
+        tr2.name                 = typeStruct->name;
+        dbgAddTypeRecord(pp, tr2);
+        pp.dbgMapTypes[typeInfo] = tr2.index;
+
         DbgTypeRecord tr0;
         tr0.kind = LF_FIELDLIST;
         for (auto& p : typeStruct->fields)
@@ -412,6 +434,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         tr1.LF_Structure.fieldList   = tr0.index;
         tr1.name                     = typeStruct->name;
         dbgAddTypeRecord(pp, tr1);
+
         pp.dbgMapTypes[typeInfo] = tr1.index;
         return tr1.index;
     }
