@@ -371,7 +371,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // x64 calling convention, space for at least 4 parameters when calling a function
     // (should ideally be reserved only if we have a call)
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack + sizeParamsStack);
-    sizeProlog = concat.totalCount() - beforeProlog;
+    coffFct->frameSize = sizeStack + sizeParamsStack;
+    sizeProlog         = concat.totalCount() - beforeProlog;
     computeUnwindStack(sizeStack + sizeParamsStack, sizeProlog, unwind);
 
     // At the end because array must be sorted in 'offset in prolog' descending order

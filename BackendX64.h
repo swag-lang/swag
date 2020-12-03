@@ -91,6 +91,7 @@ struct CoffFunction
     uint32_t               endAddress;
     uint32_t               xdataOffset = 0;
     uint32_t               sizeProlog  = 0;
+    uint32_t               frameSize   = 0;
     VectorNative<uint16_t> unwind;
     VectorNative<DbgLine>  dbgLines;
 };

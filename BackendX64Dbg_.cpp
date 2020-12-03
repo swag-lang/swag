@@ -330,10 +330,8 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             auto patchSOffset = concat.totalCount();
 
             // Proc ID
-            auto patchRecordCount  = concat.addU16Addr(0);
-            auto patchRecordOffset = concat.totalCount();
-            concat.addU16(S_GPROC32_ID);
-
+            /////////////////////////////////
+            dbgStartTypeRecord(pp, concat, S_GPROC32_ID);
             concat.addU32(0);                             // Parent = 0;
             concat.addU32(0);                             // End = 0;
             concat.addU32(0);                             // Next = 0;
@@ -358,31 +356,25 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None;
             dbgEmitTruncatedString(concat, f.node->token.text);
-
-            alignConcat(concat, 4);
-            *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
+            dbgEndTypeRecord(pp, concat);
 
             // Frame Proc
             /////////////////////////////////
-            patchRecordCount  = concat.addU16Addr(0);
-            patchRecordOffset = concat.totalCount();
-            concat.addU16(S_FRAMEPROC);
-
-            concat.addU32(0); // FrameSize
-            concat.addU32(0); // Padding
-            concat.addU32(0); // Offset of padding
-            concat.addU32(0); // Bytes of callee saved registers
-            concat.addU32(0); // Exception handler offset
-            concat.addU32(0); // Exception handler section
-            concat.addU32(0); // Flags (defines frame register)
-
-            alignConcat(concat, 4);
-            *patchRecordCount = (uint16_t)(concat.totalCount() - patchRecordOffset);
+            dbgStartTypeRecord(pp, concat, S_FRAMEPROC);
+            concat.addU32(f.frameSize); // FrameSize
+            concat.addU32(0);           // Padding
+            concat.addU32(0);           // Offset of padding
+            concat.addU32(0);           // Bytes of callee saved registers
+            concat.addU32(0);           // Exception handler offset
+            concat.addU32(0);           // Exception handler section
+            concat.addU32(0);           // Flags (defines frame register)
+            dbgEndTypeRecord(pp, concat);
 
             // End
             /////////////////////////////////
-            concat.addU16(2);
-            concat.addU16(S_PROC_ID_END);
+            dbgStartTypeRecord(pp, concat, S_PROC_ID_END);
+            dbgEndTypeRecord(pp, concat);
+
             *patchSCount = concat.totalCount() - patchSOffset;
         }
 
