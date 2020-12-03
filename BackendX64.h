@@ -102,7 +102,7 @@ struct DbgTypeRecordArray
 
 struct DbgTypeRecord
 {
-    uint16_t               index = 0;
+    DbgTypeIndex           index = 0;
     uint16_t               kind  = 0;
     AstNode*               node  = nullptr;
     const char*            name  = nullptr;

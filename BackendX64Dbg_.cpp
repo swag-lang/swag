@@ -281,7 +281,7 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
 
 void BackendX64::dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr)
 {
-    tr.index = (uint16_t) pp.dbgTypeRecords.size() + 0x1000;
+    tr.index = (DbgTypeIndex) pp.dbgTypeRecords.size() + 0x1000;
     pp.dbgTypeRecords.emplace_back(tr);
 }
 
