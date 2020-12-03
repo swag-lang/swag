@@ -118,6 +118,7 @@ struct CoffFunction
     uint32_t               frameSize    = 0;
     VectorNative<uint16_t> unwind;
     VectorNative<DbgLine>  dbgLines;
+    bool                   wrapper = false;
 };
 
 struct X64PerThread

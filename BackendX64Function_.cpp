@@ -121,6 +121,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
+    bool  debug           = buildParameters.buildCfg->backendDebugInformations;
 
     alignConcat(concat, 16);
     uint32_t startAddress = concat.totalCount();
@@ -130,7 +131,11 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     // Symbol
     uint32_t symbolFuncIndex = getOrAddSymbol(pp, node->fullnameForeign, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     pp.directives += format("/EXPORT:%s ", node->fullnameForeign.c_str());
-    auto coffFct = registerFunction(pp, node, symbolFuncIndex);
+    auto coffFct     = registerFunction(pp, node, symbolFuncIndex);
+    coffFct->wrapper = true;
+
+    if (debug)
+        coffFct->dbgLines.push_back({(uint32_t) node->exportForeignLine, 0});
 
     VectorNative<TypeInfo*> pushRAParams;
 
