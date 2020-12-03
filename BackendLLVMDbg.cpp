@@ -570,9 +570,20 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
     offset.push_back(builder.getInt32(0));
     offset.push_back(builder.getInt32(0));
 
-    auto& all = var == pp.bssSeg ? module->globalVarsBss : module->globalVarsMutable;
-    for (auto node : all)
+    VectorNative<AstNode*>* all;
+    if (var == pp.bssSeg)
+        all = &module->globalVarsBss;
+    else if (var == pp.mutableSeg)
+        all = &module->globalVarsMutable;
+    else
+        all = &module->globalVarsConstant;
+
+    for (auto node : *all)
     {
+        // Compile time constant
+        if (node->flags & AST_VALUE_COMPUTED)
+            continue;
+
         auto resolved = node->resolvedSymbolOverload;
         auto typeInfo = node->typeInfo;
         auto file     = compileUnit->getFile();

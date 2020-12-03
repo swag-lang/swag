@@ -59,6 +59,7 @@ var nFieldWidth = 12
 var nFieldHeight = 18
 var pField: *u8
 var tetromino: [7] string
+const titi = "titi"
 
 func Rotate(px, py, r: s32)->s32
 {

@@ -24,6 +24,13 @@ struct AstFuncDecl;
 struct Token;
 struct Module;
 
+enum class GlobalVarKind
+{
+    Mutable,
+    Bss,
+    Constant,
+};
+
 struct ModuleDependency
 {
     Utf8     name;
@@ -149,7 +156,8 @@ struct Module
     shared_mutex           mutexGlobalVars;
     VectorNative<AstNode*> globalVarsBss;
     VectorNative<AstNode*> globalVarsMutable;
-    void                   addGlobalVar(AstNode* node, bool bss);
+    VectorNative<AstNode*> globalVarsConstant;
+    void                   addGlobalVar(AstNode* node, GlobalVarKind kind);
 
     atomic<int> optimNeedRestart;
     int         optimPass = 0;

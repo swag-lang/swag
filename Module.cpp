@@ -522,13 +522,21 @@ void Module::printUserMessage(const BuildParameters& bp)
     }
 }
 
-void Module::addGlobalVar(AstNode* node, bool bss)
+void Module::addGlobalVar(AstNode* node, GlobalVarKind kind)
 {
     unique_lock lk(mutexGlobalVars);
-    if (bss)
-        globalVarsBss.push_back(node);
-    else
+    switch (kind)
+    {
+    case GlobalVarKind::Mutable:
         globalVarsMutable.push_back(node);
+        break;
+    case GlobalVarKind::Bss:
+        globalVarsBss.push_back(node);
+        break;
+    case GlobalVarKind::Constant:
+        globalVarsConstant.push_back(node);
+        break;
+    }
 }
 
 bool Module::mustEmitSafety(AstNode* node)

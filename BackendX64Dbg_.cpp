@@ -442,6 +442,10 @@ void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNat
 
     for (auto& p : gVars)
     {
+        // Compile time constant
+        if (p->flags & AST_VALUE_COMPUTED)
+            continue;
+
         dbgStartRecord(pp, concat, S_LDATA32);
         concat.addU32(dbgGetOrCreateType(pp, p->typeInfo));
 
@@ -650,6 +654,7 @@ bool BackendX64::dbgEmit(const BuildParameters& buildParameters)
         dbgEmitCompilerFlagsDebugS(concat);
         dbgEmitGlobalDebugS(pp, concat, module->globalVarsMutable, pp.symMSIndex);
         dbgEmitGlobalDebugS(pp, concat, module->globalVarsBss, pp.symBSIndex);
+        dbgEmitGlobalDebugS(pp, concat, module->globalVarsConstant, pp.symCSIndex);
         dbgEmitFctDebugS(buildParameters);
     }
     *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;

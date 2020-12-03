@@ -617,6 +617,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             }
 
             node->inheritComputedValue(node->assignment);
+            module->addGlobalVar(node, GlobalVarKind::Constant);
         }
     }
     else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
@@ -658,7 +659,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
         }
 
-        module->addGlobalVar(node, symbolFlags & OVERLOAD_VAR_BSS);
+        module->addGlobalVar(node, symbolFlags & OVERLOAD_VAR_BSS ? GlobalVarKind::Bss : GlobalVarKind::Mutable);
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {

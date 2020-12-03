@@ -76,6 +76,8 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
         else
         {
             pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__cs");
+            if (pp.dbg)
+                pp.dbg->createGlobalVariablesForSegment(buildParameters, arrayType, pp.constantSeg);
         }
     }
 
