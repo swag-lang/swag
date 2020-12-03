@@ -14,15 +14,23 @@ const uint32_t SUBSECTION_LINES         = 0xF2;
 const uint32_t SUBSECTION_STRING_TABLE  = 0xF3;
 const uint32_t SUBSECTION_FILE_CHECKSUM = 0xF4;
 
-const uint16_t S_FRAMEPROC   = 0x1012;
-const uint16_t S_COMPILE3    = 0x113c;
-const uint16_t S_LPROC32_ID  = 0x1146;
-const uint16_t S_GPROC32_ID  = 0x1147;
-const uint16_t S_PROC_ID_END = 0x114F;
+const uint16_t S_FRAMEPROC                 = 0x1012;
+const uint16_t S_COMPILE3                  = 0x113c;
+const uint16_t S_LPROC32_ID                = 0x1146;
+const uint16_t S_GPROC32_ID                = 0x1147;
+const uint16_t S_PROC_ID_END               = 0x114F;
+const uint16_t S_LOCAL                     = 0x113E;
+const uint16_t S_DEFRANGE_REGISTER         = 0x1141;
+const uint16_t S_DEFRANGE_FRAMEPOINTER_REL = 0x1142;
+const uint16_t S_DEFRANGE_REGISTER_REL     = 0x1145;
 
 const uint16_t LF_ARGLIST   = 0x1201;
 const uint16_t LF_PROCEDURE = 0x1008;
 const uint16_t LF_FUNC_ID   = 0x1601;
+
+const uint16_t R_RDX = 331;
+const uint16_t R_RDI = 333;
+const uint16_t R_RSP = 335;
 
 enum class SimpleTypeKind : DbgTypeIndex
 {
@@ -369,6 +377,87 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             concat.addU32(0);           // Exception handler section
             concat.addU32(0);           // Flags (defines frame register)
             dbgEndRecord(pp, concat);
+
+            // Local variables
+            /////////////////////////////////
+            for (auto localVar : f.node->bc->localVars)
+            {
+                SymbolOverload* overload = localVar->resolvedSymbolOverload;
+                auto            typeInfo = overload->typeInfo;
+
+                //////////
+                dbgStartRecord(pp, concat, S_LOCAL);
+                concat.addU32(dbgGetOrCreateType(pp, typeInfo)); // Type
+                concat.addU16(0);                                // Flags
+                dbgEmitTruncatedString(concat, localVar->token.text);
+                dbgEndRecord(pp, concat);
+
+                //////////
+                dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
+                concat.addU16(R_RDI); // Register
+                concat.addU16(0);     // Flags
+                concat.addU32(overload->storageOffset + f.offsetStack);
+
+                // Function symbol index relocation
+                reloc.type           = IMAGE_REL_AMD64_SECREL;
+                reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+                reloc.symbolIndex    = f.symbolIndex;
+                pp.relocTableDBGSSection.table.push_back(reloc);
+                concat.addU32(0);
+
+                // .text relocation
+                reloc.type           = IMAGE_REL_AMD64_SECTION;
+                reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+                reloc.symbolIndex    = pp.symCOIndex;
+                pp.relocTableDBGSSection.table.push_back(reloc);
+                concat.addU16(0);
+
+                concat.addU16(f.endAddress - f.startAddress); // Range
+                dbgEndRecord(pp, concat);
+
+                //////////
+                /*dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER);
+                concat.addU16(R_RDI); // Register
+                concat.addU16(0);     // MayHaveNoName
+
+                // Function symbol index relocation
+                reloc.type = IMAGE_REL_AMD64_SECREL;
+                reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+                reloc.symbolIndex = f.symbolIndex;
+                pp.relocTableDBGSSection.table.push_back(reloc);
+                concat.addU32(0);
+
+                // .text relocation
+                reloc.type = IMAGE_REL_AMD64_SECTION;
+                reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+                reloc.symbolIndex = pp.symCOIndex;
+                pp.relocTableDBGSSection.table.push_back(reloc);
+                concat.addU16(0);
+
+                concat.addU16(f.endAddress - f.startAddress); // Range
+                dbgEndRecord(pp, concat);*/
+
+                //////////
+                /*dbgStartRecord(pp, concat, S_DEFRANGE_FRAMEPOINTER_REL);
+                concat.addU32(overload->storageOffset);
+
+                // Function symbol index relocation
+                reloc.type           = IMAGE_REL_AMD64_SECREL;
+                reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+                reloc.symbolIndex    = f.symbolIndex;
+                pp.relocTableDBGSSection.table.push_back(reloc);
+                concat.addU32(0);
+
+                // .text relocation
+                reloc.type           = IMAGE_REL_AMD64_SECTION;
+                reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+                reloc.symbolIndex    = pp.symCOIndex;
+                pp.relocTableDBGSSection.table.push_back(reloc);
+                concat.addU16(0);
+
+                concat.addU16(f.endAddress - f.startAddress); // Range
+                dbgEndRecord(pp, concat);*/
+            }
 
             // End
             /////////////////////////////////
