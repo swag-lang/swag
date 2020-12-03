@@ -345,8 +345,8 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     /////////////////////////////////
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
-        auto typePtr    = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        auto simpleType = dbgGetSimpleType(typePtr->pointedType);
+        auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        simpleType   = dbgGetSimpleType(typePtr->pointedType);
         if (simpleType != SimpleTypeKind::None)
             return (DbgTypeIndex)(simpleType | (NearPointer64 << 8));
 
@@ -417,6 +417,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         dbgAddTypeRecord(pp, tr2);
         pp.dbgMapTypes[typeInfo] = tr2.index;
 
+        // List of fields, after the forward ref
         DbgTypeRecord tr0;
         tr0.kind = LF_FIELDLIST;
         for (auto& p : typeStruct->fields)
@@ -429,6 +430,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         }
         dbgAddTypeRecord(pp, tr0);
 
+        // Struct itself, pointing to the field list
         DbgTypeRecord tr1;
         tr1.kind                     = LF_STRUCTURE;
         tr1.LF_Structure.memberCount = (uint16_t) typeStruct->fields.size();
