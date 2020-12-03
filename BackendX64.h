@@ -253,6 +253,7 @@ struct BackendX64 : public Backend
     void         dbgEndRecord(X64PerThread& pp, Concat& concat);
     void         dbgEmitSecRel(X64PerThread& pp, Concat& concat, int symbolIndex);
     void         dbgEmitTruncatedString(Concat& concat, const Utf8& str);
+    DbgTypeIndex dbgGetSimpleType(TypeInfo* typeInfo);
     DbgTypeIndex dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo);
     void         dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr);
     void         dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);

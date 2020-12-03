@@ -9,6 +9,8 @@
 #include "TypeManager.h"
 #include "Version.h"
 
+const uint32_t DEBUG_SECTION_MAGIC = 4;
+
 const uint32_t SUBSECTION_SYMBOL        = 0xF1;
 const uint32_t SUBSECTION_LINES         = 0xF2;
 const uint32_t SUBSECTION_STRING_TABLE  = 0xF3;
@@ -32,7 +34,7 @@ const uint16_t R_RDX = 331;
 const uint16_t R_RDI = 333;
 const uint16_t R_RSP = 335;
 
-enum class SimpleTypeKind : DbgTypeIndex
+enum SimpleTypeKind : DbgTypeIndex
 {
     None          = 0x0000, // uncharacterized type (no type)
     Void          = 0x0003, // void
@@ -88,7 +90,7 @@ enum class SimpleTypeKind : DbgTypeIndex
     Boolean128 = 0x0034, // 128 bit boolean
 };
 
-enum class SimpleTypeMode : DbgTypeIndex
+enum SimpleTypeMode : DbgTypeIndex
 {
     Direct         = 0, // Not a pointer
     NearPointer    = 1, // Near pointer
@@ -245,41 +247,59 @@ void BackendX64::dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr)
     pp.dbgTypeRecords.push_back(tr);
 }
 
-DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo)
+DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
 {
-    // Simple type
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Void:
-            return (DbgTypeIndex) SimpleTypeKind::Void;
+            return SimpleTypeKind::Void;
         case NativeTypeKind::Bool:
-            return (DbgTypeIndex) SimpleTypeKind::Boolean8;
+            return SimpleTypeKind::Boolean8;
         case NativeTypeKind::S8:
-            return (DbgTypeIndex) SimpleTypeKind::SByte;
+            return SimpleTypeKind::SByte;
         case NativeTypeKind::S16:
-            return (DbgTypeIndex) SimpleTypeKind::Int16;
+            return SimpleTypeKind::Int16;
         case NativeTypeKind::S32:
-            return (DbgTypeIndex) SimpleTypeKind::Int32;
+            return SimpleTypeKind::Int32;
         case NativeTypeKind::S64:
-            return (DbgTypeIndex) SimpleTypeKind::Int64;
+            return SimpleTypeKind::Int64;
         case NativeTypeKind::U8:
-            return (DbgTypeIndex) SimpleTypeKind::Byte;
+            return SimpleTypeKind::Byte;
         case NativeTypeKind::U16:
-            return (DbgTypeIndex) SimpleTypeKind::UInt16;
+            return SimpleTypeKind::UInt16;
         case NativeTypeKind::U32:
-            return (DbgTypeIndex) SimpleTypeKind::UInt32;
+            return SimpleTypeKind::UInt32;
         case NativeTypeKind::U64:
-            return (DbgTypeIndex) SimpleTypeKind::UInt64;
+            return SimpleTypeKind::UInt64;
         case NativeTypeKind::F32:
-            return (DbgTypeIndex) SimpleTypeKind::Float32;
+            return SimpleTypeKind::Float32;
         case NativeTypeKind::F64:
-            return (DbgTypeIndex) SimpleTypeKind::Float64;
+            return SimpleTypeKind::Float64;
         case NativeTypeKind::Char:
-            return (DbgTypeIndex) SimpleTypeKind::Character32;
+            return SimpleTypeKind::Character32;
         }
     }
+
+    return SimpleTypeKind::None;
+}
+
+DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo)
+{
+    // Simple type pointer
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        auto typePtr    = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        auto simpleType = dbgGetSimpleType(typePtr->pointedType);
+        if (simpleType != SimpleTypeKind::None)
+            return (DbgTypeIndex)(simpleType | (NearPointer64 << 8));
+    }
+
+    // Simple type
+    auto simpleType = dbgGetSimpleType(typeInfo);
+    if (simpleType != SimpleTypeKind::None)
+        return simpleType;
 
     // In the cache of pointers
     auto it = pp.dbgMapTypes.find(typeInfo);
@@ -402,7 +422,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                 concat.addU16(0);     // Flags
                 concat.addU32(overload->storageOffset + f.offsetStack);
                 dbgEmitSecRel(pp, concat, f.symbolIndex);
-                concat.addU16(f.endAddress - f.startAddress); // Range
+                concat.addU16((uint16_t)(f.endAddress - f.startAddress)); // Range
                 dbgEndRecord(pp, concat);
             }
 
@@ -497,7 +517,7 @@ bool BackendX64::dbgEmit(const BuildParameters& buildParameters)
     // .debug$S
     alignConcat(concat, 16);
     *pp.patchDBGSOffset = concat.totalCount();
-    concat.addU32(4); // DEBUG_SECTION_MAGIC
+    concat.addU32(DEBUG_SECTION_MAGIC);
     if (buildParameters.buildCfg->backendDebugInformations)
     {
         dbgEmitCompilerFlagsDebugS(concat);
@@ -508,7 +528,7 @@ bool BackendX64::dbgEmit(const BuildParameters& buildParameters)
     // .debug$T
     alignConcat(concat, 16);
     *pp.patchDBGTOffset = concat.totalCount();
-    concat.addU32(4); // DEBUG_SECTION_MAGIC
+    concat.addU32(DEBUG_SECTION_MAGIC);
     if (buildParameters.buildCfg->backendDebugInformations)
         dbgEmitDataDebugT(buildParameters);
     *pp.patchDBGTCount = concat.totalCount() - *pp.patchDBGTOffset;
