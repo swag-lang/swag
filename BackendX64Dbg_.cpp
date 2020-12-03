@@ -175,9 +175,10 @@ void BackendX64::dbgStartRecord(X64PerThread& pp, Concat& concat, uint16_t what)
     pp.dbgRecordIdx++;
 }
 
-void BackendX64::dbgEndRecord(X64PerThread& pp, Concat& concat)
+void BackendX64::dbgEndRecord(X64PerThread& pp, Concat& concat, bool align)
 {
-    alignConcat(concat, 4);
+    if (align)
+        alignConcat(concat, 4);
     SWAG_ASSERT(pp.dbgRecordIdx);
     pp.dbgRecordIdx--;
     *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t)(concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
@@ -265,7 +266,7 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
             break;
         }
 
-        dbgEndRecord(pp, concat);
+        dbgEndRecord(pp, concat, false);
     }
 
     return true;
@@ -274,7 +275,7 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
 void BackendX64::dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr)
 {
     tr.index = (uint16_t) pp.dbgTypeRecords.size() + 0x1000;
-    pp.dbgTypeRecords.push_back(tr);
+    pp.dbgTypeRecords.emplace_back(tr);
 }
 
 DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
@@ -317,9 +318,6 @@ DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
 
 DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo)
 {
-    DbgTypeRecord tr;
-    DbgTypeField  field;
-
     // Simple type pointer
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
@@ -343,26 +341,58 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     /////////////////////////////////
     if (typeInfo->isNative(NativeTypeKind::String))
     {
-        tr.kind      = LF_FIELDLIST;
+        DbgTypeRecord tr0;
+        DbgTypeField  field;
+        tr0.kind     = LF_FIELDLIST;
         field.type   = (DbgTypeIndex)(SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
-        field.name   = "data";
         field.offset = 0;
-        tr.LF_FieldList.fields.push_back(field);
+        field.name   = "data";
+        tr0.LF_FieldList.fields.push_back(field);
 
         field.type   = (DbgTypeIndex)(SimpleTypeKind::UInt32);
         field.offset = sizeof(void*);
         field.name   = "sizeof";
-        tr.LF_FieldList.fields.push_back(field);
-        dbgAddTypeRecord(pp, tr);
+        tr0.LF_FieldList.fields.push_back(field);
+        dbgAddTypeRecord(pp, tr0);
 
-        tr.kind                     = LF_STRUCTURE;
-        tr.LF_Structure.memberCount = 2;
-        tr.LF_Structure.sizeOf      = 2 * sizeof(void*);
-        tr.LF_Structure.fieldList   = tr.index;
-        tr.name                     = "string";
-        dbgAddTypeRecord(pp, tr);
-        pp.dbgMapTypes[typeInfo] = tr.index;
-        return tr.index;
+        DbgTypeRecord tr1;
+        tr1.kind                     = LF_STRUCTURE;
+        tr1.LF_Structure.memberCount = 2;
+        tr1.LF_Structure.sizeOf      = 2 * sizeof(void*);
+        tr1.LF_Structure.fieldList   = tr0.index;
+        tr1.name                     = "string";
+        dbgAddTypeRecord(pp, tr1);
+        pp.dbgMapTypes[typeInfo] = tr1.index;
+        return tr1.index;
+    }
+
+    // Structure
+    /////////////////////////////////
+    if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+
+        DbgTypeRecord tr0;
+        tr0.kind = LF_FIELDLIST;
+        for (auto& p : typeStruct->fields)
+        {
+            DbgTypeField field;
+            field.type   = dbgGetOrCreateType(pp, p->typeInfo);
+            field.name   = p->namedParam;
+            field.offset = p->offset;
+            tr0.LF_FieldList.fields.push_back(field);
+        }
+        dbgAddTypeRecord(pp, tr0);
+
+        DbgTypeRecord tr1;
+        tr1.kind                     = LF_STRUCTURE;
+        tr1.LF_Structure.memberCount = (uint16_t) typeStruct->fields.size();
+        tr1.LF_Structure.sizeOf      = (uint16_t) typeStruct->sizeOf;
+        tr1.LF_Structure.fieldList   = tr0.index;
+        tr1.name                     = typeStruct->name;
+        dbgAddTypeRecord(pp, tr1);
+        pp.dbgMapTypes[typeInfo] = tr1.index;
+        return tr1.index;
     }
 
     // Function
@@ -370,9 +400,11 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     if (typeInfo->kind == TypeInfoKind::FuncAttr)
     {
         TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
-        tr.kind                    = LF_PROCEDURE;
-        tr.LF_Procedure.returnType = dbgGetOrCreateType(pp, typeFunc->returnType);
-        tr.LF_Procedure.numArgs    = (uint16_t) typeFunc->parameters.size();
+
+        DbgTypeRecord tr0;
+        tr0.kind                    = LF_PROCEDURE;
+        tr0.LF_Procedure.returnType = dbgGetOrCreateType(pp, typeFunc->returnType);
+        tr0.LF_Procedure.numArgs    = (uint16_t) typeFunc->parameters.size();
 
         // Get the arg list type. We construct a string with all parameters to be able to
         // store something in the cache
@@ -384,18 +416,18 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         {
             DbgTypeRecord tr1;
             tr1.kind             = LF_ARGLIST;
-            tr1.LF_ArgList.count = tr.LF_Procedure.numArgs;
+            tr1.LF_ArgList.count = tr0.LF_Procedure.numArgs;
             for (auto& p : typeFunc->parameters)
                 tr1.LF_ArgList.args.push_back(dbgGetOrCreateType(pp, p->typeInfo));
             dbgAddTypeRecord(pp, tr1);
-            tr.LF_Procedure.argsType  = tr1.index;
+            tr0.LF_Procedure.argsType = tr1.index;
             pp.dbgMapTypesNames[args] = tr1.index;
         }
         else
-            tr.LF_Procedure.argsType = itn->second;
+            tr0.LF_Procedure.argsType = itn->second;
 
-        dbgAddTypeRecord(pp, tr);
-        return tr.index;
+        dbgAddTypeRecord(pp, tr0);
+        return tr0.index;
     }
 
     return (DbgTypeIndex) SimpleTypeKind::Void;

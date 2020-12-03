@@ -275,7 +275,7 @@ struct BackendX64 : public Backend
     bool emitHeader(const BuildParameters& buildParameters);
 
     void         dbgStartRecord(X64PerThread& pp, Concat& concat, uint16_t what);
-    void         dbgEndRecord(X64PerThread& pp, Concat& concat);
+    void         dbgEndRecord(X64PerThread& pp, Concat& concat, bool align = true);
     void         dbgEmitSecRel(X64PerThread& pp, Concat& concat, int symbolIndex);
     void         dbgEmitTruncatedString(Concat& concat, const Utf8& str);
     DbgTypeIndex dbgGetSimpleType(TypeInfo* typeInfo);
