@@ -152,17 +152,17 @@ void BackendX64::dbgEmitCompilerFlagsDebugS(Concat& concat)
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
-void BackendX64::dbgStartTypeRecord(X64PerThread& pp, Concat& concat, uint16_t what)
+void BackendX64::dbgStartRecord(X64PerThread& pp, Concat& concat, uint16_t what)
 {
-    pp.dbgStartTypeRecordPtr    = concat.addU16Addr(0);
-    pp.dbgStartTypeRecordOffset = concat.totalCount();
+    pp.dbgStartRecordPtr    = concat.addU16Addr(0);
+    pp.dbgStartRecordOffset = concat.totalCount();
     concat.addU16(what);
 }
 
-void BackendX64::dbgEndTypeRecord(X64PerThread& pp, Concat& concat)
+void BackendX64::dbgEndRecord(X64PerThread& pp, Concat& concat)
 {
     alignConcat(concat, 4);
-    *pp.dbgStartTypeRecordPtr = (uint16_t)(concat.totalCount() - pp.dbgStartTypeRecordOffset);
+    *pp.dbgStartRecordPtr = (uint16_t)(concat.totalCount() - pp.dbgStartRecordOffset);
 }
 
 void BackendX64::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
@@ -180,7 +180,7 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
 
     for (auto& f : pp.dbgTypeRecords)
     {
-        dbgStartTypeRecord(pp, concat, f.kind);
+        dbgStartRecord(pp, concat, f.kind);
         switch (f.kind)
         {
         case LF_ARGLIST:
@@ -206,7 +206,7 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
             break;
         }
 
-        dbgEndTypeRecord(pp, concat);
+        dbgEndRecord(pp, concat);
     }
 
     return true;
@@ -331,7 +331,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
             // Proc ID
             /////////////////////////////////
-            dbgStartTypeRecord(pp, concat, S_GPROC32_ID);
+            dbgStartRecord(pp, concat, S_GPROC32_ID);
             concat.addU32(0);                             // Parent = 0;
             concat.addU32(0);                             // End = 0;
             concat.addU32(0);                             // Next = 0;
@@ -356,11 +356,11 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None;
             dbgEmitTruncatedString(concat, f.node->token.text);
-            dbgEndTypeRecord(pp, concat);
+            dbgEndRecord(pp, concat);
 
             // Frame Proc
             /////////////////////////////////
-            dbgStartTypeRecord(pp, concat, S_FRAMEPROC);
+            dbgStartRecord(pp, concat, S_FRAMEPROC);
             concat.addU32(f.frameSize); // FrameSize
             concat.addU32(0);           // Padding
             concat.addU32(0);           // Offset of padding
@@ -368,12 +368,12 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             concat.addU32(0);           // Exception handler offset
             concat.addU32(0);           // Exception handler section
             concat.addU32(0);           // Flags (defines frame register)
-            dbgEndTypeRecord(pp, concat);
+            dbgEndRecord(pp, concat);
 
             // End
             /////////////////////////////////
-            dbgStartTypeRecord(pp, concat, S_PROC_ID_END);
-            dbgEndTypeRecord(pp, concat);
+            dbgStartRecord(pp, concat, S_PROC_ID_END);
+            dbgEndRecord(pp, concat);
 
             *patchSCount = concat.totalCount() - patchSOffset;
         }

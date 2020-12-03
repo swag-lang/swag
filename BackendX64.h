@@ -208,8 +208,8 @@ struct X64PerThread
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
     // Debug infos
-    uint16_t*                    dbgStartTypeRecordPtr;
-    uint32_t                     dbgStartTypeRecordOffset;
+    uint16_t*                    dbgStartRecordPtr;
+    uint32_t                     dbgStartRecordOffset;
     vector<DbgTypeRecord>        dbgTypeRecords;
     map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
     map<Utf8, DbgTypeIndex>      dbgMapTypesNames;
@@ -248,8 +248,8 @@ struct BackendX64 : public Backend
     bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     bool emitHeader(const BuildParameters& buildParameters);
 
-    void         dbgStartTypeRecord(X64PerThread& pp, Concat& concat, uint16_t what);
-    void         dbgEndTypeRecord(X64PerThread& pp, Concat& concat);
+    void         dbgStartRecord(X64PerThread& pp, Concat& concat, uint16_t what);
+    void         dbgEndRecord(X64PerThread& pp, Concat& concat);
     void         dbgEmitTruncatedString(Concat& concat, const Utf8& str);
     DbgTypeIndex dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo);
     void         dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr);
