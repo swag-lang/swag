@@ -29,6 +29,10 @@ const uint16_t S_DEFRANGE_REGISTER_REL     = 0x1145;
 const uint16_t LF_ARGLIST   = 0x1201;
 const uint16_t LF_PROCEDURE = 0x1008;
 const uint16_t LF_FUNC_ID   = 0x1601;
+const uint16_t LF_STRUCTURE = 0x1505;
+const uint16_t LF_FIELDLIST = 0x1203;
+const uint16_t LF_ARRAY     = 0x1503;
+const uint16_t LF_MEMBER    = 0x150d;
 
 const uint16_t R_RDX = 331;
 const uint16_t R_RDI = 333;
@@ -164,15 +168,19 @@ void BackendX64::dbgEmitCompilerFlagsDebugS(Concat& concat)
 
 void BackendX64::dbgStartRecord(X64PerThread& pp, Concat& concat, uint16_t what)
 {
-    pp.dbgStartRecordPtr    = concat.addU16Addr(0);
-    pp.dbgStartRecordOffset = concat.totalCount();
+    SWAG_ASSERT(pp.dbgRecordIdx < pp.MAX_RECORD);
+    pp.dbgStartRecordPtr[pp.dbgRecordIdx]    = concat.addU16Addr(0);
+    pp.dbgStartRecordOffset[pp.dbgRecordIdx] = concat.totalCount();
     concat.addU16(what);
+    pp.dbgRecordIdx++;
 }
 
 void BackendX64::dbgEndRecord(X64PerThread& pp, Concat& concat)
 {
     alignConcat(concat, 4);
-    *pp.dbgStartRecordPtr = (uint16_t)(concat.totalCount() - pp.dbgStartRecordOffset);
+    SWAG_ASSERT(pp.dbgRecordIdx);
+    pp.dbgRecordIdx--;
+    *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t)(concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
 }
 
 void BackendX64::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
@@ -233,6 +241,28 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
             concat.addU16(0);                // padding
             dbgEmitTruncatedString(concat, f.node->token.text);
             break;
+
+        case LF_FIELDLIST:
+            for (auto& p : f.LF_FieldList.fields)
+            {
+                concat.addU16(LF_MEMBER);
+                concat.addU16(0x03); // private = 1, protected = 2, public = 3
+                concat.addU32(p.type);
+                concat.addU16(0x8004); // LF_ULONG
+                concat.addU32(p.offset);
+                dbgEmitTruncatedString(concat, p.name);
+            }
+            break;
+
+        case LF_STRUCTURE:
+            concat.addU16(f.LF_Structure.memberCount);
+            concat.addU16(0); // properties
+            concat.addU32(f.LF_Structure.fieldList);
+            concat.addU32(0); // derivedFrom
+            concat.addU32(0); // vTableShape
+            concat.addU16(f.LF_Structure.sizeOf);
+            dbgEmitTruncatedString(concat, f.name);
+            break;
         }
 
         dbgEndRecord(pp, concat);
@@ -287,6 +317,9 @@ DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
 
 DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo)
 {
+    DbgTypeRecord tr;
+    DbgTypeField  field;
+
     // Simple type pointer
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
@@ -306,10 +339,35 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     if (it != pp.dbgMapTypes.end())
         return it->second;
 
-    DbgTypeRecord tr;
-    switch (typeInfo->kind)
+    // Native string
+    /////////////////////////////////
+    if (typeInfo->isNative(NativeTypeKind::String))
     {
-    case TypeInfoKind::FuncAttr:
+        tr.kind      = LF_FIELDLIST;
+        field.type   = (DbgTypeIndex)(SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.name   = "data";
+        field.offset = 0;
+        tr.LF_FieldList.fields.push_back(field);
+
+        field.type   = (DbgTypeIndex)(SimpleTypeKind::UInt32);
+        field.offset = sizeof(void*);
+        field.name   = "sizeof";
+        tr.LF_FieldList.fields.push_back(field);
+        dbgAddTypeRecord(pp, tr);
+
+        tr.kind                     = LF_STRUCTURE;
+        tr.LF_Structure.memberCount = 2;
+        tr.LF_Structure.sizeOf      = 2 * sizeof(void*);
+        tr.LF_Structure.fieldList   = tr.index;
+        tr.name                     = "string";
+        dbgAddTypeRecord(pp, tr);
+        pp.dbgMapTypes[typeInfo] = tr.index;
+        return tr.index;
+    }
+
+    // Function
+    /////////////////////////////////
+    if (typeInfo->kind == TypeInfoKind::FuncAttr)
     {
         TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
         tr.kind                    = LF_PROCEDURE;
@@ -338,7 +396,6 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
 
         dbgAddTypeRecord(pp, tr);
         return tr.index;
-    }
     }
 
     return (DbgTypeIndex) SimpleTypeKind::Void;

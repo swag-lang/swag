@@ -73,26 +73,49 @@ struct DbgTypeRecordFuncId
     DbgTypeIndex type;
 };
 
+struct DbgTypeField
+{
+    uint16_t    accessSpecifier;
+    uint16_t    type;
+    uint32_t    offset;
+    const char* name;
+};
+
+struct DbgTypeRecordFieldList
+{
+    vector<DbgTypeField> fields;
+};
+
+struct DbgTypeRecordStructure
+{
+    uint16_t     memberCount;
+    DbgTypeIndex fieldList;
+    uint16_t     sizeOf;
+};
+
 struct DbgTypeRecord
 {
-    uint16_t               index;
-    uint16_t               kind;
-    AstNode*               node;
+    uint16_t               index = 0;
+    uint16_t               kind  = 0;
+    AstNode*               node  = nullptr;
+    const char*            name  = nullptr;
     DbgTypeRecordArgList   LF_ArgList;
     DbgTypeRecordProcedure LF_Procedure;
     DbgTypeRecordFuncId    LF_FuncId;
+    DbgTypeRecordFieldList LF_FieldList;
+    DbgTypeRecordStructure LF_Structure;
 };
 
 struct CoffFunction
 {
-    AstNode*               node;
-    uint32_t               symbolIndex;
-    uint32_t               startAddress;
-    uint32_t               endAddress;
-    uint32_t               xdataOffset = 0;
-    uint32_t               sizeProlog  = 0;
-    uint32_t               offsetStack = 0;
-    uint32_t               frameSize   = 0;
+    AstNode*               node         = nullptr;
+    uint32_t               symbolIndex  = 0;
+    uint32_t               startAddress = 0;
+    uint32_t               endAddress   = 0;
+    uint32_t               xdataOffset  = 0;
+    uint32_t               sizeProlog   = 0;
+    uint32_t               offsetStack  = 0;
+    uint32_t               frameSize    = 0;
     VectorNative<uint16_t> unwind;
     VectorNative<DbgLine>  dbgLines;
 };
@@ -209,8 +232,10 @@ struct X64PerThread
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
     // Debug infos
-    uint16_t*                    dbgStartRecordPtr;
-    uint32_t                     dbgStartRecordOffset;
+    static const int             MAX_RECORD   = 4;
+    uint16_t                     dbgRecordIdx = 0;
+    uint16_t*                    dbgStartRecordPtr[MAX_RECORD];
+    uint32_t                     dbgStartRecordOffset[MAX_RECORD];
     vector<DbgTypeRecord>        dbgTypeRecords;
     map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
     map<Utf8, DbgTypeIndex>      dbgMapTypesNames;
