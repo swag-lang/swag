@@ -54,7 +54,7 @@ struct DbgLine
     uint32_t byteOffset;
 };
 
-using DbgTypeIndex = uint16_t;
+using DbgTypeIndex = uint32_t;
 struct DbgTypeRecordArgList
 {
     uint32_t             count;
@@ -75,10 +75,10 @@ struct DbgTypeRecordFuncId
 
 struct DbgTypeField
 {
-    uint16_t    accessSpecifier;
-    uint16_t    type;
-    uint32_t    offset;
-    const char* name;
+    uint16_t     accessSpecifier;
+    DbgTypeIndex type;
+    uint32_t     offset;
+    const char*  name;
 };
 
 struct DbgTypeRecordFieldList
@@ -90,14 +90,14 @@ struct DbgTypeRecordStructure
 {
     uint16_t     memberCount;
     DbgTypeIndex fieldList;
-    uint16_t     sizeOf;
+    uint32_t     sizeOf;
 };
 
 struct DbgTypeRecordArray
 {
     DbgTypeIndex elementType;
     DbgTypeIndex indexType;
-    uint16_t     sizeOf;
+    uint32_t     sizeOf;
 };
 
 struct DbgTypeRecord

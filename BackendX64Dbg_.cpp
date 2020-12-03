@@ -229,18 +229,15 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
             break;
 
         case LF_PROCEDURE:
-            concat.addU16(f.LF_Procedure.returnType);
+            concat.addU32(f.LF_Procedure.returnType);
             concat.addU16(0);                       // calling convention
-            concat.addU16(0);                       // padding
             concat.addU16(f.LF_Procedure.numArgs);  // #params
-            concat.addU16(f.LF_Procedure.argsType); // @argstype
-            concat.addU16(0);                       // align
+            concat.addU32(f.LF_Procedure.argsType); // @argstype
             break;
 
         case LF_FUNC_ID:
             concat.addU32(0);                // ParentScope
-            concat.addU16(f.LF_FuncId.type); // @type
-            concat.addU16(0);                // padding
+            concat.addU32(f.LF_FuncId.type); // @type
             dbgEmitTruncatedString(concat, f.node->token.text);
             break;
 
@@ -268,8 +265,8 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
             concat.addU16(f.LF_Structure.memberCount);
             concat.addU16(0); // properties
             concat.addU32(f.LF_Structure.fieldList);
-            concat.addU32(0); // derivedFrom
-            concat.addU32(0); // vTableShape
+            concat.addU32(0);      // derivedFrom
+            concat.addU32(0);      // vTableShape
             concat.addU16(0x8004); // LF_ULONG
             concat.addU32(f.LF_Structure.sizeOf);
             dbgEmitTruncatedString(concat, f.name);
