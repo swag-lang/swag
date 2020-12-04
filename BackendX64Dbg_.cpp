@@ -750,7 +750,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
             // Proc ID
             /////////////////////////////////
-            dbgStartRecord(pp, concat, S_GPROC32_ID);
+            dbgStartRecord(pp, concat, f.wrapper ? S_GPROC32_ID : S_LPROC32_ID);
             concat.addU32(0);                             // Parent = 0;
             concat.addU32(0);                             // End = 0;
             concat.addU32(0);                             // Next = 0;
