@@ -459,6 +459,14 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         return dbgGetOrCreatePointerToType(pp, typePtr->pointedType);
     }
 
+    // Reference
+    /////////////////////////////////
+    if (typeInfo->kind == TypeInfoKind::Reference)
+    {
+        auto typePtr = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
+        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType);
+    }
+
     // Slice
     /////////////////////////////////
     if (typeInfo->kind == TypeInfoKind::Slice)
