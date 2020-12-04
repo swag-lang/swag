@@ -195,8 +195,9 @@ public namespace tcf
     }
 }
 
-public func tcf_join(values: s64...)
+public func tcf_join(titi: string, values: s64...)
 {
+    @assert(titi == "titi")
     loop i: values
     {
         //@print(values[i])

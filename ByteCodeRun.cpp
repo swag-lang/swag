@@ -680,8 +680,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
     case ByteCodeOp::CopySP:
-    case ByteCodeOp::CopySPVaargs:
+    case ByteCodeOp::CopySPVaargsOld:
         registersRC[ip->a.u32].pointer = context->sp - ip->b.u32;
+        break;
+
+    case ByteCodeOp::CopySPVaargs:
+        registersRC[ip->a.u32].pointer = context->sp + ip->b.u32;
         break;
 
     case ByteCodeOp::GetFromStack64:

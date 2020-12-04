@@ -107,29 +107,32 @@ void ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context, ByteCod
 
             mapRA[ip->a.u32] = ip;
         }
-        else if ((flags & OPFLAG_WRITE_A) && !(ip->flags & BCI_IMM_A))
+        else
         {
-            auto it = mapRA.find(ip->a.u32);
-            if (it != mapRA.end())
-                mapRA.erase(it);
-        }
-        else if ((flags & OPFLAG_WRITE_B) && !(ip->flags & BCI_IMM_B))
-        {
-            auto it = mapRA.find(ip->b.u32);
-            if (it != mapRA.end())
-                mapRA.erase(it);
-        }
-        else if ((flags & OPFLAG_WRITE_C) && !(ip->flags & BCI_IMM_C))
-        {
-            auto it = mapRA.find(ip->c.u32);
-            if (it != mapRA.end())
-                mapRA.erase(it);
-        }
-        else if ((flags & OPFLAG_WRITE_D) && !(ip->flags & BCI_IMM_D))
-        {
-            auto it = mapRA.find(ip->d.u32);
-            if (it != mapRA.end())
-                mapRA.erase(it);
+            if ((flags & OPFLAG_WRITE_A) && !(ip->flags & BCI_IMM_A))
+            {
+                auto it = mapRA.find(ip->a.u32);
+                if (it != mapRA.end())
+                    mapRA.erase(it);
+            }
+            if ((flags & OPFLAG_WRITE_B) && !(ip->flags & BCI_IMM_B))
+            {
+                auto it = mapRA.find(ip->b.u32);
+                if (it != mapRA.end())
+                    mapRA.erase(it);
+            }
+            if ((flags & OPFLAG_WRITE_C) && !(ip->flags & BCI_IMM_C))
+            {
+                auto it = mapRA.find(ip->c.u32);
+                if (it != mapRA.end())
+                    mapRA.erase(it);
+            }
+            if ((flags & OPFLAG_WRITE_D) && !(ip->flags & BCI_IMM_D))
+            {
+                auto it = mapRA.find(ip->d.u32);
+                if (it != mapRA.end())
+                    mapRA.erase(it);
+            }
         }
     }
 }

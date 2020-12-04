@@ -10,21 +10,6 @@ struct Job;
 
 struct ByteCodeOptimizer
 {
-    inline static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip)
-    {
-        if (ip->op == ByteCodeOp::Nop)
-            return;
-        if (context->semContext && ip->op == ByteCodeOp::IncPointer32)
-            return;
-        auto flags = g_ByteCodeOpFlags[(int) ip->op];
-        if (flags & OPFLAG_UNPURE)
-            return;
-        SWAG_ASSERT(ip->op != ByteCodeOp::End);
-        context->passHasDoneSomething = true;
-        ip->op                        = ByteCodeOp::Nop;
-        context->nops.push_back(ip);
-    }
-
     inline static bool isJump(ByteCodeInstruction* inst)
     {
         return inst->op == ByteCodeOp::Jump ||
@@ -37,6 +22,7 @@ struct ByteCodeOptimizer
                inst->op == ByteCodeOp::JumpIfNotZero32;
     }
 
+    static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void optimizePassJumps(ByteCodeOptContext* context);
     static void optimizePassDeadCode(ByteCodeOptContext* context);
     static void optimizePassEmptyFct(ByteCodeOptContext* context);

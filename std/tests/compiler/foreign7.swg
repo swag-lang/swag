@@ -3,5 +3,5 @@
 
 #test
 {
-    tcf_join(1, 2, 3, 4)
+    tcf_join("titi", 1, 2, 3, 4)
 }

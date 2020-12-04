@@ -10,6 +10,21 @@
 #include "Timer.h"
 #include "Profile.h"
 
+void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    if (ip->op == ByteCodeOp::Nop)
+        return;
+    if (context->semContext && ip->op == ByteCodeOp::IncPointer32)
+        return;
+    auto flags = g_ByteCodeOpFlags[(int) ip->op];
+    if (flags & OPFLAG_UNPURE)
+        return;
+    SWAG_ASSERT(ip->op != ByteCodeOp::End);
+    context->passHasDoneSomething = true;
+    ip->op                        = ByteCodeOp::Nop;
+    context->nops.push_back(ip);
+}
+
 void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 {
     if (context->nops.empty())

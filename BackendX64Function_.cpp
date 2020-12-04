@@ -1822,7 +1822,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
-        case ByteCodeOp::CopySPVaargs:
+        case ByteCodeOp::CopySPVaargsOld:
         {
             auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
             bool foreign      = ip->c.b;
@@ -1851,6 +1851,41 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_LoadAddress_Indirect(pp, (sizeParamsStack - variadicStackSize) + 8, RAX, RSP);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
                 BackendX64Inst::emit_Store64_Indirect(pp, (sizeParamsStack - variadicStackSize), RAX, RSP);
+            }
+            break;
+        }
+        case ByteCodeOp::CopySPVaargs:
+        {
+            auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+            bool foreign      = ip->c.b;
+            if (!foreign)
+            {
+                // We are close to the byte code, as all PushRaParams are already in the correct order for variadics.
+                // We need the RAX register to address the stack where all are stored.
+                // There's 2 more PushRAParam to come after CopySPVaargs, so offset is 16.
+                // We also need to take care of real parameters (offset is ip->b.u32)
+                // We also need to take care of the return registers, which are always first
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, (uint8_t)(16 + ip->b.u32 + (typeFuncCall->numReturnRegisters() * 8)), RAX, RSP);
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            }
+            else
+            {
+                // We need to flatten all variadic registers, in order, in the stack, and emit the address of that array
+                // We compute the number of variadic registers by removing registers of normal parameters (ip->b.u32)
+                int      idxParam          = (int) pushRAParams.size() - (ip->b.u32 / sizeof(Register)) - 1;
+                uint32_t variadicStackSize = idxParam * sizeof(Register);
+                MK_ALIGN16(variadicStackSize);
+                uint32_t offset = sizeParamsStack - variadicStackSize;
+                while (idxParam >= 0)
+                {
+                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
+                    BackendX64Inst::emit_Store64_Indirect(pp, offset, RAX, RSP);
+                    idxParam--;
+                    offset += 8;
+                }
+
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, (sizeParamsStack - variadicStackSize), RAX, RSP);
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             }
             break;
         }

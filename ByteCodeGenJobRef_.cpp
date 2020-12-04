@@ -359,25 +359,21 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference a typed variadic parameter
     else if (typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
+        //emitSafetyNullPointer(context, node->array->resultRegisterRC);
+        emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+
         auto rawType = ((TypeInfoVariadic*) typeInfo)->rawType;
-        emitSafetyBoundCheckVariadic(context, node->access->resultRegisterRC, node->array->resultRegisterRC);
 
-        // Offset from variadic named parameter to the first parameter on the stack
-        auto r0 = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
-        emitInstruction(context, ByteCodeOp::BinOpShiftRightU64VB, r0)->b.u32 = 32;
-        emitInstruction(context, ByteCodeOp::Mul64byVB32, r0)->b.u32          = sizeof(Register);
-        emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, r0, node->array->resultRegisterRC);
+        // Increment pointer (if increment is not 0)
+        if (!node->access->isConstant0())
+        {
+            emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = rawType->numRegisters() * sizeof(Register);
+            emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+        }
 
-        // Offset pointer to the parameter
-        emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeof(Register) * rawType->numRegisters();
-        emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, rawType, false));
         node->resultRegisterRC = node->array->resultRegisterRC;
-
         freeRegisterRC(context, node->access);
-        freeRegisterRC(context, r0);
     }
 
     // Dereference a struct

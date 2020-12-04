@@ -75,7 +75,9 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
         return true;
     }
 
-    if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->isNative(NativeTypeKind::String) ||
+        typeInfo->kind == TypeInfoKind::Slice ||
+        typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
         node->resultRegisterRC = expr->resultRegisterRC[1];
         SWAG_ASSERT(expr->resultRegisterRC.size() <= 2);
@@ -83,7 +85,7 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
+    if (typeInfo->kind == TypeInfoKind::Variadic)
     {
         node->resultRegisterRC = expr->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::DeRef32, node->resultRegisterRC, node->resultRegisterRC);

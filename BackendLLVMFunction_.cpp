@@ -2664,12 +2664,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, r0);
             break;
         }
-        case ByteCodeOp::CopySPVaargs:
+        case ByteCodeOp::CopySPVaargsOld:
         {
             auto allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(pushRAParams.size() + 1));
 
-            int idx      = 1;
-            int idxParam = (int) pushRAParams.size() - 1;
+            int idx = 1;
+            int idxParam = (int)pushRAParams.size() - 1;
             while (idxParam >= 0)
             {
                 auto r0 = GEP_I32(allocVA, idx);
@@ -2685,6 +2685,33 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             auto r2 = TO_PTR_PTR_I64(allocVA);
             builder.CreateStore(r1, r2);
+            break;
+        }
+        case ByteCodeOp::CopySPVaargs:
+        {
+            // We need to make all variadic parameters contiguous in stack, and point to that address
+            auto allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(pushRAParams.size()));
+
+            // In the pushRAParams array, we have first all the variadic registers
+            //
+            // And then, we have all normal parameters. So we start at pushRAParams.size() less the number of registers
+            // used to pass the normal parameters.
+            //
+            // The number of normal parameters is deduced from the 'offset' of the CopySPVaargs instruction (ip->b.u32)
+            int  idx          = 0;
+            int  idxParam     = (int) pushRAParams.size() - (ip->b.u32 / sizeof(Register)) - 1;
+            while (idxParam >= 0)
+            {
+                auto r0 = GEP_I32(allocVA, idx);
+                auto r1 = GEP_I32(allocR, pushRAParams[idxParam]);
+                builder.CreateStore(builder.CreateLoad(r1), r0);
+                idx++;
+                idxParam--;
+            }
+
+            auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst0_i32);
+            builder.CreateStore(r1, r0);
             break;
         }
 
