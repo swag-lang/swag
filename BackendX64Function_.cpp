@@ -378,6 +378,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack + sizeParamsStack);
 
     coffFct->offsetStack = offsetStack;
+    coffFct->offsetParam = 16 + sizeStack + regOffset(typeFunc->numReturnRegisters());
     coffFct->frameSize   = sizeStack + sizeParamsStack;
 
     sizeProlog = concat.totalCount() - beforeProlog;

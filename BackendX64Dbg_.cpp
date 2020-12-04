@@ -733,6 +733,8 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
     {
         if (!f.node)
             continue;
+        auto decl     = CastAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
 
         // Add a func id type record
         /////////////////////////////////
@@ -774,6 +776,44 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             concat.addU32(0);           // Exception handler section
             concat.addU32(0);           // Flags (defines frame register)
             dbgEndRecord(pp, concat);
+
+            // Parameters
+            /////////////////////////////////
+            if (decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC) && !f.wrapper)
+            {
+                auto idxParam    = typeFunc->numReturnRegisters();
+                auto countParams = decl->parameters->childs.size();
+                if (typeFunc->flags & TYPEINFO_VARIADIC)
+                {
+                    idxParam += 2;
+                    countParams--;
+                }
+
+                for (int i = 0; i < countParams; i++)
+                {
+                    auto child     = decl->parameters->childs[i];
+                    auto typeParam = typeFunc->parameters[i]->typeInfo;
+                    auto overload  = child->resolvedSymbolOverload;
+
+                    //////////
+                    dbgStartRecord(pp, concat, S_LOCAL);
+                    concat.addU32(dbgGetOrCreateType(pp, typeParam)); // Type
+                    concat.addU16(0x01);                              // Flags (IsParameter)
+                    dbgEmitTruncatedString(concat, child->token.text);
+                    dbgEndRecord(pp, concat);
+
+                    //////////
+                    dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
+                    concat.addU16(R_RDI); // Register
+                    concat.addU16(0);     // Flags
+                    concat.addU32(overload->storageIndex * sizeof(Register) + f.offsetParam);
+                    dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
+                    concat.addU16((uint16_t)(f.endAddress - f.startAddress)); // Range
+                    dbgEndRecord(pp, concat);
+
+                    idxParam += typeParam->numRegisters();
+                }
+            }
 
             // Local variables
             /////////////////////////////////

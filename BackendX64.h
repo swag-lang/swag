@@ -142,6 +142,7 @@ struct CoffFunction
     uint32_t               xdataOffset  = 0;
     uint32_t               sizeProlog   = 0;
     uint32_t               offsetStack  = 0;
+    uint32_t               offsetParam  = 0;
     uint32_t               frameSize    = 0;
     bool                   wrapper      = false;
 };
