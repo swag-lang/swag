@@ -146,9 +146,6 @@ func main()
     var builder: strconv.StringBuilder
     var keyb: keyboard.Keyboard
 
-	var slice: const [..] u8 = @[10, 20, 30, 40]
-
-
     while !bGameOver
     {
 		// Timing =======================

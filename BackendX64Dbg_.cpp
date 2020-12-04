@@ -419,6 +419,26 @@ DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
     return SimpleTypeKind::None;
 }
 
+DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64PerThread& pp, TypeInfo* typeInfo)
+{
+    auto simpleType = dbgGetSimpleType(typeInfo);
+    if (simpleType != SimpleTypeKind::None)
+        return (DbgTypeIndex)(simpleType | (NearPointer64 << 8));
+
+    // In the cache of pointers
+    auto it = pp.dbgMapPtrTypes.find(typeInfo);
+    if (it != pp.dbgMapPtrTypes.end())
+        return it->second;
+
+    // Pointer to something complex
+    DbgTypeRecord tr;
+    tr.kind                   = LF_POINTER;
+    tr.LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfo);
+    dbgAddTypeRecord(pp, tr);
+    pp.dbgMapPtrTypes[typeInfo] = tr.index;
+    return tr.index;
+}
+
 DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo)
 {
     // Simple type
@@ -426,7 +446,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     if (simpleType != SimpleTypeKind::None)
         return simpleType;
 
-    // In the cache of pointers
+    // In the cache
     auto it = pp.dbgMapTypes.find(typeInfo);
     if (it != pp.dbgMapTypes.end())
         return it->second;
@@ -436,17 +456,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        simpleType   = dbgGetSimpleType(typePtr->pointedType);
-        if (simpleType != SimpleTypeKind::None)
-            return (DbgTypeIndex)(simpleType | (NearPointer64 << 8));
-
-        // Pointer to something complex
-        DbgTypeRecord tr;
-        tr.kind                   = LF_POINTER;
-        tr.LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typePtr->pointedType);
-        dbgAddTypeRecord(pp, tr);
-        pp.dbgMapTypes[typeInfo] = tr.index;
-        return tr.index;
+        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType);
     }
 
     // Slice
@@ -455,16 +465,11 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     {
         auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 
-        DbgTypeRecord tr2;
-        tr2.kind                   = LF_POINTER;
-        tr2.LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfoPtr->pointedType);
-        dbgAddTypeRecord(pp, tr2);
-
         DbgTypeRecord tr0;
         DbgTypeField  field;
         tr0.kind              = LF_FIELDLIST;
         tr0.LF_FieldList.kind = LF_MEMBER;
-        field.type            = tr2.index;
+        field.type            = dbgGetOrCreatePointerToType(pp, typeInfoPtr->pointedType);
         field.value.reg.u32   = 0;
         field.name            = "data";
         tr0.LF_FieldList.fields.push_back(field);
@@ -574,12 +579,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         field.name            = "ptrvalue";
         tr0.LF_FieldList.fields.push_back(field);
 
-        DbgTypeRecord tr2;
-        tr2.kind                   = LF_POINTER;
-        tr2.LF_Pointer.pointeeType = dbgGetOrCreateType(pp, g_Workspace.swagScope.regTypeInfo);
-        dbgAddTypeRecord(pp, tr2);
-
-        field.type          = tr2.index;
+        field.type          = dbgGetOrCreatePointerToType(pp, g_Workspace.swagScope.regTypeInfo);
         field.value.reg.u32 = sizeof(void*);
         field.name          = "typeinfo";
         tr0.LF_FieldList.fields.push_back(field);

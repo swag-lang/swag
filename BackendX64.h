@@ -265,6 +265,7 @@ struct X64PerThread
     uint32_t                     dbgStartRecordOffset[MAX_RECORD];
     vector<DbgTypeRecord>        dbgTypeRecords;
     map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
+    map<TypeInfo*, DbgTypeIndex> dbgMapPtrTypes;
     map<Utf8, DbgTypeIndex>      dbgMapTypesNames;
 };
 
@@ -307,6 +308,7 @@ struct BackendX64 : public Backend
     void         dbgEmitSecRel(X64PerThread& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex);
     void         dbgEmitTruncatedString(Concat& concat, const Utf8& str);
     DbgTypeIndex dbgGetSimpleType(TypeInfo* typeInfo);
+    DbgTypeIndex dbgGetOrCreatePointerToType(X64PerThread& pp, TypeInfo* typeInfo);
     DbgTypeIndex dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo);
     void         dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr);
     void         dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
