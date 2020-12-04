@@ -840,10 +840,21 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     auto typeParam = typeFunc->parameters[i]->typeInfo;
                     auto overload  = child->resolvedSymbolOverload;
 
+                    DbgTypeIndex typeIdx;
+                    switch (typeParam->kind)
+                    {
+                    case TypeInfoKind::Array:
+                        typeIdx = dbgGetOrCreatePointerToType(pp, typeParam);
+                        break;
+                    default:
+                        typeIdx = dbgGetOrCreateType(pp, typeParam);
+                        break;
+                    }
+
                     //////////
                     dbgStartRecord(pp, concat, S_LOCAL);
-                    concat.addU32(dbgGetOrCreateType(pp, typeParam)); // Type
-                    concat.addU16(0x01);                              // Flags (IsParameter)
+                    concat.addU32(typeIdx); // Type
+                    concat.addU16(0x01);    // Flags (IsParameter)
                     dbgEmitTruncatedString(concat, child->token.text);
                     dbgEndRecord(pp, concat);
 
