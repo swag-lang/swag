@@ -2528,7 +2528,21 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCode
 
     // Push parameters
     SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
-    emitCall(pp, funcName);
+
+    auto& concat = pp.concat;
+
+    // Need to make a far call
+    concat.addU8(0xFF); // call
+    concat.addU8(0x15);
+
+    // Dll imported function name will have "__imp_" before (imported mangled name)
+    CoffRelocation reloc;
+    reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
+    auto callSym         = getOrAddSymbol(pp, "__imp_" + funcName, CoffSymbolKind::Extern);
+    reloc.symbolIndex    = callSym->index;
+    reloc.type           = IMAGE_REL_AMD64_REL32;
+    pp.relocTableTextSection.table.push_back(reloc);
+    concat.addU32(0);
 
     // Store result
     emitForeignCallResult(pp, typeFuncBC, offsetRT);
