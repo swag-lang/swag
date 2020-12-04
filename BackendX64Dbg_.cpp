@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "Version.h"
+#include "Workspace.h"
 
 const uint32_t DEBUG_SECTION_MAGIC = 4;
 
@@ -488,6 +489,71 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         tr1.LF_Structure.sizeOf      = 2 * sizeof(void*);
         tr1.LF_Structure.fieldList   = tr0.index;
         tr1.name                     = "string";
+        dbgAddTypeRecord(pp, tr1);
+        pp.dbgMapTypes[typeInfo] = tr1.index;
+        return tr1.index;
+    }
+
+    // Interface
+    /////////////////////////////////
+    if (typeInfo->kind == TypeInfoKind::Interface)
+    {
+        DbgTypeRecord tr0;
+        DbgTypeField  field;
+        tr0.kind              = LF_FIELDLIST;
+        tr0.LF_FieldList.kind = LF_MEMBER;
+        field.type            = (DbgTypeIndex)(SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.value.reg.u32   = 0;
+        field.name            = "data";
+        tr0.LF_FieldList.fields.push_back(field);
+
+        field.type          = (DbgTypeIndex)(SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.value.reg.u32 = sizeof(void*);
+        field.name          = "itable";
+        tr0.LF_FieldList.fields.push_back(field);
+        dbgAddTypeRecord(pp, tr0);
+
+        DbgTypeRecord tr1;
+        tr1.kind                     = LF_STRUCTURE;
+        tr1.LF_Structure.memberCount = 2;
+        tr1.LF_Structure.sizeOf      = 2 * sizeof(void*);
+        tr1.LF_Structure.fieldList   = tr0.index;
+        tr1.name                     = "interface";
+        dbgAddTypeRecord(pp, tr1);
+        pp.dbgMapTypes[typeInfo] = tr1.index;
+        return tr1.index;
+    }
+
+    // Any
+    /////////////////////////////////
+    if (typeInfo->isNative(NativeTypeKind::Any))
+    {
+        DbgTypeRecord tr0;
+        DbgTypeField  field;
+        tr0.kind              = LF_FIELDLIST;
+        tr0.LF_FieldList.kind = LF_MEMBER;
+        field.type            = (DbgTypeIndex)(SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.value.reg.u32   = 0;
+        field.name            = "ptrvalue";
+        tr0.LF_FieldList.fields.push_back(field);
+
+        DbgTypeRecord tr2;
+        tr2.kind                   = LF_POINTER;
+        tr2.LF_Pointer.pointeeType = dbgGetOrCreateType(pp, g_Workspace.swagScope.regTypeInfo);
+        dbgAddTypeRecord(pp, tr2);
+
+        field.type          = tr2.index;
+        field.value.reg.u32 = sizeof(void*);
+        field.name          = "typeinfo";
+        tr0.LF_FieldList.fields.push_back(field);
+        dbgAddTypeRecord(pp, tr0);
+
+        DbgTypeRecord tr1;
+        tr1.kind                     = LF_STRUCTURE;
+        tr1.LF_Structure.memberCount = 2;
+        tr1.LF_Structure.sizeOf      = 2 * sizeof(void*);
+        tr1.LF_Structure.fieldList   = tr0.index;
+        tr1.name                     = "any";
         dbgAddTypeRecord(pp, tr1);
         pp.dbgMapTypes[typeInfo] = tr1.index;
         return tr1.index;
