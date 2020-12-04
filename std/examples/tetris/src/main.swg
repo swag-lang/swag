@@ -146,6 +146,14 @@ func main()
     var builder: strconv.StringBuilder
     var keyb: keyboard.Keyboard
 
+	enum TOTO: f32
+	{
+		A = 16
+		B = 314
+	}
+
+	var toto: TOTO = A
+
     while !bGameOver
     {
 		// Timing =======================

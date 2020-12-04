@@ -227,8 +227,61 @@ void BackendX64::dbgEmitSecRel(X64PerThread& pp, Concat& concat, uint32_t symbol
     concat.addU16(0);
 }
 
-void BackendX64::dbgEmitEmbeddedValue(X64PerThread& pp, ComputedValue& val)
+void BackendX64::dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val)
 {
+    SWAG_ASSERT(valueType->kind == TypeInfoKind::Native);
+    switch (valueType->nativeType)
+    {
+    case NativeTypeKind::Bool:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::S8:
+        concat.addU16(LF_CHAR);
+        concat.addU8(val.reg.u8);
+        break;
+
+    case NativeTypeKind::S16:
+        concat.addU16(LF_SHORT);
+        concat.addS16(val.reg.s16);
+        break;
+    case NativeTypeKind::U16:
+        concat.addU16(LF_USHORT);
+        concat.addU16(val.reg.u16);
+        break;
+
+    case NativeTypeKind::S32:
+        concat.addU16(LF_LONG);
+        concat.addS32(val.reg.s32);
+        break;
+    case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
+        concat.addU16(LF_ULONG);
+        concat.addU32(val.reg.u32);
+        break;
+
+    case NativeTypeKind::S64:
+        concat.addU16(LF_QUADWORD);
+        concat.addS64(val.reg.s64);
+        break;
+    case NativeTypeKind::U64:
+        concat.addU16(LF_UQUADWORD);
+        concat.addU64(val.reg.u64);
+        break;
+
+    case NativeTypeKind::F32:
+        concat.addU16(LF_REAL32);
+        concat.addF32(val.reg.f32);
+        break;
+    case NativeTypeKind::F64:
+        concat.addU16(LF_REAL64);
+        concat.addF64(val.reg.f64);
+        break;
+
+    default:
+        // Should never happen, but it's better to not assert
+        concat.addU16(LF_UQUADWORD);
+        concat.addU64(val.reg.u64);
+        break;
+    }
 }
 
 bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
@@ -280,11 +333,10 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
                 case LF_MEMBER:
                     concat.addU32(p.type);
                     concat.addU16(LF_ULONG);
-                    concat.addU32(p.offset);
+                    concat.addU32(p.value.reg.u32);
                     break;
                 case LF_ENUMERATE:
-                    concat.addU16(LF_ULONG);
-                    concat.addU32(p.offset);
+                    dbgEmitEmbeddedValue(concat, p.valueType, p.value);
                     break;
                 }
                 dbgEmitTruncatedString(concat, p.name);
@@ -420,13 +472,13 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         tr0.kind              = LF_FIELDLIST;
         tr0.LF_FieldList.kind = LF_MEMBER;
         field.type            = (DbgTypeIndex)(SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
-        field.offset          = 0;
+        field.value.reg.u32   = 0;
         field.name            = "data";
         tr0.LF_FieldList.fields.push_back(field);
 
-        field.type   = (DbgTypeIndex)(SimpleTypeKind::UInt32);
-        field.offset = sizeof(void*);
-        field.name   = "sizeof";
+        field.type          = (DbgTypeIndex)(SimpleTypeKind::UInt32);
+        field.value.reg.u32 = sizeof(void*);
+        field.name          = "sizeof";
         tr0.LF_FieldList.fields.push_back(field);
         dbgAddTypeRecord(pp, tr0);
 
@@ -462,9 +514,9 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         for (auto& p : typeStruct->fields)
         {
             DbgTypeField field;
-            field.type   = dbgGetOrCreateType(pp, p->typeInfo);
-            field.name   = p->namedParam;
-            field.offset = p->offset;
+            field.type          = dbgGetOrCreateType(pp, p->typeInfo);
+            field.name          = p->namedParam;
+            field.value.reg.u32 = p->offset;
             tr0.LF_FieldList.fields.push_back(field);
         }
         dbgAddTypeRecord(pp, tr0);
@@ -489,30 +541,38 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
 
         // List of values
-        DbgTypeRecord tr0;
-        tr0.kind              = LF_FIELDLIST;
-        tr0.LF_FieldList.kind = LF_ENUMERATE;
-        for (auto& p : typeEnum->values)
+        if (typeEnum->rawType->flags & TYPEINFO_INTEGER)
         {
-            DbgTypeField field;
-            field.type   = dbgGetOrCreateType(pp, p->typeInfo);
-            field.name   = p->namedParam;
-            field.offset = p->offset;
-            tr0.LF_FieldList.fields.push_back(field);
+            DbgTypeRecord tr0;
+            tr0.kind              = LF_FIELDLIST;
+            tr0.LF_FieldList.kind = LF_ENUMERATE;
+            for (auto& p : typeEnum->values)
+            {
+                DbgTypeField field;
+                field.type      = dbgGetOrCreateType(pp, p->typeInfo);
+                field.name      = p->namedParam;
+                field.valueType = typeEnum->rawType;
+                field.value     = p->value;
+                tr0.LF_FieldList.fields.push_back(field);
+            }
+            dbgAddTypeRecord(pp, tr0);
+
+            // Enum itself, pointing to the field list
+            DbgTypeRecord tr1;
+            tr1.kind                   = LF_ENUM;
+            tr1.LF_Enum.count          = (uint16_t) typeEnum->values.size();
+            tr1.LF_Enum.fieldList      = tr0.index;
+            tr1.LF_Enum.underlyingType = dbgGetOrCreateType(pp, typeEnum->rawType);
+            tr1.name                   = typeEnum->name;
+            dbgAddTypeRecord(pp, tr1);
+            pp.dbgMapTypes[typeInfo] = tr1.index;
+            return tr1.index;
         }
-        dbgAddTypeRecord(pp, tr0);
 
-        // Enum itself, pointing to the field list
-        DbgTypeRecord tr1;
-        tr1.kind                   = LF_ENUM;
-        tr1.LF_Enum.count          = (uint16_t) typeEnum->values.size();
-        tr1.LF_Enum.fieldList      = tr0.index;
-        tr1.LF_Enum.underlyingType = dbgGetOrCreateType(pp, typeEnum->rawType);
-        tr1.name                   = typeEnum->name;
-        dbgAddTypeRecord(pp, tr1);
-
-        pp.dbgMapTypes[typeInfo] = tr1.index;
-        return tr1.index;
+        else
+        {
+            return dbgGetOrCreateType(pp, typeEnum->rawType);
+        }
     }
 
     // Function

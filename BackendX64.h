@@ -75,10 +75,11 @@ struct DbgTypeRecordFuncId
 
 struct DbgTypeField
 {
-    const char*  name            = nullptr;
-    DbgTypeIndex type            = 0;
-    uint32_t     offset          = 0;
-    uint16_t     accessSpecifier = 0;
+    ComputedValue value;
+    TypeInfo*     valueType       = nullptr;
+    const char*   name            = nullptr;
+    DbgTypeIndex  type            = 0;
+    uint16_t      accessSpecifier = 0;
 };
 
 struct DbgTypeRecordFieldList
@@ -299,7 +300,7 @@ struct BackendX64 : public Backend
     bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     bool emitHeader(const BuildParameters& buildParameters);
 
-    void         dbgEmitEmbeddedValue(X64PerThread& pp, ComputedValue& val);
+    void         dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val);
     void         dbgStartRecord(X64PerThread& pp, Concat& concat, uint16_t what);
     void         dbgEndRecord(X64PerThread& pp, Concat& concat, bool align = true);
     void         dbgEmitSecRel(X64PerThread& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex);
