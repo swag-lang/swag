@@ -84,6 +84,7 @@ struct DbgTypeField
 struct DbgTypeRecordFieldList
 {
     vector<DbgTypeField> fields;
+    uint16_t             kind = 0;
 };
 
 struct DbgTypeRecordStructure
@@ -92,6 +93,13 @@ struct DbgTypeRecordStructure
     uint32_t     sizeOf      = 0;
     uint16_t     memberCount = 0;
     bool         forward     = false;
+};
+
+struct DbgTypeRecordEnum
+{
+    DbgTypeIndex fieldList      = 0;
+    DbgTypeIndex underlyingType = 0;
+    uint16_t     count          = 0;
 };
 
 struct DbgTypeRecordArray
@@ -117,6 +125,7 @@ struct DbgTypeRecord
     DbgTypeRecordStructure LF_Structure;
     DbgTypeRecordArray     LF_Array;
     DbgTypeRecordPointer   LF_Pointer;
+    DbgTypeRecordEnum      LF_Enum;
     DbgTypeIndex           index = 0;
     uint16_t               kind  = 0;
 };
@@ -290,6 +299,7 @@ struct BackendX64 : public Backend
     bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     bool emitHeader(const BuildParameters& buildParameters);
 
+    void         dbgEmitEmbeddedValue(X64PerThread& pp, ComputedValue& val);
     void         dbgStartRecord(X64PerThread& pp, Concat& concat, uint16_t what);
     void         dbgEndRecord(X64PerThread& pp, Concat& concat, bool align = true);
     void         dbgEmitSecRel(X64PerThread& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex);

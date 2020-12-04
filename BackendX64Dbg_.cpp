@@ -27,14 +27,30 @@ const uint16_t S_DEFRANGE_FRAMEPOINTER_REL = 0x1142;
 const uint16_t S_DEFRANGE_REGISTER_REL     = 0x1145;
 const uint16_t S_LDATA32                   = 0x110C;
 
-const uint16_t LF_POINTER   = 0x1002;
-const uint16_t LF_PROCEDURE = 0x1008;
-const uint16_t LF_ARGLIST   = 0x1201;
-const uint16_t LF_FIELDLIST = 0x1203;
-const uint16_t LF_ARRAY     = 0x1503;
-const uint16_t LF_STRUCTURE = 0x1505;
-const uint16_t LF_MEMBER    = 0x150d;
-const uint16_t LF_FUNC_ID   = 0x1601;
+const uint16_t LF_POINTER      = 0x1002;
+const uint16_t LF_PROCEDURE    = 0x1008;
+const uint16_t LF_ARGLIST      = 0x1201;
+const uint16_t LF_FIELDLIST    = 0x1203;
+const uint16_t LF_ENUMERATE    = 0x1502;
+const uint16_t LF_ARRAY        = 0x1503;
+const uint16_t LF_STRUCTURE    = 0x1505;
+const uint16_t LF_ENUM         = 0x1507;
+const uint16_t LF_MEMBER       = 0x150d;
+const uint16_t LF_FUNC_ID      = 0x1601;
+const uint16_t LF_UDT_SRC_LINE = 0x1606;
+
+const uint16_t LF_NUMERIC   = 0x8000;
+const uint16_t LF_CHAR      = 0x8000;
+const uint16_t LF_SHORT     = 0x8001;
+const uint16_t LF_USHORT    = 0x8002;
+const uint16_t LF_LONG      = 0x8003;
+const uint16_t LF_ULONG     = 0x8004;
+const uint16_t LF_REAL32    = 0x8005;
+const uint16_t LF_REAL64    = 0x8006;
+const uint16_t LF_REAL80    = 0x8007;
+const uint16_t LF_REAL128   = 0x8008;
+const uint16_t LF_QUADWORD  = 0x8009;
+const uint16_t LF_UQUADWORD = 0x800a;
 
 const uint16_t R_RDX = 331;
 const uint16_t R_RDI = 333;
@@ -211,6 +227,10 @@ void BackendX64::dbgEmitSecRel(X64PerThread& pp, Concat& concat, uint32_t symbol
     concat.addU16(0);
 }
 
+void BackendX64::dbgEmitEmbeddedValue(X64PerThread& pp, ComputedValue& val)
+{
+}
+
 bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
@@ -245,7 +265,7 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
         case LF_ARRAY:
             concat.addU32(f.LF_Array.elementType);
             concat.addU32(f.LF_Array.indexType);
-            concat.addU16(0x8004); // LF_ULONG
+            concat.addU16(LF_ULONG);
             concat.addU32(f.LF_Array.sizeOf);
             dbgEmitTruncatedString(concat, "");
             break;
@@ -253,11 +273,20 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
         case LF_FIELDLIST:
             for (auto& p : f.LF_FieldList.fields)
             {
-                concat.addU16(LF_MEMBER);
+                concat.addU16(f.LF_FieldList.kind);
                 concat.addU16(0x03); // private = 1, protected = 2, public = 3
-                concat.addU32(p.type);
-                concat.addU16(0x8004); // LF_ULONG
-                concat.addU32(p.offset);
+                switch (f.LF_FieldList.kind)
+                {
+                case LF_MEMBER:
+                    concat.addU32(p.type);
+                    concat.addU16(LF_ULONG);
+                    concat.addU32(p.offset);
+                    break;
+                case LF_ENUMERATE:
+                    concat.addU16(LF_ULONG);
+                    concat.addU32(p.offset);
+                    break;
+                }
                 dbgEmitTruncatedString(concat, p.name);
             }
             break;
@@ -267,13 +296,21 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
             concat.addU32(0x1000C); // attributes (Near64)
             break;
 
+        case LF_ENUM:
+            concat.addU16(f.LF_Enum.count);
+            concat.addU16(0); // properties
+            concat.addU32(f.LF_Enum.underlyingType);
+            concat.addU32(f.LF_Enum.fieldList);
+            dbgEmitTruncatedString(concat, f.name);
+            break;
+
         case LF_STRUCTURE:
             concat.addU16(f.LF_Structure.memberCount);
             concat.addU16(f.LF_Structure.forward ? 0x80 : 0); // properties
             concat.addU32(f.LF_Structure.fieldList);
-            concat.addU32(0);      // derivedFrom
-            concat.addU32(0);      // vTableShape
-            concat.addU16(0x8004); // LF_ULONG
+            concat.addU32(0);        // derivedFrom
+            concat.addU32(0);        // vTableShape
+            concat.addU16(LF_ULONG); // LF_ULONG
             concat.addU32(f.LF_Structure.sizeOf);
             dbgEmitTruncatedString(concat, f.name);
             break;
@@ -380,10 +417,11 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     {
         DbgTypeRecord tr0;
         DbgTypeField  field;
-        tr0.kind     = LF_FIELDLIST;
-        field.type   = (DbgTypeIndex)(SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
-        field.offset = 0;
-        field.name   = "data";
+        tr0.kind              = LF_FIELDLIST;
+        tr0.LF_FieldList.kind = LF_MEMBER;
+        field.type            = (DbgTypeIndex)(SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.offset          = 0;
+        field.name            = "data";
         tr0.LF_FieldList.fields.push_back(field);
 
         field.type   = (DbgTypeIndex)(SimpleTypeKind::UInt32);
@@ -419,7 +457,8 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
 
         // List of fields, after the forward ref
         DbgTypeRecord tr0;
-        tr0.kind = LF_FIELDLIST;
+        tr0.kind              = LF_FIELDLIST;
+        tr0.LF_FieldList.kind = LF_MEMBER;
         for (auto& p : typeStruct->fields)
         {
             DbgTypeField field;
@@ -437,6 +476,39 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         tr1.LF_Structure.sizeOf      = (uint16_t) typeStruct->sizeOf;
         tr1.LF_Structure.fieldList   = tr0.index;
         tr1.name                     = typeStruct->name;
+        dbgAddTypeRecord(pp, tr1);
+
+        pp.dbgMapTypes[typeInfo] = tr1.index;
+        return tr1.index;
+    }
+
+    // Enum
+    /////////////////////////////////
+    if (typeInfo->kind == TypeInfoKind::Enum)
+    {
+        TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+
+        // List of values
+        DbgTypeRecord tr0;
+        tr0.kind              = LF_FIELDLIST;
+        tr0.LF_FieldList.kind = LF_ENUMERATE;
+        for (auto& p : typeEnum->values)
+        {
+            DbgTypeField field;
+            field.type   = dbgGetOrCreateType(pp, p->typeInfo);
+            field.name   = p->namedParam;
+            field.offset = p->offset;
+            tr0.LF_FieldList.fields.push_back(field);
+        }
+        dbgAddTypeRecord(pp, tr0);
+
+        // Enum itself, pointing to the field list
+        DbgTypeRecord tr1;
+        tr1.kind                   = LF_ENUM;
+        tr1.LF_Enum.count          = (uint16_t) typeEnum->values.size();
+        tr1.LF_Enum.fieldList      = tr0.index;
+        tr1.LF_Enum.underlyingType = dbgGetOrCreateType(pp, typeEnum->rawType);
+        tr1.name                   = typeEnum->name;
         dbgAddTypeRecord(pp, tr1);
 
         pp.dbgMapTypes[typeInfo] = tr1.index;
