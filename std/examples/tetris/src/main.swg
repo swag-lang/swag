@@ -146,7 +146,8 @@ func main()
     var builder: strconv.StringBuilder
     var keyb: keyboard.Keyboard
 
-	var aa: any = 666
+	var slice: const [..] u8 = @[10, 20, 30, 40]
+
 
     while !bGameOver
     {
