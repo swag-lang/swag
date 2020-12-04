@@ -677,7 +677,11 @@ bool Workspace::buildTarget()
             for (auto& dep : toBuild[i]->moduleDependencies)
             {
                 auto it = g_Workspace.mapModulesNames.find(dep->name);
-                SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
+                if (it == g_Workspace.mapModulesNames.end())
+                {
+                    g_Log.error(format("dependency module '%s' cannot be found in that workspace", dep->name.c_str()));
+                    return false;
+                }
 
                 auto depModule = it->second;
                 if (depModule->addedToBuild)
