@@ -721,7 +721,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         return tr0.index;
     }
 
-    return (DbgTypeIndex) SimpleTypeKind::Void;
+    return (DbgTypeIndex) SimpleTypeKind::UInt64;
 }
 
 void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
