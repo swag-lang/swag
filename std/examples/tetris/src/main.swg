@@ -107,15 +107,15 @@ func DoesPieceFit(nTetromino, nRotation, nPosX, nPosY: s32)->bool
 	return true
 }
 
-func toto(x: const [2] s32, p: string...)
+func toto(zz: f32, yyyy: string, x: const [..] s32, p: string...)
 {
-	@print("toto")
+	@print(yyyy)
 }
 
 //#[swag.printbc]
 func main()
 {
-	toto(@[10, 20], "toto", "titi")
+	toto(3.14, "string", @[10, 20], "toto", "titi")
 
     var screen: *u8 = @alloc(nScreenWidth*nScreenHeight)
     loop i: nScreenWidth*nScreenHeight

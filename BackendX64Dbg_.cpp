@@ -499,6 +499,38 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         return tr1.index;
     }
 
+    // TypedVariadic
+    /////////////////////////////////
+    if (typeInfo->kind == TypeInfoKind::TypedVariadic)
+    {
+        auto typeInfoPtr = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
+
+        DbgTypeRecord tr0;
+        DbgTypeField  field;
+        tr0.kind              = LF_FIELDLIST;
+        tr0.LF_FieldList.kind = LF_MEMBER;
+        field.type            = dbgGetOrCreatePointerToType(pp, typeInfoPtr->rawType);
+        field.value.reg.u32   = 0;
+        field.name            = "data";
+        tr0.LF_FieldList.fields.push_back(field);
+
+        field.type          = (DbgTypeIndex)(SimpleTypeKind::UInt32);
+        field.value.reg.u32 = sizeof(void*);
+        field.name          = "count";
+        tr0.LF_FieldList.fields.push_back(field);
+        dbgAddTypeRecord(pp, tr0);
+
+        DbgTypeRecord tr1;
+        tr1.kind                     = LF_STRUCTURE;
+        tr1.LF_Structure.memberCount = 2;
+        tr1.LF_Structure.sizeOf      = 2 * sizeof(void*);
+        tr1.LF_Structure.fieldList   = tr0.index;
+        tr1.name                     = "typedvariadic";
+        dbgAddTypeRecord(pp, tr1);
+        pp.dbgMapTypes[typeInfo] = tr1.index;
+        return tr1.index;
+    }
+
     // Static array
     /////////////////////////////////
     if (typeInfo->kind == TypeInfoKind::Array)
@@ -854,7 +886,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     //////////
                     dbgStartRecord(pp, concat, S_LOCAL);
                     concat.addU32(typeIdx); // Type
-                    concat.addU16(0x01);    // Flags (IsParameter)
+                    concat.addU16(0);       // Flags (do not set IsParameter, because we do not want a dereference)
                     dbgEmitTruncatedString(concat, child->token.text);
                     dbgEndRecord(pp, concat);
 
