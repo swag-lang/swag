@@ -331,35 +331,23 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference a variadic parameter
     else if (typeInfo->kind == TypeInfoKind::Variadic)
     {
-        RegisterList r0;
-        reserveLinearRegisterRC2(context, r0);
-        emitSafetyBoundCheckVariadic(context, node->access->resultRegisterRC, node->array->resultRegisterRC);
+        emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->array->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
-        // Get total number of pushed arguments
-        emitInstruction(context, ByteCodeOp::BinOpShiftRightU64VB, r0)->b.u32 = 32;
-        // Offset from variadic on top of stack to the list of 'any' (number of total pushed arguments * register)
-        emitInstruction(context, ByteCodeOp::Mul64byVB32, r0)->b.u32 = sizeof(Register);
-        // r0[1] now points to the list of any
-        emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, r0[0], r0[1]);
+        // Increment pointer (if increment is not 0)
+        if (!node->access->isConstant0())
+        {
+            emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = 2 * sizeof(Register); // 2 is sizeof(any)
+            emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+        }
 
-        // Now we point to the first 'any' of the argument list
-        emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = 2 * sizeof(Register);
-        emitInstruction(context, ByteCodeOp::IncPointer32, r0[1], node->access->resultRegisterRC, r0[0]);
-
-        // Deref the any
-        emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
-
-        node->resultRegisterRC = r0;
-        freeRegisterRC(context, node->array);
+        SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, g_TypeMgr.typeInfoAny, false));
+        node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access);
     }
 
     // Dereference a typed variadic parameter
     else if (typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
-        //emitSafetyNullPointer(context, node->array->resultRegisterRC);
         emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
         auto rawType = ((TypeInfoVariadic*) typeInfo)->rawType;

@@ -324,7 +324,6 @@ struct ByteCodeGenJob : public Job
     static void emitSafetyBoundCheckLowerEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static void emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static void emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfoArray);
-    static void emitSafetyBoundCheckVariadic(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static void emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static void emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode);
     static void emitSafetyMakeSlice(ByteCodeGenContext* context, AstArrayPointerSlicing* node);

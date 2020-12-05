@@ -75,7 +75,6 @@ void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
                         backIp->op == ByteCodeOp::PushRAParam2 ||
                         backIp->op == ByteCodeOp::PushRAParam3 ||
                         backIp->op == ByteCodeOp::PushRAParam4 ||
-                        backIp->op == ByteCodeOp::CopySPVaargsOld ||
                         backIp->op == ByteCodeOp::CopySPVaargs ||
                         backIp->op == ByteCodeOp::CopySP)
                         setNop(context, backIp);

@@ -759,13 +759,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString3("\x48\xd3\x28"); // shr qword ptr [rax], cl
             break;
 
-        case ByteCodeOp::BinOpShiftRightU64VB:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
-            concat.addString3("\x48\xd3\xe8"); // shr rax, cl
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
-
         case ByteCodeOp::AffectOpXorEqS8:
             MK_BINOPEQ8_CAB(X64Op::XOR);
             break;
@@ -1822,38 +1815,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
-        case ByteCodeOp::CopySPVaargsOld:
-        {
-            auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
-            bool foreign      = ip->c.b;
-            if (!foreign)
-            {
-                // We are close to the byte code, as all PushRaParams are already in the correct order for variadics.
-                // We need register to address the stack where all will be stored.
-                // There's one more PushRAParam to come after CopySPVaargs, so offset is 8. But we will
-                // also store first the return registers. So in the end, the start of the stack for vaargs is
-                // rsp + 8 (the next PushRAParam) + number of return registers.
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, (uint8_t)(8 + (typeFuncCall->numReturnRegisters() * 8)), RAX, RSP);
-                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            }
-            else
-            {
-                uint32_t variadicStackSize = 8 + ((int) pushRAParams.size() * sizeof(Register));
-                MK_ALIGN16(variadicStackSize);
-                uint32_t offset = sizeParamsStack - variadicStackSize;
-                for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--)
-                {
-                    offset += 8;
-                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
-                    BackendX64Inst::emit_Store64_Indirect(pp, offset, RAX, RSP);
-                }
-
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, (sizeParamsStack - variadicStackSize) + 8, RAX, RSP);
-                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-                BackendX64Inst::emit_Store64_Indirect(pp, (sizeParamsStack - variadicStackSize), RAX, RSP);
-            }
-            break;
-        }
         case ByteCodeOp::CopySPVaargs:
         {
             auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);

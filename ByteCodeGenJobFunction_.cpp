@@ -1046,9 +1046,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     funcDescription = CastAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
                 }
 
-                auto defaultParam = CastAst<AstVarDecl>(funcDescription->parameters->childs[i], AstNodeKind::FuncDeclParam);
-
                 // Empty variadic parameter
+                auto defaultParam = CastAst<AstVarDecl>(funcDescription->parameters->childs[i], AstNodeKind::FuncDeclParam);
                 if (defaultParam->typeInfo->kind != TypeInfoKind::Variadic && defaultParam->typeInfo->kind != TypeInfoKind::TypedVariadic)
                 {
                     SWAG_ASSERT(defaultParam->assignment);
@@ -1113,18 +1112,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // Pass a variadic parameter to another function
     else if (lastParam && lastParam->typeInfo && lastParam->typeInfo->kind == TypeInfoKind::Variadic)
     {
-        RegisterList r0;
-        reserveRegisterRC(context, r0, 2);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], lastParam->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::DeRef64, r0[0], r0[0]);
-        emitInstruction(context, ByteCodeOp::SetImmediate32, r0[1])->b.u32 = 8;
-        emitInstruction(context, ByteCodeOp::DecPointer32, lastParam->resultRegisterRC, r0[1], lastParam->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], lastParam->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::DeRef64, r0[1], r0[1]);
-        emitInstruction(context, ByteCodeOp::PushRAParam2, r0[0], r0[1]);
-        toFree.push_back(r0[0]);
-        toFree.push_back(r0[1]);
         precallStack += 2 * sizeof(Register);
+        emitInstruction(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);
         numPushParams += 2;
         maxCallParams += 2;
     }
@@ -1134,25 +1123,27 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         auto numVariadic = (uint32_t)(numCallParams - numTypeParams) + 1;
 
-        // Store number of extra parameters
-        auto r0 = reserveRegisterRC(context);
-        toFree.push_back(r0);
-        emitInstruction(context, ByteCodeOp::SetImmediate64, r0)->b.u64 = numVariadic | ((numPushParams + 1) << 32);
-        emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-        maxCallParams++;
+        // The array of any has been pushed first, so we need to offset all pushed parameters to point to it
+        // This is the main difference with typedvariadic, which directly point to the pushed variadic parameters
+        auto offset      = numPushParams;
 
-        // Store address on the stack of those parameters. This must be the last push
-        auto r1 = reserveRegisterRC(context);
-        toFree.push_back(r1);
-        auto inst       = emitInstruction(context, ByteCodeOp::CopySPVaargsOld, r1);
+        RegisterList r0;
+        reserveRegisterRC(context, r0, 2);
+        toFree.push_back(r0[0]);
+        toFree.push_back(r0[1]);
+
+        auto inst       = emitInstruction(context, ByteCodeOp::CopySPVaargs, r0[0]);
+        inst->b.u32     = (uint32_t) offset * sizeof(Register);
         inst->c.b       = foreign;
         inst->d.pointer = (uint8_t*) typeInfoFunc;
-        emitInstruction(context, ByteCodeOp::PushRAParam, r1);
-        maxCallParams++;
+
+        emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
+        emitInstruction(context, ByteCodeOp::PushRAParam2, r0[1], r0[0]);
+        maxCallParams += 2;
 
         precallStack += 2 * sizeof(Register);
     }
-    else if (typeInfoFunc->flags & TYPEINFO_TYPED_VARIADIC)
+    else if (typeInfoFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
         auto numVariadic  = (uint32_t)(numCallParams - numTypeParams) + 1;
         auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);

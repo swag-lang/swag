@@ -860,12 +860,6 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             {
                 auto idxParam    = typeFunc->numReturnRegisters();
                 auto countParams = decl->parameters->childs.size();
-                if (typeFunc->flags & TYPEINFO_VARIADIC)
-                {
-                    idxParam += 2;
-                    countParams--;
-                }
-
                 for (int i = 0; i < countParams; i++)
                 {
                     auto child     = decl->parameters->childs[i];

@@ -1233,14 +1233,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, TO_PTR_I64(r0));
             break;
         }
-        case ByteCodeOp::BinOpShiftRightU64VB:
-        {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto vb = builder.CreateIntCast(CST_RB32, builder.getInt64Ty(), false);
-            auto v0 = builder.CreateLShr(builder.CreateLoad(r0), vb);
-            builder.CreateStore(v0, r0);
-            break;
-        }
 
         case ByteCodeOp::BinOpModuloS32:
         {
@@ -2664,29 +2656,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, r0);
             break;
         }
-        case ByteCodeOp::CopySPVaargsOld:
-        {
-            auto allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(pushRAParams.size() + 1));
 
-            int idx = 1;
-            int idxParam = (int)pushRAParams.size() - 1;
-            while (idxParam >= 0)
-            {
-                auto r0 = GEP_I32(allocVA, idx);
-                auto r1 = GEP_I32(allocR, pushRAParams[idxParam]);
-                builder.CreateStore(builder.CreateLoad(r1), r0);
-                idx++;
-                idxParam--;
-            }
-
-            auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst1_i32);
-            builder.CreateStore(r1, r0);
-
-            auto r2 = TO_PTR_PTR_I64(allocVA);
-            builder.CreateStore(r1, r2);
-            break;
-        }
         case ByteCodeOp::CopySPVaargs:
         {
             // We need to make all variadic parameters contiguous in stack, and point to that address

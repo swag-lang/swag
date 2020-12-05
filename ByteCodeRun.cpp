@@ -680,7 +680,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
     case ByteCodeOp::CopySP:
-    case ByteCodeOp::CopySPVaargsOld:
         registersRC[ip->a.u32].pointer = context->sp - ip->b.u32;
         break;
 
@@ -1076,12 +1075,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto val1                  = IMMA_U64(ip);
         auto val2                  = IMMB_U64(ip);
         registersRC[ip->c.u32].u64 = val1 ^ val2;
-        break;
-    }
-
-    case ByteCodeOp::BinOpShiftRightU64VB:
-    {
-        registersRC[ip->a.u32].u64 >>= ip->b.u32;
         break;
     }
 

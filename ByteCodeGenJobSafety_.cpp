@@ -106,22 +106,6 @@ void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint
     freeRegisterRC(context, r1);
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckVariadic(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
-{
-    if (!mustEmitSafety(context))
-        return;
-
-    PushICFlags ic(context, BCI_SAFETY);
-
-    auto r2 = reserveRegisterRC(context);
-
-    emitInstruction(context, ByteCodeOp::DeRef64, r2, r1);
-    emitInstruction(context, ByteCodeOp::ClearMaskU64, r2)->b.u64 = 0x00000000'FFFFFFFF;
-    emitSafetyBoundCheckLower(context, r0, r2);
-
-    freeRegisterRC(context, r2);
-}
-
 void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode)
 {
     if (!mustEmitSafety(context))
