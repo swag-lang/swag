@@ -117,7 +117,7 @@ char SourceFile::loadAndGetPrivateChar()
 
     // Read one chunk of file
     {
-        Timer read(g_Stats.readFiles);
+        Timer read(g_Stats.readFilesTime);
         read.start();
         if (!openedOnce)
         {

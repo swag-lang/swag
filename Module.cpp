@@ -504,12 +504,16 @@ void Module::printUserMessage(const BuildParameters& bp)
 {
     if (!backend->mustCompile)
     {
-        if (bp.compileType == BackendCompileType::Test)
-            g_Log.messageHeaderCentered("Skipping build test", name.c_str(), LogColor::Gray);
-        else if (bp.compileType == BackendCompileType::Example)
-            g_Log.messageHeaderCentered("Skipping build example", name.c_str(), LogColor::Gray);
-        else
-            g_Log.messageHeaderCentered("Skipping build", name.c_str(), LogColor::Gray);
+        g_Stats.skippedModules += 1;
+        if (g_CommandLine.verbose)
+        {
+            if (bp.compileType == BackendCompileType::Test)
+                g_Log.messageHeaderCentered("Skipping build test", name.c_str(), LogColor::Gray);
+            else if (bp.compileType == BackendCompileType::Example)
+                g_Log.messageHeaderCentered("Skipping build example", name.c_str(), LogColor::Gray);
+            else
+                g_Log.messageHeaderCentered("Skipping build", name.c_str(), LogColor::Gray);
+        }
     }
     else
     {

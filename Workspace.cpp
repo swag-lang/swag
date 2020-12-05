@@ -730,6 +730,9 @@ bool Workspace::build()
         timer.stop(true);
     }
 
+    if (g_Stats.skippedModules.load() > 0)
+        g_Log.messageHeaderCentered("Skipped modules", format("%d", g_Stats.skippedModules.load()));
+
     if (g_Workspace.numErrors)
         g_Log.messageHeaderCentered("Done", format("%d error(s)", g_Workspace.numErrors.load()), LogColor::Green, LogColor::Red);
     else

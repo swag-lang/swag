@@ -2,11 +2,16 @@
 #include "ModuleGenOutputJob.h"
 #include "Backend.h"
 #include "Module.h"
+#include "Timer.h"
+#include "Stats.h"
 
 thread_local Pool<ModuleGenOutputJob> g_Pool_moduleGenOutputJob;
 
 JobResult ModuleGenOutputJob::execute()
 {
+    Timer timer(g_Stats.genOutputTimeJob);
+    timer.start();
+
     module->backend->generateOutput(buildParameters);
     g_Stats.numGenModules++;
 
@@ -21,5 +26,6 @@ JobResult ModuleGenOutputJob::execute()
     if (buildParameters.compileType != BackendCompileType::Test)
         module->setHasBeenBuilt(BUILDRES_COMPILER);
 
+    timer.stop();
     return JobResult::ReleaseJob;
 }

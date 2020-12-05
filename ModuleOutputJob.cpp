@@ -98,6 +98,15 @@ JobResult ModuleOutputJob::execute()
             return JobResult::ReleaseJob;
         if (module->numErrors)
             return JobResult::ReleaseJob;
+
+        // Timing...
+        if (g_CommandLine.stats || g_CommandLine.verbose)
+        {
+            timerPrepareOutput.stop();
+            if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
+                g_Log.verbosePass(LogPassType::PassEnd, "PrepareOutput", module->name, timerPrepareOutput.elapsed.count());
+        }
+
         if (!module->WaitForDependenciesDone(this))
             return JobResult::KeepJobAlive;
         pass = ModuleOutputJobPass::GenOutput;
@@ -111,12 +120,8 @@ JobResult ModuleOutputJob::execute()
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
-            timerPrepareOutput.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-            {
-                g_Log.verbosePass(LogPassType::PassEnd, "PrepareOutput", module->name, timerPrepareOutput.elapsed.count());
                 g_Log.verbosePass(LogPassType::PassBegin, "GenOutput", module->name);
-            }
             timerGenOutput.start();
         }
 
