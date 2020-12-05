@@ -9,6 +9,7 @@ namespace win32
     alias DWORD =           u32
     alias BOOL = 	        s32
     alias BYTE = 			u8
+    alias LPBYTE = 			*BYTE
     alias LONG = 			s32
     alias LPVOID =			*void
     alias LPCVOID =			const *void
@@ -23,6 +24,7 @@ namespace win32
     alias LARGE_INTEGER =	s64
     alias PLONG =           *LONG
     alias CHAR =            u8
+    alias LPSTR =           *CHAR
     alias SIZE_T =          u64
     alias va_list =         *u8
 
@@ -476,6 +478,14 @@ namespace win32
         hStdError:          HANDLE
     }
 
+    struct PROCESS_INFORMATION
+    {
+        hProcess:       HANDLE
+        hThread:        HANDLE
+        dwProcessId:    DWORD
+        dwThreadId:     DWORD
+    }
+
     #[swag.foreign("kernel32")]
     {
         func GetLastError()->DWORD;
@@ -485,7 +495,7 @@ namespace win32
         func OutputDebugStringA(lpOutputString: LPCSTR);
         func OutputDebugStringW(lpOutputString: LPCWSTR);
         func DebugActiveProcess(procId: DWORD);
-        func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPSTR, lpProcessAttributes: LPSECURITY_ATTRIBUTES, lpThreadAttributes: LPSECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
+        func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
 
         func GetCurrentProcessId()->DWORD;
         func GetStdHandle(nStdHandle: DWORD)->HANDLE;

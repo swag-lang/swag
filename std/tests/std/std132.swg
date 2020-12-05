@@ -4,12 +4,12 @@ using std.strconv
 #test
 {
     var builder: StringBuilder
-    builder.append("toto")
+    builder.appendString("toto")
     builder.appendFormat("%", 444)
-    builder.append("假"'char)
+    builder.appendAny("假"'char)
 
     var str: String = "mystring"
-    builder.append(str)
+    builder.appendString(str)
 
     s := builder.toString();
     //console.write("%\n", s)

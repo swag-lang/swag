@@ -26,19 +26,19 @@ impl StringBuilder
     }
 
     // Append a string
-    func append(using self, value: string)
+    func appendString(using self, value: string)
     {
         buffer.addBytes(value)
     }
 
     // Append a string
-    func append(using self, value: String)
+    func appendString(using self, value: String)
     {
         buffer.addBytes(cast(string) value)
     }
 
     // Append a character
-    func append(using self, value: char)
+    func appendChar(using self, value: char)
     {
         convertChar(&buffer, value, null)
     }
@@ -53,6 +53,12 @@ impl StringBuilder
     func appendFormat(using self, fmt: string, values: ...)
     {
         format.append(&buffer, fmt, values);
+    }
+
+    // Force a ending 0
+    func zeroTerminated(using self)
+    {
+        buffer.addByte(0)
     }
 
     // Return the content as a string
