@@ -399,7 +399,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Debug infos
     if (pp.dbg && bc->node)
     {
-        pp.dbg->startFunction(pp, bc, func, allocStack);
+        pp.dbg->startFunction(buildParameters, pp, bc, func, allocStack);
         pp.dbg->setLocation(pp.builder, bc, nullptr);
     }
 
@@ -2168,6 +2168,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             // - a parameter will not be visible anymore ("optimized away") after it's last usage.
             // So we force a read/write of each parameter just before the "ret" to avoid that debug mess.
             // RIDICULOUS !!
+            //
+            // If we request an optimized code, do not do that crap.
             bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
             if (isDebug && buildParameters.buildCfg->backendDebugInformations)
             {

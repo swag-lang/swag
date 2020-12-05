@@ -377,7 +377,7 @@ llvm::DISubprogram* BackendLLVMDbg::startFunction(ByteCode* bc, AstFuncDecl** re
     return SP;
 }
 
-void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
+void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
 {
     AstFuncDecl*        decl;
     llvm::DISubprogram* SP = startFunction(bc, &decl);
@@ -439,8 +439,29 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
                 break;
             }
 
-            llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, child->token.text.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
-            dbgBuilder->insertDeclare(func->getArg(idxParam), var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
+            llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, child->token.text.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
+            llvm::Value*           value = func->getArg(idxParam);
+
+            // Sometime, don't ask me why (probably because of parameters passed as registers or as pointers), non scalar types are forced by
+            // llvm to be references, and sometimes not. Which means that the debug value is correct/wrong, depending on whatever...
+            // Crap !
+            // The code below forces a local copy on the stack of the parameter, as it seams to correct the issue.
+            // What a mess !
+            //
+            // If we request an optimized code, do not do that crap.
+            bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
+            if (isDebug)
+            {
+                if (typeParam->numRegisters() > 1)
+                {
+                    auto& builder = *pp.builder;
+                    auto  allocA  = builder.CreateAlloca(builder.getInt64Ty()->getPointerTo(), nullptr, func->getArg(idxParam)->getName());
+                    builder.CreateStore(value, GEP_I32(allocA, 0));
+                    value = GEP_I32(allocA, 0);
+                }
+            }
+
+            dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
             idxParam += typeParam->numRegisters();
         }
     }
