@@ -22,7 +22,7 @@ struct BackendLLVMDbg
 
     llvm::DIFile* getOrCreateFile(SourceFile* file);
 
-    llvm::DIType*           getSliceType(TypeInfo* typeInfo, llvm::DIFile* file);
+    llvm::DIType*           getSliceType(TypeInfo* typeInfo, TypeInfo* pointedType, llvm::DIFile* file);
     llvm::DIType*           getEnumType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getReferenceToType(TypeInfo* typeInfo, llvm::DIFile* file);

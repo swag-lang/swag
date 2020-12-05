@@ -461,7 +461,11 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64PerThread& pp, TypeInfo* typeInfo, 
     tr1.LF_Structure.memberCount = 2;
     tr1.LF_Structure.sizeOf      = 2 * sizeof(void*);
     tr1.LF_Structure.fieldList   = tr0.index;
-    tr1.name                     = typeInfo->name;
+    if (typeInfo->kind == TypeInfoKind::Slice)
+        tr1.name = format("[..] %s", pointedType->name.c_str()); // debugger dosen't like 'const' before a slice name
+    else
+        tr1.name = typeInfo->name;
+
     dbgAddTypeRecord(pp, tr1);
     pp.dbgMapPtrTypes[typeInfo] = tr1.index;
     return tr1.index;

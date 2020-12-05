@@ -177,21 +177,19 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     return result;
 }
 
-llvm::DIType* BackendLLVMDbg::getSliceType(TypeInfo* typeInfo, llvm::DIFile* file)
+llvm::DIType* BackendLLVMDbg::getSliceType(TypeInfo* typeInfo, TypeInfo* pointedType, llvm::DIFile* file)
 {
     auto it = mapTypes.find(typeInfo);
     if (it != mapTypes.end())
         return it->second;
 
-    auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-    auto fileScope   = file->getScope();
-    auto noFlag      = llvm::DINode::DIFlags::FlagZero;
-    auto name        = "__autoslice_" + typeInfoPtr->name;
-    Ast::normalizeIdentifierName(name);
+    auto fileScope     = file->getScope();
+    auto noFlag        = llvm::DINode::DIFlags::FlagZero;
+    auto name          = format("[..] %s", pointedType->name.c_str()); // debugger doesn't like 'const' before slice name
     auto result        = dbgBuilder->createStructType(fileScope, name.c_str(), file, 0, 2 * sizeof(void*) * 8, 0, noFlag, nullptr, llvm::DINodeArray());
     mapTypes[typeInfo] = result;
 
-    auto realType = getPointerToType(typeInfoPtr->pointedType, file);
+    auto realType = getPointerToType(pointedType, file);
     auto v1       = dbgBuilder->createMemberType(result, "data", file, 0, 64, 0, 0, noFlag, realType);
     auto v2       = dbgBuilder->createMemberType(result, "count", file, 1, 32, 0, 64, noFlag, u32Ty);
     auto content  = dbgBuilder->getOrCreateArray({v1, v2});
@@ -245,7 +243,19 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
         return result;
     }
     case TypeInfoKind::Slice:
-        return getSliceType(typeInfo, file);
+    {
+        auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        return getSliceType(typeInfo, typeInfoPtr->pointedType, file);
+    }
+    case TypeInfoKind::TypedVariadic:
+    {
+        auto typeInfoPtr = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
+        return getSliceType(typeInfo, typeInfoPtr->rawType, file);
+    }
+    case TypeInfoKind::Variadic:
+    {
+        return getSliceType(typeInfo, g_TypeMgr.typeInfoAny, file);
+    }
 
     case TypeInfoKind::Interface:
         return interfaceTy;
@@ -389,6 +399,23 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
     {
         auto idxParam    = typeFunc->numReturnRegisters();
         auto countParams = decl->parameters->childs.size();
+
+        // Variadic. Pass as first parameters, but get type at the end
+        if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+        {
+            auto          child     = decl->parameters->childs.back();
+            const auto&   loc       = child->token.startLocation;
+            auto          typeParam = typeFunc->parameters.back()->typeInfo;
+            auto          location  = llvm::DebugLoc::get(loc.line + 1, loc.column, SP);
+            llvm::DIType* type      = getType(typeParam, file);
+
+            llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, child->token.text.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, llvm::DINode::FlagZero);
+            dbgBuilder->insertDeclare(func->getArg(idxParam), var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
+
+            idxParam += 2;
+            countParams--;
+        }
+
         for (int i = 0; i < countParams; i++)
         {
             auto        child     = decl->parameters->childs[i];

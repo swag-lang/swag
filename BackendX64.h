@@ -117,8 +117,8 @@ struct DbgTypeRecordPointer
 
 struct DbgTypeRecord
 {
+    Utf8                   name;
     AstNode*               node = nullptr;
-    const char*            name = nullptr;
     DbgTypeRecordArgList   LF_ArgList;
     DbgTypeRecordProcedure LF_Procedure;
     DbgTypeRecordFuncId    LF_FuncId;
