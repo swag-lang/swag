@@ -2172,7 +2172,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             if (isDebug && buildParameters.buildCfg->backendDebugInformations)
             {
                 auto r1 = GEP_I32(allocT, 0);
-                for (int iparam = 0; iparam < typeFunc->parameters.size() + typeFunc->numReturnRegisters(); iparam++)
+                for (int iparam = 1; iparam < typeFunc->parameters.size() + typeFunc->numReturnRegisters(); iparam++)
                 {
                     auto r0 = builder.CreateLoad(func->getArg(iparam));
                     builder.CreateStore(r0, r1);

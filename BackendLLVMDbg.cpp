@@ -183,11 +183,10 @@ llvm::DIType* BackendLLVMDbg::getSliceType(TypeInfo* typeInfo, TypeInfo* pointed
     if (it != mapTypes.end())
         return it->second;
 
-    auto fileScope     = file->getScope();
-    auto noFlag        = llvm::DINode::DIFlags::FlagZero;
-    auto name          = format("[..] %s", pointedType->name.c_str()); // debugger doesn't like 'const' before slice name
-    auto result        = dbgBuilder->createStructType(fileScope, name.c_str(), file, 0, 2 * sizeof(void*) * 8, 0, noFlag, nullptr, llvm::DINodeArray());
-    mapTypes[typeInfo] = result;
+    auto fileScope = file->getScope();
+    auto noFlag    = llvm::DINode::DIFlags::FlagZero;
+    auto name      = format("[..] %s", pointedType->name.c_str()); // debugger doesn't like 'const' before slice name
+    auto result    = dbgBuilder->createStructType(fileScope, name.c_str(), file, 0, 2 * sizeof(void*) * 8, 0, noFlag, nullptr, llvm::DINodeArray());
 
     auto realType = getPointerToType(pointedType, file);
     auto v1       = dbgBuilder->createMemberType(result, "data", file, 0, 64, 0, 0, noFlag, realType);
@@ -195,6 +194,7 @@ llvm::DIType* BackendLLVMDbg::getSliceType(TypeInfo* typeInfo, TypeInfo* pointed
     auto content  = dbgBuilder->getOrCreateArray({v1, v2});
     dbgBuilder->replaceArrays(result, content);
 
+    mapTypes[typeInfo] = result;
     return result;
 }
 
@@ -461,7 +461,6 @@ void BackendLLVMDbg::startFunction(LLVMPerThread& pp, ByteCode* bc, llvm::Functi
                 llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, localVar->token.text.c_str(), 1, file, loc.line + 1, type, !isOptimized);
                 auto                   v     = func->getArg(0);
                 vector<int64_t>        expr;
-                //expr.push_back(llvm::dwarf::DW_OP_deref);
                 dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(expr), llvm::DebugLoc::get(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
             }
         }
