@@ -15,22 +15,16 @@ func log(msg: string)   => OutputDebugStringA(cast(const *u8) msg)
 // If it works, it will open a dialog box to pickup a visual studio instance
 func attach()->ErrorId
 {
-    var si: STARTUPINFOA
-    var pi: PROCESS_INFORMATION
-    si.cb = @sizeof(si)
+    var builder: strconv.StringBuilder
+    builder.appendString("-p ")
+    builder.appendAny(GetCurrentProcessId())
+    builder.zeroTerminated()
+    arguments := builder.moveToString()
 
-    var cmdLine: strconv.StringBuilder
-    cmdLine.appendString("vsjitdebugger.exe ")
-    cmdLine.appendString("-p ")
-    cmdLine.appendAny(GetCurrentProcessId())
-    cmdLine.zeroTerminated()
-    str := cmdLine.moveToString()
+    (proc, err) := process.start("vsjitdebugger.exe", arguments.toString())
+    if err return err
 
-    if !CreateProcessA(null, @dataof(str), null, null, FALSE, 0, null, null, &si, &pi)
-    {
-        error.setLastErrorId()
-        return error.last()
-    }
+    CloseHandle(proc.handle)
 
     while !IsDebuggerPresent() thread.sleep(100)
     return null

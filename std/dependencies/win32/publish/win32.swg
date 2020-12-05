@@ -495,7 +495,7 @@ namespace win32
         func OutputDebugStringA(lpOutputString: LPCSTR);
         func OutputDebugStringW(lpOutputString: LPCWSTR);
         func DebugActiveProcess(procId: DWORD);
-        func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
+        func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
 
         func GetCurrentProcessId()->DWORD;
         func GetStdHandle(nStdHandle: DWORD)->HANDLE;
