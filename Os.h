@@ -38,6 +38,8 @@ namespace OS
     extern void*    alloc(uint32_t size);
     extern void*    realloc(void* ptr, uint32_t size);
     extern void     free(void* ptr);
+    extern uint64_t timerNow();
+    extern double   timerToSeconds(uint64_t timer);
 
     extern bool atomicTestNull(void** ptr);
     extern void atomicSetIfNotNull(void** ptr, void* what);

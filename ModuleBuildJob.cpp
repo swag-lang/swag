@@ -216,7 +216,7 @@ JobResult ModuleBuildJob::execute()
             timerSemanticCompiler.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
             {
-                g_Log.verbosePass(LogPassType::PassEnd, "SemanticCompiler", module->name, timerSemanticCompiler.elapsed.count());
+                g_Log.verbosePass(LogPassType::PassEnd, "SemanticCompiler", module->name, timerSemanticCompiler.elapsed);
                 g_Log.verbosePass(LogPassType::PassBegin, "SemanticModule", module->name);
             }
             timerSemanticModule.start();
@@ -263,7 +263,7 @@ JobResult ModuleBuildJob::execute()
         {
             timerSemanticModule.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassEnd, "SemanticModule", module->name, timerSemanticModule.elapsed.count());
+                g_Log.verbosePass(LogPassType::PassEnd, "SemanticModule", module->name, timerSemanticModule.elapsed);
         }
 
         pass = ModuleBuildPass::WaitForDependenciesEffective;
@@ -305,7 +305,7 @@ JobResult ModuleBuildJob::execute()
         {
             timerOptimizeBc.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassEnd, "OptimizeBc", module->name, timerOptimizeBc.elapsed.count());
+                g_Log.verbosePass(LogPassType::PassEnd, "OptimizeBc", module->name, timerOptimizeBc.elapsed);
         }
 
         module->printBC();
@@ -501,7 +501,7 @@ JobResult ModuleBuildJob::execute()
         {
             timerOutput.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassEnd, "Output", module->name, timerOutput.elapsed.count());
+                g_Log.verbosePass(LogPassType::PassEnd, "Output", module->name, timerOutput.elapsed);
         }
 
         if (module->numErrors)

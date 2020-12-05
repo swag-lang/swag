@@ -26,6 +26,8 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::PrepareOutput)
     {
+        pass = ModuleOutputJobPass::WaitForDependencies;
+
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
@@ -56,7 +58,6 @@ JobResult ModuleOutputJob::execute()
         module->backend->numPreCompileBuffers = max(module->backend->numPreCompileBuffers, 1);
         module->backend->numPreCompileBuffers = min(module->backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
 
-        pass = ModuleOutputJobPass::WaitForDependencies;
         for (int i = 0; i < module->backend->numPreCompileBuffers; i++)
         {
             // Precompile a specific version, to test it
@@ -94,18 +95,18 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::WaitForDependencies)
     {
-        if (module->buildPass < BuildPass::Full)
-            return JobResult::ReleaseJob;
-        if (module->numErrors)
-            return JobResult::ReleaseJob;
-
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
             timerPrepareOutput.stop();
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassEnd, "PrepareOutput", module->name, timerPrepareOutput.elapsed.count());
+                g_Log.verbosePass(LogPassType::PassEnd, "PrepareOutput", module->name, timerPrepareOutput.elapsed);
         }
+
+        if (module->buildPass < BuildPass::Full)
+            return JobResult::ReleaseJob;
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
 
         if (!module->WaitForDependenciesDone(this))
             return JobResult::KeepJobAlive;
@@ -114,9 +115,6 @@ JobResult ModuleOutputJob::execute()
 
     if (pass == ModuleOutputJobPass::GenOutput)
     {
-        if (module->numErrors)
-            return JobResult::ReleaseJob;
-
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
@@ -124,6 +122,9 @@ JobResult ModuleOutputJob::execute()
                 g_Log.verbosePass(LogPassType::PassBegin, "GenOutput", module->name);
             timerGenOutput.start();
         }
+
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
 
         pass = ModuleOutputJobPass::Done;
 
@@ -172,7 +173,7 @@ JobResult ModuleOutputJob::execute()
     {
         timerGenOutput.stop();
         if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
-            g_Log.verbosePass(LogPassType::PassEnd, "GenOutput", module->name, timerGenOutput.elapsed.count());
+            g_Log.verbosePass(LogPassType::PassEnd, "GenOutput", module->name, timerGenOutput.elapsed);
     }
 
     return JobResult::ReleaseJob;

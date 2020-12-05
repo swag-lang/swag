@@ -1,6 +1,6 @@
 #if std.WINDOWS;
-using win32
 public namespace std.time;
+using win32
 
 private var g_perfCounterFreq: u64
 

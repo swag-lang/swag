@@ -91,7 +91,7 @@ void Log::message(const Utf8& message)
     unlock();
 }
 
-void Log::verbosePass(LogPassType type, const Utf8& passName, const Utf8& moduleName, double time)
+void Log::verbosePass(LogPassType type, const Utf8& passName, const Utf8& moduleName, uint64_t time)
 {
     if (g_CommandLine.silent || !g_CommandLine.verbose)
         return;
@@ -134,7 +134,7 @@ void Log::verbosePass(LogPassType type, const Utf8& passName, const Utf8& module
 
     // Time
     if (time != -1)
-        g_Log.print(format("%.3fs", time));
+        g_Log.print(format("%.3fs", OS::timerToSeconds(time)));
 
     g_Log.eol();
     setDefaultColor();

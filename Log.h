@@ -20,7 +20,7 @@ enum class LogColor
     DarkCyan,
     DarkYellow,
     DarkMagenta,
-	Default,
+    Default,
 };
 
 enum class LogPassType
@@ -42,7 +42,7 @@ struct Log
     void message(const Utf8& message);
     void messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Green, LogColor msgColor = LogColor::White);
     void messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Cyan, LogColor msgColor = LogColor::Cyan);
-    void verbosePass(LogPassType type, const Utf8& message, const Utf8& moduleName, double time = -1);
+    void verbosePass(LogPassType type, const Utf8& message, const Utf8& moduleName, uint64_t time = -1);
     void verbose(const Utf8& message, bool forceEol = true);
 
     void lock()

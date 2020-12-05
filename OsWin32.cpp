@@ -675,6 +675,20 @@ namespace OS
         HeapFree(GetProcessHeap(), 0, ptr);
     }
 
+    uint64_t timerNow()
+    {
+        LARGE_INTEGER res;
+        QueryPerformanceCounter(&res);
+        return res.QuadPart;
+    }
+
+    double timerToSeconds(uint64_t timer)
+    {
+        LARGE_INTEGER freq;
+        QueryPerformanceFrequency(&freq);
+        return (double) timer / (double) freq.QuadPart;
+    }
+
     bool atomicTestNull(void** ptr)
     {
         return InterlockedCompareExchangePointer(ptr, *ptr, nullptr) == nullptr;
@@ -767,7 +781,7 @@ namespace OS
 
     int8_t atomicXchg(int8_t* addr, int8_t replaceWith)
     {
-        return InterlockedExchange8((char*)addr, replaceWith);
+        return InterlockedExchange8((char*) addr, replaceWith);
     }
 
     int16_t atomicXchg(int16_t* addr, int16_t replaceWith)
@@ -777,7 +791,7 @@ namespace OS
 
     int32_t atomicXchg(int32_t* addr, int32_t replaceWith)
     {
-        return InterlockedExchange((LONG*)addr, (LONG)replaceWith);
+        return InterlockedExchange((LONG*) addr, (LONG) replaceWith);
     }
 
     int64_t atomicXchg(int64_t* addr, int64_t replaceWith)

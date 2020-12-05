@@ -65,7 +65,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     if (verbose)
     {
         loadLibTimer.stop();
-        g_Log.verbosePass(LogPassType::Info, "LoadModule", name.c_str(), loadLibTimer.elapsed.count());
+        g_Log.verbosePass(LogPassType::Info, "LoadModule", name.c_str(), loadLibTimer.elapsed);
     }
 
     unique_lock lk(mutex);

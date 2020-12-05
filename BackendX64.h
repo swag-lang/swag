@@ -317,7 +317,7 @@ struct BackendX64 : public Backend
     void         dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
     bool         dbgEmitDataDebugT(const BuildParameters& buildParameters);
     bool         dbgEmitFctDebugS(const BuildParameters& buildParameters);
-    bool         dbgEmit(const BuildParameters& buildParameters);
+    bool         emitDebug(const BuildParameters& buildParameters);
 
     bool saveObjFile(const BuildParameters& buildParameters);
 

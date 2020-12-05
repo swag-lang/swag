@@ -347,9 +347,13 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         emitSymbolTable(buildParameters);
         emitStringTable(buildParameters);
         emitDirectives(buildParameters);
+
+        // Unwinding sections
         emitXData(buildParameters);
         emitPData(buildParameters);
-        dbgEmit(buildParameters);
+
+        // Debug sections
+        emitDebug(buildParameters);
 
         if (!pp.relocTableTextSection.table.empty())
         {

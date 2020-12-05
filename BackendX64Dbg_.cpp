@@ -996,7 +996,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendX64::dbgEmit(const BuildParameters& buildParameters)
+bool BackendX64::emitDebug(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;

@@ -33,19 +33,19 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job
 
 void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, Module* moduleToGen, int& start, int& end)
 {
-    int size = (int) moduleToGen->byteCodeFunc.size();
-
+    int size            = (int) moduleToGen->byteCodeFunc.size();
     int precompileIndex = buildParameters.precompileIndex;
+    int range           = size / numPreCompileBuffers;
 
     if (precompileIndex == 0)
     {
         start = 0;
-        end   = size / numPreCompileBuffers;
+        end   = range;
     }
     else
     {
-        start = precompileIndex * (size / numPreCompileBuffers);
-        end   = start + (size / numPreCompileBuffers);
+        start = precompileIndex * range;
+        end   = start + range;
         if (precompileIndex == numPreCompileBuffers - 1)
             end = size;
     }
@@ -79,6 +79,5 @@ bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module
     addFunctionsToJob(moduleToGen, job, start, end);
 
     ownerJob->jobsToAdd.push_back(job);
-
     return true;
 }

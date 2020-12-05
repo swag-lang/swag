@@ -1,9 +1,10 @@
 #pragma once
 #include "CommandLine.h"
+#include "Os.h"
 
 struct Timer
 {
-    Timer(atomic<double>& dest)
+    Timer(atomic<uint64_t>& dest)
         : destValue{dest}
     {
     }
@@ -23,7 +24,7 @@ struct Timer
         if (g_CommandLine.stats || g_CommandLine.verbose || force)
         {
             started    = true;
-            timeBefore = chrono::high_resolution_clock::now();
+            timeBefore = OS::timerNow();
         }
     }
 
@@ -34,16 +35,16 @@ struct Timer
             if (started)
             {
                 started        = false;
-                auto timeAfter = chrono::high_resolution_clock::now();
+                auto timeAfter = OS::timerNow();
                 elapsed        = timeAfter - timeBefore;
-                destValue      = destValue + elapsed.count();
+                destValue += elapsed;
             }
         }
     }
 
-    bool                                      started = false;
-    atomic<double>                            internal;
-    chrono::duration<double>                  elapsed;
-    chrono::high_resolution_clock::time_point timeBefore;
-    atomic<double>&                           destValue;
+    bool              started = false;
+    atomic<uint64_t>  internal;
+    uint64_t          elapsed;
+    uint64_t          timeBefore;
+    atomic<uint64_t>& destValue;
 };

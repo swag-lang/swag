@@ -15,19 +15,19 @@ struct Stats
     atomic<int> totalConcreteTypes = 0;
     atomic<int> skippedModules     = 0;
 
-    atomic<double> readFilesTime        = 0;
-    atomic<double> totalTime            = 0;
-    atomic<double> syntaxTime           = 0;
-    atomic<double> semanticCompilerTime = 0;
-    atomic<double> semanticModuleTime   = 0;
-    atomic<double> runTime              = 0;
-    atomic<double> runTestTime          = 0;
-    atomic<double> outputTime           = 0;
-    atomic<double> prepOutputTimePass   = 0;
-    atomic<double> prepOutputTimeJob    = 0;
-    atomic<double> genOutputTimePass    = 0;
-    atomic<double> genOutputTimeJob     = 0;
-    atomic<double> optimBCTime          = 0;
+    atomic<uint64_t> readFilesTime        = 0;
+    atomic<uint64_t> totalTime            = 0;
+    atomic<uint64_t> syntaxTime           = 0;
+    atomic<uint64_t> semanticCompilerTime = 0;
+    atomic<uint64_t> semanticModuleTime   = 0;
+    atomic<uint64_t> runTime              = 0;
+    atomic<uint64_t> runTestTime          = 0;
+    atomic<uint64_t> outputTime           = 0;
+    atomic<uint64_t> prepOutputTimePass   = 0;
+    atomic<uint64_t> prepOutputTimeJob    = 0;
+    atomic<uint64_t> genOutputTimePass    = 0;
+    atomic<uint64_t> genOutputTimeJob     = 0;
+    atomic<uint64_t> optimBCTime          = 0;
 
     atomic<int> allocatorMemory = 0;
     atomic<int> wastedMemory    = 0;

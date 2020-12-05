@@ -39,16 +39,16 @@ void printStats()
     g_Log.messageHeaderDot("concrete types", format("%d", g_Stats.totalConcreteTypes.load()));
     g_Log.print("\n");
 
-    g_Log.messageHeaderDot("syntax time", format("%.3fs", g_Stats.syntaxTime.load()));
-    g_Log.messageHeaderDot("read files", format("%.3fs", g_Stats.readFilesTime.load()));
-    g_Log.messageHeaderDot("semantic comp time", format("%.3fs", g_Stats.semanticCompilerTime.load()));
-    g_Log.messageHeaderDot("semantic mod time", format("%.3fs", g_Stats.semanticModuleTime.load()));
-    g_Log.messageHeaderDot("run time", format("%.3fs", g_Stats.runTime.load()));
-    g_Log.messageHeaderDot("output time", format("%.3fs", g_Stats.outputTime.load()));
-    g_Log.messageHeaderDot("prep out time", format("%.3fs %.3fs", g_Stats.prepOutputTimePass.load(), g_Stats.prepOutputTimeJob.load()));
-    g_Log.messageHeaderDot("gen out time", format("%.3fs %.3fs", g_Stats.genOutputTimePass.load(), g_Stats.genOutputTimeJob.load()));
-    g_Log.messageHeaderDot("run test time", format("%.3fs", g_Stats.runTestTime.load()));
-    g_Log.messageHeaderDot("optim bc time", format("%.3fs", g_Stats.optimBCTime.load()));
+    g_Log.messageHeaderDot("syntax time", format("%.3fs", OS::timerToSeconds(g_Stats.syntaxTime.load())));
+    g_Log.messageHeaderDot("read files", format("%.3fs", OS::timerToSeconds(g_Stats.readFilesTime.load())));
+    g_Log.messageHeaderDot("semantic comp time", format("%.3fs", OS::timerToSeconds(g_Stats.semanticCompilerTime.load())));
+    g_Log.messageHeaderDot("semantic mod time", format("%.3fs", OS::timerToSeconds(g_Stats.semanticModuleTime.load())));
+    g_Log.messageHeaderDot("run time", format("%.3fs", OS::timerToSeconds(g_Stats.runTime.load())));
+    g_Log.messageHeaderDot("output time", format("%.3fs", OS::timerToSeconds(g_Stats.outputTime.load())));
+    g_Log.messageHeaderDot("prep out time", format("%.3fs %.3fs", OS::timerToSeconds(g_Stats.prepOutputTimePass.load()), OS::timerToSeconds(g_Stats.prepOutputTimeJob.load())));
+    g_Log.messageHeaderDot("gen out time", format("%.3fs %.3fs", OS::timerToSeconds(g_Stats.genOutputTimePass.load()), OS::timerToSeconds(g_Stats.genOutputTimeJob.load())));
+    g_Log.messageHeaderDot("run test time", format("%.3fs", OS::timerToSeconds(g_Stats.runTestTime.load())));
+    g_Log.messageHeaderDot("optim bc time", format("%.3fs", OS::timerToSeconds(g_Stats.optimBCTime.load())));
     g_Log.print("\n");
 
     g_Log.messageHeaderDot("allocator memory", format("%dMb", g_Stats.allocatorMemory.load() / (1024 * 1024)));
