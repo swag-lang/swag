@@ -3,8 +3,10 @@ public namespace std.process;
 using win32
 
 // Starts a new process with arguments
-func start(name: string, arguments: string = null) -> {proc: Process, err: ErrorId}
+func start(info: StartInfo) -> {proc: Process, err: ErrorId}
 {
+    debug.assert(info.fileName != null, "missing process filename")
+
     var result: retval
 
     var si: STARTUPINFOA
@@ -13,11 +15,11 @@ func start(name: string, arguments: string = null) -> {proc: Process, err: Error
 
     // Construct the command line
     var builder: strconv.StringBuilder
-    builder.appendString(name)
-    if arguments
+    builder.appendString(info.fileName)
+    if info.arguments
     {
         builder.appendString(" ")
-        builder.appendString(arguments)
+        builder.appendString(info.arguments)
     }
 
     builder.zeroTerminated()
