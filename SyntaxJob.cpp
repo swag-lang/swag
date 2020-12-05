@@ -236,7 +236,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
 
 JobResult SyntaxJob::execute()
 {
-    Timer timer(g_Stats.syntaxTime);
+    Timer timer(&g_Stats.syntaxTime);
     timer.start();
 
     baseContext        = &context;

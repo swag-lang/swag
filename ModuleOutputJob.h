@@ -16,8 +16,8 @@ enum class ModuleOutputJobPass
 struct ModuleOutputJob : public Job
 {
     ModuleOutputJob()
-        : timerPrepareOutput{g_Stats.prepOutputTimePass}
-        , timerGenOutput{g_Stats.genOutputTimePass}
+        : timerPrepareOutput{&g_Stats.prepOutputTimePass}
+        , timerGenOutput{&g_Stats.genOutputTimePass}
     {
     }
 

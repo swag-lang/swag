@@ -10,9 +10,11 @@ thread_local Pool<ModulePrepOutputJob> g_Pool_modulePrepOutputJob;
 
 JobResult ModulePrepOutputJob::execute()
 {
-    Timer timer{g_Stats.prepOutputTimeJob};
+    Timer timer{&g_Stats.prepOutputTimeJob};
+
     timer.start();
     auto result = module->backend->prepareOutput(buildParameters, this);
     timer.stop();
+
     return result;
 }

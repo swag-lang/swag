@@ -9,7 +9,7 @@ thread_local Pool<ModuleGenOutputJob> g_Pool_moduleGenOutputJob;
 
 JobResult ModuleGenOutputJob::execute()
 {
-    Timer timer(g_Stats.genOutputTimeJob);
+    Timer timer(&g_Stats.genOutputTimeJob);
     timer.start();
 
     module->backend->generateOutput(buildParameters);

@@ -18,7 +18,7 @@ JobResult ModuleRunJob::execute()
         return JobResult::ReleaseJob;
 
     // Timing...
-    Timer timer(g_Stats.runTestTime);
+    Timer timer(&g_Stats.runTestTime);
     timer.start();
 
     if(buildParameters.compileType == BackendCompileType::Test)

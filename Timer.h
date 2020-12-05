@@ -4,13 +4,13 @@
 
 struct Timer
 {
-    Timer(atomic<uint64_t>& dest)
+    Timer(atomic<uint64_t>* dest)
         : destValue{dest}
     {
     }
 
     Timer()
-        : destValue{internal}
+        : destValue{&internal}
     {
     }
 
@@ -34,17 +34,18 @@ struct Timer
         {
             if (started)
             {
-                started        = false;
-                auto timeAfter = OS::timerNow();
-                elapsed        = timeAfter - timeBefore;
-                destValue += elapsed;
+                started   = false;
+                timeAfter = OS::timerNow();
+                elapsed   = timeAfter - timeBefore;
+                *destValue += elapsed;
             }
         }
     }
 
     bool              started = false;
     atomic<uint64_t>  internal;
-    uint64_t          elapsed;
-    uint64_t          timeBefore;
-    atomic<uint64_t>& destValue;
+    uint64_t          elapsed    = 0;
+    uint64_t          timeBefore = 0;
+    uint64_t          timeAfter  = 0;
+    atomic<uint64_t>* destValue;
 };

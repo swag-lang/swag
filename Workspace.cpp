@@ -713,7 +713,7 @@ bool Workspace::build()
     auto result = true;
 
     {
-        Timer timer(g_Stats.totalTime);
+        Timer timer(&g_Stats.totalTime);
         timer.start(true);
 
         setup();
@@ -736,7 +736,7 @@ bool Workspace::build()
     if (g_Workspace.numErrors)
         g_Log.messageHeaderCentered("Done", format("%d error(s)", g_Workspace.numErrors.load()), LogColor::Green, LogColor::Red);
     else
-        g_Log.messageHeaderCentered("Done", format("%.3fs", g_Stats.totalTime.load()));
+        g_Log.messageHeaderCentered("Done", format("%.3fs", OS::timerToSeconds(g_Stats.totalTime.load())));
 
     return result;
 }

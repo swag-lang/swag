@@ -27,7 +27,7 @@ ByteCodeOptimizerJob::ByteCodeOptimizerJob()
 
 bool ByteCodeOptimizerJob::optimize(bool isAsync)
 {
-    Timer tm(g_Stats.optimBCTime);
+    Timer tm(&g_Stats.optimBCTime);
     tm.start();
 
     while (true)

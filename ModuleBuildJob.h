@@ -26,10 +26,10 @@ enum class ModuleBuildPass
 struct ModuleBuildJob : public Job
 {
     ModuleBuildJob()
-        : timerSemanticCompiler{g_Stats.semanticCompilerTime}
-        , timerSemanticModule{g_Stats.semanticModuleTime}
-        , timerRun{g_Stats.runTime}
-        , timerOutput{g_Stats.outputTime}
+        : timerSemanticCompiler{&g_Stats.semanticCompilerTime}
+        , timerSemanticModule{&g_Stats.semanticModuleTime}
+        , timerRun{&g_Stats.runTime}
+        , timerOutput{&g_Stats.outputTime}
     {
         affinity = AFFINITY_ALL ^ AFFINITY_EXECBC;
     }
