@@ -112,10 +112,16 @@ func toto(zz: f32, yyyy: string, x: const [..] s32, p: string...)
 	@print(yyyy)
 }
 
+func toto1(zz: f32, yyyy: string, x: const [..] s32, p: ...)
+{
+	@print(yyyy)
+}
+
 //#[swag.printbc]
 func main()
 {
 	toto(3.14, "string", @[10, 20], "toto", "titi")
+	toto1(3.14, "string", @[10, 20], "toto", 666)
 
     var screen: *u8 = @alloc(nScreenWidth*nScreenHeight)
     loop i: nScreenWidth*nScreenHeight

@@ -501,6 +501,36 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
 
     // TypedVariadic
     /////////////////////////////////
+    if (typeInfo->kind == TypeInfoKind::Variadic)
+    {
+        DbgTypeRecord tr0;
+        DbgTypeField  field;
+        tr0.kind              = LF_FIELDLIST;
+        tr0.LF_FieldList.kind = LF_MEMBER;
+        field.type            = dbgGetOrCreatePointerToType(pp, g_TypeMgr.typeInfoAny);
+        field.value.reg.u32   = 0;
+        field.name            = "data";
+        tr0.LF_FieldList.fields.push_back(field);
+
+        field.type          = (DbgTypeIndex)(SimpleTypeKind::UInt32);
+        field.value.reg.u32 = sizeof(void*);
+        field.name          = "count";
+        tr0.LF_FieldList.fields.push_back(field);
+        dbgAddTypeRecord(pp, tr0);
+
+        DbgTypeRecord tr1;
+        tr1.kind                     = LF_STRUCTURE;
+        tr1.LF_Structure.memberCount = 2;
+        tr1.LF_Structure.sizeOf      = 2 * sizeof(void*);
+        tr1.LF_Structure.fieldList   = tr0.index;
+        tr1.name                     = "variadic";
+        dbgAddTypeRecord(pp, tr1);
+        pp.dbgMapTypes[typeInfo] = tr1.index;
+        return tr1.index;
+    }
+
+    // TypedVariadic
+    /////////////////////////////////
     if (typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
         auto typeInfoPtr = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
@@ -525,7 +555,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         tr1.LF_Structure.memberCount = 2;
         tr1.LF_Structure.sizeOf      = 2 * sizeof(void*);
         tr1.LF_Structure.fieldList   = tr0.index;
-        tr1.name                     = "typedvariadic";
+        tr1.name                     = "variadic";
         dbgAddTypeRecord(pp, tr1);
         pp.dbgMapTypes[typeInfo] = tr1.index;
         return tr1.index;
