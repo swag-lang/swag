@@ -454,6 +454,28 @@ namespace win32
         GetFileExMaxInfoLevel
     }
 
+    struct STARTUPINFOA
+    {
+        cb:                 DWORD
+        lpReserved:         LPSTR
+        lpDesktop:          LPSTR
+        lpTitle:            LPSTR
+        dwX:                DWORD
+        dwY:                DWORD
+        dwXSize:            DWORD
+        dwYSize:            DWORD
+        dwXCountChars:      DWORD
+        dwYCountChars:      DWORD
+        dwFillAttribute:    DWORD
+        dwFlags:            DWORD
+        wShowWindow:        WORD
+        cbReserved2:        WORD
+        lpReserved2:        LPBYTE
+        hStdInput:          HANDLE
+        hStdOutput:         HANDLE
+        hStdError:          HANDLE
+    }
+
     #[swag.foreign("kernel32")]
     {
         func GetLastError()->DWORD;
@@ -462,7 +484,10 @@ namespace win32
         func DebugBreak();
         func OutputDebugStringA(lpOutputString: LPCSTR);
         func OutputDebugStringW(lpOutputString: LPCWSTR);
+        func DebugActiveProcess(procId: DWORD);
+        func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPSTR, lpProcessAttributes: LPSECURITY_ATTRIBUTES, lpThreadAttributes: LPSECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
 
+        func GetCurrentProcessId()->DWORD;
         func GetStdHandle(nStdHandle: DWORD)->HANDLE;
         func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->BOOL;
         func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
