@@ -1,5 +1,5 @@
-#if std.WINDOWS;
-public namespace std.debugger;
+#if WINDOWS;
+public namespace debugger;
 using win32
 
 // Returns true if a debugger is attached to the current process

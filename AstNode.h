@@ -340,8 +340,8 @@ struct AstNode
     virtual AstNode* clone(CloneContext& context);
     void             cloneChilds(CloneContext& context, AstNode* from);
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
-    void             computeScopedNameNoLock();
     Utf8             computeScopedName();
+    Utf8             computeScopedNameForeign();
     bool             mustInline();
 
     SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);

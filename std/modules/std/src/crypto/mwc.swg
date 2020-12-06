@@ -1,4 +1,4 @@
-namespace std.random;
+namespace random;
 
 public struct Mwc
 {

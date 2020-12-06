@@ -1,5 +1,5 @@
+public namespace latin1;
 using swag
-public namespace std.latin1;
 
 #[inline, constexpr]
 {

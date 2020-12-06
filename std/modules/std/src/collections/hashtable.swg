@@ -1,6 +1,4 @@
 #public
-
-namespace std;
 using swag
 
 struct(K, V) HashTableEntry

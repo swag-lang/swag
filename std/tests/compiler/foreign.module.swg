@@ -1,4 +1,4 @@
-#module "tests.compiler.foreign"
+#module "tests_compiler_foreign"
 using swag
 
 public func tcf_tuple()->{s32, s32}

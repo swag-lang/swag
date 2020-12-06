@@ -1,5 +1,5 @@
 #if #os == "windows";
-public namespace std.sync;
+public namespace sync;
 using win32
 
 // Creates a new mutex

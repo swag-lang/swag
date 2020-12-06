@@ -1,4 +1,4 @@
-public namespace std.mouse;
+public namespace mouse;
 
 #[swag.enumindex]
 enum Button

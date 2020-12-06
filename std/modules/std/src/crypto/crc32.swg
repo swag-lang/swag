@@ -1,4 +1,4 @@
-namespace std.hash;
+namespace hash;
 
 private const maxSlices = 16
 private const lookupTable: [maxSlices, 256] u32 = @[
@@ -513,7 +513,7 @@ public func crc32(data: const [..] u8, previous: u32 = 0)->u32
     {
         loop unrolling: unroll
         {
-        #if std.BIG_ENDIAN
+        #if BIG_ENDIAN
         {
             one   := current[0] ^ Swap(crc)
             two   := current[1]

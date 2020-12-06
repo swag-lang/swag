@@ -12,8 +12,9 @@ void TypeInfo::forceComputeName()
     computeName();
 }
 
-void TypeInfo::computeScopedNameNoLock()
+void TypeInfo::computeScopedName()
 {
+    scoped_lock lk(mutexScopeName);
     if (!scopedName.empty())
         return;
 
@@ -24,7 +25,7 @@ void TypeInfo::computeScopedNameNoLock()
     {
         if (declNode->ownerScope->kind != ScopeKind::Function)
         {
-            newName += declNode->ownerScope->getFullName();
+            newName += declNode->ownerScope->getFullNameForeign();
             if (!newName.empty())
                 newName += ".";
         }
@@ -39,22 +40,6 @@ void TypeInfo::computeScopedNameNoLock()
 
     newName += nakedName;
     scopedName = newName;
-}
-
-void TypeInfo::computeScopedName()
-{
-    {
-        shared_lock lk(mutexScopeName);
-        if (!scopedName.empty())
-            return;
-    }
-
-    {
-        scoped_lock lk(mutexScopeName);
-        if (!scopedName.empty())
-            return;
-        computeScopedNameNoLock();
-    }
 }
 
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)

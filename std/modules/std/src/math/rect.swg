@@ -1,4 +1,4 @@
-public namespace std.math;
+public namespace math;
 
 // A simple rectangle with 4 coordinates
 struct Rect

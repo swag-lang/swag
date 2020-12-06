@@ -1,6 +1,4 @@
-public namespace std.sync;
-using std;
-
+public namespace sync;
 alias MutexHandle = const *void
 
 struct Mutex

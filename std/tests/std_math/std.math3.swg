@@ -1,6 +1,6 @@
 #import "std"
-#import "std.math"
-using std.math
+#import "std_math"
+using std_math, std.math
 
 //#[swag.printbc]
 #test

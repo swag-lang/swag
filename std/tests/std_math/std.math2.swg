@@ -1,5 +1,5 @@
-#import "std.math"
-using std.math
+#import "std_math"
+using std_math
 
 //#[swag.printbc]
 #test

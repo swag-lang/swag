@@ -1,4 +1,4 @@
-﻿namespace std.file;
+﻿namespace file;
 
 public enum TextEncoding
 {

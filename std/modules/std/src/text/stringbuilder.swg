@@ -1,4 +1,4 @@
-public namespace std.strconv;
+public namespace strconv;
 
 struct StringBuilder
 {

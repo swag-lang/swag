@@ -1,5 +1,5 @@
-#if std.WINDOWS;
-public namespace std.time;
+#if WINDOWS;
+public namespace time;
 using win32
 
 private var g_perfCounterFreq: u64

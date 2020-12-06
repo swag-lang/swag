@@ -1,4 +1,4 @@
-namespace std.math;
+using std.math
 
 public struct Vector2
 {

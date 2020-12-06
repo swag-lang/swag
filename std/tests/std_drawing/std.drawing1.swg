@@ -1,5 +1,5 @@
-#import "std.drawing"
-using std.drawing
+#import "std_drawing"
+using std_drawing
 
 //#[swag.printbc]
 #test

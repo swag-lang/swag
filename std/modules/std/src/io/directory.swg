@@ -1,4 +1,4 @@
-public namespace std.directory;
+public namespace directory;
 
 struct EnumerationOptions
 {

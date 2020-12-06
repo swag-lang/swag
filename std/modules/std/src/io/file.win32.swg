@@ -1,5 +1,5 @@
-#if std.WINDOWS;
-public namespace std.file;
+#if WINDOWS;
+public namespace file;
 using win32
 
 // Returns true if the given file exists

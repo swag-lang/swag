@@ -1,4 +1,4 @@
-public namespace std.memory;
+public namespace memory;
 using swag
 
 // Free the specified memory block

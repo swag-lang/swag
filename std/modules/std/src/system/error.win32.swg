@@ -1,5 +1,5 @@
-#if std.WINDOWS;
-public namespace std.error;
+#if WINDOWS;
+public namespace error;
 using win32
 
 // Fill the context error message

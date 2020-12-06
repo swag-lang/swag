@@ -1,9 +1,8 @@
-namespace std.drawing;
-using swag
+using std, swag
 
 public struct Color
 {
-    #if std.BIG_ENDIAN
+    #if BIG_ENDIAN
     {
         a, r, g, b: u8
         #[offset("a")]

@@ -1,5 +1,5 @@
-#if std.WINDOWS;
-public namespace std.environment;
+#if WINDOWS;
+public namespace environment;
 using win32
 
 const EndLine = "\r\n"

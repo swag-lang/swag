@@ -1,4 +1,4 @@
-namespace std.unicode32;
+namespace unicode32;
 
 #[swag.inline, swag.constexpr]
 public

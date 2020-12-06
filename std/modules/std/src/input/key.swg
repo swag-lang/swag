@@ -1,4 +1,4 @@
-namespace std.keyboard;
+namespace keyboard;
 
 // Represents a virtual system key
 public alias VirtualKey = u32

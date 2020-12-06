@@ -1,5 +1,5 @@
-public namespace std.mouse;
-using std.math
+public namespace mouse;
+using math
 
 // Allows reading position and button click information from mouse
 struct Mouse

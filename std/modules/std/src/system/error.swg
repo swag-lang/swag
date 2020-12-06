@@ -1,9 +1,6 @@
-public namespace std
-{
-    alias ErrorId = string
-}
+public alias ErrorId = string
 
-public namespace std.error
+public namespace error
 {
     // Returns the error string associated with the current thread
     // The returned string is valid until a new error is raised (in that

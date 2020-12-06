@@ -114,9 +114,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     {
         auto parentFunc = CastAst<AstFuncDecl>(parent->ownerFct, AstNodeKind::FuncDecl);
         if (parentFunc->genericParameters)
-        {
             structNode->genericParameters = Ast::clone(parentFunc->genericParameters, structNode, AST_GENERATED_GENERIC_PARAM);
-        }
     }
 
     // For now, we give the priority to the generic parameters from the function, if there are any
@@ -146,7 +144,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     if (sourceFile->fromTests)
         rootScope = sourceFile->scopePrivate;
     else
-        rootScope = sourceFile->module->scopeRoot;
+        rootScope = sourceFile->astRoot->ownerScope;
     structNode->alternativeScopes.push_back(currentScope);
     auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
     structNode->scope = newScope;

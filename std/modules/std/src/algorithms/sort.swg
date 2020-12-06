@@ -1,5 +1,5 @@
 #public
-namespace std.sort;
+namespace sort;
 
 // Insertion sort algorithm (slow)
 func(T) insertion(values: [..] T, cb: func(T, T)->s32)

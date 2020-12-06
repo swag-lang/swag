@@ -1,5 +1,4 @@
-public namespace std.thread;
-using std;
+public namespace thread;
 
 alias ThreadHandle = const *void
 

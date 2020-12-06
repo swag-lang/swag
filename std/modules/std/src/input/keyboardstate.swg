@@ -1,4 +1,4 @@
-namespace std.keyboard;
+namespace keyboard;
 
 // Represents one keyboard state
 public struct State

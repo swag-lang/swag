@@ -1,4 +1,4 @@
-public namespace std.path;
+public namespace path;
 using swag
 
 const DirectorySeparatorChar    = "\\"'u8

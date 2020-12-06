@@ -1,6 +1,6 @@
-#if std.WINDOWS;
+#if WINDOWS;
+public namespace keyboard;
 using swag, win32
-public namespace std.keyboard;
 
 private
 {
@@ -8,7 +8,7 @@ private
     var g_mapVKeyToKey: [256] u8 = ?
 
     #[compiler]
-    func setupArray(key: std.keyboard.Key, vkey: u8)
+    func setupArray(key: keyboard.Key, vkey: u8)
     {
         g_mapKeyToVKey[key] = vkey
         g_mapVKeyToKey[vkey] = cast(u8) key

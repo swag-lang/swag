@@ -1,4 +1,4 @@
-public namespace std.time;
+public namespace time;
 
 protected
 {

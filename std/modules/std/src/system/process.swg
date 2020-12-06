@@ -1,4 +1,4 @@
-public namespace std.process;
+public namespace process;
 
 alias ProcessHandle = const *void
 

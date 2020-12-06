@@ -1,5 +1,5 @@
 #if #os == "windows";
-public namespace std.thread;
+public namespace thread;
 using win32
 
 // Sleep the current thread for a given amount of milliseconds

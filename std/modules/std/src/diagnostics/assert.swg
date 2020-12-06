@@ -1,9 +1,9 @@
-public namespace std.debug;
+public namespace debug;
 
 #[swag.inline]
 func assert(expr: bool, message: string = null, loc = #callerlocation)
 {
-    #if std.ASSERT
+    #if ASSERT
     {
         if !expr
         {

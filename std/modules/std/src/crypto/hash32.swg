@@ -1,4 +1,4 @@
-namespace std.hash;
+namespace hash;
 using swag
 
 public interface IHash32
@@ -25,7 +25,7 @@ public func(T) hash32(value: T)->u32
     }
     #elif @typeof(T).kind == TypeInfoKind.Struct
     {
-        #assert(reflection.hasInterface(@typeof(T), IHash32), "type '" ~ @typeof(T).name ~ "' does not implement the 'std.hash.IHash32' interface")
+        #assert(reflection.hasInterface(@typeof(T), IHash32), "type '" ~ @typeof(T).name ~ "' does not implement the 'hash.IHash32' interface")
         #ast "return " ~ @typeof(T).name ~ ".IHash32.compute(value)"
     }
     #else

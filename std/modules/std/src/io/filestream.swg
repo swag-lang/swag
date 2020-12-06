@@ -1,4 +1,4 @@
-public namespace std.file;
+public namespace file;
 
 alias FileHandle = const *void
 

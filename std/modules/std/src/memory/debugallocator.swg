@@ -1,4 +1,4 @@
-namespace std.memory;
+namespace memory;
 using swag
 
 public struct DebugAllocator

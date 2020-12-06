@@ -1,5 +1,4 @@
 #public
-namespace std;
 
 // Swap two values
 #[swag.inline]

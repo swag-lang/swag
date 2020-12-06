@@ -1,6 +1,6 @@
-#if std.WINDOWS;
+#if WINDOWS;
+public namespace path;
 using win32
-public namespace std.path;
 
 // Returns true if the given path name is valid
 func isValidPathName(fullname: string)->bool

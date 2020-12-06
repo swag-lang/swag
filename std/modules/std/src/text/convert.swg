@@ -1,6 +1,5 @@
-public namespace std.strconv;
-using swag
-using std.globalization
+public namespace strconv;
+using swag, globalization
 
 struct ConvertFormat
 {

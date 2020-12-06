@@ -1,4 +1,4 @@
-namespace std.gamepad;
+namespace gamepad;
 
 // Enumerates gamepad buttons
 #[swag.enumindex]

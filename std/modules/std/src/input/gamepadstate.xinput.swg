@@ -1,6 +1,6 @@
-#if std.WINDOWS;
-using xinput, win32, std.gamepad
-public namespace std.gamepad;
+#if WINDOWS;
+public namespace gamepad;
+using xinput, win32
 
 private var g_mapButtons: [@countof(Button)] Button = ?
 #run

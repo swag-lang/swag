@@ -1,5 +1,5 @@
-#if std.WINDOWS;
-namespace std.console;
+#if WINDOWS;
+namespace console;
 using win32
 
 var g_colorToWin: [@countof(Color)] u16 = ?

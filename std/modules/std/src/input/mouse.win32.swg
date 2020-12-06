@@ -1,6 +1,6 @@
-#if std.WINDOWS;
-using win32, std.math
-public namespace std.mouse;
+#if WINDOWS;
+public namespace mouse;
+using win32, math
 
 // Returns the current mouse position
 func getPos()->Point

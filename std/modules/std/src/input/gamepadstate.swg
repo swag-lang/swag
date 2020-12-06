@@ -1,5 +1,5 @@
-public namespace std.gamepad;
-using std.math
+public namespace gamepad;
+using math
 
 // Represents specific information about the state of the controller,
 // including the current state of buttons and sticks

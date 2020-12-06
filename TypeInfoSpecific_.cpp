@@ -852,7 +852,7 @@ void TypeInfoStruct::computeScopedName()
     {
         if (declNode->ownerScope->kind != ScopeKind::Function)
         {
-            scopedName += declNode->ownerScope->getFullName();
+            scopedName += declNode->ownerScope->getFullNameForeign();
             if (!scopedName.empty())
                 scopedName += ".";
         }

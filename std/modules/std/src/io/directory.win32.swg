@@ -1,5 +1,5 @@
-#if std.WINDOWS;
-public namespace std.directory;
+#if WINDOWS;
+public namespace directory;
 using win32
 
 // Returns true if the given directory exists

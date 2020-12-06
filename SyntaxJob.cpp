@@ -6,6 +6,7 @@
 #include "LanguageSpec.h"
 #include "Scoped.h"
 #include "Timer.h"
+#include "SemanticJob.h"
 
 thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
 
@@ -247,20 +248,50 @@ JobResult SyntaxJob::execute()
 
     tokenizer.setFile(sourceFile);
 
-    module          = sourceFile->module;
-    auto parentRoot = module->astRoot;
+    module = sourceFile->module;
 
     // Setup root ast for file
-    sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, parentRoot);
+    sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
+
+    // Creates a namespace
+    currentScope     = module->scopeRoot;
+    auto parentScope = module->scopeRoot;
+    if (sourceFile->imported)
+    {
+        SWAG_ASSERT(!sourceFile->forceNamespace.empty());
+        auto namespaceNode         = Ast::newNode<AstNode>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
+        namespaceNode->semanticFct = SemanticJob::resolveNamespace;
+        namespaceNode->token.text  = sourceFile->forceNamespace;
+
+        scoped_lock lk(parentScope->symTable.mutex);
+        auto        symbol = parentScope->symTable.findNoLock(namespaceNode->token.text);
+        if (!symbol)
+        {
+            auto typeInfo  = allocType<TypeInfoNamespace>();
+            typeInfo->name = namespaceNode->token.text;
+            auto newScope  = Ast::newScope(namespaceNode, namespaceNode->token.text, ScopeKind::Namespace, parentScope);
+            newScope->flags |= SCOPE_IMPORTED;
+            typeInfo->scope         = newScope;
+            namespaceNode->typeInfo = typeInfo;
+            parentScope->symTable.addSymbolTypeInfoNoLock(&context, namespaceNode, typeInfo, SymbolKind::Namespace);
+            parentScope->addPublicNamespace(namespaceNode);
+            parentScope = newScope;
+        }
+        else
+        {
+            parentScope = static_cast<TypeInfoNamespace*>(symbol->overloads[0]->typeInfo)->scope;
+            parentScope->flags |= SCOPE_IMPORTED;
+        }
+    }
 
     // One private scope per file
-    sourceFile->scopePrivate = Ast::newPrivateScope(sourceFile->astRoot, sourceFile, module->scopeRoot);
+    sourceFile->scopePrivate = Ast::newPrivateScope(sourceFile->astRoot, sourceFile, parentScope);
 
     // By default, everything is private if it comes from the test folder
     if (sourceFile->fromTests)
         currentScope = sourceFile->scopePrivate;
     else
-        currentScope = module->scopeRoot;
+        currentScope = parentScope;
     sourceFile->astRoot->ownerScope = currentScope;
 
     bool ok = tokenizer.getToken(token);

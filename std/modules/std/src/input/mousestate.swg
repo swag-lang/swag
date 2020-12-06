@@ -1,5 +1,5 @@
-public namespace std.mouse;
-using std.math
+public namespace mouse;
+using math
 
 // Represents one mouse state
 struct State

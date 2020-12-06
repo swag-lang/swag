@@ -1,5 +1,5 @@
 #if #os == "windows";
-public namespace std.process;
+public namespace process;
 using win32
 
 // Starts a new process with arguments

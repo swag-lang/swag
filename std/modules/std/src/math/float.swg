@@ -1,4 +1,4 @@
-public namespace std.math;
+public namespace math;
 
 struct(T) Const
 {

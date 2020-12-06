@@ -1,4 +1,3 @@
-namespace std;
 using swag
 
 // Manages a compact array of bit values, which are represented as booleans, where 'true' indicates that

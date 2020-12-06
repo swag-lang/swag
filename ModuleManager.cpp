@@ -87,7 +87,8 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         ((funcCall) ptr)(&g_processInfos);
     }
 
-    applyPatches(name, h);
+    if (!applyPatches(name, h))
+        return false;
 
     unique_lock lk1(mutexLoaded);
     loadedModules[name] = h;
@@ -135,18 +136,22 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
     }
 }
 
-void ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
+bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
 {
     unique_lock lk(mutexPatch);
 
     auto it = patchOffsets.find(moduleName);
     if (it == patchOffsets.end())
-        return;
+        return true;
 
     for (auto& one : it->second)
     {
         auto fnPtr = OS::getProcAddress(moduleHandle, one.funcDecl->fullnameForeign.c_str());
-        SWAG_ASSERT(fnPtr);
+        if (!fnPtr)
+            return false;
+
         *one.patchAddress = doForeignLambda(fnPtr);
     }
+
+    return true;
 }

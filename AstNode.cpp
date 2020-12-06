@@ -140,6 +140,14 @@ Utf8 AstNode::computeScopedName()
     return fullName + "." + token.text.c_str();
 }
 
+Utf8 AstNode::computeScopedNameForeign()
+{
+    auto& fullName = ownerScope->getFullNameForeign();
+    if (fullName.empty())
+        return token.text;
+    return fullName + "." + token.text.c_str();
+}
+
 Utf8 AstNode::getArticleKindName(AstNode* node)
 {
     Utf8 result = getKindName(node);
@@ -449,7 +457,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
 
     SWAG_ASSERT(ownerScope);
 
-    auto nameForeign = computeScopedName();
+    auto nameForeign = computeScopedNameForeign();
 
     // If the symbol has overload, i.e. more than one definition, then we
     // append the type

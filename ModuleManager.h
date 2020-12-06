@@ -13,7 +13,7 @@ struct ModuleManager
     bool  isModuleFailedLoaded(const Utf8& moduleName);
     void* getFnPointer(const Utf8& moduleName, const Utf8& funcName);
     void  addPatchFuncAddress(void** patchAddress, AstFuncDecl* func);
-    void  applyPatches(const Utf8& moduleName, void* moduleHandle);
+    bool  applyPatches(const Utf8& moduleName, void* moduleHandle);
 
     shared_mutex     mutex;
     shared_mutex     mutexLoaded;

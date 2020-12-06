@@ -70,6 +70,20 @@ const Utf8& Scope::getFullName()
     return fullname;
 }
 
+const Utf8& Scope::getFullNameForeign()
+{
+    if (flags & SCOPE_IMPORTED)
+        return fullnameForeign;
+    unique_lock lk(mutex);
+    if (!fullnameForeign.empty())
+        return fullnameForeign;
+    if (parentScope)
+        makeFullName(fullnameForeign, parentScope->getFullNameForeign(), name);
+    else
+        fullnameForeign = name;
+    return fullnameForeign;
+}
+
 void Scope::makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name)
 {
     if (parentName.empty())

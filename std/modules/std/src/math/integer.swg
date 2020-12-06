@@ -1,4 +1,4 @@
-public namespace std.math;
+public namespace math;
 
 #[swag.constexpr]
 func bitIndex(x: u32)->u32

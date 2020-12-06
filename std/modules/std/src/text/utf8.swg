@@ -1,4 +1,4 @@
-public namespace std.utf8;
+public namespace utf8;
 
 // Returns the number of bytes to encode the first character of the
 // utf8 buffer

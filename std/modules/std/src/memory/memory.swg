@@ -1,4 +1,4 @@
-public namespace std.memory;
+public namespace memory;
 using swag
 
 // Copy one block of memory to a given address

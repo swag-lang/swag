@@ -1,4 +1,4 @@
-public namespace std.time;
+public namespace time;
 
 // Represents an interval of time, stored as a 64 bits integer
 struct TimeSpan

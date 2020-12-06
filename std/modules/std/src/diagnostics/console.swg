@@ -1,4 +1,4 @@
-namespace std.console;
+namespace console;
 
 public enum Color
 {

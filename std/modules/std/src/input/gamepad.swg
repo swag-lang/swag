@@ -1,5 +1,5 @@
-public namespace std.gamepad;
-using std.math
+public namespace gamepad;
+using math
 
 // Represents a gamepad
 struct GamePad

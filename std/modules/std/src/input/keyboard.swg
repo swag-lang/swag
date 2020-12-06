@@ -1,4 +1,4 @@
-public namespace std.keyboard;
+public namespace keyboard;
 
 // Allows getting keystrokes from keyboard
 struct Keyboard

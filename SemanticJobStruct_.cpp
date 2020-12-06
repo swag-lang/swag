@@ -313,6 +313,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
 bool SemanticJob::preResolveStruct(SemanticContext* context)
 {
     auto node = (AstStruct*) context->node->parent;
+
     SWAG_ASSERT(node->kind == AstNodeKind::StructDecl || node->kind == AstNodeKind::InterfaceDecl || node->kind == AstNodeKind::TypeSet);
     auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 

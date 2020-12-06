@@ -40,6 +40,7 @@ struct AlternativeScope
 static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
 static const uint32_t SCOPE_PRIVATE          = 0x00000002;
 static const uint32_t SCOPE_ROOT_PRIVATE     = 0x00000004;
+static const uint32_t SCOPE_IMPORTED         = 0x00000008;
 
 struct ScopePublicSet
 {
@@ -75,6 +76,7 @@ struct Scope
     void               addPublicNamespace(AstNode* node);
     static void        makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
     const Utf8&        getFullName();
+    const Utf8&        getFullNameForeign();
     static const char* getNakedKindName(ScopeKind kind);
     static const char* getArticleKindName(ScopeKind kind);
     static void        collectScopeFromToExcluded(Scope* src, Scope* to, VectorNative<Scope*>& result);
@@ -87,7 +89,7 @@ struct Scope
 
     bool isTopLevel()
     {
-        return kind == ScopeKind::Module || kind == ScopeKind::File;
+        return kind == ScopeKind::Module || kind == ScopeKind::File || (kind == ScopeKind::Namespace && (flags & SCOPE_IMPORTED));
     }
 
     bool isGlobalOrImpl()
@@ -108,6 +110,7 @@ struct Scope
     SymTable                 symTable;
     Utf8Crc                  name;
     Utf8                     fullname;
+    Utf8                     fullnameForeign;
     VectorNative<Scope*>     childScopes;
     VectorNative<AstNode*>   deferredNodes;
     map<SourceFile*, Scope*> privateScopes;

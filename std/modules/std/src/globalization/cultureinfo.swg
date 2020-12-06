@@ -1,4 +1,4 @@
-namespace std.globalization;
+namespace globalization;
 
 public struct CultureInfo
 {

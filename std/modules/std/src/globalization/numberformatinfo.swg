@@ -1,4 +1,4 @@
-namespace std.globalization;
+namespace globalization;
 
 // Provides culture-specific information for formatting and parsing numeric values.
 public struct NumberFormatInfo

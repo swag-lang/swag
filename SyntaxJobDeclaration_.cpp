@@ -28,6 +28,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 case AstNodeKind::CompilerForeignLib:
                 case AstNodeKind::Using:
                 case AstNodeKind::IdentifierRef:
+                case AstNodeKind::Namespace:
                     break;
 
                 default:

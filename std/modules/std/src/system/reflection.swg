@@ -1,4 +1,4 @@
-public namespace std.reflection;
+public namespace reflection;
 using swag
 
 #[constexpr]
