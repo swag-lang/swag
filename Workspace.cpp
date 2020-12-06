@@ -402,6 +402,21 @@ Utf8 Workspace::GetOsName()
     }
 }
 
+void Workspace::setupCachePath()
+{
+    // Cache directory
+    cachePath = g_CommandLine.cachePath;
+    if (cachePath.empty())
+    {
+        cachePath = OS::getTemporaryFolder();
+        if (cachePath.empty())
+        {
+            cachePath = workspacePath;
+            cachePath += "output/";
+        }
+    }
+}
+
 void Workspace::setupTarget()
 {
     targetPath = workspacePath;
@@ -420,20 +435,11 @@ void Workspace::setupTarget()
     }
 
     // Cache directory
-    cachePath = g_CommandLine.cachePath;
-    if (cachePath.empty())
+    setupCachePath();
+    if (!fs::exists(cachePath))
     {
-        cachePath = OS::getTemporaryFolder();
-        if (cachePath.empty())
-            cachePath = targetPath;
-    }
-    else
-    {
-        if (!fs::exists(cachePath))
-        {
-            g_Log.error(format("fatal error: cache directory '%s' does not exist", cachePath.string().c_str()));
-            exit(-1);
-        }
+        g_Log.error(format("fatal error: cache directory '%s' does not exist", cachePath.string().c_str()));
+        exit(-1);
     }
 
     cachePath.append("swag_cache");
@@ -733,18 +739,35 @@ bool Workspace::build()
 void Workspace::clean()
 {
     setup();
-    setupTarget();
 
+    targetPath = workspacePath;
+    targetPath.append("output/");
     if (fs::exists(targetPath))
     {
-        g_Log.messageHeaderCentered("Cleaning", targetPath.string().c_str());
-        deleteFolderContent(targetPath);
+        OS::visitFolders(targetPath.string().c_str(), [this](const char* folder) {
+            auto path = targetPath.string() + folder;
+            g_Log.messageHeaderCentered("Cleaning", path);
+            deleteFolderContent(path);
+            fs::remove_all(path);
+        });
     }
 
+    setupCachePath();
+    cachePath.append("swag_cache/");
     if (fs::exists(cachePath))
     {
-        g_Log.messageHeaderCentered("Cleaning", cachePath.string().c_str());
-        deleteFolderContent(cachePath);
+        OS::visitFolders(cachePath.string().c_str(), [this](const char* folder) {
+            auto wkPath = workspacePath.filename().string() + "-";
+
+            // We sure to only clean for the given workspace
+            if (strstr(folder, wkPath.c_str()) == folder)
+            {
+                auto path = cachePath.string() + folder;
+                g_Log.messageHeaderCentered("Cleaning", path);
+                deleteFolderContent(path);
+                fs::remove_all(path);
+            }
+        });
     }
 
     g_Log.messageHeaderCentered("Done", "");

@@ -35,6 +35,7 @@ struct Workspace
     Utf8    GetOsName();
     OneTag* hasTag(const Utf8& name);
     void    clean();
+    void    setupCachePath();
     void    setupTarget();
 
     bool watch();
