@@ -19,6 +19,7 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("run          build and run the specified workspace\n");
     g_Log.message("test         build and test the specified workspace\n");
     g_Log.message("new          creates a new workspace\n");
+    g_Log.message("clean        clean the specified workspace of cache files, binaries and dependencies (fresh start)\n");
     g_Log.message("watch        spy workspace and check it at each file change (never ends)\n");
 
     g_Log.message("\n");
@@ -72,12 +73,12 @@ int main(int argc, const char* argv[])
     }
 
     // Deal with the main command
-    if (command == "run")
+    if (command == "build" || command == "new" || command == "clean")
+    {
+    }
+    else if (command == "run")
     {
         g_CommandLine.run = true;
-    }
-    else if (command == "build" || command == "new")
-    {
     }
     else if (command == "version")
     {
@@ -168,7 +169,9 @@ int main(int argc, const char* argv[])
     g_Global.setup();
 
     // Let's go...
-    if (g_CommandLine.watch)
+    if (command == "clean")
+        g_Workspace.clean();
+    else if (g_CommandLine.watch)
         g_Workspace.watch();
     else
         g_Workspace.build();

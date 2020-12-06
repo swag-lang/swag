@@ -327,33 +327,36 @@ void Workspace::setup()
         exit(-1);
     }
 
+    bool invalid = false;
     if (!fs::exists(workspacePath))
     {
         g_Log.error(format("fatal error: workspace folder '%s' does not exist", workspacePath.string().c_str()));
-        exit(-1);
+        invalid = true;
     }
-
-    if (!fs::exists(examplesPath))
+    else if (!fs::exists(examplesPath))
     {
         g_Log.error(format("fatal error: invalid workspace '%s', subfolder 'examples/' does not exist", workspacePath.string().c_str()));
-        exit(-1);
+        invalid = true;
     }
-
-    if (!fs::exists(testsPath))
+    else if (!fs::exists(testsPath))
     {
         g_Log.error(format("fatal error: invalid workspace '%s', subfolder 'tests/' does not exist", workspacePath.string().c_str()));
-        exit(-1);
+        invalid = true;
     }
-
-    if (!fs::exists(modulesPath))
+    else if (!fs::exists(modulesPath))
     {
         g_Log.error(format("fatal error: invalid workspace '%s', subfolder 'modules/' does not exist", workspacePath.string().c_str()));
-        exit(-1);
+        invalid = true;
     }
-
-    if (!fs::exists(dependenciesPath))
+    else if (!fs::exists(dependenciesPath))
     {
         g_Log.error(format("fatal error: invalid workspace '%s', subfolder 'dependencies/' does not exist", workspacePath.string().c_str()));
+        invalid = true;
+    }
+
+    if (invalid)
+    {
+        g_Log.message("note: use '-w:path' or '--workspace:path' to specified a valid workspace folder, or launch swag from a valid workspace folder");
         exit(-1);
     }
 
@@ -408,13 +411,6 @@ void Workspace::setupTarget()
     if (g_CommandLine.verbose && g_CommandLine.verbosePath)
         g_Log.verbose(format("target path is '%s'", targetPath.string().c_str()));
 
-    // Clean target
-    if (g_CommandLine.clean && g_CommandLine.output)
-    {
-        if (fs::exists(targetPath))
-            deleteFolderContent(targetPath);
-    }
-
     // Be sure folders exists
     error_code errorCode;
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
@@ -457,13 +453,6 @@ void Workspace::setupTarget()
     if (g_CommandLine.verbose && g_CommandLine.verbosePath)
     {
         g_Log.verbose(format("cache path is '%s'", cachePath.string().c_str()));
-    }
-
-    // Clean target
-    if (g_CommandLine.clean && g_CommandLine.output)
-    {
-        if (fs::exists(cachePath))
-            deleteFolderContent(cachePath);
     }
 
     targetPath += "/";
@@ -739,6 +728,26 @@ bool Workspace::build()
         g_Log.messageHeaderCentered("Done", format("%.3fs", OS::timerToSeconds(g_Stats.totalTime.load())));
 
     return result;
+}
+
+void Workspace::clean()
+{
+    setup();
+    setupTarget();
+
+    if (fs::exists(targetPath))
+    {
+        g_Log.messageHeaderCentered("Cleaning", targetPath.string().c_str());
+        deleteFolderContent(targetPath);
+    }
+
+    if (fs::exists(cachePath))
+    {
+        g_Log.messageHeaderCentered("Cleaning", cachePath.string().c_str());
+        deleteFolderContent(cachePath);
+    }
+
+    g_Log.messageHeaderCentered("Done", "");
 }
 
 bool Workspace::watch()

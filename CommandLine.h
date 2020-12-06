@@ -28,7 +28,6 @@ struct CommandLine
     bool      script    = false;
 
     // Input
-    bool   clean = false;
     string workspacePath;
     string cachePath;
     string moduleFilter;
@@ -73,7 +72,7 @@ struct CommandLine
     string      buildCfg           = "debug";
     string      buildCfgDebug      = "default";
     string      buildCfgSafety     = "default";
-    string      buildCfgInlineBC = "default";
+    string      buildCfgInlineBC   = "default";
     string      buildCfgOptimBC    = "default";
     string      buildCfgOptimSpeed = "default";
     string      buildCfgOptimSize  = "default";

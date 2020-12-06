@@ -29,7 +29,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--test-bytecode", "-tb", CommandLineType::Bool, &cmdLine->runByteCodeTests, nullptr, "run #test functions as bytecode");
     addArg("--test-native", "-tn", CommandLineType::Bool, &cmdLine->runBackendTests, nullptr, "run #test functions as native");
 
-    addArg("--clean", nullptr, CommandLineType::Bool, &cmdLine->clean, nullptr, "clean the cache and target folder");
     addArg("--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild, nullptr, "full rebuild");
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter, nullptr, nullptr);

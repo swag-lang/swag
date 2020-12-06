@@ -36,7 +36,7 @@ void Log::messageHeaderCentered(const Utf8& header, const Utf8& message, LogColo
     print(" ");
     setColor(msgColor);
     print(message);
-    if (message.back() != '\n')
+    if (!message.length() || message.back() != '\n')
         eol();
     setDefaultColor();
     unlock();
