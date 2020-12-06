@@ -21,7 +21,7 @@ void Stats::print()
     g_Log.messageHeaderDot("modules", format("%d", numModules.load()));
     g_Log.messageHeaderDot("files", format("%d", numFiles.load()));
     g_Log.messageHeaderDot("source lines", format("%d", numLines.load()));
-    g_Log.messageHeaderDot("lines/s", format("%d", (int) (numLines.load() / totalTime.load())));
+    g_Log.messageHeaderDot("lines/s", format("%d", (int) (numLines.load() / OS::timerToSeconds(totalTime.load()))));
     g_Log.messageHeaderDot("open files", format("%d", maxOpenFiles.load()));
     if (g_CommandLine.output)
         g_Log.messageHeaderDot("output modules", format("%d", numGenModules.load()));

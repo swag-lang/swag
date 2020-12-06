@@ -81,7 +81,7 @@ struct CommandLine
     set<string> tags;
 
     // Backend
-    BackendType backendType = BackendType::LLVM;
+    BackendType backendType = BackendType::X64;
     bool        output      = true;
     bool        outputTest  = true;
     bool        outputLegit = true;
