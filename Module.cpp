@@ -428,10 +428,6 @@ void Module::addByteCodeFunc(ByteCode* bc)
         auto attributeFlags = bc->node->attributeFlags;
         auto flags          = bc->node->flags;
 
-        // This is a real user function
-        if (!(attributeFlags & ATTRIBUTE_FOREIGN) && !bc->node->sourceFile->isRuntimeFile)
-            numConcreteBC++;
-
         // Register for export
         if ((attributeFlags & ATTRIBUTE_PUBLIC) &&
             !(attributeFlags & ATTRIBUTE_INLINE) &&
@@ -676,9 +672,6 @@ bool Module::mustOutputSomething()
     else if (hasUnittestError)
         mustOutput = false;
     else if (fromTestsFolder && !g_CommandLine.outputTest)
-        mustOutput = false;
-    // only foreign functions, or no function at all
-    else if (numConcreteBC == 0)
         mustOutput = false;
 
     return mustOutput;
