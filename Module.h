@@ -141,11 +141,11 @@ struct Module
     bool      setupDone        = false;
     bool      dependenciesDone = false;
 
-    void     addForeignLib(const Utf8& text);
-    void     addDependency(AstNode* importNode);
-    void     setHasBeenBuilt(uint32_t buildResult);
-    uint32_t getHasBeenBuilt();
-    bool     mustOutputSomething();
+    void              addForeignLib(const Utf8& text);
+    ModuleDependency* addDependency(AstNode* importNode);
+    void              setHasBeenBuilt(uint32_t buildResult);
+    uint32_t          getHasBeenBuilt();
+    bool              mustOutputSomething();
 
     shared_mutex                    mutexDependency;
     VectorNative<ModuleDependency*> moduleDependencies;

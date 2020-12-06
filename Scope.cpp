@@ -3,6 +3,7 @@
 #include "AstNode.h"
 #include "Module.h"
 #include "SourceFile.h"
+#include "Ast.h"
 
 const char* Scope::getNakedKindName(ScopeKind kind)
 {
@@ -91,7 +92,11 @@ const Utf8& Scope::getFullNameForeign()
 const Utf8& Scope::getFullNameType(AstNode* declNode)
 {
     if (flags & SCOPE_IMPORTED)
-        return owner->token.text;
+    {
+        auto np = CastAst<AstNameSpace>(owner, AstNodeKind::Namespace);
+        return np->importedModuleName;
+    }
+
     if (flags & SCOPE_PRIVATE)
         return name;
 

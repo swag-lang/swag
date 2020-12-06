@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
+#include "Module.h"
 
 bool SemanticJob::resolveNamespace(SemanticContext* context)
 {

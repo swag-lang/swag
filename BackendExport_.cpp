@@ -151,8 +151,9 @@ void Backend::emitType(TypeInfo* typeInfo, int indent)
         }
         else
         {
-            typeInfo->computeScopedName();
-            bufferSwg.addString(typeInfo->scopedName);
+            typeInfo->computeScopedNameExport();
+            SWAG_ASSERT(!typeInfo->scopedNameExport.empty());
+            bufferSwg.addString(typeInfo->scopedNameExport);
         }
     }
 }

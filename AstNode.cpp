@@ -1050,3 +1050,11 @@ AstNode* AstCompilerRun::clone(CloneContext& context)
 
     return newNode;
 }
+
+AstNode* AstNameSpace::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstNameSpace>();
+    newNode->copyFrom(context, this);
+    newNode->importedModuleName = importedModuleName;
+    return newNode;
+}

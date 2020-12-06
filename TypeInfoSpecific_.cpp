@@ -143,6 +143,17 @@ void TypeInfoReference::computeScopedName()
     scopedName += pointedType->scopedName;
 }
 
+void TypeInfoReference::computeScopedNameExport()
+{
+    unique_lock lk(mutexScopeName);
+    if (!scopedNameExport.empty())
+        return;
+
+    pointedType->computeScopedNameExport();
+    scopedNameExport = preName;
+    scopedNameExport += pointedType->scopedNameExport;
+}
+
 void TypeInfoReference::computeName()
 {
     unique_lock lk(mutex);
@@ -211,6 +222,22 @@ void TypeInfoPointer::computeScopedName()
         finalType->computeScopedName();
         scopedName = preName;
         scopedName += finalType->scopedName;
+    }
+}
+
+void TypeInfoPointer::computeScopedNameExport()
+{
+    unique_lock lk(mutexScopeName);
+    if (!scopedNameExport.empty())
+        return;
+
+    if (!finalType) // "null"
+        scopedNameExport = name;
+    else
+    {
+        finalType->computeScopedNameExport();
+        scopedNameExport = preName;
+        scopedNameExport += finalType->scopedNameExport;
     }
 }
 
@@ -301,6 +328,17 @@ void TypeInfoArray::computeScopedName()
     pointedType->computeScopedName();
     scopedName = preName;
     scopedName += pointedType->scopedName;
+}
+
+void TypeInfoArray::computeScopedNameExport()
+{
+    unique_lock lk(mutexScopeName);
+    if (!scopedNameExport.empty())
+        return;
+
+    pointedType->computeScopedNameExport();
+    scopedNameExport = preName;
+    scopedNameExport += pointedType->scopedNameExport;
 }
 
 void TypeInfoArray::computeName()
@@ -849,7 +887,7 @@ void TypeInfoStruct::computeScopedName()
     if (!scopedName.empty())
         return;
 
-    getScopedName(scopedName);
+    getScopedName(scopedName, false);
     SWAG_ASSERT(!nakedName.empty());
     scopedName += structName;
 
@@ -865,6 +903,31 @@ void TypeInfoStruct::computeScopedName()
         }
 
         scopedName += ")";
+    }
+}
+
+void TypeInfoStruct::computeScopedNameExport()
+{
+    unique_lock lk(mutexScopeName);
+    if (!scopedNameExport.empty())
+        return;
+
+    getScopedName(scopedNameExport, true);
+    SWAG_ASSERT(!nakedName.empty());
+    scopedNameExport += structName;
+
+    if (!genericParameters.empty())
+    {
+        scopedNameExport += "'(";
+        for (int i = 0; i < genericParameters.size(); i++)
+        {
+            if (i)
+                scopedNameExport += ", ";
+            genericParameters[i]->typeInfo->computeScopedNameExport();
+            scopedNameExport += genericParameters[i]->typeInfo->scopedNameExport;
+        }
+
+        scopedNameExport += ")";
     }
 }
 

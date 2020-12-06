@@ -83,6 +83,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             typeParamItf = allocType<TypeInfoParam>();
             typeBaseInterface->computeScopedName();
             typeParamItf->namedParam = typeBaseInterface->scopedName;
+            SWAG_ASSERT(!typeParamItf->namedParam.empty());
             typeParamItf->typeInfo   = typeBaseInterface;
             typeParamItf->node       = typeBaseInterface->declNode;
             typeParamItf->declNode   = node;

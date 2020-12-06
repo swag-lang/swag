@@ -29,6 +29,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 case AstNodeKind::Using:
                 case AstNodeKind::IdentifierRef:
                 case AstNodeKind::Namespace:
+                case AstNodeKind::AliasImport:
                     break;
 
                 default:
@@ -62,7 +63,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 
     while (true)
     {
-        namespaceNode              = Ast::newNode<AstNode>(this, AstNodeKind::Namespace, sourceFile, parent);
+        namespaceNode              = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, parent);
         namespaceNode->semanticFct = SemanticJob::resolveNamespace;
         if (first && result)
             *result = namespaceNode;

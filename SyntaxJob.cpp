@@ -259,20 +259,18 @@ JobResult SyntaxJob::execute()
     if (sourceFile->imported)
     {
         SWAG_ASSERT(!sourceFile->forceNamespace.empty());
-        auto namespaceNode         = Ast::newNode<AstNode>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
-        namespaceNode->semanticFct = SemanticJob::resolveNamespace;
-
-        // The name is the name of the module, not the name of the namespace.
-        // That way we can compute the fullname foreign header
-        namespaceNode->token.text  = sourceFile->imported->name;
+        auto namespaceNode                = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
+        namespaceNode->semanticFct        = SemanticJob::resolveNamespace;
+        namespaceNode->token.text         = sourceFile->forceNamespace;
+        namespaceNode->importedModuleName = sourceFile->imported->name;
 
         scoped_lock lk(parentScope->symTable.mutex);
-        auto        symbol = parentScope->symTable.findNoLock(namespaceNode->token.text);
+        auto        symbol = parentScope->symTable.findNoLock(sourceFile->forceNamespace);
         if (!symbol)
         {
             auto typeInfo  = allocType<TypeInfoNamespace>();
-            typeInfo->name = namespaceNode->token.text;
-            auto newScope  = Ast::newScope(namespaceNode, namespaceNode->token.text, ScopeKind::Namespace, parentScope);
+            typeInfo->name = sourceFile->forceNamespace;
+            auto newScope  = Ast::newScope(namespaceNode, sourceFile->forceNamespace, ScopeKind::Namespace, parentScope);
             newScope->flags |= SCOPE_IMPORTED;
             typeInfo->scope         = newScope;
             namespaceNode->typeInfo = typeInfo;
@@ -284,6 +282,8 @@ JobResult SyntaxJob::execute()
         {
             parentScope = static_cast<TypeInfoNamespace*>(symbol->overloads[0]->typeInfo)->scope;
             parentScope->flags |= SCOPE_IMPORTED;
+            namespaceNode                     = CastAst<AstNameSpace>(parentScope->owner, AstNodeKind::Namespace);
+            namespaceNode->importedModuleName = sourceFile->imported->name;
         }
     }
 

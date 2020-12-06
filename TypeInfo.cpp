@@ -14,13 +14,16 @@ void TypeInfo::forceComputeName()
     computeName();
 }
 
-void TypeInfo::getScopedName(Utf8& newName)
+void TypeInfo::getScopedName(Utf8& newName, bool forExport)
 {
     if (declNode && declNode->ownerScope)
     {
         if (declNode->ownerScope->kind != ScopeKind::Function)
         {
-            newName += declNode->ownerScope->getFullNameType(declNode);
+            if (forExport)
+                newName += declNode->ownerScope->getFullNameForeign();
+            else
+                newName += declNode->ownerScope->getFullNameType(declNode);
             if (!newName.empty())
                 newName += ".";
         }
@@ -35,7 +38,7 @@ void TypeInfo::computeScopedName()
 
     Utf8 newName;
     newName = preName;
-    getScopedName(newName);
+    getScopedName(newName, false);
     SWAG_ASSERT(!nakedName.empty());
 
     // Function types are scoped with the name, because two functions of the exact same type
@@ -45,6 +48,26 @@ void TypeInfo::computeScopedName()
 
     newName += nakedName;
     scopedName = newName;
+}
+
+void TypeInfo::computeScopedNameExport()
+{
+    scoped_lock lk(mutexScopeName);
+    if (!scopedNameExport.empty())
+        return;
+
+    Utf8 newName;
+    newName = preName;
+    getScopedName(newName, true);
+    SWAG_ASSERT(!nakedName.empty());
+
+    // Function types are scoped with the name, because two functions of the exact same type
+    // (parameters and return value) should have a different concrete type info, because of attributes
+    if (declNode && declNode->kind == AstNodeKind::FuncDecl)
+        newName += declNode->token.text;
+
+    newName += nakedName;
+    scopedNameExport = newName;
 }
 
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)

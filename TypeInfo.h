@@ -143,15 +143,17 @@ struct TypeInfo
     void               forceComputeName();
     virtual TypeInfo*  clone() = 0;
     virtual void       computeName();
-    void               getScopedName(Utf8& name);
+    void               getScopedName(Utf8& name, bool forExport);
     virtual void       computeScopedName();
+    virtual void       computeScopedNameExport();
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
-    Utf8         preName;    // List const, *, [] ...
-    Utf8         nakedName;  // The simple type name
-    Utf8         name;       // preName + nakedName
-    Utf8Crc      scopedName; // preName + scope name + nakedName
+    Utf8         preName;          // List const, *, [] ...
+    Utf8         nakedName;        // The simple type name
+    Utf8         name;             // preName + nakedName
+    Utf8Crc      scopedName;       // preName + scope name + nakedName
+    Utf8         scopedNameExport; // preName + scope name + nakedName
     shared_mutex mutex;
     shared_mutex mutexScopeName;
 
@@ -383,6 +385,7 @@ struct TypeInfoPointer : public TypeInfo
 
     void      computeName() override;
     void      computeScopedName() override;
+    void      computeScopedNameExport() override;
     void      computePointedType();
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
@@ -403,6 +406,7 @@ struct TypeInfoReference : public TypeInfo
 
     void      computeName() override;
     void      computeScopedName() override;
+    void      computeScopedNameExport() override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
@@ -425,6 +429,7 @@ struct TypeInfoArray : public TypeInfo
 
     void      computeName() override;
     void      computeScopedName() override;
+    void      computeScopedNameExport() override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
@@ -516,6 +521,7 @@ struct TypeInfoStruct : public TypeInfo
     bool           isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo*      clone() override;
     void           computeScopedName() override;
+    void           computeScopedNameExport() override;
     void           computeName() override;
     void           match(SymbolMatchContext& context);
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName);

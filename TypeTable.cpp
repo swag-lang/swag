@@ -202,9 +202,13 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     }
 
     if (!forceNoScope)
+    {
         typeInfo->computeScopedName();
+        SWAG_ASSERT(!typeInfo->scopedName.empty());
+    }
 
     auto& typeName = getTypeName(typeInfo, forceNoScope);
+    SWAG_ASSERT(!typeName.empty());
 
     // Already computed ?
     auto& storedMap    = cflags & CONCRETE_FOR_COMPILER ? concreteTypesCompiler : concreteTypes;

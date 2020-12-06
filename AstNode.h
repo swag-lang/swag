@@ -61,6 +61,7 @@ enum class AstNodeKind : uint8_t
     Namespace,
     Using,
     Alias,
+    AliasImport,
     If,
     While,
     For,
@@ -817,4 +818,10 @@ struct AstCompilerAst : public AstNode
 struct AstCompilerRun : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
+};
+
+struct AstNameSpace : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+    Utf8     importedModuleName;
 };
