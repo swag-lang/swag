@@ -1,71 +1,8 @@
 #include "pch.h"
-#include "Stats.h"
 #include "Workspace.h"
 #include "CommandLineParser.h"
 #include "Version.h"
 #include "Os.h"
-#include "Timer.h"
-#include "Module.h"
-
-void printStats()
-{
-    if (!g_CommandLine.stats || g_CommandLine.silent)
-        return;
-
-    g_Log.setColor(LogColor::DarkCyan);
-    g_Log.print("\n");
-
-    g_Log.messageHeaderDot("swag version", format("%d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-    g_Log.messageHeaderDot("workers", format("%d", g_Stats.numWorkers));
-    g_Log.print("\n");
-
-    g_Log.messageHeaderDot("modules", format("%d", g_Stats.numModules.load()));
-    g_Log.messageHeaderDot("files", format("%d", g_Stats.numFiles.load()));
-    g_Log.messageHeaderDot("source lines", format("%d", g_Stats.numLines.load()));
-    g_Log.messageHeaderDot("lines/s", format("%d", (int) (g_Stats.numLines.load() / g_Stats.totalTime.load())));
-    g_Log.messageHeaderDot("open files", format("%d", g_Stats.maxOpenFiles.load()));
-    if (g_CommandLine.output)
-        g_Log.messageHeaderDot("output modules", format("%d", g_Stats.numGenModules.load()));
-    if (g_CommandLine.test)
-        g_Log.messageHeaderDot("executed #test", format("%d", g_Stats.testFunctions.load()));
-    g_Log.messageHeaderDot("executed #run", format("%d", g_Stats.runFunctions.load()));
-    if (g_Workspace.numErrors)
-        g_Log.messageHeaderDot("errors", format("%d", g_Workspace.numErrors.load()), LogColor::Red);
-    g_Log.print("\n");
-
-    g_Log.messageHeaderDot("instructions", format("%d", g_Stats.numInstructions.load()));
-    float pc = (g_Stats.totalOptimsBC.load() * 100.0f) / (g_Stats.numInstructions.load());
-    g_Log.messageHeaderDot("kicked", format("%d %.1f%%", g_Stats.totalOptimsBC.load(), pc));
-    g_Log.messageHeaderDot("concrete types", format("%d", g_Stats.totalConcreteTypes.load()));
-    g_Log.print("\n");
-
-    g_Log.messageHeaderDot("syntax time", format("%.3fs", OS::timerToSeconds(g_Stats.syntaxTime.load())));
-    g_Log.messageHeaderDot("read files", format("%.3fs", OS::timerToSeconds(g_Stats.readFilesTime.load())));
-    g_Log.messageHeaderDot("semantic comp time", format("%.3fs", OS::timerToSeconds(g_Stats.semanticCompilerTime.load())));
-    g_Log.messageHeaderDot("semantic mod time", format("%.3fs", OS::timerToSeconds(g_Stats.semanticModuleTime.load())));
-    g_Log.messageHeaderDot("run time", format("%.3fs", OS::timerToSeconds(g_Stats.runTime.load())));
-    g_Log.messageHeaderDot("output time", format("%.3fs", OS::timerToSeconds(g_Stats.outputTime.load())));
-    g_Log.messageHeaderDot("prep out time", format("%.3fs %.3fs", OS::timerToSeconds(g_Stats.prepOutputTimePass.load()), OS::timerToSeconds(g_Stats.prepOutputTimeJob.load())));
-    g_Log.messageHeaderDot("gen out time", format("%.3fs %.3fs", OS::timerToSeconds(g_Stats.genOutputTimePass.load()), OS::timerToSeconds(g_Stats.genOutputTimeJob.load())));
-    g_Log.messageHeaderDot("run test time", format("%.3fs", OS::timerToSeconds(g_Stats.runTestTime.load())));
-    g_Log.messageHeaderDot("optim bc time", format("%.3fs", OS::timerToSeconds(g_Stats.optimBCTime.load())));
-    g_Log.print("\n");
-
-    g_Log.messageHeaderDot("allocator memory", format("%dMb", g_Stats.allocatorMemory.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem wasted", format("%dMb", g_Stats.wastedMemory.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem nodes", format("%dMb", g_Stats.memNodes.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem scopes", format("%dMb", g_Stats.memScopes.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem seg", format("%dMb", g_Stats.memSeg.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem concat", format("%dMb", g_Stats.memConcat.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem types", format("%dMb", g_Stats.memTypes.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem instr", format("%dMb", g_Stats.memInstructions.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem symname", format("%dMb", g_Stats.memSymName.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem symover", format("%dMb", g_Stats.memSymOver.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem symtable", format("%dMb", g_Stats.memSymTable.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem utf8", format("%dMb", g_Stats.memUtf8.load() / (1024 * 1024)));
-
-    g_Log.setDefaultColor();
-}
 
 void help(CommandLineParser& cmdParser)
 {
@@ -237,7 +174,7 @@ int main(int argc, const char* argv[])
         g_Workspace.build();
 
     // Prints stats, then exit
-    printStats();
+    g_Stats.print();
 
     return g_Workspace.numErrors > 0 ? -1 : 0;
 }

@@ -41,6 +41,8 @@ struct Stats
     atomic<int> memSymOver      = 0;
     atomic<int> memSymTable     = 0;
     atomic<int> memUtf8         = 0;
+
+    void print();
 };
 
 extern Stats g_Stats;
