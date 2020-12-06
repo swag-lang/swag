@@ -4,7 +4,7 @@
 {
     itf := @compiler()
     msg := itf.getMessage()
-    @assert(msg.moduleName == "tests.compiler")
+    @assert(msg.moduleName == "tests_compiler")
 
     cfg := itf.getBuildCfg()
     //cfg.backendLLVM.outputIR = true

@@ -84,7 +84,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     // Module name is equivalent to the folder name
     string moduleName;
     if (parent == "tests")
-        moduleName = "tests.";
+        moduleName = "tests_";
     moduleName += cFileName;
 
     // Create theModule
