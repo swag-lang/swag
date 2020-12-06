@@ -24,7 +24,7 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
     if (dep->importDone)
         return true;
 
-    // Some dependencies can have been added by the this stage
+    // Some dependencies can have been added by this stage
     if (!depModule)
     {
         depModule = g_Workspace.getModuleByName(dep->name);
@@ -43,21 +43,24 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
     depModule->backend->setupExportFile();
     if (depModule->backend->timeExportFile)
     {
-        auto file       = g_Allocator.alloc<SourceFile>();
-        file->name      = depModule->backend->bufferSwg.name;
-        file->path      = depModule->backend->bufferSwg.path;
-        file->generated = depModule->backend->exportFileGenerated;
-        dep->generated  = depModule->backend->exportFileGenerated;
+        auto file            = g_Allocator.alloc<SourceFile>();
+        file->name           = depModule->backend->bufferSwg.name;
+        file->path           = depModule->backend->bufferSwg.path;
+        file->generated      = depModule->backend->exportFileGenerated;
+        file->imported       = true;
+        file->forceNamespace = dep->forceNamespace;
+        dep->generated       = depModule->backend->exportFileGenerated;
         files.push_back(file);
     }
 
     // Add all #public files
     for (auto one : depModule->publicSourceFiles)
     {
-        auto file      = g_Allocator.alloc<SourceFile>();
-        file->name     = one->name;
-        file->path     = one->path;
-        file->imported = true;
+        auto file            = g_Allocator.alloc<SourceFile>();
+        file->name           = one->name;
+        file->path           = one->path;
+        file->forceNamespace = dep->forceNamespace;
+        file->imported       = true;
         files.push_back(file);
     }
 
@@ -126,7 +129,7 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::IncludeSwg;
     }
 
-    // We add the "???.swg" export file that corresponds
+    // We add the all export files that corresponds
     // to each module we want to import
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::IncludeSwg)

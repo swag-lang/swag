@@ -34,6 +34,7 @@ enum class GlobalVarKind
 struct ModuleDependency
 {
     Utf8     name;
+    Utf8     forceNamespace;
     AstNode* node       = nullptr;
     Module*  module     = nullptr;
     bool     generated  = false;

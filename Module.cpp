@@ -443,6 +443,7 @@ void Module::addDependency(AstNode* importNode)
     ModuleDependency* dep = g_Allocator.alloc<ModuleDependency>();
     dep->node             = importNode;
     dep->name             = importNode->token.text;
+    dep->forceNamespace   = importNode->token.text;
     moduleDependencies.push_front(dep);
 }
 

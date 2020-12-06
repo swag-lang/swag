@@ -22,6 +22,8 @@ TODO
 ****************************************
 
 -------------------------------------
+swag clean, clean /dependencies
+-------------------------------------
 #premain ?
 -------------------------------------
 String: on peut pas specific d'allocator a priori cause small string

@@ -42,6 +42,7 @@ struct SourceFile : public File
     AstNode*       astRoot = nullptr;
     Utf8           externalContent;
     Utf8           scopeName;
+    Utf8           forceNamespace;
     bool           isExternal = false;
 
     uint64_t  writeTime       = 0;
