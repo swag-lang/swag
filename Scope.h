@@ -77,6 +77,7 @@ struct Scope
     static void        makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
     const Utf8&        getFullName();
     const Utf8&        getFullNameForeign();
+    const Utf8&        getFullNameType(AstNode* declNode);
     static const char* getNakedKindName(ScopeKind kind);
     static const char* getArticleKindName(ScopeKind kind);
     static void        collectScopeFromToExcluded(Scope* src, Scope* to, VectorNative<Scope*>& result);
@@ -111,6 +112,7 @@ struct Scope
     Utf8Crc                  name;
     Utf8                     fullname;
     Utf8                     fullnameForeign;
+    Utf8                     fullnameType;
     VectorNative<Scope*>     childScopes;
     VectorNative<AstNode*>   deferredNodes;
     map<SourceFile*, Scope*> privateScopes;

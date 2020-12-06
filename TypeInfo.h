@@ -143,6 +143,7 @@ struct TypeInfo
     void               forceComputeName();
     virtual TypeInfo*  clone() = 0;
     virtual void       computeName();
+    void               getScopedName(Utf8& name);
     virtual void       computeScopedName();
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);

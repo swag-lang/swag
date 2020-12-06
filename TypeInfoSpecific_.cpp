@@ -4,6 +4,7 @@
 #include "SourceFile.h"
 #include "AstNode.h"
 #include "Ast.h"
+#include "Module.h"
 
 TypeInfo* TypeInfoNative::clone()
 {
@@ -848,16 +849,7 @@ void TypeInfoStruct::computeScopedName()
     if (!scopedName.empty())
         return;
 
-    if (declNode && declNode->ownerScope)
-    {
-        if (declNode->ownerScope->kind != ScopeKind::Function)
-        {
-            scopedName += declNode->ownerScope->getFullNameForeign();
-            if (!scopedName.empty())
-                scopedName += ".";
-        }
-    }
-
+    getScopedName(scopedName);
     SWAG_ASSERT(!nakedName.empty());
     scopedName += structName;
 

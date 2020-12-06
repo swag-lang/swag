@@ -253,7 +253,7 @@ JobResult SyntaxJob::execute()
     // Setup root ast for file
     sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
 
-    // Creates a namespace
+    // Creates a namespace if this is an imported file
     currentScope     = module->scopeRoot;
     auto parentScope = module->scopeRoot;
     if (sourceFile->imported)
@@ -261,7 +261,10 @@ JobResult SyntaxJob::execute()
         SWAG_ASSERT(!sourceFile->forceNamespace.empty());
         auto namespaceNode         = Ast::newNode<AstNode>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
         namespaceNode->semanticFct = SemanticJob::resolveNamespace;
-        namespaceNode->token.text  = sourceFile->forceNamespace;
+
+        // The name is the name of the module, not the name of the namespace.
+        // That way we can compute the fullname foreign header
+        namespaceNode->token.text  = sourceFile->imported->name;
 
         scoped_lock lk(parentScope->symTable.mutex);
         auto        symbol = parentScope->symTable.findNoLock(namespaceNode->token.text);

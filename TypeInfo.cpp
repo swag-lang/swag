@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "TypeInfo.h"
 #include "AstNode.h"
+#include "Scope.h"
+#include "Module.h"
 
 void TypeInfo::computeName()
 {
@@ -12,6 +14,19 @@ void TypeInfo::forceComputeName()
     computeName();
 }
 
+void TypeInfo::getScopedName(Utf8& newName)
+{
+    if (declNode && declNode->ownerScope)
+    {
+        if (declNode->ownerScope->kind != ScopeKind::Function)
+        {
+            newName += declNode->ownerScope->getFullNameType(declNode);
+            if (!newName.empty())
+                newName += ".";
+        }
+    }
+}
+
 void TypeInfo::computeScopedName()
 {
     scoped_lock lk(mutexScopeName);
@@ -20,17 +35,7 @@ void TypeInfo::computeScopedName()
 
     Utf8 newName;
     newName = preName;
-
-    if (declNode && declNode->ownerScope)
-    {
-        if (declNode->ownerScope->kind != ScopeKind::Function)
-        {
-            newName += declNode->ownerScope->getFullNameForeign();
-            if (!newName.empty())
-                newName += ".";
-        }
-    }
-
+    getScopedName(newName);
     SWAG_ASSERT(!nakedName.empty());
 
     // Function types are scoped with the name, because two functions of the exact same type

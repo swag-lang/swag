@@ -47,7 +47,7 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
         file->name           = depModule->backend->bufferSwg.name;
         file->path           = depModule->backend->bufferSwg.path;
         file->generated      = depModule->backend->exportFileGenerated;
-        file->imported       = true;
+        file->imported       = depModule;
         file->forceNamespace = dep->forceNamespace;
         dep->generated       = depModule->backend->exportFileGenerated;
         files.push_back(file);
@@ -60,7 +60,7 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
         file->name           = one->name;
         file->path           = one->path;
         file->forceNamespace = dep->forceNamespace;
-        file->imported       = true;
+        file->imported       = depModule;
         files.push_back(file);
     }
 

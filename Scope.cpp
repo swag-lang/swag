@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Scope.h"
 #include "AstNode.h"
+#include "Module.h"
+#include "SourceFile.h"
 
 const char* Scope::getNakedKindName(ScopeKind kind)
 {
@@ -74,6 +76,7 @@ const Utf8& Scope::getFullNameForeign()
 {
     if (flags & SCOPE_IMPORTED)
         return fullnameForeign;
+
     unique_lock lk(mutex);
     if (!fullnameForeign.empty())
         return fullnameForeign;
@@ -81,7 +84,26 @@ const Utf8& Scope::getFullNameForeign()
         makeFullName(fullnameForeign, parentScope->getFullNameForeign(), name);
     else
         fullnameForeign = name;
+
     return fullnameForeign;
+}
+
+const Utf8& Scope::getFullNameType(AstNode* declNode)
+{
+    if (flags & SCOPE_IMPORTED)
+        return owner->token.text;
+    if (flags & SCOPE_PRIVATE)
+        return name;
+
+    unique_lock lk(mutex);
+    if (!fullnameType.empty())
+        return fullnameType;
+
+    if (parentScope)
+        makeFullName(fullnameType, parentScope->getFullNameType(declNode), name);
+    else
+        fullnameType = declNode->sourceFile->module->name;
+    return fullnameType;
 }
 
 void Scope::makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name)

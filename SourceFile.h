@@ -57,6 +57,7 @@ struct SourceFile : public File
     char*    buffer       = nullptr;
     Scope*   scopePrivate = nullptr;
     AstNode* sourceNode   = nullptr;
+    Module*  imported     = nullptr;
 
     int          headerSize    = 0;
     long         fileSeek      = 0;
@@ -69,6 +70,5 @@ struct SourceFile : public File
     bool         generated     = false;
     bool         forcedPublic  = false;
     bool         compilerPass  = false;
-    bool         imported      = false;
     shared_mutex mutexGetLine;
 };

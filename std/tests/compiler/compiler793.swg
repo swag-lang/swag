@@ -1,5 +1,3 @@
-
-
 var cpt: s32 = 0
 
 struct Point
