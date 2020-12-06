@@ -36,6 +36,7 @@ struct ModuleDependency
     Utf8     name;
     Utf8     forceNamespace;
     AstNode* node       = nullptr;
+    AstNode* aliasDone  = nullptr;
     Module*  module     = nullptr;
     bool     generated  = false;
     bool     importDone = false;

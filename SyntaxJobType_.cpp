@@ -31,7 +31,15 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(doCompilerImport(node));
 
-        auto dep            = sourceFile->module->addDependency(node->childs.front());
+        auto dep = sourceFile->module->addDependency(node->childs.front());
+        if (dep->aliasDone && dep->forceNamespace != node->token.text)
+        {
+            Diagnostic diag{node, node->token, format("#import namespace alias already done with a different name ('%s')", dep->forceNamespace.c_str())};
+            Diagnostic note{dep->aliasDone, dep->aliasDone->token, "this is the previous definition", DiagnosticLevel::Note};
+            return sourceFile->report(diag, &note);
+        }
+
+        dep->aliasDone      = node;
         dep->forceNamespace = node->token.text;
 
         node->kind        = AstNodeKind::AliasImport;
