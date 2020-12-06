@@ -48,21 +48,22 @@ static const uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER;
 
 struct Module
 {
-    bool setup(const Utf8& moduleName);
-    void release();
-    void allocateBackend();
-    void addPublicSourceFile(SourceFile* file);
-    void addCompilerPassSourceFile(SourceFile* file);
-    void addFileNoLock(SourceFile* file);
-    void addFile(SourceFile* file);
-    void removeFile(SourceFile* file);
-    bool error(const Utf8& msg);
-    bool internalError(const Utf8& msg);
-    bool internalError(AstNode* node, Token& token, const Utf8& msg);
-    bool mustOptimizeBC(AstNode* node);
-    bool mustEmitSafety(AstNode* node);
-    bool mustGenerateTestExe();
-    bool canGenerateLegit();
+    static bool isValidName(const Utf8& name, Utf8& errorStr);
+    bool        setup(const Utf8& moduleName);
+    void        release();
+    void        allocateBackend();
+    void        addPublicSourceFile(SourceFile* file);
+    void        addCompilerPassSourceFile(SourceFile* file);
+    void        addFileNoLock(SourceFile* file);
+    void        addFile(SourceFile* file);
+    void        removeFile(SourceFile* file);
+    bool        error(const Utf8& msg);
+    bool        internalError(const Utf8& msg);
+    bool        internalError(AstNode* node, Token& token, const Utf8& msg);
+    bool        mustOptimizeBC(AstNode* node);
+    bool        mustEmitSafety(AstNode* node);
+    bool        mustGenerateTestExe();
+    bool        canGenerateLegit();
 
     string                    path;
     fs::path                  documentPath;

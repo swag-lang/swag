@@ -81,6 +81,16 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     auto parent    = path.parent_path().filename();
     auto cFileName = path.filename().string();
 
+    // Be sure module name is valid
+    Utf8 errorStr;
+    if (!Module::isValidName(cFileName, errorStr))
+    {
+        errorStr = "fatal error: " + errorStr;
+        errorStr += format(" (path is '%s')", path.string().c_str());
+        g_Log.error(errorStr);
+        exit(-1);
+    }
+
     // Module name is equivalent to the folder name
     string moduleName;
     if (parent == "tests")

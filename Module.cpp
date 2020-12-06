@@ -14,6 +14,56 @@
 #include "SemanticJob.h"
 #include "ModuleManager.h"
 
+bool Module::isValidName(const Utf8& name, Utf8& errorStr)
+{
+    Utf8 reason;
+    bool error = false;
+
+    if (name.length() == 0)
+    {
+        error  = true;
+        reason = "name is empty";
+    }
+    else if (name.length() > 1 && name[0] == '_' && name[1] == '_')
+    {
+        error  = true;
+        reason = "name cannot start with '__'";
+    }
+    else if (isdigit(name[0]))
+    {
+        error  = true;
+        reason = "name cannot start with a digit number";
+    }
+    else
+    {
+        for (int i = 0; i < name.length(); i++)
+        {
+            if (name[i] <= 32)
+            {
+                error  = true;
+                reason = "name cannot contain blank characters";
+                break;
+            }
+
+            if (!isalnum(name[i]) && name[i] != '_')
+            {
+                error  = true;
+                reason = format("forbidden character '%c'", name[i]);
+                break;
+            }
+        }
+    }
+
+    if (error)
+    {
+        errorStr = format("invalid module name '%s', ", name.c_str());
+        errorStr += reason;
+        return false;
+    }
+
+    return true;
+}
+
 bool Module::mustGenerateTestExe()
 {
     if (!g_CommandLine.test)
