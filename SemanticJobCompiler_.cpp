@@ -74,7 +74,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     auto job        = context->job;
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, format("#ast expression is not 'string' ('%s' provided)", expression->typeInfo->name.c_str())}));
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, format("'#ast' expression is not 'string' ('%s' provided)", expression->typeInfo->name.c_str())}));
 
     SWAG_CHECK(executeNode(context, expression, true));
     if (context->result != ContextResult::Done)
@@ -353,7 +353,7 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
     auto back   = node->childs[0];
 
     SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, "filename cannot be evaluated at compile time"}));
-    SWAG_VERIFY(back->typeInfo == g_TypeMgr.typeInfoString, context->report({back, format("#load parameter should be of type string ('%s' provided)", back->typeInfo->name.c_str())}));
+    SWAG_VERIFY(back->typeInfo == g_TypeMgr.typeInfoString, context->report({back, format("'#load' parameter should be of type string ('%s' provided)", back->typeInfo->name.c_str())}));
 
     if (!(node->doneFlags & AST_DONE_LOAD))
     {
