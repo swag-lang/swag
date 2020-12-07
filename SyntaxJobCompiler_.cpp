@@ -13,11 +13,11 @@ bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveCompilerForeignLib;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, "#foreignlib must be followed by a string"));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, "'#foreignlib' must be followed by a string"));
 
     AstNode* literal;
     SWAG_CHECK(doLiteral(node, &literal));
-    SWAG_VERIFY(literal->token.literalType == LiteralType::TT_STRING, syntaxError(literal->token, "#foreignlib must be followed by a string"));
+    SWAG_VERIFY(literal->token.literalType == LiteralType::TT_STRING, syntaxError(literal->token, "'#foreignlib' must be followed by a string"));
 
     return true;
 }
@@ -56,7 +56,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, "missing #if expression"));
+    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, "missing '#if' expression"));
     SWAG_CHECK(doExpression(node, &node->boolExpression));
     node->boolExpression->semanticAfterFct = SemanticJob::resolveCompilerIf;
 
@@ -129,13 +129,13 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken(TokenId::SymEqual));
             SWAG_CHECK(doEmbeddedInstruction(nullptr, &stmt));
             node->replaceTokens[tokenId] = stmt;
-            SWAG_CHECK(eatSemiCol("after #mixin replacement statement"));
+            SWAG_CHECK(eatSemiCol("after '#mixin' replacement statement"));
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     }
 
-    SWAG_CHECK(eatSemiCol("after #mixin expression"));
+    SWAG_CHECK(eatSemiCol("after '#mixin' expression"));
     return true;
 }
 
@@ -211,7 +211,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     else
         SWAG_CHECK(doExpression(node));
 
-    SWAG_CHECK(eatSemiCol("after #compiler expression"));
+    SWAG_CHECK(eatSemiCol("after '#compiler' expression"));
 
     return true;
 }
@@ -242,7 +242,7 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
     else
     {
         SWAG_CHECK(doExpression(node));
-        SWAG_CHECK(eatSemiCol("after #ast expression"));
+        SWAG_CHECK(eatSemiCol("after '#ast' expression"));
     }
 
     return true;
@@ -263,7 +263,7 @@ bool SyntaxJob::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->semanticFct = SemanticJob::resolveCompilerRun;
     SWAG_CHECK(doEmbeddedInstruction(node));
-    SWAG_CHECK(eatSemiCol("after #run statement"));
+    SWAG_CHECK(eatSemiCol("after '#run' statement"));
     return true;
 }
 
@@ -320,7 +320,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerUnitTest()
 {
-    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#unittest can only be declared in the top level scope"}));
+    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#unittest' can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getToken(token));
 
     // ERROR
@@ -369,21 +369,21 @@ bool SyntaxJob::doCompilerUnitTest()
     // ???
     else
     {
-        sourceFile->report({sourceFile, token, format("unknown #unittest parameter '%s'", token.text.c_str())});
+        sourceFile->report({sourceFile, token, format("unknown '#unittest' parameter '%s'", token.text.c_str())});
         return false;
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatSemiCol("after unittest expression"));
+    SWAG_CHECK(eatSemiCol("after '#unittest' expression"));
     return true;
 }
 
 bool SyntaxJob::doCompilerModule()
 {
-    SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#module can only be specified once"}));
-    SWAG_VERIFY(canChangeModule, sourceFile->report({sourceFile, token, "#module instruction must be done before any code"}));
+    SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "'#module' can only be specified once"}));
+    SWAG_VERIFY(canChangeModule, sourceFile->report({sourceFile, token, "'#module' instruction must be done before any code"}));
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, "#module must be followed by a string"}));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, "'#module' must be followed by a string"}));
 
     // Be sure module name is valid
     Utf8 errorStr;
@@ -486,15 +486,15 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
-    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#import can only be declared in the top level scope"}));
+    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#import' can only be declared in the top level scope"}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerImport, sourceFile, parent);
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, "#import must be followed by a string"}));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, "'#import' must be followed by a string"}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatSemiCol("after #import expression"));
+    SWAG_CHECK(eatSemiCol("after '#import' expression"));
 
     sourceFile->module->addDependency(node);
     return true;
@@ -502,15 +502,15 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
 
 bool SyntaxJob::doCompilerPlaceHolder(AstNode* parent)
 {
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), sourceFile->report({sourceFile, token, "#placeholder can only be declared in a top level scope"}));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), sourceFile->report({sourceFile, token, "'#placeholder' can only be declared in a top level scope"}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPlaceHolder, sourceFile, parent);
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, "#placeholder must be followed by an identifier"}));
+    SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, "'#placeholder' must be followed by an identifier"}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatSemiCol("after #placeholder expression"));
+    SWAG_CHECK(eatSemiCol("after '#placeholder' expression"));
 
     currentScope->symTable.registerSymbolName(&context, node, SymbolKind::PlaceHolder);
 
