@@ -82,6 +82,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         return false;
     if (timeExportFile < g_Workspace.bootstrapModule->moreRecentSourceFile)
         return false;
+    if (timeExportFile < g_Workspace.runtimeModule->moreRecentSourceFile)
+        return false;
     if (!invert && timeExportFile < moreRecentSourceFile)
         return false;
     if (invert && timeExportFile > moreRecentSourceFile)
