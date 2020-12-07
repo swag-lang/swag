@@ -111,14 +111,22 @@ void Workspace::addRuntime()
 void Workspace::setupPaths()
 {
     workspacePath = fs::absolute(g_CommandLine.workspacePath);
-    testsPath     = workspacePath;
-    testsPath.append("tests/");
+
+    testsPath = workspacePath;
+    testsPath.append(SWAG_TESTS_FOLDER);
+    testsPath.append("/");
+
     examplesPath = workspacePath;
-    examplesPath.append("examples/");
+    examplesPath.append(SWAG_EXAMPLES_FOLDER);
+    examplesPath.append("/");
+
     modulesPath = workspacePath;
-    modulesPath.append("modules/");
+    modulesPath.append(SWAG_MODULES_FOLDER);
+    modulesPath.append("/");
+
     dependenciesPath = workspacePath;
-    dependenciesPath.append("dependencies/");
+    dependenciesPath.append(SWAG_DEPENDENCIES_FOLDER);
+    dependenciesPath.append("/");
 }
 
 OneTag* Workspace::hasTag(const Utf8& name)
@@ -292,7 +300,7 @@ void Workspace::createNew()
         exit(-1);
     }
 
-    modulePath.append("src");
+    modulePath.append(SWAG_SRC_FOLDER);
     if (!fs::create_directories(modulePath, errorCode))
     {
         g_Log.error(format("fatal error: cannot create directory '%s'", modulePath.string().c_str()));
@@ -412,7 +420,8 @@ void Workspace::setupCachePath()
         if (cachePath.empty())
         {
             cachePath = workspacePath;
-            cachePath += "output/";
+            cachePath += SWAG_OUTPUT_FOLDER;
+            cachePath += "/";
         }
     }
 }
@@ -420,7 +429,8 @@ void Workspace::setupCachePath()
 void Workspace::setupTarget()
 {
     targetPath = workspacePath;
-    targetPath.append("output/");
+    targetPath.append(SWAG_OUTPUT_FOLDER);
+    targetPath.append("/");
     targetPath.append(g_CommandLine.buildCfg + "-" + GetOsName().c_str() + "-" + GetArchName().c_str());
 
     if (g_CommandLine.verbose && g_CommandLine.verbosePath)
@@ -442,7 +452,7 @@ void Workspace::setupTarget()
         exit(-1);
     }
 
-    cachePath.append("swag_cache");
+    cachePath.append(SWAG_CACHE_FOLDER);
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
         g_Log.error(format("fatal error: cannot cache target directory '%s'", cachePath.string().c_str()));
@@ -742,7 +752,9 @@ void Workspace::cleanPublic(const fs::path& basePath)
     {
         OS::visitFolders(basePath.string().c_str(), [&, this](const char* folder) {
             auto path = basePath.string() + folder;
-            path += "/public/";
+            path += "/";
+            path += SWAG_PUBLIC_FOLDER;
+            path += "/";
             path = normalizePath(path);
             if (fs::exists(path))
             {
@@ -760,7 +772,8 @@ void Workspace::clean()
 
     // Clean all output folders
     targetPath = workspacePath;
-    targetPath.append("output/");
+    targetPath.append(SWAG_OUTPUT_FOLDER);
+    targetPath.append("/");
     if (fs::exists(targetPath))
     {
         OS::visitFolders(targetPath.string().c_str(), [this](const char* folder) {
@@ -774,7 +787,8 @@ void Workspace::clean()
 
     // Clean all cache folders for the given workspace
     setupCachePath();
-    cachePath.append("swag_cache/");
+    cachePath.append(SWAG_CACHE_FOLDER);
+    cachePath.append("/");
     if (fs::exists(cachePath))
     {
         OS::visitFolders(cachePath.string().c_str(), [this](const char* folder) {

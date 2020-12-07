@@ -543,7 +543,8 @@ JobResult ModuleBuildJob::execute()
 
 void ModuleBuildJob::publishFilesToTarget()
 {
-    string publishPath = module->path + "/publish";
+    string publishPath = module->path + "/";
+    publishPath += SWAG_PUBLISH_FOLDER;
     if (!fs::exists(publishPath))
         return;
 

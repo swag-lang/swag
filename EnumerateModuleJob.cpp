@@ -91,19 +91,26 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
         exit(-1);
     }
 
-    // Module name is equivalent to the folder name
+    // Module name is equivalent to the folder name, except for the tests folder where
+    // we prepend SWAG_TESTS_FOLDER
     string moduleName;
-    if (parent == "tests")
-        moduleName = "tests_";
+    if (parent == SWAG_TESTS_FOLDER)
+    {
+        moduleName = SWAG_TESTS_FOLDER;
+        moduleName += "_";
+    }
+
     moduleName += cFileName;
 
     // Create theModule
-    auto theModule = g_Workspace.createOrUseModule(moduleName, parent == "tests", parent == "examples");
+    auto theModule = g_Workspace.createOrUseModule(moduleName, parent == SWAG_TESTS_FOLDER, parent == SWAG_EXAMPLES_FOLDER);
 
-    // Parse all files in the "src" sub folder
+    // Parse all files in the source tree
     string tmp      = path.string();
     theModule->path = tmp;
-    tmp += "/src/";
+    tmp += "/";
+    tmp += SWAG_SRC_FOLDER;
+    tmp += "/";
     enumerateFilesInModule(tmp, theModule);
     return theModule;
 }

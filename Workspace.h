@@ -5,8 +5,16 @@
 struct Module;
 struct Scope;
 
+#define SWAG_CACHE_FOLDER "swag_cache"
 #define SWAG_TESTS_FOLDER "tests"
 #define SWAG_EXAMPLES_FOLDER "examples"
+#define SWAG_MODULES_FOLDER "modules"
+#define SWAG_OUTPUT_FOLDER "output"
+#define SWAG_DEPENDENCIES_FOLDER "dependencies"
+
+#define SWAG_SRC_FOLDER "src"
+#define SWAG_PUBLIC_FOLDER "public"
+#define SWAG_PUBLISH_FOLDER "publish"
 
 struct OneTag
 {
