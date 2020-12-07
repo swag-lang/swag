@@ -100,12 +100,9 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     // Create theModule
     auto theModule = g_Workspace.createOrUseModule(moduleName, parent == "tests", parent == "examples");
 
-    // Parse all files in the "src" sub folder, except for tests where all the source code
-    // is at the root folder
+    // Parse all files in the "src" sub folder
     string tmp      = path.string();
     theModule->path = tmp;
-    if (!theModule->fromTestsFolder)
-        tmp += "/src";
     enumerateFilesInModule(tmp, theModule);
     return theModule;
 }
