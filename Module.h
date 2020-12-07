@@ -67,7 +67,6 @@ struct Module
     bool        canGenerateLegit();
 
     string                    path;
-    fs::path                  documentPath;
     Utf8                      name;
     Utf8                      nameDown;
     Utf8                      nameUp;
