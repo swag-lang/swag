@@ -103,7 +103,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     moduleName += cFileName;
 
     // Kind
-    ModuleKind kind;
+    ModuleKind kind = ModuleKind::Module;
     if (parent == SWAG_TESTS_FOLDER)
         kind = ModuleKind::Test;
     else if (parent == SWAG_EXAMPLES_FOLDER)
