@@ -113,7 +113,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     for (const auto& dep : module->moduleDependencies)
     {
         SWAG_ASSERT(dep->module);
-        if (!dep->generated || !dep->module->mustOutputSomething())
+        if (!dep->module->mustOutputSomething())
             continue;
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
@@ -152,7 +152,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     // Call to global drop of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
-        if (!dep->generated || !dep->module->mustOutputSomething())
+        if (!dep->module->mustOutputSomething())
             continue;
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);

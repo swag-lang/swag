@@ -40,6 +40,11 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
     SWAG_ASSERT(depModule->backend);
 
     // Add export generated file
+    auto publicPath = depModule->path + "/";
+    publicPath += SWAG_PUBLIC_FOLDER;
+    if (!fs::exists(publicPath))
+        return true;
+
     SWAG_CHECK(depModule->backend->setupExportFile());
     if (depModule->backend->timeExportFile)
     {
@@ -49,7 +54,6 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
         file->generated      = depModule->backend->exportFileGenerated;
         file->imported       = depModule;
         file->forceNamespace = dep->forceNamespace;
-        dep->generated       = depModule->backend->exportFileGenerated;
         files.push_back(file);
     }
 

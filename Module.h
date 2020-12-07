@@ -38,7 +38,6 @@ struct ModuleDependency
     AstNode* node       = nullptr;
     AstNode* aliasDone  = nullptr;
     Module*  module     = nullptr;
-    bool     generated  = false;
     bool     importDone = false;
 };
 
