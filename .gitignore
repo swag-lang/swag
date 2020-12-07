@@ -263,6 +263,7 @@ paket-files/
 __pycache__/
 *.pyc
 
+# Swag
 *.tlog
 .out/*.exe
 .out/*.lib
@@ -271,4 +272,7 @@ __pycache__/
 .out/*.bat
 .out/.vs/
 doc/
-std/output/
+**/output/
+**/modules/**/public
+**/examples/**/public
+**/tests/**/public

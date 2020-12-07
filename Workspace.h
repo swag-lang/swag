@@ -34,6 +34,7 @@ struct Workspace
     Utf8    GetArchName();
     Utf8    GetOsName();
     OneTag* hasTag(const Utf8& name);
+    void    cleanPublic(const fs::path& basePath);
     void    clean();
     void    setupCachePath();
     void    setupTarget();

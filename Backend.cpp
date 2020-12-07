@@ -74,7 +74,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         return false;
 
     // Get export file name
-    setupExportFile();
+    if (!setupExportFile())
+        return false;
     if (bufferSwg.path.empty())
         return false;
 

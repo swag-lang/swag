@@ -40,7 +40,7 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
     SWAG_ASSERT(depModule->backend);
 
     // Add export generated file
-    depModule->backend->setupExportFile();
+    SWAG_CHECK(depModule->backend->setupExportFile());
     if (depModule->backend->timeExportFile)
     {
         auto file            = g_Allocator.alloc<SourceFile>();

@@ -47,7 +47,7 @@ struct Backend
 
     JobResult generateExportFile(Job* ownerJob);
     bool      saveExportFile();
-    void      setupExportFile();
+    bool      setupExportFile(bool force = false);
     bool      emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent);
     bool      emitAttributes(TypeInfo* typeInfo, int indent);
     bool      emitTypeTuple(TypeInfo* typeInfo, int indent);

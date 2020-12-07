@@ -736,22 +736,43 @@ bool Workspace::build()
     return result;
 }
 
+void Workspace::cleanPublic(const fs::path& basePath)
+{
+    if (fs::exists(basePath))
+    {
+        OS::visitFolders(basePath.string().c_str(), [&, this](const char* folder) {
+            auto path = basePath.string() + folder;
+            path += "/public/";
+            path = normalizePath(path);
+            if (fs::exists(path))
+            {
+                g_Log.messageHeaderCentered("Cleaning", path);
+                deleteFolderContent(path);
+                fs::remove_all(path);
+            }
+        });
+    }
+}
+
 void Workspace::clean()
 {
     setup();
 
+    // Clean all output folders
     targetPath = workspacePath;
     targetPath.append("output/");
     if (fs::exists(targetPath))
     {
         OS::visitFolders(targetPath.string().c_str(), [this](const char* folder) {
             auto path = targetPath.string() + folder;
+            path      = normalizePath(path);
             g_Log.messageHeaderCentered("Cleaning", path);
             deleteFolderContent(path);
             fs::remove_all(path);
         });
     }
 
+    // Clean all cache folders for the given workspace
     setupCachePath();
     cachePath.append("swag_cache/");
     if (fs::exists(cachePath))
@@ -763,12 +784,18 @@ void Workspace::clean()
             if (strstr(folder, wkPath.c_str()) == folder)
             {
                 auto path = cachePath.string() + folder;
+                path      = normalizePath(path);
                 g_Log.messageHeaderCentered("Cleaning", path);
                 deleteFolderContent(path);
                 fs::remove_all(path);
             }
         });
     }
+
+    // Clean all public folders of the workspace modules
+    cleanPublic(modulesPath);
+    cleanPublic(examplesPath);
+    cleanPublic(testsPath);
 
     g_Log.messageHeaderCentered("Done", "");
 }

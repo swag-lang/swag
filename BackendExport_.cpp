@@ -677,21 +677,39 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
     return true;
 }
 
-void Backend::setupExportFile()
+bool Backend::setupExportFile(bool force)
 {
     if (!bufferSwg.path.empty())
-        return;
+        return true;
 
     exportFileGenerated = true;
+    Utf8 targetPath     = normalizePath(module->path + "/public/");
     Utf8 targetName     = module->name + ".swg";
-    auto targetPath     = g_Workspace.targetPath;
+
+    if (!fs::exists(targetPath.c_str()))
+    {
+        error_code errorCode;
+        if (!fs::create_directories(targetPath.c_str(), errorCode))
+        {
+            module->error(format("cannot create public directory '%s'", targetPath.c_str()));
+            return false;
+        }
+    }
+
     targetPath.append(targetName.c_str());
-    if (fs::exists(targetPath.c_str()))
+    if (force)
     {
         bufferSwg.name = targetName;
-        bufferSwg.path = normalizePath(fs::path(targetPath.string().c_str()));
-        timeExportFile = OS::getFileWriteTime(targetPath.string().c_str());
+        bufferSwg.path = targetPath;
     }
+    else if (fs::exists(targetPath.c_str()))
+    {
+        bufferSwg.name = targetName;
+        bufferSwg.path = targetPath;
+        timeExportFile = OS::getFileWriteTime(targetPath.c_str());
+    }
+
+    return true;
 }
 
 JobResult Backend::generateExportFile(Job* ownerJob)
@@ -699,12 +717,9 @@ JobResult Backend::generateExportFile(Job* ownerJob)
     SWAG_PROFILE(PRF_OUT, format("generateExportFile %s", module->name.c_str()));
     if (passExport == BackendPreCompilePass::Init)
     {
-        passExport          = BackendPreCompilePass::GenerateObj;
-        exportFileGenerated = true;
-        bufferSwg.name      = module->name + ".swg";
-        auto targetPath     = g_Workspace.targetPath;
-        targetPath.append(bufferSwg.name.c_str());
-        bufferSwg.path = normalizePath(targetPath);
+        passExport = BackendPreCompilePass::GenerateObj;
+        if (!setupExportFile(true))
+            return JobResult::ReleaseJob;
         if (!mustCompile)
             return JobResult::ReleaseJob;
 
