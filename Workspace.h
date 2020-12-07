@@ -5,6 +5,9 @@
 struct Module;
 struct Scope;
 
+#define SWAG_TESTS_FOLDER "tests"
+#define SWAG_EXAMPLES_FOLDER "examples"
+
 struct OneTag
 {
     Utf8          cmdLine;

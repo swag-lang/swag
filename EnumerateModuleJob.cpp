@@ -103,6 +103,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     // Parse all files in the "src" sub folder
     string tmp      = path.string();
     theModule->path = tmp;
+    tmp += "/src/";
     enumerateFilesInModule(tmp, theModule);
     return theModule;
 }
