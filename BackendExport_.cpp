@@ -682,8 +682,7 @@ bool Backend::setupExportFile(bool force)
     if (!bufferSwg.path.empty())
         return true;
 
-    exportFileGenerated = true;
-    Utf8 targetPath     = module->path + "/";
+    Utf8 targetPath = module->path + "/";
     targetPath += SWAG_PUBLIC_FOLDER;
     targetPath += "/";
     targetPath      = normalizePath(fs::path(targetPath.c_str()));

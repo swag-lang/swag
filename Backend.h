@@ -69,8 +69,7 @@ struct Backend
     BackendPreCompilePass passExport           = BackendPreCompilePass::Init;
 
     Ast::OutputContext outputContext;
-    bool               mustCompile         = true;
-    bool               exportFileGenerated = false;
+    bool               mustCompile = true;
 
     static string compilerExe;
     static string compilerPath;
