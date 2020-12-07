@@ -203,6 +203,7 @@ JobResult ModuleBuildJob::execute()
 
         if (g_CommandLine.output && !module->path.empty() && !module->fromTestsFolder)
         {
+            publishFilesToPublic();
             publishFilesToTarget();
             // Do not wait ! We go straight to the semantic pass, as this are IO jobs, and the scheduler will
             // execute them when possible
@@ -539,6 +540,36 @@ JobResult ModuleBuildJob::execute()
     module->setHasBeenBuilt(BUILDRES_FULL);
 
     return JobResult::ReleaseJob;
+}
+
+void ModuleBuildJob::publishFilesToPublic()
+{
+    if (module->publicSourceFiles.empty())
+        return;
+
+    string publicPath = module->path + "/";
+    publicPath += SWAG_PUBLIC_FOLDER;
+
+    if (!fs::exists(publicPath))
+    {
+        error_code errorCode;
+        if (!fs::create_directories(publicPath.c_str(), errorCode))
+        {
+            module->error(format("cannot create public directory '%s'", publicPath.c_str()));
+            return;
+        }
+    }
+
+    // Add all #public files
+    for (auto one : module->publicSourceFiles)
+    {
+        auto job          = g_Pool_copyFileJob.alloc();
+        job->module       = module;
+        job->sourcePath   = one->path;
+        job->destPath     = publicPath + "/" + one->name;
+        job->dependentJob = this;
+        jobsToAdd.push_back(job);
+    }
 }
 
 void ModuleBuildJob::publishFilesToTarget()
