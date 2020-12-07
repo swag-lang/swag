@@ -39,34 +39,22 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
     VectorNative<SourceFile*> files;
     SWAG_ASSERT(depModule->backend);
 
-    // Add export generated file
     auto publicPath = depModule->path + "/";
     publicPath += SWAG_PUBLIC_FOLDER;
     if (!fs::exists(publicPath))
         return true;
 
-    SWAG_CHECK(depModule->backend->setupExportFile());
-    if (depModule->backend->timeExportFile)
-    {
-        auto file            = g_Allocator.alloc<SourceFile>();
-        file->name           = depModule->backend->bufferSwg.name;
-        file->path           = depModule->backend->bufferSwg.path;
-        file->generated      = depModule->backend->exportFileGenerated;
+    // Add all public files from the dependency module
+    OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
+        auto file  = g_Allocator.alloc<SourceFile>();
+        file->name = filename;
+        file->path = publicPath + "/";
+        file->path += filename;
+        file->generated      = depModule->backend->bufferSwg.name == filename;
         file->imported       = depModule;
         file->forceNamespace = dep->forceNamespace;
         files.push_back(file);
-    }
-
-    // Add all #public files
-    for (auto one : depModule->publicSourceFiles)
-    {
-        auto file            = g_Allocator.alloc<SourceFile>();
-        file->name           = one->name;
-        file->path           = one->path;
-        file->forceNamespace = dep->forceNamespace;
-        file->imported       = depModule;
-        files.push_back(file);
-    }
+    });
 
     // One syntax job per dependency file
     for (auto one : files)
