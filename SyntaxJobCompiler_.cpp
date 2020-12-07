@@ -406,6 +406,16 @@ bool SyntaxJob::doCompilerModule()
     return true;
 }
 
+bool SyntaxJob::doCompilerGenerated()
+{
+    sourceFile->generated = true;
+    if (sourceFile->imported)
+        sourceFile->imported->isSwag = true;
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(eatSemiCol("after '#generated'"));
+    return true;
+}
+
 bool SyntaxJob::doCompilerPublic()
 {
     SWAG_VERIFY(!sourceFile->forcedPublic, sourceFile->report({sourceFile, token, "'#public' can only be specified once per file"}));

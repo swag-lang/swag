@@ -94,6 +94,7 @@ struct Module
     bool                      saveBssValues        = false;
     bool                      saveMutableValues    = false;
     bool                      bssCannotChange      = false;
+    bool                      isSwag               = false;
 
     bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
     bool executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);

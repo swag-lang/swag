@@ -50,7 +50,6 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
         file->name = filename;
         file->path = publicPath + "/";
         file->path += filename;
-        file->generated      = depModule->backend->bufferSwg.name == filename;
         file->imported       = depModule;
         file->forceNamespace = dep->forceNamespace;
         files.push_back(file);
@@ -89,7 +88,20 @@ JobResult ModuleBuildJob::execute()
             module->typeSegment.initFrom(&g_Workspace.runtimeModule->typeSegment);
         }
 
+        pass = ModuleBuildPass::Publish;
+    }
+
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::Publish)
+    {
         pass = ModuleBuildPass::Dependencies;
+        if (g_CommandLine.output && !module->path.empty() && module->kind != ModuleKind::Test)
+        {
+            publishFilesToPublic();
+            publishFilesToTarget();
+            if (!jobsToAdd.empty())
+                return JobResult::KeepJobAlive;
+        }
     }
 
     // Wait for dependencies to be build
@@ -155,7 +167,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::SemanticCompiler)
     {
-        pass = ModuleBuildPass::Publish;
+        pass = ModuleBuildPass::SemanticModule;
 
         // Cannot send compiler messages while we are resolving #compiler functions
         module->runContext.canSendCompilerMessages = false;
@@ -185,24 +197,6 @@ JobResult ModuleBuildJob::execute()
     }
 
     //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::Publish)
-    {
-        pass = ModuleBuildPass::SemanticModule;
-
-        // We can then send compiler messages again
-        module->runContext.canSendCompilerMessages = true;
-        module->sendCompilerMessage(CompilerMsgKind::PassBeforePublish, this);
-
-        if (g_CommandLine.output && !module->path.empty() && module->kind != ModuleKind::Test)
-        {
-            publishFilesToPublic();
-            publishFilesToTarget();
-            // Do not wait ! We go straight to the semantic pass, as this are IO jobs, and the scheduler will
-            // execute them when possible
-        }
-    }
-
-    //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::SemanticModule)
     {
         pass = ModuleBuildPass::AfterSemantic;
@@ -221,6 +215,8 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
+        // We can then send compiler messages again
+        module->runContext.canSendCompilerMessages = true;
         module->sendCompilerMessage(CompilerMsgKind::PassBeforeSemantic, this);
         auto semanticJob          = g_Pool_moduleSemanticJob.alloc();
         semanticJob->module       = module;
@@ -567,6 +563,7 @@ void ModuleBuildJob::publishFilesToPublic()
 
         OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
             // Keep the generated file untouched !
+            module->allocateBackend();
             if (module->backend->bufferSwg.name == filename)
                 return;
 

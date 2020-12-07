@@ -146,7 +146,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Call to global init of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
-        if (!dep->module->mustOutputSomething())
+        if (!dep->module->isSwag)
             continue;
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
@@ -192,7 +192,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // Call to global drop of all dependencies
     for (const auto& dep : module->moduleDependencies)
     {
-        if (!dep->module->mustOutputSomething())
+        if (!dep->module->isSwag)
             continue;
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);

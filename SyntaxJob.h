@@ -77,6 +77,7 @@ struct SyntaxJob : public Job
     bool doCompilerUnitTest();
     bool doCompilerModule();
     bool doCompilerPublic();
+    bool doCompilerGenerated();
     bool doCompilerPass();
     bool doCompilerSpecialFunction(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerDefined(AstNode* parent, AstNode** result = nullptr);

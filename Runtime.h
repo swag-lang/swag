@@ -292,7 +292,6 @@ struct ConcreteTypeInfoSlice
 
 enum class CompilerMsgKind
 {
-    PassBeforePublish,
     PassBeforeSemantic,
     PassAfterSemantic,
     PassBeforeRun,
@@ -304,6 +303,7 @@ enum class CompilerMsgKind
 enum class CompilerMsgKindMask : uint64_t
 {
     PassBeforeSemantic = 1 << (uint32_t) CompilerMsgKind::PassBeforeSemantic,
+    PassAfterSemantic  = 1 << (uint32_t) CompilerMsgKind::PassAfterSemantic,
     PassBeforeRun      = 1 << (uint32_t) CompilerMsgKind::PassBeforeRun,
     PassBeforeOutput   = 1 << (uint32_t) CompilerMsgKind::PassBeforeOutput,
     PassAllDone        = 1 << (uint32_t) CompilerMsgKind::PassAllDone,
