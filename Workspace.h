@@ -4,6 +4,7 @@
 #include "Register.h"
 struct Module;
 struct Scope;
+enum class ModuleKind;
 
 #define SWAG_CACHE_FOLDER "swag_cache"
 #define SWAG_TESTS_FOLDER "tests"
@@ -31,7 +32,7 @@ struct Workspace
     void    checkPendingJobs();
     bool    buildTarget();
     bool    build();
-    Module* createOrUseModule(const Utf8& moduleName, bool fromTestsFolder, bool fromExamplesFolder);
+    Module* createOrUseModule(const Utf8& moduleName, ModuleKind kind);
 
     void    addBootstrap();
     void    addRuntime();

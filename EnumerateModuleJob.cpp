@@ -38,7 +38,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* th
                     if (g_CommandLine.fileFilter.empty() || strstr(cFileName, g_CommandLine.fileFilter.c_str()))
                     {
                         auto file         = g_Allocator.alloc<SourceFile>();
-                        file->fromTests   = theModule->fromTestsFolder;
+                        file->fromTests   = theModule->kind == ModuleKind::Test;
                         file->name        = cFileName;
                         fs::path pathFile = tmp.c_str();
                         pathFile.append(cFileName);
@@ -102,8 +102,23 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
 
     moduleName += cFileName;
 
+    // Kind
+    ModuleKind kind;
+    if (parent == SWAG_TESTS_FOLDER)
+        kind = ModuleKind::Test;
+    else if (parent == SWAG_EXAMPLES_FOLDER)
+        kind = ModuleKind::Example;
+    else if (parent == SWAG_DEPENDENCIES_FOLDER)
+        kind = ModuleKind::Dependency;
+    else if (parent == SWAG_MODULES_FOLDER)
+        kind = ModuleKind::Module;
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+
     // Create theModule
-    auto theModule = g_Workspace.createOrUseModule(moduleName, parent == SWAG_TESTS_FOLDER, parent == SWAG_EXAMPLES_FOLDER);
+    auto theModule = g_Workspace.createOrUseModule(moduleName, kind);
 
     // Parse all files in the source tree
     string tmp      = path.string();

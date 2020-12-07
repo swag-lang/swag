@@ -89,7 +89,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
 
     // Add struct type and scope
     Scope* rootScope;
-    if (sourceFile->module->fromTestsFolder)
+    if (sourceFile->module->kind == ModuleKind::Test)
         rootScope = sourceFile->scopePrivate;
     else
         rootScope = sourceFile->module->scopeRoot;

@@ -138,7 +138,7 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
 
-    if (module->isBootStrap || module->isRuntime || !module->runContext.canSendCompilerMessages)
+    if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime || !module->runContext.canSendCompilerMessages)
         return true;
     if (!module->hasCompilerFuncFor(CompilerMsgKind::SemanticFunc))
         return true;
@@ -234,7 +234,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
-            SWAG_VERIFY(module->fromTestsFolder, context->report({node, node->token, "#test functions can only be used in a test module (in the './tests' folder of the workspace)"}));
+            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, node->token, "#test functions can only be used in a test module (in the './tests' folder of the workspace)"}));
             SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->report({node->returnType, "function with the 'swag.test' attribute cannot have a return value"}));
             SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, "function with the 'swag.test' attribute cannot have parameters"}));
         }

@@ -80,9 +80,9 @@ JobResult ModuleOutputJob::execute()
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
-                if (module->fromTestsFolder)
+                if (module->kind == ModuleKind::Test)
                     preCompileJob->buildParameters.compileType = BackendCompileType::Test;
-                else if (module->fromExamplesFolder)
+                else if (module->kind == ModuleKind::Example)
                     preCompileJob->buildParameters.compileType = BackendCompileType::Example;
                 else
                     preCompileJob->buildParameters.compileType = BackendCompileType::Normal;
@@ -149,9 +149,9 @@ JobResult ModuleOutputJob::execute()
             compileJob->module          = module;
             compileJob->dependentJob    = this;
             compileJob->buildParameters = module->buildParameters;
-            if (module->fromTestsFolder)
+            if (module->kind == ModuleKind::Test)
                 compileJob->buildParameters.compileType = BackendCompileType::Test;
-            else if (module->fromExamplesFolder)
+            else if (module->kind == ModuleKind::Example)
                 compileJob->buildParameters.compileType = BackendCompileType::Example;
             else
                 compileJob->buildParameters.compileType = BackendCompileType::Normal;

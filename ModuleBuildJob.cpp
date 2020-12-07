@@ -193,7 +193,7 @@ JobResult ModuleBuildJob::execute()
         module->runContext.canSendCompilerMessages = true;
         module->sendCompilerMessage(CompilerMsgKind::PassBeforePublish, this);
 
-        if (g_CommandLine.output && !module->path.empty() && !module->fromTestsFolder)
+        if (g_CommandLine.output && !module->path.empty() && module->kind != ModuleKind::Test)
         {
             publishFilesToPublic();
             publishFilesToTarget();
@@ -516,7 +516,7 @@ JobResult ModuleBuildJob::execute()
         }
 
         // Run command
-        if (g_CommandLine.run && !module->fromTestsFolder)
+        if (g_CommandLine.run && module->kind != ModuleKind::Test)
         {
             auto job                         = g_Pool_moduleRunJob.alloc();
             job->module                      = module;
@@ -550,6 +550,39 @@ void ModuleBuildJob::publishFilesToPublic()
             module->error(format("cannot create public directory '%s'", publicPath.c_str()));
             return;
         }
+    }
+
+    // We need the public folder to be in sync with the current state of the code.
+    // That means that every files in the public folder that is no more #public must
+    // be removed (and every old file that does not exist anymore)
+    if (module->kind != ModuleKind::Dependency)
+    {
+        set<Utf8> publicFiles;
+        for (auto one : module->publicSourceFiles)
+        {
+            auto name = one->name;
+            name.makeUpper();
+            publicFiles.insert(name);
+        }
+
+        OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
+            // Keep the generated file untouched !
+            if (module->backend->bufferSwg.name == filename)
+                return;
+
+            // If this is still a #public file, then do nothing. The job will erase it
+            // if the one from the source code is more recent
+            Utf8 pubName = filename;
+            pubName.makeUpper();
+            if (publicFiles.find(pubName) != publicFiles.end())
+                return;
+
+            // Otherwise, remove it !
+            auto path = publicPath + "/";
+            path += filename;
+            error_code errorCode;
+            fs::remove(path, errorCode);
+        });
     }
 
     // Add all #public files

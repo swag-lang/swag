@@ -70,7 +70,7 @@ bool Module::mustGenerateTestExe()
         return false;
     if (!g_CommandLine.outputTest)
         return false;
-    if (!fromTestsFolder)
+    if (kind != ModuleKind::Test)
         return false;
     if (byteCodeTestFunc.empty())
         return false;
@@ -85,7 +85,7 @@ bool Module::mustGenerateTestExe()
 bool Module::canGenerateLegit()
 {
     // Normal module
-    if (!fromTestsFolder)
+    if (kind != ModuleKind::Test)
     {
         if (!g_CommandLine.outputLegit)
             return false;
@@ -183,7 +183,7 @@ void Module::allocateBackend()
 
     // Allocate backend, even if we do not want to output, because the backend can be used
     // to know if a build is necessary
-    if (!hasUnittestError && buildPass >= BuildPass::Backend && !isRuntime && !isBootStrap)
+    if (!hasUnittestError && buildPass >= BuildPass::Backend && kind != ModuleKind::Runtime && kind != ModuleKind::BootStrap)
     {
         switch (g_CommandLine.backendType)
         {
@@ -350,10 +350,10 @@ void Module::registerForeign(AstFuncDecl* node)
     allForeign.push_back(node);
 }
 
-bool Module::sendCompilerMessage(CompilerMsgKind kind, Job* dependentJob)
+bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 {
     ConcreteCompilerMessage msg;
-    msg.kind = kind;
+    msg.kind = msgKind;
     return sendCompilerMessage(&msg, dependentJob);
 }
 
@@ -388,9 +388,9 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
     return true;
 }
 
-bool Module::hasCompilerFuncFor(CompilerMsgKind kind)
+bool Module::hasCompilerFuncFor(CompilerMsgKind msgKind)
 {
-    int index = (int) kind;
+    int index = (int) msgKind;
     return !byteCodeCompiler[index].empty();
 }
 
@@ -574,10 +574,10 @@ void Module::printUserMessage(const BuildParameters& bp)
     }
 }
 
-void Module::addGlobalVar(AstNode* node, GlobalVarKind kind)
+void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
 {
     unique_lock lk(mutexGlobalVars);
-    switch (kind)
+    switch (varKind)
     {
     case GlobalVarKind::Mutable:
         globalVarsMutable.push_back(node);
@@ -672,7 +672,7 @@ bool Module::mustOutputSomething()
     // module must have unittest errors, so not output
     else if (hasUnittestError)
         mustOutput = false;
-    else if (fromTestsFolder && !g_CommandLine.outputTest)
+    else if (kind == ModuleKind::Test && !g_CommandLine.outputTest)
         mustOutput = false;
 
     return mustOutput;

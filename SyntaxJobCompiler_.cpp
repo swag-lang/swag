@@ -391,11 +391,11 @@ bool SyntaxJob::doCompilerModule()
         return sourceFile->report({sourceFile, token, errorStr});
 
     moduleSpecified = true;
-    auto newModule  = g_Workspace.createOrUseModule(token.text, sourceFile->module->fromTestsFolder, sourceFile->module->fromExamplesFolder);
+    auto newModule  = g_Workspace.createOrUseModule(token.text, sourceFile->module->kind);
     sourceFile->module->removeFile(sourceFile);
     newModule->addFile(sourceFile);
 
-    if (newModule->fromTestsFolder)
+    if (newModule->kind == ModuleKind::Test)
         currentScope = sourceFile->scopePrivate;
     else
         currentScope = newModule->scopeRoot;

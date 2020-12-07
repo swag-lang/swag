@@ -41,6 +41,16 @@ struct ModuleDependency
     bool     importDone = false;
 };
 
+enum class ModuleKind
+{
+    Example,
+    Test,
+    Module,
+    Dependency,
+    BootStrap,
+    Runtime,
+};
+
 static const uint32_t BUILDRES_NONE     = 0x00000000;
 static const uint32_t BUILDRES_EXPORT   = 0x00000001;
 static const uint32_t BUILDRES_COMPILER = 0x00000002;
@@ -69,6 +79,7 @@ struct Module
     Utf8                      name;
     Utf8                      nameDown;
     Utf8                      nameUp;
+    ModuleKind                kind;
     atomic<int>               numErrors      = 0;
     atomic<int>               criticalErrors = 0;
     shared_mutex              mutexFile;
@@ -79,8 +90,6 @@ struct Module
     Scope*                    scopeRoot            = nullptr;
     Backend*                  backend              = nullptr;
     uint64_t                  moreRecentSourceFile = 0;
-    bool                      fromTestsFolder      = false;
-    bool                      fromExamplesFolder   = false;
     bool                      addedToBuild         = false;
     bool                      saveBssValues        = false;
     bool                      saveMutableValues    = false;
@@ -106,10 +115,10 @@ struct Module
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;
 
-    bool sendCompilerMessage(CompilerMsgKind kind, Job* dependentJob);
+    bool sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob);
     bool sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob);
     void addCompilerFunc(ByteCode* bc);
-    bool hasCompilerFuncFor(CompilerMsgKind kind);
+    bool hasCompilerFuncFor(CompilerMsgKind msgKind);
     void addByteCodeFunc(ByteCode* bc);
     void registerForeign(AstFuncDecl* node);
     bool hasBytecodeToRun();
@@ -134,8 +143,6 @@ struct Module
 
     ByteCode* byteCodeMainFunc = nullptr;
     AstNode*  mainIsDefined    = nullptr;
-    bool      isBootStrap      = false;
-    bool      isRuntime        = false;
     bool      hasUnittestError = false;
     bool      setupDone        = false;
     bool      dependenciesDone = false;
@@ -157,7 +164,7 @@ struct Module
     VectorNative<AstNode*> globalVarsBss;
     VectorNative<AstNode*> globalVarsMutable;
     VectorNative<AstNode*> globalVarsConstant;
-    void                   addGlobalVar(AstNode* node, GlobalVarKind kind);
+    void                   addGlobalVar(AstNode* node, GlobalVarKind varKind);
 
     atomic<int> optimNeedRestart;
     int         optimPass = 0;

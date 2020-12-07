@@ -23,7 +23,7 @@ Module* Workspace::getModuleByName(const Utf8& moduleName)
     return it->second;
 }
 
-Module* Workspace::createOrUseModule(const Utf8& moduleName, bool fromTestsFolder, bool fromExamplesFolder)
+Module* Workspace::createOrUseModule(const Utf8& moduleName, ModuleKind kind)
 {
     Module* module = nullptr;
 
@@ -42,8 +42,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, bool fromTestsFolde
         mapModulesNames[moduleName] = module;
     }
 
-    module->fromExamplesFolder = fromExamplesFolder;
-    module->fromTestsFolder    = fromTestsFolder;
+    module->kind = kind;
     module->setup(moduleName);
 
     // Is this the module we want to build ?
@@ -60,8 +59,8 @@ void Workspace::addBootstrap()
 {
     // Bootstrap will be compiled in the workspace scope, in order to be defined once
     // for all modules
-    bootstrapModule              = g_Allocator.alloc<Module>();
-    bootstrapModule->isBootStrap = true;
+    bootstrapModule       = g_Allocator.alloc<Module>();
+    bootstrapModule->kind = ModuleKind::BootStrap;
     if (!bootstrapModule->setup(""))
         exit(-1);
     modules.push_back(bootstrapModule);
@@ -98,8 +97,8 @@ void Workspace::addRuntime()
 {
     // Runtime will be compiled in the workspace scope, in order to be defined once
     // for all modules
-    runtimeModule            = g_Allocator.alloc<Module>();
-    runtimeModule->isRuntime = true;
+    runtimeModule       = g_Allocator.alloc<Module>();
+    runtimeModule->kind = ModuleKind::Runtime;
     if (!runtimeModule->setup(""))
         exit(-1);
     modules.push_back(runtimeModule);
