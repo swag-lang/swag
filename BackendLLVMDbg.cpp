@@ -379,6 +379,9 @@ llvm::DISubprogram* BackendLLVMDbg::startFunction(ByteCode* bc, AstFuncDecl** re
 
 void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
 {
+    auto& builder = *pp.builder;
+    builder.SetCurrentDebugLocation(llvm::DebugLoc());
+
     AstFuncDecl*        decl;
     llvm::DISubprogram* SP = startFunction(bc, &decl);
     func->setSubprogram(SP);
@@ -454,8 +457,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             {
                 if (typeParam->numRegisters() > 1)
                 {
-                    auto& builder = *pp.builder;
-                    auto  allocA  = builder.CreateAlloca(builder.getInt64Ty()->getPointerTo(), nullptr, func->getArg(idxParam)->getName());
+                    auto allocA = builder.CreateAlloca(builder.getInt64Ty()->getPointerTo(), nullptr, func->getArg(idxParam)->getName());
                     builder.CreateStore(value, GEP_I32(allocA, 0));
                     value = GEP_I32(allocA, 0);
                 }
@@ -490,7 +492,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             llvm::DIType*          type  = getType(typeInfo, file);
             auto                   scope = getOrCreateScope(file, localVar->ownerScope);
             llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.text.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
-            auto                   v     = pp.builder->CreateInBoundsGEP(stack, pp.builder->getInt32(overload->storageOffset));
+            auto                   v     = builder.CreateInBoundsGEP(stack, pp.builder->getInt32(overload->storageOffset));
             dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
         }
     }
