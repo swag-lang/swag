@@ -391,8 +391,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     pp.concat.addString4("\x48\x8D\xBC\x24");
     pp.concat.addU32(sizeParamsStack); // lea rdi, [rsp + sizeParamsStack]
 
-    auto                   ip = bc->out;
-    VectorNative<uint32_t> pushRAParams;
+    auto                                   ip = bc->out;
+    VectorNative<uint32_t>                 pushRAParams;
+    VectorNative<pair<uint32_t, uint32_t>> pushRVParams;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->flags & AST_NO_BACKEND)
@@ -1829,6 +1830,43 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_LoadAddress_Indirect(pp, (uint8_t)(16 + ip->b.u32 + (typeFuncCall->numReturnRegisters() * 8)), RAX, RSP);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             }
+            else if (!pushRVParams.empty())
+            {
+                auto     sizeOf            = pushRVParams[0].second;
+                int      idxParam          = (int) pushRVParams.size() - 1;
+                uint32_t variadicStackSize = idxParam * sizeOf;
+                MK_ALIGN16(variadicStackSize);
+                uint32_t offset = sizeParamsStack - variadicStackSize;
+                while (idxParam >= 0)
+                {
+                    auto reg = pushRVParams[idxParam].first;
+                    switch (sizeOf)
+                    {
+                    case 1:
+                        BackendX64Inst::emit_Load8_Indirect(pp, regOffset(reg), RAX, RDI);
+                        BackendX64Inst::emit_Store8_Indirect(pp, offset, RAX, RSP);
+                        break;
+                    case 2:
+                        BackendX64Inst::emit_Load16_Indirect(pp, regOffset(reg), RAX, RDI);
+                        BackendX64Inst::emit_Store16_Indirect(pp, offset, RAX, RSP);
+                        break;
+                    case 4:
+                        BackendX64Inst::emit_Load32_Indirect(pp, regOffset(reg), RAX, RDI);
+                        BackendX64Inst::emit_Store32_Indirect(pp, offset, RAX, RSP);
+                        break;
+                    case 8:
+                        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(reg), RAX, RDI);
+                        BackendX64Inst::emit_Store64_Indirect(pp, offset, RAX, RSP);
+                        break;
+                    }
+
+                    idxParam--;
+                    offset += sizeOf;
+                }
+
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, (sizeParamsStack - variadicStackSize), RAX, RSP);
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            }
             else
             {
                 // We need to flatten all variadic registers, in order, in the stack, and emit the address of that array
@@ -1851,6 +1889,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
+        case ByteCodeOp::PushRVParam:
+            pushRVParams.push_back({ip->a.u32, ip->b.u32});
+            break;
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
             break;
@@ -1956,7 +1997,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // Local lambda
             //////////////////
             BackendX64Inst::emit_Copy64(pp, RAX, R10);
-            emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams);
+            emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams, pushRVParams);
             concat.addString3("\x41\xFF\xD2"); // call r10
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
@@ -2018,26 +2059,30 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             *jumpForeignToAfterAddr = concat.totalCount() - jumpForeignToAfterOffset;
 
             pushRAParams.clear();
+            pushRVParams.clear();
             break;
         }
 
         case ByteCodeOp::IncSPPostCall:
             pushRAParams.clear();
+            pushRVParams.clear();
             break;
 
         case ByteCodeOp::LocalCall:
         {
             auto              funcBC     = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-            emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams);
+            emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams, pushRVParams);
             emitCall(pp, funcBC->callName());
             pushRAParams.clear();
+            pushRVParams.clear();
             break;
         }
 
         case ByteCodeOp::ForeignCall:
             emitForeignCall(pp, moduleToGen, ip, offsetRT, pushRAParams);
             pushRAParams.clear();
+            pushRVParams.clear();
             break;
 
         case ByteCodeOp::Ret:
@@ -2459,14 +2504,48 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     return ok;
 }
 
-void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsStack, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams)
+void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsStack, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams, const VectorNative<pair<uint32_t, uint32_t>>& pushRVParams)
 {
     uint32_t sizeStack = (uint32_t)(pushRAParams.size() * sizeof(Register));
     sizeStack += typeFuncBC->numReturnRegisters() * sizeof(Register);
 
+    // pushRVParams are for variadics. It contains registers like pushRAParams, but also the sizeof of what needs to be pushed
+    if (pushRVParams.size())
+    {
+        auto sizeOf = pushRVParams[0].second;
+        sizeStack += (uint32_t) pushRVParams.size() * sizeOf;
+    }
+
     auto offset = sizeStack;
     MK_ALIGN16(sizeStack);
     SWAG_ASSERT(sizeStack <= sizeParamsStack);
+
+    // Emit all push params
+    for (int iParam = 0; iParam < pushRVParams.size(); iParam++)
+    {
+        auto sizeOf = pushRVParams[0].second;
+        auto reg    = pushRVParams[iParam].first;
+        offset -= sizeOf;
+        switch (sizeOf)
+        {
+        case 1:
+            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(reg), RAX, RDI);
+            BackendX64Inst::emit_Store8_Indirect(pp, offset, RAX, RSP);
+            break;
+        case 2:
+            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(reg), RAX, RDI);
+            BackendX64Inst::emit_Store16_Indirect(pp, offset, RAX, RSP);
+            break;
+        case 4:
+            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(reg), RAX, RDI);
+            BackendX64Inst::emit_Store32_Indirect(pp, offset, RAX, RSP);
+            break;
+        case 8:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(reg), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, offset, RAX, RSP);
+            break;
+        }
+    }
 
     // Emit all push params
     for (int iParam = 0; iParam < pushRAParams.size(); iParam++)

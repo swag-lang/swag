@@ -355,7 +355,10 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
         {
-            emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = rawType->numRegisters() * sizeof(Register);
+            if (rawType->kind == TypeInfoKind::Native && rawType->sizeOf < sizeof(Register))
+                emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = rawType->sizeOf;
+            else
+                emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = rawType->numRegisters() * sizeof(Register);
             emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 

@@ -532,6 +532,23 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::PushRVParam:
+        switch (ip->b.u32)
+        {
+        case 1:
+            context->push(registersRC[ip->a.u32].u8);
+            break;
+        case 2:
+            context->push(registersRC[ip->a.u32].u16);
+            break;
+        case 4:
+            context->push(registersRC[ip->a.u32].u32);
+            break;
+        case 8:
+            context->push(registersRC[ip->a.u32].u64);
+            break;
+        }
+        break;
     case ByteCodeOp::PushRAParam:
         context->push(registersRC[ip->a.u32].u64);
         break;

@@ -857,6 +857,8 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
             i += 1;
         }
     }
+
+    accParams.clear();
 }
 
 bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool freeRegistersParams)
@@ -1073,6 +1075,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // Fast call. No need to do fancy things, all the parameters are covered by the call
     else if (numCallParams)
     {
+        // Get the last variadic real type
+        TypeInfo* typeRawVariadic = nullptr;
+        if (typeInfoFunc->parameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
+        {
+            auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
+            typeRawVariadic   = typeVariadic->rawType;
+        }
+
         VectorNative<uint32_t> accParams;
         for (int i = numCallParams - 1; i >= 0; i--)
         {
@@ -1084,14 +1094,38 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
             if (param->typeInfo->kind != TypeInfoKind::Variadic && param->typeInfo->kind != TypeInfoKind::TypedVariadic)
             {
-                for (int r = param->resultRegisterRC.size() - 1; r >= 0;)
+                // If we push a something to a typed variadic, we need to push PushRVParam and not PushRAParam if the size
+                // is less than a register, because we want the typed variadic to be a real slice (not always a slice of registers)
+                bool done = false;
+                if (typeRawVariadic && i >= numTypeParams - 1)
                 {
-                    if (freeRegistersParams)
-                        toFree.push_back(param->resultRegisterRC[r]);
-                    accParams.push_back(param->resultRegisterRC[r--]);
-                    precallStack += sizeof(Register);
-                    numPushParams++;
-                    maxCallParams++;
+                    if (typeRawVariadic->kind == TypeInfoKind::Native && typeRawVariadic->sizeOf < sizeof(Register))
+                    {
+                        done = true;
+                        for (int r = param->resultRegisterRC.size() - 1; r >= 0;)
+                        {
+                            if (freeRegistersParams)
+                                toFree.push_back(param->resultRegisterRC[r]);
+                            auto inst   = emitInstruction(context, ByteCodeOp::PushRVParam, param->resultRegisterRC[r--]);
+                            inst->b.u32 = typeRawVariadic->sizeOf;
+                            precallStack += typeRawVariadic->sizeOf;
+                            numPushParams++;
+                            maxCallParams++;
+                        }
+                    }
+                }
+
+                if (!done)
+                {
+                    for (int r = param->resultRegisterRC.size() - 1; r >= 0;)
+                    {
+                        if (freeRegistersParams)
+                            toFree.push_back(param->resultRegisterRC[r]);
+                        accParams.push_back(param->resultRegisterRC[r--]);
+                        precallStack += sizeof(Register);
+                        numPushParams++;
+                        maxCallParams++;
+                    }
                 }
             }
         }
@@ -1125,7 +1159,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
         // The array of any has been pushed first, so we need to offset all pushed parameters to point to it
         // This is the main difference with typedvariadic, which directly point to the pushed variadic parameters
-        auto offset      = numPushParams;
+        auto offset = numPushParams;
 
         RegisterList r0;
         reserveRegisterRC(context, r0, 2);
@@ -1143,7 +1177,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
         precallStack += 2 * sizeof(Register);
     }
-    else if (typeInfoFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+    else if (typeInfoFunc->flags & TYPEINFO_TYPED_VARIADIC)
     {
         auto numVariadic  = (uint32_t)(numCallParams - numTypeParams) + 1;
         auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);

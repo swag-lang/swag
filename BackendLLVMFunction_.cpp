@@ -404,8 +404,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     }
 
     // Generate bytecode
-    auto                   ip = bc->out;
-    VectorNative<uint32_t> pushRAParams;
+    auto                                   ip = bc->out;
+    VectorNative<pair<uint32_t, uint32_t>> pushRVParams;
+    VectorNative<uint32_t>                 pushRAParams;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->flags & AST_NO_BACKEND)
@@ -432,7 +433,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::DecSP:
         case ByteCodeOp::DecSPBP:
         case ByteCodeOp::IncSP:
-        case ByteCodeOp::IncSPPostCall:
         case ByteCodeOp::PushRR:
         case ByteCodeOp::PopRR:
             continue;
@@ -2633,6 +2633,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::PushRVParam:
+            pushRVParams.push_back({ip->a.u32, ip->b.u32});
+            break;
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
             break;
@@ -2662,28 +2665,94 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CopySPVaargs:
         {
             // We need to make all variadic parameters contiguous in stack, and point to that address
-            auto allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(pushRAParams.size()));
+            // Two cases here :
+            // pushRVParams has something: then we have a typed param, of 1/2/4 bytes each
+            // pushRVParams is empty: we make an array of registers
 
-            // In the pushRAParams array, we have first all the variadic registers
-            //
-            // And then, we have all normal parameters. So we start at pushRAParams.size() less the number of registers
-            // used to pass the normal parameters.
-            //
-            // The number of normal parameters is deduced from the 'offset' of the CopySPVaargs instruction (ip->b.u32)
-            int  idx          = 0;
-            int  idxParam     = (int) pushRAParams.size() - (ip->b.u32 / sizeof(Register)) - 1;
-            while (idxParam >= 0)
+            if (!pushRVParams.empty())
             {
-                auto r0 = GEP_I32(allocVA, idx);
-                auto r1 = GEP_I32(allocR, pushRAParams[idxParam]);
-                builder.CreateStore(builder.CreateLoad(r1), r0);
-                idx++;
-                idxParam--;
-            }
+                llvm::AllocaInst* allocVA = nullptr;
+                auto              sizeOf  = pushRVParams[0].second;
+                switch (sizeOf)
+                {
+                case 1:
+                {
+                    allocVA = builder.CreateAlloca(builder.getInt8Ty(), builder.getInt64(pushRVParams.size()));
+                    auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+                    auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst0_i32);
+                    builder.CreateStore(r1, r0);
+                    break;
+                }
+                case 2:
+                {
+                    allocVA = builder.CreateAlloca(builder.getInt16Ty(), builder.getInt64(pushRVParams.size()));
+                    auto r0 = TO_PTR_PTR_I16(GEP_I32(allocR, ip->a.u32));
+                    auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst0_i32);
+                    builder.CreateStore(r1, r0);
+                    break;
+                }
+                case 4:
+                {
+                    allocVA = builder.CreateAlloca(builder.getInt32Ty(), builder.getInt64(pushRVParams.size()));
+                    auto r0 = TO_PTR_PTR_I32(GEP_I32(allocR, ip->a.u32));
+                    auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst0_i32);
+                    builder.CreateStore(r1, r0);
+                    break;
+                }
+                }
 
-            auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
-            auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst0_i32);
-            builder.CreateStore(r1, r0);
+                SWAG_ASSERT(allocVA);
+                int idx      = 0;
+                int idxParam = (int) pushRVParams.size() - 1;
+                while (idxParam >= 0)
+                {
+                    auto         reg = pushRVParams[idxParam].first;
+                    auto         r0  = GEP_I32(allocVA, idx);
+                    llvm::Value* r1  = nullptr;
+                    switch (sizeOf)
+                    {
+                    case 1:
+                        r1 = TO_PTR_I8(GEP_I32(allocR, reg));
+                        break;
+                    case 2:
+                        r1 = TO_PTR_I16(GEP_I32(allocR, reg));
+                        break;
+                    case 4:
+                        r1 = TO_PTR_I32(GEP_I32(allocR, reg));
+                        break;
+                    }
+
+                    SWAG_ASSERT(r1);
+                    builder.CreateStore(builder.CreateLoad(r1), r0);
+                    idx++;
+                    idxParam--;
+                }
+            }
+            else
+            {
+                auto allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(pushRAParams.size()));
+
+                // In the pushRAParams array, we have first all the variadic registers
+                //
+                // And then, we have all normal parameters. So we start at pushRAParams.size() less the number of registers
+                // used to pass the normal parameters.
+                //
+                // The number of normal parameters is deduced from the 'offset' of the CopySPVaargs instruction (ip->b.u32)
+                int idx      = 0;
+                int idxParam = (int) pushRAParams.size() - (ip->b.u32 / sizeof(Register)) - 1;
+                while (idxParam >= 0)
+                {
+                    auto r0 = GEP_I32(allocVA, idx);
+                    auto r1 = GEP_I32(allocR, pushRAParams[idxParam]);
+                    builder.CreateStore(builder.CreateLoad(r1), r0);
+                    idx++;
+                    idxParam--;
+                }
+
+                auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
+                auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst0_i32);
+                builder.CreateStore(r1, r0);
+            }
             break;
         }
 
@@ -2786,7 +2855,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto                       PT = llvm::PointerType::getUnqual(FT);
                 auto                       r1 = builder.CreatePointerCast(r0, PT);
                 VectorNative<llvm::Value*> fctParams;
-                getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
+                getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams, pushRVParams);
                 builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
                 builder.CreateBr(blockNext);
             }
@@ -2799,15 +2868,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst3_i32})));
                 auto PT = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
                 auto r2 = builder.CreatePointerCast(r1, PT);
-                getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
+                getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams, pushRVParams);
                 builder.CreateCall(pp.bytecodeRunTy, r2, {fctParams.begin(), fctParams.end()});
                 builder.CreateBr(blockNext);
             }
 
             builder.SetInsertPoint(blockNext);
             pushRAParams.clear();
+            pushRVParams.clear();
             break;
         }
+
+        case ByteCodeOp::IncSPPostCall:
+            pushRAParams.clear();
+            pushRVParams.clear();
+            break;
 
         case ByteCodeOp::LocalCall:
         {
@@ -2816,15 +2891,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             auto                       FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
             VectorNative<llvm::Value*> fctParams;
-            getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
+            getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams, pushRVParams);
             builder.CreateCall(modu.getOrInsertFunction(funcBC->callName().c_str(), FT), {fctParams.begin(), fctParams.end()});
-
             pushRAParams.clear();
+            pushRVParams.clear();
             break;
         }
 
         case ByteCodeOp::ForeignCall:
             SWAG_CHECK(emitForeignCall(buildParameters, allocR, allocRR, moduleToGen, ip, pushRAParams));
+            pushRAParams.clear();
+            pushRVParams.clear();
             break;
 
         case ByteCodeOp::IntrinsicS8x1:
@@ -3055,12 +3132,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     return ok;
 }
 
-void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParameters,
-                                         llvm::AllocaInst*           allocR,
-                                         llvm::AllocaInst*           allocRR,
-                                         VectorNative<llvm::Value*>& params,
-                                         TypeInfoFuncAttr*           typeFuncBC,
-                                         VectorNative<uint32_t>&     pushRAParams)
+void BackendLLVM::getLocalCallParameters(const BuildParameters&                  buildParameters,
+                                         llvm::AllocaInst*                       allocR,
+                                         llvm::AllocaInst*                       allocRR,
+                                         VectorNative<llvm::Value*>&             params,
+                                         TypeInfoFuncAttr*                       typeFuncBC,
+                                         VectorNative<uint32_t>&                 pushRAParams,
+                                         VectorNative<pair<uint32_t, uint32_t>>& pushRVParams)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;

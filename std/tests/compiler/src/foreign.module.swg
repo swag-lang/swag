@@ -212,6 +212,57 @@ public func tcf_join(titi: string, values: s64...)
     }
 }
 
+public func tcf_join8(titi: string, values: s8...)
+{
+    @assert(titi == "titi")
+    loop i: values
+    {
+        //@print(values[i])
+        //@print(" ")
+        switch i
+        {
+            case 0: @assert(values[i] == 1)
+            case 1: @assert(values[i] == 2)
+            case 2: @assert(values[i] == 3)
+            case 3: @assert(values[i] == 4)
+        }
+    }
+}
+
+public func tcf_join16(titi: string, values: s16...)
+{
+    @assert(titi == "titi")
+    loop i: values
+    {
+        //@print(values[i])
+        //@print(" ")
+        switch i
+        {
+            case 0: @assert(values[i] == 1)
+            case 1: @assert(values[i] == 2)
+            case 2: @assert(values[i] == 3)
+            case 3: @assert(values[i] == 4)
+        }
+    }
+}
+
+public func tcf_join32(titi: string, values: s32...)
+{
+    @assert(titi == "titi")
+    loop i: values
+    {
+        //@print(values[i])
+        //@print(" ")
+        switch i
+        {
+            case 0: @assert(values[i] == 1)
+            case 1: @assert(values[i] == 2)
+            case 2: @assert(values[i] == 3)
+            case 3: @assert(values[i] == 4)
+        }
+    }
+}
+
 private const DaysToMonth365 = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
 
 //#[swag.printbc]
