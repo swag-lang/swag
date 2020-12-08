@@ -603,8 +603,7 @@ public impl String
     // All strings will be invalid if 'this' String is destroyed
     func split(using self, separators: const [..] char) -> Array'string
     {
-        var result: Array'string
-
+        var result: retval
         var ptr = cast(const *u8) buffer
         var c: char
         var eat: u32
