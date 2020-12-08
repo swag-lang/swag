@@ -1,8 +1,7 @@
 using swag
 
-private const SmallSize = 24'u32
-private const SmallSizeInternal = SmallSize - @sizeof(IAllocator)
-#assert @sizeof(String) == 40
+private const SmallSize = 16'u32
+#assert @sizeof(String) == 48
 
 public enum CharacterSet
 {
@@ -16,7 +15,7 @@ public struct String
     length:     u32
     capacity:   u32
     allocator:  IAllocator
-    padding:    [SmallSizeInternal] u8
+    padding:    [SmallSize] u8
 }
 
 impl String
@@ -135,7 +134,7 @@ public impl String
     func opPostMove(using self)
     {
         if buffer && capacity <= SmallSize
-            buffer = autocast &allocator
+            buffer = autocast &padding[0]
     }
 
     func opPostCopy(using self)
@@ -144,7 +143,7 @@ public impl String
             return
 
         if capacity <= SmallSize
-            buffer = autocast &allocator
+            buffer = autocast &padding[0]
         else
         {
             oldBuffer := buffer
@@ -157,7 +156,7 @@ public impl String
 
     func opDrop(using self)
     {
-        if buffer && buffer != autocast &allocator
+        if buffer && buffer != autocast &padding[0]
             free()
     }
 
@@ -266,7 +265,7 @@ public impl String
     func ensureNotNull(using self)
     {
         if buffer return
-        buffer = autocast &allocator
+        buffer = autocast &padding[0]
     }
 
     // Append a byte to the String
@@ -360,7 +359,7 @@ public impl String
             {
                 if !buffer
                     return
-                if buffer != autocast &allocator
+                if buffer != autocast &padding[0]
                     free()
                 buffer = null
                 length, capacity = 0
@@ -369,7 +368,7 @@ public impl String
 
             capacity = SmallSize
             if !buffer
-                buffer = autocast &allocator
+                buffer = autocast &padding[0]
             return
         }
 
@@ -378,7 +377,7 @@ public impl String
             return
 
         // We were in small size mode, and we are no more
-        if buffer == autocast &allocator
+        if buffer == autocast &padding[0]
         {
             oldBuffer := buffer
             newAllocator := @getcontext().allocator
