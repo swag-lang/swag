@@ -4,6 +4,7 @@
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
+#include "Module.h"
 
 namespace Ast
 {
@@ -182,6 +183,8 @@ namespace Ast
     Scope* newPrivateScope(AstNode* owner, SourceFile* sourceFile, Scope* parentScope)
     {
         SWAG_ASSERT(parentScope);
+        if (parentScope == sourceFile->module->scopeRoot)
+            return sourceFile->scopePrivate;
         sourceFile->computePrivateScopeName();
         return parentScope->getOrAddChild(owner, sourceFile->scopeName, ScopeKind::File, true, true);
     }

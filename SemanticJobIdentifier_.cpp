@@ -2389,6 +2389,10 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
         here.push_back(startScope);
     }
 
+    // Add current file private scope
+    scopes.insert(context->sourceFile->scopePrivate);
+    here.push_back(context->sourceFile->scopePrivate);
+
     // Add bootstrap
     SWAG_ASSERT(g_Workspace.bootstrapModule);
     scopes.insert(g_Workspace.bootstrapModule->scopeRoot);

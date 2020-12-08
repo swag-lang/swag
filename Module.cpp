@@ -231,7 +231,11 @@ void Module::addFileNoLock(SourceFile* file)
     file->module        = this;
     file->indexInModule = (uint32_t) files.size();
     files.push_back(file);
-    scopeRoot->addChildNoLock(file->scopePrivate);
+
+    // A file private scope is not registers in the list of childs of
+    // its parent
+    if(file->scopePrivate)
+        file->scopePrivate->parentScope = scopeRoot;
 
     // Keep track of the most recent file
     moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);
@@ -266,8 +270,7 @@ void Module::removeFile(SourceFile* file)
     files[idx]->indexInModule = idx;
     files.pop_back();
     file->module        = nullptr;
-    file->indexInModule = UINT32_MAX;
-    scopeRoot->removeChildNoLock(file->scopePrivate);
+    file->indexInModule = UINT32_MAX;    
 
     // If the file has compiler functions, then we need to unregister it from the module
     auto it = filesForCompilerPass.find(file);
