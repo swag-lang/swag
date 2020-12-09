@@ -324,21 +324,6 @@ public impl String
         return result
     }
 
-    // Join an array of strings to make a unique one, by using a given 'separator'
-    // between them
-    func joinWith(separator: string, values: const [..] string)->String
-    {
-        var result: String
-        loop values
-        {
-            if separator && @index
-                result += separator
-            result += values[@index]
-        }
-
-        return result
-    }
-
     // Ensure the String is big enough to store a given amount of bytes
     func grow(using self, wantedCapacity: u32)
     {

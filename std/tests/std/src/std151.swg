@@ -13,6 +13,6 @@ using std
     arr.add("this")
     arr.add("is")
     arr.add("another")
-    res2 := String.joinWith(" ", arr.toSlice())
+    res2 := String.joinWith(" ", @spread(arr.toSlice()))
     @assert(res2 == "this is another")
 }
