@@ -35,24 +35,32 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             return;
         }
 
-        auto symbolParameter = isAfterVariadic ? parameters.back() : parameters[i];
-        auto symbolTypeInfo  = symbolParameter->typeInfo;
+        auto wantedParameter = isAfterVariadic ? parameters.back() : parameters[i];
+        auto wantedTypeInfo  = wantedParameter->typeInfo;
 
-        if (symbolTypeInfo->kind == TypeInfoKind::Variadic)
+        if (wantedTypeInfo->kind == TypeInfoKind::Variadic)
         {
             context.cptResolved = (int) context.parameters.size();
             return;
         }
 
-        auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
+        auto callTypeInfo = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
 
         // For a typed variadic, cast against the underlying type
         // In case of a spread, match the underlying type too
-        if (symbolTypeInfo->kind == TypeInfoKind::TypedVariadic)
+        if (wantedTypeInfo->kind == TypeInfoKind::TypedVariadic)
         {
-            if (typeInfo->kind != TypeInfoKind::TypedVariadic)
-                symbolTypeInfo = ((TypeInfoVariadic*) symbolTypeInfo)->rawType;
+            if (callTypeInfo->kind != TypeInfoKind::TypedVariadic)
+                wantedTypeInfo = ((TypeInfoVariadic*) wantedTypeInfo)->rawType;
             isAfterVariadic = true;
+        }
+        else if (callTypeInfo->flags & TYPEINFO_SPREAD)
+        {
+            context.badSignatureInfos.badSignatureParameterIdx  = i;
+            context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
+            context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
+            SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+            context.result = MatchResult::BadSignature;
         }
 
         uint32_t castFlags = CASTFLAG_NO_ERROR;
@@ -62,12 +70,12 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             castFlags |= CASTFLAG_UFCS;
         castFlags |= forceCastFlags;
 
-        bool same = TypeManager::makeCompatibles(nullptr, symbolTypeInfo, typeInfo, nullptr, nullptr, castFlags);
+        bool same = TypeManager::makeCompatibles(nullptr, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
         if (!same)
         {
             context.badSignatureInfos.badSignatureParameterIdx  = i;
-            context.badSignatureInfos.badSignatureRequestedType = symbolTypeInfo;
-            context.badSignatureInfos.badSignatureGivenType     = typeInfo;
+            context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
+            context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
             SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
             context.result = MatchResult::BadSignature;
         }
@@ -77,42 +85,42 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 context.doneParameters[context.cptResolved] = true;
 
             // This is a generic type match
-            if (symbolTypeInfo->flags & TYPEINFO_GENERIC)
+            if (wantedTypeInfo->flags & TYPEINFO_GENERIC)
             {
                 // Need to register inside types when the generic type is a compound
                 VectorNative<TypeInfo*> symbolTypeInfos;
-                symbolTypeInfos.push_back(symbolTypeInfo);
+                symbolTypeInfos.push_back(wantedTypeInfo);
                 VectorNative<TypeInfo*> typeInfos;
-                typeInfos.push_back(typeInfo);
+                typeInfos.push_back(callTypeInfo);
                 while (symbolTypeInfos.size())
                 {
-                    symbolTypeInfo = symbolTypeInfos.back();
+                    wantedTypeInfo = symbolTypeInfos.back();
 
                     // When we have a reference, we match with the real type, as we do not want a generic function/struct to have a
                     // reference as a concrete type
-                    typeInfo = TypeManager::concreteReference(typeInfos.back());
+                    callTypeInfo = TypeManager::concreteReference(typeInfos.back());
 
                     symbolTypeInfos.pop_back();
                     typeInfos.pop_back();
 
                     // Do we already have mapped the generic parameter to something ?
-                    auto it = context.genericReplaceTypes.find(symbolTypeInfo->name);
+                    auto it = context.genericReplaceTypes.find(wantedTypeInfo->name);
                     if (it != context.genericReplaceTypes.end())
                     {
                         // If user type is undefined, then we consider this is ok, because the undefined type will be changed to the generic one
                         // Match is in fact the other way
-                        if (typeInfo->isNative(NativeTypeKind::Undefined))
+                        if (callTypeInfo->isNative(NativeTypeKind::Undefined))
                             same = true;
 
                         // Yes, and the map is not the same, then this is an error
                         else
-                            same = TypeManager::makeCompatibles(nullptr, it->second, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
+                            same = TypeManager::makeCompatibles(nullptr, it->second, callTypeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
                         if (!same)
                         {
                             context.badSignatureInfos.badSignatureParameterIdx  = i;
                             context.badSignatureInfos.badSignatureRequestedType = it->second;
-                            context.badSignatureInfos.badSignatureGivenType     = typeInfo;
-                            context.badSignatureInfos.badGenMatch               = symbolTypeInfo->name;
+                            context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
+                            context.badSignatureInfos.badGenMatch               = wantedTypeInfo->name;
                             SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
                             context.result = MatchResult::BadGenericMatch;
                         }
@@ -120,36 +128,36 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     else
                     {
                         bool canReg = true;
-                        if (symbolTypeInfo->kind == TypeInfoKind::Pointer)
+                        if (wantedTypeInfo->kind == TypeInfoKind::Pointer)
                             canReg = false;
 
                         // Do not register type replacement if the concrete type is a pending lambda typing (we do not know
                         // yet the type of parameters)
-                        if (typeInfo->declNode && (typeInfo->declNode->flags & AST_PENDING_LAMBDA_TYPING))
+                        if (callTypeInfo->declNode && (callTypeInfo->declNode->flags & AST_PENDING_LAMBDA_TYPING))
                             canReg = false;
 
                         if (canReg)
                         {
                             // Associate the generic type with that concrete one
-                            context.genericReplaceTypes[symbolTypeInfo->name] = typeInfo;
+                            context.genericReplaceTypes[wantedTypeInfo->name] = callTypeInfo;
 
                             // If this is a valid generic argument, register it at the correct call position
-                            auto itIdx = context.mapGenericTypesIndex.find(symbolTypeInfo->name);
+                            auto itIdx = context.mapGenericTypesIndex.find(wantedTypeInfo->name);
                             if (itIdx != context.mapGenericTypesIndex.end())
                             {
-                                context.genericParametersCallTypes[itIdx->second] = typeInfo;
+                                context.genericParametersCallTypes[itIdx->second] = callTypeInfo;
                             }
                         }
                     }
 
-                    switch (symbolTypeInfo->kind)
+                    switch (wantedTypeInfo->kind)
                     {
                     case TypeInfoKind::Struct:
                     {
-                        auto symbolStruct = CastTypeInfo<TypeInfoStruct>(symbolTypeInfo, TypeInfoKind::Struct);
-                        if (typeInfo->kind == TypeInfoKind::Struct)
+                        auto symbolStruct = CastTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
+                        if (callTypeInfo->kind == TypeInfoKind::Struct)
                         {
-                            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+                            auto typeStruct = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
                             auto num        = symbolStruct->genericParameters.size();
                             for (int idx = 0; idx < num; idx++)
                             {
@@ -164,25 +172,25 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
                     case TypeInfoKind::Pointer:
                     {
-                        auto symbolPtr = CastTypeInfo<TypeInfoPointer>(symbolTypeInfo, TypeInfoKind::Pointer);
-                        if (typeInfo->kind == TypeInfoKind::Pointer)
+                        auto symbolPtr = CastTypeInfo<TypeInfoPointer>(wantedTypeInfo, TypeInfoKind::Pointer);
+                        if (callTypeInfo->kind == TypeInfoKind::Pointer)
                         {
-                            auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+                            auto typePtr = CastTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
                             symbolTypeInfos.push_back(symbolPtr->pointedType);
                             typeInfos.push_back(typePtr->pointedType);
                         }
                         else
                         {
                             symbolTypeInfos.push_back(symbolPtr->pointedType);
-                            typeInfos.push_back(typeInfo);
+                            typeInfos.push_back(callTypeInfo);
                         }
                         break;
                     }
 
                     case TypeInfoKind::Array:
                     {
-                        auto symbolArray = CastTypeInfo<TypeInfoArray>(symbolTypeInfo, TypeInfoKind::Array);
-                        auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+                        auto symbolArray = CastTypeInfo<TypeInfoArray>(wantedTypeInfo, TypeInfoKind::Array);
+                        auto typeArray   = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
                         symbolTypeInfos.push_back(symbolArray->finalType);
                         typeInfos.push_back(typeArray->finalType);
                         break;
@@ -190,31 +198,31 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
                     case TypeInfoKind::Slice:
                     {
-                        auto symbolSlice = CastTypeInfo<TypeInfoSlice>(symbolTypeInfo, TypeInfoKind::Slice);
-                        if (typeInfo->kind == TypeInfoKind::Slice)
+                        auto symbolSlice = CastTypeInfo<TypeInfoSlice>(wantedTypeInfo, TypeInfoKind::Slice);
+                        if (callTypeInfo->kind == TypeInfoKind::Slice)
                         {
-                            auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+                            auto typeSlice = CastTypeInfo<TypeInfoSlice>(callTypeInfo, TypeInfoKind::Slice);
                             symbolTypeInfos.push_back(symbolSlice->pointedType);
                             typeInfos.push_back(typeSlice->pointedType);
                         }
-                        else if (typeInfo->kind == TypeInfoKind::Array)
+                        else if (callTypeInfo->kind == TypeInfoKind::Array)
                         {
-                            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+                            auto typeArray = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
                             symbolTypeInfos.push_back(symbolSlice->pointedType);
                             typeInfos.push_back(typeArray->pointedType);
                         }
                         else
                         {
                             symbolTypeInfos.push_back(symbolSlice->pointedType);
-                            typeInfos.push_back(typeInfo);
+                            typeInfos.push_back(callTypeInfo);
                         }
                         break;
                     }
 
                     case TypeInfoKind::Lambda:
                     {
-                        auto symbolLambda = CastTypeInfo<TypeInfoFuncAttr>(symbolTypeInfo, TypeInfoKind::Lambda);
-                        auto typeLambda   = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
+                        auto symbolLambda = CastTypeInfo<TypeInfoFuncAttr>(wantedTypeInfo, TypeInfoKind::Lambda);
+                        auto typeLambda   = CastTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::Lambda);
                         if (symbolLambda->returnType && (symbolLambda->returnType->flags & TYPEINFO_GENERIC))
                         {
                             symbolTypeInfos.push_back(symbolLambda->returnType);
@@ -241,11 +249,11 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         }
 
         if (context.cptResolved < context.solvedParameters.size())
-            context.solvedParameters[context.cptResolved] = symbolParameter;
+            context.solvedParameters[context.cptResolved] = wantedParameter;
 
         if (param)
         {
-            param->resolvedParameter = symbolParameter;
+            param->resolvedParameter = wantedParameter;
             param->index             = context.cptResolved;
         }
 

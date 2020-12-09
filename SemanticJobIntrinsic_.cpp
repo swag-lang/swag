@@ -328,6 +328,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     }
 
     node->typeInfo = node->typeInfo->clone();
+    node->typeInfo->name += "...";
     node->typeInfo->flags |= TYPEINFO_SPREAD;
 
     return true;
