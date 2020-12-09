@@ -1092,7 +1092,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             if (!param->typeInfo)
                 continue;
 
-            if (param->typeInfo->kind != TypeInfoKind::Variadic && param->typeInfo->kind != TypeInfoKind::TypedVariadic)
+            if (param->typeInfo->kind != TypeInfoKind::Variadic && param->typeInfo->kind != TypeInfoKind::TypedVariadic && !(param->typeInfo->flags & TYPEINFO_SPREAD))
             {
                 // If we push a something to a typed variadic, we need to push PushRVParam and not PushRAParam if the size
                 // is less than a register, because we want the typed variadic to be a real slice (not always a slice of registers)
@@ -1152,6 +1152,14 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         maxCallParams += 2;
     }
 
+    // If last parameter is a spread, then no need to deal with variadic slice : already done
+    else if (lastParam && lastParam->typeInfo && lastParam->typeInfo->flags & TYPEINFO_SPREAD)
+    {
+        emitInstruction(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);
+        maxCallParams += 2;
+        precallStack += 2 * sizeof(Register);
+    }
+
     // Variadic parameter is on top of stack
     else if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
     {
@@ -1162,7 +1170,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         auto offset = numPushParams;
 
         RegisterList r0;
-        reserveRegisterRC(context, r0, 2);
+        reserveLinearRegisterRC2(context, r0);
         toFree.push_back(r0[0]);
         toFree.push_back(r0[1]);
 
@@ -1171,7 +1179,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         inst->c.b       = foreign;
         inst->d.pointer = (uint8_t*) typeInfoFunc;
 
-        emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
+        emitInstruction(context, ByteCodeOp::SetImmediate32, r0[1])->b.u64 = numVariadic;
         emitInstruction(context, ByteCodeOp::PushRAParam2, r0[1], r0[0]);
         maxCallParams += 2;
 
@@ -1184,7 +1192,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         auto offset       = (numPushParams - numVariadic * typeVariadic->rawType->numRegisters());
 
         RegisterList r0;
-        reserveRegisterRC(context, r0, 2);
+        reserveLinearRegisterRC2(context, r0);
         toFree.push_back(r0[0]);
         toFree.push_back(r0[1]);
 
@@ -1193,7 +1201,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         inst->c.b       = foreign;
         inst->d.pointer = (uint8_t*) typeInfoFunc;
 
-        emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
+        emitInstruction(context, ByteCodeOp::SetImmediate32, r0[1])->b.u64 = numVariadic;
         emitInstruction(context, ByteCodeOp::PushRAParam2, r0[1], r0[0]);
         maxCallParams += 2;
 

@@ -174,6 +174,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIndex(parent, result));
         break;
 
+    case TokenId::IntrinsicSpread:
     case TokenId::IntrinsicSizeOf:
     case TokenId::IntrinsicKindOf:
     case TokenId::IntrinsicCountOf:

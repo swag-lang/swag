@@ -107,6 +107,7 @@ void LanguageSpec::setup()
     keywords["void"]     = TokenId::NativeType;
     keywords["typeinfo"] = TokenId::NativeType;
 
+    keywords["@spread"]      = TokenId::IntrinsicSpread;
     keywords["@init"]        = TokenId::IntrinsicInit;
     keywords["@drop"]        = TokenId::IntrinsicDrop;
     keywords["@postmove"]    = TokenId::IntrinsicPostMove;
@@ -120,6 +121,7 @@ void LanguageSpec::setup()
     keywords["@mkany"]       = TokenId::IntrinsicMakeAny;
     keywords["@mkinterface"] = TokenId::IntrinsicMakeInterface;
     keywords["@index"]       = TokenId::IntrinsicIndex;
+
     keywords["@print"]       = TokenId::IntrinsicPrint;
     keywords["@assert"]      = TokenId::IntrinsicAssert;
     keywords["@assertmsg"]   = TokenId::IntrinsicAssertMsg;

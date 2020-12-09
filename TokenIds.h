@@ -145,6 +145,7 @@ DEFINE_TOKEN_ID(KwdDefer)
 DEFINE_TOKEN_ID(KwdCode)
 DEFINE_TOKEN_ID(KwdLabel)
 
+DEFINE_TOKEN_ID(IntrinsicSpread)
 DEFINE_TOKEN_ID(IntrinsicInit)
 DEFINE_TOKEN_ID(IntrinsicDrop)
 DEFINE_TOKEN_ID(IntrinsicPostCopy)

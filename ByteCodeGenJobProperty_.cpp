@@ -50,6 +50,32 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitIntrinsicSpread(ByteCodeGenContext* context)
+{
+    auto node     = context->node;
+    auto expr     = node->childs.back();
+    auto typeInfo = TypeManager::concreteType(expr->typeInfo);
+
+    if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        transformResultToLinear2(context, expr);
+        node->resultRegisterRC = expr->resultRegisterRC;
+        auto typeArr           = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto inst              = emitInstruction(context, ByteCodeOp::SetImmediate64, expr->resultRegisterRC[1]);
+        inst->b.u64            = typeArr->count;
+    }
+    else if (typeInfo->kind == TypeInfoKind::TypeListArray || typeInfo->kind == TypeInfoKind::Slice)
+    {
+        node->resultRegisterRC = expr->resultRegisterRC;
+    }
+    else
+    {
+        return internalError(context, "emitIntrinsicSpread, type not supported");
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
 {
     auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);

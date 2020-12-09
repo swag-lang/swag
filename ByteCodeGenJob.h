@@ -293,6 +293,7 @@ struct ByteCodeGenJob : public Job
     static bool emitArrayRef(ByteCodeGenContext* context);
     static bool emitStringRef(ByteCodeGenContext* context);
     static bool emitSliceRef(ByteCodeGenContext* context);
+    static bool emitIntrinsicSpread(ByteCodeGenContext* context);
     static bool emitIntrinsicCountOf(ByteCodeGenContext* context);
     static bool emitIntrinsicDataOf(ByteCodeGenContext* context);
     static bool emitIntrinsicKindOf(ByteCodeGenContext* context);

@@ -285,6 +285,54 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
+{
+    auto node         = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto expr         = node->childs.front();
+    auto typeInfo     = TypeManager::concreteReferenceType(expr->typeInfo);
+    node->byteCodeFct = ByteCodeGenJob::emitIntrinsicSpread;
+
+    SWAG_VERIFY(node->parent && node->parent->parent && node->parent->parent->kind == AstNodeKind::FuncCallParam, context->report({node, "'@spread' can only be called as a function parameter"}));
+
+    if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto typeArr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        node->typeInfo = typeArr->pointedType;
+    }
+    else if (typeInfo->kind == TypeInfoKind::Slice)
+    {
+        auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        node->typeInfo = typeSlice->pointedType;
+    }
+    else if (typeInfo->kind == TypeInfoKind::TypeListArray)
+    {
+        auto typeList  = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
+        node->typeInfo = typeList->subTypes[0]->typeInfo;
+
+        // Need to be sure that the expression list can be casted to the equivalent array
+        auto typeArr         = allocType<TypeInfoArray>();
+        typeArr->count       = (uint32_t) typeList->subTypes.size();
+        typeArr->pointedType = typeList->subTypes[0]->typeInfo;
+        typeArr->finalType   = typeArr->pointedType;
+        typeArr->sizeOf      = typeArr->count * typeArr->finalType->sizeOf;
+        typeArr->totalCount  = typeArr->count;
+        typeArr->computeName();
+
+        SWAG_CHECK(TypeManager::makeCompatibles(context, typeArr, typeList, nullptr, expr));
+
+        g_Allocator.free(typeArr, sizeof(TypeInfoArray));
+    }
+    else
+    {
+        return context->report({expr, format("expression of type '%s' cannot be spreaded", typeInfo->name.c_str())});
+    }
+
+    node->typeInfo = node->typeInfo->clone();
+    node->typeInfo->flags |= TYPEINFO_SPREAD;
+
+    return true;
+}
+
 bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
 {
     auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
@@ -353,6 +401,10 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
     switch (node->token.id)
     {
+    case TokenId::IntrinsicSpread:
+        SWAG_CHECK(resolveIntrinsicSpread(context));
+        return true;
+
     case TokenId::IntrinsicSizeOf:
     {
         auto expr = node->childs.front();
