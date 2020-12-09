@@ -94,12 +94,6 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::forceConstNode(SemanticContext* context, AstNode* node)
-{
-    SWAG_ASSERT(node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY);
-    node->typeInfo = TypeManager::makeConst(node->typeInfo);
-}
-
 void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* node)
 {
     if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
@@ -107,7 +101,7 @@ void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* no
         if (node->typeFlags & TYPEFLAG_FORCECONST)
             node->typeFlags |= TYPEFLAG_ISCONST;
         if (node->typeFlags & TYPEFLAG_ISCONST)
-            forceConstNode(context, node);
+            node->typeInfo = TypeManager::makeConst(node->typeInfo);
     }
 }
 
