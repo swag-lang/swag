@@ -499,6 +499,14 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType, false, cflags));
         break;
     }
+
+    case TypeInfoKind::TypedVariadic:
+    {
+        auto concreteType = (ConcreteTypeInfoVariadic*) concreteTypeInfoValue;
+        auto realType     = (TypeInfoVariadic*) typeInfo;
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->rawType, realType->rawType, false, cflags));
+        break;
+    }
     }
 
     return true;

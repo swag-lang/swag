@@ -286,6 +286,12 @@ struct ConcreteTypeInfoSlice
     ConcreteTypeInfo* pointedType;
 };
 
+struct ConcreteTypeInfoVariadic
+{
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* rawType;
+};
+
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

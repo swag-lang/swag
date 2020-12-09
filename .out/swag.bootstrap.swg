@@ -354,6 +354,7 @@ namespace swag
     struct TypeInfoVariadic
     {
         using base:	TypeInfo
+        rawType:	const *TypeInfo
     }
 
     struct TypeInfoArray
