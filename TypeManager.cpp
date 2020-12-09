@@ -427,11 +427,7 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
 
     if (!typeInfo->constCopy)
     {
-        auto typeConst       = allocType<TypeInfoAlias>();
-        typeConst->rawType   = typeInfo;
-        typeConst->preName   = typeInfo->preName;
-        typeConst->nakedName = typeInfo->nakedName;
-        typeConst->name      = typeInfo->name;
+        auto typeConst = typeInfo->clone();
         typeConst->setConst();
         typeConst->computeName();
         typeInfo->constCopy = typeConst;

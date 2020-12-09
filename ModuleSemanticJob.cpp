@@ -24,7 +24,7 @@ JobResult ModuleSemanticJob::execute()
         job->module       = module;
         job->dependentJob = dependentJob;
         job->nodes.push_back(file->astRoot);
-        g_ThreadMgr.addJob(job);
+        jobsToAdd.push_back(job);
     }
 
     return JobResult::ReleaseJob;

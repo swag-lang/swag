@@ -507,7 +507,7 @@ JobResult ModuleBuildJob::execute()
             job->buildParameters                = module->buildParameters;
             job->buildParameters.outputFileName = module->name;
             job->buildParameters.compileType    = BackendCompileType::Test;
-            g_ThreadMgr.addJob(job);
+            jobsToAdd.push_back(job);
         }
 
         // Run command
@@ -518,7 +518,7 @@ JobResult ModuleBuildJob::execute()
             job->dependentJob                = this;
             job->buildParameters             = module->buildParameters;
             job->buildParameters.compileType = BackendCompileType::Normal;
-            g_ThreadMgr.addJob(job);
+            jobsToAdd.push_back(job);
         }
     }
 

@@ -88,10 +88,11 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     case TypeInfoKind::Reference:
     {
         auto typeReference = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-        if (typeReference->pointedType->kind == TypeInfoKind::Struct)
-            identifierRef->startScope = static_cast<TypeInfoStruct*>(typeReference->pointedType)->scope;
-        else if (typeReference->pointedType->kind == TypeInfoKind::Interface)
-            identifierRef->startScope = static_cast<TypeInfoStruct*>(typeReference->pointedType)->itable->scope;
+        auto subType       = TypeManager::concreteReferenceType(typeReference->pointedType);
+        if (subType->kind == TypeInfoKind::Struct)
+            identifierRef->startScope = static_cast<TypeInfoStruct*>(subType)->scope;
+        else if (subType->kind == TypeInfoKind::Interface)
+            identifierRef->startScope = static_cast<TypeInfoStruct*>(subType)->itable->scope;
         node->typeInfo = typeInfo;
         break;
     }
@@ -101,10 +102,11 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         if (typePointer->ptrCount == 1)
         {
-            if (typePointer->finalType->kind == TypeInfoKind::Struct)
-                identifierRef->startScope = static_cast<TypeInfoStruct*>(typePointer->finalType)->scope;
-            else if (typePointer->finalType->kind == TypeInfoKind::Interface)
-                identifierRef->startScope = static_cast<TypeInfoStruct*>(typePointer->finalType)->itable->scope;
+            auto subType = TypeManager::concreteReferenceType(typePointer->finalType);
+            if (subType->kind == TypeInfoKind::Struct)
+                identifierRef->startScope = static_cast<TypeInfoStruct*>(subType)->scope;
+            else if (subType->kind == TypeInfoKind::Interface)
+                identifierRef->startScope = static_cast<TypeInfoStruct*>(subType)->itable->scope;
         }
 
         node->typeInfo = typeInfo;
@@ -134,8 +136,9 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     case TypeInfoKind::Array:
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        if (typeArray->finalType->kind == TypeInfoKind::Struct)
-            identifierRef->startScope = static_cast<TypeInfoStruct*>(typeArray->finalType)->scope;
+        auto subType   = TypeManager::concreteReferenceType(typeArray->finalType);
+        if (subType->kind == TypeInfoKind::Struct)
+            identifierRef->startScope = static_cast<TypeInfoStruct*>(subType)->scope;
         node->typeInfo = typeInfo;
         break;
     }
@@ -143,8 +146,9 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     case TypeInfoKind::Slice:
     {
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        if (typeSlice->pointedType->kind == TypeInfoKind::Struct)
-            identifierRef->startScope = static_cast<TypeInfoStruct*>(typeSlice->pointedType)->scope;
+        auto subType   = TypeManager::concreteReferenceType(typeSlice->pointedType);
+        if (subType->kind == TypeInfoKind::Struct)
+            identifierRef->startScope = static_cast<TypeInfoStruct*>(subType)->scope;
         node->typeInfo = typeInfo;
         break;
     }
