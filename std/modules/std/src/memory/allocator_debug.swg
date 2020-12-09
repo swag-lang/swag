@@ -143,6 +143,18 @@ public impl IAllocator for DebugAllocator
                     prevHeader -= 1
                     copyReq.address = prevHeader.allocAddr
                     prevSize = prevHeader.userSize
+
+                    // Unlink now, before the realloc, because that block could
+                    // become invalid in case of a reallocation
+                    if prevHeader
+                    {
+                        if !prevHeader.prev
+                            self.first = prevHeader.next
+                        else
+                            prevHeader.prev.next = prevHeader.next
+                        if prevHeader.next
+                            prevHeader.next.prev = prevHeader.prev
+                    }
                 }
 
                 // Make the real allocation
@@ -178,23 +190,12 @@ public impl IAllocator for DebugAllocator
                 self.size -= prevSize
                 self.size += request.size
 
-                // And set the new user address
+                // Set the new user address
                 request.address = userAddr
 
                 // Set a unique id
                 self.nextId += 1
                 header.allocId = self.nextId
-
-                // Unlink previous (realloc) header
-                if prevHeader
-                {
-                    if !prevHeader.prev
-                        self.first = prevHeader.next
-                    else
-                        prevHeader.prev.next = prevHeader.next
-                    if prevHeader.next
-                        prevHeader.next.prev = prevHeader.prev
-                }
 
                 // Link to list of allocated blocks
                 header.prev = null
