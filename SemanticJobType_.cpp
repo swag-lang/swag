@@ -364,7 +364,9 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
 
     auto typeResolved = overload->typeInfo;
 
-    if (typeResolved->kind == TypeInfoKind::Struct)
+    if (typeResolved->kind == TypeInfoKind::Struct ||
+        typeResolved->kind == TypeInfoKind::TypeSet ||
+        typeResolved->kind == TypeInfoKind::Interface)
     {
         node->resolvedSymbolName->kind = SymbolKind::TypeAlias;
         SWAG_CHECK(resolveTypeAlias(context));

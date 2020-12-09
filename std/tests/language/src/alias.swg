@@ -15,9 +15,21 @@
         alias Float64 = f64
         var x: Float32 = 1.0
         var y: Float64 = 1.0
+        @assert(@typeof(Float32) == f32)
+        @assert(@typeof(Float64) == f64)
     }
 
-    // you can alias a function name
+    // a type alias can be marked with the 'swag.strict' attribute
+    // in that case, implicit cast is not done, but explicit cast is
+    // still possible
+    {
+        #[swag.strict]
+        alias MyType = s32
+        @assert(@typeof(MyType) != s32)
+        var x: MyType = cast(MyType) 0
+    }
+
+    // you can also alias a function/namespace/enum name
     {
         func thisIsABigFunctionName(x: s32) => x * x
         alias myFunc = thisIsABigFunctionName
