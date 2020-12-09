@@ -267,7 +267,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
 {
     for (int j = 0; j < parameters.size(); j++)
     {
-        auto symbolParameter = parameters[j];
+        auto wantedParameter = parameters[j];
         if (parameters[j]->namedParam == callParameter->namedParam)
         {
             if (context.doneParameters[j])
@@ -277,21 +277,41 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
                 return;
             }
 
-            auto     typeInfo  = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
-            uint32_t castFlags = CASTFLAG_NO_ERROR;
-            castFlags |= forceCastFlags;
-            bool same = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, castFlags);
-            if (!same)
+            auto callTypeInfo   = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
+            auto wantedTypeInfo = wantedParameter->typeInfo;
+
+            // For a typed variadic, cast against the underlying type
+            // In case of a spread, match the underlying type too
+            if (wantedTypeInfo->kind == TypeInfoKind::TypedVariadic)
+            {
+                if (callTypeInfo->kind != TypeInfoKind::TypedVariadic && !(callTypeInfo->flags & TYPEINFO_SPREAD))
+                    wantedTypeInfo = ((TypeInfoVariadic*) wantedTypeInfo)->rawType;
+            }
+
+            // If we pass a @spread, must be match to a TypedVariadic !
+            else if (callTypeInfo->flags & TYPEINFO_SPREAD)
             {
                 context.badSignatureInfos.badSignatureParameterIdx  = parameterIndex;
-                context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;
-                context.badSignatureInfos.badSignatureGivenType     = typeInfo;
+                context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
+                context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
                 SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
                 context.result = MatchResult::BadSignature;
             }
 
-            context.solvedParameters[j]      = symbolParameter;
-            callParameter->resolvedParameter = symbolParameter;
+            uint32_t castFlags = CASTFLAG_NO_ERROR;
+            castFlags |= forceCastFlags;
+            bool same = TypeManager::makeCompatibles(nullptr, wantedParameter->typeInfo, callTypeInfo, nullptr, nullptr, castFlags);
+            if (!same)
+            {
+                context.badSignatureInfos.badSignatureParameterIdx  = parameterIndex;
+                context.badSignatureInfos.badSignatureRequestedType = wantedParameter->typeInfo;
+                context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
+                SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+                context.result = MatchResult::BadSignature;
+            }
+
+            context.solvedParameters[j]      = wantedParameter;
+            callParameter->resolvedParameter = wantedParameter;
             callParameter->index             = j;
             context.doneParameters[j]        = true;
             context.cptResolved++;
