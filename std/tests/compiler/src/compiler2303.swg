@@ -1,6 +1,7 @@
+
 struct AA
 {
-    x: *AA.BB
+    xyz: *AA.BB
 }
 
 impl AA

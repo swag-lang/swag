@@ -154,7 +154,8 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     auto lineNo = typeInfo->declNode->token.startLocation.line + 1;
     auto name   = typeInfo->name;
     Ast::normalizeIdentifierName(name);
-    auto result = dbgBuilder->createStructType(scope, name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, llvm::DINodeArray());
+    typeInfo->computeScopedName();
+    auto result = dbgBuilder->createStructType(scope, name.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, llvm::DINodeArray(), 0, nullptr, typeInfo->scopedName.c_str());
 
     // Register it right away, so that even if a struct is referencing itself, this will work
     // and won't recurse forever
@@ -171,7 +172,8 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
         subscripts.push_back(typeField);
     }
 
-    auto content = dbgBuilder->getOrCreateArray({subscripts.begin(), subscripts.end()});
+    llvm::ArrayRef<llvm::Metadata*> subscripts1{subscripts.begin(), subscripts.end()};
+    auto                            content = dbgBuilder->getOrCreateArray(subscripts1);
     dbgBuilder->replaceArrays(result, content);
 
     return result;
