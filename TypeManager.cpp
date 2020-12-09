@@ -250,8 +250,13 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
         break;
 
     case TypeInfoKind::Alias:
-        if (flags & CONCRETE_ALIAS)
-            return concreteType(static_cast<TypeInfoAlias*>(typeInfo)->rawType, flags);
+        if (flags & (CONCRETE_ALIAS | CONCRETE_FORCEALIAS))
+        {
+            auto typeAlias = static_cast<TypeInfoAlias*>(typeInfo);
+            if (typeAlias->flags & TYPEINFO_STRICT && !(flags & CONCRETE_FORCEALIAS))
+                return typeAlias;
+            return concreteType(typeAlias->rawType, flags);
+        }
         break;
 
     case TypeInfoKind::Generic:

@@ -373,6 +373,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
 
     // Collect all attributes for the variable
     SWAG_CHECK(collectAttributes(context, node, nullptr));
+    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_STRICT), context->report({node, "'swag.strict' attribute can only be used on a type alias"}));
 
     node->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Alias));
@@ -416,6 +417,8 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_RETURN_BY_COPY);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
+    if (node->attributeFlags & ATTRIBUTE_STRICT)
+        typeInfo->flags |= TYPEINFO_STRICT;
 
     typeInfo->computeName();
     node->typeInfo = typeInfo;

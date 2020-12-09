@@ -25,11 +25,12 @@ static const uint32_t CASTFLAG_COERCE          = 0x00001000;
 static const uint32_t CASTFLAG_COERCE_SAMESIGN = 0x00002000;
 static const uint32_t CASTFLAG_COERCE_FULL     = 0x00004000;
 
-static const uint32_t CONCRETE_ALL     = 0xFFFFFFFF;
-static const uint32_t CONCRETE_ENUM    = 0x00000001;
-static const uint32_t CONCRETE_FUNC    = 0x00000002;
-static const uint32_t CONCRETE_GENERIC = 0x00000004;
-static const uint32_t CONCRETE_ALIAS   = 0x00000008;
+static const uint32_t CONCRETE_ALL        = 0xFFFFFFFF;
+static const uint32_t CONCRETE_ENUM       = 0x00000001;
+static const uint32_t CONCRETE_FUNC       = 0x00000002;
+static const uint32_t CONCRETE_GENERIC    = 0x00000004;
+static const uint32_t CONCRETE_ALIAS      = 0x00000008;
+static const uint32_t CONCRETE_FORCEALIAS = 0x00000010;
 
 struct TypeManager
 {

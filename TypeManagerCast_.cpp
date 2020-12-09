@@ -21,7 +21,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
                 {
                     auto node         = Ast::newNode(context->sourceFile, AstNodeKind::Cast, fromNode);
                     node->semanticFct = SemanticJob::resolveUserCast;
-                    node->token.text        = Utf8Crc("opCast");
+                    node->token.text  = Utf8Crc("opCast");
 
                     auto lastNode = context->job->nodes.back();
                     context->job->nodes.pop_back();
@@ -1559,7 +1559,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             if (toTypeStruct->fields.size() > child->childs.size())
                 return context->report({child, format("not enough initializers for '%s' ('%d' expected, '%d' provided)", toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
             if (toTypeStruct->fields.size() < child->childs.size())
-                return context->report({ child, format("too many initializers for '%s' ('%d' expected, '%d' provided)", toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size()) });
+                return context->report({child, format("too many initializers for '%s' ('%d' expected, '%d' provided)", toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
 
             for (int j = 0; j < toTypeStruct->fields.size(); j++)
             {
@@ -2547,9 +2547,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     }
 
     if (toType->kind == TypeInfoKind::Alias)
-        toType = TypeManager::concreteType(toType, CONCRETE_ALIAS);
+        toType = TypeManager::concreteType(toType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
     if (fromType->kind == TypeInfoKind::Alias)
-        fromType = TypeManager::concreteType(fromType, CONCRETE_ALIAS);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
 
     if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT))
     {

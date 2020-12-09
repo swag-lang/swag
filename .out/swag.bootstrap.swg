@@ -48,6 +48,9 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr property()
 
+    // Hardcoded for type alias
+    attr strict()
+
     // Hardcoded for local variables
     attr global()
 

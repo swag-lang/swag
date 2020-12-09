@@ -56,6 +56,8 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         if (oneAttribute->token.text == "global" && kind == AstNodeKind::VarDecl)
             if (!checkNode->ownerScope->isGlobalOrImpl())
                 return true;
+        if (oneAttribute->token.text == "strict" && kind == AstNodeKind::Alias)
+            return true;
     }
 
     if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
@@ -192,6 +194,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_NO_RETURN;
             else if (child->token.text == "global")
                 flags |= ATTRIBUTE_GLOBAL;
+            else if (child->token.text == "strict")
+                flags |= ATTRIBUTE_STRICT;
             else if (child->token.text == "callback")
                 flags |= ATTRIBUTE_CALLBACK;
             else if (child->token.text == "safety")

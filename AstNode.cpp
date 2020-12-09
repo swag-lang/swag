@@ -158,11 +158,11 @@ Utf8 AstNode::getArticleKindName(AstNode* node)
     case AstNodeKind::FuncDecl:
     case AstNodeKind::FuncDeclType:
     case AstNodeKind::Namespace:
-    case AstNodeKind::Alias:
     case AstNodeKind::FuncDeclParam:
     case AstNodeKind::StructDecl:
     case AstNodeKind::TypeSet:
         return "a " + result;
+    case AstNodeKind::Alias:
     case AstNodeKind::EnumDecl:
     case AstNodeKind::EnumValue:
     case AstNodeKind::InterfaceDecl:
