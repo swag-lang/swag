@@ -25,3 +25,22 @@ func set(dest: *void, value: u8, size: u32)
 {
     if size @memset(dest, value, size)
 }
+
+// Align a value to the given amount
+func align(value: u32, alignement: u32)->u32
+{
+    toAlign := alignement ?? @sizeof(*void)
+    result := value & ~(toAlign - 1)
+    if result < value result += toAlign
+    return result
+}
+
+// Align a pointer to the given amount
+func align(value: const *void, alignement: u32)->const *void
+{
+    toAlign := alignement ?? @sizeof(*void)
+    res64 := cast(u64) value
+    result := res64 & ~(toAlign - 1)
+    if result < res64 result += toAlign
+    return cast(const *void) result
+}

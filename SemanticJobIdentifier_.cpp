@@ -1108,6 +1108,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         // Get the overload site
         if (!errs1.empty())
         {
+            const_cast<Diagnostic*>(errs0[0])->sourceFile    = errs1[0]->sourceFile;
             const_cast<Diagnostic*>(errs0[0])->startLocation = errs1[0]->startLocation;
             const_cast<Diagnostic*>(errs0[0])->endLocation   = errs1[0]->startLocation;
         }
