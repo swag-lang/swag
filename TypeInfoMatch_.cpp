@@ -50,10 +50,12 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         // In case of a spread, match the underlying type too
         if (wantedTypeInfo->kind == TypeInfoKind::TypedVariadic)
         {
-            if (callTypeInfo->kind != TypeInfoKind::TypedVariadic)
+            if (callTypeInfo->kind != TypeInfoKind::TypedVariadic && !(callTypeInfo->flags & TYPEINFO_SPREAD))
                 wantedTypeInfo = ((TypeInfoVariadic*) wantedTypeInfo)->rawType;
             isAfterVariadic = true;
         }
+
+        // If we pass a @spread, must be match to a TypedVariadic !
         else if (callTypeInfo->flags & TYPEINFO_SPREAD)
         {
             context.badSignatureInfos.badSignatureParameterIdx  = i;

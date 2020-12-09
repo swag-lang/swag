@@ -327,8 +327,11 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
         return context->report({expr, format("expression of type '%s' cannot be spreaded", typeInfo->name.c_str())});
     }
 
-    node->typeInfo = node->typeInfo->clone();
-    node->typeInfo->name += "...";
+    auto typeVar     = allocType<TypeInfoVariadic>();
+    typeVar->kind    = TypeInfoKind::TypedVariadic;
+    typeVar->rawType = node->typeInfo;
+    typeVar->computeName();
+    node->typeInfo = typeVar;
     node->typeInfo->flags |= TYPEINFO_SPREAD;
 
     return true;
