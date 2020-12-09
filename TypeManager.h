@@ -85,6 +85,7 @@ struct TypeManager
     static TypeInfo* concreteReferenceType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* concreteReference(TypeInfo* typeInfo);
     static TypeInfo* concreteType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
+    static TypeInfo* makeConst(TypeInfo* typeInfo);
 
     TypeInfoNative*    typeInfoS8;
     TypeInfoNative*    typeInfoS16;

@@ -418,3 +418,24 @@ TypeInfo* TypeManager::literalTypeToType(const Token& token)
     result = makeUntypedType(result, token.literalValue.u32);
     return result;
 }
+
+TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
+{
+    unique_lock lk(typeInfo->mutex);
+    if (typeInfo->isConst())
+        return typeInfo;
+
+    if (!typeInfo->constCopy)
+    {
+        auto typeConst       = allocType<TypeInfoAlias>();
+        typeConst->rawType   = typeInfo;
+        typeConst->preName   = typeInfo->preName;
+        typeConst->nakedName = typeInfo->nakedName;
+        typeConst->name      = typeInfo->name;
+        typeConst->setConst();
+        typeConst->computeName();
+        typeInfo->constCopy = typeConst;
+    }
+
+    return typeInfo->constCopy;
+}

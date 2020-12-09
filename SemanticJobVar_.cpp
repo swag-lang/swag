@@ -577,18 +577,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::Struct)
             {
-                // Be sure type is now constant
-                if (!node->typeInfo->isConst())
-                {
-                    auto typeConst       = allocType<TypeInfoAlias>();
-                    typeConst->rawType   = node->typeInfo;
-                    typeConst->preName   = node->typeInfo->preName;
-                    typeConst->nakedName = node->typeInfo->nakedName;
-                    typeConst->name      = node->typeInfo->name;
-                    typeConst->setConst();
-                    typeConst->computeName();
-                    node->typeInfo = typeConst;
-                }
+                node->typeInfo = TypeManager::makeConst(node->typeInfo);
             }
         }
     }
