@@ -337,6 +337,7 @@ void TypeInfoArray::computeScopedNameExport()
         return;
 
     pointedType->computeScopedNameExport();
+
     scopedNameExport = preName;
     scopedNameExport += pointedType->scopedNameExport;
 }

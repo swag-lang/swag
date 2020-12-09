@@ -580,27 +580,33 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 // Be sure type is now constant
                 if (!node->typeInfo->isConst())
                 {
-                    auto typeConst = node->typeInfo->clone();
+                    auto typeConst       = allocType<TypeInfoAlias>();
+                    typeConst->rawType   = node->typeInfo;
+                    typeConst->preName   = node->typeInfo->preName;
+                    typeConst->nakedName = node->typeInfo->nakedName;
+                    typeConst->name      = node->typeInfo->name;
                     typeConst->setConst();
+                    typeConst->computeName();
                     node->typeInfo = typeConst;
                 }
             }
         }
     }
 
+    auto typeInfo = TypeManager::concreteType(node->typeInfo, CONCRETE_ALIAS);
+
     // An enum must be initialized
     if (!node->assignment && !(symbolFlags & OVERLOAD_VAR_FUNC_PARAM) && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
-        if (node->typeInfo->kind == TypeInfoKind::Enum ||
-            (node->typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) node->typeInfo)->pointedType->kind == TypeInfoKind::Enum))
+        if (typeInfo->kind == TypeInfoKind::Enum ||
+            (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Enum))
         {
             return context->report({node, node->token, "an enum variable must be initialized"});
         }
     }
 
-    auto     typeInfo      = TypeManager::concreteType(node->typeInfo);
+    typeInfo               = TypeManager::concreteType(node->typeInfo);
     uint32_t storageOffset = UINT32_MAX;
-
     if (isCompilerConstant)
     {
         node->flags |= AST_NO_BYTECODE | AST_R_VALUE;

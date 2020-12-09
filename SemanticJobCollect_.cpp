@@ -261,7 +261,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
         return true;
 
     // Already computed in the constant segment for an array
-    if (node->typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->kind == TypeInfoKind::Array)
     {
         if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
         {
@@ -271,12 +271,12 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
             storageOffset = seg->reserve(typeInfo->sizeOf);
             auto addrDst  = seg->address(storageOffset);
             auto addrSrc  = node->sourceFile->module->tempSegment.address(node->assignment->computedValue.reg.offset);
-            memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
+            memcpy(addrDst, addrSrc, typeInfo->sizeOf);
             return true;
         }
     }
 
-    if (node->typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->kind == TypeInfoKind::Struct)
     {
         if (node->assignment && node->assignment->kind == AstNodeKind::IdentifierRef && node->assignment->resolvedSymbolOverload)
         {
@@ -289,7 +289,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
             storageOffset = seg->reserve(typeInfo->sizeOf);
             auto addrDst  = seg->address(storageOffset);
             auto addrSrc  = node->sourceFile->module->constantSegment.address(node->assignment->resolvedSymbolOverload->storageOffset);
-            memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
+            memcpy(addrDst, addrSrc, typeInfo->sizeOf);
         }
         else
         {
