@@ -101,7 +101,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(init|drop|index|mkany|mkslice|mkinterface|sizeof|typeof|kindof|countof|dataof|postcopy|postmove)\\b"
+          "match": "(@)\\b(init|drop|index|mkany|mkslice|mkinterface|sizeof|typeof|kindof|countof|dataof|postcopy|postmove|spread)\\b"
         }
       ]
     },
