@@ -35,4 +35,10 @@
         alias myFunc = thisIsABigFunctionName
         @assert(myFunc(4) == 16)
     }
+
+    // alias can also be used to force the namespace name of an
+    // imported module
+    {
+        // alias MyStd = #import "std"
+    }
 }
