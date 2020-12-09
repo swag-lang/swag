@@ -572,7 +572,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || isLocalConstant)
         {
-            if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::Struct)
+            if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
             {
                 node->typeInfo = TypeManager::makeConst(node->typeInfo);
             }
