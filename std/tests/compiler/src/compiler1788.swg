@@ -1,13 +1,13 @@
 //#[swag.printbc]
 #run
 {
-    G += 1
+//    G += 1
 }
 
 //#[swag.printbc]
 #init
 {
-    @assert(G == 1)
+    //@assert(G == 1)
 }
 
-var G: s64 = ?
+var G: s64

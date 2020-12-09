@@ -3,9 +3,6 @@
 #include "Workspace.h"
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
-#include "ModuleManager.h"
-#include "Os.h"
-#include "ByteCode.h"
 #include "Backend.h"
 #include "CopyFileJob.h"
 #include "SemanticJob.h"
@@ -13,7 +10,6 @@
 #include "ModuleRunJob.h"
 #include "ThreadManager.h"
 #include "Profile.h"
-#include "Context.h"
 #include "ByteCodeOptimizer.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
@@ -326,7 +322,10 @@ JobResult ModuleBuildJob::execute()
         module->sendCompilerMessage(CompilerMsgKind::PassBeforeRun, this);
 
         // #init functions are only executed in script mode, if the module has a #main
-        if (!module->byteCodeInitFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)
+        bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc;
+        // OR in a test module, during testing
+        callInitDrop |= g_CommandLine.test && g_CommandLine.runByteCodeTests;
+        if (callInitDrop)
         {
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #init)", module->name.c_str(), module->byteCodeInitFunc.size()));
@@ -406,8 +405,8 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        // #drop functions are only executed in script mode, if the module has a #main
-        if (!module->byteCodeDropFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc)
+        // #drop functions
+        if (callInitDrop)
         {
             if (g_CommandLine.verbose && !module->hasUnittestError && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #drop)", module->name.c_str(), module->byteCodeDropFunc.size()));

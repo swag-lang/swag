@@ -14,7 +14,12 @@ var g_cxt: swag.Context
 
 #drop
 {
-    g_dbg.printAllocated()
+    if !g_dbg.isEmpty()
+    {
+        @print("memory leaks !\n")
+        g_dbg.printAllocated()
+        @assert(false)
+    }
 }
 
 #test
