@@ -46,7 +46,7 @@ public impl BitArray
             otherBuffer := buffer
             buffer = null
             self.reserve(count)
-            memory.copy(buffer, otherBuffer, capacity)
+            memory.copy(buffer, otherBuffer, cast(uint) capacity)
         }
     }
 

@@ -168,7 +168,7 @@ public impl ConcatBuffer
             remain := bucketSize - curCount
             while num > remain
             {
-                memory.copy(currentSP, slicePtr, remain)
+                memory.copy(currentSP, slicePtr, cast(uint) remain)
                 num -= remain
                 slicePtr += remain
                 currentSP += remain
@@ -185,7 +185,7 @@ public impl ConcatBuffer
 
         // We should have enough size in the last bucket to store the
         // rest of the slice
-        memory.copy(currentSP, slicePtr, num)
+        memory.copy(currentSP, slicePtr, cast(uint) num)
         currentSP += num
     }
 

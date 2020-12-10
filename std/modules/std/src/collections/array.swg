@@ -42,7 +42,7 @@ impl Array
         }
         #else
         {
-            memory.copy(buffer, oldBuffer, @sizeof(T) * count)
+            memory.copy(buffer, oldBuffer, cast(uint) @sizeof(T) * count)
         }
     }
 
@@ -80,7 +80,7 @@ impl Array
         }
         #else
         {
-            memory.copy(buffer, dataof, @sizeof(T) * countof)
+            memory.copy(buffer, dataof, cast(uint) @sizeof(T) * countof)
         }
 
         count += countof

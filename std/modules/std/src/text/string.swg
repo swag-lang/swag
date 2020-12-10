@@ -90,7 +90,7 @@ public impl String
         newCapacity := @countof(value) + 1
         length = newCapacity - 1
         reserve(newCapacity)
-        memory.copy(buffer, @dataof(value), length)
+        memory.copy(buffer, @dataof(value), cast(uint) length)
         buffer[length] = 0
     }
 
@@ -150,7 +150,7 @@ public impl String
             buffer = null
             capacity = 0
             reserve(length + 1)
-            memory.copy(buffer, oldBuffer, length + 1)
+            memory.copy(buffer, oldBuffer, cast(uint) length + 1)
         }
     }
 
@@ -286,7 +286,7 @@ public impl String
 
         newLength := length + concatLength + 1
         grow(newLength)
-        memory.copy(buffer + length, @dataof(value), concatLength)
+        memory.copy(buffer + length, @dataof(value), cast(uint) concatLength)
         length = newLength - 1
         buffer[length] = 0
     }
@@ -367,7 +367,7 @@ public impl String
             oldBuffer := buffer
             newAllocator := @getcontext().allocator
             buffer = autocast memory.alloc(cast(uint) newCapacity, newAllocator)
-            memory.copy(buffer, oldBuffer, length + 1)
+            memory.copy(buffer, oldBuffer, cast(uint) length + 1)
             allocator = newAllocator
         }
         else
@@ -395,7 +395,7 @@ public impl String
             ptr += eat
         }
 
-        memory.copy(buffer, ptr, length)
+        memory.copy(buffer, ptr, cast(uint) length)
         buffer[length] = 0
     }
 

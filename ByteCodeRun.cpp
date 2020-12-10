@@ -622,7 +622,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         void*  dst                 = (void*) registersRC[ip->b.u32].pointer;
         void*  src                 = (void*) registersRC[ip->c.u32].pointer;
-        size_t size                = registersRC[ip->d.u32].uint;
+        size_t size                = registersRC[ip->d.u32].u32;
         registersRC[ip->a.u32].s32 = Runtime::memcmp(dst, src, size);
         break;
     }

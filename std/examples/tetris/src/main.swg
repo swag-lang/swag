@@ -251,7 +251,7 @@ func main()
         builder.clear()
         builder.appendFormat("SCORE: %{D08}", nScore)
         strScore := builder.moveToString()
-        memory.copy(&screen[2 * nScreenWidth + nFieldWidth + 6], strScore.buffer, strScore.length)
+        memory.copy(&screen[2 * nScreenWidth + nFieldWidth + 6], strScore.buffer, cast(uint) strScore.length)
 
 		// Animate Line Completion
 		if !vLines.isEmpty()
