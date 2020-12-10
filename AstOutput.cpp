@@ -157,6 +157,12 @@ namespace Ast
 
         switch (node->kind)
         {
+        case AstNodeKind::Defer:
+            CONCAT_FIXED_STR(concat, "defer ");
+            SWAG_CHECK(output(context, concat, node->childs.front()));
+            concat.addEol();
+            break;
+
         case AstNodeKind::AttrUse:
         {
             auto nodeAttr = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
@@ -751,6 +757,7 @@ namespace Ast
         case AstNodeKind::Statement:
             if (node->childs.count == 1 &&
                 node->parent->kind != AstNodeKind::FuncDecl &&
+                node->parent->kind != AstNodeKind::CompilerMacro &&
                 node->childs.front()->kind != AstNodeKind::For &&
                 node->childs.front()->kind != AstNodeKind::If &&
                 node->childs.front()->kind != AstNodeKind::While &&

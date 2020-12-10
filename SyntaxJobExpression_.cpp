@@ -866,9 +866,9 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
     if (token.id == TokenId::SymLeftCurly)
-        SWAG_CHECK(doScopedCurlyStatement(node, nullptr));
+        SWAG_CHECK(doScopedCurlyStatement(node));
     else
-        SWAG_CHECK(doAffectExpression(node, nullptr));
+        SWAG_CHECK(doAffectExpression(node));
 
     return true;
 }
