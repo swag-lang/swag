@@ -234,7 +234,7 @@ void Module::addFileNoLock(SourceFile* file)
 
     // A file private scope is not registers in the list of childs of
     // its parent
-    if(file->scopePrivate)
+    if (file->scopePrivate)
         file->scopePrivate->parentScope = scopeRoot;
 
     // Keep track of the most recent file
@@ -270,7 +270,7 @@ void Module::removeFile(SourceFile* file)
     files[idx]->indexInModule = idx;
     files.pop_back();
     file->module        = nullptr;
-    file->indexInModule = UINT32_MAX;    
+    file->indexInModule = UINT32_MAX;
 
     // If the file has compiler functions, then we need to unregister it from the module
     auto it = filesForCompilerPass.find(file);
@@ -294,8 +294,10 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     SWAG_ASSERT(node->bc->out);
 
     // Setup flags before running
-    g_defaultContext.flags = getDefaultContextFlags(this);
-    g_defaultContext.flags |= (uint64_t) ContextFlags::ByteCode;
+    auto cxt = (SwagContext*) OS::tlsGetValue(g_tlsContextId);
+    SWAG_ASSERT(cxt);
+    cxt->flags = getDefaultContextFlags(this);
+    cxt->flags |= (uint64_t) ContextFlags::ByteCode;
 
     g_byteCodeStack.clear();
     bool result = executeNodeNoLock(sourceFile, node, callerContext);
@@ -381,13 +383,13 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
     JobContext context;
     context.baseJob = dependentJob;
 
+    PushSwagContext cxt;
     for (auto bc : byteCodeCompiler[index])
     {
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));
     }
 
     runContext.currentCompilerMessage = nullptr;
-
     return true;
 }
 

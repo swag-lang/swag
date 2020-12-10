@@ -11,6 +11,7 @@
 #include "ThreadManager.h"
 #include "Profile.h"
 #include "ByteCodeOptimizer.h"
+#include "Context.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
@@ -320,6 +321,9 @@ JobResult ModuleBuildJob::execute()
         SWAG_PROFILE(PRF_GFCT, format("run bc %s", module->name.c_str()));
 
         module->sendCompilerMessage(CompilerMsgKind::PassBeforeRun, this);
+
+        // Push a copy of the default context, in case the user code changes it (or push a new one)
+        PushSwagContext cxt;
 
         // #init functions are only executed in script mode, if the module has a #main
         bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc;

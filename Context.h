@@ -11,3 +11,19 @@ extern SwagProcessInfos g_processInfos;
 
 extern void     initDefaultContext();
 extern uint64_t getDefaultContextFlags(Module* module);
+
+struct PushSwagContext
+{
+    PushSwagContext()
+    {
+        copy = g_defaultContext;
+        OS::tlsSetValue(g_tlsContextId, &copy);
+    }
+
+    ~PushSwagContext()
+    {
+        OS::tlsSetValue(g_tlsContextId, &g_defaultContext);
+    }
+
+    SwagContext copy;
+};
