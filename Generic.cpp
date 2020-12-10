@@ -458,7 +458,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // Generate and initialize a new type if the type is still generic
     // The type is still generic if the doTypeSubstitution didn't find any type to change
     // (for example if we have just generic value)
-    TypeInfoFuncAttr* newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo);
+    TypeInfoFuncAttr* newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo, newFunc->typeInfo->kind);
     if (newTypeFunc->flags & TYPEINFO_GENERIC || noReplaceTypes)
     {
         newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo->clone(), newFunc->typeInfo->kind);

@@ -221,7 +221,7 @@ TypeInfo* TypeManager::concreteReference(TypeInfo* typeInfo)
 {
     if (typeInfo->kind != TypeInfoKind::Reference)
         return typeInfo;
-    return static_cast<TypeInfoReference*>(typeInfo)->pointedType;
+    return CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference)->pointedType;
 }
 
 TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
@@ -237,7 +237,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
     case TypeInfoKind::FuncAttr:
         if (flags & CONCRETE_FUNC)
         {
-            auto returnType = static_cast<TypeInfoFuncAttr*>(typeInfo)->returnType;
+            auto returnType = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr)->returnType;
             if (!returnType)
                 return g_TypeMgr.typeInfoVoid;
             return concreteType(returnType, flags);
@@ -246,13 +246,13 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
 
     case TypeInfoKind::Enum:
         if (flags & CONCRETE_ENUM)
-            return concreteType(static_cast<TypeInfoEnum*>(typeInfo)->rawType, flags);
+            return concreteType(CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum)->rawType, flags);
         break;
 
     case TypeInfoKind::Alias:
         if (flags & (CONCRETE_ALIAS | CONCRETE_FORCEALIAS))
         {
-            auto typeAlias = static_cast<TypeInfoAlias*>(typeInfo);
+            auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
             if (typeAlias->flags & TYPEINFO_STRICT && !(flags & CONCRETE_FORCEALIAS))
                 return typeAlias;
             return concreteType(typeAlias->rawType, flags);
@@ -262,7 +262,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
     case TypeInfoKind::Generic:
         if (flags & CONCRETE_GENERIC)
         {
-            auto typeGeneric = static_cast<TypeInfoGeneric*>(typeInfo);
+            auto typeGeneric = CastTypeInfo<TypeInfoGeneric>(typeInfo, TypeInfoKind::Generic);
             if (!typeGeneric->rawType)
                 return typeGeneric;
             return concreteType(typeGeneric->rawType, flags);

@@ -31,7 +31,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
             op->computedValue.reg.s64 = -op->computedValue.reg.s64;
             if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                int32_t newValue = -static_cast<TypeInfoNative*>(typeInfo)->valueInteger;
+                int32_t newValue = -CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind)->valueInteger;
                 op->typeInfo     = TypeManager::makeUntypedType(typeInfo, *(uint32_t*) &newValue);
             }
 
@@ -40,7 +40,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
             op->computedValue.reg.f32 = -op->computedValue.reg.f32;
             if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
             {
-                float newValue = -static_cast<TypeInfoNative*>(typeInfo)->valueFloat;
+                float newValue = -CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind)->valueFloat;
                 op->typeInfo   = TypeManager::makeUntypedType(typeInfo, *(uint32_t*) &newValue);
             }
 

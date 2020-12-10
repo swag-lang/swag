@@ -110,7 +110,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
                 return sourceFile->report(diag, &diagNote);
             }
             else
-                newScope = static_cast<TypeInfoNamespace*>(symbol->overloads[0]->typeInfo)->scope;
+                newScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
         }
 
         SWAG_CHECK(tokenizer.getToken(token));

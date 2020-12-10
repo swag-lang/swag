@@ -280,7 +280,7 @@ JobResult SyntaxJob::execute()
         }
         else
         {
-            parentScope = static_cast<TypeInfoNamespace*>(symbol->overloads[0]->typeInfo)->scope;
+            parentScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
             parentScope->flags |= SCOPE_IMPORTED;
             namespaceNode                     = CastAst<AstNameSpace>(parentScope->owner, AstNodeKind::Namespace);
             namespaceNode->importedModuleName = sourceFile->imported->name;
@@ -291,7 +291,7 @@ JobResult SyntaxJob::execute()
     // of the module scope, to avoid contention in // (and this is useless). That way,
     // no need to lock the module scope each time a file is encountered.
     sourceFile->computePrivateScopeName();
-    sourceFile->scopePrivate = Ast::newScope(sourceFile->astRoot, sourceFile->scopeName, ScopeKind::File, nullptr);
+    sourceFile->scopePrivate              = Ast::newScope(sourceFile->astRoot, sourceFile->scopeName, ScopeKind::File, nullptr);
     sourceFile->scopePrivate->parentScope = currentScope;
     sourceFile->scopePrivate->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
 
