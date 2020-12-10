@@ -33,7 +33,7 @@ namespace std
 
             var req: AllocatorRequest
             req.mode = AllocatorMode.Realloc
-            req.size = newSize
+            req.size = cast(uint) newSize
             req.address = buffer
             allocator.alloc(&req)
             buffer = autocast req.address

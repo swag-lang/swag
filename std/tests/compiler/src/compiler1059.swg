@@ -23,7 +23,7 @@ impl Array
 		context := @getcontext()
 
 		var request: AllocatorRequest
-		request.size = size * @sizeof(T)
+		request.size = cast(uint) size * @sizeof(T)
 		context.allocator.alloc(&request)
 		newBuffer := request.address
 

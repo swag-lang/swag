@@ -112,7 +112,7 @@ namespace swag
     // Context & allocators
     // #########################################################
 
-    enum AllocatorMode: u16
+    enum AllocatorMode
     {
         Alloc
         Free
@@ -125,9 +125,9 @@ namespace swag
         callerLoc:  CompilerSourceLocation
         hint:       string
         address:	*void
-        size:		u32
+        size:		uint
         mode =		AllocatorMode.Alloc
-        alignement: u16
+        alignement: u32
     }
 
     interface IAllocator
@@ -167,7 +167,7 @@ namespace swag
                     size += alignement - 1
 
                     storePtr := cast(**void) request.address
-                    realPtr := cast(*u8) @realloc(storePtr ? storePtr[-1] : null, cast(uint) size)
+                    realPtr := cast(*u8) @realloc(storePtr ? storePtr[-1] : null, size)
 
                     userPtr := cast(*u8) (cast(uint) realPtr & ~(cast(uint) alignement - 1))
                     if userPtr != realPtr userPtr += alignement

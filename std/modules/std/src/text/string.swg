@@ -29,7 +29,7 @@ impl String
     {
         if allocator == null
             allocator = @getcontext().allocator
-        buffer = autocast memory.realloc(buffer, newCapacity, allocator)
+        buffer = autocast memory.realloc(buffer, cast(uint) newCapacity, allocator)
     }
 }
 
@@ -366,7 +366,7 @@ public impl String
         {
             oldBuffer := buffer
             newAllocator := @getcontext().allocator
-            buffer = autocast memory.alloc(newCapacity, newAllocator)
+            buffer = autocast memory.alloc(cast(uint) newCapacity, newAllocator)
             memory.copy(buffer, oldBuffer, length + 1)
             allocator = newAllocator
         }

@@ -90,7 +90,7 @@ public impl ConcatBuffer
         // Need to allocate a new bucket
         if allocator == null
             allocator = @getcontext().allocator
-        newBucket := cast(*ConcatBufferBucket) memory.alloc(@sizeof(ConcatBufferBucket), allocator)
+        newBucket := cast(*ConcatBufferBucket) memory.alloc(cast(uint) @sizeof(ConcatBufferBucket), allocator)
         @init(newBucket)
         if lastBucket
             lastBucket.next = newBucket
@@ -98,7 +98,7 @@ public impl ConcatBuffer
             firstBucket = newBucket
         lastBucket = newBucket
 
-        lastBucket.datas = memory.alloc(bucketSize, allocator)
+        lastBucket.datas = memory.alloc(cast(uint) bucketSize, allocator)
         currentSP = lastBucket.datas
     }
 

@@ -27,7 +27,7 @@ func freeAll(allocator: IAllocator, hint: string = null, loc = #callerlocation)
 }
 
 // Reallocate/allocate a given amount of bytes
-func realloc(buffer: *void, sizeInBytes: u32, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*void
+func realloc(buffer: *void, sizeInBytes: uint, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*void
 {
     var req: AllocatorRequest
     req.callerLoc   = loc
@@ -44,7 +44,7 @@ func realloc(buffer: *void, sizeInBytes: u32, allocator: IAllocator = null, alig
 }
 
 // Allocate a given amount of bytes
-func alloc(sizeInBytes: u32, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*void
+func alloc(sizeInBytes: uint, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*void
 {
     var req: AllocatorRequest
     req.callerLoc   = loc
@@ -63,7 +63,7 @@ func alloc(sizeInBytes: u32, allocator: IAllocator = null, alignement: u16 = 0, 
 func(T) new(allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*T
 {
     userHint := hint ?? @typeof(T).name
-    ptr := cast(*T) alloc(@sizeof(T), allocator, alignement, userHint, loc)
+    ptr := cast(*T) alloc(cast(uint) @sizeof(T), allocator, alignement, userHint, loc)
     @init(ptr)
     return ptr
 }
@@ -84,7 +84,7 @@ func(T) new(num: u32, allocator: IAllocator = null, alignement: u16 = 0, hint: s
     debug.assert(num > 0)
 
     userHint := hint ?? @typeof(T).name
-    ptr := cast(*T) alloc(@sizeof(T) * num, allocator, alignement, userHint, loc)
+    ptr := cast(*T) alloc(cast(uint) @sizeof(T) * num, allocator, alignement, userHint, loc)
     @init(ptr, num)
     return ptr
 }

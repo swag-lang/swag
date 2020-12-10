@@ -8,9 +8,9 @@ public struct DebugAllocator
     allocator:  IAllocator
 
     first:  *void
+    size:   uint    // Total user size, in bytes
     nextId: u32
     count:  u32     // Number of allocated block
-    size:   u32     // Total user size, in bytes
 }
 
 // This will be address before and after each allocated block
@@ -28,8 +28,8 @@ private
         hint:           string
         prev:           *Header
         next:           *Header
+        userSize:       uint
         magic:          u32
-        userSize:       u32
         allocId:        u32
         locLine:        u32
     }
@@ -110,7 +110,7 @@ public impl IAllocator for DebugAllocator
                 self.size -= userSize
 
                 // Fill the user memory area with garbage
-                memory.set(userAddr, FreeByte, userSize)
+                memory.set(userAddr, FreeByte, cast(u32) userSize)
 
                 // Really free the memory
                 copyReq := :request
@@ -120,7 +120,8 @@ public impl IAllocator for DebugAllocator
             case AllocatorMode.FreeAll:
                 allocator.alloc(request)
                 first = null
-                count, size = 0
+                count = 0
+                size = 0
 
             case AllocatorMode.Realloc:
                 assertIsAllocated(request.address)
@@ -136,7 +137,7 @@ public impl IAllocator for DebugAllocator
                 // In case of a reallocation, get the previous allocated user size
                 // This will be used to fill with garbage the difference
                 copyReq := :request
-                prevSize := 0'u32
+                prevSize := 0'uint
                 prevHeader := cast(*Header) request.address
                 if request.mode == AllocatorMode.Realloc && request.address
                 {
@@ -181,9 +182,9 @@ public impl IAllocator for DebugAllocator
 
                 // Fill with garbage
                 if request.mode == AllocatorMode.Alloc || !request.address
-                    memory.set(userAddr, AllocByte, request.size)
+                    memory.set(userAddr, AllocByte, cast(u32) request.size)
                 else if prevSize < request.size
-                    memory.set(userAddr + prevSize, AllocByte, request.size - prevSize)
+                    memory.set(userAddr + prevSize, AllocByte, cast(u32) (request.size - prevSize))
 
                 // Stats
                 if !prevSize self.count += 1
