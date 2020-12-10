@@ -26,6 +26,7 @@ private
         func TlsSetValue(dwTlsIndex: u32, lpTlsValue: *void);
         func TlsGetValue(dwTlsIndex: u32)->*void;
         func RtlCopyMemory(destination: *void, source: const *void, length: u64);
+        func RtlMoveMemory(destination: *void, source: const *void, length: u64);
         func RtlFillMemory(destination: *void, length: u64, fill: u32);
         func HeapAlloc(hHeap: HANDLE, dwFlags: DWORD, dwBytes: u64)->*void;
         func HeapReAlloc(hHeap: HANDLE, dwFlags: DWORD, mem: *void, dwBytes: u64)->*void;
@@ -38,6 +39,12 @@ private
 func @memcpy(dst: *void, src: const *void, size: u32)
 {
     RtlCopyMemory(dst, src, cast(u64) size)
+}
+
+////////////////////////////////////////////////////////////
+func @memmove(dst: *void, src: const *void, size: u32)
+{
+    RtlMoveMemory(dst, src, cast(u64) size)
 }
 
 ////////////////////////////////////////////////////////////

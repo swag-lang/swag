@@ -374,6 +374,19 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, childSize);
         break;
     }
+    case TokenId::IntrinsicMemMove:
+    {
+        auto childDest = callParams->childs[0];
+        auto childSrc  = callParams->childs[1];
+        auto childSize = callParams->childs[2];
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, "destination pointer of '@memmove' is null");
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "source pointer of '@memmove' is null");
+        emitInstruction(context, ByteCodeOp::MemMove, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
+        freeRegisterRC(context, childDest);
+        freeRegisterRC(context, childSrc);
+        freeRegisterRC(context, childSize);
+        break;
+    }
     case TokenId::IntrinsicMemSet:
     {
         auto childDest  = callParams->childs[0];

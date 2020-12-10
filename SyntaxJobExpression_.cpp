@@ -935,6 +935,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     case TokenId::IntrinsicError:
     case TokenId::IntrinsicFree:
     case TokenId::IntrinsicMemCpy:
+    case TokenId::IntrinsicMemMove:
     case TokenId::IntrinsicMemSet:
     case TokenId::IntrinsicSetContext:
     case TokenId::IntrinsicGetContext:

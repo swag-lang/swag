@@ -130,6 +130,7 @@ void LanguageSpec::setup()
     keywords["@realloc"]     = TokenId::IntrinsicRealloc;
     keywords["@free"]        = TokenId::IntrinsicFree;
     keywords["@memcpy"]      = TokenId::IntrinsicMemCpy;
+    keywords["@memmove"]     = TokenId::IntrinsicMemMove;
     keywords["@memset"]      = TokenId::IntrinsicMemSet;
     keywords["@memcmp"]      = TokenId::IntrinsicMemCmp;
     keywords["@cstrlen"]     = TokenId::IntrinsicCStrLen;

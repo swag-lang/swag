@@ -585,6 +585,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->bp = context->sp;
         break;
     }
+
     case ByteCodeOp::MemCpy:
     {
         void*    dst  = (void*) registersRC[ip->a.u32].pointer;
@@ -593,6 +594,16 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         memcpy(dst, src, size);
         break;
     }
+
+    case ByteCodeOp::MemMove:
+    {
+        void*    dst  = (void*) registersRC[ip->a.u32].pointer;
+        void*    src  = (void*) registersRC[ip->b.u32].pointer;
+        uint32_t size = IMMC_U32(ip);
+        memmove(dst, src, size);
+        break;
+    }
+
     case ByteCodeOp::MemSet:
     {
         void*    dst   = (void*) registersRC[ip->a.u32].pointer;

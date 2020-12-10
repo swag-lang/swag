@@ -938,6 +938,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             break;
         }
+
+        case ByteCodeOp::MemMove:
+        {
+            auto typeF = createFunctionTypeInternal(buildParameters, 3);
+            auto r0    = GEP_I32(allocR, ip->a.u32);
+            auto r1    = GEP_I32(allocR, ip->b.u32);
+            if (ip->flags & BCI_IMM_C)
+            {
+                auto r2 = builder.getInt64(ip->c.u32);
+                auto p0 = GEP_I32(allocT, 0);
+                builder.CreateStore(r2, p0);
+                builder.CreateCall(modu.getOrInsertFunction("@memmove", typeF), {r0, r1, p0});
+            }
+            else
+            {
+                auto r2 = GEP_I32(allocR, ip->c.u32);
+                builder.CreateCall(modu.getOrInsertFunction("@memmove", typeF), {r0, r1, r2});
+            }
+
+            break;
+        }
+
         case ByteCodeOp::MemSet:
         {
             auto r0    = GEP_I32(allocR, ip->a.u32);
@@ -947,6 +969,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateCall(modu.getOrInsertFunction("@memset", typeF), {r0, r1, r2});
             break;
         }
+
         case ByteCodeOp::IntrinsicMemCmp:
         {
             auto rr    = GEP_I32(allocR, ip->a.u32);
@@ -957,6 +980,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateCall(modu.getOrInsertFunction("@memcmp", typeF), {rr, r0, r1, r2});
             break;
         }
+
         case ByteCodeOp::IntrinsicCStrLen:
         {
             auto rr    = GEP_I32(allocR, ip->a.u32);
