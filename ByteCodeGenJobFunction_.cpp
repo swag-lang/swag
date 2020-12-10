@@ -131,7 +131,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             }
             else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
             {
-                auto inst = emitInstruction(context, ByteCodeOp::MemCpy, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC);
+                auto inst = emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC);
                 inst->flags |= BCI_IMM_C;
                 inst->c.u32 = returnExpression->typeInfo->sizeOf;
                 freeRegisterRC(context, returnExpression);
@@ -206,7 +206,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             {
                 auto r0 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
-                auto inst = emitInstruction(context, ByteCodeOp::MemCpy, r0, returnExpression->resultRegisterRC);
+                auto inst = emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, r0, returnExpression->resultRegisterRC);
                 inst->flags |= BCI_IMM_C;
                 inst->c.u32 = returnExpression->typeInfo->sizeOf;
                 freeRegisterRC(context, r0);
@@ -368,7 +368,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childSize = callParams->childs[2];
         emitSafetyNullPointer(context, childDest->resultRegisterRC, "destination pointer of '@memcpy' is null");
         emitSafetyNullPointer(context, childSrc->resultRegisterRC, "source pointer of '@memcpy' is null");
-        emitInstruction(context, ByteCodeOp::MemCpy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
         freeRegisterRC(context, childSize);
@@ -381,7 +381,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childSize = callParams->childs[2];
         emitSafetyNullPointer(context, childDest->resultRegisterRC, "destination pointer of '@memmove' is null");
         emitSafetyNullPointer(context, childSrc->resultRegisterRC, "source pointer of '@memmove' is null");
-        emitInstruction(context, ByteCodeOp::MemMove, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IntrinsicMemMove, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
         freeRegisterRC(context, childSize);
@@ -393,7 +393,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childValue = callParams->childs[1];
         auto childSize  = callParams->childs[2];
         emitSafetyNullPointer(context, childDest->resultRegisterRC, "destination pointer of '@memset' is null");
-        emitInstruction(context, ByteCodeOp::MemSet, childDest->resultRegisterRC, childValue->resultRegisterRC, childSize->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IntrinsicMemSet, childDest->resultRegisterRC, childValue->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childValue);
         freeRegisterRC(context, childSize);

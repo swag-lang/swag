@@ -586,7 +586,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::MemCpy:
+    case ByteCodeOp::IntrinsicMemCpy:
     {
         void*    dst  = (void*) registersRC[ip->a.u32].pointer;
         void*    src  = (void*) registersRC[ip->b.u32].pointer;
@@ -595,7 +595,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::MemMove:
+    case ByteCodeOp::IntrinsicMemMove:
     {
         void*    dst  = (void*) registersRC[ip->a.u32].pointer;
         void*    src  = (void*) registersRC[ip->b.u32].pointer;
@@ -604,7 +604,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::MemSet:
+    case ByteCodeOp::IntrinsicMemSet:
     {
         void*    dst   = (void*) registersRC[ip->a.u32].pointer;
         uint32_t value = registersRC[ip->b.u32].u8;

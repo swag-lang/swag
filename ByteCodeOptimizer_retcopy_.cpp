@@ -96,7 +96,7 @@ void ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
                 ip++;
 
             // This will copy the result in the real variable
-            if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::MemCpy && ip[1].b.u32 == ipOrg->a.u32)
+            if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::IntrinsicMemCpy && ip[1].b.u32 == ipOrg->a.u32)
             {
                 optimRetCopy(context, ipOrg, ip);
             }
@@ -132,7 +132,7 @@ void ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
                 ip++;
 
             // This will copy the result in the real variable
-            if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::MemCpy && ip[1].b.u32 == ipOrg->a.u32)
+            if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::IntrinsicMemCpy && ip[1].b.u32 == ipOrg->a.u32)
             {
                 optimRetCopy(context, ipOrg, ip);
             }
@@ -173,7 +173,7 @@ void ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                 ip++;
 
             // This will copy the result in the real variable
-            if (ip->op == ByteCodeOp::MemCpy && ip->b.u32 == ipOrg->a.u32)
+            if (ip->op == ByteCodeOp::IntrinsicMemCpy && ip->b.u32 == ipOrg->a.u32)
             {
                 // Make CopyRCtoRT point to the MemCpy destination register
                 if (ipOrg[1].op == ByteCodeOp::CopyRCtoRT)

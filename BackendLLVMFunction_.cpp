@@ -918,7 +918,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::MemCpy:
+        case ByteCodeOp::IntrinsicMemCpy:
         {
             auto typeF = createFunctionTypeInternal(buildParameters, 3);
             auto r0    = GEP_I32(allocR, ip->a.u32);
@@ -939,7 +939,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::MemMove:
+        case ByteCodeOp::IntrinsicMemMove:
         {
             auto typeF = createFunctionTypeInternal(buildParameters, 3);
             auto r0    = GEP_I32(allocR, ip->a.u32);
@@ -960,7 +960,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::MemSet:
+        case ByteCodeOp::IntrinsicMemSet:
         {
             auto r0    = GEP_I32(allocR, ip->a.u32);
             auto r1    = GEP_I32(allocR, ip->b.u32);
