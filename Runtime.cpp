@@ -300,12 +300,12 @@ namespace Runtime
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
-    void* alloc(uint32_t size)
+    void* alloc(size_t size)
     {
         return OS::alloc(size);
     }
 
-    void* realloc(void* ptr, uint32_t size)
+    void* realloc(void* ptr, size_t size)
     {
         return OS::realloc(ptr, size);
     }

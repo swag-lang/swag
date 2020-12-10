@@ -35,8 +35,8 @@ namespace OS
     extern void     setupBackend();
     extern bool     compile(const BuildParameters& buildParameters, Module* module, const vector<string>& cFiles);
     extern bool     link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles);
-    extern void*    alloc(uint32_t size);
-    extern void*    realloc(void* ptr, uint32_t size);
+    extern void*    alloc(size_t size);
+    extern void*    realloc(void* ptr, size_t size);
     extern void     free(void* ptr);
     extern uint64_t timerNow();
     extern double   timerToSeconds(uint64_t timer);

@@ -4,7 +4,9 @@
 union Register
 {
     volatile uint8_t* pointer = nullptr;
+    uint64_t          uint;
     uint64_t          u64;
+    int64_t           sint;
     int64_t           s64;
     uint32_t          u32;
     uint32_t          offset;

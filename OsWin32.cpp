@@ -654,14 +654,14 @@ namespace OS
         return "";
     }
 
-    void* alloc(uint32_t size)
+    void* alloc(size_t size)
     {
         if (!size)
             return nullptr;
         return HeapAlloc(GetProcessHeap(), 0, size);
     }
 
-    void* realloc(void* ptr, uint32_t size)
+    void* realloc(void* ptr, size_t size)
     {
         if (!ptr)
             return alloc(size);
