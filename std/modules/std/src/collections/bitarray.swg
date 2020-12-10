@@ -138,13 +138,13 @@ public impl BitArray
     func reserve(using self, maxBits: u32, initialValue: bool)
     {
         self.reserve(maxBits)
-        memory.set(buffer, initialValue ? 0xFF : 0x00, capacity)
+        memory.set(buffer, initialValue ? 0xFF : 0x00, cast(uint) capacity)
     }
 
     // Sets all bits to the specified value
     func setAll(using self, value: bool)
     {
-        memory.set(buffer, value ? 0xFF : 0x00, capacity)
+        memory.set(buffer, value ? 0xFF : 0x00, cast(uint) capacity)
     }
 
     // Sets the bit at a specific position to the specified value

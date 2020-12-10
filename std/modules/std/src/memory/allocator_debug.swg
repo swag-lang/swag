@@ -110,7 +110,7 @@ public impl IAllocator for DebugAllocator
                 self.size -= userSize
 
                 // Fill the user memory area with garbage
-                memory.set(userAddr, FreeByte, cast(u32) userSize)
+                memory.set(userAddr, FreeByte, userSize)
 
                 // Really free the memory
                 copyReq := :request
@@ -182,9 +182,9 @@ public impl IAllocator for DebugAllocator
 
                 // Fill with garbage
                 if request.mode == AllocatorMode.Alloc || !request.address
-                    memory.set(userAddr, AllocByte, cast(u32) request.size)
+                    memory.set(userAddr, AllocByte, request.size)
                 else if prevSize < request.size
-                    memory.set(userAddr + prevSize, AllocByte, cast(u32) (request.size - prevSize))
+                    memory.set(userAddr + prevSize, AllocByte, request.size - prevSize)
 
                 // Stats
                 if !prevSize self.count += 1

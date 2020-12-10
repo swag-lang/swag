@@ -21,9 +21,9 @@ func clear(dest: *void, size: u32)
 }
 
 // Set the content of one block of memory to a specific byte value
-func set(dest: *void, value: u8, size: u32)
+func set(dest: *void, value: u8, size: uint)
 {
-    if size @memset(dest, value, cast(uint) size)
+    if size @memset(dest, value, size)
 }
 
 // Align a value to the given amount
