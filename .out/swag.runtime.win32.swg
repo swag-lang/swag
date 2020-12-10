@@ -88,16 +88,16 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
 }
 
 ////////////////////////////////////////////////////////////
-func __alloc(size: u32)->*void
+func __alloc(size: uint)->*void
 {
     if !size return null
-    return HeapAlloc(GetProcessHeap(), 0, cast(uint) size)
+    return HeapAlloc(GetProcessHeap(), 0, size)
 }
 
-func __realloc(ptr: *void, size: u32)->*void
+func __realloc(ptr: *void, size: uint)->*void
 {
     if !ptr return __alloc(size)
-    return HeapReAlloc(GetProcessHeap(), 0, ptr, cast(uint) size)
+    return HeapReAlloc(GetProcessHeap(), 0, ptr, size)
 }
 
 func __free(ptr: *void)
