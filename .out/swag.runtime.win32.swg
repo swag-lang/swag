@@ -42,9 +42,9 @@ func @memcpy(dst: *void, src: const *void, size: u32)
 }
 
 ////////////////////////////////////////////////////////////
-func @memmove(dst: *void, src: const *void, size: u32)
+func @memmove(dst: *void, src: const *void, size: uint)
 {
-    RtlMoveMemory(dst, src, cast(u64) size)
+    RtlMoveMemory(dst, src, size)
 }
 
 ////////////////////////////////////////////////////////////

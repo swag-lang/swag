@@ -17,7 +17,7 @@ func pushContext(cxt: swag.Context, stmt: code)
 {
     x := @[0, 0]
     y := @[1, 2]
-    @memmove(&x, &y, @sizeof(x))
+    @memmove(&x, &y, cast(uint) @sizeof(x))
     @assert(x[0] == 1)
     @assert(x[1] == 2)
 }
