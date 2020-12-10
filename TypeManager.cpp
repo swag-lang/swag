@@ -425,13 +425,21 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
     if (typeInfo->isConst())
         return typeInfo;
 
-    if (!typeInfo->constCopy)
+    TypeInfo* typeConst;
+    if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        auto typeConst = typeInfo->clone();
+        auto typeAlias = allocType<TypeInfoAlias>();
+        typeAlias->copyFrom(typeInfo);
+        typeAlias->rawType = typeInfo;
+        typeAlias->flags |= TYPEINFO_CONST | TYPEINFO_FAKE_ALIAS;
+        typeConst = typeAlias;
+    }
+    else
+    {
+        typeConst = typeInfo->clone();
         typeConst->setConst();
         typeConst->computeName();
-        typeInfo->constCopy = typeConst;
     }
 
-    return typeInfo->constCopy;
+    return typeConst;
 }

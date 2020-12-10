@@ -81,7 +81,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     // Before making the type concrete
     if (node->typeInfo->kind == TypeInfoKind::Enum)
-        identifierRef->startScope = static_cast<TypeInfoEnum*>(node->typeInfo)->scope;
+        identifierRef->startScope = CastTypeInfo<TypeInfoEnum>(node->typeInfo, node->typeInfo->kind)->scope;
 
     switch (typeInfo->kind)
     {
@@ -90,9 +90,9 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         auto typeReference = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
         auto subType       = TypeManager::concreteReferenceType(typeReference->pointedType);
         if (subType->kind == TypeInfoKind::Struct)
-            identifierRef->startScope = static_cast<TypeInfoStruct*>(subType)->scope;
+            identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         else if (subType->kind == TypeInfoKind::Interface)
-            identifierRef->startScope = static_cast<TypeInfoStruct*>(subType)->itable->scope;
+            identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->itable->scope;
         node->typeInfo = typeInfo;
         break;
     }
@@ -104,9 +104,9 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         {
             auto subType = TypeManager::concreteReferenceType(typePointer->finalType);
             if (subType->kind == TypeInfoKind::Struct)
-                identifierRef->startScope = static_cast<TypeInfoStruct*>(subType)->scope;
+                identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
             else if (subType->kind == TypeInfoKind::Interface)
-                identifierRef->startScope = static_cast<TypeInfoStruct*>(subType)->itable->scope;
+                identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->itable->scope;
         }
 
         node->typeInfo = typeInfo;
@@ -115,13 +115,13 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     case TypeInfoKind::TypeListArray:
     case TypeInfoKind::TypeListTuple:
-        identifierRef->startScope = static_cast<TypeInfoList*>(typeInfo)->scope;
+        identifierRef->startScope = CastTypeInfo<TypeInfoList>(typeInfo, typeInfo->kind)->scope;
         node->typeInfo            = typeInfo;
         break;
 
     case TypeInfoKind::Interface:
     {
-        auto typeStruct           = static_cast<TypeInfoStruct*>(typeInfo);
+        auto typeStruct           = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
         identifierRef->startScope = typeStruct->itable->scope;
         node->typeInfo            = typeInfo;
         break;
@@ -129,7 +129,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     case TypeInfoKind::Struct:
     case TypeInfoKind::TypeSet:
-        identifierRef->startScope = static_cast<TypeInfoStruct*>(typeInfo)->scope;
+        identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind)->scope;
         node->typeInfo            = typeInfo;
         break;
 
@@ -138,7 +138,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto subType   = TypeManager::concreteReferenceType(typeArray->finalType);
         if (subType->kind == TypeInfoKind::Struct)
-            identifierRef->startScope = static_cast<TypeInfoStruct*>(subType)->scope;
+            identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
         break;
     }
@@ -148,7 +148,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto subType   = TypeManager::concreteReferenceType(typeSlice->pointedType);
         if (subType->kind == TypeInfoKind::Struct)
-            identifierRef->startScope = static_cast<TypeInfoStruct*>(subType)->scope;
+            identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
         break;
     }
@@ -478,12 +478,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
 
     case SymbolKind::Namespace:
-        parent->startScope = static_cast<TypeInfoNamespace*>(identifier->typeInfo)->scope;
+        parent->startScope = CastTypeInfo<TypeInfoNamespace>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
         identifier->flags |= AST_CONST_EXPR;
         break;
 
     case SymbolKind::Enum:
-        parent->startScope = static_cast<TypeInfoEnum*>(identifier->typeInfo)->scope;
+        parent->startScope = CastTypeInfo<TypeInfoEnum>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
         identifier->flags |= AST_CONST_EXPR;
         break;
 
@@ -499,7 +499,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     case SymbolKind::TypeSet:
         if (!(overload->flags & OVERLOAD_IMPL))
             SWAG_CHECK(setupIdentifierRef(context, identifier, identifier->typeInfo));
-        parent->startScope = static_cast<TypeInfoStruct*>(typeAlias)->scope;
+        parent->startScope = CastTypeInfo<TypeInfoStruct>(typeAlias, typeAlias->kind)->scope;
         identifier->flags |= AST_CONST_EXPR;
 
         // A struct with parameters is in fact the creation of a temporary variable

@@ -9,7 +9,7 @@ thread_local Pool<TypeTableJob> g_Pool_typeTableJob;
 bool TypeTableJob::computeStruct()
 {
     auto concreteType = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
-    auto realType     = (TypeInfoStruct*) typeInfo;
+    auto realType     = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
     auto segment      = typeTable->getConstantSegment(module, cflags);
 
     if (realType->opPostCopy || realType->opUserPostCopyFct)
@@ -135,7 +135,7 @@ JobResult TypeTableJob::execute()
         typeInfo->kind == TypeInfoKind::TypeSet)
     {
         // Need to wait for all interfaces & methods to be registered
-        auto realType = (TypeInfoStruct*) typeInfo;
+        auto realType = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
         waitForAllStructInterfaces(realType);
         if (baseContext->result == ContextResult::Pending)
             return JobResult::KeepJobAlive;

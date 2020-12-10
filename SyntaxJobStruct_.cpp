@@ -232,11 +232,15 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
 
             // If an 'impl' came first, then typeinfo has already been defined
             scoped_lock     lk1(newScope->owner->mutex);
-            TypeInfoStruct* typeInfo = (TypeInfoStruct*) newScope->owner->typeInfo;
-            if (!typeInfo)
+            TypeInfoStruct* typeInfo = nullptr;
+            if (!newScope->owner->typeInfo)
             {
                 typeInfo                  = allocType<TypeInfoStruct>();
                 newScope->owner->typeInfo = typeInfo;
+            }
+            else
+            {
+                typeInfo = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, newScope->owner->typeInfo->kind);
             }
 
             SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Struct);

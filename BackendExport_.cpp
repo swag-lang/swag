@@ -51,17 +51,29 @@ bool Backend::emitAttributes(TypeInfo* typeInfo, int indent)
     case TypeInfoKind::Struct:
     case TypeInfoKind::TypeSet:
     case TypeInfoKind::Interface:
-        attr = &((TypeInfoStruct*) typeInfo)->attributes;
+    {
+        auto type = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
+        attr      = &type->attributes;
         break;
+    }
     case TypeInfoKind::FuncAttr:
-        attr = &((TypeInfoFuncAttr*) typeInfo)->attributes;
+    {
+        auto type = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, typeInfo->kind);
+        attr      = &type->attributes;
         break;
+    }
     case TypeInfoKind::Enum:
-        attr = &((TypeInfoEnum*) typeInfo)->attributes;
+    {
+        auto type = CastTypeInfo<TypeInfoEnum>(typeInfo, typeInfo->kind);
+        attr      = &type->attributes;
         break;
+    }
     case TypeInfoKind::Param:
-        attr = &((TypeInfoParam*) typeInfo)->attributes;
+    {
+        auto type = CastTypeInfo<TypeInfoParam>(typeInfo, typeInfo->kind);
+        attr      = &type->attributes;
         break;
+    }
     }
 
     outputContext.indent = indent;

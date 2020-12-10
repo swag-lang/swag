@@ -414,7 +414,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        auto typePtr = static_cast<TypeInfoPointer*>(arrayType);
+        auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, "cannot dereference a 'void' pointer"}));
         if (typePtr->ptrCount == 1)
         {
@@ -422,7 +422,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         }
         else
         {
-            auto newType = static_cast<TypeInfoPointer*>(typePtr->clone());
+            auto newType = CastTypeInfo<TypeInfoPointer>(typePtr->clone(), TypeInfoKind::Pointer);
             newType->ptrCount--;
             newType->computeName();
             newType->computePointedType();
@@ -435,7 +435,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     case TypeInfoKind::Array:
     {
-        auto typePtr        = static_cast<TypeInfoArray*>(arrayType);
+        auto typePtr        = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
 
@@ -458,7 +458,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     case TypeInfoKind::Slice:
     {
-        auto typePtr        = static_cast<TypeInfoSlice*>(arrayType);
+        auto typePtr        = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
         break;
@@ -470,7 +470,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     case TypeInfoKind::TypedVariadic:
     {
-        auto typeVariadic   = static_cast<TypeInfoVariadic*>(arrayType);
+        auto typeVariadic   = CastTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
         arrayNode->typeInfo = typeVariadic->rawType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
         break;

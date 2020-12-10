@@ -19,30 +19,13 @@ struct TypeInfoFuncAttr;
 struct AstFuncDecl;
 struct JobContext;
 
-template<typename T>
-inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
-{
-    SWAG_ASSERT(ptr);
-    T* casted = static_cast<T*>(ptr);
-    SWAG_ASSERT(casted->kind == kind);
-    return casted;
-}
-
-template<typename T>
-inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
-{
-    T* casted = static_cast<T*>(ptr);
-    SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2));
-    return casted;
-}
-
-static const uint32_t TYPEINFO_SELF                     = 0x00000001;
-static const uint32_t TYPEINFO_UNTYPED_BINHEXA          = 0x00000002;
-static const uint32_t TYPEINFO_INTEGER                  = 0x00000004;
-static const uint32_t TYPEINFO_FLOAT                    = 0x00000008;
-static const uint32_t TYPEINFO_UNSIGNED                 = 0x00000010;
-static const uint32_t TYPEINFO_CONST                    = 0x00000020;
-static const uint32_t TYPEINFO_IN_EXACT_LIST            = 0x00000040;
+static const uint32_t TYPEINFO_SELF            = 0x00000001;
+static const uint32_t TYPEINFO_UNTYPED_BINHEXA = 0x00000002;
+static const uint32_t TYPEINFO_INTEGER         = 0x00000004;
+static const uint32_t TYPEINFO_FLOAT           = 0x00000008;
+static const uint32_t TYPEINFO_UNSIGNED        = 0x00000010;
+static const uint32_t TYPEINFO_CONST           = 0x00000020;
+//static const uint32_t TYPEINFO_IN_EXACT_LIST            = 0x00000040;
 static const uint32_t TYPEINFO_VARIADIC                 = 0x00000080;
 static const uint32_t TYPEINFO_STRUCT_HAS_INIT_VALUES   = 0x00000100;
 static const uint32_t TYPEINFO_STRUCT_ALL_UNINITIALIZED = 0x00000200;
@@ -63,6 +46,7 @@ static const uint32_t TYPEINFO_SPREAD                   = 0x00800000;
 static const uint32_t TYPEINFO_UNDEFINED                = 0x01000000;
 static const uint32_t TYPEINFO_ENUM_INDEX               = 0x02000000;
 static const uint32_t TYPEINFO_STRICT                   = 0x04000000;
+static const uint32_t TYPEINFO_FAKE_ALIAS               = 0x08000000;
 
 static const uint32_t ISSAME_EXACT     = 0x00000001;
 static const uint32_t ISSAME_CAST      = 0x00000002;
@@ -74,6 +58,7 @@ struct TypeInfo
     {
         if (this == from)
             return true;
+
         if (kind != from->kind)
             return false;
 
@@ -131,14 +116,16 @@ struct TypeInfo
 
     void copyFrom(TypeInfo* from)
     {
-        flags      = from->flags & ~TYPEINFO_IN_EXACT_LIST;
+        preName   = from->preName;
+        nakedName = from->nakedName;
+        name      = from->name;
+
+        declNode = from->declNode;
+
         kind       = from->kind;
         nativeType = from->nativeType;
-        preName    = from->preName;
-        nakedName  = from->nakedName;
-        name       = from->name;
+        flags      = from->flags;
         sizeOf     = from->sizeOf;
-        declNode   = from->declNode;
     }
 
     void               forceComputeName();
@@ -150,16 +137,16 @@ struct TypeInfo
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
-    Utf8         preName;          // List const, *, [] ...
-    Utf8         nakedName;        // The simple type name
-    Utf8         name;             // preName + nakedName
-    Utf8Crc      scopedName;       // preName + scope name + nakedName
-    Utf8         scopedNameExport; // preName + scope name + nakedName
     shared_mutex mutex;
     shared_mutex mutexScopeName;
 
-    TypeInfo* constCopy = nullptr;
-    AstNode*  declNode  = nullptr;
+    Utf8    preName;          // List const, *, [] ...
+    Utf8    nakedName;        // The simple type name
+    Utf8    name;             // preName + nakedName
+    Utf8Crc scopedName;       // preName + scope name + nakedName
+    Utf8    scopedNameExport; // preName + scope name + nakedName
+
+    AstNode* declNode = nullptr;
 
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
     NativeTypeKind nativeType = NativeTypeKind::Void;
@@ -563,6 +550,13 @@ struct TypeInfoAlias : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
+    int numRegisters() override
+    {
+        if (flags & TYPEINFO_FAKE_ALIAS)
+            return rawType->numRegisters();
+        return TypeInfo::numRegisters();
+    }
+
     TypeInfo* rawType = nullptr;
 };
 
@@ -601,4 +595,30 @@ T* allocType()
     if (g_CommandLine.stats)
         g_Stats.memTypes += sizeof(T);
     return newType;
+}
+
+template<typename T>
+inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
+{
+    SWAG_ASSERT(ptr);
+    T* casted;
+    if (ptr->flags & TYPEINFO_FAKE_ALIAS)
+        casted = static_cast<T*>(((TypeInfoAlias*) ptr)->rawType);
+    else
+        casted = static_cast<T*>(ptr);
+    SWAG_ASSERT(casted->kind == kind);
+    return casted;
+}
+
+template<typename T>
+inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
+{
+    SWAG_ASSERT(ptr);
+    T* casted;
+    if (ptr->flags & TYPEINFO_FAKE_ALIAS)
+        casted = static_cast<T*>(((TypeInfoAlias*) ptr)->rawType);
+    else
+        casted = static_cast<T*>(ptr);
+    SWAG_ASSERT(casted->kind == kind1 || casted->kind == kind2);
+    return casted;
 }

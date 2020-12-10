@@ -319,7 +319,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
         {
             if (!fromNode)
             {
-                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                auto value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
                 if (value < 0)
                     return false;
             }
@@ -411,7 +411,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!fromNode)
                 {
-                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    auto value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
                     if (value < 0)
                         return false;
                 }
@@ -437,7 +437,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!fromNode)
                 {
-                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    auto value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
                     if (value > UINT8_MAX)
                         return false;
                 }
@@ -532,7 +532,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!fromNode)
                 {
-                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    auto value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
                     if (value < 0)
                         return false;
                 }
@@ -558,7 +558,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!fromNode)
                 {
-                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    auto value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
                     if (value > UINT16_MAX)
                         return false;
                 }
@@ -653,7 +653,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!fromNode)
                 {
-                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    auto value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
                     if (value < 0)
                         return false;
                 }
@@ -777,7 +777,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!fromNode)
                 {
-                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    auto value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
                     if (value < 0)
                         return false;
                 }
@@ -887,7 +887,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!fromNode)
                 {
-                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    auto value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
                     if (value < INT8_MIN || value > INT8_MAX)
                         return false;
                 }
@@ -981,7 +981,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!fromNode)
                 {
-                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    auto value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
                     if (value < INT16_MIN || value > INT16_MAX)
                         return false;
                 }
@@ -1207,7 +1207,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
         {
             if (!fromNode)
             {
-                auto    value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                auto    value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
                 float   tmpF  = static_cast<float>(value);
                 int64_t tmpI  = static_cast<int64_t>(tmpF);
                 if (tmpI != value)
@@ -1343,7 +1343,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
         {
             if (!fromNode)
             {
-                auto    value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                auto    value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
                 double  tmpF  = static_cast<double>(value);
                 int64_t tmpI  = static_cast<int64_t>(tmpF);
                 if (tmpI != value)

@@ -84,9 +84,9 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             typeBaseInterface->computeScopedName();
             typeParamItf->namedParam = typeBaseInterface->scopedName;
             SWAG_ASSERT(!typeParamItf->namedParam.empty());
-            typeParamItf->typeInfo   = typeBaseInterface;
-            typeParamItf->node       = typeBaseInterface->declNode;
-            typeParamItf->declNode   = node;
+            typeParamItf->typeInfo = typeBaseInterface;
+            typeParamItf->node     = typeBaseInterface->declNode;
+            typeParamItf->declNode = node;
             typeStruct->interfaces.push_back(typeParamItf);
         }
     }
@@ -589,7 +589,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Compute padding
         auto paddingSizeof = child->typeInfo->sizeOf;
         if (child->typeInfo->kind == TypeInfoKind::Struct)
-            paddingSizeof = ((TypeInfoStruct*) child->typeInfo)->maxPaddingSize;
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(child->typeInfo, TypeInfoKind::Struct);
+            paddingSizeof   = typeStruct->maxPaddingSize;
+        }
+
         if (!relocated && node->packing > 1 && paddingSizeof)
         {
             auto padding = realStorageOffset & (paddingSizeof - 1);

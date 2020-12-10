@@ -183,7 +183,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         }
         else if (typeVar->kind == TypeInfoKind::Struct && (typeVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
-            auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
+            auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             SWAG_ASSERT(typeVarStruct->opInit);
             emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
             emitOpCallUser(&cxt, nullptr, typeVarStruct->opInit, false);

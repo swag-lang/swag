@@ -95,8 +95,15 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
         return true;
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
-    auto other = static_cast<TypeInfoAlias*>(to);
-    return rawType->isSame(other->rawType, isSameFlags);
+
+    if (to->kind == TypeInfoKind::Alias)
+    {
+        auto other = static_cast<TypeInfoAlias*>(to);
+        return rawType->isSame(other->rawType, isSameFlags);
+    }
+
+    SWAG_ASSERT(flags & TYPEINFO_FAKE_ALIAS);
+    return rawType->isSame(to, isSameFlags);
 }
 
 TypeInfo* TypeInfoParam::clone()
@@ -806,6 +813,9 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (this == to)
         return true;
 
+    if (to->flags & TYPEINFO_FAKE_ALIAS)
+        to = static_cast<TypeInfoAlias*>(to)->rawType;
+
     if (isSameFlags & ISSAME_CAST)
     {
         if (to->kind == TypeInfoKind::Generic)
@@ -816,7 +826,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     {
         if (kind == TypeInfoKind::Interface && to->kind == TypeInfoKind::Struct)
         {
-            auto other = static_cast<TypeInfoStruct*>(to);
+            auto other = CastTypeInfo<TypeInfoStruct>(to, to->kind);
             if (other->hasInterface(this))
                 return true;
         }
@@ -827,7 +837,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     if ((flags & TYPEINFO_STRUCT_IS_TUPLE) != (to->flags & TYPEINFO_STRUCT_IS_TUPLE))
         return false;
 
-    auto other = static_cast<TypeInfoStruct*>(to);
+    auto other = CastTypeInfo<TypeInfoStruct>(to, to->kind);
 
     int childCount = (int) fields.size();
     if (childCount != other->fields.size())

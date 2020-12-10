@@ -73,7 +73,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     {
     case TypeInfoKind::Namespace:
     {
-        auto typeInfo = static_cast<TypeInfoNamespace*>(typeResolved);
+        auto typeInfo = CastTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
         SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
         node->parent->alternativeScopes.push_back(scope);
@@ -81,7 +81,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     }
     case TypeInfoKind::Enum:
     {
-        auto typeInfo = static_cast<TypeInfoEnum*>(typeResolved);
+        auto typeInfo = CastTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
         SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
         node->parent->alternativeScopes.push_back(scope);
@@ -89,7 +89,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     }
     case TypeInfoKind::Struct:
     {
-        auto typeInfo = static_cast<TypeInfoStruct*>(typeResolved);
+        auto typeInfo = CastTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
         SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
         node->parent->alternativeScopes.push_back(scope);

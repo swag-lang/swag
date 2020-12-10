@@ -98,7 +98,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
         auto newType      = doTypeSubstitution(cloneContext, typeVariadic->rawType);
         if (newType != typeVariadic->rawType)
         {
-            typeVariadic          = static_cast<TypeInfoVariadic*>(typeVariadic->clone());
+            typeVariadic          = CastTypeInfo<TypeInfoVariadic>(typeVariadic->clone(), TypeInfoKind::TypedVariadic);
             typeVariadic->rawType = newType;
             typeVariadic->flags &= ~TYPEINFO_GENERIC;
             typeVariadic->computeName();
@@ -114,7 +114,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
         auto newType   = doTypeSubstitution(cloneContext, typeAlias->rawType);
         if (newType != typeAlias->rawType)
         {
-            typeAlias          = static_cast<TypeInfoAlias*>(typeAlias->clone());
+            typeAlias          = CastTypeInfo<TypeInfoAlias>(typeAlias->clone(), TypeInfoKind::Alias);
             typeAlias->rawType = newType;
             typeAlias->flags &= ~TYPEINFO_GENERIC;
             typeAlias->computeName();
@@ -130,7 +130,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
         auto newType     = doTypeSubstitution(cloneContext, typePointer->finalType);
         if (newType != typePointer->finalType)
         {
-            typePointer            = static_cast<TypeInfoPointer*>(typePointer->clone());
+            typePointer            = CastTypeInfo<TypeInfoPointer>(typePointer->clone(), TypeInfoKind::Pointer);
             typePointer->finalType = newType;
             typePointer->flags &= ~TYPEINFO_GENERIC;
             typePointer->computeName();
@@ -152,7 +152,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
             newFinalType = doTypeSubstitution(cloneContext, typeArray->finalType);
         if (newPointedType != typeArray->pointedType || newFinalType != typeArray->finalType)
         {
-            typeArray              = static_cast<TypeInfoArray*>(typeArray->clone());
+            typeArray              = CastTypeInfo<TypeInfoArray>(typeArray->clone(), TypeInfoKind::Array);
             typeArray->pointedType = newPointedType;
             typeArray->finalType   = newFinalType;
             typeArray->flags &= ~TYPEINFO_GENERIC;
@@ -169,7 +169,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
         auto newType   = doTypeSubstitution(cloneContext, typeSlice->pointedType);
         if (newType != typeSlice->pointedType)
         {
-            typeSlice              = static_cast<TypeInfoSlice*>(typeSlice->clone());
+            typeSlice              = CastTypeInfo<TypeInfoSlice>(typeSlice->clone(), TypeInfoKind::Slice);
             typeSlice->pointedType = newType;
             typeSlice->flags &= ~TYPEINFO_GENERIC;
             typeSlice->computeName();
@@ -188,7 +188,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
         auto newType = doTypeSubstitution(cloneContext, typeLambda->returnType);
         if (newType != typeLambda->returnType)
         {
-            newLambda = static_cast<TypeInfoFuncAttr*>(typeLambda->clone());
+            newLambda = CastTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), typeLambda->kind);
             newLambda->flags &= ~TYPEINFO_GENERIC;
             newLambda->returnType   = newType;
             newLambda->replaceTypes = cloneContext.replaceTypes;
@@ -203,12 +203,12 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
             {
                 if (!newLambda)
                 {
-                    newLambda = static_cast<TypeInfoFuncAttr*>(typeLambda->clone());
+                    newLambda = CastTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
                     newLambda->flags &= ~TYPEINFO_GENERIC;
                     newLambda->replaceTypes = cloneContext.replaceTypes;
                 }
 
-                auto newParam      = static_cast<TypeInfoParam*>(newLambda->parameters[idx]);
+                auto newParam      = CastTypeInfo<TypeInfoParam>(newLambda->parameters[idx], TypeInfoKind::Param);
                 newParam->typeInfo = newType;
             }
         }
@@ -254,10 +254,11 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
-    context->job->waitForAllStructMethods((TypeInfoStruct*) match.symbolOverload->typeInfo);
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(match.symbolOverload->typeInfo, match.symbolOverload->typeInfo->kind);
+    context->job->waitForAllStructMethods(typeStruct);
     if (context->result != ContextResult::Done)
         return true;
-    context->job->waitForAllStructInterfaces((TypeInfoStruct*) match.symbolOverload->typeInfo);
+    context->job->waitForAllStructInterfaces(typeStruct);
     if (context->result != ContextResult::Done)
         return true;
 
@@ -271,12 +272,12 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     // Can be a type alias
     // In that case, we need to retrieve the real struct
-    auto genericStructType = static_cast<TypeInfoStruct*>(overload->typeInfo);
+    auto genericStructType = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, overload->typeInfo->kind);
     auto sourceSymbol      = match.symbolName;
     SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, node->token, format("partial type alias for generic struct instantation is not supported", node->token.text.c_str())}));
 
     // Make a new type
-    auto newType = static_cast<TypeInfoStruct*>(genericStructType->clone());
+    auto newType = CastTypeInfo<TypeInfoStruct>(genericStructType->clone(), genericStructType->kind);
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->fromGeneric = genericStructType;
 
@@ -369,10 +370,10 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     // Generate and initialize a new type if the type is still generic
     // The type is still generic if the doTypeSubstitution didn't find any type to change
     // (for example if we have just generic value)
-    TypeInfoFuncAttr* newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo);
+    TypeInfoFuncAttr* newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo, newFunc->typeInfo->kind);
     if (newTypeFunc->flags & TYPEINFO_GENERIC)
     {
-        newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
+        newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo->clone(), newFunc->typeInfo->kind);
         newTypeFunc->flags &= ~TYPEINFO_GENERIC;
         newFunc->typeInfo = newTypeFunc;
     }
@@ -430,7 +431,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // We replace all types and generic types with undefined for now
     if (noReplaceTypes)
     {
-        auto typeFunc = static_cast<TypeInfoFuncAttr*>(match.symbolOverload->node->typeInfo);
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(match.symbolOverload->node->typeInfo, TypeInfoKind::FuncAttr);
         for (auto p : typeFunc->genericParameters)
             cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr.typeInfoUndefined;
         for (auto p : typeFunc->parameters)
@@ -460,7 +461,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     TypeInfoFuncAttr* newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo);
     if (newTypeFunc->flags & TYPEINFO_GENERIC || noReplaceTypes)
     {
-        newTypeFunc = static_cast<TypeInfoFuncAttr*>(newFunc->typeInfo->clone());
+        newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo->clone(), newFunc->typeInfo->kind);
         newTypeFunc->flags &= ~TYPEINFO_GENERIC;
         newTypeFunc->declNode = newFunc;
         newFunc->typeInfo     = newTypeFunc;
