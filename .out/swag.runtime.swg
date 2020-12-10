@@ -240,14 +240,14 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
     {
         len = @countof(message)
         if(len > 512) len = 512
-        @memcpy(&str[0], @dataof(message), len)
+        @memcpy(&str[0], @dataof(message), cast(uint) len)
         str[len]     = "\n"'u8
         str[len + 1] = "\n"'u8
         len += 2;
     }
 
     // Source location
-    @memcpy(&str[len], @dataof(loc.fileName), @countof(loc.fileName))
+    @memcpy(&str[len], @dataof(loc.fileName), cast(uint) @countof(loc.fileName))
     len += @countof(loc.fileName)
     @memcpy(&str[len], @dataof(", line "), 7);
     len += 7;
@@ -265,7 +265,7 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
       - Press Continue to ignore the assert
       "@
 
-    @memcpy(&str[len], @dataof(info), @countof(info))
+    @memcpy(&str[len], @dataof(info), cast(uint) @countof(info))
     len += @countof(info)
 
     str[len] = 0

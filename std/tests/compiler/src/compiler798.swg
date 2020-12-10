@@ -16,7 +16,7 @@ impl Utf8
 
 		newPtr := @alloc(cast(uint) newSize)
 		if self.buffer != null
-			@memcpy(newPtr, self.buffer, self.size)
+			@memcpy(newPtr, self.buffer, cast(uint) self.size)
 		self.size = newSize;
 		@free(self.buffer)
 		self.buffer = cast(*u8) newPtr;
@@ -26,7 +26,7 @@ impl Utf8
 	{
 		self.length = @countof(from)
 		self.reserveSize(self.length + 1)
-		@memcpy(self.buffer, @dataof(from), self.length + 1)
+		@memcpy(self.buffer, @dataof(from), cast(uint) self.length + 1)
 	}
 }
 

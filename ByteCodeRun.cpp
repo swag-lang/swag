@@ -24,27 +24,28 @@
 #define IMMA_S8(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s8 : registersRC[ip->a.u32].s8)
 #define IMMA_S32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s32 : registersRC[ip->a.u32].s32)
 #define IMMA_S64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s64 : registersRC[ip->a.u32].s64)
-#define IMMA_INT(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s64 : registersRC[ip->a.u32].s64)
+#define IMMA_INT(ip) ((ip->flags & BCI_IMM_A) ? ip->a.sint : registersRC[ip->a.u32].sint)
 
 #define IMMB_S8(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s8 : registersRC[ip->b.u32].s8)
 #define IMMB_S16(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s16 : registersRC[ip->b.u32].s16)
 #define IMMB_S32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s32 : registersRC[ip->b.u32].s32)
 #define IMMB_S64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s64 : registersRC[ip->b.u32].s64)
-#define IMMB_INT(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s64 : registersRC[ip->b.u32].s64)
+#define IMMB_INT(ip) ((ip->flags & BCI_IMM_B) ? ip->b.sint : registersRC[ip->b.u32].sint)
 
 #define IMMA_U8(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u8 : registersRC[ip->a.u32].u8)
 #define IMMA_U16(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u16 : registersRC[ip->a.u32].u16)
 #define IMMA_U32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u32 : registersRC[ip->a.u32].u32)
 #define IMMA_U64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u64 : registersRC[ip->a.u32].u64)
-#define IMMA_UInt(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u64 : registersRC[ip->a.u32].u64)
+#define IMMA_UInt(ip) ((ip->flags & BCI_IMM_A) ? ip->a.uint : registersRC[ip->a.u32].uint)
 
 #define IMMB_U8(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u8 : registersRC[ip->b.u32].u8)
 #define IMMB_U16(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u16 : registersRC[ip->b.u32].u16)
 #define IMMB_U32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u32 : registersRC[ip->b.u32].u32)
 #define IMMB_U64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u64 : registersRC[ip->b.u32].u64)
-#define IMMB_UInt(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u64 : registersRC[ip->b.u32].u64)
+#define IMMB_UInt(ip) ((ip->flags & BCI_IMM_B) ? ip->b.uint : registersRC[ip->b.u32].uint)
 
 #define IMMC_U32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32)
+#define IMMC_UINT(ip) ((ip->flags & BCI_IMM_C) ? ip->c.uint : registersRC[ip->c.u32].uint)
 
 bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc)
 {
@@ -592,18 +593,18 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IntrinsicMemCpy:
     {
-        void*    dst  = (void*) registersRC[ip->a.u32].pointer;
-        void*    src  = (void*) registersRC[ip->b.u32].pointer;
-        uint32_t size = IMMC_U32(ip);
+        void*  dst  = (void*) registersRC[ip->a.u32].pointer;
+        void*  src  = (void*) registersRC[ip->b.u32].pointer;
+        size_t size = IMMC_UINT(ip);
         memcpy(dst, src, size);
         break;
     }
 
     case ByteCodeOp::IntrinsicMemMove:
     {
-        void*    dst  = (void*) registersRC[ip->a.u32].pointer;
-        void*    src  = (void*) registersRC[ip->b.u32].pointer;
-        uint32_t size = IMMC_U32(ip);
+        void*  dst  = (void*) registersRC[ip->a.u32].pointer;
+        void*  src  = (void*) registersRC[ip->b.u32].pointer;
+        size_t size = IMMC_UINT(ip);
         memmove(dst, src, size);
         break;
     }
@@ -612,16 +613,16 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         void*    dst   = (void*) registersRC[ip->a.u32].pointer;
         uint32_t value = registersRC[ip->b.u32].u8;
-        uint32_t size  = registersRC[ip->c.u32].u32;
+        size_t   size  = registersRC[ip->c.u32].uint;
         memset(dst, value, size);
         break;
     }
 
     case ByteCodeOp::IntrinsicMemCmp:
     {
-        void*    dst               = (void*) registersRC[ip->b.u32].pointer;
-        void*    src               = (void*) registersRC[ip->c.u32].pointer;
-        uint32_t size              = registersRC[ip->d.u32].u32;
+        void*  dst                 = (void*) registersRC[ip->b.u32].pointer;
+        void*  src                 = (void*) registersRC[ip->c.u32].pointer;
+        size_t size                = registersRC[ip->d.u32].uint;
         registersRC[ip->a.u32].s32 = Runtime::memcmp(dst, src, size);
         break;
     }

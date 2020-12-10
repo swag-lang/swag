@@ -61,7 +61,7 @@
         {
             len := 0
             while buf[len] len += 1
-            @memcpy(buf + len, @dataof(val), @countof(val) + 1)
+            @memcpy(buf + len, @dataof(val), cast(uint) @countof(val) + 1)
         }
 
         struct Vector3

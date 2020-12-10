@@ -36,9 +36,9 @@ private
 }
 
 ////////////////////////////////////////////////////////////
-func @memcpy(dst: *void, src: const *void, size: u32)
+func @memcpy(dst: *void, src: const *void, size: uint)
 {
-    RtlCopyMemory(dst, src, cast(u64) size)
+    RtlCopyMemory(dst, src, size)
 }
 
 ////////////////////////////////////////////////////////////
@@ -48,9 +48,9 @@ func @memmove(dst: *void, src: const *void, size: uint)
 }
 
 ////////////////////////////////////////////////////////////
-func @memset(dst: *void, value: u8, size: u32)
+func @memset(dst: *void, value: u8, size: uint)
 {
-    RtlFillMemory(dst, cast(u64) size, cast(u32) value)
+    RtlFillMemory(dst, size, cast(u32) value)
 }
 
 ////////////////////////////////////////////////////////////

@@ -22,7 +22,7 @@ func cstr(x: string)->CStr
     dataof := @dataof(x)
     tmp.length = countof
     tmp.buffer = cast(*u8) @alloc(cast(uint) countof + 1)
-    @memcpy(tmp.buffer, dataof, countof)
+    @memcpy(tmp.buffer, dataof, cast(uint) countof)
     tmp.buffer[countof] = 0
     return tmp
 }

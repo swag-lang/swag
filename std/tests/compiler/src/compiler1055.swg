@@ -25,7 +25,7 @@ impl Array
 		context.allocator.alloc(&request)
 		newBuffer := request.address
 		if self.buffer
-			@memcpy(newBuffer, self.buffer, self.count * @sizeof(T))
+			@memcpy(newBuffer, self.buffer, cast(uint) self.count * @sizeof(T))
 
 		request.mode = AllocatorMode.Free
 		request.address = self.buffer

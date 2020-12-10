@@ -28,7 +28,7 @@ impl Array
 		newBuffer := request.address
 
 		if buffer
-			@memcpy(newBuffer, buffer, count * @sizeof(T))
+			@memcpy(newBuffer, buffer, cast(uint) count * @sizeof(T))
 
 		request.mode = AllocatorMode.Free
 		request.address = buffer

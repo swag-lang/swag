@@ -931,7 +931,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1    = GEP_I32(allocR, ip->b.u32);
             if (ip->flags & BCI_IMM_C)
             {
-                auto r2 = builder.getInt64(ip->c.u32);
+                auto r2 = builder.getInt64(ip->c.uint);
                 auto p0 = GEP_I32(allocT, 0);
                 builder.CreateStore(r2, p0);
                 builder.CreateCall(modu.getOrInsertFunction("@memcpy", typeF), {r0, r1, p0});
@@ -952,7 +952,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1    = GEP_I32(allocR, ip->b.u32);
             if (ip->flags & BCI_IMM_C)
             {
-                auto r2 = builder.getInt64(ip->c.u32);
+                auto r2 = builder.getInt64(ip->c.uint);
                 auto p0 = GEP_I32(allocT, 0);
                 builder.CreateStore(r2, p0);
                 builder.CreateCall(modu.getOrInsertFunction("@memmove", typeF), {r0, r1, p0});

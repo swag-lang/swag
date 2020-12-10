@@ -13,10 +13,10 @@ struct TT
     ptr := @typeof(TT)
     visit it: ptr.fields
     {
-        @memcpy(&buf[idx], @dataof(it.name), @countof(it.name))
+        @memcpy(&buf[idx], @dataof(it.name), cast(uint) @countof(it.name))
         idx += @countof(it.name)
         const val = ": s32 = 555;"
-        @memcpy(&buf[idx], @dataof(val), @countof(val))
+        @memcpy(&buf[idx], @dataof(val), cast(uint) @countof(val))
         idx += @countof(val)
     }
 
