@@ -670,11 +670,13 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
             node->computedValue.reg.ch = *(uint32_t*) ptr;
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
             if (!node->typeInfo)
                 node->typeInfo = g_TypeMgr.typeInfoS64;
             node->computedValue.reg.s64 = *(int64_t*) ptr;
             break;
         case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
             if (!node->typeInfo)
                 node->typeInfo = g_TypeMgr.typeInfoU64;
             node->computedValue.reg.u64 = *(uint64_t*) ptr;

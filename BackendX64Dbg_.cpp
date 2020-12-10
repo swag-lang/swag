@@ -260,10 +260,12 @@ void BackendX64::dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, Compu
         break;
 
     case NativeTypeKind::S64:
+    case NativeTypeKind::Int:
         concat.addU16(LF_QUADWORD);
         concat.addS64(val.reg.s64);
         break;
     case NativeTypeKind::U64:
+    case NativeTypeKind::UInt:
         concat.addU16(LF_UQUADWORD);
         concat.addU64(val.reg.u64);
         break;

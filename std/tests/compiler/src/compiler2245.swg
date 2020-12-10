@@ -19,13 +19,13 @@ func entry(param: *void)
     //@print("tititititti\n")
 }
 
-func create(lambda: func(*void), userParam: u64)
+func create(lambda: func(*void), userParam: uint)
 {
     var paramBC: [2] *void
     paramBC[0] = autocast lambda
     paramBC[1] = autocast userParam
 
-    var l64 = cast(u64) lambda
+    var l64 = cast(uint) lambda
     if l64 & swag.LambdaBcMarker
         l64 = autocast @thrunptr()
     else

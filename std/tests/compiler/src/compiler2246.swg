@@ -35,7 +35,7 @@ func create(lambda: func(*Thread), userParam: u64)
     th.lambda = lambda
     th.param  = userParam
 
-    var l64 = cast(u64) &entry
+    var l64 = cast(uint) &entry
     if l64 & swag.LambdaBcMarker
         l64 = autocast @thrunptr()
     else

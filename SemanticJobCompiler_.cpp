@@ -250,6 +250,7 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
         g_Log.print(to_string(expr->computedValue.reg.s32));
         break;
     case NativeTypeKind::S64:
+    case NativeTypeKind::Int:
         g_Log.print(to_string(expr->computedValue.reg.s64));
         break;
     case NativeTypeKind::U8:
@@ -262,6 +263,7 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
         g_Log.print(to_string(expr->computedValue.reg.u32));
         break;
     case NativeTypeKind::U64:
+    case NativeTypeKind::UInt:
         g_Log.print(to_string(expr->computedValue.reg.u64));
         break;
     case NativeTypeKind::F32:

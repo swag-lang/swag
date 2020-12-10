@@ -25,11 +25,11 @@ private
         func TlsAlloc()->u32;
         func TlsSetValue(dwTlsIndex: u32, lpTlsValue: *void);
         func TlsGetValue(dwTlsIndex: u32)->*void;
-        func RtlCopyMemory(destination: *void, source: const *void, length: u64);
-        func RtlMoveMemory(destination: *void, source: const *void, length: u64);
-        func RtlFillMemory(destination: *void, length: u64, fill: u32);
-        func HeapAlloc(hHeap: HANDLE, dwFlags: DWORD, dwBytes: u64)->*void;
-        func HeapReAlloc(hHeap: HANDLE, dwFlags: DWORD, mem: *void, dwBytes: u64)->*void;
+        func RtlCopyMemory(destination: *void, source: const *void, length: uint);
+        func RtlMoveMemory(destination: *void, source: const *void, length: uint);
+        func RtlFillMemory(destination: *void, length: uint, fill: u32);
+        func HeapAlloc(hHeap: HANDLE, dwFlags: DWORD, dwBytes: uint)->*void;
+        func HeapReAlloc(hHeap: HANDLE, dwFlags: DWORD, mem: *void, dwBytes: uint)->*void;
         func HeapFree(hHeap: HANDLE, dwFlags: DWORD, mem: *void);
         func GetProcessHeap()->HANDLE;
     }
@@ -72,7 +72,7 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
         g_exceptionLocation = loc
         g_exceptionParams[0] = cast(const *void) &g_exceptionLocation
         g_exceptionParams[1] = cast(const *void) @dataof(message)
-        g_exceptionParams[2] = cast(const *void) cast(u64) @countof(message)
+        g_exceptionParams[2] = cast(const *void) cast(uint) @countof(message)
         RaiseException(666, 0, 3, &g_exceptionParams[0])
     }
 
@@ -91,13 +91,13 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
 func __alloc(size: u32)->*void
 {
     if !size return null
-    return HeapAlloc(GetProcessHeap(), 0, cast(u64) size)
+    return HeapAlloc(GetProcessHeap(), 0, cast(uint) size)
 }
 
 func __realloc(ptr: *void, size: u32)->*void
 {
     if !ptr return __alloc(size)
-    return HeapReAlloc(GetProcessHeap(), 0, ptr, cast(u64) size)
+    return HeapReAlloc(GetProcessHeap(), 0, ptr, cast(uint) size)
 }
 
 func __free(ptr: *void)

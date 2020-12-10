@@ -270,6 +270,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             emitInstruction(context, ByteCodeOp::SetImmediate32, regList)->b.u32 = node->computedValue.reg.u32;
             return true;
         case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
             emitInstruction(context, ByteCodeOp::SetImmediate64, regList)->b.u64 = node->computedValue.reg.u64;
             return true;
         case NativeTypeKind::S8:
@@ -282,6 +283,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             emitInstruction(context, ByteCodeOp::SetImmediate32, regList)->b.s32 = node->computedValue.reg.s32;
             return true;
         case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
             emitInstruction(context, ByteCodeOp::SetImmediate64, regList)->b.s64 = node->computedValue.reg.s64;
             return true;
         case NativeTypeKind::F32:

@@ -150,6 +150,8 @@ enum class NativeTypeKind
     String,
     Any,
     Undefined,
+    UInt,
+    Int,
     Count,
 };
 

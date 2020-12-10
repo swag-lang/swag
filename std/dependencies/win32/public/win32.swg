@@ -16,14 +16,14 @@ alias LPCWSTR =			const *u16
 alias LPCTSTR =			const *u16
 alias LPDWORD =			*DWORD
 alias LPOVERLAPPED =	*DWORD
-alias DWORD_PTR =		u64
+alias DWORD_PTR =		uint
 alias UINT =			u32
 alias SHORT =			s16
 alias LARGE_INTEGER =	s64
 alias PLONG =           *LONG
 alias CHAR =            u8
 alias LPSTR =           *CHAR
-alias SIZE_T =          u64
+alias SIZE_T =          uint
 alias va_list =         *u8
 
 const STD_INPUT_HANDLE 	= cast(DWORD) -10
@@ -326,7 +326,7 @@ const OPEN_EXISTING       = 3'u32
 const OPEN_ALWAYS         = 4'u32
 const TRUNCATE_EXISTING   = 5'u32
 
-const INVALID_HANDLE_VALUE = cast(HANDLE) cast(u64) -1
+const INVALID_HANDLE_VALUE = cast(HANDLE) cast(uint) -1
 const CONSOLE_TEXTMODE_BUFFER = 1'u32
 const MAX_PATH = 260
 const INFINITE = 0xFFFFFFFF
@@ -389,11 +389,11 @@ struct SYSTEM_INFO
     lpMinimumApplicationAddress:	LPVOID
     lpMaximumApplicationAddress:	LPVOID
     dwActiveProcessorMask:			DWORD_PTR
-    dwNumberOfProcessors:		DWORD
-    dwProcessorType:			DWORD
-    dwAllocationGranularity:	DWORD
-    wProcessorLevel:			WORD
-    wProcessorRevision:			WORD
+    dwNumberOfProcessors:		    DWORD
+    dwProcessorType:			    DWORD
+    dwAllocationGranularity:	    DWORD
+    wProcessorLevel:			    WORD
+    wProcessorRevision:			    WORD
 }
 
 struct SYSTEMTIME

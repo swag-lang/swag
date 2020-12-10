@@ -19,6 +19,7 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0)
         emitInstruction(context, ByteCodeOp::NegS32, r0);
         return true;
     case NativeTypeKind::S64:
+    case NativeTypeKind::Int:
         emitInstruction(context, ByteCodeOp::NegS64, r0);
         return true;
     case NativeTypeKind::F32:
@@ -55,6 +56,8 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0)
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
+    case NativeTypeKind::Int:
+    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::InvertS64, r0);
         return true;
     default:

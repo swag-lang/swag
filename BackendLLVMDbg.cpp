@@ -273,6 +273,7 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
         case NativeTypeKind::S32:
             return s32Ty;
         case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
             return s64Ty;
         case NativeTypeKind::U8:
             return u8Ty;
@@ -281,6 +282,7 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
         case NativeTypeKind::U32:
             return u32Ty;
         case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
             return u64Ty;
         case NativeTypeKind::F32:
             return f32Ty;

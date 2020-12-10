@@ -98,8 +98,10 @@ ffi_type* ByteCodeRun::ffiFromTypeInfo(TypeInfo* typeInfo)
     case NativeTypeKind::Char:
         return &ffi_type_uint32;
     case NativeTypeKind::S64:
+    case NativeTypeKind::Int:
         return &ffi_type_sint64;
     case NativeTypeKind::U64:
+    case NativeTypeKind::UInt:
         return &ffi_type_uint64;
     case NativeTypeKind::F32:
         return &ffi_type_float;

@@ -90,6 +90,8 @@ void LanguageSpec::setup()
     keywords["code"]        = TokenId::KwdCode;
     keywords["label"]       = TokenId::KwdLabel;
 
+    keywords["uint"]     = TokenId::NativeType;
+    keywords["int"]      = TokenId::NativeType;
     keywords["u64"]      = TokenId::NativeType;
     keywords["u32"]      = TokenId::NativeType;
     keywords["u16"]      = TokenId::NativeType;
@@ -171,6 +173,8 @@ void LanguageSpec::setup()
     keywords["@exp2"]  = TokenId::IntrinsicExp2;
     keywords["@pow"]   = TokenId::IntrinsicPow;
 
+    nativeTypes["uint"]     = LiteralType::TT_UINT;
+    nativeTypes["int"]      = LiteralType::TT_INT;
     nativeTypes["u64"]      = LiteralType::TT_U64;
     nativeTypes["u32"]      = LiteralType::TT_U32;
     nativeTypes["u16"]      = LiteralType::TT_U16;

@@ -22,6 +22,8 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
+        case NativeTypeKind::Int:
+        case NativeTypeKind::UInt:
             emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
@@ -78,6 +80,8 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
+        case NativeTypeKind::Int:
+        case NativeTypeKind::UInt:
             emitInstruction(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
@@ -119,6 +123,8 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* type
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
+    case NativeTypeKind::Int:
+    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::BinOpMulS64, r0, r1, r2);
         return true;
     case NativeTypeKind::F32:
@@ -146,6 +152,7 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* type
         emitInstruction(context, ByteCodeOp::BinOpDivS32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
+    case NativeTypeKind::Int:
         emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::BinOpDivS64, r0, r1, r2);
         return true;
@@ -155,6 +162,7 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* type
         emitInstruction(context, ByteCodeOp::BinOpDivU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
+    case NativeTypeKind::UInt:
         emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::BinOpDivU64, r0, r1, r2);
         return true;
@@ -185,6 +193,7 @@ bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* t
         emitInstruction(context, ByteCodeOp::BinOpModuloS32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
+    case NativeTypeKind::Int:
         emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::BinOpModuloS64, r0, r1, r2);
         return true;
@@ -194,6 +203,7 @@ bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* t
         emitInstruction(context, ByteCodeOp::BinOpModuloU32, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
+    case NativeTypeKind::UInt:
         emitSafetyDivZero(context, r1, 64);
         emitInstruction(context, ByteCodeOp::BinOpModuloU64, r0, r1, r2);
         return true;
@@ -219,6 +229,8 @@ bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeI
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
+    case NativeTypeKind::Int:
+    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::BinOpBitmaskAndS64, r0, r1, r2);
         return true;
     default:
@@ -242,6 +254,8 @@ bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeIn
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
+    case NativeTypeKind::Int:
+    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::BinOpBitmaskOrS64, r0, r1, r2);
         return true;
     default:
@@ -265,6 +279,8 @@ bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeIn
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
+    case NativeTypeKind::Int:
+    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, r2);
         return true;
     default:
@@ -289,9 +305,11 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeI
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
+    case NativeTypeKind::Int:
         emitInstruction(context, ByteCodeOp::BinOpShiftRightS64, r0, r1, r2);
         return true;
     case NativeTypeKind::U64:
+    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU64, r0, r1, r2);
         return true;
     default:
@@ -315,6 +333,8 @@ bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
+    case NativeTypeKind::Int:
+    case NativeTypeKind::UInt:
         emitInstruction(context, ByteCodeOp::BinOpXorU64, r0, r1, r2);
         return true;
     default:

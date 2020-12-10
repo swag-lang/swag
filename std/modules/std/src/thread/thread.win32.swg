@@ -34,7 +34,7 @@ func create(th: *Thread, lambda: func(Thread), userParam: *void = null, priority
     // we have a valid function pointer whatever the case is :
     // - we are running bytecode, and threadEntry should be run by the compiler
     // - we are native, and threadEntry is like a foreign function (native, i.e. callback)
-    var l64 = cast(u64) &threadEntry
+    var l64 = cast(uint) &threadEntry
     if l64 & swag.LambdaBcMarker
         l64 = autocast @thrunptr()
     else

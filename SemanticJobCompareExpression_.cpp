@@ -55,6 +55,8 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
+        case NativeTypeKind::Int:
+        case NativeTypeKind::UInt:
             node->computedValue.reg.b = left->computedValue.reg.u64 == right->computedValue.reg.u64;
             break;
         case NativeTypeKind::String:
@@ -106,6 +108,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
             node->computedValue.reg.s32 = CMP3(left->computedValue.reg.s32, right->computedValue.reg.s32);
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
             node->computedValue.reg.s32 = CMP3(left->computedValue.reg.s64, right->computedValue.reg.s64);
             break;
         case NativeTypeKind::U8:
@@ -119,6 +122,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
             node->computedValue.reg.s32 = CMP3(left->computedValue.reg.u32, right->computedValue.reg.u32);
             break;
         case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
             node->computedValue.reg.s32 = CMP3(left->computedValue.reg.u64, right->computedValue.reg.u64);
             break;
 
@@ -164,6 +168,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             node->computedValue.reg.b = left->computedValue.reg.s32 < right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
             node->computedValue.reg.b = left->computedValue.reg.s64 < right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U8:
@@ -177,6 +182,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             node->computedValue.reg.b = left->computedValue.reg.u32 < right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
             node->computedValue.reg.b = left->computedValue.reg.u64 < right->computedValue.reg.u64;
             break;
 
@@ -222,6 +228,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             node->computedValue.reg.b = left->computedValue.reg.s32 > right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
             node->computedValue.reg.b = left->computedValue.reg.s64 > right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U8:
@@ -235,6 +242,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             node->computedValue.reg.b = left->computedValue.reg.u32 > right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
             node->computedValue.reg.b = left->computedValue.reg.u64 > right->computedValue.reg.u64;
             break;
 

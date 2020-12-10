@@ -35,6 +35,8 @@ enum class LiteralType
     TT_UNTYPED_BINHEXA,
     TT_UNTYPED_INT,
     TT_UNTYPED_FLOAT,
+    TT_UINT,
+    TT_INT,
     TT_MAX,
 };
 

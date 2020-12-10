@@ -37,6 +37,7 @@ namespace Ast
                 result += reg.ch;
             break;
         case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
             result = format("%llu", reg.u64);
             break;
         case NativeTypeKind::S8:
@@ -49,6 +50,7 @@ namespace Ast
             result = format("%d", reg.s32);
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
             result = format("%lld", reg.s64);
             break;
         case NativeTypeKind::F32:

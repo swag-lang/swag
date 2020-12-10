@@ -169,7 +169,7 @@ namespace swag
                     storePtr := cast(**void) request.address
                     realPtr := cast(*u8) @realloc(storePtr ? storePtr[-1] : null, size)
 
-                    userPtr := cast(*u8) (cast(u64) realPtr & ~(cast(u64) alignement - 1))
+                    userPtr := cast(*u8) (cast(uint) realPtr & ~(cast(uint) alignement - 1))
                     if userPtr != realPtr userPtr += alignement
                     userPtr += @sizeof(*void)
 
