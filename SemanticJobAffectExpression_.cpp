@@ -279,7 +279,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             if (rightTypeInfo->nativeType != NativeTypeKind::S32 &&
                 rightTypeInfo->nativeType != NativeTypeKind::S64 &&
                 rightTypeInfo->nativeType != NativeTypeKind::U32 &&
-                rightTypeInfo->nativeType != NativeTypeKind::U64)
+                rightTypeInfo->nativeType != NativeTypeKind::U64 &&
+                rightTypeInfo->nativeType != NativeTypeKind::Int &&
+                rightTypeInfo->nativeType != NativeTypeKind::UInt)
             {
                 return context->report({right, format("pointer arithmetic not allowed with type '%s'", rightTypeInfo->name.c_str())});
             }
