@@ -48,7 +48,7 @@ struct SnakeSegment
 
 func main()
 {
-    var screen: *u8 = @alloc(nScreenWidth*nScreenHeight)
+    var screen: *u8 = @alloc(cast(uint) nScreenWidth*nScreenHeight)
     loop i: nScreenWidth*nScreenHeight
         screen[i] = " "'u8
     hConsole := CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, null, CONSOLE_TEXTMODE_BUFFER, null)

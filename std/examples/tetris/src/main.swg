@@ -110,7 +110,7 @@ func DoesPieceFit(nTetromino, nRotation, nPosX, nPosY: s32)->bool
 //#[swag.printbc]
 func main()
 {
-    var screen: *u8 = @alloc(nScreenWidth*nScreenHeight)
+    var screen: *u8 = @alloc(cast(uint) nScreenWidth*nScreenHeight)
     loop i: nScreenWidth*nScreenHeight
         screen[i] = " "'u8
     hConsole := CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, null, CONSOLE_TEXTMODE_BUFFER, null)
@@ -125,7 +125,7 @@ func main()
 	tetromino[5] = ".X...X...XX....."
 	tetromino[6] = "..X...X..XX....."
 
-    pField = @alloc(cast(u32)(nFieldWidth*nFieldHeight)) // Create play field buffer
+    pField = @alloc(cast(uint)(nFieldWidth*nFieldHeight)) // Create play field buffer
     loop x: autocast nFieldWidth
         loop y: autocast nFieldHeight
 			pField[y*nFieldWidth + x] = (x == 0 || x == nFieldWidth - 1 || y == nFieldHeight - 1) ? 9 : 0;

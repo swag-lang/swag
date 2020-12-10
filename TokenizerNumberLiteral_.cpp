@@ -42,6 +42,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
 
     case LiteralType::TT_S32:
     case LiteralType::TT_S64:
+    case LiteralType::TT_INT:
         switch (tokenSuffix.literalType)
         {
         case LiteralType::TT_U8:
@@ -57,6 +58,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
                 return error(token, format("literal number '%I64u' is not in the range of 'u32'", token.literalValue.u64));
             break;
         case LiteralType::TT_U64:
+        case LiteralType::TT_UINT:
             break;
 
         case LiteralType::TT_S8:
@@ -72,6 +74,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
                 return error(token, format("literal number '%I64d' is not in the range of 's32'", token.literalValue.s64));
             break;
         case LiteralType::TT_S64:
+        case LiteralType::TT_INT:
             if (token.literalValue.s64 < INT64_MIN || token.literalValue.s64 > INT64_MAX)
                 return error(token, format("literal number '%I64d' is not in the range of 's64'", token.literalValue.s64));
             break;
@@ -108,6 +111,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
 
     case LiteralType::TT_U32:
     case LiteralType::TT_U64:
+    case LiteralType::TT_UINT:
         switch (tokenSuffix.literalType)
         {
         case LiteralType::TT_U8:
@@ -123,6 +127,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
                 return error(token, format("literal number '%I64u' is not in the range of 'u32'", token.literalValue.u64));
             break;
         case LiteralType::TT_U64:
+        case LiteralType::TT_UINT:
             break;
 
         case LiteralType::TT_S8:
@@ -138,6 +143,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
                 return error(token, format("literal number '%I64u' is not in the range of 's32'", token.literalValue.u64));
             break;
         case LiteralType::TT_S64:
+        case LiteralType::TT_INT:
             break;
 
         case LiteralType::TT_CHAR:

@@ -167,7 +167,7 @@ namespace swag
                     size += alignement - 1
 
                     storePtr := cast(**void) request.address
-                    realPtr := cast(*u8) @realloc(storePtr ? storePtr[-1] : null, size)
+                    realPtr := cast(*u8) @realloc(storePtr ? storePtr[-1] : null, cast(uint) size)
 
                     userPtr := cast(*u8) (cast(uint) realPtr & ~(cast(uint) alignement - 1))
                     if userPtr != realPtr userPtr += alignement
@@ -473,8 +473,8 @@ namespace swag
 //
 
 func @assert(value: bool);
-func @alloc(size: u32)->*void;
-func @realloc(ptr: *void, size: u32)->*void;
+func @alloc(size: uint)->*void;
+func @realloc(ptr: *void, size: uint)->*void;
 func @free(ptr: *void);
 func @getcontext()->*swag.Context;
 func @setcontext(context: const *swag.Context);

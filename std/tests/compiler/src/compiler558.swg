@@ -10,6 +10,6 @@ struct point
 //#[swag.printbc]
 #test
 {
-	pt := cast(*point) @alloc(@sizeof(point))
+	pt := cast(*point) @alloc(cast(uint) @sizeof(point))
 	@free(cast(*u8) pt)
 }
