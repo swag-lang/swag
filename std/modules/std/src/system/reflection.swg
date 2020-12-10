@@ -21,7 +21,7 @@ using swag
 
         if buffer == dataof
             return type.name
-        return cast(string) @mkslice(buffer + 1, count)
+        return cast(string) @mkslice(buffer + 1, cast(uint) count)
     }
 
     // Get information about a specific method in a given struct

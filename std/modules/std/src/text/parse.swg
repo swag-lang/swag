@@ -151,7 +151,7 @@ func parseF64(str: const [..] u8) -> {value: f64, eat: u32}
     // Fractional part
     if countof
     {
-        (c, eat) = utf8.firstChar(@mkslice(buffer, countof))
+        (c, eat) = utf8.firstChar(@mkslice(buffer, cast(uint) countof))
         if c == g_CultureInfo.numberFormat.decimalSeparator
         {
             // Skip decimal separator

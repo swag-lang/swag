@@ -2,7 +2,7 @@
 using std
 
 //#[swag.printbc]
-func XX(v: String)->[..]u8 => @mkslice(v.buffer, v.length)
+func XX(v: String)->[..]u8 => @mkslice(v.buffer, cast(uint) v.length)
 
 //#[swag.printbc]
 #test

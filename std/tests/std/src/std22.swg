@@ -10,7 +10,7 @@ using std
 	cpt := 0
 	while true
 	{
-        slice := @mkslice(ptr, count)
+        slice := @mkslice(ptr, cast(uint) count)
 		(c, eat) := std.utf8.firstChar(slice)
 		if !eat
 			break

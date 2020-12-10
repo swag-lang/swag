@@ -20,7 +20,7 @@ func fromUtf8(dest: [..] u16, src: const [..] u8)->u32
 
         srcPtr += eat
         srcLength -= eat
-        (c, eat) = utf8.firstChar(@mkslice(srcPtr, srcLength))
+        (c, eat) = utf8.firstChar(@mkslice(srcPtr, cast(uint) srcLength))
     }
 
     return count
@@ -31,6 +31,6 @@ func fromUtf8(src: const [..] u8)->Array'u16
 {
     var result: retval
     result.reserve(@countof(src))
-    result.count = fromUtf8(@mkslice(result.buffer, @countof(src)), src)
+    result.count = fromUtf8(@mkslice(result.buffer, cast(uint) @countof(src)), src)
     return result
 }

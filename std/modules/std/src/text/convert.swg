@@ -38,7 +38,7 @@ impl ConvertFormatFloat
         }
 
         // Precision
-        (userWidth, eatCount) := parseU64(@mkslice(buffer + cpt, countof - cpt))
+        (userWidth, eatCount) := parseU64(@mkslice(buffer + cpt, cast(uint) (countof - cpt)))
         debug.assert(userWidth <= 255, "precision overflow")
         if eatCount precision = cast(u8) userWidth
     }
@@ -97,7 +97,7 @@ impl ConvertFormatInt
         // Next comes the padding width
         if cpt >= countof
             return
-        (userWidth, eatCount) := parseU64(@mkslice(buffer + cpt, countof - cpt))
+        (userWidth, eatCount) := parseU64(@mkslice(buffer + cpt, cast(uint) countof - cpt))
         debug.assert(userWidth <= 255, "padding width overflow")
         if eatCount width = cast(u8) userWidth
     }
@@ -140,7 +140,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     {
         enumName := reflection.getEnumName(type, @dataof(value))
         if !enumName.isEmpty()
-            buf.addBytes(@mkslice(enumName.buffer, enumName.length))
+            buf.addBytes(@mkslice(enumName.buffer, cast(uint) enumName.length))
         else
             buf.addBytes("?")
         return
@@ -354,7 +354,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         cpt -= 1
     }
 
-    buf.addBytes(cast([..] u8) @mkslice(&tmp[cpt + 1], 63 - cpt));
+    buf.addBytes(cast([..] u8) @mkslice(&tmp[cpt + 1], cast(uint) 63 - cpt));
 }
 
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
@@ -390,5 +390,5 @@ func convertChar(buf: *ConcatBuffer, value: char, strFormat: string)
 {
     var arr: [4] u8
     var count = utf8.fromChar(arr, value)
-    buf.addBytes(@mkslice(&arr[0], count))
+    buf.addBytes(@mkslice(&arr[0], cast(uint) count))
 }

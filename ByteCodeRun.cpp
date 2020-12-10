@@ -533,7 +533,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto       ptr                 = registersRC[ip->a.u32].pointer;
         uint64_t** ptrptr              = (uint64_t**) ptr;
         registersRC[ip->a.u32].pointer = (uint8_t*) ptrptr[0];
-        registersRC[ip->b.u32].u64     = (uint64_t) ptrptr[1];
+        registersRC[ip->b.u32].uint    = (uint64_t) ptrptr[1];
         break;
     }
 

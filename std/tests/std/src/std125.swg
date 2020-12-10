@@ -8,7 +8,7 @@ using std
     arr.addAny("1")
     arr.addAny("2")
     arr.addAny("3")
-    sort.quick(@mkslice(arr.buffer, arr.count), @(x, y) => y <=> x)
+    sort.quick(@mkslice(arr.buffer, cast(uint) arr.count), @(x, y) => y <=> x)
     @assert(arr[0] == "3")
     @assert(arr[1] == "2")
     @assert(arr[2] == "1")

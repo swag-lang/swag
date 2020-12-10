@@ -7,7 +7,7 @@ func Visit(str: string, user: code)
     count := @countof(str)
 	while true
 	{
-        slice := @mkslice(ptr, count)
+        slice := @mkslice(ptr, cast(uint) count)
 		(c, eat) := std.utf8.firstChar(slice)
 		if !eat
 			break

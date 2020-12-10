@@ -9,7 +9,7 @@ public namespace error
     {
         cxt := @getcontext()
         if cxt.errorMsgLen == 0 return null
-        return cast(string) @mkslice(&cxt.errorMsg[0], cxt.errorMsgLen)
+        return cast(string) @mkslice(&cxt.errorMsg[0], cast(uint) cxt.errorMsgLen)
     }
 
     // Clear the last error message

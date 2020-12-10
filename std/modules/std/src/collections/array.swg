@@ -49,7 +49,7 @@ impl Array
     func opSlice(using self, lower, upper: u32)->[..] T
     {
         debug.assert(lower <= upper && lower < count && upper < count)
-        return @mkslice(buffer + lower, (upper + 1) - lower)
+        return @mkslice(buffer + lower, cast(uint) (upper + 1) - lower)
     }
 
     func opIndex(using self, index: u32)->const &T
@@ -162,7 +162,7 @@ impl Array
     // Returns a slice
     func toSlice(using self)->[..] T
     {
-        return @mkslice(buffer, count)
+        return @mkslice(buffer, cast(uint) count)
     }
 
     // Ensure the Array is big enough to store at least 'newCount' elements

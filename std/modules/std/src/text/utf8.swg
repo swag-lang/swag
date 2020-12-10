@@ -79,7 +79,7 @@ func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
         eat += 1
     }
 
-    return firstChar(@mkslice(ptr, eat))
+    return firstChar(@mkslice(ptr, cast(uint) eat))
 }
 
 // Get the unicode character pointed by 'buffer', and the number of bytes to encode it
@@ -166,7 +166,7 @@ func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'u32) 
     remain := length - startByteIndex
     while countof <= remain
     {
-        res := utf8.firstChar(cast(string) @mkslice(scan, remain))
+        res := utf8.firstChar(cast(string) @mkslice(scan, cast(uint) remain))
         if !res.eat
             break
         if contains(what, res.c)
@@ -188,7 +188,7 @@ func lastIndexOf(src: const [..] u8, what: const [..] char) -> {index: u32, succ
     byteIdx := length
     while true
     {
-        slice := @mkslice(dataof, byteIdx)
+        slice := @mkslice(dataof, cast(uint) byteIdx)
         (c, eat) := lastChar(slice)
         if eat == 0
             return @{0, false}
@@ -216,7 +216,7 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u32, compariso
     remain := length - startByteIndex
     while countof <= remain
     {
-        res := compare(cast(string) @mkslice(scan, countof), what, comparisonType)
+        res := compare(cast(string) @mkslice(scan, cast(uint) countof), what, comparisonType)
         if res == 0 return @{idx, true}
         scan, idx += 1
         remain -= 1
@@ -232,7 +232,7 @@ func startsWith(src: const [..] u8, str: string, comparisonType = utf8.Compariso
     countof := @countof(str)
     if countof > length return false
     buffer := @dataof(src)
-    return compare(cast(string) @mkslice(buffer, countof), str, comparisonType) == 0
+    return compare(cast(string) @mkslice(buffer, cast(uint) countof), str, comparisonType) == 0
 }
 
 // Return true if the string ends with 'str'
@@ -242,7 +242,7 @@ func endsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonT
     countof := @countof(str)
     if countof > length return false
     buffer := @dataof(src)
-    return compare(cast(string) @mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
+    return compare(cast(string) @mkslice((buffer + length) - countof, cast(uint) countof), str, comparisonType) == 0
 }
 
 public enum ComparisonType
@@ -278,8 +278,8 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
         var eat1, eat2: u32
         while true
         {
-            (c1, eat1) = firstChar(@mkslice(data, length))
-            (c2, eat2) = firstChar(@mkslice(otherData, otherLength))
+            (c1, eat1) = firstChar(@mkslice(data, cast(uint) length))
+            (c2, eat2) = firstChar(@mkslice(otherData, cast(uint) otherLength))
             if eat1 == 0 || eat2 == 0 break
 
             if c1 != c2
@@ -319,7 +319,7 @@ func visitChars(buffer: const [..] u8, stmt: code)
     scan := @dataof(buffer)
     while count
     {
-        slice := @mkslice(scan, count)
+        slice := @mkslice(scan, cast(uint) count)
         var (c, eat) = firstChar(slice)
         if eat == 0
             break
@@ -394,7 +394,7 @@ func fromCharArray(dest: [..] u8, src: const [..] char)->u32
     visit ch: src
     {
         debug.assert(remain >= 4, "destination buffer is too small")
-        slice := @mkslice(dataof + total, remain)
+        slice := @mkslice(dataof + total, cast(uint) remain)
         cpt := fromChar(slice, ch)
         total += cpt
         remain -= cpt

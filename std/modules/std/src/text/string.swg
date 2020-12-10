@@ -37,7 +37,7 @@ public impl strconv.IConvert for String
 {
     func convert(using self, buf: *ConcatBuffer, fmt: const *strconv.ConvertFormat, strFormat: string)
     {
-        buf.addBytes(@mkslice(buffer, length))
+        buf.addBytes(@mkslice(buffer, cast(uint) length))
     }
 }
 
@@ -45,7 +45,7 @@ public impl hash.IHash32 for String
 {
     func compute(using self)->u32
     {
-        return hash.crc32(@mkslice(buffer, length))
+        return hash.crc32(@mkslice(buffer, cast(uint) length))
     }
 }
 
@@ -66,7 +66,7 @@ public impl String
     func(T) opCast(using self)->T
     {
         #if @typeof(T) == string
-            return cast(string) @mkslice(buffer, length)
+            return cast(string) @mkslice(buffer, cast(uint) length)
         #elif @typeof(T) == const [..] u8
             return @mkslice(buffer, length)
         #else
@@ -76,7 +76,7 @@ public impl String
     func opSlice(using self, lower, upper: u32)->string
     {
         debug.assert(lower <= upper && lower < length && upper < length)
-        return cast(string) @mkslice(buffer + lower, (upper + 1) - lower)
+        return cast(string) @mkslice(buffer + lower, cast(uint) (upper + 1) - lower)
     }
 
     func opAffect(using self, value: string)
@@ -207,7 +207,7 @@ public impl String
         scan := buffer
         while true
         {
-            slice := @mkslice(scan, count)
+            slice := @mkslice(scan, cast(uint) count)
             var (c, eat) = utf8.firstChar(slice)
             if eat == 0
                 break
@@ -240,7 +240,7 @@ public impl String
     // Returns the number of unicode characters in the string
     func countChars(using self)->u32
     {
-        return utf8.countChars(@mkslice(buffer, length))
+        return utf8.countChars(@mkslice(buffer, cast(uint) length))
     }
 
     // Returns true if the String has zero length
@@ -387,7 +387,7 @@ public impl String
         ptr := buffer
         while true
         {
-            slice := @mkslice(ptr, length)
+            slice := @mkslice(ptr, cast(uint) length)
             (c, eat) := utf8.firstChar(slice)
             if !unicode32.isSpace(c)
                 break
@@ -407,7 +407,7 @@ public impl String
 
         while true
         {
-            slice := @mkslice(buffer, length)
+            slice := @mkslice(buffer, cast(uint) length)
             (c, eat) := utf8.lastChar(slice)
             if !unicode32.isSpace(c)
                 break
@@ -432,7 +432,7 @@ public impl String
             return 0
         if latin1.isAscii(buffer[0])
             return cast(char) buffer[0]
-        (c, ?) := utf8.firstChar(@mkslice(buffer, length))
+        (c, ?) := utf8.firstChar(@mkslice(buffer, cast(uint) length))
         return c
     }
 
@@ -444,14 +444,14 @@ public impl String
             return 0
         if latin1.isAscii(buffer[length - 1])
             return cast(char) buffer[length - 1]
-        (c, ?) := utf8.lastChar(@mkslice(buffer, length))
+        (c, ?) := utf8.lastChar(@mkslice(buffer, cast(uint) length))
         return c
     }
 
     // Convert string to a 32 bits character array
     func toCharArray(using self)->Array'char
     {
-        return unicode32.fromUtf8(@mkslice(buffer, length))
+        return unicode32.fromUtf8(@mkslice(buffer, cast(uint) length))
     }
 
     // Convert a literal string to a String
@@ -464,13 +464,13 @@ public impl String
     // Returns a string type
     func toString(using self)->string
     {
-        return cast(string) @mkslice(buffer, length)
+        return cast(string) @mkslice(buffer, cast(uint) length)
     }
 
     // Convert the string inplace to upper case.
     func makeUpper(using self, set = CharacterSet.Latin1)
     {
-        sl := @mkslice(buffer, length)
+        sl := @mkslice(buffer, cast(uint) length)
 
         using CharacterSet
         switch set
@@ -482,14 +482,14 @@ public impl String
                 uni32 := unicode32.fromUtf8(toString())
                 unicode32.makeUpper(uni32.toSlice())
                 reserve(uni32.count * 4)
-                length = utf8.fromCharArray(@mkslice(buffer, capacity), uni32.toSlice())
+                length = utf8.fromCharArray(@mkslice(buffer, cast(uint) capacity), uni32.toSlice())
         }
     }
 
     // Convert the string inplace to lower case.
     func makeLower(using self, set = CharacterSet.Latin1)
     {
-        sl := @mkslice(buffer, length)
+        sl := @mkslice(buffer, cast(uint) length)
 
         using CharacterSet
         switch set
@@ -501,7 +501,7 @@ public impl String
                 uni32 := unicode32.fromUtf8(toString())
                 unicode32.makeLower(uni32.toSlice())
                 reserve(uni32.count * 4)
-                length = utf8.fromCharArray(@mkslice(buffer, capacity), uni32.toSlice())
+                length = utf8.fromCharArray(@mkslice(buffer, cast(uint) capacity), uni32.toSlice())
         }
     }
 
@@ -524,49 +524,49 @@ public impl String
     // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
     func indexOf(using self, what: char, startByteIndex = 0'u32) -> {index: u32, success: bool}
     {
-        return utf8.indexOf(@mkslice(buffer, length), @[what], startByteIndex)
+        return utf8.indexOf(@mkslice(buffer, cast(uint) length), @[what], startByteIndex)
     }
 
     // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
     func indexOf(using self, what: const [..] char, startByteIndex = 0'u32) -> {index: u32, success: bool}
     {
-        return utf8.indexOf(@mkslice(buffer, length), what, startByteIndex)
+        return utf8.indexOf(@mkslice(buffer, cast(uint) length), what, startByteIndex)
     }
 
     // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
     func lastIndexOf(using self, what: char) -> {index: u32, success: bool}
     {
-        return utf8.lastIndexOf(@mkslice(buffer, length), @[what])
+        return utf8.lastIndexOf(@mkslice(buffer, cast(uint) length), @[what])
     }
 
     // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
     func lastIndexOf(using self, what: const [..] char) -> {index: u32, success: bool}
     {
-        return utf8.lastIndexOf(@mkslice(buffer, length), what)
+        return utf8.lastIndexOf(@mkslice(buffer, cast(uint) length), what)
     }
 
     // Find the given string, and returns the byte index of it
     func indexOf(using self, what: string, startByteIndex = 0'u32, comparisonType = utf8.ComparisonType.Latin1) -> {index: u32, success: bool}
     {
-        return utf8.indexOf(@mkslice(buffer, length), what, startByteIndex, comparisonType)
+        return utf8.indexOf(@mkslice(buffer, cast(uint) length), what, startByteIndex, comparisonType)
     }
 
     // Return true if the string starts with 'str'
     func startsWith(using self, what: string, comparisonType = utf8.ComparisonType.Latin1)->bool
     {
-        return utf8.startsWith(@mkslice(buffer, length), what, comparisonType)
+        return utf8.startsWith(@mkslice(buffer, cast(uint) length), what, comparisonType)
     }
 
     // Return true if the string ends with 'str'
     func endsWith(using self, what: string, comparisonType = utf8.ComparisonType.Latin1)->bool
     {
-        return utf8.endsWith(@mkslice(buffer, length), what, comparisonType)
+        return utf8.endsWith(@mkslice(buffer, cast(uint) length), what, comparisonType)
     }
 
     // Compare with another string
     func compare(using self, other: string, comparisonType = utf8.ComparisonType.Latin1)->s32
     {
-        return utf8.compare(@mkslice(buffer, length), other, comparisonType)
+        return utf8.compare(@mkslice(buffer, cast(uint) length), other, comparisonType)
     }
 
     // Compare two strings
@@ -600,7 +600,7 @@ public impl String
             // Remove separator at the start
             while true
             {
-                slice := @mkslice(ptr, count)
+                slice := @mkslice(ptr, cast(uint) count)
                 (c, eat) = utf8.firstChar(slice)
                 if eat == 0 || !contains(separators, c)
                     break
@@ -615,7 +615,7 @@ public impl String
             endbyteIdx := startbyteIdx
             while true
             {
-                slice := @mkslice(ptr, count)
+                slice := @mkslice(ptr, cast(uint) count)
                 (c, eat) = utf8.firstChar(slice)
                 if eat == 0 || contains(separators, c)
                     break
@@ -624,7 +624,7 @@ public impl String
                 count -= eat
             }
 
-            oneString := cast(string) @mkslice(buffer + startbyteIdx, endbyteIdx - startbyteIdx)
+            oneString := cast(string) @mkslice(buffer + startbyteIdx, cast(uint) endbyteIdx - startbyteIdx)
             result.add(oneString)
 
             if eat == 0 break // done

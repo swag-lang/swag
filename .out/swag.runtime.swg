@@ -90,9 +90,9 @@ func @memcmp(dst, src: const *void, size: u32)->s32
 }
 
 ////////////////////////////////////////////////////////////
-func @cstrlen(value: const *u8)->u32
+func @cstrlen(value: const *u8)->uint
 {
-    idx := 0'u32
+    idx := 0'uint
     while value[idx] idx += 1
     return idx
 }
@@ -195,14 +195,14 @@ private func convertArgcArgv()
             cmdLine += 1
             start := cmdLine
             while :cmdLine && :cmdLine != "\""'u8 cmdLine += 1
-            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(u32) cast(u64) (cmdLine - start))
+            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
             if :cmdLine cmdLine += 1
         }
         else
         {
             start := cmdLine
             while :cmdLine && :cmdLine != " "'u8 cmdLine += 1
-            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(u32) cast(u64) (cmdLine - start))
+            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
         }
 
         g_Argc += 1
@@ -216,7 +216,7 @@ func @args()->[..] string
 {
     if g_Argc == 0
         convertArgcArgv()
-    return @mkslice(&g_Argv[0], g_Argc)
+    return @mkslice(&g_Argv[0], cast(uint) g_Argc)
 }
 
 ////////////////////////////////////////////////////////////

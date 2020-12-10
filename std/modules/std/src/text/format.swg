@@ -24,7 +24,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
         if ptr[nextIdx] == "%"'u8
         {
             // Add remaining text, and starts again after the mark
-            buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, nextIdx - idx))
+            buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, cast(uint) (nextIdx - idx)))
             idx = nextIdx + 1
             nextIdx = idx
 
@@ -53,7 +53,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
                 if ptr[nextIdx]
                     nextIdx += 1
                 idx = nextIdx
-                strFormat = @mkslice(ptrFormat, countFormat)
+                strFormat = @mkslice(ptrFormat, cast(uint) countFormat)
             }
 
             // Deal with the parameter
@@ -69,5 +69,5 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 
     // Add remaining text
     if idx < nextIdx
-        buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, nextIdx - idx))
+        buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, cast(uint) nextIdx - idx))
 }

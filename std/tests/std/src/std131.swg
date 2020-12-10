@@ -11,7 +11,7 @@ using std
         arr.add(rand.nextS32(0, 100))
 
     arr.sort(@(x, y) => y <=> x)
-    @assert(!sort.isSorted(@mkslice(arr.buffer, arr.count)))
+    @assert(!sort.isSorted(@mkslice(arr.buffer, cast(uint) arr.count)))
     arr.sort()
-    @assert(sort.isSorted(@mkslice(arr.buffer, arr.count)))
+    @assert(sort.isSorted(@mkslice(arr.buffer, cast(uint) arr.count)))
 }

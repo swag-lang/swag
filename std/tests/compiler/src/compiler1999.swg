@@ -42,12 +42,12 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
         {
             if set1 <= set2
             {
-                sortQuick(@mkslice(buffer + begin, (low - begin) + 1), cb);
+                sortQuick(@mkslice(buffer + begin, cast(uint) (low - begin) + 1), cb);
                 begin = high + 1
             }
             else
             {
-                sortQuick(@mkslice(buffer + high + 1, (end - high) + 1), cb);
+                sortQuick(@mkslice(buffer + high + 1, cast(uint) (end - high) + 1), cb);
                 end = low - 1
             }
         }
