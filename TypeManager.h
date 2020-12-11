@@ -17,7 +17,7 @@ static const uint32_t CASTFLAG_UNCONST         = 0x00000010;
 static const uint32_t CASTFLAG_AUTO_BOOL       = 0x00000020;
 static const uint32_t CASTFLAG_NO_COLLECT      = 0x00000040;
 static const uint32_t CASTFLAG_BIJECTIF        = 0x00000080;
-static const uint32_t CASTFLAG_STRICT          = 0x00000100;
+//static const uint32_t CASTFLAG_STRICT          = 0x00000100;
 static const uint32_t CASTFLAG_FORCE_UNCONST   = 0x00000200;
 static const uint32_t CASTFLAG_COMPARE         = 0x00000400;
 static const uint32_t CASTFLAG_UFCS            = 0x00000800;
@@ -44,10 +44,12 @@ struct TypeManager
     static bool castToNativeU16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeU32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeU64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
+    static bool castToNativeUInt(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeS8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeS16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeS32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeS64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
+    static bool castToNativeInt(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeF32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToNativeF64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
 

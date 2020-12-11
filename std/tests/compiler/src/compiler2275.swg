@@ -2,5 +2,5 @@
 {
     var ptr: **void
     ptr += 1
-    @assert(cast(u64) ptr == @sizeof(*void))
+    @assert(cast(uint) ptr == @sizeof(*void))
 }
