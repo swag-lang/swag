@@ -138,7 +138,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             auto rightTypePointer = CastTypeInfo<TypeInfoPointer>(rightTypeInfo, TypeInfoKind::Pointer);
             if (leftTypePointer->ptrCount == rightTypePointer->ptrCount && leftTypePointer->pointedType->kind == rightTypePointer->pointedType->kind)
             {
-                node->typeInfo = g_TypeMgr.typeInfoS64;
+                node->typeInfo = g_TypeMgr.typeInfoInt;
                 return true;
             }
         }
