@@ -300,7 +300,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     case TypeInfoKind::Native:
     {
-        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL));
         if (arrayType->nativeType == NativeTypeKind::String)
         {
             arrayNode->typeInfo    = g_TypeMgr.typeInfoU8;
