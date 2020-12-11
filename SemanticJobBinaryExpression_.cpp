@@ -26,24 +26,12 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     if (leftTypeInfo->kind == TypeInfoKind::Pointer)
     {
         node->typeInfo = leftTypeInfo;
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({node, format("operator '+' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())}));
-        switch (rightTypeInfo->nativeType)
-        {
-        case NativeTypeKind::S32:
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
-            break;
-        default:
-            return context->report({node, format("operator '+' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())});
-        }
-
+        SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format("operator '+' not allowed on a pointer with operand type '%s' (should be an integer)", rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_COERCE_FULL));
         return true;
     }
 
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({node, format("operator '+' not allowed on type '%s'", rightTypeInfo->name.c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, format("operator '+' not allowed with operand type '%s'", rightTypeInfo->name.c_str())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_FULL));
     leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
@@ -60,7 +48,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, format("operator '+' not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        return context->report({left, format("operator '+' not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
     node->typeInfo = leftTypeInfo;
@@ -155,24 +143,12 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         }
 
         // Pointer arithmetic
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({node, format("operator '-' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())}));
-        switch (rightTypeInfo->nativeType)
-        {
-        case NativeTypeKind::S32:
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
-            break;
-        default:
-            return context->report({node, format("operator '-' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())});
-        }
-
+        SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format("operator '-' not allowed on a pointer with operand type '%s' (should be an integer)", rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_COERCE_FULL));
         return true;
     }
 
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({node, format("operator '-' not allowed on type '%s'", rightTypeInfo->name.c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, format("operator '-' not allowed with operand type '%s'", rightTypeInfo->name.c_str())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_FULL));
     leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
@@ -189,7 +165,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, format("operator '-' not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        return context->report({left, format("operator '-' not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
     node->typeInfo = leftTypeInfo;

@@ -1,23 +1,7 @@
-//#[swag.printbc]
+//#[swag.printbc, swag.optim(false)]
 #test
 {
-    {
-        cpt := 0'u32
-        loop 5
-        {
-            cpt += @index
-        }
-
-        @assert(cpt == 0+1+2+3+4)
-    }
-
-    {
-        cpt := 0'u32
-        loop 5
-        {
-            cpt += @index
-        }
-
-        @assert(cpt == 0+1+2+3+4)
-    }
+    var ptr: *u64
+    x := 1
+    ptr = ptr - x
 }
