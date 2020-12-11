@@ -172,11 +172,11 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     typeInfo = TypeManager::concreteReferenceType(typeInfo);
     if (typeInfo->isNative(NativeTypeKind::String))
     {
+        node->typeInfo = g_TypeMgr.typeInfoU32;
         if (node->flags & AST_VALUE_COMPUTED)
         {
             node->setFlagsValueIsComputed();
             node->computedValue.reg.u64 = node->computedValue.text.length();
-            node->typeInfo              = g_TypeMgr.typeInfoU32;
         }
         else
         {
@@ -193,6 +193,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
+        node->typeInfo    = g_TypeMgr.typeInfoU32;
     }
     else if (typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
     {
@@ -204,6 +205,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
+        node->typeInfo    = g_TypeMgr.typeInfoU32;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
@@ -246,9 +248,10 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, typeInfo, nullptr, node));
         }
+
+        node->typeInfo = g_TypeMgr.typeInfoU32;
     }
 
-    node->typeInfo = g_TypeMgr.typeInfoU32;
     return true;
 }
 
