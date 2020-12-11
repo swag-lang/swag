@@ -2388,6 +2388,8 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
             left->computedValue.reg.u32 = left->computedValue.reg.u8;
         else if (newLeft == NativeTypeKind::U64)
             left->computedValue.reg.u64 = left->computedValue.reg.u8;
+        else if (newLeft == NativeTypeKind::UInt)
+            left->computedValue.reg.u64 = left->computedValue.reg.u8;
         else if (newLeft == NativeTypeKind::F32)
             left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.u8);
         else if (newLeft == NativeTypeKind::F64)
@@ -2398,6 +2400,8 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
             left->computedValue.reg.u32 = left->computedValue.reg.u16;
         else if (newLeft == NativeTypeKind::U64)
             left->computedValue.reg.u64 = left->computedValue.reg.u16;
+        else if (newLeft == NativeTypeKind::UInt)
+            left->computedValue.reg.u64 = left->computedValue.reg.u16;
         else if (newLeft == NativeTypeKind::F32)
             left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.u16);
         else if (newLeft == NativeTypeKind::F64)
@@ -2405,6 +2409,8 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
         break;
     case NativeTypeKind::U32:
         if (newLeft == NativeTypeKind::U64)
+            left->computedValue.reg.u64 = left->computedValue.reg.u32;
+        else if (newLeft == NativeTypeKind::UInt)
             left->computedValue.reg.u64 = left->computedValue.reg.u32;
         else if (newLeft == NativeTypeKind::F32)
             left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.u32);
@@ -2421,6 +2427,8 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
             left->computedValue.reg.s32 = left->computedValue.reg.s8;
         else if (newLeft == NativeTypeKind::S64)
             left->computedValue.reg.s64 = left->computedValue.reg.s8;
+        else if (newLeft == NativeTypeKind::Int)
+            left->computedValue.reg.s64 = left->computedValue.reg.s8;
         else if (newLeft == NativeTypeKind::F32)
             left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.s8);
         else if (newLeft == NativeTypeKind::F64)
@@ -2431,6 +2439,8 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
             left->computedValue.reg.s32 = left->computedValue.reg.s16;
         else if (newLeft == NativeTypeKind::S64)
             left->computedValue.reg.s64 = left->computedValue.reg.s16;
+        else if (newLeft == NativeTypeKind::Int)
+            left->computedValue.reg.s64 = left->computedValue.reg.s16;
         else if (newLeft == NativeTypeKind::F32)
             left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.s16);
         else if (newLeft == NativeTypeKind::F64)
@@ -2438,6 +2448,8 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
         break;
     case NativeTypeKind::S32:
         if (newLeft == NativeTypeKind::S64)
+            left->computedValue.reg.s64 = left->computedValue.reg.s32;
+        else if (newLeft == NativeTypeKind::S64)
             left->computedValue.reg.s64 = left->computedValue.reg.s32;
         else if (newLeft == NativeTypeKind::F32)
             left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.s32);

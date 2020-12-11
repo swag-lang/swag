@@ -29,7 +29,7 @@ void TypeManager::setup()
     typeInfoAny       = new TypeInfoNative(NativeTypeKind::Any, "any", 2 * sizeof(Register), 0);
     typeInfoUndefined = new TypeInfoNative(NativeTypeKind::Undefined, "?", 0, 0);
 
-    typeInfoUInt = new TypeInfoNative(NativeTypeKind::UInt, "uint", 8, TYPEINFO_INTEGER);
+    typeInfoUInt = new TypeInfoNative(NativeTypeKind::UInt, "uint", 8, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
     typeInfoInt  = new TypeInfoNative(NativeTypeKind::Int, "int", 8, TYPEINFO_INTEGER);
 
     typeInfoUntypedInt = (TypeInfoNative*) typeInfoS32->clone();
