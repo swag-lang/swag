@@ -1632,11 +1632,9 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
+            fromNode->typeInfo = toType;
             if (!fromNode->castedTypeInfo)
-            {
-                fromNode->typeInfo       = toType;
                 fromNode->castedTypeInfo = fromType;
-            }
         }
     }
 
@@ -2686,6 +2684,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         toType   = TypeManager::concreteType(toType, CONCRETE_ENUM);
         fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     }
+
+    if ((castFlags & CASTFLAG_INDEX) && (fromType->flags & TYPEINFO_ENUM_INDEX))
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
 
     if (fromType == toType)
         return true;

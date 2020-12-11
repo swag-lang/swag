@@ -322,6 +322,7 @@ struct ByteCodeGenJob : public Job
     static void emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message = "dereferencing a null pointer");
     static void emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits);
     static void emitSafetyBoundCheckLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void emitSafetyBoundCheckLower64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static void emitSafetyBoundCheckLowerEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static void emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static void emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfoArray);

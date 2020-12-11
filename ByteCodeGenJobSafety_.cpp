@@ -54,10 +54,17 @@ void ByteCodeGenJob::emitSafetyBoundCheckLower(ByteCodeGenContext* context, uint
     PushICFlags ic(context, BCI_SAFETY);
 
     auto re = reserveRegisterRC(context);
-
     emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r0, r1, re);
     emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "index out of range";
+    freeRegisterRC(context, re);
+}
 
+void ByteCodeGenJob::emitSafetyBoundCheckLower64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    PushICFlags ic(context, BCI_SAFETY);
+    auto        re = reserveRegisterRC(context);
+    emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, re);
+    emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "index out of range";
     freeRegisterRC(context, re);
 }
 
@@ -66,11 +73,9 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerEq(ByteCodeGenContext* context, ui
     PushICFlags ic(context, BCI_SAFETY);
 
     auto re = reserveRegisterRC(context);
-
     emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, r0, r1, re);
     emitInstruction(context, ByteCodeOp::NegBool, re);
     emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "index out of range";
-
     freeRegisterRC(context, re);
 }
 
@@ -96,13 +101,10 @@ void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
-
-    auto r1 = reserveRegisterRC(context);
-
-    auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, r1);
-    inst->b.u32 = typeInfoArray->count;
-    emitSafetyBoundCheckLower(context, r0, r1);
-
+    auto        r1   = reserveRegisterRC(context);
+    auto        inst = emitInstruction(context, ByteCodeOp::SetImmediate64, r1);
+    inst->b.u64      = typeInfoArray->count;
+    emitSafetyBoundCheckLower64(context, r0, r1);
     freeRegisterRC(context, r1);
 }
 
@@ -146,8 +148,8 @@ void ByteCodeGenJob::emitSafetyMakeSlice(ByteCodeGenContext* context, AstArrayPo
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
         maxBound       = reserveRegisterRC(context);
-        auto inst      = emitInstruction(context, ByteCodeOp::SetImmediate32, maxBound);
-        inst->b.u32    = typeArray->count;
+        auto inst      = emitInstruction(context, ByteCodeOp::SetImmediate64, maxBound);
+        inst->b.u64    = typeArray->count;
         freeMaxBound   = true;
     }
     else if (typeVar->isNative(NativeTypeKind::String))

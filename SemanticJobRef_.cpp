@@ -8,13 +8,13 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-bool SemanticJob::boundCheck(SemanticContext* context, AstNode* arrayAccess, uint32_t maxCount)
+bool SemanticJob::boundCheck(SemanticContext* context, AstNode* arrayAccess, uint64_t maxCount)
 {
     if (!(arrayAccess->flags & AST_VALUE_COMPUTED))
         return true;
-    auto idx = arrayAccess->computedValue.reg.u32;
-    if (idx >= (uint32_t) maxCount)
-        return context->report({arrayAccess, format("index out of range (index is '%u', maximum index is '%u')", idx, maxCount - 1)});
+    auto idx = arrayAccess->computedValue.reg.u64;
+    if (idx >= maxCount)
+        return context->report({arrayAccess, format("index out of range (index is '%I64u', maximum index is '%I64u')", idx, maxCount - 1)});
     return true;
 }
 
@@ -261,7 +261,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
     arrayNode->flags |= AST_R_VALUE;
 
-    auto arrayType = TypeManager::concreteType(arrayNode->array->typeInfo, CONCRETE_ALIAS);
+    auto arrayType = TypeManager::concreteReferenceType(arrayNode->array->typeInfo, CONCRETE_ALIAS);
 
     // When we are building a pointer, this is fine to be const, because in fact we do no generate an address to modify the content
     // (or it will be done later on a pointer, and it will be const too)
@@ -270,15 +270,15 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         SWAG_VERIFY(!arrayType->isConst(), context->report({arrayNode->access, format("type '%s' is immutable and cannot be changed", arrayType->name.c_str())}));
     }
 
-    auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
-    if (!(accessType->flags & TYPEINFO_INTEGER))
+    auto accessType = TypeManager::concreteReferenceType(arrayNode->access->typeInfo);
+    if (!(accessType->flags & TYPEINFO_INTEGER) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
         return context->report({arrayNode->access, format("array access type should be integer ('%s' provided)", arrayNode->access->typeInfo->name.c_str())});
 
     switch (arrayType->kind)
     {
     case TypeInfoKind::Pointer:
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, "cannot dereference a 'void' pointer"}));
         if (typePtr->ptrCount == 1)
@@ -300,7 +300,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     case TypeInfoKind::Native:
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         if (arrayType->nativeType == NativeTypeKind::String)
         {
             arrayNode->typeInfo    = g_TypeMgr.typeInfoU8;
@@ -316,7 +316,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     case TypeInfoKind::Array:
     {
-        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = ByteCodeGenJob::emitArrayRef;
@@ -384,9 +384,6 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     arrayNode->flags |= AST_R_VALUE;
 
-    // Promote to 32 or 64 bits
-    SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
-
     auto accessType = TypeManager::concreteReferenceType(arrayNode->access->typeInfo);
     if (!(accessType->flags & TYPEINFO_INTEGER) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
         return context->report({arrayNode->access, format("array access type should be integer ('%s' provided)", arrayNode->access->typeInfo->name.c_str())});
@@ -396,6 +393,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     // Can we dereference the string at compile time ?
     if (arrayType->isNative(NativeTypeKind::String))
     {
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         if (arrayNode->access->flags & AST_VALUE_COMPUTED)
         {
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
@@ -416,6 +414,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, "cannot dereference a 'void' pointer"}));
         if (typePtr->ptrCount == 1)
@@ -437,6 +436,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     case TypeInfoKind::Array:
     {
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         auto typePtr        = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
@@ -449,7 +449,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             {
                 SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
                 auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->storageOffset);
-                ptr += arrayNode->access->computedValue.reg.u32 * typePtr->finalType->sizeOf;
+                ptr += arrayNode->access->computedValue.reg.u64 * typePtr->finalType->sizeOf;
                 if (derefConstantValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
                     arrayNode->setFlagsValueIsComputed();
             }
@@ -460,6 +460,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     case TypeInfoKind::Slice:
     {
+        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
         auto typePtr        = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
@@ -467,11 +468,13 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     }
 
     case TypeInfoKind::Variadic:
+        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
         arrayNode->typeInfo = g_TypeMgr.typeInfoAny;
         break;
 
     case TypeInfoKind::TypedVariadic:
     {
+        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
         auto typeVariadic   = CastTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
         arrayNode->typeInfo = typeVariadic->rawType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
@@ -479,6 +482,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     }
 
     case TypeInfoKind::Struct:
+        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
+
         // Only the top level ArrayPointerIndex node will deal with the call
         if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)
         {

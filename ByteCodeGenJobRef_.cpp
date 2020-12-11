@@ -60,7 +60,6 @@ bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 {
     auto node          = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    int  sizeOf        = node->typeInfo->sizeOf;
     auto typeArray     = TypeManager::concreteType(node->array->typeInfo, CONCRETE_ALIAS);
     auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
 
@@ -76,9 +75,10 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
         emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
 
     // Pointer increment
+    auto sizeOf = node->typeInfo->sizeOf;
     if (sizeOf > 1)
-        emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
-    emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+    emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
 
     freeRegisterRC(context, node->access);
@@ -305,7 +305,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        int  sizeOf        = typeInfoArray->pointedType->sizeOf;
+        auto sizeOf        = typeInfoArray->pointedType->sizeOf;
 
         if (!node->access->hasComputedValue())
             emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
@@ -315,8 +315,8 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         if (!node->access->isConstant0())
         {
             if (sizeOf > 1)
-                emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
-            emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+            emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
         if (typeInfoArray->pointedType->isNative(NativeTypeKind::String))

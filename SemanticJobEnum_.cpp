@@ -40,7 +40,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     }
 
     // By default, raw type is s32, except for flags and index
-    TypeInfo* rawTypeInfo = (enumNode->attributeFlags & (ATTRIBUTE_ENUM_FLAGS | ATTRIBUTE_INDEX)) ? g_TypeMgr.typeInfoU32 : g_TypeMgr.typeInfoS32;
+    TypeInfo* rawTypeInfo = (enumNode->attributeFlags & (ATTRIBUTE_ENUM_FLAGS | ATTRIBUTE_ENUM_INDEX)) ? g_TypeMgr.typeInfoU32 : g_TypeMgr.typeInfoS32;
     if (!typeNode->childs.empty())
         rawTypeInfo = typeNode->childs[0]->typeInfo;
 
@@ -50,28 +50,17 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     if (enumNode->attributeFlags & ATTRIBUTE_ENUM_FLAGS)
     {
         typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
-
         auto concreteType = TypeManager::concreteType(rawTypeInfo);
-        if (concreteType != g_TypeMgr.typeInfoU8 &&
-            concreteType != g_TypeMgr.typeInfoU16 &&
-            concreteType != g_TypeMgr.typeInfoU32 &&
-            concreteType != g_TypeMgr.typeInfoU64)
-        {
-            return context->report({typeNode->childs[0], format("invalid type '%s' for enum flags (should be u8, u16, u32 or u64)", rawTypeInfo->name.c_str())});
-        }
+        if (!(concreteType->flags & TYPEINFO_INTEGER) || !(concreteType->flags & TYPEINFO_UNSIGNED))
+            return context->report({typeNode->childs[0], format("invalid type '%s' for enum flags (should be unsigned integer)", rawTypeInfo->name.c_str())});
     }
 
-    if (enumNode->attributeFlags & ATTRIBUTE_INDEX)
+    if (enumNode->attributeFlags & ATTRIBUTE_ENUM_INDEX)
     {
         typeInfo->flags |= TYPEINFO_ENUM_INDEX;
-
         auto concreteType = TypeManager::concreteType(rawTypeInfo);
-        if (concreteType != g_TypeMgr.typeInfoU8 &&
-            concreteType != g_TypeMgr.typeInfoU16 &&
-            concreteType != g_TypeMgr.typeInfoU32)
-        {
-            return context->report({typeNode->childs[0], format("invalid type '%s' for enum index (should be u8, u16 or u32)", rawTypeInfo->name.c_str())});
-        }
+        if (!(concreteType->flags & TYPEINFO_INTEGER))
+            return context->report({typeNode->childs[0], format("invalid type '%s' for enum index (should be integer)", rawTypeInfo->name.c_str())});
     }
 
     return true;
