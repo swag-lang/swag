@@ -270,11 +270,16 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
 
     auto expression = node->expression;
     SWAG_CHECK(resolveIntrinsicCountOf(context, expression, expression->typeInfo));
+    if (context->result != ContextResult::Done)
+        return true;
+
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, expression->typeInfo, nullptr, expression, CASTFLAG_COERCE_FULL));
+    node->typeInfo = expression->typeInfo;
 
     // Do not evaluate loop if it's constant and 0
     if (module->mustOptimizeBC(node) && (node->expression->flags & AST_VALUE_COMPUTED))
     {
-        if (!node->expression->computedValue.reg.u32)
+        if (!node->expression->computedValue.reg.u64)
         {
             node->expression->flags |= AST_NO_BYTECODE;
             node->block->flags |= AST_NO_BYTECODE;
@@ -282,7 +287,6 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
         }
     }
 
-    node->typeInfo                     = g_TypeMgr.typeInfoU32;
     node->byteCodeFct                  = ByteCodeGenJob::emitLoop;
     node->expression->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
     node->block->byteCodeAfterFct      = ByteCodeGenJob::emitLoopAfterBlock;

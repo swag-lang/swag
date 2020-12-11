@@ -235,10 +235,10 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
 
         // If opCount has been inlined, then the register of the inline block contains the result
         if (loopNode->childs.back()->kind == AstNodeKind::Inline)
-        {
             node->resultRegisterRC = loopNode->childs.back()->resultRegisterRC;
-        }
     }
+
+    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
 
     // To store the 'index' of the loop
     if (loopNode->needIndex())
@@ -251,7 +251,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
     loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
     loopNode->seekJumpExpression       = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfZero32, node->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRC);
 
     // Decrement the loop variable
     emitInstruction(context, ByteCodeOp::DecrementRA64, node->resultRegisterRC);
