@@ -498,6 +498,16 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer - IMMB_S32(ip);
         break;
     }
+    case ByteCodeOp::IncPointer64:
+    {
+        registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer + IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::DecPointer64:
+    {
+        registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer - IMMB_S64(ip);
+        break;
+    }
     case ByteCodeOp::DeRef8:
     {
         registersRC[ip->a.u32].u64 = *(uint8_t*) registersRC[ip->b.u32].pointer;
@@ -856,6 +866,16 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::Div64byVB32:
     {
         registersRC[ip->a.u32].s64 /= ip->b.u32;
+        break;
+    }
+    case ByteCodeOp::Mul64byVB64:
+    {
+        registersRC[ip->a.u32].s64 *= ip->b.u64;
+        break;
+    }
+    case ByteCodeOp::Div64byVB64:
+    {
+        registersRC[ip->a.u32].s64 /= ip->b.u64;
         break;
     }
 

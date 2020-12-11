@@ -1580,16 +1580,90 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             }
             break;
+        case ByteCodeOp::IncPointer64:
+            if (ip->flags & BCI_IMM_B)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            BackendX64Inst::emit_SignedExtend_ECX_To_RCX(pp);
+            if (ip->a.u32 == ip->c.u32)
+                BackendX64Inst::emit_Op64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI, X64Op::ADD);
+            else
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::ADD);
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            }
+            break;
+        case ByteCodeOp::DecPointer64:
+            if (ip->flags & BCI_IMM_B)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            BackendX64Inst::emit_SignedExtend_ECX_To_RCX(pp);
+            if (ip->a.u32 == ip->c.u32)
+                BackendX64Inst::emit_Op64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI, X64Op::SUB);
+            else
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::SUB);
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            }
+            break;
 
         case ByteCodeOp::Mul64byVB32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            concat.addString3("\x48\x69\xC0"); // imul rax, rax, ????????
-            concat.addU32(ip->b.u32);
+            if (ip->b.u32 <= 0x7F)
+            {
+                concat.addString3("\x48\x6B\xC0"); // imul rax, ??
+                concat.addU8(ip->b.u8);
+            }
+            else if (ip->b.u32 <= 0x7FFFFFFF)
+            {
+                concat.addString3("\x48\x69\xC0"); // imul rax, ????????
+                concat.addU32(ip->b.u32);
+            }
+            else
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
+                concat.addString4("\x48\x0F\xAF\xC1"); // imul rax, rcx
+                concat.addU32(ip->b.u32);
+            }
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
+
         case ByteCodeOp::Div64byVB32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
+            BackendX64Inst::emit_Clear64(pp, RDX);
+            concat.addString3("\x48\xf7\xf9"); // idiv rax, rcx
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+
+        case ByteCodeOp::Mul64byVB64:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if (ip->b.u64 <= 0x7F)
+            {
+                concat.addString3("\x48\x6B\xC0"); // imul rax, ??
+                concat.addU8(ip->b.u8);
+            }
+            else if (ip->b.u64 <= 0x7FFFFFFF)
+            {
+                concat.addString3("\x48\x69\xC0"); // imul rax, ????????
+                concat.addU32(ip->b.u32);
+            }
+            else
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
+                concat.addString4("\x48\x0F\xAF\xC1"); // imul rax, rcx
+                concat.addU64(ip->b.u64);
+            }
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+
+        case ByteCodeOp::Div64byVB64:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
             BackendX64Inst::emit_Clear64(pp, RDX);
             concat.addString3("\x48\xf7\xf9"); // idiv rax, rcx
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
