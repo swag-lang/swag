@@ -680,8 +680,8 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         node->resultRegisterRC = exprNode->resultRegisterRC;
         if (node->resultRegisterRC.size() == 1)
             node->resultRegisterRC += reserveRegisterRC(context);
-        auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1]);
-        inst->b.u32 = fromTypeArray->count;
+        auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
+        inst->b.u64 = fromTypeArray->count;
         transformResultToLinear2(context, node);
     }
     else

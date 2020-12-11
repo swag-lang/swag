@@ -214,6 +214,17 @@ namespace Ast
             visit(child, fctor);
     }
 
+    AstNode* cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags)
+    {
+        if (!source)
+            return nullptr;
+        CloneContext cloneContext;
+        cloneContext.parent     = parent;
+        cloneContext.forceFlags = forceFlags;
+        cloneContext.rawClone   = true;
+        return source->clone(cloneContext);
+    }
+
     AstNode* clone(AstNode* source, AstNode* parent, uint64_t forceFlags)
     {
         if (!source)

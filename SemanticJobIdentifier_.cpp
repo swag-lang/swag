@@ -1530,7 +1530,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
         // X.Y.call(...) => X.Y.call(X.Y, ...)
         for (auto child : identifierRef->childs)
         {
-            auto copyChild = Ast::clone(child, idRef);
+            auto copyChild = Ast::cloneRaw(child, idRef);
             if (child == identifierRef->previousResolvedNode)
             {
                 copyChild->flags |= AST_TO_UFCS;
@@ -1559,7 +1559,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
             // We copy instead of moving in case this will be evaluated another time (inline)
             for (auto child : identifierRef->childs)
             {
-                auto copyChild = Ast::clone(child, idRef);
+                auto copyChild = Ast::cloneRaw(child, idRef);
                 child->flags |= AST_NO_BYTECODE;
                 if (child == identifierRef->previousResolvedNode)
                 {

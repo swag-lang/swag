@@ -675,7 +675,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
                 RegisterList r0 = reserveRegisterRC(context);
                 RegisterList r1 = reserveRegisterRC(context);
 
-                emitInstruction(context, ByteCodeOp::SetImmediate32, r0[0])->b.u32 = typeArray->totalCount;
+                emitInstruction(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
 
                 auto inst     = emitInstruction(context, ByteCodeOp::MakeStackPointer, r1);
                 inst->b.u32   = one.storageOffset;

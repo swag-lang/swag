@@ -62,8 +62,11 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             node->parent->resultRegisterRC = node->resultRegisterRC;
 
             SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->resolvedSymbolOverload->storageOffset;
-            emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1])->b.u32         = typeArray->count;
+            auto inst   = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0]);
+            inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
+
+            inst        = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
+            inst->b.u64 = typeArray->count;
             return true;
         }
 
@@ -89,7 +92,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             auto inst                      = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC);
             SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
             inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
-            emitInstruction(context, ByteCodeOp::SetImmediate32, node->resultRegisterRC[1], (uint32_t) node->resolvedSymbolOverload->computedValue.text.length());
+
+            inst        = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
+            inst->b.u64 = node->resolvedSymbolOverload->computedValue.text.length();
             return true;
         }
 

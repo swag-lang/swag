@@ -92,7 +92,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint
     if (!mustEmitSafety(context))
         return;
 
-    emitSafetyBoundCheckLower(context, r0, r1);
+    emitSafetyBoundCheckLower64(context, r0, r1);
 }
 
 void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfoArray)

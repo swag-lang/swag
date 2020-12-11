@@ -326,7 +326,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     case TypeInfoKind::Slice:
     {
-        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         auto typePtr           = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = ByteCodeGenJob::emitSliceRef;
@@ -460,7 +460,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     case TypeInfoKind::Slice:
     {
-        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         auto typePtr        = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
@@ -468,13 +468,13 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     }
 
     case TypeInfoKind::Variadic:
-        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         arrayNode->typeInfo = g_TypeMgr.typeInfoAny;
         break;
 
     case TypeInfoKind::TypedVariadic:
     {
-        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         auto typeVariadic   = CastTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
         arrayNode->typeInfo = typeVariadic->rawType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);

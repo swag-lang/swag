@@ -87,8 +87,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
 {
-    auto node   = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    int  sizeOf = node->typeInfo->sizeOf;
+    auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
     if (!(node->access->doneFlags & AST_DONE_CAST1))
     {
@@ -106,9 +105,10 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
     // Pointer increment
+    auto sizeOf = node->typeInfo->sizeOf;
     if (sizeOf > 1)
-        emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
-    emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+    emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
 
     freeRegisterRC(context, node->access);
@@ -257,14 +257,14 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
         auto typeInfoSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        int  sizeOf        = typeInfoSlice->pointedType->sizeOf;
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
         {
+            auto sizeOf = typeInfoSlice->pointedType->sizeOf;
             if (sizeOf > 1)
-                emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
-            emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+            emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
         if (typeInfoSlice->pointedType->isNative(NativeTypeKind::String))
@@ -336,8 +336,8 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
         {
-            emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = 2 * sizeof(Register); // 2 is sizeof(any)
-            emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = 2 * sizeof(Register); // 2 is sizeof(any)
+            emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
         SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, g_TypeMgr.typeInfoAny, false));
@@ -356,10 +356,10 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         if (!node->access->isConstant0())
         {
             if (rawType->kind == TypeInfoKind::Native && rawType->sizeOf < sizeof(Register))
-                emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = rawType->sizeOf;
+                emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = rawType->sizeOf;
             else
-                emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = rawType->numRegisters() * sizeof(Register);
-            emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = rawType->numRegisters() * sizeof(Register);
+            emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
         SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, rawType, false));

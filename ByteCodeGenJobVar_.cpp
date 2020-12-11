@@ -132,7 +132,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                         // Need to loop on every element of the array in order to initialize them
                         RegisterList r0;
                         reserveRegisterRC(context, r0, 2);
-                        emitInstruction(context, ByteCodeOp::SetImmediate32, r0[0])->b.u32 = typeArray->totalCount;
+                        emitInstruction(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
                         emitInstruction(context, ByteCodeOp::ClearRA, r0[1]);
                         auto seekJump = context->bc->numInstructions;
 

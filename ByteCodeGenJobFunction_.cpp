@@ -113,9 +113,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     // Need to loop on every element of the array in order to initialize them
                     RegisterList r0 = reserveRegisterRC(context);
 
-                    emitInstruction(context, ByteCodeOp::SetImmediate32, r0)->b.u32 = typeArray->totalCount;
-                    auto seekJump                                                   = context->bc->numInstructions;
+                    emitInstruction(context, ByteCodeOp::SetImmediate64, r0)->b.u64 = typeArray->totalCount;
 
+                    auto seekJump = context->bc->numInstructions;
                     SWAG_CHECK(emitStructCopyMoveCall(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, typeArrayStruct, returnExpression));
 
                     auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->ownerInline->resultRegisterRC, typeArrayStruct->sizeOf, node->ownerInline->resultRegisterRC);
@@ -184,7 +184,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     RegisterList r0 = reserveRegisterRC(context);
                     RegisterList r1 = reserveRegisterRC(context);
 
-                    emitInstruction(context, ByteCodeOp::SetImmediate32, r0)->b.u32 = typeArray->totalCount;
+                    emitInstruction(context, ByteCodeOp::SetImmediate64, r0)->b.u64 = typeArray->totalCount;
                     emitInstruction(context, ByteCodeOp::CopyRRtoRC, r1, 0);
                     auto seekJump = context->bc->numInstructions;
 
@@ -841,7 +841,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
             auto        offset = context->sourceFile->module->constantSegment.addString(str);
             SWAG_ASSERT(offset != UINT32_MAX);
             emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);
-            emitInstruction(context, ByteCodeOp::SetImmediate32, regList[1], (uint32_t) str.length());
+            emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = str.length();
             break;
         }
         default:
@@ -1206,7 +1206,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         inst->c.b       = foreign;
         inst->d.pointer = (uint8_t*) typeInfoFunc;
 
-        emitInstruction(context, ByteCodeOp::SetImmediate32, r0[1])->b.u64 = numVariadic;
+        emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
         emitInstruction(context, ByteCodeOp::PushRAParam2, r0[1], r0[0]);
         maxCallParams += 2;
 
@@ -1228,7 +1228,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         inst->c.b       = foreign;
         inst->d.pointer = (uint8_t*) typeInfoFunc;
 
-        emitInstruction(context, ByteCodeOp::SetImmediate32, r0[1])->b.u64 = numVariadic;
+        emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
         emitInstruction(context, ByteCodeOp::PushRAParam2, r0[1], r0[0]);
         maxCallParams += 2;
 
