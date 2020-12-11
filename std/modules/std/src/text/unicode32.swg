@@ -183,7 +183,7 @@ func compare(src, dst: const [..] char, ignoreCase = false)->s32
     }
     else
     {
-        result = memory.compare(@dataof(src), @dataof(dst), minLen)
+        result = memory.compare(@dataof(src), @dataof(dst), cast(uint) minLen)
     }
 
     if result != 0 return math.sign(result)

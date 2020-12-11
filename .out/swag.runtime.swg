@@ -73,14 +73,14 @@ func __ftoa(result: *u8, value: f64)
 }
 
 ////////////////////////////////////////////////////////////
-func @memcmp(dst, src: const *void, size: u32)->s32
+func @memcmp(dst, src: const *void, size: uint)->s32
 {
     if !size
         return 0
 
     p1 := cast(const *s8) dst
     p2 := cast(const *s8) src
-    loop i: size
+    loop i: cast(u32) size
     {
         if p1[i] != p2[i]
             return p1[i] - p2[i]
@@ -110,7 +110,7 @@ func @strcmp(str1: string, str2: string)->bool
     data2 := @dataof(str2)
     if data1 == null || data2 == null
         return data1 == data2
-    return !@memcmp(data1, data2, num1)
+    return !@memcmp(data1, data2, cast(uint) num1)
 }
 
 ////////////////////////////////////////////////////////////

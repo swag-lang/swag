@@ -160,9 +160,9 @@ func aaa(ptr: *s64)
         {
             x := @[1, 2, 3]
             y := @[1, 3, 3]
-            @print(cast(s64) @memcmp(&x[0], &y[0], 3 * 4'u32))
+            @print(cast(s64) @memcmp(&x[0], &y[0], 3'uint * 4))
             z := @[1, 2, 3]
-            @print(cast(s64) @memcmp(&x[0], &z[0], 3 * 4'u32))
+            @print(cast(s64) @memcmp(&x[0], &z[0], 3'uint * 4))
         }
 
         {

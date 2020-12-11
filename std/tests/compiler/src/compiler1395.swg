@@ -1,6 +1,6 @@
 struct DateTime
 {
-    day:			u16     
+    day:			u16
     dayOfWeek:		u16
     month:			u16
     year:			u16
@@ -14,7 +14,7 @@ impl DateTime
 {
     func opEquals(self, other: Self)->bool
     {
-        return @memcmp(self, other, @sizeof(Self)) == 0
+        return @memcmp(self, other, cast(uint) @sizeof(Self)) == 0
     }
 }
 

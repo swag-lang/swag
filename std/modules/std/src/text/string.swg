@@ -100,14 +100,14 @@ public impl String
             return true
         if length != @countof(other)
             return false
-        return memory.compare(buffer, @dataof(other), length) == 0
+        return memory.compare(buffer, @dataof(other), cast(uint) length) == 0
     }
 
     func opEquals(using self, other: Self)->bool
     {
         if length != other.length
             return false
-        return memory.compare(buffer, other.buffer, length) == 0
+        return memory.compare(buffer, other.buffer, cast(uint) length) == 0
     }
 
     func opCmp(using self, other: Self)->s32

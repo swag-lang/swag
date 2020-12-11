@@ -8,7 +8,7 @@ func copy(dest: *void, src: const *void, size: uint)
 }
 
 // Compare two blocks of memory
-func compare(dest, src: const *void, size: u32)->s32
+func compare(dest, src: const *void, size: uint)->s32
 {
     if !size return 0
     return @memcmp(dest, src, size)
