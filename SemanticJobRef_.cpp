@@ -270,9 +270,6 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         SWAG_VERIFY(!arrayType->isConst(), context->report({arrayNode->access, format("type '%s' is immutable and cannot be changed", arrayType->name.c_str())}));
     }
 
-    // Promote to 32 or 64 bits
-    SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
-
     auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
     if (!(accessType->flags & TYPEINFO_INTEGER))
         return context->report({arrayNode->access, format("array access type should be integer ('%s' provided)", arrayNode->access->typeInfo->name.c_str())});
@@ -281,6 +278,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, "cannot dereference a 'void' pointer"}));
         if (typePtr->ptrCount == 1)
@@ -302,6 +300,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     case TypeInfoKind::Native:
     {
+        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
         if (arrayType->nativeType == NativeTypeKind::String)
         {
             arrayNode->typeInfo    = g_TypeMgr.typeInfoU8;
@@ -317,6 +316,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     case TypeInfoKind::Array:
     {
+        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
         auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = ByteCodeGenJob::emitArrayRef;
@@ -326,6 +326,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     case TypeInfoKind::Slice:
     {
+        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
         auto typePtr           = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = ByteCodeGenJob::emitSliceRef;
@@ -333,6 +334,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     }
 
     case TypeInfoKind::Struct:
+        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
         if (arrayType->flags & TYPEINFO_STRUCT_IS_TUPLE)
             return context->report({arrayNode->array, "cannot dereference a tuple type"});
 
