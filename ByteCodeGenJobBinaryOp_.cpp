@@ -39,9 +39,9 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
     else if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
-        int  sizeOf  = typePtr->pointedType->sizeOf;
+        auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
-            emitInstruction(context, ByteCodeOp::Mul64byVB32, r1)->b.u32 = sizeOf;
+            emitInstruction(context, ByteCodeOp::Mul64byVB32, r1)->b.u64 = sizeOf;
         emitInstruction(context, ByteCodeOp::IncPointer32, r0, r1, r2);
         return true;
     }

@@ -60,7 +60,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         else
         {
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r1[0])->flags |= BCI_IMM_B;
+            emitInstruction(context, ByteCodeOp::IncPointer64, r0, 8, r1[0])->flags |= BCI_IMM_B;
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r1[0], r1[1]);
         }
 
@@ -82,7 +82,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             auto r2        = reserveRegisterRC(context);
 
             emitInstruction(context, ByteCodeOp::SetImmediate64, r2)->b.u64 = typeArray->count;
-            emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r1[0])->flags |= BCI_IMM_B;
+            emitInstruction(context, ByteCodeOp::IncPointer64, r0, 8, r1[0])->flags |= BCI_IMM_B;
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r1[0], r2);
 
             freeRegisterRC(context, r2);
@@ -90,7 +90,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         else
         {
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r1[0])->flags |= BCI_IMM_B;
+            emitInstruction(context, ByteCodeOp::IncPointer64, r0, 8, r1[0])->flags |= BCI_IMM_B;
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r1[0], r1[1]);
         }
 
@@ -101,7 +101,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     {
         auto r2 = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-        emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r2)->flags |= BCI_IMM_B;
+        emitInstruction(context, ByteCodeOp::IncPointer64, r0, 8, r2)->flags |= BCI_IMM_B;
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r2, r1[1]);
         freeRegisterRC(context, r2);
         return true;
@@ -144,7 +144,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         {
             auto r2 = reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r2)->flags |= BCI_IMM_B;
+            emitInstruction(context, ByteCodeOp::IncPointer64, r0, 8, r2)->flags |= BCI_IMM_B;
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r2, r1[1]);
             freeRegisterRC(context, r2);
         }
@@ -153,7 +153,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     {
         auto r2 = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-        emitInstruction(context, ByteCodeOp::IncPointer32, r0, 8, r2)->flags |= BCI_IMM_B;
+        emitInstruction(context, ByteCodeOp::IncPointer64, r0, 8, r2)->flags |= BCI_IMM_B;
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r2, r1[1]);
         freeRegisterRC(context, r2);
         return true;

@@ -1,3 +1,4 @@
+#[swag.printbc]
 #test
 {
     var arr : [2, 2] u32 = @[[10, 20], [30, 40]]
