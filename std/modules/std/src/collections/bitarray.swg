@@ -36,7 +36,7 @@ public impl BitArray
 
     func opDrop(using self)
     {
-        self.free()
+        free()
     }
 
     func opPostCopy(using self)
@@ -45,7 +45,7 @@ public impl BitArray
         {
             otherBuffer := buffer
             buffer = null
-            self.reserve(count)
+            reserve(count)
             memory.copy(buffer, otherBuffer, cast(uint) capacity)
         }
     }
@@ -53,23 +53,23 @@ public impl BitArray
     // Gets the value of the bit at a specific position
     func opIndex(using self, index: u32)->bool
     {
-        return self.get(index)
+        return get(index)
     }
 
     // Sets the value of the bit at a specific position
     func opIndexAffect(using self, index: u32, value: bool)
     {
-        self.set(index, value)
+        set(index, value)
     }
 
     // Initializes a BitArray that contains bit values copied from the specified array of booleans
     func opAffect(using self, slice: const [..] bool)
     {
         len := @countof(slice)
-        self.reserve(len)
+        reserve(len)
         buffer[len >> 5] = 0
         visit value, index: slice
-            self.set(index, value)
+            set(index, value)
     }
 
     // Compares two arrays, and returns 'true' if they are equal
@@ -119,7 +119,7 @@ public impl BitArray
     {
         if !maxBits
         {
-            self.free()
+            free()
             buffer = null
             count, capacity = 0
             return
@@ -131,13 +131,13 @@ public impl BitArray
             capacity += 1
 
         capacity *= 4
-        self.realloc(capacity)
+        realloc(capacity)
     }
 
     // Reserve the given amount of bits and set an initial value to all bits
     func reserve(using self, maxBits: u32, initialValue: bool)
     {
-        self.reserve(maxBits)
+        reserve(maxBits)
         memory.set(buffer, initialValue ? 0xFF : 0x00, cast(uint) capacity)
     }
 
