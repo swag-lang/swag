@@ -30,5 +30,26 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             ip[1].op                      = ByteCodeOp::SetImmediate32;
             ip[1].b.u32                   = 1;
         }
+
+        // Remove operators which do nothing
+        if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C) && ip->a.u32 == ip->c.u32)
+        {
+            switch (ip->op)
+            {
+            case ByteCodeOp::BinOpPlusS32:
+            case ByteCodeOp::BinOpMinusS32:
+            case ByteCodeOp::IncPointer32:
+            case ByteCodeOp::DecPointer32:
+                if (ip->b.u32 == 0)
+                    setNop(context, ip);
+                break;
+
+            case ByteCodeOp::BinOpPlusS64:
+            case ByteCodeOp::BinOpMinusS64:
+                if (ip->b.u64 == 0)
+                    setNop(context, ip);
+                break;
+            }
+        }
     }
 }
