@@ -372,16 +372,28 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->b.b = ip->c.s32 >= 0 ? true : false;
                 OK();
                 break;
-            case ByteCodeOp::DecrementRA32:
-                ip->op = ByteCodeOp::SetImmediate32;
-                ip->b.u32 -= 1;
-                OK();
-                break;
+
             case ByteCodeOp::IncrementRA32:
                 ip->op = ByteCodeOp::SetImmediate32;
                 ip->b.u32 += 1;
                 OK();
                 break;
+            case ByteCodeOp::DecrementRA32:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u32 -= 1;
+                OK();
+                break;
+            case ByteCodeOp::IncrementRA64:
+                ip->op = ByteCodeOp::SetImmediate64;
+                ip->b.u64 += 1;
+                OK();
+                break;
+            case ByteCodeOp::DecrementRA64:
+                ip->op = ByteCodeOp::SetImmediate64;
+                ip->b.u64 -= 1;
+                OK();
+                break;
+
             case ByteCodeOp::NegS32:
                 ip->op    = ByteCodeOp::SetImmediate32;
                 ip->b.s32 = -ip->b.s32;
@@ -563,14 +575,29 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->b.u32 = ip->c.u32 + ip->b.u32;
                 OK();
                 break;
+            case ByteCodeOp::Add64byVB64:
+                ip->op    = ByteCodeOp::SetImmediate64;
+                ip->b.u64 = ip->c.u64 + ip->b.u64;
+                OK();
+                break;
             case ByteCodeOp::Mul64byVB32:
                 ip->op    = ByteCodeOp::SetImmediate64;
                 ip->b.s64 = ip->c.s64 * ip->b.s32;
                 OK();
                 break;
+            case ByteCodeOp::Mul64byVB64:
+                ip->op    = ByteCodeOp::SetImmediate64;
+                ip->b.s64 = ip->c.s64 * ip->b.s64;
+                OK();
+                break;
             case ByteCodeOp::Div64byVB32:
                 ip->op    = ByteCodeOp::SetImmediate64;
                 ip->b.s64 = ip->c.s64 / ip->b.s32;
+                OK();
+                break;
+            case ByteCodeOp::Div64byVB64:
+                ip->op    = ByteCodeOp::SetImmediate64;
+                ip->b.s64 = ip->c.s64 / ip->b.s64;
                 OK();
                 break;
             case ByteCodeOp::ClearMaskU32:

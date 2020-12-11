@@ -1071,13 +1071,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(pp.cst0_i64, r0);
             break;
         }
-        case ByteCodeOp::DecrementRA32:
-        {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateSub(builder.CreateLoad(r0), pp.cst1_i32);
-            builder.CreateStore(v0, r0);
-            break;
-        }
+
         case ByteCodeOp::IncrementRA32:
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
@@ -1085,10 +1079,39 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
+        case ByteCodeOp::DecrementRA32:
+        {
+            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
+            auto v0 = builder.CreateSub(builder.CreateLoad(r0), pp.cst1_i32);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::IncrementRA64:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), pp.cst1_i64);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::DecrementRA64:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateSub(builder.CreateLoad(r0), pp.cst1_i64);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::Add32byVB32:
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateAdd(builder.CreateLoad(r0), CST_RB32);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::Add64byVB64:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), CST_RB64);
             builder.CreateStore(v0, r0);
             break;
         }

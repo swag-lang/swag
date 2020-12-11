@@ -423,17 +423,33 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
         case ByteCodeOp::Add32byVB32:
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            if (ip->b.u32 <= 0x7F) // add [rax], ?
+            if (ip->b.u32 <= 0x7F)
             {
-                concat.addU8(0x83);
-                concat.addU8(0x00);
-                concat.addU8((uint8_t) ip->b.u32);
+                concat.addString2("\x83\x00"); // add [rax], ??
+                concat.addU8(ip->b.u8);
             }
             else
             {
-                concat.addU8(0x81);
-                concat.addU8(0x00);
-                concat.addU32((uint8_t) ip->b.u32);
+                concat.addString2("\x81\x00"); // add [rax], ??????
+                concat.addU32(ip->b.u32);
+            }
+            break;
+        case ByteCodeOp::Add64byVB64:
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if (ip->b.u64 <= 0x7F) // add [rax], ??
+            {
+                concat.addString3("\x48\x83\x00");
+                concat.addU8(ip->b.u8);
+            }
+            else if (ip->b.u64 <= 0x7FFFFFFF) // add [rax], ????????
+            {
+                concat.addString3("\x48\x81\x00");
+                concat.addU32(ip->b.u32);
+            }
+            else
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
+                concat.addString3("\x48\x01\x08"); // add [rax], rcx
             }
             break;
 
@@ -1355,6 +1371,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::DecrementRA32:
             BackendX64Inst::emit_Dec32_Indirect(pp, regOffset(ip->a.u32), RDI);
+            break;
+        case ByteCodeOp::IncrementRA64:
+            BackendX64Inst::emit_Inc64_Indirect(pp, regOffset(ip->a.u32), RDI);
+            break;
+        case ByteCodeOp::DecrementRA64:
+            BackendX64Inst::emit_Dec64_Indirect(pp, regOffset(ip->a.u32), RDI);
             break;
 
         case ByteCodeOp::DeRef8:

@@ -665,19 +665,36 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u64 = 0;
         break;
     }
-    case ByteCodeOp::DecrementRA32:
-    {
-        registersRC[ip->a.u32].u32--;
-        break;
-    }
+
     case ByteCodeOp::IncrementRA32:
     {
         registersRC[ip->a.u32].u32++;
         break;
     }
+    case ByteCodeOp::DecrementRA32:
+    {
+        registersRC[ip->a.u32].u32--;
+        break;
+    }
+    case ByteCodeOp::IncrementRA64:
+    {
+        registersRC[ip->a.u32].u64++;
+        break;
+    }
+    case ByteCodeOp::DecrementRA64:
+    {
+        registersRC[ip->a.u32].u64--;
+        break;
+    }
+
     case ByteCodeOp::Add32byVB32:
     {
         registersRC[ip->a.u32].u32 += ip->b.u32;
+        break;
+    }
+    case ByteCodeOp::Add64byVB64:
+    {
+        registersRC[ip->a.u32].u64 += ip->b.u64;
         break;
     }
 
