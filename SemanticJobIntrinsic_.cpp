@@ -222,7 +222,6 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     else
     {
         SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({node, format("expression should be of type integer, but is '%s'", typeInfo->name.c_str())}));
-        SWAG_VERIFY(typeInfo->sizeOf <= 4, context->report({node, format("expression should be a 32 bit integer, but is '%s'", typeInfo->name.c_str())}));
         if (node->flags & AST_VALUE_COMPUTED)
         {
             if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
@@ -240,6 +239,11 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
                 case NativeTypeKind::S32:
                     if (node->computedValue.reg.s32 < 0)
                         return context->report({node, format("constant value should be unsigned, but is '%d'", node->computedValue.reg.s32)});
+                    break;
+                case NativeTypeKind::S64:
+                case NativeTypeKind::Int:
+                    if (node->computedValue.reg.s64 < 0)
+                        return context->report({node, format("constant value should be unsigned, but is '%I64d'", node->computedValue.reg.s64)});
                     break;
                 }
             }

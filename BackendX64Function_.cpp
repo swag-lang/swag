@@ -1614,7 +1614,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             if (ip->flags & BCI_IMM_C)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->c.uint, RAX);
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u64, RAX);
             else
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
@@ -1627,7 +1627,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             if (ip->flags & BCI_IMM_C)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->c.uint, RAX);
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u64, RAX);
             else
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
