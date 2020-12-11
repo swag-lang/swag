@@ -697,7 +697,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             if (ip->flags & BCI_IMM_B)
                 r2 = builder.getInt64(ip->b.u64);
             else
-                r2 = builder.CreateLoad(TO_PTR_I64(GEP_I32(allocR, ip->b.u32)));
+                r2 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
             if (ip->op == ByteCodeOp::DecPointer64)
                 r2 = builder.CreateNeg(r2);
             auto r3 = builder.CreateInBoundsGEP(r1, r2);
@@ -763,28 +763,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::Mul64byVB32:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = llvm::ConstantInt::get(builder.getInt64Ty(), ip->b.u32);
+            auto r1 = builder.getInt64(ip->b.u32);
             builder.CreateStore(builder.CreateMul(builder.CreateLoad(r0), r1), r0);
             break;
         }
         case ByteCodeOp::Div64byVB32:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = llvm::ConstantInt::get(builder.getInt64Ty(), ip->b.u32);
+            auto r1 = builder.getInt64(ip->b.u32);
             builder.CreateStore(builder.CreateUDiv(builder.CreateLoad(r0), r1), r0);
             break;
         }
         case ByteCodeOp::Mul64byVB64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = llvm::ConstantInt::get(builder.getInt64Ty(), ip->b.u64);
+            auto r1 = builder.getInt64(ip->b.u64);
             builder.CreateStore(builder.CreateMul(builder.CreateLoad(r0), r1), r0);
             break;
         }
         case ByteCodeOp::Div64byVB64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = llvm::ConstantInt::get(builder.getInt64Ty(), ip->b.u64);
+            auto r1 = builder.getInt64(ip->b.u64);
             builder.CreateStore(builder.CreateUDiv(builder.CreateLoad(r0), r1), r0);
             break;
         }
