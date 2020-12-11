@@ -243,7 +243,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitSafetyNullPointer(context, node->array->resultRegisterRC);
         emitSafetyBoundCheckString(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
-        emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC, node->array->resultRegisterRC);
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access);
@@ -280,16 +280,16 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     else if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        int  sizeOf          = typeInfoPointer->pointedType->sizeOf;
 
         emitSafetyNullPointer(context, node->array->resultRegisterRC);
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
         {
+            auto sizeOf = typeInfoPointer->pointedType->sizeOf;
             if (sizeOf > 1)
-                emitInstruction(context, ByteCodeOp::Mul64byVB32, node->access->resultRegisterRC)->b.u32 = sizeOf;
-            emitInstruction(context, ByteCodeOp::IncPointer32, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+            emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
         if (typeInfoPointer->finalType->isNative(NativeTypeKind::String))
@@ -305,7 +305,6 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        auto sizeOf        = typeInfoArray->pointedType->sizeOf;
 
         if (!node->access->hasComputedValue())
             emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
@@ -314,6 +313,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
         {
+            auto sizeOf = typeInfoArray->pointedType->sizeOf;
             if (sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
             emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
