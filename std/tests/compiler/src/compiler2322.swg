@@ -1,7 +1,7 @@
-//#[swag.printbc, swag.optim(false)]
+//#[swag.printbc]
 #test
 {
-    var ptr: *u64
+    var ptr: *void
     x := 1
-    ptr = ptr - x
+    ptr = ptr + x
 }

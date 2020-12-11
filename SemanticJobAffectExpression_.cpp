@@ -271,23 +271,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         // Pointer arithmetic
         if (leftTypeInfo->kind == TypeInfoKind::Pointer)
         {
-            SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, "pointer arithmetic not allowed on 'TypeInfo'"}));
-
-            SWAG_CHECK(TypeManager::promoteOne(context, right));
+            SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, "pointer arithmetic not allowed on 'typeinfo'"}));
             rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
-
-            if (rightTypeInfo->nativeType != NativeTypeKind::S32 &&
-                rightTypeInfo->nativeType != NativeTypeKind::S64 &&
-                rightTypeInfo->nativeType != NativeTypeKind::U32 &&
-                rightTypeInfo->nativeType != NativeTypeKind::U64 &&
-                rightTypeInfo->nativeType != NativeTypeKind::Int &&
-                rightTypeInfo->nativeType != NativeTypeKind::UInt)
-            {
-                return context->report({right, format("pointer arithmetic not allowed with type '%s'", rightTypeInfo->name.c_str())});
-            }
-
-            auto leftPtrType = CastTypeInfo<TypeInfoPointer>(leftTypeInfo, TypeInfoKind::Pointer);
-            SWAG_VERIFY(leftPtrType->pointedType->sizeOf > 0, context->report({left, format("operation not allowed on %s '%s' because size of pointed type is zero", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+            SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format("pointer arithmetic not allowed with operand type '%s'", rightTypeInfo->name.c_str())}));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_COERCE_FULL));
             break;
         }
 

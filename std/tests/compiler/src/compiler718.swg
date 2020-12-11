@@ -1,9 +1,10 @@
-#module "compiler718"
+//#module "compiler718"
 
 //#[swag.printbc]
-#unittest error
+//#unittest error
 #test
 {
 	var ptr1: *void = null
 	ptr1 += 1
+    @assert(cast(uint) ptr1 == 1)
 }
