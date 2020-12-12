@@ -23,7 +23,7 @@ func(T) quick(values: [..] T, cb: func(T, T)->s32)
     if(count == 0)
         return
 
-    begin := 0'u32
+    begin := 0'uint
     end := count - 1
     buffer := @dataof(values)
 
@@ -57,8 +57,8 @@ func(T) quick(values: [..] T, cb: func(T, T)->s32)
         swap(&buffer[end], &buffer[high])
 
         // To avoid too much recursions, we recurse only for the smaller partition
-        set1 := cast(s32) ((low - 1) - begin)
-        set2 := cast(s32) (end - (high + 1))
+        set1 := cast(int) ((low - 1) - begin)
+        set2 := cast(int) (end - (high + 1))
         if set1 > 0 && set2 > 0
         {
             if set1 <= set2
@@ -112,7 +112,7 @@ func(T) isSorted(values: const [..] T, cb: func(T, T)->s32 = null)->bool
 
 // Find 'value' in the slice by performing a binary search.
 // The slice must be sorted in ascending order
-func(T) find(values: const [..] T, value: T) -> {index: u32, success: bool}
+func(T) find(values: const [..] T, value: T) -> {index: uint, success: bool}
 {
     min := 0'u32
     countof := @countof(values)

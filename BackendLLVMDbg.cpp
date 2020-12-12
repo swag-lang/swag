@@ -192,7 +192,7 @@ llvm::DIType* BackendLLVMDbg::getSliceType(TypeInfo* typeInfo, TypeInfo* pointed
 
     auto realType = getPointerToType(pointedType, file);
     auto v1       = dbgBuilder->createMemberType(result, "data", file, 0, 64, 0, 0, noFlag, realType);
-    auto v2       = dbgBuilder->createMemberType(result, "count", file, 1, 32, 0, 64, noFlag, u32Ty);
+    auto v2       = dbgBuilder->createMemberType(result, "count", file, 1, 64, 0, 64, noFlag, u64Ty);
     auto content  = dbgBuilder->getOrCreateArray({v1, v2});
     dbgBuilder->replaceArrays(result, content);
 

@@ -656,7 +656,11 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
 
     if (fromTypeInfo == g_TypeMgr.typeInfoNull || fromTypeInfo->isNative(NativeTypeKind::String))
     {
-        node->resultRegisterRC = exprNode->resultRegisterRC;
+        node->resultRegisterRC                                                                   = exprNode->resultRegisterRC;
+
+        // TEMPORARY (because string is still 4 bytes for the count)
+        // Remove when done
+        emitInstruction(context, ByteCodeOp::ClearMaskU64, exprNode->resultRegisterRC[1])->b.u64 = 0x0000000'FFFFFFFF;
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Slice)
     {

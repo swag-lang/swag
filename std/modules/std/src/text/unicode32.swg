@@ -230,7 +230,7 @@ func isInTable(ranges: const [..] Range, r: char)->bool
     }
 
     // binary search over ranges
-    lo := 0'u32
+    lo := 0'uint
     hi := @countof(ranges)
     while lo < hi
     {
@@ -253,7 +253,7 @@ func caseChangeTo(wCase: WantedCase, r: char, caseRange: const [..] CaseRange) -
     var result: retval
 
 	// binary search over ranges
-	lo := 0'u32
+	lo := 0'uint
 	hi := @countof(caseRange)
 	while lo < hi
     {

@@ -4,9 +4,9 @@ using std
 #test
 {
     var x: String = "this is a string"
+    @assert(x.startsWith("this"))
 
     @assert(!x.startsWith("This"))
-    @assert(x.startsWith("this"))
     @assert(x.startsWith("this is a"))
     @assert(x.endsWith("string"))
     @assert(x.endsWith("g"))

@@ -3,7 +3,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
     if(@countof(values) == 0)
         return
 
-    begin := 0'u32
+    begin := 0'uint
     end := @countof(values) - 1
     buffer := @dataof(values)
 

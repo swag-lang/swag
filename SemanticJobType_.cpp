@@ -266,7 +266,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 SWAG_VERIFY(child->computedValue.reg.u64 <= g_CommandLine.staticArrayMaxSize, context->report({child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.staticArrayMaxSize, child->computedValue.reg.u64)}));
 
                 auto ptrArray   = allocType<TypeInfoArray>();
-                ptrArray->count = child->computedValue.reg.u64;
+                ptrArray->count = (uint32_t) child->computedValue.reg.u64;
                 totalCount *= ptrArray->count;
                 ptrArray->totalCount  = totalCount;
                 ptrArray->pointedType = typeNode->typeInfo;

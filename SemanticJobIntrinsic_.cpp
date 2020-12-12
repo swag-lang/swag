@@ -193,7 +193,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
-        node->typeInfo    = g_TypeMgr.typeInfoU32;
+        node->typeInfo    = g_TypeMgr.typeInfoUInt;
     }
     else if (typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
     {

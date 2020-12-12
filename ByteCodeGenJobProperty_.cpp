@@ -16,9 +16,13 @@ bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 {
-    auto node              = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    node->resultRegisterRC = node->childs.front()->resultRegisterRC;
-    node->resultRegisterRC += node->childs.back()->resultRegisterRC;
+    auto node      = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto ptrNode   = node->childs.front();
+    auto countNode = node->childs.back();
+
+    SWAG_CHECK(emitCast(context, countNode, countNode->typeInfo, countNode->castedTypeInfo));
+    node->resultRegisterRC = ptrNode->resultRegisterRC;
+    node->resultRegisterRC += countNode->resultRegisterRC;
     transformResultToLinear2(context, node);
     return true;
 }

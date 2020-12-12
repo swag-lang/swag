@@ -311,7 +311,6 @@ struct ByteCodeGenJob : public Job
     static bool emitConditionalOp(ByteCodeGenContext* context);
     static bool emitNullConditionalOp(ByteCodeGenContext* context);
     static bool emitPassThrough(ByteCodeGenContext* context);
-    static bool emitIs(ByteCodeGenContext* context);
     static bool emitInit(ByteCodeGenContext* context);
     static bool emitDropCopyMove(ByteCodeGenContext* context);
     static bool emitStruct(ByteCodeGenContext* context);
