@@ -182,7 +182,7 @@ void ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                 {
                     SWAG_ASSERT(ipOrg[1].op == ByteCodeOp::IncPointer64);
                     ipOrg[1].a.u32 = ip->a.u32;
-                    ipOrg[1].c.u32 = ip->a.u32;
+                    ipOrg[1].c.u64 = ip->a.u32;
 
                     SWAG_ASSERT(ipOrg[2].op == ByteCodeOp::CopyRCtoRT);
                     ipOrg[2].b.u64 = ip->a.u32;

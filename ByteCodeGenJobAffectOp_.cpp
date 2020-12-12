@@ -34,7 +34,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     {
         auto inst = emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, r0, r1);
         inst->flags |= BCI_IMM_C;
-        inst->c.u32 = typeInfo->sizeOf;
+        inst->c.u64 = typeInfo->sizeOf;
         return true;
     }
 

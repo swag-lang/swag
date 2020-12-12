@@ -213,7 +213,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
                 auto inst = emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, r0, returnExpression->resultRegisterRC);
                 inst->flags |= BCI_IMM_C;
-                inst->c.u32 = returnExpression->typeInfo->sizeOf;
+                inst->c.u64 = returnExpression->typeInfo->sizeOf;
                 freeRegisterRC(context, r0);
             }
             else if (returnType->isNative(NativeTypeKind::String))
@@ -1027,7 +1027,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 // Store address of value on the stack
                 auto inst   = emitInstruction(context, ByteCodeOp::CopySP, r1);
                 inst->b.u64 = offset;
-                inst->c.u32 = child->resultRegisterRC[0];
+                inst->c.u64 = child->resultRegisterRC[0];
                 emitInstruction(context, ByteCodeOp::PushRAParam, r1);
                 maxCallParams++;
             }
