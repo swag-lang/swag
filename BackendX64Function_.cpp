@@ -2679,7 +2679,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
 
             index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr.typeInfoU32);
+            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
             numCallParams--;
         }
     }

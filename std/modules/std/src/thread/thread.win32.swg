@@ -66,7 +66,7 @@ func wait(threads: *Thread...)
     total := @countof(threads)
     while total > 0
     {
-        toTreat := math.min(MAXIMUM_WAIT_OBJECTS, total)
+        toTreat := math.min(MAXIMUM_WAIT_OBJECTS, cast(u32) total)
         loop i: toTreat
         {
             debug.assert(threads[i].isValid())

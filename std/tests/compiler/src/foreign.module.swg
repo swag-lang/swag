@@ -208,6 +208,7 @@ public func tcf_join(titi: string, values: s64...)
             case 1: @assert(values[i] == 2)
             case 2: @assert(values[i] == 3)
             case 3: @assert(values[i] == 4)
+            default: @assert(false)
         }
     }
 }
@@ -225,6 +226,7 @@ public func tcf_join8(titi: string, values: s8...)
             case 1: @assert(values[i] == 2)
             case 2: @assert(values[i] == 3)
             case 3: @assert(values[i] == 4)
+            default: @assert(false)
         }
     }
 }
@@ -242,6 +244,7 @@ public func tcf_join16(titi: string, values: s16...)
             case 1: @assert(values[i] == 2)
             case 2: @assert(values[i] == 3)
             case 3: @assert(values[i] == 4)
+            default: @assert(false)
         }
     }
 }
@@ -259,6 +262,7 @@ public func tcf_join32(titi: string, values: s32...)
             case 1: @assert(values[i] == 2)
             case 2: @assert(values[i] == 3)
             case 3: @assert(values[i] == 4)
+            default: @assert(false)
         }
     }
 }

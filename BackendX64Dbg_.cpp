@@ -452,7 +452,7 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64PerThread& pp, TypeInfo* typeInfo, 
     field.name            = "data";
     tr0.LF_FieldList.fields.push_back(field);
 
-    field.type          = (DbgTypeIndex)(SimpleTypeKind::UInt32);
+    field.type          = (DbgTypeIndex)(SimpleTypeKind::UInt64);
     field.value.reg.u32 = sizeof(void*);
     field.name          = "count";
     tr0.LF_FieldList.fields.push_back(field);
@@ -532,7 +532,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         DbgTypeRecord tr;
         tr.kind                 = LF_ARRAY;
         tr.LF_Array.elementType = dbgGetOrCreateType(pp, typeArr->pointedType);
-        tr.LF_Array.indexType   = SimpleTypeKind::UInt32;
+        tr.LF_Array.indexType   = SimpleTypeKind::UInt64;
         tr.LF_Array.sizeOf      = typeArr->sizeOf;
         dbgAddTypeRecord(pp, tr);
         pp.dbgMapTypes[typeInfo] = tr.index;

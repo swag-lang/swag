@@ -240,7 +240,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             auto cst0 = TO_PTR_I8(func->getArg(0));
             builder.CreateStore(cst0, rr0);
 
-            auto rr1 = TO_PTR_I32(GEP_I32(allocRR, idx + 1));
+            auto rr1 = GEP_I32(allocRR, idx + 1);
             builder.CreateStore(func->getArg(1), rr1);
 
             idx += 2;
@@ -3291,7 +3291,7 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
             if (param->typeInfo->kind == TypeInfoKind::Variadic || param->typeInfo->kind == TypeInfoKind::TypedVariadic)
             {
                 params.push_back(builder.getInt8Ty()->getPointerTo());
-                params.push_back(builder.getInt32Ty());
+                params.push_back(builder.getInt64Ty());
                 numParams--;
             }
         }
@@ -3357,7 +3357,7 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
             params.push_back(builder.CreateLoad(r0));
 
             index   = pushParams[idxParam--];
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
+            auto r1 = GEP_I32(allocR, index);
             params.push_back(builder.CreateLoad(r1));
             numCallParams--;
         }
