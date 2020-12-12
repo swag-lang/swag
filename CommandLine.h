@@ -44,7 +44,7 @@ struct CommandLine
     int  randSeed  = 0;
 
     // Language options
-    uint32_t staticArrayMaxSize = 32 * 1024 * 1024;
+    uint64_t staticArrayMaxSize = 32 * 1024 * 1024;
 
     // User arguments
     string                     userArguments;

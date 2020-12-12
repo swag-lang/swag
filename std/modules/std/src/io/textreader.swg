@@ -12,7 +12,7 @@ public struct TextReader
     buffer:         Array'u8
     decode:         Array'u8
     encodingType =  TextEncoding.Utf8
-    byteSeek:       u32
+    byteSeek:       uint
     checkPreamble:  bool
 }
 

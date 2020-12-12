@@ -194,7 +194,7 @@ public impl ConcatBuffer
         if !firstBucket
             return result
 
-        result.reserve(cast(u32) count() + 1)
+        result.reserve(count() + 1)
 
         ptr := firstBucket
         while ptr != lastBucket.next
@@ -224,8 +224,8 @@ public impl ConcatBuffer
             // Move buffer
             result.allocator = allocator
             result.buffer    = firstBucket.datas
-            result.capacity  = cast(u32) bucketSize
-            result.length    = cast(u32) (currentSP - lastBucket.datas)
+            result.capacity  = bucketSize
+            result.length    = cast(uint) (currentSP - lastBucket.datas)
 
             // And clear me
             memory.free(firstBucket, allocator)

@@ -1,5 +1,5 @@
-#module "compiler319"
+/*#module "compiler319"
 ;
 
 #unittest error;
-var a: [6'u64] s32;
+var a: [6'u64] s32;*/

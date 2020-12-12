@@ -96,7 +96,7 @@ func getCurrent()->String
 {
     length := GetCurrentDirectoryA(0, null)
     var result: retval
-    result.reserve(length + 1)
+    result.reserve(cast(uint) length + 1)
     result.length = GetCurrentDirectoryA(length + 1, result.buffer)
     return result
 }

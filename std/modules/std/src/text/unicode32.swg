@@ -135,7 +135,7 @@ public func fromUtf8(dest: [..] char, src: const [..] u8)->u32
 public func fromUtf8(src: const [..] u8)->Array'char
 {
     var result: retval
-    result.reserve(@countof(src))
+    result.reserve(cast(uint) @countof(src))
     result.count = fromUtf8(@mkslice(result.buffer, cast(uint) @countof(src)), src)
     return result
 }

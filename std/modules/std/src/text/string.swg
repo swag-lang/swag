@@ -1,7 +1,7 @@
 using swag
 
-private const SmallSize = 16'u32
-#assert @sizeof(String) == 48
+private const SmallSize = 16'uint
+#assert @sizeof(String) == 56
 
 public enum CharacterSet
 {
@@ -12,8 +12,8 @@ public enum CharacterSet
 public struct String
 {
     buffer:     *u8
-    length:     u32
-    capacity:   u32
+    length:     uint
+    capacity:   uint
     allocator:  IAllocator
     padding:    [SmallSize] u8
 }
@@ -25,11 +25,11 @@ impl String
         memory.free(buffer, allocator)
     }
 
-    func realloc(using self, newCapacity: u32)
+    func realloc(using self, newCapacity: uint)
     {
         if allocator == null
             allocator = @getcontext().allocator
-        buffer = autocast memory.realloc(buffer, cast(uint) newCapacity, allocator)
+        buffer = autocast memory.realloc(buffer, newCapacity, allocator)
     }
 }
 
@@ -37,7 +37,7 @@ public impl strconv.IConvert for String
 {
     func convert(using self, buf: *ConcatBuffer, fmt: const *strconv.ConvertFormat, strFormat: string)
     {
-        buf.addBytes(@mkslice(buffer, cast(uint) length))
+        buf.addBytes(@mkslice(buffer, length))
     }
 }
 
@@ -45,7 +45,7 @@ public impl hash.IHash32 for String
 {
     func compute(using self)->u32
     {
-        return hash.crc32(@mkslice(buffer, cast(uint) length))
+        return hash.crc32(@mkslice(buffer, length))
     }
 }
 
@@ -54,7 +54,7 @@ public impl String
     #[inline]
     func opCount(using self)->uint
     {
-        return cast(uint) length
+        return length
     }
 
     #[inline]
@@ -66,7 +66,7 @@ public impl String
     func(T) opCast(using self)->T
     {
         #if @typeof(T) == string
-            return cast(string) @mkslice(buffer, cast(uint) length)
+            return cast(string) @mkslice(buffer, length)
         #elif @typeof(T) == const [..] u8
             return @mkslice(buffer, length)
         #else
@@ -87,10 +87,10 @@ public impl String
             return
         }
 
-        newCapacity := @countof(value) + 1
+        newCapacity := cast(uint) @countof(value) + 1
         length = newCapacity - 1
         reserve(newCapacity)
-        memory.copy(buffer, @dataof(value), cast(uint) length)
+        memory.copy(buffer, @dataof(value), length)
         buffer[length] = 0
     }
 
@@ -100,14 +100,14 @@ public impl String
             return true
         if length != @countof(other)
             return false
-        return memory.compare(buffer, @dataof(other), cast(uint) length) == 0
+        return memory.compare(buffer, @dataof(other), length) == 0
     }
 
     func opEquals(using self, other: Self)->bool
     {
         if length != other.length
             return false
-        return memory.compare(buffer, other.buffer, cast(uint) length) == 0
+        return memory.compare(buffer, other.buffer, length) == 0
     }
 
     func opCmp(using self, other: Self)->s32
@@ -325,7 +325,7 @@ public impl String
     }
 
     // Ensure the String is big enough to store a given amount of bytes
-    func grow(using self, wantedCapacity: u32)
+    func grow(using self, wantedCapacity: uint)
     {
         if wantedCapacity <= capacity
             return
@@ -334,7 +334,7 @@ public impl String
     }
 
     // Reserve room for 'newCapacity' bytes without changing the string length
-    func reserve(using self, newCapacity: u32)
+    func reserve(using self, newCapacity: uint)
     {
         // Small size, just be sure with have a valid buffer address
         if newCapacity <= SmallSize
@@ -366,8 +366,8 @@ public impl String
         {
             oldBuffer := buffer
             newAllocator := @getcontext().allocator
-            buffer = autocast memory.alloc(cast(uint) newCapacity, newAllocator)
-            memory.copy(buffer, oldBuffer, cast(uint) length + 1)
+            buffer = autocast memory.alloc(newCapacity, newAllocator)
+            memory.copy(buffer, oldBuffer, length + 1)
             allocator = newAllocator
         }
         else

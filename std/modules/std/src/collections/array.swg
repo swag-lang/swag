@@ -5,15 +5,15 @@ struct(T) Array
 {
     allocator:  IAllocator
     buffer:     *T
-    count:      u32
-    capacity:   u32
+    count:      uint
+    capacity:   uint
 }
 
 impl Array
 {
     func opCount(using self)->uint
     {
-        return cast(uint) count
+        return count
     }
 
     func opData(using self)->const *void
@@ -42,14 +42,14 @@ impl Array
         }
         #else
         {
-            memory.copy(buffer, oldBuffer, cast(uint) @sizeof(T) * count)
+            memory.copy(buffer, oldBuffer, @sizeof(T) * count)
         }
     }
 
     func opSlice(using self, lower, upper: uint)->[..] T
     {
         debug.assert(lower <= upper && lower < count && upper < count)
-        return @mkslice(buffer + lower, cast(uint) (upper + 1) - lower)
+        return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
     func opIndex(using self, index: uint)->const &T
@@ -68,7 +68,7 @@ impl Array
     func opAffect(using self, arr: const [..] T)
     {
         clear()
-        countof := @countof(arr)
+        countof := cast(uint) @countof(arr)
         if !countof return
         dataof := @dataof(arr)
 
@@ -80,7 +80,7 @@ impl Array
         }
         #else
         {
-            memory.copy(buffer, dataof, cast(uint) @sizeof(T) * countof)
+            memory.copy(buffer, dataof, @sizeof(T) * countof)
         }
 
         count += countof
@@ -125,12 +125,12 @@ impl Array
         memory.free(buffer, allocator)
     }
 
-    func realloc(using self, newCapacity: u32)
+    func realloc(using self, newCapacity: uint)
     {
         if allocator == null
             allocator = @getcontext().allocator
 
-        newBuffer := cast(*T) memory.realloc(buffer, cast(uint) newCapacity * @sizeof(T), allocator)
+        newBuffer := cast(*T) memory.realloc(buffer, newCapacity * @sizeof(T), allocator)
 
         // Need to call opPostMove/opPostCopy on every existing element if the buffer has not been reallocated
         // in place
@@ -162,11 +162,11 @@ impl Array
     // Returns a slice
     func toSlice(using self)->[..] T
     {
-        return @mkslice(buffer, cast(uint) count)
+        return @mkslice(buffer, count)
     }
 
     // Ensure the Array is big enough to store at least 'newCount' elements
-    func grow(using self, newCount : u32)
+    func grow(using self, newCount : uint)
     {
         if newCount <= capacity
             return
@@ -175,7 +175,7 @@ impl Array
     }
 
     // Reserve room for 'newCapacity' elements without changing the array count
-    func reserve(using self, newCapacity: u32)
+    func reserve(using self, newCapacity: uint)
     {
         if !newCapacity
         {

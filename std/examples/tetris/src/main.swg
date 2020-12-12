@@ -211,7 +211,7 @@ func main()
                 }
 
                 nScore += 25
-                if !vLines.isEmpty() nScore += (1 << vLines.count) * 100
+                if !vLines.isEmpty() nScore += (1 << cast(u32) vLines.count) * 100
 
 				// Pick New Piece
 				nCurrentX = nFieldWidth / 2

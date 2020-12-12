@@ -89,11 +89,7 @@ func readAllBytes(fullname: string) -> {bytes: Array'u8, err: ErrorId}
         return result
     }
 
-    debug.assert(len <= swag.MaxU32)
-    len32 := cast(u32) len
-
-    result.bytes.reserve(len32)
-    result.bytes.count = read(stream, result.bytes.buffer, len32)
-
+    result.bytes.reserve(len)
+    result.bytes.count = read(stream, result.bytes.buffer, len)
     return result
 }

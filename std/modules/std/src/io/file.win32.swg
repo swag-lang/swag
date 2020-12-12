@@ -76,14 +76,15 @@ func openRead(fullname: string) -> {stream: Stream, err: ErrorId}
 }
 
 // Read from the given file stream, and returns the number of bytes
-func read(stream: Stream, buffer: *void, length: u32)->u32
+func read(stream: Stream, buffer: *void, length: uint)->uint
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canRead)
 
     var dwRead: DWORD = 0
-    ReadFile(stream.handle, buffer, length, &dwRead, null)
-    return dwRead
+    debug.assert(length <= swag.MaxU32)
+    ReadFile(stream.handle, buffer, cast(u32) length, &dwRead, null)
+    return cast(uint) dwRead
 }
 
 // Close the given file stream
