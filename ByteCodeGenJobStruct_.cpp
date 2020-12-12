@@ -57,7 +57,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
         emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 0, 24);
-        SWAG_CHECK(emitClearRefConstantSize(&cxt, typeInfoStruct->sizeOf, 0));
+        emitSetZeroAtPointer(&cxt, typeInfoStruct->sizeOf, 0);
         emitInstruction(&cxt, ByteCodeOp::Ret);
         emitInstruction(&cxt, ByteCodeOp::End);
         return true;
@@ -178,7 +178,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             }
             else
             {
-                SWAG_CHECK(emitClearRefConstantSize(&cxt, typeVar->sizeOf, 0));
+                emitSetZeroAtPointer(&cxt, typeVar->sizeOf, 0);
             }
         }
         else if (typeVar->kind == TypeInfoKind::Struct && (typeVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
@@ -190,7 +190,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         }
         else
         {
-            SWAG_CHECK(emitClearRefConstantSize(&cxt, typeVar->sizeOf, 0));
+            emitSetZeroAtPointer(&cxt, typeVar->sizeOf, 0);
         }
     }
 
@@ -600,7 +600,7 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
             }
             else
             {
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r1)->b.u32 = typeInfoStruct->sizeOf;
+                emitSetZeroAtPointer(context, typeInfoStruct->sizeOf, r1);
             }
 
             // If the current scope contains a drop for that variable, then we remove it, because we have
@@ -644,8 +644,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         {
             RegisterList r0 = reserveRegisterRC(context);
             emitRetValRef(context, r0);
-            auto inst   = emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r0);
-            inst->b.u32 = typeInfoStruct->sizeOf;
+            emitSetZeroAtPointer(context, typeInfoStruct->sizeOf, r0);
             freeRegisterRC(context, r0);
         }
         else

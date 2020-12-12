@@ -534,7 +534,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
             if (numToInit)
             {
                 sizeToClear *= numToInit;
-                SWAG_CHECK(emitClearRefConstantSize(context, sizeToClear, node->expression->resultRegisterRC));
+                emitSetZeroAtPointer(context, sizeToClear, node->expression->resultRegisterRC);
             }
             else
             {
@@ -714,7 +714,7 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitClearRefConstantSize(ByteCodeGenContext* context, uint64_t sizeOf, uint32_t registerIndex)
+void ByteCodeGenJob::emitSetZeroAtPointer(ByteCodeGenContext* context, uint64_t sizeOf, uint32_t registerIndex)
 {
     switch (sizeOf)
     {
@@ -734,6 +734,4 @@ bool ByteCodeGenJob::emitClearRefConstantSize(ByteCodeGenContext* context, uint6
         emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, registerIndex)->b.u64 = sizeOf;
         break;
     }
-
-    return true;
 }
