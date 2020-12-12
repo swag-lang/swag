@@ -1598,27 +1598,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             break;
 
-        case ByteCodeOp::Mul64byVB32:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            if (ip->b.u32 <= 0x7F)
-            {
-                concat.addString3("\x48\x6B\xC0"); // imul rax, ??
-                concat.addU8(ip->b.u8);
-            }
-            else if (ip->b.u32 <= 0x7FFFFFFF)
-            {
-                concat.addString3("\x48\x69\xC0"); // imul rax, ????????
-                concat.addU32(ip->b.u32);
-            }
-            else
-            {
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
-                concat.addString4("\x48\x0F\xAF\xC1"); // imul rax, rcx
-                concat.addU32(ip->b.u32);
-            }
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
-
         case ByteCodeOp::Mul64byVB64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_imul64_RAX(pp, ip->b.u64);

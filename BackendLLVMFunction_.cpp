@@ -744,13 +744,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::Mul64byVB32:
-        {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.getInt64(ip->b.u32);
-            builder.CreateStore(builder.CreateMul(builder.CreateLoad(r0), r1), r0);
-            break;
-        }
         case ByteCodeOp::Mul64byVB64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
