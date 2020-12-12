@@ -160,7 +160,7 @@ public impl String
             free()
     }
 
-    func opIndex(using self, index: u32)->u8
+    func opIndex(using self, index: uint)->u8
     {
         if !length return 0
         return buffer[index]

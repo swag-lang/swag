@@ -4,7 +4,7 @@ struct(T) B
 
 impl B
 {
-    func opIndex(using self, index: u32) -> T
+    func opIndex(using self, index: uint) -> T
     {
         var x: T = 666 + cast(s32) index
         return x
@@ -23,5 +23,5 @@ impl B
     val00 := arr.opIndex(10)
     @assert(val00 == 676)
     val10 := arr[10]
-    @assert(val10 == 676)    
+    @assert(val10 == 676)
 }

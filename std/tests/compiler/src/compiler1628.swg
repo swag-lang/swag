@@ -5,7 +5,7 @@ struct(T) A
 
 impl A
 {
-    func opIndexAffect(using self, idx: u32, v: T)
+    func opIndexAffect(using self, idx: uint, v: T)
     {
         arr[0] = 0
     }

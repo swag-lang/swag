@@ -6,7 +6,7 @@ var G: u32 = 0
 
 impl A
 {
-    func opIndexAffect(using self, idx: u32, v: T)
+    func opIndexAffect(using self, idx: uint, v: T)
     {
         G += 1
     }
@@ -17,6 +17,6 @@ impl A
     G = 0
     var x: A'(*u8)
     loop i: "toto"
-        x[cast(u32) i] = null
+        x[i] = null
     @assert(G == 4)
 }

@@ -10,7 +10,7 @@ struct B
 
 impl B
 {
-    func opIndex(using self, index: u32)->*A
+    func opIndex(using self, index: uint)->*A
     {
         return &buffer[index]
     }
@@ -19,5 +19,5 @@ impl B
 #test
 {
     var arr: B
-    @assert(arr[0].front == 0)    
+    @assert(arr[0].front == 0)
 }

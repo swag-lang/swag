@@ -563,5 +563,17 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
     }
 
     bool foreign = symbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN;
+
+    // We are less restrictive on type parameters for useop, as type are more in control.
+    // Se we could have a needed cast now.
+    if (allParams)
+    {
+        for (auto c : allParams->childs)
+        {
+            SWAG_CHECK(emitCast(context, c, c->typeInfo, c->castedTypeInfo));
+            SWAG_ASSERT(context->result == ContextResult::Done);
+        }
+    }
+
     return emitCall(context, allParams ? allParams : node, funcDecl, nullptr, funcDecl->resultRegisterRC, foreign, freeRegisterParams);
 }

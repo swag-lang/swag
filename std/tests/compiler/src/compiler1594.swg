@@ -6,12 +6,12 @@ var G = 0
 
 impl B
 {
-    func opIndexAffect(using self, index: u32, value: T)
+    func opIndexAffect(using self, index: uint, value: T)
     {
         G = 1
     }
 
-    func(op: string) opIndexAssign(using self, index: u32, value: T)
+    func(op: string) opIndexAssign(using self, index: uint, value: T)
     {
         G = 2
     }

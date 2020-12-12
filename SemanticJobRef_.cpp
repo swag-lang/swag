@@ -334,7 +334,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     }
 
     case TypeInfoKind::Struct:
-        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         if (arrayType->flags & TYPEINFO_STRUCT_IS_TUPLE)
             return context->report({arrayNode->array, "cannot dereference a tuple type"});
 
@@ -483,7 +483,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     case TypeInfoKind::Struct:
     {
-        SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
 
         // Only the top level ArrayPointerIndex node will deal with the call
         if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)

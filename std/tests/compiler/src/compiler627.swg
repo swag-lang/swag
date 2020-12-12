@@ -6,7 +6,7 @@ struct Point
 
 impl Point
 {
-	func opIndexAffect(self, i: u32, v: s32)
+	func opIndexAffect(self, i: uint, v: s32)
 	{
         if(i == 0)
             self.x = v;

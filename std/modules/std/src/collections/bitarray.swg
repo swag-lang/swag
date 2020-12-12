@@ -51,15 +51,15 @@ public impl BitArray
     }
 
     // Gets the value of the bit at a specific position
-    func opIndex(using self, index: u32)->bool
+    func opIndex(using self, index: uint)->bool
     {
-        return get(cast(uint) index)
+        return get(index)
     }
 
     // Sets the value of the bit at a specific position
-    func opIndexAffect(using self, index: u32, value: bool)
+    func opIndexAffect(using self, index: uint, value: bool)
     {
-        set(cast(uint) index, value)
+        set(index, value)
     }
 
     // Initializes a BitArray that contains bit values copied from the specified array of booleans
@@ -94,7 +94,7 @@ public impl BitArray
         #assert(ptr == false, "pointer visit not supported for BitArray")
         if !count return
         remainingBits := count
-        countBits := 0'u32
+        countBits := 0'uint
         loop idx: math.max(count >> 5, 1)
         {
             var shift: u32 = 1

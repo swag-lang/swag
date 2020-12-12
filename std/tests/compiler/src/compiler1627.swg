@@ -6,7 +6,7 @@ var G: u32 = 0
 
 impl A
 {
-    func opIndexAffect(using self, idx: u32, v: T)
+    func opIndexAffect(using self, idx: uint, v: T)
     {
         G += 1
     }

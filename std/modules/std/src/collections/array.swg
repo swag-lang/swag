@@ -52,13 +52,13 @@ impl Array
         return @mkslice(buffer + lower, cast(uint) (upper + 1) - lower)
     }
 
-    func opIndex(using self, index: u32)->const &T
+    func opIndex(using self, index: uint)->const &T
     {
         debug.assert(index < count, "index out of range")
         return buffer[index]
     }
 
-    func opIndexAffect(using self, index: u32, value: T)
+    func opIndexAffect(using self, index: uint, value: T)
     {
         debug.assert(index < count, "index out of range")
         buffer[index] = value

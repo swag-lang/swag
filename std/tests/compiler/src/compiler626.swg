@@ -6,7 +6,7 @@ struct Point
 
 impl Point
 {
-	func(op: string) opIndexAssign(self, i: u32, v: s32)
+	func(op: string) opIndexAssign(self, i: uint, v: s32)
 	{
 		#if op == "+="
 		{
