@@ -134,9 +134,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             }
             else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
             {
-                auto inst = emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC);
+                auto inst   = emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC);
+                inst->c.u64 = returnExpression->typeInfo->sizeOf;
                 inst->flags |= BCI_IMM_C;
-                inst->c.u32 = returnExpression->typeInfo->sizeOf;
                 freeRegisterRC(context, returnExpression);
             }
             else
@@ -193,13 +193,15 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 
                     SWAG_CHECK(emitStructCopyMoveCall(context, r1, returnExpression->resultRegisterRC, typeArrayStruct, returnExpression));
 
-                    auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, r1, typeArrayStruct->sizeOf, r1);
+                    auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, r1, 0, r1);
+                    inst->b.u64 = typeArrayStruct->sizeOf;
                     inst->flags |= BCI_IMM_B;
-                    inst = emitInstruction(context, ByteCodeOp::IncPointer32, returnExpression->resultRegisterRC, typeArrayStruct->sizeOf, returnExpression->resultRegisterRC);
+                    inst        = emitInstruction(context, ByteCodeOp::IncPointer64, returnExpression->resultRegisterRC, 0, returnExpression->resultRegisterRC);
+                    inst->b.u64 = typeArrayStruct->sizeOf;
                     inst->flags |= BCI_IMM_B;
 
-                    emitInstruction(context, ByteCodeOp::DecrementRA32, r0);
-                    emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+                    emitInstruction(context, ByteCodeOp::DecrementRA64, r0);
+                    emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
 
                     freeRegisterRC(context, r0);
                     freeRegisterRC(context, r1);
