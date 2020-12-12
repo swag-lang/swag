@@ -752,9 +752,9 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
         if (exprNode->castOffset)
         {
-            auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->resultRegisterRC, 0, node->resultRegisterRC);
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+            inst->b.u64 = exprNode->castOffset;
             inst->flags |= BCI_IMM_B;
-            inst->b.u32 = exprNode->castOffset;
         }
 
         // The field is a pointer : need to dereference it

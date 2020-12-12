@@ -684,11 +684,12 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
                 emitInstruction(context, ByteCodeOp::PushRAParam, r1);
                 emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
 
-                inst = emitInstruction(context, ByteCodeOp::IncPointer32, r1, one.typeStruct->sizeOf, r1);
+                inst        = emitInstruction(context, ByteCodeOp::IncPointer64, r1, 0, r1);
+                inst->b.u64 = one.typeStruct->sizeOf;
                 inst->flags |= BCI_IMM_B;
 
-                emitInstruction(context, ByteCodeOp::DecrementRA32, r0[0]);
-                emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
+                emitInstruction(context, ByteCodeOp::DecrementRA64, r0[0]);
+                emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
 
                 freeRegisterRC(context, r0);
                 freeRegisterRC(context, r1);

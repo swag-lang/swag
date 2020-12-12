@@ -118,13 +118,16 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     auto seekJump = context->bc->numInstructions;
                     SWAG_CHECK(emitStructCopyMoveCall(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, typeArrayStruct, returnExpression));
 
-                    auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->ownerInline->resultRegisterRC, typeArrayStruct->sizeOf, node->ownerInline->resultRegisterRC);
-                    inst->flags |= BCI_IMM_B;
-                    inst = emitInstruction(context, ByteCodeOp::IncPointer32, returnExpression->resultRegisterRC, typeArrayStruct->sizeOf, returnExpression->resultRegisterRC);
+                    auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->ownerInline->resultRegisterRC, 0, node->ownerInline->resultRegisterRC);
+                    inst->b.u64 = typeArrayStruct->sizeOf;
                     inst->flags |= BCI_IMM_B;
 
-                    emitInstruction(context, ByteCodeOp::DecrementRA32, r0);
-                    emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+                    inst        = emitInstruction(context, ByteCodeOp::IncPointer64, returnExpression->resultRegisterRC, 0, returnExpression->resultRegisterRC);
+                    inst->b.u64 = typeArrayStruct->sizeOf;
+                    inst->flags |= BCI_IMM_B;
+
+                    emitInstruction(context, ByteCodeOp::DecrementRA64, r0);
+                    emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
 
                     freeRegisterRC(context, r0);
                 }
