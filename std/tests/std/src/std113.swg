@@ -5,7 +5,7 @@ using std
 {
     var arr: Array'u32
 
-    loop 10 arr.add(@index)
+    loop 10 arr.add(cast(u32) @index)
     arr.insertAt(1, 100)
     @assert(arr[0] == 0)
     @assert(arr[1] == 100)

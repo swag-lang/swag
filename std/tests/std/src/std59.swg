@@ -2,7 +2,7 @@
 using std
 
 //#[swag.printbc]
-func fromCapa(capa: u32)->BitArray
+func fromCapa(capa: uint)->BitArray
 {
     var x: BitArray
     x.reserve(capa, false)

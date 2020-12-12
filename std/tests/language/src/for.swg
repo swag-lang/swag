@@ -34,7 +34,7 @@
 
     // Like 'loop' and 'while', you have access to '@index', the current loop index as an 'u32'
     {
-        cpt := 0'u32
+        cpt := 0'uint
         for var i: u32 = 10; i < 15; i += 1;
         {
             cpt += @index

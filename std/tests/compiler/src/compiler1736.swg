@@ -1,7 +1,7 @@
 //#[swag.printbc]
 #test
 {
-    a := 0'u32
+    a := 0'uint
     visit "ABC"
     {
         a += @index

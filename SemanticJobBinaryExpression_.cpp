@@ -795,6 +795,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     case NativeTypeKind::S64:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
+    case NativeTypeKind::UInt:
     case NativeTypeKind::Char:
         break;
     default:
@@ -822,6 +823,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 << right->computedValue.reg.u32;
             break;
         default:
@@ -868,6 +870,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     case NativeTypeKind::S64:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
+    case NativeTypeKind::UInt:
     case NativeTypeKind::Char:
         break;
     default:
@@ -899,6 +902,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             node->computedValue.reg.u32 = left->computedValue.reg.u32 >> right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 >> right->computedValue.reg.u32;
             break;
         default:

@@ -10,7 +10,7 @@
     // The intrinsic @index returns the current index of the loop.
     // Its return type is 'u32'
     {
-        cpt := 0'u32
+        cpt := 0'uint
         loop 5
         {
             cpt += @index
@@ -21,8 +21,8 @@
 
     // You can name that index if you want
     {
-        cpt := 0'u32
-        cpt1 := 0'u32
+        cpt := 0'uint
+        cpt1 := 0'uint
 
         loop i: 5
         {

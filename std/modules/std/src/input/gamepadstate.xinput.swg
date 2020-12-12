@@ -49,7 +49,7 @@ impl State
 
         // Button pressed state
         loop i: 16
-            pressed[g_mapButtons[i]] = state.Gamepad.wButtons & (1 << i)
+            pressed[g_mapButtons[i]] = state.Gamepad.wButtons & (1 << cast(u32) i)
 
         // Move
         using Button, state.Gamepad

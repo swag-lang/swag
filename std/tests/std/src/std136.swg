@@ -10,7 +10,7 @@ using std
     var arr1: Array'String
     arr1 = arr
 
-    loop 10 @assert(arr[@index] == arr1[@index])
+    loop i: 10 @assert(arr[cast(u32) i] == arr1[cast(u32) i])
     @assert(arr.buffer != arr1.buffer)
     @assert(arr.count == arr1.count)
 

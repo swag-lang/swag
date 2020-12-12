@@ -422,7 +422,7 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     SWAG_VERIFY(node->ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX, context->report({node, node->token, "'@index' can only be used inside a breakable loop"}));
 
     node->ownerBreakable->breakableFlags |= BREAKABLE_NEED_INDEX;
-    node->typeInfo    = g_TypeMgr.typeInfoU32;
+    node->typeInfo    = g_TypeMgr.typeInfoUInt;
     node->byteCodeFct = ByteCodeGenJob::emitIndex;
     return true;
 }
