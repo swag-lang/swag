@@ -18,7 +18,7 @@ struct ByteCodeOptContext
     map<uint32_t, uint32_t>                             mapU32U32;
     map<uint32_t, ByteCodeInstruction*>                 mapU32InstA;
     map<uint32_t, ByteCodeInstruction*>                 mapU32InstB;
-    map<uint32_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
+    map<uint64_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
 
     bool                allPassesHaveDoneSomething = false;
     bool                passHasDoneSomething       = false;

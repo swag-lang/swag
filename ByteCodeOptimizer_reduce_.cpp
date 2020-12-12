@@ -20,15 +20,15 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         }
 
         // Testing if a pointer is not null is irrelevant if previous instruction has incremented the pointer.
-        if (ip[0].op == ByteCodeOp::IncPointer32 &&
+        if (ip[0].op == ByteCodeOp::IncPointer64 &&
             ip[1].op == ByteCodeOp::TestNotZero64 &&
             ip[0].c.u32 == ip[1].b.u32 &&
             (ip[0].flags & BCI_IMM_B) &&
             ip[0].b.u32)
         {
             context->passHasDoneSomething = true;
-            ip[1].op                      = ByteCodeOp::SetImmediate32;
-            ip[1].b.u32                   = 1;
+            ip[1].op                      = ByteCodeOp::SetImmediate64;
+            ip[1].b.u64                   = 1;
         }
 
         // Remove operators which do nothing
@@ -38,7 +38,6 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             {
             case ByteCodeOp::BinOpPlusS32:
             case ByteCodeOp::BinOpMinusS32:
-            case ByteCodeOp::IncPointer32:
             case ByteCodeOp::DecPointer32:
                 if (ip->b.u32 == 0)
                     setNop(context, ip);

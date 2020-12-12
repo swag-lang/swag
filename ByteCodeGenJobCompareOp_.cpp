@@ -60,7 +60,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         {
             auto rflags = reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, rflags);
-            inst->b.u32 = Runtime::COMPARE_STRICT;
+            inst->b.u64 = Runtime::COMPARE_STRICT;
             inst        = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, r2);
             freeRegisterRC(context, rflags);
         }

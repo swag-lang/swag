@@ -949,7 +949,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Store in RR0 the address of the stack to store the result
             node->resultRegisterRC = reserveRegisterRC(context);
             auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u32            = node->concreteTypeInfoStorage;
+            inst->b.u64            = node->concreteTypeInfoStorage;
             emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
@@ -1026,7 +1026,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 // of that value on that stack. This is the data part of the 'any'
                 // Store address of value on the stack
                 auto inst   = emitInstruction(context, ByteCodeOp::CopySP, r1);
-                inst->b.u32 = offset;
+                inst->b.u64 = offset;
                 inst->c.u32 = child->resultRegisterRC[0];
                 emitInstruction(context, ByteCodeOp::PushRAParam, r1);
                 maxCallParams++;
@@ -1139,7 +1139,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                             if (freeRegistersParams)
                                 toFree.push_back(param->resultRegisterRC[r]);
                             auto inst   = emitInstruction(context, ByteCodeOp::PushRVParam, param->resultRegisterRC[r--]);
-                            inst->b.u32 = typeRawVariadic->sizeOf;
+                            inst->b.u64 = typeRawVariadic->sizeOf;
                             precallStack += typeRawVariadic->sizeOf;
                             numPushParams++;
                             maxCallParams++;

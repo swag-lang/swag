@@ -19,19 +19,19 @@ void ByteCodeOptimizer::optimizePassStack(ByteCodeOptContext* context)
         // If MakeStackPointer is followed by an increment of the pointer, we can just
         // make the increment now and remove the increment instruction
         if (ip[0].op == ByteCodeOp::MakeStackPointer &&
-            ip[1].op == ByteCodeOp::IncPointer32 &&
+            ip[1].op == ByteCodeOp::IncPointer64 &&
             ip[0].a.u32 == ip[1].a.u32 &&
             ip[1].a.u32 == ip[1].c.u32 &&
             ip[1].flags & BCI_IMM_B)
         {
-            auto it = mapCst.find(ip->b.u32);
+            auto it = mapCst.find(ip->b.u64);
             if (it != mapCst.end())
                 mapCst.erase(it);
 
-            ip->b.u32 += ip[1].b.u32;
+            ip->b.u64 += ip[1].b.u64;
             setNop(context, &ip[1]);
 
-            it = mapCst.find(ip->b.u32);
+            it = mapCst.find(ip->b.u64);
             if (it != mapCst.end())
                 mapCst.erase(it);
         }

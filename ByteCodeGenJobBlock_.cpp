@@ -21,7 +21,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-        inst->b.u32 = node->concreteTypeInfoStorage;
+        inst->b.u64 = node->concreteTypeInfoStorage;
         node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->concreteTypeInfoStorage);
     }
 
@@ -492,7 +492,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                 SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
                 allJumps.push_back(context->bc->numInstructions);
                 auto inst   = emitInstruction(context, ByteCodeOp::JumpIfTrue, r0);
-                inst->b.u32 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+                inst->b.u64 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
             }
 
             freeRegisterRC(context, r0);
@@ -505,7 +505,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
             {
                 allJumps.push_back(context->bc->numInstructions);
                 auto inst   = emitInstruction(context, ByteCodeOp::JumpIfTrue, expr->resultRegisterRC);
-                inst->b.u32 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+                inst->b.u64 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
             }
         }
 
@@ -664,7 +664,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
             {
                 RegisterList r1   = reserveRegisterRC(context);
                 auto         inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r1);
-                inst->b.u32       = one.storageOffset;
+                inst->b.u64       = one.storageOffset;
                 emitInstruction(context, ByteCodeOp::PushRAParam, r1);
                 emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
                 freeRegisterRC(context, r1);
@@ -678,7 +678,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
                 emitInstruction(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
 
                 auto inst     = emitInstruction(context, ByteCodeOp::MakeStackPointer, r1);
-                inst->b.u32   = one.storageOffset;
+                inst->b.u64   = one.storageOffset;
                 auto seekJump = context->bc->numInstructions;
 
                 emitInstruction(context, ByteCodeOp::PushRAParam, r1);
@@ -699,7 +699,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         {
             auto r0     = reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
-            inst->b.u32 = one.storageOffset;
+            inst->b.u64 = one.storageOffset;
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
             emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
             freeRegisterRC(context, r0);

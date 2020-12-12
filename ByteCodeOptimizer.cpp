@@ -14,7 +14,7 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
 {
     if (ip->op == ByteCodeOp::Nop)
         return;
-    if (context->semContext && ip->op == ByteCodeOp::IncPointer32)
+    if (context->semContext && ip->op == ByteCodeOp::IncPointer64)
         return;
     auto flags = g_ByteCodeOpFlags[(int) ip->op];
     if (flags & OPFLAG_UNPURE)

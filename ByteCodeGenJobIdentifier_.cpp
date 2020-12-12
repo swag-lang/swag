@@ -63,7 +63,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
             SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
             auto inst   = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0]);
-            inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
+            inst->b.u64 = node->resolvedSymbolOverload->storageOffset;
 
             inst        = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
             inst->b.u64 = typeArray->count;
@@ -76,7 +76,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             node->parent->resultRegisterRC = node->resultRegisterRC;
             auto inst                      = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC);
             SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-            inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
+            inst->b.u64 = node->resolvedSymbolOverload->storageOffset;
             return true;
         }
 
@@ -91,7 +91,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             node->parent->resultRegisterRC = node->resultRegisterRC;
             auto inst                      = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC);
             SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-            inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
+            inst->b.u64 = node->resolvedSymbolOverload->storageOffset;
 
             inst        = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
             inst->b.u64 = node->resolvedSymbolOverload->computedValue.text.length();
@@ -109,16 +109,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if ((node->forceTakeAddress()) && typeInfo->kind != TypeInfoKind::Lambda && typeInfo->kind != TypeInfoKind::Array)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointerParam, node->resultRegisterRC);
-            inst->b.u32 = resolved->storageOffset;
-            inst->c.u32 = resolved->storageIndex;
+            inst->b.u64 = resolved->storageOffset;
+            inst->c.u64 = resolved->storageIndex;
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
                 emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
             auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC);
-            inst->b.u32 = resolved->storageOffset;
-            inst->c.u32 = resolved->storageIndex;
+            inst->b.u64 = resolved->storageOffset;
+            inst->c.u64 = resolved->storageIndex;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
                 emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = 8;
             else // Get the structure pointer
@@ -130,14 +130,14 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             if (node->flags & AST_FROM_UFCS)
             {
                 auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC);
-                inst->b.u32 = resolved->storageOffset + 8;
-                inst->c.u32 = resolved->storageIndex + 1;
+                inst->b.u64 = resolved->storageOffset + 8;
+                inst->c.u64 = resolved->storageIndex + 1;
             }
             // Get the structure pointer
             else
             {
                 auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC);
-                inst->b.u32 = resolved->storageOffset;
+                inst->b.u64 = resolved->storageOffset;
                 inst->c.u32 = resolved->storageIndex;
             }
         }
@@ -145,17 +145,17 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
             auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC[0]);
-            inst->b.u32 = resolved->storageOffset;
+            inst->b.u64 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;
             inst        = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC[1]);
-            inst->b.u32 = resolved->storageOffset + 8;
+            inst->b.u64 = resolved->storageOffset + 8;
             inst->c.u32 = resolved->storageIndex + 1;
         }
         else
         {
             SWAG_ASSERT(typeInfo->numRegisters() == 1);
             auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC);
-            inst->b.u32 = resolved->storageOffset;
+            inst->b.u64 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;
         }
 
@@ -178,7 +178,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
             else
                 inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
-            inst->b.u32 = resolved->storageOffset;
+            inst->b.u64 = resolved->storageOffset;
             if (node->forceTakeAddress())
                 inst->c.pointer = (uint8_t*) resolved;
         }
@@ -201,7 +201,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst = emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC);
             else
                 inst = emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC);
-            inst->b.u32 = resolved->storageOffset;
+            inst->b.u64 = resolved->storageOffset;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
                 emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
             else if (node->flags & AST_TO_UFCS) // Get the struct pointer
@@ -214,7 +214,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
             else
                 inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
-            inst->b.u32 = resolved->storageOffset;
+            inst->b.u64 = resolved->storageOffset;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
                 emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
             else if (node->flags & AST_TO_UFCS) // Get the struct pointer
@@ -225,13 +225,13 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
             if (resolved->flags & OVERLOAD_VAR_BSS)
             {
-                emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
-                emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
+                emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC[0])->b.u64 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC[1])->b.u64 = resolved->storageOffset + 8;
             }
             else
             {
-                emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
-                emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
+                emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC[0])->b.u64 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC[1])->b.u64 = resolved->storageOffset + 8;
             }
         }
         else
@@ -242,7 +242,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst = emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC);
             else
                 inst = emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC);
-            inst->b.u32 = resolved->storageOffset;
+            inst->b.u64 = resolved->storageOffset;
         }
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
@@ -259,11 +259,11 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (resolved->typeInfo->kind == TypeInfoKind::Reference)
         {
             if (node->forceTakeAddress())
-                emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->storageOffset;
             else
             {
                 auto inst   = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
-                inst->b.u32 = resolved->storageOffset;
+                inst->b.u64 = resolved->storageOffset;
             }
         }
         else if (typeInfo->kind == TypeInfoKind::Array ||
@@ -272,18 +272,18 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                  typeInfo->kind == TypeInfoKind::Struct)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u32 = resolved->storageOffset;
+            inst->b.u64 = resolved->storageOffset;
         }
         else if ((node->forceTakeAddress()) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u32 = resolved->storageOffset;
+            inst->b.u64 = resolved->storageOffset;
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
                 emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
-            emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC)->b.u64 = resolved->storageOffset;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
                 emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
             else if (node->flags & AST_TO_UFCS) // Get the structure pointer
@@ -291,7 +291,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->storageOffset;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
                 emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
             else if (node->flags & AST_TO_UFCS) // Get the structure pointer
@@ -300,15 +300,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
-            emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
-            emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
+            emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[0])->b.u64 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[1])->b.u64 = resolved->storageOffset + 8;
         }
         else
         {
             SWAG_ASSERT(typeInfo->sizeOf <= sizeof(uint64_t));
 
             auto inst   = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
-            inst->b.u32 = resolved->storageOffset;
+            inst->b.u64 = resolved->storageOffset;
         }
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;

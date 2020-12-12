@@ -672,7 +672,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::IncPointer32:
         case ByteCodeOp::DecPointer32:
         {
             auto         r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));

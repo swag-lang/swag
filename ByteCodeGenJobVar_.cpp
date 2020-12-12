@@ -190,7 +190,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             {
                 auto inst   = emitInstruction(context, ByteCodeOp::SetZeroStackX);
                 inst->a.u32 = resolved->storageOffset;
-                inst->b.u32 = typeInfo->sizeOf;
+                inst->b.u64 = typeInfo->sizeOf;
                 break;
             }
             }

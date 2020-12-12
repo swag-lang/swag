@@ -40,12 +40,12 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
         {
         case 1:
             inst        = emitInstruction(context, ByteCodeOp::ClearMaskU32, child0->resultRegisterRC);
-            inst->b.u32 = 0x000000FF;
+            inst->b.u64 = 0x000000FF;
             inst        = emitInstruction(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRC);
             break;
         case 2:
             inst        = emitInstruction(context, ByteCodeOp::ClearMaskU32, child0->resultRegisterRC);
-            inst->b.u32 = 0x0000FFFF;
+            inst->b.u64 = 0x0000FFFF;
             inst        = emitInstruction(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRC);
             break;
         case 4:
@@ -181,14 +181,14 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         uint32_t oneOffset = typeList->subTypes.front()->typeInfo->sizeOf;
         for (auto child : job->collectChilds)
         {
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u32 = offsetIdx;
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = offsetIdx;
             emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC);
             offsetIdx += oneOffset;
             freeRegisterRC(context, child);
         }
 
         // Reference to the stack, and store the number of element in a register
-        emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u32 = listNode->computedValue.reg.offset;
+        emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u64 = listNode->computedValue.reg.offset;
         if (!node->forTuple)
             emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1])->b.u64 = listNode->childs.size();
     }
@@ -204,7 +204,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
             SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, node->computedValue.reg.offset, &module->constantSegment, nullptr, typeList, node));
         }
 
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u32 = node->computedValue.reg.offset;
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0])->b.u64 = node->computedValue.reg.offset;
         if (!node->forTuple)
             emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1])->b.u64 = typeList->subTypes.size();
     }
@@ -250,7 +250,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
 
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
-        emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, regList[0])->b.u32 = node->computedValue.reg.offset;
+        emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, regList[0])->b.u64 = node->computedValue.reg.offset;
         node->parent->resultRegisterRC                                              = node->resultRegisterRC;
     }
     else if (typeInfo->kind == TypeInfoKind::Native)
@@ -267,7 +267,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             emitInstruction(context, ByteCodeOp::SetImmediate32, regList)->b.u16 = node->computedValue.reg.u16;
             return true;
         case NativeTypeKind::U32:
-            emitInstruction(context, ByteCodeOp::SetImmediate32, regList)->b.u32 = node->computedValue.reg.u32;
+            emitInstruction(context, ByteCodeOp::SetImmediate32, regList)->b.u64 = node->computedValue.reg.u32;
             return true;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
@@ -293,7 +293,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             emitInstruction(context, ByteCodeOp::SetImmediate64, regList)->b.f64 = node->computedValue.reg.f64;
             return true;
         case NativeTypeKind::Char:
-            emitInstruction(context, ByteCodeOp::SetImmediate32, regList)->b.u32 = node->computedValue.reg.u32;
+            emitInstruction(context, ByteCodeOp::SetImmediate32, regList)->b.u64 = node->computedValue.reg.u32;
             return true;
         case NativeTypeKind::String:
         {
@@ -327,7 +327,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         reserveLinearRegisterRC2(context, regList);
         SWAG_ASSERT(node->resolvedSymbolOverload);
         SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u32 = node->resolvedSymbolOverload->storageOffset;
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = node->resolvedSymbolOverload->storageOffset;
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = typeArray->count;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
@@ -341,7 +341,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         else
             storageOffset = node->computedValue.reg.u32;
         SWAG_ASSERT(storageOffset != UINT32_MAX);
-        inst->b.u32 = storageOffset;
+        inst->b.u64 = storageOffset;
     }
     else if (typeInfo->kind == TypeInfoKind::Pointer && node->castedTypeInfo && node->castedTypeInfo->isNative(NativeTypeKind::String))
     {
@@ -364,7 +364,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         reserveLinearRegisterRC2(context, regList);
         SWAG_ASSERT(node->resolvedSymbolOverload);
         SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u32 = node->resolvedSymbolOverload->storageOffset;
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = node->resolvedSymbolOverload->storageOffset;
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = typeArray->count;
         return true;
     }

@@ -118,7 +118,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     auto r0   = reserveRegisterRC(context);
     auto inst = emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0);
     SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
-    inst->b.u32 = exprNode->concreteTypeInfoStorage;
+    inst->b.u64 = exprNode->concreteTypeInfoStorage;
 
     RegisterList result = reserveRegisterRC(context);
     inst                = emitInstruction(context, ByteCodeOp::SetImmediate32, result);

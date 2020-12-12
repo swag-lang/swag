@@ -80,7 +80,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         // A structure initialized with a literal
         if (varDecl->type && varDecl->type->flags & AST_HAS_STRUCT_PARAMETERS)
         {
-            emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u32 = varDecl->type->computedValue.reg.offset;
+            emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u64 = varDecl->type->computedValue.reg.offset;
 
             auto inst   = emitInstruction(&cxt, ByteCodeOp::IntrinsicMemCpy, 0, 1);
             inst->c.u64 = typeVar->sizeOf;
@@ -96,8 +96,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
                 auto typeList = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
-                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u32 = exprList->computedValue.reg.offset;
-                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 2)->b.u32 = (uint32_t) typeList->subTypes.size();
+                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u64 = exprList->computedValue.reg.offset;
+                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 2)->b.u64 = (uint32_t) typeList->subTypes.size();
 
                 auto inst = emitInstruction(&cxt, ByteCodeOp::IntrinsicMemCpy, 0, 1);
                 inst->flags |= BCI_IMM_C;
@@ -120,15 +120,15 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 switch (typeVar->sizeOf)
                 {
                 case 1:
-                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u32 = varDecl->assignment->computedValue.reg.u8;
+                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue.reg.u8;
                     emitInstruction(&cxt, ByteCodeOp::SetAtPointer8, 0, 1);
                     break;
                 case 2:
-                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u32 = varDecl->assignment->computedValue.reg.u16;
+                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue.reg.u16;
                     emitInstruction(&cxt, ByteCodeOp::SetAtPointer16, 0, 1);
                     break;
                 case 4:
-                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u32 = varDecl->assignment->computedValue.reg.u32;
+                    emitInstruction(&cxt, ByteCodeOp::SetImmediate32, 1)->b.u64 = varDecl->assignment->computedValue.reg.u32;
                     emitInstruction(&cxt, ByteCodeOp::SetAtPointer32, 0, 1);
                     break;
                 case 8:
@@ -654,7 +654,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
             auto inst = emitInstruction(context, ByteCodeOp::SetZeroStackX);
             SWAG_ASSERT(resolved->storageOffset != UINT32_MAX);
             inst->a.u32 = resolved->storageOffset;
-            inst->b.u32 = typeInfoStruct->sizeOf;
+            inst->b.u64 = typeInfoStruct->sizeOf;
         }
     }
     else
