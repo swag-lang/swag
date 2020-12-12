@@ -14,13 +14,13 @@ impl StringBuilder
     }
 
     // Returns the number of characters
-    func count(using self)->u32
+    func count(using self)->uint
     {
         return buffer.count()
     }
 
     // Set sizes of buckets of the string builder
-    func setBucketSize(using self, size: u32)
+    func setBucketSize(using self, size: uint)
     {
         buffer.setBucketSize(size)
     }

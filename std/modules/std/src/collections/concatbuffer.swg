@@ -2,7 +2,7 @@ public struct ConcatBufferBucket
 {
     datas:  *u8
     next:   *ConcatBufferBucket
-    count:  u32
+    count:  uint
 }
 
 // Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
@@ -15,8 +15,8 @@ public struct ConcatBuffer
     lastBucket:     *ConcatBufferBucket
     currentSP:      *u8
 
-    bucketSize:     u32 = 1024
-    totalCount:     u32
+    bucketSize:     uint = 1024
+    totalCount:     uint
 }
 
 public impl ConcatBuffer
@@ -46,31 +46,29 @@ public impl ConcatBuffer
     }
 
     // Returns the number of bytes
-    func count(using self)->u32
+    func count(using self)->uint
     {
         if !lastBucket
             return 0;
-        lastBucket.count = cast(u32) (currentSP - lastBucket.datas)
+        lastBucket.count = cast(uint) (currentSP - lastBucket.datas)
         return totalCount + lastBucket.count
     }
 
     // Returns the number of elements in the given bucket
-    func bucketCount(using self, b: *ConcatBufferBucket)->u32
+    func bucketCount(using self, b: *ConcatBufferBucket)->uint
     {
-        if b != lastBucket
-            return b.count
-        bcount := cast(u32) (currentSP - lastBucket.datas)
-        return bcount
+        if b != lastBucket return b.count
+        return cast(uint) (currentSP - lastBucket.datas)
     }
 
     // Be sure that their is enough room to store at least 'numBytes' bytes
-    func grow(using self, numBytes: u32)
+    func grow(using self, numBytes: uint)
     {
         debug.assert(numBytes <= bucketSize)
 
         if firstBucket
         {
-            bcount := cast(u32) (currentSP - lastBucket.datas);
+            bcount := cast(uint) (currentSP - lastBucket.datas);
             if bcount + numBytes <= bucketSize
                 return
 
@@ -98,7 +96,7 @@ public impl ConcatBuffer
             firstBucket = newBucket
         lastBucket = newBucket
 
-        lastBucket.datas = memory.alloc(cast(uint) bucketSize, allocator)
+        lastBucket.datas = memory.alloc(bucketSize, allocator)
         currentSP = lastBucket.datas
     }
 
@@ -112,10 +110,10 @@ public impl ConcatBuffer
 
     // Set the size of one given bucket. Minimum size is 4.
     // The buffer will be erased before the change, even if the new size is the same as the current one.
-    func setBucketSize(using self, size: u32)
+    func setBucketSize(using self, size: uint)
     {
         debug.assert(size >= 4)
-        self.free()
+        free()
         bucketSize = size
     }
 
@@ -151,7 +149,7 @@ public impl ConcatBuffer
     // If 'contiguous' is false, the slice will be divided in chunks if necessary
     func addBytes(using self, bytes: const [..] u8, contiguous = true)
     {
-        num := @countof(bytes)
+        num := cast(uint) @countof(bytes)
         if !num
             return
 
@@ -164,11 +162,11 @@ public impl ConcatBuffer
         // Divide the slice in the given amount of buckets if necessary
         if !contiguous
         {
-            curCount := cast(u32) (currentSP - lastBucket.datas)
+            curCount := cast(uint) (currentSP - lastBucket.datas)
             remain := bucketSize - curCount
             while num > remain
             {
-                memory.copy(currentSP, slicePtr, cast(uint) remain)
+                memory.copy(currentSP, slicePtr, remain)
                 num -= remain
                 slicePtr += remain
                 currentSP += remain
@@ -185,7 +183,7 @@ public impl ConcatBuffer
 
         // We should have enough size in the last bucket to store the
         // rest of the slice
-        memory.copy(currentSP, slicePtr, cast(uint) num)
+        memory.copy(currentSP, slicePtr, num)
         currentSP += num
     }
 
@@ -196,12 +194,12 @@ public impl ConcatBuffer
         if !firstBucket
             return result
 
-        result.reserve(count() + 1)
+        result.reserve(cast(u32) count() + 1)
 
         ptr := firstBucket
         while ptr != lastBucket.next
         {
-            result.append(cast(string) @mkslice(ptr.datas, cast(uint) ptr.count))
+            result.append(cast(string) @mkslice(ptr.datas, ptr.count))
             ptr = ptr.next
         }
 
@@ -226,7 +224,7 @@ public impl ConcatBuffer
             // Move buffer
             result.allocator = allocator
             result.buffer    = firstBucket.datas
-            result.capacity  = bucketSize
+            result.capacity  = cast(u32) bucketSize
             result.length    = cast(u32) (currentSP - lastBucket.datas)
 
             // And clear me
