@@ -714,7 +714,7 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitClearRefConstantSize(ByteCodeGenContext* context, uint32_t sizeOf, uint32_t registerIndex)
+bool ByteCodeGenJob::emitClearRefConstantSize(ByteCodeGenContext* context, uint64_t sizeOf, uint32_t registerIndex)
 {
     switch (sizeOf)
     {
@@ -731,7 +731,7 @@ bool ByteCodeGenJob::emitClearRefConstantSize(ByteCodeGenContext* context, uint3
         emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, registerIndex);
         break;
     default:
-        emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, registerIndex)->b.u32 = sizeOf;
+        emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, registerIndex)->b.u64 = sizeOf;
         break;
     }
 

@@ -315,7 +315,7 @@ struct ByteCodeGenJob : public Job
     static bool emitInit(ByteCodeGenContext* context);
     static bool emitDropCopyMove(ByteCodeGenContext* context);
     static bool emitStruct(ByteCodeGenContext* context);
-    static bool emitClearRefConstantSize(ByteCodeGenContext* context, uint32_t sizeOf, uint32_t registerIndex);
+    static bool emitClearRefConstantSize(ByteCodeGenContext* context, uint64_t sizeOf, uint32_t registerIndex);
 
     static bool mustEmitSafety(ByteCodeGenContext* context);
     static void emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);

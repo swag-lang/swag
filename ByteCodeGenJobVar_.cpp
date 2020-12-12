@@ -166,25 +166,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         {
             RegisterList r0 = reserveRegisterRC(context);
             emitRetValRef(context, r0);
-            switch (typeInfo->sizeOf)
-            {
-            case 1:
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointer8, r0);
-                break;
-            case 2:
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointer16, r0);
-                break;
-            case 4:
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointer32, r0);
-                break;
-            case 8:
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-                break;
-            default:
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r0)->b.u32 = typeInfo->sizeOf;
-                break;
-            }
-
+            emitClearRefConstantSize(context, typeInfo->sizeOf, r0);
             freeRegisterRC(context, r0);
         }
         else
