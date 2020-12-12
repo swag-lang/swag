@@ -793,7 +793,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
     case ByteCodeOp::SetZeroAtPointerX:
-        memset((void*) registersRC[ip->a.u32].pointer, 0, ip->b.u32);
+        memset((void*) registersRC[ip->a.u32].pointer, 0, ip->b.u64);
         break;
     case ByteCodeOp::SetZeroAtPointerXRB:
         memset((void*) registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u32 * ip->c.u32);
