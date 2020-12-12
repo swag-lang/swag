@@ -46,7 +46,7 @@ impl Array
         }
     }
 
-    func opSlice(using self, lower, upper: u32)->[..] T
+    func opSlice(using self, lower, upper: uint)->[..] T
     {
         debug.assert(lower <= upper && lower < count && upper < count)
         return @mkslice(buffer + lower, cast(uint) (upper + 1) - lower)
@@ -293,7 +293,7 @@ impl Array
         }
         #else
         {
-            memory.copy(buffer + oldCount, @dataof(values), sliceCount * @sizeof(T))
+            memory.copy(buffer + oldCount, @dataof(values), cast(uint) sliceCount * @sizeof(T))
         }
     }
 

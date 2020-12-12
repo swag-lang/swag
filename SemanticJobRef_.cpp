@@ -97,10 +97,10 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 {
     auto     node     = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
     auto     typeVar  = node->array->typeInfo;
-    uint32_t maxBound = 0;
+    uint64_t maxBound = 0;
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, node->lowerBound));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, node->upperBound));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->lowerBound, CASTFLAG_COERCE_FULL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->upperBound, CASTFLAG_COERCE_FULL));
 
     // Slicing of an array
     if (typeVar->kind == TypeInfoKind::Array)
@@ -181,22 +181,22 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     // startBound <= endBound
     if ((node->lowerBound->flags & AST_VALUE_COMPUTED) && (node->upperBound->flags & AST_VALUE_COMPUTED))
     {
-        if (node->lowerBound->computedValue.reg.u32 > node->upperBound->computedValue.reg.u32)
+        if (node->lowerBound->computedValue.reg.u64 > node->upperBound->computedValue.reg.u64)
         {
-            return context->report({node->lowerBound, format("bad slicing, lower bound '%d' is greater than upper bound '%d'", node->lowerBound->computedValue.reg.u32, node->upperBound->computedValue.reg.u32)});
+            return context->report({node->lowerBound, format("bad slicing, lower bound '%I64u' is greater than upper bound '%I64u'", node->lowerBound->computedValue.reg.u64, node->upperBound->computedValue.reg.u64)});
         }
     }
 
     // endBound < maxBound
     if (maxBound && (node->upperBound->flags & AST_VALUE_COMPUTED))
     {
-        if (node->upperBound->computedValue.reg.u32 > maxBound)
+        if (node->upperBound->computedValue.reg.u64 > maxBound)
         {
-            return context->report({node->upperBound, format("bad slicing, upper bound '%d' is out of range", node->upperBound->computedValue.reg.u32)});
+            return context->report({node->upperBound, format("bad slicing, upper bound '%I64u' is out of range", node->upperBound->computedValue.reg.u64)});
         }
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitMakeSlice;
+    node->byteCodeFct = ByteCodeGenJob::emitMakeArrayPointerSlicing;
     return true;
 }
 

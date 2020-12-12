@@ -114,10 +114,10 @@ impl HashTable
 
         if allocator == null
             allocator = @getcontext().allocator
-        table = autocast memory.alloc(newCapacityBytes, allocator)
+        table = autocast memory.alloc(cast(uint) newCapacityBytes, allocator)
 
         // Be sure hash entry is 0
-        memory.clear(table, newCapacityBytes)
+        memory.clear(table, cast(uint) newCapacityBytes)
 
         // Copy the last table to the new table, removing deleted entries
         loop i: capacity

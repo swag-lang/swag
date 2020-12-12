@@ -423,7 +423,7 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
 {
     auto job     = context->job;
     auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
@@ -443,30 +443,30 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
             return true;
         }
 
-        return internalError(context, "emitMakeSlice, type not supported");
+        return internalError(context, "emitMakeArrayPointerSlicing, type not supported");
     }
 
-    int sizeOf = 1;
+    uint64_t sizeOf = 1;
     if (typeVar->kind == TypeInfoKind::Array)
-        sizeOf = ((TypeInfoArray*) typeVar)->finalType->sizeOf;
+        sizeOf = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->finalType->sizeOf;
     else if (typeVar->isNative(NativeTypeKind::String))
         sizeOf = 1;
     else if (typeVar->kind == TypeInfoKind::Slice)
-        sizeOf = ((TypeInfoSlice*) typeVar)->pointedType->sizeOf;
+        sizeOf = CastTypeInfo<TypeInfoSlice>(typeVar, TypeInfoKind::Slice)->pointedType->sizeOf;
     else if (typeVar->kind == TypeInfoKind::Pointer)
-        sizeOf = ((TypeInfoPointer*) typeVar)->pointedType->sizeOf;
+        sizeOf = CastTypeInfo<TypeInfoPointer>(typeVar, TypeInfoKind::Pointer)->pointedType->sizeOf;
     else
-        return internalError(context, "emitMakeSlice, type not supported");
+        return internalError(context, "emitMakeArrayPointerSlicing, type not supported");
 
-    emitSafetyMakeSlice(context, node);
+    emitSafetyArrayPointerSlicing(context, node);
 
     RegisterList r0;
     reserveLinearRegisterRC2(context, r0);
 
     // Compute size of slice
     if (node->lowerBound)
-        emitInstruction(context, ByteCodeOp::BinOpMinusS32, node->upperBound->resultRegisterRC, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC);
-    emitInstruction(context, ByteCodeOp::Add32byVB32, node->upperBound->resultRegisterRC)->b.u32 = 1;
+        emitInstruction(context, ByteCodeOp::BinOpMinusS64, node->upperBound->resultRegisterRC, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::Add64byVB64, node->upperBound->resultRegisterRC)->b.u64 = 1;
     emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], node->upperBound->resultRegisterRC);
 
     // Increment start pointer
@@ -474,8 +474,8 @@ bool ByteCodeGenJob::emitMakeSlice(ByteCodeGenContext* context)
     if (node->lowerBound)
     {
         if (sizeOf > 1)
-            emitInstruction(context, ByteCodeOp::Mul64byVB32, node->lowerBound->resultRegisterRC)->b.u32 = sizeOf;
-        emitInstruction(context, ByteCodeOp::IncPointer32, r0[0], node->lowerBound->resultRegisterRC, r0[0]);
+            emitInstruction(context, ByteCodeOp::Mul64byVB64, node->lowerBound->resultRegisterRC)->b.u64 = sizeOf;
+        emitInstruction(context, ByteCodeOp::IncPointer64, r0[0], node->lowerBound->resultRegisterRC, r0[0]);
     }
 
     freeRegisterRC(context, node->array);

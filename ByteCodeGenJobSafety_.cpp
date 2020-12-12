@@ -132,40 +132,39 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     freeRegisterRC(context, r0);
 }
 
-void ByteCodeGenJob::emitSafetyMakeSlice(ByteCodeGenContext* context, AstArrayPointerSlicing* node)
+void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, AstArrayPointerSlicing* node)
 {
     if (!mustEmitSafety(context))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
-
-    uint32_t maxBound     = UINT32_MAX;
-    bool     freeMaxBound = false;
+    uint32_t    maxBoundReg     = UINT32_MAX;
+    bool        freeMaxBoundReg = false;
 
     // Check type, and safety check
     auto typeVar = node->array->typeInfo;
     if (typeVar->kind == TypeInfoKind::Array)
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
-        maxBound       = reserveRegisterRC(context);
-        auto inst      = emitInstruction(context, ByteCodeOp::SetImmediate64, maxBound);
-        inst->b.u64    = typeArray->count;
-        freeMaxBound   = true;
+        auto typeArray  = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+        maxBoundReg     = reserveRegisterRC(context);
+        auto inst       = emitInstruction(context, ByteCodeOp::SetImmediate64, maxBoundReg);
+        inst->b.u64     = typeArray->count;
+        freeMaxBoundReg = true;
     }
     else if (typeVar->isNative(NativeTypeKind::String))
     {
-        maxBound = node->array->resultRegisterRC[1];
+        maxBoundReg = node->array->resultRegisterRC[1];
     }
     else if (typeVar->kind == TypeInfoKind::Slice)
     {
-        maxBound = node->array->resultRegisterRC[1];
+        maxBoundReg = node->array->resultRegisterRC[1];
     }
 
     // Lower bound <= upper bound
     {
         auto re = reserveRegisterRC(context);
         context->pushLocation(&node->lowerBound->token.startLocation);
-        emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC, re);
+        emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC, re);
         emitInstruction(context, ByteCodeOp::NegBool, re);
         emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "bad slicing, lower bound is greater than upper bound";
         context->popLocation();
@@ -173,16 +172,15 @@ void ByteCodeGenJob::emitSafetyMakeSlice(ByteCodeGenContext* context, AstArrayPo
     }
 
     // Upper bound < maxBound
-    if (maxBound != UINT32_MAX)
+    if (maxBoundReg != UINT32_MAX)
     {
         auto re = reserveRegisterRC(context);
         context->pushLocation(&node->upperBound->token.startLocation);
-        emitInstruction(context, ByteCodeOp::CompareOpLowerU32, node->upperBound->resultRegisterRC, maxBound, re);
+        emitInstruction(context, ByteCodeOp::CompareOpLowerU64, node->upperBound->resultRegisterRC, maxBoundReg, re);
         emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "bad slicing, upper bound is out of range";
         context->popLocation();
         freeRegisterRC(context, re);
+        if (freeMaxBoundReg)
+            freeRegisterRC(context, maxBoundReg);
     }
-
-    if (maxBound != UINT32_MAX && freeMaxBound)
-        freeRegisterRC(context, maxBound);
 }

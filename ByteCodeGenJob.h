@@ -284,7 +284,7 @@ struct ByteCodeGenJob : public Job
     static bool emitFallThrough(ByteCodeGenContext* context);
     static bool emitContinue(ByteCodeGenContext* context);
     static bool emitMakePointer(ByteCodeGenContext* context);
-    static bool emitMakeSlice(ByteCodeGenContext* context);
+    static bool emitMakeArrayPointerSlicing(ByteCodeGenContext* context);
     static bool emitMakeLambda(ByteCodeGenContext* context);
     static bool emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo, bool safety = true);
     static bool emitPointerDeRef(ByteCodeGenContext* context);
@@ -328,7 +328,7 @@ struct ByteCodeGenJob : public Job
     static void emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfoArray);
     static void emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static void emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode);
-    static void emitSafetyMakeSlice(ByteCodeGenContext* context, AstArrayPointerSlicing* node);
+    static void emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, AstArrayPointerSlicing* node);
 
     static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);

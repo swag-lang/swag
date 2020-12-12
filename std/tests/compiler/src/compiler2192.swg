@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    func opSlice(using self, lower, upper: u32)->u32
+    func opSlice(using self, lower, upper: uint)->uint
     {
         return lower + upper
     }

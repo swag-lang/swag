@@ -19,7 +19,7 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
         return context->report({node, "'@mkslice' must have a one dimension pointer as a first parameter"});
 
     // Slice count
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, second->typeInfo, nullptr, second));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, second->typeInfo, nullptr, second, CASTFLAG_COERCE_FULL));
 
     // Create slice type
     auto ptrSlice         = allocType<TypeInfoSlice>();
