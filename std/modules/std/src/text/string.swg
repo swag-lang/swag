@@ -52,9 +52,9 @@ public impl hash.IHash32 for String
 public impl String
 {
     #[inline]
-    func opCount(using self)->u32
+    func opCount(using self)->uint
     {
-        return length
+        return cast(uint) length
     }
 
     #[inline]

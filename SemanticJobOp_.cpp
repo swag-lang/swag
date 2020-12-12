@@ -170,7 +170,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     else if (name == "opCount")
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 1));
-        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoU32));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoUInt));
     }
     else if (name == "opData")
     {

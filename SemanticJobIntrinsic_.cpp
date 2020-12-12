@@ -215,7 +215,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         SWAG_CHECK(resolveUserOp(context, "opCount", nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
             return true;
-        node->typeInfo = g_TypeMgr.typeInfoU32;
+        node->typeInfo = g_TypeMgr.typeInfoUInt;
         if (!node->byteCodeFct)
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
     }

@@ -29,9 +29,9 @@ impl BitArray
 
 public impl BitArray
 {
-    func opCount(using self)->u32
+    func opCount(using self)->uint
     {
-        return cast(u32) count
+        return count
     }
 
     func opDrop(using self)

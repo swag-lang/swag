@@ -1,12 +1,12 @@
 struct AA
 {
-    l: u32 = 4
+    l: uint = 4
 }
 
 impl AA
 {
     #[swag.inline]
-    func opCount(using self)->u32 => l
+    func opCount(using self)->uint => l
 }
 
 //#[swag.printbc]

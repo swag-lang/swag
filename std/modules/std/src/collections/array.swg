@@ -11,9 +11,9 @@ struct(T) Array
 
 impl Array
 {
-    func opCount(using self)->u32
+    func opCount(using self)->uint
     {
-        return count
+        return cast(uint) count
     }
 
     func opData(using self)->const *void

@@ -35,9 +35,9 @@ public impl ConcatBuffer
         }
     }
 
-    func opCount(using self)->u32
+    func opCount(using self)->uint
     {
-        return count()
+        return cast(uint) count()
     }
 
     func opDrop(using self)

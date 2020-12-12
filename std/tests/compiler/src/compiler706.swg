@@ -8,9 +8,9 @@ struct Point
 
 impl Point
 {
-	func opCount(self)->u32 
-    { 
-        return self.c
+	func opCount(self)->uint
+    {
+        return cast(uint) self.c
     }
 }
 
