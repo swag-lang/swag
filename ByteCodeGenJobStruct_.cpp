@@ -72,9 +72,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 0, 24);
         if (param->offset)
         {
-            auto inst = emitInstruction(&cxt, ByteCodeOp::IncPointer32, 0, 0, 0);
+            auto inst   = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
+            inst->b.u64 = param->offset;
             inst->flags |= BCI_IMM_B;
-            inst->b.u32 = param->offset;
         }
 
         // A structure initialized with a literal
@@ -82,9 +82,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         {
             emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u32 = varDecl->type->computedValue.reg.offset;
 
-            auto inst = emitInstruction(&cxt, ByteCodeOp::IntrinsicMemCpy, 0, 1);
+            auto inst   = emitInstruction(&cxt, ByteCodeOp::IntrinsicMemCpy, 0, 1);
+            inst->c.u64 = typeVar->sizeOf;
             inst->flags |= BCI_IMM_C;
-            inst->c.u32 = typeVar->sizeOf;
             continue;
         }
 
@@ -110,7 +110,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1, offset);
                 emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue.text.length();
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
-                emitInstruction(&cxt, ByteCodeOp::IncPointer32, 0, 8, 0)->flags |= BCI_IMM_B;
+                auto inst   = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
+                inst->b.u64 = 8;
+                inst->flags |= BCI_IMM_B;
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2);
             }
             else if (typeVar->kind == TypeInfoKind::Native)
@@ -211,9 +213,9 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         emitInstruction(context, ByteCodeOp::GetFromStackParam64, 0, 24);
         if (offset)
         {
-            auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, 0, 0, 0);
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, 0, 0, 0);
+            inst->b.u64 = offset;
             inst->flags |= BCI_IMM_B;
-            inst->b.u32 = offset;
         }
 
         emitInstruction(context, ByteCodeOp::PushRAParam, 0);
@@ -711,7 +713,8 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                     emitRetValRef(context, r0);
                     if (typeParam->offset)
                     {
-                        auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, r0, typeParam->offset, r0);
+                        auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, r0, 0, r0);
+                        inst->b.u64 = typeParam->offset;
                         inst->flags |= BCI_IMM_B;
                     }
                 }
