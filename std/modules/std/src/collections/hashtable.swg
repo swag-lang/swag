@@ -101,7 +101,7 @@ impl HashTable
     }
 
     // Reserve 'newCapacity' elements in the table.
-    func reserve(using self, newCapacity: u32)
+    func reserve(using self, newCapacity: uint)
     {
         reqCapacity := math.max(newCapacity, 32)
         if(reqCapacity <= capacity)
@@ -114,10 +114,10 @@ impl HashTable
 
         if allocator == null
             allocator = @getcontext().allocator
-        table = autocast memory.alloc(cast(uint) newCapacityBytes, allocator)
+        table = autocast memory.alloc(newCapacityBytes, allocator)
 
         // Be sure hash entry is 0
-        memory.clear(table, cast(uint) newCapacityBytes)
+        memory.clear(table, newCapacityBytes)
 
         // Copy the last table to the new table, removing deleted entries
         loop i: capacity
