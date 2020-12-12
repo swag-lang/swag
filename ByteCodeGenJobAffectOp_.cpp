@@ -55,7 +55,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0, 8);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64OffVB32, r0, 8);
         }
         else
         {
@@ -72,7 +72,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0, 8);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64OffVB32, r0, 8);
         }
         else if (node->childs.size() > 1 && node->childs[1]->typeInfo->kind == TypeInfoKind::Array)
         {
@@ -138,7 +138,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0, 8);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64OffVB32, r0, 8);
         }
         else
         {
