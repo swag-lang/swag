@@ -590,11 +590,6 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->b.s64 = ip->c.s64 * ip->b.s64;
                 OK();
                 break;
-            case ByteCodeOp::Div64byVB32:
-                ip->op    = ByteCodeOp::SetImmediate64;
-                ip->b.s64 = ip->c.s64 / ip->b.s32;
-                OK();
-                break;
             case ByteCodeOp::Div64byVB64:
                 ip->op    = ByteCodeOp::SetImmediate64;
                 ip->b.s64 = ip->c.s64 / ip->b.s64;
