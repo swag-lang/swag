@@ -619,7 +619,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
         SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'%s' count parameter should be an integer, but is '%s'", node->token.text.c_str(), countTypeInfo->name.c_str())}));
-        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->report({node->count, format("'%s' count parameter should be 32 bits", node->token.text.c_str())}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_COERCE_FULL));
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitDropCopyMove;

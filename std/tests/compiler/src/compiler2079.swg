@@ -1,5 +1,5 @@
-#module "compiler2079"
-#unittest error
+//#module "compiler2079"
+//#unittest error
 
 struct AA
 {
