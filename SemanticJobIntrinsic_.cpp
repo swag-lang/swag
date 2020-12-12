@@ -199,8 +199,8 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     {
         auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
         node->setFlagsValueIsComputed();
-        node->computedValue.reg.u64 = (uint32_t) typeList->subTypes.size();
-        node->typeInfo              = g_TypeMgr.typeInfoU32;
+        node->computedValue.reg.u64 = typeList->subTypes.size();
+        node->typeInfo              = g_TypeMgr.typeInfoUInt;
     }
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {

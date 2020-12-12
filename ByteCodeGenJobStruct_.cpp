@@ -97,7 +97,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 auto typeList = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
                 emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u64 = exprList->computedValue.reg.offset;
-                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 2)->b.u64 = (uint32_t) typeList->subTypes.size();
+                emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 2)->b.u64 = typeList->subTypes.size();
 
                 auto inst   = emitInstruction(&cxt, ByteCodeOp::IntrinsicMemCpy, 0, 1);
                 inst->c.u64 = typeVar->sizeOf;

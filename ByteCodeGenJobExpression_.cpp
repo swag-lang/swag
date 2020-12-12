@@ -177,8 +177,8 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         auto listNode = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
         // Emit one affectation per child
-        int      offsetIdx = listNode->computedValue.reg.offset;
-        uint32_t oneOffset = typeList->subTypes.front()->typeInfo->sizeOf;
+        auto offsetIdx = listNode->computedValue.reg.offset;
+        auto oneOffset = typeList->subTypes.front()->typeInfo->sizeOf;
         for (auto child : job->collectChilds)
         {
             emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = offsetIdx;
