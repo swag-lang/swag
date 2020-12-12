@@ -672,21 +672,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::DecPointer32:
-        {
-            auto         r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-            llvm::Value* r2;
-            if (ip->flags & BCI_IMM_B)
-                r2 = builder.getInt32(ip->b.u32);
-            else
-                r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
-            if (ip->op == ByteCodeOp::DecPointer32)
-                r2 = builder.CreateNeg(r2);
-            auto r3 = builder.CreateInBoundsGEP(r1, r2);
-            builder.CreateStore(r3, r0);
-            break;
-        }
         case ByteCodeOp::IncPointer64:
         case ByteCodeOp::DecPointer64:
         {
