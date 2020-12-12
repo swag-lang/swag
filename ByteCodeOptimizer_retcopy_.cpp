@@ -97,13 +97,9 @@ void ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
 
             // This will copy the result in the real variable
             if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::IntrinsicMemCpy && ip[1].b.u32 == ipOrg->a.u32)
-            {
                 optimRetCopy(context, ipOrg, ip);
-            }
             else
-            {
                 ip = ipOrg;
-            }
         }
     }
 }
