@@ -899,10 +899,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto p1 = GEP_I32(allocT, 0);
             builder.CreateStore(r1, TO_PTR_I8(p1));
 
-            auto r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
-            auto v2 = builder.CreateMul(r2, builder.getInt32(ip->c.u32));
+            auto r2 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
+            auto v2 = builder.CreateMul(r2, builder.getInt64(ip->c.u64));
             auto p2 = GEP_I32(allocT, 1);
-            builder.CreateStore(v2, TO_PTR_I32(p2));
+            builder.CreateStore(v2, p2);
 
             auto typeF = createFunctionTypeInternal(buildParameters, 3);
             builder.CreateCall(modu.getOrInsertFunction("@memset", typeF), {r0, p1, p2});

@@ -546,7 +546,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
         SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'@init' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str())}));
-        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->report({node->count, "'@init' count parameter should be 32 bits"}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_COERCE_FULL));
     }
 
     if (node->parameters)

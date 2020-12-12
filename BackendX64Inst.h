@@ -902,6 +902,27 @@ namespace BackendX64Inst
     }
 
     /////////////////////////////////////////////////////////////////////
+    inline void emit_imul64_RAX(X64PerThread& pp, uint64_t value)
+    {
+        if (value <= 0x7F)
+        {
+            pp.concat.addString3("\x48\x6B\xC0"); // imul rax, ??
+            pp.concat.addU8((uint8_t) value);
+        }
+        else if (value <= 0x7FFFFFFF)
+        {
+            pp.concat.addString3("\x48\x69\xC0"); // imul rax, ????????
+            pp.concat.addU32((uint32_t) value);
+        }
+        else
+        {
+            BackendX64Inst::emit_Load64_Immediate(pp, value, RCX);
+            pp.concat.addString4("\x48\x0F\xAF\xC1"); // imul rax, rcx
+            pp.concat.addU64(value);
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////
 
     inline void emit_BinOpInt_Div_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, bool isSigned, uint32_t bits, bool modulo = false)
     {

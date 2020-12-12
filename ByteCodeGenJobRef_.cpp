@@ -520,15 +520,22 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     }
 
     // Number of elements to init. If 0, then this is dynamic
-    uint32_t numToInit = 0;
+    uint64_t numToInit = 0;
     if (!node->count)
         numToInit = 1;
     else if (node->count->flags & AST_VALUE_COMPUTED)
-        numToInit = node->count->computedValue.reg.u32;
+        numToInit = node->count->computedValue.reg.u64;
+    else if (!(node->count->doneFlags & AST_DONE_CAST1))
+    {
+        SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->count->doneFlags |= AST_DONE_CAST1;
+    }
 
     if (justClear)
     {
-        uint32_t sizeToClear = typeExpression->pointedType->sizeOf;
+        uint64_t sizeToClear = typeExpression->pointedType->sizeOf;
         if (sizeToClear)
         {
             if (numToInit)
@@ -539,7 +546,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
             else
             {
                 SWAG_ASSERT(node->count);
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointerXRB, node->expression->resultRegisterRC, node->count->resultRegisterRC)->c.u32 = sizeToClear;
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointerXRB, node->expression->resultRegisterRC, node->count->resultRegisterRC)->c.u64 = sizeToClear;
             }
         }
     }
@@ -563,11 +570,11 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
 
             if (numToInit != 1)
             {
-                auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
+                auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
                 inst->flags |= BCI_IMM_B;
-                inst->b.u32 = typeStruct->sizeOf;
-                emitInstruction(context, ByteCodeOp::DecrementRA32, node->count->resultRegisterRC);
-                auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero32, node->count->resultRegisterRC);
+                inst->b.u64 = typeStruct->sizeOf;
+                emitInstruction(context, ByteCodeOp::DecrementRA64, node->count->resultRegisterRC);
+                auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero64, node->count->resultRegisterRC);
                 instJump->b.s32 = startLoop - context->bc->numInstructions;
             }
         }
@@ -579,11 +586,11 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
         SWAG_CHECK(emitAffectEqual(context, node->expression->resultRegisterRC, child->resultRegisterRC, child->typeInfo, child));
         if (numToInit != 1)
         {
-            auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
+            auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
             inst->flags |= BCI_IMM_B;
-            inst->b.u32 = typeExpression->pointedType->sizeOf;
-            emitInstruction(context, ByteCodeOp::DecrementRA32, node->count->resultRegisterRC);
-            auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero32, node->count->resultRegisterRC);
+            inst->b.u64 = typeExpression->pointedType->sizeOf;
+            emitInstruction(context, ByteCodeOp::DecrementRA64, node->count->resultRegisterRC);
+            auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero64, node->count->resultRegisterRC);
             instJump->b.s32 = startLoop - context->bc->numInstructions;
         }
     }
@@ -599,17 +606,18 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
             auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, r1, node->expression->resultRegisterRC);
             if (typeParam->offset)
-                emitInstruction(context, ByteCodeOp::Add32byVB32, r1)->b.u32 = typeParam->offset;
+                emitInstruction(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = typeParam->offset;
             emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
         }
 
         if (numToInit != 1)
         {
-            auto inst = emitInstruction(context, ByteCodeOp::IncPointer32, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
+            inst->b.u64 = typeExpression->pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
-            inst->b.u32 = typeExpression->pointedType->sizeOf;
-            emitInstruction(context, ByteCodeOp::DecrementRA32, node->count->resultRegisterRC);
-            auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero32, node->count->resultRegisterRC);
+
+            emitInstruction(context, ByteCodeOp::DecrementRA64, node->count->resultRegisterRC);
+            auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero64, node->count->resultRegisterRC);
             instJump->b.s32 = startLoop - context->bc->numInstructions;
         }
 

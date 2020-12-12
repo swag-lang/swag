@@ -1471,16 +1471,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::SetZeroAtPointerXRB:
             SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            if (ip->c.u32 <= 0x7F)
-            {
-                concat.addString2("\x6b\xc0"); // imul eax, ??
-                concat.addU8((uint8_t) ip->c.u32);
-            }
-            else
-            {
-                concat.addString2("\x69\xc0"); // imul eax, ????????
-                concat.addU32(ip->c.u32);
-            }
+            BackendX64Inst::emit_imul64_RAX(pp, ip->c.u64);
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
             BackendX64Inst::emit_Clear64(pp, RAX);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
@@ -1664,22 +1655,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::Mul64byVB64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            if (ip->b.u64 <= 0x7F)
-            {
-                concat.addString3("\x48\x6B\xC0"); // imul rax, ??
-                concat.addU8(ip->b.u8);
-            }
-            else if (ip->b.u64 <= 0x7FFFFFFF)
-            {
-                concat.addString3("\x48\x69\xC0"); // imul rax, ????????
-                concat.addU32(ip->b.u32);
-            }
-            else
-            {
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
-                concat.addString4("\x48\x0F\xAF\xC1"); // imul rax, rcx
-                concat.addU64(ip->b.u64);
-            }
+            BackendX64Inst::emit_imul64_RAX(pp, ip->b.u64);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
