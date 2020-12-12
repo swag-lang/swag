@@ -248,11 +248,8 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
                 }
             }
         }
-        else
-        {
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, typeInfo, nullptr, node));
-        }
 
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, typeInfo, nullptr, node, CASTFLAG_COERCE_FULL));
         node->typeInfo = g_TypeMgr.typeInfoU32;
     }
 

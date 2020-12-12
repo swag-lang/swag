@@ -482,49 +482,50 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     }
 
     case TypeInfoKind::Struct:
+    {
         SWAG_CHECK(TypeManager::promoteOne(context, arrayNode->access));
 
         // Only the top level ArrayPointerIndex node will deal with the call
         if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)
         {
             arrayNode->typeInfo = arrayType;
+            break;
         }
-        else
+
+        // Flatten all operator parameters : self, then all indices
+        arrayNode->structFlatParams.clear();
+        arrayNode->structFlatParams.push_back(arrayNode->access);
+
+        AstNode* child = arrayNode->array;
+        while (child->kind == AstNodeKind::ArrayPointerIndex)
         {
-            // Flatten all operator parameters : self, then all indices
-            arrayNode->structFlatParams.clear();
-            arrayNode->structFlatParams.push_back(arrayNode->access);
-
-            AstNode* child = arrayNode->array;
-            while (child->kind == AstNodeKind::ArrayPointerIndex)
-            {
-                auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
-                arrayNode->structFlatParams.push_front(arrayChild->access);
-                child = arrayChild->array;
-            }
-
-            // Self in first position
-            arrayNode->structFlatParams.push_front(arrayNode->array);
-
-            // Resolve call
-            auto typeInfo = arrayNode->array->typeInfo;
-            if (!hasUserOp(context, "opIndex", arrayNode->array))
-            {
-                if (arrayNode->array->token.text.empty())
-                {
-                    Utf8 msg = format("cannot access by index because special function 'opIndex' cannot be found in type '%s'", typeInfo->name.c_str());
-                    return context->report({arrayNode->access, msg});
-                }
-                else
-                {
-                    Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", arrayNode->array->token.text.c_str(), typeInfo->name.c_str());
-                    return context->report({arrayNode->access, msg});
-                }
-            }
-
-            SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams, false));
+            auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
+            arrayNode->structFlatParams.push_front(arrayChild->access);
+            child = arrayChild->array;
         }
+
+        // Self in first position
+        arrayNode->structFlatParams.push_front(arrayNode->array);
+
+        // Resolve call
+        auto typeInfo = arrayNode->array->typeInfo;
+        if (!hasUserOp(context, "opIndex", arrayNode->array))
+        {
+            if (arrayNode->array->token.text.empty())
+            {
+                Utf8 msg = format("cannot access by index because special function 'opIndex' cannot be found in type '%s'", typeInfo->name.c_str());
+                return context->report({arrayNode->access, msg});
+            }
+            else
+            {
+                Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", arrayNode->array->token.text.c_str(), typeInfo->name.c_str());
+                return context->report({arrayNode->access, msg});
+            }
+        }
+
+        SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams, false));
         break;
+    }
 
     default:
         return context->report({arrayNode->array, format("%s '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->name.c_str())});
