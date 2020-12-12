@@ -675,7 +675,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
 
         // Offset variable reference
         if (regOffset != UINT32_MAX)
-            emitInstruction(context, ByteCodeOp::IncPointer32, r0, regOffset, r0);
+            emitInstruction(context, ByteCodeOp::IncPointer64, r0, regOffset, r0);
 
         // Then call
         SWAG_ASSERT(typeInfoStruct->opInit);
@@ -726,7 +726,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                 }
 
                 if (regOffset != UINT32_MAX)
-                    emitInstruction(context, ByteCodeOp::IncPointer32, r0, regOffset, r0);
+                    emitInstruction(context, ByteCodeOp::IncPointer64, r0, regOffset, r0);
 
                 child->flags |= AST_NO_LEFT_DROP;
                 emitAffectEqual(context, r0, child->resultRegisterRC, child->typeInfo, child);

@@ -140,10 +140,10 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                             emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct), r0[1], retVal);
                         emitStructParameters(context, r0[1], retVal);
 
-                        emitInstruction(context, ByteCodeOp::DecrementRA32, r0[0]);
+                        emitInstruction(context, ByteCodeOp::DecrementRA64, r0[0]);
                         if (typeArray->finalType->sizeOf)
-                            emitInstruction(context, ByteCodeOp::Add32byVB32, r0[1])->b.u32 = typeArray->finalType->sizeOf;
-                        emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
+                            emitInstruction(context, ByteCodeOp::Add64byVB64, r0[1])->b.u64 = typeArray->finalType->sizeOf;
+                        emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
 
                         freeRegisterRC(context, r0);
                     }
