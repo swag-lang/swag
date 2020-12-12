@@ -16,9 +16,9 @@ struct(K, V) HashTable
 
     allocator:  IAllocator
     table:      *HashTableEntry
-    count:      u32 // Number of valid entries
-    capacity:   u32 // Number of total entries the table can hold
-    deleted:    u32 // Number of deleted entries
+    count:      uint // Number of valid entries
+    capacity:   uint // Number of total entries the table can hold
+    deleted:    uint // Number of deleted entries
 }
 
 impl HashTable
