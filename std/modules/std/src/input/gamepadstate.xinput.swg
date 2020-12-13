@@ -6,20 +6,20 @@ private var g_mapButtons: [@countof(Button)] Button = ?
 #run
 {
     using Button
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_A)] = A
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_B)] = B
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_X)] = X
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_Y)] = Y
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_LEFT_THUMB)] = LeftStick
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_RIGHT_THUMB)] = RightStick
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_START)] = Start
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_BACK)] = Back
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_LEFT_SHOULDER)] = LeftShoulder
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = RightShoulder
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_UP)] = DPadUp
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_DOWN)] = DPadDown
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_LEFT)] = DPadLeft
-    g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_RIGHT)] = DPadRight
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_A)] = A
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_B)] = B
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_X)] = X
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_Y)] = Y
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_LEFT_THUMB)] = LeftStick
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_RIGHT_THUMB)] = RightStick
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_START)] = Start
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_BACK)] = Back
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_LEFT_SHOULDER)] = LeftShoulder
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = RightShoulder
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_DPAD_UP)] = DPadUp
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_DPAD_DOWN)] = DPadDown
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_DPAD_LEFT)] = DPadLeft
+    g_mapButtons[math.trailingZeros(XINPUT_GAMEPAD_DPAD_RIGHT)] = DPadRight
 }
 
 // Returns true if the corresponding 'padIndex' is connected
