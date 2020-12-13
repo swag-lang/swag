@@ -96,9 +96,6 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     // LIBC functions
     {
 
-        pp.fn_malloc  = modu.getOrInsertFunction("_aligned_malloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt64Ty(context), llvm::Type::getInt64Ty(context)}, false));
-        pp.fn_free    = modu.getOrInsertFunction("_aligned_free", llvm::FunctionType::get(llvm::Type::getVoidTy(context), {llvm::Type::getInt8PtrTy(context)}, false));
-        pp.fn_realloc = modu.getOrInsertFunction("_aligned_realloc", llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context), llvm::Type::getInt64Ty(context)}, false));
         pp.fn_acosf32 = modu.getOrInsertFunction("acosf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
         pp.fn_acosf64 = modu.getOrInsertFunction("acos", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context), false));
         pp.fn_asinf32 = modu.getOrInsertFunction("asinf", ::llvm::FunctionType::get(llvm::Type::getFloatTy(context), llvm::Type::getFloatTy(context), false));
