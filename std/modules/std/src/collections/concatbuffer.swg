@@ -37,7 +37,7 @@ public impl ConcatBuffer
 
     func opCount(using self)->uint
     {
-        return cast(uint) count()
+        return count()
     }
 
     func opDrop(using self)
@@ -149,7 +149,7 @@ public impl ConcatBuffer
     // If 'contiguous' is false, the slice will be divided in chunks if necessary
     func addBytes(using self, bytes: const [..] u8, contiguous = true)
     {
-        num := cast(uint) @countof(bytes)
+        num := @countof(bytes)
         if !num
             return
 

@@ -66,7 +66,7 @@ public impl BitArray
     func opAffect(using self, slice: const [..] bool)
     {
         len := @countof(slice)
-        reserve(cast(uint) len)
+        reserve(len)
         buffer[len >> 5] = 0
         visit value, index: slice
             set(index, value)

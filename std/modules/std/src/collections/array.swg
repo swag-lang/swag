@@ -68,7 +68,7 @@ impl Array
     func opAffect(using self, arr: const [..] T)
     {
         clear()
-        countof := cast(uint) @countof(arr)
+        countof := @countof(arr)
         if !countof return
         dataof := @dataof(arr)
 
@@ -237,7 +237,7 @@ impl Array
     // Insert a value at the given index. If 'index' is equal to 'count', then
     // the value is added at the end of the array.
     // Order is preserved.
-    func insertAt(using self, index: u32, value: T)
+    func insertAt(using self, index: uint, value: T)
     {
         debug.assert(index <= count, "index out of range")
         if index == count
@@ -254,7 +254,7 @@ impl Array
     // Move a value at the given index. If 'index' is equal to 'count', then
     // the value is added at the end of the array.
     // Order is preserved.
-    func emplaceAt(using self, index: u32, value: *T)
+    func emplaceAt(using self, index: uint, value: *T)
     {
         debug.assert(index <= count, "index out of range")
         if index == count
@@ -293,13 +293,13 @@ impl Array
         }
         #else
         {
-            memory.copy(buffer + oldCount, @dataof(values), cast(uint) sliceCount * @sizeof(T))
+            memory.copy(buffer + oldCount, @dataof(values), sliceCount * @sizeof(T))
         }
     }
 
     // Remove an element at 'index' by replacing it with the last element.
     // Order is not preserved
-    func removeAt(using self, index: u32)
+    func removeAt(using self, index: uint)
     {
         debug.assert(index < count, "index out of range")
         count -= 1
@@ -315,7 +315,7 @@ impl Array
 
     // Remove an element at 'index' by shifting all others.
     // Order is preserved
-    func removeAtOrdered(using self, index: u32)
+    func removeAtOrdered(using self, index: uint)
     {
         debug.assert(index < count, "index out of range")
         count -= 1
