@@ -3045,15 +3045,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = MK_IMMB_F32();
             switch ((TokenId) ip->d.u32)
             {
-            case TokenId::IntrinsicSqrt:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getFloatTy(), r1), r0);
-                break;
-            case TokenId::IntrinsicSin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, builder.getFloatTy(), r1), r0);
-                break;
-            case TokenId::IntrinsicCos:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getFloatTy(), r1), r0);
-                break;
             case TokenId::IntrinsicTan:
                 builder.CreateStore(builder.CreateCall(pp.fn_tanf32, r1), r0);
                 break;
@@ -3074,6 +3065,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicATan:
                 builder.CreateStore(builder.CreateCall(pp.fn_atanf32, r1), r0);
+                break;
+            case TokenId::IntrinsicSqrt:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicSin:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, builder.getFloatTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicCos:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getFloatTy(), r1), r0);
                 break;
             case TokenId::IntrinsicLog:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, builder.getFloatTy(), r1), r0);
@@ -3115,15 +3115,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1 = MK_IMMB_F64();
             switch ((TokenId) ip->d.u32)
             {
-            case TokenId::IntrinsicSqrt:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getDoubleTy(), r1), r0);
-                break;
-            case TokenId::IntrinsicSin:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, builder.getDoubleTy(), r1), r0);
-                break;
-            case TokenId::IntrinsicCos:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getDoubleTy(), r1), r0);
-                break;
             case TokenId::IntrinsicTan:
                 builder.CreateStore(builder.CreateCall(pp.fn_tanf64, r1), r0);
                 break;
@@ -3144,6 +3135,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicATan:
                 builder.CreateStore(builder.CreateCall(pp.fn_atanf64, r1), r0);
+                break;
+            case TokenId::IntrinsicSqrt:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, builder.getDoubleTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicSin:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, builder.getDoubleTy(), r1), r0);
+                break;
+            case TokenId::IntrinsicCos:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, builder.getDoubleTy(), r1), r0);
                 break;
             case TokenId::IntrinsicLog:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, builder.getDoubleTy(), r1), r0);
