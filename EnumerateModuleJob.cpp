@@ -118,11 +118,10 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     }
 
     // Create theModule
-    auto theModule = g_Workspace.createOrUseModule(moduleName, kind);
+    auto theModule = g_Workspace.createOrUseModule(moduleName, path.string(), kind);
 
     // Parse all files in the source tree
-    string tmp      = path.string();
-    theModule->path = tmp;
+    string tmp = path.string();
     tmp += "/";
     tmp += SWAG_SRC_FOLDER;
     tmp += "/";

@@ -391,7 +391,7 @@ bool SyntaxJob::doCompilerModule()
         return sourceFile->report({sourceFile, token, errorStr});
 
     moduleSpecified = true;
-    auto newModule  = g_Workspace.createOrUseModule(token.text, sourceFile->module->kind);
+    auto newModule  = g_Workspace.createOrUseModule(token.text, sourceFile->module->path, sourceFile->module->kind);
     sourceFile->module->removeFile(sourceFile);
     newModule->addFile(sourceFile);
 

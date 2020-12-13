@@ -23,7 +23,7 @@ Module* Workspace::getModuleByName(const Utf8& moduleName)
     return it->second;
 }
 
-Module* Workspace::createOrUseModule(const Utf8& moduleName, ModuleKind kind)
+Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind)
 {
     Module* module = nullptr;
 
@@ -33,7 +33,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, ModuleKind kind)
         auto it = mapModulesNames.find(moduleName);
         if (it != mapModulesNames.end())
         {
-            it->second->setup(moduleName);
+            it->second->setup(moduleName, modulePath);
             return it->second;
         }
 
@@ -43,7 +43,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, ModuleKind kind)
     }
 
     module->kind = kind;
-    module->setup(moduleName);
+    module->setup(moduleName, modulePath);
 
     // Is this the module we want to build ?
     if (g_CommandLine.moduleFilter == moduleName)
@@ -61,7 +61,7 @@ void Workspace::addBootstrap()
     // for all modules
     bootstrapModule       = g_Allocator.alloc<Module>();
     bootstrapModule->kind = ModuleKind::BootStrap;
-    if (!bootstrapModule->setup(""))
+    if (!bootstrapModule->setup("", ""))
         exit(-1);
     modules.push_back(bootstrapModule);
 
@@ -99,7 +99,7 @@ void Workspace::addRuntime()
     // for all modules
     runtimeModule       = g_Allocator.alloc<Module>();
     runtimeModule->kind = ModuleKind::Runtime;
-    if (!runtimeModule->setup(""))
+    if (!runtimeModule->setup("", ""))
         exit(-1);
     modules.push_back(runtimeModule);
 

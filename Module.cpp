@@ -107,7 +107,7 @@ bool Module::canGenerateLegit()
     return true;
 }
 
-bool Module::setup(const Utf8& moduleName)
+bool Module::setup(const Utf8& moduleName, const Utf8& modulePath)
 {
     unique_lock lk(mutexFile);
     if (setupDone)
@@ -121,6 +121,7 @@ bool Module::setup(const Utf8& moduleName)
     nameUp.replaceAll('.', '_');
     nameDown = nameUp;
     nameUp.makeUpper();
+    path = modulePath.c_str();
 
     scopeRoot                      = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
     astRoot                        = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr, nullptr);

@@ -32,7 +32,7 @@ struct Workspace
     void    checkPendingJobs();
     bool    buildTarget();
     bool    build();
-    Module* createOrUseModule(const Utf8& moduleName, ModuleKind kind);
+    Module* createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind);
 
     void    addBootstrap();
     void    addRuntime();
