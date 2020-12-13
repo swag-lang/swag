@@ -552,7 +552,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         field.name            = "data";
         tr0.LF_FieldList.fields.push_back(field);
 
-        field.type          = (DbgTypeIndex)(SimpleTypeKind::UInt32);
+        field.type          = (DbgTypeIndex)(SimpleTypeKind::UInt64);
         field.value.reg.u32 = sizeof(void*);
         field.name          = "sizeof";
         tr0.LF_FieldList.fields.push_back(field);

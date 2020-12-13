@@ -264,14 +264,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             auto cst0 = TO_PTR_I8(func->getArg(argIdx));
             builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
         }
-        else if (typeParam->isNative(NativeTypeKind::String))
-        {
-            auto cst0 = TO_PTR_I8(func->getArg(argIdx));
-            builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
-            auto rr1 = TO_PTR_I32(GEP_I32(allocRR, idx + 1));
-            builder.CreateStore(func->getArg(argIdx + 1), rr1);
-        }
-        else if (typeParam->kind == TypeInfoKind::Slice)
+        else if (typeParam->isNative(NativeTypeKind::String) ||
+                 typeParam->kind == TypeInfoKind::Slice)
         {
             auto cst0 = TO_PTR_I8(func->getArg(argIdx));
             builder.CreateStore(cst0, TO_PTR_PTR_I8(rr0));
@@ -3308,23 +3302,20 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
         llvm::Type* cType = nullptr;
         for (int i = 0; i < numParams; i++)
         {
-            auto param = typeFunc->parameters[i];
+            auto param = typeFunc->parameters[i]->typeInfo;
 
-            SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param->typeInfo, &cType));
+            SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param, &cType));
             params.push_back(cType);
 
             // Additional parameter
-            if (param->typeInfo->isNative(NativeTypeKind::String))
-            {
-                params.push_back(builder.getInt32Ty());
-            }
-            else if (param->typeInfo->kind == TypeInfoKind::Slice)
+            if (param->isNative(NativeTypeKind::String) ||
+                param->kind == TypeInfoKind::Slice)
             {
                 params.push_back(builder.getInt64Ty());
             }
-            else if (param->typeInfo->isNative(NativeTypeKind::Any) ||
-                     param->typeInfo->kind == TypeInfoKind::Interface ||
-                     param->typeInfo->kind == TypeInfoKind::TypeSet)
+            else if (param->isNative(NativeTypeKind::Any) ||
+                     param->kind == TypeInfoKind::Interface ||
+                     param->kind == TypeInfoKind::TypeSet)
             {
                 params.push_back(builder.getInt8Ty()->getPointerTo());
             }
@@ -3399,16 +3390,8 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));
         }
-        else if (typeParam->isNative(NativeTypeKind::String))
-        {
-            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r0));
-
-            index   = pushParams[idxParam--];
-            auto r1 = TO_PTR_I32(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r1));
-        }
-        else if (typeParam->kind == TypeInfoKind::Slice)
+        else if (typeParam->isNative(NativeTypeKind::String) ||
+                 typeParam->kind == TypeInfoKind::Slice)
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));
@@ -3417,7 +3400,9 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
             auto r1 = GEP_I32(allocR, index);
             params.push_back(builder.CreateLoad(r1));
         }
-        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface || typeParam->kind == TypeInfoKind::TypeSet)
+        else if (typeParam->isNative(NativeTypeKind::Any) ||
+                 typeParam->kind == TypeInfoKind::Interface ||
+                 typeParam->kind == TypeInfoKind::TypeSet)
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             params.push_back(builder.CreateLoad(r0));

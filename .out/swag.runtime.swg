@@ -234,20 +234,20 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
 
     // Build message
     var str: [1024] u8
-    var len: u32
+    var len: uint
 
     if message != null
     {
         len = @countof(message)
         if(len > 512) len = 512
-        @memcpy(&str[0], @dataof(message), cast(uint) len)
+        @memcpy(&str[0], @dataof(message), len)
         str[len]     = "\n"'u8
         str[len + 1] = "\n"'u8
         len += 2;
     }
 
     // Source location
-    @memcpy(&str[len], @dataof(loc.fileName), cast(uint) @countof(loc.fileName))
+    @memcpy(&str[len], @dataof(loc.fileName), @countof(loc.fileName))
     len += @countof(loc.fileName)
     @memcpy(&str[len], @dataof(", line "), 7);
     len += 7;

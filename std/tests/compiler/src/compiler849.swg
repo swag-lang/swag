@@ -1,22 +1,20 @@
-
-
 struct Utf8
 {
 	buffer: *u8
-	length:	u32
-	size:	u32
+	length:	uint
+	size:	uint
 }
 
 impl Utf8
 {
-	func reserveSize(using self, newSize: u32)
+	func reserveSize(using self, newSize: uint)
 	{
 		if(size >= newSize)
 			return;
 
-		newPtr := @alloc(cast(uint) newSize)
+		newPtr := @alloc(newSize)
 		if buffer
-			@memcpy(newPtr, buffer, cast(uint) size)
+			@memcpy(newPtr, buffer, size)
 		size = newSize
 		@free(buffer)
 		buffer = autocast newPtr
@@ -27,7 +25,7 @@ impl Utf8
 		length = @countof(from)
 		self.reserveSize(length + 1)
 		if length
-			@memcpy(buffer, @dataof(from), cast(uint) length + 1)
+			@memcpy(buffer, @dataof(from), length + 1)
 		else
 			buffer[0] = 0
 	}

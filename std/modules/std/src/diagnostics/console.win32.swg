@@ -87,6 +87,7 @@ public func print(message: string, params: ...)
     }
     else
     {
-        WriteFile(g_stdOutputHandle, @dataof(message), @countof(message), null, null)
+        len := cast(u32) @countof(message)
+        WriteFile(g_stdOutputHandle, @dataof(message), len, null, null)
     }
 }

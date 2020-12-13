@@ -172,7 +172,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     typeInfo = TypeManager::concreteReferenceType(typeInfo);
     if (typeInfo->isNative(NativeTypeKind::String))
     {
-        node->typeInfo = g_TypeMgr.typeInfoU32;
+        node->typeInfo = g_TypeMgr.typeInfoUInt;
         if (node->flags & AST_VALUE_COMPUTED)
         {
             node->setFlagsValueIsComputed();

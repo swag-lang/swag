@@ -165,15 +165,8 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             return;
         }
 
-        if (typeParam->isNative(NativeTypeKind::String))
-        {
-            context->ffiArgsValues.push_back(&sp->pointer); // Pointer
-            sp++;
-            context->ffiArgs.push_back(&ffi_type_uint32); // Count
-            context->ffiArgsValues.push_back(&sp->u32);
-            sp++;
-        }
-        else if (typeParam->kind == TypeInfoKind::Slice)
+        if (typeParam->isNative(NativeTypeKind::String) ||
+            typeParam->kind == TypeInfoKind::Slice)
         {
             context->ffiArgsValues.push_back(&sp->pointer); // Pointer
             sp++;

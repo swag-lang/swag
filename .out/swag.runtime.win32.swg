@@ -58,7 +58,8 @@ func @print(message: string)
 {
     if !@dataof(message) || !@countof(message)
         return
-    WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), @dataof(message), @countof(message), null, null);
+    len := cast(u32) @countof(message)
+    WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), @dataof(message), len, null, null);
 }
 
 ////////////////////////////////////////////////////////////

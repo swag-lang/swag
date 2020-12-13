@@ -1,7 +1,7 @@
 struct CStr
 {
     buffer:     *u8
-    length:     u32
+    length:     uint
 }
 
 impl CStr

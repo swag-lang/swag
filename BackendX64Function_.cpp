@@ -2699,15 +2699,18 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU64);
         }
-        else if (typeParam->kind == TypeInfoKind::Slice || typeParam->isNative(NativeTypeKind::String))
+        else if (typeParam->kind == TypeInfoKind::Slice ||
+                 typeParam->isNative(NativeTypeKind::String))
         {
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU64);
             index = pushRAParams[indexParam--];
             paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr.typeInfoU32);
+            paramsTypes.push_back(g_TypeMgr.typeInfoU64);
         }
-        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface || typeParam->kind == TypeInfoKind::TypeSet)
+        else if (typeParam->isNative(NativeTypeKind::Any) ||
+                 typeParam->kind == TypeInfoKind::Interface ||
+                 typeParam->kind == TypeInfoKind::TypeSet)
         {
             paramsRegisters.push_back(index);
             paramsTypes.push_back(g_TypeMgr.typeInfoU64);
