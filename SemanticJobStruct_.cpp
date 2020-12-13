@@ -441,6 +441,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         flattenStructChilds(context, node->content, job->tmpNodes);
     }
 
+    typeInfo->sizeOf = 0;
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
@@ -586,21 +587,16 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             }
         }
 
-        // Compute padding
+        // Compute struct alignement
         auto alignOf      = TypeManager::alignOf(child->typeInfo);
         typeInfo->alignOf = max(typeInfo->alignOf, alignOf);
 
+        // Compute padding before the current field
         if (!relocated && node->packing > 1 && alignOf)
         {
-            auto padding = realStorageOffset & (alignOf - 1);
-            padding %= node->packing;
-            if (padding)
-            {
-                padding = alignOf - padding;
-                padding %= node->packing;
-                realStorageOffset += padding;
-                storageOffset += padding;
-            }
+            alignOf           = min(alignOf, node->packing);
+            realStorageOffset = (uint32_t) TypeManager::align(realStorageOffset, alignOf);
+            storageOffset     = (uint32_t) TypeManager::align(storageOffset, alignOf);
         }
 
         typeParam->offset                             = realStorageOffset;
@@ -642,18 +638,17 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // A struct cannot have a zero size
     if (!typeInfo->sizeOf)
-        typeInfo->sizeOf = 1;
+    {
+        typeInfo->sizeOf  = 1;
+        typeInfo->alignOf = 1;
+    }
 
     // Align structure size
-    else if (node->packing && typeInfo->alignOf)
+    else if (node->packing > 1 && !(typeInfo->flags & TYPEINFO_GENERIC))
     {
-        auto pack    = min(node->packing, typeInfo->alignOf);
-        auto padding = pack * (typeInfo->sizeOf / pack);
-        if (padding < typeInfo->sizeOf)
-        {
-            SWAG_ASSERT(padding + pack >= typeInfo->sizeOf);
-            typeInfo->sizeOf = padding + pack;
-        }
+        SWAG_ASSERT(typeInfo->alignOf);
+        auto alignOf     = min(typeInfo->alignOf, node->packing);
+        typeInfo->sizeOf = (uint32_t) TypeManager::align(typeInfo->sizeOf, alignOf);
     }
 
     // Check public

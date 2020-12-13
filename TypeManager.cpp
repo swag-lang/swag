@@ -495,6 +495,17 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
     return typeConst;
 }
 
+uint64_t TypeManager::align(uint64_t value, uint32_t align)
+{
+    SWAG_ASSERT(align);
+    if (align == 1)
+        return value;
+    auto alignValue = value & ~((uint64_t) align - 1);
+    if (alignValue < value)
+        alignValue += align;
+    return alignValue;
+}
+
 uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
 {
     if (typeInfo->kind == TypeInfoKind::Struct)
