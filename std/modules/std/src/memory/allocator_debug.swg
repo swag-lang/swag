@@ -162,12 +162,11 @@ public impl IAllocator for DebugAllocator
                 allocator.alloc(&copyReq)
 
                 // This is the aligned returned user address
-                orgAddr := cast(*u8) copyReq.address
-                orgAddr += toAddAlign
-                userAddr := orgAddr
+                userAddr := cast(*u8) copyReq.address
+                userAddr += toAddAlign
 
                 // Setup header
-                header := cast(*Header) (orgAddr - @sizeof(Header))
+                header := cast(*Header) (userAddr - @sizeof(Header))
                 header.magic = MagicAlloc
                 header.allocAddr = copyReq.address
                 header.userSize = request.size
@@ -176,7 +175,7 @@ public impl IAllocator for DebugAllocator
                 header.hint = copyReq.hint
 
                 // Setup footer
-                footer := cast(*Footer) (orgAddr + request.size)
+                footer := cast(*Footer) (userAddr + request.size)
                 footer.magic = MagicAlloc
 
                 // Fill with garbage
