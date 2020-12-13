@@ -96,7 +96,7 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
 bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
 {
     done = true;
-    if (module->hasUnittestError || module->byteCodeFunc.empty())
+    if (module->hasTtestErrors || module->byteCodeFunc.empty())
         return true;
 
     done = false;

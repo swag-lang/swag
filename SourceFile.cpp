@@ -276,9 +276,9 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         module->criticalErrors++;
 
     // Do not raise an error if we are waiting for one, during tests
-    if (unittestError && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError)
+    if (testErrors && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError)
     {
-        unittestError--;
+        testErrors--;
         if (g_CommandLine.verbose && g_CommandLine.verboseUnittestErrors)
         {
             diag.report(true);

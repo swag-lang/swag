@@ -144,7 +144,7 @@ struct Module
 
     ByteCode* byteCodeMainFunc = nullptr;
     AstNode*  mainIsDefined    = nullptr;
-    bool      hasUnittestError = false;
+    bool      hasTtestErrors = false;
     bool      setupDone        = false;
     bool      dependenciesDone = false;
 

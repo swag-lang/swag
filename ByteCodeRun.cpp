@@ -1168,7 +1168,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         if (IMMA_U8(ip))
             break;
-        if (context->sourceFile->unittestError)
+        if (context->sourceFile->testErrors)
             context->error(ip->d.pointer ? (const char*) ip->d.pointer : "assertion failed");
         else
         {

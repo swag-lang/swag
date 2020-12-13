@@ -330,15 +330,15 @@ bool SyntaxJob::doCompilerUnitTest()
         if (!moduleSpecified)
         {
             moduleSpecified = true;
-            auto newModule = g_Workspace.createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
+            auto newModule  = g_Workspace.createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
             sourceFile->module->removeFile(sourceFile);
             newModule->addFile(sourceFile);
         }
 
         if (g_CommandLine.test)
         {
-            sourceFile->unittestError++;
-            sourceFile->module->hasUnittestError = true;
+            sourceFile->testErrors++;
+            sourceFile->module->hasTtestErrors = true;
         }
     }
 
