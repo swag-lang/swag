@@ -180,9 +180,10 @@ struct ConcreteSlice
 struct ConcreteTypeInfo
 {
     ConcreteSlice name;
-    uint32_t      sizeOf;
+    uint64_t      sizeOf;
     TypeInfoKind  kind;
     uint16_t      flags;
+    uint32_t      padding;
 };
 
 struct ConcreteAny

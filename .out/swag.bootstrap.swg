@@ -272,10 +272,11 @@ namespace swag
 
     struct TypeInfo
     {
-        name:	string  // Must remain first !! (see emitCompareOpEqual when comparing two typeinfos)
-        sizeof: u32
-        kind: 	TypeInfoKind = ?
-        flags:  TypeInfoFlags = ?
+        name:	    string  // Must remain first !! (see emitCompareOpEqual when comparing two typeinfos)
+        sizeof:     uint
+        kind: 	    TypeInfoKind = ?
+        flags:      TypeInfoFlags = ?
+        padding:    u32
     }
 
     struct TypeInfoNative
