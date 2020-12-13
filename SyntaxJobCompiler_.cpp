@@ -321,6 +321,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
 bool SyntaxJob::doCompilerUnitTest()
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#unittest' can only be declared in the top level scope"}));
+    SWAG_VERIFY(sourceFile->fromTests, sourceFile->report({sourceFile, token, "'#unittest' can only be used in a test module"}));
     SWAG_CHECK(tokenizer.getToken(token));
 
     // ERROR

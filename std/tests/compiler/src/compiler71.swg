@@ -1,4 +1,3 @@
-﻿
-#unittest pass syntax;
+﻿#unittest pass syntax
 
-alias myType = u32;
+alias myType = u32

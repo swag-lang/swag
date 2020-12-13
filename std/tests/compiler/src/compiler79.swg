@@ -1,5 +1,2 @@
-﻿
-;
-
-#unittest error;
-type str: 1;
+﻿#unittest error
+type str: 1
