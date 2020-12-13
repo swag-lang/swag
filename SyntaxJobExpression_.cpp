@@ -177,6 +177,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicSpread:
     case TokenId::IntrinsicSizeOf:
     case TokenId::IntrinsicAlignOf:
+    case TokenId::IntrinsicOffsetOf:
     case TokenId::IntrinsicKindOf:
     case TokenId::IntrinsicCountOf:
     case TokenId::IntrinsicDataOf:

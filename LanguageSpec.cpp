@@ -116,6 +116,7 @@ void LanguageSpec::setup()
     keywords["@postcopy"]    = TokenId::IntrinsicPostCopy;
     keywords["@sizeof"]      = TokenId::IntrinsicSizeOf;
     keywords["@alignof"]     = TokenId::IntrinsicAlignOf;
+    keywords["@offsetof"]    = TokenId::IntrinsicOffsetOf;
     keywords["@typeof"]      = TokenId::IntrinsicTypeOf;
     keywords["@kindof"]      = TokenId::IntrinsicKindOf;
     keywords["@countof"]     = TokenId::IntrinsicCountOf;

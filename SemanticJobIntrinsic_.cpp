@@ -434,6 +434,16 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         break;
     }
 
+    case TokenId::IntrinsicOffsetOf:
+    {
+        auto expr = node->childs.front();
+        SWAG_VERIFY(expr->resolvedSymbolOverload, context->report({expr, "expression cannot be evaluated at compile time"}));
+        node->computedValue.reg.u64 = expr->resolvedSymbolOverload->storageOffset;
+        node->setFlagsValueIsComputed();
+        node->typeInfo = g_TypeMgr.typeInfoUInt;
+        break;
+    }
+
     case TokenId::IntrinsicTypeOf:
         SWAG_CHECK(resolveIntrinsicTypeOf(context));
         return true;

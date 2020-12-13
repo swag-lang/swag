@@ -87,6 +87,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, bool acceptPa
     case TokenId::IntrinsicSpread:
     case TokenId::IntrinsicSizeOf:
     case TokenId::IntrinsicAlignOf:
+    case TokenId::IntrinsicOffsetOf:
     case TokenId::IntrinsicTypeOf:
     case TokenId::IntrinsicKindOf:
     case TokenId::IntrinsicCountOf:
