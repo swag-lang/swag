@@ -437,9 +437,9 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         if (expr->typeInfo->kind == TypeInfoKind::Enum)
         {
             auto typeEnum               = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
-            node->computedValue.reg.u32 = (uint32_t) typeEnum->values.size();
+            node->computedValue.reg.u64 = typeEnum->values.size();
             node->setFlagsValueIsComputed();
-            node->typeInfo = g_TypeMgr.typeInfoU32;
+            node->typeInfo = g_TypeMgr.typeInfoUInt;
             break;
         }
 
