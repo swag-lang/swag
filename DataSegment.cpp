@@ -6,13 +6,14 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "Runtime.h"
+#include "TypeManager.h"
 
 static const uint32_t BUCKET_SIZE = 16 * 1024;
 
-uint32_t DataSegment::reserve(uint32_t size, bool setZero)
+uint32_t DataSegment::reserve(uint32_t size, bool setZero, uint32_t alignOf)
 {
     scoped_lock lock(mutex);
-    return reserveNoLock(size, setZero);
+    return reserveNoLock(size, setZero, alignOf);
 }
 
 void DataSegment::initFrom(DataSegment* other)
@@ -35,6 +36,29 @@ void DataSegment::initFrom(DataSegment* other)
     SWAG_ASSERT(other->storedValues16.size() == 0);
     SWAG_ASSERT(other->storedValues32.size() == 0);
     SWAG_ASSERT(other->storedValues64.size() == 0);
+}
+
+uint32_t DataSegment::reserveNoLock(TypeInfo* typeInfo)
+{
+    return reserveNoLock(typeInfo->sizeOf, false, TypeManager::alignOf(typeInfo));
+}
+
+uint32_t DataSegment::reserveNoLock(uint32_t size, bool setZero, uint32_t alignOf)
+{
+    // Align
+    if (buckets.size() && alignOf > 1)
+    {
+        auto last        = &buckets.back();
+        auto curOffset   = last->totalCountBefore + last->count;
+        auto alignOffset = (uint32_t) TypeManager::align(curOffset, alignOf);
+        if (alignOffset != curOffset)
+        {
+            auto diff = alignOffset - curOffset;
+            reserveNoLock(diff, true);
+        }
+    }
+
+    return reserveNoLock(size, setZero);
 }
 
 uint32_t DataSegment::reserveNoLock(uint32_t size, bool setZero)

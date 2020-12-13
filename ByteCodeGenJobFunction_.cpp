@@ -808,7 +808,7 @@ uint32_t ByteCodeGenJob::computeSourceLocation(AstNode* node)
     auto sourceFile = node->sourceFile;
     auto module     = sourceFile->module;
     auto str        = Utf8(normalizePath(sourceFile->path));
-    auto offset     = module->constantSegment.reserve(sizeof(ConcreteCompilerSourceLocation));
+    auto offset     = module->constantSegment.reserve(sizeof(ConcreteCompilerSourceLocation), false, sizeof(void*));
     auto loc        = (ConcreteCompilerSourceLocation*) module->constantSegment.address(offset);
     auto offsetName = module->constantSegment.addString(str);
     auto addrName   = module->constantSegment.address(offsetName);

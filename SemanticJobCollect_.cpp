@@ -66,7 +66,7 @@ bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t storageOffse
 
 bool SemanticJob::reserveAndStoreToSegmentNoLock(JobContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
-    storageOffset = seg->reserveNoLock(typeInfo->sizeOf);
+    storageOffset = seg->reserveNoLock(typeInfo);
     return storeToSegmentNoLock(context, storageOffset, seg, value, typeInfo, assignment);
 }
 
@@ -268,7 +268,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
             SWAG_ASSERT(node->assignment->computedValue.reg.offset != UINT32_MAX);
 
             // Should be stored in the temp segment !
-            storageOffset = seg->reserve(typeInfo->sizeOf);
+            storageOffset = seg->reserve(typeInfo->sizeOf, false, TypeManager::alignOf(typeInfo));
             auto addrDst  = seg->address(storageOffset);
             auto addrSrc  = node->sourceFile->module->tempSegment.address(node->assignment->computedValue.reg.offset);
             memcpy(addrDst, addrSrc, typeInfo->sizeOf);
@@ -286,7 +286,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
 
             // Copy from a constant
             SWAG_ASSERT(node->assignment->flags & AST_CONST_EXPR);
-            storageOffset = seg->reserve(typeInfo->sizeOf);
+            storageOffset = seg->reserve(typeInfo->sizeOf, false, TypeManager::alignOf(typeInfo));
             auto addrDst  = seg->address(storageOffset);
             auto addrSrc  = node->sourceFile->module->constantSegment.address(node->assignment->resolvedSymbolOverload->storageOffset);
             memcpy(addrDst, addrSrc, typeInfo->sizeOf);
