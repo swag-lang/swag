@@ -13,5 +13,5 @@ struct B
 
 #test
 {
-    @assert(@sizeof(B) == 20)
+    @assert(@sizeof(B) == 24)
 }

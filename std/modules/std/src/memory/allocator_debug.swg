@@ -128,12 +128,6 @@ public impl IAllocator for DebugAllocator
                 fallthrough
 
             case AllocatorMode.Alloc:
-                // Adapt size to be able to store additional informations
-                // Take care of alignement request, because we need to be sure
-                // that the returned memory block is well aligned
-                toAdd := cast(uint) @sizeof(Header) + @sizeof(Footer)
-                toAddAlign := memory.align(toAdd, cast(u32) request.alignement)
-
                 // In case of a reallocation, get the previous allocated user size
                 // This will be used to fill with garbage the difference
                 copyReq := :request
@@ -158,8 +152,13 @@ public impl IAllocator for DebugAllocator
                     }
                 }
 
+                // Adapt size to be able to store additional informations
+                // Take care of alignement request, because we need to be sure
+                // that the returned memory block is well aligned
+                toAddAlign := memory.align(@sizeof(Header), request.alignement)
+
                 // Make the real allocation
-                copyReq.size += toAddAlign
+                copyReq.size += toAddAlign + @sizeof(Footer)
                 allocator.alloc(&copyReq)
 
                 // This is the aligned returned user address

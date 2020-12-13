@@ -586,12 +586,53 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             }
         }
 
+        struct CC
+        {
+            uint16_t x;
+            uint16_t y;
+            uint16_t z;
+        };
+
+        struct AA
+        {
+            uint64_t x;
+            uint16_t y;
+        };
+
+        struct BB
+        {
+            AA       v;
+            uint32_t z;
+        };
+
+        int aa = sizeof(AA);
+        int bb = sizeof(BB);
+        int cc = sizeof(CC);
+
         // Compute padding
         auto paddingSizeof = child->typeInfo->sizeOf;
         if (child->typeInfo->kind == TypeInfoKind::Struct)
         {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(child->typeInfo, TypeInfoKind::Struct);
-            paddingSizeof   = typeStruct->maxPaddingSize;
+            auto typeStruct          = CastTypeInfo<TypeInfoStruct>(child->typeInfo, TypeInfoKind::Struct);
+            paddingSizeof            = typeStruct->maxPaddingSize;
+            typeInfo->maxPaddingSize = max(typeInfo->maxPaddingSize, typeStruct->maxPaddingSize);
+        }
+        else if (child->typeInfo->kind == TypeInfoKind::Array)
+        {
+            auto typeArray           = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
+            typeInfo->maxPaddingSize = max(typeInfo->maxPaddingSize, typeArray->finalType->sizeOf);
+        }
+        else if (child->typeInfo->kind == TypeInfoKind::Slice ||
+                 child->typeInfo->kind == TypeInfoKind::Interface ||
+                 child->typeInfo->kind == TypeInfoKind::TypeSet ||
+                 child->typeInfo->isNative(NativeTypeKind::Any) ||
+                 child->typeInfo->isNative(NativeTypeKind::String))
+        {
+            typeInfo->maxPaddingSize = max(typeInfo->maxPaddingSize, sizeof(void*));
+        }
+        else
+        {
+            typeInfo->maxPaddingSize = max(typeInfo->maxPaddingSize, child->typeInfo->sizeOf);
         }
 
         if (!relocated && node->packing > 1 && paddingSizeof)
@@ -606,9 +647,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 storageOffset += padding;
             }
         }
-
-        if (child->typeInfo->kind != TypeInfoKind::Struct)
-            typeInfo->maxPaddingSize = max(typeInfo->maxPaddingSize, child->typeInfo->sizeOf);
 
         typeParam->offset                             = realStorageOffset;
         child->resolvedSymbolOverload->storageOffset  = realStorageOffset;
@@ -647,8 +685,24 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         storageIndexField++;
     }
 
+    if (typeInfo->name == "CaseRange")
+        typeInfo = typeInfo;
+
     // A struct cannot have a zero size
-    typeInfo->sizeOf = max(typeInfo->sizeOf, 1);
+    if (!typeInfo->sizeOf)
+        typeInfo->sizeOf = 1;
+
+    // Align structure size
+    else if (node->packing && typeInfo->maxPaddingSize)
+    {
+        auto pack    = min(node->packing, typeInfo->maxPaddingSize);
+        auto padding = pack * (typeInfo->sizeOf / pack);
+        if (padding < typeInfo->sizeOf)
+        {
+            SWAG_ASSERT(padding + pack >= typeInfo->sizeOf);
+            typeInfo->sizeOf = padding + pack;
+        }
+    }
 
     // Check public
     if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE))
