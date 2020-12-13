@@ -423,6 +423,17 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         break;
     }
 
+    case TokenId::IntrinsicAlignOf:
+    {
+        auto expr = node->childs.front();
+        SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, "alignement cannot be computed because expression is generic"}));
+        node->computedValue.reg.u64 = TypeManager::alignOf(expr->typeInfo);
+        node->setFlagsValueIsComputed();
+        node->typeInfo = g_TypeMgr.typeInfoUInt;
+        break;
+    }
+
     case TokenId::IntrinsicTypeOf:
         SWAG_CHECK(resolveIntrinsicTypeOf(context));
         return true;

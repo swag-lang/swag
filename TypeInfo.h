@@ -535,7 +535,7 @@ struct TypeInfoStruct : public TypeInfo
     AstFuncDecl*    opUserDropFct     = nullptr;
     ByteCode*       opDrop            = nullptr;
 
-    uint32_t maxPaddingSize         = 0;
+    uint32_t alignOf         = 0;
     uint32_t cptRemainingInterfaces = 0;
     uint32_t cptRemainingMethods    = 0;
 };

@@ -494,3 +494,29 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
 
     return typeConst;
 }
+
+uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
+{
+    if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        return typeStruct->alignOf;
+    }
+    else if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        return alignOf(typeArray->finalType);
+    }
+    else if (typeInfo->kind == TypeInfoKind::Slice ||
+             typeInfo->kind == TypeInfoKind::Interface ||
+             typeInfo->kind == TypeInfoKind::TypeSet ||
+             typeInfo->kind == TypeInfoKind::Pointer ||
+             typeInfo->kind == TypeInfoKind::Reference ||
+             typeInfo->isNative(NativeTypeKind::Any) ||
+             typeInfo->isNative(NativeTypeKind::String))
+    {
+        return sizeof(void*);
+    }
+
+    return typeInfo->sizeOf;
+}

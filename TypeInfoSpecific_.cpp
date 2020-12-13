@@ -765,7 +765,7 @@ TypeInfo* TypeInfoStruct::clone()
     newType->opDrop            = opDrop;
     newType->attributes        = attributes;
     newType->itable            = itable;
-    newType->maxPaddingSize    = maxPaddingSize;
+    newType->alignOf    = alignOf;
     newType->structName        = structName;
 
     int size = (int) genericParameters.size();

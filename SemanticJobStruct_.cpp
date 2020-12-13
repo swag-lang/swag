@@ -586,62 +586,17 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             }
         }
 
-        struct CC
-        {
-            uint16_t x;
-            uint16_t y;
-            uint16_t z;
-        };
-
-        struct AA
-        {
-            uint64_t x;
-            uint16_t y;
-        };
-
-        struct BB
-        {
-            AA       v;
-            uint32_t z;
-        };
-
-        int aa = sizeof(AA);
-        int bb = sizeof(BB);
-        int cc = sizeof(CC);
-
         // Compute padding
-        auto paddingSizeof = child->typeInfo->sizeOf;
-        if (child->typeInfo->kind == TypeInfoKind::Struct)
-        {
-            auto typeStruct          = CastTypeInfo<TypeInfoStruct>(child->typeInfo, TypeInfoKind::Struct);
-            paddingSizeof            = typeStruct->maxPaddingSize;
-            typeInfo->maxPaddingSize = max(typeInfo->maxPaddingSize, typeStruct->maxPaddingSize);
-        }
-        else if (child->typeInfo->kind == TypeInfoKind::Array)
-        {
-            auto typeArray           = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
-            typeInfo->maxPaddingSize = max(typeInfo->maxPaddingSize, typeArray->finalType->sizeOf);
-        }
-        else if (child->typeInfo->kind == TypeInfoKind::Slice ||
-                 child->typeInfo->kind == TypeInfoKind::Interface ||
-                 child->typeInfo->kind == TypeInfoKind::TypeSet ||
-                 child->typeInfo->isNative(NativeTypeKind::Any) ||
-                 child->typeInfo->isNative(NativeTypeKind::String))
-        {
-            typeInfo->maxPaddingSize = max(typeInfo->maxPaddingSize, sizeof(void*));
-        }
-        else
-        {
-            typeInfo->maxPaddingSize = max(typeInfo->maxPaddingSize, child->typeInfo->sizeOf);
-        }
+        auto alignOf      = TypeManager::alignOf(child->typeInfo);
+        typeInfo->alignOf = max(typeInfo->alignOf, alignOf);
 
-        if (!relocated && node->packing > 1 && paddingSizeof)
+        if (!relocated && node->packing > 1 && alignOf)
         {
-            auto padding = realStorageOffset & (paddingSizeof - 1);
+            auto padding = realStorageOffset & (alignOf - 1);
             padding %= node->packing;
             if (padding)
             {
-                padding = paddingSizeof - padding;
+                padding = alignOf - padding;
                 padding %= node->packing;
                 realStorageOffset += padding;
                 storageOffset += padding;
@@ -685,17 +640,14 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         storageIndexField++;
     }
 
-    if (typeInfo->name == "CaseRange")
-        typeInfo = typeInfo;
-
     // A struct cannot have a zero size
     if (!typeInfo->sizeOf)
         typeInfo->sizeOf = 1;
 
     // Align structure size
-    else if (node->packing && typeInfo->maxPaddingSize)
+    else if (node->packing && typeInfo->alignOf)
     {
-        auto pack    = min(node->packing, typeInfo->maxPaddingSize);
+        auto pack    = min(node->packing, typeInfo->alignOf);
         auto padding = pack * (typeInfo->sizeOf / pack);
         if (padding < typeInfo->sizeOf)
         {
