@@ -2,7 +2,7 @@ struct(T) Array
 {
 }
 
-var G = 0'u32
+var G = 0'uint
 
 impl Array
 {

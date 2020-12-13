@@ -419,7 +419,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, "size cannot be computed because expression is generic"}));
         node->computedValue.reg.u64 = expr->typeInfo->sizeOf;
         node->setFlagsValueIsComputed();
-        node->typeInfo = g_TypeMgr.typeInfoU32;
+        node->typeInfo = g_TypeMgr.typeInfoUInt;
         break;
     }
 
