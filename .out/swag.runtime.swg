@@ -110,7 +110,7 @@ func @strcmp(str1: string, str2: string)->bool
     data2 := @dataof(str2)
     if data1 == null || data2 == null
         return data1 == data2
-    return !@memcmp(data1, data2, cast(uint) num1)
+    return !@memcmp(data1, data2, num1)
 }
 
 ////////////////////////////////////////////////////////////
@@ -265,7 +265,7 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
       - Press Continue to ignore the assert
       "@
 
-    @memcpy(&str[len], @dataof(info), cast(uint) @countof(info))
+    @memcpy(&str[len], @dataof(info), @countof(info))
     len += @countof(info)
 
     str[len] = 0
