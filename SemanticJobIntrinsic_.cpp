@@ -188,7 +188,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         node->setFlagsValueIsComputed();
         auto typeArray              = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->computedValue.reg.u64 = typeArray->count;
-        node->typeInfo              = g_TypeMgr.typeInfoU32;
+        node->typeInfo              = g_TypeMgr.typeInfoUInt;
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
