@@ -125,7 +125,7 @@ public func fromUtf8(dest: [..] char, src: const [..] u8)->u32
 
         srcPtr += eat
         srcLength -= eat
-        (c, eat) = utf8.firstChar(@mkslice(srcPtr, cast(uint) srcLength))
+        (c, eat) = utf8.firstChar(@mkslice(srcPtr, srcLength))
     }
 
     return count
@@ -135,8 +135,8 @@ public func fromUtf8(dest: [..] char, src: const [..] u8)->u32
 public func fromUtf8(src: const [..] u8)->Array'char
 {
     var result: retval
-    result.reserve(cast(uint) @countof(src))
-    result.count = fromUtf8(@mkslice(result.buffer, cast(uint) @countof(src)), src)
+    result.reserve(@countof(src))
+    result.count = fromUtf8(@mkslice(result.buffer, @countof(src)), src)
     return result
 }
 
@@ -183,7 +183,7 @@ func compare(src, dst: const [..] char, ignoreCase = false)->s32
     }
     else
     {
-        result = memory.compare(@dataof(src), @dataof(dst), cast(uint) minLen)
+        result = memory.compare(@dataof(src), @dataof(dst), minLen)
     }
 
     if result != 0 return math.sign(result)
