@@ -1,4 +1,4 @@
-#module "compiler691"
+
 #unittest error
 
 struct(T) Point

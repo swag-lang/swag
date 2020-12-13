@@ -1,4 +1,4 @@
-#module "compiler1266"
+
 #unittest error
 
 func getCharCount(buffer: *u8)

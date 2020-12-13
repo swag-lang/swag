@@ -1,10 +1,10 @@
-#module "compiler166"
+
 ;
 using swag;
 
 #unittest error;
 
-#run 
+#run
 {
 	@assert(1 == 2);
 }

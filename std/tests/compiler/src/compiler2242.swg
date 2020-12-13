@@ -1,4 +1,4 @@
-#module "compiler2242"
+
 #unittest error
 
 func mix(v, val: alias)

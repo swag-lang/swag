@@ -1,4 +1,4 @@
-#module "compiler240"
+
 ;
 using swag;
 
@@ -14,7 +14,7 @@ func main ()
 	}
 }
 
-#run 
+#run
 {
 	main()
 }

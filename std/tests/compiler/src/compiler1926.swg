@@ -1,4 +1,4 @@
-#module "compiler1926"
+
 #unittest error
 
 alias A = [] s32

@@ -1,4 +1,4 @@
-#module "compiler1196"
+
 #unittest error
 
 const A = false

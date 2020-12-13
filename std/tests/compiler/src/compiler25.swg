@@ -1,4 +1,4 @@
-#module "compiler25"
+
 #unittest pass lexer;
 //#unittest error
 //"tototo\oθθθθ"

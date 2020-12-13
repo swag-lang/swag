@@ -1,4 +1,4 @@
-#module "compiler128"
+
 
 #[swag.attributeUsage(swag.AttributeUsage.GlobalVariable)]
 attr toto();

@@ -326,6 +326,15 @@ bool SyntaxJob::doCompilerUnitTest()
     // ERROR
     if (token.text == "error")
     {
+        // Put the file in its own module, because of errors
+        if (!moduleSpecified)
+        {
+            moduleSpecified = true;
+            auto newModule = g_Workspace.createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
+            sourceFile->module->removeFile(sourceFile);
+            newModule->addFile(sourceFile);
+        }
+
         if (g_CommandLine.test)
         {
             sourceFile->unittestError++;
@@ -375,34 +384,6 @@ bool SyntaxJob::doCompilerUnitTest()
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatSemiCol("after '#unittest' expression"));
-    return true;
-}
-
-bool SyntaxJob::doCompilerModule()
-{
-    SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "'#module' can only be specified once"}));
-    SWAG_VERIFY(canChangeModule, sourceFile->report({sourceFile, token, "'#module' instruction must be done before any code"}));
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, "'#module' must be followed by a string"}));
-
-    // Be sure module name is valid
-    Utf8 errorStr;
-    if (!Module::isValidName(token.text, errorStr))
-        return sourceFile->report({sourceFile, token, errorStr});
-
-    moduleSpecified = true;
-    auto newModule  = g_Workspace.createOrUseModule(token.text, sourceFile->module->path, sourceFile->module->kind);
-    sourceFile->module->removeFile(sourceFile);
-    newModule->addFile(sourceFile);
-
-    if (newModule->kind == ModuleKind::Test)
-        currentScope = sourceFile->scopePrivate;
-    else
-        currentScope = newModule->scopeRoot;
-
-    SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatSemiCol("after module name"));
-
     return true;
 }
 

@@ -1,4 +1,4 @@
-#module "compiler953"
+
 using swag
 
 func toto(x: s32, y: bool)->s32 => x

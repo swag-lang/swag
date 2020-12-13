@@ -1,4 +1,4 @@
-﻿#module "compiler58"
+﻿
 ;
 
 var a: s8 = -127;

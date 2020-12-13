@@ -1,4 +1,4 @@
-#module "compiler130"
+
 #[attributeUsage(AttributeUsage.Field)]
 attr toto();
 

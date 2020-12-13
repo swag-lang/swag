@@ -1,4 +1,4 @@
-#module "compiler232"
+
 using swag
 
 #unittest error;
@@ -14,5 +14,3 @@ func main1 ()
 	var a = 'a';
 	a += 'a';
 }
-
-

@@ -1,4 +1,4 @@
-#module "compiler101"
+
 #unittest pass syntax;
 
 enum A: u8

@@ -1,4 +1,4 @@
-#module "compiler670"
+
 
 
 alias toto = bool

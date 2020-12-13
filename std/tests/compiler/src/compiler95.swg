@@ -1,4 +1,4 @@
-#module "compiler95"
+
 #unittest pass syntax;
 
 enum A

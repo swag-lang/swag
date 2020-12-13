@@ -1,4 +1,4 @@
-﻿#module "compiler78"
+﻿
 ;
 
 alias str = string;

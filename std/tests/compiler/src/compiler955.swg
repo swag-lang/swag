@@ -1,4 +1,4 @@
-#module "compiler955"
+
 #unittest error
 
 func toto()->s32 => 666

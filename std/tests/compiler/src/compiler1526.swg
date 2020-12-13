@@ -1,4 +1,4 @@
-#module "compiler1526"
+
 #unittest error
 
 func(T) toto(x: T)

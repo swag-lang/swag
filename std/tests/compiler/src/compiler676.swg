@@ -1,4 +1,4 @@
-#module "compiler676"
+
 
 
 struct Point

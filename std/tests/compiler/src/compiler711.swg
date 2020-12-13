@@ -1,4 +1,4 @@
-#module "compiler711"
+
 
 //#[swag.printbc]
 #unittest error
@@ -10,7 +10,7 @@ func(T) toto(x: T)->s32
 	case 1: 	return 1
 	default: 	return 2
 	}
-	
+
 	return 0
 }
 

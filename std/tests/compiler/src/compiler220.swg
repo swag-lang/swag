@@ -1,4 +1,4 @@
-#module "compiler220"
+
 #unittest pass syntax;
 
 #run

@@ -1,4 +1,4 @@
-#module "compiler1260"
+
 #unittest error
 struct TOTO
 {

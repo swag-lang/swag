@@ -1,4 +1,4 @@
-#module "compiler805"
+
 
 struct Point
 {

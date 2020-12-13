@@ -1,4 +1,4 @@
-//#module "std101"
+//
 //#unittest error
 //#import "std"
 

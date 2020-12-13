@@ -1,4 +1,4 @@
-#module "compiler313"
+
 
 var g: string = "tata";
 

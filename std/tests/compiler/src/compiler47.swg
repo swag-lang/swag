@@ -1,4 +1,4 @@
-﻿#module "compiler47"
+﻿
 ;
 #unittest error;
 namespace A

@@ -1,4 +1,4 @@
-﻿#module "compiler73"
+﻿
 ;
 
 alias myType = u32;

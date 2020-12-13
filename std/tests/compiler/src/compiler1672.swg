@@ -1,4 +1,4 @@
-//#module "compiler1670"
+//
 //#unittest error
 
 //#[swag.printbc]

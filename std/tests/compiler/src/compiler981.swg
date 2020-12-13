@@ -1,4 +1,4 @@
-#module "compiler981"
+
 #unittest error
 
 struct Point
@@ -15,4 +15,3 @@ const nullPoint: Point(10, 50) = {100, 500}
 	@assert(nullPoint.x == 100)
 	@assert(nullPoint.y == 500)
 }
-

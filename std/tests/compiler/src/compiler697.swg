@@ -1,4 +1,4 @@
-#module "compiler697"
+
 
 
 func(op: s32) toto()

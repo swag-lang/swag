@@ -1,4 +1,4 @@
-﻿#module "compiler38"
+﻿
 #unittest pass lexer;
 #unittest error;
 0xFFFFFFFF_FFFFFFFF'char;
@@ -14,4 +14,3 @@
 1's64;
 1'char;
 0b11'char
-

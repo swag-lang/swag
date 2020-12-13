@@ -1,4 +1,4 @@
-#module "compiler1092"
+
 #[swag.enumflags]
 enum TITI
 {

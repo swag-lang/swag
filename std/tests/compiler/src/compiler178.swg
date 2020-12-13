@@ -1,4 +1,4 @@
-#module "compiler178"
+
 ;
 
 namespace A{}

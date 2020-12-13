@@ -1,4 +1,4 @@
-#module "compiler405"
+
 
 //#[swag.printbc]
 //#assert true

@@ -1,4 +1,4 @@
-#module "compiler816"
+
 
 #unittest error
 func toto(x: [4] s32)

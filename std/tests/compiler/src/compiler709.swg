@@ -1,4 +1,4 @@
-#module "compiler709"
+
 
 //#[swag.printbc]
 #unittest error
@@ -7,7 +7,7 @@
 	loop(i: 2)
 	{
 		loop(i: 2)
-		{	
-		}	
-	}	
+		{
+		}
+	}
 }

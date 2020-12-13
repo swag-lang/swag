@@ -1,4 +1,4 @@
-#module "compiler1190"
+
 #unittest error
 
 struct Color
@@ -8,7 +8,7 @@ struct Color
 }
 
 impl Color
-{    
+{
     func toto(using self, b: u32)
     {
         a = b

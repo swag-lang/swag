@@ -1,4 +1,4 @@
-#module "compiler1828"
+
 #unittest error
 
 alias A = [2] s32

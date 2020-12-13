@@ -1,4 +1,4 @@
-#module "compiler1228"
+
 #unittest error
 
 namespace A

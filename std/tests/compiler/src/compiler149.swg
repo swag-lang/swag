@@ -1,11 +1,11 @@
-#module "compiler149"
+
 ;
 
 #unittest error;
 func main (){}
 func main (b: string){}
 
-#run 
+#run
 {
 	main(1);
 }

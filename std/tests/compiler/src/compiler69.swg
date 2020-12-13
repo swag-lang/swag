@@ -1,4 +1,4 @@
-﻿#module "compiler69"
+﻿
 ;
 
 #unittest error;

@@ -1,4 +1,4 @@
-#module "compiler1169"
+
 #unittest error
 
 var TOTO = "win32"

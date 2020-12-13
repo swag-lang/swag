@@ -1,11 +1,11 @@
-#module "compiler118"
+
 #unittest pass syntax;
 
 func main ()
 {
 }
 
-#run 
+#run
 {
 	main();
 }

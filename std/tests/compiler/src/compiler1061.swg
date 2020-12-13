@@ -1,4 +1,4 @@
-#module "compiler1061"
+
 
 #unittest error
 struct(T) Array

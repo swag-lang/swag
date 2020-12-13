@@ -1,4 +1,4 @@
-#module "compiler138"
+
 #unittest pass syntax;
 
 #[toto(true)]

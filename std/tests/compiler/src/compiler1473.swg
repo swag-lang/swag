@@ -1,4 +1,4 @@
-#module "compiler1473"
+
 #unittest error
 
 struct S
@@ -32,7 +32,7 @@ impl S
         xx := 666
         i = 0
         cpt += i
-    }  
+    }
 
     @assert(cpt == 165)
 }

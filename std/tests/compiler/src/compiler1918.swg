@@ -1,4 +1,4 @@
-//#module "compiler1917"
+//
 //#unittest error
 
 struct(T) A

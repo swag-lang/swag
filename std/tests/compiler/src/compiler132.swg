@@ -1,4 +1,4 @@
-#module "compiler132"
+
 
 #unittest error;
 attr toto() -> "func"

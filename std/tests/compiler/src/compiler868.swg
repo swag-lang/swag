@@ -1,4 +1,4 @@
-#module "compiler868"
+
 
 var G: s32 = 0
 

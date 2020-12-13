@@ -1,4 +1,4 @@
-#module "compiler285"
+
 #unittest pass syntax;
 
 #run

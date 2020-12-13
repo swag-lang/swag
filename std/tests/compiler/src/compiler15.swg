@@ -1,4 +1,4 @@
-#module "compiler15"
+
 #unittest pass lexer;
 
 #unittest error;

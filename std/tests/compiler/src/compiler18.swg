@@ -1,4 +1,4 @@
-﻿#module "compiler18"
+﻿
 #unittest pass lexer;
 #unittest error;
 È
@@ -36,5 +36,3 @@
 1'f64
 100_1.00_00_1
 0.1
-
-

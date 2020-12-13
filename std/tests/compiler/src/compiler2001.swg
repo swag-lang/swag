@@ -1,4 +1,4 @@
-#module "compiler2001"
+
 #unittest error
 
 struct(T) B

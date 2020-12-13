@@ -1,4 +1,4 @@
-#module "compiler1256"
+
 #unittest error
 
 func toto() -> {f32, bool}

@@ -1,4 +1,4 @@
-#module "compiler1621"
+
 #unittest error
 
 #[swag.mixin]
@@ -9,7 +9,7 @@ func mac(stmt: code)
 
 #test
 {
-    mac() 
+    mac()
     {
          return 1
     }

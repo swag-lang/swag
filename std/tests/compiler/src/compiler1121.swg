@@ -1,4 +1,4 @@
-#module "compiler1121"
+
 
 #unittest error
 namespace A.B
@@ -7,9 +7,9 @@ namespace A.B
 	{
 		x: s32
 	}
-	
+
 	struct Random
 	{
 		x: s32
-	}	
+	}
 }

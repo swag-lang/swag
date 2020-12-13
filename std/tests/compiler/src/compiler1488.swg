@@ -1,4 +1,4 @@
-#module "compiler1488"
+
 #unittest error
 
 //#[swag.inline]
@@ -10,7 +10,7 @@ func toto(x: code)
 #test
 {
     toto()
-    {        
+    {
         @print("toto\n")
     }
 }

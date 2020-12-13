@@ -1,4 +1,4 @@
-//#module "compiler2079"
+//
 //#unittest error
 
 struct AA

@@ -1,4 +1,4 @@
-/*#module "compiler1660"
+/*
 #unittest error
 
 struct TT
@@ -9,7 +9,7 @@ struct TT
 //#[swag.printbc]
 func C(x: ...)
 {
-    //ptr := @kindof(x[0])   
+    //ptr := @kindof(x[0])
     //@print(ptr.name)
     ptr1 := cast(*TT) x[0]
     //@print(ptr1.value)

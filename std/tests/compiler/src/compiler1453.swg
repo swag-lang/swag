@@ -1,4 +1,4 @@
-#module "compiler1453"
+
 #unittest error
 
 struct S
@@ -24,7 +24,7 @@ impl S
 #test
 {
     var x: S
-    
+
     visit x
     {
         @print("toto\n")

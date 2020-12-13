@@ -1,4 +1,4 @@
-//#module "compiler1974"
+//
 //#unittest error
 
 struct(K, V) HashTableEntry

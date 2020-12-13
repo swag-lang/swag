@@ -1,4 +1,4 @@
-﻿#module "compiler40"
+﻿
 #unittest pass syntax;
 namespace toto
 {

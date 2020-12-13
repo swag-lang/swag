@@ -1,4 +1,4 @@
-#module "compiler1047"
+
 
 func new() => @{1}
 

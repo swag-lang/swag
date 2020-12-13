@@ -1,4 +1,4 @@
-#module "compiler759"
+
 
 //#[swag.printbc]
 struct Point

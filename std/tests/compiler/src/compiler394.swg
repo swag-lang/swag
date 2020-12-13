@@ -1,10 +1,10 @@
-#module "compiler394"
+
 ;
 
 #unittest error;
 var c = 666;
 var d = {c};
-	
+
 //#[swag.printbc]
 #test
 {

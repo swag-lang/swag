@@ -1,4 +1,4 @@
-#module "compiler1940"
+
 #unittest error
 
 struct(T) B

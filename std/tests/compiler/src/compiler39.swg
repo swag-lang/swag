@@ -1,4 +1,4 @@
-﻿#module "compiler39"
+﻿
 #unittest pass syntax;
 #unittest error;
 namespace toto

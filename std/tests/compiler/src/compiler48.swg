@@ -1,4 +1,4 @@
-﻿#module "compiler48"
+﻿
 ;
 #unittest error;
 

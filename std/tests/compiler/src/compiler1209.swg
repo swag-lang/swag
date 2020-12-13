@@ -1,4 +1,4 @@
-#module "compiler1209"
+
 #unittest error
 
 public
@@ -8,11 +8,11 @@ public
     {
         toto1()
     }
-    
+
     func toto1()
     {
         //@print("toto\n")
-    }    
+    }
 }
 
 //#[swag.printbc]

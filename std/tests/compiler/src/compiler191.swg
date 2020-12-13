@@ -1,9 +1,8 @@
-#module "compiler191"
+
 ;
 
 #unittest error;
-#run 
+#run
 {
 	swag.@print;
 }
-

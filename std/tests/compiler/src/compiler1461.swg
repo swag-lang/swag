@@ -1,4 +1,4 @@
-#module "compiler1461"
+
 #unittest pass syntax
 
 struct S
@@ -21,9 +21,9 @@ impl S
 
 #test
 {
-    var x: S    
+    var x: S
     visit i, j: x
     {
         @print("AAA\n")
-    }   
+    }
 }

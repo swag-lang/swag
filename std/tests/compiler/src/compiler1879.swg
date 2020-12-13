@@ -1,4 +1,4 @@
-#module "compiler1879"
+
 #unittest error
 
 func(T) AA()

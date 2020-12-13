@@ -1,4 +1,4 @@
-#module "compiler649"
+
 #unittest pass syntax
 
 //#[swag.printbc]

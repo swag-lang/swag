@@ -1,4 +1,4 @@
-#module "compiler1150"
+
 #unittest error
 
 //#[swag.printbc]
@@ -10,6 +10,6 @@ func toto()
 		x: s32 = 2
 		y: s32 = 3
 	}
-	
+
 	var b: A
 }

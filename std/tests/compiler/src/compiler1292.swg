@@ -1,4 +1,4 @@
-#module "compiler1292"
+
 #unittest error
 
 var str = "あああ"

@@ -1,4 +1,4 @@
-#module "compiler366"
+
 ;
 
 //#[swag.printbc]

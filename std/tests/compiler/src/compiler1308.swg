@@ -1,4 +1,4 @@
-#module "compiler1308"
+
 #unittest error
 
 #test
@@ -10,9 +10,9 @@
         {
             break outer
         }
-		
+
 		error = true
     }
-	
+
 	@assert(!error)
 }

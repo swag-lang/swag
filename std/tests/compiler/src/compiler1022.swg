@@ -1,4 +1,4 @@
-#module "compiler1022"
+
 #unittest pass syntax
 
 #test

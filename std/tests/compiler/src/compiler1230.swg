@@ -1,4 +1,4 @@
-/*#module "compiler1230"
+/*
 #unittest error
 
 func toto1()

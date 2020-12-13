@@ -1,4 +1,4 @@
-#module "compiler280"
+
 #unittest pass syntax;
 
 func main ()

@@ -1,4 +1,4 @@
-//#module "compiler2195"
+//
 //#unittest error
 
 var G = 0

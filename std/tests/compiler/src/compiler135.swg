@@ -1,4 +1,4 @@
-#module "compiler135"
+
 #unittest pass syntax;
 
 attr toto(b: bool);

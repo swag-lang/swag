@@ -1,4 +1,4 @@
-#module "compiler87"
+
 ;
 #unittest error;
 namespace A

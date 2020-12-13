@@ -1,10 +1,10 @@
-#module "compiler1523"
+
 #unittest error
 
 struct X
 {
     x: s32
-    y: bool   
+    y: bool
 }
 
 impl X

@@ -1,9 +1,9 @@
-#module "compiler1632"
+
 #unittest error
 
 struct A
 {
-    readonly x, y: u32    
+    readonly x, y: u32
 }
 
 #run

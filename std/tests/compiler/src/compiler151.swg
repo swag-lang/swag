@@ -1,4 +1,4 @@
-#module "compiler151"
+
 #unittest pass syntax;
 
 func main () { return 1; }

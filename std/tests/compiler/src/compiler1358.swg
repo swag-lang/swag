@@ -1,4 +1,4 @@
-#module "compiler1358"
+
 #unittest error
 
 interface TOTO
@@ -21,7 +21,7 @@ impl TOTO for TITI
 
 //#[swag.printbc]
 #test
-{   
+{
     var XX: TOTO
     TOTO.print(XX, true)
     /*var YY: TITI

@@ -1,4 +1,4 @@
-//#module "compiler1588"
+//
 //#unittest error
 
 struct(T) B

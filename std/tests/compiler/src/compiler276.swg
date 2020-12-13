@@ -1,5 +1,5 @@
 /*
-#module "compiler276"
+
 #unittest pass syntax;
 
 #version(toto)
@@ -9,15 +9,13 @@
 {
 }
 
-#version(toto) 
-{ 
+#version(toto)
+{
 }
 
 #version(toto) var a: bool;
 
-#version(toto) 
+#version(toto)
 	var a: bool;
 #else
 	var a: bool;*/
-
-	

@@ -1,4 +1,4 @@
-﻿#module "compiler56"
+﻿
 #unittest pass lexer;
 
 #unittest error;

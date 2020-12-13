@@ -1,4 +1,4 @@
-﻿#module "compiler43"
+﻿
 ;
 #unittest error;
 var a: s32;

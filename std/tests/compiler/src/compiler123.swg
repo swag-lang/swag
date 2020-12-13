@@ -1,10 +1,10 @@
-/*#module "compiler123"
+/*
 #unittest pass syntax;
 
 attr toto() -> "func", "var"
 
 #unittest error;
-attr toto() -> "func", 
+attr toto() -> "func",
 
 #unittest pass syntax;
 #unittest error;

@@ -1,4 +1,4 @@
-/*#module "compiler652"
+/*
 
 //#[swag.printbc]
 #unittest error

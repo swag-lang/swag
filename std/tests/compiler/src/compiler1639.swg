@@ -1,9 +1,9 @@
-#module "compiler1639"
+
 #unittest error
 
 internal struct A
 {
-    x: u32    
+    x: u32
     y: u32
 }
 

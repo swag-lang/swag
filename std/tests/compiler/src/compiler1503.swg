@@ -1,4 +1,4 @@
-#module "compiler1502"
+
 #unittest error
 
 func titi()->(s32, s32)

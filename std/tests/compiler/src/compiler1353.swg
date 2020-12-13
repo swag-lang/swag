@@ -1,4 +1,4 @@
-#module "compiler1353"
+
 #unittest error
 
 struct TOTO
@@ -14,6 +14,6 @@ func print1(s: *TOTO, x: bool)
 #test
 {
     var x: TOTO
-    x.print = &print1   
+    x.print = &print1
     TOTO.print(x, true)
 }

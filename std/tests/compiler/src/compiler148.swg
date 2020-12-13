@@ -1,11 +1,11 @@
-#module "compiler148"
+
 ;
 
 func main (){}
 func main (b: bool){}
 
 #unittest error;
-#run 
+#run
 {
 	main(1, 2);
 }
@@ -14,7 +14,7 @@ func main1 (b: bool, b1: bool){}
 func main1 (b: string, b1: string){}
 
 #unittest error;
-#run 
+#run
 {
 	main1(1);
 }

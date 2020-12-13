@@ -1,4 +1,4 @@
-#module "compiler26"
+
 #unittest pass lexer;
 
 "A"'char

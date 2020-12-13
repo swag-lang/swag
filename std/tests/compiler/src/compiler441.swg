@@ -1,4 +1,4 @@
-#module "compiler441"
+
 
 //#[swag.printbc]
 #unittest error
@@ -7,7 +7,7 @@
 	cpt := 0
 	switch(5)
 	{
-	case 5: 
+	case 5:
 		continue;
 	}
 }

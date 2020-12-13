@@ -1,4 +1,4 @@
-#module "compiler1950"
+
 #unittest error
 
 struct(A, B) Foozle

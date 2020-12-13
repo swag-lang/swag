@@ -1,4 +1,4 @@
-#module "compiler1587"
+
 #unittest error
 
 struct A

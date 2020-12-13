@@ -1,4 +1,4 @@
-#module "compiler2312"
+
 #unittest error
 
 func toto32(s: string, x: s32)->s32

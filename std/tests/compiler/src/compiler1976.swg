@@ -1,4 +1,4 @@
-//#module "compiler1974"
+//
 //#unittest error
 using swag
 

@@ -323,9 +323,6 @@ JobResult SyntaxJob::execute()
         case TokenId::CompilerUnitTest:
             ok = doCompilerUnitTest();
             continue;
-        case TokenId::CompilerModule:
-            ok = doCompilerModule();
-            continue;
         }
 
         // Ask for lexer only

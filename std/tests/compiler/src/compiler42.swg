@@ -1,4 +1,4 @@
-﻿#module "compiler42"
+﻿
 ;
 #unittest error;
 namespace toto

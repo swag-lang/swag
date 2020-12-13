@@ -1,4 +1,4 @@
-﻿#module "compiler29"
+﻿
 #unittest pass lexer;
 #unittest error;
 0b112

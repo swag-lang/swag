@@ -1,4 +1,4 @@
-#module "compiler2005"
+
 #unittest error
 
 func toto()

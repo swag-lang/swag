@@ -1,11 +1,11 @@
-#module "compiler1634"
+
 #unittest error
 
 struct A
 {
-    readonly 
+    readonly
     {
-        x: u32    
+        x: u32
         y: u32
     }
 }

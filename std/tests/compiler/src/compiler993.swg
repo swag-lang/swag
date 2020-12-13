@@ -1,4 +1,4 @@
-#module "compiler993"
+
 
 
 #unittest error
@@ -8,4 +8,3 @@ struct Point
 }
 
 attr NC1(x: Point) -> var
-

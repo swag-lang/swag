@@ -1,4 +1,4 @@
-#module "compiler919"
+
 
 func sum(x: f32, nums: ...)
 {

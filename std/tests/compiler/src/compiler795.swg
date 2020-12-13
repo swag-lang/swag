@@ -1,4 +1,4 @@
-#module "compiler795"
+
 
 //#[swag.printbc]
 func(T) toto()

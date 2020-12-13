@@ -1,4 +1,4 @@
-#module "compiler772"
+
 
 struct Point
 {
@@ -8,7 +8,7 @@ struct Point
 
 //#[swag.printbc]
 #test
-{	
+{
 	var pt1: Point
 	pt1 = 1
 	@assert(pt1.x == 1)

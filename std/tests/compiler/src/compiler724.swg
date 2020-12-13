@@ -1,4 +1,4 @@
-#module "compiler724"
+
 
 func toto(x: s8)
 {

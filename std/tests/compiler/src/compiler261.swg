@@ -1,4 +1,4 @@
-#module "compiler261"
+
 ;
 using swag;
 
@@ -6,14 +6,14 @@ using swag;
 func main ()->s32
 {
 	if(true)
-		return 0;	
+		return 0;
 }
 
 #unittest error;
 func main1 ()->s32
 {
 	while(true)
-		return 0;	
+		return 0;
 }
 
 #unittest error;
@@ -24,6 +24,6 @@ func main2 ()->s32
 	}
 	else
 	{
-		return 0;	
+		return 0;
 	}
 }

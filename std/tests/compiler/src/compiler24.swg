@@ -1,4 +1,4 @@
-#module "compiler24"
+
 #unittest pass lexer;
 
 "totototoθθθθ"
