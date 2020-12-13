@@ -365,8 +365,8 @@ namespace swag
         using base: 	TypeInfo
         pointedType:	const *TypeInfo
         finalType:		const *TypeInfo
-        count:			u32
-        totalCount:		u32
+        count:			uint
+        totalCount:		uint
     }
 
     struct TypeInfoSlice

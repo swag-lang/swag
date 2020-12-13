@@ -278,8 +278,8 @@ struct ConcreteTypeInfoArray
     ConcreteTypeInfo  base;
     ConcreteTypeInfo* pointedType;
     ConcreteTypeInfo* finalType;
-    uint32_t          count;
-    uint32_t          totalCount;
+    uint64_t          count;
+    uint64_t          totalCount;
 };
 
 struct ConcreteTypeInfoSlice
