@@ -14,7 +14,6 @@ ByteCodeOptimizerJob::ByteCodeOptimizerJob()
     passes.push_back(ByteCodeOptimizer::optimizePassEmptyFct);
     passes.push_back(ByteCodeOptimizer::optimizePassDeadStore);
     passes.push_back(ByteCodeOptimizer::optimizePassDeadCode);
-    passes.push_back(ByteCodeOptimizer::optimizePassStack);
     passes.push_back(ByteCodeOptimizer::optimizePassImmediate);
     passes.push_back(ByteCodeOptimizer::optimizePassConst);
     passes.push_back(ByteCodeOptimizer::optimizePassDupCopyRBRA);

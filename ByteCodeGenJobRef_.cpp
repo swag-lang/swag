@@ -429,6 +429,22 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
     auto typeVar = node->array->typeInfo;
 
+    if (!(node->lowerBound->doneFlags & AST_DONE_CAST1))
+    {
+        SWAG_CHECK(emitCast(context, node->lowerBound, node->lowerBound->typeInfo, node->lowerBound->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->lowerBound->doneFlags |= AST_DONE_CAST1;
+    }
+
+    if (!(node->lowerBound->doneFlags & AST_DONE_CAST2))
+    {
+        SWAG_CHECK(emitCast(context, node->upperBound, node->upperBound->typeInfo, node->upperBound->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->upperBound->doneFlags |= AST_DONE_CAST2;
+    }
+
     // Slicing of a structure, with a special function
     if (typeVar->kind == TypeInfoKind::Struct)
     {

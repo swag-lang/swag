@@ -529,5 +529,5 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
         return sizeof(void*);
     }
 
-    return typeInfo->sizeOf;
+    return max(1, typeInfo->sizeOf);
 }
