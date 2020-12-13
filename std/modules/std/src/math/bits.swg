@@ -118,9 +118,9 @@ func countOnes(x: u32)->u32
 #[swag.constexpr]
 func countOnes(x: u64)->u32
 {
-    const M0 = 0X5555555555555555 // 01010101 ...
-    const M1 = 0X3333333333333333 // 00110011 ...
-    const M2 = 0X0F0F0F0F0F0F0F0F // 00001111 ...
+    const M0 = 0X5555555555555555
+    const M1 = 0X3333333333333333
+    const M2 = 0X0F0F0F0F0F0F0F0F
     vx := x
 	vx = ((vx >> 1) & M0) + (vx & M0)
 	vx = ((vx >> 2) & M1) + (vx & M1)
