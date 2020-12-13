@@ -87,7 +87,7 @@ public impl String
             return
         }
 
-        newCapacity := cast(uint) @countof(value) + 1
+        newCapacity := @countof(value) + 1
         length = newCapacity - 1
         reserve(newCapacity)
         memory.copy(buffer, @dataof(value), length)
@@ -150,7 +150,7 @@ public impl String
             buffer = null
             capacity = 0
             reserve(length + 1)
-            memory.copy(buffer, oldBuffer, cast(uint) length + 1)
+            memory.copy(buffer, oldBuffer, length + 1)
         }
     }
 
@@ -201,13 +201,13 @@ public impl String
     {
         if !length return
 
-        byteIdx := 0'u32
-        charIdx := 0'u32
+        byteIdx := 0'uint
+        charIdx := 0'uint
         count := length
         scan := buffer
         while true
         {
-            slice := @mkslice(scan, cast(uint) count)
+            slice := @mkslice(scan, count)
             var (c, eat) = utf8.firstChar(slice)
             if eat == 0
                 break
@@ -238,9 +238,9 @@ public impl String
     }
 
     // Returns the number of unicode characters in the string
-    func countChars(using self)->u32
+    func countChars(using self)->uint
     {
-        return utf8.countChars(@mkslice(buffer, cast(uint) length))
+        return utf8.countChars(@mkslice(buffer, length))
     }
 
     // Returns true if the String has zero length
@@ -286,7 +286,7 @@ public impl String
 
         newLength := length + concatLength + 1
         grow(newLength)
-        memory.copy(buffer + length, @dataof(value), cast(uint) concatLength)
+        memory.copy(buffer + length, @dataof(value), concatLength)
         length = newLength - 1
         buffer[length] = 0
     }
@@ -387,7 +387,7 @@ public impl String
         ptr := buffer
         while true
         {
-            slice := @mkslice(ptr, cast(uint) length)
+            slice := @mkslice(ptr, length)
             (c, eat) := utf8.firstChar(slice)
             if !unicode32.isSpace(c)
                 break
@@ -395,7 +395,7 @@ public impl String
             ptr += eat
         }
 
-        memory.copy(buffer, ptr, cast(uint) length)
+        memory.copy(buffer, ptr, length)
         buffer[length] = 0
     }
 
@@ -407,7 +407,7 @@ public impl String
 
         while true
         {
-            slice := @mkslice(buffer, cast(uint) length)
+            slice := @mkslice(buffer, length)
             (c, eat) := utf8.lastChar(slice)
             if !unicode32.isSpace(c)
                 break
@@ -432,7 +432,7 @@ public impl String
             return 0
         if latin1.isAscii(buffer[0])
             return cast(char) buffer[0]
-        (c, ?) := utf8.firstChar(@mkslice(buffer, cast(uint) length))
+        (c, ?) := utf8.firstChar(@mkslice(buffer, length))
         return c
     }
 
@@ -444,14 +444,14 @@ public impl String
             return 0
         if latin1.isAscii(buffer[length - 1])
             return cast(char) buffer[length - 1]
-        (c, ?) := utf8.lastChar(@mkslice(buffer, cast(uint) length))
+        (c, ?) := utf8.lastChar(@mkslice(buffer, length))
         return c
     }
 
     // Convert string to a 32 bits character array
     func toCharArray(using self)->Array'char
     {
-        return unicode32.fromUtf8(@mkslice(buffer, cast(uint) length))
+        return unicode32.fromUtf8(@mkslice(buffer, length))
     }
 
     // Convert a literal string to a String
@@ -464,13 +464,13 @@ public impl String
     // Returns a string type
     func toString(using self)->string
     {
-        return cast(string) @mkslice(buffer, cast(uint) length)
+        return cast(string) @mkslice(buffer, length)
     }
 
     // Convert the string inplace to upper case.
     func makeUpper(using self, set = CharacterSet.Latin1)
     {
-        sl := @mkslice(buffer, cast(uint) length)
+        sl := @mkslice(buffer, length)
 
         using CharacterSet
         switch set
@@ -482,14 +482,14 @@ public impl String
                 uni32 := unicode32.fromUtf8(toString())
                 unicode32.makeUpper(uni32.toSlice())
                 reserve(uni32.count * 4)
-                length = utf8.fromCharArray(@mkslice(buffer, cast(uint) capacity), uni32.toSlice())
+                length = utf8.fromCharArray(@mkslice(buffer, capacity), uni32.toSlice())
         }
     }
 
     // Convert the string inplace to lower case.
     func makeLower(using self, set = CharacterSet.Latin1)
     {
-        sl := @mkslice(buffer, cast(uint) length)
+        sl := @mkslice(buffer, length)
 
         using CharacterSet
         switch set
@@ -501,7 +501,7 @@ public impl String
                 uni32 := unicode32.fromUtf8(toString())
                 unicode32.makeLower(uni32.toSlice())
                 reserve(uni32.count * 4)
-                length = utf8.fromCharArray(@mkslice(buffer, cast(uint) capacity), uni32.toSlice())
+                length = utf8.fromCharArray(@mkslice(buffer, capacity), uni32.toSlice())
         }
     }
 
@@ -591,16 +591,16 @@ public impl String
         var result: retval
         var ptr = cast(const *u8) buffer
         var c: char
-        var eat: u32
+        var eat: uint
 
-        startbyteIdx := 0'u32
+        startbyteIdx := 0'uint
         count := length
         while true
         {
             // Remove separator at the start
             while true
             {
-                slice := @mkslice(ptr, cast(uint) count)
+                slice := @mkslice(ptr, count)
                 (c, eat) = utf8.firstChar(slice)
                 if eat == 0 || !contains(separators, c)
                     break
@@ -615,7 +615,7 @@ public impl String
             endbyteIdx := startbyteIdx
             while true
             {
-                slice := @mkslice(ptr, cast(uint) count)
+                slice := @mkslice(ptr, count)
                 (c, eat) = utf8.firstChar(slice)
                 if eat == 0 || contains(separators, c)
                     break
@@ -624,7 +624,7 @@ public impl String
                 count -= eat
             }
 
-            oneString := cast(string) @mkslice(buffer + startbyteIdx, cast(uint) endbyteIdx - startbyteIdx)
+            oneString := cast(string) @mkslice(buffer + startbyteIdx, endbyteIdx - startbyteIdx)
             result.add(oneString)
 
             if eat == 0 break // done

@@ -40,12 +40,12 @@ func byteIndex(buffer: const [..] u8, charIndex: u32) -> {index: u32, success: b
 }
 
 // Returns the number of unicode characters in an utf8 buffer
-func countChars(buffer: const [..] u8)->u32
+func countChars(buffer: const [..] u8)->uint
 {
     dataof := @dataof(buffer)
     countof := @countof(buffer)
 
-    cpt := 0'u32
+    cpt := 0'uint
     while countof
     {
         val := countBytesAt(dataof)
@@ -58,7 +58,7 @@ func countChars(buffer: const [..] u8)->u32
     return cpt
 }
 
-// Get the address of the previous utf8 character, and the corresponding unicode character
+// Get the previous utf8 character, and the number of bytes to encode it
 func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
     countof := @countof(buffer)
@@ -206,7 +206,7 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
 func startsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonType.Latin1)->bool
 {
     length := @countof(src)
-    countof := cast(uint) @countof(str)
+    countof := @countof(str)
     if countof > length return false
     buffer := @dataof(src)
     return compare(cast(string) @mkslice(buffer, countof), str, comparisonType) == 0
@@ -242,7 +242,7 @@ func endsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonT
     countof := @countof(str)
     if countof > length return false
     buffer := @dataof(src)
-    return compare(cast(string) @mkslice((buffer + length) - countof, cast(uint) countof), str, comparisonType) == 0
+    return compare(cast(string) @mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
 }
 
 public enum ComparisonType
@@ -278,8 +278,8 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
         var eat1, eat2: u32
         while true
         {
-            (c1, eat1) = firstChar(@mkslice(data, cast(uint) length))
-            (c2, eat2) = firstChar(@mkslice(otherData, cast(uint) otherLength))
+            (c1, eat1) = firstChar(@mkslice(data, length))
+            (c2, eat2) = firstChar(@mkslice(otherData, otherLength))
             if eat1 == 0 || eat2 == 0 break
 
             if c1 != c2
@@ -314,12 +314,12 @@ func visitChars(buffer: const [..] u8, stmt: code)
     count := @countof(buffer)
     if !count return
 
-    byteIdx := 0'u32
-    charIdx := 0'u32
+    byteIdx := 0'uint
+    charIdx := 0'uint
     scan := @dataof(buffer)
     while count
     {
-        slice := @mkslice(scan, cast(uint) count)
+        slice := @mkslice(scan, count)
         var (c, eat) = firstChar(slice)
         if eat == 0
             break
@@ -385,16 +385,16 @@ func fromChar(dest: [..] u8, src: char)->u32
 // Convert a unicode 32 array to an utf8 buffer
 // Returns the number of bytes written in the destination buffer
 // 'dest' must be at least 4 bytes long
-func fromCharArray(dest: [..] u8, src: const [..] char)->u32
+func fromCharArray(dest: [..] u8, src: const [..] char)->uint
 {
     dataof := @dataof(dest)
     remain := @countof(dest)
 
-    total := 0'u32
+    total := 0'uint
     visit ch: src
     {
         debug.assert(remain >= 4, "destination buffer is too small")
-        slice := @mkslice(dataof + total, cast(uint) remain)
+        slice := @mkslice(dataof + total, remain)
         cpt := fromChar(slice, ch)
         total += cpt
         remain -= cpt
