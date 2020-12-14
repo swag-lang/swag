@@ -60,7 +60,6 @@ struct OneMatch
 {
     VectorNative<TypeInfoParam*> solvedParameters;
 
-    SymbolName*     symbolName     = nullptr;
     SymbolOverload* symbolOverload = nullptr;
     AstNode*        dependentVar   = nullptr;
 
@@ -70,7 +69,6 @@ struct OneMatch
     void reset()
     {
         solvedParameters.clear();
-        symbolName     = nullptr;
         symbolOverload = nullptr;
         dependentVar   = nullptr;
         ufcs           = false;

@@ -6,7 +6,8 @@ public struct ScratchAllocator
     fallback:   IAllocator
 
     block:  *void
-    used:   u32
+    used:   uint
+    //leak:   Array'{*void, uint}
 }
 
 public impl IAllocator for ScratchAllocator
@@ -15,6 +16,13 @@ public impl IAllocator for ScratchAllocator
     {
         switch request.mode
         {
+            case AllocatorMode.Free:
+                break
+
+            case AllocatorMode.FreeAll:
+                used = 0
+                break
+
             case AllocatorMode.Alloc:
                 break
         }

@@ -319,7 +319,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
 
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, OneMatch& oneMatch)
 {
-    auto symbol       = oneMatch.symbolName;
+    auto symbol       = oneMatch.symbolOverload->symbol;
     auto overload     = oneMatch.symbolOverload;
     auto dependentVar = oneMatch.dependentVar;
     auto sourceFile   = context->sourceFile;
@@ -1161,7 +1161,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 SWAG_ASSERT(symbol->overloads.size() == 1);
 
                 auto match              = job->getOneMatch();
-                match->symbolName       = symbol;
                 match->symbolOverload   = overload;
                 match->solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
                 match->dependentVar     = dependentVar;
@@ -1303,7 +1302,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             else
             {
                 auto match              = job->getOneMatch();
-                match->symbolName       = symbol;
                 match->symbolOverload   = overload;
                 match->solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
                 match->dependentVar     = dependentVar;
@@ -1450,7 +1448,6 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
         else
         {
             auto oneMatch            = job->getOneMatch();
-            oneMatch->symbolName     = firstMatch.symbolName;
             oneMatch->symbolOverload = firstMatch.symbolOverload;
             matches.push_back(oneMatch);
             node->flags |= AST_IS_GENERIC;
@@ -1499,7 +1496,7 @@ bool SemanticJob::ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* i
 
 bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match)
 {
-    auto symbol       = match.symbolName;
+    auto symbol       = match.symbolOverload->symbol;
     auto dependentVar = match.dependentVar;
     auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
 
@@ -1941,12 +1938,12 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
     for (int i = 0; i < matches.size(); i++)
     {
         // Priority to a concrete type versus a generic one
-        auto lastOverloadType = matches[i]->symbolName->ownerTable->scope->owner->typeInfo;
+        auto lastOverloadType = matches[i]->symbolOverload->symbol->ownerTable->scope->owner->typeInfo;
         if (lastOverloadType && lastOverloadType->flags & TYPEINFO_GENERIC)
         {
             for (int j = 0; j < matches.size(); j++)
             {
-                auto newOverloadType = matches[j]->symbolName->ownerTable->scope->owner->typeInfo;
+                auto newOverloadType = matches[j]->symbolOverload->symbol->ownerTable->scope->owner->typeInfo;
                 if (newOverloadType && !(newOverloadType->flags & TYPEINFO_GENERIC))
                 {
                     matches[i]->remove = true;
@@ -2156,7 +2153,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (node->resolvedSymbolOverload)
         {
             OneMatch oneMatch;
-            oneMatch.symbolName     = node->resolvedSymbolName;
             oneMatch.symbolOverload = node->resolvedSymbolOverload;
             SWAG_CHECK(setSymbolMatch(context, identifierRef, node, oneMatch));
         }
@@ -2330,7 +2326,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 identifierRef->previousResolvedNode   = match->dependentVar;
             }
 
-            SWAG_CHECK(ufcsSetLastParam(context, identifierRef, match->symbolName));
+            SWAG_CHECK(ufcsSetLastParam(context, identifierRef, match->symbolOverload->symbol));
             SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, *match));
         }
     }
