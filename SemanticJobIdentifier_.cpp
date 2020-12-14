@@ -1578,10 +1578,25 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
 
 bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
-    auto  job                = context->job;
+    auto  job              = context->job;
+    auto& dependentSymbols = job->cacheDependentSymbols;
+
+    // When this is "retval" type, no need to do fancy things, we take the corresponding function
+    // return symbol. This will avoid some ambiguous resolutions with multiple tuples/structs.
+    if (node->token.text == "retval")
+    {
+        // Be sure this is correct
+        SWAG_CHECK(resolveRetVal(context));
+        auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
+        SWAG_ASSERT(fctDecl);
+        auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fctDecl->typeInfo, TypeInfoKind::FuncAttr);
+        SWAG_ASSERT(typeFct->returnType->kind == TypeInfoKind::Struct);
+        dependentSymbols.push_back(typeFct->returnType->declNode->resolvedSymbolName);
+        return true;
+    }
+
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
-    auto& dependentSymbols   = job->cacheDependentSymbols;
 
     // We make 2 tries at max : one try with the previous symbol scope (A.B), and one try with the collected scope
     // hierarchy. We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
