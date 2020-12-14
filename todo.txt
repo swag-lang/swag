@@ -18,7 +18,7 @@ crc value pour chaque field d'une structure en reflection ?
 ca serait cool que les methods, en reflections, aient une value qui peut être castée en lambda, et donc appelées
 -------------------------------------
 where pour mettre des contraintes sur les parametres (et les generics, pour faire un choix d'overload par ex)
-
+-------------------------------------
 
 
 ****************************************
@@ -38,7 +38,6 @@ slice/cstrings and foreign
 y'a forcement des merdes avec les typeinfo compiler dans leur propre segment
 (si on les compare avec un type non compiler, si on les met dans une var any...)
 -------------------------------------
-slice, strings & co, passer le count en 64 bits une bonne fois pour toute
 
 
 
@@ -52,4 +51,4 @@ rc[0] = r12 etc...
 -------------------------------------
 calling convention local call, passer les registres plutot que les adresses des registres, tabarnac
 probablement grosse modif (variadics ?)
-
+-------------------------------------

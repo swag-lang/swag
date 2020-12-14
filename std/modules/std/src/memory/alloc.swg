@@ -44,7 +44,7 @@ func realloc(buffer: *void, sizeInBytes: uint, allocator: IAllocator = null, ali
 }
 
 // Allocate a given amount of bytes
-func alloc(sizeInBytes: uint, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*void
+func alloc(sizeInBytes: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
 {
     var req: AllocatorRequest
     req.callerLoc   = loc
@@ -60,10 +60,10 @@ func alloc(sizeInBytes: uint, allocator: IAllocator = null, alignement: u16 = 0,
 }
 
 // Allocate and initialize the given type
-func(T) new(allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*T
+func(T) new(allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*T
 {
     userHint := hint ?? @typeof(T).name
-    ptr := cast(*T) alloc(cast(uint) @sizeof(T), allocator, alignement, userHint, loc)
+    ptr := cast(*T) alloc(@sizeof(T), allocator, alignement, userHint, loc)
     @init(ptr)
     return ptr
 }
@@ -79,18 +79,18 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc =
 }
 
 // Allocate and initialize an array of the given type
-func(T) new(num: u32, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*T
+func(T) new(num: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*T
 {
     debug.assert(num > 0)
 
     userHint := hint ?? @typeof(T).name
-    ptr := cast(*T) alloc(cast(uint) @sizeof(T) * num, allocator, alignement, userHint, loc)
+    ptr := cast(*T) alloc(@sizeof(T) * num, allocator, alignement, userHint, loc)
     @init(ptr, num)
     return ptr
 }
 
 // Drop and release memory an array of of the given type
-func(T) delete(ptr: *T, num: u32, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
+func(T) delete(ptr: *T, num: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
     if !ptr return
     debug.assert(num > 0)
