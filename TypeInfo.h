@@ -19,13 +19,13 @@ struct TypeInfoFuncAttr;
 struct AstFuncDecl;
 struct JobContext;
 
-static const uint32_t TYPEINFO_SELF            = 0x00000001;
-static const uint32_t TYPEINFO_UNTYPED_BINHEXA = 0x00000002;
-static const uint32_t TYPEINFO_INTEGER         = 0x00000004;
-static const uint32_t TYPEINFO_FLOAT           = 0x00000008;
-static const uint32_t TYPEINFO_UNSIGNED        = 0x00000010;
-static const uint32_t TYPEINFO_CONST           = 0x00000020;
-//static const uint32_t TYPEINFO_IN_EXACT_LIST            = 0x00000040;
+static const uint32_t TYPEINFO_SELF                     = 0x00000001;
+static const uint32_t TYPEINFO_UNTYPED_BINHEXA          = 0x00000002;
+static const uint32_t TYPEINFO_INTEGER                  = 0x00000004;
+static const uint32_t TYPEINFO_FLOAT                    = 0x00000008;
+static const uint32_t TYPEINFO_UNSIGNED                 = 0x00000010;
+static const uint32_t TYPEINFO_CONST                    = 0x00000020;
+static const uint32_t TYPEINFO_AUTO_NAME                = 0x00000040;
 static const uint32_t TYPEINFO_VARIADIC                 = 0x00000080;
 static const uint32_t TYPEINFO_STRUCT_HAS_INIT_VALUES   = 0x00000100;
 static const uint32_t TYPEINFO_STRUCT_ALL_UNINITIALIZED = 0x00000200;
@@ -535,7 +535,7 @@ struct TypeInfoStruct : public TypeInfo
     AstFuncDecl*    opUserDropFct     = nullptr;
     ByteCode*       opDrop            = nullptr;
 
-    uint32_t alignOf         = 0;
+    uint32_t alignOf                = 0;
     uint32_t cptRemainingInterfaces = 0;
     uint32_t cptRemainingMethods    = 0;
 };

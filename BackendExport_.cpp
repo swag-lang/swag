@@ -170,7 +170,7 @@ void Backend::emitType(TypeInfo* typeInfo, int indent)
     }
 }
 
-bool Backend::emitGenericParameters(AstNode* node)
+bool Backend::emitGenericParameters(AstNode* node, int indent)
 {
     CONCAT_FIXED_STR(bufferSwg, "(");
     int idx = 0;
@@ -184,7 +184,7 @@ bool Backend::emitGenericParameters(AstNode* node)
         if (varDecl->type)
         {
             CONCAT_FIXED_STR(bufferSwg, ": ");
-            SWAG_CHECK(Ast::output(outputContext, bufferSwg, varDecl->type));
+            emitType(varDecl->type->typeInfo, indent);
         }
 
         if (varDecl->assignment)
@@ -265,7 +265,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
     if (node->genericParameters)
     {
         if (!(node->flags & AST_FROM_GENERIC) || (node->flags & AST_IS_GENERIC))
-            SWAG_CHECK(emitGenericParameters(node->genericParameters));
+            SWAG_CHECK(emitGenericParameters(node->genericParameters, indent));
     }
 
     CONCAT_FIXED_STR(bufferSwg, " ");
@@ -386,7 +386,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     }
 
     if (node->genericParameters)
-        SWAG_CHECK(emitGenericParameters(node->genericParameters));
+        SWAG_CHECK(emitGenericParameters(node->genericParameters, indent));
 
     if (!(node->flags & AST_ANONYMOUS_STRUCT))
     {

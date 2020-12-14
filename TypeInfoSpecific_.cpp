@@ -765,7 +765,7 @@ TypeInfo* TypeInfoStruct::clone()
     newType->opDrop            = opDrop;
     newType->attributes        = attributes;
     newType->itable            = itable;
-    newType->alignOf    = alignOf;
+    newType->alignOf           = alignOf;
     newType->structName        = structName;
 
     int size = (int) genericParameters.size();
@@ -922,6 +922,29 @@ void TypeInfoStruct::computeScopedNameExport()
     unique_lock lk(mutexScopeName);
     if (!scopedNameExport.empty())
         return;
+
+    // Exporting a tuple. Need to use the tuple syntax
+    if (flags & TYPEINFO_STRUCT_IS_TUPLE)
+    {
+        scopedNameExport += "{";
+        for (int i = 0; i < fields.size(); i++)
+        {
+            auto p = fields[i];
+            if (i)
+                scopedNameExport += ", ";
+            p->typeInfo->computeScopedNameExport();
+            if (!p->namedParam.empty() && !(p->flags & TYPEINFO_AUTO_NAME))
+            {
+                scopedNameExport += p->namedParam;
+                scopedNameExport += ": ";
+            }
+
+            scopedNameExport += p->typeInfo->scopedNameExport;
+        }
+
+        scopedNameExport += "}";
+        return;
+    }
 
     getScopedName(scopedNameExport, true);
     SWAG_ASSERT(!nakedName.empty());

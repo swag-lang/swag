@@ -33,12 +33,15 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
             varName  = format("item%u", idx);
         }
 
-        auto paramNode = Ast::newVarDecl(sourceFile, varName, contentNode);
-        if (autoName)
-            paramNode->flags |= AST_AUTO_NAME;
+        auto paramNode      = Ast::newVarDecl(sourceFile, varName, contentNode);
         auto typeExpression = Ast::newTypeExpression(sourceFile, paramNode);
         typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
         paramNode->type = typeExpression;
+        if (autoName)
+        {
+            typeParam->flags |= TYPEINFO_AUTO_NAME;
+            paramNode->flags |= AST_AUTO_NAME;
+        }
 
         // Convert typeinfo to TypeExpression
         switch (childType->kind)

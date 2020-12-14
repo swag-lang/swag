@@ -52,7 +52,7 @@ struct Backend
     bool      emitAttributes(TypeInfo* typeInfo, int indent);
     bool      emitTypeTuple(TypeInfo* typeInfo, int indent);
     void      emitType(TypeInfo* typeInfo, int indent);
-    bool      emitGenericParameters(AstNode* node);
+    bool      emitGenericParameters(AstNode* node, int indent);
     bool      emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent);
     bool      emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent);
     bool      emitVarSwg(const char* kindName, AstVarDecl* node, int indent);

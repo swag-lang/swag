@@ -611,7 +611,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         else if (node->packing)
             storageOffset += child->typeInfo->sizeOf;
 
-        // Created a generic alias
+        // Create a generic alias
         if (!(child->flags & AST_AUTO_NAME))
         {
             bool hasItemName = false;
@@ -631,6 +631,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 auto&   symTable = node->scope->symTable;
                 symTable.addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset, &name);
             }
+        }
+        else
+        {
+            typeParam->flags |= TYPEINFO_AUTO_NAME;
         }
 
         storageIndexField++;

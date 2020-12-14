@@ -348,7 +348,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         // Name followed by ':'
         if (token.id == TokenId::SymColon)
         {
-            typeExpression = (AstTypeExpression*) expression;
+            typeExpression = CastAst<AstTypeExpression>(expression, AstNodeKind::TypeExpression);
             SWAG_VERIFY(prevToken.id == TokenId::Identifier, syntaxError(prevToken, "identifier expected"));
             SWAG_ASSERT(typeExpression->identifier);
             SWAG_CHECK(checkIsSingleIdentifier(typeExpression->identifier, "as a tuple field name"));
