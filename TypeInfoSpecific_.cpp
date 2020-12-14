@@ -952,7 +952,9 @@ void TypeInfoStruct::computeScopedNameExport()
 
     if (!genericParameters.empty())
     {
-        scopedNameExport += "'(";
+        scopedNameExport += "'";
+        if (genericParameters.size() > 1)
+            scopedNameExport += "(";
         for (int i = 0; i < genericParameters.size(); i++)
         {
             if (i)
@@ -961,7 +963,8 @@ void TypeInfoStruct::computeScopedNameExport()
             scopedNameExport += genericParameters[i]->typeInfo->scopedNameExport;
         }
 
-        scopedNameExport += ")";
+        if (genericParameters.size() > 1)
+            scopedNameExport += ")";
     }
 }
 
