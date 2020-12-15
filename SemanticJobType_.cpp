@@ -339,7 +339,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
 
     auto overload = back->resolvedSymbolOverload;
     SWAG_VERIFY(overload, context->report({back, "alias can only be used with a type or an identifier"}));
-
+    auto symbol       = overload->symbol;
     auto typeResolved = overload->typeInfo;
 
     if (typeResolved->kind == TypeInfoKind::Struct ||
@@ -360,15 +360,16 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    switch (typeResolved->kind)
+    switch (symbol->kind)
     {
-    case TypeInfoKind::Namespace:
-    case TypeInfoKind::Enum:
-    case TypeInfoKind::FuncAttr:
-    case TypeInfoKind::Alias:
+    case SymbolKind::Namespace:
+    case SymbolKind::Enum:
+    case SymbolKind::Function:
+    case SymbolKind::Variable:
+    case SymbolKind::TypeAlias:
         break;
     default:
-        return context->report({back, back->token, format("alias cannot be used on type %s", TypeInfo::getNakedKindName(typeResolved))});
+        return context->report({back, back->token, format("alias cannot be used on %s", SymTable::getArticleKindName(symbol->kind))});
     }
 
     SWAG_ASSERT(overload);

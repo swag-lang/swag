@@ -148,9 +148,19 @@ bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerInline(SemanticContext* context)
 {
-    auto node             = context->node;
+    auto node             = CastAst<AstCompilerInline>(context->node, AstNodeKind::CompilerInline);
     auto scope            = node->childs.back()->ownerScope;
     scope->startStackSize = node->ownerScope->startStackSize;
+
+    // Register all function parameters as inline symbols
+    /*if (!node->parameters.empty())
+    {
+        for (auto funcParam : node->parameters)
+        {
+            scope->symTable.addSymbolTypeInfo(context, funcParam, funcParam->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN);
+        }
+    }*/
+
     return true;
 }
 
