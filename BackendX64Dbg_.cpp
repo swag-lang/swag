@@ -133,20 +133,26 @@ void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeIns
     if (!ip)
     {
         coffFct->dbgLines.push_back({coffFct->node->token.startLocation.line + 1, byteOffset});
+        return;
     }
-    else if (ip && ip->node && ip->node->ownerScope && ip->node->kind != AstNodeKind::FuncDecl && !(ip->flags & BCI_SAFETY))
-    {
-        auto location = ip->getLocation(bc);
-        if (!location)
-            return;
-        SWAG_ASSERT(!coffFct->dbgLines.empty());
 
-        if (coffFct->dbgLines.back().line != location->line + 1)
+    if (ip && ip->node && ip->node->ownerScope && ip->node->kind != AstNodeKind::FuncDecl && !(ip->flags & BCI_SAFETY))
+    {
+        if (!ip->node->ownerInline || (ip->node->flags & AST_IN_MIXIN))
         {
-            if (coffFct->dbgLines.back().byteOffset == byteOffset)
-                coffFct->dbgLines.back().line = location->line + 1;
-            else
-                coffFct->dbgLines.push_back({location->line + 1, byteOffset});
+            auto location = ip->getLocation(bc);
+            if (location)
+            {
+                SWAG_ASSERT(!coffFct->dbgLines.empty());
+
+                if (coffFct->dbgLines.back().line != location->line + 1)
+                {
+                    if (coffFct->dbgLines.back().byteOffset == byteOffset)
+                        coffFct->dbgLines.back().line = location->line + 1;
+                    else
+                        coffFct->dbgLines.push_back({location->line + 1, byteOffset});
+                }
+            }
         }
     }
 }
