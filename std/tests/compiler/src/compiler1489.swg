@@ -10,7 +10,7 @@ impl S
     #[swag.macro, swag.noreturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        #if ptr
+        #if `ptr
             G += 1
         #else
             G += 2
@@ -25,8 +25,8 @@ impl S
     var x: S
     visit x {}
     @assert(G == 2)
-    visit x {}    
+    visit x {}
     @assert(G == 4)
-    visit *xxx: x {} 
+    visit *xxx: x {}
     @assert(G == 5)
 }

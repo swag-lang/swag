@@ -39,15 +39,15 @@ impl HashTable
                 continue
             #macro
             {
-                #if ptr
+                #if `ptr
                 {
-                    var @alias0 = &table[@index].key
-                    var @alias1 = &table[@index].value
+                    var @alias0 = &`table[@index].key
+                    var @alias1 = &`table[@index].value
                 }
                 #else
                 {
-                    var @alias0 = table[@index].key
-                    var @alias1 = table[@index].value
+                    var @alias0 = `table[@index].key
+                    var @alias1 = `table[@index].value
                 }
 
                 #[swag.noreturn]

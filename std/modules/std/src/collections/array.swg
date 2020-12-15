@@ -96,7 +96,7 @@ impl Array
         {
             #macro
             {
-                #if ptr
+                #if `ptr
                     var @alias0 = `scan
                 #else
                     var @alias0 = :`scan

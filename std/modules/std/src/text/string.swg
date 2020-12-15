@@ -178,7 +178,7 @@ public impl String
         {
             #macro
             {
-                #if ptr
+                #if `ptr
                     var @alias0 = `scan
                 #else
                     var @alias0 = :`scan
@@ -213,7 +213,7 @@ public impl String
                 break
             #macro
             {
-                #if ptr
+                #if `ptr
                     var @alias0 = `scan
                 #else
                     var @alias0 = `c

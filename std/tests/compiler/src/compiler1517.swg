@@ -10,7 +10,7 @@ impl A
     {
         #macro
         {
-            myTruc = 666
+            `self.myTruc = 666
         }
     }
 }

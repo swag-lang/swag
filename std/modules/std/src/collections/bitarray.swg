@@ -102,7 +102,7 @@ public impl BitArray
             {
                 #macro
                 {
-                    var @alias0 = cast(bool) (buffer[`idx] & `shift)
+                    var @alias0 = cast(bool) (`buffer[`idx] & `shift)
                     var @alias1 = `countBits
                     #[swag.noreturn]
                     #mixin `stmt

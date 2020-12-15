@@ -417,16 +417,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 idNode->inheritTokenLocation(idRef->token);
                 Ast::addChildFront(idRef, idNode);
                 context->job->nodes.push_back(idNode);
-
-                // Determine if the added identifier is out scope, and must be backticked to be retrieved in the
-                // following semantic pass
-                if (idNode->ownerInline &&
-                    (idNode->ownerInline->attributeFlags & ATTRIBUTE_INLINE | ATTRIBUTE_MACRO) &&
-                    !(idNode->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) &&
-                    (idNode->ownerInline != dependentVar->ownerInline))
-                {
-                    idNode->flags |= AST_IDENTIFIER_BACKTICK;
-                }
+                if (i == 0)
+                    idNode->flags |= identifier->flags & AST_IDENTIFIER_BACKTICK;
             }
         }
         else
@@ -442,18 +434,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             while (newParent->parent != idRef)
                 newParent = newParent->parent;
 
+            idNode->flags |= identifier->flags & AST_IDENTIFIER_BACKTICK;
             Ast::insertChild(idRef, idNode, newParent->childParentIdx);
             context->job->nodes.push_back(idNode);
-
-            // Determine if the added identifier is out scope, and must be backticked to be retrieved in the
-            // following semantic pass
-            if (idNode->ownerInline &&
-                (idNode->ownerInline->attributeFlags & ATTRIBUTE_INLINE | ATTRIBUTE_MACRO) &&
-                !(idNode->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) &&
-                (idNode->ownerInline != dependentVar->ownerInline))
-            {
-                idNode->flags |= AST_IDENTIFIER_BACKTICK;
-            }
         }
 
         context->node->semanticState = AstNodeResolveState::Enter;
@@ -2351,7 +2334,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode)
+void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     if (!startNode->alternativeScopes.empty())
     {
@@ -2373,17 +2356,30 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
         }
     }
 
-    // If we are in an inline block, jump right to the function parent
-    if (startNode->kind == AstNodeKind::Inline)
+    if (startNode->kind == AstNodeKind::CompilerMacro)
     {
-        while (startNode->kind != AstNodeKind::FuncDecl)
-            startNode = startNode->parent;
+        if (!(flags & COLLECT_PASS_INLINE))
+        {
+            while (startNode->kind != AstNodeKind::Inline && startNode->kind != AstNodeKind::CompilerInline)
+                startNode = startNode->parent;
+        }
+
+        flags &= ~COLLECT_PASS_INLINE;
+    }
+    // If we are in an inline block, jump right to the function parent
+    else if (startNode->kind == AstNodeKind::Inline || startNode->kind == AstNodeKind::CompilerInline)
+    {
+        if (!(flags & COLLECT_PASS_INLINE))
+        {
+            while (startNode->kind != AstNodeKind::FuncDecl)
+                startNode = startNode->parent;
+        }
+
+        flags &= ~COLLECT_PASS_INLINE;
     }
 
     if (startNode->parent)
-    {
-        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->parent);
-    }
+        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->parent, flags);
 }
 
 bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
@@ -2396,7 +2392,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
     scopes.clear();
 
     // Get alternative scopes from the node hierarchy
-    collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode);
+    collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode, flags);
 
     auto startScope = startNode->ownerScope;
     if (startScope)
