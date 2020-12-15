@@ -316,6 +316,7 @@ struct ByteCodeGenJob : public Job
     static bool emitStruct(ByteCodeGenContext* context);
     static void emitSetZeroAtPointer(ByteCodeGenContext* context, uint64_t sizeOf, uint32_t registerIndex);
 
+    static void emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg = nullptr);
     static bool mustEmitSafety(ByteCodeGenContext* context);
     static void emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);
     static void emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message = "dereferencing a null pointer");

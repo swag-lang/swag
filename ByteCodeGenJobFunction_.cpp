@@ -341,7 +341,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicAssert:
     {
         auto child0 = callParams->childs.front();
-        emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);
+        emitAssert(context, child0->resultRegisterRC);
         freeRegisterRC(context, child0);
         break;
     }

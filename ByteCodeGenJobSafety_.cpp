@@ -6,6 +6,12 @@
 #include "Ast.h"
 #include "Runtime.h"
 
+void ByteCodeGenJob::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg)
+{
+    auto inst       = emitInstruction(context, ByteCodeOp::IntrinsicAssert, reg);
+    inst->d.pointer = (uint8_t*) msg;
+}
+
 bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context)
 {
     if (context->contextFlags & BCC_FLAG_NOSAFETY)
@@ -29,7 +35,7 @@ void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, 
         emitInstruction(context, ByteCodeOp::TestNotZero64, r0, r);
     else
         SWAG_ASSERT(false);
-    emitInstruction(context, ByteCodeOp::IntrinsicAssert, r0)->d.pointer = (uint8_t*) message;
+    emitAssert(context, r0, message);
     freeRegisterRC(context, r0);
 }
 
@@ -55,7 +61,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLower(ByteCodeGenContext* context, uint
 
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r0, r1, re);
-    emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "index out of range";
+    emitAssert(context, re, "index out of range");
     freeRegisterRC(context, re);
 }
 
@@ -64,7 +70,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLower64(ByteCodeGenContext* context, ui
     PushICFlags ic(context, BCI_SAFETY);
     auto        re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, re);
-    emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "index out of range";
+    emitAssert(context, re, "index out of range");
     freeRegisterRC(context, re);
 }
 
@@ -75,7 +81,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerEq(ByteCodeGenContext* context, ui
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, r0, r1, re);
     emitInstruction(context, ByteCodeOp::NegBool, re);
-    emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "index out of range";
+    emitAssert(context, re, "index out of range");
     freeRegisterRC(context, re);
 }
 
@@ -124,9 +130,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     inst                = emitInstruction(context, ByteCodeOp::SetImmediate32, result);
     inst->b.u32         = Runtime::COMPARE_CAST_ANY;
     inst                = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], result, result);
-    inst                = emitInstruction(context, ByteCodeOp::IntrinsicAssert, result, r0, exprNode->resultRegisterRC[1]);
-    inst->d.pointer     = (uint8_t*) "invalid dynamic cast";
-    inherhitLocation(inst, exprNode);
+    emitAssert(context, result, "invalid dynamic cast");
 
     freeRegisterRC(context, result);
     freeRegisterRC(context, r0);
@@ -166,7 +170,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
         context->pushLocation(&node->lowerBound->token.startLocation);
         emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC, re);
         emitInstruction(context, ByteCodeOp::NegBool, re);
-        emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "bad slicing, lower bound is greater than upper bound";
+        emitAssert(context, re, "bad slicing, lower bound is greater than upper bound");
         context->popLocation();
         freeRegisterRC(context, re);
     }
@@ -177,7 +181,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
         auto re = reserveRegisterRC(context);
         context->pushLocation(&node->upperBound->token.startLocation);
         emitInstruction(context, ByteCodeOp::CompareOpLowerU64, node->upperBound->resultRegisterRC, maxBoundReg, re);
-        emitInstruction(context, ByteCodeOp::IntrinsicAssert, re)->d.pointer = (uint8_t*) "bad slicing, upper bound is out of range";
+        emitAssert(context, re, "bad slicing, upper bound is out of range");
         context->popLocation();
         freeRegisterRC(context, re);
         if (freeMaxBoundReg)
