@@ -18,21 +18,6 @@ public struct String
     padding:    [SmallSize] u8
 }
 
-impl String
-{
-    func free(using self)
-    {
-        memory.free(buffer, capacity, allocator)
-    }
-
-    func realloc(using self, newCapacity: uint)
-    {
-        if allocator == null
-            allocator = @getcontext().allocator
-        buffer = autocast memory.realloc(buffer, newCapacity, capacity, allocator)
-    }
-}
-
 public impl strconv.IConvert for String
 {
     func convert(using self, buf: *ConcatBuffer, fmt: const *strconv.ConvertFormat, strFormat: string)
@@ -156,8 +141,8 @@ public impl String
 
     func opDrop(using self)
     {
-        if buffer && buffer != autocast &padding[0]
-            free()
+        if buffer != autocast &padding[0]
+            memory.free(buffer, capacity, allocator)
     }
 
     func opIndex(using self, index: uint)->u8
@@ -333,49 +318,40 @@ public impl String
         reserve(newCapacity)
     }
 
-    // Reserve room for 'newCapacity' bytes without changing the string length
+    // Reserve room for at least 'newCapacity' bytes
     func reserve(using self, newCapacity: uint)
     {
+        length = math.min(length, newCapacity)
+        if allocator == null
+            allocator = @getcontext().allocator
+
         // Small size, just be sure with have a valid buffer address
         if newCapacity <= SmallSize
         {
-            // Free everything
-            if !newCapacity
-            {
-                if !buffer
-                    return
-                if buffer != autocast &padding[0]
-                    free()
-                buffer = null
-                length, capacity = 0
-                return
-            }
+            // Free dynamic memory if this is not a small string
+            if buffer != autocast &padding[0]
+                memory.free(buffer, capacity, allocator)
 
+            // This is a small string again
             capacity = SmallSize
-            if !buffer
-                buffer = autocast &padding[0]
-            return
+            buffer = autocast &padding[0]
         }
-
-        // Actual size is fine
-        if newCapacity <= capacity
-            return
 
         // We were in small size mode, and we are no more
-        if buffer == autocast &padding[0]
+        else if buffer == autocast &padding[0]
         {
             oldBuffer := buffer
-            newAllocator := @getcontext().allocator
-            buffer = autocast memory.alloc(newCapacity, newAllocator)
-            memory.copy(buffer, oldBuffer, length + 1)
-            allocator = newAllocator
-        }
-        else
-        {
-            realloc(newCapacity)
+            buffer = autocast memory.alloc(newCapacity, allocator)
+            memory.copy(buffer, oldBuffer, math.min(newCapacity, length + 1))
+            capacity = newCapacity
         }
 
-        capacity = newCapacity
+        // We were in dynamic mode, so just realloc memory
+        else
+        {
+            buffer = autocast memory.realloc(buffer, newCapacity, capacity, allocator)
+            capacity = newCapacity
+        }
     }
 
     // Remove whitespaces at the start of the String
