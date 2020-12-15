@@ -2397,6 +2397,15 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
     auto startScope = startNode->ownerScope;
     if (startScope)
     {
+        if (flags & COLLECT_PASS_INLINE)
+        {
+            while (startScope && startScope->kind != ScopeKind::Inline && startScope->kind != ScopeKind::Macro)
+                startScope = startScope->parentScope;
+            SWAG_VERIFY(startScope, context->report({ context->node, "backtick can only be used inside an inline/macro block" }));
+            startScope = startScope->parentScope;
+            flags &= ~COLLECT_PASS_INLINE;
+        }
+
         scopes.insert(startScope);
         here.push_back(startScope);
     }
@@ -2435,7 +2444,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
         {
             if (!(flags & COLLECT_PASS_INLINE))
             {
-                while (scope && scope->kind != ScopeKind::Function)
+                while (scope->kind != ScopeKind::Function)
                     scope = scope->parentScope;
             }
 
@@ -2445,10 +2454,9 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
         {
             if (!(flags & COLLECT_PASS_INLINE))
             {
-                while (scope && scope->kind != ScopeKind::Function && scope->parentScope->kind != ScopeKind::Inline)
+                while (scope->parentScope->kind != ScopeKind::Inline)
                     scope = scope->parentScope;
-                if (scope->parentScope->kind == ScopeKind::Inline)
-                    scope = scope->parentScope;
+                scope = scope->parentScope;
             }
 
             flags &= ~COLLECT_PASS_INLINE;

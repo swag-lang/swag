@@ -21,4 +21,17 @@
 
         @assert(myVar == 1)
     }
+
+    // You can alias an out of scope variable for easy referencing
+    {
+        myVar := 0
+        #inline
+        {
+            alias myVar = `myVar
+            myVar += 1
+            myVar += 2
+        }
+
+        @assert(myVar == 3)
+    }
 }
