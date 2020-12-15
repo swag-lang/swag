@@ -442,6 +442,24 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64PerThread& pp, TypeInfo*
     return tr.index;
 }
 
+DbgTypeIndex BackendX64::dbgGetOrCreatePointerPointerToType(X64PerThread& pp, TypeInfo* typeInfo)
+{
+    // In the cache of pointers
+    auto it = pp.dbgMapPtrPtrTypes.find(typeInfo);
+    if (it != pp.dbgMapPtrPtrTypes.end())
+        return it->second;
+
+    auto typeIdx = dbgGetOrCreatePointerToType(pp, typeInfo);
+
+    // Pointer to something complex
+    DbgTypeRecord tr;
+    tr.kind                   = LF_POINTER;
+    tr.LF_Pointer.pointeeType = typeIdx;
+    dbgAddTypeRecord(pp, tr);
+    pp.dbgMapPtrPtrTypes[typeInfo] = tr.index;
+    return tr.index;
+}
+
 DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64PerThread& pp, TypeInfo* typeInfo, TypeInfo* pointedType)
 {
     DbgTypeRecord tr0;
@@ -900,8 +918,11 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
                 //////////
                 dbgStartRecord(pp, concat, S_LOCAL);
-                concat.addU32(dbgGetOrCreateType(pp, typeInfo)); // Type
-                concat.addU16(0);                                // Flags
+                if (overload->flags & OVERLOAD_RETVAL)
+                    concat.addU32(dbgGetOrCreatePointerPointerToType(pp, typeInfo)); // Type
+                else
+                    concat.addU32(dbgGetOrCreateType(pp, typeInfo)); // Type
+                concat.addU16(0);                                    // Flags
                 dbgEmitTruncatedString(concat, localVar->token.text);
                 dbgEndRecord(pp, concat);
 
@@ -909,7 +930,10 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                 dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
                 concat.addU16(R_RDI); // Register
                 concat.addU16(0);     // Flags
-                concat.addU32(overload->storageOffset + f.offsetStack);
+                if (overload->flags & OVERLOAD_RETVAL)
+                    concat.addU32(f.offsetRetVal);
+                else
+                    concat.addU32(overload->storageOffset + f.offsetStack);
                 dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
                 concat.addU16((uint16_t)(f.endAddress - f.startAddress)); // Range
                 dbgEndRecord(pp, concat);

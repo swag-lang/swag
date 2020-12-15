@@ -627,7 +627,7 @@ void ByteCodeGenJob::emitRetValRef(ByteCodeGenContext* context, RegisterList& r0
     if (node->ownerInline)
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->ownerInline->resultRegisterRC);
     else
-        emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
+        emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
 }
 
 bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)

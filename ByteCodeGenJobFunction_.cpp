@@ -165,7 +165,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 returnExpression->flags |= AST_NO_LEFT_DROP;
 
                 RegisterList r0 = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
+                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
                 SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, exprType, returnExpression));
                 freeRegisterRC(context, r0);
             }
@@ -177,7 +177,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 if (typeArray->totalCount == 1)
                 {
                     RegisterList r1 = reserveRegisterRC(context);
-                    emitInstruction(context, ByteCodeOp::CopyRRtoRC, r1, 0);
+                    emitInstruction(context, ByteCodeOp::CopyRRtoRC, r1);
                     SWAG_CHECK(emitStructCopyMoveCall(context, r1, returnExpression->resultRegisterRC, typeArrayStruct, returnExpression));
                     freeRegisterRC(context, r1);
                 }
@@ -188,7 +188,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     RegisterList r1 = reserveRegisterRC(context);
 
                     emitInstruction(context, ByteCodeOp::SetImmediate64, r0)->b.u64 = typeArray->totalCount;
-                    emitInstruction(context, ByteCodeOp::CopyRRtoRC, r1, 0);
+                    emitInstruction(context, ByteCodeOp::CopyRRtoRC, r1);
                     auto seekJump = context->bc->numInstructions;
 
                     SWAG_CHECK(emitStructCopyMoveCall(context, r1, returnExpression->resultRegisterRC, typeArrayStruct, returnExpression));
@@ -210,7 +210,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
             {
                 auto r0 = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0, 0);
+                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
                 auto inst   = emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, r0, returnExpression->resultRegisterRC);
                 inst->c.u64 = returnExpression->typeInfo->sizeOf;
                 inst->flags |= BCI_IMM_C;
@@ -937,7 +937,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->ownerInline->resultRegisterRC);
             else
             {
-                emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC, 0);
+                emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
                 emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
             }
 

@@ -142,6 +142,7 @@ struct CoffFunction
     uint32_t               xdataOffset  = 0;
     uint32_t               sizeProlog   = 0;
     uint32_t               offsetStack  = 0;
+    uint32_t               offsetRetVal = 0;
     uint32_t               offsetParam  = 0;
     uint32_t               frameSize    = 0;
     bool                   wrapper      = false;
@@ -266,6 +267,7 @@ struct X64PerThread
     vector<DbgTypeRecord>        dbgTypeRecords;
     map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
     map<TypeInfo*, DbgTypeIndex> dbgMapPtrTypes;
+    map<TypeInfo*, DbgTypeIndex> dbgMapPtrPtrTypes;
     map<Utf8, DbgTypeIndex>      dbgMapTypesNames;
 };
 
@@ -310,6 +312,7 @@ struct BackendX64 : public Backend
     void         dbgEmitTruncatedString(Concat& concat, const Utf8& str);
     DbgTypeIndex dbgGetSimpleType(TypeInfo* typeInfo);
     DbgTypeIndex dbgGetOrCreatePointerToType(X64PerThread& pp, TypeInfo* typeInfo);
+    DbgTypeIndex dbgGetOrCreatePointerPointerToType(X64PerThread& pp, TypeInfo* typeInfo);
     DbgTypeIndex dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo);
     void         dbgAddTypeRecord(X64PerThread& pp, DbgTypeRecord& tr);
     void         dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);

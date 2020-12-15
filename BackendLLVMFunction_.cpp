@@ -2613,7 +2613,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CopyRRtoRC:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(func->getArg(ip->b.u32));
+            auto r1 = builder.CreateLoad(func->getArg(0));
             builder.CreateStore(r1, r0);
             break;
         }
