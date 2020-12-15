@@ -19,8 +19,9 @@ JobResult ModuleOutputJob::execute()
         {
             auto exportJob          = g_Pool_moduleExportJob.alloc();
             exportJob->backend      = module->backend;
-            exportJob->dependentJob = dependentJob;
+            exportJob->dependentJob = this;
             jobsToAdd.push_back(exportJob);
+            return JobResult::KeepJobAlive;
         }
     }
 

@@ -449,7 +449,7 @@ JobResult ModuleBuildJob::execute()
             }
         }
 
-        // TIming...
+        // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
             timerRun.stop();
