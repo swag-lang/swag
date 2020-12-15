@@ -87,7 +87,7 @@ impl HashTable
             }
         }
 
-        memory.free(table, allocator)
+        memory.free(table, capacity * @sizeof(HashTableEntry), allocator)
     }
 
     func grow(using self)
