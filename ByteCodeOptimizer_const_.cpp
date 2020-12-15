@@ -313,16 +313,6 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
             }
         }
-        else if (ip->flags & BCI_IMM_A)
-        {
-            switch (ip->op)
-            {
-            case ByteCodeOp::IntrinsicAssert:
-                if (ip->a.u8)
-                    setNop(context, ip);
-                break;
-            }
-        }
         else if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C))
         {
             switch (ip->op)

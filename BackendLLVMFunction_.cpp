@@ -2286,20 +2286,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicAssert:
         {
-            llvm::BasicBlock* brTrue  = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* brFalse = llvm::BasicBlock::Create(context, "", func);
-
-            // Expr
-            llvm::Value* r0;
-            if (ip->flags & BCI_IMM_A)
-                r0 = builder.getInt8(ip->a.b);
-            else
-                r0 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-
-            auto b0 = builder.CreateIsNotNull(r0);
-            builder.CreateCondBr(b0, brTrue, brFalse);
-            builder.SetInsertPoint(brFalse);
-
             // Filename
             llvm::Value* r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
             r1              = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32}));
@@ -2319,21 +2305,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
 
             // The intrinsic function needs pointers to u64 values, so we need to convert
-            builder.CreateStore(builder.CreateIntCast(r0, builder.getInt64Ty(), false), GEP_I32(allocT, 0));
-            builder.CreateStore(builder.CreatePtrToInt(r1, builder.getInt64Ty()), GEP_I32(allocT, 1));
-            builder.CreateStore(r2, GEP_I32(allocT, 2));
-            builder.CreateStore(r3, GEP_I32(allocT, 3));
-            builder.CreateStore(builder.CreatePtrToInt(r4, builder.getInt64Ty()), GEP_I32(allocT, 4));
+            builder.CreateStore(builder.CreatePtrToInt(r1, builder.getInt64Ty()), GEP_I32(allocT, 0));
+            builder.CreateStore(r2, GEP_I32(allocT, 1));
+            builder.CreateStore(r3, GEP_I32(allocT, 2));
+            builder.CreateStore(builder.CreatePtrToInt(r4, builder.getInt64Ty()), GEP_I32(allocT, 3));
             auto p0    = GEP_I32(allocT, 0);
             auto p1    = GEP_I32(allocT, 1);
             auto p2    = GEP_I32(allocT, 2);
             auto p3    = GEP_I32(allocT, 3);
-            auto p4    = GEP_I32(allocT, 4);
-            auto typeF = createFunctionTypeInternal(buildParameters, 5);
-            builder.CreateCall(modu.getOrInsertFunction("__assert", typeF), {p0, p1, p2, p3, p4});
-            builder.CreateBr(brTrue);
-
-            builder.SetInsertPoint(brTrue);
+            auto typeF = createFunctionTypeInternal(buildParameters, 4);
+            builder.CreateCall(modu.getOrInsertFunction("__assert", typeF), {p0, p1, p2, p3});
             break;
         }
         case ByteCodeOp::IntrinsicAlloc:

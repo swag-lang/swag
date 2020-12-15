@@ -1685,23 +1685,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicAssert:
         {
-            SWAG_ASSERT(sizeParamsStack >= 5 * sizeof(Register));
-            if (ip->flags & BCI_IMM_A)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u8, RAX);
-            else
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+            SWAG_ASSERT(sizeParamsStack >= 4 * sizeof(Register));
             emitGlobalString(pp, precompileIndex, normalizePath(ip->node->sourceFile->path), RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
             BackendX64Inst::emit_Load64_Immediate(pp, ip->node->token.startLocation.line, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
+            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_Load64_Immediate(pp, ip->node->token.startLocation.column, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
+            BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
             if (ip->d.pointer)
                 emitGlobalString(pp, precompileIndex, (const char*) ip->d.pointer, RAX);
             else
                 BackendX64Inst::emit_Clear64(pp, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, 32, RAX, RSP);
+            BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
             emitCall(pp, "__assert");
             break;
         }

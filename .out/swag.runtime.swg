@@ -274,10 +274,8 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
 }
 
 ////////////////////////////////////////////////////////////
-func __assert(expr: bool, file: const *u8, line: u32, col: u32, message: const *u8)
+func __assert(file: const *u8, line: u32, col: u32, message: const *u8)
 {
-    if expr return
-
     var loc: swag.CompilerSourceLocation
     loc.fileName = cast(string) @mkslice(file, @cstrlen(file))
     loc.lineStart, loc.lineEnd = line

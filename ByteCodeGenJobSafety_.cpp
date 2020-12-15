@@ -8,8 +8,9 @@
 
 void ByteCodeGenJob::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg)
 {
-    auto inst       = emitInstruction(context, ByteCodeOp::IntrinsicAssert, reg);
-    inst->d.pointer = (uint8_t*) msg;
+    emitInstruction(context, ByteCodeOp::ClearMaskU32, reg)->b.u32   = 0xFF;
+    emitInstruction(context, ByteCodeOp::JumpIfNotZero32, reg)->b.s32 = 1;
+    emitInstruction(context, ByteCodeOp::IntrinsicAssert)->d.pointer = (uint8_t*) msg;
 }
 
 bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context)
