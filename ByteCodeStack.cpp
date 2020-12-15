@@ -13,15 +13,20 @@ void ByteCodeStack::log()
     for (int i = (int) steps.size() - 1; i >= 0; i--)
     {
         const auto& step = steps[i];
+
+        SourceFile*     sourceFile;
+        SourceLocation* location;
+        ByteCode::getLocation(step.bc, step.ip, &sourceFile, &location);
+
         if (step.bc->node && step.bc->node->kind == AstNodeKind::FuncDecl)
         {
-            auto funcDecl = CastAst<AstFuncDecl>(step.bc->node, AstNodeKind::FuncDecl);
-            Diagnostic diag{step.ip->node->sourceFile, *step.ip->getLocation(step.bc), funcDecl->getNameForMessage().c_str(), DiagnosticLevel::CallStack};
+            auto       funcDecl = CastAst<AstFuncDecl>(step.bc->node, AstNodeKind::FuncDecl);
+            Diagnostic diag{sourceFile, *location, funcDecl->getNameForMessage().c_str(), DiagnosticLevel::CallStack};
             diag.report();
         }
         else
         {
-            Diagnostic diag{step.ip->node->sourceFile, *step.ip->getLocation(step.bc), step.bc->name, DiagnosticLevel::CallStack};
+            Diagnostic diag{sourceFile, *location, step.bc->name, DiagnosticLevel::CallStack};
             diag.report();
         }
     }

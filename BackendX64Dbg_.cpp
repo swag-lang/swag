@@ -136,24 +136,19 @@ void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeIns
         return;
     }
 
-    if (ip && ip->node && ip->node->ownerScope && ip->node->kind != AstNodeKind::FuncDecl && !(ip->flags & BCI_SAFETY))
-    {
-        if (!ip->node->ownerInline || (ip->node->flags & AST_IN_MIXIN))
-        {
-            auto location = ip->getLocation(bc);
-            if (location)
-            {
-                SWAG_ASSERT(!coffFct->dbgLines.empty());
+    SourceFile*     sourceFile;
+    SourceLocation* location;
+    ByteCode::getLocation(bc, ip, &sourceFile, &location);
+    if (!location)
+        return;
 
-                if (coffFct->dbgLines.back().line != location->line + 1)
-                {
-                    if (coffFct->dbgLines.back().byteOffset == byteOffset)
-                        coffFct->dbgLines.back().line = location->line + 1;
-                    else
-                        coffFct->dbgLines.push_back({location->line + 1, byteOffset});
-                }
-            }
-        }
+    SWAG_ASSERT(!coffFct->dbgLines.empty());
+    if (coffFct->dbgLines.back().line != location->line + 1)
+    {
+        if (coffFct->dbgLines.back().byteOffset == byteOffset)
+            coffFct->dbgLines.back().line = location->line + 1;
+        else
+            coffFct->dbgLines.push_back({location->line + 1, byteOffset});
     }
 }
 

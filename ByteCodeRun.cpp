@@ -1172,12 +1172,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             context->error(ip->d.pointer ? (const char*) ip->d.pointer : "assertion failed");
         else
         {
+            SourceFile*     sourceFile;
+            SourceLocation* location;
+            ByteCode::getLocation(context->bc, ip, &sourceFile, &location);
+
             ConcreteCompilerSourceLocation loc;
-            auto                           ipLocation = ip->getLocation(context->bc);
-            loc.lineStart = loc.lineEnd = ipLocation->line;
-            loc.colStart = loc.colEnd = ipLocation->column;
-            loc.fileName.buffer       = (void*) ip->node->sourceFile->path.c_str();
-            loc.fileName.count        = ip->node->sourceFile->path.length();
+            loc.lineStart = loc.lineEnd = location->line;
+            loc.colStart = loc.colEnd = location->column;
+            loc.fileName.buffer       = (void*) sourceFile->path.c_str();
+            loc.fileName.count        = sourceFile->path.length();
             auto msg                  = (const char*) ip->d.pointer;
             auto lenMsg               = msg ? (uint32_t) strlen(msg) : 0;
             Runtime::assertMsg(msg, lenMsg, &loc);
@@ -1981,11 +1984,13 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
             }
             else
             {
-                auto location = ip->getLocation(context->bc);
+                SourceFile*     sourceFile;
+                SourceLocation* location;
+                ByteCode::getLocation(context->bc, ip, &sourceFile, &location);
                 if (location)
                 {
-                    Diagnostic diag{ip->node->sourceFile, *location, "error during bytecode execution, " + context->errorMsg};
-                    errorContext->sourceFile = ip->node->sourceFile;
+                    Diagnostic diag{sourceFile, *location, "error during bytecode execution, " + context->errorMsg};
+                    errorContext->sourceFile = sourceFile;
                     errorContext->report(diag);
                 }
                 else
@@ -2026,7 +2031,12 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             runContext->ip--; // ip is the next pointer instruction
             auto path1 = normalizePath(fs::path(runContext->ip->node->sourceFile->path.c_str()));
             auto path2 = normalizePath(fs::path(fileName.c_str()));
-            if (path1 != path2 || runContext->ip->getLocation(runContext->bc)->line != location->lineStart)
+
+            SourceFile*     file;
+            SourceLocation* iplocation;
+            ByteCode::getLocation(runContext->bc, runContext->ip, &file, &iplocation);
+
+            if (path1 != path2 || iplocation->line != location->lineStart)
                 runContext->bc->addCallStack(runContext);
         }
 

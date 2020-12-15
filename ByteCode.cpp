@@ -25,30 +25,23 @@ uint32_t g_ByteCodeOpFlags[] = {
 #include "ByteCodeOpList.h"
 };
 
-SourceFile* ByteCodeInstruction::getFileLocation(ByteCode* bc)
+void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location)
 {
-    if (!node)
-        return bc->sourceFile;
+    *file     = bc->sourceFile;
+    *location = nullptr;
 
-    if (node->ownerInline && !(node->flags & AST_IN_MIXIN))
+    if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl || (ip->flags & BCI_SAFETY))
+        return;
+    if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN))
+        return;
+
+    *location = ip->location;
+
+    if (ip->flags & BCI_LOCATION_IS_BC)
     {
-        auto inlineNode = CastAst<AstInline>(node->ownerInline, AstNodeKind::Inline);
-        return inlineNode->func->sourceFile;
+        if (ip->locationBC < bc->numInstructions)
+            *location = bc->out[ip->locationBC].location;
     }
-
-    return bc->sourceFile;
-}
-
-SourceLocation* ByteCodeInstruction::getLocation(ByteCode* bc)
-{
-    if (flags & BCI_LOCATION_IS_BC)
-    {
-        if (locationBC >= bc->numInstructions)
-            return nullptr;
-        return bc->out[locationBC].location;
-    }
-
-    return location;
 }
 
 Utf8 ByteCode::callName()
@@ -277,11 +270,14 @@ void ByteCode::print()
     for (int i = 0; i < (int) numInstructions; i++)
     {
         // Print source code
-        auto location = ip->getLocation(this);
+        SourceFile*     file;
+        SourceLocation* location;
+        ByteCode::getLocation(this, ip, &file, &location);
+
         if (location && location->line != lastLine && ip->op != ByteCodeOp::End)
         {
             lastLine = location->line;
-            auto s   = ip->getFileLocation(this)->getLine(lastLine);
+            auto s   = file->getLine(lastLine);
             s.trimLeft();
             g_Log.setColor(LogColor::DarkYellow);
             for (int idx = 0; idx < 9; idx++)

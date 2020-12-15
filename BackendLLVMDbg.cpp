@@ -526,29 +526,19 @@ void BackendLLVMDbg::startWrapperFunction(LLVMPerThread& pp, ByteCode* bc, AstFu
 void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip)
 {
     SWAG_ASSERT(dbgBuilder);
-    if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl || (ip->flags & BCI_SAFETY))
+
+    SourceFile*     sourceFile;
+    SourceLocation* location;
+    ByteCode::getLocation(bc, ip, &sourceFile, &location);
+    if (!location)
     {
         builder->SetCurrentDebugLocation(llvm::DebugLoc());
+        return;
     }
-    else
-    {
-        auto location = ip->getLocation(bc);
-        if (location)
-        {
-            if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN))
-            {
-                llvm::DIFile*  file  = getOrCreateFile(bc->sourceFile);
-                llvm::DIScope* scope = getOrCreateScope(file, ip->node->ownerInline->ownerScope);
-                builder->SetCurrentDebugLocation(llvm::DebugLoc::get(ip->node->ownerInline->token.startLocation.line + 1, 0, scope));
-            }
-            else
-            {
-                llvm::DIFile*  file  = getOrCreateFile(ip->getFileLocation(bc));
-                llvm::DIScope* scope = getOrCreateScope(file, ip->node->ownerScope);
-                builder->SetCurrentDebugLocation(llvm::DebugLoc::get(location->line + 1, 0, scope));
-            }
-        }
-    }
+
+    llvm::DIFile*  file  = getOrCreateFile(sourceFile);
+    llvm::DIScope* scope = getOrCreateScope(file, ip->node->ownerScope);
+    builder->SetCurrentDebugLocation(llvm::DebugLoc::get(location->line + 1, 0, scope));
 }
 
 llvm::DIScope* BackendLLVMDbg::getOrCreateScope(llvm::DIFile* file, Scope* scope)

@@ -42,9 +42,6 @@ struct ByteCodeInstruction
 
     ByteCodeOp op;
     uint16_t   flags;
-
-    SourceLocation* getLocation(ByteCode* bc);
-    SourceFile*     getFileLocation(ByteCode* bc);
 };
 
 #define MAX_CACHE_FREE_REG 8
@@ -59,6 +56,7 @@ struct ByteCode
     void              print();
     Utf8              callName();
     TypeInfoFuncAttr* callType();
+    static void       getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location);
 
     static const int ALIGN_RIGHT_OPCODE = 25;
 
