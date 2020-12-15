@@ -27,7 +27,7 @@ func freeAll(allocator: IAllocator, hint: string = null, loc = #callerlocation)
 }
 
 // Reallocate/allocate a given amount of bytes
-func realloc(buffer: *void, sizeInBytes: uint, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*void
+func realloc(buffer: *void, sizeInBytes: uint, oldSize: uint, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*void
 {
     var req: AllocatorRequest
     req.callerLoc   = loc
@@ -35,6 +35,7 @@ func realloc(buffer: *void, sizeInBytes: uint, allocator: IAllocator = null, ali
     req.mode        = AllocatorMode.Realloc
     req.address     = buffer
     req.size        = sizeInBytes
+    req.oldSize     = oldSize
     req.alignement  = alignement
 
     talloc := allocator ?? @getcontext().allocator

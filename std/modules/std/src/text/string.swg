@@ -29,7 +29,7 @@ impl String
     {
         if allocator == null
             allocator = @getcontext().allocator
-        buffer = autocast memory.realloc(buffer, newCapacity, allocator)
+        buffer = autocast memory.realloc(buffer, newCapacity, capacity, allocator)
     }
 }
 

@@ -126,6 +126,7 @@ namespace swag
         hint:       string
         address:	*void
         size:		uint
+        oldSize:	uint
         mode =		AllocatorMode.Alloc
         alignement: u32
     }
