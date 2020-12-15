@@ -29,7 +29,7 @@ var g_cxt: swag.Context
     var dbg: memory.DebugAllocator
     dbg.allocator = @getcontext().allocator
 
-    ptr := memory.alloc(16, dbg)
+    ptr := memory.alloc(16, dbg) 
     ptr1 := memory.new'String(dbg)
 
     //dbg.printAllocated()

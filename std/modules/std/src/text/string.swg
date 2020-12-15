@@ -83,13 +83,13 @@ public impl String
     {
         if @dataof(value) == null
         {
-            reserve(0)
+            length = 0
             return
         }
 
         newCapacity := @countof(value) + 1
         length = newCapacity - 1
-        reserve(newCapacity)
+        grow(newCapacity)
         memory.copy(buffer, @dataof(value), length)
         buffer[length] = 0
     }

@@ -24,6 +24,7 @@ private
     struct Header
     {
         allocAddr:      *void
+        allocSize:       uint
         locFilename:    string
         hint:           string
         prev:           *Header
@@ -94,6 +95,9 @@ public impl IAllocator for DebugAllocator
                 ptrHeader := cast(*Header) (userAddr - @sizeof(Header))
                 ptrFooter := cast(*Footer) (userAddr + ptrHeader.userSize)
 
+                // Be sure size is correct
+                debug.assert(ptrHeader.userSize == request.size)
+
                 // Unlink from allocated list
                 if !ptrHeader.prev
                     self.first = ptrHeader.next
@@ -115,6 +119,7 @@ public impl IAllocator for DebugAllocator
                 // Really free the memory
                 copyReq := :request
                 copyReq.address = ptrHeader.allocAddr
+                copyReq.size = ptrHeader.allocSize
                 allocator.alloc(&copyReq)
 
             case AllocatorMode.FreeAll:
@@ -169,6 +174,7 @@ public impl IAllocator for DebugAllocator
                 header := cast(*Header) (userAddr - @sizeof(Header))
                 header.magic = MagicAlloc
                 header.allocAddr = copyReq.address
+                header.allocSize = copyReq.size
                 header.userSize = request.size
                 header.locFilename = copyReq.callerLoc.fileName
                 header.locLine = copyReq.callerLoc.lineStart + 1
