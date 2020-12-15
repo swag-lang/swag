@@ -34,7 +34,7 @@ var g_cxt: swag.Context
 
     //dbg.printAllocated()
 
-    memory.free(ptr, dbg)
-    memory.free(ptr1, dbg)
+    memory.free(ptr, 16, dbg)
+    memory.delete'String(ptr1, dbg)
     @assert(dbg.isEmpty())
 }

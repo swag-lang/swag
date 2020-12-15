@@ -22,7 +22,7 @@ impl String
 {
     func free(using self)
     {
-        memory.free(buffer, allocator)
+        memory.free(buffer, capacity, allocator)
     }
 
     func realloc(using self, newCapacity: uint)

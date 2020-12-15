@@ -122,7 +122,7 @@ impl Array
                 @drop(buffer + @index)
         }
 
-        memory.free(buffer, allocator)
+        memory.free(buffer, capacity * @sizeof(T), allocator)
     }
 
     func realloc(using self, newCapacity: uint)

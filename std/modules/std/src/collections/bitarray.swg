@@ -16,7 +16,7 @@ impl BitArray
     {
         if !buffer
             return
-        memory.free(buffer, allocator)
+        memory.free(buffer, capacity, allocator)
     }
 
     func realloc(using self, newCapacity: uint)

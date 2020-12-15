@@ -29,8 +29,8 @@ public impl ConcatBuffer
         while ptr
         {
             nextPtr := ptr.next
-            memory.free(ptr.datas, allocator)
-            memory.free(ptr, allocator)
+            memory.free(ptr.datas, bucketSize, allocator)
+            memory.free(ptr, @sizeof(ConcatBufferBucket), allocator)
             ptr = nextPtr
         }
     }
@@ -228,7 +228,7 @@ public impl ConcatBuffer
             result.length    = cast(uint) (currentSP - lastBucket.datas)
 
             // And clear me
-            memory.free(firstBucket, allocator)
+            memory.free(firstBucket, @sizeof(ConcatBufferBucket), allocator)
             firstBucket, lastBucket = null
             currentSP = null
             totalCount = 0

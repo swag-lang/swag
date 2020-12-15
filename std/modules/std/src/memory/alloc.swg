@@ -2,11 +2,12 @@ public namespace memory;
 using swag
 
 // Free the specified memory block
-func free(buffer: *void, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
+func free(buffer: *void, size: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
     var req: AllocatorRequest
     req.callerLoc   = loc
     req.mode        = AllocatorMode.Free
+    req.size        = size
     req.address     = buffer
     req.hint        = hint
 
@@ -27,14 +28,14 @@ func freeAll(allocator: IAllocator, hint: string = null, loc = #callerlocation)
 }
 
 // Reallocate/allocate a given amount of bytes
-func realloc(buffer: *void, sizeInBytes: uint, oldSize: uint, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*void
+func realloc(buffer: *void, newSize: uint, oldSize: uint, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*void
 {
     var req: AllocatorRequest
     req.callerLoc   = loc
     req.hint        = hint
     req.mode        = AllocatorMode.Realloc
     req.address     = buffer
-    req.size        = sizeInBytes
+    req.size        = newSize
     req.oldSize     = oldSize
     req.alignement  = alignement
 
@@ -45,13 +46,13 @@ func realloc(buffer: *void, sizeInBytes: uint, oldSize: uint, allocator: IAlloca
 }
 
 // Allocate a given amount of bytes
-func alloc(sizeInBytes: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
+func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
 {
     var req: AllocatorRequest
     req.callerLoc   = loc
     req.hint        = hint
     req.mode        = AllocatorMode.Alloc
-    req.size        = sizeInBytes
+    req.size        = size
     req.alignement  = alignement
 
     talloc := allocator ?? @getcontext().allocator
@@ -76,7 +77,7 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc =
 
     userHint := hint ?? @typeof(T).name
     @drop(ptr)
-    free(ptr, allocator, userHint, loc)
+    free(ptr, @sizeof(T), allocator, userHint, loc)
 }
 
 // Allocate and initialize an array of the given type
@@ -98,5 +99,5 @@ func(T) delete(ptr: *T, num: uint, allocator: IAllocator = null, hint: string = 
 
     userHint := hint ?? @typeof(T).name
     @drop(ptr, num)
-    free(ptr, allocator, userHint, loc)
+    free(ptr, @sizeof(T) * num, allocator, userHint, loc)
 }
