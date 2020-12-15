@@ -311,10 +311,12 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         case s16:   signedValue = cast(s64) :cast(*s16) dataof; value = cast(u64) math.abs(signedValue)
         case s32:   signedValue = cast(s64) :cast(*s32) dataof; value = cast(u64) math.abs(signedValue)
         case s64:   signedValue = :cast(*s64) dataof; value = cast(u64) math.abs(signedValue)
+        case int:   signedValue = :cast(*s64) dataof; value = cast(u64) math.abs(signedValue)
         case u8:    value = cast(u64) :cast(*u8) dataof
         case u16:   value = cast(u64) :cast(*u16) dataof
         case u32:   value = cast(u64) :cast(*u32) dataof
         case u64:   value = :cast(*u64) dataof
+        case uint:  value = :cast(*u64) dataof
     }
 
     const tbl = "0123456789ABCDEF"
