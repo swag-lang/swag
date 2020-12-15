@@ -29,11 +29,19 @@
         var x: MyType = cast(MyType) 0
     }
 
-    // you can also alias a function/namespace/enum name
+    // you can also alias a function
     {
         func thisIsABigFunctionName(x: s32) => x * x
         alias myFunc = thisIsABigFunctionName
         @assert(myFunc(4) == 16)
+    }
+
+    // you can also alias a variable
+    {
+        var myLongVariableName: s32 = 0
+        alias short = myLongVariableName
+        short += 2
+        @assert(myLongVariableName == 2)
     }
 
     // alias can also be used to force the namespace name of an

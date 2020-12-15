@@ -1592,7 +1592,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
             // Pass through the first inline if there's a back tick before the name
             if (node->flags & AST_IDENTIFIER_BACKTICK)
-                collectFlags = COLLECT_PASS_INLINE;
+                collectFlags = COLLECT_BACKTICK;
 
             startScope = node->ownerScope;
             SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags));
@@ -2358,24 +2358,24 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
 
     if (startNode->kind == AstNodeKind::CompilerMacro)
     {
-        if (!(flags & COLLECT_PASS_INLINE))
+        if (!(flags & COLLECT_BACKTICK))
         {
             while (startNode->kind != AstNodeKind::Inline && startNode->kind != AstNodeKind::CompilerInline)
                 startNode = startNode->parent;
         }
 
-        flags &= ~COLLECT_PASS_INLINE;
+        flags &= ~COLLECT_BACKTICK;
     }
     // If we are in an inline block, jump right to the function parent
     else if (startNode->kind == AstNodeKind::Inline || startNode->kind == AstNodeKind::CompilerInline)
     {
-        if (!(flags & COLLECT_PASS_INLINE))
+        if (!(flags & COLLECT_BACKTICK))
         {
             while (startNode->kind != AstNodeKind::FuncDecl)
                 startNode = startNode->parent;
         }
 
-        flags &= ~COLLECT_PASS_INLINE;
+        flags &= ~COLLECT_BACKTICK;
     }
 
     if (startNode->parent)
@@ -2397,13 +2397,14 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
     auto startScope = startNode->ownerScope;
     if (startScope)
     {
-        if (flags & COLLECT_PASS_INLINE)
+        // For a backtick, do not collect scope until we find an inline block
+        if (flags & COLLECT_BACKTICK)
         {
             while (startScope && startScope->kind != ScopeKind::Inline && startScope->kind != ScopeKind::Macro)
                 startScope = startScope->parentScope;
-            SWAG_VERIFY(startScope, context->report({ context->node, "backtick can only be used inside an inline/macro block" }));
+            SWAG_VERIFY(startScope, context->report({context->node, "backtick can only be used inside an inline/macro block"}));
             startScope = startScope->parentScope;
-            flags &= ~COLLECT_PASS_INLINE;
+            flags &= ~COLLECT_BACKTICK;
         }
 
         scopes.insert(startScope);
@@ -2442,24 +2443,16 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
         // For an inline scope, jump right to the function
         if (scope->kind == ScopeKind::Inline)
         {
-            if (!(flags & COLLECT_PASS_INLINE))
-            {
-                while (scope->kind != ScopeKind::Function)
-                    scope = scope->parentScope;
-            }
-
-            flags &= ~COLLECT_PASS_INLINE;
+            while (scope->kind != ScopeKind::Function)
+                scope = scope->parentScope;
         }
+
+        // For a macro scope, jump right to the inline
         else if (scope->kind == ScopeKind::Macro)
         {
-            if (!(flags & COLLECT_PASS_INLINE))
-            {
-                while (scope->parentScope->kind != ScopeKind::Inline)
-                    scope = scope->parentScope;
+            while (scope->parentScope->kind != ScopeKind::Inline)
                 scope = scope->parentScope;
-            }
-
-            flags &= ~COLLECT_PASS_INLINE;
+            scope = scope->parentScope;
         }
 
         // Add parent scope
@@ -2476,7 +2469,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
         }
     }
 
-    SWAG_VERIFY(!(flags & COLLECT_PASS_INLINE), context->report({startNode, startNode->token, "back ticked identifier can only be used inside a 'swag.macro' function or an '#inline' block"}));
+    SWAG_VERIFY(!(flags & COLLECT_BACKTICK), context->report({startNode, startNode->token, "back ticked identifier can only be used inside a 'swag.macro' function or an '#inline' block"}));
     return true;
 }
 

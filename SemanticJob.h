@@ -103,7 +103,7 @@ struct OneGenericMatch
 };
 
 static const uint32_t COLLECT_ALL         = 0x00000000;
-static const uint32_t COLLECT_PASS_INLINE = 0x00000001;
+static const uint32_t COLLECT_BACKTICK = 0x00000001;
 static const uint32_t COLLECT_NO_STRUCT   = 0x00000002;
 
 struct SemanticJob : public Job
