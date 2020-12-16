@@ -263,6 +263,7 @@ public enum ComparisonType
 func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s32
 {
     using ComparisonType
+
     #[swag.complete]
     switch comparisonType
     {
