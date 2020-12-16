@@ -592,7 +592,7 @@ const TableLetter: [] Range =
     {0x2f800, 0x2fa1d, 1},
 ]
 
-var TableDigit: [] Range = @[
+const TableDigit: [] Range = @[
     {0x0030, 0x0039, 1},
     {0x0660, 0x0669, 1},
     {0x06f0, 0x06f9, 1},
@@ -655,7 +655,7 @@ var TableDigit: [] Range = @[
     {0x1e950, 0x1e959, 1},
 ]
 
-var TableNumber: [] Range = @[
+const TableNumber: [] Range = @[
     {0x0030, 0x0039, 1},
     {0x00b2, 0x00b3, 1},
     {0x00b9, 0x00bc, 3},
@@ -787,7 +787,7 @@ var TableNumber: [] Range = @[
     {0x1f100, 0x1f10c, 1},
 ]
 
-var TableSymbol: [] Range = @[
+const TableSymbol: [] Range = @[
     {0x0024, 0x002b, 7},
     {0x003c, 0x003e, 1},
     {0x005e, 0x0060, 2},
@@ -987,7 +987,7 @@ var TableSymbol: [] Range = @[
     {0x1fa90, 0x1fa95, 1},
 ]
 
-var TableLower: [] Range = @[
+const TableLower: [] Range = @[
     {0x0061, 0x007a, 1},
     {0x00b5, 0x00df, 42},
     {0x00e0, 0x00f6, 1},
@@ -1145,7 +1145,7 @@ var TableLower: [] Range = @[
     {0x1e923, 0x1e943, 1},
 ]
 
-var TableUpper: [] Range = @[
+const TableUpper: [] Range = @[
     {0x0041, 0x005a, 1},
     {0x00c0, 0x00d6, 1},
     {0x00d8, 0x00de, 1},
@@ -1292,7 +1292,7 @@ var TableUpper: [] Range = @[
     {0x1e901, 0x1e921, 1},
 ]
 
-var TableTitle: [] Range = @[
+const TableTitle: [] Range = @[
     {0x01c5, 0x01cb, 3},
     {0x01f2, 0x1f88, 7574},
     {0x1f89, 0x1f8f, 1},
@@ -1302,7 +1302,7 @@ var TableTitle: [] Range = @[
     {0x1ffc, 0x1ffc, 1},
 ]
 
-var TableCaseRanges: [] CaseRange = @[
+const TableCaseRanges: [] CaseRange = @[
     {0x0041, 0x005A, [0, 32, 0]},
     {0x0061, 0x007A, [-32, 0, -32]},
     {0x00B5, 0x00B5, [743, 0, 743]},
@@ -1622,7 +1622,7 @@ var TableCaseRanges: [] CaseRange = @[
     {0x1E922, 0x1E943, [-34, 0, -34]},
 ]
 
-var TableSpecialCaseRanges: [] CaseRange = @[
+const TableSpecialCaseRanges: [] CaseRange = @[
 	{0x0049, 0x0049, [0, cast(s32) 0x131 - cast(s32) 0x49, 0]},
 	{0x0069, 0x0069, [cast(s32) 0x130 - cast(s32) 0x69, 0, cast(s32) 0x130 - cast(s32) 0x69]},
 	{0x0130, 0x0130, [0, cast(s32) 0x69 - cast(s32) 0x130, 0]},

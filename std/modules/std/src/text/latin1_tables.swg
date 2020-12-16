@@ -21,8 +21,7 @@ enum CharAttribute
     Letter = Lower | Upper
 }
 
-const CharProperties: [256] CharAttribute =
-@[
+const CharProperties: [256] CharAttribute = @[
     Control, // '\x00'
     Control, // '\x01'
     Control, // '\x02'
