@@ -41,13 +41,5 @@ const utf8Map: [] Utf8Map = @[
 
 #test
 {
-    //@assert(utf8Map[0].c == 0)
-
-    /*visit *it: utf8Map
-    {
-        //@assert(validChar(it.c))
-        //if !validChar(it.c)
-        @print(it.str)
-        @print("\n")
-    }*/
+    @assert(utf8Map[0].c == 0)
 }
