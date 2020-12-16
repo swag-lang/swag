@@ -5,9 +5,10 @@ struct ScratchAllocator
 {
     fallback:   IAllocator
     block:      *u8
-    used:       uint
     capacity:   uint
-    leaks:      Array'{ptr: *void, size: uint}
+    used:       uint    // Currently allocated size in 'blocks'
+    leaks:      Array'{ptr: *void, size: uint}  // List of allocated blocks which do not feat in 'blocks'
+    usedLeaks:  uint    // Currently total allocated size in 'leaks'
 }
 
 impl ScratchAllocator
@@ -21,7 +22,7 @@ impl ScratchAllocator
     // Free all allocated blocks
     func freeAll(using self)
     {
-        used = 0
+        used, usedLeaks = 0
         visit p: leaks
         {
             var newReq: AllocatorRequest
@@ -36,14 +37,17 @@ impl ScratchAllocator
 
     // First create allocator by allocation a block of memory with
     // the current context allocator
-    func createWithContext(using self, blockSize: uint)
+    func createWithContext(using self, blockSize: uint, allocator: IAllocator = null)
     {
         debug.assert(blockSize > 0)
 
-        if fallback == null
-            fallback = @getcontext().allocator
+        // Allocate the big block to store all allocations
+        fallback = allocator ?? @getcontext().allocator
         capacity = blockSize
         block = memory.alloc(blockSize, fallback)
+
+        // Dynamic array allocator
+        leaks.allocator = fallback
     }
 }
 
@@ -81,9 +85,10 @@ impl IAllocator for ScratchAllocator
             {
                 fallback.alloc(request)
                 leaks.add(@{request.address, request.size})
+                usedLeaks += request.size
             }
 
-            // Move block
+            // Copy previous block in case of a reallocation
             if oldAddress
                 memory.copy(request.address, oldAddress, request.oldSize)
         }
