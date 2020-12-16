@@ -1,6 +1,7 @@
 public namespace utf8;
 
-const MaxRune       = 0x10FFFF'char
+const ErrorChar     = 0xFFFD'char
+const MaxChars      = 0x10FFFF'char
 const SurrogateMin  = 0xD800'char
 const SurrogateMax  = 0xDFFF'char
 
@@ -9,14 +10,15 @@ const SurrogateMax  = 0xDFFF'char
 func countBytesAt(buffer: const *u8)->u32
 {
     c := :buffer
-    count := 1'u32
+    switch
+    {
+    case (c & 0x80) == 0:       return 1
+    case (c & 0xE0) == 0xC0:    return 2
+    case (c & 0xF0) == 0xE0:    return 3
+    case (c & 0xF8) == 0xF0:    return 4
+    }
 
-    if ((c & 0x80) == 0)         count = 1
-    else if ((c & 0xE0) == 0xC0) count = 2
-    else if ((c & 0xF0) == 0xE0) count = 3
-    else if ((c & 0xF8) == 0xF0) count = 4
-
-    return count
+    return 1
 }
 
 // Returns the byte index of the given character index
@@ -152,7 +154,7 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
         return @{wc, 1}
     }
 
-    return @{autocast c, 1}
+    return @{ErrorChar, 1}
 }
 
 // Find one of the characters in 'what', and returns the byte index of it
@@ -266,8 +268,10 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
     {
     case Latin1:
         return latin1.compare(src, dst) // bytes compare
+
     case Latin1NoCase:
         return latin1.compare(src, dst, ignoreCase: true)
+
     case Unicode:
         return latin1.compare(src, dst) // bytes compare
 
@@ -373,7 +377,7 @@ func fromChar(dest: [..] u8, src: char)->u32
         dest[2] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
         return 3
 
-    case src <= MaxRune:
+    case src <= MaxChars:
         dest[0] = cast(u8) (((src >> 18) & 0x07) | 0xF0)
         dest[1] = cast(u8) (((src >> 12) & 0x3F) | 0x80)
         dest[2] = cast(u8) (((src >> 6) & 0x3F) | 0x80)
@@ -416,7 +420,7 @@ func validChar(c: char)->bool
     {
 	case 0 <= c < SurrogateMin:
 		return true
-	case SurrogateMax < c <= MaxRune:
+	case SurrogateMax < c <= MaxChars:
 		return true
 	}
 
