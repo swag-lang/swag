@@ -262,8 +262,6 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
             continue;
 
         auto param = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
-        //if (child->kind == AstNodeKind::Literal)
-        //    param->namedParam = move(child->token.text);
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
         param->inheritTokenLocation(child->token);

@@ -247,7 +247,12 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(JobContext* context, uint32_t b
         }
 
         SWAG_CHECK(storeToSegmentNoLock(context, offset, segment, &child->computedValue, child->typeInfo, child));
-        offset += child->typeInfo->sizeOf;
+
+        // castOffset can store the padding between one field and one other, in case we collect for a struct
+        if (child->castOffset)
+            offset += child->castOffset;
+        else
+            offset += child->typeInfo->sizeOf;
     }
 
     return true;

@@ -1681,6 +1681,13 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeStruct->fields[j]->typeInfo, child->childs[j]->typeInfo, nullptr, child->childs[j], castFlags));
                 if (child->childs[j]->typeInfo != oldType)
                     hasChanged = true;
+
+                // We use castOffset to store the padding between one field and one other, in order to collect later at
+                // the right position
+                if (j)
+                    child->childs[j - 1]->castOffset = toTypeStruct->fields[j]->offset - toTypeStruct->fields[j - 1]->offset;
+                else
+                    child->childs[j]->castOffset = 0;
             }
 
             if (hasChanged)
