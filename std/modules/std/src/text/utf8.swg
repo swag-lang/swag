@@ -95,56 +95,47 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
     if countof == 0
         return @{autocast 0, 0}
 
+    var wc: char = ?
     dataof := @dataof(buffer)
     c := cast(char) :dataof
     dataof += 1
 
-    // Ascii
-    if ((c & 0x80) == 0)
+    switch
+    {
+    case (c & 0x80) == 0:
         return @{c, 1}
 
-    // Utf8
-    var wc: char = ?
-    if ((c & 0xE0) == 0xC0)
-    {
+    case (c & 0xE0) == 0xC0:
         debug.assert(countof >= 2, "invalid utf8 character")
         wc = (c & 0x1F) << 6;
         c = cast(char) :dataof
         wc |= (c & 0x3F);
         return @{wc, 2}
-    }
 
-    if ((c & 0xF0) == 0xE0)
-    {
+    case (c & 0xF0) == 0xE0:
         debug.assert(countof >= 3, "invalid utf8 character")
         wc = (c & 0xF) << 12;
         wc |= cast(char) (dataof[0] & 0x3F) << 6;
         wc |= cast(char) (dataof[1] & 0x3F);
         return @{wc, 3}
-    }
 
-    if ((c & 0xF8) == 0xF0)
-    {
+    case (c & 0xF8) == 0xF0:
         debug.assert(countof >= 4, "invalid utf8 character")
         wc = (c & 0x7) << 18;
         wc |= cast(char) (dataof[0] & 0x3F) << 12;
         wc |= cast(char) (dataof[1] & 0x3F) << 6;
         wc |= cast(char) (dataof[2] & 0x3F);
         return @{wc, 4}
-    }
 
-    if ((c & 0xFC) == 0xF8)
-    {
+    case (c & 0xFC) == 0xF8:
         wc = (c & 0x3) << 24;
         wc |= (c & 0x3F) << 18;
         wc |= (c & 0x3F) << 12;
         wc |= (c & 0x3F) << 6;
         wc |= (c & 0x3F);
         return @{wc, 1}
-    }
 
-    if ((c & 0xFE) == 0xFC)
-    {
+    case (c & 0xFE) == 0xFC:
         wc = (c & 0x1) << 30;
         wc |= (c & 0x3F) << 24;
         wc |= (c & 0x3F) << 18;
@@ -152,9 +143,10 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
         wc |= (c & 0x3F) << 6;
         wc |= (c & 0x3F);
         return @{wc, 1}
-    }
 
-    return @{ErrorChar, 1}
+    default:
+        return @{ErrorChar, 1}
+    }
 }
 
 // Find one of the characters in 'what', and returns the byte index of it
