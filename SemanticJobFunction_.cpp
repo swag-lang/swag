@@ -658,6 +658,54 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     return true;
 }
 
+void SemanticJob::propagateReturn(AstReturn* node)
+{
+    auto stopFct = node->ownerFct->parent;
+    if (node->semFlags & AST_SEM_EMBEDDED_RETURN)
+        stopFct = node->ownerInline->parent;
+
+    AstNode* scanNode = node;
+    bool     passNextSwitch = false;
+    while (scanNode && scanNode != stopFct)
+    {
+        scanNode->semFlags |= AST_SEM_SCOPE_HAS_RETURN;
+        if (scanNode->parent->kind == AstNodeKind::If)
+        {
+            auto ifNode = CastAst<AstIf>(scanNode->parent, AstNodeKind::If);
+            if (ifNode->elseBlock != scanNode)
+                break;
+            if (!(ifNode->ifBlock->semFlags & AST_SEM_SCOPE_HAS_RETURN))
+                break;
+        }
+        else if (scanNode->kind == AstNodeKind::SwitchCase)
+        {
+            auto sc = CastAst<AstSwitchCase>(scanNode, AstNodeKind::SwitchCase);
+            if (sc->isDefault)
+                passNextSwitch = true;
+        }
+        else if (scanNode->kind == AstNodeKind::Switch)
+        {
+            if (!passNextSwitch)
+                break;
+            passNextSwitch = false;
+        }
+        else if (scanNode->kind == AstNodeKind::While ||
+            scanNode->kind == AstNodeKind::Loop ||
+            scanNode->kind == AstNodeKind::For)
+        {
+            break;
+        }
+
+        scanNode = scanNode->parent;
+    }
+
+    while (scanNode && scanNode != stopFct)
+    {
+        scanNode->semFlags |= AST_SEM_FCT_HAS_RETURN;
+        scanNode = scanNode->parent;
+    }
+}
+
 bool SemanticJob::resolveReturn(SemanticContext* context)
 {
     SWAG_CHECK(checkUnreachableCode(context));
@@ -753,51 +801,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         node->forceNoDrop.push_back(child->resolvedSymbolOverload);
     }
 
-    // Propagate return
-    auto stopFct = node->ownerFct->parent;
-    if (node->semFlags & AST_SEM_EMBEDDED_RETURN)
-        stopFct = node->ownerInline->parent;
-
-    AstNode* scanNode       = node;
-    bool     passNextSwitch = false;
-    while (scanNode && scanNode != stopFct)
-    {
-        scanNode->semFlags |= AST_SEM_SCOPE_HAS_RETURN;
-        if (scanNode->parent->kind == AstNodeKind::If)
-        {
-            auto ifNode = CastAst<AstIf>(scanNode->parent, AstNodeKind::If);
-            if (ifNode->elseBlock != scanNode)
-                break;
-            if (!(ifNode->ifBlock->semFlags & AST_SEM_SCOPE_HAS_RETURN))
-                break;
-        }
-        else if (scanNode->kind == AstNodeKind::SwitchCase)
-        {
-            auto sc = CastAst<AstSwitchCase>(scanNode, AstNodeKind::SwitchCase);
-            if (sc->isDefault)
-                passNextSwitch = true;
-        }
-        else if (scanNode->kind == AstNodeKind::Switch)
-        {
-            if (!passNextSwitch)
-                break;
-            passNextSwitch = false;
-        }
-        else if (scanNode->kind == AstNodeKind::While ||
-                 scanNode->kind == AstNodeKind::Loop ||
-                 scanNode->kind == AstNodeKind::For)
-        {
-            break;
-        }
-
-        scanNode = scanNode->parent;
-    }
-
-    while (scanNode && scanNode != stopFct)
-    {
-        scanNode->semFlags |= AST_SEM_FCT_HAS_RETURN;
-        scanNode = scanNode->parent;
-    }
+    // Propagate return so that we can detect if some paths are missing one
+    propagateReturn(node);
 
     // Register symbol now that we have inferred the return type
     if (lateRegister)

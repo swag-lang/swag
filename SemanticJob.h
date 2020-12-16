@@ -102,9 +102,9 @@ struct OneGenericMatch
     }
 };
 
-static const uint32_t COLLECT_ALL         = 0x00000000;
-static const uint32_t COLLECT_BACKTICK = 0x00000001;
-static const uint32_t COLLECT_NO_STRUCT   = 0x00000002;
+static const uint32_t COLLECT_ALL       = 0x00000000;
+static const uint32_t COLLECT_BACKTICK  = 0x00000001;
+static const uint32_t COLLECT_NO_STRUCT = 0x00000002;
 
 struct SemanticJob : public Job
 {
@@ -268,6 +268,7 @@ struct SemanticJob : public Job
     static bool preResolveAttrDecl(SemanticContext* context);
     static bool resolveAttrDecl(SemanticContext* context);
     static bool resolveAttrUse(SemanticContext* context);
+    static void propagateReturn(AstReturn* node);
     static bool resolveReturn(SemanticContext* context);
     static bool resolveRetVal(SemanticContext* context);
     static bool resolveNamespace(SemanticContext* context);
