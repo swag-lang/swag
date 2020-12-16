@@ -450,6 +450,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                 SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
                 auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->storageOffset);
                 ptr += arrayNode->access->computedValue.reg.u64 * typePtr->finalType->sizeOf;
+
+                // Dereference a simple value
                 if (derefConstantValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
                     arrayNode->setFlagsValueIsComputed();
             }
@@ -726,18 +728,10 @@ bool SemanticJob::derefConstantValue(SemanticContext* context, AstNode* node, Ty
     return true;
 }
 
-bool SemanticJob::derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload, DataSegment* segment)
+bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* segment)
 {
     auto node = context->node;
 
-    uint32_t storageOffset = UINT32_MAX;
-    if (parent->previousResolvedNode->resolvedSymbolOverload)
-        storageOffset = parent->previousResolvedNode->resolvedSymbolOverload->storageOffset;
-    else
-        storageOffset = parent->previousResolvedNode->computedValue.reg.u32;
-    SWAG_ASSERT(storageOffset != UINT32_MAX);
-
-    uint8_t* ptr = segment->address(storageOffset);
     ptr += overload->storageOffset;
     node->typeInfo = overload->typeInfo;
 
@@ -753,5 +747,17 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, AstIdentifierRef*
     }
 
     node->setFlagsValueIsComputed();
+    return true;
+}
+
+bool SemanticJob::derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload, DataSegment* segment)
+{
+    uint32_t storageOffset = UINT32_MAX;
+    if (parent->previousResolvedNode->resolvedSymbolOverload)
+        storageOffset = parent->previousResolvedNode->resolvedSymbolOverload->storageOffset;
+    else
+        storageOffset = parent->previousResolvedNode->computedValue.reg.u32;
+    SWAG_ASSERT(storageOffset != UINT32_MAX);
+    SWAG_CHECK(derefLiteralStruct(context, segment->address(storageOffset), overload, segment));
     return true;
 }

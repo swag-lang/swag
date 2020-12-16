@@ -41,5 +41,8 @@ const utf8Map: [] Utf8Map = @[
 
 #test
 {
-    @assert(utf8Map[0].c == 0)
+    @assert(utf8Map[2].c == 0x007e)
+    @assert(utf8Map[2].str == "\x7e")
+    #assert(utf8Map[2].c == 0x007e)
+    #assert(utf8Map[2].str == "\x7e")
 }

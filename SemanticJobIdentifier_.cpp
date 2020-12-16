@@ -367,6 +367,32 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         identifier->flags |= AST_R_VALUE;
     }
 
+    // Direct reference of a struct field inside a const array
+    if (parent->previousResolvedNode &&
+        parent->previousResolvedNode->kind == AstNodeKind::ArrayPointerIndex &&
+        parent->previousResolvedNode->typeInfo->kind == TypeInfoKind::Struct &&
+        symbol->kind == SymbolKind::Variable)
+    {
+        auto arrayNode = CastAst<AstArrayPointerIndex>(parent->previousResolvedNode, AstNodeKind::ArrayPointerIndex);
+        if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
+        {
+            if (arrayNode->access->flags & AST_VALUE_COMPUTED)
+            {
+                auto typePtr = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
+                SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
+                auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->storageOffset);
+                ptr += arrayNode->access->computedValue.reg.u64 * typePtr->finalType->sizeOf;
+                if (derefLiteralStruct(context, ptr, overload, &sourceFile->module->constantSegment))
+                {
+                    parent->previousResolvedNode = context->node;
+                    return true;
+                }
+
+                identifier->flags |= AST_R_VALUE;
+            }
+        }
+    }
+
     // If this a L or R value
     if (!dependentVar && (overload->flags & OVERLOAD_VAR_STRUCT))
     {
