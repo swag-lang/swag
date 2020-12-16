@@ -1,5 +1,9 @@
 public namespace utf8;
 
+const MaxRune       = 0x10FFFF'char
+const SurrogateMin  = 0xD800'char
+const SurrogateMax  = 0xDFFF'char
+
 // Returns the number of bytes to encode the first character of the
 // utf8 buffer
 func countBytesAt(buffer: const *u8)->u32
@@ -346,40 +350,42 @@ func fromChar(dest: [..] u8, src: char)->u32
 {
     debug.assert(@countof(dest) >= 4, "destination buffer is too small")
 
-    if (src <= 0x7F)
+    switch
     {
+    case src <= 0x7F:
         dest[0] = cast(u8) src
         return 1
-    }
 
-    if (src <= 0x07FF)
-    {
+    case src <= 0x07FF:
         dest[0] = cast(u8) (((src >> 6) & 0x1F) | 0xC0)
         dest[1] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
         return 2
-    }
 
-    if (src <= 0xFFFF)
-    {
+    case SurrogateMin <= src <= SurrogateMax:
+        dest[0] = cast(u8) 0xEF;
+        dest[1] = cast(u8) 0xBF;
+        dest[2] = cast(u8) 0xBD;
+        return 3
+
+    case src <= 0xFFFF:
         dest[0] = cast(u8) (((src >> 12) & 0x0F) | 0xE0)
         dest[1] = cast(u8) (((src >> 6) & 0x3F) | 0x80)
         dest[2] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
         return 3
-    }
 
-    if (src <= 0x10FFFF)
-    {
+    case src <= MaxRune:
         dest[0] = cast(u8) (((src >> 18) & 0x07) | 0xF0)
         dest[1] = cast(u8) (((src >> 12) & 0x3F) | 0x80)
         dest[2] = cast(u8) (((src >> 6) & 0x3F) | 0x80)
         dest[3] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
         return 4
-    }
 
-    dest[0] = cast(u8) 0xEF;
-    dest[1] = cast(u8) 0xBF;
-    dest[2] = cast(u8) 0xBD;
-    return 3
+    default:
+        dest[0] = cast(u8) 0xEF;
+        dest[1] = cast(u8) 0xBF;
+        dest[2] = cast(u8) 0xBD;
+        return 3
+    }
 }
 
 // Convert a unicode 32 array to an utf8 buffer
@@ -401,4 +407,18 @@ func fromCharArray(dest: [..] u8, src: const [..] char)->uint
     }
 
     return total
+}
+
+// Returns true if the given char can be encoded in utf8
+func validChar(c: char)->bool
+{
+	switch
+    {
+	case 0 <= c < SurrogateMin:
+		return true
+	case SurrogateMax < c <= MaxRune:
+		return true
+	}
+
+	return false
 }

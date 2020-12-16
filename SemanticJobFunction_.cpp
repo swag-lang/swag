@@ -758,7 +758,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (node->semFlags & AST_SEM_EMBEDDED_RETURN)
         stopFct = node->ownerInline->parent;
 
-    AstNode* scanNode = node;
+    AstNode* scanNode       = node;
+    bool     passNextSwitch = false;
     while (scanNode && scanNode != stopFct)
     {
         scanNode->semFlags |= AST_SEM_SCOPE_HAS_RETURN;
@@ -770,10 +771,21 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             if (!(ifNode->ifBlock->semFlags & AST_SEM_SCOPE_HAS_RETURN))
                 break;
         }
+        else if (scanNode->kind == AstNodeKind::SwitchCase)
+        {
+            auto sc = CastAst<AstSwitchCase>(scanNode, AstNodeKind::SwitchCase);
+            if (sc->isDefault)
+                passNextSwitch = true;
+        }
+        else if (scanNode->kind == AstNodeKind::Switch)
+        {
+            if (!passNextSwitch)
+                break;
+            passNextSwitch = false;
+        }
         else if (scanNode->kind == AstNodeKind::While ||
                  scanNode->kind == AstNodeKind::Loop ||
-                 scanNode->kind == AstNodeKind::For ||
-                 scanNode->kind == AstNodeKind::Switch)
+                 scanNode->kind == AstNodeKind::For)
         {
             break;
         }
