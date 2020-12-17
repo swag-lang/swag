@@ -480,9 +480,8 @@ func isValid(buffer: const [..] u8)->bool
     // Quick zap ascii characters
     while countof >= 8
     {
-        first32 := cast(u32) (p[0]) | cast(u32) (p[1])<<8 | cast(u32) (p[2])<<16 | cast(u32) (p[3])<<24
-        second32 := cast(u32) (p[4]) | cast(u32) (p[5])<<8 | cast(u32) (p[6])<<16 | cast(u32) (p[7])<<24
-        if (first32 | second32) & 0x80808080 != 0
+        first64 := :cast(const *u64) p
+        if first64 & 0x80808080_80808080
             break
         p += 8
         countof -= 8
