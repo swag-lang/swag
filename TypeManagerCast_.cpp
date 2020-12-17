@@ -1682,10 +1682,14 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 if (child->childs[j]->typeInfo != oldType)
                     hasChanged = true;
 
-                // We use castOffset to store the padding between one field and one other, in order to collect later at
+                // We use castOffset to store the offset between one field and one other, in order to collect later at
                 // the right position
                 if (j)
+                {
                     child->childs[j - 1]->castOffset = toTypeStruct->fields[j]->offset - toTypeStruct->fields[j - 1]->offset;
+                    if (child->childs[j - 1]->castOffset != child->childs[j - 1]->typeInfo->sizeOf)
+                        hasChanged = true;
+                }
                 else
                     child->childs[j]->castOffset = 0;
             }

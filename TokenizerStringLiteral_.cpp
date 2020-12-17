@@ -27,8 +27,9 @@ bool Tokenizer::getDigitHexa(Token& token, int& result, const char* errMsg)
     return true;
 }
 
-bool Tokenizer::isEscape(char32_t& c, Token& token)
+bool Tokenizer::isEscape(char32_t& c, Token& token, bool& asIs)
 {
+    asIs                = false;
     auto locationBefore = location;
     c                   = getChar();
     switch (c)
@@ -72,7 +73,8 @@ bool Tokenizer::isEscape(char32_t& c, Token& token)
         const char* msg = "'\\x' escape code needs 2 of them";
         SWAG_CHECK(getDigitHexa(token, c1, msg));
         SWAG_CHECK(getDigitHexa(token, c2, msg));
-        c = (c1 << 4) + c2;
+        c    = (c1 << 4) + c2;
+        asIs = true;
         return true;
     }
     case 'u':
@@ -193,9 +195,14 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             if (!raw && c == '\\')
             {
                 treatChar(c, offset);
-                SWAG_CHECK(isEscape(c, token));
+
+                bool asIs = false;
+                SWAG_CHECK(isEscape(c, token, asIs));
                 token.endLocation = location;
-                token.text += c;
+                if (asIs)
+                    token.text.append((char) c);
+                else
+                    token.text += c;
                 continue;
             }
 
@@ -337,8 +344,15 @@ bool Tokenizer::doCharLiteral(Token& token)
     if (c == '\\')
     {
         treatChar(c, offset);
-        result     = result && isEscape(c, token);
-        token.text = c;
+
+        bool asIs = false;
+        result    = result && isEscape(c, token, asIs);
+
+        token.text.clear();
+        if (asIs)
+            token.text.append((char) c);
+        else
+            token.text += c;
     }
     else
     {

@@ -47,5 +47,10 @@ var utf8Map: [] Utf8Map = @[
     visit *it: utf8Map
     {
         @assert(validChar(it.c))
+
+        var arr: [4] u8
+        eat := fromChar(arr, it.c)
+        @assert(eat == @countof(it.str))
+        loop i: eat @assert(arr[i] == it.str[i])
     }
 }

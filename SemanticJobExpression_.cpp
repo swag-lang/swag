@@ -30,6 +30,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
     auto typeInfo       = allocType<TypeInfoList>();
     typeInfo->kind      = TypeInfoKind::TypeListTuple;
     typeInfo->nakedName = "{";
+    typeInfo->sizeOf    = 0;
 
     int idx = 0;
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
@@ -54,7 +55,11 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
 
         typeInfo->nakedName += child->typeInfo->name;
 
-        typeInfo->sizeOf += child->typeInfo->sizeOf;
+        if (child->castOffset)
+            typeInfo->sizeOf += child->castOffset;
+        else
+            typeInfo->sizeOf += child->typeInfo->sizeOf;
+
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
         if (!(child->flags & AST_R_VALUE))
