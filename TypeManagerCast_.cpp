@@ -1673,7 +1673,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             if (toTypeStruct->fields.size() < child->childs.size())
                 return context->report({child, format("too many initializers for '%s' ('%d' expected, '%d' provided)", toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
 
-            for (int j = 0; j < toTypeStruct->fields.size(); j++)
+            auto count = toTypeStruct->fields.size();
+            for (int j = 0; j < count; j++)
             {
                 auto oldType = child->childs[j]->typeInfo;
                 SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeStruct->fields[j]->typeInfo, child->childs[j]->typeInfo, nullptr, child->childs[j], castFlags));
@@ -1682,15 +1683,26 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
                 // We use castOffset to store the offset between one field and one other, in order to collect later at
                 // the right position
+                child->childs[j]->castOffset = 0;
                 if (j)
                 {
                     child->childs[j - 1]->castOffset = toTypeStruct->fields[j]->offset - toTypeStruct->fields[j - 1]->offset;
                     if (child->childs[j - 1]->castOffset != child->childs[j - 1]->typeInfo->sizeOf)
                         hasChanged = true;
                 }
-                else
-                    child->childs[j]->castOffset = 0;
+
+                // For the last field, padding will be the difference between the field offset and the struct size
+                // (because struct sizeof is aligned too, and padding can be added at the end)
+                if (j == count - 1)
+                {
+                    child->childs[j]->castOffset = toTypeStruct->sizeOf - toTypeStruct->fields[j]->offset;
+                    if (child->childs[j]->castOffset != child->childs[j]->typeInfo->sizeOf)
+                        hasChanged = true;
+                }
             }
+
+            if (child->typeInfo->sizeOf != toTypeStruct->sizeOf)
+                hasChanged = true;
 
             if (hasChanged)
                 SemanticJob::computeExpressionListTupleType(context, child);

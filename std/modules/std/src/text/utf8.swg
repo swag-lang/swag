@@ -109,7 +109,7 @@ func countBytesAt(buffer: const [..] u8)->u32
 }
 
 // Returns the byte index of the given character index
-func byteIndex(buffer: const [..] u8, charIndex: u32) -> {index: u32, success: bool}
+func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success: bool}
 {
     countof := @countof(buffer)
     if !countof return @{0'u32, false}
@@ -117,8 +117,8 @@ func byteIndex(buffer: const [..] u8, charIndex: u32) -> {index: u32, success: b
 
     dataof := @dataof(buffer)
 
-    resultChar := 0'u32
-    resultByte := 0'u32
+    resultChar := 0'uint
+    resultByte := 0'uint
     while countof && resultChar != charIndex
     {
         val := countBytesAt(@mkslice(dataof, countof))
@@ -142,7 +142,7 @@ func countChars(buffer: const [..] u8)->uint
     while countof
     {
         val := countBytesAt(@mkslice(dataof, countof))
-        debug.assert(val <= countof, "invalid utf8 character")
+        debug.assert(val <= countof)
         cpt += 1
         dataof += val
         countof -= val
@@ -151,7 +151,7 @@ func countChars(buffer: const [..] u8)->uint
     return cpt
 }
 
-// Get the previous utf8 character, and the number of bytes to encode it
+// Get the last utf8 character of the slice, and the number of bytes to encode it
 func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
     countof := @countof(buffer)
@@ -468,6 +468,74 @@ func fromCharArray(dest: [..] u8, src: const [..] char)->uint
     }
 
     return total
+}
+
+// Returns true if the utf8 sequence is valid
+func isValid(buffer: const [..] u8)->bool
+{
+    p := @dataof(buffer)
+    countof := @countof(buffer)
+    if !countof return true
+
+    // quick zap ascii characters
+    while countof >= 8
+    {
+        first32 := cast(u32) (p[0]) | cast(u32) (p[1])<<8 | cast(u32) (p[2])<<16 | cast(u32) (p[3])<<24
+        second32 := cast(u32) (p[4]) | cast(u32) (p[5])<<8 | cast(u32) (p[6])<<16 | cast(u32) (p[7])<<24
+        if (first32 | second32) & 0x80808080 != 0
+            break
+        p += 8
+        countof -= 8
+    }
+
+    while countof
+    {
+        p0 := cast(char) :p
+
+        // Ascii
+        if (p0 & 0x80) == 0
+        {
+            p += 1
+            countof -= 1
+            continue
+        }
+
+        // Invalid first byte
+        x := First[cast(u8) p0]
+        if x == XX return false
+
+        // Be sure input buffer is large enough to hold the requested
+        // encoded size
+        sz := x & 7
+        if countof < sz return false
+
+        accept := AcceptRanges[x >> 4]
+
+        b1 := p[1]
+        if !(accept.lo <= b1 <= accept.hi) return false
+        if sz <= 2
+        {
+            p += 2
+            countof -= 2
+            continue
+        }
+
+        b2 := p[2]
+        if !(LoCB <= b2 <= HiCB) return false
+        if sz <= 3
+        {
+            p += 3
+            countof -= 3
+            continue
+        }
+
+        b3 := p[3]
+        if !(LoCB <= b3 <= HiCB) return false
+        p += 4
+        countof -= 4
+    }
+
+    return true
 }
 
 // Returns true if the given unicode character can be encoded in utf8
