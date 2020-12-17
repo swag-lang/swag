@@ -115,7 +115,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     type := cast(const *TypeInfo) @kindof(value)
 
     // This is a type
-    if type.flags & TypeInfoFlags.TypeInfoPtr
+    if reflection.isType(type)
     {
         ptrType := :cast(*typeinfo) @dataof(value)
         buf.addBytes(ptrType.name)
@@ -123,7 +123,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     }
 
     // A pointer, whatever type
-    if type.kind == TypeInfoKind.Pointer
+    if reflection.isPointer(type)
     {
         var fmt: ConvertFormatInt
         fmt.base = 16
@@ -136,7 +136,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     }
 
     // An enum value
-    if type.kind == TypeInfoKind.Enum
+    if reflection.isEnum(type)
     {
         enumName := reflection.getEnumName(type, @dataof(value))
         if !enumName.isEmpty()
@@ -147,7 +147,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     }
 
     // A struct
-    if type.kind == TypeInfoKind.Struct
+    if reflection.isStruct(type)
     {
         if type == ConvertFormatInt
             convertInt(buf, cast(ConvertFormatInt) value)
@@ -159,7 +159,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     }
 
     // A static array
-    if type.kind == TypeInfoKind.Array
+    if reflection.isArray(type)
     {
         ptrArr := cast(const *TypeInfoArray) type
         buf.addBytes("[")
@@ -179,13 +179,13 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         return
     }
 
-    if type.flags & TypeInfoFlags.Integer
+    if reflection.isInteger(type)
     {
         convertInt(buf, value, strFormat)
         return
     }
 
-    if type.flags & TypeInfoFlags.Float
+    if reflection.isFloat(type)
     {
         convertFloat(buf, value, strFormat)
         return

@@ -10,11 +10,11 @@ public interface IHash32
 #[constexpr]
 public func(T) hash32(value: T)->u32
 {
-    #if @typeof(T).flags & TypeInfoFlags.Integer
+    #if reflection.isInteger(@typeof(T))
     {
         return cast(u32) value
     }
-    #elif @typeof(T).flags & TypeInfoFlags.Float
+    #elif reflection.isFloat(@typeof(T))
     {
         val32 := cast(f32) value
         return bitcast(u32) val32
