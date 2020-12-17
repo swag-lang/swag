@@ -388,7 +388,7 @@ func visitChars(buffer: const [..] u8, stmt: code)
     while count
     {
         slice := @mkslice(scan, count)
-        var (c, eat) = firstChar(slice)
+        (c, eat) := firstChar(slice)
         if eat == 0
             break
         #macro
@@ -477,7 +477,7 @@ func isValid(buffer: const [..] u8)->bool
     countof := @countof(buffer)
     if !countof return true
 
-    // quick zap ascii characters
+    // Quick zap ascii characters
     while countof >= 8
     {
         first32 := cast(u32) (p[0]) | cast(u32) (p[1])<<8 | cast(u32) (p[2])<<16 | cast(u32) (p[3])<<24
