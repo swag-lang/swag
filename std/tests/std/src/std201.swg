@@ -52,5 +52,9 @@ var utf8Map: [] Utf8Map = @[
         eat := fromChar(arr, it.c)
         @assert(eat == @countof(it.str))
         loop i: eat @assert(arr[i] == it.str[i])
+
+        res := firstChar(it.str)
+        @assert(res.eat == @countof(it.str))
+        @assert(res.c == it.c)
     }
 }
