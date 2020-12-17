@@ -30,7 +30,7 @@ public impl hash.IHash32 for String
 {
     func compute(using self)->u32
     {
-        return hash.Crc32.hash(@mkslice(buffer, length))
+        return hash.Crc32.compute(@mkslice(buffer, length))
     }
 }
 

@@ -577,7 +577,7 @@ impl Crc32
 
     // Returns the crc32 hash value for the given buffer
     #[swag.constexpr]
-    func hash(buffer: const [..] u8)->u32
+    func compute(buffer: const [..] u8)->u32
     {
         var v: Crc32
         v.init()

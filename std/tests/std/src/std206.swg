@@ -58,7 +58,7 @@ const validTests: [] ValidTest = @[
 {
     visit *it: validTests
     {
-        res := Adler32.hash(it.in)
+        res := Adler32.compute(it.in)
         @assert(res == it.out)
     }
 }

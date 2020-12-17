@@ -49,7 +49,7 @@ const validTests: [] ValidTest = @[
 {
     visit *it: validTests
     {
-        res := Crc32.hash(it.in1)
+        res := Crc32.compute(it.in1)
         @assert(res == it.out1)
     }
 }

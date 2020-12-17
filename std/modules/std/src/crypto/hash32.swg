@@ -17,11 +17,11 @@ public func(T) hash32(value: T)->u32
     #elif @typeof(T).flags & TypeInfoFlags.Float
     {
         val32 := cast(f32) value
-        return :cast(const *u32) &val32
+        return bitcast(u32) val32
     }
     #elif @typeof(T) == string
     {
-        return hash.Crc32.hash(value)
+        return hash.Crc32.compute(value)
     }
     #elif @typeof(T).kind == TypeInfoKind.Struct
     {
