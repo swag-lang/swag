@@ -225,18 +225,21 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
 
 	accept := AcceptRanges[x >> 4]
 
+    // Length == 2
 	b1 := dataof[1]
 	if !(accept.lo <= b1 <= accept.hi)
         return @{CharError, 1}
 	if sz <= 2
         return @{(p0 & Mask2) << 6 | (b1 & MaskX), 2}
 
+    // Length == 3
 	b2 := dataof[2]
     if !(LoCB <= b2 <= HiCB)
         return @{CharError, 1}
 	if sz <= 3
         return @{(p0 & Mask3) << 12 | (b1 & MaskX) << 6 | (b2 & MaskX), 3}
 
+    // Length == 4
 	b3 := dataof[3]
 	if !(LoCB <= b3 <= HiCB)
         return @{CharError, 1}
