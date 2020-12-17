@@ -75,7 +75,8 @@ func countBytesAt(buffer: const [..] u8)->u32
 {
     dataof := @dataof(buffer)
     countof := @countof(buffer)
-    if !countof return 1
+    if !countof
+        return 1
 
     p0 := cast(char) :dataof
 
@@ -91,20 +92,26 @@ func countBytesAt(buffer: const [..] u8)->u32
     // Be sure input buffer is large enough to hold the requested
     // encoded size
     sz := x & 7
-	if countof < sz return 1
+	if countof < sz
+        return 1
 
 	accept := AcceptRanges[x >> 4]
 
 	b1 := dataof[1]
-	if !(accept.lo <= b1 <= accept.hi) return 1
-	if sz <= 2 return 2
+	if !(accept.lo <= b1 <= accept.hi)
+        return 1
+	if sz <= 2
+        return 2
 
 	b2 := dataof[2]
-    if !(LoCB <= b2 <= HiCB) return 1
-	if sz <= 3 return 3
+    if !(LoCB <= b2 <= HiCB)
+        return 1
+	if sz <= 3
+        return 3
 
 	b3 := dataof[3]
-	if !(LoCB <= b3 <= HiCB) return 1
+	if !(LoCB <= b3 <= HiCB)
+        return 1
 	return 4
 }
 
@@ -112,8 +119,10 @@ func countBytesAt(buffer: const [..] u8)->u32
 func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success: bool}
 {
     countof := @countof(buffer)
-    if !countof return @{0'u32, false}
-    if !charIndex return @{0'u32, true}
+    if !countof
+        return @{0'u32, false}
+    if !charIndex
+        return @{0'u32, true}
 
     dataof := @dataof(buffer)
 
@@ -155,24 +164,36 @@ func countChars(buffer: const [..] u8)->uint
 func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
     countof := @countof(buffer)
-    if countof == 0
-        return @{autocast 0, 0}
+    if !countof
+        return @{CharError, 0}
 
     dataof := @dataof(buffer)
     ptr := dataof + (countof - 1)
+
+    // Ascii
+    c := cast(char) :ptr
+    if c & 0x80 == 0
+        return @{c, 1}
+
     eat := 1'u32
     while true
     {
-        c := :ptr
+        c = :ptr
         if c >> 6 != 2
             break
         if ptr == dataof
-            return @{autocast 0, 0}
+            return @{CharError, 1}
         ptr -= 1
         eat += 1
+        if eat > 4
+            return @{CharError, 1}
     }
 
-    return firstChar(@mkslice(ptr, cast(uint) eat))
+    var result: retval
+    result = firstChar(@mkslice(ptr, cast(uint) eat))
+    if result.eat != eat
+        return @{CharError, 1}
+    return result
 }
 
 // Get the unicode character pointed by 'buffer', and the number of bytes to encode it
@@ -199,20 +220,26 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
     // Be sure input buffer is large enough to hold the requested
     // encoded size
     sz := x & 7
-	if countof < sz return @{CharError, 1}
+	if countof < sz
+        return @{CharError, 1}
 
 	accept := AcceptRanges[x >> 4]
 
 	b1 := dataof[1]
-	if !(accept.lo <= b1 <= accept.hi) return @{CharError, 1}
-	if sz <= 2 return @{(p0 & Mask2) << 6 | (b1 & MaskX), 2}
+	if !(accept.lo <= b1 <= accept.hi)
+        return @{CharError, 1}
+	if sz <= 2
+        return @{(p0 & Mask2) << 6 | (b1 & MaskX), 2}
 
 	b2 := dataof[2]
-    if !(LoCB <= b2 <= HiCB) return @{CharError, 1}
-	if sz <= 3 return @{(p0 & Mask3) << 12 | (b1 & MaskX) << 6 | (b2 & MaskX), 3}
+    if !(LoCB <= b2 <= HiCB)
+        return @{CharError, 1}
+	if sz <= 3
+        return @{(p0 & Mask3) << 12 | (b1 & MaskX) << 6 | (b2 & MaskX), 3}
 
 	b3 := dataof[3]
-	if !(LoCB <= b3 <= HiCB) return @{CharError, 1}
+	if !(LoCB <= b3 <= HiCB)
+        return @{CharError, 1}
 	return @{(p0 & Mask4) << 18 | (b1 & MaskX) << 12 | (b2 & MaskX) << 6 | (b3 & MaskX), 4}
 }
 
@@ -220,11 +247,13 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
 func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'uint) -> {index: uint, success: bool}
 {
     length := @countof(src)
-    if !length return @{0, false}
+    if !length
+        return @{0, false}
     debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
     countof := @countof(what)
-    if !countof return @{0, false}
+    if !countof
+        return @{0, false}
 
     idx := startByteIndex
     scan := @dataof(src) + startByteIndex
@@ -247,7 +276,8 @@ func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'uint)
 func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparisonType = ComparisonType.Latin1) -> {index: uint, success: bool}
 {
     length := @countof(src)
-    if !length return @{0, false}
+    if !length
+        return @{0, false}
     debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
     countof := @countof(what)
@@ -259,7 +289,8 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
     while countof <= remain
     {
         res := compare(cast(string) @mkslice(scan, countof), what, comparisonType)
-        if res == 0 return @{idx, true}
+        if res == 0
+            return @{idx, true}
         scan, idx += 1
         remain -= 1
     }
@@ -272,7 +303,8 @@ func startsWith(src: const [..] u8, str: string, comparisonType = utf8.Compariso
 {
     length := @countof(src)
     countof := @countof(str)
-    if countof > length return false
+    if countof > length
+        return false
     buffer := @dataof(src)
     return compare(cast(string) @mkslice(buffer, countof), str, comparisonType) == 0
 }
@@ -281,7 +313,8 @@ func startsWith(src: const [..] u8, str: string, comparisonType = utf8.Compariso
 func lastIndexOf(src: const [..] u8, what: const [..] char) -> {index: uint, success: bool}
 {
     length := @countof(src)
-    if !length return @{0, false}
+    if !length
+        return @{0, false}
     dataof := @dataof(src)
 
     byteIdx := length
@@ -305,7 +338,8 @@ func endsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonT
 {
     length := @countof(src)
     countof := @countof(str)
-    if countof > length return false
+    if countof > length
+        return false
     buffer := @dataof(src)
     return compare(cast(string) @mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
 }
@@ -348,14 +382,16 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
         {
             (c1, eat1) = firstChar(@mkslice(data, length))
             (c2, eat2) = firstChar(@mkslice(otherData, otherLength))
-            if eat1 == 0 || eat2 == 0 break
+            if eat1 == 0 || eat2 == 0
+                break
 
             if c1 != c2
             {
                 c1 = unicode32.toLower(c1)
                 c2 = unicode32.toLower(c2)
                 result = cast(s32) c1 - cast(s32) c2
-                if result != 0 return math.sign(result)
+                if result != 0
+                    return math.sign(result)
             }
 
             length -= eat1
@@ -364,8 +400,10 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
             otherData += eat2
         }
 
-        if !eat1 && eat2 return -1
-        if eat1 && !eat2 return 1
+        if !eat1 && eat2
+            return -1
+        if eat1 && !eat2
+            return 1
         return 0
     }
 
@@ -380,7 +418,8 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
 func visitChars(buffer: const [..] u8, stmt: code)
 {
     count := @countof(buffer)
-    if !count return
+    if !count
+        return
 
     byteIdx := 0'uint
     charIdx := 0'uint
@@ -475,7 +514,8 @@ func isValid(buffer: const [..] u8)->bool
 {
     p := @dataof(buffer)
     countof := @countof(buffer)
-    if !countof return true
+    if !countof
+        return true
 
     // Quick zap ascii characters
     while countof >= 8
@@ -501,17 +541,20 @@ func isValid(buffer: const [..] u8)->bool
 
         // Invalid first byte
         x := First[cast(u8) p0]
-        if x == XX return false
+        if x == XX
+            return false
 
         // Be sure input buffer is large enough to hold the requested
         // encoded size
         sz := x & 7
-        if countof < sz return false
+        if countof < sz
+            return false
 
         accept := AcceptRanges[x >> 4]
 
         b1 := p[1]
-        if !(accept.lo <= b1 <= accept.hi) return false
+        if !(accept.lo <= b1 <= accept.hi)
+            return false
         if sz <= 2
         {
             p += 2
@@ -520,7 +563,8 @@ func isValid(buffer: const [..] u8)->bool
         }
 
         b2 := p[2]
-        if !(LoCB <= b2 <= HiCB) return false
+        if !(LoCB <= b2 <= HiCB)
+            return false
         if sz <= 3
         {
             p += 3
@@ -529,7 +573,8 @@ func isValid(buffer: const [..] u8)->bool
         }
 
         b3 := p[3]
-        if !(LoCB <= b3 <= HiCB) return false
+        if !(LoCB <= b3 <= HiCB)
+            return false
         p += 4
         countof -= 4
     }
