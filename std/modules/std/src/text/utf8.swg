@@ -5,89 +5,6 @@ const MaxChars      = 0x10FFFF'char
 const SurrogateMin  = 0xD800'char
 const SurrogateMax  = 0xDFFF'char
 
-// Returns the number of bytes to encode the first character of the
-// utf8 buffer
-func countBytesAt(buffer: const *u8)->u32
-{
-    c := :buffer
-    switch
-    {
-    case (c & 0x80) == 0:       return 1
-    case (c & 0xE0) == 0xC0:    return 2
-    case (c & 0xF0) == 0xE0:    return 3
-    case (c & 0xF8) == 0xF0:    return 4
-    }
-
-    return 1
-}
-
-// Returns the byte index of the given character index
-func byteIndex(buffer: const [..] u8, charIndex: u32) -> {index: u32, success: bool}
-{
-    countof := @countof(buffer)
-    if !countof return @{0'u32, false}
-    if !charIndex return @{0'u32, true}
-
-    dataof := @dataof(buffer)
-
-    resultChar := 0'u32
-    resultByte := 0'u32
-    while countof && resultChar != charIndex
-    {
-        val := countBytesAt(dataof)
-        debug.assert(val <= countof, "invalid utf8 character")
-        resultByte += val
-        resultChar += 1
-        dataof += val
-        countof -= val
-    }
-
-    return @{resultByte, resultByte < @countof(buffer)}
-}
-
-// Returns the number of unicode characters in an utf8 buffer
-func countChars(buffer: const [..] u8)->uint
-{
-    dataof := @dataof(buffer)
-    countof := @countof(buffer)
-
-    cpt := 0'uint
-    while countof
-    {
-        val := countBytesAt(dataof)
-        debug.assert(val <= countof, "invalid utf8 character")
-        cpt += 1
-        dataof += val
-        countof -= val
-    }
-
-    return cpt
-}
-
-// Get the previous utf8 character, and the number of bytes to encode it
-func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
-{
-    countof := @countof(buffer)
-    if countof == 0
-        return @{autocast 0, 0}
-
-    dataof := @dataof(buffer)
-    ptr := dataof + (countof - 1)
-    eat := 1'u32
-    while true
-    {
-        c := :ptr
-        if c >> 6 != 2
-            break
-        if ptr == dataof
-            return @{autocast 0, 0}
-        ptr -= 1
-        eat += 1
-    }
-
-    return firstChar(@mkslice(ptr, cast(uint) eat))
-}
-
 // https://github.com/golang/go/blob/master/src/unicode/utf8/utf8.go
 private
 {
@@ -149,6 +66,113 @@ private
         {0x90, HiCB},
         {LoCB, 0x8F},
     ]
+}
+
+// Returns the number of bytes to encode the first character of the
+// utf8 buffer.
+// If it's an invalid encoding, returns 1.
+func countBytesAt(buffer: const [..] u8)->u32
+{
+    dataof := @dataof(buffer)
+    countof := @countof(buffer)
+    if !countof return 1
+
+    p0 := cast(char) :dataof
+
+    // Ascii
+    if (p0 & 0x80) == 0
+        return 1
+
+    // Invalid first byte
+    x := First[cast(u8) p0]
+    if x == XX
+        return 1
+
+    // Be sure input buffer is large enough to hold the requested
+    // encoded size
+    sz := x & 7
+	if countof < sz return 1
+
+	accept := AcceptRanges[x >> 4]
+
+	b1 := dataof[1]
+	if !(accept.lo <= b1 <= accept.hi) return 1
+	if sz <= 2 return 2
+
+	b2 := dataof[2]
+    if !(LoCB <= b2 <= HiCB) return 1
+	if sz <= 3 return 3
+
+	b3 := dataof[3]
+	if !(LoCB <= b3 <= HiCB) return 1
+	return 4
+}
+
+// Returns the byte index of the given character index
+func byteIndex(buffer: const [..] u8, charIndex: u32) -> {index: u32, success: bool}
+{
+    countof := @countof(buffer)
+    if !countof return @{0'u32, false}
+    if !charIndex return @{0'u32, true}
+
+    dataof := @dataof(buffer)
+
+    resultChar := 0'u32
+    resultByte := 0'u32
+    while countof && resultChar != charIndex
+    {
+        val := countBytesAt(@mkslice(dataof, countof))
+        debug.assert(val <= countof, "invalid utf8 character")
+        resultByte += val
+        resultChar += 1
+        dataof += val
+        countof -= val
+    }
+
+    return @{resultByte, resultByte < @countof(buffer)}
+}
+
+// Returns the number of unicode characters in an utf8 buffer
+func countChars(buffer: const [..] u8)->uint
+{
+    dataof := @dataof(buffer)
+    countof := @countof(buffer)
+
+    cpt := 0'uint
+    while countof
+    {
+        val := countBytesAt(@mkslice(dataof, countof))
+        debug.assert(val <= countof, "invalid utf8 character")
+        cpt += 1
+        dataof += val
+        countof -= val
+    }
+
+    return cpt
+}
+
+// Get the previous utf8 character, and the number of bytes to encode it
+func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
+{
+    countof := @countof(buffer)
+    if countof == 0
+        return @{autocast 0, 0}
+
+    dataof := @dataof(buffer)
+    ptr := dataof + (countof - 1)
+    eat := 1'u32
+    while true
+    {
+        c := :ptr
+        if c >> 6 != 2
+            break
+        if ptr == dataof
+            return @{autocast 0, 0}
+        ptr -= 1
+        eat += 1
+    }
+
+    return firstChar(@mkslice(ptr, cast(uint) eat))
 }
 
 // Get the unicode character pointed by 'buffer', and the number of bytes to encode it
