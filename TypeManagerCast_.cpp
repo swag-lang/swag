@@ -55,7 +55,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                Diagnostic diag{fromNode, fromNode->token, format("cannot cast implicitly from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str())};
+                Diagnostic diag{fromNode, format("cannot cast implicitly from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str())};
                 diag.codeComment = format("'cast(%s)' can be used in that context", toType->name.c_str());
                 context->report(diag);
                 done = true;
@@ -65,13 +65,13 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         // Cast from struct to interface
         if (toType->kind == TypeInfoKind::Interface && fromType->kind == TypeInfoKind::Struct)
         {
-            context->report({fromNode, fromNode->token, format("cannot cast, type '%s' does not implement interface '%s'", fromTypeName.c_str(), toTypeName.c_str())});
+            context->report({fromNode, format("cannot cast, type '%s' does not implement interface '%s'", fromTypeName.c_str(), toTypeName.c_str())});
             done = true;
         }
 
         // General cast error
         if (!done)
-            context->report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str())});
+            context->report({fromNode, format("cannot cast from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str())});
     }
 
     return false;
@@ -1553,25 +1553,23 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
 
 bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    // Fine if right type is of the same sign, and its sizeof is lower or equal
-    if (castFlags & CASTFLAG_COERCE_SAMESIGN)
-    {
-        if ((toType->sizeOf >= fromType->sizeOf) && (toType->flags & TYPEINFO_UNSIGNED) == (fromType->flags & TYPEINFO_UNSIGNED))
-        {
-            if ((toType->flags & TYPEINFO_INTEGER) && ((toType->flags & TYPEINFO_INTEGER) == (fromType->flags & TYPEINFO_INTEGER)))
-                castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
-            else if ((toType->flags & TYPEINFO_FLOAT) && (toType->flags & TYPEINFO_FLOAT) == (fromType->flags & TYPEINFO_FLOAT))
-                castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
-        }
-    }
-    else if (castFlags & CASTFLAG_COERCE_FULL)
+    // Automatic conversions if coerce mode is on (for expressions)
+    if (castFlags & (CASTFLAG_COERCE_SAMESIGN | CASTFLAG_COERCE_FULL))
     {
         if (toType->sizeOf >= fromType->sizeOf)
         {
-            if ((toType->flags & TYPEINFO_INTEGER) && ((toType->flags & TYPEINFO_INTEGER) == (fromType->flags & TYPEINFO_INTEGER)))
-                castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
-            else if ((toType->flags & TYPEINFO_FLOAT) && (toType->flags & TYPEINFO_FLOAT) == (fromType->flags & TYPEINFO_FLOAT))
-                castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
+            auto leftIsInt       = (toType->flags & TYPEINFO_INTEGER) || toType->isNative(NativeTypeKind::Char);
+            auto rightIsInt      = (fromType->flags & TYPEINFO_INTEGER) || fromType->isNative(NativeTypeKind::Char);
+            auto leftIsFloat     = (toType->flags & TYPEINFO_FLOAT);
+            auto rightIsFloat    = (fromType->flags & TYPEINFO_FLOAT);
+            auto leftIsUnsigned  = (toType->flags & TYPEINFO_UNSIGNED) || toType->isNative(NativeTypeKind::Char);
+            auto rightIsUnsigned = (fromType->flags & TYPEINFO_UNSIGNED) || toType->isNative(NativeTypeKind::Char);
+
+            if ((leftIsInt && rightIsInt) || (leftIsFloat && rightIsFloat))
+            {
+                if ((castFlags & CASTFLAG_COERCE_FULL) || (leftIsUnsigned == rightIsUnsigned))
+                    castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
+            }
         }
     }
 

@@ -192,7 +192,7 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
 
 	b1 := dataof[1]
 	if !(accept.lo <= b1 <= accept.hi) return @{CharError, 1}
-	if sz <= 2 return @{(p0 & mask2) << 6 | (cast(char) b1 & maskx), 2}
+	if sz <= 2 return @{(p0 & mask2) << 6 | (b1 & maskx), 2}
 
 	b2 := dataof[2]
     if !(locb <= b2 <= hicb) return @{CharError, 1}
