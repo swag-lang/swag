@@ -21,7 +21,7 @@ public func(T) hash32(value: T)->u32
     }
     #elif @typeof(T) == string
     {
-        return hash.crc32(value)
+        return hash.Crc32.hash(value)
     }
     #elif @typeof(T).kind == TypeInfoKind.Struct
     {

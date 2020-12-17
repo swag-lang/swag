@@ -1,4 +1,4 @@
-namespace hash;
+public namespace hash;
 
 private const maxSlices = 16
 private const lookupTable: [maxSlices, 256] u32 = @[
@@ -499,66 +499,89 @@ private const lookupTable: [maxSlices, 256] u32 = @[
     0x24B98D25, 0x8AD11CB4, 0xA319A846, 0x0D7139D7,
 ]]
 
-// Compute the crc32 of a slice of bytes
-#[swag.constexpr]
-public func crc32(data: const [..] u8, previous: u32 = 0)->u32
+struct Crc32
 {
-    crc := ~previous
-    current := cast(const *u32) @dataof(data)
-    length := @countof(data)
+    crc: u32
+}
 
-    const unroll = 4
-    const bytesAtOnce = 16 * unroll
-    while length >= bytesAtOnce
+impl Crc32
+{
+    // Initialize the hashing sequence
+    func init(using self)
     {
-        loop unrolling: unroll
-        {
-        #if BIG_ENDIAN
-        {
-            one   := current[0] ^ Swap(crc)
-            two   := current[1]
-            three := current[2]
-            four  := current[3]
-            current += 4
-
-            crc = lookupTable[0, four & 0xFF] ^ lookupTable[1, (four >> 8) & 0xFF] ^
-                    lookupTable[2, (four >> 16) & 0xFF] ^ lookupTable[3, (four >> 24) & 0xFF] ^
-                    lookupTable[4, three & 0xFF] ^ lookupTable[5, (three >> 8) & 0xFF] ^
-                    lookupTable[6, (three >> 16) & 0xFF] ^ lookupTable[7, (three >> 24) & 0xFF] ^
-                    lookupTable[8, two & 0xFF] ^ lookupTable[9, (two >> 8) & 0xFF] ^
-                    lookupTable[10, (two >> 16) & 0xFF] ^ lookupTable[11, (two >> 24) & 0xFF] ^
-                    lookupTable[12, one & 0xFF] ^ lookupTable[13, (one >> 8) & 0xFF] ^
-                    lookupTable[14, (one >> 16) & 0xFF] ^ lookupTable[15, (one >> 24) & 0xFF]
-        }
-        #else
-        {
-            one   := current[0] ^ crc
-            two   := current[1]
-            three := current[2]
-            four  := current[3]
-            current += 4
-
-            crc = lookupTable[0, (four >> 24) & 0xFF] ^ lookupTable[1, (four >> 16) & 0xFF] ^
-                    lookupTable[2, (four >> 8) & 0xFF] ^ lookupTable[3, four & 0xFF] ^
-                    lookupTable[4, (three >> 24) & 0xFF] ^ lookupTable[5, (three >> 16) & 0xFF] ^
-                    lookupTable[6, (three >> 8) & 0xFF] ^ lookupTable[7, three & 0xFF] ^
-                    lookupTable[8, (two >> 24) & 0xFF] ^ lookupTable[9, (two >> 16) & 0xFF] ^
-                    lookupTable[10, (two >> 8) & 0xFF] ^ lookupTable[11, two & 0xFF] ^
-                    lookupTable[12, (one >> 24) & 0xFF] ^ lookupTable[13, (one >> 16) & 0xFF] ^
-                    lookupTable[14, (one >> 8) & 0xFF] ^ lookupTable[15, one & 0xFF]
-        }
-        }
-
-        length -= bytesAtOnce
+        crc = 0
     }
 
-    currentChar := cast(const *u8) current
-    while length
+    // Update the hash value with 'buffer' content
+    func update(using self, data: const [..] u8)
     {
-        crc = (crc >> 8) ^ lookupTable[0, (crc & 0xFF) ^ currentChar[0]]
-        currentChar += 1
-        length -= 1
+        cur := ~crc
+        current := cast(const *u32) @dataof(data)
+        length := @countof(data)
+
+        const unroll = 4
+        const bytesAtOnce = 16 * unroll
+        while length >= bytesAtOnce
+        {
+            loop unrolling: unroll
+            {
+            #if BIG_ENDIAN
+            {
+                one   := current[0] ^ Swap(cur)
+                two   := current[1]
+                three := current[2]
+                four  := current[3]
+                current += 4
+
+                cur = lookupTable[0, four & 0xFF] ^ lookupTable[1, (four >> 8) & 0xFF] ^
+                        lookupTable[2, (four >> 16) & 0xFF] ^ lookupTable[3, (four >> 24) & 0xFF] ^
+                        lookupTable[4, three & 0xFF] ^ lookupTable[5, (three >> 8) & 0xFF] ^
+                        lookupTable[6, (three >> 16) & 0xFF] ^ lookupTable[7, (three >> 24) & 0xFF] ^
+                        lookupTable[8, two & 0xFF] ^ lookupTable[9, (two >> 8) & 0xFF] ^
+                        lookupTable[10, (two >> 16) & 0xFF] ^ lookupTable[11, (two >> 24) & 0xFF] ^
+                        lookupTable[12, one & 0xFF] ^ lookupTable[13, (one >> 8) & 0xFF] ^
+                        lookupTable[14, (one >> 16) & 0xFF] ^ lookupTable[15, (one >> 24) & 0xFF]
+            }
+            #else
+            {
+                one   := current[0] ^ cur
+                two   := current[1]
+                three := current[2]
+                four  := current[3]
+                current += 4
+
+                cur = lookupTable[0, (four >> 24) & 0xFF] ^ lookupTable[1, (four >> 16) & 0xFF] ^
+                        lookupTable[2, (four >> 8) & 0xFF] ^ lookupTable[3, four & 0xFF] ^
+                        lookupTable[4, (three >> 24) & 0xFF] ^ lookupTable[5, (three >> 16) & 0xFF] ^
+                        lookupTable[6, (three >> 8) & 0xFF] ^ lookupTable[7, three & 0xFF] ^
+                        lookupTable[8, (two >> 24) & 0xFF] ^ lookupTable[9, (two >> 16) & 0xFF] ^
+                        lookupTable[10, (two >> 8) & 0xFF] ^ lookupTable[11, two & 0xFF] ^
+                        lookupTable[12, (one >> 24) & 0xFF] ^ lookupTable[13, (one >> 16) & 0xFF] ^
+                        lookupTable[14, (one >> 8) & 0xFF] ^ lookupTable[15, one & 0xFF]
+            }
+            }
+
+            length -= bytesAtOnce
+        }
+
+        currentChar := cast(const *u8) current
+        while length
+        {
+            cur = (cur >> 8) ^ lookupTable[0, (cur & 0xFF) ^ currentChar[0]]
+            currentChar += 1
+            length -= 1
+        }
+
+        crc = ~cur
     }
 
-    return ~crc
+    // Returns the crc32 hash value for the given buffer
+    #[swag.constexpr]
+    func hash(buffer: const [..] u8)->u32
+    {
+        var v: Crc32
+        v.init()
+        v.update(buffer)
+        return v.crc
+    }
 }
