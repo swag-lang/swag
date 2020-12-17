@@ -8,10 +8,10 @@ struct Utf8Map
 }
 
 var utf8Map: [] Utf8Map = @[
-	{0x0000, "\x00"},
+	/*{0x0000, "\x00"},
 	{0x0001, "\x01"},
 	{0x007e, "\x7e"},
-	{0x007f, "\x7f"},
+	{0x007f, "\x7f"},*/
 	{0x0080, "\xc2\x80"},
 	{0x0081, "\xc2\x81"},
 	{0x00bf, "\xc2\xbf"},
@@ -46,7 +46,7 @@ var utf8Map: [] Utf8Map = @[
 {
     visit *it: utf8Map
     {
-        @assert(validChar(it.c))
+        @assert(isValidChar(it.c))
 
         var arr: [4] u8
         eat := fromChar(arr, it.c)

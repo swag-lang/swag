@@ -1,6 +1,6 @@
 public namespace utf8;
 
-const ErrorChar     = 0xFFFD'char
+const CharError     = 0xFFFD'char
 const MaxChars      = 0x10FFFF'char
 const SurrogateMin  = 0xD800'char
 const SurrogateMax  = 0xDFFF'char
@@ -88,65 +88,119 @@ func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
     return firstChar(@mkslice(ptr, cast(uint) eat))
 }
 
+// https://github.com/golang/go/blob/master/src/unicode/utf8/utf8.go
+private
+{
+	const t1 = 0b00000000
+	const tx = 0b10000000
+	const t2 = 0b11000000
+	const t3 = 0b11100000
+	const t4 = 0b11110000
+	const t5 = 0b11111000
+
+	const maskx = 0b00111111
+	const mask2 = 0b00011111
+	const mask3 = 0b00001111
+	const mask4 = 0b00000111
+
+	const rune1Max = (1<<7) - 1
+	const rune2Max = (1<<11) - 1
+	const rune3Max = (1<<16) - 1
+
+	// The default lowest and highest continuation byte.
+	const locb = 0b10000000
+	const hicb = 0b10111111
+
+	// These names of these constants are chosen to give nice alignment in the
+	// table below. The first nibble is an index into acceptRanges or F for
+	// special one-byte cases. The second nibble is the Rune length or the
+	// Status for the special one-byte case.
+	const xx = 0xF1 // invalid: size 1
+	const as = 0xF0 // ASCII: size 1
+	const s1 = 0x02 // accept 0, size 2
+	const s2 = 0x13 // accept 1, size 3
+	const s3 = 0x03 // accept 0, size 3
+	const s4 = 0x23 // accept 2, size 3
+	const s5 = 0x34 // accept 3, size 4
+	const s6 = 0x04 // accept 0, size 4
+	const s7 = 0x44 // accept 4, size 4
+
+    // first is information about the first byte in a UTF-8 sequence.
+    const First: [256] u8 = @[
+        //   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x00-0x0F
+        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x10-0x1F
+        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x20-0x2F
+        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x30-0x3F
+        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x40-0x4F
+        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x50-0x5F
+        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x60-0x6F
+        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x70-0x7F
+        //   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+        xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, // 0x80-0x8F
+        xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, // 0x90-0x9F
+        xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, // 0xA0-0xAF
+        xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, // 0xB0-0xBF
+        xx, xx, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, // 0xC0-0xCF
+        s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, // 0xD0-0xDF
+        s2, s3, s3, s3, s3, s3, s3, s3, s3, s3, s3, s3, s3, s4, s3, s3, // 0xE0-0xEF
+        s5, s6, s6, s6, s7, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, // 0xF0-0xFF
+    ]
+
+    struct acceptRange
+    {
+        lo: u8
+        hi: u8
+    }
+
+    const acceptRanges: [] acceptRange = @[
+        {locb, hicb},
+        {0xA0, hicb},
+        {locb, 0x9F},
+        {0x90, hicb},
+        {locb, 0x8F},
+    ]
+}
+
 // Get the unicode character pointed by 'buffer', and the number of bytes to encode it
+// Will return 'CharError' for an invalid utf8 sequence
 func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
     countof := @countof(buffer)
     if countof == 0
-        return @{autocast 0, 0}
+        return @{CharError, 0}
 
-    var wc: char = ?
     dataof := @dataof(buffer)
-    c := cast(char) :dataof
-    dataof += 1
+    p0 := cast(char) :dataof
 
-    switch
-    {
-    case (c & 0x80) == 0:
-        return @{c, 1}
+    // Ascii
+    if (p0 & 0x80) == 0
+        return @{p0, 1}
 
-    case (c & 0xE0) == 0xC0:
-        debug.assert(countof >= 2, "invalid utf8 character")
-        wc = (c & 0x1F) << 6;
-        c = cast(char) :dataof
-        wc |= (c & 0x3F);
-        return @{wc, 2}
+    x := First[cast(u8) p0]
 
-    case (c & 0xF0) == 0xE0:
-        debug.assert(countof >= 3, "invalid utf8 character")
-        wc = (c & 0xF) << 12;
-        wc |= cast(char) (dataof[0] & 0x3F) << 6;
-        wc |= cast(char) (dataof[1] & 0x3F);
-        return @{wc, 3}
+    // Invalid first byte
+    if x == xx
+        return @{CharError, 1}
 
-    case (c & 0xF8) == 0xF0:
-        debug.assert(countof >= 4, "invalid utf8 character")
-        wc = (c & 0x7) << 18;
-        wc |= cast(char) (dataof[0] & 0x3F) << 12;
-        wc |= cast(char) (dataof[1] & 0x3F) << 6;
-        wc |= cast(char) (dataof[2] & 0x3F);
-        return @{wc, 4}
+    // Be sure input buffer is large enough to hold the requested
+    // encoded size
+    sz := x & 7
+	if countof < sz return @{CharError, 1}
 
-    case (c & 0xFC) == 0xF8:
-        wc = (c & 0x3) << 24;
-        wc |= (c & 0x3F) << 18;
-        wc |= (c & 0x3F) << 12;
-        wc |= (c & 0x3F) << 6;
-        wc |= (c & 0x3F);
-        return @{wc, 1}
+	accept := acceptRanges[x >> 4]
 
-    case (c & 0xFE) == 0xFC:
-        wc = (c & 0x1) << 30;
-        wc |= (c & 0x3F) << 24;
-        wc |= (c & 0x3F) << 18;
-        wc |= (c & 0x3F) << 12;
-        wc |= (c & 0x3F) << 6;
-        wc |= (c & 0x3F);
-        return @{wc, 1}
+	b1 := dataof[1]
+	if b1 < accept.lo || accept.hi < b1 return @{CharError, 1}
+	if sz <= 2 return @{(p0 & mask2) << 6 | (cast(char) b1 & maskx), 2}
 
-    default:
-        return @{ErrorChar, 1}
-    }
+	b2 := dataof[2]
+	if b2 < locb || hicb < b2 return @{CharError, 1}
+	if sz <= 3 return @{(p0 & mask3) << 12 | (b1 & maskx) << 6 | (b2 & maskx), 3}
+
+	b3 := dataof[3]
+	if b3 < locb || hicb < b3 return @{CharError, 1}
+	return @{(p0 & mask4) << 18 | (b1 & maskx) << 12 | (b2 & maskx) << 6 | (b3 & maskx), 4}
 }
 
 // Find one of the characters in 'what', and returns the byte index of it
@@ -343,6 +397,9 @@ func visitChars(buffer: const [..] u8, stmt: code)
 // Convert unicode character 'src' to an utf8 sequence, and returns
 // the number of bytes that were needed to make the conversion.
 // 'dest' must be at least 4 bytes long
+//
+// For speed reasons, this function never fails, even if 'src' is invalid.
+// Use 'fromCharSafe' if you're not sure of the validity of 'src'
 func fromChar(dest: [..] u8, src: char)->u32
 {
     debug.assert(@countof(dest) >= 4, "destination buffer is too small")
@@ -358,10 +415,10 @@ func fromChar(dest: [..] u8, src: char)->u32
         dest[1] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
         return 2
 
-    case SurrogateMin <= src <= SurrogateMax:
-        dest[0] = cast(u8) 0xEF;
-        dest[1] = cast(u8) 0xBF;
-        dest[2] = cast(u8) 0xBD;
+    case !isValidChar(src):
+        dest[0] = cast(u8) (((CharError >> 12) & 0x0F) | 0xE0)
+        dest[1] = cast(u8) (((CharError >> 6) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((CharError >> 0) & 0x3F) | 0x80)
         return 3
 
     case src <= 0xFFFF:
@@ -370,22 +427,16 @@ func fromChar(dest: [..] u8, src: char)->u32
         dest[2] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
         return 3
 
-    case src <= MaxChars:
+    default:
         dest[0] = cast(u8) (((src >> 18) & 0x07) | 0xF0)
         dest[1] = cast(u8) (((src >> 12) & 0x3F) | 0x80)
         dest[2] = cast(u8) (((src >> 6) & 0x3F) | 0x80)
         dest[3] = cast(u8) (((src >> 0) & 0x3F) | 0x80)
         return 4
-
-    default:
-        dest[0] = cast(u8) 0xEF;
-        dest[1] = cast(u8) 0xBF;
-        dest[2] = cast(u8) 0xBD;
-        return 3
     }
 }
 
-// Convert a unicode 32 array to an utf8 buffer
+// Convert a character array (32 bits unicode) to an utf8 buffer
 // Returns the number of bytes written in the destination buffer
 // 'dest' must be at least 4 bytes long
 func fromCharArray(dest: [..] u8, src: const [..] char)->uint
@@ -406,8 +457,8 @@ func fromCharArray(dest: [..] u8, src: const [..] char)->uint
     return total
 }
 
-// Returns true if the given char can be encoded in utf8
-func validChar(c: char)->bool
+// Returns true if the given unicode character can be encoded in utf8
+func isValidChar(c: char)->bool
 {
 	switch
     {
