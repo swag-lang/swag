@@ -91,74 +91,63 @@ func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
 // https://github.com/golang/go/blob/master/src/unicode/utf8/utf8.go
 private
 {
-	const t1 = 0b00000000
-	const tx = 0b10000000
-	const t2 = 0b11000000
-	const t3 = 0b11100000
-	const t4 = 0b11110000
-	const t5 = 0b11111000
-
-	const maskx = 0b00111111
-	const mask2 = 0b00011111
-	const mask3 = 0b00001111
-	const mask4 = 0b00000111
-
-	const rune1Max = (1<<7) - 1
-	const rune2Max = (1<<11) - 1
-	const rune3Max = (1<<16) - 1
+	const MaskX = 0b00111111
+	const Mask2 = 0b00011111
+	const Mask3 = 0b00001111
+	const Mask4 = 0b00000111
 
 	// The default lowest and highest continuation byte.
-	const locb = 0b10000000
-	const hicb = 0b10111111
+	const LoCB = 0b10000000
+	const HiCB = 0b10111111
 
 	// These names of these constants are chosen to give nice alignment in the
-	// table below. The first nibble is an index into acceptRanges or F for
+	// table below. The first nibble is an index into AcceptRanges or F for
 	// special one-byte cases. The second nibble is the Rune length or the
 	// Status for the special one-byte case.
-	const xx = 0xF1 // invalid: size 1
-	const as = 0xF0 // ASCII: size 1
-	const s1 = 0x02 // accept 0, size 2
-	const s2 = 0x13 // accept 1, size 3
-	const s3 = 0x03 // accept 0, size 3
-	const s4 = 0x23 // accept 2, size 3
-	const s5 = 0x34 // accept 3, size 4
-	const s6 = 0x04 // accept 0, size 4
-	const s7 = 0x44 // accept 4, size 4
+	const XX = 0xF1 // invalid: size 1
+	const AS = 0xF0 // ASCII: size 1
+	const S1 = 0x02 // accept 0, size 2
+	const S2 = 0x13 // accept 1, size 3
+	const S3 = 0x03 // accept 0, size 3
+	const S4 = 0x23 // accept 2, size 3
+	const S5 = 0x34 // accept 3, size 4
+	const S6 = 0x04 // accept 0, size 4
+	const S7 = 0x44 // accept 4, size 4
 
     // first is information about the first byte in a UTF-8 sequence.
     const First: [256] u8 = @[
         //   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x00-0x0F
-        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x10-0x1F
-        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x20-0x2F
-        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x30-0x3F
-        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x40-0x4F
-        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x50-0x5F
-        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x60-0x6F
-        as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, as, // 0x70-0x7F
+        AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, // 0x00-0x0F
+        AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, // 0x10-0x1F
+        AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, // 0x20-0x2F
+        AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, // 0x30-0x3F
+        AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, // 0x40-0x4F
+        AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, // 0x50-0x5F
+        AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, // 0x60-0x6F
+        AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, AS, // 0x70-0x7F
         //   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-        xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, // 0x80-0x8F
-        xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, // 0x90-0x9F
-        xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, // 0xA0-0xAF
-        xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, // 0xB0-0xBF
-        xx, xx, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, // 0xC0-0xCF
-        s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, s1, // 0xD0-0xDF
-        s2, s3, s3, s3, s3, s3, s3, s3, s3, s3, s3, s3, s3, s4, s3, s3, // 0xE0-0xEF
-        s5, s6, s6, s6, s7, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, xx, // 0xF0-0xFF
+        XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, // 0x80-0x8F
+        XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, // 0x90-0x9F
+        XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, // 0xA0-0xAF
+        XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, // 0xB0-0xBF
+        XX, XX, S1, S1, S1, S1, S1, S1, S1, S1, S1, S1, S1, S1, S1, S1, // 0xC0-0xCF
+        S1, S1, S1, S1, S1, S1, S1, S1, S1, S1, S1, S1, S1, S1, S1, S1, // 0xD0-0xDF
+        S2, S3, S3, S3, S3, S3, S3, S3, S3, S3, S3, S3, S3, S4, S3, S3, // 0xE0-0xEF
+        S5, S6, S6, S6, S7, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, XX, // 0xF0-0xFF
     ]
 
-    struct acceptRange
+    struct AcceptRange
     {
         lo: u8
         hi: u8
     }
 
-    const acceptRanges: [] acceptRange = @[
-        {locb, hicb},
-        {0xA0, hicb},
-        {locb, 0x9F},
-        {0x90, hicb},
-        {locb, 0x8F},
+    const AcceptRanges: [] AcceptRange = @[
+        {LoCB, HiCB},
+        {0xA0, HiCB},
+        {LoCB, 0x9F},
+        {0x90, HiCB},
+        {LoCB, 0x8F},
     ]
 }
 
@@ -180,7 +169,7 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
     x := First[cast(u8) p0]
 
     // Invalid first byte
-    if x == xx
+    if x == XX
         return @{CharError, 1}
 
     // Be sure input buffer is large enough to hold the requested
@@ -188,19 +177,19 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
     sz := x & 7
 	if countof < sz return @{CharError, 1}
 
-	accept := acceptRanges[x >> 4]
+	accept := AcceptRanges[x >> 4]
 
 	b1 := dataof[1]
 	if !(accept.lo <= b1 <= accept.hi) return @{CharError, 1}
-	if sz <= 2 return @{(p0 & mask2) << 6 | (b1 & maskx), 2}
+	if sz <= 2 return @{(p0 & Mask2) << 6 | (b1 & MaskX), 2}
 
 	b2 := dataof[2]
-    if !(locb <= b2 <= hicb) return @{CharError, 1}
-	if sz <= 3 return @{(p0 & mask3) << 12 | (b1 & maskx) << 6 | (b2 & maskx), 3}
+    if !(LoCB <= b2 <= HiCB) return @{CharError, 1}
+	if sz <= 3 return @{(p0 & Mask3) << 12 | (b1 & MaskX) << 6 | (b2 & MaskX), 3}
 
 	b3 := dataof[3]
-	if !(locb <= b3 <= hicb) return @{CharError, 1}
-	return @{(p0 & mask4) << 18 | (b1 & maskx) << 12 | (b2 & maskx) << 6 | (b3 & maskx), 4}
+	if !(LoCB <= b3 <= HiCB) return @{CharError, 1}
+	return @{(p0 & Mask4) << 18 | (b1 & MaskX) << 12 | (b2 & MaskX) << 6 | (b3 & MaskX), 4}
 }
 
 // Find one of the characters in 'what', and returns the byte index of it
