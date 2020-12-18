@@ -803,6 +803,19 @@ void Workspace::cleanPublic(const fs::path& basePath)
             path = normalizePath(path);
             if (fs::exists(path))
             {
+                // Clean all targets
+                OS::visitFolders(path.c_str(), [&, this](const char* folder) {
+                    auto cfgpath = path + folder;
+                    cfgpath      = normalizePath(cfgpath);
+                    if (fs::exists(path))
+                    {
+                        g_Log.messageHeaderCentered("Cleaning", cfgpath);
+                        deleteFolderContent(cfgpath);
+                        fs::remove_all(cfgpath);
+                    }
+                });
+
+                // Clean public folder itself
                 g_Log.messageHeaderCentered("Cleaning", path);
                 deleteFolderContent(path);
                 fs::remove_all(path);
