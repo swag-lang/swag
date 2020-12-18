@@ -556,6 +556,7 @@ void ModuleBuildJob::publishFilesToPublic()
     OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
         // Keep the generated file untouched !
         module->allocateBackend();
+        module->backend->setupExportFile();
         if (module->backend->bufferSwg.name == filename)
             return;
 
