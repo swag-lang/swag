@@ -1,0 +1,5 @@
+#import "core"
+
+#test
+{
+}

@@ -618,7 +618,7 @@ fi
 echo >> configure.log
 
 # conduct a series of tests to resolve eight possible cases of using "vs" or "s" printf functions
-# (using stdarg or not), with or without "n" (proving size of buffer), and with or without a
+# (using corearg or not), with or without "n" (proving size of buffer), and with or without a
 # return value.  The most secure result is vsnprintf() with a return value.  snprintf() with a
 # return value is secure as well, but then gzprintf() will be limited to 20 arguments.
 cat > $test.c <<EOF

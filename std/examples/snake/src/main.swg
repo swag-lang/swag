@@ -35,8 +35,8 @@ Video:
 https://youtu.be/e8lYLYlrGLg
 Last Updated: 24/06/2017
 */
-#import "std"
-using win32, std.keyboard
+#import "core"
+using win32, core.keyboard
 
 var nScreenWidth  = 120'u32
 var nScreenHeight = 30'u32

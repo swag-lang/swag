@@ -1,0 +1,23 @@
+#import "core"
+using core
+
+//#[swag.printbc]
+#test
+{
+    var buf: ConcatBuffer
+    format.append(&buf, "%", false)
+    @assert(buf.toString() == "false")
+
+    buf.clear()
+    format.append(&buf, "%", true)
+    @assert(buf.toString() == "true")
+
+    buf.clear()
+    format.append(&buf, "%", "1"'char)
+    @assert(buf.toString() == "1")
+
+    //format(&buf, "%", &buf)
+
+    //str := buf.toString()
+    //console.write(cast(string) str)
+}

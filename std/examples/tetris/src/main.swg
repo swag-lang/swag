@@ -50,8 +50,8 @@
 	Last Updated: 30/03/2017
 */
 
-#import "std"
-using std, win32
+#import "core"
+using core, win32
 
 var nScreenWidth = 120'u32			// Console Screen Size X (columns)
 var nScreenHeight = 30'u32			// Console Screen Size Y (rows)

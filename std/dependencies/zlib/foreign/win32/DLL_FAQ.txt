@@ -159,7 +159,7 @@ in the zlib distribution, or at the following location:
     Technically, STDCALL is not bad; in fact, it is slightly
     faster than CDECL, and it works with variable-argument
     functions, just like CDECL.  It is unfortunate that, in spite
-    of using STDCALL in the Windows API, it is not the default
+    of using coreCALL in the Windows API, it is not the default
     convention used by the C compilers that run under Windows.
     The roots of the problem reside deep inside the unsafety of
     the K&R-style function prototypes, where the argument types

@@ -1,5 +1,0 @@
-#import "std"
-
-#test
-{
-}
