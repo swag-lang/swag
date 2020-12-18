@@ -402,10 +402,6 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
         if (context->result == ContextResult::Pending)
             return true;
     }
-    else
-    {
-        context->job->module->registerForeign(funcNode);
-    }
 
     freeRegisterRC(context, front);
     node->resultRegisterRC = reserveRegisterRC(context);

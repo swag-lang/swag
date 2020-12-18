@@ -121,7 +121,6 @@ struct Module
     void addCompilerFunc(ByteCode* bc);
     bool hasCompilerFuncFor(CompilerMsgKind msgKind);
     void addByteCodeFunc(ByteCode* bc);
-    void registerForeign(AstFuncDecl* node);
     bool hasBytecodeToRun();
     bool WaitForDependenciesDone(Job* job);
     void printBC();
@@ -137,7 +136,6 @@ struct Module
     VectorNative<ByteCode*>    byteCodeDropFunc;
     VectorNative<ByteCode*>    byteCodeRunFunc;
     VectorNative<ByteCode*>    byteCodePrintBC;
-    VectorNative<AstFuncDecl*> allForeign;
     ByteCodeRunContext         runContext;
     ByteCodeRun                runner;
     mutex                      mutexExecuteNode;

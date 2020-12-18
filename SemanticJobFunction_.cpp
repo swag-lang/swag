@@ -222,8 +222,6 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     // Check attributes
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
         return context->report({node, node->token, "function with the 'swag.foreign' attribute cannot have a body"});
-    if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-        sourceFile->module->registerForeign(node);
 
     if (!(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
     {

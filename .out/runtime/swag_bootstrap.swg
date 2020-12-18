@@ -403,7 +403,7 @@ namespace swag
     struct BuildCfg
     {
         // Add guard code
-        safetyGuards: bool  = true
+        safetyGuards: bool = true
 
         // Bytecode
         byteCodeMaxRecurse: u32 = 1024

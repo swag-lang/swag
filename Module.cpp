@@ -350,12 +350,6 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     return true;
 }
 
-void Module::registerForeign(AstFuncDecl* node)
-{
-    scoped_lock lk(mutexByteCode);
-    allForeign.push_back(node);
-}
-
 bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 {
     ConcreteCompilerMessage msg;
