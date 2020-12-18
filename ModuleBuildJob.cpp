@@ -176,9 +176,9 @@ JobResult ModuleBuildJob::execute()
                 g_Log.verbosePass(LogPassType::PassBegin, "SemanticCompiler", module->name);
         }
 
-        if (!module->filesForCompilerPass.empty())
+        if (!module->compilerSourceFiles.empty())
         {
-            for (auto itfile : module->filesForCompilerPass)
+            for (auto itfile : module->compilerSourceFiles)
             {
                 auto semanticJob          = g_Pool_semanticJob.alloc();
                 semanticJob->sourceFile   = itfile;

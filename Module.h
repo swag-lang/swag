@@ -83,7 +83,10 @@ struct Module
     atomic<int>               numErrors      = 0;
     atomic<int>               criticalErrors = 0;
     shared_mutex              mutexFile;
+    shared_mutex              mutexCompilerPass;
     VectorNative<SourceFile*> files;
+    set<SourceFile*>          compilerSourceFiles;
+    set<SourceFile*>          publicSourceFiles;
     BuildCfg                  buildCfg;
     BuildParameters           buildParameters;
     AstNode*                  astRoot              = nullptr;
@@ -109,10 +112,6 @@ struct Module
 
     void setBuildPass(BuildPass buildP);
 
-    shared_mutex     mutexCompilerPass;
-    set<SourceFile*> filesForCompilerPass;
-    set<SourceFile*> publicSourceFiles;
-
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;
 
@@ -126,23 +125,23 @@ struct Module
     void printBC();
     bool compileString(const Utf8& str);
 
-    DependentJobs              dependentJobs;
-    shared_mutex               mutexByteCode;
-    shared_mutex               mutexByteCodeCompiler;
-    VectorNative<ByteCode*>    byteCodeCompiler[64];
-    VectorNative<ByteCode*>    byteCodeFunc;
-    VectorNative<ByteCode*>    byteCodeTestFunc;
-    VectorNative<ByteCode*>    byteCodeInitFunc;
-    VectorNative<ByteCode*>    byteCodeDropFunc;
-    VectorNative<ByteCode*>    byteCodeRunFunc;
-    VectorNative<ByteCode*>    byteCodePrintBC;
-    ByteCodeRunContext         runContext;
-    ByteCodeRun                runner;
-    mutex                      mutexExecuteNode;
+    DependentJobs           dependentJobs;
+    shared_mutex            mutexByteCode;
+    shared_mutex            mutexByteCodeCompiler;
+    VectorNative<ByteCode*> byteCodeCompiler[64];
+    VectorNative<ByteCode*> byteCodeFunc;
+    VectorNative<ByteCode*> byteCodeTestFunc;
+    VectorNative<ByteCode*> byteCodeInitFunc;
+    VectorNative<ByteCode*> byteCodeDropFunc;
+    VectorNative<ByteCode*> byteCodeRunFunc;
+    VectorNative<ByteCode*> byteCodePrintBC;
+    ByteCodeRunContext      runContext;
+    ByteCodeRun             runner;
+    mutex                   mutexExecuteNode;
 
     ByteCode* byteCodeMainFunc = nullptr;
     AstNode*  mainIsDefined    = nullptr;
-    bool      hasTtestErrors = false;
+    bool      hasTtestErrors   = false;
     bool      setupDone        = false;
     bool      dependenciesDone = false;
 

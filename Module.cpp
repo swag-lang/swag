@@ -224,7 +224,7 @@ void Module::addPublicSourceFile(SourceFile* file)
 void Module::addCompilerPassSourceFile(SourceFile* file)
 {
     scoped_lock lk(mutexCompilerPass);
-    filesForCompilerPass.insert(file);
+    compilerSourceFiles.insert(file);
 }
 
 void Module::addFileNoLock(SourceFile* file)
@@ -243,7 +243,7 @@ void Module::addFileNoLock(SourceFile* file)
 
     // If the file has nodes for the compiler pass, then we need to register it in the module
     if (file->compilerPass)
-        filesForCompilerPass.insert(file);
+        compilerSourceFiles.insert(file);
 
     // If the file is flagged as #public, register it
     if (file->forcedPublic)
@@ -274,9 +274,9 @@ void Module::removeFile(SourceFile* file)
     file->indexInModule = UINT32_MAX;
 
     // If the file has compiler functions, then we need to unregister it from the module
-    auto it = filesForCompilerPass.find(file);
-    if (it != filesForCompilerPass.end())
-        filesForCompilerPass.erase(it);
+    auto it = compilerSourceFiles.find(file);
+    if (it != compilerSourceFiles.end())
+        compilerSourceFiles.erase(it);
 
     // If the file is flagged as #public, unregister it
     auto it1 = publicSourceFiles.find(file);
