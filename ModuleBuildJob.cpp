@@ -38,19 +38,19 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
 
     auto publicPath = depModule->path + "/";
     publicPath += SWAG_PUBLIC_FOLDER;
-    if (!fs::exists(publicPath))
-        return true;
-
-    // Add all public files from the dependency module
-    OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
-        auto file  = g_Allocator.alloc<SourceFile>();
-        file->name = filename;
-        file->path = publicPath + "/";
-        file->path += filename;
-        file->imported       = depModule;
-        file->forceNamespace = dep->forceNamespace;
-        files.push_back(file);
-    });
+    if (fs::exists(publicPath))
+    {
+        // Add all public files from the dependency module
+        OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
+            auto file  = g_Allocator.alloc<SourceFile>();
+            file->name = filename;
+            file->path = publicPath + "/";
+            file->path += filename;
+            file->imported       = depModule;
+            file->forceNamespace = dep->forceNamespace;
+            files.push_back(file);
+        });
+    }
 
     // One syntax job per dependency file
     for (auto one : files)
@@ -442,7 +442,7 @@ JobResult ModuleBuildJob::execute()
                     continue;
                 if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
                 {
-                    auto nb             = file->testErrors;
+                    auto nb          = file->testErrors;
                     file->testErrors = 0;
                     file->report({file, format("missing unittest errors: %d (%d raised)", nb, file->numErrors)});
                 }
