@@ -12,9 +12,9 @@ using core
     @assert(path.getExtension(loc.fileName) == ".swg")
     @assert(path.hasExtension(loc.fileName))
 
-    @assert(path.getFileName(loc.fileName) == "std160.swg")
+    @assert(path.getFileName(loc.fileName) == "core160.swg")
     //console.print("%\n", path.getFileNameWithoutExtension(loc.fileName))
-    @assert(path.getFileNameWithoutExtension(loc.fileName) == "std160")
+    @assert(path.getFileNameWithoutExtension(loc.fileName) == "core160")
 
     var ext: String = path.getExtension(loc.fileName)
     @assert(ext.compare(".SWG", utf8.ComparisonType.Latin1NoCase) == 0)
