@@ -432,6 +432,9 @@ Utf8 Workspace::getTargetFolder()
 
 Utf8 Workspace::getPublicPath(Module* module, bool forWrite)
 {
+    if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime)
+        return "";
+
     Utf8 publicPath = module->path + "/";
     publicPath += SWAG_PUBLIC_FOLDER;
     publicPath += "/";
