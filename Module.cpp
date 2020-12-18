@@ -74,7 +74,7 @@ bool Module::mustGenerateTestExe()
         return false;
     if (byteCodeTestFunc.empty())
         return false;
-    if ((g_CommandLine.script))
+    if (g_CommandLine.script)
         return false;
     if (g_Workspace.filteredModule && g_Workspace.filteredModule != this)
         return false;
@@ -248,6 +248,9 @@ void Module::addFileNoLock(SourceFile* file)
     // If the file is flagged as #public, register it
     if (file->forcedPublic)
         publicSourceFiles.insert(file);
+
+    if (file->imported)
+        importedSourceFiles.insert(file);
 }
 
 void Module::addFile(SourceFile* file)
@@ -672,7 +675,11 @@ bool Module::mustOutputSomething()
     // module must have unittest errors, so not output
     else if (hasTtestErrors)
         mustOutput = false;
+    // a test module needs swag to be in test mode
     else if (kind == ModuleKind::Test && !g_CommandLine.outputTest)
+        mustOutput = false;
+    // if all files are public, then do not generate a module
+    else if (files.size() - importedSourceFiles.size() == publicSourceFiles.size())
         mustOutput = false;
 
     return mustOutput;

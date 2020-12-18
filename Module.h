@@ -87,6 +87,7 @@ struct Module
     VectorNative<SourceFile*> files;
     set<SourceFile*>          compilerSourceFiles;
     set<SourceFile*>          publicSourceFiles;
+    set<SourceFile*>          importedSourceFiles;
     BuildCfg                  buildCfg;
     BuildParameters           buildParameters;
     AstNode*                  astRoot              = nullptr;

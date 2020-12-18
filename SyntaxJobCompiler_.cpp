@@ -405,15 +405,6 @@ bool SyntaxJob::doCompilerPublic()
         sourceFile->module->addPublicSourceFile(sourceFile);
     }
 
-    // Be sure filename is != modulename
-    fs::path path = sourceFile->name.c_str();
-    path.replace_extension("");
-    Utf8 nameFile = path.string();
-    nameFile.makeUpper();
-    Utf8 nameModule = sourceFile->module->name;
-    nameModule.makeUpper();
-    SWAG_VERIFY(nameFile != nameModule, sourceFile->report({sourceFile, token, "a '#public' file cannot have the same name as the module it belongs to"}));
-
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatSemiCol("after '#public'"));
     return true;

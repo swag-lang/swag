@@ -1,3 +1,4 @@
+#public
 #foreignlib "user32"
 
 alias HANDLE = 			const *void

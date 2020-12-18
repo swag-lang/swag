@@ -439,8 +439,6 @@ Utf8 Workspace::getPublicPath(Module* module, bool forWrite)
 
     if (!fs::exists(publicPath.c_str()))
     {
-        if (module->kind == ModuleKind::Dependency)
-            return "";
         if (!forWrite)
             return "";
         error_code errorCode;
@@ -456,8 +454,6 @@ Utf8 Workspace::getPublicPath(Module* module, bool forWrite)
 
     if (!fs::exists(cfgPublicPath.c_str()))
     {
-        if (module->kind == ModuleKind::Dependency)
-            return publicPath;
         if (!forWrite)
             return "";
         error_code errorCode;
@@ -868,6 +864,7 @@ void Workspace::clean()
     cleanPublic(modulesPath);
     cleanPublic(examplesPath);
     cleanPublic(testsPath);
+    cleanPublic(dependenciesPath);
 
     g_Log.messageHeaderCentered("Done", "");
 }
