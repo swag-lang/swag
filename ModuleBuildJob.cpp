@@ -320,7 +320,7 @@ JobResult ModuleBuildJob::execute()
 
         SWAG_PROFILE(PRF_GFCT, format("run bc %s", module->name.c_str()));
 
-        module->sendCompilerMessage(CompilerMsgKind::PassBeforeRun, this);
+        module->sendCompilerMessage(CompilerMsgKind::PassBeforeRunByteCode, this);
 
         // Push a copy of the default context, in case the user code changes it (or push a new one)
         PushSwagContext cxt;

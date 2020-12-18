@@ -303,7 +303,7 @@ enum class CompilerMsgKind
 {
     PassBeforeSemantic,
     PassAfterSemantic,
-    PassBeforeRun,
+    PassBeforeRunByteCode,
     PassBeforeOutput,
     PassAllDone,
     SemanticFunc,
@@ -313,7 +313,7 @@ enum class CompilerMsgKindMask : uint64_t
 {
     PassBeforeSemantic = 1 << (uint32_t) CompilerMsgKind::PassBeforeSemantic,
     PassAfterSemantic  = 1 << (uint32_t) CompilerMsgKind::PassAfterSemantic,
-    PassBeforeRun      = 1 << (uint32_t) CompilerMsgKind::PassBeforeRun,
+    PassBeforeRunByteCode      = 1 << (uint32_t) CompilerMsgKind::PassBeforeRunByteCode,
     PassBeforeOutput   = 1 << (uint32_t) CompilerMsgKind::PassBeforeOutput,
     PassAllDone        = 1 << (uint32_t) CompilerMsgKind::PassAllDone,
     SemanticFunc       = 1 << (uint32_t) CompilerMsgKind::SemanticFunc,
