@@ -763,9 +763,6 @@
     <Filter Include="Backend\ByteCode">
       <UniqueIdentifier>{5facb5bb-a2a0-45dd-aa6c-20852346b20a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource">
-      <UniqueIdentifier>{db70f2f6-b909-4fab-a3c3-a23454ba5a37}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Win32">
       <UniqueIdentifier>{31fa90c8-f664-40b5-8bc5-d3606d6e2ffa}</UniqueIdentifier>
     </Filter>
@@ -784,12 +781,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
-    <None Include=".out\swag.bootstrap.swg">
-      <Filter>Resource</Filter>
-    </None>
-    <None Include=".out\swag.runtime.swg">
-      <Filter>Resource</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />

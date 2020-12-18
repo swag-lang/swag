@@ -68,7 +68,7 @@ void Workspace::addBootstrap()
     auto     file         = g_Allocator.alloc<SourceFile>();
     fs::path p            = g_CommandLine.exePath;
     file->name            = "swag.bootstrap.swg";
-    file->path            = p.parent_path().string() + "/swag.bootstrap.swg";
+    file->path            = p.parent_path().string() + "/runtime/swag_bootstrap.swg";
     file->module          = bootstrapModule;
     file->isBootstrapFile = true;
     bootstrapModule->addFile(file);
@@ -83,7 +83,7 @@ void Workspace::addRuntimeFile(const char* fileName)
     auto     file       = g_Allocator.alloc<SourceFile>();
     fs::path p          = g_CommandLine.exePath;
     file->name          = fileName;
-    file->path          = p.parent_path().string() + "/" + fileName;
+    file->path          = p.parent_path().string() + "/runtime/" + fileName;
     file->module        = runtimeModule;
     file->isRuntimeFile = true;
     runtimeModule->addFile(file);
@@ -103,8 +103,8 @@ void Workspace::addRuntime()
         exit(-1);
     modules.push_back(runtimeModule);
 
-    addRuntimeFile("swag.runtime.swg");
-    addRuntimeFile("swag.runtime.win32.swg");
+    addRuntimeFile("swag_runtime.swg");
+    addRuntimeFile("swag_runtime_win32.swg");
 }
 
 void Workspace::setupPaths()
