@@ -3,13 +3,16 @@ using swag
 
 #[constexpr]
 {
-    func isInteger(t: typeinfo)     => t.flags & TypeInfoFlags.Integer
-    func isFloat(t: typeinfo)       => t.flags & TypeInfoFlags.Float
-    func isType(t: typeinfo)        => t.flags & TypeInfoFlags.TypeInfoPtr
-    func isPointer(t: typeinfo)     => t.kind == TypeInfoKind.Pointer
-    func isEnum(t: typeinfo)        => t.kind == TypeInfoKind.Enum
-    func isStruct(t: typeinfo)      => t.kind == TypeInfoKind.Struct
-    func isArray(t: typeinfo)       => t.kind == TypeInfoKind.Array
+    #[inline]
+    {
+        func isInteger(t: typeinfo)     => t.flags & TypeInfoFlags.Integer
+        func isFloat(t: typeinfo)       => t.flags & TypeInfoFlags.Float
+        func isType(t: typeinfo)        => t.flags & TypeInfoFlags.TypeInfoPtr
+        func isPointer(t: typeinfo)     => t.kind == TypeInfoKind.Pointer
+        func isEnum(t: typeinfo)        => t.kind == TypeInfoKind.Enum
+        func isStruct(t: typeinfo)      => t.kind == TypeInfoKind.Struct
+        func isArray(t: typeinfo)       => t.kind == TypeInfoKind.Array
+    }
 
     // Type names are scoped (i.e. "A.B.C"). This function will return the last
     // part, which is in fact the real simple name

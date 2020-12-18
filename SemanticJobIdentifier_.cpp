@@ -667,6 +667,15 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             break;
         }
 
+        // The function call is constexpr if the function is, and all parameters are
+        if (identifier->resolvedSymbolOverload->node->flags & AST_CONST_EXPR)
+        {
+            if (identifier->callParameters)
+                identifier->inheritAndFlag1(identifier->callParameters, AST_CONST_EXPR);
+            else
+                identifier->flags |= AST_CONST_EXPR;
+        }
+
         auto returnType = TypeManager::concreteType(identifier->typeInfo);
         if (overload->node->mustInline())
         {
@@ -710,15 +719,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         identifier->kind = AstNodeKind::FuncCall;
-
-        // The function call is constexpr if the function is, and all parameters are
-        if (identifier->resolvedSymbolOverload->node->flags & AST_CONST_EXPR)
-        {
-            if (identifier->callParameters)
-                identifier->inheritAndFlag1(identifier->callParameters, AST_CONST_EXPR);
-            else
-                identifier->flags |= AST_CONST_EXPR;
-        }
 
         if (identifier->token.text[0] == '@')
         {

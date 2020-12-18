@@ -10,11 +10,11 @@ public interface IHash32
 #[constexpr]
 public func(T) hash32(value: T)->u32
 {
-    #if reflection.isInteger(@typeof(T))
+    #if reflection.isInteger(T)
     {
         return cast(u32) value
     }
-    #elif reflection.isFloat(@typeof(T))
+    #elif reflection.isFloat(T)
     {
         val32 := cast(f32) value
         return bitcast(u32) val32
@@ -23,9 +23,9 @@ public func(T) hash32(value: T)->u32
     {
         return hash.Crc32.compute(value)
     }
-    #elif @typeof(T).kind == TypeInfoKind.Struct
+    #elif reflection.isStruct(T)
     {
-        #assert(reflection.hasInterface(@typeof(T), IHash32), "type '" ~ @typeof(T).name ~ "' does not implement the 'hash.IHash32' interface")
+        #assert(reflection.hasInterface(T, IHash32), "type '" ~ @typeof(T).name ~ "' does not implement the 'hash.IHash32' interface")
         #ast "return " ~ @typeof(T).name ~ ".IHash32.compute(value)"
     }
     #else
