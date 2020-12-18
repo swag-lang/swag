@@ -430,6 +430,47 @@ Utf8 Workspace::getTargetFolder()
     return g_CommandLine.buildCfg + "-" + GetOsName().c_str() + "-" + GetArchName().c_str();
 }
 
+Utf8 Workspace::getPublicPath(Module* module, bool forWrite)
+{
+    Utf8 publicPath = module->path + "/";
+    publicPath += SWAG_PUBLIC_FOLDER;
+    publicPath += "/";
+    publicPath = normalizePath(fs::path(publicPath.c_str()));
+
+    if (!fs::exists(publicPath.c_str()))
+    {
+        if (module->kind == ModuleKind::Dependency)
+            return "";
+        if (!forWrite)
+            return "";
+        error_code errorCode;
+        if (!fs::create_directories(publicPath.c_str(), errorCode))
+        {
+            module->error(format("cannot create public directory '%s'", publicPath.c_str()));
+            return "";
+        }
+    }
+
+    auto cfgPublicPath = publicPath + getTargetFolder().c_str();
+    cfgPublicPath += "/";
+
+    if (!fs::exists(cfgPublicPath.c_str()))
+    {
+        if (module->kind == ModuleKind::Dependency)
+            return publicPath;
+        if (!forWrite)
+            return "";
+        error_code errorCode;
+        if (!fs::create_directories(cfgPublicPath.c_str(), errorCode))
+        {
+            module->error(format("cannot create public directory '%s'", cfgPublicPath.c_str()));
+            return "";
+        }
+    }
+
+    return cfgPublicPath;
+}
+
 void Workspace::setupTarget()
 {
     targetPath = workspacePath;

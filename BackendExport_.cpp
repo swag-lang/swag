@@ -694,33 +694,22 @@ bool Backend::setupExportFile(bool force)
     if (!bufferSwg.path.empty())
         return true;
 
-    Utf8 targetPath = module->path + "/";
-    targetPath += SWAG_PUBLIC_FOLDER;
-    targetPath += "/";
-    targetPath      = normalizePath(fs::path(targetPath.c_str()));
-    Utf8 targetName = module->name + ".swg";
+    Utf8 publicPath = g_Workspace.getPublicPath(module, true);
+    if (publicPath.empty())
+        return false;
 
-    if (!fs::exists(targetPath.c_str()))
-    {
-        error_code errorCode;
-        if (!fs::create_directories(targetPath.c_str(), errorCode))
-        {
-            module->error(format("cannot create public directory '%s'", targetPath.c_str()));
-            return false;
-        }
-    }
-
-    targetPath.append(targetName.c_str());
+    Utf8 exportName = module->name + ".swg";
+    publicPath.append(exportName.c_str());
     if (force)
     {
-        bufferSwg.name = targetName;
-        bufferSwg.path = targetPath;
+        bufferSwg.name = exportName;
+        bufferSwg.path = publicPath;
     }
-    else if (fs::exists(targetPath.c_str()))
+    else if (fs::exists(publicPath.c_str()))
     {
-        bufferSwg.name = targetName;
-        bufferSwg.path = targetPath;
-        timeExportFile = OS::getFileWriteTime(targetPath.c_str());
+        bufferSwg.name = exportName;
+        bufferSwg.path = publicPath;
+        timeExportFile = OS::getFileWriteTime(publicPath.c_str());
     }
 
     return true;

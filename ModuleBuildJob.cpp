@@ -12,6 +12,7 @@
 #include "Profile.h"
 #include "ByteCodeOptimizer.h"
 #include "Context.h"
+#include "Workspace.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
@@ -36,8 +37,7 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
     VectorNative<SourceFile*> files;
     SWAG_ASSERT(depModule->backend);
 
-    auto publicPath = depModule->path + "/";
-    publicPath += SWAG_PUBLIC_FOLDER;
+    string publicPath = g_Workspace.getPublicPath(depModule, false).c_str();
     if (fs::exists(publicPath))
     {
         // Add all public files from the dependency module
@@ -538,18 +538,9 @@ void ModuleBuildJob::publishFilesToPublic()
     if (module->publicSourceFiles.empty())
         return;
 
-    string publicPath = module->path + "/";
-    publicPath += SWAG_PUBLIC_FOLDER;
-
-    if (!fs::exists(publicPath))
-    {
-        error_code errorCode;
-        if (!fs::create_directories(publicPath.c_str(), errorCode))
-        {
-            module->error(format("cannot create public directory '%s'", publicPath.c_str()));
-            return;
-        }
-    }
+    string publicPath = g_Workspace.getPublicPath(module, true).c_str();
+    if (publicPath.empty())
+        return;
 
     // We need the public folder to be in sync with the current state of the code.
     // That means that every files in the public folder that is no more #public must

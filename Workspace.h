@@ -50,6 +50,7 @@ struct Workspace
     void    clean();
     void    setupCachePath();
     Utf8    getTargetFolder();
+    Utf8    getPublicPath(Module* module, bool forWrite);
     void    setupTarget();
 
     bool watch();
