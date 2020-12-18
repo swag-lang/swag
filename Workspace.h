@@ -49,6 +49,7 @@ struct Workspace
     void    cleanPublic(const fs::path& basePath);
     void    clean();
     void    setupCachePath();
+    Utf8    getTargetFolder();
     void    setupTarget();
 
     bool watch();

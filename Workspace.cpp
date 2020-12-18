@@ -425,12 +425,17 @@ void Workspace::setupCachePath()
     }
 }
 
+Utf8 Workspace::getTargetFolder()
+{
+    return g_CommandLine.buildCfg + "-" + GetOsName().c_str() + "-" + GetArchName().c_str();
+}
+
 void Workspace::setupTarget()
 {
     targetPath = workspacePath;
     targetPath.append(SWAG_OUTPUT_FOLDER);
     targetPath.append("/");
-    targetPath.append(g_CommandLine.buildCfg + "-" + GetOsName().c_str() + "-" + GetArchName().c_str());
+    targetPath.append(getTargetFolder().c_str());
 
     if (g_CommandLine.verbose && g_CommandLine.verbosePath)
         g_Log.verbose(format("target path is '%s'", targetPath.string().c_str()));
@@ -458,7 +463,7 @@ void Workspace::setupTarget()
         exit(-1);
     }
 
-    cachePath.append(workspacePath.filename().string() + "-" + g_CommandLine.buildCfg + "-" + g_Workspace.GetOsName().c_str() + "-" + g_Workspace.GetArchName().c_str());
+    cachePath.append(workspacePath.filename().string() + "-" + g_Workspace.getTargetFolder().c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
         g_Log.error(format("fatal error: cannot cache target directory '%s'", cachePath.string().c_str()));
@@ -725,7 +730,7 @@ bool Workspace::build()
         if (g_CommandLine.verbose && g_CommandLine.verbosePath)
             g_Log.verbose(format("workspace path is '%s'", workspacePath.string().c_str()));
 
-        g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.buildCfg.c_str(), g_Workspace.GetOsName().c_str(), g_Workspace.GetArchName().c_str()));
+        g_Log.messageHeaderCentered("Workspace", format("%s [%s]", workspacePath.filename().string().c_str(), g_Workspace.getTargetFolder().c_str()));
         addBootstrap();
         addRuntime();
         setupTarget();
