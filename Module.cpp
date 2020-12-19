@@ -14,6 +14,81 @@
 #include "SemanticJob.h"
 #include "ModuleManager.h"
 
+bool Module::setup(const Utf8& moduleName, const Utf8& modulePath)
+{
+    unique_lock lk(mutexFile);
+    if (setupDone)
+        return true;
+    setupDone = true;
+
+    constantSegmentCompiler.compilerOnly = true;
+    mutableSegment.setup("mutable segment", this);
+    typeSegment.setup("type segment", this);
+    constantSegment.setup("constant segment", this);
+    constantSegmentCompiler.setup("compiler constant segment", this);
+    bssSegment.setup("bss segment", this);
+    tempSegment.setup("temp segment", this);
+
+    name   = moduleName;
+    nameUp = name;
+    nameUp.replaceAll('.', '_');
+    nameDown = nameUp;
+    nameUp.makeUpper();
+    path = modulePath.c_str();
+
+    scopeRoot                      = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
+    astRoot                        = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr, nullptr);
+    scopeRoot->owner               = astRoot;
+    buildPass                      = g_CommandLine.buildPass;
+    buildParameters.buildCfg       = &buildCfg;
+    buildParameters.outputFileName = name.c_str();
+
+    // Setup build configuration
+    if (g_CommandLine.buildCfg == "debug")
+    {
+        buildCfg.byteCodeOptimize         = true;
+        buildCfg.byteCodeInline           = true;
+        buildCfg.safetyGuards             = true;
+        buildCfg.backendOptimizeSpeed     = false;
+        buildCfg.backendOptimizeSize      = false;
+        buildCfg.backendDebugInformations = true;
+    }
+    else if (g_CommandLine.buildCfg == "fast-debug")
+    {
+        buildCfg.byteCodeOptimize         = true;
+        buildCfg.byteCodeInline           = true;
+        buildCfg.safetyGuards             = true;
+        buildCfg.backendOptimizeSpeed     = true;
+        buildCfg.backendOptimizeSize      = false;
+        buildCfg.backendDebugInformations = true;
+    }
+    else if (g_CommandLine.buildCfg == "release")
+    {
+        buildCfg.byteCodeOptimize         = true;
+        buildCfg.byteCodeInline           = true;
+        buildCfg.safetyGuards             = false;
+        buildCfg.backendOptimizeSpeed     = true;
+        buildCfg.backendOptimizeSize      = false;
+        buildCfg.backendDebugInformations = false;
+    }
+
+    // Overwrite with command line
+    if (g_CommandLine.buildCfgInlineBC != "default")
+        buildCfg.byteCodeInline = g_CommandLine.buildCfgInlineBC == "true" ? true : false;
+    if (g_CommandLine.buildCfgOptimBC != "default")
+        buildCfg.byteCodeOptimize = g_CommandLine.buildCfgOptimBC == "true" ? true : false;
+    if (g_CommandLine.buildCfgDebug != "default")
+        buildCfg.backendDebugInformations = g_CommandLine.buildCfgDebug == "true" ? true : false;
+    if (g_CommandLine.buildCfgOptimSpeed != "default")
+        buildCfg.backendOptimizeSpeed = g_CommandLine.buildCfgOptimSpeed == "true" ? true : false;
+    if (g_CommandLine.buildCfgOptimSize != "default")
+        buildCfg.backendOptimizeSize = g_CommandLine.buildCfgOptimSize == "true" ? true : false;
+    if (g_CommandLine.buildCfgSafety != "default")
+        buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? true : false;
+
+    return true;
+}
+
 bool Module::isValidName(const Utf8& name, Utf8& errorStr)
 {
     Utf8 reason;
@@ -103,75 +178,6 @@ bool Module::canGenerateLegit()
         if (g_CommandLine.script)
             return false;
     }
-
-    return true;
-}
-
-bool Module::setup(const Utf8& moduleName, const Utf8& modulePath)
-{
-    unique_lock lk(mutexFile);
-    if (setupDone)
-        return true;
-    setupDone = true;
-
-    constantSegmentCompiler.compilerOnly = true;
-
-    name   = moduleName;
-    nameUp = name;
-    nameUp.replaceAll('.', '_');
-    nameDown = nameUp;
-    nameUp.makeUpper();
-    path = modulePath.c_str();
-
-    scopeRoot                      = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
-    astRoot                        = Ast::newNode<AstNode>(nullptr, AstNodeKind::Module, nullptr, nullptr);
-    scopeRoot->owner               = astRoot;
-    buildPass                      = g_CommandLine.buildPass;
-    buildParameters.buildCfg       = &buildCfg;
-    buildParameters.outputFileName = name.c_str();
-
-    // Setup build configuration
-    if (g_CommandLine.buildCfg == "debug")
-    {
-        buildCfg.byteCodeOptimize         = true;
-        buildCfg.byteCodeInline           = true;
-        buildCfg.safetyGuards             = true;
-        buildCfg.backendOptimizeSpeed     = false;
-        buildCfg.backendOptimizeSize      = false;
-        buildCfg.backendDebugInformations = true;
-    }
-    else if (g_CommandLine.buildCfg == "fast-debug")
-    {
-        buildCfg.byteCodeOptimize         = true;
-        buildCfg.byteCodeInline           = true;
-        buildCfg.safetyGuards             = true;
-        buildCfg.backendOptimizeSpeed     = true;
-        buildCfg.backendOptimizeSize      = false;
-        buildCfg.backendDebugInformations = true;
-    }
-    else if (g_CommandLine.buildCfg == "release")
-    {
-        buildCfg.byteCodeOptimize         = true;
-        buildCfg.byteCodeInline           = true;
-        buildCfg.safetyGuards             = false;
-        buildCfg.backendOptimizeSpeed     = true;
-        buildCfg.backendOptimizeSize      = false;
-        buildCfg.backendDebugInformations = false;
-    }
-
-    // Overwrite with command line
-    if (g_CommandLine.buildCfgInlineBC != "default")
-        buildCfg.byteCodeInline = g_CommandLine.buildCfgInlineBC == "true" ? true : false;
-    if (g_CommandLine.buildCfgOptimBC != "default")
-        buildCfg.byteCodeOptimize = g_CommandLine.buildCfgOptimBC == "true" ? true : false;
-    if (g_CommandLine.buildCfgDebug != "default")
-        buildCfg.backendDebugInformations = g_CommandLine.buildCfgDebug == "true" ? true : false;
-    if (g_CommandLine.buildCfgOptimSpeed != "default")
-        buildCfg.backendOptimizeSpeed = g_CommandLine.buildCfgOptimSpeed == "true" ? true : false;
-    if (g_CommandLine.buildCfgOptimSize != "default")
-        buildCfg.backendOptimizeSize = g_CommandLine.buildCfgOptimSize == "true" ? true : false;
-    if (g_CommandLine.buildCfgSafety != "default")
-        buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? true : false;
 
     return true;
 }

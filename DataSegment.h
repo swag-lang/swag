@@ -5,6 +5,7 @@
 #include "TypeTable.h"
 #include "RaceCondition.h"
 struct SourceFile;
+struct Module;
 
 struct DataSegmentHeader
 {
@@ -31,6 +32,7 @@ struct DataSegmentRef
 
 struct DataSegment
 {
+    void                            setup(const char* name, Module* module);
     void                            initFrom(DataSegment* other);
     uint32_t                        reserve(uint32_t size, uint32_t alignOf = 1);
     uint32_t                        reserveNoLock(TypeInfo* typeInfo);
@@ -65,8 +67,12 @@ struct DataSegment
 
     map<uint32_t, pair<Utf8, RelocType>> initFuncPtr;
 
+    const char* name       = nullptr;
+    Module*     module     = nullptr;
+    bool        overflow   = false;
+    uint32_t    totalCount = 0;
+
     VectorNative<DataSegmentRef> initPtr;
-    uint32_t                     totalCount = 0;
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 
     struct Seek

@@ -10,6 +10,12 @@
 
 static const uint32_t BUCKET_SIZE = 16 * 1024;
 
+void DataSegment::setup(const char* _name, Module* _module)
+{
+    name   = _name;
+    module = _module;
+}
+
 uint32_t DataSegment::reserve(uint32_t size, uint32_t alignOf)
 {
     scoped_lock lock(mutex);
@@ -69,34 +75,40 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     if (buckets.size())
         last = &buckets.back();
 
-    if (last)
+    uint32_t result = 0;
+    if (last && last->count + size <= last->size)
     {
-        if (last->count + size <= last->size)
-        {
-            uint32_t result = last->totalCountBefore + last->count;
-            last->count += size;
-            SWAG_ASSERT((uint64_t) totalCount + size <= SWAG_LIMIT_SEGMENT);
+        result = last->totalCountBefore + last->count;
+        last->count += size;
+    }
+    else
+    {
+        DataSegmentHeader bucket;
+        bucket.size   = max(size, BUCKET_SIZE);
+        bucket.size   = (uint32_t) g_Allocator.alignSize(bucket.size);
+        bucket.buffer = (uint8_t*) g_Allocator.alloc(bucket.size);
+        if (g_CommandLine.stats)
+            g_Stats.memSeg += bucket.size;
+        memset(bucket.buffer, 0, bucket.size);
+        bucket.count            = size;
+        bucket.totalCountBefore = last ? last->totalCountBefore + last->count : 0;
+        buckets.push_back(bucket);
 
-            totalCount += size;
-            return result;
+        result = bucket.totalCountBefore;
+    }
+
+    // Check that we do not overflow maximum size
+    if ((uint64_t) totalCount + size > SWAG_LIMIT_SEGMENT)
+    {
+        if (!overflow)
+        {
+            overflow = true;
+            module->error(format("%s size overflow", name));
         }
     }
 
-    DataSegmentHeader bucket;
-    bucket.size   = max(size, BUCKET_SIZE);
-    bucket.size   = (uint32_t) g_Allocator.alignSize(bucket.size);
-    bucket.buffer = (uint8_t*) g_Allocator.alloc(bucket.size);
-    if (g_CommandLine.stats)
-        g_Stats.memSeg += bucket.size;
-    memset(bucket.buffer, 0, bucket.size);
-    bucket.count            = size;
-    bucket.totalCountBefore = last ? last->totalCountBefore + last->count : 0;
-    buckets.push_back(bucket);
-
-    SWAG_ASSERT((uint64_t) totalCount + size <= SWAG_LIMIT_SEGMENT);
     totalCount += size;
-
-    return bucket.totalCountBefore;
+    return result;
 }
 
 uint32_t DataSegment::offset(uint8_t* location)
