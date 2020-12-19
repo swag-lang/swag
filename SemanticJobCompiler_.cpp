@@ -367,6 +367,7 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
         struct stat stat_buf;
         int         rc = stat(filename, &stat_buf);
         SWAG_VERIFY(rc == 0, context->report({back, format("cannot open file '%s'", back->computedValue.text.c_str())}));
+        SWAG_CHECK(checkSizeOverflow(context, "'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
         auto newJob                    = g_Pool_loadFileJob.alloc();
         node->computedValue.reg.offset = module->tempSegment.reserve(stat_buf.st_size);
