@@ -446,7 +446,10 @@ bool SyntaxJob::doOperatorPrecedence(AstNode** result)
 
             auto leftRight = right->childs[0];
             Ast::removeFromParent(right);
-            Ast::addChildBack(factor->parent, right);
+            if (factor->childParentIdx == 0)
+                Ast::addChildFront(factor->parent, right);
+            else
+                Ast::addChildBack(factor->parent, right);
             Ast::removeFromParent(leftRight);
 
             Ast::removeFromParent(factor);

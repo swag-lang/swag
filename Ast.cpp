@@ -102,24 +102,14 @@ namespace Ast
         auto parent = child->parent;
         if (!parent)
             return;
+
         scoped_lock lk(parent->mutex);
-        for (int i = 0; i < parent->childs.size(); i++)
-        {
-            if (parent->childs[i] == child)
-            {
-                parent->childs.erase(i);
-                child->parent = nullptr;
-
-                // Update of each child index
-                while (i < parent->childs.size())
-                {
-                    parent->childs[i]->childParentIdx = i;
-                    i++;
-                }
-
-                return;
-            }
-        }
+        auto        idx = child->childParentIdx;
+        SWAG_ASSERT(parent->childs[idx] == child);
+        parent->childs.erase(idx);
+        for (int i = idx; i < parent->childs.size(); i++)
+            parent->childs[i]->childParentIdx = i;
+        child->parent = nullptr;
     }
 
     void insertChild(AstNode* parent, AstNode* child, uint32_t index)
@@ -151,7 +141,10 @@ namespace Ast
         if (parent)
         {
             scoped_lock lk(parent->mutex);
+            child->childParentIdx = 0;
             parent->childs.push_front(child);
+            for (auto i = 1; i < parent->childs.size(); i++)
+                parent->childs[i]->childParentIdx = i;
             if (!child->ownerScope)
                 child->inheritOwners(parent);
         }
