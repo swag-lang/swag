@@ -75,6 +75,8 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
         {
             uint32_t result = last->totalCountBefore + last->count;
             last->count += size;
+            SWAG_ASSERT((uint64_t) totalCount + size <= SWAG_LIMIT_SEGMENT);
+
             totalCount += size;
             return result;
         }
@@ -90,6 +92,8 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     bucket.count            = size;
     bucket.totalCountBefore = last ? last->totalCountBefore + last->count : 0;
     buckets.push_back(bucket);
+
+    SWAG_ASSERT((uint64_t) totalCount + size <= SWAG_LIMIT_SEGMENT);
     totalCount += size;
 
     return bucket.totalCountBefore;
