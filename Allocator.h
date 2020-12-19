@@ -7,8 +7,8 @@
 struct AllocatorBucket
 {
     uint8_t* data      = nullptr;
-    int      maxUsed   = 0;
-    int      allocated = 0;
+    size_t   maxUsed   = 0;
+    size_t   allocated = 0;
 };
 
 struct Allocator
@@ -38,24 +38,24 @@ struct Allocator
         return (T*) returnData;
     }
 
-    int   alignSize(int size);
-    void  free(void*, int size);
-    void* alloc(int size);
+    size_t alignSize(size_t size);
+    void   free(void*, size_t size);
+    void*  alloc(size_t size);
 
-    void* tryBucket(uint32_t bucket, int size);
-    void* tryFreeBlock(uint32_t maxCount, int size);
+    void* tryBucket(uint32_t bucket, size_t size);
+    void* tryFreeBlock(uint32_t maxCount, size_t size);
 
     typedef struct FreeBlock
     {
         FreeBlock* next;
-        int        size;
+        size_t     size;
     } FreeBlock;
 
     FreeBlock*       firstFreeBlock = nullptr;
     AllocatorBucket* lastBucket     = nullptr;
     uint8_t*         currentData    = nullptr;
     void*            freeBuckets[MAX_FREE_BUCKETS];
-    int              freeBucketsCpt[MAX_FREE_BUCKETS];
+    size_t           freeBucketsCpt[MAX_FREE_BUCKETS];
 };
 
 extern thread_local Allocator g_Allocator;

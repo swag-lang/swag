@@ -7,7 +7,7 @@ thread_local Allocator g_Allocator;
 void* operator new(size_t t)
 {
     t           = g_Allocator.alignSize((int) t);
-    uint64_t* p = (uint64_t*) g_Allocator.alloc((uint32_t) t + sizeof(uint64_t));
+    uint64_t* p = (uint64_t*) g_Allocator.alloc(t + sizeof(uint64_t));
     *p          = (uint64_t) t;
     return p + 1;
 }
@@ -18,10 +18,10 @@ void operator delete(void* addr)
         return;
     uint64_t* p = (uint64_t*) addr;
     p--;
-    return g_Allocator.free(p, (int) *p);
+    return g_Allocator.free(p, *p);
 }
 
-void* Allocator::tryFreeBlock(uint32_t maxCount, int size)
+void* Allocator::tryFreeBlock(uint32_t maxCount, size_t size)
 {
     if (!firstFreeBlock)
         return nullptr;
@@ -90,7 +90,7 @@ void* Allocator::tryFreeBlock(uint32_t maxCount, int size)
     return nullptr;
 }
 
-void* Allocator::tryBucket(uint32_t bucket, int size)
+void* Allocator::tryBucket(uint32_t bucket, size_t size)
 {
     if (bucket >= MAX_FREE_BUCKETS)
         return nullptr;
@@ -119,15 +119,15 @@ void* Allocator::tryBucket(uint32_t bucket, int size)
     return result;
 }
 
-void* Allocator::alloc(int size)
+void* Allocator::alloc(size_t size)
 {
     SWAG_ASSERT((size & 7) == 0);
 
-    int bucket = size / 8;
+    auto bucket = size / 8;
     if (bucket < MAX_FREE_BUCKETS)
     {
         // Try in the list of free blocks, per bucket
-        auto result = tryBucket(bucket, size);
+        auto result = tryBucket((uint32_t) bucket, size);
         if (result)
             return result;
         // Try to split the biggest bucket
@@ -204,7 +204,7 @@ void* Allocator::alloc(int size)
     return returnData;
 }
 
-int Allocator::alignSize(int size)
+size_t Allocator::alignSize(size_t size)
 {
     if (!size)
         return 0;
@@ -214,7 +214,7 @@ int Allocator::alignSize(int size)
     return size;
 }
 
-void Allocator::free(void* ptr, int size)
+void Allocator::free(void* ptr, size_t size)
 {
     if (!ptr)
         return;

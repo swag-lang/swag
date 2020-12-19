@@ -29,18 +29,18 @@ struct Stats
     atomic<uint64_t> genOutputTimeJob     = 0;
     atomic<uint64_t> optimBCTime          = 0;
 
-    atomic<int> allocatorMemory = 0;
-    atomic<int> wastedMemory    = 0;
-    atomic<int> memNodes        = 0;
-    atomic<int> memScopes       = 0;
-    atomic<int> memSeg          = 0;
-    atomic<int> memConcat       = 0;
-    atomic<int> memTypes        = 0;
-    atomic<int> memInstructions = 0;
-    atomic<int> memSymName      = 0;
-    atomic<int> memSymOver      = 0;
-    atomic<int> memSymTable     = 0;
-    atomic<int> memUtf8         = 0;
+    atomic<size_t> allocatorMemory = 0;
+    atomic<size_t> wastedMemory    = 0;
+    atomic<size_t> memNodes        = 0;
+    atomic<size_t> memScopes       = 0;
+    atomic<size_t> memSeg          = 0;
+    atomic<size_t> memConcat       = 0;
+    atomic<size_t> memTypes        = 0;
+    atomic<size_t> memInstructions = 0;
+    atomic<size_t> memSymName      = 0;
+    atomic<size_t> memSymOver      = 0;
+    atomic<size_t> memSymTable     = 0;
+    atomic<size_t> memUtf8         = 0;
 
     void print();
 };
