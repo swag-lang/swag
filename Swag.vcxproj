@@ -90,6 +90,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <AdditionalIncludeDirectories>c:\program files (x86)\microsoft visual studio\2019\enterprise\common7\ide\extensions\jcn3iwfw.vp2\SDK\Native\inc;llvm/llvm/include;llvm/llvm/build/include;llvm/lld/include</AdditionalIncludeDirectories>
+      <SupportJustMyCode>false</SupportJustMyCode>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
