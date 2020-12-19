@@ -10,10 +10,10 @@
 
 static const uint32_t BUCKET_SIZE = 16 * 1024;
 
-uint32_t DataSegment::reserve(uint32_t size, bool setZero, uint32_t alignOf)
+uint32_t DataSegment::reserve(uint32_t size, uint32_t alignOf)
 {
     scoped_lock lock(mutex);
-    return reserveNoLock(size, setZero, alignOf);
+    return reserveNoLock(size, alignOf);
 }
 
 void DataSegment::initFrom(DataSegment* other)
@@ -40,10 +40,10 @@ void DataSegment::initFrom(DataSegment* other)
 
 uint32_t DataSegment::reserveNoLock(TypeInfo* typeInfo)
 {
-    return reserveNoLock(typeInfo->sizeOf, false, TypeManager::alignOf(typeInfo));
+    return reserveNoLock(typeInfo->sizeOf, TypeManager::alignOf(typeInfo));
 }
 
-uint32_t DataSegment::reserveNoLock(uint32_t size, bool setZero, uint32_t alignOf)
+uint32_t DataSegment::reserveNoLock(uint32_t size, uint32_t alignOf)
 {
     // Align
     if (buckets.size() && alignOf > 1)
@@ -54,14 +54,14 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, bool setZero, uint32_t alignO
         if (alignOffset != curOffset)
         {
             auto diff = alignOffset - curOffset;
-            reserveNoLock(diff, true);
+            reserveNoLock(diff);
         }
     }
 
-    return reserveNoLock(size, setZero);
+    return reserveNoLock(size);
 }
 
-uint32_t DataSegment::reserveNoLock(uint32_t size, bool setZero)
+uint32_t DataSegment::reserveNoLock(uint32_t size)
 {
     SWAG_ASSERT(size);
     SWAG_RACE_CONDITION_WRITE(raceCondition);
@@ -74,8 +74,6 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, bool setZero)
         if (last->count + size <= last->size)
         {
             uint32_t result = last->totalCountBefore + last->count;
-            if (setZero)
-                memset(last->buffer + last->count, 0, size);
             last->count += size;
             totalCount += size;
             return result;
@@ -93,12 +91,6 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, bool setZero)
     bucket.totalCountBefore = last ? last->totalCountBefore + last->count : 0;
     buckets.push_back(bucket);
     totalCount += size;
-
-    if (setZero)
-    {
-        last = &buckets.back();
-        memset(last->buffer, 0, size);
-    }
 
     return bucket.totalCountBefore;
 }

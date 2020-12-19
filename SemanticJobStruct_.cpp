@@ -176,7 +176,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // Construct itable in the constant segment
     auto     module       = context->job->sourceFile->module;
-    uint32_t itableOffset = module->constantSegment.reserve(numFctInterface * sizeof(void*), false, sizeof(void*));
+    uint32_t itableOffset = module->constantSegment.reserve(numFctInterface * sizeof(void*), sizeof(void*));
     void**   ptrITable    = (void**) module->constantSegment.address(itableOffset);
     auto     offset       = itableOffset;
     for (uint32_t i = 0; i < numFctInterface; i++)
