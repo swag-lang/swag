@@ -110,7 +110,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
 
     attrUse->content        = topStmt;
     attrUse->attributeFlags = attr;
-    setOwnerAttrUse(attrUse, attrUse->content);
+    attrUse->content->setOwnerAttrUse(attrUse);
 
     // Add original scope
     if (topStmt)
@@ -120,28 +120,6 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     }
 
     return true;
-}
-
-void SyntaxJob::setOwnerAttrUse(AstAttrUse* attrUse, AstNode* who)
-{
-    if (!who)
-        return;
-
-    switch (who->kind)
-    {
-    case AstNodeKind::Statement:
-    case AstNodeKind::Namespace:
-    case AstNodeKind::Impl:
-    case AstNodeKind::CompilerIf:
-    case AstNodeKind::CompilerIfBlock:
-        for (auto s : who->childs)
-            setOwnerAttrUse(attrUse, s);
-        break;
-
-    default:
-        who->ownerAttrUse = attrUse;
-        break;
-    }
 }
 
 bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)

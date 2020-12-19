@@ -389,7 +389,8 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         if (result)
             *result = attrUse;
         SWAG_CHECK(doEmbeddedInstruction(attrUse, &attrUse->content));
-        setOwnerAttrUse(attrUse, attrUse->content);
+        if (attrUse->content)
+            attrUse->content->setOwnerAttrUse(attrUse);
         break;
     }
 
@@ -515,7 +516,8 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         if (result)
             *result = attrUse;
         SWAG_CHECK(doTopLevelInstruction(attrUse, &attrUse->content));
-        setOwnerAttrUse(attrUse, attrUse->content);
+        if (attrUse->content)
+            attrUse->content->setOwnerAttrUse(attrUse);
         break;
     }
     case TokenId::CompilerAst:

@@ -573,6 +573,26 @@ AstNode* AstAttrDecl::clone(CloneContext& context)
     return newNode;
 }
 
+void AstNode::setOwnerAttrUse(AstAttrUse* attrUse)
+{
+    switch (kind)
+    {
+    case AstNodeKind::CompilerAst:
+    case AstNodeKind::Statement:
+    case AstNodeKind::Namespace:
+    case AstNodeKind::Impl:
+    case AstNodeKind::CompilerIf:
+    case AstNodeKind::CompilerIfBlock:
+        for (auto s : childs)
+            s->setOwnerAttrUse(attrUse);
+        break;
+
+    default:
+        ownerAttrUse = attrUse;
+        break;
+    }
+}
+
 AstNode* AstAttrUse::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstAttrUse>();
@@ -580,6 +600,8 @@ AstNode* AstAttrUse::clone(CloneContext& context)
 
     newNode->attributes = attributes;
     newNode->content    = findChildRef(content, newNode);
+    if (newNode->content)
+        newNode->content->setOwnerAttrUse(newNode);
 
     return newNode;
 }

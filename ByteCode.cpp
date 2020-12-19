@@ -25,10 +25,10 @@ uint32_t g_ByteCodeOpFlags[] = {
 #include "ByteCodeOpList.h"
 };
 
-void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location)
+void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force)
 {
     *file     = bc->sourceFile;
-    *location = nullptr;
+    *location = force ? ip->location : nullptr;
 
     if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl || (ip->flags & BCI_SAFETY))
         return;

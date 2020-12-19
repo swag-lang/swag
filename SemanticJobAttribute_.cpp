@@ -58,6 +58,8 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
                 return true;
         if (oneAttribute->token.text == "strict" && kind == AstNodeKind::Alias)
             return true;
+        if (oneAttribute->token.text == "printbc" && kind == AstNodeKind::CompilerAst)
+            return true;
     }
 
     if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))

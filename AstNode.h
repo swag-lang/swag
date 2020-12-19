@@ -344,6 +344,7 @@ struct AstNode
     Utf8             computeScopedName();
     Utf8             computeScopedNameForeign();
     bool             mustInline();
+    void             setOwnerAttrUse(AstAttrUse* attrUse);
 
     SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
 

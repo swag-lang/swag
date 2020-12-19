@@ -56,7 +56,7 @@ struct ByteCode
     void              print();
     Utf8              callName();
     TypeInfoFuncAttr* callType();
-    static void       getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location);
+    static void       getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force = false);
 
     static const int ALIGN_RIGHT_OPCODE = 25;
 

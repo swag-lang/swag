@@ -131,7 +131,6 @@ struct SyntaxJob : public Job
     bool doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false);
     bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false);
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);
-    void setOwnerAttrUse(AstAttrUse* attrUse, AstNode* who);
     bool doAttrUse(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedStatement(AstNode* parent, AstNode** result = nullptr);

@@ -1172,7 +1172,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         {
             SourceFile*     sourceFile;
             SourceLocation* location;
-            ByteCode::getLocation(context->bc, ip, &sourceFile, &location);
+            ByteCode::getLocation(context->bc, ip, &sourceFile, &location, true);
 
             ConcreteCompilerSourceLocation loc;
             loc.lineStart = loc.lineEnd = location->line;
@@ -2032,7 +2032,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
             SourceFile*     file;
             SourceLocation* iplocation;
-            ByteCode::getLocation(runContext->bc, runContext->ip, &file, &iplocation);
+            ByteCode::getLocation(runContext->bc, runContext->ip, &file, &iplocation, true);
 
             if (path1 != path2 || iplocation->line != location->lineStart)
                 runContext->bc->addCallStack(runContext);

@@ -432,7 +432,8 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         SWAG_CHECK(doAttrUse(parent, (AstNode**) &attrUse));
         SWAG_CHECK(doStructBody(attrUse, structType, &attrUse->content));
         parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
-        setOwnerAttrUse(attrUse, attrUse->content);
+        if (attrUse->content)
+            attrUse->content->setOwnerAttrUse(attrUse);
         break;
     }
 
