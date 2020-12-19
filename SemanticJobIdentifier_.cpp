@@ -681,7 +681,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             // Expand inline function. Do not expand an inline call inside a function marked as inline.
             // The expansion will be done at the lowest level possible
-            if (identifier->ownerFct && !identifier->ownerFct->mustInline())
+            if (!identifier->ownerFct || !identifier->ownerFct->mustInline())
             {
                 // Need to wait for function full semantic resolve
                 auto funcDecl = static_cast<AstFuncDecl*>(overload->node);
@@ -2392,19 +2392,21 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
 
         flags &= ~COLLECT_BACKTICK;
     }
+
     // If we are in an inline block, jump right to the function parent
+    // Not that the function parent can be null in case of inlined expression in a global for example (compile time execution)
     else if (startNode->kind == AstNodeKind::Inline || startNode->kind == AstNodeKind::CompilerInline)
     {
         if (!(flags & COLLECT_BACKTICK))
         {
-            while (startNode->kind != AstNodeKind::FuncDecl)
+            while (startNode && startNode->kind != AstNodeKind::FuncDecl)
                 startNode = startNode->parent;
         }
 
         flags &= ~COLLECT_BACKTICK;
     }
 
-    if (startNode->parent)
+    if (startNode && startNode->parent)
         collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->parent, flags);
 }
 
@@ -2469,15 +2471,19 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
         // For an inline scope, jump right to the function
         if (scope->kind == ScopeKind::Inline)
         {
-            while (scope->kind != ScopeKind::Function)
+            while (scope && scope->kind != ScopeKind::Function)
                 scope = scope->parentScope;
+            if (!scope)
+                continue;
         }
 
         // For a macro scope, jump right to the inline
         else if (scope->kind == ScopeKind::Macro)
         {
-            while (scope->parentScope->kind != ScopeKind::Inline)
+            while (scope && scope->parentScope->kind != ScopeKind::Inline)
                 scope = scope->parentScope;
+            if (!scope)
+                continue;
             scope = scope->parentScope;
         }
 

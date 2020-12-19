@@ -344,12 +344,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
-        SWAG_ASSERT(resolved->registers.size());
+        SWAG_VERIFY(resolved->registers.size() > 0, internalError(context, format("emitIdentifier, identifier not generated '%s'", identifier->token.text.c_str()).c_str()));
+
         reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
         for (int i = 0; i < node->resultRegisterRC.size(); i++)
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[i], resolved->registers[i]);
 
-        SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, format("emitIdentifier, cannot reference identifier '%s'", identifier->token.text.c_str()).c_str()));
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC              = node->resultRegisterRC;
         return true;
