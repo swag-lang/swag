@@ -31,6 +31,13 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, Typ
     return true;
 }
 
+bool SemanticJob::checkSizeOverflow(SemanticContext* context, const char* typeOverflow, uint64_t value, uint64_t maxValue)
+{
+    if (value <= maxValue)
+        return true;
+    return context->report({context->node, format("%s overflow, maximum size is 0x%I64x bytes", typeOverflow, maxValue)});
+}
+
 bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     return context->report({node, node->token, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())});

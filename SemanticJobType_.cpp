@@ -263,11 +263,12 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 auto child = typeNode->childs[i];
                 SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, "array dimension cannot be evaluted at compile time"}));
                 SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->report({child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
-                SWAG_VERIFY(child->computedValue.reg.u64 <= g_CommandLine.staticArrayMaxSize, context->report({child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.staticArrayMaxSize, child->computedValue.reg.u64)}));
+                SWAG_CHECK(checkSizeOverflow(context, "array", child->computedValue.reg.u64 * rawType->sizeOf, SWAG_LIMIT_ARRASIZE));
 
                 auto ptrArray   = allocType<TypeInfoArray>();
                 ptrArray->count = (uint32_t) child->computedValue.reg.u64;
                 totalCount *= ptrArray->count;
+                SWAG_CHECK(checkSizeOverflow(context, "array", totalCount * rawType->sizeOf, SWAG_LIMIT_ARRASIZE));
                 ptrArray->totalCount  = totalCount;
                 ptrArray->pointedType = typeNode->typeInfo;
                 ptrArray->finalType   = rawType;

@@ -43,9 +43,6 @@ struct CommandLine
     bool randomize = false;
     int  randSeed  = 0;
 
-    // Language options
-    uint64_t staticArrayMaxSize = 32 * 1024 * 1024;
-
     // User arguments
     string                     userArguments;
     vector<Utf8>               userArgumentsVec;

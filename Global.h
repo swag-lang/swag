@@ -2,6 +2,8 @@
 #include "Utf8.h"
 #include "Assert.h"
 
+const uint32_t SWAG_LIMIT_ARRASIZE = 0x7FFFFFFF;
+
 struct Global
 {
     void        setup();
@@ -18,8 +20,7 @@ extern void*  undoForeignLambda(void* ptr);
 extern void*  doByteCodeLambda(void* ptr);
 extern void*  undoByteCodeLambda(void* ptr);
 extern bool   isByteCodeLambda(void* ptr);
-
-extern Utf8 toStringF64(double v);
+extern Utf8   toStringF64(double v);
 
 extern struct Global g_Global;
 
