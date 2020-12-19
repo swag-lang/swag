@@ -218,6 +218,9 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
 
     if (precompileIndex == 0)
     {
+        pp.globalSegment.setup("global segment", module);
+        pp.stringSegment.setup("string segment", module);
+
         pp.symBSIndex = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Custom, 0, pp.sectionIndexBS)->index;
         pp.symCSIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
         pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
