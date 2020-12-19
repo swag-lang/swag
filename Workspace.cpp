@@ -340,24 +340,9 @@ void Workspace::setup()
         g_Log.error(format("fatal error: workspace folder '%s' does not exist", workspacePath.string().c_str()));
         invalid = true;
     }
-    else if (!fs::exists(examplesPath))
+    else if (!fs::exists(modulesPath) && !fs::exists(testsPath))
     {
-        g_Log.error(format("fatal error: invalid workspace '%s', subfolder 'examples/' does not exist", workspacePath.string().c_str()));
-        invalid = true;
-    }
-    else if (!fs::exists(testsPath))
-    {
-        g_Log.error(format("fatal error: invalid workspace '%s', subfolder 'tests/' does not exist", workspacePath.string().c_str()));
-        invalid = true;
-    }
-    else if (!fs::exists(modulesPath))
-    {
-        g_Log.error(format("fatal error: invalid workspace '%s', subfolder 'modules/' does not exist", workspacePath.string().c_str()));
-        invalid = true;
-    }
-    else if (!fs::exists(dependenciesPath))
-    {
-        g_Log.error(format("fatal error: invalid workspace '%s', subfolder 'dependencies/' does not exist", workspacePath.string().c_str()));
+        g_Log.error(format("fatal error: invalid workspace '%s', subfolders 'modules/' and 'tests/' do not exist", workspacePath.string().c_str()));
         invalid = true;
     }
 
