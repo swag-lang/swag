@@ -19,7 +19,7 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
     auto& modu            = *pp.module;
 
     llvm::Type* type       = llvm::Type::getInt64Ty(context);
-    uint32_t    totalCount = dataSegment->totalCount / 8;
+    auto        totalCount = dataSegment->totalCount / 8;
     if (totalCount * 8 != dataSegment->totalCount)
         totalCount++;
     llvm::ArrayType* arrayType = llvm::ArrayType::get(type, totalCount);
