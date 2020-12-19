@@ -10,7 +10,6 @@ struct Module;
 struct DataSegmentHeader
 {
     uint8_t* buffer;
-    uint32_t totalCountBefore;
     uint32_t count;
     uint32_t size;
 };

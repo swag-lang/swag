@@ -54,12 +54,10 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint32_t alignOf)
     // Align
     if (buckets.size() && alignOf > 1)
     {
-        auto last        = &buckets.back();
-        auto curOffset   = last->totalCountBefore + last->count;
-        auto alignOffset = (uint32_t) TypeManager::align(curOffset, alignOf);
-        if (alignOffset != curOffset)
+        auto alignOffset = (uint32_t) TypeManager::align(totalCount, alignOf);
+        if (alignOffset != totalCount)
         {
-            auto diff = alignOffset - curOffset;
+            auto diff = alignOffset - totalCount;
             reserveNoLock(diff);
         }
     }
@@ -75,10 +73,8 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     if (buckets.size())
         last = &buckets.back();
 
-    uint32_t result = 0;
     if (last && last->count + size <= last->size)
     {
-        result = last->totalCountBefore + last->count;
         last->count += size;
     }
     else
@@ -90,11 +86,8 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
         if (g_CommandLine.stats)
             g_Stats.memSeg += bucket.size;
         memset(bucket.buffer, 0, bucket.size);
-        bucket.count            = size;
-        bucket.totalCountBefore = last ? last->totalCountBefore + last->count : 0;
+        bucket.count = size;
         buckets.push_back(bucket);
-
-        result = bucket.totalCountBefore;
     }
 
     // Check that we do not overflow maximum size
@@ -107,6 +100,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
         }
     }
 
+    auto result = totalCount;
     totalCount += size;
     return result;
 }
@@ -114,15 +108,18 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
 uint32_t DataSegment::offset(uint8_t* location)
 {
     shared_lock lock(mutex);
+
+    uint32_t offset = 0;
     for (int i = 0; i < buckets.size(); i++)
     {
         auto bucket = &buckets[i];
         if (location >= bucket->buffer && location < bucket->buffer + bucket->count)
         {
-            auto offset = (uint32_t)(location - bucket->buffer);
-            offset += bucket->totalCountBefore;
+            offset += (uint32_t)(location - bucket->buffer);
             return offset;
         }
+
+        offset += bucket->count;
     }
 
     SWAG_ASSERT(false);
@@ -143,11 +140,9 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     for (int i = 0; i < buckets.size(); i++)
     {
         auto bucket = &buckets[i];
-        if (location < (uint64_t) bucket->totalCountBefore + bucket->count)
-        {
-            location -= bucket->totalCountBefore;
+        if (location < (uint64_t) bucket->count)
             return bucket->buffer + location;
-        }
+        location -= bucket->count;
     }
 
     SWAG_ASSERT(false);
