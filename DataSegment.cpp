@@ -135,7 +135,7 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     for (int i = 0; i < buckets.size(); i++)
     {
         auto bucket = &buckets[i];
-        if (location < bucket->totalCountBefore + bucket->count)
+        if (location < (uint64_t) bucket->totalCountBefore + bucket->count)
         {
             location -= bucket->totalCountBefore;
             return bucket->buffer + location;
