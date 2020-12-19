@@ -14,7 +14,7 @@ namespace OS
     extern bool     doProcess(const Utf8& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor = LogColor::DarkCyan, const char* logPrefix = nullptr);
     extern string   getOutputFileExtension(BackendOutputType type);
     extern string   getDllFileExtension();
-    extern string   getLastErrorAsString();
+    extern Utf8     getLastErrorAsString();
     extern uint64_t tlsAlloc();
     extern void     tlsSetValue(uint64_t id, void* value);
     extern void*    tlsGetValue(uint64_t id);

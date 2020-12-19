@@ -74,6 +74,21 @@ Utf8::Utf8(const char* from)
     count = len;
 }
 
+Utf8::Utf8(const char* from, uint32_t len)
+{
+    buffer = padding;
+    count = 0;
+    allocated = UTF8_SMALL_SIZE;
+    buffer[0] = 0;
+
+    if (!len)
+        return;
+
+    reserve(len + 1);
+    Memcpy(buffer, from, len + 1);
+    count = len;
+}
+
 Utf8::Utf8(const string& from)
 {
     buffer    = padding;
@@ -377,7 +392,10 @@ void Utf8::trimRight()
     if (!count)
         return;
     while (count && UTF8_IS_BLANK(buffer[count - 1]))
+    {
         count--;
+        buffer[count] = 0;
+    }
 }
 
 void Utf8::trim()

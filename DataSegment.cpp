@@ -84,6 +84,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, bool setZero)
 
     DataSegmentHeader bucket;
     bucket.size   = max(size, BUCKET_SIZE);
+    bucket.size   = (uint32_t) g_Allocator.alignSize(bucket.size);
     bucket.buffer = (uint8_t*) g_Allocator.alloc(bucket.size);
     if (g_CommandLine.stats)
         g_Stats.memSeg += bucket.size;

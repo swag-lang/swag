@@ -154,7 +154,7 @@ namespace OS
                                   &si,
                                   &pi))
             {
-                g_Log.error(format("cannot create '%s' process (::CreateProcess)", cmdline.c_str()));
+                g_Log.error(format("cannot create '%s' process (%s)", cmdline.c_str(), getLastErrorAsString().c_str()));
                 return false;
             }
         }
@@ -292,7 +292,7 @@ namespace OS
         }
     }
 
-    string getLastErrorAsString()
+    Utf8 getLastErrorAsString()
     {
         // Get the error message, if any.
         DWORD errorMessageID = ::GetLastError();
@@ -308,7 +308,18 @@ namespace OS
                                      0,
                                      NULL);
 
-        std::string message(messageBuffer, size);
+        // Remove unwanted characters
+        char* pz = messageBuffer;
+        for (int i = 0; i < size; i++)
+        {
+            if (pz[i] < 32)
+                pz[i] = 32;
+        }
+
+        Utf8 message(messageBuffer, (uint32_t) size);
+        message.trim();
+        if (message.length() && message.back() == '.')
+            message.pop_back();
 
         //Free the buffer.
         LocalFree(messageBuffer);
