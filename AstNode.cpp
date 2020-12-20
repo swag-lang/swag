@@ -1043,7 +1043,21 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
 AstNode* AstCompilerAst::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstCompilerAst>();
-    newNode->copyFrom(context, this);
+    newNode->copyFrom(context, this, false);
+
+    // Clone childs by hand, because an #ast block can contain a sub function, and this sub
+    // function shouldn't have the ownerLine set (if the #ast is in an inline block)
+    auto cloneContext   = context;
+    cloneContext.parent = newNode;
+    for (auto p : childs)
+    {
+        if (p->kind == AstNodeKind::FuncDecl)
+            cloneContext.ownerInline = nullptr;
+        else
+            cloneContext.ownerInline = context.ownerInline;
+        p->clone(cloneContext)->flags &= ~AST_NO_SEMANTIC;
+    }
+
     newNode->embeddedKind = embeddedKind;
 
     // If #ast has an embedded function, we need to restore the semantic pass on that function
