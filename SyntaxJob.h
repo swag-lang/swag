@@ -16,6 +16,7 @@ struct AstStruct;
 struct AstCompilerIfBlock;
 struct SyntaxJob;
 struct AstAttrUse;
+struct AstInline;
 enum class AstNodeKind : uint8_t;
 
 enum class InvalidTokenError
@@ -170,6 +171,7 @@ struct SyntaxJob : public Job
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
     Token*              currentTokenLocation   = nullptr;
     AstNode*            currentMainNode        = nullptr;
+    AstInline*          currentInline          = nullptr;
     uint64_t            currentFlags           = 0;
     bool                canChangeModule        = true;
     bool                moduleSpecified        = false;
@@ -186,6 +188,7 @@ struct SyntaxJob : public Job
         currentStructScope     = nullptr;
         currentCompilerIfBlock = nullptr;
         currentMainNode        = nullptr;
+        currentInline          = nullptr;
         currentTokenLocation   = nullptr;
         currentFlags           = 0;
         canChangeModule        = true;

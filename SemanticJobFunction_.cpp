@@ -667,7 +667,7 @@ void SemanticJob::propagateReturn(AstReturn* node)
     while (scanNode && scanNode != stopFct)
     {
         scanNode->semFlags |= AST_SEM_SCOPE_HAS_RETURN;
-        if (scanNode->parent->kind == AstNodeKind::If)
+        if (scanNode->parent && scanNode->parent->kind == AstNodeKind::If)
         {
             auto ifNode = CastAst<AstIf>(scanNode->parent, AstNodeKind::If);
             if (ifNode->elseBlock != scanNode)

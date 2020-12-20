@@ -283,6 +283,7 @@ struct AstNode
         ownerFct             = job->currentFct;
         ownerBreakable       = job->currentBreakable;
         ownerCompilerIfBlock = job->currentCompilerIfBlock;
+        ownerInline          = job->currentInline;
         flags |= job->currentFlags;
     }
 

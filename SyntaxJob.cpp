@@ -201,6 +201,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     currentStructScope  = parent->ownerStructScope;
     currentMainNode     = parent->ownerMainNode;
     currentFct          = parent->ownerFct;
+    currentInline       = parent->ownerInline;
 
     tokenizer.setFile(sourceFile);
     if (parentLocation)
