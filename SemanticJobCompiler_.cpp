@@ -235,52 +235,59 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 
     g_Log.lock();
     TypeInfo* typeInfo = TypeManager::concreteType(expr->typeInfo);
-    switch (typeInfo->nativeType)
+    if (typeInfo->kind == TypeInfoKind::Native)
     {
-    case NativeTypeKind::Bool:
-        g_Log.print(expr->computedValue.reg.b ? "true" : "false");
-        break;
-    case NativeTypeKind::S8:
-        g_Log.print(to_string(expr->computedValue.reg.s8));
-        break;
-    case NativeTypeKind::S16:
-        g_Log.print(to_string(expr->computedValue.reg.s16));
-        break;
-    case NativeTypeKind::S32:
-        g_Log.print(to_string(expr->computedValue.reg.s32));
-        break;
-    case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
-        g_Log.print(to_string(expr->computedValue.reg.s64));
-        break;
-    case NativeTypeKind::U8:
-        g_Log.print(to_string(expr->computedValue.reg.u8));
-        break;
-    case NativeTypeKind::U16:
-        g_Log.print(to_string(expr->computedValue.reg.u16));
-        break;
-    case NativeTypeKind::U32:
-        g_Log.print(to_string(expr->computedValue.reg.u32));
-        break;
-    case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
-        g_Log.print(to_string(expr->computedValue.reg.u64));
-        break;
-    case NativeTypeKind::F32:
-        g_Log.print(to_string(expr->computedValue.reg.f32));
-        break;
-    case NativeTypeKind::F64:
-        g_Log.print(to_string(expr->computedValue.reg.f64));
-        break;
-    case NativeTypeKind::Char:
-        g_Log.print(to_string(expr->computedValue.reg.ch));
-        break;
-    case NativeTypeKind::String:
-        g_Log.print(expr->computedValue.text);
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::Bool:
+            g_Log.print(expr->computedValue.reg.b ? "true" : "false");
+            break;
+        case NativeTypeKind::S8:
+            g_Log.print(to_string(expr->computedValue.reg.s8));
+            break;
+        case NativeTypeKind::S16:
+            g_Log.print(to_string(expr->computedValue.reg.s16));
+            break;
+        case NativeTypeKind::S32:
+            g_Log.print(to_string(expr->computedValue.reg.s32));
+            break;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
+            g_Log.print(to_string(expr->computedValue.reg.s64));
+            break;
+        case NativeTypeKind::U8:
+            g_Log.print(to_string(expr->computedValue.reg.u8));
+            break;
+        case NativeTypeKind::U16:
+            g_Log.print(to_string(expr->computedValue.reg.u16));
+            break;
+        case NativeTypeKind::U32:
+            g_Log.print(to_string(expr->computedValue.reg.u32));
+            break;
+        case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
+            g_Log.print(to_string(expr->computedValue.reg.u64));
+            break;
+        case NativeTypeKind::F32:
+            g_Log.print(to_string(expr->computedValue.reg.f32));
+            break;
+        case NativeTypeKind::F64:
+            g_Log.print(to_string(expr->computedValue.reg.f64));
+            break;
+        case NativeTypeKind::Char:
+            g_Log.print(to_string(expr->computedValue.reg.ch));
+            break;
+        case NativeTypeKind::String:
+            g_Log.print(expr->computedValue.text);
+            break;
+        default:
+            g_Log.print(format("<%s>", typeInfo->name.c_str()));
+            break;
+        }
+    }
+    else
+    {
+        g_Log.print(format("<%s>", typeInfo->name.c_str()));
     }
 
     g_Log.eol();
