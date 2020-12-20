@@ -52,55 +52,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             return true;
     }
 
-    // Reference to a constant
-    if (resolved->flags & OVERLOAD_COMPUTED_VALUE)
-    {
-        if (typeInfo->kind == TypeInfoKind::Array)
-        {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-            reserveRegisterRC(context, node->resultRegisterRC, 2);
-            node->parent->resultRegisterRC = node->resultRegisterRC;
-
-            SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-            auto inst   = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC[0]);
-            inst->b.u64 = node->resolvedSymbolOverload->storageOffset;
-
-            inst        = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
-            inst->b.u64 = typeArray->count;
-            return true;
-        }
-
-        if (typeInfo->kind == TypeInfoKind::Struct)
-        {
-            node->resultRegisterRC         = reserveRegisterRC(context);
-            node->parent->resultRegisterRC = node->resultRegisterRC;
-            auto inst                      = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC);
-            SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-            inst->b.u64 = node->resolvedSymbolOverload->storageOffset;
-            return true;
-        }
-
-        if (typeInfo->isNative(NativeTypeKind::String))
-        {
-            // Not yet stored in the constant segment
-            unique_lock lk(node->resolvedSymbolName->mutex);
-            if (node->resolvedSymbolOverload->storageOffset == UINT32_MAX)
-                node->resolvedSymbolOverload->storageOffset = context->sourceFile->module->constantSegment.addString(node->resolvedSymbolOverload->computedValue.text);
-
-            reserveLinearRegisterRC2(context, node->resultRegisterRC);
-            node->parent->resultRegisterRC = node->resultRegisterRC;
-            auto inst                      = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, node->resultRegisterRC);
-            SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-            inst->b.u64 = node->resolvedSymbolOverload->storageOffset;
-
-            inst        = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
-            inst->b.u64 = node->resolvedSymbolOverload->computedValue.text.length();
-            return true;
-        }
-
-        return internalError(context, "emitIdentifier, invalid constant type");
-    }
-
     // Function parameter : it's a register on the stack
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {

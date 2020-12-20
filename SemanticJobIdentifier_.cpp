@@ -541,7 +541,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     case SymbolKind::Variable:
     {
         // Transform the variable to a constant node
-        if (overload->flags & OVERLOAD_VAR_INLINE && overload->flags & OVERLOAD_COMPUTED_VALUE)
+        if (overload->flags & OVERLOAD_COMPUTED_VALUE)
         {
             if (overload->node->flags & AST_VALUE_IS_TYPEINFO)
                 identifier->flags |= AST_VALUE_IS_TYPEINFO;
