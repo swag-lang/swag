@@ -662,7 +662,7 @@ void SemanticJob::propagateReturn(AstReturn* node)
     if (node->semFlags & AST_SEM_EMBEDDED_RETURN)
         stopFct = node->ownerInline->parent;
 
-    AstNode* scanNode = node;
+    AstNode* scanNode       = node;
     bool     passNextSwitch = false;
     while (scanNode && scanNode != stopFct)
     {
@@ -688,8 +688,8 @@ void SemanticJob::propagateReturn(AstReturn* node)
             passNextSwitch = false;
         }
         else if (scanNode->kind == AstNodeKind::While ||
-            scanNode->kind == AstNodeKind::Loop ||
-            scanNode->kind == AstNodeKind::For)
+                 scanNode->kind == AstNodeKind::Loop ||
+                 scanNode->kind == AstNodeKind::For)
         {
             break;
         }
@@ -846,12 +846,17 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         }
     }
 
+    // A mixin behave exactly like if it is in the caller scope, so do not create a subscope for them
     Scope* newScope = identifier->ownerScope;
     if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
     {
         newScope          = Ast::newScope(inlineNode, format("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
         inlineNode->scope = newScope;
     }
+
+    // Creates a constant scope that will all all constant parameters.
+    // Constant scope is specific to each inline block, that's why we create it even for mixins
+    inlineNode->constantScope = Ast::newScope(inlineNode, "", ScopeKind::Statement, nullptr);
 
     // Clone the function body
     cloneContext.parent         = inlineNode;

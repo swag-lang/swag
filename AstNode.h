@@ -785,6 +785,7 @@ struct AstInline : public AstNode
 
     AstFuncDecl* func;
     Scope*       scope;
+    Scope*       constantScope;
 };
 
 struct AstCompilerIfBlock : public AstNode

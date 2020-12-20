@@ -87,8 +87,37 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
     // Register all function parameters as inline symbols
     if (func->parameters)
     {
-        for (auto funcParam : func->parameters->childs)
+        AstIdentifier* identifier = nullptr;
+        if (node->parent->kind == AstNodeKind::Identifier)
+            identifier = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+        for (int i = 0; i < func->parameters->childs.size(); i++)
         {
+            auto funcParam = func->parameters->childs[i];
+
+            // If the call parameter of the inlined function is constant, then we register it in a specific 
+            // constant scope, not in the caller (for mixins)/inline scope.
+            // This is a separated scope because mixins do not have their own scope, and we must have a
+            // different symbol registration for each constant value
+            if (identifier && identifier->callParameters && i < identifier->callParameters->childs.size())
+            {
+                auto callParam = identifier->callParameters->childs[i];
+                if (callParam->flags & AST_VALUE_COMPUTED)
+                {
+                    Utf8Crc name = funcParam->token.text;
+                    SWAG_ASSERT(node->constantScope);
+                    node->constantScope->symTable.addSymbolTypeInfo(context,
+                                                                    callParam,
+                                                                    funcParam->typeInfo,
+                                                                    SymbolKind::Variable,
+                                                                    &callParam->computedValue,
+                                                                    OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE,
+                                                                    nullptr,
+                                                                    callParam->computedValue.reg.offset,
+                                                                    &name);
+                    continue;
+                }
+            }
+
             node->scope->symTable.addSymbolTypeInfo(context, funcParam, funcParam->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN);
         }
     }

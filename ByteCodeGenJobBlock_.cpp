@@ -64,6 +64,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                 auto funcParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
                 auto callParam = allParams->childs[i];
                 auto symbol    = node->scope->symTable.find(funcParam->token.text);
+                if (!symbol)
+                    symbol = node->constantScope->symTable.find(funcParam->token.text);
                 SWAG_ASSERT(symbol);
 
                 for (auto overload : symbol->overloads)
@@ -92,6 +94,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     if (callParam->index == i)
                     {
                         auto symbol = node->scope->symTable.find(funcParam->token.text);
+                        if (!symbol)
+                            symbol = node->constantScope->symTable.find(funcParam->token.text);
                         SWAG_ASSERT(symbol);
                         for (auto overload : symbol->overloads)
                         {

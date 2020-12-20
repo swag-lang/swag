@@ -540,6 +540,15 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Variable:
     {
+        // Transform the variable to a constant node
+        if (overload->flags & OVERLOAD_VAR_INLINE && overload->flags & OVERLOAD_COMPUTED_VALUE)
+        {
+            if (overload->node->flags & AST_VALUE_IS_TYPEINFO)
+                identifier->flags |= AST_VALUE_IS_TYPEINFO;
+            identifier->computedValue = overload->computedValue;
+            identifier->setFlagsValueIsComputed();
+        }
+
         // Setup parent if necessary
         auto typeInfo = TypeManager::concreteType(identifier->typeInfo);
         SWAG_CHECK(setupIdentifierRef(context, identifier, typeInfo));
@@ -2380,6 +2389,13 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
 
             scopesVars.append(startNode->alternativeScopesVars);
         }
+    }
+
+    if (startNode->kind == AstNodeKind::Inline)
+    {
+        auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
+        SWAG_ASSERT(inlineNode->constantScope);
+        scopes.push_back(inlineNode->constantScope);
     }
 
     if (startNode->kind == AstNodeKind::CompilerMacro)
