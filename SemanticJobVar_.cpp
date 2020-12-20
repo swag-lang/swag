@@ -370,6 +370,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Value
     if (node->assignment &&
         node->assignment->kind != AstNodeKind::ExpressionList &&
+        node->assignment->kind != AstNodeKind::ExplicitNoInit &&
         !isGeneric)
     {
         // A generic type with a default value is a generic type

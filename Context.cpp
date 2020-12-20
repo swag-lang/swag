@@ -35,7 +35,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
     ByteCodeRunContext runContext;
     auto               node   = bc->node;
     auto               module = node->sourceFile->module;
-    runContext.setup(node->sourceFile, node, module->runContext.stackSize);
+    runContext.setup(node->sourceFile, node, module->buildParameters.buildCfg->byteCodeStackSize);
 
     // Parameters
     for (int i = 0; i < typeFunc->numParamsRegisters(); i++)

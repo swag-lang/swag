@@ -324,11 +324,10 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     node->bc->enterByteCode(&runContext);
     auto module = sourceFile->module;
 
+    // We need to take care of the room necessary in the stack, as bytecode instruction IncSPBP is not
+    // generated for expression (just for functions)
     if (node->ownerScope)
     {
-        if (node->ownerScope->startStackSize)
-            node = node;
-
         runContext.decSP(node->ownerScope->startStackSize);
         runContext.bp = runContext.sp;
     }
