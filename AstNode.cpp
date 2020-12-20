@@ -104,6 +104,8 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
         return true;
     if (overload->flags & OVERLOAD_COMPUTED_VALUE)
         return true;
+    if (overload->flags & OVERLOAD_VAR_INLINE && !ownerInline)
+        return false;
     if (!(overload->flags & OVERLOAD_VAR_FUNC_PARAM) && !(overload->flags & OVERLOAD_VAR_LOCAL))
         return true;
 
@@ -1052,9 +1054,16 @@ AstNode* AstCompilerAst::clone(CloneContext& context)
     for (auto p : childs)
     {
         if (p->kind == AstNodeKind::FuncDecl)
+        {
             cloneContext.ownerInline = nullptr;
+            cloneContext.removeFlags |= AST_RUN_BLOCK;
+        }
         else
+        {
             cloneContext.ownerInline = context.ownerInline;
+            cloneContext.removeFlags = context.removeFlags;
+        }
+
         p->clone(cloneContext)->flags &= ~AST_NO_SEMANTIC;
     }
 

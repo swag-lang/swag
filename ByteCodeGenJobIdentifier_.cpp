@@ -342,6 +342,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Reference to an inline parameter : the registers are directly stored in the overload symbol
     if (resolved->flags & OVERLOAD_VAR_INLINE)
     {
+        SWAG_CHECK(sameStackFrame(context, resolved));
+
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
         SWAG_VERIFY(resolved->registers.size() > 0, internalError(context, format("emitIdentifier, identifier not generated '%s'", identifier->token.text.c_str()).c_str()));
