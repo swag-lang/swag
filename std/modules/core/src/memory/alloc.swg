@@ -4,6 +4,8 @@ using swag
 // Free the specified memory block
 func free(buffer: *void, size: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
+    if !buffer return
+
     var req: AllocatorRequest
     req.callerLoc   = loc
     req.mode        = AllocatorMode.Free

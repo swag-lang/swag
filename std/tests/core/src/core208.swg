@@ -1,4 +1,4 @@
-﻿/*#import "core"
+﻿#import "core"
 using core
 
 #[swag.constexpr]
@@ -10,4 +10,4 @@ func toto(rep: u32)->String
 }
 
 const str = cast(string) toto(10)
-#print str*/
+#print str

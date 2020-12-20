@@ -368,7 +368,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     bool isGeneric   = node->ownerMainNode && (node->ownerMainNode->flags & AST_IS_GENERIC);
 
     // Value
-    if (node->assignment && node->assignment->kind != AstNodeKind::ExpressionList && !isGeneric)
+    if (node->assignment &&
+        node->assignment->kind != AstNodeKind::ExpressionList &&
+        !isGeneric)
     {
         // A generic type with a default value is a generic type
         if ((node->flags & AST_IS_GENERIC) && !node->type && !(node->flags & AST_R_VALUE))

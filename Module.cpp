@@ -317,16 +317,24 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
 bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
 {
-    if (sourceFile->name == "core208.swg")
-        node->bc->print();
-
     // Global setup
     runContext.callerContext = callerContext;
     runContext.setup(sourceFile, node, buildParameters.buildCfg->byteCodeStackSize);
 
     node->bc->enterByteCode(&runContext);
     auto module = sourceFile->module;
+
+    if (node->ownerScope)
+    {
+        if (node->ownerScope->startStackSize)
+            node = node;
+
+        runContext.decSP(node->ownerScope->startStackSize);
+        runContext.bp = runContext.sp;
+    }
+
     bool result = module->runner.run(&runContext);
+
     node->bc->leaveByteCode(&runContext, false);
     g_byteCodeStack.clear();
 
