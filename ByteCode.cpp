@@ -67,7 +67,7 @@ Utf8 ByteCode::callName()
 
 TypeInfoFuncAttr* ByteCode::callType()
 {
-    if (node)
+    if (node && node->typeInfo->kind == TypeInfoKind::FuncAttr)
         return CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     return typeInfoFunc;
 }
@@ -261,9 +261,13 @@ void ByteCode::print()
         g_Log.print(name.c_str());
     }
 
-    g_Log.print(" ");
-    g_Log.print(callType()->name.c_str());
-    g_Log.eol();
+    auto callt = callType();
+    if (callt)
+    {
+        g_Log.print(" ");
+        g_Log.print(callt->name.c_str());
+        g_Log.eol();
+    }
 
     uint32_t lastLine = UINT32_MAX;
     auto     ip       = out;

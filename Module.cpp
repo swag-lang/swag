@@ -317,6 +317,9 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
 bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
 {
+    if (sourceFile->name == "core208.swg")
+        node->bc->print();
+
     // Global setup
     runContext.callerContext = callerContext;
     runContext.setup(sourceFile, node, buildParameters.buildCfg->byteCodeStackSize);
@@ -330,10 +333,10 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     if (!result)
         return false;
 
-    // Get result
+    // Transform result to a literal value
     if (node->resultRegisterRC.size())
     {
-        node->typeInfo = TypeManager::concreteType(node->typeInfo);
+        node->typeInfo = TypeManager::concreteReferenceType(node->typeInfo);
         if (node->typeInfo->isNative(NativeTypeKind::String))
         {
             SWAG_ASSERT(node->resultRegisterRC.size() == 2);
