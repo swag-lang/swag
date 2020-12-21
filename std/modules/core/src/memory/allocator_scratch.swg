@@ -29,18 +29,6 @@ impl ScratchAllocator
         leaks.clear()
     }
 
-    func opDrop(using self)
-    {
-        release()
-    }
-
-    func release(using self)
-    {
-        freeAll()
-        memory.free(block, capacity, fallback)
-        block = null
-    }
-
     // First create allocator by allocating a block of memory with
     // the specified allocator.
     // If 'allocator' is null, the current context allocator will be used
@@ -56,6 +44,14 @@ impl ScratchAllocator
 
         // Dynamic array allocator
         leaks.allocator = fallback
+    }
+
+    // Release all allocated memory
+    func release(using self)
+    {
+        freeAll()
+        memory.free(block, capacity, fallback)
+        block = null
     }
 }
 

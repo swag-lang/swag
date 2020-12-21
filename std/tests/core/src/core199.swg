@@ -5,6 +5,7 @@ using core.memory, swag
 {
     var mem: ScratchAllocator
     mem.create(16*1024'uint)
+    defer mem.release()
 
     system.pushAllocator(cast(IAllocator) mem)
     {
