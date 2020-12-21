@@ -31,12 +31,19 @@ impl ScratchAllocator
 
     func opDrop(using self)
     {
-        freeAll()
-        memory.free(block, capacity, fallback)
+        release()
     }
 
-    // First create allocator by allocation a block of memory with
-    // the current context allocator
+    func release(using self)
+    {
+        freeAll()
+        memory.free(block, capacity, fallback)
+        block = null
+    }
+
+    // First create allocator by allocating a block of memory with
+    // the specified allocator.
+    // If 'allocator' is null, the current context allocator will be used
     func create(using self, blockSize: uint, allocator: IAllocator = null)
     {
         debug.assert(block == null, "already created")
