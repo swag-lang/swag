@@ -8,10 +8,12 @@
 #include "Global.h"
 #include "Module.h"
 #include "ByteCodeStack.h"
+#include "ByteCodeOp.h"
 
-uint64_t         g_tlsContextId = 0;
-SwagContext      g_defaultContext;
-SwagProcessInfos g_processInfos = {0};
+uint64_t                        g_tlsContextId = 0;
+SwagContext                     g_defaultContext;
+SwagProcessInfos                g_processInfos = {0};
+thread_local ByteCodeRunContext g_runContext;
 
 static void byteCodeRun(void* byteCodePtr, ...)
 {
@@ -32,10 +34,18 @@ static void byteCodeRun(void* byteCodePtr, ...)
         returnRegisters.push_back(r);
     }
 
-    ByteCodeRunContext runContext;
-    auto               node   = bc->node;
-    auto               module = node->sourceFile->module;
-    runContext.setup(node->sourceFile, node, module->buildParameters.buildCfg->byteCodeStackSize);
+    auto saveNode       = g_runContext.node;
+    auto saveSourceFile = g_runContext.sourceFile;
+
+    auto node   = bc->node;
+    auto module = node->sourceFile->module;
+    if (!g_runContext.stack)
+        g_runContext.setup(node->sourceFile, node, module->buildParameters.buildCfg->byteCodeStackSize);
+    else
+    {
+        g_runContext.sourceFile = node->sourceFile;
+        g_runContext.node       = node;
+    }
 
     // Parameters
     for (int i = 0; i < typeFunc->numParamsRegisters(); i++)
@@ -44,23 +54,32 @@ static void byteCodeRun(void* byteCodePtr, ...)
         paramRegisters.push_back(r);
     }
 
+    auto saveSp      = g_runContext.sp;
+    auto saveFirstRC = g_runContext.firstRC;
+
     while (!paramRegisters.empty())
     {
         auto r = paramRegisters.back();
         paramRegisters.pop_back();
-        runContext.push(r->pointer);
+        g_runContext.push(r->pointer);
     }
 
-    // Dummy 24 bytes on the stack necessary before a call
-    runContext.push(nullptr);
-    runContext.push(nullptr);
-    runContext.push(nullptr);
+    // Simulate a LocalCall
+    g_runContext.push(g_runContext.bp);
+    g_runContext.push(g_runContext.bc);
+    g_runContext.push(g_runContext.ip);
+    g_runContext.bc      = bc;
+    g_runContext.ip      = bc->out;
+    g_runContext.bp      = g_runContext.sp;
+    g_runContext.firstRC = g_runContext.curRC;
+    g_runContext.bc->enterByteCode(&g_runContext);
 
-    // Run !
-    runContext.bp = runContext.sp;
-    bc->addCallStack(&runContext);
-    bc->enterByteCode(&runContext);
-    module->runner.run(&runContext);
+    module->runner.run(&g_runContext);
+
+    g_runContext.sp         = saveSp;
+    g_runContext.node       = saveNode;
+    g_runContext.sourceFile = saveSourceFile;
+    g_runContext.firstRC    = saveFirstRC;
 }
 
 static void threadRun(void* param)

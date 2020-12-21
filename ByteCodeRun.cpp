@@ -406,6 +406,8 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->ip = context->pop<ByteCodeInstruction*>();
         context->bc = context->pop<ByteCode*>();
         context->bp = context->pop<uint8_t*>();
+        if (context->curRC == context->firstRC)
+            return false;
         break;
     }
     case ByteCodeOp::LocalCall:

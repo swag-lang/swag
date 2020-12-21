@@ -31,6 +31,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t stackS)
     SWAG_ASSERT(ip);
 
     curRC    = -1;
+    firstRC  = -1;
     hasError = false;
     errorLoc = nullptr;
     errorMsg.clear();

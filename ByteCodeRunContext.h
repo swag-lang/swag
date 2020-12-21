@@ -84,6 +84,7 @@ struct ByteCodeRunContext : public JobContext
 
     uint32_t stackSize = 0;
     int32_t  curRC     = -1;
+    int32_t  firstRC   = -1;
     bool     hasError  = false;
 
     const ConcreteCompilerMessage* currentCompilerMessage  = nullptr;
