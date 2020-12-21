@@ -78,6 +78,7 @@ namespace BackendLinkerWin32
         arguments.push_back("/SUBSYSTEM:CONSOLE");
         arguments.push_back("/NODEFAULTLIB");
         arguments.push_back(format("/MACHINE:%s", target));
+        arguments.push_back(format("/STACK:%d", g_CommandLine.stackSize));
 
         if (buildParameters.buildCfg->backendDebugInformations)
             arguments.push_back("/DEBUG");
