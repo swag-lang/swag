@@ -6,7 +6,7 @@ const N = 100
 
 func entry(th: thread.Thread)
 {
-    var x: String = "this is a very long string"
+    var x: String = "this is a very long string this is a very long string"
 }
 
 #test
