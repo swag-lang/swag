@@ -3,6 +3,12 @@
 #include "ByteCode.h"
 #include "AstNode.h"
 
+ByteCodeRunContext::~ByteCodeRunContext()
+{
+    free(registersRR);
+    free(stack);
+}
+
 void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t stackS)
 {
     if (!registersRR)
@@ -10,12 +16,16 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t stackS)
         registersRR = (Register*) malloc(MAX_ALLOC_RR * sizeof(Register));
         if (g_CommandLine.devMode)
             memset(registersRR, 0xFE, MAX_ALLOC_RR * sizeof(Register));
+        if (g_CommandLine.stats)
+            g_Stats.memBcStack += MAX_ALLOC_RR * sizeof(Register);
     }
 
     if (stackSize < stackS)
     {
         stackSize = stackS;
         stack     = (uint8_t*) realloc(stack, stackS);
+        if (g_CommandLine.stats)
+            g_Stats.memBcStack += stackS;
         if (g_CommandLine.devMode)
             memset(stack, 0xFE, stackS);
     }

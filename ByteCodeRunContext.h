@@ -22,6 +22,7 @@ struct StackValue
 
 struct ByteCodeRunContext : public JobContext
 {
+    ~ByteCodeRunContext();
     void setup(SourceFile* sf, AstNode* node, uint32_t stackS);
     void error(const Utf8& msg, ConcreteCompilerSourceLocation* loc = nullptr);
     void addCallStack();

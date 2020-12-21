@@ -364,7 +364,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
 
     // Free auto allocated memory
     for (auto ptr : node->bc->autoFree)
-        free(ptr);
+        g_Allocator.free(ptr.first, ptr.second);
 
     return true;
 }

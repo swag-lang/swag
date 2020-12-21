@@ -60,10 +60,10 @@ struct ByteCode
 
     static const int ALIGN_RIGHT_OPCODE = 25;
 
-    VectorNative<uint32_t> availableRegistersRC;
-    VectorNative<uint32_t> availableRegistersRC2;
-    uint32_t               regIsFree[MAX_CACHE_FREE_REG] = {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX};
-    VectorNative<void*>    autoFree;
+    VectorNative<uint32_t>            availableRegistersRC;
+    VectorNative<uint32_t>            availableRegistersRC2;
+    uint32_t                          regIsFree[MAX_CACHE_FREE_REG] = {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX};
+    VectorNative<pair<void*, size_t>> autoFree;
 
     Utf8                   name;
     VectorNative<AstNode*> localVars;

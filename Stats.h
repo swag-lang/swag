@@ -37,6 +37,7 @@ struct Stats
     atomic<size_t> memConcat       = 0;
     atomic<size_t> memTypes        = 0;
     atomic<size_t> memInstructions = 0;
+    atomic<size_t> memBcStack      = 0;
     atomic<size_t> memSymName      = 0;
     atomic<size_t> memSymOver      = 0;
     atomic<size_t> memSymTable     = 0;
