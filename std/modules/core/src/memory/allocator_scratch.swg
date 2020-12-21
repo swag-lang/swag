@@ -13,12 +13,6 @@ struct ScratchAllocator
 
 impl ScratchAllocator
 {
-    func opDrop(using self)
-    {
-        freeAll()
-        memory.free(block, capacity, fallback)
-    }
-
     // Free all allocated blocks
     func freeAll(using self)
     {
@@ -35,10 +29,17 @@ impl ScratchAllocator
         leaks.clear()
     }
 
+    func opDrop(using self)
+    {
+        freeAll()
+        memory.free(block, capacity, fallback)
+    }
+
     // First create allocator by allocation a block of memory with
     // the current context allocator
-    func createWithContext(using self, blockSize: uint, allocator: IAllocator = null)
+    func create(using self, blockSize: uint, allocator: IAllocator = null)
     {
+        debug.assert(block == null, "already created")
         debug.assert(blockSize > 0)
 
         // Allocate the big block to store all allocations

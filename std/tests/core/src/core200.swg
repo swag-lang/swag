@@ -4,7 +4,7 @@ using core.memory, swag
 #test
 {
     var mem: ScratchAllocator
-    mem.createWithContext(16'uint)
+    mem.create(16'uint)
 
     system.pushAllocator(cast(IAllocator) mem)
     {
