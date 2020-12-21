@@ -10,4 +10,4 @@ func toto(rep: u32)->String
 }
 
 const str = cast(string) toto(10)
-#print str
+#assert str == "XXXXXXXXXX"
