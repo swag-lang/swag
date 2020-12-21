@@ -40,7 +40,7 @@ struct ByteCodeRunContext : public JobContext
         if (sp - sizeof(T) < stack)
         {
             hasError = true;
-            errorMsg = "stack overflow during bytecode execution";
+            errorMsg = format("bytecode stack overflow (stack size is %s)", toNiceSize(stackSize).c_str());
             return;
         }
 
@@ -55,6 +55,13 @@ struct ByteCodeRunContext : public JobContext
 
     inline void decSP(uint32_t offset)
     {
+        if (sp - offset < stack)
+        {
+            hasError = true;
+            errorMsg = format("bytecode stack overflow (stack size is %s)", toNiceSize(stackSize).c_str());
+            return;
+        }
+
         sp -= offset;
     }
 

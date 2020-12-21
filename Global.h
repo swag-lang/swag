@@ -23,6 +23,7 @@ extern void*  doByteCodeLambda(void* ptr);
 extern void*  undoByteCodeLambda(void* ptr);
 extern bool   isByteCodeLambda(void* ptr);
 extern Utf8   toStringF64(double v);
+extern Utf8   toNiceSize(size_t size);
 
 extern struct Global g_Global;
 

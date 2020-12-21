@@ -135,3 +135,14 @@ bool isByteCodeLambda(void* ptr)
     uint64_t u = (uint64_t) ptr;
     return u & SWAG_LAMBDA_BC_MARKER;
 }
+
+Utf8 toNiceSize(size_t size)
+{
+    if (size < 1024)
+        return format("%u bytes", size);
+    if (size < 1024 * 1024)
+        return format("%.1f Kb", size / 1024.0f);
+    if (size < 1024 * 1024 * 1024)
+        return format("%.1f Mb", size / (1024.0f * 1024.0f));
+    return format("%.1f Gb", size / (1024.0f * 1024.0f * 1024.0f));
+}

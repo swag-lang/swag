@@ -50,18 +50,18 @@ void Stats::print()
     g_Log.messageHeaderDot("optim bc time", format("%.3fs", OS::timerToSeconds(optimBCTime.load())));
     g_Log.print("\n");
 
-    g_Log.messageHeaderDot("allocator memory", format("%I64uMb", allocatorMemory.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem wasted", format("%I64uMb", wastedMemory.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem nodes", format("%I64uMb", memNodes.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem scopes", format("%I64uMb", memScopes.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem seg", format("%I64uMb", memSeg.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem concat", format("%I64uMb", memConcat.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem types", format("%I64uMb", memTypes.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem instr", format("%I64uMb", memInstructions.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem symname", format("%I64uMb", memSymName.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem symover", format("%I64uMb", memSymOver.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem symtable", format("%I64uMb", memSymTable.load() / (1024 * 1024)));
-    g_Log.messageHeaderDot("mem utf8", format("%I64uMb", memUtf8.load() / (1024 * 1024)));
+    g_Log.messageHeaderDot("allocator memory", format("%s", toNiceSize(allocatorMemory.load()).c_str()));
+    g_Log.messageHeaderDot("mem wasted", format("%s", toNiceSize(wastedMemory.load()).c_str()));
+    g_Log.messageHeaderDot("mem nodes", format("%s", toNiceSize(memNodes.load()).c_str()));
+    g_Log.messageHeaderDot("mem scopes", format("%s", toNiceSize(memScopes.load()).c_str()));
+    g_Log.messageHeaderDot("mem seg", format("%s", toNiceSize(memSeg.load()).c_str()));
+    g_Log.messageHeaderDot("mem concat", format("%s", toNiceSize(memConcat.load()).c_str()));
+    g_Log.messageHeaderDot("mem types", format("%s", toNiceSize(memTypes.load()).c_str()));
+    g_Log.messageHeaderDot("mem instr", format("%s", toNiceSize(memInstructions.load()).c_str()));
+    g_Log.messageHeaderDot("mem symname", format("%s", toNiceSize(memSymName.load()).c_str()));
+    g_Log.messageHeaderDot("mem symover", format("%s", toNiceSize(memSymOver.load()).c_str()));
+    g_Log.messageHeaderDot("mem symtable", format("%s", toNiceSize(memSymTable.load()).c_str()));
+    g_Log.messageHeaderDot("mem utf8", format("%s", toNiceSize(memUtf8.load()).c_str()));
 
     g_Log.setDefaultColor();
 }
