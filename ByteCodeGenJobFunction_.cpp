@@ -1351,6 +1351,8 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
     if (funcNode->stackSize)
     {
+        if (funcNode->stackSize > g_CommandLine.stackSize)
+            context->sourceFile->report({funcNode, funcNode->token, format("stack overflow (maximum stack size is '--stack-size:%s')", toNiceSize(g_CommandLine.stackSize).c_str())});
         PushNode pn(context, funcNode->content);
         emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
     }
