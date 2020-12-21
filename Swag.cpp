@@ -179,5 +179,8 @@ int main(int argc, const char* argv[])
     // Prints stats, then exit
     g_Stats.print();
 
+    // To avoid freeing some stuff, and have a fast exit
+    g_Global.exiting = true;
+
     return g_Workspace.numErrors > 0 ? -1 : 0;
 }

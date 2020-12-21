@@ -1,8 +1,51 @@
 #include "pch.h"
 #include "Allocator.h"
 #include "CommandLine.h"
+#include "Global.h"
 
 thread_local Allocator g_Allocator;
+
+mutex      g_allocatorListMutex;
+Allocator* g_firstFreeAllocator = nullptr;
+
+Allocator::Allocator()
+{
+    // Reuse an existing allocator if there are some
+    // Be sure to not access g_allocatorListMutex during compiler tls allocation (by os runtime)
+    if(!g_Global.duringInit)
+    {
+        unique_lock lk(g_allocatorListMutex);
+        if (g_firstFreeAllocator)
+        {
+            memcpy(this, g_firstFreeAllocator, sizeof(Allocator));
+            auto next = g_firstFreeAllocator->nextFreeAllocator;
+            ::free(g_firstFreeAllocator);
+            g_firstFreeAllocator = next;
+            return;
+        }
+    }
+
+    memset(freeBuckets, 0, sizeof(freeBuckets));
+    memset(freeBucketsCpt, 0, sizeof(freeBucketsCpt));
+}
+
+Allocator::~Allocator()
+{
+    if (g_Global.exiting)
+        return;
+
+    // Destructor is only called when releasing tls, i.e. when a bytecode user thread is
+    // terminated (for compiler threads, g_Global.exiting will be true).
+    // We cannot release memory, as it can be used by someone else, so we copy the allocator informations so that the next created
+    // thread can reuse it.
+
+    auto cpy = (Allocator*) ::malloc(sizeof(Allocator));
+    memcpy(cpy, this, sizeof(Allocator));
+
+    unique_lock lk(g_allocatorListMutex);
+    cpy->nextFreeAllocator = g_firstFreeAllocator;
+    g_firstFreeAllocator   = cpy;
+}
 
 void* operator new(size_t t)
 {

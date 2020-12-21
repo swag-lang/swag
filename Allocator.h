@@ -13,11 +13,8 @@ struct AllocatorBucket
 
 struct Allocator
 {
-    Allocator()
-    {
-        memset(freeBuckets, 0, sizeof(freeBuckets));
-        memset(freeBucketsCpt, 0, sizeof(freeBucketsCpt));
-    }
+    Allocator();
+    ~Allocator();
 
     template<typename T>
     T* alloc()
@@ -51,9 +48,10 @@ struct Allocator
         size_t     size;
     } FreeBlock;
 
-    FreeBlock*       firstFreeBlock = nullptr;
-    AllocatorBucket* lastBucket     = nullptr;
-    uint8_t*         currentData    = nullptr;
+    Allocator*       nextFreeAllocator = nullptr;
+    FreeBlock*       firstFreeBlock    = nullptr;
+    AllocatorBucket* lastBucket        = nullptr;
+    uint8_t*         currentData       = nullptr;
     void*            freeBuckets[MAX_FREE_BUCKETS];
     size_t           freeBucketsCpt[MAX_FREE_BUCKETS];
 };

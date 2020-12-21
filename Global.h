@@ -9,7 +9,9 @@ const uint32_t SWAG_LIMIT_SEGMENT       = 0x7FFFFFFF;
 struct Global
 {
     void        setup();
-    atomic<int> uniqueID = 0;
+    atomic<int> uniqueID   = 0;
+    bool        duringInit = true;
+    bool        exiting    = false;
 };
 
 extern Utf8   format(const char* format, ...);

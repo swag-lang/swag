@@ -5,8 +5,11 @@
 
 ByteCodeRunContext::~ByteCodeRunContext()
 {
-    free(registersRR);
-    free(stack);
+    if (g_Global.exiting)
+        return;
+
+    ::free(registersRR);
+    ::free(stack);
 }
 
 void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t stackS)
