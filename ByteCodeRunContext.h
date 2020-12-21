@@ -23,7 +23,7 @@ struct StackValue
 struct ByteCodeRunContext : public JobContext
 {
     ~ByteCodeRunContext();
-    void setup(SourceFile* sf, AstNode* node, uint32_t stackS);
+    void setup(SourceFile* sf, AstNode* node);
     void error(const Utf8& msg, ConcreteCompilerSourceLocation* loc = nullptr);
     void addCallStack();
 
@@ -35,13 +35,14 @@ struct ByteCodeRunContext : public JobContext
         return popResult;
     }
 
+    void stackOverflow();
+
     template<typename T>
     inline void push(const T& value)
     {
         if (sp - sizeof(T) < stack)
         {
-            hasError = true;
-            errorMsg = format("bytecode stack overflow (stack size is %s)", toNiceSize(stackSize).c_str());
+            stackOverflow();
             return;
         }
 
@@ -58,8 +59,7 @@ struct ByteCodeRunContext : public JobContext
     {
         if (sp - offset < stack)
         {
-            hasError = true;
-            errorMsg = format("bytecode stack overflow (stack size is %s)", toNiceSize(stackSize).c_str());
+            stackOverflow();
             return;
         }
 

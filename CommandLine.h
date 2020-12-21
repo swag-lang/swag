@@ -77,6 +77,9 @@ struct CommandLine
     BackendArch arch               = BackendArch::X64;
     set<string> tags;
 
+    uint32_t stackSize  = 1024 * 1024;
+    uint32_t maxRecurse = 16 * 1024;
+
     // Backend
     BackendType backendType = BackendType::X64;
     bool        output      = true;
@@ -85,6 +88,8 @@ struct CommandLine
 
     fs::path exePath;
     string   exePathStr;
+
+    bool check();
 };
 
 extern CommandLine g_CommandLine;

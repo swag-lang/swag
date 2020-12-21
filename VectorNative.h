@@ -69,19 +69,19 @@ struct VectorNative
         allocated *= 2;
         allocated = max(allocated, 4);
         allocated = max(allocated, newcapacity);
-        T* newPtr = (T*) g_Allocator.alloc(g_Allocator.alignSize(allocated * sizeof(T)));
+        T* newPtr = (T*) g_Allocator.alloc(Allocator::alignSize(allocated * sizeof(T)));
         SWAG_ASSERT(newPtr);
         if (copy && count)
             memcpy(newPtr, buffer, count * sizeof(T));
         if (buffer)
-            g_Allocator.free(buffer, g_Allocator.alignSize(oldAllocated * sizeof(T)));
+            g_Allocator.free(buffer, Allocator::alignSize(oldAllocated * sizeof(T)));
         buffer = newPtr;
     }
 
     ~VectorNative()
     {
         if (buffer)
-            g_Allocator.free(buffer, g_Allocator.alignSize(allocated * sizeof(T)));
+            g_Allocator.free(buffer, Allocator::alignSize(allocated * sizeof(T)));
     }
 
     T* reserve_back()

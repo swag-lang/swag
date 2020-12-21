@@ -12,8 +12,10 @@ ByteCodeRunContext::~ByteCodeRunContext()
     ::free(stack);
 }
 
-void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t stackS)
+void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
 {
+    auto stackS = max(g_CommandLine.stackSize, 1024);
+
     if (!registersRR)
     {
         registersRR = (Register*) malloc(MAX_ALLOC_RR * sizeof(Register));
@@ -55,4 +57,10 @@ void ByteCodeRunContext::error(const Utf8& msg, ConcreteCompilerSourceLocation* 
     hasError = true;
     errorLoc = loc;
     errorMsg = msg;
+}
+
+void ByteCodeRunContext::stackOverflow()
+{
+    hasError = true;
+    errorMsg = format("bytecode stack overflow (maximum stack size is '--stack-size:%s')", toNiceSize(stackSize).c_str());
 }

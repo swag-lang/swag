@@ -1303,7 +1303,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         char*    ptr                   = (char*) registersRC[ip->a.u32].pointer;
         uint32_t count                 = registersRC[ip->b.u32].u32;
-        auto     size                  = g_Allocator.alignSize(count + 1);
+        auto     size                  = Allocator::alignSize(count + 1);
         registersRC[ip->a.u32].pointer = (uint8_t*) g_Allocator.alloc(size);
         context->bc->autoFree.push_back({(void*) registersRC[ip->a.u32].pointer, size});
         memcpy((void*) registersRC[ip->a.u32].pointer, ptr, count + 1);

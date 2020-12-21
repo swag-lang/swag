@@ -182,6 +182,7 @@
     <ClInclude Include="ByteCodeOptimizer.h" />
     <ClInclude Include="ByteCodeOptimizerJob.h" />
     <ClInclude Include="CompilerItf.h" />
+    <ClInclude Include="Limit.h" />
     <ClInclude Include="LLVMSetup.h" />
     <ClInclude Include="LoadFileJob.h" />
     <ClInclude Include="ModuleManager.h" />

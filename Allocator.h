@@ -35,9 +35,9 @@ struct Allocator
         return (T*) returnData;
     }
 
-    size_t alignSize(size_t size);
-    void   free(void*, size_t size);
-    void*  alloc(size_t size);
+    static size_t alignSize(size_t size);
+    void          free(void*, size_t size);
+    void*         alloc(size_t size);
 
     void* tryBucket(uint32_t bucket, size_t size);
     void* tryFreeBlock(uint32_t maxCount, size_t size);

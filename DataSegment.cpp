@@ -81,7 +81,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     {
         DataSegmentHeader bucket;
         bucket.size   = max(size, BUCKET_SIZE);
-        bucket.size   = (uint32_t) g_Allocator.alignSize(bucket.size);
+        bucket.size   = (uint32_t) Allocator::alignSize(bucket.size);
         bucket.buffer = (uint8_t*) g_Allocator.alloc(bucket.size);
         if (g_CommandLine.stats)
             g_Stats.memSeg += bucket.size;
@@ -355,7 +355,7 @@ void DataSegment::saveValue(void* address, uint32_t size, bool zero)
         savedValues[address] = {(void*) (size_t) * (uint64_t*) address, size};
         break;
     default:
-        auto buf = g_Allocator.alloc(g_Allocator.alignSize(size));
+        auto buf = g_Allocator.alloc(Allocator::alignSize(size));
         Memcpy(buf, address, size);
         savedValues[address] = {buf, size};
         break;
@@ -389,7 +389,7 @@ void DataSegment::restoreAllValues()
             break;
         default:
             Memcpy(one.first, one.second.ptr, one.second.size);
-            g_Allocator.free(one.second.ptr, g_Allocator.alignSize(one.second.size));
+            g_Allocator.free(one.second.ptr, Allocator::alignSize(one.second.size));
             break;
         }
     }

@@ -17,7 +17,7 @@ void Utf8::reserve(int newSize)
     auto lastAllocated = allocated;
     allocated *= 2;
     allocated      = max(allocated, newSize);
-    allocated      = (int) g_Allocator.alignSize(allocated);
+    allocated      = (int) Allocator::alignSize(allocated);
     auto newBuffer = (char*) g_Allocator.alloc(allocated);
     if (count)
         Memcpy(newBuffer, buffer, count + 1);
@@ -76,8 +76,8 @@ Utf8::Utf8(const char* from)
 
 Utf8::Utf8(const char* from, uint32_t len)
 {
-    buffer = padding;
-    count = 0;
+    buffer    = padding;
+    count     = 0;
     allocated = UTF8_SMALL_SIZE;
     buffer[0] = 0;
 

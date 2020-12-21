@@ -49,7 +49,7 @@ Allocator::~Allocator()
 
 void* operator new(size_t t)
 {
-    t           = g_Allocator.alignSize((int) t);
+    t           = Allocator::alignSize((int) t);
     uint64_t* p = (uint64_t*) g_Allocator.alloc(t + sizeof(uint64_t));
     *p          = (uint64_t) t;
     return p + 1;

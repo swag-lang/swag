@@ -740,6 +740,9 @@
     <ClInclude Include="ByteCodeOptContext.h">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClInclude>
+    <ClInclude Include="Limit.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

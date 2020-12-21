@@ -40,7 +40,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
     auto node   = bc->node;
     auto module = node->sourceFile->module;
     if (!g_runContext.stack)
-        g_runContext.setup(node->sourceFile, node, module->buildParameters.buildCfg->byteCodeStackSize);
+        g_runContext.setup(node->sourceFile, node);
     else
     {
         g_runContext.sourceFile = node->sourceFile;

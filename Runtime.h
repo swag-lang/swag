@@ -86,10 +86,8 @@ struct BuildCfg
     bool safetyGuards = true;
 
     // Bytecode
-    uint32_t byteCodeMaxRecurse = 1024;
-    uint32_t byteCodeStackSize  = 16 * 1024;
-    bool     byteCodeOptimize   = true;
-    bool     byteCodeInline     = true;
+    bool byteCodeOptimize = true;
+    bool byteCodeInline   = true;
 
     // Backend common
     bool backendDebugInformations = false;
@@ -311,13 +309,13 @@ enum class CompilerMsgKind
 
 enum class CompilerMsgKindMask : uint64_t
 {
-    PassBeforeSemantic = 1 << (uint32_t) CompilerMsgKind::PassBeforeSemantic,
-    PassAfterSemantic  = 1 << (uint32_t) CompilerMsgKind::PassAfterSemantic,
-    PassBeforeRunByteCode      = 1 << (uint32_t) CompilerMsgKind::PassBeforeRunByteCode,
-    PassBeforeOutput   = 1 << (uint32_t) CompilerMsgKind::PassBeforeOutput,
-    PassAllDone        = 1 << (uint32_t) CompilerMsgKind::PassAllDone,
-    SemanticFunc       = 1 << (uint32_t) CompilerMsgKind::SemanticFunc,
-    All                = 0xFFFFFFFFFFFFFFFF,
+    PassBeforeSemantic    = 1 << (uint32_t) CompilerMsgKind::PassBeforeSemantic,
+    PassAfterSemantic     = 1 << (uint32_t) CompilerMsgKind::PassAfterSemantic,
+    PassBeforeRunByteCode = 1 << (uint32_t) CompilerMsgKind::PassBeforeRunByteCode,
+    PassBeforeOutput      = 1 << (uint32_t) CompilerMsgKind::PassBeforeOutput,
+    PassAllDone           = 1 << (uint32_t) CompilerMsgKind::PassAllDone,
+    SemanticFunc          = 1 << (uint32_t) CompilerMsgKind::SemanticFunc,
+    All                   = 0xFFFFFFFFFFFFFFFF,
 };
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

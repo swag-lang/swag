@@ -406,8 +406,6 @@ namespace swag
         safetyGuards: bool = true
 
         // Bytecode
-        byteCodeMaxRecurse: u32 = 1024
-        byteCodeStackSize: u32  = 16 * 1024
         byteCodeOptimize: bool  = true
         byteCodeInline: bool    = true
 

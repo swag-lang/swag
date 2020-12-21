@@ -82,11 +82,10 @@ void ByteCode::addCallStack(ByteCodeRunContext* context)
 
 void ByteCode::enterByteCode(ByteCodeRunContext* context)
 {
-    auto module = context->sourceFile->module;
-    if (context->curRC == (int) module->buildParameters.buildCfg->byteCodeMaxRecurse)
+    if (g_CommandLine.maxRecurse && context->curRC == (int) g_CommandLine.maxRecurse)
     {
         context->hasError = true;
-        context->errorMsg = format("recursive overflow during bytecode execution (max recursion is '--bc-max-recurse:%d')", module->buildParameters.buildCfg->byteCodeMaxRecurse);
+        context->errorMsg = format("call level limit reached (maximum level is '--max-recurse:%d')", g_CommandLine.maxRecurse);
         return;
     }
 

@@ -108,6 +108,8 @@ int main(int argc, const char* argv[])
     // Process all arguments
     if (!cmdParser.process(argc - 2, argv + 2))
         exit(-1);
+    if (!g_CommandLine.check())
+        exit(-1);
 
     // [devmode] stuff
     if (g_CommandLine.devMode)

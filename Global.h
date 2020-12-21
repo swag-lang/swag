@@ -1,10 +1,7 @@
 #pragma once
 #include "Utf8.h"
 #include "Assert.h"
-
-const uint32_t SWAG_LIMIT_ARRAY_SIZE    = 0x7FFFFFFF;
-const uint32_t SWAG_LIMIT_COMPILER_LOAD = 0x7FFFFFFF;
-const uint32_t SWAG_LIMIT_SEGMENT       = 0x7FFFFFFF;
+#include "Limit.h"
 
 struct Global
 {
