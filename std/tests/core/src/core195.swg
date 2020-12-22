@@ -1,14 +1,14 @@
 ﻿#import "core"
-using core
+using core.memory
 
-var g_dbg: memory.DebugAllocator
+var g_dbg: DebugAllocator
 var g_cxt: swag.Context
 
 #init
 {
     g_cxt = :@getcontext()
-    g_dbg.allocator = @getcontext().allocator
     g_cxt.allocator = g_dbg
+    g_dbg.create()
     @setcontext(g_cxt)
 }
 
@@ -20,21 +20,24 @@ var g_cxt: swag.Context
         g_dbg.printAllocated()
         @assert(false)
     }
+
+    g_dbg.release()
 }
 
 #test
 {
     //#assert reflection.hasDrop(std.file.FileInfo)
 
-    var dbg: memory.DebugAllocator
-    dbg.allocator = @getcontext().allocator
+    var dbg: DebugAllocator
+    dbg.create()
+    defer dbg.release()
 
-    ptr := memory.alloc(16, dbg)
-    ptr1 := memory.new'String(dbg)
+    ptr := alloc(16, dbg)
+    ptr1 := new'String(dbg)
 
     //dbg.printAllocated()
 
-    memory.free(ptr, 16, dbg)
-    memory.delete'String(ptr1, dbg)
+    free(ptr, 16, dbg)
+    delete'String(ptr1, dbg)
     @assert(dbg.isEmpty())
 }

@@ -44,6 +44,17 @@ private
 
 public impl DebugAllocator
 {
+    // Create the allocator once
+    func create(self, allocator: IAllocator = null)
+    {
+        self.allocator = allocator ?? @getcontext().allocator
+    }
+
+    // Release allocator ressources
+    func release(using self)
+    {
+    }
+
     // Returns true if there are some remaining allocations
     func isEmpty(using self) => first == null
 
