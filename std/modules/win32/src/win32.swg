@@ -541,6 +541,10 @@ struct PROCESS_INFORMATION
     func FindClose(hFindFile: HANDLE)->BOOL;
     func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
     func SetCurrentDirectoryA(lpPathName: LPCSTR)->BOOL;
+
+    func CreateWaitableTimerA(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCSTR)->HANDLE;
+    func CancelWaitableTimer(hTimer: HANDLE)->BOOL;
+    //func SetWaitableTimer(hTimer: HANDLE, lpDueTime: const *LARGE_INTEGER, lPeriod: LONG, pfnCompletionRoutine: PTIMERAPCROUTINE, lpArgToCompletionRoutine: LPVOID, fResume: BOOL)->BOOL;
 }
 
 #[swag.foreign("user32")]
