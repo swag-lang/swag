@@ -13,6 +13,6 @@ var cpt: s32 = 0
 			continue
 		}
 	}
-	
+
 	@assert(cpt == 10)
 }

@@ -379,3 +379,14 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
 
     return true;
 }
+
+bool ByteCodeGenJob::emitDefer(ByteCodeGenContext* context)
+{
+    auto node = context->node;
+    SWAG_ASSERT(node->childs.size() == 1);
+
+    auto expr = node->childs.front();
+    node->ownerScope->deferredNodes.push_back(expr);
+
+    return true;
+}
