@@ -69,14 +69,14 @@ impl TextReader
 public impl TextReader
 {
     // Open the reader
-    func open(using self, fullname: string, encoding = TextEncoding.Utf8) -> ErrorId
+    func open(using self, fullname: string, encoding = TextEncoding.Utf8)->ErrorId
     {
         debug.assert(!stream.isOpen())
 
         var err: ErrorId
         (stream, err) = openRead(fullname)
-        if err return err
-
+        if err
+            return err
         debug.assert(stream.isOpen())
 
         byteSeek = 0
@@ -88,7 +88,6 @@ public impl TextReader
     // Close the reader
     func close(using self)
     {
-        debug.assert(stream.isOpen())
         stream.close()
     }
 
@@ -143,7 +142,7 @@ public impl TextReader
         {
             remain := buffer.count - byteSeek
             result.grow(result.length + remain)
-            memory.copy(result.buffer + result.length, buffer.buffer + byteSeek, cast(uint) remain)
+            memory.copy(result.buffer + result.length, buffer.buffer + byteSeek, remain)
             result.length += remain
         }
 
@@ -152,7 +151,7 @@ public impl TextReader
         while buffer.count
         {
             result.grow(result.length + buffer.count)
-            memory.copy(result.buffer + result.length, buffer.buffer, cast(uint) buffer.count)
+            memory.copy(result.buffer + result.length, buffer.buffer, buffer.count)
             result.length += buffer.count
             readBuffer()
         }

@@ -20,7 +20,8 @@ impl Mutex
     // Destroy an existing mutex
     func release(using self)
     {
-        if !handle return
+        if !handle
+            return
         CloseHandle(handle)
         handle = null
     }
