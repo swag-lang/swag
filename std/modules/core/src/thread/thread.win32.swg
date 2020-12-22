@@ -39,7 +39,7 @@ func create(th: *Thread, lambda: func(Thread), userParam: *void = null, priority
         l64 = autocast @thrunptr()
     else
     {
-        th.context.flags &= ~swag.ContextFlags.ByteCode
+        //th.context.flags &= ~swag.ContextFlags.ByteCode
         l64 &= ~swag.LambdaForeignMarker
     }
 

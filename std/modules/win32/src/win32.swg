@@ -514,6 +514,7 @@ struct PROCESS_INFORMATION
     func GetLocalTime(lpSystemTime: *SYSTEMTIME);
 
     func Sleep(dwMilliseconds: DWORD);
+    func SleepEx(dwMilliseconds: DWORD, bAltertable: BOOL);
     func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE;
     func SetThreadPriority(hThread: HANDLE, nPriority: s32)->BOOL;
     func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD;
@@ -525,6 +526,10 @@ struct PROCESS_INFORMATION
     func GetCurrentThread()->HANDLE;
     func CreateMutexA(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCSTR)->HANDLE;
     func ReleaseMutex(hMutex: HANDLE)->BOOL;
+
+    func CreateWaitableTimerA(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCSTR)->HANDLE;
+    func CancelWaitableTimer(hTimer: HANDLE)->BOOL;
+    func SetWaitableTimer(hTimer: HANDLE, lpDueTime: const *LARGE_INTEGER, lPeriod: LONG, pfnCompletionRoutine: *void, lpArgToCompletionRoutine: LPVOID, fResume: BOOL)->BOOL;
 
     func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
     func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;
@@ -541,10 +546,6 @@ struct PROCESS_INFORMATION
     func FindClose(hFindFile: HANDLE)->BOOL;
     func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
     func SetCurrentDirectoryA(lpPathName: LPCSTR)->BOOL;
-
-    func CreateWaitableTimerA(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCSTR)->HANDLE;
-    func CancelWaitableTimer(hTimer: HANDLE)->BOOL;
-    //func SetWaitableTimer(hTimer: HANDLE, lpDueTime: const *LARGE_INTEGER, lPeriod: LONG, pfnCompletionRoutine: PTIMERAPCROUTINE, lpArgToCompletionRoutine: LPVOID, fResume: BOOL)->BOOL;
 }
 
 #[swag.foreign("user32")]

@@ -1917,6 +1917,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
+        LARGE_INTEGER
+
         case ByteCodeOp::PushRVParam:
             pushRVParams.push_back({ip->a.u32, ip->b.u32});
             break;
