@@ -1,7 +1,5 @@
-// TODO: thread safety
-
 namespace memory;
-using swag
+using swag, sync
 
 public struct DebugAllocator
 {
@@ -11,6 +9,7 @@ public struct DebugAllocator
     size:   uint    // Total user size, in bytes
     nextId: u32
     count:  u32     // Number of allocated block
+    mutex:  Mutex
 }
 
 // This will be address before and after each allocated block
@@ -45,14 +44,18 @@ private
 public impl DebugAllocator
 {
     // Create the allocator once
-    func create(self, allocator: IAllocator = null)
+    func create(allocator: IAllocator = null)->DebugAllocator
     {
-        self.allocator = allocator ?? @getcontext().allocator
+        var result: retval
+        result.allocator = allocator ?? @getcontext().allocator
+        result.mutex = Mutex.create()
+        return result
     }
 
     // Release allocator ressources
     func release(using self)
     {
+        mutex.release()
     }
 
     // Returns true if there are some remaining allocations
@@ -94,7 +97,10 @@ public impl IAllocator for DebugAllocator
 {
     func alloc(using self, request: *AllocatorRequest)
     {
-        debug.assert(allocator != null, "missing concrete allocator")
+        debug.assert(allocator != null, "not created")
+
+        mutex.lock()
+        defer mutex.unlock()
 
         switch request.mode
         {

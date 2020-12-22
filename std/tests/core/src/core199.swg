@@ -3,8 +3,7 @@ using core.memory, swag
 
 #test
 {
-    var mem: ScratchAllocator
-    mem.create(16*1024'uint)
+    mem := ScratchAllocator.create(16*1024'uint)
     defer mem.release()
 
     system.pushAllocator(cast(IAllocator) mem)

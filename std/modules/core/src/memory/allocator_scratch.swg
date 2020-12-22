@@ -1,5 +1,5 @@
 public namespace memory;
-using swag;
+using swag, sync
 
 struct ScratchAllocator
 {
@@ -9,10 +9,42 @@ struct ScratchAllocator
     used:       uint    // Currently allocated size in 'blocks'
     leaks:      Array'{ptr: *void, size: uint}  // List of allocated blocks which do not feat in 'blocks'
     usedLeaks:  uint    // Currently total allocated size in 'leaks'
+    mutex:      Mutex
+
 }
 
 impl ScratchAllocator
 {
+    // First create allocator by allocating a block of memory with
+    // the specified allocator.
+    // If 'allocator' is null, the current context allocator will be used
+    func create(blockSize: uint, allocator: IAllocator = null)->ScratchAllocator
+    {
+        var result: retval
+        using result
+
+        mutex = Mutex.create()
+
+        // Allocate the big block to store all allocations
+        fallback = allocator ?? @getcontext().allocator
+        debug.assert(blockSize > 0)
+        capacity = blockSize
+        block = memory.alloc(blockSize, fallback)
+
+        // Dynamic array allocator
+        leaks.allocator = fallback
+        return result
+    }
+
+    // Release all allocated memory
+    func release(using self)
+    {
+        freeAll()
+        memory.free(block, capacity, fallback)
+        block = null
+        mutex.release()
+    }
+
     // Free all allocated blocks
     func freeAll(using self)
     {
@@ -28,39 +60,17 @@ impl ScratchAllocator
 
         leaks.clear()
     }
-
-    // First create allocator by allocating a block of memory with
-    // the specified allocator.
-    // If 'allocator' is null, the current context allocator will be used
-    func create(using self, blockSize: uint, allocator: IAllocator = null)
-    {
-        debug.assert(block == null, "already created")
-        debug.assert(blockSize > 0)
-
-        // Allocate the big block to store all allocations
-        fallback = allocator ?? @getcontext().allocator
-        capacity = blockSize
-        block = memory.alloc(blockSize, fallback)
-
-        // Dynamic array allocator
-        leaks.allocator = fallback
-    }
-
-    // Release all allocated memory
-    func release(using self)
-    {
-        freeAll()
-        memory.free(block, capacity, fallback)
-        block = null
-    }
 }
 
 impl IAllocator for ScratchAllocator
 {
     func alloc(using self, request: *AllocatorRequest)
     {
-        debug.assert(fallback != null, "missing fallback allocator")
-        debug.assert(block != null, "ScratchAllocator should be initialized first")
+        debug.assert(fallback != null, "not created")
+        debug.assert(block != null, "not created")
+
+        mutex.lock()
+        defer mutex.unlock()
 
         switch request.mode
         {

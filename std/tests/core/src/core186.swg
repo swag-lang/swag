@@ -18,13 +18,12 @@ func entry(th: thread.Thread)
 {
     var th: [N] thread.Thread
 
-    mutex = sync.createMutex()
+    mutex = sync.Mutex.create()
     @assert(mutex.isValid())
+    defer mutex.release()
 
     visit *t: th thread.create(t, &entry)
     visit *t: th t.start()
     thread.wait(&th[0], &th[1], &th[2])
     @assert(G == N * ITER)
-
-    sync.destroyMutex(&mutex)
 }

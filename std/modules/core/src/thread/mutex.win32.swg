@@ -2,27 +2,27 @@
 public namespace sync;
 using win32
 
-// Creates a new mutex
-func createMutex()->Mutex
-{
-    var result: retval
-    result.handle = CreateMutexA(null, 0, null)
-    return result
-}
-
-// Destroy an existing mutex
-func destroyMutex(mutex: *Mutex)
-{
-    if !mutex.handle return
-    CloseHandle(mutex.handle)
-    mutex.handle = null
-}
-
 impl Mutex
 {
     func opDrop(using self)
     {
-        destroyMutex(self)
+        release()
+    }
+
+    // Creates a new mutex
+    func create()->Mutex
+    {
+        var result: retval = ?
+        result.handle = CreateMutexA(null, 0, null)
+        return result
+    }
+
+    // Destroy an existing mutex
+    func release(using self)
+    {
+        if !handle return
+        CloseHandle(handle)
+        handle = null
     }
 
     // Try to lock the mutex, and return 'true' if it's the case
