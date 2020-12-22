@@ -11,7 +11,7 @@ func entry(t: Timer)
 #test
 {
     var timer: Timer
-    @assert(timer.init(10, true, &entry) == null)
+    @assert(timer.init(10, &entry, true) == null)
     defer timer.release()
     thread.sleep(30)
     @assert(G >= 1)
