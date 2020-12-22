@@ -43,7 +43,9 @@ func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {text: Strin
     var textReader: TextReader
 
     result.err = textReader.open(fullname, encoding)
-    if result.err return result
+    if result.err
+        return result
+    defer textReader.close()
 
     result.text = textReader.readToEnd()
     return result
@@ -56,7 +58,9 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8) -> {lines: Arr
     var textReader: TextReader
 
     result.err = textReader.open(fullname, encoding)
-    if result.err return result
+    if result.err
+        return result
+    defer textReader.close()
 
     res := textReader.readLine()
     while !res.isNull()
@@ -81,6 +85,7 @@ func readAllBytes(fullname: string) -> {bytes: Array'u8, err: ErrorId}
     }
 
     debug.assert(stream.isOpen())
+    defer stream.close()
 
     (len, err1) := getSize(stream)
     if err1
