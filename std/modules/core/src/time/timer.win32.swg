@@ -5,20 +5,17 @@ using win32
 #[swag.callback]
 private func timerEntry(param: *void)
 {
-    @print("entry\n")
+    t := cast(*Timer) param
+    t.userLambda(:t)
 }
 
 impl Timer
 {
     // Creates a new timer
-    func init(using self, autoReset: bool, elapsedTimeMs: u32, lambda: func(Timer))->ErrorId
+    func init(using self, elapsedTimeMs: u32, periodic: bool, lambda: func(Timer))->ErrorId
     {
-        h := CreateWaitableTimerA(null, autoReset ? TRUE : FALSE, null)
-        if h == null
-        {
-            error.setLastErrorId()
-            return error.last()
-        }
+        debug.assert(elapsedTimeMs > 0)
+        debug.assert(lambda != null)
 
         // As the threadEntry will be called by the os, need to be sure
         // we have a valid function pointer whatever the case is :
@@ -30,19 +27,13 @@ impl Timer
         else
             l64 &= ~swag.LambdaForeignMarker
 
-        @print(cast(s64) l64)
-
-        // Setup timer
-        var t: s64 = cast(s64) elapsedTimeMs * -10000's64
-        if !SetWaitableTimer(h, &t, 0, cast(*void) l64, self, FALSE)
+        if !CreateTimerQueueTimer(&handle, null, cast(*void) l64, self, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
         {
-            CloseHandle(h)
             error.setLastErrorId()
             return error.last()
         }
 
-        handle = h
-        SleepEx(2000, TRUE)
+        userLambda = lambda
         return null
     }
 
@@ -51,8 +42,7 @@ impl Timer
     {
         if !handle
             return
-        CancelWaitableTimer(handle)
-        CloseHandle(handle)
+        DeleteTimerQueueTimer(null, handle, null)
         handle = null
     }
 }

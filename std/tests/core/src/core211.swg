@@ -1,14 +1,18 @@
 #import "core"
 using core.time
 
+var G = 0
+
+func entry(t: Timer)
+{
+    G += 1
+}
+
 #test
 {
     var timer: Timer
-    @print("set\n")
-    @assert(timer.init(true, 1000, null) == null)
-
-    //now := nowMilliseconds()
-    //while nowMilliseconds() - now < 2000 {}
-
-    timer.release()
+    @assert(timer.init(10, true, &entry) == null)
+    defer timer.release()
+    thread.sleep(30)
+    @assert(G >= 1)
 }
