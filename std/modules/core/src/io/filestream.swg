@@ -2,7 +2,7 @@ public namespace file;
 
 alias FileHandle = const *void
 
-struct Stream
+struct FileStream
 {
     name:       String
     handle:     FileHandle
@@ -11,7 +11,7 @@ struct Stream
     canWrite:   bool
 }
 
-impl Stream
+impl FileStream
 {
     func opDrop(using self)
     {

@@ -13,7 +13,7 @@ func exists(fullname: string)->bool
 }
 
 // Open a new file stream
-func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)-> {stream: Stream, err: ErrorId}
+func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)-> {stream: FileStream, err: ErrorId}
 {
     var result: retval
     using result
@@ -70,13 +70,13 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
 }
 
 // Creates a new file stream for reading
-func openRead(fullname: string) -> {stream: Stream, err: ErrorId}
+func openRead(fullname: string) -> {stream: FileStream, err: ErrorId}
 {
     return open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
 }
 
 // Read from the given file stream, and returns the number of bytes
-func read(stream: Stream, buffer: *void, length: uint)->uint
+func read(stream: FileStream, buffer: *void, length: uint)->uint
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canRead)
@@ -88,7 +88,7 @@ func read(stream: Stream, buffer: *void, length: uint)->uint
 }
 
 // Close the given file stream
-func close(stream: *Stream)
+func close(stream: *FileStream)
 {
     if stream.handle
     {
@@ -98,7 +98,7 @@ func close(stream: *Stream)
 }
 
 // Returns the given file stream length on disk
-func getSize(stream: Stream) -> {size: u64, err: ErrorId}
+func getSize(stream: FileStream) -> {size: u64, err: ErrorId}
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)
@@ -119,7 +119,7 @@ func getSize(stream: Stream) -> {size: u64, err: ErrorId}
 }
 
 // Returns the current seek position of the given file stream
-func getPosition(stream: Stream) -> {position: u64, err: ErrorId}
+func getPosition(stream: FileStream) -> {position: u64, err: ErrorId}
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)
@@ -140,7 +140,7 @@ func getPosition(stream: Stream) -> {position: u64, err: ErrorId}
 }
 
 // Set the current seek position of the given file stream
-func setPosition(stream: Stream, origin: SeekOrigin, seek: u64) -> ErrorId
+func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64) -> ErrorId
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)

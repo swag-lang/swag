@@ -8,7 +8,7 @@ public enum TextEncoding
 
 public struct TextReader
 {
-    stream:         Stream
+    stream:         FileStream
     buffer:         Array'u8
     decode:         Array'u8
     encodingType =  TextEncoding.Utf8
