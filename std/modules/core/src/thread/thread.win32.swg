@@ -23,7 +23,7 @@ private func threadEntry(param: *void)
     th.userLambda(:th)
 }
 
-// Creates a new thread
+// Creates a new thread in pause state
 func create(th: *Thread, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal) -> ErrorId
 {
     debug.assert(!th.isValid(), "thread already created")
