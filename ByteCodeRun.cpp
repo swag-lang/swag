@@ -2047,7 +2047,11 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         sourceLocation.line   = location->lineStart;
         sourceLocation.column = location->colStart;
         Diagnostic diag{&dummyFile, sourceLocation, userMsg};
-        runContext->bc->sourceFile->report(diag);
+
+        if(g_byteCodeStack.steps.size())
+            g_byteCodeStack.steps[0].bc->sourceFile->report(diag);
+        else
+            runContext->bc->sourceFile->report(diag);
 
         return EXCEPTION_EXECUTE_HANDLER;
     }
