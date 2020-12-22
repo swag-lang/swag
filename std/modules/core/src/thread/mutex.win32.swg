@@ -6,11 +6,11 @@ impl Mutex
 {
     func opDrop(using self)
     {
-        release()
+        debug.assert(handle == null, "missing call to release()")
     }
 
     // Creates a new mutex
-    func create()->Mutex
+    func create()->Self
     {
         var result: retval = ?
         result.handle = CreateMutexA(null, 0, null)

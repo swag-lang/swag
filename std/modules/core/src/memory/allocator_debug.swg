@@ -44,7 +44,7 @@ private
 public impl DebugAllocator
 {
     // Create the allocator once
-    func create(allocator: IAllocator = null)->DebugAllocator
+    func create(allocator: IAllocator = null)->Self
     {
         var result: retval
         result.allocator = allocator ?? @getcontext().allocator

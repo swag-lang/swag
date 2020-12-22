@@ -15,10 +15,15 @@ struct ScratchAllocator
 
 impl ScratchAllocator
 {
+    func opDrop(using self)
+    {
+        debug.assert(block == null, "missing call to release()")
+    }
+
     // First create allocator by allocating a block of memory with
     // the specified allocator.
     // If 'allocator' is null, the current context allocator will be used
-    func create(blockSize: uint, allocator: IAllocator = null)->ScratchAllocator
+    func create(blockSize: uint, allocator: IAllocator = null)->Self
     {
         var result: retval
         using result
