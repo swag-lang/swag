@@ -12,8 +12,17 @@ private func timerEntry(param: *void)
 impl Timer
 {
     // Creates a new timer
+    func create(elapsedTimeMs: u32, lambda: func(Timer), periodic = false)->{res: Self, err: ErrorId}
+    {
+        var result: retval
+        result.err = result.res.init(elapsedTimeMs, lambda, periodic)
+        return result
+    }
+
+    // Initialize timer
     func init(using self, elapsedTimeMs: u32, lambda: func(Timer), periodic = false)->ErrorId
     {
+        debug.assert(handle == null)
         debug.assert(elapsedTimeMs > 0)
         debug.assert(lambda != null)
 
