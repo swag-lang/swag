@@ -30,20 +30,8 @@ func create(th: *Thread, lambda: func(Thread), userParam: *void = null, priority
     debug.assert(lambda != null, "lambda parameter is null")
     th.context = :@getcontext()
 
-    // As the threadEntry will be called by the os, need to be sure
-    // we have a valid function pointer whatever the case is :
-    // - we are running bytecode, and threadEntry should be run by the compiler
-    // - we are native, and threadEntry is like a foreign function (native, i.e. callback)
-    var l64 = cast(uint) &threadEntry
-    if l64 & swag.LambdaBcMarker
-        l64 = autocast @thrunptr()
-    else
-    {
-        //th.context.flags &= ~swag.ContextFlags.ByteCode
-        l64 &= ~swag.LambdaForeignMarker
-    }
-
-    h := CreateThread(null, 0, cast(*void) l64, th, CREATE_SUSPENDED, &th.id)
+    var cb = system.lambdaToCallback(&threadEntry)
+    h := CreateThread(null, 0, cb, th, CREATE_SUSPENDED, &th.id)
     if h == null
     {
         error.setLastErrorId()

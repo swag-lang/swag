@@ -516,7 +516,7 @@ struct PROCESS_INFORMATION
 
     func Sleep(dwMilliseconds: DWORD);
     func SleepEx(dwMilliseconds: DWORD, bAltertable: BOOL);
-    func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE;
+    func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: const *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE;
     func SetThreadPriority(hThread: HANDLE, nPriority: s32)->BOOL;
     func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD;
     func WaitForMultipleObjects(nCount: DWORD, lpHandles: const *HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD;
