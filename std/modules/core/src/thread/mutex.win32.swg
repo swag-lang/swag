@@ -10,11 +10,26 @@ impl Mutex
     }
 
     // Creates a new mutex
-    func create()->Self
+    func create()->{mtx: Self, err: ErrorId}
     {
-        var result: retval = ?
-        result.handle = CreateMutexA(null, 0, null)
+        var result: retval
+        result.err = result.mtx.init()
         return result
+    }
+
+    // Initialize mutex
+    func init(using self)->ErrorId
+    {
+        debug.assert(handle == null)
+
+        handle = CreateMutexA(null, 0, null)
+        if !handle
+        {
+            error.setLastErrorId()
+            return error.last()
+        }
+
+        return null
     }
 
     // Destroy an existing mutex

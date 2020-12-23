@@ -20,25 +20,33 @@ impl ScratchAllocator
         debug.assert(block == null, "missing call to release()")
     }
 
-    // First create allocator by allocating a block of memory with
-    // the specified allocator.
-    // If 'allocator' is null, the current context allocator will be used
-    func create(blockSize: uint, allocator: IAllocator = null)->Self
+    // Creates a new allocator
+    func create(blockSize: uint, allocator: IAllocator = null)->{res: Self, err: ErrorId}
     {
         var result: retval
-        using result
+        result.err = result.res.init(blockSize, allocator)
+        return result
+    }
 
-        mutex = Mutex.create()
+    // First initialize allocator by allocating a block of memory with
+    // the specified allocator.
+    // If 'allocator' is null, the current context allocator will be used
+    func init(self, blockSize: uint, allocator: IAllocator = null)->ErrorId
+    {
+        // Mutex
+        err := self.mutex.init()
+        if err
+            return err
 
         // Allocate the big block to store all allocations
-        fallback = allocator ?? @getcontext().allocator
+        self.fallback = allocator ?? @getcontext().allocator
         debug.assert(blockSize > 0)
-        capacity = blockSize
-        block = memory.alloc(blockSize, fallback)
+        self.capacity = blockSize
+        self.block = memory.alloc(blockSize, self.fallback)
 
         // Dynamic array allocator
-        leaks.allocator = fallback
-        return result
+        self.leaks.allocator = self.fallback
+        return null
     }
 
     // Release all allocated memory

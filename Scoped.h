@@ -113,6 +113,24 @@ struct ScopedStruct
     Scope*     savedStruct;
 };
 
+struct ScopedSelfStruct
+{
+    ScopedSelfStruct(SyntaxJob* job, Scope* structScope)
+    {
+        savedJob                    = job;
+        savedStruct                 = job->currentSelfStructScope;
+        job->currentSelfStructScope = structScope;
+    }
+
+    ~ScopedSelfStruct()
+    {
+        savedJob->currentSelfStructScope = savedStruct;
+    }
+
+    SyntaxJob* savedJob;
+    Scope*     savedStruct;
+};
+
 struct ScopedMainNode
 {
     ScopedMainNode(SyntaxJob* job, AstNode* mainNode)

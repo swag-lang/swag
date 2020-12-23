@@ -18,7 +18,8 @@ func entry(th: thread.Thread)
 {
     var th: [N] thread.Thread
 
-    mutex = sync.Mutex.create()
+    err := mutex.init()
+    @assert(!err)
     @assert(mutex.isValid())
     defer mutex.release()
 

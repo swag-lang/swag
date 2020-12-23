@@ -168,6 +168,7 @@ struct SyntaxJob : public Job
     AstFuncDecl*        currentFct             = nullptr;
     AstBreakable*       currentBreakable       = nullptr;
     Scope*              currentStructScope     = nullptr;
+    Scope*              currentSelfStructScope = nullptr;
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
     Token*              currentTokenLocation   = nullptr;
     AstNode*            currentMainNode        = nullptr;

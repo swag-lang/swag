@@ -39,6 +39,16 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
 
     SWAG_CHECK(checkIsValidUserName(identifier));
 
+    // Replace "Self" with the corresponding struct name
+    if (identifier->token.text == "Self")
+    {
+        SWAG_VERIFY(parent->ownerStructScope, sourceFile->report({identifier, identifier->token, "type 'Self' cannot be used outside an 'impl', 'struct' or 'interface' block"}));
+        if (currentSelfStructScope)
+            identifier->token.text = currentSelfStructScope->name;
+        else
+            identifier->token.text = parent->ownerStructScope->name;
+    }
+
     if (acceptParameters && !tokenizer.lastTokenIsEOL)
     {
         // Generic arguments

@@ -172,8 +172,9 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     structNode->scope = newScope;
 
     {
-        Scoped       sc(this, structNode->scope);
-        ScopedStruct ss(this, structNode->scope);
+        ScopedSelfStruct sf(this, parent->ownerStructScope);
+        Scoped           sc(this, structNode->scope);
+        ScopedStruct     ss(this, structNode->scope);
 
         // Content
         if (anonymousStruct)

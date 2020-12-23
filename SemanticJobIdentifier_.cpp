@@ -2193,13 +2193,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         return true;
     }
 
-    // Patch the node name in case of 'Self'. Replace it with the structure name
-    if (node->token.text == "Self")
-    {
-        SWAG_VERIFY(node->ownerStructScope, context->report({node, node->token, "type 'Self' cannot be used outside an 'impl', 'struct' or 'interface' block"}));
-        node->token.text = node->ownerStructScope->name;
-    }
-
     // Compute dependencies if not already done
     if (node->semanticState == AstNodeResolveState::ProcessingChilds)
     {
