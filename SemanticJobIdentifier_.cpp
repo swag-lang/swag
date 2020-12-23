@@ -1970,6 +1970,19 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
     auto node = context->node;
     for (int i = 0; i < matches.size(); i++)
     {
+        // Priority to a local var/parameter versus a function
+        if (matches[i]->symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
+        {
+            for (int j = 0; j < matches.size(); j++)
+            {
+                if (matches[j]->symbolOverload->flags & (OVERLOAD_VAR_LOCAL | OVERLOAD_VAR_FUNC_PARAM))
+                {
+                    matches[i]->remove = true;
+                    break;
+                }
+            }
+        }
+
         // Priority to a concrete type versus a generic one
         auto lastOverloadType = matches[i]->symbolOverload->symbol->ownerTable->scope->owner->typeInfo;
         if (lastOverloadType && lastOverloadType->flags & TYPEINFO_GENERIC)

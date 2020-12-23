@@ -1,8 +1,5 @@
-
-;
-
-#unittest error;
-var main: bool;
+#unittest error
+var main: bool
 
 func main ()
 {

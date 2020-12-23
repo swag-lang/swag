@@ -44,18 +44,18 @@ private
 public impl DebugAllocator
 {
     // Create the allocator
-    func create(allocator: IAllocator = null)->{res: Self, err: ErrorId}
+    func create(alloc: IAllocator = null)->{res: Self, err: ErrorId}
     {
         var result: retval
-        result.err = result.res.init(allocator)
+        result.err = result.res.init(alloc)
         return result
     }
 
     // Initialize the allocator
-    func init(self, allocator: IAllocator = null)->ErrorId
+    func init(using self, alloc: IAllocator = null)->ErrorId
     {
-        self.allocator = allocator ?? @getcontext().allocator
-        return self.mutex.init()
+        allocator = alloc ?? @getcontext().allocator
+        return mutex.init()
     }
 
     // Release allocator ressources

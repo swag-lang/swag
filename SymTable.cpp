@@ -262,6 +262,11 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     // A symbol with a different kind already exists
     if (symbol->kind != kind)
     {
+        // If they are not in the same scope, then this is fine for now.
+        // The identifier resolution will deal with ambiguities later, if necessary
+        if (node->ownerScope && &node->ownerScope->symTable != this)
+            return true;
+
         auto       firstOverload = &symbol->defaultOverload;
         Utf8       msg           = format("symbol '%s' already defined as %s in an accessible scope", symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
         Diagnostic diag{node, token, msg};

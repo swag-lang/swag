@@ -1,8 +1,6 @@
+//#unittest error
 
-;
-
-#unittest error;
-var b: bool;
+var b: bool
 namespace c
 {
 	namespace b
