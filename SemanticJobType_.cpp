@@ -215,6 +215,21 @@ bool SemanticJob::resolveType(SemanticContext* context)
         ptrPointer->computeName();
         ptrPointer->computePointedType();
         typeNode->typeInfo = ptrPointer;
+
+        // In fact no, this is a pointer on a const pointer
+        if (typeNode->ptrConstCount)
+        {
+            ptrPointer            = allocType<TypeInfoPointer>();
+            ptrPointer->ptrCount  = typeNode->ptrConstCount;
+            ptrPointer->finalType = typeNode->typeInfo;
+            ptrPointer->finalType->flags |= TYPEINFO_CONST;
+            ptrPointer->finalType->computeName();
+            ptrPointer->sizeOf    = sizeof(void*);
+            ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
+            ptrPointer->computeName();
+            ptrPointer->computePointedType();
+            typeNode->typeInfo = ptrPointer;
+        }
     }
 
     // In fact, this is a reference

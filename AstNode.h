@@ -651,12 +651,13 @@ struct AstTypeExpression : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    AstNode*  identifier  = nullptr;
-    TypeInfo* literalType = nullptr;
+    AstNode*  identifier;
+    TypeInfo* literalType;
 
-    uint8_t  ptrCount;
-    uint8_t  arrayDim;
     uint16_t typeFlags;
+    uint8_t  ptrCount;
+    uint8_t  ptrConstCount;
+    uint8_t  arrayDim;
 };
 
 struct AstTypeLambda : public AstNode

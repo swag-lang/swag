@@ -531,7 +531,7 @@ struct PROCESS_INFORMATION
     func CreateWaitableTimerA(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCSTR)->HANDLE;
     func CancelWaitableTimer(hTimer: HANDLE)->BOOL;
     func SetWaitableTimer(hTimer: HANDLE, lpDueTime: const *LARGE_INTEGER, lPeriod: LONG, pfnCompletionRoutine: *void, lpArgToCompletionRoutine: LPVOID, fResume: BOOL)->BOOL;
-    func CreateTimerQueueTimer(phNewTimer: const *HANDLE, timerQueue: HANDLE, callback: *void, parameter: *void, dueTime: DWORD, period: DWORD, flags: ULONG)->BOOL;
+    func CreateTimerQueueTimer(phNewTimer: *HANDLE, timerQueue: HANDLE, callback: *void, parameter: *void, dueTime: DWORD, period: DWORD, flags: ULONG)->BOOL;
     func DeleteTimerQueueTimer(timerQueue: HANDLE, timer: HANDLE, completionEvent: HANDLE)->BOOL;
 
     func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;

@@ -270,6 +270,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
+    to = TypeManager::concreteType(to);
 
     if (isSameFlags & ISSAME_CAST)
     {

@@ -362,12 +362,31 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     }
 
     // Pointers
-    while (token.id == TokenId::SymAsterisk)
+    if (token.id == TokenId::SymAsterisk)
     {
-        if (node->ptrCount == 254)
-            return syntaxError(token, "too many pointer dimensions (max is 254)");
-        node->ptrCount++;
-        SWAG_CHECK(tokenizer.getToken(token));
+        while (token.id == TokenId::SymAsterisk)
+        {
+            if (node->ptrCount == 254)
+                return syntaxError(token, "too many pointer dimensions (max is 254)");
+            node->ptrCount++;
+            SWAG_CHECK(tokenizer.getToken(token));
+        }
+
+        if (token.id == TokenId::KwdConst)
+        {
+            node->ptrConstCount = node->ptrCount;
+            node->ptrCount      = 0;
+            SWAG_VERIFY(!isConst, syntaxError(token, "'const' already defined"));
+            SWAG_CHECK(tokenizer.getToken(token));
+            SWAG_VERIFY(token.id == TokenId::SymAsterisk, syntaxError(token, "missing pointer declaration '*' after 'const'"));
+            while (token.id == TokenId::SymAsterisk)
+            {
+                if (node->ptrCount == 254)
+                    return syntaxError(token, "too many pointer dimensions (max is 254)");
+                node->ptrCount++;
+                SWAG_CHECK(tokenizer.getToken(token));
+            }
+        }
     }
 
     // Reference

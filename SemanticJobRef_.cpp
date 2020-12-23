@@ -51,16 +51,21 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         TypeInfoPointer* ptrType = nullptr;
 
         // Pointer on a pointer
+        bool done = false;
         if (typeInfo->kind == TypeInfoKind::Pointer)
         {
             TypeInfoPointer* typeInfoPtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-            ptrType                      = (TypeInfoPointer*) typeInfoPtr->clone();
-            ptrType->ptrCount++;
-            ptrType->computeName();
+            if (!typeInfoPtr->isConst())
+            {
+                ptrType = (TypeInfoPointer*)typeInfoPtr->clone();
+                ptrType->ptrCount++;
+                ptrType->computeName();
+                done = true;
+            }
         }
 
-        // Else new pointer
-        else
+        // A new pointer
+        if (!done)
         {
             ptrType           = allocType<TypeInfoPointer>();
             ptrType->ptrCount = 1;
