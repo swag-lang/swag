@@ -23,29 +23,6 @@ private func threadEntry(param: *void)
     th.userLambda(:th)
 }
 
-// Creates a new thread in pause state
-func create(th: *Thread, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal) -> ErrorId
-{
-    debug.assert(!th.isValid(), "thread already created")
-    debug.assert(lambda != null, "lambda parameter is null")
-    th.context = :@getcontext()
-
-    var cb = system.lambdaToCallback(&threadEntry)
-    h := CreateThread(null, 0, cb, th, CREATE_SUSPENDED, &th.id)
-    if h == null
-    {
-        error.setLastErrorId()
-        return error.last()
-    }
-
-    th.userLambda = lambda
-    th.userParam = userParam
-    th.handle = h
-    th.setPriority(priority)
-
-    return null
-}
-
 // Wait multiple threads
 func wait(threads: *Thread...)
 {
@@ -75,6 +52,28 @@ func wait(threads: *Thread...)
 
 impl Thread
 {
+    // Initialize a thread in pause state
+    func init(using self, lambda: func(Thread), param: *void = null, prio = ThreadPriority.Normal)->ErrorId
+    {
+        debug.assert(!isValid(), "thread already created")
+        debug.assert(lambda != null, "lambda parameter is null")
+        context = :@getcontext()
+
+        var cb = system.lambdaToCallback(&threadEntry)
+        h := CreateThread(null, 0, cb, self, CREATE_SUSPENDED, &id)
+        if h == null
+        {
+            error.setLastErrorId()
+            return error.last()
+        }
+
+        userLambda = lambda
+        userParam = param
+        handle = h
+        setPriority(prio)
+        return null
+    }
+
     // Resume the given thread, if it was paused
     func start(using self)->ErrorId
     {

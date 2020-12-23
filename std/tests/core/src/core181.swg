@@ -1,6 +1,6 @@
 ﻿#import "core"
 using core.thread
-alias createThread = thread.create
+alias createThread = thread.Thread.init
 
 var G = 0's64
 const N = 5

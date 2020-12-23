@@ -9,7 +9,7 @@ func entry(th: thread.Thread)
 #test
 {
     var th: thread.Thread
-    thread.create(&th, &entry)
+    th.init(&entry)
     th.start()
     th.wait()
 }

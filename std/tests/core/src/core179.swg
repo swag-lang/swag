@@ -18,8 +18,8 @@ func entry2(th: thread.Thread)
 //#[swag.printbc]
 #test
 {
-    thread.create(&th1, &entry1)
-    thread.create(&th2, &entry2)
+    th1.init(&entry1)
+    thread.Thread.init(&th2, &entry2)
     th1.start()
     th2.start()
     th2.wait()

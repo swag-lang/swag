@@ -23,7 +23,7 @@ func entry(th: thread.Thread)
     defer mutex.release()
     @assert(mutex.isValid())
 
-    visit *t: th thread.create(t, &entry)
+    visit *t: th t.init(&entry)
     visit *t: th t.start()
     visit *t: th t.wait()
     @assert(G == N * ITER)
