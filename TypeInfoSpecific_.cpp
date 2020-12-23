@@ -274,6 +274,12 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_CAST)
     {
+        if (to->kind == TypeInfoKind::Generic)
+            return true;
+    }
+
+    if (isSameFlags & ISSAME_CAST)
+    {
         if (this == g_TypeMgr.typeInfoNull && to->kind == TypeInfoKind::Lambda)
             return true;
     }

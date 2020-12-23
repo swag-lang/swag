@@ -17,17 +17,8 @@ impl Timer
         debug.assert(elapsedTimeMs > 0)
         debug.assert(lambda != null)
 
-        // As the threadEntry will be called by the os, need to be sure
-        // we have a valid function pointer whatever the case is :
-        // - we are running bytecode, and threadEntry should be run by the compiler
-        // - we are native, and threadEntry is like a foreign function (native, i.e. callback)
-        var l64 = cast(uint) &timerEntry
-        if l64 & swag.LambdaBcMarker
-            l64 = autocast @thrunptr()
-        else
-            l64 &= ~swag.LambdaForeignMarker
-
-        if !CreateTimerQueueTimer(&handle, null, cast(*void) l64, self, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
+        var cb = system.lambdaToCallback(&timerEntry)
+        if !CreateTimerQueueTimer(&handle, null, cb, self, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
         {
             error.setLastErrorId()
             return error.last()
