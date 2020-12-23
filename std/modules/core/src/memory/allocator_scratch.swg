@@ -21,17 +21,17 @@ impl ScratchAllocator
     }
 
     // Creates a new allocator
-    func create(blockSize: uint, alloc: IAllocator = null)->{res: Self, err: ErrorId}
+    func create(blockSize: uint, allocator: IAllocator = null)->{res: Self, err: ErrorId}
     {
         var result: retval
-        result.err = result.res.init(blockSize, alloc)
+        result.err = result.res.init(blockSize, allocator)
         return result
     }
 
     // First initialize allocator by allocating a block of memory with
     // the specified allocator.
     // If 'allocator' is null, the current context allocator will be used
-    func init(using self, blockSize: uint, alloc: IAllocator = null)->ErrorId
+    func init(using self, blockSize: uint, allocator: IAllocator = null)->ErrorId
     {
         // Mutex
         err := mutex.init()
@@ -39,7 +39,7 @@ impl ScratchAllocator
             return err
 
         // Allocate the big block to store all allocations
-        fallback = alloc ?? @getcontext().allocator
+        fallback = #scopefct.allocator ?? @getcontext().allocator
         debug.assert(blockSize > 0)
         capacity = blockSize
         block = memory.alloc(blockSize, fallback)

@@ -285,8 +285,21 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         canOverload = true;
     if (!canOverload && !symbol->overloads.empty())
     {
-        auto       firstOverload = symbol->overloads[0];
-        Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
+        auto firstOverload = symbol->overloads[0];
+
+        // Special case for function parameters. We want to let the symbol resolution to deal with ambiguities if we can
+        // because the user has some ways (#param) to solve this.
+        // That way, a function parameter can have the same name as something else (like a field in a struct)
+        if (symbol->kind == SymbolKind::Variable &&
+            node->parent &&
+            node->parent->kind == AstNodeKind::FuncDeclParams &&
+            this != &node->ownerScope->symTable &&
+            !(firstOverload->flags & OVERLOAD_VAR_FUNC_PARAM))
+        {
+            return true;
+        }
+
+        Utf8       msg = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};

@@ -1639,18 +1639,26 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         {
             scopeHierarchy.insert(startScope);
 
-            // Add private scope
-            auto it = startScope->privateScopes.find(context->sourceFile);
-            if (it != startScope->privateScopes.end())
-                scopeHierarchy.insert(it->second);
+            // Only deal with previous scope if the previous node wants to
+            bool addAlternative = true;
+            if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->semFlags & AST_SEM_FORCE_SCOPE)
+                addAlternative = false;
 
-            // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
-            // relevant and we should not use it
-            if (startScope->kind != ScopeKind::Namespace)
+            if (addAlternative)
             {
-                for (auto s : startScope->owner->alternativeScopes)
-                    scopeHierarchy.insert(s);
-                scopeHierarchyVars.append(startScope->owner->alternativeScopesVars);
+                // Add private scope
+                auto it = startScope->privateScopes.find(context->sourceFile);
+                if (it != startScope->privateScopes.end())
+                    scopeHierarchy.insert(it->second);
+
+                // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
+                // relevant and we should not use it
+                if (startScope->kind != ScopeKind::Namespace)
+                {
+                    for (auto s : startScope->owner->alternativeScopes)
+                        scopeHierarchy.insert(s);
+                    scopeHierarchyVars.append(startScope->owner->alternativeScopesVars);
+                }
             }
         }
 

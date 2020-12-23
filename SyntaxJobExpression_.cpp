@@ -163,10 +163,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         break;
 
     case TokenId::SymBackTick:
-        SWAG_CHECK(doIdentifierRef(parent, result));
-        break;
-
     case TokenId::Identifier:
+    case TokenId::CompilerScopeFct:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
@@ -902,6 +900,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result, bool acceptParameters)
 
     case TokenId::Identifier:
     case TokenId::SymBackTick:
+    case TokenId::CompilerScopeFct:
     {
         AstNode* exprNode = nullptr;
         AstNode* multi    = nullptr;

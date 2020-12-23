@@ -414,6 +414,24 @@ bool SemanticJob::resolveCompilerDefined(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveCompilerScopeFct(SemanticContext* context)
+{
+    auto node          = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+    auto identifierRef = node->identifierRef;
+
+    SWAG_VERIFY(!identifierRef->startScope, context->report({node, "an identifier marked with '#scopefct' cannot be used in a scope"}));
+    SWAG_VERIFY(node->ownerFct, context->report({node, "an identifier marked with '#scopefct' can only be used inside a function"}));
+
+    node->semFlags |= AST_SEM_FORCE_SCOPE;
+    node->typeInfo = g_TypeMgr.typeInfoVoid;
+
+    identifierRef->previousResolvedNode = node;
+    identifierRef->startScope           = node->ownerFct->scope;
+    node->flags |= AST_NO_BYTECODE;
+
+    return true;
+}
+
 bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 {
     auto node = context->node;

@@ -320,6 +320,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doDefer(parent, result));
         break;
     case TokenId::SymBackTick:
+    case TokenId::CompilerScopeFct:
     case TokenId::Identifier:
     case TokenId::IntrinsicPrint:
     case TokenId::IntrinsicAssert:

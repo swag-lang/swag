@@ -22,6 +22,7 @@ bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
 bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
 {
     bool backTick = false;
+
     if (token.id == TokenId::SymBackTick)
     {
         SWAG_CHECK(tokenizer.getToken(token));
@@ -31,7 +32,10 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
     identifier->inheritTokenLocation(token);
     identifier->inheritTokenName(token);
-    identifier->semanticFct   = SemanticJob::resolveIdentifier;
+    if (token.id == TokenId::CompilerScopeFct)
+        identifier->semanticFct = SemanticJob::resolveCompilerScopeFct;
+    else
+        identifier->semanticFct = SemanticJob::resolveIdentifier;
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
     if (backTick)
         identifier->flags |= AST_IDENTIFIER_BACKTICK;
