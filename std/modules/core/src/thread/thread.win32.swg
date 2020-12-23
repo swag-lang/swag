@@ -53,7 +53,7 @@ func wait(threads: *Thread...)
 impl Thread
 {
     // Initialize a thread in pause state
-    func init(using self, lambda: func(Thread), param: *void = null, prio = ThreadPriority.Normal)->ErrorId
+    func init(using self, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal)->ErrorId
     {
         debug.assert(!isValid(), "thread already created")
         debug.assert(lambda != null, "lambda parameter is null")
@@ -68,9 +68,9 @@ impl Thread
         }
 
         userLambda = lambda
-        userParam = param
         handle = h
-        setPriority(prio)
+        self.userParam = #scopefct.userParam
+        setPriority(#scopefct.priority)
         return null
     }
 
@@ -88,17 +88,18 @@ impl Thread
     }
 
     // Set the thread priority
-    func setPriority(using self, newPriority: ThreadPriority)
+    func setPriority(using self, priority: ThreadPriority)
     {
         debug.assert(isValid())
 
-        if priority == newPriority
+        newPrio := #scopefct.priority
+        if self.priority == newPrio
             return
-        priority = newPriority
+        self.priority = newPrio
 
         using ThreadPriority
         #[swag.complete]
-        switch priority
+        switch newPrio
         {
             case Lowest:        SetThreadPriority(handle, THREAD_PRIORITY_LOWEST)
             case BelowNormal:   SetThreadPriority(handle, THREAD_PRIORITY_BELOW_NORMAL)
