@@ -82,10 +82,88 @@ static void byteCodeRun(void* byteCodePtr, ...)
     g_runContext.firstRC    = saveFirstRC;
 }
 
-static void threadRun(void* param)
+static void doCallback(void* cb, void* p1, void* p2, void* p3, void* p4);
+
+struct Callback
 {
-    void** arr = (void**) param;
-    byteCodeRun(arr[0], &param);
+    void* bytecode;
+    void* cb;
+};
+
+#define DECL_CB(__idx)                                                                   \
+    void __callback##__idx(void* p1, void* p2, void* p3, void* p4) \
+    {                                                                                    \
+        doCallback(&__callback##__idx, p1, p2, p3, p4);                                   \
+    }
+#define USE_CB(__idx)              \
+    {                              \
+        nullptr, __callback##__idx \
+    }
+
+// WARNING WARNING WARNING WARNING WARNING WARNING
+// WARNING WARNING WARNING WARNING WARNING WARNING
+// WARNING WARNING WARNING WARNING WARNING WARNING
+//
+// If /OPT:ICF is enabled in the linker (COMDAT FOLDING), this will not work
+// as the linker will make only one __callback function, and all pointers in
+// g_callbackArr will be the same !!!
+
+DECL_CB(1);
+DECL_CB(2);
+DECL_CB(3);
+DECL_CB(4);
+
+Callback g_callbackArr[] = {
+    USE_CB(1),
+    USE_CB(2),
+    USE_CB(3),
+    USE_CB(4),
+};
+
+mutex    g_makeCallbackMutex;
+uint32_t g_makeCallbackCount = 0;
+
+static void doCallback(void* cb, void* p1, void* p2, void* p3, void* p4)
+{
+    uint32_t cbIndex = UINT32_MAX;
+
+    // Find the slot that corresponds to the native callback
+    {
+        unique_lock lk(g_makeCallbackMutex);
+        for (uint32_t i = 0; i < g_makeCallbackCount; i++)
+        {
+            if (g_callbackArr[i].cb == cb)
+            {
+                cbIndex = i;
+                break;
+            }
+        }
+    }
+
+    SWAG_ASSERT(cbIndex != UINT32_MAX);
+    byteCodeRun(g_callbackArr[cbIndex].bytecode, &p1, &p2, &p3, &p4);
+}
+
+void* makeCallback(void* lambda)
+{
+    unique_lock lk(g_makeCallbackMutex);
+
+    g_callbackArr[0].cb = __callback1;
+
+    // Search if the lambda pointer has already been associated with a given callback
+    for (uint32_t i = 0; i < g_makeCallbackCount; i++)
+    {
+        if (g_callbackArr[i].bytecode == lambda)
+            return g_callbackArr[i].cb;
+    }
+
+    // No more room
+    if (g_makeCallbackCount == sizeof(g_callbackArr) / sizeof(g_callbackArr[0]))
+        return nullptr;
+
+    // Use a new slot
+    g_callbackArr[g_makeCallbackCount].bytecode = lambda;
+    return g_callbackArr[g_makeCallbackCount++].cb;
 }
 
 void initDefaultContext()
@@ -98,7 +176,7 @@ void initDefaultContext()
     g_processInfos.contextTlsId    = g_tlsContextId;
     g_processInfos.defaultContext  = &g_defaultContext;
     g_processInfos.byteCodeRun     = byteCodeRun;
-    g_processInfos.threadRun       = threadRun;
+    g_processInfos.makeCallback    = makeCallback;
 }
 
 uint64_t getDefaultContextFlags(Module* module)

@@ -181,6 +181,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicDataOf:
     case TokenId::IntrinsicMakeAny:
     case TokenId::IntrinsicMakeSlice:
+    case TokenId::IntrinsicMakeCallback:
     case TokenId::IntrinsicMakeInterface:
     case TokenId::IntrinsicAlloc:
     case TokenId::IntrinsicRealloc:
@@ -192,7 +193,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicCStrLen:
     case TokenId::IntrinsicStrCmp:
     case TokenId::IntrinsicTypeCmp:
-    case TokenId::IntrinsicThreadRunPtr:
     case TokenId::IntrinsicAtomicAdd:
     case TokenId::IntrinsicAtomicAnd:
     case TokenId::IntrinsicAtomicOr:

@@ -254,7 +254,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         offset                  = pp.globalSegment.reserve(8, true);
         pp.symPI_byteCodeRun    = getOrAddSymbol(pp, "swag_process_infos_byteCodeRun", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, true);
-        pp.symPI_threadRun      = getOrAddSymbol(pp, "swag_process_infos_threadRun", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_makeCallback   = getOrAddSymbol(pp, "swag_process_infos_makeCallback", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
     }
     else
     {
@@ -270,7 +270,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symPI_contextTlsId   = getOrAddSymbol(pp, "swag_process_infos_contextTlsId", CoffSymbolKind::Extern)->index;
         pp.symPI_defaultContext = getOrAddSymbol(pp, "swag_process_infos_defaultContext", CoffSymbolKind::Extern)->index;
         pp.symPI_byteCodeRun    = getOrAddSymbol(pp, "swag_process_infos_byteCodeRun", CoffSymbolKind::Extern)->index;
-        pp.symPI_threadRun      = getOrAddSymbol(pp, "swag_process_infos_threadRun", CoffSymbolKind::Extern)->index;
+        pp.symPI_makeCallback   = getOrAddSymbol(pp, "swag_process_infos_makeCallback", CoffSymbolKind::Extern)->index;
     }
 
     return true;

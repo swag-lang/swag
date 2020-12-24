@@ -16,7 +16,6 @@ func entry(param: *void)
 {
     ptr := cast(*u64) param
     G = ptr[1]
-    //@print("tititititti\n")
 }
 
 func create(lambda: func(*void), userParam: uint)
@@ -25,14 +24,8 @@ func create(lambda: func(*void), userParam: uint)
     paramBC[0] = autocast lambda
     paramBC[1] = autocast userParam
 
-    var l64 = cast(uint) lambda
-    if l64 & swag.LambdaBcMarker
-        l64 = autocast @thrunptr()
-    else
-        l64 &= ~swag.LambdaForeignMarker
-
     id := 0'u32
-    h := CreateThread(null, 0, cast(*void) l64, cast(*void) &paramBC[0], 0, &id)
+    h := CreateThread(null, 0, @mkcallback(lambda), cast(*void) &paramBC[0], 0, &id)
     WaitForSingleObject(h, INFINITE);
 }
 

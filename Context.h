@@ -11,6 +11,7 @@ extern SwagProcessInfos g_processInfos;
 
 extern void     initDefaultContext();
 extern uint64_t getDefaultContextFlags(Module* module);
+extern void*    makeCallback(void* lambda);
 
 struct PushSwagContext
 {

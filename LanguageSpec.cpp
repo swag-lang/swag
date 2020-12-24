@@ -124,6 +124,7 @@ void LanguageSpec::setup()
     keywords["@mkslice"]     = TokenId::IntrinsicMakeSlice;
     keywords["@mkany"]       = TokenId::IntrinsicMakeAny;
     keywords["@mkinterface"] = TokenId::IntrinsicMakeInterface;
+    keywords["@mkcallback"]  = TokenId::IntrinsicMakeCallback;
     keywords["@index"]       = TokenId::IntrinsicIndex;
 
     keywords["@print"]       = TokenId::IntrinsicPrint;
@@ -145,7 +146,6 @@ void LanguageSpec::setup()
     keywords["@args"]        = TokenId::IntrinsicArguments;
     keywords["@isbytecode"]  = TokenId::IntrinsicIsByteCode;
     keywords["@compiler"]    = TokenId::IntrinsicCompiler;
-    keywords["@thrunptr"]    = TokenId::IntrinsicThreadRunPtr;
     keywords["@atomadd"]     = TokenId::IntrinsicAtomicAdd;
     keywords["@atomand"]     = TokenId::IntrinsicAtomicAnd;
     keywords["@atomor"]      = TokenId::IntrinsicAtomicOr;

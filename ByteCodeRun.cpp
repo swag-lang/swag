@@ -425,6 +425,17 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->bc->enterByteCode(context);
         break;
     }
+
+    case ByteCodeOp::IntrinsicMakeCallback:
+    {
+        auto ptr = (void*) registersRC[ip->a.u32].pointer;
+        if (isByteCodeLambda(ptr))
+            registersRC[ip->a.u32].pointer = (uint8_t*) makeCallback(ptr);
+        else
+            registersRC[ip->a.u32].pointer = (uint8_t*) undoForeignLambda(ptr);
+        break;
+    }
+
     case ByteCodeOp::LambdaCall:
     {
         auto ptr = registersRC[ip->a.u32].u64;
@@ -1210,11 +1221,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicSetContext:
     {
         Runtime::tlsSetValue(g_tlsContextId, (void*) registersRC[ip->a.u32].pointer);
-        break;
-    }
-    case ByteCodeOp::IntrinsicThreadRunPtr:
-    {
-        registersRC[ip->a.u32].pointer = (uint8_t*) g_processInfos.threadRun;
         break;
     }
     case ByteCodeOp::IntrinsicPrintF64:
@@ -2048,7 +2054,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         sourceLocation.column = location->colStart;
         Diagnostic diag{&dummyFile, sourceLocation, userMsg};
 
-        if(g_byteCodeStack.steps.size())
+        if (g_byteCodeStack.steps.size())
             g_byteCodeStack.steps[0].bc->sourceFile->report(diag);
         else
             runContext->bc->sourceFile->report(diag);

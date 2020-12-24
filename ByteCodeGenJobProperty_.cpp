@@ -14,6 +14,16 @@ bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
+{
+    auto node    = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto ptrNode = node->childs.front();
+    emitInstruction(context, ByteCodeOp::IntrinsicMakeCallback, ptrNode->resultRegisterRC);
+    node->resultRegisterRC = ptrNode->resultRegisterRC;
+    emitSafetyNullPointer(context, node->resultRegisterRC, "cannot allocate a new external callback, you have too many !");
+    return true;
+}
+
 bool ByteCodeGenJob::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 {
     auto node      = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);

@@ -306,3 +306,28 @@ public func tcf_alloc(size: u32)
         vv.x = @getcontext().allocator
     all(vv.x)
 }
+
+#[swag.foreign("kernel32")]
+{
+    func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
+    func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;
+}
+
+#[swag.callback]
+public func tcf_entry(param: *void)
+{
+    ptr := cast(*u64) param
+    @assert(ptr[1] == 666)
+}
+
+public func tcf_createThread(lambda: func(*void), userParam: uint)
+{
+    var paramBC: [2] *void
+    paramBC[0] = autocast lambda
+    paramBC[1] = autocast userParam
+
+    id := 0'u32
+    h := CreateThread(null, 0, @mkcallback(lambda), cast(*void) &paramBC[0], 0, &id)
+    const INFINITE = 0xFFFFFFFF
+    WaitForSingleObject(h, INFINITE);
+}

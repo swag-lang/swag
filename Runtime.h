@@ -53,14 +53,15 @@ typedef struct SwagSlice
 
 typedef void (*SwagBytecodeRun)(void*, ...);
 typedef void (*SwagThreadRun)(void*);
+typedef void* (*SwagMakeCallback)(void*);
 
 typedef struct SwagProcessInfos
 {
-    SwagSlice       arguments;
-    uint64_t        contextTlsId;
-    SwagContext*    defaultContext;
-    SwagBytecodeRun byteCodeRun;
-    SwagThreadRun   threadRun;
+    SwagSlice        arguments;
+    uint64_t         contextTlsId;
+    SwagContext*     defaultContext;
+    SwagBytecodeRun  byteCodeRun;
+    SwagMakeCallback makeCallback;
 } SwagProcessInfos;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

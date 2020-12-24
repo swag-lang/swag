@@ -35,14 +35,8 @@ func create(lambda: func(*Thread), userParam: u64)
     th.lambda = lambda
     th.param  = userParam
 
-    var l64 = cast(uint) &entry
-    if l64 & swag.LambdaBcMarker
-        l64 = autocast @thrunptr()
-    else
-        l64 &= ~swag.LambdaForeignMarker
-
     id := 0'u32
-    h := CreateThread(null, 0, cast(*void) l64, &th, 0, &id)
+    h := CreateThread(null, 0, @mkcallback(&entry), &th, 0, &id)
     WaitForSingleObject(h, INFINITE);
 }
 

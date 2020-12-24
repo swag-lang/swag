@@ -109,6 +109,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, bool acceptPa
     case TokenId::IntrinsicMakeAny:
     case TokenId::IntrinsicMakeSlice:
     case TokenId::IntrinsicMakeInterface:
+    case TokenId::IntrinsicMakeCallback:
         SWAG_CHECK(doIntrinsicProp(identifierRef));
         break;
 

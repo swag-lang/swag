@@ -59,8 +59,7 @@ impl Thread
         debug.assert(lambda != null, "lambda parameter is null")
         context = :@getcontext()
 
-        var cb = system.lambdaToCallback(&threadEntry)
-        h := CreateThread(null, 0, cb, self, CREATE_SUSPENDED, &id)
+        h := CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
         if h == null
         {
             error.setLastErrorId()

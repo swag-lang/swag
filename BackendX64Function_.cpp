@@ -1754,10 +1754,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Immediate(pp, 0, 0, RAX);
             break;
-        case ByteCodeOp::IntrinsicThreadRunPtr:
-            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_threadRun, 0);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
         case ByteCodeOp::IntrinsicIsByteCode:
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store32_Immediate(pp, 0, 0, RAX);
@@ -1996,6 +1992,45 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
 
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        }
+
+        case ByteCodeOp::IntrinsicMakeCallback:
+        {
+            // Test if it's a bytecode lambda
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_BC_MARKER, RCX);
+            BackendX64Inst::emit_Op64(pp, RAX, RCX, X64Op::AND);
+            BackendX64Inst::emit_Test64(pp, RCX, RCX);
+            concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
+            concat.addU32(0);
+            auto jumpToBCAddr   = (uint32_t*) concat.getSeekPtr() - 1;
+            auto jumpToBCOffset = concat.totalCount();
+
+            // Foreign lambda
+            //////////////////
+
+            BackendX64Inst::emit_Load64_Immediate(pp, ~SWAG_LAMBDA_FOREIGN_MARKER, RCX);
+            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::AND);
+            concat.addString1("\xe9"); // jmp ???????? => jump after foreign lambda
+            concat.addU32(0);
+            auto jumpBCToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
+            auto jumpBCToAfterOffset = concat.totalCount();
+
+            // ByteCode lambda
+            //////////////////
+            *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
+
+            BackendX64Inst::emit_Copy64(pp, RAX, RCX);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_makeCallback, 0);
+            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
+            concat.addString2("\xff\xd0"); // call rax
+
+            // End
+            //////////////////
+            *jumpBCToAfterAddr = concat.totalCount() - jumpBCToAfterOffset;
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+
             break;
         }
 

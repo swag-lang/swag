@@ -105,9 +105,6 @@ namespace swag
     const MinF64 = 2.22507e-308'f64
     const MaxF64 = 1.79769e+308'f64
 
-    const LambdaBcMarker      = 0x8000000000000000'u64
-    const LambdaForeignMarker = 0x0400000000000000'u64
-
     // #########################################################
     // Context & allocators
     // #########################################################
@@ -479,7 +476,6 @@ func @free(ptr: *void);
 func @getcontext()->*swag.Context;
 func @setcontext(context: const *swag.Context);
 func @isbytecode()->bool;
-func @thrunptr()->const *void;
 func @compiler()->swag.ICompiler;
 
 func @atomadd(addr: *s8, value: s8)->s8;

@@ -5,6 +5,19 @@
 #include "Module.h"
 #include "TypeManager.h"
 
+bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+{
+    auto first = node->childs.front();
+
+    // Check first parameter
+    if (first->typeInfo->kind != TypeInfoKind::Lambda)
+        return context->report({node, "'@mkcallback' must have a lambda as a first parameter"});
+
+    node->typeInfo    = g_TypeMgr.typeInfoPVoid;
+    node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     auto first  = node->childs.front();
@@ -491,6 +504,14 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, expr->typeInfo));
+        break;
+    }
+
+    case TokenId::IntrinsicMakeCallback:
+    {
+        auto expr = node->childs.front();
+        SWAG_CHECK(checkIsConcrete(context, expr));
+        SWAG_CHECK(resolveIntrinsicMakeCallback(context, node, expr->typeInfo));
         break;
     }
 

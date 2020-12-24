@@ -101,7 +101,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(init|drop|index|mkany|mkslice|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|postcopy|postmove|spread)\\b"
+          "match": "(@)\\b(init|drop|index|mkany|mkslice|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|postcopy|postmove|spread)\\b"
         }
       ]
     },
@@ -109,7 +109,7 @@
       "patterns": [
         {
           "name": "entity.name.tag",
-          "match": "(@)\\b(sqrt|sin|cos|tan|sinh|cosh|tanh|asin|acos|atan|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2|pow|print|error|assert|assertmsg|alloc|realloc|free|memcpy|memmove|memset|strcmp|memcmp|typecmp|interfaceof|getcontext|setcontext|args|compiler|isbytecode|cstrlen|thrunptr|atomadd|atomand|atomor|atomxor|atomxchg|atomcmpxchg)\\b"
+          "match": "(@)\\b(sqrt|sin|cos|tan|sinh|cosh|tanh|asin|acos|atan|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2|pow|print|error|assert|assertmsg|alloc|realloc|free|memcpy|memmove|memset|strcmp|memcmp|typecmp|interfaceof|getcontext|setcontext|args|compiler|isbytecode|cstrlen|atomadd|atomand|atomor|atomxor|atomxchg|atomcmpxchg)\\b"
         }
       ]
     },

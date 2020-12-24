@@ -26,8 +26,7 @@ impl Timer
         debug.assert(elapsedTimeMs > 0)
         debug.assert(lambda != null)
 
-        var cb = system.lambdaToCallback(&timerEntry)
-        if !CreateTimerQueueTimer(&handle, null, cb, self, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
+        if !CreateTimerQueueTimer(&handle, null, @mkcallback(&timerEntry), self, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
         {
             error.setLastErrorId()
             return error.last()
