@@ -4,6 +4,13 @@
 alias HANDLE = 			const *void
 alias HLOCAL = 			HANDLE
 alias HWND = 			const *void
+alias HMENU = 			const *void
+alias HINSTANCE =		const *void
+alias HMODULE =		    const *void
+alias HICON =		    const *void
+alias HCURSOR =		    const *void
+alias HBRUSH =		    const *void
+alias ATOM =		    const *void
 alias WORD = 			u16
 alias DWORD =           u32
 alias BOOL = 	        s32
@@ -27,6 +34,8 @@ alias CHAR =            u8
 alias LPSTR =           *CHAR
 alias SIZE_T =          uint
 alias va_list =         *u8
+alias WPARAM =          u64
+alias LPARAM =          u64
 
 const STD_INPUT_HANDLE 	= cast(DWORD) -10
 const STD_OUTPUT_HANDLE = cast(DWORD) -11
@@ -486,6 +495,43 @@ struct PROCESS_INFORMATION
     dwThreadId:     DWORD
 }
 
+struct WNDCLASSA
+{
+    style:            UINT
+    lpfnWndProc:      const *void
+    cbClsExtra:       s32
+    cbWndExtra:       s32
+    hInstance:        HINSTANCE
+    hIcon:            HICON
+    hCursor:          HCURSOR
+    hbrBackground:    HBRUSH
+    lpszMenuName:     LPCSTR
+    lpszClassName:    LPCSTR
+}
+
+const WS_OVERLAPPED       = 0x00000000
+const WS_POPUP            = 0x80000000
+const WS_CHILD            = 0x40000000
+const WS_MINIMIZE         = 0x20000000
+const WS_VISIBLE          = 0x10000000
+const WS_DISABLED         = 0x08000000
+const WS_CLIPSIBLINGS     = 0x04000000
+const WS_CLIPCHILDREN     = 0x02000000
+const WS_MAXIMIZE         = 0x01000000
+const WS_CAPTION          = 0x00C00000
+const WS_BORDER           = 0x00800000
+const WS_DLGFRAME         = 0x00400000
+const WS_VSCROLL          = 0x00200000
+const WS_HSCROLL          = 0x00100000
+const WS_SYSMENU          = 0x00080000
+const WS_THICKFRAME       = 0x00040000
+const WS_GROUP            = 0x00020000
+const WS_TABSTOP          = 0x00010000
+const WS_MINIMIZEBOX      = 0x00020000
+const WS_MAXIMIZEBOX      = 0x00010000
+const WS_OVERLAPPEDWINDOW = WS_OVERLAPPED |WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX
+const CW_USEDEFAULT       = cast(s32) 0x80000000
+
 #[swag.foreign("kernel32")]
 {
     func GetLastError()->DWORD;
@@ -498,6 +544,7 @@ struct PROCESS_INFORMATION
     func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
 
     func GetCurrentProcessId()->DWORD;
+    func GetModuleHandleA(lpModuleName: LPCSTR)->HMODULE;
     func GetStdHandle(nStdHandle: DWORD)->HANDLE;
     func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->BOOL;
     func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
@@ -560,4 +607,6 @@ struct PROCESS_INFORMATION
     func ShowCursor(show: BOOL);
     func MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: u32)->s32;
     func MessageBoxW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: u32)->s32;
+    func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM;
+    func CreateWindowExA(dwExStyle: DWORD, lpClassName: LPCSTR, lpWindowName: LPCSTR, dwStyle: DWORD, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID)->HWND;
 }
