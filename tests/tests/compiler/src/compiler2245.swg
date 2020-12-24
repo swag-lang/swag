@@ -19,9 +19,9 @@ func entry(param: *void)
     //@print("tititititti\n")
 }
 
-func create(lambda: func(*void), userParam: uint)
+func create(lambda: const *void, userParam: uint)
 {
-    var paramBC: [2] *void
+    var paramBC: [2] const *void
     paramBC[0] = autocast lambda
     paramBC[1] = autocast userParam
 
