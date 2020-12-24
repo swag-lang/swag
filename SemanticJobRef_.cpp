@@ -34,7 +34,10 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     // Lambda
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
     {
-        SWAG_VERIFY(!(child->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_INLINE), context->report({child, "cannot take address of an inline function"}));
+        auto funcNode = child->resolvedSymbolOverload->node;
+        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({child, "cannot take address of a macro"}));
+        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({child, "cannot take address of a mixin"}));
+        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({child, "cannot take address of an inline function"}));
 
         auto lambdaType    = child->typeInfo->clone();
         lambdaType->kind   = TypeInfoKind::Lambda;
@@ -57,7 +60,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
             TypeInfoPointer* typeInfoPtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
             if (!typeInfoPtr->isConst())
             {
-                ptrType = (TypeInfoPointer*)typeInfoPtr->clone();
+                ptrType = (TypeInfoPointer*) typeInfoPtr->clone();
                 ptrType->ptrCount++;
                 ptrType->computeName();
                 done = true;
