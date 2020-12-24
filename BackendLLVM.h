@@ -33,6 +33,7 @@ struct LLVMPerThread
     llvm::Type*         processInfosTy = nullptr;
     llvm::FunctionType* allocatorTy    = nullptr;
     llvm::FunctionType* bytecodeRunTy  = nullptr;
+    llvm::FunctionType* makeCallbackTy = nullptr;
 
     llvm::Value* cst0_i1  = nullptr;
     llvm::Value* cst1_i1  = nullptr;

@@ -2841,6 +2841,43 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::IntrinsicMakeCallback:
+        {
+            llvm::BasicBlock* blockLambdaBC      = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockLambdaForeign = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockNext          = llvm::BasicBlock::Create(context, "", func);
+            auto              v0                 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+
+            {
+                auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_BC_MARKER));
+                auto v2 = builder.CreateIsNotNull(v1);
+                builder.CreateCondBr(v2, blockLambdaBC, blockLambdaForeign);
+            }
+
+            builder.SetInsertPoint(blockLambdaBC);
+            {
+                auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst4_i32})));
+                auto PT = llvm::PointerType::getUnqual(pp.makeCallbackTy);
+                auto r2 = builder.CreatePointerCast(r1, PT);
+                auto v2 = builder.CreateIntToPtr(v0, builder.getInt8PtrTy());
+                auto v1 = builder.CreateCall(pp.makeCallbackTy, r2, {v2});
+                auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+                builder.CreateStore(v1, r0);
+                builder.CreateBr(blockNext);
+            }
+
+            builder.SetInsertPoint(blockLambdaForeign);
+            {
+                auto v1 = builder.CreateAnd(v0, builder.getInt64(~SWAG_LAMBDA_FOREIGN_MARKER));
+                auto r0 = GEP_I32(allocR, ip->a.u32);
+                builder.CreateStore(v1, r0);
+                builder.CreateBr(blockNext);
+            }
+
+            builder.SetInsertPoint(blockNext);
+            break;
+        }
+
         case ByteCodeOp::LambdaCall:
         {
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;

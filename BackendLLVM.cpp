@@ -66,6 +66,14 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         pp.bytecodeRunTy = llvm::FunctionType::get(llvm::Type::getVoidTy(context), params, true);
     }
 
+    // makeCallback
+    {
+        llvm::Type* params[] = {
+            llvm::Type::getInt8PtrTy(context),
+        };
+        pp.makeCallbackTy = llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), params, false);
+    }
+
     // swag_process_infos_t
     {
         llvm::Type* members[] = {
@@ -73,7 +81,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::Type::getInt64Ty(context),
             pp.contextTy->getPointerTo(),
             pp.bytecodeRunTy->getPointerTo(),
-            llvm::Type::getInt8Ty(context)->getPointerTo(),
+            pp.makeCallbackTy->getPointerTo(),
         };
         pp.processInfosTy = llvm::StructType::create(context, members, "swag_process_infos_t");
         SWAG_ASSERT(pp.processInfosTy->isSized());

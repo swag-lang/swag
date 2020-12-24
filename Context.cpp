@@ -82,6 +82,17 @@ static void byteCodeRun(void* byteCodePtr, ...)
     g_runContext.firstRC    = saveFirstRC;
 }
 
+// Callback stuff. This is tricky !
+// The problem: we want an external library to be able to call a callback defined in swag.
+// For native code, no problem. 
+// The problem starts when that callback is bytecode, at compile time.
+// We need a way to associate a native function that will be called by the external library to a bytecode.
+//
+// The only way i have found : make the native function generic (always the same parameters), and attach
+// the address of that function to bytecode. One native callback for one specific bytecode.
+// That's why we have here lots of native identical functions, which are dynamically associated to a bytecode
+// when calling @mkcallback
+
 static void doCallback(void* cb, void* p1, void* p2, void* p3, void* p4);
 
 struct Callback
@@ -90,10 +101,10 @@ struct Callback
     void* cb;
 };
 
-#define DECL_CB(__idx)                                                                   \
-    void __callback##__idx(void* p1, void* p2, void* p3, void* p4) \
-    {                                                                                    \
-        doCallback(&__callback##__idx, p1, p2, p3, p4);                                   \
+#define DECL_CB(__idx)                                                    \
+    static void __callback##__idx(void* p1, void* p2, void* p3, void* p4) \
+    {                                                                     \
+        doCallback(&__callback##__idx, p1, p2, p3, p4);                   \
     }
 #define USE_CB(__idx)              \
     {                              \
@@ -108,20 +119,20 @@ struct Callback
 // as the linker will make only one __callback function, and all pointers in
 // g_callbackArr will be the same !!!
 
-DECL_CB(1);
-DECL_CB(2);
-DECL_CB(3);
-DECL_CB(4);
+// clang-format off
+DECL_CB(a); DECL_CB(b); DECL_CB(c); DECL_CB(d); DECL_CB(e); DECL_CB(f); DECL_CB(g); DECL_CB(h); DECL_CB(i);
+DECL_CB(aa); DECL_CB(ab); DECL_CB(ac); DECL_CB(ad); DECL_CB(ae); DECL_CB(af); DECL_CB(ag); DECL_CB(ah); DECL_CB(ai);
+DECL_CB(aaa); DECL_CB(aab); DECL_CB(aac); DECL_CB(aad); DECL_CB(aae); DECL_CB(aaf); DECL_CB(aag); DECL_CB(aah); DECL_CB(aai);
 
-Callback g_callbackArr[] = {
-    USE_CB(1),
-    USE_CB(2),
-    USE_CB(3),
-    USE_CB(4),
+static Callback g_callbackArr[] = {
+    USE_CB(a), USE_CB(b), USE_CB(c), USE_CB(d), USE_CB(e), USE_CB(f), USE_CB(g), USE_CB(h), USE_CB(i),
+    USE_CB(aa), USE_CB(ab), USE_CB(ac), USE_CB(ad), USE_CB(ae), USE_CB(af), USE_CB(ag), USE_CB(ah), USE_CB(ai),
+    USE_CB(aaa), USE_CB(aab), USE_CB(aac), USE_CB(aad), USE_CB(aae), USE_CB(aaf), USE_CB(aag), USE_CB(aah), USE_CB(aai),
 };
+// clang-format on
 
-mutex    g_makeCallbackMutex;
-uint32_t g_makeCallbackCount = 0;
+static mutex    g_makeCallbackMutex;
+static uint32_t g_makeCallbackCount = 0;
 
 static void doCallback(void* cb, void* p1, void* p2, void* p3, void* p4)
 {
@@ -147,8 +158,6 @@ static void doCallback(void* cb, void* p1, void* p2, void* p3, void* p4)
 void* makeCallback(void* lambda)
 {
     unique_lock lk(g_makeCallbackMutex);
-
-    g_callbackArr[0].cb = __callback1;
 
     // Search if the lambda pointer has already been associated with a given callback
     for (uint32_t i = 0; i < g_makeCallbackCount; i++)
