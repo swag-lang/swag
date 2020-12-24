@@ -286,7 +286,6 @@ struct ByteCodeGenJob : public Job
     static bool emitMakePointer(ByteCodeGenContext* context);
     static bool emitMakeArrayPointerSlicing(ByteCodeGenContext* context);
     static bool emitMakeLambda(ByteCodeGenContext* context);
-    static bool emitMakeCallback(ByteCodeGenContext* context);
     static bool emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo, bool safety = true);
     static bool emitPointerDeRef(ByteCodeGenContext* context);
     static bool emitStructDeRef(ByteCodeGenContext* context);

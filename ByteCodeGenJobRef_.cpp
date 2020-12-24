@@ -389,30 +389,6 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitMakeCallback(ByteCodeGenContext* context)
-{
-    auto node     = context->node;
-    auto front    = node->childs.front();
-    auto funcNode = CastAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
-
-    if (!(funcNode->attributeFlags & ATTRIBUTE_FOREIGN))
-    {
-        // Need to generate bytecode, if not already done or running
-        askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-        if (context->result == ContextResult::Pending)
-            return true;
-    }
-
-    freeRegisterRC(context, front);
-    node->resultRegisterRC = reserveRegisterRC(context);
-
-    auto inst       = emitInstruction(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
-    inst->b.pointer = (uint8_t*) funcNode;
-    inst->c.pointer = (uint8_t*) funcNode->bc;
-
-    return true;
-}
-
 bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
 {
     auto node     = context->node;

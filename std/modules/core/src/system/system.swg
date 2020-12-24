@@ -33,7 +33,7 @@ func pushAllocator(allocator: swag.IAllocator, stmt: code)
 
 // Convert a lambda pointer to an external callback pointer
 // that can be called from a foreign library
-func lambdaToCallback(lambda: const *void)->const *void
+func(T) lambdaToCallback(lambda: func(T))->const *void
 {
     var l64 = cast(uint) lambda
     if l64 & swag.LambdaBcMarker
