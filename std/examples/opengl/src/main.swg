@@ -3,24 +3,28 @@
 using core, win32, ogl, gdi32
 
 #[swag.callback]
-func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
+func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     switch msg
     {
     case WM_PAINT:
         glClear(GL_COLOR_BUFFER_BIT)
+
+        var ps: PAINTSTRUCT
+        BeginPaint(hWnd, &ps)
+        EndPaint(hWnd, &ps)
         return 0
 
     case WM_SIZE:
 	    glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
-	    PostMessage(hWnd, WM_PAINT, 0, 0)
+	    PostMessageA(hWnd, WM_PAINT, 0, 0)
 	    return 0
 
     case WM_DESTROY:
         PostQuitMessage(0)
     }
 
-    return DefWindowProcA(hwnd, msg, wParam, lParam)
+    return DefWindowProcA(hWnd, msg, wParam, lParam)
 }
 
 func createWindow()->HWND

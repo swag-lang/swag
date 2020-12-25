@@ -353,6 +353,24 @@ const CS_BYTEALIGNCLIENT  = 0x1000
 const CS_BYTEALIGNWINDOW  = 0x2000
 const CS_GLOBALCLASS      = 0x4000
 
+struct RECT
+{
+    left:   LONG
+    top:    LONG
+    right:  LONG
+    bottom: LONG
+}
+
+struct PAINTSTRUCT
+{
+    hdc:            HDC
+    fErase:         BOOL
+    rcPaint:        RECT
+    fRestore:       BOOL
+    fIncUpdate:     BOOL
+    rgbReserved:    [32] BYTE
+}
+
 #[swag.foreign("user32")]
 {
     func GetAsyncKeyState(vKey: s32)->SHORT;
@@ -378,7 +396,10 @@ const CS_GLOBALCLASS      = 0x4000
     func DispatchMessageA(lpMsg: const *MSG)->LRESULT;
     func DispatchMessageW(lpMsg: const *MSG)->LRESULT;
     func PostQuitMessage(nExitCode: s32);
+    func PostMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->BOOL;
 
     func GetDC(hWnd: HWND)->HDC;
     func ReleaseDC(hWnd: HWND, hDC: HDC)->s32;
+    func BeginPaint(hWnd: HWND, lpPaint: *PAINTSTRUCT)->HDC;
+    func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL;
 }
