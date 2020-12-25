@@ -11,6 +11,7 @@ alias HICON =		    const *void
 alias HCURSOR =		    const *void
 alias HBRUSH =		    const *void
 alias ATOM =		    const *void
+alias LRESULT =		    s64
 alias WORD = 			u16
 alias DWORD =           u32
 alias BOOL = 	        s32
@@ -532,6 +533,58 @@ const WS_MAXIMIZEBOX      = 0x00010000
 const WS_OVERLAPPEDWINDOW = WS_OVERLAPPED |WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX
 const CW_USEDEFAULT       = cast(s32) 0x80000000
 
+const SW_HIDE             = 0
+const SW_SHOWNORMAL       = 1
+const SW_NORMAL           = 1
+const SW_SHOWMINIMIZED    = 2
+const SW_SHOWMAXIMIZED    = 3
+const SW_MAXIMIZE         = 3
+const SW_SHOWNOACTIVATE   = 4
+const SW_SHOW             = 5
+const SW_MINIMIZE         = 6
+const SW_SHOWMINNOACTIVE  = 7
+const SW_SHOWNA           = 8
+const SW_RESTORE          = 9
+const SW_SHOWDEFAULT      = 10
+const SW_FORCEMINIMIZE    = 11
+const SW_MAX              = 11
+
+struct MSG
+{
+    hwnd:       HWND
+    message:    UINT
+    wParam:     WPARAM
+    lParam:     LPARAM
+    time:       DWORD
+    pt:         POINT
+    lPrivate:   DWORD
+}
+
+const WA_INACTIVE     = 0
+const WA_ACTIVE       = 1
+const WA_CLICKACTIVE  = 2
+
+const WM_CREATE         = 0x0001
+const WM_DESTROY        = 0x0002
+const WM_MOVE           = 0x0003
+const WM_SIZE           = 0x0005
+const WM_ACTIVATE       = 0x0006
+const WM_SETFOCUS       = 0x0007
+const WM_KILLFOCUS      = 0x0008
+const WM_ENABLE         = 0x000A
+const WM_SETREDRAW      = 0x000B
+const WM_SETTEXT        = 0x000C
+const WM_GETTEXT        = 0x000D
+const WM_GETTEXTLENGTH  = 0x000E
+const WM_PAINT          = 0x000F
+const WM_CLOSE          = 0x0010
+const WM_QUIT           = 0x0012
+const WM_ERASEBKGND     = 0x0014
+const WM_SYSCOLORCHANGE = 0x0015
+const WM_SHOWWINDOW     = 0x0018
+const WM_WININICHANGE   = 0x001A
+const WM_SETTINGCHANGE  = WM_WININICHANGE
+
 #[swag.foreign("kernel32")]
 {
     func GetLastError()->DWORD;
@@ -607,6 +660,14 @@ const CW_USEDEFAULT       = cast(s32) 0x80000000
     func ShowCursor(show: BOOL);
     func MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: u32)->s32;
     func MessageBoxW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: u32)->s32;
+
     func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM;
     func CreateWindowExA(dwExStyle: DWORD, lpClassName: LPCSTR, lpWindowName: LPCSTR, dwStyle: DWORD, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID)->HWND;
+    func DefWindowProcA(hwnd: HWND, uMsg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
+    func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
+    func GetMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL;
+    func GetMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL;
+    func TranslateMessage(lpMsg: const *MSG)->BOOL;
+    func DispatchMessageA(lpMsg: const *MSG)->LRESULT;
+    func PostQuitMessage(nExitCode: s32);
 }

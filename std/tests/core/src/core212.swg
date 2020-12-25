@@ -1,11 +1,13 @@
 #if #os == "windows";
 #import "core"
-using win32
+using win32, core
 
 #[swag.callback]
 func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)
 {
-    @print("procccc\n")
+    if msg == WM_DESTROY
+        PostQuitMessage(0)
+    DefWindowProcA(hwnd, msg, wParam, lParam)
 }
 
 #test
@@ -29,4 +31,13 @@ func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)
         null,                   // use class menu
         wc.hInstance,           // handle to application instance
         null)                   // no window-creation data
+    ShowWindow(hwnd, SW_SHOW)
+
+    var msg: MSG
+    while GetMessageA(&msg, null, 0, 0) != 0
+    {
+        if msg.message == WM_QUIT break
+        TranslateMessage(&msg)
+        DispatchMessageA(&msg)
+    }
 }
