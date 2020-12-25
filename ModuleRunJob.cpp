@@ -28,10 +28,17 @@ JobResult ModuleRunJob::execute()
     if (g_CommandLine.verbose && g_CommandLine.verboseBackendCommand)
         g_Log.verbosePass(LogPassType::Info, "Test", path.string());
 
-    uint32_t numErrors = 0;
-    OS::doProcess(path.string(), path.parent_path().parent_path().string(), true, numErrors, LogColor::Default);
-    g_Workspace.numErrors += numErrors;
-    module->numErrors += numErrors;
+    if (buildParameters.compileType == BackendCompileType::Test)
+    {
+        uint32_t numErrors = 0;
+        OS::doProcess(path.string(), path.parent_path().parent_path().string(), true, numErrors, LogColor::Default);
+        g_Workspace.numErrors += numErrors;
+        module->numErrors += numErrors;
+    }
+    else
+    {
+        OS::doRunProcess(path.string(), path.parent_path().parent_path().string());
+    }
 
     timer.stop();
     return JobResult::ReleaseJob;

@@ -271,6 +271,55 @@ namespace OS
         return ok;
     }
 
+    void doRunProcess(const Utf8& cmdline, const string& currentDirectory)
+    {
+        STARTUPINFOA        si;
+        PROCESS_INFORMATION pi;
+        SECURITY_ATTRIBUTES saAttr;
+        UINT                errmode;
+
+        errmode = ::GetErrorMode();
+        ::SetErrorMode(SEM_FAILCRITICALERRORS);
+
+        ::ZeroMemory(&saAttr, sizeof(saAttr));
+        saAttr.nLength              = sizeof(SECURITY_ATTRIBUTES);
+        saAttr.bInheritHandle       = TRUE;
+        saAttr.lpSecurityDescriptor = nullptr;
+
+        // Create process
+        ::ZeroMemory(&si, sizeof(si));
+        si.cb = sizeof(si);
+
+        ::ZeroMemory(&pi, sizeof(pi));
+
+        {
+            SWAG_PROFILE(PRF_LOAD, format("create process %s", cmdline.c_str()));
+            if (!::CreateProcessA(nullptr,
+                                  (LPSTR) cmdline.c_str(),
+                                  nullptr,
+                                  nullptr,
+                                  TRUE,
+                                  0,
+                                  nullptr,
+                                  currentDirectory.c_str(),
+                                  &si,
+                                  &pi))
+            {
+                g_Log.error(format("cannot create '%s' process (%s)", cmdline.c_str(), getLastErrorAsString().c_str()));
+                return;
+            }
+        }
+
+        // Wait until child process exits
+        WaitForSingleObject(pi.hProcess, INFINITE);
+
+        // Close process and thread handles
+        ::CloseHandle(pi.hProcess);
+        ::CloseHandle(pi.hThread);
+
+        ::SetErrorMode(errmode);
+    }
+
     string getDllFileExtension()
     {
         return ".dll";

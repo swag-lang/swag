@@ -31,7 +31,7 @@ func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         null,                   // use class menu
         wc.hInstance,           // handle to application instance
         null)                   // no window-creation data
-    ShowWindow(hwnd, SW_SHOW)
+    //ShowWindow(hwnd, SW_SHOW)
 
     var msg: MSG
     while GetMessageA(&msg, null, 0, 0) != 0

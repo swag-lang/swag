@@ -12,6 +12,7 @@ namespace OS
     extern void     consoleSetup();
     extern void     consoleSetColor(LogColor color);
     extern bool     doProcess(const Utf8& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor = LogColor::DarkCyan, const char* logPrefix = nullptr);
+    extern void     doRunProcess(const Utf8& cmdline, const string& currentDirectory);
     extern string   getOutputFileExtension(BackendOutputType type);
     extern string   getDllFileExtension();
     extern Utf8     getLastErrorAsString();
