@@ -1,0 +1,74 @@
+#import "core"
+#import "ogl"
+using core, win32, ogl
+
+#[swag.callback]
+func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
+{
+    switch msg
+    {
+    case WM_DESTROY:
+        PostQuitMessage(0)
+    }
+
+    return DefWindowProcA(hwnd, msg, wParam, lParam)
+}
+
+func createWindow()->HWND
+{
+    var wc: WNDCLASSA
+    wc.style         = CS_OWNDC
+    wc.lpfnWndProc   = autocast @mkcallback(&winProc)
+    wc.hInstance     = GetModuleHandleA(null)
+    wc.lpszClassName = @dataof("CLASS_NAME")
+    RegisterClassA(wc)
+
+    hWnd := CreateWindowExA(
+        0,
+        @dataof("CLASS_NAME"),
+        @dataof("Example"),
+        WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+        CW_USEDEFAULT,
+        CW_USEDEFAULT,
+        CW_USEDEFAULT,
+        CW_USEDEFAULT,
+        null,
+        null,
+        wc.hInstance,
+        null)
+
+    hDC := GetDC(hWnd)
+    ReleaseDC(hDC, hWnd)
+
+    return hWnd
+}
+
+func messageLoop()
+{
+    var msg: MSG
+    while GetMessageA(&msg, null, 0, 0) != 0
+    {
+        if msg.message == WM_QUIT
+            break
+        TranslateMessage(&msg)
+        DispatchMessageA(&msg)
+    }
+}
+
+#main
+{
+    hWnd := createWindow()
+
+    hDC := GetDC(hWnd)
+    hRC := wglCreateContext(hDC)
+    wglMakeCurrent(hDC, hRC)
+
+    glClear(GL_COLOR_BUFFER_BIT)
+    ShowWindow(hWnd, SW_SHOW)
+    messageLoop()
+
+    wglMakeCurrent(null, null)
+    ReleaseDC(hWnd, hDC)
+    wglDeleteContext(hRC)
+    DestroyWindow(hWnd)
+}

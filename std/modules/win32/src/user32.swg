@@ -1,13 +1,14 @@
 #public
 #foreignlib "user32"
 
-alias HWND = 			const *void
-alias HMENU = 			const *void
-alias HICON =		    const *void
-alias HCURSOR =		    const *void
-alias HBRUSH =		    const *void
-alias WPARAM =          u64
-alias LPARAM =          u64
+alias HWND = 		const *void
+alias HMENU = 		const *void
+alias HICON =		const *void
+alias HCURSOR =		const *void
+alias HBRUSH =		const *void
+alias HDC =		    const *void
+alias WPARAM =      u64
+alias LPARAM =      u64
 
 const VK_LBUTTON        = 0x01
 const VK_RBUTTON        = 0x02
@@ -340,6 +341,18 @@ const PM_NOREMOVE = 0x0000
 const PM_REMOVE   = 0x0001
 const PM_NOYIELD  = 0x0002
 
+const CS_VREDRAW          = 0x0001
+const CS_HREDRAW          = 0x0002
+const CS_DBLCLKS          = 0x0008
+const CS_OWNDC            = 0x0020
+const CS_CLASSDC          = 0x0040
+const CS_PARENTDC         = 0x0080
+const CS_NOCLOSE          = 0x0200
+const CS_SAVEBITS         = 0x0800
+const CS_BYTEALIGNCLIENT  = 0x1000
+const CS_BYTEALIGNWINDOW  = 0x2000
+const CS_GLOBALCLASS      = 0x4000
+
 #[swag.foreign("user32")]
 {
     func GetAsyncKeyState(vKey: s32)->SHORT;
@@ -352,6 +365,7 @@ const PM_NOYIELD  = 0x0002
 
     func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM;
     func CreateWindowExA(dwExStyle: DWORD, lpClassName: LPCSTR, lpWindowName: LPCSTR, dwStyle: DWORD, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID)->HWND;
+    func DestroyWindow(hWnd: HWND)->BOOL;
     func DefWindowProcA(hwnd: HWND, uMsg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
     func DefWindowProcW(hwnd: HWND, uMsg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
     func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
@@ -364,4 +378,7 @@ const PM_NOYIELD  = 0x0002
     func DispatchMessageA(lpMsg: const *MSG)->LRESULT;
     func DispatchMessageW(lpMsg: const *MSG)->LRESULT;
     func PostQuitMessage(nExitCode: s32);
+
+    func GetDC(hWnd: HWND)->HDC;
+    func ReleaseDC(hWnd: HWND, hDC: HDC)->s32;
 }
