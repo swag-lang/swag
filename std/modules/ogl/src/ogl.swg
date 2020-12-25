@@ -12,4 +12,5 @@ const GL_COLOR_BUFFER_BIT = 0x00004000
     func glClearColor(red: GLclampf, green: GLclampf, blue: GLclampf, alpha: GLclampf);
     func glClear(mask: GLbitfield);
     func glViewport(x: GLint, y: GLint, width: GLsizei, height: GLsizei);
+    func glFlush();
 }

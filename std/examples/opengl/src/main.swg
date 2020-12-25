@@ -6,6 +6,7 @@ func display()
 {
     glClearColor(1, 0, 0, 0)
     glClear(GL_COLOR_BUFFER_BIT)
+    glFlush()
 }
 
 #[swag.callback]
@@ -18,7 +19,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         var ps: PAINTSTRUCT
         BeginPaint(hWnd, &ps)
         EndPaint(hWnd, &ps)
-        return 0
+        return 1
 
     case WM_ERASEBKGND:
         display()
