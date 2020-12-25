@@ -281,6 +281,7 @@ const WS_TABSTOP          = 0x00010000
 const WS_MINIMIZEBOX      = 0x00020000
 const WS_MAXIMIZEBOX      = 0x00010000
 const WS_OVERLAPPEDWINDOW = WS_OVERLAPPED |WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX
+
 const CW_USEDEFAULT       = cast(s32) 0x80000000
 
 const SW_HIDE             = 0
@@ -335,6 +336,10 @@ const WM_SHOWWINDOW     = 0x0018
 const WM_WININICHANGE   = 0x001A
 const WM_SETTINGCHANGE  = WM_WININICHANGE
 
+const PM_NOREMOVE = 0x0000
+const PM_REMOVE   = 0x0001
+const PM_NOYIELD  = 0x0002
+
 #[swag.foreign("user32")]
 {
     func GetAsyncKeyState(vKey: s32)->SHORT;
@@ -348,10 +353,15 @@ const WM_SETTINGCHANGE  = WM_WININICHANGE
     func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM;
     func CreateWindowExA(dwExStyle: DWORD, lpClassName: LPCSTR, lpWindowName: LPCSTR, dwStyle: DWORD, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID)->HWND;
     func DefWindowProcA(hwnd: HWND, uMsg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
+    func DefWindowProcW(hwnd: HWND, uMsg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
     func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
+    func UpdateWindow(hWnd: HWND)->BOOL;
     func GetMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL;
     func GetMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL;
+    func PeekMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL;
+    func PeekMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL;
     func TranslateMessage(lpMsg: const *MSG)->BOOL;
     func DispatchMessageA(lpMsg: const *MSG)->LRESULT;
+    func DispatchMessageW(lpMsg: const *MSG)->LRESULT;
     func PostQuitMessage(nExitCode: s32);
 }
