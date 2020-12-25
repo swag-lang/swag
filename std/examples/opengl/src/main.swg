@@ -3,11 +3,13 @@
 using core, win32, ogl, gdi32
 
 var hDC: HDC
+var dt: time.Frame
 
 func display()
 {
+    const SPEED = 100
     glClearColor(0, 0, 0, 0)
-    glRotatef(1.0, 0.0, 0.0, 1.0)
+    glRotatef(SPEED * dt.dt, 0.0, 0.0, 1)
     glClear(GL_COLOR_BUFFER_BIT)
     glBegin(GL_TRIANGLES);
     glColor3f(1.0, 0.0, 0.0);
@@ -92,6 +94,9 @@ func messageLoop()
     var msg: MSG
     while true
     {
+        dt.update()
+
+        dt.pause()
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {
             if msg.message == WM_QUIT
@@ -99,6 +104,7 @@ func messageLoop()
             TranslateMessage(&msg)
             DispatchMessageA(&msg)
         }
+        dt.unpause()
 
         display()
     }

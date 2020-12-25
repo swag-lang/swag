@@ -13,7 +13,6 @@ enum ThreadPriority
 
 struct Thread
 {
-    // Must be first, for Context.cpp/threadRun
     userLambda: func(Thread)
 
     context:    swag.Context
