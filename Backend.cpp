@@ -78,16 +78,22 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         return false;
     if (bufferSwg.path.empty())
         return false;
-
     if (g_CommandLine.rebuild)
         return false;
-    if (timeExportFile < g_Workspace.bootstrapModule->moreRecentSourceFile)
+
+    auto timeToTest = timeExportFile;
+    if (module->isOnlyPublic())
+        timeToTest = module->moreRecentSourceFile;
+
+    if (invert && timeToTest > moreRecentSourceFile)
         return false;
-    if (timeExportFile < g_Workspace.runtimeModule->moreRecentSourceFile)
+    if (module->isOnlyPublic())
+        return true;
+    if (timeToTest < g_Workspace.bootstrapModule->moreRecentSourceFile)
         return false;
-    if (!invert && timeExportFile < moreRecentSourceFile)
+    if (timeToTest < g_Workspace.runtimeModule->moreRecentSourceFile)
         return false;
-    if (invert && timeExportFile > moreRecentSourceFile)
+    if (!invert && timeToTest < moreRecentSourceFile)
         return false;
 
     // If one of my dependency is more recent than me, then need to rebuild
@@ -96,7 +102,7 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         auto it = g_Workspace.mapModulesNames.find(dep->name);
         SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
         auto depModule = it->second;
-        if (!depModule->backend->isUpToDate(timeExportFile, true))
+        if (!depModule->backend->isUpToDate(timeToTest, true))
             return false;
     }
 

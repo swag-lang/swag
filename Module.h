@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include "ByteCodeRunContext.h"
 #include "ByteCodeRun.h"
 #include "Pool.h"
@@ -150,6 +151,7 @@ struct Module
     ModuleDependency* addDependency(AstNode* importNode);
     void              setHasBeenBuilt(uint32_t buildResult);
     uint32_t          getHasBeenBuilt();
+    bool              isOnlyPublic();
     bool              mustOutputSomething();
 
     shared_mutex                    mutexDependency;

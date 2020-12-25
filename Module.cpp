@@ -672,10 +672,15 @@ bool Module::WaitForDependenciesDone(Job* job)
     return true;
 }
 
+bool Module::isOnlyPublic()
+{
+    return files.size() - importedSourceFiles.size() == publicSourceFiles.size();
+}
+
 bool Module::mustOutputSomething()
 {
     bool mustOutput = true;
-    // do not generate an executable that have been run in script mode
+    // do not generate an executable that has been run in script mode
     if (byteCodeMainFunc && g_CommandLine.script)
         mustOutput = false;
     // bootstrap
@@ -688,14 +693,14 @@ bool Module::mustOutputSomething()
     // every files are published
     else if (files.size() == publicSourceFiles.size())
         mustOutput = false;
-    // module must have unittest errors, so not output
+    // module must have unittest errors, so no output
     else if (hasTtestErrors)
         mustOutput = false;
     // a test module needs swag to be in test mode
     else if (kind == ModuleKind::Test && !g_CommandLine.outputTest)
         mustOutput = false;
     // if all files are public, then do not generate a module
-    else if (files.size() - importedSourceFiles.size() == publicSourceFiles.size())
+    else if (isOnlyPublic())
         mustOutput = false;
 
     return mustOutput;
