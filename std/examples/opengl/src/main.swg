@@ -2,9 +2,12 @@
 #import "ogl"
 using core, win32, ogl, gdi32
 
+var hDC: HDC
+
 func display()
 {
     glClearColor(0, 0, 0, 0)
+    glRotatef(1.0, 0.0, 0.0, 1.0)
     glClear(GL_COLOR_BUFFER_BIT)
     glBegin(GL_TRIANGLES);
     glColor3f(1.0, 0.0, 0.0);
@@ -15,6 +18,7 @@ func display()
     glVertex2i(1, -1);
     glEnd();
     glFlush()
+    SwapBuffers(hDC)
 }
 
 #[swag.callback]
@@ -64,7 +68,7 @@ func createWindow()->HWND
         wc.hInstance,
         null)
 
-    hDC := GetDC(hWnd)
+    hDC = GetDC(hWnd)
 
     var pfd: PIXELFORMATDESCRIPTOR
     pfd.nSize        = @sizeof(pfd)
@@ -86,12 +90,17 @@ func createWindow()->HWND
 func messageLoop()
 {
     var msg: MSG
-    while GetMessageA(&msg, null, 0, 0) != 0
+    while true
     {
-        if msg.message == WM_QUIT
-            break
-        TranslateMessage(&msg)
-        DispatchMessageA(&msg)
+        while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
+        {
+            if msg.message == WM_QUIT
+                return
+            TranslateMessage(&msg)
+            DispatchMessageA(&msg)
+        }
+
+        display()
     }
 }
 
@@ -99,11 +108,13 @@ func messageLoop()
 {
     hWnd := createWindow()
 
-    hDC := GetDC(hWnd)
+    hDC = GetDC(hWnd)
     hRC := wglCreateContext(hDC)
     wglMakeCurrent(hDC, hRC)
 
     ShowWindow(hWnd, SW_SHOW)
+    UpdateWindow(hWnd)
+
     messageLoop()
 
     wglMakeCurrent(null, null)

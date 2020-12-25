@@ -65,4 +65,5 @@ const PFD_STEREO_DONTCARE         = 0x80000000
     func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32;
     func SetPixelFormat(hdc: HDC, format: s32, ppfd: const *PIXELFORMATDESCRIPTOR)->BOOL;
     func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: *PIXELFORMATDESCRIPTOR)->s32;
+    func SwapBuffers(arg1: HDC)->BOOL;
 }
