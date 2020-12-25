@@ -8,6 +8,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     switch msg
     {
     case WM_PAINT:
+        glClearColor(1, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT)
 
         var ps: PAINTSTRUCT
@@ -43,8 +44,8 @@ func createWindow()->HWND
         WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
+        512,
+        512,
         null,
         null,
         wc.hInstance,
@@ -60,7 +61,10 @@ func createWindow()->HWND
     pfd.cColorBits   = 32
 
     pf := ChoosePixelFormat(hDC, &pfd)
-    SetPixelFormat(hDC, pf, &pfd)
+    @assert(pf != 0)
+    res := SetPixelFormat(hDC, pf, &pfd)
+    @assert(res != FALSE)
+    DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
 
     ReleaseDC(hDC, hWnd)
     return hWnd
