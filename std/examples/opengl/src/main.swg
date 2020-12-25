@@ -4,8 +4,16 @@ using core, win32, ogl, gdi32
 
 func display()
 {
-    glClearColor(1, 0, 0, 0)
+    glClearColor(0, 0, 0, 0)
     glClear(GL_COLOR_BUFFER_BIT)
+    glBegin(GL_TRIANGLES);
+    glColor3f(1.0, 0.0, 0.0);
+    glVertex2i(0,  1);
+    glColor3f(0.0, 1.0, 0.0);
+    glVertex2i(-1, -1);
+    glColor3f(0.0, 0.0, 1.0);
+    glVertex2i(1, -1);
+    glEnd();
     glFlush()
 }
 
@@ -20,10 +28,6 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         BeginPaint(hWnd, &ps)
         EndPaint(hWnd, &ps)
         return 1
-
-    case WM_ERASEBKGND:
-        display()
-        return 0
 
     case WM_SIZE:
 	    glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
