@@ -1,12 +1,21 @@
 #import "core"
 #import "ogl"
-using core, win32, ogl
+using core, win32, ogl, gdi32
 
 #[swag.callback]
 func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     switch msg
     {
+    case WM_PAINT:
+        glClear(GL_COLOR_BUFFER_BIT)
+        return 0
+
+    case WM_SIZE:
+	    glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
+	    PostMessage(hWnd, WM_PAINT, 0, 0)
+	    return 0
+
     case WM_DESTROY:
         PostQuitMessage(0)
     }
@@ -38,8 +47,18 @@ func createWindow()->HWND
         null)
 
     hDC := GetDC(hWnd)
-    ReleaseDC(hDC, hWnd)
 
+    var pfd: PIXELFORMATDESCRIPTOR
+    pfd.nSize        = @sizeof(pfd)
+    pfd.nVersion     = 1;
+    pfd.dwFlags      = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
+    pfd.iPixelType   = PFD_TYPE_RGBA
+    pfd.cColorBits   = 32
+
+    pf := ChoosePixelFormat(hDC, &pfd)
+    SetPixelFormat(hDC, pf, &pfd)
+
+    ReleaseDC(hDC, hWnd)
     return hWnd
 }
 
@@ -63,7 +82,6 @@ func messageLoop()
     hRC := wglCreateContext(hDC)
     wglMakeCurrent(hDC, hRC)
 
-    glClear(GL_COLOR_BUFFER_BIT)
     ShowWindow(hWnd, SW_SHOW)
     messageLoop()
 
