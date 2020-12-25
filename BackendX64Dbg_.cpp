@@ -494,6 +494,8 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64PerThread& pp, TypeInfo* typeInfo, 
 
 DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo)
 {
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+
     // Simple type
     auto simpleType = dbgGetSimpleType(typeInfo);
     if (simpleType != SimpleTypeKind::None)

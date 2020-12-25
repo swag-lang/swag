@@ -2,18 +2,26 @@
 #import "ogl"
 using core, win32, ogl, gdi32
 
+func display()
+{
+    glClearColor(1, 0, 0, 0)
+    glClear(GL_COLOR_BUFFER_BIT)
+}
+
 #[swag.callback]
 func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     switch msg
     {
     case WM_PAINT:
-        glClearColor(1, 0, 0, 0)
-        glClear(GL_COLOR_BUFFER_BIT)
-
+        display()
         var ps: PAINTSTRUCT
         BeginPaint(hWnd, &ps)
         EndPaint(hWnd, &ps)
+        return 0
+
+    case WM_ERASEBKGND:
+        display()
         return 0
 
     case WM_SIZE:
@@ -94,7 +102,7 @@ func messageLoop()
     messageLoop()
 
     wglMakeCurrent(null, null)
-    ReleaseDC(hWnd, hDC)
     wglDeleteContext(hRC)
+    ReleaseDC(hWnd, hDC)
     DestroyWindow(hWnd)
 }
