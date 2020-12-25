@@ -88,7 +88,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
 
 // Callback stuff. This is tricky !
 // The problem: we want an external library to be able to call a callback defined in swag.
-// For native code, no problem.
+// When swag code is native, no problem.
 // The problem starts when that callback is bytecode, at compile time.
 // We need a way to associate a native function that will be called by the external library to a bytecode.
 //
@@ -97,7 +97,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
 // That's why we have here lots of native identical functions, which are dynamically associated to a bytecode
 // when calling @mkcallback
 
-static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4);
+static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6);
 
 struct Callback
 {
@@ -105,10 +105,10 @@ struct Callback
     void* cb;
 };
 
-#define DECL_CB(__idx)                                                     \
-    static void* __callback##__idx(void* p1, void* p2, void* p3, void* p4) \
-    {                                                                      \
-        return doCallback(&__callback##__idx, p1, p2, p3, p4);             \
+#define DECL_CB(__idx)                                                                         \
+    static void* __callback##__idx(void* p1, void* p2, void* p3, void* p4, void* p5, void* p6) \
+    {                                                                                          \
+        return doCallback(&__callback##__idx, p1, p2, p3, p4, p5, p6);                         \
     }
 #define USE_CB(__idx)              \
     {                              \
@@ -138,11 +138,13 @@ static Callback g_callbackArr[] = {
 static mutex    g_makeCallbackMutex;
 static uint32_t g_makeCallbackCount = 0;
 
-static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4)
+// This is the actual callback that will be called by external libraries
+static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6)
 {
     uint32_t cbIndex = UINT32_MAX;
 
-    // Find the slot that corresponds to the native callback
+    // Find the slot that corresponds to the native callback, because
+    // we beed the bytecode pointer that matches 'cb'
     {
         unique_lock lk(g_makeCallbackMutex);
         for (uint32_t i = 0; i < g_makeCallbackCount; i++)
@@ -163,13 +165,14 @@ static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4)
     SWAG_ASSERT(typeFunc->numReturnRegisters() <= 1);
 
     if (typeFunc->numReturnRegisters())
-        byteCodeRun(g_callbackArr[cbIndex].bytecode, &result, &p1, &p2, &p3, &p4);
+        byteCodeRun(g_callbackArr[cbIndex].bytecode, &result, &p1, &p2, &p3, &p4, &p5, &p6);
     else
-        byteCodeRun(g_callbackArr[cbIndex].bytecode, &p1, &p2, &p3, &p4);
+        byteCodeRun(g_callbackArr[cbIndex].bytecode, &p1, &p2, &p3, &p4, &p5, &p6);
 
     return result;
 }
 
+// Runtime function called by user code
 void* makeCallback(void* lambda)
 {
     unique_lock lk(g_makeCallbackMutex);
