@@ -2034,8 +2034,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
-        WM_DESTROY
-
         case ByteCodeOp::LambdaCall:
         {
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
@@ -2091,7 +2089,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
 
             BackendX64Inst::emit_Copy64(pp, RAX, RCX);
-            for (int idxParam = (int) pushRAParams.size() - 1, idxReg = 0; idxParam >= 0; idxParam--, idxReg++)
+
+            int idxReg = 0;
+            for (int idxParam = typeFuncBC->numReturnRegisters() - 1; idxParam >= 0; idxParam--, idxReg++)
+            {
+                switch (idxReg)
+                {
+                case 0:
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRT, RDX, RDI);
+                    break;
+                case 1:
+                    BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRT + sizeof(Register), R8, RDI);
+                    break;
+                }
+            }
+
+            for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--, idxReg++)
             {
                 switch (idxReg)
                 {

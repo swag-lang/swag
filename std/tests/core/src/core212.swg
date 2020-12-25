@@ -39,5 +39,6 @@ func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)
         if msg.message == WM_QUIT break
         TranslateMessage(&msg)
         DispatchMessageA(&msg)
+        break
     }
 }

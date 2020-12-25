@@ -24,9 +24,6 @@ static void byteCodeRun(void* byteCodePtr, ...)
     VectorNative<Register*> paramRegisters;
     va_list                 valist;
 
-    // @todo, unsupported yet
-    SWAG_ASSERT(!typeFunc->numReturnRegisters());
-
     va_start(valist, byteCodePtr);
     for (int i = 0; i < typeFunc->numReturnRegisters(); i++)
     {
@@ -80,11 +77,18 @@ static void byteCodeRun(void* byteCodePtr, ...)
     g_runContext.node       = saveNode;
     g_runContext.sourceFile = saveSourceFile;
     g_runContext.firstRC    = saveFirstRC;
+
+    // Get result
+    for (int i = 0; i < returnRegisters.size(); i++)
+    {
+        auto r = returnRegisters[i];
+        *r     = g_runContext.registersRR[i];
+    }
 }
 
 // Callback stuff. This is tricky !
 // The problem: we want an external library to be able to call a callback defined in swag.
-// For native code, no problem. 
+// For native code, no problem.
 // The problem starts when that callback is bytecode, at compile time.
 // We need a way to associate a native function that will be called by the external library to a bytecode.
 //

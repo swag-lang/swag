@@ -331,3 +331,13 @@ public func tcf_createThread(lambda: func(*void), userParam: uint)
     const INFINITE = 0xFFFFFFFF
     WaitForSingleObject(h, INFINITE);
 }
+
+public func tcf_callret(fct: func()->s64)->s64
+{
+    return fct()
+}
+
+public func tcf_callret1(v: s64, fct: func(s64)->string)->string
+{
+    return fct(v)
+}
