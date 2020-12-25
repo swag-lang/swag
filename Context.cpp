@@ -97,7 +97,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
 // That's why we have here lots of native identical functions, which are dynamically associated to a bytecode
 // when calling @mkcallback
 
-static void doCallback(void* cb, void* p1, void* p2, void* p3, void* p4);
+static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4);
 
 struct Callback
 {
@@ -105,10 +105,10 @@ struct Callback
     void* cb;
 };
 
-#define DECL_CB(__idx)                                                    \
-    static void __callback##__idx(void* p1, void* p2, void* p3, void* p4) \
-    {                                                                     \
-        doCallback(&__callback##__idx, p1, p2, p3, p4);                   \
+#define DECL_CB(__idx)                                                     \
+    static void* __callback##__idx(void* p1, void* p2, void* p3, void* p4) \
+    {                                                                      \
+        return doCallback(&__callback##__idx, p1, p2, p3, p4);             \
     }
 #define USE_CB(__idx)              \
     {                              \
@@ -138,7 +138,7 @@ static Callback g_callbackArr[] = {
 static mutex    g_makeCallbackMutex;
 static uint32_t g_makeCallbackCount = 0;
 
-static void doCallback(void* cb, void* p1, void* p2, void* p3, void* p4)
+static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4)
 {
     uint32_t cbIndex = UINT32_MAX;
 
@@ -156,7 +156,18 @@ static void doCallback(void* cb, void* p1, void* p2, void* p3, void* p4)
     }
 
     SWAG_ASSERT(cbIndex != UINT32_MAX);
-    byteCodeRun(g_callbackArr[cbIndex].bytecode, &p1, &p2, &p3, &p4);
+
+    void*             result   = nullptr;
+    ByteCode*         bc       = (ByteCode*) undoByteCodeLambda(g_callbackArr[cbIndex].bytecode);
+    TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
+    SWAG_ASSERT(typeFunc->numReturnRegisters() <= 1);
+
+    if (typeFunc->numReturnRegisters())
+        byteCodeRun(g_callbackArr[cbIndex].bytecode, &result, &p1, &p2, &p3, &p4);
+    else
+        byteCodeRun(g_callbackArr[cbIndex].bytecode, &p1, &p2, &p3, &p4);
+
+    return result;
 }
 
 void* makeCallback(void* lambda)

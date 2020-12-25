@@ -16,6 +16,8 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(first->typeInfo, TypeInfoKind::Lambda);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
         return context->report({node, format("callback type not supported, too many parameters (maximum is '%d')", SWAG_LIMIT_CB_MAX_PARAMS)});
+    if (typeFunc->numReturnRegisters() > 1)
+        return context->report({node, format("callback return type '%s' not supported", typeFunc->returnType->name.c_str())});
 
     node->typeInfo    = g_TypeMgr.typeInfoPVoid;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;

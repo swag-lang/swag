@@ -3,11 +3,11 @@
 using win32, core
 
 #[swag.callback]
-func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)
+func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     if msg == WM_DESTROY
         PostQuitMessage(0)
-    DefWindowProcA(hwnd, msg, wParam, lParam)
+    return DefWindowProcA(hwnd, msg, wParam, lParam)
 }
 
 #test
@@ -39,6 +39,5 @@ func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)
         if msg.message == WM_QUIT break
         TranslateMessage(&msg)
         DispatchMessageA(&msg)
-        break
     }
 }
