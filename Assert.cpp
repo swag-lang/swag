@@ -2,7 +2,6 @@
 #include "ByteCodeStack.h"
 #include "Os.h"
 
-#ifdef SWAG_HAS_ASSERT
 void swag_assert(const char* expr, const char* file, int line)
 {
     g_Log.lock();
@@ -13,4 +12,3 @@ void swag_assert(const char* expr, const char* file, int line)
     g_Log.unlock();
     OS::assertBox(expr, file, line);
 }
-#endif

@@ -160,12 +160,13 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& r
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 {
-#ifdef SWAG_HAS_ASSERT
     if (rc < MAX_CACHE_FREE_REG)
         SWAG_ASSERT(context->bc->regIsFree[rc] == UINT32_MAX);
-    for (auto r : context->bc->availableRegistersRC)
-        SWAG_ASSERT(r != rc);
-#endif
+    if (g_CommandLine.devMode)
+    {
+        for (auto r : context->bc->availableRegistersRC)
+            SWAG_ASSERT(r != rc);
+    }
 
     // In linear cache ?
     if (rc < MAX_CACHE_FREE_REG)

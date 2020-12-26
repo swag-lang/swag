@@ -2634,10 +2634,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 
             if (fromNode && (fromNode->flags & AST_CONST_EXPR))
             {
-#ifdef SWAG_HAS_ASSERT
                 TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
                 SWAG_ASSERT(typeList->subTypes.size() == fromNode->childs.size());
-#endif
 
                 auto module   = context->sourceFile->module;
                 auto exprList = CastAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
