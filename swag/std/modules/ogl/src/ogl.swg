@@ -1,6 +1,6 @@
 #public
 
-alias GLenum        = s32
+alias GLenum        = u32
 alias GLboolean     = u8
 alias GLbitfield    = u32
 alias GLbyte        = s8
@@ -60,16 +60,16 @@ const GL_SCISSOR_BIT                    = 0x00080000
 const GL_ALL_ATTRIB_BITS                = 0x000fffff
 
 /* BeginMode */
-const GL_POINTS             = 0x0000's32
-const GL_LINES              = 0x0001's32
-const GL_LINE_LOOP          = 0x0002's32
-const GL_LINE_STRIP         = 0x0003's32
-const GL_TRIANGLES          = 0x0004's32
-const GL_TRIANGLE_STRIP     = 0x0005's32
-const GL_TRIANGLE_FAN       = 0x0006's32
-const GL_QUADS              = 0x0007's32
-const GL_QUAD_STRIP         = 0x0008's32
-const GL_POLYGON            = 0x0009's32
+const GL_POINTS             = 0x0000
+const GL_LINES              = 0x0001
+const GL_LINE_LOOP          = 0x0002
+const GL_LINE_STRIP         = 0x0003
+const GL_TRIANGLES          = 0x0004
+const GL_TRIANGLE_STRIP     = 0x0005
+const GL_TRIANGLE_FAN       = 0x0006
+const GL_QUADS              = 0x0007
+const GL_QUAD_STRIP         = 0x0008
+const GL_POLYGON            = 0x0009
 
 /* BlendingFactorDest */
 const GL_ZERO                   = 0
@@ -708,8 +708,8 @@ const GL_MAX_ELEMENTS_VERTICES_WIN      = 0x80E8
 const GL_MAX_ELEMENTS_INDICES_WIN       = 0x80E9
 
 /* WIN_phong_shading */
-const GL_PHONG_WIN                      = 0x80EA 
-const GL_PHONG_HINT_WIN                 = 0x80EB 
+const GL_PHONG_WIN                      = 0x80EA
+const GL_PHONG_HINT_WIN                 = 0x80EB
 
 /* WIN_specular_fog */
 const GL_FOG_SPECULAR_TEXTURE_WIN       = 0x80EC
@@ -1056,4 +1056,7 @@ const GL_TEXTURE_COMPONENTS = GL_TEXTURE_INTERNAL_FORMAT
     func glVertex4sv(v: const *GLshort);
     func glVertexPointer(size: GLint, type: GLenum, stride: GLsizei, pointer: const *GLvoid);
     func glViewport(x: GLint, y: GLint, width: GLsizei, height: GLsizei);
+
+    //func glGenVertexArrays(n: GLsizei, arrays: *GLuint);
+    //func glBindVertexArray(array: GLuint);
 }

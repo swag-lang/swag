@@ -12,4 +12,5 @@ alias HGLRC = const *void
     func wglCreateContext(hDc: HDC)->HGLRC;
     func wglMakeCurrent(hDc: HDC, hRc: HGLRC)->BOOL;
     func wglDeleteContext(hRc: HGLRC)->BOOL;
+    func wglGetProcAddress(arg1: LPCSTR)->const *void;
 }
