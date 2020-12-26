@@ -1,6 +1,6 @@
 #pragma once
 #include "Pool.h"
-#include "Utf8Crc.h"
+#include "Utf8.h"
 #include "Log.h"
 #include "Register.h"
 #include "Attribute.h"
@@ -143,7 +143,7 @@ struct TypeInfo
     Utf8    preName;          // List const, *, [] ...
     Utf8    nakedName;        // The simple type name
     Utf8    name;             // preName + nakedName
-    Utf8Crc scopedName;       // preName + scope name + nakedName
+    Utf8 scopedName;       // preName + scope name + nakedName
     Utf8    scopedNameExport; // preName + scope name + nakedName
 
     AstNode* declNode = nullptr;
@@ -315,8 +315,8 @@ struct SymbolMatchContext
     VectorNative<bool>           doneParameters;
     VectorNative<TypeInfo*>      genericParametersCallTypes;
     VectorNative<TypeInfo*>      genericParametersGenTypes;
-    map<Utf8Crc, TypeInfo*>      genericReplaceTypes;
-    map<Utf8Crc, uint32_t>       mapGenericTypesIndex;
+    map<Utf8, TypeInfo*>      genericReplaceTypes;
+    map<Utf8, uint32_t>       mapGenericTypesIndex;
     BadSignatureInfos            badSignatureInfos;
 
     uint32_t    flags;
@@ -360,7 +360,7 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     int                     firstDefaultValueIdx = -1;
     int                     stackSize            = 0;
-    map<Utf8Crc, TypeInfo*> replaceTypes;
+    map<Utf8, TypeInfo*> replaceTypes;
     uint32_t                attributeUsage = 0xFFFFFFFF; // All by default
 };
 

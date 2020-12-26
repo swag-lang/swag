@@ -509,9 +509,6 @@
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Utf8Crc.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="SourceFile.h">
       <Filter>Main</Filter>
     </ClInclude>

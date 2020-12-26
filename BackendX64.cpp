@@ -469,7 +469,7 @@ void BackendX64::registerFunction(CoffFunction* fct, uint32_t startAddress, uint
     fct->unwind       = move(unwind);
 }
 
-CoffSymbol* BackendX64::getSymbol(X64PerThread& pp, const Utf8Crc& name)
+CoffSymbol* BackendX64::getSymbol(X64PerThread& pp, const Utf8& name)
 {
     auto it = pp.mapSymbols.find(name);
     if (it != pp.mapSymbols.end())
@@ -477,7 +477,7 @@ CoffSymbol* BackendX64::getSymbol(X64PerThread& pp, const Utf8Crc& name)
     return nullptr;
 }
 
-CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value, uint16_t sectionIdx)
+CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8& name, CoffSymbolKind kind, uint32_t value, uint16_t sectionIdx)
 {
     auto it = getSymbol(pp, name);
     if (it)
@@ -508,7 +508,7 @@ CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, Co
     return &pp.allSymbols.back();
 }
 
-void BackendX64::emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8Crc& str, uint8_t reg)
+void BackendX64::emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8& str, uint8_t reg)
 {
     BackendX64Inst::emit_Load64_Immediate(pp, 0, reg, true);
 

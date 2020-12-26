@@ -267,7 +267,7 @@ void Scope::removeChildNoLock(Scope* child)
     }
 }
 
-Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate)
+Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate)
 {
     unique_lock lk(mutex);
 
@@ -276,7 +276,7 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeK
     {
         for (auto child : childScopes)
         {
-            if (child->name.compare(scopeName))
+            if (child->name == scopeName)
             {
                 return child;
             }

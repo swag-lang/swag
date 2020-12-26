@@ -248,7 +248,6 @@
     <ClInclude Include="TypeTable.h" />
     <ClInclude Include="TypeTableJob.h" />
     <ClInclude Include="Utf8.h" />
-    <ClInclude Include="Utf8Crc.h" />
     <ClInclude Include="VectorNative.h" />
     <ClInclude Include="Version.h" />
     <ClInclude Include="ComWin32.hpp" />

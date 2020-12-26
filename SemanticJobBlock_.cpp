@@ -103,7 +103,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
                 auto callParam = identifier->callParameters->childs[i];
                 if (callParam->flags & AST_VALUE_COMPUTED)
                 {
-                    Utf8Crc name = funcParam->token.text;
+                    Utf8 name = funcParam->token.text;
                     SWAG_ASSERT(node->constantScope);
                     node->constantScope->symTable.addSymbolTypeInfo(context,
                                                                     callParam,

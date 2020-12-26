@@ -1,5 +1,5 @@
 #pragma once
-#include "Utf8Crc.h"
+#include "Utf8.h"
 #include "Backend.h"
 #include "BuildParameters.h"
 #include "DataSegment.h"
@@ -22,7 +22,7 @@ enum class CoffSymbolKind
 
 struct CoffSymbol
 {
-    Utf8Crc        name;
+    Utf8        name;
     CoffSymbolKind kind;
     uint32_t       value;
     uint32_t       index;
@@ -162,8 +162,8 @@ struct X64PerThread
     CoffRelocationTable        relocTablePDSection;
     CoffRelocationTable        relocTableDBGSSection;
     vector<CoffSymbol>         allSymbols;
-    map<Utf8Crc, uint32_t>     mapSymbols;
-    map<Utf8Crc, uint32_t>     globalStrings;
+    map<Utf8, uint32_t>     mapSymbols;
+    map<Utf8, uint32_t>     globalStrings;
     map<uint32_t, int32_t>     labels;
     DataSegment                globalSegment;
     DataSegment                stringSegment;
@@ -292,9 +292,9 @@ struct BackendX64 : public Backend
     bool     emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc);
     bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
-    CoffSymbol* getSymbol(X64PerThread& pp, const Utf8Crc& name);
-    CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8Crc& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
-    void        emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8Crc& str, uint8_t reg);
+    CoffSymbol* getSymbol(X64PerThread& pp, const Utf8& name);
+    CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
+    void        emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8& str, uint8_t reg);
 
     bool emitXData(const BuildParameters& buildParameters);
     bool emitPData(const BuildParameters& buildParameters);

@@ -1,5 +1,5 @@
 #pragma once
-#include "Utf8Crc.h"
+#include "Utf8.h"
 #include "Pool.h"
 #include "RegisterList.h"
 #include "DependentJobs.h"
@@ -109,7 +109,7 @@ struct Scope
     }
 
     SymTable                 symTable;
-    Utf8Crc                  name;
+    Utf8                  name;
     Utf8                     fullname;
     Utf8                     fullnameForeign;
     Utf8                     fullnameType;
@@ -131,7 +131,7 @@ struct Scope
     uint32_t  flags          = 0;
     uint32_t  startStackSize = 0;
 
-    Scope* getOrAddChild(AstNode* nodeOwner, const Utf8Crc& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate);
+    Scope* getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate);
     void   addChildNoLock(Scope* child);
     void   removeChildNoLock(Scope* child);
 };

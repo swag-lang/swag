@@ -21,7 +21,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
                 {
                     auto node         = Ast::newNode(context->sourceFile, AstNodeKind::Cast, fromNode);
                     node->semanticFct = SemanticJob::resolveUserCast;
-                    node->token.text  = Utf8Crc("opCast");
+                    node->token.text  = Utf8("opCast");
 
                     auto lastNode = context->job->nodes.back();
                     context->job->nodes.pop_back();

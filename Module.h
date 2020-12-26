@@ -12,7 +12,7 @@
 struct Utf8;
 struct SourceFile;
 struct SymTable;
-struct Utf8Crc;
+struct Utf8;
 struct Workspace;
 struct AstNode;
 struct Scope;

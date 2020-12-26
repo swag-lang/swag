@@ -4,6 +4,25 @@
 #include "Runtime.h"
 #include "CommandLine.h"
 
+uint32_t Utf8::hash() const
+{
+    uint32_t hash = 0;
+
+    auto s = buffer;
+    for(int i = 0; i < count; i++)
+    {
+        hash += *s;
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
+    }
+
+    hash += (hash << 3);
+    hash ^= (hash >> 11);
+    hash += (hash << 15);
+
+    return hash;
+}
+
 void Utf8::reserve(int newSize)
 {
     if (newSize <= allocated)

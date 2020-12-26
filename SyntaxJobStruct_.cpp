@@ -112,7 +112,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     if (implInterface)
     {
         scoped_lock lk(newScope->symTable.mutex);
-        Utf8Crc     itfName  = implNode->identifier->childs.back()->token.text;
+        Utf8     itfName  = implNode->identifier->childs.back()->token.text;
         auto        symbol   = newScope->symTable.findNoLock(itfName);
         Scope*      subScope = nullptr;
         if (!symbol)

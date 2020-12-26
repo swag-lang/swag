@@ -32,11 +32,11 @@ struct TypeTable
     Utf8&        getTypeName(TypeInfo* typeInfo, bool forceNoScope);
     DataSegment* getConstantSegment(Module* module, uint32_t flags);
 
-    using mapType = map<Utf8Crc, pair<TypeInfo*, uint32_t>>;
+    using mapType = map<Utf8, pair<TypeInfo*, uint32_t>>;
     mapType concreteTypes;
     mapType concreteTypesCompiler;
 
-    using mapTypeJob = map<Utf8Crc, TypeTableJob*>;
+    using mapTypeJob = map<Utf8, TypeTableJob*>;
     mapTypeJob concreteTypesJob;
     mapTypeJob concreteTypesJobCompiler;
 };

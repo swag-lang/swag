@@ -19,6 +19,7 @@ struct Utf8
     Utf8(Utf8&& from);
     ~Utf8();
 
+    uint32_t    hash() const;
     void        reset();
     void        reserve(int newSize);
     bool        empty() const;

@@ -627,7 +627,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             if (!hasItemName)
             {
                 auto    overload = child->resolvedSymbolOverload;
-                Utf8Crc name     = format("item%u", storageIndexField);
+                Utf8 name     = format("item%u", storageIndexField);
                 auto&   symTable = node->scope->symTable;
                 symTable.addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset, &name);
             }

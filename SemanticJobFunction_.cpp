@@ -505,7 +505,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
         if (returnType->kind == TypeInfoKind::Struct)
         {
-            Utf8Crc retVal = "retval";
+            Utf8 retVal = "retval";
             funcNode->ownerScope->symTable.addSymbolTypeInfo(context, funcNode->returnType, returnType, SymbolKind::TypeAlias, nullptr, symbolFlags | OVERLOAD_RETVAL, nullptr, 0, &retVal);
         }
     }

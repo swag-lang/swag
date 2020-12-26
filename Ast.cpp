@@ -184,7 +184,7 @@ namespace Ast
         return parentScope->getOrAddChild(owner, sourceFile->scopeName, ScopeKind::File, true, true);
     }
 
-    Scope* newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName)
+    Scope* newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName)
     {
         if (parentScope)
             return parentScope->getOrAddChild(owner, name, kind, matchName, false);
@@ -309,7 +309,7 @@ namespace Ast
         return node;
     }
 
-    AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob, AstNodeKind kind)
+    AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob, AstNodeKind kind)
     {
         AstVarDecl* node  = Ast::newNode<AstVarDecl>(syntaxJob, kind, sourceFile, parent, 2);
         node->token.text  = name;
@@ -324,7 +324,7 @@ namespace Ast
         return node;
     }
 
-    AstIdentifier* newIdentifier(SourceFile* sourceFile, const Utf8Crc& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob)
+    AstIdentifier* newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob)
     {
         AstIdentifier* node = Ast::newNode<AstIdentifier>(syntaxJob, AstNodeKind::Identifier, sourceFile, parent);
         node->token.text    = name;
@@ -343,7 +343,7 @@ namespace Ast
         return node;
     }
 
-    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob)
+    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob)
     {
         AstIdentifierRef* node = Ast::newIdentifierRef(sourceFile, parent, syntaxJob);
         node->token.text       = name;

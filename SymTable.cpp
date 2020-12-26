@@ -7,28 +7,28 @@
 #include "Allocator.h"
 #include "Ast.h"
 
-SymbolName* SymTable::find(const Utf8Crc& name)
+SymbolName* SymTable::find(const Utf8& name)
 {
     shared_lock lk(mutex);
     return findNoLock(name);
 }
 
-SymbolName* SymTable::findNoLock(const Utf8Crc& name)
+SymbolName* SymTable::findNoLock(const Utf8& name)
 {
     return mapNames.find(name);
 }
 
-SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName)
+SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
     unique_lock lk(mutex);
     return registerSymbolNameNoLock(context, node, kind, aliasName);
 }
 
-SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName)
+SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
     SWAG_RACE_CONDITION_WRITE(raceCondition);
 
-    Utf8Crc alName;
+    Utf8 alName;
     if (!aliasName)
     {
         alName    = node->token.text;
@@ -78,7 +78,7 @@ SymbolOverload* SymTable::addSymbolTypeInfo(JobContext*    context,
                                             uint32_t       flags,
                                             SymbolName**   resultName,
                                             uint32_t       storageOffset,
-                                            Utf8Crc*       aliasName)
+                                            Utf8*          aliasName)
 {
     unique_lock lk(mutex);
     if (node->attributeFlags & ATTRIBUTE_PUBLIC || context->sourceFile->generated)
@@ -94,11 +94,11 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
                                                   uint32_t       flags,
                                                   SymbolName**   resultName,
                                                   uint32_t       storageOffset,
-                                                  Utf8Crc*       aliasName)
+                                                  Utf8*          aliasName)
 {
     SWAG_RACE_CONDITION_WRITE(raceCondition);
 
-    Utf8Crc alName;
+    Utf8 alName;
     if (!aliasName)
     {
         alName    = node->token.text;
@@ -493,15 +493,16 @@ const Utf8& SymbolName::getFullName()
     return fullName;
 }
 
-SymbolName* SymTableHash::find(const Utf8Crc& str)
+SymbolName* SymTableHash::find(const Utf8& str)
 {
     if (!allocated)
         return nullptr;
 
-    uint32_t idx = str.crc % allocated;
+    uint32_t crc = str.hash();
+    uint32_t idx = crc % allocated;
     while (buffer[idx].hash)
     {
-        if (buffer[idx].hash == str.crc && !strcmp((const char*) buffer[idx].symbolName->name.buffer, (const char*) str.buffer))
+        if (buffer[idx].hash == crc && buffer[idx].symbolName->name == str)
             return buffer[idx].symbolName;
         idx = idx + 1;
         if (idx == allocated)
@@ -513,8 +514,10 @@ SymbolName* SymTableHash::find(const Utf8Crc& str)
 
 void SymTableHash::addElem(SymbolName* data)
 {
+    uint32_t crc = data->name.hash();
+
     // Find a free slot
-    uint32_t idx = data->name.crc % allocated;
+    uint32_t idx = crc % allocated;
     while (buffer[idx].hash)
     {
         idx = idx + 1;
@@ -522,7 +525,7 @@ void SymTableHash::addElem(SymbolName* data)
             idx = 0;
     }
 
-    buffer[idx].hash       = data->name.crc;
+    buffer[idx].hash       = crc;
     buffer[idx].symbolName = data;
     count += 1;
 }

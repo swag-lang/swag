@@ -1,7 +1,7 @@
 #pragma once
 #include "DependentJobs.h"
 #include "Pool.h"
-#include "Utf8Crc.h"
+#include "Utf8.h"
 #include "Tokenizer.h"
 #include "SyntaxJob.h"
 #include "Register.h"
@@ -148,9 +148,9 @@ enum class AstNodeKind : uint8_t
 
 struct CloneContext
 {
-    map<Utf8Crc, TypeInfo*> replaceTypes;
+    map<Utf8, TypeInfo*> replaceTypes;
     map<TokenId, AstNode*>  replaceTokens;
-    map<Utf8Crc, Utf8>      replaceNames;
+    map<Utf8, Utf8>      replaceNames;
 
     AstInline*    ownerInline      = nullptr;
     AstBreakable* ownerBreakable   = nullptr;
@@ -441,7 +441,7 @@ struct AstFuncDecl : public AstNode
     Scope*                  scope;
     TypeInfoParam*          methodParam;
     Job*                    pendingLambdaJob;
-    map<Utf8Crc, TypeInfo*> replaceTypes;
+    map<Utf8, TypeInfo*> replaceTypes;
     VectorNative<AstNode*>  subFunctions;
 
     uint32_t stackSize         = 0;
@@ -715,7 +715,7 @@ struct AstStruct : public AstNode
     AstNode*                content;
     Scope*                  scope;
     AstNode*                ownerGeneric;
-    map<Utf8Crc, TypeInfo*> replaceTypes;
+    map<Utf8, TypeInfo*> replaceTypes;
 
     uint32_t packing = sizeof(uint64_t);
 };

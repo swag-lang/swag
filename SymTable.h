@@ -1,7 +1,6 @@
 #pragma once
 #include "DependentJobs.h"
 #include "Pool.h"
-#include "Utf8crc.h"
 #include "Register.h"
 #include "RegisterList.h"
 #include "SourceLocation.h"
@@ -10,7 +9,7 @@ struct Scope;
 struct SourceFile;
 struct Token;
 struct TypeInfo;
-struct Utf8Crc;
+struct Utf8;
 struct Job;
 struct TypeInfoFuncAttr;
 struct ByteCodeGenJob;
@@ -79,7 +78,7 @@ struct SymbolName
     shared_mutex                  mutex;
     VectorNative<SymbolOverload*> overloads;
     Utf8                          fullName;
-    Utf8Crc                       name;
+    Utf8                          name;
     SymbolOverload                defaultOverload;
     DependentJobs                 dependentJobs;
 
@@ -104,7 +103,7 @@ struct SymTableHash
     uint32_t allocated = 0;
     uint32_t count;
 
-    SymbolName* find(const Utf8Crc& str);
+    SymbolName* find(const Utf8& str);
     void        addElem(SymbolName* data);
     void        add(SymbolName* data);
 };
@@ -119,14 +118,14 @@ struct StructToDrop
 
 struct SymTable
 {
-    SymbolName*     registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName = nullptr);
-    SymbolName*     registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName = nullptr);
-    SymbolOverload* addSymbolTypeInfo(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8Crc* aliasName = nullptr);
-    SymbolOverload* addSymbolTypeInfoNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8Crc* aliasName = nullptr);
+    SymbolName*     registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
+    SymbolName*     registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName = nullptr);
+    SymbolOverload* addSymbolTypeInfo(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8* aliasName = nullptr);
+    SymbolOverload* addSymbolTypeInfoNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8* aliasName = nullptr);
     bool            checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind);
     bool            checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
-    SymbolName*     find(const Utf8Crc& name);
-    SymbolName*     findNoLock(const Utf8Crc& name);
+    SymbolName*     find(const Utf8& name);
+    SymbolName*     findNoLock(const Utf8& name);
     void            addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
     void            addVarToDrop(StructToDrop& st);
     static void     decreaseOverloadNoLock(SymbolName* symbol);

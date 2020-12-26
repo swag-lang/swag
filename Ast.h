@@ -4,7 +4,7 @@
 #include "Allocator.h"
 #include "SourceFile.h"
 #include "CommandLine.h"
-struct Utf8Crc;
+struct Utf8;
 struct Scope;
 struct Concat;
 enum class ScopeKind;
@@ -71,7 +71,7 @@ namespace Ast
     }
 
     extern Scope*   newPrivateScope(AstNode* owner, SourceFile* file, Scope* parentScope);
-    extern Scope*   newScope(AstNode* owner, const Utf8Crc& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
+    extern Scope*   newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
     extern void     removeFromParent(AstNode* child);
     extern void     insertChild(AstNode* parent, AstNode* child, uint32_t index);
     extern void     addChildBack(AstNode* parent, AstNode* child);
@@ -91,10 +91,10 @@ namespace Ast
     extern AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstNode*           newFuncCallParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstFuncCallParam*  newFuncCallParam(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstVarDecl*        newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr, AstNodeKind kind = AstNodeKind::VarDecl);
+    extern AstVarDecl*        newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr, AstNodeKind kind = AstNodeKind::VarDecl);
     extern AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8Crc& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    extern AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    extern AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
