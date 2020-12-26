@@ -103,7 +103,7 @@ struct SymTableHash
     uint32_t allocated = 0;
     uint32_t count;
 
-    SymbolName* find(const Utf8& str);
+    SymbolName* find(const Utf8& str, uint32_t crc = 0);
     void        addElem(SymbolName* data);
     void        add(SymbolName* data);
 };
@@ -124,8 +124,8 @@ struct SymTable
     SymbolOverload* addSymbolTypeInfoNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8* aliasName = nullptr);
     bool            checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind);
     bool            checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
-    SymbolName*     find(const Utf8& name);
-    SymbolName*     findNoLock(const Utf8& name);
+    SymbolName*     find(const Utf8& name, uint32_t crc = 0);
+    SymbolName*     findNoLock(const Utf8& name, uint32_t crc = 0);
     void            addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
     void            addVarToDrop(StructToDrop& st);
     static void     decreaseOverloadNoLock(SymbolName* symbol);

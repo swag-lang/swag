@@ -7,15 +7,15 @@
 #include "Allocator.h"
 #include "Ast.h"
 
-SymbolName* SymTable::find(const Utf8& name)
+SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 {
     shared_lock lk(mutex);
     return findNoLock(name);
 }
 
-SymbolName* SymTable::findNoLock(const Utf8& name)
+SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
 {
-    return mapNames.find(name);
+    return mapNames.find(name, crc);
 }
 
 SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
@@ -493,12 +493,14 @@ const Utf8& SymbolName::getFullName()
     return fullName;
 }
 
-SymbolName* SymTableHash::find(const Utf8& str)
+SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc)
 {
     if (!allocated)
         return nullptr;
 
-    uint32_t crc = str.hash();
+    if (!crc)
+        crc = str.hash();
+
     uint32_t idx = crc % allocated;
     while (buffer[idx].hash)
     {

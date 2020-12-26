@@ -1663,9 +1663,10 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         }
 
         // Search symbol in all the scopes of the hierarchy
+        auto crc = node->token.text.hash();
         for (auto scope : scopeHierarchy)
         {
-            auto symbol = scope->symTable.find(node->token.text);
+            auto symbol = scope->symTable.find(node->token.text, crc);
             if (symbol)
                 dependentSymbols.insert(symbol);
         }
@@ -2553,6 +2554,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
 
     collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, collectFlags);
 
+    auto crc = node->token.text.hash();
     for (auto scope : job->cacheScopeHierarchy)
     {
         // Do not check if this is the same scope
@@ -2561,7 +2563,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
 
         // Be sure that symbol is fully resolved, otherwise we cannot check for a ghosting
         {
-            auto symbol = scope->symTable.find(node->token.text);
+            auto symbol = scope->symTable.find(node->token.text, crc);
             if (!symbol)
                 continue;
 
