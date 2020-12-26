@@ -480,6 +480,21 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             symbolKind = SymbolKind::Struct;
     }
 
+    // Global identifier call. Must be a call to a mixin function, that's it...
+    if (identifier->identifierRef && identifier->identifierRef->flags & AST_GLOBAL_IDENTIFIER)
+    {
+        if (symbolKind != SymbolKind::Function)
+            return context->report({identifier, format("only calls to 'swag.mixin' functions can be done at global scope ('%s' is %s)", identifier->token.text.c_str(), SymTable::getArticleKindName(symbolKind))});
+
+        auto funcDecl = CastAst<AstFuncDecl>(identifier->typeInfo->declNode, AstNodeKind::FuncDecl);
+        if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
+        {
+            Diagnostic diag{identifier, identifier->token, format("function '%s' is not declared with the 'swag.mixin' attribute, and this is mandatory for a function call at global scope", funcDecl->token.text.c_str())};
+            Diagnostic note{funcDecl, funcDecl->token, "this is the function", DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
+    }
+
     switch (symbolKind)
     {
     case SymbolKind::GenericType:

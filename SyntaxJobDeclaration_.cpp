@@ -565,6 +565,15 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerPass:
         SWAG_CHECK(doCompilerPass());
         break;
+    case TokenId::Identifier:
+    {
+        AstNode* identifierRef = nullptr;
+        SWAG_CHECK(doIdentifierRef(parent, &identifierRef));
+        identifierRef->flags |= AST_GLOBAL_IDENTIFIER;
+        if (result)
+            *result = identifierRef;
+        break;
+    }
 
     default:
         return invalidTokenError(InvalidTokenError::TopLevelInstruction);
