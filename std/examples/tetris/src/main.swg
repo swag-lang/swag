@@ -49,7 +49,7 @@
 
 	Last Updated: 30/03/2017
 */
-
+#if #os == "windows";
 #import "core"
 using core, win32
 
