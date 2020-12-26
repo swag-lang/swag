@@ -33,7 +33,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         var ps: PAINTSTRUCT
         BeginPaint(hWnd, &ps)
         EndPaint(hWnd, &ps)
-        return 1
+        return 0
 
     case WM_SIZE:
 	    glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
@@ -119,6 +119,7 @@ func messageLoop()
     hRC := wglCreateContext(hDC)
     wglMakeCurrent(hDC, hRC)
 
+    display()
     ShowWindow(hWnd, SW_SHOW)
     UpdateWindow(hWnd)
 
