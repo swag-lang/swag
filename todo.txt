@@ -46,6 +46,9 @@ OPTIMS
 ****************************************
 
 -------------------------------------
+créer un utf8 et calcul crc à chaque fois !!!!!
+            auto symbol = scope->symTable.find(node->token.text);
+-------------------------------------
 jumpifnotzero8 etc... pour éviter un clearmask systematique
 -------------------------------------
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?

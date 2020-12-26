@@ -2,14 +2,14 @@
 #import "ogl"
 using core, win32, ogl, gdi32
 
-var hDC: HDC
-var dt: time.Frame
+var hDC:    HDC
+var frame:  time.FrameTiming
 
 func display()
 {
     const SPEED = 100
     glClearColor(0, 0, 0, 0)
-    glRotatef(SPEED * dt.dt, 0.0, 0.0, 1)
+    glRotatef(SPEED * frame.dt, 0.0, 0.0, 1)
     glClear(GL_COLOR_BUFFER_BIT)
     glBegin(GL_TRIANGLES);
     glColor3f(1.0, 0.0, 0.0);
@@ -94,9 +94,10 @@ func messageLoop()
     var msg: MSG
     while true
     {
-        dt.update()
+        frame.update()
 
-        dt.pause()
+        // Windows messages
+        frame.pause()
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {
             if msg.message == WM_QUIT
@@ -104,7 +105,7 @@ func messageLoop()
             TranslateMessage(&msg)
             DispatchMessageA(&msg)
         }
-        dt.unpause()
+        frame.unpause()
 
         display()
     }
