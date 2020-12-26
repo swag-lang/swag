@@ -264,8 +264,9 @@ struct PROCESS_INFORMATION
     func OutputDebugStringA(lpOutputString: LPCSTR);
     func OutputDebugStringW(lpOutputString: LPCWSTR);
     func DebugActiveProcess(procId: DWORD);
-    func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
 
+    func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
+    func GetProcAddress(hModule: HMODULE, lpProcName: LPCSTR)->const *void;
     func GetCurrentProcessId()->DWORD;
     func GetModuleHandleA(lpModuleName: LPCSTR)->HMODULE;
     func GetStdHandle(nStdHandle: DWORD)->HANDLE;

@@ -436,6 +436,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::IntrinsicMakeForeign:
+    {
+        auto ptr                       = (void*) registersRC[ip->a.u32].pointer;
+        registersRC[ip->a.u32].pointer = (uint8_t*) doForeignLambda(ptr);
+        break;
+    }
+
     case ByteCodeOp::LambdaCall:
     {
         auto ptr = registersRC[ip->a.u32].u64;

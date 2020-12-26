@@ -5,13 +5,34 @@
 #include "Module.h"
 #include "TypeManager.h"
 
+bool SemanticJob::resolveIntrinsicMakeForeign(SemanticContext* context)
+{
+    auto node  = context->node;
+    auto first = node->childs.front();
+    auto expr  = node->childs.back();
+
+    // Check first parameter
+    if (first->typeInfo->kind != TypeInfoKind::Lambda)
+        return context->report({first, "'@mkforeign' must have a lambda type as a first parameter"});
+    first->flags |= AST_NO_BYTECODE;
+
+    // Check expression
+    SWAG_CHECK(checkIsConcrete(context, expr));
+    if (!expr->typeInfo->isSame(g_TypeMgr.typeInfoConstPVoid, ISSAME_CAST))
+        return context->report({expr, "'@mkforeign' must have a 'const *void' as a second parameter"});
+
+    node->typeInfo    = first->typeInfo;
+    node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeForeign;
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     auto first = node->childs.front();
 
     // Check first parameter
     if (first->typeInfo->kind != TypeInfoKind::Lambda)
-        return context->report({node, "'@mkcallback' must have a lambda as a first parameter"});
+        return context->report({node, "'@mkcallback' must have a lambda value as a first parameter"});
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(first->typeInfo, TypeInfoKind::Lambda);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
@@ -518,6 +539,12 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(resolveIntrinsicMakeCallback(context, node, expr->typeInfo));
+        break;
+    }
+
+    case TokenId::IntrinsicMakeForeign:
+    {
+        SWAG_CHECK(resolveIntrinsicMakeForeign(context));
         break;
     }
 

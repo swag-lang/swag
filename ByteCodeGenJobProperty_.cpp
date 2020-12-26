@@ -14,6 +14,15 @@ bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitIntrinsicMakeForeign(ByteCodeGenContext* context)
+{
+    auto node = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto expr = node->childs.back();
+    emitInstruction(context, ByteCodeOp::IntrinsicMakeForeign, expr->resultRegisterRC);
+    node->resultRegisterRC = expr->resultRegisterRC;
+    return true;
+}
+
 bool ByteCodeGenJob::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
 {
     auto node    = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);

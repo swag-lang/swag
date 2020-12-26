@@ -125,6 +125,7 @@ void LanguageSpec::setup()
     keywords["@mkany"]       = TokenId::IntrinsicMakeAny;
     keywords["@mkinterface"] = TokenId::IntrinsicMakeInterface;
     keywords["@mkcallback"]  = TokenId::IntrinsicMakeCallback;
+    keywords["@mkforeign"]   = TokenId::IntrinsicMakeForeign;
     keywords["@index"]       = TokenId::IntrinsicIndex;
 
     keywords["@print"]       = TokenId::IntrinsicPrint;
