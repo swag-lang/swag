@@ -2841,6 +2841,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::IntrinsicMakeForeign:
+        {
+            auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+            auto v1 = builder.CreateOr(v0, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
+            builder.CreateStore(v1, GEP_I32(allocR, ip->a.u32));
+            break;
+        }
+
         case ByteCodeOp::IntrinsicMakeCallback:
         {
             llvm::BasicBlock* blockLambdaBC      = llvm::BasicBlock::Create(context, "", func);
