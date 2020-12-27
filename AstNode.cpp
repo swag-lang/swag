@@ -1087,7 +1087,9 @@ AstNode* AstCompilerAst::clone(CloneContext& context)
         func->token.text = newName;
         func->flags &= ~AST_NO_SEMANTIC;
         func->content->flags &= ~AST_NO_SEMANTIC;
+        newNode->ownerScope->symTable.registerSymbolName(nullptr, func, SymbolKind::Function);
 
+        // Ref to the function
         auto idRef = CastAst<AstIdentifierRef>(newNode->childs.back(), AstNodeKind::IdentifierRef);
         idRef->childs.back()->token.text = newName;
     }

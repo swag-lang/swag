@@ -1,4 +1,4 @@
-/*#import "core"
+#import "core"
 using core
 
 #[swag.mixin]
@@ -11,4 +11,4 @@ func mk(name: string, type: typeinfo)
     }
 }
 
-mk("toto", s32)*/
+mk("toto", s32)
