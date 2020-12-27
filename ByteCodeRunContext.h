@@ -88,7 +88,6 @@ struct ByteCodeRunContext : public JobContext
     int32_t  firstRC   = -1;
     bool     hasError  = false;
 
-    const ConcreteCompilerMessage* currentCompilerMessage  = nullptr;
-    Job*                           currentCompilerJob      = nullptr;
-    bool                           canSendCompilerMessages = true;
+    const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
+    Job*                           currentCompilerJob     = nullptr;
 };

@@ -1,4 +1,3 @@
-#compilerpass
 using swag
 
 var cpt = 0's64

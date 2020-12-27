@@ -300,7 +300,6 @@ struct ConcreteTypeInfoVariadic
 
 enum class CompilerMsgKind
 {
-    PassBeforeSemantic,
     PassAfterSemantic,
     PassBeforeRunByteCode,
     PassBeforeOutput,
@@ -310,7 +309,6 @@ enum class CompilerMsgKind
 
 enum class CompilerMsgKindMask : uint64_t
 {
-    PassBeforeSemantic    = 1 << (uint32_t) CompilerMsgKind::PassBeforeSemantic,
     PassAfterSemantic     = 1 << (uint32_t) CompilerMsgKind::PassAfterSemantic,
     PassBeforeRunByteCode = 1 << (uint32_t) CompilerMsgKind::PassBeforeRunByteCode,
     PassBeforeOutput      = 1 << (uint32_t) CompilerMsgKind::PassBeforeOutput,

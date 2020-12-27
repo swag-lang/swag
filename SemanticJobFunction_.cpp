@@ -138,12 +138,10 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
 
-    if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime || !module->runContext.canSendCompilerMessages)
-        return true;
-    if (!module->hasCompilerFuncFor(CompilerMsgKind::SemanticFunc))
+    if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime)
         return true;
 
-    // Send user message
+    // Post user message
     auto node     = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
@@ -159,15 +157,9 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     msg.kind        = CompilerMsgKind::SemanticFunc;
     msg.name.buffer = (void*) node->token.text.c_str();
     msg.name.count  = node->token.text.length();
+    msg.type        = (ConcreteTypeInfo*) typeInfo; // Will be converted if really sent
+    module->postCompilerMessage(msg);
 
-    uint32_t storageOffset;
-    auto&    typeTable = module->typeTable;
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, nullptr, &storageOffset, CONCRETE_SHOULD_WAIT | CONCRETE_FOR_COMPILER));
-    if (context->result != ContextResult::Done)
-        return true;
-    msg.type = (ConcreteTypeInfo*) module->constantSegmentCompiler.address(storageOffset);
-
-    module->sendCompilerMessage((ConcreteCompilerMessage*) &msg, context->job);
     return true;
 }
 

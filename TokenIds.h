@@ -60,7 +60,6 @@ DEFINE_TOKEN_ID(SymLiteralParen)
 
 DEFINE_TOKEN_ID(CompilerPublic)
 DEFINE_TOKEN_ID(CompilerGenerated)
-DEFINE_TOKEN_ID(CompilerPass)
 DEFINE_TOKEN_ID(CompilerUnitTest)
 DEFINE_TOKEN_ID(CompilerAssert)
 DEFINE_TOKEN_ID(CompilerPrint)

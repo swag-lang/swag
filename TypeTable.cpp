@@ -6,6 +6,7 @@
 #include "TypeTableJob.h"
 #include "TypeManager.h"
 #include "Module.h"
+#include "ModuleBuildJob.h"
 
 DataSegment* TypeTable::getConstantSegment(Module* module, uint32_t flags)
 {
@@ -390,6 +391,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
         if (cflags & CONCRETE_SHOULD_WAIT)
         {
+            SWAG_ASSERT(context->result == ContextResult::Done || !strcmp(context->baseJob->waitingId, "CONCRETE_SHOULD_WAIT"));
             job->dependentJob = context->baseJob;
             context->baseJob->setPending(nullptr, "CONCRETE_SHOULD_WAIT", nullptr, typeInfo);
             context->baseJob->jobsToAdd.push_back(job);
@@ -401,7 +403,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
             job->dependentJob = context->baseJob->dependentJob;
             while (job->dependentJob && job->dependentJob->dependentJob)
                 job->dependentJob = job->dependentJob->dependentJob;
-
+            SWAG_ASSERT(dynamic_cast<ModuleBuildJob*>(job->dependentJob) != nullptr);
             g_ThreadMgr.addJob(job);
         }
 

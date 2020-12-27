@@ -5,6 +5,7 @@
 #include "SourceFile.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
+#include "Module.h"
 
 bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
 {
@@ -371,7 +372,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->token.text = "#compiler";
             funcNode->token.text = "__compiler" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_COMPILER_FUNC | ATTRIBUTE_COMPILER;
-            SWAG_VERIFY(sourceFile->compilerPass, syntaxError(token, "'#compiler' function can only be declared in a file marked with '#compilerpass'"));
+            module->numCompilerFunctions++;
             break;
         case TokenId::CompilerAst:
             funcNode->token.text = "#ast";

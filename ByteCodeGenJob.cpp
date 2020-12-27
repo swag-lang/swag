@@ -708,6 +708,10 @@ JobResult ByteCodeGenJob::execute()
         originalNode->byteCodeJob = nullptr;
     }
 
+    // Register function in compiler list, now that we are done
+    if(originalNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+        module->addCompilerFunc(originalNode->bc);
+
     // #ast can have a #[swag.printbc]. We need to print it now, because it's compile time, and the legit
     // pipeline for printing (after bc optimize) will not be called in that case
     if (originalNode->attributeFlags & ATTRIBUTE_AST_FUNC && originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)

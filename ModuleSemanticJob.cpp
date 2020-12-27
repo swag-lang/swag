@@ -16,8 +16,6 @@ JobResult ModuleSemanticJob::execute()
     {
         if (file->buildPass < BuildPass::Semantic)
             continue;
-        if (file->compilerPass)
-            continue;
 
         auto job          = g_Pool_semanticJob.alloc();
         job->sourceFile   = file;

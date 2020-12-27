@@ -8,7 +8,6 @@ void LanguageSpec::setup()
 {
     keywords["#public"]         = TokenId::CompilerPublic;
     keywords["#generated"]      = TokenId::CompilerGenerated;
-    keywords["#compilerpass"]   = TokenId::CompilerPass;
     keywords["#unittest"]       = TokenId::CompilerUnitTest;
     keywords["#assert"]         = TokenId::CompilerAssert;
     keywords["#print"]          = TokenId::CompilerPrint;

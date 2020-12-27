@@ -227,12 +227,6 @@ void Module::addPublicSourceFile(SourceFile* file)
     publicSourceFiles.insert(file);
 }
 
-void Module::addCompilerPassSourceFile(SourceFile* file)
-{
-    scoped_lock lk(mutexCompilerPass);
-    compilerSourceFiles.insert(file);
-}
-
 void Module::addFileNoLock(SourceFile* file)
 {
     file->module        = this;
@@ -246,10 +240,6 @@ void Module::addFileNoLock(SourceFile* file)
 
     // Keep track of the most recent file
     moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);
-
-    // If the file has nodes for the compiler pass, then we need to register it in the module
-    if (file->compilerPass)
-        compilerSourceFiles.insert(file);
 
     // If the file is flagged as #public, register it
     if (file->forcedPublic)
@@ -281,11 +271,6 @@ void Module::removeFile(SourceFile* file)
     files.pop_back();
     file->module        = nullptr;
     file->indexInModule = UINT32_MAX;
-
-    // If the file has compiler functions, then we need to unregister it from the module
-    auto it = compilerSourceFiles.find(file);
-    if (it != compilerSourceFiles.end())
-        compilerSourceFiles.erase(it);
 
     // If the file is flagged as #public, unregister it
     auto it1 = publicSourceFiles.find(file);
@@ -369,6 +354,58 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     return true;
 }
 
+void Module::postCompilerMessage(ConcreteCompilerMessage& msg)
+{
+    unique_lock lk(mutexByteCodeCompiler);
+
+    // Cannot decide yet if there's a corresponding #compiler for that message, so push it
+    if (numCompilerFunctions > 0)
+        compilerMessages.push_back(msg);
+
+    // We can decide, because every #compiler function have been registered.
+    // So if there's no #compiler function for the given message, just dismiss it.
+    else
+    {
+        int index = (int) msg.kind;
+        if (byteCodeCompiler[index].empty())
+            return;
+        compilerMessages.push_back(msg);
+    }
+}
+
+bool Module::flushCompilerMessages(JobContext* context)
+{
+    while (!compilerMessages.empty())
+    {
+        auto& msg = compilerMessages.back();
+
+        // Be sure we have a #compiler for that message
+        int index = (int) msg.kind;
+        if (byteCodeCompiler[index].empty())
+        {
+            compilerMessages.pop_back();
+            continue;
+        }
+
+        if (msg.kind == CompilerMsgKind::SemanticFunc)
+        {
+            uint32_t storageOffset;
+            context->sourceFile = files.front();
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, (TypeInfo*) msg.type, nullptr, &storageOffset, CONCRETE_SHOULD_WAIT | CONCRETE_FOR_COMPILER));
+            if (context->result != ContextResult::Done)
+                return true;
+            msg.type = (ConcreteTypeInfo*) constantSegmentCompiler.address(storageOffset);
+        }
+
+        sendCompilerMessage(&msg, context->baseJob);
+        SWAG_ASSERT(context->result == ContextResult::Done);
+
+        compilerMessages.pop_back();
+    }
+
+    return true;
+}
+
 bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 {
     ConcreteCompilerMessage msg;
@@ -378,12 +415,8 @@ bool Module::sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob)
 
 bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob)
 {
-    if (!runContext.canSendCompilerMessages)
-        return true;
-
     unique_lock lk(mutexByteCodeCompiler);
-
-    int index = (int) msg->kind;
+    int         index = (int) msg->kind;
     if (byteCodeCompiler[index].empty())
         return true;
 
@@ -407,12 +440,6 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
     return true;
 }
 
-bool Module::hasCompilerFuncFor(CompilerMsgKind msgKind)
-{
-    int index = (int) msgKind;
-    return !byteCodeCompiler[index].empty();
-}
-
 void Module::addCompilerFunc(ByteCode* bc)
 {
     auto funcDecl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
@@ -427,6 +454,8 @@ void Module::addCompilerFunc(ByteCode* bc)
         if (filter & ((uint64_t) 1 << i))
         {
             scoped_lock lk(mutexByteCodeCompiler);
+            SWAG_ASSERT(numCompilerFunctions > 0);
+            numCompilerFunctions--;
             byteCodeCompiler[i].push_back(bc);
         }
     }
@@ -470,10 +499,6 @@ void Module::addByteCodeFunc(ByteCode* bc)
         else if (attributeFlags & ATTRIBUTE_RUN_FUNC)
         {
             byteCodeRunFunc.push_back(bc);
-        }
-        else if (attributeFlags & ATTRIBUTE_COMPILER_FUNC)
-        {
-            addCompilerFunc(bc);
         }
         else if (attributeFlags & ATTRIBUTE_MAIN_FUNC)
         {

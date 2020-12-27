@@ -157,39 +157,7 @@ JobResult ModuleBuildJob::execute()
             if (!jobsToAdd.empty())
                 return JobResult::KeepJobAlive;
 
-            pass = ModuleBuildPass::SemanticCompiler;
-        }
-    }
-
-    //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::SemanticCompiler)
-    {
-        pass = ModuleBuildPass::SemanticModule;
-
-        // Cannot send compiler messages while we are resolving #compiler functions
-        module->runContext.canSendCompilerMessages = false;
-
-        if (g_CommandLine.stats || g_CommandLine.verbose)
-        {
-            timerSemanticCompiler.start();
-            if (g_CommandLine.verbose && !module->hasTtestErrors && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassBegin, "SemanticCompiler", module->name);
-        }
-
-        if (!module->compilerSourceFiles.empty())
-        {
-            for (auto itfile : module->compilerSourceFiles)
-            {
-                auto semanticJob          = g_Pool_semanticJob.alloc();
-                semanticJob->sourceFile   = itfile;
-                semanticJob->module       = module;
-                semanticJob->dependentJob = this;
-                semanticJob->nodes.push_back(itfile->astRoot);
-                semanticJob->flags |= JOB_COMPILER_PASS;
-                jobsToAdd.push_back(semanticJob);
-            }
-
-            return JobResult::KeepJobAlive;
+            pass = ModuleBuildPass::SemanticModule;
         }
     }
 
@@ -212,9 +180,6 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        // We can then send compiler messages again
-        module->runContext.canSendCompilerMessages = true;
-        module->sendCompilerMessage(CompilerMsgKind::PassBeforeSemantic, this);
         auto semanticJob          = g_Pool_moduleSemanticJob.alloc();
         semanticJob->module       = module;
         semanticJob->dependentJob = this;
@@ -227,6 +192,12 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
+
+        // Send all compiler messages
+        if (!module->flushCompilerMessages(&context))
+            return JobResult::ReleaseJob;
+        if (context.result != ContextResult::Done)
+            return JobResult::KeepJobAlive;
 
         pass = ModuleBuildPass::WaitForDependencies;
         module->sendCompilerMessage(CompilerMsgKind::PassAfterSemantic, this);

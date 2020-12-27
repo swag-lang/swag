@@ -562,9 +562,6 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerGenerated:
         SWAG_CHECK(doCompilerGenerated());
         break;
-    case TokenId::CompilerPass:
-        SWAG_CHECK(doCompilerPass());
-        break;
     case TokenId::Identifier:
     {
         AstNode* identifierRef = nullptr;

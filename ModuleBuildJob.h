@@ -15,7 +15,6 @@ enum class ModuleBuildPass
     WaitForDependenciesEffective,
     OptimizeBc,
     Publish,
-    SemanticCompiler,
     SemanticModule,
     RunByteCode,
     Output,

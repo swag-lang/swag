@@ -64,7 +64,6 @@ struct Module
     void        release();
     void        allocateBackend();
     void        addPublicSourceFile(SourceFile* file);
-    void        addCompilerPassSourceFile(SourceFile* file);
     void        addFileNoLock(SourceFile* file);
     void        addFile(SourceFile* file);
     void        removeFile(SourceFile* file);
@@ -86,7 +85,6 @@ struct Module
     shared_mutex              mutexFile;
     shared_mutex              mutexCompilerPass;
     VectorNative<SourceFile*> files;
-    set<SourceFile*>          compilerSourceFiles;
     set<SourceFile*>          publicSourceFiles;
     set<SourceFile*>          importedSourceFiles;
     BuildCfg                  buildCfg;
@@ -117,10 +115,13 @@ struct Module
     shared_mutex mutexBuildPass;
     BuildPass    buildPass = BuildPass::Full;
 
+    vector<ConcreteCompilerMessage> compilerMessages;
+
     bool sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob);
     bool sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob);
+    void postCompilerMessage(ConcreteCompilerMessage& msg);
+    bool flushCompilerMessages(JobContext* context);
     void addCompilerFunc(ByteCode* bc);
-    bool hasCompilerFuncFor(CompilerMsgKind msgKind);
     void addByteCodeFunc(ByteCode* bc);
     bool hasBytecodeToRun();
     bool WaitForDependenciesDone(Job* job);
@@ -141,11 +142,12 @@ struct Module
     ByteCodeRun             runner;
     mutex                   mutexExecuteNode;
 
-    ByteCode* byteCodeMainFunc = nullptr;
-    AstNode*  mainIsDefined    = nullptr;
-    bool      hasTtestErrors   = false;
-    bool      setupDone        = false;
-    bool      dependenciesDone = false;
+    atomic<int> numCompilerFunctions;
+    ByteCode*   byteCodeMainFunc = nullptr;
+    AstNode*    mainIsDefined    = nullptr;
+    bool        hasTtestErrors   = false;
+    bool        setupDone        = false;
+    bool        dependenciesDone = false;
 
     void              addForeignLib(const Utf8& text);
     ModuleDependency* addDependency(AstNode* importNode);
