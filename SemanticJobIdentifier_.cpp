@@ -2440,8 +2440,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
     }
 
     // If we are in an inline block, jump right to the function parent
-    // Not that the function parent can be null in case of inlined expression in a global for example (compile time execution)
-    else if (startNode->kind == AstNodeKind::Inline || startNode->kind == AstNodeKind::CompilerInline)
+    else if (startNode->kind == AstNodeKind::CompilerInline)
     {
         if (!(flags & COLLECT_BACKTICK))
         {
@@ -2450,6 +2449,23 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
         }
 
         flags &= ~COLLECT_BACKTICK;
+    }
+
+    // If we are in an inline block, jump right to the function parent
+    // Not that the function parent can be null in case of inlined expression in a global for example (compile time execution)
+    else if (startNode->kind == AstNodeKind::Inline)
+    {
+        auto inlineBlock = CastAst<AstInline>(startNode, AstNodeKind::Inline);
+        if (!(inlineBlock->func->attributeFlags & ATTRIBUTE_MIXIN))
+        {
+            if (!(flags & COLLECT_BACKTICK))
+            {
+                while (startNode && startNode->kind != AstNodeKind::FuncDecl)
+                    startNode = startNode->parent;
+            }
+
+            flags &= ~COLLECT_BACKTICK;
+        }
     }
 
     if (startNode && startNode->parent)
