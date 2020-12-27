@@ -146,6 +146,8 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
     // Filter what we send
+    if (sourceFile->imported)
+        return true;
     if (!node->ownerScope->isGlobalOrImpl())
         return true;
     if (node->attributeFlags & ATTRIBUTE_GENERATED_FUNC)

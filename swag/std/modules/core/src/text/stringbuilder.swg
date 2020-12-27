@@ -37,6 +37,12 @@ impl StringBuilder
         buffer.addBytes(cast(string) value)
     }
 
+    // Append a end of line
+    func appendEOL(using self)
+    {
+        buffer.addBytes(environment.EndLine)
+    }
+
     // Append a character
     func appendChar(using self, value: char)
     {

@@ -1,27 +1,67 @@
 #import "core"
-using core, swag
+using core, swag, strconv
 
 #[attributeUsage(AttributeUsage.Function)]
 attr extension()
 
 #[extension]
-func thisIs();
+{
+    func extension1();
+    func extension2();
+}
 
-var g: Array'typeinfo
+struct OneFunc
+{
+    type: typeinfo
+    name: string
+}
+
+var g: Array'OneFunc
 
 #compiler(CompilerMsgMask.SemanticFunc)
 {
     itf := @compiler()
     msg := itf.getMessage()
     if(msg.type.kind != TypeInfoKind.Func) return
+    if(!reflection.hasAttribute(msg.type, "__core214.extension")) return
 
-    type := cast(const* TypeInfoFunc) msg.type
+    g.add(@{msg.type, msg.name})
+}
 
-    visit i: type.attributes
+#compiler(CompilerMsgMask.PassAfterSemantic)
+{
+    var builderVars: StringBuilder
+    var builderFct: StringBuilder
+
+    builderFct.appendString("func printAll() {\n");
+
+    visit t: g
     {
-        if(i.name == "__core214.extension")
-        {
-            console.print("%\n", type)
-        }
+        builderVars.appendFormat("var gen_%: s32", t.name)
+        builderVars.appendEOL()
+
+        builderFct.appendFormat("gen_% = 555\n", t.name)
+        //builderFct.appendFormat(@"console.print("gen %%", gen_%);"@, t.name);
+        builderFct.appendEOL()
     }
+
+    builderFct.appendString("}\n");
+
+    itf := @compiler()
+
+    strVars := builderVars.moveToString()
+    //console.print("%\n", strVars)
+    itf.compileString(strVars.toString())
+
+    strFunc := builderFct.moveToString()
+    //console.print("%\n", strFunc)
+    itf.compileString(strFunc.toString())
+}
+
+#placeholder printAll
+#test
+{
+    printAll()
+    @assert(gen_extension1 == 555)
+    @assert(gen_extension2 == 555)
 }

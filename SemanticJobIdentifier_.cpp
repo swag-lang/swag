@@ -1050,12 +1050,15 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     AstNode*       genericParameters = nullptr;
     AstNode*       callParameters    = nullptr;
 
+    // node can be null when we try to resolve a userOp
     if (node)
     {
         identifier        = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
         genericParameters = identifier->genericParameters;
         callParameters    = identifier->callParameters;
     }
+    else
+        node = context->node;
 
     // Take non generic errors in priority
     {
@@ -1134,7 +1137,6 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     }
 
     // Multiple overloads
-    SWAG_ASSERT(node);
     Diagnostic                diag{node, node->token, format("none of the %d overloads could match", overloads.size())};
     vector<const Diagnostic*> notes;
     for (auto& one : overloads)
