@@ -1996,6 +1996,20 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
     auto node = context->node;
     for (int i = 0; i < matches.size(); i++)
     {
+        // Priority to a non empty function
+        if (matches[i]->symbolOverload->node->flags & AST_EMPTY_FCT)
+        {
+            for (int j = 0; j < matches.size(); j++)
+            {
+                if (!(matches[j]->symbolOverload->node->flags & AST_EMPTY_FCT) &&
+                    matches[j]->symbolOverload->symbol == matches[i]->symbolOverload->symbol)
+                {
+                    matches[i]->remove = true;
+                    break;
+                }
+            }
+        }
+
         // Priority to a local var/parameter versus a function
         if (matches[i]->symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr)
         {

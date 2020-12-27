@@ -323,8 +323,8 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     auto overload = symbol->findOverload(typeInfo);
     if (overload)
     {
-        // This is fine to define a foreign thing multiple times, if they have the same signature
-        if (!(node->attributeFlags & ATTRIBUTE_FOREIGN) || !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN))
+        // This is fine to define an empty function multiple times, if the signatures are the same
+        if (!(node->flags & AST_EMPTY_FCT) && !(overload->node->flags & AST_EMPTY_FCT))
         {
             auto       firstOverload = overload;
             Utf8       msg           = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());

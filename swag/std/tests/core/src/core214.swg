@@ -37,8 +37,8 @@ var g: Array'OneFunc
 
     visit t: g
     {
-        builderVars.appendFormat("var gen_%: s32", t.name)
-        builderVars.appendEOL()
+        builderVars.appendFormat("var gen_%: s32\n", t.name)
+        builderVars.appendFormat("func %(){}\n", t.name)
 
         builderFct.appendFormat("gen_% = 555\n", t.name)
         //builderFct.appendFormat(@"console.print("gen %%", gen_%);"@, t.name);

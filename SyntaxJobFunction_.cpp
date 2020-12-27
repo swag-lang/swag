@@ -489,11 +489,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
     funcNode->typeInfo->computeName();
 
-    // Semi colon is valid only for foreign and intrinsics declarations
+    // If we have now a semi colon, then this is an empty function, like a forward decl in c++
     if (token.id == TokenId::SymSemiColon)
     {
         SWAG_VERIFY(!funcForCompiler, syntaxError(token, format("special function '%s' must have a body", funcNode->token.text.c_str())));
         SWAG_CHECK(eatSemiCol("after function declaration"));
+        funcNode->flags |= AST_EMPTY_FCT;
         return true;
     }
 
