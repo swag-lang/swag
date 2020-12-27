@@ -569,13 +569,13 @@ void Workspace::checkPendingJobs()
         auto toSolve = pendingJob->waitingSymbolSolved;
         if (!toSolve && !node->token.text.empty())
         {
-            Diagnostic diag{node, node->token, format("cannot resolve %s '%s'", AstNode::getKindName(node).c_str(), node->token.text.c_str())};
+            Diagnostic diag{node, node->token, format("module '%s', cannot resolve %s '%s'", pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.text.c_str())};
             diag.codeComment = id;
             sourceFile->report(diag);
         }
         else if (!toSolve)
         {
-            Diagnostic diag{node, node->token, format("cannot resolve %s", AstNode::getKindName(node).c_str())};
+            Diagnostic diag{node, node->token, format("module '%s', cannot resolve %s", pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str())};
             diag.codeComment = id;
             sourceFile->report(diag);
         }
