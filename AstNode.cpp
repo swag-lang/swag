@@ -433,6 +433,8 @@ AstNode* AstIdentifier::clone(CloneContext& context)
 
 Utf8 AstFuncDecl::getNameForMessage()
 {
+    if (attributeFlags & ATTRIBUTE_AST_FUNC)
+        return "'#ast' block";
     if (flags & AST_SPECIAL_COMPILER_FUNC)
         return format("'%s' block", token.text.c_str());
     if (attributeFlags & ATTRIBUTE_MIXIN)
@@ -1075,9 +1077,19 @@ AstNode* AstCompilerAst::clone(CloneContext& context)
     // content now
     if (newNode->childs.size() > 1)
     {
-        auto func = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
+        // We also want to replace the name of the function (and the reference to it) in case
+        // the #ast is in a mixin block, because in that case the ast function can be registered
+        // more than once in the same scope.
+        int  id      = g_Global.uniqueID.fetch_add(1);
+        Utf8 newName = "__ast" + to_string(id);
+
+        auto func        = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
+        func->token.text = newName;
         func->flags &= ~AST_NO_SEMANTIC;
         func->content->flags &= ~AST_NO_SEMANTIC;
+
+        auto idRef = CastAst<AstIdentifierRef>(newNode->childs.back(), AstNodeKind::IdentifierRef);
+        idRef->childs.back()->token.text = newName;
     }
 
     return newNode;

@@ -231,6 +231,7 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
     {
         AstNode* funcNode;
         SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerAst));
+
         auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
         idRef->token.startLocation      = node->token.startLocation;
         idRef->token.endLocation        = node->token.endLocation;
