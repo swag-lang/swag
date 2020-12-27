@@ -336,7 +336,6 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    node->flags |= AST_COMPILER_IF_DONE;
     node->boolExpression->flags |= AST_NO_BYTECODE;
     AstNode* validatedNode = nullptr;
     if (node->boolExpression->computedValue.reg.b)
