@@ -630,6 +630,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (identifier->token.text == "opPostMove")
             return context->report({identifier, identifier->token, "cannot reference 'opPostMove' special function (use '@postmove' instead)"});
 
+        // Be sure this is not a 'forward' decl
+        if (overload->node->flags & AST_EMPTY_FCT && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN) && identifier->token.text[0] != '@')
+        {
+            Diagnostic diag{identifier, identifier->token, format("cannot call empty function '%s'", identifier->token.text.c_str())};
+            Diagnostic note{overload->node, overload->node->token, "this is the function", DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
+
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
         // Need to make all types compatible, in case a cast is necessary
