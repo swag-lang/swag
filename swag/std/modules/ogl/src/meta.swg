@@ -17,13 +17,19 @@ var g: Array'OneFunc
     g.add(@{msg.type, msg.name})
 }
 
+// For each extension, we will generate :
+//
+// global :
+// var ext_Function = func(...)
+// public func Function(...) { ext_Function(...) }
+//
+// in initExtensions() :
+// ext_Function = @mkforeign(func(...), getExtensionAddress("Function"))
+
 #compiler(CompilerMsgMask.PassAfterSemantic)
 {
-    itf := @compiler()
-
     var builderVars: StringBuilder
     var builderInit: StringBuilder
-    var str: String
 
     builderInit.appendString("func initExtensions() {\n");
 
@@ -58,7 +64,8 @@ var g: Array'OneFunc
         builderInit.appendFormat("ext_% = @mkforeign(func%, getExtensionAddress(@dataof(\"%\")))\n", e.name, typeFunc.rawType.name, e.name);
     }
 
-    str = builderVars.moveToString()
+    itf := @compiler()
+    str := builderVars.moveToString()
     itf.compileString(str.toString())
 
     builderInit.appendString("}\n");
