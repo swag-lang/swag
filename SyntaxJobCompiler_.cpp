@@ -368,7 +368,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (token.text == "public")
+    else if (token.text == "public" || token.text == "protected" || token.text == "private")
     {
         SWAG_CHECK(doGlobalAttributeExpose(parent, result, true));
     }
