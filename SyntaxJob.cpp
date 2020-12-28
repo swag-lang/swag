@@ -187,7 +187,7 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     return true;
 }
 
-bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool parentLocation)
+bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind)
 {
     SourceFile* tmpFile      = g_Allocator.alloc<SourceFile>();
     tmpFile->externalContent = content;
@@ -204,8 +204,6 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     currentInline       = parent->ownerInline;
 
     tokenizer.setFile(sourceFile);
-    if (parentLocation)
-        tokenizer.location = parent->token.startLocation;
 
     ScopedFlags scopedFlags(this, AST_GENERATED | (parent->flags & (AST_RUN_BLOCK | AST_NO_BACKEND)));
     SWAG_CHECK(tokenizer.getToken(token));

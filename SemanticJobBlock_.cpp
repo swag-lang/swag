@@ -94,7 +94,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
         {
             auto funcParam = func->parameters->childs[i];
 
-            // If the call parameter of the inlined function is constant, then we register it in a specific 
+            // If the call parameter of the inlined function is constant, then we register it in a specific
             // constant scope, not in the caller (for mixins)/inline scope.
             // This is a separated scope because mixins do not have their own scope, and we must have a
             // different symbol registration for each constant value
@@ -378,17 +378,19 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     concat.addU8(0);
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
 
+    int id = g_Global.uniqueID.fetch_add(1);
+
     // Multi dimensional array
     if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)
     {
         auto typeArray = (TypeInfoArray*) typeInfo;
-        content += format("{ var __addr = cast(*%s) @dataof(%s); ", typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
-        content += format("const __count = @sizeof(%s) / %d; ", (const char*) concat.firstBucket->datas, typeArray->finalType->sizeOf);
-        content += format("loop __count { ", (const char*) concat.firstBucket->datas);
+        content += format("{ var __addr%u = cast(*%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
+        content += format("const __count%u = @sizeof(%s) / %u; ", id, (const char*) concat.firstBucket->datas, typeArray->finalType->sizeOf);
+        content += format("loop __count%u { ", id);
         if (node->wantPointer)
-            content += format("var %s = __addr + @index; ", alias0Name.c_str());
+            content += format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
         else
-            content += format("var %s = __addr[@index]; ", alias0Name.c_str());
+            content += format("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
         content += format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
     }
@@ -396,12 +398,12 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // One dimensional array
     else if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice || typeInfo->kind == TypeInfoKind::Array)
     {
-        content += format("{ var __addr = @dataof(%s); ", (const char*) concat.firstBucket->datas);
+        content += format("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += format("loop %s { ", (const char*) concat.firstBucket->datas);
         if (node->wantPointer)
-            content += format("var %s = __addr + @index; ", alias0Name.c_str());
+            content += format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
         else
-            content += format("var %s = __addr[@index]; ", alias0Name.c_str());
+            content += format("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
         content += format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
     }
@@ -422,7 +424,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     }
 
     SyntaxJob syntaxJob;
-    syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction, true);
+    syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction);
     newExpression = node->childs.back();
 
     // First child is the let in the statement, and first child of this is the loop node

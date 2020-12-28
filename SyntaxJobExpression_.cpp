@@ -1013,7 +1013,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     if (node->token.text.length() >= 6)
     {
         if (node->token.text == "@alias")
-            return syntaxError(node->token, "@alias variable name must be followed by a number");
+            return syntaxError(node->token, "'@alias' variable name must be followed by a number");
 
         if (node->token.text.find("@alias") == 0)
         {
@@ -1021,7 +1021,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
             while (*pz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return syntaxError(node->token, format("invalid @alias variable name '%s', '%s' is not a valid number", node->token.text.c_str(), node->token.text.c_str() + 6));
+                    return syntaxError(node->token, format("invalid '@alias' variable name '%s', '%s' is not a valid number", node->token.text.c_str(), node->token.text.c_str() + 6));
                 pz++;
             }
 
