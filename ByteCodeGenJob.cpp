@@ -714,8 +714,11 @@ JobResult ByteCodeGenJob::execute()
 
     // #ast can have a #[swag.printbc]. We need to print it now, because it's compile time, and the legit
     // pipeline for printing (after bc optimize) will not be called in that case
-    if (originalNode->attributeFlags & ATTRIBUTE_AST_FUNC && originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-        context.bc->print();
+    if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+    {
+        if (originalNode->attributeFlags & ATTRIBUTE_AST_FUNC || originalNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+            context.bc->print();
+    }
 
     return JobResult::ReleaseJob;
 }
