@@ -191,7 +191,6 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
 
 bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, uint32_t cflags)
 {
-    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
     switch (typeInfo->kind)
     {
     case TypeInfoKind::TypeListArray:
@@ -319,6 +318,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Float;
     if (typeInfo->flags & TYPEINFO_UNSIGNED)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Unsigned;
+    if (typeInfo->flags & TYPEINFO_STRICT)
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Strict;
 
     // Register type and value
     // Do it now to break recursive references

@@ -164,6 +164,7 @@ enum class TypeInfoFlags : uint16_t
     HasPostCopy = 0x0010,
     HasPostMove = 0x0020,
     HasDrop     = 0x0040,
+    Strict      = 0x0080,
 };
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

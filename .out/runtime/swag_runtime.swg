@@ -132,14 +132,25 @@ func @print(value: f64)
 }
 
 ////////////////////////////////////////////////////////////
-func @typecmp(type1, type2: typeinfo, cmpFlags: swag.TypeCmpFlags)->bool
+private func concreteAlias(type1: typeinfo)->typeinfo
 {
-    if cast(const*u8) type1 == cast(const*u8) type2
+    if type1.kind != swag.TypeInfoKind.Alias || type1.flags & swag.TypeInfoFlags.Strict
+        return type1
+    typeAlias := cast(const *swag.TypeInfoAlias) type1
+    return concreteAlias(typeAlias.rawType)
+}
+
+func @typecmp(typeA, typeB: typeinfo, cmpFlags: swag.TypeCmpFlags)->bool
+{
+    if cast(const*u8) typeA == cast(const*u8) typeB
         return true
-    if !type1 && !type2
+    if !typeA && !typeB
         return true
-    if !type1 || !type2
+    if !typeA || !typeB
         return false
+
+    type1 := concreteAlias(typeA)
+    type2 := concreteAlias(typeB)
 
     // Fine to convert from concrete to ref, or the other way
     if cmpFlags & swag.TypeCmpFlags.CastAny

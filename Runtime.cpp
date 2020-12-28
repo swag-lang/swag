@@ -130,6 +130,14 @@ namespace Runtime
     }
 
     ////////////////////////////////////////////////////////////
+    static ConcreteTypeInfo* concreteAlias(ConcreteTypeInfo* type1)
+    {
+        if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) TypeInfoFlags::Strict))
+            return type1;
+        auto typeAlias = (const ConcreteTypeInfoAlias*) type1;
+        return concreteAlias(typeAlias->rawType);
+    }
+
     bool compareType(const void* type1, const void* type2, uint32_t flags)
     {
         if (type1 == type2)
@@ -139,8 +147,8 @@ namespace Runtime
         if (!type1 || !type2)
             return false;
 
-        auto ctype1 = (ConcreteTypeInfo*) type1;
-        auto ctype2 = (ConcreteTypeInfo*) type2;
+        auto ctype1 = concreteAlias((ConcreteTypeInfo*) type1);
+        auto ctype2 = concreteAlias((ConcreteTypeInfo*) type2);
 
         // Fine to convert from concrete to ref, or the other way
         if (flags & COMPARE_CAST_ANY)
