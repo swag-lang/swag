@@ -1,0 +1,4 @@
+#test
+{
+    msg := @compiler().getMessage()
+}
