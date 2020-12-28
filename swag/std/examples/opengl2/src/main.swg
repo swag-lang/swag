@@ -120,9 +120,10 @@ func messageLoop()
     hRC := wglCreateContext(hDC)
     wglMakeCurrent(hDC, hRC)
 
-var vertexArrayID: GLuint
-//glGenVertexArrays(1, &vertexArrayID)
-//glBindVertexArray(vertexArrayID)
+    var vertexbuffer: GLuint
+    glGenBuffers(1, &vertexbuffer)
+    //glGenVertexArrays(1, &vertexArrayID)
+    //glBindVertexArray(vertexArrayID)
 
     display()
     ShowWindow(hWnd, SW_SHOW)

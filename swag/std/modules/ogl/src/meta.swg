@@ -70,10 +70,13 @@ var g: Array'OneFunc
     builderInit.appendString("}\n");
     str = builderInit.moveToString()
     itf.compileString(str.toString())
+
+    console.print("%", str)
 }
 
 #placeholder initExtensions
 #init
 {
+    console.print("%\n", getExtensionAddress(@dataof("glGenBuffers")))
     initExtensions()
 }

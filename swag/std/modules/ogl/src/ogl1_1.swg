@@ -16,9 +16,6 @@ alias GLdouble      = f64
 alias GLclampd      = f64
 alias GLvoid        = void
 
-/* Version */
-const GL_VERSION_1_1                    = 1
-
 /* AccumOp */
 const GL_ACCUM                          = 0x0100
 const GL_LOAD                           = 0x0101
