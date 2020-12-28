@@ -19,6 +19,7 @@
     { "include": "#intrinsics-invalid" },
     { "include": "#intrinsics-literal" },
     { "include": "#compiler-function" },
+    { "include": "#compiler-global" },
     { "include": "#compiler-statement" },
     { "include": "#compiler" },
     { "include": "#compiler-invalid" },
@@ -145,11 +146,24 @@
         }
       ]
     },
+    "compiler-global": {
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "(#)(global)\\s(public|foreignlib|generated)\\b",
+          "captures": {
+            "3": {
+              "name": "meta.preprocessor"
+            }
+          }
+        }
+      ]
+    },
     "compiler-statement": {
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)\\b(generated|public|unittest|assert|print|import|mixin|macro|inline|foreignlib|placeholder|if|else|elif)\\b"
+          "match": "(#)\\b(unittest|assert|print|import|mixin|macro|inline|placeholder|if|else|elif)\\b"
         }
       ]
     },
