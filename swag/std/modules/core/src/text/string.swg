@@ -284,8 +284,8 @@ impl String
         grow(length + eat + 1)
         loop i: eat
             buffer[length + i] = tmp[i]
-        buffer[length + eat + 1] = 0
         length += eat
+        buffer[length + 1] = 0
     }
 
     // Append a string to the String
@@ -304,15 +304,6 @@ impl String
 
     // Join a list of strings to make a unique one
     func join(values: string...)->String
-    {
-        var result: String
-        loop values
-            result += values[@index]
-        return result
-    }
-
-    // Join an array of strings to make a unique one
-    func join(values: const [..] string)->String
     {
         var result: String
         loop values
