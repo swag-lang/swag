@@ -465,12 +465,28 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
 
     auto nameForeign = computeScopedNameForeign();
 
-    // If the symbol has overload, i.e. more than one definition, then we
+    // If the symbol has overloads, i.e. more than one definition, then we
     // append the type
     if (resolvedSymbolName && resolvedSymbolName->overloads.size() > 1)
     {
-        nameForeign += "@@";
-        nameForeign += typeFunc->name;
+        // Empty (forward) decl are counted as overloads, so be sure it's not a bunch of
+        // empty functions.
+        uint32_t countNoEmpty = 0;
+        for (auto r : resolvedSymbolName->overloads)
+        {
+            if (!(r->node->flags & AST_EMPTY_FCT))
+            {
+                countNoEmpty++;
+                if (countNoEmpty > 1)
+                    break;
+            }
+        }
+
+        if (countNoEmpty > 1)
+        {
+            nameForeign += "@@";
+            nameForeign += typeFunc->name;
+        }
     }
 
     fullnameForeign = nameForeign;
@@ -1090,7 +1106,7 @@ AstNode* AstCompilerAst::clone(CloneContext& context)
         newNode->ownerScope->symTable.registerSymbolName(nullptr, func, SymbolKind::Function);
 
         // Ref to the function
-        auto idRef = CastAst<AstIdentifierRef>(newNode->childs.back(), AstNodeKind::IdentifierRef);
+        auto idRef                       = CastAst<AstIdentifierRef>(newNode->childs.back(), AstNodeKind::IdentifierRef);
         idRef->childs.back()->token.text = newName;
     }
 
