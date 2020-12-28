@@ -119,9 +119,12 @@ func messageLoop()
     hDC = GetDC(hWnd)
     hRC := wglCreateContext(hDC)
     wglMakeCurrent(hDC, hRC)
+    glInitExtensions()
+
+    console.print("%\n", getExtensionAddress(@dataof("glGenBuffers")))
 
     var vertexbuffer: GLuint
-    glGenBuffers(1, &vertexbuffer)
+    //glGenBuffers(1, &vertexbuffer)
     //glGenVertexArrays(1, &vertexArrayID)
     //glBindVertexArray(vertexArrayID)
 

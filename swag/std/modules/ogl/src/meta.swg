@@ -31,7 +31,7 @@ var g: Array'OneFunc
     var builderVars: StringBuilder
     var builderInit: StringBuilder
 
-    builderInit.appendString("func initExtensions() {\n");
+    builderInit.appendString("public func glInitExtensions() {\n");
 
     visit e: g
     {
@@ -70,13 +70,4 @@ var g: Array'OneFunc
     builderInit.appendString("}\n");
     str = builderInit.moveToString()
     itf.compileString(str.toString())
-
-    console.print("%", str)
-}
-
-#placeholder initExtensions
-#init
-{
-    console.print("%\n", getExtensionAddress(@dataof("glGenBuffers")))
-    initExtensions()
 }

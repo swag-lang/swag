@@ -127,6 +127,8 @@ struct Module
     bool WaitForDependenciesDone(Job* job);
     void printBC();
     bool compileString(const Utf8& str);
+    bool hasDependencyTo(Module* module);
+    void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result);
 
     DependentJobs           dependentJobs;
     shared_mutex            mutexByteCode;

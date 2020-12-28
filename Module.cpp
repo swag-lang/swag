@@ -761,3 +761,24 @@ bool Module::compileString(const Utf8& text)
     g_ThreadMgr.addJob(job);
     return true;
 }
+
+bool Module::hasDependencyTo(Module* module)
+{
+    for (auto dep : moduleDependencies)
+    {
+        if (dep->module == module)
+            return true;
+        if (dep->module->hasDependencyTo(module))
+            return true;
+    }
+
+    return false;
+}
+
+void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result)
+{
+    result = moduleDependencies;
+    sort(result.begin(), result.end(), [](ModuleDependency* n1, ModuleDependency* n2) {
+        return n2->module->hasDependencyTo(n1->module);
+    });
+}

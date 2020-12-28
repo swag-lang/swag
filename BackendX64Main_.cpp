@@ -97,8 +97,11 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     emitCall(pp, "__tlsSetValue");
 
     // Load all dependencies
-    for (const auto& dep : module->moduleDependencies)
+    VectorNative<ModuleDependency*> moduleDependencies;
+    module->sortDependenciesByInitOrder(moduleDependencies);
+    for (int i = 0; i < moduleDependencies.size(); i++)
     {
+        auto dep      = moduleDependencies[i];
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown + OS::getDllFileExtension();
@@ -110,8 +113,9 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call to global init of all dependencies
-    for (const auto& dep : module->moduleDependencies)
+    for (int i = 0; i < moduleDependencies.size(); i++)
     {
+        auto dep = moduleDependencies[i];
         SWAG_ASSERT(dep->module);
         if (!dep->module->isSwag)
             continue;
@@ -150,8 +154,9 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     emitCall(pp, thisDrop);
 
     // Call to global drop of all dependencies
-    for (const auto& dep : module->moduleDependencies)
+    for (int i = (int) moduleDependencies.size() - 1; i >= 0; i--)
     {
+        auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
             continue;
         auto nameDown = dep->name;
