@@ -1808,12 +1808,22 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                 if (identifierRef->previousResolvedNode->flags & AST_NO_BYTECODE)
                     return true;
 
-                // Be sure we have a missing parameter in order to try ufcs
                 auto typeFunc  = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
                 auto numParams = node->callParameters ? node->callParameters->childs.size() : 0;
-                if (numParams < typeFunc->parameters.size())
+
+                if (typeFunc->parameters.size())
                 {
-                    *ufcsFirstParam = identifierRef->previousResolvedNode;
+                    // If we have missing parameters, we will try ufcs
+                    if (numParams < typeFunc->parameters.size())
+                        *ufcsFirstParam = identifierRef->previousResolvedNode;
+
+                    // In case of variadic functions, make ufcs if the first parameter is correct
+                    else if(typeFunc->flags & TYPEINFO_VARIADIC)
+                    {
+                        bool cmp = TypeManager::makeCompatibles(context, typeFunc->parameters[0]->typeInfo, identifierRef->previousResolvedNode->typeInfo, nullptr, identifierRef->previousResolvedNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR | CASTFLAG_UFCS);
+                        if (cmp)
+                            *ufcsFirstParam = identifierRef->previousResolvedNode;
+                    }
                 }
 
                 // If we do not have parenthesis (call parameters), then this must be a function marked with 'swag.property'

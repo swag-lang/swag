@@ -6,6 +6,7 @@
 using win32
 
 alias HGLRC = const *void
+alias getExtensionAddress = wglGetProcAddress
 
 #[swag.foreign("opengl32")]
 {
