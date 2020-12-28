@@ -1,4 +1,4 @@
-#if #os == "windows";
+#global if #os == "windows"
 public namespace time;
 using win32
 

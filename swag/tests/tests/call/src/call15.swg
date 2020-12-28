@@ -1,4 +1,4 @@
-#if #os == "windows";
+#global if #os == "windows"
 #import "tests_foreign"
 using tests_foreign
 

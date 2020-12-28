@@ -1,6 +1,6 @@
 #global public
 #global foreignlib "opengl32"
-#if #os == "windows";
+#global if #os == "windows"
 #import "win32"
 #import "gdi32"
 using win32

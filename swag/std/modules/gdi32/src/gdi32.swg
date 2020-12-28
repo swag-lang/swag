@@ -1,6 +1,6 @@
 #global public
 #global foreignlib "gdi32"
-#if #os == "windows";
+#global if #os == "windows"
 #import "win32"
 using win32
 

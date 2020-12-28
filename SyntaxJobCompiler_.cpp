@@ -51,20 +51,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
 
         // Global #if for the whole file
         ScopedCompilerIfBlock scopedIf(this, block);
-        if (token.id == TokenId::SymSemiColon)
-        {
-            SWAG_CHECK(eatToken(TokenId::SymSemiColon));
-            while (token.id != TokenId::EndOfFile)
-            {
-                SWAG_CHECK(doTopLevelInstruction(block));
-            }
-        }
-
-        // Embedded if
-        else
-        {
-            SWAG_CHECK(doStatementFor(block, nullptr, kind));
-        }
+        SWAG_CHECK(doStatementFor(block, nullptr, kind));
     }
 
     if (token.id == TokenId::CompilerElse || token.id == TokenId::CompilerElseIf)
@@ -320,6 +307,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatSemiCol("after '#global'"));
     }
 
     /////////////////////////////////
@@ -329,6 +317,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         if (sourceFile->imported)
             sourceFile->imported->isSwag = true;
         SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatSemiCol("after '#global'"));
     }
 
     /////////////////////////////////
@@ -345,9 +334,35 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         AstNode* literal;
         SWAG_CHECK(doLiteral(node, &literal));
         SWAG_VERIFY(literal->token.literalType == LiteralType::TT_STRING, syntaxError(literal->token, "'#global foreignlib' must be followed by a string"));
+        SWAG_CHECK(eatSemiCol("after '#global'"));
     }
 
-    SWAG_CHECK(eatSemiCol("after '#global'"));
+    /////////////////////////////////
+    else if (token.text == "if")
+    {
+        auto node = Ast::newNode<AstIf>(this, AstNodeKind::CompilerIf, sourceFile, parent);
+        if (result)
+            *result = node;
+
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, "missing '#global if' expression"));
+        SWAG_CHECK(doExpression(node, &node->boolExpression));
+        node->boolExpression->semanticAfterFct = SemanticJob::resolveCompilerIf;
+
+        auto block    = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
+        node->ifBlock = block;
+        if (node->ownerCompilerIfBlock)
+            node->ownerCompilerIfBlock->blocks.push_back(block);
+
+        // Global #if for the whole file
+        ScopedCompilerIfBlock scopedIf(this, block);
+        SWAG_CHECK(eatSemiCol("after '#global'"));
+        while (token.id != TokenId::EndOfFile)
+        {
+            SWAG_CHECK(doTopLevelInstruction(block));
+        }
+    }
+
     return true;
 }
 

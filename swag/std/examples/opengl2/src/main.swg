@@ -1,4 +1,4 @@
-#if #os == "windows";
+#global if #os == "windows"
 #import "core"
 #import "ogl"
 using core, win32, ogl, gdi32
