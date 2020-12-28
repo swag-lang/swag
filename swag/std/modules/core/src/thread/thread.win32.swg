@@ -1,4 +1,4 @@
-#global if #os == "windows"
+#global if WINDOWS
 #global public
 #global namespace thread
 using win32
