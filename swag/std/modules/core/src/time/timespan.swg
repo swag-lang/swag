@@ -1,4 +1,5 @@
-public namespace time;
+#global public
+#global namespace time
 
 // Represents an interval of time, stored as a 64 bits integer
 struct TimeSpan

@@ -1,5 +1,6 @@
 #global if #os == "windows"
-public namespace process;
+#global public
+#global namespace process
 using win32
 
 // Starts a new process with arguments

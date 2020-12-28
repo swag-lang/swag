@@ -1,5 +1,6 @@
 #global if #os == "windows"
-public namespace sync;
+#global public
+#global namespace sync
 using win32
 
 impl Mutex

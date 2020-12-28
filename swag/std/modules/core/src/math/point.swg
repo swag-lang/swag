@@ -1,4 +1,5 @@
-public namespace math;
+#global public
+#global namespace math
 
 // A simple Point with 2 coordinates X and Y
 struct Point

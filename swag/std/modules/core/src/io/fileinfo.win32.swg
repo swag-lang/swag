@@ -1,5 +1,6 @@
-#if WINDOWS;
-public namespace file;
+#global if WINDOWS
+#global public
+#global namespace file
 using win32
 
 // Returns various file informations

@@ -1,4 +1,5 @@
-public namespace sync;
+#global public
+#global namespace sync
 alias MutexHandle = const *void
 
 struct Mutex

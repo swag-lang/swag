@@ -1,4 +1,5 @@
-public namespace process;
+#global public
+#global namespace process
 
 alias ProcessHandle = const *void
 

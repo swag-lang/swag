@@ -1,4 +1,5 @@
-public namespace gamepad;
+#global public
+#global namespace gamepad
 using math
 
 // Represents specific information about the state of the controller,

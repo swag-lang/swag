@@ -1,5 +1,6 @@
-#if WINDOWS;
-public namespace directory;
+#global if WINDOWS
+#global public
+#global namespace directory
 using win32
 
 // Returns true if the given directory exists

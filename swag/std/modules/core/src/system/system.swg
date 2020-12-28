@@ -1,4 +1,5 @@
-public namespace system;
+#global public
+#global namespace system
 
 // Push a new execution context for the given block of code
 #[swag.macro]

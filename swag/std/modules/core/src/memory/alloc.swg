@@ -1,4 +1,5 @@
-public namespace memory;
+#global public
+#global namespace memory
 using swag
 
 // Free the specified memory block

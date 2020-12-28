@@ -1,4 +1,5 @@
-public namespace time;
+#global public
+#global namespace time
 
 alias TimerHandle = const *void
 

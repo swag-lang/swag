@@ -1,4 +1,5 @@
-public namespace time;
+#global public
+#global namespace time
 
 struct FrameTiming
 {

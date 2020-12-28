@@ -1,4 +1,5 @@
-public namespace strconv;
+#global public
+#global namespace strconv
 
 struct StringBuilder
 {

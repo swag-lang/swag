@@ -1,4 +1,5 @@
-public namespace mouse;
+#global public
+#global namespace mouse
 using math
 
 // Allows reading position and button click information from mouse

@@ -1,4 +1,5 @@
-public namespace math;
+#global public
+#global namespace math
 
 private
 {

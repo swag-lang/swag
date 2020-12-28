@@ -1,4 +1,5 @@
-public namespace file;
+#global public
+#global namespace file
 using time
 
 struct FileInfo

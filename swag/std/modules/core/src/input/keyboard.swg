@@ -1,4 +1,5 @@
-public namespace keyboard;
+#global public
+#global namespace keyboard
 
 // Allows getting keystrokes from keyboard
 struct Keyboard

@@ -1,4 +1,5 @@
-public namespace format;
+#global public
+#global namespace format
 
 // Format a string and returns the result as a String
 func toString(fmt: string, values: ...)->String

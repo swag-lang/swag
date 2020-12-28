@@ -1,4 +1,5 @@
-public namespace strconv;
+#global public
+#global namespace strconv
 using globalization
 
 // Convert an utf8 buffer in decimal to an unsigned integer value

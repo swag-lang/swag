@@ -38,11 +38,10 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
+bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool forGlobal)
 {
-    uint32_t attr = 0;
-
-    Scope* newScope = currentScope;
+    uint32_t attr     = 0;
+    Scope*   newScope = currentScope;
 
     switch (token.id)
     {
@@ -77,41 +76,52 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     }
 
     SWAG_ASSERT(newScope);
-    switch (token.id)
-    {
-    case TokenId::SymLeftCurly:
-    case TokenId::KwdFunc:
-    case TokenId::KwdAttr:
-    case TokenId::KwdVar:
-    case TokenId::KwdConst:
-    case TokenId::KwdEnum:
-    case TokenId::KwdStruct:
-    case TokenId::KwdUnion:
-    case TokenId::KwdImpl:
-    case TokenId::KwdInterface:
-    case TokenId::KwdTypeSet:
-    case TokenId::KwdAlias:
-    case TokenId::KwdNamespace:
-        break;
-
-    default:
-        if (attr == ATTRIBUTE_PRIVATE)
-            return syntaxError(token, format("unexpected token '%s' after 'private' attribute", token.text.c_str()));
-        if (attr == ATTRIBUTE_PROTECTED)
-            return syntaxError(token, format("unexpected token '%s' after 'protected' attribute", token.text.c_str()));
-        return syntaxError(token, format("unexpected token '%s' after 'public' attribute", token.text.c_str()));
-    }
-
     Scoped scoped(this, newScope);
     auto   attrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
     if (result)
         *result = attrUse;
+    attrUse->attributeFlags = attr;
 
     AstNode* topStmt = nullptr;
-    SWAG_CHECK(doTopLevelInstruction(attrUse, &topStmt));
 
-    attrUse->content        = topStmt;
-    attrUse->attributeFlags = attr;
+    if (!forGlobal)
+    {
+        // Check following instruction
+        switch (token.id)
+        {
+        case TokenId::SymLeftCurly:
+        case TokenId::KwdFunc:
+        case TokenId::KwdAttr:
+        case TokenId::KwdVar:
+        case TokenId::KwdConst:
+        case TokenId::KwdEnum:
+        case TokenId::KwdStruct:
+        case TokenId::KwdUnion:
+        case TokenId::KwdImpl:
+        case TokenId::KwdInterface:
+        case TokenId::KwdTypeSet:
+        case TokenId::KwdAlias:
+        case TokenId::KwdNamespace:
+            break;
+
+        default:
+            if (attr == ATTRIBUTE_PRIVATE)
+                return syntaxError(token, format("unexpected token '%s' after 'private' attribute", token.text.c_str()));
+            if (attr == ATTRIBUTE_PROTECTED)
+                return syntaxError(token, format("unexpected token '%s' after 'protected' attribute", token.text.c_str()));
+            return syntaxError(token, format("unexpected token '%s' after 'public' attribute", token.text.c_str()));
+        }
+
+        SWAG_CHECK(doTopLevelInstruction(attrUse, &topStmt));
+    }
+    else
+    {
+        topStmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        while (token.id != TokenId::EndOfFile)
+            SWAG_CHECK(doTopLevelInstruction(topStmt));
+    }
+
+    attrUse->content = topStmt;
     attrUse->content->setOwnerAttrUse(attrUse);
 
     // Add original scope

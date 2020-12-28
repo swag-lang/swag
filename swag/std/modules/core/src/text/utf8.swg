@@ -1,4 +1,5 @@
-public namespace utf8;
+#global public
+#global namespace utf8
 
 const CharError     = 0xFFFD'char
 const MaxChars      = 0x10FFFF'char

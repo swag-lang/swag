@@ -1,4 +1,5 @@
-public namespace directory;
+#global public
+#global namespace directory
 
 struct EnumerationOptions
 {

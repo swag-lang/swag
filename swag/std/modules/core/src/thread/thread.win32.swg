@@ -1,5 +1,6 @@
 #global if #os == "windows"
-public namespace thread;
+#global public
+#global namespace thread
 using win32
 
 // Sleep the current thread for a given amount of milliseconds

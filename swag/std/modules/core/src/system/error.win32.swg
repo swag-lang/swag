@@ -1,5 +1,6 @@
-#if WINDOWS;
-public namespace error;
+#global if WINDOWS
+#global public
+#global namespace error
 using win32
 
 // Fill the context error message

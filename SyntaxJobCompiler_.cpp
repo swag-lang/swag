@@ -368,6 +368,12 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_CHECK(doNamespace(parent, result, true));
     }
 
+    /////////////////////////////////
+    else if (token.text == "public")
+    {
+        SWAG_CHECK(doGlobalAttributeExpose(parent, result, true));
+    }
+
     return true;
 }
 

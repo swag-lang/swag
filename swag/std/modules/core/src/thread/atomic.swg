@@ -1,4 +1,5 @@
-public namespace atomic;
+#global public
+#global namespace atomic
 
 #[swag.inline]
 {

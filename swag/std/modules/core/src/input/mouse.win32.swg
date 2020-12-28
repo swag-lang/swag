@@ -1,5 +1,6 @@
-#if WINDOWS;
-public namespace mouse;
+#global if WINDOWS
+#global public
+#global namespace mouse
 using win32, math
 
 // Returns the current mouse position

@@ -1,4 +1,5 @@
-public namespace hash;
+#global public
+#global namespace hash
 
 private const maxSlices = 16
 private const lookupTable: [maxSlices, 256] u32 = @[

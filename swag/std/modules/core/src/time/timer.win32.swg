@@ -1,5 +1,6 @@
 #global if #os == "windows"
-public namespace time;
+#global public
+#global namespace time
 using win32
 
 #[swag.callback]

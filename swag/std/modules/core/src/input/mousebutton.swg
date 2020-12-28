@@ -1,4 +1,5 @@
-public namespace mouse;
+#global public
+#global namespace mouse
 
 #[swag.enumindex]
 enum Button

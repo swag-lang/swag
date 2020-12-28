@@ -1,4 +1,5 @@
-public namespace mouse;
+#global public
+#global namespace mouse
 using math
 
 // Represents one mouse state

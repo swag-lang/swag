@@ -1,5 +1,6 @@
-#if WINDOWS;
-public namespace time;
+#global if WINDOWS
+#global public
+#global namespace time
 using win32
 
 private var g_perfCounterFreq: u64

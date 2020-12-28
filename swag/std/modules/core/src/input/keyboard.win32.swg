@@ -1,5 +1,6 @@
-#if WINDOWS;
-public namespace keyboard;
+#global if WINDOWS
+#global public
+#global namespace keyboard
 using swag, win32
 
 private

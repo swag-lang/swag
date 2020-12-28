@@ -1,6 +1,8 @@
-public alias ErrorId = string
+#global public
 
-public namespace error
+alias ErrorId = string
+
+namespace error
 {
     // Returns the error string associated with the current thread
     // The returned string is valid until a new error is raised (in that
