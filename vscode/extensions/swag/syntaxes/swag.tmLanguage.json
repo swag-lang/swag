@@ -150,7 +150,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "(#)(global)\\s(export|foreignlib|generated|if|namespace|public|protected|private)\\b",
+          "match": "(#)(global)\\s+(export|foreignlib|generated|if|namespace|public|protected|private)\\b",
           "captures": {
             "3": {
               "name": "meta.preprocessor"
