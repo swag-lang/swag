@@ -1,15 +1,16 @@
+#global public
 using swag
 
 private const SmallSize = 16'uint
 #assert @sizeof(String) == 56
 
-public enum CharacterSet
+enum CharacterSet
 {
     Latin1
     Unicode
 }
 
-public struct String
+struct String
 {
     buffer:     *u8
     length:     uint
@@ -18,7 +19,7 @@ public struct String
     padding:    [SmallSize] u8
 }
 
-public impl strconv.IConvert for String
+impl strconv.IConvert for String
 {
     func convert(using self, buf: *ConcatBuffer, fmt: const *strconv.ConvertFormat, strFormat: string)
     {
@@ -26,7 +27,7 @@ public impl strconv.IConvert for String
     }
 }
 
-public impl hash.IHash32 for String
+impl hash.IHash32 for String
 {
     func compute(using self)->u32
     {
@@ -34,7 +35,7 @@ public impl hash.IHash32 for String
     }
 }
 
-public impl String
+impl String
 {
     #[inline]
     func opCount(using self)->uint
