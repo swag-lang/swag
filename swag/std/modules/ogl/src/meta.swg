@@ -36,7 +36,7 @@ var g: Array'OneFunc
     visit e: g
     {
         typeFunc := cast(const *TypeInfoFunc) e.type
-        typeFunc = cast(const *TypeInfoFunc) typeFunc.rawType
+        typeFunc = autocast typeFunc.rawType
 
         // Declare a lambda variable for that extension
         builderVars.appendFormat("var ext_%: func%\n", e.name, typeFunc.name)
