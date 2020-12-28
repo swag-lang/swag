@@ -1,4 +1,4 @@
-namespace globalization;
+#global namespace globalization
 
 // Provides culture-specific information for formatting and parsing numeric values.
 public struct NumberFormatInfo

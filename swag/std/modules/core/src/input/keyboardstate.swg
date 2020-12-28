@@ -1,4 +1,4 @@
-namespace keyboard;
+#global namespace keyboard
 
 // Represents one keyboard state
 public struct State

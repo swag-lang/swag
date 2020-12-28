@@ -1,4 +1,4 @@
-﻿namespace file;
+﻿#global namespace file
 
 public enum TextEncoding
 {

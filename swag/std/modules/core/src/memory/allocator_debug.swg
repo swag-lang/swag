@@ -1,4 +1,4 @@
-namespace memory;
+#global namespace memory
 using swag, sync
 
 public struct DebugAllocator

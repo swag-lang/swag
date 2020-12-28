@@ -1,5 +1,5 @@
 #global export
-namespace sort;
+#global namespace sort
 
 // Insertion sort algorithm (slow)
 func(T) insertion(values: [..] T, cb: func(T, T)->s32)

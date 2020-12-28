@@ -1,4 +1,4 @@
-namespace globalization;
+#global namespace globalization
 
 public struct CultureInfo
 {

@@ -130,7 +130,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
     currentScope   = oldScope;
     auto openCurly = token;
 
-    if ((token.id == TokenId::SymSemiColon) || forGlobal)
+    if (forGlobal)
     {
         SWAG_CHECK(eatSemiCol());
         Scoped scoped(this, newScope);

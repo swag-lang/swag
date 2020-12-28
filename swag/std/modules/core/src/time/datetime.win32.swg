@@ -1,5 +1,5 @@
-#if WINDOWS;
-namespace time;
+#global if WINDOWS
+#global namespace time
 using win32
 
 impl DateTime

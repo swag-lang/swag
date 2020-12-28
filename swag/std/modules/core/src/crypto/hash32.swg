@@ -1,4 +1,4 @@
-namespace hash;
+#global namespace hash
 using swag
 
 public interface IHash32

@@ -1,4 +1,4 @@
-namespace random;
+#global namespace random
 
 public struct(T = Mwc) Rng
 {
