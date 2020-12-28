@@ -1,5 +1,5 @@
 #global public
-#foreignlib "kernel32"
+#global foreignlib "kernel32"
 
 alias HANDLE = 			const *void
 alias HLOCAL = 			HANDLE

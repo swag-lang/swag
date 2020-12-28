@@ -1,7 +1,7 @@
 #global public
+#global foreignlib "gdi32"
 #if #os == "windows";
 #import "win32"
-#foreignlib "gdi32"
 using win32
 
 struct PIXELFORMATDESCRIPTOR

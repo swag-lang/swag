@@ -1,5 +1,5 @@
 #global public
-#foreignlib "user32"
+#global foreignlib "user32"
 
 alias HWND = 		const *void
 alias HMENU = 		const *void

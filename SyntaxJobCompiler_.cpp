@@ -5,23 +5,6 @@
 #include "Scoped.h"
 #include "Module.h"
 
-bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
-{
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);
-    if (result)
-        *result = node;
-    node->semanticFct = SemanticJob::resolveCompilerForeignLib;
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, "'#foreignlib' must be followed by a string"));
-
-    AstNode* literal;
-    SWAG_CHECK(doLiteral(node, &literal));
-    SWAG_VERIFY(literal->token.literalType == LiteralType::TT_STRING, syntaxError(literal->token, "'#foreignlib' must be followed by a string"));
-
-    return true;
-}
-
 bool SyntaxJob::doCompilerTag(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
@@ -319,13 +302,14 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerGlobal(AstNode* parent)
+bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#global' can only be used in the top level scope"}));
     SWAG_VERIFY(!afterGlobal, error(token, "'#global' must be defined first, at the top of the file"));
 
     SWAG_CHECK(tokenizer.getToken(token));
 
+    /////////////////////////////////
     if (token.text == "public")
     {
         if (!sourceFile->imported)
@@ -334,15 +318,35 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent)
             sourceFile->forcedPublic = true;
             sourceFile->module->addPublicSourceFile(sourceFile);
         }
+
+        SWAG_CHECK(eatToken());
     }
+
+    /////////////////////////////////
     else if (token.text == "generated")
     {
         sourceFile->generated = true;
         if (sourceFile->imported)
             sourceFile->imported->isSwag = true;
+        SWAG_CHECK(eatToken());
     }
 
-    SWAG_CHECK(eatToken());
+    /////////////////////////////////
+    else if (token.text == "foreignlib")
+    {
+        auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);
+        if (result)
+            *result = node;
+        node->semanticFct = SemanticJob::resolveCompilerForeignLib;
+
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, "'#global foreignlib' must be followed by a string"));
+
+        AstNode* literal;
+        SWAG_CHECK(doLiteral(node, &literal));
+        SWAG_VERIFY(literal->token.literalType == LiteralType::TT_STRING, syntaxError(literal->token, "'#global foreignlib' must be followed by a string"));
+    }
+
     SWAG_CHECK(eatSemiCol("after '#global'"));
     return true;
 }

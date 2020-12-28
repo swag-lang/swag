@@ -64,7 +64,6 @@ struct SyntaxJob : public Job
     bool doFuncCallParameters(AstNode* parent, AstNode** result, TokenId closeToken);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
-    bool doCompilerForeignLib(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerTag(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerInline(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerMacro(AstNode* parent, AstNode** result = nullptr);
@@ -76,7 +75,7 @@ struct SyntaxJob : public Job
     bool doCompilerRunTopLevel(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunEmbedded(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerUnitTest();
-    bool doCompilerGlobal(AstNode* parent);
+    bool doCompilerGlobal(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerSpecialFunction(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerDefined(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerLoad(AstNode* parent, AstNode** result = nullptr);

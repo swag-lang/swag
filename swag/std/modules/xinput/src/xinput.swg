@@ -1,6 +1,6 @@
 #global public
+#global foreignlib "xinput"
 #import "win32"
-#foreignlib "xinput"
 
 using swag, win32
 

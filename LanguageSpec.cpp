@@ -40,7 +40,6 @@ void LanguageSpec::setup()
     keywords["#mixin"]          = TokenId::CompilerMixin;
     keywords["#inline"]         = TokenId::CompilerInline;
     keywords["#macro"]          = TokenId::CompilerMacro;
-    keywords["#foreignlib"]     = TokenId::CompilerForeignLib;
     keywords["#defined"]        = TokenId::CompilerDefined;
     keywords["#load"]           = TokenId::CompilerLoad;
     keywords["#scopefct"]       = TokenId::CompilerScopeFct;
