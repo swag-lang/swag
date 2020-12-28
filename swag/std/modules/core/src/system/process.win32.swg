@@ -1,7 +1,7 @@
 #global if WINDOWS
 #global public
 #global namespace process
-using win32
+using win32, strconv
 
 // Starts a new process with arguments
 func start(info: StartInfo) -> {proc: Process, err: ErrorId}
@@ -15,7 +15,7 @@ func start(info: StartInfo) -> {proc: Process, err: ErrorId}
     si.cb = @sizeof(si)
 
     // Construct the command line
-    var builder: strconv.StringBuilder
+    var builder: StringBuilder
     builder.appendString(info.fileName)
     if info.arguments
     {

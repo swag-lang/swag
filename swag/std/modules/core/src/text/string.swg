@@ -108,6 +108,14 @@ public impl String
             #assert(false, "invalid binary operator '" ~ op ~ "'")
     }
 
+    func(op: string) opAssign(using self, value: char)
+    {
+        #if op == "+="
+            append(value)
+        #else
+            #assert(false, "invalid binary operator '" ~ op ~ "'")
+    }
+
     func(op: string) opAssign(using self, value: u8)
     {
         #if op == "+="
@@ -147,7 +155,8 @@ public impl String
 
     func opIndex(using self, index: uint)->u8
     {
-        if !length return 0
+        if !length
+            return 0
         return buffer[index]
     }
 
@@ -157,7 +166,8 @@ public impl String
     #[macro]
     func(ptr: bool) opVisitBytes(using self, stmt: code)
     {
-        if !length return
+        if !length
+            return
         scan := buffer
         loop length
         {
@@ -184,7 +194,8 @@ public impl String
     #[macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        if !length return
+        if !length
+            return
 
         byteIdx := 0'uint
         charIdx := 0'uint
@@ -249,7 +260,8 @@ public impl String
     // Transform a null string in an empty one
     func ensureNotNull(using self)
     {
-        if buffer return
+        if buffer
+            return
         buffer = autocast &padding[0]
     }
 
@@ -260,6 +272,19 @@ public impl String
         buffer[length] = value
         buffer[length + 1] = 0
         length += 1
+    }
+
+    // Append a character to the String
+    func append(using self, value: char)
+    {
+        debug.assert(utf8.isValidChar(value))
+        var tmp: [4] u8
+        eat := utf8.fromChar(tmp, value)
+        grow(length + eat + 1)
+        loop i: eat
+            buffer[length + i] = tmp[i]
+        buffer[length + eat + 1] = 0
+        length += eat
     }
 
     // Append a string to the String
@@ -451,14 +476,14 @@ public impl String
         using CharacterSet
         switch set
         {
-            case Latin1:
-                latin1.makeUpper(sl)
+        case Latin1:
+            latin1.makeUpper(sl)
 
-            case Unicode:
-                uni32 := unicode32.fromUtf8(toString())
-                unicode32.makeUpper(uni32.toSlice())
-                reserve(uni32.count * 4)
-                length = utf8.fromCharArray(@mkslice(buffer, capacity), uni32.toSlice())
+        case Unicode:
+            uni32 := unicode32.fromUtf8(toString())
+            unicode32.makeUpper(uni32.toSlice())
+            reserve(uni32.count * 4)
+            length = utf8.fromCharArray(@mkslice(buffer, capacity), uni32.toSlice())
         }
     }
 
@@ -470,14 +495,14 @@ public impl String
         using CharacterSet
         switch set
         {
-            case Latin1:
-                latin1.makeLower(sl)
+        case Latin1:
+            latin1.makeLower(sl)
 
-            case Unicode:
-                uni32 := unicode32.fromUtf8(toString())
-                unicode32.makeLower(uni32.toSlice())
-                reserve(uni32.count * 4)
-                length = utf8.fromCharArray(@mkslice(buffer, capacity), uni32.toSlice())
+        case Unicode:
+            uni32 := unicode32.fromUtf8(toString())
+            unicode32.makeLower(uni32.toSlice())
+            reserve(uni32.count * 4)
+            length = utf8.fromCharArray(@mkslice(buffer, capacity), uni32.toSlice())
         }
     }
 
