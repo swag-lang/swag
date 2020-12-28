@@ -506,7 +506,7 @@ JobResult ModuleBuildJob::execute()
 
 void ModuleBuildJob::publishFilesToPublic()
 {
-    if (module->publicSourceFiles.empty())
+    if (module->exportSourceFiles.empty())
         return;
 
     string publicPath = g_Workspace.getPublicPath(module, true).c_str();
@@ -514,10 +514,10 @@ void ModuleBuildJob::publishFilesToPublic()
         return;
 
     // We need the public folder to be in sync with the current state of the code.
-    // That means that every files in the public folder that is no more #public must
+    // That means that every files in the public folder that is no more '#global export' must
     // be removed (and every old file that does not exist anymore)
     set<Utf8> publicFiles;
-    for (auto one : module->publicSourceFiles)
+    for (auto one : module->exportSourceFiles)
     {
         auto name = one->name;
         name.makeUpper();
@@ -546,7 +546,7 @@ void ModuleBuildJob::publishFilesToPublic()
     });
 
     // Add all #public files
-    for (auto one : module->publicSourceFiles)
+    for (auto one : module->exportSourceFiles)
     {
         auto job          = g_Pool_copyFileJob.alloc();
         job->module       = module;

@@ -63,7 +63,7 @@ struct Module
     bool        setup(const Utf8& moduleName, const Utf8& modulePath);
     void        release();
     void        allocateBackend();
-    void        addPublicSourceFile(SourceFile* file);
+    void        addExportSourceFile(SourceFile* file);
     void        addFileNoLock(SourceFile* file);
     void        addFile(SourceFile* file);
     void        removeFile(SourceFile* file);
@@ -85,7 +85,7 @@ struct Module
     shared_mutex              mutexFile;
     shared_mutex              mutexCompilerPass;
     VectorNative<SourceFile*> files;
-    set<SourceFile*>          publicSourceFiles;
+    set<SourceFile*>          exportSourceFiles;
     set<SourceFile*>          importedSourceFiles;
     BuildCfg                  buildCfg;
     BuildParameters           buildParameters;

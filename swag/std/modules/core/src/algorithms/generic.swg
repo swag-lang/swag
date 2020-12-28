@@ -1,4 +1,4 @@
-#global public
+#global export
 
 // Swap two values
 #[swag.inline]

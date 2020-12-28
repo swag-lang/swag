@@ -55,7 +55,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     case TokenId::KwdPublic:
         attr = ATTRIBUTE_PUBLIC;
         SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, "a public definition must appear at file or namespace scope"));
-        SWAG_VERIFY(!sourceFile->forcedPublic, error(token, "'public' attribute cannot be used in a file marked with '#public', because the whole file is implicitly public"));
+        SWAG_VERIFY(!sourceFile->forceExport, error(token, "'public' attribute cannot be used in a file marked with '#global export', because the whole file is implicitly public"));
         if (sourceFile->fromTests && currentScope->kind == ScopeKind::File)
             newScope = currentScope->parentScope;
         else
@@ -65,7 +65,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     case TokenId::KwdProtected:
         attr = ATTRIBUTE_PROTECTED;
         SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, "a protected definition must appear at file or namespace scope"));
-        SWAG_VERIFY(!sourceFile->forcedPublic, error(token, "'protected' attribute cannot be used in a file marked with '#public'"));
+        SWAG_VERIFY(!sourceFile->forceExport, error(token, "'protected' attribute cannot be used in a file marked with '#global export'"));
         if (sourceFile->fromTests && currentScope->kind == ScopeKind::File)
             newScope = currentScope->parentScope;
         else

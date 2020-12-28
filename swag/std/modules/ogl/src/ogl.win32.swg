@@ -1,4 +1,4 @@
-#global public
+#global export
 #global foreignlib "opengl32"
 #global if #os == "windows"
 #import "win32"

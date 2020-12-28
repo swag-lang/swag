@@ -1,4 +1,4 @@
-#global public
+#global export
 #global foreignlib "xinput"
 #import "win32"
 

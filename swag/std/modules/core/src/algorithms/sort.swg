@@ -1,4 +1,4 @@
-#global public
+#global export
 namespace sort;
 
 // Insertion sort algorithm (slow)

@@ -297,17 +297,17 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
 
     /////////////////////////////////
-    if (token.text == "public")
+    if (token.text == "export")
     {
         if (!sourceFile->imported)
         {
-            SWAG_VERIFY(!sourceFile->forcedPublic, error(token, "'#global public' already defined"));
-            sourceFile->forcedPublic = true;
-            sourceFile->module->addPublicSourceFile(sourceFile);
+            SWAG_VERIFY(!sourceFile->forceExport, error(token, "'#global export' already defined"));
+            sourceFile->forceExport = true;
+            sourceFile->module->addExportSourceFile(sourceFile);
         }
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("after '#global'"));
+        SWAG_CHECK(eatSemiCol("after '#global export'"));
     }
 
     /////////////////////////////////
@@ -317,7 +317,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         if (sourceFile->imported)
             sourceFile->imported->isSwag = true;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("after '#global'"));
+        SWAG_CHECK(eatSemiCol("after '#global generated'"));
     }
 
     /////////////////////////////////
@@ -334,7 +334,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         AstNode* literal;
         SWAG_CHECK(doLiteral(node, &literal));
         SWAG_VERIFY(literal->token.literalType == LiteralType::TT_STRING, syntaxError(literal->token, "'#global foreignlib' must be followed by a string"));
-        SWAG_CHECK(eatSemiCol("after '#global'"));
+        SWAG_CHECK(eatSemiCol("after '#global foreignlib'"));
     }
 
     /////////////////////////////////
@@ -354,9 +354,8 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         if (node->ownerCompilerIfBlock)
             node->ownerCompilerIfBlock->blocks.push_back(block);
 
-        // Global #if for the whole file
         ScopedCompilerIfBlock scopedIf(this, block);
-        SWAG_CHECK(eatSemiCol("after '#global'"));
+        SWAG_CHECK(eatSemiCol("after '#global if'"));
         while (token.id != TokenId::EndOfFile)
         {
             SWAG_CHECK(doTopLevelInstruction(block));

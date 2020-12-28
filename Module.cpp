@@ -221,10 +221,10 @@ void Module::release()
     bssSegment.release();
 }
 
-void Module::addPublicSourceFile(SourceFile* file)
+void Module::addExportSourceFile(SourceFile* file)
 {
     scoped_lock lk(mutexFile);
-    publicSourceFiles.insert(file);
+    exportSourceFiles.insert(file);
 }
 
 void Module::addFileNoLock(SourceFile* file)
@@ -241,9 +241,9 @@ void Module::addFileNoLock(SourceFile* file)
     // Keep track of the most recent file
     moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);
 
-    // If the file is flagged as #public, register it
-    if (file->forcedPublic)
-        publicSourceFiles.insert(file);
+    // If the file is flagged as '#global export', register it
+    if (file->forceExport)
+        exportSourceFiles.insert(file);
 
     if (file->imported)
         importedSourceFiles.insert(file);
@@ -272,10 +272,10 @@ void Module::removeFile(SourceFile* file)
     file->module        = nullptr;
     file->indexInModule = UINT32_MAX;
 
-    // If the file is flagged as #public, unregister it
-    auto it1 = publicSourceFiles.find(file);
-    if (it1 != publicSourceFiles.end())
-        publicSourceFiles.erase(it1);
+    // If the file is flagged as '#global export', unregister it
+    auto it1 = exportSourceFiles.find(file);
+    if (it1 != exportSourceFiles.end())
+        exportSourceFiles.erase(it1);
 }
 
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext)
@@ -699,7 +699,7 @@ bool Module::WaitForDependenciesDone(Job* job)
 
 bool Module::isOnlyPublic()
 {
-    return files.size() - importedSourceFiles.size() == publicSourceFiles.size();
+    return files.size() - importedSourceFiles.size() == exportSourceFiles.size();
 }
 
 bool Module::mustOutputSomething()
@@ -716,7 +716,7 @@ bool Module::mustOutputSomething()
     else if (files.empty())
         mustOutput = false;
     // every files are published
-    else if (files.size() == publicSourceFiles.size())
+    else if (files.size() == exportSourceFiles.size())
         mustOutput = false;
     // module must have unittest errors, so no output
     else if (hasTtestErrors)

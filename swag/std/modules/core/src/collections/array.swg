@@ -1,4 +1,4 @@
-#global public
+#global export
 using swag
 
 struct(T) Array
