@@ -57,8 +57,7 @@ var g: Array'OneFunc
             builderVars.appendFormat("p%", i)
         }
 
-        builderVars.appendFormat(")\n", e.name)
-        builderVars.appendString("}\n")
+        builderVars.appendString("); }\n")
 
         // Initialize the variable with the getExtensionAddress
         builderInit.appendFormat("ext_% = @mkforeign(func%, getExtensionAddress(@dataof(\"%\")))\n", e.name, typeFunc.rawType.name, e.name);
