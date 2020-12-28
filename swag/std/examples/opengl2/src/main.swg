@@ -119,8 +119,8 @@ func messageLoop()
     hDC = GetDC(hWnd)
     hRC := wglCreateContext(hDC)
     wglMakeCurrent(hDC, hRC)
-    glInitExtensions()
 
+    glInitExtensions()
     console.print("%\n", getExtensionAddress(@dataof("glGenBuffers")))
 
     var vertexbuffer: GLuint

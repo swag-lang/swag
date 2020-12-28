@@ -1,6 +1,9 @@
 #import "core"
 using core, swag, strconv
 
+#[attributeUsage(AttributeUsage.Function)]
+attr extension()
+
 struct OneFunc
 {
     type: typeinfo

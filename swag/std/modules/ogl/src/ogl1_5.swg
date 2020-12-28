@@ -1,8 +1,5 @@
 using swag
 
-#[attributeUsage(AttributeUsage.Function)]
-attr extension()
-
 #[extension]
 {
     func glGenBuffers(n: GLsizei, buffer: *GLuint);
