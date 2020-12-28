@@ -1,4 +1,4 @@
-#public
+#global public
 
 // Swap two values
 #[swag.inline]

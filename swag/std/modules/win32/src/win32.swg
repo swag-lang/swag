@@ -1,1 +1,1 @@
-#public
+#global public

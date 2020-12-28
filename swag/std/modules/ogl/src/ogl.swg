@@ -1,4 +1,4 @@
-#public
+#global public
 
 alias GLenum        = u32
 alias GLboolean     = u8

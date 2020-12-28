@@ -1,4 +1,4 @@
-#public
+#global public
 #if #os == "windows";
 #import "win32"
 #foreignlib "gdi32"

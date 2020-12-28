@@ -319,6 +319,34 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doCompilerGlobal(AstNode* parent)
+{
+    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#global' can only be used in the top level scope"}));
+    SWAG_VERIFY(!afterGlobal, error(token, "'#global' must be defined first, at the top of the file"));
+
+    SWAG_CHECK(tokenizer.getToken(token));
+
+    if (token.text == "public")
+    {
+        if (!sourceFile->imported)
+        {
+            SWAG_VERIFY(!sourceFile->forcedPublic, error(token, "'#global public' already defined"));
+            sourceFile->forcedPublic = true;
+            sourceFile->module->addPublicSourceFile(sourceFile);
+        }
+    }
+    else if (token.text == "generated")
+    {
+        sourceFile->generated = true;
+        if (sourceFile->imported)
+            sourceFile->imported->isSwag = true;
+    }
+
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(eatSemiCol("after '#global'"));
+    return true;
+}
+
 bool SyntaxJob::doCompilerUnitTest()
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#unittest' can only be declared in the top level scope"}));
@@ -382,32 +410,8 @@ bool SyntaxJob::doCompilerUnitTest()
         return false;
     }
 
-    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken());
     SWAG_CHECK(eatSemiCol("after '#unittest' expression"));
-    return true;
-}
-
-bool SyntaxJob::doCompilerGenerated()
-{
-    sourceFile->generated = true;
-    if (sourceFile->imported)
-        sourceFile->imported->isSwag = true;
-    SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatSemiCol("after '#generated'"));
-    return true;
-}
-
-bool SyntaxJob::doCompilerPublic()
-{
-    SWAG_VERIFY(!sourceFile->forcedPublic, sourceFile->report({sourceFile, token, "'#public' can only be specified once per file"}));
-    if (!sourceFile->imported)
-    {
-        sourceFile->forcedPublic = true;
-        sourceFile->module->addPublicSourceFile(sourceFile);
-    }
-
-    SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatSemiCol("after '#public'"));
     return true;
 }
 

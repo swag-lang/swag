@@ -1,4 +1,4 @@
-#public
+#global public
 #foreignlib "kernel32"
 
 alias HANDLE = 			const *void

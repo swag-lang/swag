@@ -729,7 +729,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
         bufferSwg.init(4 * 1024);
         bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
         bufferSwg.addEol();
-        bufferSwg.addString("#generated");
+        bufferSwg.addString("#global generated");
         module->isSwag = true;
         bufferSwg.addEol();
 

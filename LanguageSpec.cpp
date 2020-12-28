@@ -6,8 +6,7 @@ LanguageSpec g_LangSpec;
 
 void LanguageSpec::setup()
 {
-    keywords["#public"]         = TokenId::CompilerPublic;
-    keywords["#generated"]      = TokenId::CompilerGenerated;
+    keywords["#global"]         = TokenId::CompilerGlobal;
     keywords["#unittest"]       = TokenId::CompilerUnitTest;
     keywords["#assert"]         = TokenId::CompilerAssert;
     keywords["#print"]          = TokenId::CompilerPrint;

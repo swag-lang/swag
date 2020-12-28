@@ -1,4 +1,4 @@
-#public
+#global public
 using swag
 
 struct(K, V) HashTableEntry

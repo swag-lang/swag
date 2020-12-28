@@ -1,4 +1,4 @@
-#public
+#global public
 #foreignlib "user32"
 
 alias HWND = 		const *void

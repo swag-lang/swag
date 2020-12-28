@@ -469,6 +469,9 @@ bool SyntaxJob::doLabel(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
 {
+    if (token.id != TokenId::CompilerGlobal)
+        afterGlobal = true;
+
     switch (token.id)
     {
     case TokenId::SymLeftCurly:
@@ -556,11 +559,8 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerPlaceHolder:
         SWAG_CHECK(doCompilerPlaceHolder(parent));
         break;
-    case TokenId::CompilerPublic:
-        SWAG_CHECK(doCompilerPublic());
-        break;
-    case TokenId::CompilerGenerated:
-        SWAG_CHECK(doCompilerGenerated());
+    case TokenId::CompilerGlobal:
+        SWAG_CHECK(doCompilerGlobal(parent));
         break;
     case TokenId::Identifier:
     {

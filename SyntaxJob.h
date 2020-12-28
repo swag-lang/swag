@@ -76,8 +76,7 @@ struct SyntaxJob : public Job
     bool doCompilerRunTopLevel(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunEmbedded(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerUnitTest();
-    bool doCompilerPublic();
-    bool doCompilerGenerated();
+    bool doCompilerGlobal(AstNode* parent);
     bool doCompilerSpecialFunction(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerDefined(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerLoad(AstNode* parent, AstNode** result = nullptr);
@@ -176,6 +175,7 @@ struct SyntaxJob : public Job
     bool                canChangeModule        = true;
     bool                moduleSpecified        = false;
     bool                inFunCall              = false;
+    bool                afterGlobal            = false;
 
     void reset() override
     {
@@ -194,6 +194,7 @@ struct SyntaxJob : public Job
         canChangeModule        = true;
         moduleSpecified        = false;
         inFunCall              = false;
+        afterGlobal            = false;
     }
 
     void release() override
