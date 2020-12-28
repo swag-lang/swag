@@ -362,6 +362,12 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
     }
 
+    /////////////////////////////////
+    else if (token.text == "namespace")
+    {
+        SWAG_CHECK(doNamespace(parent, result, true));
+    }
+
     return true;
 }
 

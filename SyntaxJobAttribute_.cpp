@@ -97,6 +97,8 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result)
     default:
         if (attr == ATTRIBUTE_PRIVATE)
             return syntaxError(token, format("unexpected token '%s' after 'private' attribute", token.text.c_str()));
+        if (attr == ATTRIBUTE_PROTECTED)
+            return syntaxError(token, format("unexpected token '%s' after 'protected' attribute", token.text.c_str()));
         return syntaxError(token, format("unexpected token '%s' after 'public' attribute", token.text.c_str()));
     }
 

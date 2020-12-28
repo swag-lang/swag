@@ -54,6 +54,12 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isGlobal(), error(token, "a namespace definition must appear either at file scope or immediately within another namespace definition"));
+    SWAG_CHECK(doNamespace(parent, result, false));
+    return true;
+}
+
+bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
+{
     SWAG_CHECK(tokenizer.getToken(token));
 
     AstNode* namespaceNode;
@@ -124,9 +130,9 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
     currentScope   = oldScope;
     auto openCurly = token;
 
-    if (token.id == TokenId::SymSemiColon)
+    if ((token.id == TokenId::SymSemiColon) || forGlobal)
     {
-        SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+        SWAG_CHECK(eatSemiCol());
         Scoped scoped(this, newScope);
         while (token.id != TokenId::EndOfFile)
         {
