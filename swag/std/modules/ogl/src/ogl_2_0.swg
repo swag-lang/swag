@@ -2,6 +2,7 @@
 
 #[extension]
 {
+    func glCreateShader(type: GLenum)->GLuint;
     func glEnableVertexAttribArray(index: GLuint);
     func glDisableVertexAttribArray(index: GLuint);
     func glVertexAttribPointer(index: GLuint, size: GLint, type: GLenum, normalized: GLboolean, stride: GLsizei, pointer: const *void);

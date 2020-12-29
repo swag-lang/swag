@@ -20,15 +20,6 @@ var g: Array'OneFunc
     g.add(@{msg.type, msg.name})
 }
 
-// For each extension, we will generate :
-//
-// global :
-// var ext_Function = func(...)
-// public func Function(...) { ext_Function(...) }
-//
-// in initExtensions() :
-// ext_Function = @mkforeign(func(...), getExtensionAddress("Function"))
-
 #compiler(CompilerMsgMask.PassAfterSemantic)
 {
     var builderVars: StringBuilder
@@ -52,8 +43,8 @@ var g: Array'OneFunc
             builderVars.appendFormat("p%: %", i, p.pointedType)
         }
 
-        builderVars.appendString(")\n{\n")
-        builderVars.appendFormat("\text_%(", e.name)
+        builderVars.appendFormat(")->%\n{\n", typeFunc.returnType.name)
+        builderVars.appendFormat("\treturn ext_%(", e.name)
         visit p, i: typeFunc.parameters
         {
             if i != 0 builderVars.appendString(", ")

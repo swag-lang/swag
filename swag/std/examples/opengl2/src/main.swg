@@ -1,12 +1,38 @@
 #global if #os == "windows"
 #import "core"
 #import "ogl"
-using core, win32, ogl, gdi32
+using core, win32, ogl, gdi32, time
 
 var hDC:    HDC
-var frame:  time.FrameTiming
+var frame:  FrameTiming
 
-var vertexbuffer: GLuint
+var vertexbuffer:   GLuint
+var programID:      GLuint
+
+const g_vertex_buffer_data: [] GLfloat = @[
+    -1.0, -1.0, 0.0,
+     1.0, -1.0, 0.0,
+     0.0,  1.0, 0.0,
+]
+
+const g_vertex_shader = @"
+    #version 330 core
+    layout(location = 0) in vec3 vertexPosition_modelspace;
+    void main()
+    {
+        gl_Position.xyz = vertexPosition_modelspace;
+        gl_Position.w = 1.0;
+    }
+"@
+
+const g_pixel_shader = @"
+    #version 330 core
+    out vec3 color;
+    void main()
+    {
+        color = vec3(1,0,0);
+    }
+"@
 
 func display()
 {
@@ -113,6 +139,12 @@ func messageLoop()
     }
 }
 
+func createShader()
+{
+    vertexShaderID   := glCreateShader(GL_VERTEX_SHADER)
+	fragmentShaderID := glCreateShader(GL_FRAGMENT_SHADER)
+}
+
 #main
 {
     hWnd := createWindow()
@@ -124,12 +156,8 @@ func messageLoop()
 
     glGenBuffers(1, &vertexbuffer)
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    const g_vertex_buffer_data: [] GLfloat = @[
-        -1.0, -1.0, 0.0,
-         1.0, -1.0, 0.0,
-         0.0,  1.0, 0.0,
-    ]
     glBufferData(GL_ARRAY_BUFFER, @sizeof(g_vertex_buffer_data), @dataof(g_vertex_buffer_data), GL_STATIC_DRAW);
+    createShader()
 
     display()
     ShowWindow(hWnd, SW_SHOW)
