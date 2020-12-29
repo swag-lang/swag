@@ -3,9 +3,7 @@
 #import "ogl"
 using core, win32, ogl, gdi32, time
 
-var hDC:    HDC
-var frame:  FrameTiming
-
+var hDC:            HDC
 var vertexbuffer:   GLuint
 var programID:      GLuint
 
@@ -36,11 +34,10 @@ const g_pixel_shader = @"
 
 func display()
 {
-    const SPEED = 100
     glClearColor(0, 0, 0, 0)
-    glRotatef(SPEED * frame.dt, 0.0, 0.0, 1)
     glClear(GL_COLOR_BUFFER_BIT)
 
+    glUseProgram(programID);
     glEnableVertexAttribArray(0)
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, null)
@@ -122,10 +119,6 @@ func messageLoop()
     var msg: MSG
     while true
     {
-        frame.update()
-
-        // Windows messages
-        frame.pause()
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {
             if msg.message == WM_QUIT
@@ -133,7 +126,6 @@ func messageLoop()
             TranslateMessage(&msg)
             DispatchMessageA(&msg)
         }
-        frame.unpause()
 
         display()
     }
@@ -141,8 +133,40 @@ func messageLoop()
 
 func createShader()
 {
-    vertexShaderID   := glCreateShader(GL_VERTEX_SHADER)
+	var result: GLint
+	var infoLogLength: s32
+    var infoLog: String
+
+    vertexShaderID := glCreateShader(GL_VERTEX_SHADER)
+    vertexSourcePointer := @dataof(g_vertex_shader)
+    glShaderSource(vertexShaderID, 1, &vertexSourcePointer, null)
+	glCompileShader(vertexShaderID)
+    glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &result)
+	glGetShaderiv(vertexShaderID, GL_INFO_LOG_LENGTH, &infoLogLength)
+    infoLog.reserve(cast(uint) infoLogLength + 1)
+    glGetShaderInfoLog(vertexShaderID, infoLogLength, null, @dataof(infoLog))
+
 	fragmentShaderID := glCreateShader(GL_FRAGMENT_SHADER)
+    pixelSourcePointer := @dataof(g_pixel_shader)
+    glShaderSource(fragmentShaderID, 1, &pixelSourcePointer, null)
+	glCompileShader(fragmentShaderID)
+    glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &result)
+	glGetShaderiv(fragmentShaderID, GL_INFO_LOG_LENGTH, &infoLogLength)
+    infoLog.reserve(cast(uint) infoLogLength + 1)
+    glGetShaderInfoLog(fragmentShaderID, infoLogLength, null, @dataof(infoLog))
+
+    programID = glCreateProgram()
+	glAttachShader(programID, vertexShaderID)
+	glAttachShader(programID, fragmentShaderID)
+	glLinkProgram(programID)
+    glGetProgramiv(programID, GL_LINK_STATUS, &result)
+	glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infoLogLength)
+    glGetProgramInfoLog(programID, infoLogLength, null, @dataof(infoLog))
+
+    glDetachShader(programID, vertexShaderID)
+	glDetachShader(programID, fragmentShaderID)
+	glDeleteShader(vertexShaderID)
+	glDeleteShader(fragmentShaderID)
 }
 
 #main

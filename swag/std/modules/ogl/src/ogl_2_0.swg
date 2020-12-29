@@ -2,9 +2,21 @@
 
 #[extension]
 {
+    func glAttachShader(program: GLuint, shader: GLuint);
+	func glCompileShader(shader: GLuint);
+    func glCreateProgram()->GLuint;
     func glCreateShader(type: GLenum)->GLuint;
-    func glEnableVertexAttribArray(index: GLuint);
+    func glDeleteShader(shader: GLuint);
+    func glDetachShader(program: GLuint, shader: GLuint);
     func glDisableVertexAttribArray(index: GLuint);
+    func glEnableVertexAttribArray(index: GLuint);
+    func glGetProgramiv(program: GLuint, pname: GLenum, param: *GLint);
+    func glGetShaderInfoLog(shader: GLuint, bufSize: GLsizei, length: *GLsizei, infoLog: *GLchar);
+    func glGetShaderiv(shader: GLuint, pname: GLenum, param: *GLint);
+    func glLinkProgram(program: GLuint);
+    func glGetProgramInfoLog(program: GLuint, bufSize: GLsizei, length: *GLsizei, infoLog: *GLchar);
+    func glShaderSource(shader: GLuint, count: GLsizei, str: *const *GLchar, length: const *GLint);
+    func glUseProgram(program: GLuint);
     func glVertexAttribPointer(index: GLuint, size: GLint, type: GLenum, normalized: GLboolean, stride: GLsizei, pointer: const *void);
 }
 
