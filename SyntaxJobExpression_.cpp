@@ -131,11 +131,14 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::CompilerFunction:
     case TokenId::CompilerCallerFunction:
     case TokenId::CompilerCallerLocation:
-    case TokenId::CompilerLocation:
     case TokenId::CompilerBuildCfg:
     case TokenId::CompilerArch:
     case TokenId::CompilerOs:
         SWAG_CHECK(doCompilerSpecialFunction(parent, result));
+        break;
+
+    case TokenId::CompilerLocation:
+        SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
     case TokenId::CompilerDefined:

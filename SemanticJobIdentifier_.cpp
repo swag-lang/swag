@@ -353,8 +353,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     // Direct reference to a constexpr structure
     if (parent->previousResolvedNode &&
-        parent->previousResolvedNode->resolvedSymbolOverload &&
-        (parent->previousResolvedNode->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE) &&
+        (parent->previousResolvedNode->flags & AST_VALUE_COMPUTED) &&
         parent->previousResolvedNode->typeInfo->kind == TypeInfoKind::Struct &&
         symbol->kind == SymbolKind::Variable)
     {

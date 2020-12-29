@@ -449,16 +449,19 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
         return true;
+
     case TokenId::CompilerArch:
         node->computedValue.text = g_Workspace.GetArchName();
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
         return true;
+
     case TokenId::CompilerOs:
         node->computedValue.text = g_Workspace.GetOsName();
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
         return true;
+
     case TokenId::CompilerHasTag:
     {
         auto front = node->childs.front();
@@ -473,6 +476,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->setFlagsValueIsComputed();
         return true;
     }
+
     case TokenId::CompilerTagVal:
     {
         auto front = node->childs.front();
@@ -506,11 +510,14 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->typeInfo                 = g_Workspace.swagScope.regTypeInfoSourceLoc;
         node->computedValue.reg.offset = ByteCodeGenJob::computeSourceLocation(node);
         node->setFlagsValueIsComputed();
+        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
         return true;
+
     case TokenId::CompilerCallerLocation:
         SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerlocation' can only be set in a function parameter declaration"}));
         node->typeInfo = g_Workspace.swagScope.regTypeInfoSourceLoc;
         return true;
+
     case TokenId::CompilerCallerFunction:
         SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerfunction' can only be set in a function parameter declaration"}));
         node->typeInfo = g_TypeMgr.typeInfoString;

@@ -98,6 +98,10 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, bool acceptPa
 
     switch (token.id)
     {
+    case TokenId::CompilerLocation: 
+        SWAG_CHECK(doCompilerSpecialFunction(identifierRef));
+        break;
+
     case TokenId::IntrinsicSpread:
     case TokenId::IntrinsicSizeOf:
     case TokenId::IntrinsicAlignOf:

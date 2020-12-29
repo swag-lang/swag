@@ -3,9 +3,8 @@ using core
 
 #main
 {
-    loc := #location
-    curPath := loc.fileName
-    curPath = path.getDirectoryName(curPath)
+    curPath := path.getDirectoryName(#location.fileName)
     glewPath := path.combine(curPath, "glew.h")
-    res := file.readAllLines(glewPath.toString())
+    (lines, err) := file.readAllLines(glewPath.toString())
+    console.print("lines: %\n", lines.count)
 }
