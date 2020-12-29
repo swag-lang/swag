@@ -89,15 +89,18 @@ struct Module
     set<SourceFile*>          importedSourceFiles;
     BuildCfg                  buildCfg;
     BuildParameters           buildParameters;
-    AstNode*                  astRoot              = nullptr;
-    Scope*                    scopeRoot            = nullptr;
-    Backend*                  backend              = nullptr;
-    uint64_t                  moreRecentSourceFile = 0;
-    bool                      addedToBuild         = false;
-    bool                      saveBssValues        = false;
-    bool                      saveMutableValues    = false;
-    bool                      bssCannotChange      = false;
-    bool                      isSwag               = false;
+    AstNode*                  astRoot   = nullptr;
+    Scope*                    scopeRoot = nullptr;
+    Backend*                  backend   = nullptr;
+    mutex                     mutexGeneratedFile;
+    uint32_t                  countLinesGeneratedFile = 0;
+    uint64_t                  moreRecentSourceFile    = 0;
+    bool                      addedToBuild            = false;
+    bool                      saveBssValues           = false;
+    bool                      saveMutableValues       = false;
+    bool                      bssCannotChange         = false;
+    bool                      isSwag                  = false;
+    bool                      firstGenerated          = true;
 
     bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
     bool executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);

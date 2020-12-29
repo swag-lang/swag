@@ -7,6 +7,7 @@
 #include "Scoped.h"
 #include "Timer.h"
 #include "SemanticJob.h"
+#include "Workspace.h"
 
 thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
 
@@ -187,14 +188,67 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     return true;
 }
 
-bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind)
+bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated)
 {
+    Utf8     tmpFileName     = "<generated>";
+    Utf8     tmpFilePath     = "<generated>";
+    uint32_t previousLogLine = 0;
+
+    // Log the generated code in 'generated.swg'
+    if (logGenerated && !fromNode->sourceFile->testErrors)
+    {
+        auto modl       = fromNode->sourceFile->module;
+        Utf8 publicPath = g_Workspace.getPublicPath(modl, true);
+        tmpFilePath     = publicPath;
+        tmpFileName     = "generated.swg";
+        publicPath += tmpFileName;
+
+        uint32_t    countEol = 0;
+        const char* pz       = content.c_str();
+        for (int i = 0; i < content.length(); i++)
+        {
+            if (*pz == '\n')
+                countEol++;
+            pz++;
+        }
+
+        unique_lock lk(modl->mutexGeneratedFile);
+        FILE*       f;
+
+        previousLogLine = modl->countLinesGeneratedFile;
+        if (modl->firstGenerated)
+            fopen_s(&f, publicPath.c_str(), "w");
+        else
+            fopen_s(&f, publicPath.c_str(), "a+");
+        if (!f)
+        {
+            fromNode->sourceFile->report({fromNode, fromNode->token, format("cannot open file '%s' for writing", publicPath.c_str())});
+            return false;
+        }
+
+        modl->firstGenerated = false;
+
+        Utf8 sourceCode = format("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
+        fwrite(sourceCode.c_str(), sourceCode.length(), 1, f);
+        modl->countLinesGeneratedFile += 1;
+
+        fwrite(content.c_str(), content.length(), 1, f);
+        modl->countLinesGeneratedFile += countEol;
+
+        static char eol = '\n';
+        fwrite(&eol, 1, 1, f);
+        fwrite(&eol, 1, 1, f);
+        modl->countLinesGeneratedFile += 2;
+
+        fclose(f);
+    }
+
     SourceFile* tmpFile      = g_Allocator.alloc<SourceFile>();
     tmpFile->externalContent = content;
     tmpFile->setExternalBuffer((char*) tmpFile->externalContent.c_str(), tmpFile->externalContent.length());
     tmpFile->module     = parent->sourceFile->module;
-    tmpFile->name       = "<generated>";
-    tmpFile->path       = "<generated>";
+    tmpFile->name       = tmpFileName;
+    tmpFile->path       = tmpFilePath;
     tmpFile->sourceNode = fromNode;
     sourceFile          = tmpFile;
     currentScope        = parent->ownerScope;
@@ -204,6 +258,11 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     currentInline       = parent->ownerInline;
 
     tokenizer.setFile(sourceFile);
+    if (logGenerated)
+    {
+        tokenizer.location.column = 0;
+        tokenizer.location.line   = previousLogLine;
+    }
 
     ScopedFlags scopedFlags(this, AST_GENERATED | (parent->flags & (AST_RUN_BLOCK | AST_NO_BACKEND)));
     SWAG_CHECK(tokenizer.getToken(token));

@@ -750,7 +750,7 @@ bool Module::compileString(const Utf8& text)
     auto      sourceFile = runContext.ip->node->sourceFile;
     AstNode*  parent     = Ast::newNode(files[0], AstNodeKind::StatementNoScope, sourceFile->astRoot);
     SyntaxJob syntaxJob;
-    if (!syntaxJob.constructEmbedded(text, parent, runContext.ip->node, CompilerAstKind::TopLevelInstruction))
+    if (!syntaxJob.constructEmbedded(text, parent, runContext.ip->node, CompilerAstKind::TopLevelInstruction, true))
         return false;
 
     auto job          = g_Pool_semanticJob.alloc();

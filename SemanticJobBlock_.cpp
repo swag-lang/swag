@@ -424,7 +424,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     }
 
     SyntaxJob syntaxJob;
-    syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction);
+    syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction, false);
     newExpression = node->childs.back();
 
     // First child is the let in the statement, and first child of this is the loop node

@@ -44,7 +44,7 @@ struct SyntaxContext : public JobContext
 struct SyntaxJob : public Job
 {
     JobResult execute() override;
-    bool      constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, enum class CompilerAstKind kind);
+    bool      constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, enum class CompilerAstKind kind, bool logGenerated);
 
     bool error(const Token& tk, const Utf8& msg);
     bool error(AstNode* node, const Utf8& msg);

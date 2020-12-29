@@ -86,7 +86,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     {
         SyntaxJob syntaxJob;
         node->childs.clear();
-        syntaxJob.constructEmbedded(expression->computedValue.text, node, expression, node->embeddedKind);
+        syntaxJob.constructEmbedded(expression->computedValue.text, node, expression, node->embeddedKind, true);
 
         job->nodes.pop_back();
         for (int i = (int) node->childs.size() - 1; i >= 0; i--)

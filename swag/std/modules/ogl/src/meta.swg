@@ -34,7 +34,7 @@ var g: Array'OneFunc
     var builderVars: StringBuilder
     var builderInit: StringBuilder
 
-    builderInit.appendString("public func glInitExtensions() {\n");
+    builderInit.appendString("public func glInitExtensions()\n{\n");
 
     visit e: g
     {
@@ -48,22 +48,22 @@ var g: Array'OneFunc
         builderVars.appendFormat("public func %(", e.name)
         visit p, i: typeFunc.parameters
         {
-            if i != 0 builderVars.appendString(",")
+            if i != 0 builderVars.appendString(", ")
             builderVars.appendFormat("p%: %", i, p.pointedType)
         }
 
-        builderVars.appendString(") {\n")
-        builderVars.appendFormat("ext_%(", e.name)
+        builderVars.appendString(")\n{\n")
+        builderVars.appendFormat("\text_%(", e.name)
         visit p, i: typeFunc.parameters
         {
-            if i != 0 builderVars.appendString(",")
+            if i != 0 builderVars.appendString(", ")
             builderVars.appendFormat("p%", i)
         }
 
-        builderVars.appendString("); }\n")
+        builderVars.appendString(");\n}\n\n")
 
         // Initialize the variable with the getExtensionAddress
-        builderInit.appendFormat("ext_% = @mkforeign(func%, getExtensionAddress(@dataof(\"%\")))\n", e.name, typeFunc.rawType.name, e.name);
+        builderInit.appendFormat("\text_% = @mkforeign(func%, getExtensionAddress(@dataof(\"%\")))\n", e.name, typeFunc.rawType.name, e.name);
     }
 
     itf := @compiler()
