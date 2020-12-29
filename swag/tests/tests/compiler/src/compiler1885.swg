@@ -20,7 +20,7 @@ struct(T) AA
         }
 
         buf[idx] = 0
-        return cast(string) buf
+        return cast(string) @mkslice(&buf[0], idx)
     }
 
     enPlus: bool
