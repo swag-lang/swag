@@ -3,6 +3,9 @@
 #global namespace process
 using win32, strconv
 
+// Exit the current process
+func exit(exitCode: u32) => ExitProcess(exitCode)
+
 // Starts a new process with arguments
 func start(info: StartInfo) -> {proc: Process, err: ErrorId}
 {

@@ -9,7 +9,7 @@ using core
     if err
     {
         console.print("error: cannot read '%' (%)\n", glewPath, err)
-        environment.exit(cast(u32) -1)
+        process.exit(cast(u32) -1)
     }
 
     console.print("lines: %\n", lines.count)
