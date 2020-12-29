@@ -84,8 +84,8 @@ const GL_ONE_MINUS_DST_COLOR    = 0x0307
 const GL_SRC_ALPHA_SATURATE     = 0x0308
 
 /* Boolean */
-const GL_TRUE   = 1
-const GL_FALSE  = 0
+const GL_TRUE   = 1'u8
+const GL_FALSE  = 0'u8
 
 /* ClipPlaneName */
 const GL_CLIP_PLANE0 = 0x3000

@@ -6,20 +6,21 @@ using core, win32, ogl, gdi32
 var hDC:    HDC
 var frame:  time.FrameTiming
 
+var vertexbuffer: GLuint
+
 func display()
 {
     const SPEED = 100
     glClearColor(0, 0, 0, 0)
     glRotatef(SPEED * frame.dt, 0.0, 0.0, 1)
     glClear(GL_COLOR_BUFFER_BIT)
-    glBegin(GL_TRIANGLES);
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex2i(0,  1);
-    glColor3f(0.0, 1.0, 0.0);
-    glVertex2i(-1, -1);
-    glColor3f(0.0, 0.0, 1.0);
-    glVertex2i(1, -1);
-    glEnd();
+
+    glEnableVertexAttribArray(0)
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, null)
+    glDrawArrays(GL_TRIANGLES, 0, 3) // Starting from vertex 0; 3 vertices total -> 1 triangle
+    glDisableVertexAttribArray(0)
+
     glFlush()
     SwapBuffers(hDC)
 }
@@ -121,9 +122,14 @@ func messageLoop()
     wglMakeCurrent(hDC, hRC)
     glInitExtensions()
 
-    var vertexbuffer: GLuint
     glGenBuffers(1, &vertexbuffer)
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+    const g_vertex_buffer_data: [] GLfloat = @[
+        -1.0, -1.0, 0.0,
+         1.0, -1.0, 0.0,
+         0.0,  1.0, 0.0,
+    ]
+    glBufferData(GL_ARRAY_BUFFER, @sizeof(g_vertex_buffer_data), @dataof(g_vertex_buffer_data), GL_STATIC_DRAW);
 
     display()
     ShowWindow(hWnd, SW_SHOW)

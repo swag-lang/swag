@@ -1,10 +1,14 @@
 #global public
 using swag
 
+alias GLintptr   = int
+alias GLsizeiptr = uint
+
 #[extension]
 {
     func glGenBuffers(n: GLsizei, buffer: *GLuint);
     func glBindBuffer(target: GLenum, buffer: GLuint);
+    func glBufferData(target: GLenum, size: GLsizeiptr, data: const *void, usage: GLenum);
     func glGenVertexArrays(n: GLsizei, arrays: *GLuint);
     func glBindVertexArray(array: GLuint);
 }
