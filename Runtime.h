@@ -338,7 +338,8 @@ struct ConcreteCompilerSourceLocation
 };
 
 static const uint64_t SWAG_LAMBDA_BC_MARKER      = 0x8000000000000000;
-static const uint64_t SWAG_LAMBDA_FOREIGN_MARKER = 0x0400000000000000;
+static const uint64_t SWAG_LAMBDA_FOREIGN_MARKER = 0x4000000000000000;
+static const uint64_t SWAG_LAMBDA_MARKER_MASK    = 0xC000000000000000;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

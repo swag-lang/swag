@@ -1247,7 +1247,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     else
     {
         SWAG_ASSERT(varNodeRegisters.size() > 0);
-        emitSafetyNullPointer(context, varNodeRegisters);
+        emitSafetyNullLambda(context, varNodeRegisters);
         auto inst       = emitInstruction(context, ByteCodeOp::LambdaCall, varNodeRegisters);
         inst->b.pointer = (uint8_t*) typeInfoFunc;
     }

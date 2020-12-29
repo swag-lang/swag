@@ -8,9 +8,9 @@
 
 void ByteCodeGenJob::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg)
 {
-    emitInstruction(context, ByteCodeOp::ClearMaskU32, reg)->b.u32   = 0xFF;
+    emitInstruction(context, ByteCodeOp::ClearMaskU32, reg)->b.u32    = 0xFF;
     emitInstruction(context, ByteCodeOp::JumpIfNotZero32, reg)->b.s32 = 1;
-    emitInstruction(context, ByteCodeOp::IntrinsicAssert)->d.pointer = (uint8_t*) msg;
+    emitInstruction(context, ByteCodeOp::IntrinsicAssert)->d.pointer  = (uint8_t*) msg;
 }
 
 bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context)
@@ -46,6 +46,22 @@ void ByteCodeGenJob::emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t
         return;
 
     emitSafetyNotZero(context, r, 64, message);
+}
+
+void ByteCodeGenJob::emitSafetyNullLambda(ByteCodeGenContext* context, uint32_t r, const char* message)
+{
+    if (!mustEmitSafety(context))
+        return;
+
+    auto re = reserveRegisterRC(context);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, re, r);
+    auto inst = emitInstruction(context, ByteCodeOp::BinOpBitmaskAndS64, re, 0, re);
+    inst->flags |= BCI_IMM_B;
+    inst->b.u64 = ~SWAG_LAMBDA_MARKER_MASK;
+
+    emitSafetyNotZero(context, re, 64, message);
+
+    freeRegisterRC(context, re);
 }
 
 void ByteCodeGenJob::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits)
