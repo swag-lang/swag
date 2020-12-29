@@ -208,17 +208,21 @@ impl String
             var (c, eat) = utf8.firstChar(slice)
             if eat == 0
                 break
-            #macro
-            {
-                #if `ptr
-                    var @alias0 = `scan
-                #else
-                    var @alias0 = `c
-                var @alias1 = `byteIdx
-                var @alias2 = `charIdx
 
-                #[swag.noreturn]
-                #mixin `stmt
+            label up
+            {
+                #macro
+                {
+                    #if `ptr
+                        var @alias0 = `scan
+                    #else
+                        var @alias0 = `c
+                    var @alias1 = `byteIdx
+                    var @alias2 = `charIdx
+
+                    #[swag.noreturn]
+                    #mixin `stmt { continue = break up; }
+                }
             }
 
             byteIdx += eat

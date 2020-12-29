@@ -763,6 +763,7 @@ namespace Ast
                 node->childs.front()->kind != AstNodeKind::While &&
                 node->childs.front()->kind != AstNodeKind::Visit &&
                 node->childs.front()->kind != AstNodeKind::Loop &&
+                node->childs.front()->kind != AstNodeKind::LabelBreakable &&
                 node->childs.front()->kind != AstNodeKind::Switch)
             {
                 context.indent++;
@@ -905,6 +906,13 @@ namespace Ast
 
         case AstNodeKind::Literal:
             SWAG_CHECK(outputLiteral(context, concat, node, TypeManager::literalTypeToType(node->token), node->token.text, node->token.literalValue));
+            break;
+
+        case AstNodeKind::LabelBreakable:
+            CONCAT_FIXED_STR(concat, "label ");
+            concat.addString(node->token.text);
+            concat.addEolIndent(context.indent);
+            SWAG_CHECK(output(context, concat, node->childs[0]));
             break;
 
         default:

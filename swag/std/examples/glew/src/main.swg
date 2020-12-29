@@ -6,11 +6,15 @@ using core
     curPath := path.getDirectoryName(#location.fileName)
     glewPath := path.combine(curPath, "glew.h")
     (lines, err) := file.readAllLines(glewPath.toString())
-    if err
-    {
-        console.print("error: cannot read '%' (%)\n", glewPath, err)
-        process.exit(cast(u32) -1)
-    }
+    if err error.fatal("error: cannot read '%' (%)\n", glewPath, err)
 
-    console.print("lines: %\n", lines.count)
+    const fctExtension = "glCompileShader "
+
+    visit *line: lines
+    {
+        (idx, success) := line.indexOf(fctExtension)
+        if !success continue
+        console.print("line: %\n", :line)
+        break
+    }
 }

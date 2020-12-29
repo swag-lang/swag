@@ -20,4 +20,10 @@ namespace error
         cxt := @getcontext()
         cxt.errorMsgLen = 0
     }
+
+    func fatal(msg: string, args: ...)
+    {
+        console.print(msg, args)
+        process.exit(cast(u32) -1)
+    }
 }
