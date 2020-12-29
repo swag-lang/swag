@@ -123,8 +123,7 @@ func messageLoop()
 
     var vertexbuffer: GLuint
     glGenBuffers(1, &vertexbuffer)
-    //glGenVertexArrays(1, &vertexArrayID)
-    //glBindVertexArray(vertexArrayID)
+    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 
     display()
     ShowWindow(hWnd, SW_SHOW)
