@@ -200,7 +200,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
         auto modl       = fromNode->sourceFile->module;
         Utf8 publicPath = g_Workspace.getPublicPath(modl, true);
         tmpFilePath     = publicPath;
-        tmpFileName     = "generated.swg";
+        tmpFileName     = modl->name + ".generated.swg";
         publicPath += tmpFileName;
 
         uint32_t    countEol = 0;
