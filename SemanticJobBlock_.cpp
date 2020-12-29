@@ -552,6 +552,7 @@ bool SemanticJob::resolveLabel(SemanticContext* context)
         check = check->parent;
     }
 
-    node->block->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
+    node->block->byteCodeBeforeFct = ByteCodeGenJob::emitLabelBeforeBlock;
+    node->block->byteCodeAfterFct  = ByteCodeGenJob::emitLoopAfterBlock;
     return true;
 }

@@ -269,6 +269,14 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitLabelBeforeBlock(ByteCodeGenContext* context)
+{
+    auto node                        = context->node;
+    auto loopNode                    = static_cast<AstBreakable*>(node->parent);
+    loopNode->seekJumpBeforeContinue = context->bc->numInstructions;
+    return true;
+}
+
 bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
 {
     auto         node = context->node;

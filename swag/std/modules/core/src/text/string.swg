@@ -169,9 +169,14 @@ impl String
     {
         if !length
             return
-        scan := buffer
+
+        // Little trick to avoid labels. That way a 'continue' in the user code will work
+        // correctly, that's why we increment 'scan' before the use code, and take -1 to start.
+        scan := buffer - 1
+
         loop length
         {
+            scan += 1
             #macro
             {
                 #if `ptr
@@ -183,8 +188,6 @@ impl String
                 #[swag.noreturn]
                 #mixin `stmt
             }
-
-            scan += 1
         }
     }
 
@@ -202,6 +205,8 @@ impl String
         charIdx := 0'uint
         count := length
         scan := buffer
+
+        label up
         while true
         {
             slice := @mkslice(scan, count)
@@ -209,20 +214,18 @@ impl String
             if eat == 0
                 break
 
-            label up
+            label down
+            #macro
             {
-                #macro
-                {
-                    #if `ptr
-                        var @alias0 = `scan
-                    #else
-                        var @alias0 = `c
-                    var @alias1 = `byteIdx
-                    var @alias2 = `charIdx
+                #if `ptr
+                    var @alias0 = `scan
+                #else
+                    var @alias0 = `c
+                var @alias1 = `byteIdx
+                var @alias2 = `charIdx
 
-                    #[swag.noreturn]
-                    #mixin `stmt { continue = break up; }
-                }
+                #[swag.noreturn]
+                #mixin `stmt { break = break up; continue = break down; }
             }
 
             byteIdx += eat

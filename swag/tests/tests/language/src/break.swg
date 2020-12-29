@@ -42,4 +42,19 @@
 
         @assert(cpt == 1)
     }
+
+    // When used with a label, a continue is a way to go back
+    // to the start of the label
+    {
+        cpt := 0
+        label down
+        {
+            cpt += 1
+            if cpt == 5
+                break
+            continue
+        }
+
+        @assert(cpt == 5)
+    }
 }

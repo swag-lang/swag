@@ -91,9 +91,14 @@ impl Array
     func(ptr: bool) opVisit(using self, stmt: code)
     {
         if !count return
-        scan := buffer
+
+        // Little trick to avoid labels. That way a 'continue' in the user code will work
+        // correctly, that's why we increment 'scan' before the use code, and take -1 to start.
+        scan := buffer - 1
+
         loop count
         {
+            scan += 1
             #macro
             {
                 #if `ptr
@@ -105,8 +110,6 @@ impl Array
                 #[swag.noreturn]
                 #mixin `stmt
             }
-
-            scan += 1
         }
     }
 

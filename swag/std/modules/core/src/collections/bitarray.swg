@@ -95,6 +95,7 @@ public impl BitArray
         if !count return
         remainingBits := count
         countBits := 0'uint
+
         loop idx: math.max(count >> 5, 1)
         {
             var shift: u32 = 1
