@@ -546,6 +546,11 @@ struct AstBreakable : public AstNode
 
 struct AstLabelBreakable : public AstBreakable
 {
+    AstLabelBreakable()
+    {
+        breakableFlags &= ~BREAKABLE_CAN_HAVE_INDEX;
+    }
+
     AstNode* clone(CloneContext& context) override;
 
     AstNode* block;

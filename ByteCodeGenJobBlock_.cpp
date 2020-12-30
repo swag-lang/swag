@@ -625,7 +625,13 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
 {
     auto node              = context->node;
     node->resultRegisterRC = reserveRegisterRC(context);
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC, node->ownerBreakable->registerIndex);
+
+    auto ownerBreakable = node->ownerBreakable;
+    while (ownerBreakable && !(ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX))
+        ownerBreakable = ownerBreakable->ownerBreakable;
+    SWAG_ASSERT(ownerBreakable);
+
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC, ownerBreakable->registerIndex);
     return true;
 }
 

@@ -449,10 +449,13 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 bool SemanticJob::resolveIndex(SemanticContext* context)
 {
     auto node = context->node;
-    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'@index' can only be used inside a breakable loop"}));
-    SWAG_VERIFY(node->ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX, context->report({node, node->token, "'@index' can only be used inside a breakable loop"}));
 
-    node->ownerBreakable->breakableFlags |= BREAKABLE_NEED_INDEX;
+    auto ownerBreakable = node->ownerBreakable;
+    while (ownerBreakable && !(ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX))
+        ownerBreakable = ownerBreakable->ownerBreakable;
+    SWAG_VERIFY(ownerBreakable, context->report({node, node->token, "'@index' can only be used inside a breakable loop"}));
+
+    ownerBreakable->breakableFlags |= BREAKABLE_NEED_INDEX;
     node->typeInfo    = g_TypeMgr.typeInfoUInt;
     node->byteCodeFct = ByteCodeGenJob::emitIndex;
     return true;
