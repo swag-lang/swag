@@ -31,12 +31,17 @@ impl HashTable
     #[macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        if !count return
+        if !count
+            return
+
         remain := count
+        label up
         loop capacity
         {
             if table[@index].hash < HASH_FIRST
                 continue
+
+            label down
             #macro
             {
                 #if `ptr
@@ -51,7 +56,7 @@ impl HashTable
                 }
 
                 #[swag.noreturn]
-                #mixin `stmt
+                #mixin `stmt { break = break up; continue = break down; }
             }
 
             remain -= 1

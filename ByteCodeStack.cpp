@@ -15,8 +15,8 @@ void ByteCodeStack::log()
         const auto& step = steps[i];
 
         SourceFile*     sourceFile;
-        SourceLocation* location;
-        ByteCode::getLocation(step.bc, step.ip, &sourceFile, &location);
+        SourceLocation* location = nullptr;
+        ByteCode::getLocation(step.bc, step.ip, &sourceFile, &location, true);
 
         if (step.bc->node && step.bc->node->kind == AstNodeKind::FuncDecl)
         {

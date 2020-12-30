@@ -435,6 +435,14 @@ Utf8 AstFuncDecl::getNameForMessage()
 {
     if (attributeFlags & ATTRIBUTE_AST_FUNC)
         return "'#ast' block";
+    if (attributeFlags & ATTRIBUTE_TEST_FUNC)
+        return "'#test' block";
+    if (attributeFlags & ATTRIBUTE_RUN_FUNC)
+        return "'#run' block";
+    if (attributeFlags & ATTRIBUTE_MAIN_FUNC)
+        return "'#main' block";
+    if (attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+        return "'#compiler' block";
     if (flags & AST_SPECIAL_COMPILER_FUNC)
         return format("'%s' block", token.text.c_str());
     if (attributeFlags & ATTRIBUTE_MIXIN)

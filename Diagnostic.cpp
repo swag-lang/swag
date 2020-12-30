@@ -46,7 +46,8 @@ void Diagnostic::report(bool verboseMode) const
     {
         SWAG_ASSERT(sourceFile);
         fs::path path = sourceFile->path;
-        g_Log.print(path.string().c_str());
+        g_Log.print(normalizePath(path).c_str());
+
         if (hasRangeLocation)
             g_Log.print(format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
         else if (hasLocation)

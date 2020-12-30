@@ -2076,6 +2076,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     auto       ip = runContext->ip - 1;
     Diagnostic diag{ip->node, ip->node->token, "exception during bytecode execution !"};
     diag.exceptionError = true;
+    runContext->bc->addCallStack(runContext);
     runContext->bc->sourceFile->report(diag);
     return g_CommandLine.devMode ? EXCEPTION_CONTINUE_EXECUTION : EXCEPTION_EXECUTE_HANDLER;
 }
