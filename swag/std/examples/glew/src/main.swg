@@ -25,18 +25,8 @@ func findLine(what: string)->*String
     (lines, err) = file.readAllLines(glewPath.toString())
     if err error.fatal("error: cannot read '%' (%)\n", glewPath, err)
 
-    var line1: *String
-    visit *line: lines
-    {
-        (idx, success) := line.indexOf(fctExtension)
-        if !success continue
-        console.print("line: %\n", :line)
-        line1 = line
-        break
-    }
-
-    if line1 == null
-        error.fatal("error: cannot find '%'\n", fctExtension)
+    line1 := findLine(fctExtension)
+    debug.assert(line1 != null)
 
     (idx, success) := line1.indexOf("(")
     debug.assert(success)
@@ -52,17 +42,10 @@ func findLine(what: string)->*String
     console.print("glew: %\n", glew)
     glew += ";"'u8
 
-    var line2: *String
-    visit *line: lines
-    {
-        (idx, success) = line.indexOf(glew.toString())
-        if !success continue
-        console.print("line: %\n", :line)
-        line2 = line
-        break
-    }
+    line2 := findLine(glew.toString())
+    debug.assert(line2 != null)
 
-    (idx, success) = line2.indexOf(" "'char)
+    (idx, success) = line2.indexOf(" ")
     idx += 1
 
     var proc: String
@@ -74,13 +57,6 @@ func findLine(what: string)->*String
 
     console.print("proc: %\n", proc)
 
-    var line3: *String
-    visit *line: lines
-    {
-        (idx, success) = line.indexOf(proc.toString())
-        if !success continue
-        console.print("line: %\n", :line)
-        line2 = line
-        break
-    }
+    line3 := findLine(proc.toString())
+    debug.assert(line3 != null)
 }
