@@ -522,31 +522,36 @@ impl String
     }
 
     // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
-    func indexOf(using self, what: char, startByteIndex = 0'uint) -> {index: uint, success: bool}
+    // Returns swag.MaxUINT if not found
+    func indexOf(using self, what: char, startByteIndex = 0'uint)->uint
     {
         return utf8.indexOf(@mkslice(buffer, length), @[what], startByteIndex)
     }
 
     // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
-    func indexOf(using self, what: const [..] char, startByteIndex = 0'uint) -> {index: uint, success: bool}
+    // Returns swag.MaxUINT if not found
+    func indexOf(using self, what: const [..] char, startByteIndex = 0'uint)->uint
     {
         return utf8.indexOf(@mkslice(buffer, length), what, startByteIndex)
     }
 
     // Find the given string, and returns the byte index of it
-    func indexOf(using self, what: string, startByteIndex = 0'uint, comparisonType = utf8.ComparisonType.Latin1) -> {index: uint, success: bool}
+    // Returns swag.MaxUINT if not found
+    func indexOf(using self, what: string, startByteIndex = 0'uint, comparisonType = utf8.ComparisonType.Latin1)->uint
     {
         return utf8.indexOf(@mkslice(buffer, length), what, startByteIndex, comparisonType)
     }
 
     // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
-    func lastIndexOf(using self, what: char) -> {index: uint, success: bool}
+    // Returns swag.MaxUINT if not found
+    func lastIndexOf(using self, what: char)->uint
     {
         return utf8.lastIndexOf(@mkslice(buffer, length), @[what])
     }
 
     // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
-    func lastIndexOf(using self, what: const [..] char) -> {index: uint, success: bool}
+    // Returns swag.MaxUINT if not found
+    func lastIndexOf(using self, what: const [..] char)->uint
     {
         return utf8.lastIndexOf(@mkslice(buffer, length), what)
     }

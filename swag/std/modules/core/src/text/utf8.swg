@@ -248,16 +248,17 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
 }
 
 // Find one of the characters in 'what', and returns the byte index of it
-func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'uint) -> {index: uint, success: bool}
+// Returns swag.MaxUINT if not found
+func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'uint)->uint
 {
     length := @countof(src)
     if !length
-        return @{0, false}
+        return swag.MaxUINT
     debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
     countof := @countof(what)
     if !countof
-        return @{0, false}
+        return swag.MaxUINT
 
     idx := startByteIndex
     scan := @dataof(src) + startByteIndex
@@ -268,24 +269,26 @@ func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'uint)
         if !res.eat
             break
         if contains(what, res.c)
-            return @{idx, true}
+            return idx
         scan, idx += res.eat
         remain -= res.eat
     }
 
-    return @{0, false}
+    return swag.MaxUINT
 }
 
 // Find the given string, and returns the byte index of it
-func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparisonType = ComparisonType.Latin1) -> {index: uint, success: bool}
+// Returns swag.MaxUINT if not found
+func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparisonType = ComparisonType.Latin1)->uint
 {
     length := @countof(src)
     if !length
-        return @{0, false}
+        return swag.MaxUINT
     debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
     countof := @countof(what)
-    if !countof || countof > (length - startByteIndex) return @{0, false}
+    if !countof || countof > (length - startByteIndex)
+        return swag.MaxUINT
 
     idx := startByteIndex
     scan := @dataof(src) + startByteIndex
@@ -294,12 +297,12 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
     {
         res := compare(cast(string) @mkslice(scan, countof), what, comparisonType)
         if res == 0
-            return @{idx, true}
+            return idx
         scan, idx += 1
         remain -= 1
     }
 
-    return @{0, false}
+    return swag.MaxUINT
 }
 
 // Return true if the string starts with 'str'
@@ -314,11 +317,12 @@ func startsWith(src: const [..] u8, str: string, comparisonType = utf8.Compariso
 }
 
 // Returns the last index (in bytes) of a character
-func lastIndexOf(src: const [..] u8, what: const [..] char) -> {index: uint, success: bool}
+// Returns swag.MaxUINT if not found
+func lastIndexOf(src: const [..] u8, what: const [..] char)->uint
 {
     length := @countof(src)
     if !length
-        return @{0, false}
+        return swag.MaxUINT
     dataof := @dataof(src)
 
     byteIdx := length
@@ -327,14 +331,14 @@ func lastIndexOf(src: const [..] u8, what: const [..] char) -> {index: uint, suc
         slice := @mkslice(dataof, byteIdx)
         (c, eat) := lastChar(slice)
         if eat == 0
-            return @{0, false}
+            return swag.MaxUINT
 
         byteIdx -= eat
         if contains(what, c)
-            return @{byteIdx, true}
+            return byteIdx
     }
 
-    return @{0, false}
+    return swag.MaxUINT
 }
 
 // Return true if the string ends with 'str'

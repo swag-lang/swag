@@ -89,16 +89,19 @@ namespace swag
     const MinS16 = -32767's16 - 1
     const MinS32 = -2147483647's32 - 1
     const MinS64 = -9223372036854775807's64 - 1
+    const MinInt = MinS64
 
     const MaxS8  = 127's8
     const MaxS16 = 32767's16
     const MaxS32 = 2147483647's32
     const MaxS64 = 9223372036854775807's64
+    const MaxInt = MaxS64
 
-    const MaxU8  = 0xFF'u8
-    const MaxU16 = 0xFFFF'u16
-    const MaxU32 = 0xFFFF_FFFF'u32
-    const MaxU64 = 0xFFFF_FFFF_FFFF_FFFF'u64
+    const MaxU8   = 0xFF'u8
+    const MaxU16  = 0xFFFF'u16
+    const MaxU32  = 0xFFFF_FFFF'u32
+    const MaxU64  = 0xFFFF_FFFF_FFFF_FFFF'u64
+    const MaxUINT = MaxU64
 
     const MinF32 = 1.175494e-38'f32
     const MaxF32 = 3.402822e+38'f32

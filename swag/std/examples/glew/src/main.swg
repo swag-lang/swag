@@ -9,8 +9,8 @@ func findLine(what: string)->*String
 {
     visit *line: lines
     {
-        (idx, success) := line.indexOf(what)
-        if !success continue
+        idx := line.indexOf(what)
+        if idx == swag.MaxUINT continue
         console.print("line: %\n", :line)
         return line
     }
@@ -28,8 +28,8 @@ func findLine(what: string)->*String
     line1 := findLine(fctExtension)
     debug.assert(line1 != null)
 
-    (idx, success) := line1.indexOf("(")
-    debug.assert(success)
+    idx := line1.indexOf("(")
+    debug.assert(idx != swag.MaxUINT)
     idx += 1
 
     var glew: String
@@ -45,7 +45,7 @@ func findLine(what: string)->*String
     line2 := findLine(glew.toString())
     debug.assert(line2 != null)
 
-    (idx, success) = line2.indexOf(" ")
+    idx = line2.indexOf(" ")
     idx += 1
 
     var proc: String
