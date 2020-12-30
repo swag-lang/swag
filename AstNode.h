@@ -148,9 +148,9 @@ enum class AstNodeKind : uint8_t
 
 struct CloneContext
 {
-    map<Utf8, TypeInfo*> replaceTypes;
-    map<TokenId, AstNode*>  replaceTokens;
-    map<Utf8, Utf8>      replaceNames;
+    map<Utf8, TypeInfo*>   replaceTypes;
+    map<TokenId, AstNode*> replaceTokens;
+    map<Utf8, Utf8>        replaceNames;
 
     AstInline*    ownerInline      = nullptr;
     AstBreakable* ownerBreakable   = nullptr;
@@ -434,15 +434,15 @@ struct AstFuncDecl : public AstNode
 
     DependentJobs dependentJobs;
 
-    AstNode*                parameters;
-    AstNode*                genericParameters;
-    AstNode*                returnType;
-    AstNode*                content;
-    Scope*                  scope;
-    TypeInfoParam*          methodParam;
-    Job*                    pendingLambdaJob;
-    map<Utf8, TypeInfo*> replaceTypes;
-    VectorNative<AstNode*>  subFunctions;
+    AstNode*               parameters;
+    AstNode*               genericParameters;
+    AstNode*               returnType;
+    AstNode*               content;
+    Scope*                 scope;
+    TypeInfoParam*         methodParam;
+    Job*                   pendingLambdaJob;
+    map<Utf8, TypeInfo*>   replaceTypes;
+    VectorNative<AstNode*> subFunctions;
 
     uint32_t stackSize         = 0;
     int      exportForeignLine = 0;
@@ -711,10 +711,10 @@ struct AstStruct : public AstNode
 
     DependentJobs dependentJobs;
 
-    AstNode*                genericParameters;
-    AstNode*                content;
-    Scope*                  scope;
-    AstNode*                ownerGeneric;
+    AstNode*             genericParameters;
+    AstNode*             content;
+    Scope*               scope;
+    AstNode*             ownerGeneric;
     map<Utf8, TypeInfo*> replaceTypes;
 
     uint32_t packing = sizeof(uint64_t);

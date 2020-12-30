@@ -90,6 +90,9 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftCurly)
     {
         SWAG_CHECK(eatToken());
+        if (token.id != TokenId::KwdBreak && token.id != TokenId::KwdContinue)
+            return error(token, format("invalid replacement '%s' in '#mixin'", token.text.c_str()));
+
         AstNode* stmt;
         while (token.id != TokenId::SymRightCurly)
         {

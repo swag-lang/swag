@@ -355,9 +355,36 @@ namespace Ast
             break;
 
         case AstNodeKind::CompilerMixin:
+        {
+            auto compilerMixin = CastAst<AstCompilerMixin>(node, AstNodeKind::CompilerMixin);
             CONCAT_FIXED_STR(concat, "#mixin ");
             SWAG_CHECK(output(context, concat, node->childs.front()));
+            if (!compilerMixin->replaceTokens.empty())
+            {
+                CONCAT_FIXED_STR(concat, " { ");
+                for (auto m : compilerMixin->replaceTokens)
+                {
+                    switch (m.first)
+                    {
+                    case TokenId::KwdBreak:
+                        CONCAT_FIXED_STR(concat, "break");
+                        break;
+                    case TokenId::KwdContinue:
+                        CONCAT_FIXED_STR(concat, "continue");
+                        break;
+                    default:
+                        SWAG_ASSERT(false);
+                        break;
+                    }
+
+                    CONCAT_FIXED_STR(concat, " = ");
+                    SWAG_CHECK(output(context, concat, m.second));
+                    CONCAT_FIXED_STR(concat, "; ");
+                }
+                concat.addChar('}');
+            }
             break;
+        }
 
         case AstNodeKind::CompilerPrint:
             CONCAT_FIXED_STR(concat, "#print ");

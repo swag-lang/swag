@@ -5,17 +5,19 @@ using core
 {
     var str: String = "toto"
 
-    /*cpt := 0
+    cpt := 0
     visit str
     {
         break
     }
 
-    @assert(cpt == 0)*/
+    @assert(cpt == 0)
 
-    /*visit str
+    visit str
     {
-        //cpt += 1
+        cpt += 1
         continue
-    }*/
+    }
+
+    @assert(cpt == 4)
 }
