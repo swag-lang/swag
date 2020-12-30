@@ -673,12 +673,17 @@ void AstBreakable::copyFrom(CloneContext& context, AstBreakable* from)
 
 AstNode* AstBreakContinue::clone(CloneContext& context)
 {
-    auto it = context.replaceTokens.find(token.id);
-    if (it != context.replaceTokens.end())
+    // Do the token replacement only if this is a break/continue in the original breakable,
+    // not a 'new' breakable in the user code
+    if (context.ownerBreakable == context.replaceTokensBreakable)
     {
-        CloneContext cloneContext = context;
-        cloneContext.replaceTokens.clear();
-        return it->second->clone(cloneContext);
+        auto it = context.replaceTokens.find(token.id);
+        if (it != context.replaceTokens.end())
+        {
+            CloneContext cloneContext = context;
+            cloneContext.replaceTokens.clear();
+            return it->second->clone(cloneContext);
+        }
     }
 
     auto newNode = Ast::newNode<AstBreakContinue>();

@@ -182,13 +182,14 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
             auto typeCode = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
 
             CloneContext cloneContext;
-            cloneContext.parent         = node;
-            cloneContext.parentScope    = node->ownerScope;
-            cloneContext.ownerBreakable = node->ownerBreakable;
-            cloneContext.ownerInline    = node->ownerInline;
-            cloneContext.replaceTokens  = node->replaceTokens;
-            cloneContext.forceFlags     = AST_IN_MIXIN;
-            auto cloneContent           = typeCode->content->clone(cloneContext);
+            cloneContext.parent                 = node;
+            cloneContext.parentScope            = node->ownerScope;
+            cloneContext.ownerBreakable         = node->ownerBreakable;
+            cloneContext.replaceTokensBreakable = node->ownerBreakable;
+            cloneContext.ownerInline            = node->ownerInline;
+            cloneContext.replaceTokens          = node->replaceTokens;
+            cloneContext.forceFlags             = AST_IN_MIXIN;
+            auto cloneContent                   = typeCode->content->clone(cloneContext);
             cloneContent->flags &= ~AST_NO_SEMANTIC;
             node->typeInfo = cloneContent->typeInfo;
             context->job->nodes.push_back(cloneContent);
