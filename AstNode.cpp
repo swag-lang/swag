@@ -857,6 +857,9 @@ AstNode* AstArrayPointerSlicing::clone(CloneContext& context)
     newNode->array      = findChildRef(array, newNode);
     newNode->lowerBound = findChildRef(lowerBound, newNode);
     newNode->upperBound = findChildRef(upperBound, newNode);
+    for (auto f : structFlatParams)
+        newNode->structFlatParams.push_back(findChildRef(f, newNode));
+
     return newNode;
 }
 
@@ -868,6 +871,9 @@ AstNode* AstArrayPointerIndex::clone(CloneContext& context)
     newNode->array   = findChildRef(array, newNode);
     newNode->access  = findChildRef(access, newNode);
     newNode->isDeref = isDeref;
+    for (auto f : structFlatParams)
+        newNode->structFlatParams.push_back(findChildRef(f, newNode));
+
     return newNode;
 }
 

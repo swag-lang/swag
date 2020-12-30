@@ -1,9 +1,7 @@
 #include "pch.h"
-#include "SourceFile.h"
 #include "Ast.h"
 #include "SemanticJob.h"
 #include "LanguageSpec.h"
-#include "TypeManager.h"
 #include "Scoped.h"
 
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
@@ -1158,7 +1156,8 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             varNode->kind          = kind;
             varNode->token         = identifier->token;
             varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
-            SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
+            if (currentScope->isGlobalOrImpl())
+                SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
             identifier          = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
             varNode->assignment = identifier;
             SemanticJob::setVarDeclResolve(varNode);

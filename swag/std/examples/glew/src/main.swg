@@ -10,11 +10,18 @@ using core
 
     const fctExtension = "glCompileShader "
 
+    var line1: *String
     visit *line: lines
     {
         (idx, success) := line.indexOf(fctExtension)
         if !success continue
         console.print("line: %\n", :line)
+        line1 = line
         break
     }
+
+    (idx, success) := line1.indexOf("(")
+    debug.assert(success)
+    idx += 1
+
 }

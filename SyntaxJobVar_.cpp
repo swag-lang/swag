@@ -1,11 +1,5 @@
 #include "pch.h"
-#include "Global.h"
-#include "SourceFile.h"
 #include "Ast.h"
-#include "SemanticJob.h"
-#include "Scope.h"
-#include "Scoped.h"
-#include "SymTable.h"
 
 bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
 {
