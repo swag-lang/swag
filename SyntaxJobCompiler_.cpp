@@ -89,9 +89,11 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
     // Replacement parameters
     if (token.id == TokenId::SymLeftCurly)
     {
+        SWAG_VERIFY(node->ownerBreakable, error(token, "'#mixin' replacement block can only be used inside a breakable statement"));
         SWAG_CHECK(eatToken());
         if (token.id != TokenId::KwdBreak && token.id != TokenId::KwdContinue)
-            return error(token, format("invalid replacement '%s' in '#mixin'", token.text.c_str()));
+            return error(token, format("'#mixin' invalid replacement '%s'", token.text.c_str()));
+        SWAG_VERIFY(token.id != TokenId::SymRightCurly, syntaxError(token, "'#mixin' empty replacement block"));
 
         AstNode* stmt;
         while (token.id != TokenId::SymRightCurly)
