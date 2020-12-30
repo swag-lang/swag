@@ -96,17 +96,19 @@ public impl BitArray
         remainingBits := count
         countBits := 0'uint
 
+        label up
         loop idx: math.max(count >> 5, 1)
         {
             var shift: u32 = 1
             loop math.min(remainingBits, 32)
             {
+                label down
                 #macro
                 {
                     var @alias0 = cast(bool) (`buffer[`idx] & `shift)
                     var @alias1 = `countBits
                     #[swag.noreturn]
-                    #mixin `stmt
+                    #mixin `stmt { break = break up; continue = break down; }
                 }
 
                 countBits += 1
