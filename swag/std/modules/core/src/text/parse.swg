@@ -179,3 +179,17 @@ func parseF64(str: const [..] u8) -> {value: f64, eat: u32}
     if signed result = -result
     return @{result, cpt}
 }
+
+// Returns a substring starting at 'startByteIdx' and ending with the 'stopAtByte' byte
+func parseTo(what: const [..] u8, startByteIdx: uint, stopAtByte: u8)->const [..] u8
+{
+    countof := @countof(what)
+    dataof := @dataof(what)
+    debug.assert(startByteIdx < countof)
+
+    i := startByteIdx
+    while dataof[i] != stopAtByte && i < countof
+        i += 1
+
+    return @mkslice(dataof + startByteIdx, i - startByteIdx)
+}

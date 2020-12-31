@@ -46,6 +46,8 @@ OPTIMS
 ****************************************
 
 -------------------------------------
+i < 0 || i > 0 => i < 0 | i > 0 avoid a branch ?
+-------------------------------------
 jumpifnotzero8 etc... pour éviter un clearmask systematique
 -------------------------------------
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?

@@ -48,6 +48,8 @@ func findLine(what: string)->*String
     idx = line2.indexOf(" ")
     idx += 1
 
+    proc1 := cast(string) strconv.parseTo(line2.toString(), idx, " "'u8)
+
     var proc: String
     while line2.buffer[idx] != " "'u8
     {
@@ -55,6 +57,7 @@ func findLine(what: string)->*String
         idx += 1
     }
 
+    console.print("proc1: %\n", proc1)
     console.print("proc: %\n", proc)
 
     line3 := findLine(proc.toString())
