@@ -1,26 +1,26 @@
 #import "core"
-using core
+using core, utf8
 
 //#[swag.printbc]
 #test
 {
     //res := "A假CD"
     var res: String = "XXABAB"
-    result := res.indexOf("AB")
+    result := indexOf(res.toString(), "AB")
     @assert(result == 2)
 
-    result = res.indexOf("AB", 3)
+    result = indexOf(res.toString(), "AB", 3)
     @assert(result == 4)
 
-    result = res.indexOf("C")
+    result = indexOf(res.toString(), "C")
     @assert(result == swag.MaxUINT)
 
-    result = res.indexOf("CCCCCCCCC")
+    result = indexOf(res.toString(), "CCCCCCCCC")
     @assert(result == swag.MaxUINT)
 
-    result = res.indexOf("XXABAB")
+    result = indexOf(res.toString(), "XXABAB")
     @assert(result == 0)
 
-    result = res.indexOf("BAB")
+    result = indexOf(res.toString(), "BAB")
     @assert(result == 3)
 }

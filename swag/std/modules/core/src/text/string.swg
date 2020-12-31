@@ -98,7 +98,7 @@ impl String
 
     func opCmp(using self, other: Self)->s32
     {
-        return compare(other.toString(), utf8.ComparisonType.Latin1)
+        return utf8.compare(toString(), other.toString(), utf8.ComparisonType.Latin1)
     }
 
     func(op: string) opAssign(using self, value: string)
@@ -519,65 +519,6 @@ impl String
         var result: retval = :self
         result.makeLower(set)
         return result
-    }
-
-    // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
-    // Returns swag.MaxUINT if not found
-    func indexOf(using self, what: char, startByteIndex = 0'uint)->uint
-    {
-        return utf8.indexOf(@mkslice(buffer, length), @[what], startByteIndex)
-    }
-
-    // Reports the zero-based index (in bytes) of the first occurrence of the specified Unicode character in this String.
-    // Returns swag.MaxUINT if not found
-    func indexOf(using self, what: const [..] char, startByteIndex = 0'uint)->uint
-    {
-        return utf8.indexOf(@mkslice(buffer, length), what, startByteIndex)
-    }
-
-    // Find the given string, and returns the byte index of it
-    // Returns swag.MaxUINT if not found
-    func indexOf(using self, what: string, startByteIndex = 0'uint, comparisonType = utf8.ComparisonType.Latin1)->uint
-    {
-        return utf8.indexOf(@mkslice(buffer, length), what, startByteIndex, comparisonType)
-    }
-
-    // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
-    // Returns swag.MaxUINT if not found
-    func lastIndexOf(using self, what: char)->uint
-    {
-        return utf8.lastIndexOf(@mkslice(buffer, length), @[what])
-    }
-
-    // Reports the zero-based index (in bytes) of the last occurrence of the specified Unicode character in this String.
-    // Returns swag.MaxUINT if not found
-    func lastIndexOf(using self, what: const [..] char)->uint
-    {
-        return utf8.lastIndexOf(@mkslice(buffer, length), what)
-    }
-
-    // Return true if the string starts with 'str'
-    func startsWith(using self, what: string, comparisonType = utf8.ComparisonType.Latin1)->bool
-    {
-        return utf8.startsWith(@mkslice(buffer, length), what, comparisonType)
-    }
-
-    // Return true if the string ends with 'str'
-    func endsWith(using self, what: string, comparisonType = utf8.ComparisonType.Latin1)->bool
-    {
-        return utf8.endsWith(@mkslice(buffer, length), what, comparisonType)
-    }
-
-    // Compare with another string
-    func compare(using self, other: string, comparisonType = utf8.ComparisonType.Latin1)->s32
-    {
-        return utf8.compare(@mkslice(buffer, length), other, comparisonType)
-    }
-
-    // Compare two strings
-    func compare(src, dst: string, comparisonType = utf8.ComparisonType.Latin1)->s32
-    {
-        return utf8.compare(src, dst, comparisonType)
     }
 
     // Split string into sub strings, given a character separator

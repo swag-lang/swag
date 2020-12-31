@@ -1,19 +1,19 @@
 #import "core"
-using core
+using core, utf8
 
 #test
 {
     var x: String = "this is a string"
-    @assert(x.startsWith("this"))
+    @assert(utf8.startsWith(x.toString(), "this"))
 
-    @assert(!x.startsWith("This"))
-    @assert(x.startsWith("this is a"))
-    @assert(x.endsWith("string"))
-    @assert(x.endsWith("g"))
+    @assert(!utf8.startsWith(x.toString(), "This"))
+    @assert(utf8.startsWith(x.toString(), "this is a"))
+    @assert(utf8.endsWith(x.toString(), "string"))
+    @assert(utf8.endsWith(x.toString(), "g"))
 
-    @assert(x.startsWith("this is a string"))
-    @assert(x.endsWith("this is a string"))
+    @assert(utf8.startsWith(x.toString(), "this is a string"))
+    @assert(utf8.endsWith(x.toString(), "this is a string"))
 
     var y: String = "string"
-    @assert(x.endsWith(y.toString()))
+    @assert(utf8.endsWith(x.toString(), y.toString()))
 }

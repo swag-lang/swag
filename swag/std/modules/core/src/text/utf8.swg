@@ -247,6 +247,13 @@ func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
 	return @{(p0 & Mask4) << 18 | (b1 & MaskX) << 12 | (b2 & MaskX) << 6 | (b3 & MaskX), 4}
 }
 
+// Find the first occurence of character 'what', and returns the byte index of it
+// Returns swag.MaxUINT if not found
+func indexOf(src: const [..] u8, what: char, startByteIndex = 0'uint)->uint
+{
+    return indexOf(src, @[what], startByteIndex)
+}
+
 // Find one of the characters in 'what', and returns the byte index of it
 // Returns swag.MaxUINT if not found
 func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'uint)->uint
@@ -305,15 +312,11 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
     return swag.MaxUINT
 }
 
-// Return true if the string starts with 'str'
-func startsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonType.Latin1)->bool
+// Find the last character occurence of 'what', and returns the byte index of it
+// Returns swag.MaxUINT if not found
+func lastIndexOf(src: const [..] u8, what: char)->uint
 {
-    length := @countof(src)
-    countof := @countof(str)
-    if countof > length
-        return false
-    buffer := @dataof(src)
-    return compare(cast(string) @mkslice(buffer, countof), str, comparisonType) == 0
+    return lastIndexOf(src, @[what])
 }
 
 // Returns the last index (in bytes) of a character
@@ -339,6 +342,17 @@ func lastIndexOf(src: const [..] u8, what: const [..] char)->uint
     }
 
     return swag.MaxUINT
+}
+
+// Return true if the string starts with 'str'
+func startsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonType.Latin1)->bool
+{
+    length := @countof(src)
+    countof := @countof(str)
+    if countof > length
+        return false
+    buffer := @dataof(src)
+    return compare(cast(string) @mkslice(buffer, countof), str, comparisonType) == 0
 }
 
 // Return true if the string ends with 'str'
