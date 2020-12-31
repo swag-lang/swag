@@ -213,34 +213,34 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
         }
 
         unique_lock lk(modl->mutexGeneratedFile);
-        FILE*       f;
 
         previousLogLine = modl->countLinesGeneratedFile;
-        if (modl->firstGenerated)
-            fopen_s(&f, publicPath.c_str(), "w");
-        else
-            fopen_s(&f, publicPath.c_str(), "a+");
-        if (!f)
+        if (!modl->handleGeneratedFile)
         {
-            fromNode->sourceFile->report({fromNode, fromNode->token, format("cannot open file '%s' for writing", publicPath.c_str())});
-            return false;
+            if (modl->firstGenerated)
+                fopen_s(&modl->handleGeneratedFile, publicPath.c_str(), "wN");
+            else
+                fopen_s(&modl->handleGeneratedFile, publicPath.c_str(), "a+N");
+            if (!modl->handleGeneratedFile)
+            {
+                fromNode->sourceFile->report({fromNode, fromNode->token, format("cannot open file '%s' for writing", publicPath.c_str())});
+                return false;
+            }
         }
 
         modl->firstGenerated = false;
 
         Utf8 sourceCode = format("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
-        fwrite(sourceCode.c_str(), sourceCode.length(), 1, f);
+        fwrite(sourceCode.c_str(), sourceCode.length(), 1, modl->handleGeneratedFile);
         modl->countLinesGeneratedFile += 1;
 
-        fwrite(content.c_str(), content.length(), 1, f);
+        fwrite(content.c_str(), content.length(), 1, modl->handleGeneratedFile);
         modl->countLinesGeneratedFile += countEol;
 
         static char eol = '\n';
-        fwrite(&eol, 1, 1, f);
-        fwrite(&eol, 1, 1, f);
+        fwrite(&eol, 1, 1, modl->handleGeneratedFile);
+        fwrite(&eol, 1, 1, modl->handleGeneratedFile);
         modl->countLinesGeneratedFile += 2;
-
-        fclose(f);
     }
 
     SourceFile* tmpFile      = g_Allocator.alloc<SourceFile>();

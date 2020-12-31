@@ -93,6 +93,7 @@ struct Module
     Scope*                    scopeRoot = nullptr;
     Backend*                  backend   = nullptr;
     mutex                     mutexGeneratedFile;
+    FILE*                     handleGeneratedFile     = nullptr;
     uint32_t                  countLinesGeneratedFile = 0;
     uint64_t                  moreRecentSourceFile    = 0;
     bool                      addedToBuild            = false;

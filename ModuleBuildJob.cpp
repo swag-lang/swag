@@ -218,6 +218,13 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
+        // Close generated file
+        if (module->handleGeneratedFile)
+        {
+            fclose(module->handleGeneratedFile);
+            module->handleGeneratedFile = nullptr;
+        }
+
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbose)
         {
