@@ -127,20 +127,22 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoBool, ISSAME_CAST), context->report({firstGen, format("invalid generic parameter for special function '%s' ('bool' expected, '%s' provided)", name.c_str(), firstGen->token.text.c_str())}));
         SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report({node, node->token, "'opVisit' must have the 'swag.macro' attribute"}));
     }
-    else if (name == "opCast")
+    else
     {
-        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(!node->genericParameters || node->genericParameters->childs.empty(), context->report({node, node->token, format("special function '%s' cannot be generic", name.c_str())}));
     }
 
     // Check each function
-    if (name == "opCast")
-    {
-    }
-    else if (isOpVisit)
+    if (isOpVisit)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr.typeInfoVoid));
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr.typeInfoCode));
+    }
+    else if (name == "opCast")
+    {
+        SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 1));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
     }
     else if (name == "opEquals")
     {
@@ -342,7 +344,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     for (int i = 0; i < params.size(); i++)
     {
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
-            SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, params[i], CASTFLAG_UNCONST));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, params[i], CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST));
     }
 
     auto overload = oneMatch->symbolOverload;

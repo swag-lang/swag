@@ -313,14 +313,31 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
         decreaseInterfaceCount(typeStruct);
 
     // Decrease methods count to resolve
+    set<TypeInfoStruct*> allStructs;
     for (auto typeStructPair : block->methodsCount)
     {
         // Remove the corresponding method
         auto typeStruct = typeStructPair.first;
-        typeStruct->methods.erase_unordered(typeStructPair.second);
+        allStructs.insert(typeStruct);
+
+        auto idx                 = typeStructPair.second;
+        typeStruct->methods[idx] = nullptr;
 
         // Then decrease wanted method number count
         decreaseMethodCount(typeStruct);
+    }
+
+    // Clean array
+    for (auto typeStruct : allStructs)
+    {
+        for (int i = 0; i < typeStruct->methods.size(); i++)
+        {
+            if (!typeStruct->methods[i])
+            {
+                typeStruct->methods.erase_unordered(i);
+                i--;
+            }
+        }
     }
 
     // Do the same for all embedded blocks

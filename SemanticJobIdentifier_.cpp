@@ -655,7 +655,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     if (nodeCall->typeInfo->kind == TypeInfoKind::Lambda && (nodeCall->typeInfo->declNode->flags & AST_PENDING_LAMBDA_TYPING))
                         resolvePendingLambdaTyping(nodeCall, &oneMatch, i);
 
-                    uint32_t castFlags = 0;
+                    uint32_t castFlags = CASTFLAG_AUTO_OPCAST;
                     if (i == 0 && oneMatch.ufcs)
                         castFlags |= CASTFLAG_UFCS;
 
@@ -1245,6 +1245,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         // We collect type replacements depending on where the identifier is
         setupContextualGenericTypeReplacement(context, oneOverload, overload);
 
+        oneOverload.symMatchContext.semContext = context;
         if (rawTypeInfo->kind == TypeInfoKind::Struct)
         {
             forStruct     = true;
@@ -1355,6 +1356,8 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     }
 
     SWAG_CHECK(filterMatches(context, matches));
+    if (context->result != ContextResult::Done)
+        return true;
 
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
@@ -1371,9 +1374,21 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         vector<const Diagnostic*> notes;
         for (auto match : genericMatches)
         {
-            auto overload               = match->symbolOverload;
-            auto couldBe                = "could be: " + Ast::computeTypeDisplay(overload->node->token.text, overload->typeInfo);
-            auto note                   = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+            auto overload = match->symbolOverload;
+            auto couldBe  = "could be: " + Ast::computeTypeDisplay(overload->node->token.text, overload->typeInfo);
+            auto note     = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
+
+            Utf8 width;
+            for (auto og : match->genericReplaceTypes)
+            {
+                if (!width.empty())
+                    width += " and ";
+                else
+                    width = "widh ";
+                width += format("%s = %s", og.first.c_str(), og.second->name.c_str());
+            }
+
+            note->codeComment           = width;
             note->showRange             = false;
             note->showMultipleCodeLines = false;
             notes.push_back(note);
@@ -1412,6 +1427,8 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     // There is more than one possible match
     if (matches.size() > 1)
     {
+        if (!node)
+            node = context->node;
         auto                      symbol = overloads[0]->overload->symbol;
         Diagnostic                diag{node, node->token, format("ambiguous resolution of %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
         vector<const Diagnostic*> notes;

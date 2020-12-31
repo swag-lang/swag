@@ -80,7 +80,7 @@ struct OneGenericMatch
 {
     VectorNative<TypeInfo*> genericParametersCallTypes;
     VectorNative<TypeInfo*> genericParametersGenTypes;
-    map<Utf8, TypeInfo*> genericReplaceTypes;
+    map<Utf8, TypeInfo*>    genericReplaceTypes;
 
     SymbolName*     symbolName        = nullptr;
     SymbolOverload* symbolOverload    = nullptr;
@@ -319,7 +319,6 @@ struct SemanticJob : public Job
     static bool resolveNullConditionalOp(SemanticContext* context);
     static bool resolveInit(SemanticContext* context);
     static bool resolveDropCopyMove(SemanticContext* context);
-    static bool resolveUserCast(SemanticContext* context);
 
     void clearTryMatch()
     {

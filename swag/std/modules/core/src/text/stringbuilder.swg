@@ -32,12 +32,6 @@ impl StringBuilder
         buffer.addBytes(value)
     }
 
-    // Append a string
-    func appendString(using self, value: String)
-    {
-        buffer.addBytes(cast(string) value)
-    }
-
     // Append a end of line
     func appendEOL(using self)
     {

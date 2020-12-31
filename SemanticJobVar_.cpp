@@ -454,7 +454,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     return true;
             }
 
-            SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, CASTFLAG_UNCONST));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST));
+            if (context->result == ContextResult::Pending)
+                return true;
         }
         else
         {

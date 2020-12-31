@@ -231,9 +231,7 @@ void SemanticJob::decreaseMethodCount(TypeInfoStruct* typeInfoStruct)
     SWAG_ASSERT(typeInfoStruct->cptRemainingMethods);
     typeInfoStruct->cptRemainingMethods--;
     if (!typeInfoStruct->cptRemainingMethods)
-    {
         typeInfoStruct->scope->dependentJobs.setRunning();
-    }
 }
 
 bool SemanticJob::CheckImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope)
@@ -626,9 +624,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
             if (!hasItemName)
             {
-                auto    overload = child->resolvedSymbolOverload;
-                Utf8 name     = format("item%u", storageIndexField);
-                auto&   symTable = node->scope->symTable;
+                auto  overload = child->resolvedSymbolOverload;
+                Utf8  name     = format("item%u", storageIndexField);
+                auto& symTable = node->scope->symTable;
                 symTable.addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset, &name);
             }
         }

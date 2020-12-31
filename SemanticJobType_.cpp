@@ -224,7 +224,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
             ptrPointer->finalType = typeNode->typeInfo;
             ptrPointer->finalType->flags |= TYPEINFO_CONST;
             ptrPointer->finalType->computeName();
-            ptrPointer->sizeOf    = sizeof(void*);
+            ptrPointer->sizeOf = sizeof(void*);
             ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
             ptrPointer->computeName();
             ptrPointer->computePointedType();
@@ -512,19 +512,6 @@ bool SemanticJob::resolveExplicitAutoCast(SemanticContext* context)
     node->byteCodeFct = ByteCodeGenJob::emitExplicitAutoCast;
     node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED);
     node->inheritComputedValue(exprNode);
-    return true;
-}
-
-bool SemanticJob::resolveUserCast(SemanticContext* context)
-{
-    auto node = context->node;
-    SWAG_CHECK(context->job->resolveUserOp(context, "opCast", nullptr, node->typeInfo, node->parent, nullptr, false));
-    if (context->result == ContextResult::Pending)
-        return true;
-
-    node->parent->castedTypeInfo               = node->castedTypeInfo;
-    node->parent->typeInfo                     = node->typeInfo;
-    node->parent->resolvedUserOpSymbolOverload = node->resolvedUserOpSymbolOverload;
     return true;
 }
 

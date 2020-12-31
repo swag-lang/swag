@@ -505,14 +505,11 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     auto pzd = fullnameForeign.buffer;
     for (int i = 0; i < len; i++)
     {
-        if (pz[0] == '-' && pz[1] == '>')
-            break;
-
         if (*pz == ' ')
         {
             pz++;
         }
-        else if (*pz == ',' || *pz == '\'')
+        else if (*pz == ',' || *pz == '\'' || *pz == '-' || *pz == '>')
         {
             *pzd++ = '@';
             pz++;

@@ -427,11 +427,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         typeParam->typeInfo   = funcNode->typeInfo;
         typeParam->node       = funcNode;
         funcNode->methodParam = typeParam;
+
         unique_lock lk(typeStruct->mutex);
         typeStruct->cptRemainingMethods++;
         typeStruct->methods.push_back(typeParam);
         if (funcNode->ownerCompilerIfBlock)
-            funcNode->ownerCompilerIfBlock->methodsCount.push_back({typeStruct, (int) typeStruct->methods.size()});
+            funcNode->ownerCompilerIfBlock->methodsCount.push_back({typeStruct, (int) typeStruct->methods.size() - 1});
     }
 
     // Dispatch owners

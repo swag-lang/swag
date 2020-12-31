@@ -8,7 +8,7 @@
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     // Last minute change : opCast, with a structure
-    if (fromType->kind == TypeInfoKind::Struct && (castFlags & CASTFLAG_EXPLICIT))
+    if (fromType->kind == TypeInfoKind::Struct && (castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
         if (typeStruct->declNode)
@@ -17,23 +17,35 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             auto symbol     = structNode->scope->symTable.find("opCast");
             if (symbol)
             {
-                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                // Wait for all opCast to be solved
+                unique_lock lk(symbol->mutex);
+                if (symbol->cptOverloads)
                 {
-                    auto node         = Ast::newNode(context->sourceFile, AstNodeKind::Cast, fromNode);
-                    node->semanticFct = SemanticJob::resolveUserCast;
-                    node->token.text  = Utf8("opCast");
-
-                    auto lastNode = context->job->nodes.back();
-                    context->job->nodes.pop_back();
-                    context->job->nodes.push_back(node);
-                    context->job->nodes.push_back(lastNode);
-
-                    node->castedTypeInfo = fromType;
-                    node->typeInfo       = toType;
-                    fromNode->flags |= AST_USER_CAST;
+                    SWAG_ASSERT(context && context->job);
+                    context->job->waitForSymbolNoLock(symbol);
+                    return true;
                 }
 
-                return true;
+                VectorNative<SymbolOverload*> toCast;
+                for (auto over : symbol->overloads)
+                {
+                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+                    if (typeFunc->returnType->isSame(toType, 0))
+                        toCast.push_back(over);
+                }
+
+                if (toCast.size() == 1)
+                {
+                    if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                    {
+                        fromNode->castedTypeInfo               = fromType;
+                        fromNode->typeInfo                     = toType;
+                        fromNode->resolvedUserOpSymbolOverload = toCast[0];
+                        fromNode->flags |= AST_USER_CAST;
+                    }
+
+                    return true;
+                }
             }
         }
     }

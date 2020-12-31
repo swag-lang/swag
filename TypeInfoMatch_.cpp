@@ -65,14 +65,14 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             context.result = MatchResult::BadSignature;
         }
 
-        uint32_t castFlags = CASTFLAG_NO_ERROR;
+        uint32_t castFlags = CASTFLAG_NO_ERROR | CASTFLAG_AUTO_OPCAST;
         if (context.flags & SymbolMatchContext::MATCH_UNCONST)
             castFlags |= CASTFLAG_UNCONST;
         if (context.flags & SymbolMatchContext::MATCH_UFCS && i == 0)
             castFlags |= CASTFLAG_UFCS;
         castFlags |= forceCastFlags;
 
-        bool same = TypeManager::makeCompatibles(nullptr, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
+        bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
         if (!same)
         {
             context.badSignatureInfos.badSignatureParameterIdx  = i;
@@ -116,7 +116,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
                         // Yes, and the map is not the same, then this is an error
                         else
-                            same = TypeManager::makeCompatibles(nullptr, it->second, callTypeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
+                            same = TypeManager::makeCompatibles(context.semContext, it->second, callTypeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
                         if (!same)
                         {
                             context.badSignatureInfos.badSignatureParameterIdx  = i;
@@ -300,7 +300,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
 
             uint32_t castFlags = CASTFLAG_NO_ERROR;
             castFlags |= forceCastFlags;
-            bool same = TypeManager::makeCompatibles(nullptr, wantedParameter->typeInfo, callTypeInfo, nullptr, nullptr, castFlags);
+            bool same = TypeManager::makeCompatibles(context.semContext, wantedParameter->typeInfo, callTypeInfo, nullptr, nullptr, castFlags);
             if (!same)
             {
                 context.badSignatureInfos.badSignatureParameterIdx  = parameterIndex;
@@ -521,7 +521,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             }
         }
 
-        bool same = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR);
+        bool same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR);
         if (!same)
         {
             context.badSignatureInfos.badSignatureParameterIdx  = i;

@@ -24,6 +24,7 @@ static const uint32_t CASTFLAG_UFCS            = 0x00000800;
 static const uint32_t CASTFLAG_COERCE          = 0x00001000;
 static const uint32_t CASTFLAG_COERCE_SAMESIGN = 0x00002000;
 static const uint32_t CASTFLAG_COERCE_FULL     = 0x00004000;
+static const uint32_t CASTFLAG_AUTO_OPCAST     = 0x00008000;
 
 static const uint32_t CONCRETE_ALL        = 0xFFFFFFFF;
 static const uint32_t CONCRETE_ENUM       = 0x00000001;

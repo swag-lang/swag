@@ -49,14 +49,14 @@ impl String
         return buffer
     }
 
-    func(T) opCast(using self)->T
+    func opCast(using self)->string
     {
-        #if @typeof(T) == string
-            return cast(string) @mkslice(buffer, length)
-        #elif @typeof(T) == const [..] u8
-            return @mkslice(buffer, length)
-        #else
-            #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
+        return cast(string) @mkslice(buffer, length)
+    }
+
+    func opCast(using self)->const [..] u8
+    {
+        return @mkslice(buffer, length)
     }
 
     func opSlice(using self, lower, upper: uint)->string
@@ -87,13 +87,6 @@ impl String
         if length != @countof(other)
             return false
         return memory.compare(buffer, @dataof(other), length) == 0
-    }
-
-    func opEquals(using self, other: Self)->bool
-    {
-        if length != other.length
-            return false
-        return memory.compare(buffer, other.buffer, length) == 0
     }
 
     func opCmp(using self, other: Self)->s32

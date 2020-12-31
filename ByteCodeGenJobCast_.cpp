@@ -6,6 +6,7 @@
 #include "ByteCode.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "Ast.h"
 
 bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
@@ -696,6 +697,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     SWAG_ASSERT(typeInfo);
 
+    auto job     = context->job;
     typeInfo     = TypeManager::concreteReferenceType(typeInfo, CONCRETE_ENUM | CONCRETE_ALIAS);
     fromTypeInfo = TypeManager::concreteReferenceType(fromTypeInfo, CONCRETE_FUNC);
 
@@ -703,9 +705,24 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     if (exprNode->flags & AST_USER_CAST)
     {
         SWAG_ASSERT(exprNode->resolvedUserOpSymbolOverload);
-        SWAG_CHECK(emitUserOp(context, nullptr, exprNode));
+        if (isExplicit)
+        {
+            SWAG_CHECK(emitUserOp(context, nullptr, exprNode));
+        }
+        else
+        {
+            if (!job->allParamsTmp)
+                job->allParamsTmp = Ast::newFuncCallParams(exprNode->sourceFile, nullptr);
+            job->allParamsTmp->childs.clear();
+            job->allParamsTmp->childs.push_back(exprNode);
+            exprNode->typeInfo                              = exprNode->castedTypeInfo;
+            job->allParamsTmp->resolvedUserOpSymbolOverload = exprNode->resolvedUserOpSymbolOverload;
+            SWAG_CHECK(emitUserOp(context, nullptr, job->allParamsTmp));
+        }
+
         if (context->result != ContextResult::Done)
             return true;
+        exprNode->resultRegisterRC = context->node->resultRegisterRC;
         return true;
     }
 

@@ -18,6 +18,7 @@ struct ByteCode;
 struct TypeInfoFuncAttr;
 struct AstFuncDecl;
 struct JobContext;
+struct SemanticContext;
 
 static const uint32_t TYPEINFO_SELF                     = 0x00000001;
 static const uint32_t TYPEINFO_UNTYPED_BINHEXA          = 0x00000002;
@@ -140,11 +141,11 @@ struct TypeInfo
     shared_mutex mutex;
     shared_mutex mutexScopeName;
 
-    Utf8    preName;          // List const, *, [] ...
-    Utf8    nakedName;        // The simple type name
-    Utf8    name;             // preName + nakedName
+    Utf8 preName;          // List const, *, [] ...
+    Utf8 nakedName;        // The simple type name
+    Utf8 name;             // preName + nakedName
     Utf8 scopedName;       // preName + scope name + nakedName
-    Utf8    scopedNameExport; // preName + scope name + nakedName
+    Utf8 scopedNameExport; // preName + scope name + nakedName
 
     AstNode* declNode = nullptr;
 
@@ -301,6 +302,7 @@ struct SymbolMatchContext
         result             = MatchResult::Ok;
         cptResolved        = 0;
         hasNamedParameters = false;
+        semContext         = nullptr;
     }
 
     void resetTmp()
@@ -309,14 +311,15 @@ struct SymbolMatchContext
         hasNamedParameters = false;
     }
 
+    SemanticContext*             semContext = nullptr;
     VectorNative<AstNode*>       genericParameters;
     VectorNative<AstNode*>       parameters;
     VectorNative<TypeInfoParam*> solvedParameters;
     VectorNative<bool>           doneParameters;
     VectorNative<TypeInfo*>      genericParametersCallTypes;
     VectorNative<TypeInfo*>      genericParametersGenTypes;
-    map<Utf8, TypeInfo*>      genericReplaceTypes;
-    map<Utf8, uint32_t>       mapGenericTypesIndex;
+    map<Utf8, TypeInfo*>         genericReplaceTypes;
+    map<Utf8, uint32_t>          mapGenericTypesIndex;
     BadSignatureInfos            badSignatureInfos;
 
     uint32_t    flags;
@@ -358,10 +361,10 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     TypeInfo* returnType = nullptr;
 
-    int                     firstDefaultValueIdx = -1;
-    int                     stackSize            = 0;
+    int                  firstDefaultValueIdx = -1;
+    int                  stackSize            = 0;
     map<Utf8, TypeInfo*> replaceTypes;
-    uint32_t                attributeUsage = 0xFFFFFFFF; // All by default
+    uint32_t             attributeUsage = 0xFFFFFFFF; // All by default
 };
 
 struct TypeInfoPointer : public TypeInfo
