@@ -26,7 +26,7 @@ func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'uint)
     remain := length - startByteIndex
     while countof <= remain
     {
-        res := utf8.decodeChar(cast(string) @mkslice(scan, remain))
+        res := utf8.decodeChar(@mkslice(scan, remain))
         if !res.eat
             break
         if contains(what, res.c)
@@ -56,7 +56,7 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
     remain := length - startByteIndex
     while countof <= remain
     {
-        res := compare(cast(string) @mkslice(scan, countof), what, comparisonType)
+        res := compare(@mkslice(scan, countof), what, comparisonType)
         if res == 0
             return idx
         scan, idx += 1
@@ -106,7 +106,7 @@ func startsWith(src: const [..] u8, str: string, comparisonType = utf8.Compariso
     if countof > length
         return false
     buffer := @dataof(src)
-    return compare(cast(string) @mkslice(buffer, countof), str, comparisonType) == 0
+    return compare(@mkslice(buffer, countof), str, comparisonType) == 0
 }
 
 // Return true if the string ends with 'str'
@@ -117,7 +117,7 @@ func endsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonT
     if countof > length
         return false
     buffer := @dataof(src)
-    return compare(cast(string) @mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
+    return compare(@mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
 }
 
 // Returns the first unicode character
