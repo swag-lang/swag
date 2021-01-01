@@ -653,6 +653,12 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     auto node        = context->node;
     auto toTypeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 
+    if (fromTypeInfo->kind == TypeInfoKind::TypedVariadic)
+    {
+        auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(fromTypeInfo, TypeInfoKind::TypedVariadic);
+        fromTypeInfo      = TypeManager::concreteReferenceType(typeVariadic->rawType);
+    }
+
     if (fromTypeInfo == g_TypeMgr.typeInfoNull || fromTypeInfo->isNative(NativeTypeKind::String))
     {
         node->resultRegisterRC = exprNode->resultRegisterRC;
