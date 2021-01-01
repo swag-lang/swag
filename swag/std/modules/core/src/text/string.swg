@@ -65,7 +65,7 @@ impl String
         return cast(string) @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
-    func opAffect(using self, value: string)
+    func opAffect(using self, value: const [..] u8)
     {
         if @dataof(value) == null
         {
@@ -80,7 +80,7 @@ impl String
         buffer[length] = 0
     }
 
-    func opEquals(using self, other: string)->bool
+    func opEquals(using self, other: const [..] u8)->bool
     {
         if buffer == @dataof(other) // true if null
             return true
@@ -94,7 +94,7 @@ impl String
         return utf8.compare(toString(), other.toString(), utf8.ComparisonType.Latin1)
     }
 
-    func(op: string) opAssign(using self, value: string)
+    func(op: string) opAssign(using self, value: const [..] u8)
     {
         #if op == "+="
             append(value)
@@ -283,7 +283,7 @@ impl String
     }
 
     // Append a string to the String
-    func append(using self, value: string)
+    func append(using self, value: const [..] u8)
     {
         concatLength := @countof(value)
         if concatLength == 0
@@ -418,7 +418,7 @@ impl String
     }
 
     // Convert a literal string to a String
-    func from(value: string)->String
+    func from(value: const [..] u8)->String
     {
         var val: retval = value
         return val

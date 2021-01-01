@@ -28,45 +28,22 @@ func findLine(what: string)->*String
     line1 := findLine(fctExtension)
     debug.assert(line1 != null)
 
-    idx := line1.indexOf("(")
-    debug.assert(idx != swag.MaxUINT)
-    idx += 1
-
-    var glew: String
-    while line1.buffer[idx] != ")"'u8
-    {
-        glew += line1.buffer[idx]
-        idx += 1
-    }
-
+    idx := line1.indexOf("(") + 1
+    glew := String.from(line1.eatTo(")"'u8, idx, includeDelimiter: false))
     console.print("glew: %\n", glew)
     glew += ";"'u8
 
     line2 := findLine(glew)
     debug.assert(line2 != null)
 
-    idx = line2.indexOf(" ")
-    idx += 1
-
-    var proc: String
-    while line2.buffer[idx] != " "'u8
-    {
-        proc += line2.buffer[idx]
-        idx += 1
-    }
-
+    idx = line2.indexOf(" ") + 1
+    proc := cast(string) line2.eatTo(" "'u8, idx, includeDelimiter: false)
     console.print("proc: %\n", proc)
 
     line3 := findLine(proc)
     debug.assert(line3 != null)
 
     idx = line3.lastIndexOf("(")
-    var proto: String
-    while line3.buffer[idx] != ";"'u8
-    {
-        proto += line3.buffer[idx]
-        idx += 1
-    }
-
+    proto := cast(string) line3.eatTo(")"'u8, idx, includeDelimiter: true)
     console.print("proto: %\n", proto)
 }

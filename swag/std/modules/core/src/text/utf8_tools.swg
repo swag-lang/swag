@@ -233,3 +233,31 @@ func split(src: const [..] u8, separators: const [..] char) -> Array'string
 
     return result
 }
+
+// Returns a sub string starting at 'startByteIndex' and ending with 'delimiter'
+func eatTo(src: const [..] u8, delimiter: u8, startByteIndex = 0'uint, includeDelimiter = true)->const [..] u8
+{
+    dataof := @dataof(src)
+    length := @countof(src)
+    if !length
+        return @mkslice(dataof, 0)
+    debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
+
+    length -= startByteIndex
+    dataof += startByteIndex
+    scan := dataof
+    while length
+    {
+        if :scan == delimiter
+        {
+            if includeDelimiter
+                scan += 1
+            return @mkslice(dataof, cast(uint) (scan - dataof))
+        }
+
+        scan += 1
+        length -= 1
+    }
+
+    return @mkslice(dataof, 0)
+}

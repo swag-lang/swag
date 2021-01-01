@@ -52,11 +52,13 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
 
     // Must start with a pointer of the same type as the slice
     if (first->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({node, "'@mkslice' must have a pointer as a first parameter"});
+        return context->report({first, "'@mkslice' must have a pointer as a first parameter"});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
+    if (ptrPointer->ptrCount == 0)
+        return context->report({first, "'@mkslice' cannot have 'null' as first parameter"});
     if (ptrPointer->ptrCount != 1)
-        return context->report({node, "'@mkslice' must have a one dimension pointer as a first parameter"});
+        return context->report({first, "'@mkslice' must have a one dimension pointer as a first parameter"});
 
     // Slice count
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, second->typeInfo, nullptr, second, CASTFLAG_COERCE_FULL));
@@ -80,10 +82,13 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
 
     // Check first parameter
     if (first->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({node, "'@mkany' must have a pointer as a first parameter"});
+        return context->report({first, "'@mkany' must have a pointer as a first parameter"});
+
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
+    if (ptrPointer->ptrCount == 0)
+        return context->report({first, "'@mkany' cannot have 'null' as first parameter"});
     if (ptrPointer->ptrCount != 1)
-        return context->report({node, "'@mkany' must have a one dimension pointer as a first parameter"});
+        return context->report({first, "'@mkany' must have a one dimension pointer as a first parameter"});
 
     // Check second parameter
     if (second->flags & AST_VALUE_IS_TYPEINFO)
