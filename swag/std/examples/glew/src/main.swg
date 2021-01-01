@@ -60,7 +60,7 @@ func findLine(what: string)->*String
     line3 := findLine(proc)
     debug.assert(line3 != null)
 
-    idx = line3.lastIndexOf("("'char)
+    idx = line3.lastIndexOf("(")
     var proto: String
     while line3.buffer[idx] != ";"'u8
     {

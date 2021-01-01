@@ -98,6 +98,31 @@ func lastIndexOf(src: const [..] u8, what: const [..] char)->uint
     return swag.MaxUINT
 }
 
+// Returns the last index (in bytes) of a string
+// Returns swag.MaxUINT if not found
+func lastIndexOf(src: const [..] u8, what: string)->uint
+{
+    length := @countof(src)
+    if !length
+        return swag.MaxUINT
+    lengthStr := @countof(what)
+    if lengthStr > length
+        return swag.MaxUINT
+
+    dataof := @dataof(src)
+    byteIdx := length - lengthStr
+    while true
+    {
+        if memory.compare(dataof + byteIdx, @dataof(what), lengthStr) == 0
+            return byteIdx
+        if !byteIdx
+            return swag.MaxUINT
+        byteIdx -= 1
+    }
+
+    return swag.MaxUINT
+}
+
 // Return true if the string starts with 'str'
 func startsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonType.Latin1)->bool
 {
