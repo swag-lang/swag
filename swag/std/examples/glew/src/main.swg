@@ -49,13 +49,14 @@ func findLine(what: string)->*String
     idx = line2.indexOf(" ") + 1
     proc := cast(string) line2.eatTo(" "'u8, idx, includeDelimiter: false)
     console.print("proc: %\n", proc)
-    ///////////////////
 
+    ///////////////////
     line3 := findLine(proc)
     debug.assert(line3 != null)
 
     idx = line3.lastIndexOf("(")
     proto := cast(string) line3.eatTo(")"'u8, idx, includeDelimiter: true)
     console.print("proto: %\n", proto)
+
     ///////////////////
 }
