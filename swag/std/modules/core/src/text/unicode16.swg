@@ -10,7 +10,7 @@ func fromUtf8(dest: [..] u16, src: const [..] u8)->u32
     destPtr := @dataof(dest)
     srcLength := @countof(src)
 
-    (c, eat) := utf8.firstChar(src)
+    (c, eat) := utf8.decodeChar(src)
     while eat != 0
     {
         debug.assert(count != @countof(dest), "destination buffer is too small")
@@ -21,7 +21,7 @@ func fromUtf8(dest: [..] u16, src: const [..] u8)->u32
 
         srcPtr += eat
         srcLength -= eat
-        (c, eat) = utf8.firstChar(@mkslice(srcPtr, srcLength))
+        (c, eat) = utf8.decodeChar(@mkslice(srcPtr, srcLength))
     }
 
     return count

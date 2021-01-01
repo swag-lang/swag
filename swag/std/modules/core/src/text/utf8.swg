@@ -162,7 +162,7 @@ func countChars(buffer: const [..] u8)->uint
 }
 
 // Get the last utf8 character of the slice, and the number of bytes to encode it
-func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
+func decodeLastChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
     countof := @countof(buffer)
     if !countof
@@ -191,7 +191,7 @@ func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
     }
 
     var result: retval
-    result = firstChar(@mkslice(ptr, cast(uint) eat))
+    result = decodeChar(@mkslice(ptr, cast(uint) eat))
     if result.eat != eat
         return @{CharError, 1}
     return result
@@ -199,7 +199,7 @@ func lastChar(buffer: const [..] u8) -> {c: char, eat: u32}
 
 // Get the unicode character pointed by 'buffer', and the number of bytes to encode it
 // Will return 'CharError' for an invalid utf8 sequence
-func firstChar(buffer: const [..] u8) -> {c: char, eat: u32}
+func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
     countof := @countof(buffer)
     if countof == 0
@@ -272,7 +272,7 @@ func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'uint)
     remain := length - startByteIndex
     while countof <= remain
     {
-        res := utf8.firstChar(cast(string) @mkslice(scan, remain))
+        res := utf8.decodeChar(cast(string) @mkslice(scan, remain))
         if !res.eat
             break
         if contains(what, res.c)
@@ -332,7 +332,7 @@ func lastIndexOf(src: const [..] u8, what: const [..] char)->uint
     while true
     {
         slice := @mkslice(dataof, byteIdx)
-        (c, eat) := lastChar(slice)
+        (c, eat) := decodeLastChar(slice)
         if eat == 0
             return swag.MaxUINT
 
@@ -402,8 +402,8 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
         var eat1, eat2: u32
         while true
         {
-            (c1, eat1) = firstChar(@mkslice(data, length))
-            (c2, eat2) = firstChar(@mkslice(otherData, otherLength))
+            (c1, eat1) = decodeChar(@mkslice(data, length))
+            (c2, eat2) = decodeChar(@mkslice(otherData, otherLength))
             if eat1 == 0 || eat2 == 0
                 break
 
@@ -449,7 +449,7 @@ func visitChars(buffer: const [..] u8, stmt: code)
     while count
     {
         slice := @mkslice(scan, count)
-        (c, eat) := firstChar(slice)
+        (c, eat) := decodeChar(slice)
         if eat == 0
             break
         #macro

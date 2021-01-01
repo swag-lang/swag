@@ -84,7 +84,7 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32}
 
     // Does the number starts with the negative/positive sign ?
     signed := false
-    (c, eat) := utf8.firstChar(str)
+    (c, eat) := utf8.decodeChar(str)
     if c == g_CultureInfo.numberFormat.negativeSign
     {
         buffer, cpt += eat
@@ -123,7 +123,7 @@ func parseF64(str: const [..] u8) -> {value: f64, eat: u32}
 
     // Does the number starts with the negative/positive sign ?
     signed := false
-    (c, eat) := utf8.firstChar(str)
+    (c, eat) := utf8.decodeChar(str)
     if c == g_CultureInfo.numberFormat.negativeSign
     {
         // Skip negative sign
@@ -152,7 +152,7 @@ func parseF64(str: const [..] u8) -> {value: f64, eat: u32}
     // Fractional part
     if countof
     {
-        (c, eat) = utf8.firstChar(@mkslice(buffer, cast(uint) countof))
+        (c, eat) = utf8.decodeChar(@mkslice(buffer, cast(uint) countof))
         if c == g_CultureInfo.numberFormat.decimalSeparator
         {
             // Skip decimal separator

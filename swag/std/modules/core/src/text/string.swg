@@ -203,7 +203,7 @@ impl String
         while true
         {
             slice := @mkslice(scan, count)
-            var (c, eat) = utf8.firstChar(slice)
+            var (c, eat) = utf8.decodeChar(slice)
             if eat == 0
                 break
 
@@ -232,12 +232,6 @@ impl String
     func clear(using self)
     {
         length = 0
-    }
-
-    // Returns the number of unicode characters in the string
-    func countChars(using self)->uint
-    {
-        return utf8.countChars(@mkslice(buffer, length))
     }
 
     // Returns true if the String has zero length
@@ -381,7 +375,7 @@ impl String
         while true
         {
             slice := @mkslice(ptr, length)
-            (c, eat) := utf8.firstChar(slice)
+            (c, eat) := utf8.decodeChar(slice)
             if !unicode32.isSpace(c)
                 break
             length -= eat
@@ -401,7 +395,7 @@ impl String
         while true
         {
             slice := @mkslice(buffer, length)
-            (c, eat) := utf8.lastChar(slice)
+            (c, eat) := utf8.decodeLastChar(slice)
             if !unicode32.isSpace(c)
                 break
             length -= eat
@@ -425,7 +419,7 @@ impl String
             return 0
         if latin1.isAscii(buffer[0])
             return cast(char) buffer[0]
-        (c, ?) := utf8.firstChar(@mkslice(buffer, length))
+        (c, ?) := utf8.decodeChar(@mkslice(buffer, length))
         return c
     }
 
@@ -437,7 +431,7 @@ impl String
             return 0
         if latin1.isAscii(buffer[length - 1])
             return cast(char) buffer[length - 1]
-        (c, ?) := utf8.lastChar(@mkslice(buffer, length))
+        (c, ?) := utf8.decodeLastChar(@mkslice(buffer, length))
         return c
     }
 
@@ -540,7 +534,7 @@ impl String
             while true
             {
                 slice := @mkslice(ptr, count)
-                (c, eat) = utf8.firstChar(slice)
+                (c, eat) = utf8.decodeChar(slice)
                 if eat == 0 || !contains(separators, c)
                     break
                 startbyteIdx += eat
@@ -555,7 +549,7 @@ impl String
             while true
             {
                 slice := @mkslice(ptr, count)
-                (c, eat) = utf8.firstChar(slice)
+                (c, eat) = utf8.decodeChar(slice)
                 if eat == 0 || contains(separators, c)
                     break
                 endbyteIdx += eat

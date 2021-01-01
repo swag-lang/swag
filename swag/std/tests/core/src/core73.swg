@@ -5,7 +5,7 @@ using core
 #test
 {
     str := "A⺗B"
-    result := utf8.lastChar(str)
+    result := utf8.decodeLastChar(str)
     @assert(result.item0 == "B"'char)
     @assert(result.item1 == 1)
 
