@@ -38,7 +38,7 @@ func findLine(what: string)->*String
     if line1 == null error.fatal("error: cannot find '%'\n", fctExtension)
 
     idx := line1.indexOf("(") + 1
-    glew := String.from(line1.eatTo(")"'u8, idx, includeDelimiter: false))
+    glew := String.from(cast(string) line1.eatTo(")"'u8, idx, includeDelimiter: false))
     console.print("glew: %\n", glew)
     glew += ";"'u8
 
