@@ -48,7 +48,8 @@ func findLine(what: string)->*String
     idx = utf8.indexOf(line2.toString(), " ")
     idx += 1
 
-    proc1 := cast(string) strconv.parseTo(line2.toString(), idx, " "'u8)
+    proc1 := cast(string) @mkslice(line2.buffer + idx, utf8.indexOf(line2.toString(), " ", idx) - idx)
+    //strconv.parseTo(line2.toString(), idx, " "'u8)
 
     var proc: String
     while line2.buffer[idx] != " "'u8
