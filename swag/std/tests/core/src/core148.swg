@@ -1,5 +1,5 @@
 #import "core"
-using core
+using core, utf8
 
 //#[swag.printbc]
 #test

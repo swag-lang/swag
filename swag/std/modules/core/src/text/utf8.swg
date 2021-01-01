@@ -643,3 +643,65 @@ func isValidChar(c: char)->bool
 
 	return false
 }
+
+// Split string into sub strings, given a character separator
+// Note that this returns an array of native strings, not copies.
+// All strings will be invalid if 'this' String is destroyed
+func split(src: const [..] u8, separator: char) -> Array'string
+{
+    return split(src, @[separator])
+}
+
+// Split string into sub strings, given an array of character separators
+// Note that this returns an array of native strings, not copies.
+// All strings will be invalid if 'this' String is destroyed
+func split(src: const [..] u8, separators: const [..] char) -> Array'string
+{
+    dataof := @dataof(src)
+    countof := @countof(src)
+
+    var result: retval
+    var ptr = dataof
+    var c: char
+    var eat: uint
+
+    startbyteIdx := 0'uint
+    count := countof
+    while true
+    {
+        // Remove separator at the start
+        while true
+        {
+            slice := @mkslice(ptr, count)
+            (c, eat) = utf8.decodeChar(slice)
+            if eat == 0 || !contains(separators, c)
+                break
+            startbyteIdx += eat
+            ptr += eat
+            count -= eat
+        }
+
+        if eat == 0 break // done
+
+        // Add all real characters until we found a separator
+        endbyteIdx := startbyteIdx
+        while true
+        {
+            slice := @mkslice(ptr, count)
+            (c, eat) = utf8.decodeChar(slice)
+            if eat == 0 || contains(separators, c)
+                break
+            endbyteIdx += eat
+            ptr += eat
+            count -= eat
+        }
+
+        oneString := cast(string) @mkslice(dataof + startbyteIdx, endbyteIdx - startbyteIdx)
+        result.add(oneString)
+
+        if eat == 0 break // done
+        startbyteIdx = endbyteIdx
+    }
+
+    return result
+}
