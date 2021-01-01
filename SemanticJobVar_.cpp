@@ -13,7 +13,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     *result               = structNode;
 
     auto contentNode               = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
-    contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
+    contentNode->semanticBeforeFct = SemanticJob::preResolveStructContent;
     structNode->content            = contentNode;
 
     auto typeList = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);

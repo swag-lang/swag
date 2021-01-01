@@ -309,7 +309,49 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::preResolveStruct(SemanticContext* context)
+bool SemanticJob::preResolveGeneratedStruct(SemanticContext* context)
+{
+    auto structNode = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
+    auto parent     = structNode->originalParent;
+    if (!parent)
+        return true;
+    if (structNode->genericParameters)
+        return true;
+
+    // We convert the {...} expression to a structure. As the structure can contain generic parameters,
+    // we need to copy them. But from the function or the structure ?
+    // For now, we give the priority to the generic parameters from the function, if there are any
+    // But this will not work in all cases
+    if (parent->ownerFct)
+    {
+        auto parentFunc = CastAst<AstFuncDecl>(parent->ownerFct, AstNodeKind::FuncDecl);
+        if (parentFunc->genericParameters)
+            structNode->genericParameters = Ast::clone(parentFunc->genericParameters, nullptr, AST_GENERATED_GENERIC_PARAM);
+    }
+
+    if (parent->ownerStructScope && !structNode->genericParameters)
+    {
+        auto parentStruct = (AstStruct*) parent->ownerStructScope->owner;
+        if (parentStruct->genericParameters)
+            structNode->genericParameters = Ast::clone(parentStruct->genericParameters, nullptr, AST_GENERATED_GENERIC_PARAM);
+    }
+
+    if (structNode->genericParameters)
+    {
+        Ast::addChildFront(structNode, structNode->genericParameters);
+
+        Ast::visit(structNode->genericParameters, [&](AstNode* n) {
+            n->inheritOwners(structNode);
+            n->ownerStructScope = structNode->scope;
+            n->ownerScope       = structNode->scope;
+            n->flags |= AST_IS_GENERIC;
+        });
+    }
+
+    return true;
+}
+
+bool SemanticJob::preResolveStructContent(SemanticContext* context)
 {
     auto node = (AstStruct*) context->node->parent;
 

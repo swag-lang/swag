@@ -254,7 +254,8 @@ struct SemanticJob : public Job
     static bool instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
     static bool filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches);
     static bool filterSymbols(SemanticContext* context, AstIdentifier* node);
-    static bool preResolveStruct(SemanticContext* context);
+    static bool preResolveGeneratedStruct(SemanticContext* context);
+    static bool preResolveStructContent(SemanticContext* context);
     static void flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);
     static bool resolveStruct(SemanticContext* context);
     static bool resolveInterface(SemanticContext* context);

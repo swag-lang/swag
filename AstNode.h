@@ -721,6 +721,7 @@ struct AstStruct : public AstNode
     AstNode*             content;
     Scope*               scope;
     AstNode*             ownerGeneric;
+    AstNode*             originalParent;
     map<Utf8, TypeInfo*> replaceTypes;
 
     uint32_t packing = sizeof(uint64_t);

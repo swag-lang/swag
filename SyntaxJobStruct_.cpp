@@ -301,7 +301,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
 
         auto contentNode               = Ast::newNode<AstNode>(this, AstNodeKind::StructContent, sourceFile, structNode);
         structNode->content            = contentNode;
-        contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
+        contentNode->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
         if (structType == SyntaxStructType::Tuple)
             SWAG_CHECK(doStructBodyTuple(contentNode, true));

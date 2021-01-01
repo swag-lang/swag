@@ -123,38 +123,18 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion)
 {
-    auto structNode = Ast::newStructDecl(sourceFile, nullptr, this);
+    auto structNode               = Ast::newStructDecl(sourceFile, nullptr, this);
+    structNode->originalParent    = parent;
+    structNode->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
 
     if (anonymousStruct)
         structNode->flags |= AST_ANONYMOUS_STRUCT;
     if (anonymousUnion)
         structNode->flags |= AST_UNION;
 
-    // We convert the {...} expression to a structure. As the structure can contain generic parameters,
-    // we need to copy them. But from the function or the structure ?
-    if (parent->ownerFct)
-    {
-        auto parentFunc = CastAst<AstFuncDecl>(parent->ownerFct, AstNodeKind::FuncDecl);
-        if (parentFunc->genericParameters)
-            structNode->genericParameters = Ast::clone(parentFunc->genericParameters, structNode, AST_GENERATED_GENERIC_PARAM);
-    }
-
-    // For now, we give the priority to the generic parameters from the function, if there are any
-    // But this will not work in all cases
-    if (parent->ownerStructScope)
-    {
-        auto parentStruct = (AstStruct*) parent->ownerStructScope->owner;
-        if (parentStruct->genericParameters)
-        {
-            if (structNode->genericParameters)
-                return error(parent, "cannot decide which generic parameter to use for tuple creation");
-            structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode, AST_GENERATED_GENERIC_PARAM);
-        }
-    }
-
     auto contentNode               = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
     structNode->content            = contentNode;
-    contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
+    contentNode->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
     // Name
     Utf8 name = sourceFile->scopePrivate->name + "_tuple_";
@@ -214,16 +194,6 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
         n->ownerStructScope = newScope;
         n->ownerScope       = newScope;
     });
-
-    if (structNode->genericParameters)
-    {
-        Ast::visit(structNode->genericParameters, [&](AstNode* n) {
-            n->inheritOwners(structNode);
-            n->ownerStructScope = newScope;
-            n->ownerScope       = newScope;
-            n->flags |= AST_IS_GENERIC;
-        });
-    }
 
     return true;
 }
