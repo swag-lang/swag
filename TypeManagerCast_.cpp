@@ -29,6 +29,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
                 if (symbol->cptOverloads)
                 {
                     SWAG_ASSERT(context && context->job);
+                    SWAG_ASSERT(context->result == ContextResult::Done);
                     context->job->waitForSymbolNoLock(symbol);
                     return true;
                 }

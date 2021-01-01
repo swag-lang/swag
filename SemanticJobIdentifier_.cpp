@@ -1279,6 +1279,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             SWAG_ASSERT(false);
         }
 
+        if (context->result != ContextResult::Done)
+            return true;
+
         // For a function, sometime, we do not want call parameters
         bool forcedFine = false;
         if (node && node->parent && node->parent->parent && symbol->kind == SymbolKind::Function)
