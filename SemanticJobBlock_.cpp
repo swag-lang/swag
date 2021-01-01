@@ -383,12 +383,19 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Multi dimensional array
     if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)
     {
-        auto typeArray = (TypeInfoArray*) typeInfo;
+        auto typeArray   = (TypeInfoArray*) typeInfo;
+        auto pointedType = typeArray->finalType;
+
         content += format("{ var __addr%u = cast(*%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
         content += format("const __count%u = @sizeof(%s) / %u; ", id, (const char*) concat.firstBucket->datas, typeArray->finalType->sizeOf);
         content += format("loop __count%u { ", id);
         if (node->wantPointer)
             content += format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
+        else if (pointedType->kind == TypeInfoKind::Struct)
+        {
+            pointedType->computeScopedName();
+            content += format("var %s = cast(const &%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
+        }
         else
             content += format("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
         content += format("var %s = @index; ", alias1Name.c_str());
@@ -396,7 +403,31 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     }
 
     // One dimensional array
-    else if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice || typeInfo->kind == TypeInfoKind::Array)
+    else if (typeInfo->kind == TypeInfoKind::Slice || typeInfo->kind == TypeInfoKind::Array)
+    {
+        TypeInfo* pointedType;
+        if (typeInfo->kind == TypeInfoKind::Slice)
+            pointedType = ((TypeInfoSlice*) typeInfo)->pointedType;
+        else
+            pointedType = ((TypeInfoArray*) typeInfo)->pointedType;
+
+        content += format("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
+        content += format("loop %s { ", (const char*) concat.firstBucket->datas);
+        if (node->wantPointer)
+            content += format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
+        else if (pointedType->kind == TypeInfoKind::Struct)
+        {
+            pointedType->computeScopedName();
+            content += format("var %s = cast(const &%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
+        }
+        else
+            content += format("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
+        content += format("var %s = @index; ", alias1Name.c_str());
+        content += "}} ";
+    }
+
+    // String
+    else if (typeInfo->isNative(NativeTypeKind::String))
     {
         content += format("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += format("loop %s { ", (const char*) concat.firstBucket->datas);
@@ -432,7 +463,9 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     Ast::removeFromParent(node->block);
     Ast::addChildBack(loopNode->block, node->block);
     SWAG_ASSERT(node->block);
-    Ast::visit(node->block, [&](AstNode* x) { if (!x->ownerBreakable) x->ownerBreakable = loopNode; });
+    Ast::visit(node->block, [&](AstNode* x) {
+        if (!x->ownerBreakable)
+            x->ownerBreakable = loopNode; });
     node->block->flags &= ~AST_NO_SEMANTIC;
     loopNode->block->token.endLocation = node->block->token.endLocation;
 
