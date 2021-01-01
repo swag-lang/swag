@@ -85,8 +85,8 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
             t->kind = TypeInfoKind::FuncAttr;
             return t;
         }
-        else
-            return it->second;
+
+        return it->second;
     }
 
     // When type is a compound, we do substitution in the raw type

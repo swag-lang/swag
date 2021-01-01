@@ -295,7 +295,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     if (typeInfo != from->typeInfo)
         flags |= AST_FROM_GENERIC;
 
-    // This should not be copied. If will be recomputed if necessary.
+    // This should not be copied. It will be recomputed if necessary.
     // This can cause some problems with inline functions and autocast, as inline functions are evaluated
     // as functions, and also each time they are inlined.
     if (context.rawClone)
@@ -567,7 +567,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
             auto subFuncScope = newScopeNode->ownerScope;
 
             cloneContext.parentScope = subFuncScope;
-            cloneContext.parent      = sourceFile->astRoot;
+            cloneContext.parent      = nullptr;
             auto subFunc             = (AstFuncDecl*) f->clone(cloneContext);
 
             subFunc->typeInfo = subFunc->typeInfo->clone();
@@ -579,6 +579,9 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
             newNode->subFunctions.push_back(subFunc);
             subFunc->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, subFunc, SymbolKind::Function);
             subFunc->resolvedSymbolOverload = nullptr;
+
+            // Do it last for avoid a race condition with the file job
+            Ast::addChildBack(sourceFile->astRoot, subFunc);
         }
     }
     else

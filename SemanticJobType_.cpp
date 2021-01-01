@@ -448,6 +448,9 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, CASTFLAG_EXPLICIT));
+    if (context->result == ContextResult::Pending)
+        return true;
+
     node->typeInfo = typeNode->typeInfo;
 
     node->byteCodeFct = ByteCodeGenJob::emitExplicitCast;
