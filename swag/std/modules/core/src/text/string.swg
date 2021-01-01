@@ -411,30 +411,6 @@ impl String
         trimEnd()
     }
 
-    // Returns the first Unicode character of the String
-    // This function will return 0 if the String is null or empty
-    func front(using self)->char
-    {
-        if !length
-            return 0
-        if latin1.isAscii(buffer[0])
-            return cast(char) buffer[0]
-        (c, ?) := utf8.decodeChar(@mkslice(buffer, length))
-        return c
-    }
-
-    // Returns the last Unicode character of the String
-    // This function will return 0 if the String is null or empty
-    func back(using self)->char
-    {
-        if !length
-            return 0
-        if latin1.isAscii(buffer[length - 1])
-            return cast(char) buffer[length - 1]
-        (c, ?) := utf8.decodeLastChar(@mkslice(buffer, length))
-        return c
-    }
-
     // Convert string to a 32 bits character array
     func toCharArray(using self)->Array'char
     {

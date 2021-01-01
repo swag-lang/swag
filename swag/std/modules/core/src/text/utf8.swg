@@ -366,6 +366,32 @@ func endsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonT
     return compare(cast(string) @mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
 }
 
+// Returns the first unicode character
+func firstChar(src: const [..] u8)->char
+{
+    countof := @countof(src)
+    if !countof
+        return 0
+    dataof := @dataof(src)
+    if latin1.isAscii(dataof[0])
+        return cast(char) dataof[0]
+    (c, ?) := utf8.decodeChar(src)
+    return c
+}
+
+// Returns the last unicode character
+func lastChar(src: const [..] u8)->char
+{
+    countof := @countof(src)
+    if !countof
+        return 0
+    dataof := @dataof(src)
+    if latin1.isAscii(dataof[countof - 1])
+        return cast(char) dataof[countof - 1]
+    (c, ?) := utf8.decodeLastChar(src)
+    return c
+}
+
 public enum ComparisonType
 {
     Latin1

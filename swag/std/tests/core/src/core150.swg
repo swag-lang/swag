@@ -1,10 +1,10 @@
 #import "core"
-using core
+using core, utf8
 
 //#[swag.printbc]
 #test
 {
     var x: String = "ABCDE昨"
-    @assert(x.front() == "A"'char)
-    @assert(x.back() == "昨"'char)
+    @assert(x.firstChar() == "A"'char)
+    @assert(x.lastChar() == "昨"'char)
 }
