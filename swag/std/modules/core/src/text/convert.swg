@@ -50,18 +50,19 @@ impl ConvertFormatFloat
 // be stored in 'unsignedValue'.
 struct ConvertFormatInt
 {
-    using val:  ConvertFormat
-    base:       u32 = 10
-    padding:    u8
-    width:      u8
-    forceSign:  bool
+    using val:      ConvertFormat
+    base:           u32 = 10
+    padding:        u8
+    width:          u8
+    forceSign:      bool
 }
 
 impl ConvertFormatInt
 {
     // Set some format options with a given user string
     // Format is :
-    // [B|D|X][padding][width]
+    // [+][B|D|X][padding][width]
+    // => force sign for positive numbers
     // => binary, decimal, hexadecimal
     // => padding character, in ascii, mandatory before the next field
     // => width of the output, in characters
