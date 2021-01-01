@@ -59,4 +59,14 @@ func findLine(what: string)->*String
 
     line3 := findLine(proc)
     debug.assert(line3 != null)
+
+    idx = line3.lastIndexOf("("'char)
+    var proto: String
+    while line3.buffer[idx] != ";"'u8
+    {
+        proto += line3.buffer[idx]
+        idx += 1
+    }
+
+    console.print("proto: %\n", proto)
 }
