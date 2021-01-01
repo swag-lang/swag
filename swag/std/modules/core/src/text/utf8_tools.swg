@@ -100,7 +100,7 @@ func lastIndexOf(src: const [..] u8, what: const [..] char)->uint
 
 // Returns the last index (in bytes) of a string
 // Returns swag.MaxUINT if not found
-func lastIndexOf(src: const [..] u8, what: string)->uint
+func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonType.Latin1)->uint
 {
     length := @countof(src)
     if !length
@@ -109,22 +109,23 @@ func lastIndexOf(src: const [..] u8, what: string)->uint
     if lengthStr > length
         return swag.MaxUINT
 
-    dataof := @dataof(src)
-    byteIdx := length - lengthStr
+    idx := length - lengthStr
+    dataof := @dataof(src) + idx
     while true
     {
-        if memory.compare(dataof + byteIdx, @dataof(what), lengthStr) == 0
-            return byteIdx
-        if !byteIdx
+        res := compare(@mkslice(dataof, lengthStr), what, comparisonType)
+        if res == 0
+            return idx
+        if !idx
             return swag.MaxUINT
-        byteIdx -= 1
+        idx, dataof -= 1
     }
 
     return swag.MaxUINT
 }
 
 // Return true if the string starts with 'str'
-func startsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonType.Latin1)->bool
+func startsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
 {
     length := @countof(src)
     countof := @countof(str)
@@ -135,7 +136,7 @@ func startsWith(src: const [..] u8, str: string, comparisonType = utf8.Compariso
 }
 
 // Return true if the string ends with 'str'
-func endsWith(src: const [..] u8, str: string, comparisonType = utf8.ComparisonType.Latin1)->bool
+func endsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
 {
     length := @countof(src)
     countof := @countof(str)
