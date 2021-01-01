@@ -797,10 +797,11 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             fromTypeInfo->kind == TypeInfoKind::Pointer ||
             fromTypeInfo->kind == TypeInfoKind::Struct ||
             fromTypeInfo->kind == TypeInfoKind::Interface ||
+            fromTypeInfo->kind == TypeInfoKind::TypeSet ||
             fromTypeInfo->kind == TypeInfoKind::Slice ||
             fromTypeInfo->kind == TypeInfoKind::Reference ||
             fromTypeInfo->kind == TypeInfoKind::Lambda ||
-            fromTypeInfo->isNative(NativeTypeKind::UInt))
+            fromTypeInfo->numRegisters() == 1)
         {
             truncRegisterRC(context, exprNode->resultRegisterRC, 1);
             node->resultRegisterRC   = exprNode->resultRegisterRC;
@@ -808,7 +809,8 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             return true;
         }
 
-        if (fromTypeInfo->isNative(NativeTypeKind::String))
+        if (fromTypeInfo->isNative(NativeTypeKind::String) ||
+            fromTypeInfo->isNative(NativeTypeKind::Any))
         {
             truncRegisterRC(context, exprNode->resultRegisterRC, 1);
             node->resultRegisterRC   = exprNode->resultRegisterRC;
