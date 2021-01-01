@@ -1,6 +1,9 @@
 #import "core"
+using core
 
 #test
 {
-    //core.console.write("toto %", 10)
+    v := @[1, 2, 40]
+    c := cast([..] s32) v
+    console.print("%{X}", c)
 }

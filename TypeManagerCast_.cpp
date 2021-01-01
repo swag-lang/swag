@@ -2288,6 +2288,19 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
 
         return true;
     }
+    else if (fromType->isPointerTo(g_TypeMgr.typeInfoVoid))
+    {
+        if (castFlags & CASTFLAG_EXPLICIT)
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfo       = toTypeSlice;
+            }
+
+            return true;
+        }
+    }
     else if (fromType->kind == TypeInfoKind::Slice)
     {
         auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);

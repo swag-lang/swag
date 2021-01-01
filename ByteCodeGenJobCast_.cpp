@@ -683,6 +683,12 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         inst->b.u64 = fromTypeArray->count;
         transformResultToLinear2(context, node);
     }
+    else if (fromTypeInfo->kind == TypeInfoKind::Pointer)
+    {
+        node->resultRegisterRC = exprNode->resultRegisterRC;
+        transformResultToLinear2(context, node);
+        emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+    }
     else
     {
         return internalError(context, "emitCastToSlice, invalid expression type", exprNode);

@@ -159,18 +159,36 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         return
     }
 
+    // A slice
+    if reflection.isSlice(type)
+    {
+        ptrSlice := cast(const *TypeInfoSlice) type
+        buf.addBytes("[")
+
+        slice := cast(const [..] u8) @dataof(value)
+        bufSlice := @dataof(slice)
+        loop @countof(slice)
+        {
+            if @index buf.addBytes(",")
+            v := @mkany(bufSlice, ptrSlice.pointedType)
+            convertAny(buf, v, strFormat)
+            bufSlice += ptrSlice.pointedType.sizeof
+        }
+
+        buf.addBytes("]")
+        return
+    }
+
     // A static array
     if reflection.isArray(type)
     {
         ptrArr := cast(const *TypeInfoArray) type
         buf.addBytes("[")
 
-        first := true
         bufArr := cast(const *u8) @dataof(value)
         loop ptrArr.count
         {
-            if !first buf.addBytes(",")
-            first = false
+            if @index buf.addBytes(",")
             v := @mkany(bufArr, ptrArr.pointedType)
             convertAny(buf, v, strFormat)
             bufArr += ptrArr.pointedType.sizeof
