@@ -1,5 +1,5 @@
 #import "core"
-using core
+using core, utf8
 
 const fctExtension = "glCompileShader "
 var err:    ErrorId
@@ -9,7 +9,7 @@ func findLine(what: string)->*String
 {
     visit *line: lines
     {
-        idx := utf8.indexOf(line.toString(), what)
+        idx := line.indexOf(what)
         if idx == swag.MaxUINT continue
         console.print("line: %\n", :line)
         return line
@@ -22,13 +22,13 @@ func findLine(what: string)->*String
 {
     curPath := path.getDirectoryName(#location.fileName)
     glewPath := path.combine(curPath, "glew.h")
-    (lines, err) = file.readAllLines(glewPath.toString())
+    (lines, err) = file.readAllLines(glewPath)
     if err error.fatal("error: cannot read '%' (%)\n", glewPath, err)
 
     line1 := findLine(fctExtension)
     debug.assert(line1 != null)
 
-    idx := utf8.indexOf(line1.toString(), "(")
+    idx := line1.indexOf("(")
     debug.assert(idx != swag.MaxUINT)
     idx += 1
 
@@ -42,14 +42,11 @@ func findLine(what: string)->*String
     console.print("glew: %\n", glew)
     glew += ";"'u8
 
-    line2 := findLine(glew.toString())
+    line2 := findLine(glew)
     debug.assert(line2 != null)
 
-    idx = utf8.indexOf(line2.toString(), " ")
+    idx = line2.indexOf(" ")
     idx += 1
-
-    proc1 := cast(string) @mkslice(line2.buffer + idx, utf8.indexOf(line2.toString(), " ", idx) - idx)
-    //strconv.parseTo(line2.toString(), idx, " "'u8)
 
     var proc: String
     while line2.buffer[idx] != " "'u8
@@ -58,9 +55,8 @@ func findLine(what: string)->*String
         idx += 1
     }
 
-    console.print("proc1: %\n", proc1)
     console.print("proc: %\n", proc)
 
-    line3 := findLine(proc.toString())
+    line3 := findLine(proc)
     debug.assert(line3 != null)
 }

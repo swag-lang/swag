@@ -8,9 +8,16 @@
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     // Last minute change : opCast, with a structure
-    if (fromType->kind == TypeInfoKind::Struct && (castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
+    auto structType = fromType;
+    if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
+        structType   = typePtr->finalType;
+    }
+
+    if (structType->kind == TypeInfoKind::Struct && (castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
         if (typeStruct->declNode)
         {
             auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
