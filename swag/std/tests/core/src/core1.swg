@@ -5,5 +5,5 @@ using core
 {
     v := @[1, 2, 40]
     c := cast([..] s32) v
-    console.print("%{X}", c)
+    //console.print("%{X}", c)
 }

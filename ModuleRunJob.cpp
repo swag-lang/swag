@@ -21,7 +21,7 @@ JobResult ModuleRunJob::execute()
     Timer timer(&g_Stats.runTestTime);
     timer.start();
 
-    if(buildParameters.compileType == BackendCompileType::Test)
+    if (buildParameters.compileType == BackendCompileType::Test)
         g_Log.messageHeaderCentered("Testing backend", module->name.c_str());
     else
         g_Log.messageHeaderCentered("Running backend", module->name.c_str());
@@ -37,7 +37,10 @@ JobResult ModuleRunJob::execute()
     }
     else
     {
-        OS::doRunProcess(path.string(), path.parent_path().parent_path().string());
+        auto cmdLine = path.string();
+        cmdLine += " ";
+        cmdLine += g_CommandLine.userArguments;
+        OS::doRunProcess(cmdLine, path.parent_path().parent_path().string());
     }
 
     timer.stop();
