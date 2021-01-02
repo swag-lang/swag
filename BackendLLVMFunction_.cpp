@@ -2218,6 +2218,26 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             blockIsClosed = true;
             break;
         }
+        case ByteCodeOp::JumpIfNotZero8:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfNotZero16:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
+            auto b0         = builder.CreateIsNotNull(builder.CreateLoad(r0));
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
         case ByteCodeOp::JumpIfNotZero32:
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);

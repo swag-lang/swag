@@ -31,6 +31,8 @@ void ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
                  ip->op == ByteCodeOp::JumpIfZero16 ||
                  ip->op == ByteCodeOp::JumpIfZero32 ||
                  ip->op == ByteCodeOp::JumpIfZero64 ||
+                 ip->op == ByteCodeOp::JumpIfNotZero8 ||
+                 ip->op == ByteCodeOp::JumpIfNotZero16 ||
                  ip->op == ByteCodeOp::JumpIfNotZero32 ||
                  ip->op == ByteCodeOp::JumpIfNotZero64)
         {

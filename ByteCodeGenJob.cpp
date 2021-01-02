@@ -268,6 +268,8 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     case ByteCodeOp::Jump:
     case ByteCodeOp::JumpIfTrue:
     case ByteCodeOp::JumpIfFalse:
+    case ByteCodeOp::JumpIfNotZero8:
+    case ByteCodeOp::JumpIfNotZero16:
     case ByteCodeOp::JumpIfNotZero32:
     case ByteCodeOp::JumpIfNotZero64:
     case ByteCodeOp::JumpIfZero8:

@@ -201,6 +201,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     case ByteCodeOp::JumpIfZero16:
     case ByteCodeOp::JumpIfZero32:
     case ByteCodeOp::JumpIfZero64:
+    case ByteCodeOp::JumpIfNotZero8:
+    case ByteCodeOp::JumpIfNotZero16:
     case ByteCodeOp::JumpIfNotZero32:
     case ByteCodeOp::JumpIfNotZero64:
     case ByteCodeOp::JumpIfFalse:
@@ -320,6 +322,8 @@ void ByteCode::markLabels()
         case ByteCodeOp::Jump:
         case ByteCodeOp::JumpIfTrue:
         case ByteCodeOp::JumpIfFalse:
+        case ByteCodeOp::JumpIfNotZero8:
+        case ByteCodeOp::JumpIfNotZero16:
         case ByteCodeOp::JumpIfNotZero32:
         case ByteCodeOp::JumpIfNotZero64:
         case ByteCodeOp::JumpIfZero8:
