@@ -13,7 +13,7 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
     auto node     = context->node;
     auto child0   = node->childs[0];
     auto child1   = node->childs[1];
-    auto typeInfo = child0->typeInfo;
+    auto typeInfo = TypeManager::concreteReferenceType(child0->typeInfo);
 
     if (!(child0->doneFlags & AST_DONE_CAST1))
     {

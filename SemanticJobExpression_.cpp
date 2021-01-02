@@ -229,29 +229,70 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, expression));
     SWAG_CHECK(checkIsConcrete(context, ifTrue));
 
-    auto typeInfo = expression->typeInfo;
+    SWAG_CHECK(evaluateConstExpression(context, expression, ifTrue));
+    if (context->result == ContextResult::Pending)
+        return true;
 
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    auto typeInfo = TypeManager::concreteReferenceType(expression->typeInfo);
+
+    if (expression->flags & AST_VALUE_COMPUTED)
     {
-        SWAG_CHECK(resolveUserOp(context, "opData", nullptr, nullptr, expression, nullptr, false));
-        if (context->result == ContextResult::Pending)
-            return true;
+        bool notNull = true;
+        if ((typeInfo->flags & TYPEINFO_INTEGER) || (typeInfo->flags & TYPEINFO_FLOAT) || typeInfo->isNative(NativeTypeKind::Char))
+        {
+            switch (typeInfo->sizeOf)
+            {
+            case 1:
+                notNull = expression->computedValue.reg.u8 != 0;
+                break;
+            case 2:
+                notNull = expression->computedValue.reg.u16 != 0;
+                break;
+            case 4:
+                notNull = expression->computedValue.reg.u32 != 0;
+                break;
+            case 8:
+                notNull = expression->computedValue.reg.u64 != 0;
+                break;
+            }
+        }
+
+        if (notNull)
+        {
+            node->inheritComputedValue(expression);
+            node->typeInfo = expression->typeInfo;
+        }
+        else
+        {
+            node->inheritComputedValue(ifTrue);
+            node->typeInfo = ifTrue->typeInfo;
+        }
     }
-    else if (!typeInfo->isNative(NativeTypeKind::String) &&
-             !typeInfo->isNative(NativeTypeKind::Char) &&
-             typeInfo->kind != TypeInfoKind::Pointer &&
-             typeInfo->kind != TypeInfoKind::Interface &&
-             !(typeInfo->flags & TYPEINFO_INTEGER) &&
-             !(typeInfo->flags & TYPEINFO_FLOAT) &&
-             typeInfo->kind != TypeInfoKind::Lambda)
+    else
     {
-        return context->report({expression, format("cannot use operator '??' on type '%s'", typeInfo->name.c_str())});
+        if (typeInfo->kind == TypeInfoKind::Struct)
+        {
+            SWAG_CHECK(resolveUserOp(context, "opData", nullptr, nullptr, expression, nullptr, false));
+            if (context->result == ContextResult::Pending)
+                return true;
+        }
+        else if (!typeInfo->isNative(NativeTypeKind::String) &&
+                 !typeInfo->isNative(NativeTypeKind::Char) &&
+                 typeInfo->kind != TypeInfoKind::Pointer &&
+                 typeInfo->kind != TypeInfoKind::Interface &&
+                 !(typeInfo->flags & TYPEINFO_INTEGER) &&
+                 !(typeInfo->flags & TYPEINFO_FLOAT) &&
+                 typeInfo->kind != TypeInfoKind::Lambda)
+        {
+            return context->report({expression, format("cannot use operator '??' on type '%s'", typeInfo->name.c_str())});
+        }
+
+        SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_BIJECTIF | CASTFLAG_STRICT));
+
+        node->typeInfo    = expression->typeInfo;
+        node->byteCodeFct = ByteCodeGenJob::emitNullConditionalOp;
     }
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_BIJECTIF));
-
-    node->typeInfo    = expression->typeInfo;
-    node->byteCodeFct = ByteCodeGenJob::emitNullConditionalOp;
     return true;
 }
 
