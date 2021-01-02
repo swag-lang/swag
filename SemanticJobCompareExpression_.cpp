@@ -272,6 +272,10 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
+    SWAG_CHECK(evaluateConstExpression(context, left, right));
+    if (context->result == ContextResult::Pending)
+        return true;
+
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
     SWAG_ASSERT(leftTypeInfo);

@@ -5,5 +5,5 @@ func titi() => 666
 #[swag.printbc]
 #test
 {
-    x := toto() >> 2
+    x := toto() == titi()
 }
