@@ -361,7 +361,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (isCompilerConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
             return context->report({node, "a constant must be initialized"});
         if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
-            return context->report({node, "a non mutable 'let' variable must be initialized"});
+            return context->report({node, "a non mutable variable must be initialized"});
+        if (node->type && node->type->typeInfo->kind == TypeInfoKind::Reference && node->kind != AstNodeKind::FuncDeclParam)
+            return context->report({node, "a reference must be initialized"});
     }
 
     bool genericType = !node->type && !node->assignment;
