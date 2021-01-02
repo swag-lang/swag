@@ -103,10 +103,8 @@ impl Array
             {
                 #if `ptr
                     var @alias0 = `scan
-                #elif reflection.isStruct(T)
-                    var @alias0 = cast(const &T) :`scan
                 #else
-                    var @alias0 = :`scan
+                    var @alias0 = reflection.isStruct(T) ? cast(const &T) `scan[0] : `scan[0]
                 var @alias1 = @index
 
                 #[swag.noreturn]

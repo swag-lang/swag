@@ -152,6 +152,31 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
     return true;
 }
 
+bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2)
+{
+    SWAG_CHECK(evaluateConstExpression(context, node1));
+    if (context->result == ContextResult::Pending)
+        return true;
+    SWAG_CHECK(evaluateConstExpression(context, node2));
+    if (context->result == ContextResult::Pending)
+        return true;
+    return true;
+}
+
+bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3)
+{
+    SWAG_CHECK(evaluateConstExpression(context, node1));
+    if (context->result == ContextResult::Pending)
+        return true;
+    SWAG_CHECK(evaluateConstExpression(context, node2));
+    if (context->result == ContextResult::Pending)
+        return true;
+    SWAG_CHECK(evaluateConstExpression(context, node3));
+    if (context->result == ContextResult::Pending)
+        return true;
+    return true;
+}
+
 bool SemanticJob::resolveConditionalOp(SemanticContext* context)
 {
     auto node = context->node;
@@ -164,16 +189,28 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, ifTrue));
     SWAG_CHECK(checkIsConcrete(context, ifFalse));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expression, CASTFLAG_AUTO_BOOL));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, ifFalse, ifTrue, CASTFLAG_BIJECTIF));
-    node->typeInfo = ifTrue->typeInfo;
+    SWAG_CHECK(evaluateConstExpression(context, expression, ifTrue, ifFalse));
+    if (context->result == ContextResult::Pending)
+        return true;
 
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expression, CASTFLAG_AUTO_BOOL));
     if (expression->flags & AST_VALUE_COMPUTED)
     {
         if (expression->computedValue.reg.b)
+        {
             node->inheritComputedValue(ifTrue);
+            node->typeInfo = ifTrue->typeInfo;
+        }
         else
+        {
             node->inheritComputedValue(ifFalse);
+            node->typeInfo = ifFalse->typeInfo;
+        }
+    }
+    else
+    {
+        SWAG_CHECK(TypeManager::makeCompatibles(context, ifFalse, ifTrue, CASTFLAG_BIJECTIF | CASTFLAG_STRICT));
+        node->typeInfo = ifTrue->typeInfo;
     }
 
     expression->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterExpr;

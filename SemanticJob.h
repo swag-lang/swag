@@ -168,6 +168,8 @@ struct SemanticJob : public Job
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
     static bool checkIsConcreteOrType(SemanticContext* context, AstNode* node);
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
+    static bool evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
+    static bool evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);
     static bool checkUnreachableCode(SemanticContext* context);
     static bool waitForStructUserOps(SemanticContext* context, AstNode* node);
     static bool convertAssignementToStruct(SemanticContext* context, AstNode* assignment, AstStruct** result);
