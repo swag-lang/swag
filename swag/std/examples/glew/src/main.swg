@@ -4,17 +4,18 @@ using core, utf8
 var err:    ErrorId
 var lines:  Array'String
 
-func findLine(what: string)->*String
+func findLine(what: string)->const &String
 {
-    visit *line: lines
+    visit line: lines
     {
         idx := line.indexOf(what)
         if idx == swag.MaxUINT continue
-        console.print("line: %\n", :line)
+        console.print("line: %\n", line)
         return line
     }
 
-    return null
+    error.fatal("error: cannot find '%'\n", what)
+    return lines[0]
 }
 
 #main
@@ -35,8 +36,6 @@ func findLine(what: string)->*String
 
     ///////////////////
     line1 := findLine(fctExtension)
-    if line1 == null error.fatal("error: cannot find '%'\n", fctExtension)
-
     idx := line1.indexOf("(") + 1
     glew := String.from(cast(string) line1.eatTo(")"'u8, idx, includeDelimiter: false))
     console.print("glew: %\n", glew)
@@ -44,16 +43,12 @@ func findLine(what: string)->*String
 
     ///////////////////
     line2 := findLine(glew)
-    debug.assert(line2 != null)
-
     idx = line2.indexOf(" ") + 1
     proc := cast(string) line2.eatTo(" "'u8, idx, includeDelimiter: false)
     console.print("proc: %\n", proc)
 
     ///////////////////
     line3 := findLine(proc)
-    debug.assert(line3 != null)
-
     idx = line3.lastIndexOf("(")
     proto := cast(string) line3.eatTo(")"'u8, idx, includeDelimiter: true)
     console.print("proto: %\n", proto)
