@@ -15,11 +15,13 @@ struct ByteCodeOptimizer
         return inst->op == ByteCodeOp::Jump ||
                inst->op == ByteCodeOp::JumpIfTrue ||
                inst->op == ByteCodeOp::JumpIfFalse ||
-               inst->op == ByteCodeOp::JumpIfZero64 ||
+               inst->op == ByteCodeOp::JumpIfNotZero32 ||
                inst->op == ByteCodeOp::JumpIfNotZero64 ||
                inst->op == ByteCodeOp::JumpIfFalse ||
+               inst->op == ByteCodeOp::JumpIfZero8 ||
+               inst->op == ByteCodeOp::JumpIfZero16 ||
                inst->op == ByteCodeOp::JumpIfZero32 ||
-               inst->op == ByteCodeOp::JumpIfNotZero32;
+               inst->op == ByteCodeOp::JumpIfZero64;
     }
 
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);

@@ -98,9 +98,16 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 else
                     ip->op = ByteCodeOp::Jump;
                 break;
-            case ByteCodeOp::JumpIfNotZero32:
+            case ByteCodeOp::JumpIfZero8:
                 context->passHasDoneSomething = true;
-                if (!ip->a.u32)
+                if (ip->a.u8)
+                    setNop(context, ip);
+                else
+                    ip->op = ByteCodeOp::Jump;
+                break;
+            case ByteCodeOp::JumpIfZero16:
+                context->passHasDoneSomething = true;
+                if (ip->a.u16)
                     setNop(context, ip);
                 else
                     ip->op = ByteCodeOp::Jump;
@@ -112,16 +119,23 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 else
                     ip->op = ByteCodeOp::Jump;
                 break;
-            case ByteCodeOp::JumpIfNotZero64:
+            case ByteCodeOp::JumpIfZero64:
                 context->passHasDoneSomething = true;
-                if (!ip->a.u64)
+                if (ip->a.u64)
                     setNop(context, ip);
                 else
                     ip->op = ByteCodeOp::Jump;
                 break;
-            case ByteCodeOp::JumpIfZero64:
+            case ByteCodeOp::JumpIfNotZero32:
                 context->passHasDoneSomething = true;
-                if (ip->a.u64)
+                if (!ip->a.u32)
+                    setNop(context, ip);
+                else
+                    ip->op = ByteCodeOp::Jump;
+                break;
+            case ByteCodeOp::JumpIfNotZero64:
+                context->passHasDoneSomething = true;
+                if (!ip->a.u64)
                     setNop(context, ip);
                 else
                     ip->op = ByteCodeOp::Jump;

@@ -39,14 +39,10 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
         switch (typeInfo->sizeOf)
         {
         case 1:
-            inst        = emitInstruction(context, ByteCodeOp::ClearMaskU32, child0->resultRegisterRC);
-            inst->b.u64 = 0x000000FF;
-            inst        = emitInstruction(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRC);
+            inst = emitInstruction(context, ByteCodeOp::JumpIfZero8, child0->resultRegisterRC);
             break;
         case 2:
-            inst        = emitInstruction(context, ByteCodeOp::ClearMaskU32, child0->resultRegisterRC);
-            inst->b.u64 = 0x0000FFFF;
-            inst        = emitInstruction(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRC);
+            inst = emitInstruction(context, ByteCodeOp::JumpIfZero16, child0->resultRegisterRC);
             break;
         case 4:
             inst = emitInstruction(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRC);

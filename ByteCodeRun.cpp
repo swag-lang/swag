@@ -357,6 +357,18 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::JumpIfZero8:
+    {
+        if (!IMMA_U8(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfZero16:
+    {
+        if (!IMMA_U16(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
     case ByteCodeOp::JumpIfZero32:
     {
         if (!IMMA_U32(ip))
@@ -365,7 +377,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::JumpIfZero64:
     {
-        if (!registersRC[ip->a.u32].u64)
+        if (!IMMA_U64(ip))
             context->ip += ip->b.s32;
         break;
     }

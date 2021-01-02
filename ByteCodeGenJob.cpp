@@ -270,6 +270,8 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     case ByteCodeOp::JumpIfFalse:
     case ByteCodeOp::JumpIfNotZero32:
     case ByteCodeOp::JumpIfNotZero64:
+    case ByteCodeOp::JumpIfZero8:
+    case ByteCodeOp::JumpIfZero16:
     case ByteCodeOp::JumpIfZero32:
     case ByteCodeOp::JumpIfZero64:
         bc->numJumps++;
@@ -709,7 +711,7 @@ JobResult ByteCodeGenJob::execute()
     }
 
     // Register function in compiler list, now that we are done
-    if(originalNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+    if (originalNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
         module->addCompilerFunc(originalNode->bc);
 
     // #ast can have a #[swag.printbc]. We need to print it now, because it's compile time, and the legit

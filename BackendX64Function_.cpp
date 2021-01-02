@@ -1353,6 +1353,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Test64(pp, RAX, RAX);
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
             break;
+        case ByteCodeOp::JumpIfZero8:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Test8(pp, RAX, RAX);
+            BackendX64Inst::emit_Jump(pp, BackendX64Inst::JZ, i, ip->b.s32);
+            break;
+        case ByteCodeOp::JumpIfZero16:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Test16(pp, RAX, RAX);
+            BackendX64Inst::emit_Jump(pp, BackendX64Inst::JZ, i, ip->b.s32);
+            break;
         case ByteCodeOp::JumpIfZero32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test32(pp, RAX, RAX);
