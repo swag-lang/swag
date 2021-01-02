@@ -660,6 +660,10 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
 
+    SWAG_CHECK(evaluateConstExpression(context, left, right));
+    if (context->result == ContextResult::Pending)
+        return true;
+
     // Special case for enum : nothing is possible, except for flags
     bool isEnumFlags   = false;
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_ALIAS);
@@ -934,6 +938,10 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
 
+    SWAG_CHECK(evaluateConstExpression(context, left, right));
+    if (context->result == ContextResult::Pending)
+        return true;
+
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
@@ -982,6 +990,10 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
+
+    SWAG_CHECK(evaluateConstExpression(context, left, right));
+    if (context->result == ContextResult::Pending)
+        return true;
 
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);

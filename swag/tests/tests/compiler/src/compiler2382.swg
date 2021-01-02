@@ -2,8 +2,8 @@
 func toto() => 666
 func titi() => 666
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
-    x := toto() + titi()
+    x := toto() >> 2
 }
