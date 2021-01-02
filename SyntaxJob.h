@@ -119,7 +119,7 @@ struct SyntaxJob : public Job
     bool doDeRef(AstNode* parent, AstNode** result = nullptr);
     bool doUnaryExpression(AstNode* parent, AstNode** result = nullptr);
     bool doOperatorPrecedence(AstNode** result);
-    bool doFactorExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doFactorExpression(AstNode** parent, AstNode** result = nullptr);
     bool doCompareExpression(AstNode* parent, AstNode** result = nullptr);
     bool doBoolExpression(AstNode* parent, AstNode** result = nullptr);
     bool doMoveExpression(AstNode* parent, AstNode** result = nullptr);

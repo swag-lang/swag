@@ -86,7 +86,7 @@
         a, b := 0
         inc10(a)
         inc10(b)
-        @assert(a == b == 10)
+        @assert(a == b && b == 10)
     }
 
     // You can also use special type 'alias' and '#code' to create a named alias

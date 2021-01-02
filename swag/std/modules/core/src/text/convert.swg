@@ -316,7 +316,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 {
     kindof := @kindof(fmt.value)
     debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
-    debug.assert(0 < fmt.base <= 16, "invalid convert base")
+    debug.assert(0 < fmt.base && fmt.base <= 16, "invalid convert base")
 
     dataof := @dataof(fmt.value)
     bits := kindof.sizeof * 8

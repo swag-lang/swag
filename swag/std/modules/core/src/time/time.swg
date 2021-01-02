@@ -49,10 +49,10 @@ alias Ticks = u64
 // Convert a time to a 64 bits value
 func timeToTicks(hour, minute, second, millisecond: u16)->Ticks
 {
-    debug.assert(0 <= hour < 24)
-    debug.assert(0 <= minute < 60)
-    debug.assert(0 <= second < 60)
-    debug.assert(0 <= millisecond < 1000)
+    debug.assert(0 <= hour && hour < 24)
+    debug.assert(0 <= minute && minute < 60)
+    debug.assert(0 <= second && second < 60)
+    debug.assert(0 <= millisecond && millisecond < 1000)
 
     // totalSeconds is bounded by 2^31 * 2^12 + 2^31 * 2^8 + 2^31,
     // which is less than 2^44, meaning we won't overflow totalSeconds.
@@ -76,9 +76,9 @@ func ticksToTime(ticks: Ticks) -> {hour: u16, minute: u16, second: u16, millisec
 // Convert a date to a 64 bits value
 func dateToTicks(year, month, day: u16)->Ticks
 {
-    debug.assert(1 <= year <= 9999)
-    debug.assert(1 <= month <= 12)
-    debug.assert(1 <= day <= daysInMonth(year, month))
+    debug.assert(1 <= year && year <= 9999)
+    debug.assert(1 <= month && month <= 12)
+    debug.assert(1 <= day && day <= daysInMonth(year, month))
 
     days := isLeapYear(year) ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
     y := cast(u64) (year - 1)
@@ -138,7 +138,7 @@ func isLeapYear(year: u16)->bool
 // Returns the number of days of the given month, for the given year
 func daysInMonth(year, month: u16)->u16
 {
-    debug.assert(1 <= month <= 12)
+    debug.assert(1 <= month && month <= 12)
     if isLeapYear(year)
         return autocast (DaysToMonth366[month] - DaysToMonth366[month - 1])
     return autocast (DaysToMonth365[month] - DaysToMonth365[month - 1])

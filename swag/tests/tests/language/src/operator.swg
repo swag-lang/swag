@@ -67,13 +67,6 @@
         a = 1 > 1 ? true : false
     }
 
-    // You can have more than one single comparison operator
-    {
-        a, b := 10
-        @assert(a == b == 10) // (a == b && b == 10)
-        @assert(5 <= b <= 15) // (b >= 5 && b <= 15)
-    }
-
     // Two ways comparison operator, which returns a s32 of -1, 0 or 1
     // A <=> B == -1 if A < B
     // A <=> B == 0  if A == B

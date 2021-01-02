@@ -104,7 +104,7 @@ func @strcmp(str1: string, str2: string)->bool
     num2 := @countof(str2)
     if num1 != num2
         return false
-    if num1 == num2 == 0
+    if num1 == 0 && num2 == 0
         return true
     data1 := @dataof(str1)
     data2 := @dataof(str2)

@@ -471,6 +471,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
 
     switch (leftTypeInfo->nativeType)
     {
+    case NativeTypeKind::Bool:
     case NativeTypeKind::S32:
     case NativeTypeKind::S64:
     case NativeTypeKind::U32:
@@ -489,6 +490,10 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
 
         switch (leftTypeInfo->nativeType)
         {
+        case NativeTypeKind::Bool:
+            node->computedValue.reg.b = left->computedValue.reg.b || right->computedValue.reg.b;
+            break;
+
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:

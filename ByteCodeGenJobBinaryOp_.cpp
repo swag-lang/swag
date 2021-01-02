@@ -247,6 +247,7 @@ bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeIn
 
     switch (typeInfo->nativeType)
     {
+    case NativeTypeKind::Bool:
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:

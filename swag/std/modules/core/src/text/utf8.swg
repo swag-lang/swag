@@ -99,19 +99,19 @@ func countBytesAt(buffer: const [..] u8)->u32
 	accept := AcceptRanges[x >> 4]
 
 	b1 := dataof[1]
-	if !(accept.lo <= b1 <= accept.hi)
+	if !(accept.lo <= b1 && b1 <= accept.hi)
         return 1
 	if sz <= 2
         return 2
 
 	b2 := dataof[2]
-    if !(LoCB <= b2 <= HiCB)
+    if !(LoCB <= b2 && b2 <= HiCB)
         return 1
 	if sz <= 3
         return 3
 
 	b3 := dataof[3]
-	if !(LoCB <= b3 <= HiCB)
+	if !(LoCB <= b3 && b3 <= HiCB)
         return 1
 	return 4
 }
@@ -228,21 +228,21 @@ func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
 
     // Length == 2
 	b1 := dataof[1]
-	if !(accept.lo <= b1 <= accept.hi)
+	if !(accept.lo <= b1 && b1 <= accept.hi)
         return @{CharError, 1}
 	if sz <= 2
         return @{(p0 & Mask2) << 6 | (b1 & MaskX), 2}
 
     // Length == 3
 	b2 := dataof[2]
-    if !(LoCB <= b2 <= HiCB)
+    if !(LoCB <= b2 && b2 <= HiCB)
         return @{CharError, 1}
 	if sz <= 3
         return @{(p0 & Mask3) << 12 | (b1 & MaskX) << 6 | (b2 & MaskX), 3}
 
     // Length == 4
 	b3 := dataof[3]
-	if !(LoCB <= b3 <= HiCB)
+	if !(LoCB <= b3 && b3 <= HiCB)
         return @{CharError, 1}
 	return @{(p0 & Mask4) << 18 | (b1 & MaskX) << 12 | (b2 & MaskX) << 6 | (b3 & MaskX), 4}
 }
@@ -456,7 +456,7 @@ func isValid(buffer: const [..] u8)->bool
         accept := AcceptRanges[x >> 4]
 
         b1 := p[1]
-        if !(accept.lo <= b1 <= accept.hi)
+        if !(accept.lo <= b1 && b1 <= accept.hi)
             return false
         if sz <= 2
         {
@@ -466,7 +466,7 @@ func isValid(buffer: const [..] u8)->bool
         }
 
         b2 := p[2]
-        if !(LoCB <= b2 <= HiCB)
+        if !(LoCB <= b2 && b2 <= HiCB)
             return false
         if sz <= 3
         {
@@ -476,7 +476,7 @@ func isValid(buffer: const [..] u8)->bool
         }
 
         b3 := p[3]
-        if !(LoCB <= b3 <= HiCB)
+        if !(LoCB <= b3 && b3 <= HiCB)
             return false
         p += 4
         countof -= 4
@@ -490,9 +490,9 @@ func isValidChar(c: char)->bool
 {
 	switch
     {
-	case 0 <= c < SurrogateMin:
+	case 0 <= c && c < SurrogateMin:
 		return true
-	case SurrogateMax < c <= MaxChars:
+	case SurrogateMax < c && c <= MaxChars:
 		return true
 	}
 

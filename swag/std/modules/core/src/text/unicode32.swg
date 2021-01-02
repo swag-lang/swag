@@ -236,7 +236,7 @@ func isInTable(ranges: const [..] Range, r: char)->bool
     {
         m := lo + (hi-lo)/2
         range := &ranges[m]
-        if range.lo <= r <= range.hi
+        if range.lo <= r && r <= range.hi
             return range.stride == 1 || (r-range.lo) % range.stride == 0
         if r < range.lo
             hi = m

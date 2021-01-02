@@ -56,13 +56,13 @@ impl Rect
     // Returns true if this instance is null
     func isZero(using self)->bool
     {
-        return x == y == width == height == 0
+        return x == 0 && y == 0 && width == 0 && height == 0
     }
 
     // Returns true if this instance has a surface of zero (width and height are null)
     func isEmpty(using self)->bool
     {
-        return width == height == 0
+        return width == 0 && height == 0
     }
 
     // Returns true if this instance has a positive surface (width and height greater than zero)
@@ -141,7 +141,7 @@ impl Rect
     // Determines if the specfied point is contained within the rectangular region
     func contains(self, x, y: f32)->bool
     {
-        return (self.x >= x < self.x + self.width) && (self.y >= y < self.y + self.height)
+        return (self.x >= x && x < self.x + self.width) && (self.y >= y && y < self.y + self.height)
     }
 
     // Determines if the specfied point is contained within the rectangular region
