@@ -17,23 +17,6 @@ func findFirstLine(what: string)
         if idx == swag.MaxUINT continue
         #if LOG console.print("line: %\n", line)
         toProcess.add(line)
-
-        // Get version
-        idx1 := @index
-        while idx1
-        {
-            line1 := lines[idx1]
-            idxO := line1.indexOf("GL_VERSION")
-            if idxO != swag.MaxUINT
-            {
-                version := String.from(cast(string) utf8.eatTo(line1, " "'u8, idxO))
-                console.print("version: %\n", version)
-                break
-            }
-
-            idx1 -= 1
-        }
-
         idxFirst = @index + 1
         break
     }
