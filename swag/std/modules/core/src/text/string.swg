@@ -274,7 +274,7 @@ impl String
         {
             grow(length + growSize)
             memory.copyOver(buffer + idx + byLength, buffer + idx + whatLength, length - idx + 1)
-            memory.copyOver(buffer + idx, @dataof(by), byLength)
+            memory.copy(buffer + idx, @dataof(by), byLength)
             length -= whatLength
             length += byLength
             idx += byLength
