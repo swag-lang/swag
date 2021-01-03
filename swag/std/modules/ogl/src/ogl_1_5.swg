@@ -6,11 +6,25 @@ alias GLsizeiptr = uint
 
 #[extension]
 {
-    func glGenBuffers(n: GLsizei, buffer: *GLuint);
+    func glBeginQuery(target: GLenum, id: GLuint);
     func glBindBuffer(target: GLenum, buffer: GLuint);
     func glBufferData(target: GLenum, size: GLsizeiptr, data: const *void, usage: GLenum);
-    func glGenVertexArrays(n: GLsizei, arrays: *GLuint);
-    func glBindVertexArray(array: GLuint);
+    func glBufferSubData(target: GLenum, offset: GLintptr, size: GLsizeiptr, data: const *void);
+    func glDeleteBuffers(n: GLsizei, buffers: const *GLuint);
+    func glDeleteQueries(n: GLsizei, ids: const *GLuint);
+    func glEndQuery(target: GLenum);
+    func glGenBuffers(n: GLsizei, buffers: *GLuint);
+    func glGenQueries(n: GLsizei, ids: *GLuint);
+    func glGetBufferParameteriv(target: GLenum, pname: GLenum, params: *GLint);
+    func glGetBufferPointerv(target: GLenum, pname: GLenum, params: **void);
+    func glGetBufferSubData(target: GLenum, offset: GLintptr, size: GLsizeiptr, data: *void);
+    func glGetQueryObjectiv(id: GLuint, pname: GLenum, params: *GLint);
+    func glGetQueryObjectuiv(id: GLuint, pname: GLenum, params: *GLuint);
+    func glGetQueryiv(target: GLenum, pname: GLenum, params: *GLint);
+    func glIsBuffer(buffer: GLuint)->GLboolean;
+    func glIsQuery(id: GLuint)->GLboolean;
+    func glMapBuffer(target: GLenum, access: GLenum)->*void;
+    func glUnmapBuffer(target: GLenum)->GLboolean;
 }
 
 const GL_CURRENT_FOG_COORD = GL_CURRENT_FOG_COORDINATE

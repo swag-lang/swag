@@ -6,6 +6,7 @@ var lines:      Array'String
 var toProcess:  Array'String
 
 const LOG = false
+const SINGLE = false
 
 func findFirstLine(what: string)
 {
@@ -37,11 +38,16 @@ func findFirstLine(what: string)
         break
     }
 
-    while !lines[idxFirst].isEmpty()
+    if toProcess.isEmpty() error.fatal("error: cannot find '%'\n", what)
+
+    #if !SINGLE
     {
-        //console.print("line: %\n", lines[idxFirst])
-        toProcess.add(lines[idxFirst])
-        idxFirst += 1
+        while !lines[idxFirst].isEmpty()
+        {
+            //console.print("line: %\n", lines[idxFirst])
+            toProcess.add(lines[idxFirst])
+            idxFirst += 1
+        }
     }
 }
 
@@ -62,6 +68,7 @@ func findLine(what: string)->const &String
 func swapParams(what: string)->String
 {
     var result: retval
+    if what == "void, " return result
 
     var idxNext: uint
     while true
@@ -143,17 +150,23 @@ func swapParams(what: string)->String
         ///////////////////
         idx := line1.indexOf("(") + 1
         glew := String.from(cast(string) line1.eatTo(")"'u8, idx, includeDelimiter: false))
-        //console.print("glew: %\n", glew)
+        #if LOG console.print("glew: %\n", glew)
         glew += ";"'u8
 
         ///////////////////
         line2 := findLine(glew)
         idx = line2.indexOf(" ") + 1
         proc := cast(string) line2.eatTo(" "'u8, idx, includeDelimiter: false)
-        //console.print("proc: %\n", proc)
+        #if LOG console.print("proc: %\n", proc)
 
-        ///////////////////
         line3 := findLine(proc)
+        ///////////////////
+        idx = line3.indexOf(" ")
+        idx += 1
+        retType := String.from(cast(string) line3.eatTo(" "'u8, idx, includeDelimiter: false))
+        if retType == "void" retType.clear()
+        #if LOG console.print("retType: %\n", retType)
+
         idx = line3.lastIndexOf("(")
         idx += 1
         proto := String.from(cast(string) line3.eatTo(")"'u8, idx, includeDelimiter: false))
@@ -161,8 +174,10 @@ func swapParams(what: string)->String
 
         ///////////////////
         strProto := swapParams(proto)
-        //console.print("\n")
-        console.print("func %(%);\n", funcName, strProto)
+        if !retType.isEmpty()
+            console.print("func %(%)->%;\n", funcName, strProto, retType)
+        else
+            console.print("func %(%);\n", funcName, strProto)
 
         ///////////////////
     }

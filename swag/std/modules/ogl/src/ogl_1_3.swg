@@ -1,8 +1,7 @@
 #global public
 using swag
 
-/*
-[extension]
+#[extension]
 {
     func glActiveTexture(texture: GLenum);
     func glClientActiveTexture(texture: GLenum);
@@ -50,7 +49,6 @@ using swag
     func glMultiTexCoord4sv(target: GLenum, v: const *GLshort);
     func glSampleCoverage(value: GLclampf, invert: GLboolean);
 }
-*/
 
 const GL_MULTISAMPLE = 0x809D
 const GL_SAMPLE_ALPHA_TO_COVERAGE = 0x809E

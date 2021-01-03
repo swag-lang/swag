@@ -1,6 +1,57 @@
 #global public
 using swag
 
+#[extension]
+{
+    func glBlendColor(red: GLclampf, green: GLclampf, blue: GLclampf, alpha: GLclampf);
+    func glBlendEquation(mode: GLenum);
+    func glBlendFuncSeparate(sfactorRGB: GLenum, dfactorRGB: GLenum, sfactorAlpha: GLenum, dfactorAlpha: GLenum);
+    func glFogCoordPointer(type: GLenum, stride: GLsizei, pointer: const *void);
+    func glFogCoordd(coord: GLdouble);
+    func glFogCoorddv(coord: const *GLdouble);
+    func glFogCoordf(coord: GLfloat);
+    func glFogCoordfv(coord: const *GLfloat);
+    func glMultiDrawArrays(mode: GLenum, first: const *GLint, count: const *GLsizei, drawcount: GLsizei);
+    func glMultiDrawElements(mode: GLenum, count: const *GLsizei, type: GLenum, indices: const **void, drawcount: GLsizei);
+    func glPointParameterf(pname: GLenum, param: GLfloat);
+    func glPointParameterfv(pname: GLenum, params: const *GLfloat);
+    func glPointParameteri(pname: GLenum, param: GLint);
+    func glPointParameteriv(pname: GLenum, params: const *GLint);
+    func glSecondaryColor3b(red: GLbyte, green: GLbyte, blue: GLbyte);
+    func glSecondaryColor3bv(v: const *GLbyte);
+    func glSecondaryColor3d(red: GLdouble, green: GLdouble, blue: GLdouble);
+    func glSecondaryColor3dv(v: const *GLdouble);
+    func glSecondaryColor3f(red: GLfloat, green: GLfloat, blue: GLfloat);
+    func glSecondaryColor3fv(v: const *GLfloat);
+    func glSecondaryColor3i(red: GLint, green: GLint, blue: GLint);
+    func glSecondaryColor3iv(v: const *GLint);
+    func glSecondaryColor3s(red: GLshort, green: GLshort, blue: GLshort);
+    func glSecondaryColor3sv(v: const *GLshort);
+    func glSecondaryColor3ub(red: GLubyte, green: GLubyte, blue: GLubyte);
+    func glSecondaryColor3ubv(v: const *GLubyte);
+    func glSecondaryColor3ui(red: GLuint, green: GLuint, blue: GLuint);
+    func glSecondaryColor3uiv(v: const *GLuint);
+    func glSecondaryColor3us(red: GLushort, green: GLushort, blue: GLushort);
+    func glSecondaryColor3usv(v: const *GLushort);
+    func glSecondaryColorPointer(size: GLint, type: GLenum, stride: GLsizei, pointer: const *void);
+    func glWindowPos2d(x: GLdouble, y: GLdouble);
+    func glWindowPos2dv(p: const *GLdouble);
+    func glWindowPos2f(x: GLfloat, y: GLfloat);
+    func glWindowPos2fv(p: const *GLfloat);
+    func glWindowPos2i(x: GLint, y: GLint);
+    func glWindowPos2iv(p: const *GLint);
+    func glWindowPos2s(x: GLshort, y: GLshort);
+    func glWindowPos2sv(p: const *GLshort);
+    func glWindowPos3d(x: GLdouble, y: GLdouble, z: GLdouble);
+    func glWindowPos3dv(p: const *GLdouble);
+    func glWindowPos3f(x: GLfloat, y: GLfloat, z: GLfloat);
+    func glWindowPos3fv(p: const *GLfloat);
+    func glWindowPos3i(x: GLint, y: GLint, z: GLint);
+    func glWindowPos3iv(p: const *GLint);
+    func glWindowPos3s(x: GLshort, y: GLshort, z: GLshort);
+    func glWindowPos3sv(p: const *GLshort);
+}
+
 const GL_BLEND_DST_RGB = 0x80C8
 const GL_BLEND_SRC_RGB = 0x80C9
 const GL_BLEND_DST_ALPHA = 0x80CA
