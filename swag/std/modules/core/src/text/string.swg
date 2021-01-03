@@ -267,11 +267,8 @@ impl String
         if !whatLength || whatLength > length
             return
         byLength := @countof(by)
+        growSize := byLength > whatLength ? (byLength - whatLength) + 1 : 0
 
-        var growSize: uint = byLength > whatLength ? (byLength - whatLength) + 1 : 0
-
-        remain := length
-        scan := buffer
         idx := utf8.indexOf(toString(), what, 0, comparisonType)
         while idx != swag.MaxUINT
         {
