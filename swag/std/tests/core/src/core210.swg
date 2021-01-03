@@ -1,10 +1,13 @@
-﻿#unittest error
-
-#import "core"
-using core.sync
-
-#test
+﻿#if core.ASSERT
 {
-    mtx := Mutex.create()
-    mtx = Mutex.create()
+    #import "core"
+    #unittest error
+
+    using core.sync
+
+    #test
+    {
+        mtx := Mutex.create()
+        mtx = Mutex.create()
+    }
 }

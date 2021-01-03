@@ -462,12 +462,14 @@ impl String
     }
 
     // Returns a string type
+    #[swag.inline]
     func toString(using self)->string
     {
         return cast(string) @mkslice(buffer, length)
     }
 
     // Returns a slice type
+    #[swag.inline]
     func toSlice(using self)->[..] u8
     {
         return @mkslice(buffer, length)
