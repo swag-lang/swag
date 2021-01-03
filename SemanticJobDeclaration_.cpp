@@ -47,7 +47,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     }
     else
     {
-        return context->report({node, format("'using' cannot be used on a variable of type '%s'", node->typeInfo->name.c_str())});
+        return context->report({node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())});
     }
 
     return true;
@@ -63,6 +63,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
 
     if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
     {
+        SWAG_VERIFY(idref->resolvedSymbolOverload, context->report({node, "'using' on a variable is only valid for pointers to struct and structs"}));
         SWAG_CHECK(resolveUsingVar(context, node->childs.front(), idref->resolvedSymbolOverload->typeInfo));
         return true;
     }

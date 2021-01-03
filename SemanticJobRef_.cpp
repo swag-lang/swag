@@ -396,6 +396,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     if (!(accessType->flags & TYPEINFO_INTEGER) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
         return context->report({arrayNode->access, format("array access type should be integer ('%s' provided)", arrayNode->access->typeInfo->name.c_str())});
 
+    // Do not set resolvedSymbolOverload !
     arrayNode->resolvedSymbolName = arrayNode->array->resolvedSymbolName;
 
     // Can we dereference the string at compile time ?
