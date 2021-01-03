@@ -725,7 +725,8 @@ namespace Ast
                     symbol->name[0] != '@' &&
                     overload->node->ownerScope->isGlobalOrImpl() &&
                     !overload->node->sourceFile->isBootstrapFile &&
-                    !overload->node->sourceFile->isRuntimeFile)
+                    !overload->node->sourceFile->isRuntimeFile &&
+                    !overload->node->sourceFile->forceExport)
                 {
                     if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
                         (symbol->kind == SymbolKind::Function) ||

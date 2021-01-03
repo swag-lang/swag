@@ -1,6 +1,12 @@
 #global public
 using swag
 
+/* ----------------------------- GL_ARB_shadow ----------------------------- */
+
+const GL_TEXTURE_COMPARE_MODE_ARB = 0x884C
+const GL_TEXTURE_COMPARE_FUNC_ARB = 0x884D
+const GL_COMPARE_R_TO_TEXTURE_ARB = 0x884E
+
 /* ----------------------------- GL_ARB_imaging ---------------------------- */
 
 const GL_CONSTANT_COLOR = 0x8001
