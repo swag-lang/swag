@@ -116,6 +116,7 @@ JobResult SemanticJob::execute()
                 if (firstNode->kind == AstNodeKind::Impl ||
                     firstNode->kind == AstNodeKind::File ||
                     firstNode->kind == AstNodeKind::StatementNoScope ||
+                    firstNode->kind == AstNodeKind::AttrUse ||
                     (firstNode->kind == AstNodeKind::CompilerIf && node->ownerScope->isGlobal()))
                 {
                     switch (node->kind)
@@ -142,6 +143,10 @@ JobResult SemanticJob::execute()
                         nodes.pop_back();
                         continue;
                     }
+
+                    case AstNodeKind::AttrUse:
+                        if (!node->ownerScope->isGlobalOrImpl())
+                            break;
 
                     case AstNodeKind::VarDecl:
                     case AstNodeKind::ConstDecl:

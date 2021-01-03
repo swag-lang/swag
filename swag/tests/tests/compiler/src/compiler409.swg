@@ -1,7 +1,6 @@
+#unittest error
 
-
-#[swag.printbc]
-#unittest error;
+//#[swag.printbc]
 #test
 {
 	var c = "toto";
