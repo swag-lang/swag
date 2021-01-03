@@ -424,7 +424,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
 {
     auto job     = context->job;
     auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
-    auto typeVar = node->array->typeInfo;
+    auto typeVar = TypeManager::concreteReferenceType(node->array->typeInfo);
 
     if (!(node->lowerBound->doneFlags & AST_DONE_CAST1))
     {

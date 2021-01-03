@@ -104,7 +104,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
 {
     auto     node     = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
-    auto     typeVar  = node->array->typeInfo;
+    auto     typeVar  = TypeManager::concreteReferenceType(node->array->typeInfo);
     uint64_t maxBound = 0;
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->lowerBound, CASTFLAG_COERCE_FULL));

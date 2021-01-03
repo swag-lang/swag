@@ -261,7 +261,7 @@ impl String
     }
 
     // Insert a substring at the given position
-    func insert(using self, value: string, byteIndex: uint)
+    func insert(using self, byteIndex: uint, value: string)
     {
         debug.assert(byteIndex < length, "invalid index")
         countof := @countof(value)

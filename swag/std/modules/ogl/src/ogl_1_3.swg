@@ -1,6 +1,57 @@
 #global public
 using swag
 
+/*
+[extension]
+{
+    func glActiveTexture(texture: GLenum);
+    func glClientActiveTexture(texture: GLenum);
+    func glCompressedTexImage1D(target: GLenum, level: GLint, internalformat: GLenum, width: GLsizei, border: GLint, imageSize: GLsizei, data: const *void);
+    func glCompressedTexImage2D(target: GLenum, level: GLint, internalformat: GLenum, width: GLsizei, height: GLsizei, border: GLint, imageSize: GLsizei, data: const *void);
+    func glCompressedTexImage3D(target: GLenum, level: GLint, internalformat: GLenum, width: GLsizei, height: GLsizei, depth: GLsizei, border: GLint, imageSize: GLsizei, data: const *void);
+    func glCompressedTexSubImage1D(target: GLenum, level: GLint, xoffset: GLint, width: GLsizei, format: GLenum, imageSize: GLsizei, data: const *void);
+    func glCompressedTexSubImage2D(target: GLenum, level: GLint, xoffset: GLint, yoffset: GLint, width: GLsizei, height: GLsizei, format: GLenum, imageSize: GLsizei, data: const *void);func glCompressedTexSubImage3D(target: GLenum, level: GLint, xoffset: GLint, yoffset: GLint, zoffset: GLint, width: GLsizei, height: GLsizei, depth: GLsizei, format: GLenum, imageSize: GLsizei, data: const *void);
+    func glGetCompressedTexImage(target: GLenum, lod: GLint, img: *void);
+    func glLoadTransposeMatrixd(m: const [16] GLdouble);
+    func glLoadTransposeMatrixf(m: const [16] GLfloat);
+    func glMultTransposeMatrixd(m: const [16] GLdouble);
+    func glMultTransposeMatrixf(m: const [16] GLfloat);
+    func glMultiTexCoord1d(target: GLenum, s: GLdouble);
+    func glMultiTexCoord1dv(target: GLenum, v: const *GLdouble);
+    func glMultiTexCoord1f(target: GLenum, s: GLfloat);
+    func glMultiTexCoord1fv(target: GLenum, v: const *GLfloat);
+    func glMultiTexCoord1i(target: GLenum, s: GLint);
+    func glMultiTexCoord1iv(target: GLenum, v: const *GLint);
+    func glMultiTexCoord1s(target: GLenum, s: GLshort);
+    func glMultiTexCoord1sv(target: GLenum, v: const *GLshort);
+    func glMultiTexCoord2d(target: GLenum, s: GLdouble, t: GLdouble);
+    func glMultiTexCoord2dv(target: GLenum, v: const *GLdouble);
+    func glMultiTexCoord2f(target: GLenum, s: GLfloat, t: GLfloat);
+    func glMultiTexCoord2fv(target: GLenum, v: const *GLfloat);
+    func glMultiTexCoord2i(target: GLenum, s: GLint, t: GLint);
+    func glMultiTexCoord2iv(target: GLenum, v: const *GLint);
+    func glMultiTexCoord2s(target: GLenum, s: GLshort, t: GLshort);
+    func glMultiTexCoord2sv(target: GLenum, v: const *GLshort);
+    func glMultiTexCoord3d(target: GLenum, s: GLdouble, t: GLdouble, r: GLdouble);
+    func glMultiTexCoord3dv(target: GLenum, v: const *GLdouble);
+    func glMultiTexCoord3f(target: GLenum, s: GLfloat, t: GLfloat, r: GLfloat);
+    func glMultiTexCoord3fv(target: GLenum, v: const *GLfloat);
+    func glMultiTexCoord3i(target: GLenum, s: GLint, t: GLint, r: GLint);
+    func glMultiTexCoord3iv(target: GLenum, v: const *GLint);
+    func glMultiTexCoord3s(target: GLenum, s: GLshort, t: GLshort, r: GLshort);
+    func glMultiTexCoord3sv(target: GLenum, v: const *GLshort);
+    func glMultiTexCoord4d(target: GLenum, s: GLdouble, t: GLdouble, r: GLdouble, q: GLdouble);
+    func glMultiTexCoord4dv(target: GLenum, v: const *GLdouble);
+    func glMultiTexCoord4f(target: GLenum, s: GLfloat, t: GLfloat, r: GLfloat, q: GLfloat);
+    func glMultiTexCoord4fv(target: GLenum, v: const *GLfloat);
+    func glMultiTexCoord4i(target: GLenum, s: GLint, t: GLint, r: GLint, q: GLint);
+    func glMultiTexCoord4iv(target: GLenum, v: const *GLint);
+    func glMultiTexCoord4s(target: GLenum, s: GLshort, t: GLshort, r: GLshort, q: GLshort);
+    func glMultiTexCoord4sv(target: GLenum, v: const *GLshort);
+    func glSampleCoverage(value: GLclampf, invert: GLboolean);
+}
+*/
+
 const GL_MULTISAMPLE = 0x809D
 const GL_SAMPLE_ALPHA_TO_COVERAGE = 0x809E
 const GL_SAMPLE_ALPHA_TO_ONE = 0x809F
