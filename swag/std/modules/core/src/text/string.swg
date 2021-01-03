@@ -269,7 +269,7 @@ impl String
             return
 
         grow(length + countof + 1)
-        memory.copyOver(buffer + byteIndex + countof, buffer + byteIndex, length - byteIndex)
+        memory.copyOver(buffer + byteIndex + countof, buffer + byteIndex, length - byteIndex + 1)
         memory.copy(buffer + byteIndex, @dataof(value), countof)
         length += countof + 1
     }
