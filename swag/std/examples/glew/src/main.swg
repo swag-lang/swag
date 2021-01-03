@@ -37,6 +37,50 @@ func findLine(what: string, checkVersion = false)->const &String
     return lines[0]
 }
 
+func swapParams(what: string)->String
+{
+    var result: retval
+
+    var idxNext: uint
+    while true
+    {
+        idxNext = what.indexOf(",", idxNext)
+        if idxNext == swag.MaxUINT break
+        if !result.isEmpty() result += ", "
+
+        // Isolate parameter name
+        idxName := idxNext - 1
+        while latin1.isLetter(what[idxName - 1]) idxName -= 1
+        name := what[idxName..idxNext - 1]
+        console.print("name: %\n", name)
+
+        // Isolate parameter type
+        idxType := idxName - 1
+        while idxType && what[idxType - 1] != ","'u8 idxType -= 1
+        if idxType idxType += 1
+        type := String.from(what[idxType..idxName - 1])
+        type.trim()
+        console.print("type: %\n", type)
+
+        // Pointer
+        if(type.lastChar() == "*"'char)
+        {
+            idxType = type.length - 1
+            while latin1.isLetter(type[idxType]) idxType -= 1
+            type.length -= 2
+            type.insert("*", idxType)
+        }
+
+        result += name
+        result += ": "
+        result += type
+
+        idxNext += 1
+    }
+
+    return result
+}
+
 #main
 {
     ///////////////////
@@ -69,12 +113,15 @@ func findLine(what: string, checkVersion = false)->const &String
     ///////////////////
     line3 := findLine(proc)
     idx = line3.lastIndexOf("(")
-    proto := cast(string) line3.eatTo(")"'u8, idx, includeDelimiter: true)
+    idx += 1
+    proto := String.from(cast(string) line3.eatTo(")"'u8, idx, includeDelimiter: false))
+    proto += ", "
 
     ///////////////////
+    strProto := swapParams(proto)
     console.print("\n")
     console.print("version: %\n", version)
-    console.print("proto: % %\n", @args()[1], proto)
+    console.print("func %(%);\n", @args()[1], strProto)
 
     ///////////////////
 }
