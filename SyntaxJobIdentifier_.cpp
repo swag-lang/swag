@@ -80,10 +80,12 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
         }
     }
 
-    // Array index
     AstNode* expr = identifier;
-    if (token.id == TokenId::SymLeftSquare)
+
+    // Array index
+    if (acceptParameters && token.id == TokenId::SymLeftSquare)
         SWAG_CHECK(doArrayPointerIndex(&expr));
+
     Ast::addChildBack(parent, expr);
 
     return true;
@@ -98,7 +100,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, bool acceptPa
 
     switch (token.id)
     {
-    case TokenId::CompilerLocation: 
+    case TokenId::CompilerLocation:
         SWAG_CHECK(doCompilerSpecialFunction(identifierRef));
         break;
 

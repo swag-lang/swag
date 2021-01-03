@@ -63,7 +63,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
 
     if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
     {
-        SWAG_VERIFY(idref->resolvedSymbolOverload, context->report({node, "'using' on a variable is only valid for pointers to struct and structs"}));
+        SWAG_VERIFY(idref->resolvedSymbolOverload, context->report({node, "invalid 'using' type"}));
         SWAG_CHECK(resolveUsingVar(context, node->childs.front(), idref->resolvedSymbolOverload->typeInfo));
         return true;
     }
