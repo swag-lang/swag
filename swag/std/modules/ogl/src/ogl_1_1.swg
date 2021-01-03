@@ -16,6 +16,8 @@ alias GLdouble      = f64
 alias GLclampd      = f64
 alias GLvoid        = void
 alias GLchar        = u8
+alias GLint64       = s64
+alias GLuint64      = u64
 
 /* AccumOp */
 const GL_ACCUM                          = 0x0100
