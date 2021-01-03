@@ -61,18 +61,7 @@ namespace Runtime
     ////////////////////////////////////////////////////////////
     int memcmp(const void* b1, const void* b2, size_t n)
     {
-        if (!n)
-            return 0;
-
-        auto p1 = (const int8_t*) b1;
-        auto p2 = (const int8_t*) b2;
-        for (size_t i = 0; i < n; i++)
-        {
-            if (p1[i] != p2[i])
-                return p1[i] - p2[i];
-        }
-
-        return 0;
+        return OS::memcmp(b1, b2, n);
     }
 
     ////////////////////////////////////////////////////////////

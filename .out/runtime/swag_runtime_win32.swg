@@ -27,12 +27,23 @@ private
         func TlsGetValue(dwTlsIndex: u32)->*void;
         func RtlCopyMemory(destination: *void, source: const *void, length: uint);
         func RtlMoveMemory(destination: *void, source: const *void, length: uint);
+        func RtlCompareMemory(destination, source: const *void, length: uint)->uint;
         func RtlFillMemory(destination: *void, length: uint, fill: u32);
         func HeapAlloc(hHeap: HANDLE, dwFlags: DWORD, dwBytes: uint)->*void;
         func HeapReAlloc(hHeap: HANDLE, dwFlags: DWORD, mem: *void, dwBytes: uint)->*void;
         func HeapFree(hHeap: HANDLE, dwFlags: DWORD, mem: *void);
         func GetProcessHeap()->HANDLE;
     }
+}
+
+////////////////////////////////////////////////////////////
+func @memcmp(dst, src: const *void, size: uint)->s32
+{
+    len := RtlCompareMemory(dst, src, size)
+    if len == size return 0
+    p1 := cast(const *s8) dst
+    p2 := cast(const *s8) src
+    return p1[len] - p2[len]
 }
 
 ////////////////////////////////////////////////////////////

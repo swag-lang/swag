@@ -73,24 +73,6 @@ func __ftoa(result: *u8, value: f64)
 }
 
 ////////////////////////////////////////////////////////////
-func @memcmp(dst, src: const *void, size: uint)->s32
-{
-    if !size
-        return 0
-
-    p1 := cast(const *s8) dst
-    p2 := cast(const *s8) src
-    loop i: size
-    {
-        if :p1 != :p2
-            return :p1 - :p2
-        p1, p2 += 1
-    }
-
-    return 0
-}
-
-////////////////////////////////////////////////////////////
 func @cstrlen(value: const *u8)->uint
 {
     idx := 0'uint
