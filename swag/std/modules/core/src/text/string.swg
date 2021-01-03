@@ -260,6 +260,32 @@ impl String
         buffer = autocast &padding[0]
     }
 
+    // Replace all occurences of 'what' with 'by'
+    func replace(using self, what, by: string, comparisonType = utf8.ComparisonType.Latin1)
+    {
+        whatLength := @countof(what)
+        if !whatLength || whatLength > length
+            return
+        byLength := @countof(by)
+
+        var growSize: uint = byLength > whatLength ? (byLength - whatLength) + 1 : 0
+
+        remain := length
+        scan := buffer
+        idx := utf8.indexOf(toString(), what, 0, comparisonType)
+        while idx != swag.MaxUINT
+        {
+            grow(length + growSize)
+            memory.copyOver(buffer + idx + byLength, buffer + idx + whatLength, length - idx + 1)
+            memory.copyOver(buffer + idx, @dataof(by), byLength)
+            length -= whatLength
+            length += byLength
+            idx += byLength
+            if idx == length break
+            idx = utf8.indexOf(toString(), what, idx, comparisonType)
+        }
+    }
+
     // Insert a substring at the given position
     func insert(using self, byteIndex: uint, value: string)
     {
@@ -442,6 +468,12 @@ impl String
     func toString(using self)->string
     {
         return cast(string) @mkslice(buffer, length)
+    }
+
+    // Returns a slice type
+    func toSlice(using self)->[..] u8
+    {
+        return @mkslice(buffer, length)
     }
 
     // Convert the string inplace to upper case.
