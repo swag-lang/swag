@@ -80,10 +80,11 @@ func @memcmp(dst, src: const *void, size: uint)->s32
 
     p1 := cast(const *s8) dst
     p2 := cast(const *s8) src
-    loop i: cast(u32) size
+    loop i: size
     {
-        if p1[i] != p2[i]
-            return p1[i] - p2[i]
+        if :p1 != :p2
+            return :p1 - :p2
+        p1, p2 += 1
     }
 
     return 0
