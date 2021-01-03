@@ -8,6 +8,12 @@ func copy(dest: *void, src: const *void, size: uint)
     if size @memcpy(dest, src, size)
 }
 
+// Move one block of memory to a given address
+func copyOver(dest: *void, src: const *void, size: uint)
+{
+    if size @memmove(dest, src, size)
+}
+
 // Compare two blocks of memory
 func compare(dest, src: const *void, size: uint)->s32
 {

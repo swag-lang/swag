@@ -260,6 +260,20 @@ impl String
         buffer = autocast &padding[0]
     }
 
+    // Insert a substring at the given position
+    func insert(using self, value: string, byteIndex: uint)
+    {
+        debug.assert(byteIndex < length, "invalid index")
+        countof := @countof(value)
+        if !countof
+            return
+
+        grow(length + countof + 1)
+        memory.copyOver(buffer + byteIndex + countof, buffer + byteIndex, length - byteIndex)
+        memory.copy(buffer + byteIndex, @dataof(value), countof)
+        length += countof + 1
+    }
+
     // Append a byte to the String
     func append(using self, value: u8)
     {

@@ -60,15 +60,17 @@ func swapParams(what: string)->String
         if idxType idxType += 1
         type := String.from(what[idxType..idxName - 1])
         type.trim()
-        console.print("type: %\n", type)
+        console.print("type: '%'\n", type)
 
         // Pointer
         if(type.lastChar() == "*"'char)
         {
-            idxType = type.length - 1
+            idxType = type.length - 2
+            while latin1.isSpace(type[idxType]) idxType -= 1
             while latin1.isLetter(type[idxType]) idxType -= 1
+            type.insert("*", idxType + 1)
             type.length -= 2
-            type.insert("*", idxType)
+            type.trim()
         }
 
         result += name
