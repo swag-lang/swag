@@ -41,7 +41,8 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, "missing '#if' expression"));
     SWAG_CHECK(doExpression(node, &node->boolExpression));
-    node->boolExpression->semanticAfterFct = SemanticJob::resolveCompilerIf;
+    node->boolExpression->allocateExtension();
+    node->boolExpression->extension->semanticAfterFct = SemanticJob::resolveCompilerIf;
 
     {
         auto block    = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
@@ -118,7 +119,8 @@ bool SyntaxJob::doCompilerMacro(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstCompilerMacro>(this, AstNodeKind::CompilerMacro, sourceFile, parent);
     if (result)
         *result = node;
-    node->semanticBeforeFct = SemanticJob::resolveCompilerMacro;
+    node->allocateExtension();
+    node->extension->semanticBeforeFct = SemanticJob::resolveCompilerMacro;
 
     SWAG_CHECK(tokenizer.getToken(token));
     auto newScope = Ast::newScope(node, "", ScopeKind::Macro, node->ownerScope);
@@ -133,7 +135,8 @@ bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstCompilerInline>(this, AstNodeKind::CompilerInline, sourceFile, parent);
     if (result)
         *result = node;
-    node->semanticBeforeFct = SemanticJob::resolveCompilerInline;
+    node->allocateExtension();
+    node->extension->semanticBeforeFct = SemanticJob::resolveCompilerInline;
 
     SWAG_CHECK(tokenizer.getToken(token));
     auto newScope = Ast::newScope(node, "", ScopeKind::Inline, node->ownerScope);
@@ -163,9 +166,10 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    node->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    node->semanticFct       = SemanticJob::resolveCompilerAssert;
-    node->token             = move(token);
+    node->allocateExtension();
+    node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->semanticFct                  = SemanticJob::resolveCompilerAssert;
+    node->token                        = move(token);
     SWAG_CHECK(isValidScopeForCompilerRun(node));
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
@@ -195,9 +199,10 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
     auto node = Ast::newNode<AstCompilerAst>(this, AstNodeKind::CompilerAst, sourceFile, parent);
     if (result)
         *result = node;
-    node->embeddedKind      = kind;
-    node->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    node->semanticFct       = SemanticJob::resolveCompilerAstExpression;
+    node->embeddedKind = kind;
+    node->allocateExtension();
+    node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->semanticFct                  = SemanticJob::resolveCompilerAstExpression;
     SWAG_CHECK(eatToken());
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
@@ -248,9 +253,10 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    node->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    node->semanticFct       = SemanticJob::resolveCompilerRun;
-    node->token             = move(token);
+    node->allocateExtension();
+    node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->semanticFct                  = SemanticJob::resolveCompilerRun;
+    node->token                        = move(token);
     SWAG_CHECK(isValidScopeForCompilerRun(node));
     SWAG_CHECK(eatToken());
 
@@ -282,9 +288,10 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    node->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    node->semanticFct       = SemanticJob::resolveCompilerPrint;
-    node->token             = move(token);
+    node->allocateExtension();
+    node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->semanticFct                  = SemanticJob::resolveCompilerPrint;
+    node->token                        = move(token);
     SWAG_CHECK(isValidScopeForCompilerRun(node));
     SWAG_CHECK(eatToken());
 
@@ -351,7 +358,8 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, "missing '#global if' expression"));
         SWAG_CHECK(doExpression(node, &node->boolExpression));
-        node->boolExpression->semanticAfterFct = SemanticJob::resolveCompilerIf;
+        node->boolExpression->allocateExtension();
+        node->boolExpression->extension->semanticAfterFct = SemanticJob::resolveCompilerIf;
 
         auto block    = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
         node->ifBlock = block;

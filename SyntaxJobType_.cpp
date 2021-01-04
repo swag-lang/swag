@@ -123,18 +123,20 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion)
 {
-    auto structNode               = Ast::newStructDecl(sourceFile, nullptr, this);
-    structNode->originalParent    = parent;
-    structNode->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
+    auto structNode            = Ast::newStructDecl(sourceFile, nullptr, this);
+    structNode->originalParent = parent;
+    structNode->allocateExtension();
+    structNode->extension->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
 
     if (anonymousStruct)
         structNode->flags |= AST_ANONYMOUS_STRUCT;
     if (anonymousUnion)
         structNode->flags |= AST_UNION;
 
-    auto contentNode               = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
-    structNode->content            = contentNode;
-    contentNode->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    auto contentNode    = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
+    structNode->content = contentNode;
+    contentNode->allocateExtension();
+    contentNode->extension->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
     // Name
     Utf8 name = sourceFile->scopePrivate->name + "_tuple_";

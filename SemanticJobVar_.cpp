@@ -12,9 +12,10 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     AstStruct* structNode = Ast::newStructDecl(sourceFile, nullptr);
     *result               = structNode;
 
-    auto contentNode               = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
-    contentNode->semanticBeforeFct = SemanticJob::preResolveStructContent;
-    structNode->content            = contentNode;
+    auto contentNode = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
+    contentNode->allocateExtension();
+    contentNode->extension->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    structNode->content                       = contentNode;
 
     auto typeList = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);
     Utf8 varName;
@@ -148,13 +149,16 @@ void SemanticJob::setVarDeclResolve(AstVarDecl* varNode)
 {
     if (varNode->assignment)
     {
-        varNode->semanticBeforeFct            = SemanticJob::resolveVarDeclBefore;
-        varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+        varNode->allocateExtension();
+        varNode->extension->semanticBeforeFct = SemanticJob::resolveVarDeclBefore;
+        varNode->assignment->allocateExtension();
+        varNode->assignment->extension->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
     }
 
     if (varNode->assignment && varNode->type)
     {
-        varNode->type->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+        varNode->type->allocateExtension();
+        varNode->type->extension->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
     }
 }
 

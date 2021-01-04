@@ -509,7 +509,7 @@ JobResult ByteCodeGenJob::execute()
             case AstNodeResolveState::Enter:
                 node->bytecodeState = AstNodeResolveState::ProcessingChilds;
 
-                if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
+                if (node->extension && node->extension->byteCodeBeforeFct && !node->extension->byteCodeBeforeFct(&context))
                     return JobResult::ReleaseJob;
                 SWAG_ASSERT(context.result == ContextResult::Done);
 
@@ -557,9 +557,9 @@ JobResult ByteCodeGenJob::execute()
                 }
 
             case AstNodeResolveState::PostChilds:
-                if (node->byteCodeAfterFct)
+                if (node->extension && node->extension->byteCodeAfterFct)
                 {
-                    if (!node->byteCodeAfterFct(&context))
+                    if (!node->extension->byteCodeAfterFct(&context))
                         return JobResult::ReleaseJob;
                     if (context.result == ContextResult::Pending)
                         return JobResult::KeepJobAlive;

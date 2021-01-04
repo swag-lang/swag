@@ -8,6 +8,13 @@
 #include "SourceFile.h"
 #include "Module.h"
 
+void AstNode::allocateExtension()
+{
+    if (extension)
+        return;
+    extension = g_Allocator.alloc0<Extension>();
+}
+
 bool AstNode::mustInline()
 {
     if (attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
@@ -78,12 +85,15 @@ bool AstNode::isConstant1()
 
 void AstNode::setPassThrough()
 {
-    semanticAfterFct  = nullptr;
-    semanticBeforeFct = nullptr;
-    semanticFct       = nullptr;
-    byteCodeAfterFct  = nullptr;
-    byteCodeBeforeFct = nullptr;
-    byteCodeFct       = ByteCodeGenJob::emitPassThrough;
+    semanticFct = nullptr;
+    byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    if (extension)
+    {
+        extension->semanticAfterFct  = nullptr;
+        extension->semanticBeforeFct = nullptr;
+        extension->byteCodeAfterFct  = nullptr;
+        extension->byteCodeBeforeFct = nullptr;
+    }
 }
 
 bool AstNode::isParentOf(AstNode* child)
@@ -307,12 +317,16 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     token = from->token;
 
-    semanticFct       = from->semanticFct;
-    semanticBeforeFct = from->semanticBeforeFct;
-    semanticAfterFct  = from->semanticAfterFct;
-    byteCodeFct       = from->byteCodeFct;
-    byteCodeBeforeFct = from->byteCodeBeforeFct;
-    byteCodeAfterFct  = from->byteCodeAfterFct;
+    semanticFct = from->semanticFct;
+    byteCodeFct = from->byteCodeFct;
+    if (from->extension)
+    {
+        allocateExtension();
+        extension->semanticBeforeFct = from->extension->semanticBeforeFct;
+        extension->semanticAfterFct  = from->extension->semanticAfterFct;
+        extension->byteCodeBeforeFct = from->extension->byteCodeBeforeFct;
+        extension->byteCodeAfterFct  = from->extension->byteCodeAfterFct;
+    }
 
     computedValue           = from->computedValue;
     token.text              = from->token.text;

@@ -79,8 +79,9 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
     SWAG_CHECK(computeExpressionListTupleType(context, node));
 
-    node->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
-    node->byteCodeFct       = ByteCodeGenJob::emitExpressionList;
+    node->allocateExtension();
+    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
+    node->byteCodeFct                  = ByteCodeGenJob::emitExpressionList;
 
     // If the literal tuple is not constant, then we need to reserve some space in the
     // stack in order to store it.
@@ -119,9 +120,10 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
             node->flags &= ~AST_R_VALUE;
     }
 
-    node->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
-    node->byteCodeFct       = ByteCodeGenJob::emitExpressionList;
-    node->typeInfo          = typeInfo;
+    node->allocateExtension();
+    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
+    node->byteCodeFct                  = ByteCodeGenJob::emitExpressionList;
+    node->typeInfo                     = typeInfo;
 
     // If the literal array is not constant, then we need to reserve some space in the
     // stack in order to store it.
@@ -213,9 +215,11 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
         node->typeInfo = ifTrue->typeInfo;
     }
 
-    expression->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterExpr;
-    ifTrue->byteCodeAfterFct     = ByteCodeGenJob::emitConditionalOpAfterIfTrue;
-    node->byteCodeFct            = ByteCodeGenJob::emitConditionalOp;
+    expression->allocateExtension();
+    expression->extension->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterExpr;
+    ifTrue->allocateExtension();
+    ifTrue->extension->byteCodeAfterFct = ByteCodeGenJob::emitConditionalOpAfterIfTrue;
+    node->byteCodeFct                   = ByteCodeGenJob::emitConditionalOp;
     return true;
 }
 

@@ -212,7 +212,8 @@ bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeK
         SWAG_CHECK(doCurlyStatement(parent, &statement));
         newScope->owner = statement;
         statement->flags |= AST_NEED_SCOPE;
-        statement->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+        statement->allocateExtension();
+        statement->extension->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
     }
 
     if (result)
@@ -241,7 +242,8 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
     AstNode* statement = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
     if (result)
         *result = statement;
-    statement->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+    statement->allocateExtension();
+    statement->extension->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
     statement->flags |= AST_NEED_SCOPE;
     SWAG_CHECK(doEmbeddedInstruction(statement));
     return true;

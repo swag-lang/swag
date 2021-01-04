@@ -108,10 +108,11 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             auto   newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
             Scoped scoped(this, newScope);
 
-            auto statement               = Ast::newNode<AstSwitchCaseBlock>(this, AstNodeKind::Statement, sourceFile, caseNode);
-            statement->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
-            statement->ownerCase         = caseNode;
-            caseNode->block              = statement;
+            auto statement = Ast::newNode<AstSwitchCaseBlock>(this, AstNodeKind::Statement, sourceFile, caseNode);
+            statement->allocateExtension();
+            statement->extension->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+            statement->ownerCase                    = caseNode;
+            caseNode->block                         = statement;
             if (isDefault)
                 defaultStatement = statement;
 
@@ -144,9 +145,10 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
     auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
-    auto node               = Ast::newNode<AstFor>(this, AstNodeKind::For, sourceFile, parent, 4);
-    node->semanticBeforeFct = SemanticJob::resolveForBefore;
-    node->semanticFct       = SemanticJob::resolveFor;
+    auto node = Ast::newNode<AstFor>(this, AstNodeKind::For, sourceFile, parent, 4);
+    node->allocateExtension();
+    node->extension->semanticBeforeFct = SemanticJob::resolveForBefore;
+    node->semanticFct                  = SemanticJob::resolveFor;
     if (result)
         *result = node;
 
@@ -243,9 +245,10 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
-    auto node               = Ast::newNode<AstLoop>(this, AstNodeKind::Loop, sourceFile, parent, 2);
-    node->semanticBeforeFct = SemanticJob::resolveLoopBefore;
-    node->semanticFct       = SemanticJob::resolveLoop;
+    auto node = Ast::newNode<AstLoop>(this, AstNodeKind::Loop, sourceFile, parent, 2);
+    node->allocateExtension();
+    node->extension->semanticBeforeFct = SemanticJob::resolveLoopBefore;
+    node->semanticFct                  = SemanticJob::resolveLoop;
     if (result)
         *result = node;
 

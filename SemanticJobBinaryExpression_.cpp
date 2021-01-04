@@ -1026,10 +1026,12 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     switch (node->token.id)
     {
     case TokenId::SymAmpersandAmpersand:
-        left->byteCodeAfterFct = ByteCodeGenJob::emitLogicalAndAfterLeft;
+        left->allocateExtension();
+        left->extension->byteCodeAfterFct = ByteCodeGenJob::emitLogicalAndAfterLeft;
         break;
     case TokenId::SymVerticalVertical:
-        left->byteCodeAfterFct = ByteCodeGenJob::emitLogicalOrAfterLeft;
+        left->allocateExtension();
+        left->extension->byteCodeAfterFct = ByteCodeGenJob::emitLogicalOrAfterLeft;
         break;
     }
 

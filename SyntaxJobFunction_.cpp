@@ -305,9 +305,10 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
-    auto funcNode              = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
-    funcNode->semanticFct      = SemanticJob::resolveFuncDecl;
-    funcNode->semanticAfterFct = SemanticJob::resolveAfterFuncDecl;
+    auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
+    funcNode->semanticFct = SemanticJob::resolveFuncDecl;
+    funcNode->allocateExtension();
+    funcNode->extension->semanticAfterFct = SemanticJob::resolveAfterFuncDecl;
     if (result)
         *result = funcNode;
 
@@ -537,8 +538,9 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
         }
 
-        newScope->owner                     = funcNode->content;
-        funcNode->content->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
+        newScope->owner = funcNode->content;
+        funcNode->content->allocateExtension();
+        funcNode->content->extension->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
     }
 
     return true;
@@ -625,8 +627,9 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
             funcNode->content->token = token;
         }
 
-        funcNode->content->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
-        newScope->owner                     = funcNode->content;
+        funcNode->content->allocateExtension();
+        funcNode->content->extension->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
+        newScope->owner                                = funcNode->content;
     }
 
     return true;

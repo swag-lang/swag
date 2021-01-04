@@ -239,7 +239,10 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // Can be null for intrinsics etc...
     if (node->content)
-        node->content->byteCodeBeforeFct = ByteCodeGenJob::emitBeforeFuncDeclContent;
+    {
+        node->content->allocateExtension();
+        node->content->extension->byteCodeBeforeFct = ByteCodeGenJob::emitBeforeFuncDeclContent;
+    }
 
     // Do we have a return value
     if (node->content && node->returnType && node->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
@@ -890,10 +893,15 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     cloneContext.forceFlags |= identifier->flags & AST_NO_BACKEND;
     cloneContext.forceFlags |= identifier->flags & AST_RUN_BLOCK;
 
-    auto newContent               = funcDecl->content->clone(cloneContext);
-    newContent->byteCodeBeforeFct = nullptr;
-    if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN)
-        newContent->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
+    auto newContent = funcDecl->content->clone(cloneContext);
+
+    if (newContent->extension)
+    {
+        newContent->extension->byteCodeBeforeFct = nullptr;
+        if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN)
+            newContent->extension->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
+    }
+
     newContent->flags &= ~AST_NO_SEMANTIC;
 
     // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called

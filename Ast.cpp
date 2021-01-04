@@ -272,11 +272,12 @@ namespace Ast
 
     AstInline* newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        AstInline* node         = Ast::newNode<AstInline>(syntaxJob, AstNodeKind::Inline, sourceFile, parent);
-        node->semanticBeforeFct = SemanticJob::resolveInlineBefore;
-        node->semanticAfterFct  = SemanticJob::resolveInlineAfter;
-        node->byteCodeBeforeFct = ByteCodeGenJob::emitInlineBefore;
-        node->byteCodeFct       = ByteCodeGenJob::emitInline;
+        AstInline* node = Ast::newNode<AstInline>(syntaxJob, AstNodeKind::Inline, sourceFile, parent);
+        node->allocateExtension();
+        node->extension->semanticBeforeFct = SemanticJob::resolveInlineBefore;
+        node->extension->semanticAfterFct  = SemanticJob::resolveInlineAfter;
+        node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInlineBefore;
+        node->byteCodeFct                  = ByteCodeGenJob::emitInline;
         return node;
     }
 

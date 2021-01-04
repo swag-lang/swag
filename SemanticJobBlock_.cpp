@@ -30,9 +30,11 @@ bool SemanticJob::resolveIf(SemanticContext* context)
         return true;
     }
 
-    node->byteCodeFct                      = ByteCodeGenJob::emitIf;
-    node->boolExpression->byteCodeAfterFct = ByteCodeGenJob::emitIfAfterExpr;
-    node->ifBlock->byteCodeAfterFct        = ByteCodeGenJob::emitIfAfterIf;
+    node->byteCodeFct = ByteCodeGenJob::emitIf;
+    node->boolExpression->allocateExtension();
+    node->boolExpression->extension->byteCodeAfterFct = ByteCodeGenJob::emitIfAfterExpr;
+    node->ifBlock->allocateExtension();
+    node->ifBlock->extension->byteCodeAfterFct = ByteCodeGenJob::emitIfAfterIf;
 
     return true;
 }
@@ -56,10 +58,12 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
         }
     }
 
-    node->byteCodeFct                       = ByteCodeGenJob::emitLoop;
-    node->boolExpression->byteCodeBeforeFct = ByteCodeGenJob::emitWhileBeforeExpr;
-    node->boolExpression->byteCodeAfterFct  = ByteCodeGenJob::emitWhileAfterExpr;
-    node->block->byteCodeAfterFct           = ByteCodeGenJob::emitLoopAfterBlock;
+    node->byteCodeFct = ByteCodeGenJob::emitLoop;
+    node->boolExpression->allocateExtension();
+    node->boolExpression->extension->byteCodeBeforeFct = ByteCodeGenJob::emitWhileBeforeExpr;
+    node->boolExpression->extension->byteCodeAfterFct  = ByteCodeGenJob::emitWhileAfterExpr;
+    node->block->allocateExtension();
+    node->block->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
     return true;
 }
 
@@ -169,11 +173,14 @@ bool SemanticJob::resolveFor(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression));
-    node->byteCodeFct                       = ByteCodeGenJob::emitLoop;
-    node->boolExpression->byteCodeBeforeFct = ByteCodeGenJob::emitForBeforeExpr;
-    node->boolExpression->byteCodeAfterFct  = ByteCodeGenJob::emitForAfterExpr;
-    node->postExpression->byteCodeAfterFct  = ByteCodeGenJob::emitForAfterPost;
-    node->block->byteCodeAfterFct           = ByteCodeGenJob::emitLoopAfterBlock;
+    node->byteCodeFct = ByteCodeGenJob::emitLoop;
+    node->boolExpression->allocateExtension();
+    node->boolExpression->extension->byteCodeBeforeFct = ByteCodeGenJob::emitForBeforeExpr;
+    node->boolExpression->extension->byteCodeAfterFct  = ByteCodeGenJob::emitForAfterExpr;
+    node->postExpression->allocateExtension();
+    node->postExpression->extension->byteCodeAfterFct = ByteCodeGenJob::emitForAfterPost;
+    node->block->allocateExtension();
+    node->block->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
     return true;
 }
 
@@ -188,11 +195,13 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     node->byteCodeFct = ByteCodeGenJob::emitSwitch;
     if (!node->expression)
     {
-        node->byteCodeBeforeFct = ByteCodeGenJob::emitBeforeSwitch;
+        node->allocateExtension();
+        node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitBeforeSwitch;
         return true;
     }
 
-    node->expression->byteCodeAfterFct = ByteCodeGenJob::emitSwitchAfterExpr;
+    node->expression->allocateExtension();
+    node->expression->extension->byteCodeAfterFct = ByteCodeGenJob::emitSwitchAfterExpr;
 
     SWAG_CHECK(checkIsConcrete(context, node->expression));
     node->typeInfo = node->expression->typeInfo;
@@ -286,8 +295,9 @@ bool SemanticJob::resolveCase(SemanticContext* context)
 
     if (node->ownerSwitch->expression)
         node->typeInfo = node->ownerSwitch->expression->typeInfo;
-    node->block->byteCodeBeforeFct = ByteCodeGenJob::emitSwitchCaseBeforeBlock;
-    node->block->byteCodeAfterFct  = ByteCodeGenJob::emitSwitchCaseAfterBlock;
+    node->block->allocateExtension();
+    node->block->extension->byteCodeBeforeFct = ByteCodeGenJob::emitSwitchCaseBeforeBlock;
+    node->block->extension->byteCodeAfterFct  = ByteCodeGenJob::emitSwitchCaseAfterBlock;
     return true;
 }
 
@@ -316,9 +326,11 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
         }
     }
 
-    node->byteCodeFct                  = ByteCodeGenJob::emitLoop;
-    node->expression->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
-    node->block->byteCodeAfterFct      = ByteCodeGenJob::emitLoopAfterBlock;
+    node->byteCodeFct = ByteCodeGenJob::emitLoop;
+    node->expression->allocateExtension();
+    node->expression->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
+    node->block->allocateExtension();
+    node->block->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
     return true;
 }
 
@@ -588,7 +600,8 @@ bool SemanticJob::resolveLabel(SemanticContext* context)
         check = check->parent;
     }
 
-    node->block->byteCodeBeforeFct = ByteCodeGenJob::emitLabelBeforeBlock;
-    node->block->byteCodeAfterFct  = ByteCodeGenJob::emitLoopAfterBlock;
+    node->block->allocateExtension();
+    node->block->extension->byteCodeBeforeFct = ByteCodeGenJob::emitLabelBeforeBlock;
+    node->block->extension->byteCodeAfterFct  = ByteCodeGenJob::emitLoopAfterBlock;
     return true;
 }

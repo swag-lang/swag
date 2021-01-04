@@ -112,7 +112,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     if (implInterface)
     {
         scoped_lock lk(newScope->symTable.mutex);
-        Utf8     itfName  = implNode->identifier->childs.back()->token.text;
+        Utf8        itfName  = implNode->identifier->childs.back()->token.text;
         auto        symbol   = newScope->symTable.findNoLock(itfName);
         Scope*      subScope = nullptr;
         if (!symbol)
@@ -299,9 +299,10 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         ScopedStruct   scopedStruct(this, newScope);
         ScopedMainNode scopedMainNode(this, structNode);
 
-        auto contentNode               = Ast::newNode<AstNode>(this, AstNodeKind::StructContent, sourceFile, structNode);
-        structNode->content            = contentNode;
-        contentNode->semanticBeforeFct = SemanticJob::preResolveStructContent;
+        auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::StructContent, sourceFile, structNode);
+        structNode->content = contentNode;
+        contentNode->allocateExtension();
+        contentNode->extension->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
         if (structType == SyntaxStructType::Tuple)
             SWAG_CHECK(doStructBodyTuple(contentNode, true));

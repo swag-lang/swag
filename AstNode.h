@@ -347,6 +347,7 @@ struct AstNode
     Utf8             computeScopedNameForeign();
     bool             mustInline();
     void             setOwnerAttrUse(AstAttrUse* attrUse);
+    void             allocateExtension();
 
     SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
 
@@ -357,8 +358,14 @@ struct AstNode
     Token         token;
     shared_mutex  mutex;
     ComputedValue computedValue;
-    RegisterList  resultRegisterRC;
-    RegisterList  additionalRegisterRC;
+
+    struct Extension
+    {
+        SemanticFct       semanticBeforeFct;
+        SemanticFct       semanticAfterFct;
+        ByteCodeNotifyFct byteCodeBeforeFct;
+        ByteCodeNotifyFct byteCodeAfterFct;
+    };
 
     Scope*              ownerScope;
     AstBreakable*       ownerBreakable;
@@ -376,16 +383,16 @@ struct AstNode
     ByteCodeGenJob*     byteCodeJob;
     AstNode*            parent;
     SemanticFct         semanticFct;
-    SemanticFct         semanticBeforeFct;
-    SemanticFct         semanticAfterFct;
     ByteCodeFct         byteCodeFct;
-    ByteCodeNotifyFct   byteCodeBeforeFct;
-    ByteCodeNotifyFct   byteCodeAfterFct;
     SourceFile*         sourceFile;
     ByteCode*           bc;
+    Extension*          extension;
 
     uint64_t flags;
     uint64_t attributeFlags;
+
+    RegisterList resultRegisterRC;
+    RegisterList additionalRegisterRC;
 
     uint32_t doneFlags;
     uint32_t semFlags;
