@@ -8,7 +8,6 @@ Global g_Global;
 
 void Global::setup()
 {
-    duringInit = false;
     g_TypeMgr.setup();
     g_LangSpec.setup();
     Backend::setup();

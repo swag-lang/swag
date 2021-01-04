@@ -5,47 +5,8 @@
 
 thread_local Allocator g_Allocator;
 
-mutex      g_allocatorListMutex;
-Allocator* g_firstFreeAllocator = nullptr;
-
-Allocator::Allocator()
-{
-    // Reuse an existing allocator if there are some
-    // Be sure to not access g_allocatorListMutex during compiler tls allocation (by os runtime)
-    if (!g_Global.duringInit)
-    {
-        unique_lock lk(g_allocatorListMutex);
-        if (g_firstFreeAllocator)
-        {
-            memcpy(this, g_firstFreeAllocator, sizeof(Allocator));
-            auto next = g_firstFreeAllocator->nextFreeAllocator;
-            ::free(g_firstFreeAllocator);
-            g_firstFreeAllocator = next;
-            return;
-        }
-    }
-
-    memset(freeBuckets, 0, sizeof(freeBuckets));
-    memset(freeBucketsCpt, 0, sizeof(freeBucketsCpt));
-}
-
-Allocator::~Allocator()
-{
-    if (g_Global.exiting)
-        return;
-
-    // Destructor is only called when releasing tls, i.e. when a bytecode user thread is
-    // terminated (for compiler threads, g_Global.exiting will be true).
-    // We cannot release memory, as it can be used by someone else, so we copy the allocator informations so that the next created
-    // thread can reuse it.
-
-    auto cpy = (Allocator*) ::malloc(sizeof(Allocator));
-    memcpy(cpy, this, sizeof(Allocator));
-
-    unique_lock lk(g_allocatorListMutex);
-    cpy->nextFreeAllocator = g_firstFreeAllocator;
-    g_firstFreeAllocator   = cpy;
-}
+mutex      g_allocatorMutex;
+Allocator* g_sharedAllocator = nullptr;
 
 void* operator new(size_t t)
 {
@@ -64,7 +25,13 @@ void operator delete(void* addr)
     return g_Allocator.free(p, *p);
 }
 
-void* Allocator::tryFreeBlock(uint32_t maxCount, size_t size)
+AllocatorImpl::AllocatorImpl()
+{
+    memset(freeBuckets, 0, sizeof(freeBuckets));
+    memset(freeBucketsCpt, 0, sizeof(freeBucketsCpt));
+}
+
+void* AllocatorImpl::tryFreeBlock(uint32_t maxCount, size_t size)
 {
     if (!firstFreeBlock)
         return nullptr;
@@ -133,7 +100,7 @@ void* Allocator::tryFreeBlock(uint32_t maxCount, size_t size)
     return nullptr;
 }
 
-void* Allocator::tryBucket(uint32_t bucket, size_t size)
+void* AllocatorImpl::tryBucket(uint32_t bucket, size_t size)
 {
     if (bucket >= MAX_FREE_BUCKETS)
         return nullptr;
@@ -162,7 +129,7 @@ void* Allocator::tryBucket(uint32_t bucket, size_t size)
     return result;
 }
 
-void* Allocator::alloc(size_t size)
+void* AllocatorImpl::alloc(size_t size)
 {
     SWAG_ASSERT((size & 7) == 0);
 
@@ -244,17 +211,7 @@ void* Allocator::alloc(size_t size)
     return returnData;
 }
 
-size_t Allocator::alignSize(size_t size)
-{
-    if (!size)
-        return 0;
-    auto alignedSize = size & ~7;
-    if (size != alignedSize)
-        return alignedSize + 8;
-    return size;
-}
-
-void Allocator::free(void* ptr, size_t size)
+void AllocatorImpl::free(void* ptr, size_t size)
 {
     if (!ptr)
         return;
@@ -278,4 +235,58 @@ void Allocator::free(void* ptr, size_t size)
     fptr->size     = size;
     fptr->next     = firstFreeBlock;
     firstFreeBlock = fptr;
+}
+
+Allocator::Allocator()
+{
+    impl = &_impl;
+
+    // Allocator created by the tls of a user bytecode thread. In that can, we use
+    // the same shared AllocatorImpl
+    if (g_Global.compilerAllocTh >= g_Stats.numWorkers && g_Stats.numWorkers)
+    {
+        shared = true;
+        unique_lock lk(g_allocatorMutex);
+        if (g_sharedAllocator)
+        {
+            impl = g_sharedAllocator->impl;
+            SWAG_ASSERT(impl);
+        }
+        else
+        {
+            g_sharedAllocator       = (Allocator*) malloc(sizeof(Allocator));
+            g_sharedAllocator->impl = &g_sharedAllocator->_impl;
+            memset(g_sharedAllocator->impl, 0, sizeof(AllocatorImpl));
+            impl = &g_sharedAllocator->_impl;
+        }
+    }
+}
+
+size_t Allocator::alignSize(size_t size)
+{
+    if (!size)
+        return 0;
+    auto alignedSize = size & ~7;
+    if (size != alignedSize)
+        return alignedSize + 8;
+    return size;
+}
+
+void* Allocator::alloc(size_t size)
+{
+    if (shared)
+        g_allocatorMutex.lock();
+    auto result = impl->alloc(size);
+    if (shared)
+        g_allocatorMutex.unlock();
+    return result;
+}
+
+void Allocator::free(void* ptr, size_t size)
+{
+    if (shared)
+        g_allocatorMutex.lock();
+    impl->free(ptr, size);
+    if (shared)
+        g_allocatorMutex.unlock();
 }

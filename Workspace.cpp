@@ -744,7 +744,7 @@ bool Workspace::buildTarget()
 
 bool Workspace::build()
 {
-    auto result = true;
+    auto result         = true;
 
     {
         Timer timer(&g_Stats.totalTime);

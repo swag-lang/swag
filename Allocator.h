@@ -11,10 +11,32 @@ struct AllocatorBucket
     size_t   allocated = 0;
 };
 
+struct AllocatorImpl
+{
+    AllocatorImpl();
+
+    void  free(void*, size_t size);
+    void* alloc(size_t size);
+
+    void* tryBucket(uint32_t bucket, size_t size);
+    void* tryFreeBlock(uint32_t maxCount, size_t size);
+
+    typedef struct FreeBlock
+    {
+        FreeBlock* next;
+        size_t     size;
+    } FreeBlock;
+
+    FreeBlock*       firstFreeBlock = nullptr;
+    AllocatorBucket* lastBucket     = nullptr;
+    uint8_t*         currentData    = nullptr;
+    void*            freeBuckets[MAX_FREE_BUCKETS];
+    size_t           freeBucketsCpt[MAX_FREE_BUCKETS];
+};
+
 struct Allocator
 {
     Allocator();
-    ~Allocator();
 
     template<typename T>
     T* alloc()
@@ -28,7 +50,7 @@ struct Allocator
     template<typename T>
     void free(void* ptr)
     {
-        ((T*)ptr)->~T();
+        ((T*) ptr)->~T();
         free(ptr, sizeof(T));
     }
 
@@ -46,21 +68,9 @@ struct Allocator
     void          free(void*, size_t size);
     void*         alloc(size_t size);
 
-    void* tryBucket(uint32_t bucket, size_t size);
-    void* tryFreeBlock(uint32_t maxCount, size_t size);
-
-    typedef struct FreeBlock
-    {
-        FreeBlock* next;
-        size_t     size;
-    } FreeBlock;
-
-    Allocator*       nextFreeAllocator = nullptr;
-    FreeBlock*       firstFreeBlock    = nullptr;
-    AllocatorBucket* lastBucket        = nullptr;
-    uint8_t*         currentData       = nullptr;
-    void*            freeBuckets[MAX_FREE_BUCKETS];
-    size_t           freeBucketsCpt[MAX_FREE_BUCKETS];
+    AllocatorImpl* impl = nullptr;
+    AllocatorImpl  _impl;
+    bool           shared = false;
 };
 
 extern thread_local Allocator g_Allocator;

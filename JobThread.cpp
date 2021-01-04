@@ -34,6 +34,7 @@ void JobThread::loop()
 {
     // TLS context
     OS::tlsSetValue(g_tlsContextId, &g_defaultContext);
+    g_Global.compilerAllocTh += 1;
 
     while (!requestEnd)
     {
