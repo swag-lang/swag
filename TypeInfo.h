@@ -358,13 +358,13 @@ struct TypeInfoFuncAttr : public TypeInfo
     VectorNative<TypeInfoParam*> genericParameters;
     VectorNative<TypeInfoParam*> parameters;
     SymbolAttributes             attributes;
+    map<Utf8, TypeInfo*>         replaceTypes;
 
     TypeInfo* returnType = nullptr;
 
-    int                  firstDefaultValueIdx = -1;
-    int                  stackSize            = 0;
-    map<Utf8, TypeInfo*> replaceTypes;
-    uint32_t             attributeUsage = 0xFFFFFFFF; // All by default
+    int      firstDefaultValueIdx = -1;
+    int      stackSize            = 0;
+    uint32_t attributeUsage       = 0xFFFFFFFF; // All by default
 };
 
 struct TypeInfoPointer : public TypeInfo
