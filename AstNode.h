@@ -365,6 +365,7 @@ struct AstNode
         ByteCodeNotifyFct byteCodeAfterFct;
         ByteCodeGenJob*   byteCodeJob;
         ByteCode*         bc;
+        SymbolOverload*   resolvedUserOpSymbolOverload;
     };
 
     Scope*              ownerScope;
@@ -379,7 +380,6 @@ struct AstNode
     TypeInfo*           castedTypeInfo;
     SymbolName*         resolvedSymbolName;
     SymbolOverload*     resolvedSymbolOverload;
-    SymbolOverload*     resolvedUserOpSymbolOverload;
     AstNode*            parent;
     SemanticFct         semanticFct;
     ByteCodeFct         byteCodeFct;

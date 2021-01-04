@@ -46,9 +46,10 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
                 {
                     if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                     {
-                        fromNode->castedTypeInfo               = fromType;
-                        fromNode->typeInfo                     = toType;
-                        fromNode->resolvedUserOpSymbolOverload = toCast[0];
+                        fromNode->castedTypeInfo = fromType;
+                        fromNode->typeInfo       = toType;
+                        fromNode->allocateExtension();
+                        fromNode->extension->resolvedUserOpSymbolOverload = toCast[0];
                         fromNode->flags |= AST_USER_CAST;
                     }
 

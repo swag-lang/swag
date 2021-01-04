@@ -716,7 +716,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     // opCast
     if (exprNode->flags & AST_USER_CAST)
     {
-        SWAG_ASSERT(exprNode->resolvedUserOpSymbolOverload);
+        SWAG_ASSERT(exprNode->extension && exprNode->extension->resolvedUserOpSymbolOverload);
         if (isExplicit)
         {
             SWAG_CHECK(emitUserOp(context, nullptr, exprNode));
@@ -727,8 +727,9 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
                 job->allParamsTmp = Ast::newFuncCallParams(exprNode->sourceFile, nullptr);
             job->allParamsTmp->childs.clear();
             job->allParamsTmp->childs.push_back(exprNode);
-            exprNode->typeInfo                              = exprNode->castedTypeInfo;
-            job->allParamsTmp->resolvedUserOpSymbolOverload = exprNode->resolvedUserOpSymbolOverload;
+            exprNode->typeInfo = exprNode->castedTypeInfo;
+            job->allParamsTmp->allocateExtension();
+            job->allParamsTmp->extension->resolvedUserOpSymbolOverload = exprNode->extension->resolvedUserOpSymbolOverload;
             SWAG_CHECK(emitUserOp(context, nullptr, job->allParamsTmp));
         }
 

@@ -311,9 +311,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     if (context.rawClone)
         castedTypeInfo = from->castedTypeInfo;
 
-    resolvedSymbolName           = from->resolvedSymbolName;
-    resolvedSymbolOverload       = from->resolvedSymbolOverload;
-    resolvedUserOpSymbolOverload = from->resolvedUserOpSymbolOverload;
+    resolvedSymbolName     = from->resolvedSymbolName;
+    resolvedSymbolOverload = from->resolvedSymbolOverload;
 
     token = from->token;
 
@@ -322,11 +321,12 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     if (from->extension)
     {
         allocateExtension();
-        extension->semanticBeforeFct = from->extension->semanticBeforeFct;
-        extension->semanticAfterFct  = from->extension->semanticAfterFct;
-        extension->byteCodeBeforeFct = from->extension->byteCodeBeforeFct;
-        extension->byteCodeAfterFct  = from->extension->byteCodeAfterFct;
-        extension->bc                = from->extension->bc;
+        extension->semanticBeforeFct            = from->extension->semanticBeforeFct;
+        extension->semanticAfterFct             = from->extension->semanticAfterFct;
+        extension->byteCodeBeforeFct            = from->extension->byteCodeBeforeFct;
+        extension->byteCodeAfterFct             = from->extension->byteCodeAfterFct;
+        extension->bc                           = from->extension->bc;
+        extension->resolvedUserOpSymbolOverload = from->extension->resolvedUserOpSymbolOverload;
     }
 
     computedValue           = from->computedValue;

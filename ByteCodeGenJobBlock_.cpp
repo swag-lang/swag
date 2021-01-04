@@ -37,7 +37,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     else if (node->parent->kind == AstNodeKind::Loop)
     {
         // This should be opCount
-        SWAG_ASSERT(node->parent->resolvedUserOpSymbolOverload);
+        SWAG_ASSERT(node->parent->extension && node->parent->extension->resolvedUserOpSymbolOverload);
         allParams     = node->parent;
         numCallParams = 1;
     }
@@ -231,7 +231,9 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     auto node     = context->node;
     auto loopNode = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
 
-    if (loopNode->resolvedUserOpSymbolOverload && loopNode->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
+    if (loopNode->extension &&
+        loopNode->extension->resolvedUserOpSymbolOverload &&
+        loopNode->extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context, nullptr, loopNode));
         if (context->result != ContextResult::Done)

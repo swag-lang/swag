@@ -428,7 +428,9 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
         auto r0 = node->childs[0]->resultRegisterRC;
         auto r1 = node->childs[1]->resultRegisterRC;
 
-        if (node->resolvedUserOpSymbolOverload && node->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
+        if (node->extension &&
+            node->extension->resolvedUserOpSymbolOverload &&
+            node->extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
         {
             SWAG_CHECK(emitUserOp(context));
             if (context->result != ContextResult::Done)
@@ -528,8 +530,9 @@ bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDe
 
 bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, AstNode* forNode, bool freeRegisterParams)
 {
-    AstNode* node           = forNode ? forNode : context->node;
-    auto     symbolOverload = node->resolvedUserOpSymbolOverload;
+    AstNode* node = forNode ? forNode : context->node;
+    SWAG_ASSERT(node->extension);
+    auto symbolOverload = node->extension->resolvedUserOpSymbolOverload;
     SWAG_ASSERT(symbolOverload);
     auto funcDecl = CastAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
 

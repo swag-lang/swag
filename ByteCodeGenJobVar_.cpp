@@ -28,9 +28,10 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 
         // Generate initialization
         // Do not generate if we have a user define affectation, and the operator is marked as 'complete'
-        if (!node->resolvedUserOpSymbolOverload ||
-            node->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
-            !(node->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_COMPLETE))
+        if (!node->extension ||
+            !node->extension->resolvedUserOpSymbolOverload ||
+            node->extension->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
+            !(node->extension->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_COMPLETE))
         {
             if (!(node->doneFlags & AST_DONE_VARDECL_STRUCT_PARAMETERS))
             {
@@ -48,7 +49,9 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             }
         }
 
-        if (node->resolvedUserOpSymbolOverload && node->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
+        if (node->extension &&
+            node->extension->resolvedUserOpSymbolOverload &&
+            node->extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
         {
             if (!(node->doneFlags & AST_DONE_VARDECL_REF_CALL))
             {

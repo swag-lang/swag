@@ -254,7 +254,9 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
         node->doneFlags |= AST_DONE_CAST2;
     }
 
-    if (node->resolvedUserOpSymbolOverload && node->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
+    if (node->extension &&
+        node->extension->resolvedUserOpSymbolOverload &&
+        node->extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context));
         if (context->result != ContextResult::Done)

@@ -350,8 +350,9 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     auto overload = oneMatch->symbolOverload;
     if (!optionnal)
     {
-        node->typeInfo                     = overload->typeInfo;
-        node->resolvedUserOpSymbolOverload = overload;
+        node->typeInfo = overload->typeInfo;
+        node->allocateExtension();
+        node->extension->resolvedUserOpSymbolOverload = overload;
         SWAG_ASSERT(symbol && symbol->kind == SymbolKind::Function);
     }
 
