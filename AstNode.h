@@ -349,8 +349,6 @@ struct AstNode
     void             setOwnerAttrUse(AstAttrUse* attrUse);
     void             allocateExtension();
 
-    SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
-
     VectorNative<Scope*>           alternativeScopes;
     VectorNative<AlternativeScope> alternativeScopesVars;
     VectorNative<AstNode*>         childs;

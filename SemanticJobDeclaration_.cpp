@@ -25,7 +25,6 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
         {
-            SWAG_RACE_CONDITION_WRITE(regNode->raceConditionAlternativeScopes);
             regNode->alternativeScopes.push_back(typeStruct->scope);
             regNode->alternativeScopesVars.push_back({varNode, typeStruct->scope});
         }
@@ -40,7 +39,6 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         SWAG_VERIFY(typePointer->finalType->kind == TypeInfoKind::Struct, context->report({node, node->token, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct, TypeInfoKind::TypeSet);
         {
-            SWAG_RACE_CONDITION_WRITE(regNode->raceConditionAlternativeScopes);
             regNode->alternativeScopes.push_back(typeStruct->scope);
             regNode->alternativeScopesVars.push_back({varNode, typeStruct->scope});
         }
@@ -76,7 +74,6 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     {
         auto typeInfo = CastTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
-        SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
         node->parent->alternativeScopes.push_back(scope);
         break;
     }
@@ -84,7 +81,6 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     {
         auto typeInfo = CastTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
-        SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
         node->parent->alternativeScopes.push_back(scope);
         break;
     }
@@ -92,7 +88,6 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     {
         auto typeInfo = CastTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
-        SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
         node->parent->alternativeScopes.push_back(scope);
         break;
     }

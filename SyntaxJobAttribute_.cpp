@@ -128,7 +128,6 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
     // Add original scope
     if (topStmt)
     {
-        SWAG_RACE_CONDITION_WRITE(topStmt->raceConditionAlternativeScopes);
         topStmt->alternativeScopes.push_back(currentScope);
     }
 

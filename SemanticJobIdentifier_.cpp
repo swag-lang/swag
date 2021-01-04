@@ -2477,7 +2477,6 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
         auto& here = job->scopesHere;
 
         {
-            SWAG_RACE_CONDITION_READ(startNode->raceConditionAlternativeScopes);
             for (auto p : startNode->alternativeScopes)
             {
                 if (!scopes.contains(p))
