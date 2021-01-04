@@ -308,6 +308,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     SWAG_ASSERT(!typeName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeName, OFFSETOF(concreteTypeInfoValue->name), cflags));
+    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->flatName, typeInfo->name, OFFSETOF(concreteTypeInfoValue->flatName), cflags));
     concreteTypeInfoValue->kind   = typeInfo->kind;
     concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
 
@@ -454,7 +455,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
             }
         }
 
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->rawType, realType, cflags | CONCRETE_FORCE_NO_SCOPE));
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->returnType, realType->returnType, cflags));
         break;
     }

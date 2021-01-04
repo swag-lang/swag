@@ -526,12 +526,12 @@ bool SemanticJob::resolveTypeList(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo)
+bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo, uint32_t flags)
 {
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
 
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, node->typeInfo, resultTypeInfo, &node->computedValue.reg.offset, CONCRETE_SHOULD_WAIT));
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, node->typeInfo, resultTypeInfo, &node->computedValue.reg.offset, CONCRETE_SHOULD_WAIT | flags));
     if (context->result != ContextResult::Done)
         return true;
     node->setFlagsValueIsComputed();

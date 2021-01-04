@@ -300,39 +300,6 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
-{
-    auto  node       = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto  expr       = node->childs.front();
-    auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
-
-    SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
-
-    // Will be runtime for an 'any' type, or a typeset
-    if (expr->typeInfo->isNative(NativeTypeKind::Any) || expr->typeInfo->kind == TypeInfoKind::TypeSet)
-    {
-        SWAG_CHECK(checkIsConcrete(context, expr));
-        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32, CONCRETE_SHOULD_WAIT));
-        if (context->result != ContextResult::Done)
-            return true;
-        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;
-        node->flags |= AST_R_VALUE;
-        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
-        return true;
-    }
-
-    // For a function, this is the return type
-    if (expr->typeInfo->kind == TypeInfoKind::FuncAttr)
-    {
-        auto typeFunc  = CastTypeInfo<TypeInfoFuncAttr>(expr->typeInfo, TypeInfoKind::FuncAttr);
-        expr->typeInfo = typeFunc->returnType;
-    }
-
-    SWAG_CHECK(resolveIntrinsicTypeOf(context));
-    return true;
-}
-
 bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
 {
     auto node         = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
@@ -382,6 +349,43 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     node->typeInfo = typeVar;
     node->typeInfo->flags |= TYPEINFO_SPREAD;
 
+    return true;
+}
+
+bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
+{
+    auto  node       = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto  expr       = node->childs.front();
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
+
+    SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
+
+    // Will be runtime for an 'any' type, or a typeset
+    if (expr->typeInfo->isNative(NativeTypeKind::Any) || expr->typeInfo->kind == TypeInfoKind::TypeSet)
+    {
+        SWAG_CHECK(checkIsConcrete(context, expr));
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32, CONCRETE_SHOULD_WAIT));
+        if (context->result != ContextResult::Done)
+            return true;
+        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;
+        node->flags |= AST_R_VALUE;
+        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+        return true;
+    }
+
+    // For a function, this is the unscoped type
+    if (expr->typeInfo->kind == TypeInfoKind::FuncAttr)
+    {
+        SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo, CONCRETE_FORCE_NO_SCOPE));
+        if (context->result != ContextResult::Done)
+            return true;
+        node->inheritComputedValue(expr);
+        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+        return true;
+    }
+
+    SWAG_CHECK(resolveIntrinsicTypeOf(context));
     return true;
 }
 

@@ -275,6 +275,7 @@ namespace swag
     struct TypeInfo
     {
         name:	    string  // Must remain first !! (see emitCompareOpEqual when comparing two typeinfos)
+        flatName:   string
         sizeof:     uint
         kind: 	    TypeInfoKind = ?
         flags:      TypeInfoFlags = ?
@@ -344,7 +345,6 @@ namespace swag
         using base: 	TypeInfo
         generics:		const [..] TypeInfoParam
         parameters:		const [..] TypeInfoParam
-        rawType:		const *TypeInfo
         returnType:		const *TypeInfo
         attributes:	    const [..] TypeInfoAttribute
     }

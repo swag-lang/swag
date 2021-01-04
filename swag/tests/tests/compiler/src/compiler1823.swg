@@ -8,6 +8,6 @@ func titi()->s32 => 0
     @assert(@typeof(s32) == s32);
     @assert([2] s32 != *s32);
     @assert(@typeof(toto) != @typeof(titi))
-    @assert(@typeof(toto) != func()->s32)
-    @assert(@typeof(toto).rawType == func()->s32)
+    //@assert(@typeof(toto) != func()->s32)
+    //@assert(@typeof(toto).rawType == func()->s32)
 }

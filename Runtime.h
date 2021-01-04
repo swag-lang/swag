@@ -180,6 +180,7 @@ struct ConcreteSlice
 struct ConcreteTypeInfo
 {
     ConcreteSlice name;
+    ConcreteSlice flatName;
     uint64_t      sizeOf;
     TypeInfoKind  kind;
     uint16_t      flags;
@@ -261,7 +262,6 @@ struct ConcreteTypeInfoFunc
     ConcreteTypeInfo  base;
     ConcreteSlice     generics;
     ConcreteSlice     parameters;
-    ConcreteTypeInfo* rawType;
     ConcreteTypeInfo* returnType;
     ConcreteSlice     attributes;
 };
