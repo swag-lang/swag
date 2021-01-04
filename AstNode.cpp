@@ -326,12 +326,12 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extension->semanticAfterFct  = from->extension->semanticAfterFct;
         extension->byteCodeBeforeFct = from->extension->byteCodeBeforeFct;
         extension->byteCodeAfterFct  = from->extension->byteCodeAfterFct;
+        extension->bc                = from->extension->bc;
     }
 
     computedValue           = from->computedValue;
     token.text              = from->token.text;
     sourceFile              = from->sourceFile;
-    bc                      = from->bc;
     castOffset              = from->castOffset;
     concreteTypeInfoStorage = from->concreteTypeInfoStorage;
 

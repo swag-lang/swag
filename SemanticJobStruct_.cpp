@@ -195,8 +195,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
         else
         {
-            *ptrITable = doByteCodeLambda(funcChild->bc);
-            module->constantSegment.addInitPtrFunc(offset, funcChild->bc->callName(), DataSegment::RelocType::Local);
+            *ptrITable = doByteCodeLambda(funcChild->extension->bc);
+            module->constantSegment.addInitPtrFunc(offset, funcChild->extension->bc->callName(), DataSegment::RelocType::Local);
         }
 
         ptrITable++;
@@ -729,14 +729,16 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         node->flags &= ~AST_NO_BYTECODE;
         node->flags |= AST_NO_BYTECODE_CHILDS;
 
-        SWAG_ASSERT(!node->byteCodeJob);
-        node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
-        node->byteCodeJob->sourceFile   = sourceFile;
-        node->byteCodeJob->module       = sourceFile->module;
-        node->byteCodeJob->dependentJob = context->job->dependentJob;
-        node->byteCodeJob->nodes.push_back(node);
+        SWAG_ASSERT(!node->extension || !node->extension->byteCodeJob);
+        node->allocateExtension();
+        auto extension                       = node->extension;
+        extension->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+        extension->byteCodeJob->sourceFile   = sourceFile;
+        extension->byteCodeJob->module       = sourceFile->module;
+        extension->byteCodeJob->dependentJob = context->job->dependentJob;
+        extension->byteCodeJob->nodes.push_back(node);
         node->byteCodeFct = ByteCodeGenJob::emitStruct;
-        g_ThreadMgr.addJob(node->byteCodeJob);
+        g_ThreadMgr.addJob(extension->byteCodeJob);
     }
 
     return true;

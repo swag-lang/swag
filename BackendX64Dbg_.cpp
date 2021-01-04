@@ -913,7 +913,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
             // Local variables
             /////////////////////////////////
-            for (auto localVar : f.node->bc->localVars)
+            for (auto localVar : f.node->extension->bc->localVars)
             {
                 SymbolOverload* overload = localVar->resolvedSymbolOverload;
                 auto            typeInfo = overload->typeInfo;

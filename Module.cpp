@@ -285,8 +285,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
     SWAG_ASSERT(node->flags & AST_BYTECODE_GENERATED);
     SWAG_ASSERT(node->flags & AST_BYTECODE_RESOLVED);
-    SWAG_ASSERT(node->bc);
-    SWAG_ASSERT(node->bc->out);
+    SWAG_ASSERT(node->extension && node->extension->bc);
+    SWAG_ASSERT(node->extension->bc->out);
 
     // Setup flags before running
     auto cxt = (SwagContext*) OS::tlsGetValue(g_tlsContextId);
@@ -306,7 +306,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     runContext.callerContext = callerContext;
     runContext.setup(sourceFile, node);
 
-    node->bc->enterByteCode(&runContext);
+    node->extension->bc->enterByteCode(&runContext);
     auto module = sourceFile->module;
 
     // We need to take care of the room necessary in the stack, as bytecode instruction IncSPBP is not
@@ -319,7 +319,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
 
     bool result = module->runner.run(&runContext);
 
-    node->bc->leaveByteCode(&runContext, false);
+    node->extension->bc->leaveByteCode(&runContext, false);
     g_byteCodeStack.clear();
 
     if (!result)
@@ -348,7 +348,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
     }
 
     // Free auto allocated memory
-    for (auto ptr : node->bc->autoFree)
+    for (auto ptr : node->extension->bc->autoFree)
         g_Allocator.free(ptr.first, ptr.second);
 
     return true;

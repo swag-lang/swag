@@ -373,7 +373,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     if (job)
     {
         // If true, then this is a simple recursive call
-        if (node->byteCodeJob == job)
+        if (node->extension && node->extension->byteCodeJob == job)
             return;
 
         // Need to wait for function full semantic resolve
@@ -406,40 +406,42 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
             job->setPending(nullptr, "ASKBC_WAIT_DONE", node, nullptr);
         }
 
-        if (!node->byteCodeJob)
+        node->allocateExtension();
+        auto extension = node->extension;
+        if (!extension->byteCodeJob)
         {
-            node->byteCodeJob             = g_Pool_byteCodeGenJob.alloc();
-            node->byteCodeJob->sourceFile = sourceFile;
-            node->byteCodeJob->module     = sourceFile->module;
+            extension->byteCodeJob             = g_Pool_byteCodeGenJob.alloc();
+            extension->byteCodeJob->sourceFile = sourceFile;
+            extension->byteCodeJob->module     = sourceFile->module;
             if (flags & ASKBC_WAIT_DONE)
-                node->byteCodeJob->dependentJob = job;
+                extension->byteCodeJob->dependentJob = job;
             else
-                node->byteCodeJob->dependentJob = job->dependentJob;
-            node->byteCodeJob->context.expansionNode = job->baseContext->expansionNode;
-            node->byteCodeJob->nodes.push_back(node);
-            node->bc             = g_Allocator.alloc<ByteCode>();
-            node->bc->node       = node;
-            node->bc->sourceFile = node->sourceFile;
+                extension->byteCodeJob->dependentJob = job->dependentJob;
+            extension->byteCodeJob->context.expansionNode = job->baseContext->expansionNode;
+            extension->byteCodeJob->nodes.push_back(node);
+            extension->bc             = g_Allocator.alloc<ByteCode>();
+            extension->bc->node       = node;
+            extension->bc->sourceFile = node->sourceFile;
             if (node->flags & AST_DEFINED_INTRINSIC)
-                node->bc->name = node->token.text;
+                extension->bc->name = node->token.text;
             else if (node->sourceFile->isRuntimeFile)
-                node->bc->name = node->token.text.c_str();
+                extension->bc->name = node->token.text.c_str();
             else
-                node->bc->name = node->ownerScope->getFullName() + "_" + node->token.text.c_str();
-            node->bc->name.replaceAll('.', '_');
+                extension->bc->name = node->ownerScope->getFullName() + "_" + node->token.text.c_str();
+            extension->bc->name.replaceAll('.', '_');
             if (node->kind == AstNodeKind::FuncDecl)
-                sourceFile->module->addByteCodeFunc(node->bc);
+                sourceFile->module->addByteCodeFunc(node->extension->bc);
             if (flags & ASKBC_WAIT_DONE)
-                job->jobsToAdd.push_back(node->byteCodeJob);
+                job->jobsToAdd.push_back(node->extension->byteCodeJob);
             else
-                g_ThreadMgr.addJob(node->byteCodeJob);
+                g_ThreadMgr.addJob(node->extension->byteCodeJob);
             return;
         }
 
         if (flags & ASKBC_WAIT_DONE)
         {
-            scoped_lock lk1(node->byteCodeJob->mutexDependent);
-            node->byteCodeJob->dependentJobs.add(job);
+            scoped_lock lk1(extension->byteCodeJob->mutexDependent);
+            extension->byteCodeJob->dependentJobs.add(job);
         }
 
         return;
@@ -450,8 +452,8 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
         SWAG_ASSERT(job);
         if (!(node->flags & AST_BYTECODE_RESOLVED))
         {
-            SWAG_ASSERT(node->byteCodeJob);
-            node->byteCodeJob->dependentJobs.add(job);
+            SWAG_ASSERT(node->extension && node->extension->byteCodeJob);
+            node->extension->byteCodeJob->dependentJobs.add(job);
             job->setPending(nullptr, "ASKBC_WAIT_RESOLVED", node, nullptr);
             return;
         }
@@ -470,11 +472,12 @@ JobResult ByteCodeGenJob::execute()
         originalNode = nodes.front();
     }
 
-    SWAG_ASSERT(originalNode->byteCodeJob);
+    SWAG_ASSERT(originalNode->extension);
+    SWAG_ASSERT(originalNode->extension->byteCodeJob);
     baseContext        = &context;
     context.job        = this;
     context.sourceFile = sourceFile;
-    context.bc         = originalNode->bc;
+    context.bc         = originalNode->extension->bc;
     context.node       = originalNode;
 
     if (pass == Pass::Generate)
@@ -593,7 +596,7 @@ JobResult ByteCodeGenJob::execute()
         // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
         {
             unique_lock lk(originalNode->mutex);
-            SWAG_ASSERT(originalNode->byteCodeJob);
+            SWAG_ASSERT(originalNode->extension && originalNode->extension->byteCodeJob);
             originalNode->flags |= AST_BYTECODE_GENERATED;
             dependentJobs.setRunning();
         }
@@ -617,8 +620,8 @@ JobResult ByteCodeGenJob::execute()
                 continue;
             }
 
-            scoped_lock lk1(node->byteCodeJob->mutexDependent);
-            node->byteCodeJob->dependentJobs.add(this);
+            scoped_lock lk1(node->extension->byteCodeJob->mutexDependent);
+            node->extension->byteCodeJob->dependentJobs.add(this);
             return JobResult::KeepJobAlive;
         }
 
@@ -652,22 +655,20 @@ JobResult ByteCodeGenJob::execute()
                 auto dep = tmp[toScan];
 
                 unique_lock lkDep(dep->mutex);
-                if (!dep->byteCodeJob)
-                {
+                if (!dep->extension || !dep->extension->byteCodeJob)
                     continue;
-                }
 
-                if (dep->byteCodeJob == this)
+                if (dep->extension->byteCodeJob == this)
                 {
                     mustWait = false;
                     break;
                 }
 
-                if (dep->byteCodeJob->dependentNodes.empty())
+                if (dep->extension->byteCodeJob->dependentNodes.empty())
                     continue;
 
-                shared_lock lk1(dep->byteCodeJob->mutexDependent);
-                for (auto newDep : dep->byteCodeJob->dependentNodes)
+                shared_lock lk1(dep->extension->byteCodeJob->mutexDependent);
+                for (auto newDep : dep->extension->byteCodeJob->dependentNodes)
                 {
                     auto it = done.find(newDep);
                     if (it != done.end())
@@ -698,8 +699,8 @@ JobResult ByteCodeGenJob::execute()
                 continue;
             }
 
-            scoped_lock lk1(node->byteCodeJob->mutexDependent);
-            node->byteCodeJob->dependentJobs.add(this);
+            scoped_lock lk1(node->extension->byteCodeJob->mutexDependent);
+            node->extension->byteCodeJob->dependentJobs.add(this);
             return JobResult::KeepJobAlive;
         }
     }
@@ -709,12 +710,12 @@ JobResult ByteCodeGenJob::execute()
         unique_lock lk(originalNode->mutex);
         originalNode->flags |= AST_BYTECODE_RESOLVED;
         SWAG_ASSERT(originalNode->flags & AST_BYTECODE_RESOLVED);
-        originalNode->byteCodeJob = nullptr;
+        originalNode->extension->byteCodeJob = nullptr;
     }
 
     // Register function in compiler list, now that we are done
     if (originalNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
-        module->addCompilerFunc(originalNode->bc);
+        module->addCompilerFunc(originalNode->extension->bc);
 
     // #ast can have a #[swag.printbc]. We need to print it now, because it's compile time, and the legit
     // pipeline for printing (after bc optimize) will not be called in that case

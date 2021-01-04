@@ -1240,8 +1240,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     else if (funcNode)
     {
         auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(funcNode->bc);
-        inst->a.pointer = (uint8_t*) funcNode->bc;
+        SWAG_ASSERT(funcNode->extension && funcNode->extension->bc);
+        inst->a.pointer = (uint8_t*) funcNode->extension->bc;
         inst->b.pointer = (uint8_t*) typeInfoFunc;
     }
     else

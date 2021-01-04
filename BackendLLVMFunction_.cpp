@@ -2289,7 +2289,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicPrintF64:
         {
             auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc;
+            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
             auto typeF = createFunctionTypeInternal(buildParameters, 1);
             builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0});
             break;
@@ -2298,7 +2298,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0    = GEP_I32(allocR, ip->a.u32);
             auto r1    = GEP_I32(allocR, ip->b.u32);
-            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc;
+            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
             auto typeF = createFunctionTypeInternal(buildParameters, 2);
             builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0, r1});
             break;
@@ -2308,7 +2308,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r0    = GEP_I32(allocR, ip->a.u32);
             auto r1    = GEP_I32(allocR, ip->b.u32);
             auto r2    = GEP_I32(allocR, ip->c.u32);
-            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc;
+            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
             auto typeF = createFunctionTypeInternal(buildParameters, 3);
             builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0, r1, r2});
             break;
@@ -2318,7 +2318,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r0    = GEP_I32(allocR, ip->a.u32);
             auto r1    = GEP_I32(allocR, ip->b.u32);
             auto r2    = GEP_I32(allocR, ip->c.u32);
-            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->bc;
+            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
             auto typeF = createFunctionTypeInternal(buildParameters, 3);
             builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0, r1, r2});
             break;

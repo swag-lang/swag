@@ -363,6 +363,8 @@ struct AstNode
         SemanticFct       semanticAfterFct;
         ByteCodeNotifyFct byteCodeBeforeFct;
         ByteCodeNotifyFct byteCodeAfterFct;
+        ByteCodeGenJob*   byteCodeJob;
+        ByteCode*         bc;
     };
 
     Scope*              ownerScope;
@@ -378,12 +380,10 @@ struct AstNode
     SymbolName*         resolvedSymbolName;
     SymbolOverload*     resolvedSymbolOverload;
     SymbolOverload*     resolvedUserOpSymbolOverload;
-    ByteCodeGenJob*     byteCodeJob;
     AstNode*            parent;
     SemanticFct         semanticFct;
     ByteCodeFct         byteCodeFct;
     SourceFile*         sourceFile;
-    ByteCode*           bc;
     Extension*          extension;
 
     uint64_t flags;

@@ -40,7 +40,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
 
     sourceFile = sf;
     node       = nd;
-    bc         = node->bc;
+    bc         = node->extension->bc;
     SWAG_ASSERT(bc);
     ip = bc->out;
     SWAG_ASSERT(ip);

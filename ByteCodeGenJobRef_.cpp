@@ -408,7 +408,8 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
 
     auto inst       = emitInstruction(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
     inst->b.pointer = (uint8_t*) funcNode;
-    inst->c.pointer = (uint8_t*) funcNode->bc;
+    SWAG_ASSERT(funcNode->extension);
+    inst->c.pointer = (uint8_t*) funcNode->extension->bc;
 
     return true;
 }
