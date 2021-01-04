@@ -68,7 +68,7 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
         return true;
 
     auto expression = context->node->childs.front();
-    SWAG_CHECK(executeNode(context, expression, false));
+    SWAG_CHECK(executeNodeOnce(context, expression, false));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -88,7 +88,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, format("'#ast' expression is not 'string' ('%s' provided)", expression->typeInfo->name.c_str())}));
 
-    SWAG_CHECK(executeNode(context, expression, true));
+    SWAG_CHECK(executeNodeOnce(context, expression, true));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -124,7 +124,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
-    SWAG_CHECK(executeNode(context, expr, true));
+    SWAG_CHECK(executeNodeOnce(context, expr, true));
     if (context->result == ContextResult::Pending)
         return true;
 
@@ -242,7 +242,7 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
         return true;
 
     auto expr = context->node->childs[0];
-    SWAG_CHECK(executeNode(context, expr, true));
+    SWAG_CHECK(executeNodeOnce(context, expr, true));
     if (context->result == ContextResult::Pending)
         return true;
 
