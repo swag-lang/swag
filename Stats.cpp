@@ -56,11 +56,11 @@ void Stats::print()
     g_Log.messageHeaderDot("mem seg", format("%s", toNiceSize(memSeg.load()).c_str()));
     g_Log.messageHeaderDot("mem concat", format("%s", toNiceSize(memConcat.load()).c_str()));
     g_Log.messageHeaderDot("mem types", format("%s", toNiceSize(memTypes.load()).c_str()));
-    g_Log.messageHeaderDot("mem instr", format("%s", toNiceSize(memInstructions.load()).c_str()));
+    g_Log.messageHeaderDot("mem bcinstr", format("%s", toNiceSize(memInstructions.load()).c_str()));
     g_Log.messageHeaderDot("mem bcstack", format("%s", toNiceSize(memBcStack.load()).c_str()));
+    g_Log.messageHeaderDot("mem symtable", format("%s", toNiceSize(memSymTable.load()).c_str()));
     g_Log.messageHeaderDot("mem symname", format("%s", toNiceSize(memSymName.load()).c_str()));
     g_Log.messageHeaderDot("mem symover", format("%s", toNiceSize(memSymOver.load()).c_str()));
-    g_Log.messageHeaderDot("mem symtable", format("%s", toNiceSize(memSymTable.load()).c_str()));
     g_Log.messageHeaderDot("mem utf8", format("%s", toNiceSize(memUtf8.load()).c_str()));
 
     g_Log.setDefaultColor();

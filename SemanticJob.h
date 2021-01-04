@@ -148,6 +148,7 @@ struct SemanticJob : public Job
     static void resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i);
     static bool checkSymbolGhosting(SemanticContext* context, AstNode* node, SymbolKind kind);
     static bool setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
+    static bool executeNodeOnce(SemanticContext* context, AstNode* node, bool onlyconstExpr);
     static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
     static bool reserveAndStoreToSegment(JobContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool storeToSegment(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);

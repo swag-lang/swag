@@ -1,14 +1,26 @@
 #include "pch.h"
-#include "SourceFile.h"
 #include "Ast.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
-#include "ThreadManager.h"
 #include "Module.h"
 #include "ByteCodeGenJob.h"
 #include "Workspace.h"
-#include "SyntaxJob.h"
 #include "LoadFileJob.h"
+#include "ByteCode.h"
+
+bool SemanticJob::executeNodeOnce(SemanticContext* context, AstNode* node, bool onlyconstExpr)
+{
+    bool res = executeNode(context, node, onlyconstExpr);
+
+    // Do not need bc anymore. Release it
+    if (res && context->result == ContextResult::Done && node->extension && node->extension->bc)
+    {
+        g_Allocator.free<ByteCode>(node->extension->bc);
+        node->extension->bc = nullptr;
+    }
+
+    return res;
+}
 
 bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
@@ -350,7 +362,7 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     auto node = CastAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
-    SWAG_CHECK(executeNode(context, node->boolExpression, true));
+    SWAG_CHECK(executeNodeOnce(context, node->boolExpression, true));
     if (context->result == ContextResult::Pending)
         return true;
 

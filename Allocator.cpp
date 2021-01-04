@@ -12,7 +12,7 @@ Allocator::Allocator()
 {
     // Reuse an existing allocator if there are some
     // Be sure to not access g_allocatorListMutex during compiler tls allocation (by os runtime)
-    if(!g_Global.duringInit)
+    if (!g_Global.duringInit)
     {
         unique_lock lk(g_allocatorListMutex);
         if (g_firstFreeAllocator)
@@ -238,6 +238,7 @@ void* Allocator::alloc(size_t size)
         lastBucket->data      = (uint8_t*) malloc(lastBucket->allocated);
         currentData           = lastBucket->data;
 
+        g_Stats.allocatorMemory += sizeof(AllocatorBucket);
         g_Stats.allocatorMemory += lastBucket->allocated;
     }
 

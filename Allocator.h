@@ -26,6 +26,13 @@ struct Allocator
     }
 
     template<typename T>
+    void free(void* ptr)
+    {
+        ((T*)ptr)->~T();
+        free(ptr, sizeof(T));
+    }
+
+    template<typename T>
     T* alloc0()
     {
         auto size       = alignSize(sizeof(T));
