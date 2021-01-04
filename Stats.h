@@ -18,7 +18,6 @@ struct Stats
     atomic<uint64_t> readFilesTime        = 0;
     atomic<uint64_t> totalTime            = 0;
     atomic<uint64_t> syntaxTime           = 0;
-    atomic<uint64_t> semanticCompilerTime = 0;
     atomic<uint64_t> semanticModuleTime   = 0;
     atomic<uint64_t> runTime              = 0;
     atomic<uint64_t> runTestTime          = 0;

@@ -40,8 +40,7 @@ void Stats::print()
 
     g_Log.messageHeaderDot("syntax time", format("%.3fs", OS::timerToSeconds(syntaxTime.load())));
     g_Log.messageHeaderDot("read files", format("%.3fs", OS::timerToSeconds(readFilesTime.load())));
-    g_Log.messageHeaderDot("semantic comp time", format("%.3fs", OS::timerToSeconds(semanticCompilerTime.load())));
-    g_Log.messageHeaderDot("semantic mod time", format("%.3fs", OS::timerToSeconds(semanticModuleTime.load())));
+    g_Log.messageHeaderDot("semantic time", format("%.3fs", OS::timerToSeconds(semanticModuleTime.load())));
     g_Log.messageHeaderDot("run time", format("%.3fs", OS::timerToSeconds(runTime.load())));
     g_Log.messageHeaderDot("output time", format("%.3fs", OS::timerToSeconds(outputTime.load())));
     g_Log.messageHeaderDot("prep out time", format("%.3fs %.3fs", OS::timerToSeconds(prepOutputTimePass.load()), OS::timerToSeconds(prepOutputTimeJob.load())));
