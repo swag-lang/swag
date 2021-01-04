@@ -240,11 +240,13 @@ void* Allocator::alloc(size_t size)
 
         g_Stats.allocatorMemory += sizeof(AllocatorBucket);
         g_Stats.allocatorMemory += lastBucket->allocated;
+        g_Stats.wastedMemory += lastBucket->allocated;
     }
 
     auto returnData = currentData;
     currentData += size;
     lastBucket->maxUsed += size;
+    g_Stats.wastedMemory -= size;
     return returnData;
 }
 
