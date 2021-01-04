@@ -25,13 +25,6 @@ uint32_t g_ByteCodeOpFlags[] = {
 #include "ByteCodeOpList.h"
 };
 
-ByteCode::~ByteCode()
-{
-    g_Allocator.free(out, maxInstructions * sizeof(ByteCodeInstruction));
-    if (g_CommandLine.stats)
-        g_Stats.memInstructions -= maxInstructions * sizeof(ByteCodeInstruction);
-}
-
 void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force)
 {
     *file     = bc->sourceFile;

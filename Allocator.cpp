@@ -166,21 +166,32 @@ void* Allocator::alloc(size_t size)
 {
     SWAG_ASSERT((size & 7) == 0);
 
-    auto bucket = size / 8;
+    auto  bucket = size / 8;
+    void* result;
     if (bucket < MAX_FREE_BUCKETS)
     {
         // Try in the list of free blocks, per bucket
-        auto result = tryBucket((uint32_t) bucket, size);
+        result = tryBucket((uint32_t) bucket, size);
         if (result)
             return result;
+
         // Try to split the biggest bucket
         result = tryBucket(MAX_FREE_BUCKETS - 1, size);
         if (result)
             return result;
     }
 
-    // Try the first free block
-    auto result = tryFreeBlock(1, size);
+    // Try other big buckets
+    for (int i = MAX_FREE_BUCKETS - 2; i > bucket; i--)
+    {
+        result = tryBucket(i, size);
+        if (result)
+            return result;
+    }
+
+    // Magic number
+    uint32_t maxTries = !lastBucket || lastBucket->maxUsed + size >= lastBucket->allocated ? 1024 : 128;
+    result            = tryFreeBlock(maxTries, size);
     if (result)
     {
         if (g_CommandLine.devMode)
@@ -191,23 +202,6 @@ void* Allocator::alloc(size_t size)
     // Do we need to allocate a new data block ?
     if (!lastBucket || lastBucket->maxUsed + size >= lastBucket->allocated)
     {
-        // Try other big buckets
-        for (int i = MAX_FREE_BUCKETS - 2; i > bucket; i--)
-        {
-            result = tryBucket(i, size);
-            if (result)
-                return result;
-        }
-
-        // Magic number
-        result = tryFreeBlock(8, size);
-        if (result)
-        {
-            if (g_CommandLine.devMode)
-                memset(result, 0xCC, size);
-            return result;
-        }
-
         // We get the remaining space in the last bucket, to be able to use it as
         // a free block
         if (lastBucket)
