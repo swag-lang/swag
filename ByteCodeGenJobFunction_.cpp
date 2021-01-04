@@ -981,7 +981,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             // Store concrete type info
             auto r0 = reserveRegisterRC(context);
             toFree.push_back(r0);
-            SWAG_ASSERT(child->concreteTypeInfoStorage != UINT32_MAX);
 
             // If this is a reference, then we push the type pointed by it, so that the user will receive a real type,
             // and not a reference to a type

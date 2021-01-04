@@ -97,7 +97,6 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
         // Store value in constant segment
         uint32_t storageOffsetValue;
         SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, storageOffsetValue, &module->constantSegment, value, assignment->castedTypeInfo, assignment));
-        SWAG_ASSERT(assignment->concreteTypeInfoStorage != UINT32_MAX);
 
         // Then reference that value and the concrete type info
         auto ptrStorage                     = module->constantSegment.addressNoLock(storageOffsetValue);

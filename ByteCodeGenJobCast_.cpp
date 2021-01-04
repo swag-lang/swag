@@ -35,7 +35,6 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
 
     // This is the type part.
     // Get concrete typeinfo from constant segment
-    SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
     emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0[1])->b.u64 = exprNode->concreteTypeInfoStorage;
 
     exprNode->additionalRegisterRC  = exprNode->resultRegisterRC;

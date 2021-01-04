@@ -395,12 +395,12 @@ struct AstNode
     uint32_t semFlags;
 
     uint32_t castOffset;
-    uint32_t concreteTypeInfoStorage = UINT32_MAX;
+    uint32_t concreteTypeInfoStorage;
 
     uint32_t            childParentIdx;
-    AstNodeResolveState semanticState = AstNodeResolveState::Enter;
-    AstNodeResolveState bytecodeState = AstNodeResolveState::Enter;
-    AstNodeKind         kind          = AstNodeKind::Invalid;
+    AstNodeResolveState semanticState;
+    AstNodeResolveState bytecodeState;
+    AstNodeKind         kind;
 };
 
 struct AstVarDecl : public AstNode
@@ -410,7 +410,7 @@ struct AstVarDecl : public AstNode
     Utf8     publicName;
     AstNode* type;
     AstNode* assignment;
-    bool     constAssign = false;
+    bool     constAssign;
 };
 
 struct AstIdentifierRef : public AstNode
@@ -437,22 +437,22 @@ struct AstFuncDecl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    DependentJobs dependentJobs;
-
-    AstNode*               parameters;
-    AstNode*               genericParameters;
-    AstNode*               returnType;
-    AstNode*               content;
-    Scope*                 scope;
-    TypeInfoParam*         methodParam;
-    Job*                   pendingLambdaJob;
+    DependentJobs          dependentJobs;
+    Utf8                   fullnameForeign;
     map<Utf8, TypeInfo*>   replaceTypes;
     VectorNative<AstNode*> subFunctions;
 
-    uint32_t stackSize         = 0;
-    int      exportForeignLine = 0;
+    AstNode*       parameters;
+    AstNode*       genericParameters;
+    AstNode*       returnType;
+    AstNode*       content;
+    Scope*         scope;
+    TypeInfoParam* methodParam;
+    Job*           pendingLambdaJob;
 
-    Utf8 fullnameForeign;
+    uint32_t stackSize;
+    int      exportForeignLine;
+
     void computeFullNameForeign(bool forExport);
     Utf8 getNameForMessage();
 };
@@ -466,7 +466,8 @@ struct AstAttrDecl : public AstNode
 
 struct AstAttrUse : public AstNode
 {
-    AstNode*         clone(CloneContext& context) override;
+    AstNode* clone(CloneContext& context) override;
+
     AstNode*         content;
     SymbolAttributes attributes;
 };
@@ -518,7 +519,7 @@ struct AstBreakContinue : public AstNode
 
     Utf8 label;
 
-    AstSwitchCase* switchCase = nullptr; // The corresponding case, if inside a switch
+    AstSwitchCase* switchCase;
 
     int jumpInstruction;
 };
@@ -769,7 +770,8 @@ struct AstReturn : public AstNode
     AstNode* clone(CloneContext& context) override;
 
     VectorNative<SymbolOverload*> forceNoDrop;
-    int                           seekJump;
+
+    int seekJump;
 };
 
 struct AstCompilerInline : public AstNode
@@ -826,8 +828,9 @@ enum class CompilerAstKind
 
 struct AstCompilerAst : public AstNode
 {
-    AstNode*        clone(CloneContext& context) override;
-    CompilerAstKind embeddedKind = CompilerAstKind::EmbeddedInstruction;
+    AstNode* clone(CloneContext& context) override;
+
+    CompilerAstKind embeddedKind;
 };
 
 struct AstCompilerRun : public AstNode
@@ -838,5 +841,6 @@ struct AstCompilerRun : public AstNode
 struct AstNameSpace : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
-    Utf8     importedModuleName;
+
+    Utf8 importedModuleName;
 };
