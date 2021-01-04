@@ -123,6 +123,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             typeInfo->nakedName  = typeInfo->name;
             typeInfo->structName = typeInfo->name;
             typeInfo->scope      = subScope;
+            typeInfo->declNode   = implNode;
             newScope->symTable.addSymbolTypeInfoNoLock(&context, implNode, typeInfo, SymbolKind::Struct, nullptr, OVERLOAD_IMPL, nullptr, 0, &itfName);
         }
         else

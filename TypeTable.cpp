@@ -241,7 +241,10 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     }
 
     if (!(cflags & CONCRETE_FOR_COMPILER))
+    {
+        //printf("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str());
         g_Stats.totalConcreteTypes++;
+    }
 
     auto node       = context->node;
     auto sourceFile = context->sourceFile;
