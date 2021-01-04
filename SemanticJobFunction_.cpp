@@ -814,19 +814,24 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     CloneContext cloneContext;
 
     // The content will be inline in its separated syntax block
-    auto inlineNode                   = Ast::newInline(identifier->sourceFile, identifier);
-    inlineNode->attributeFlags        = funcDecl->attributeFlags;
-    inlineNode->func                  = funcDecl;
-    inlineNode->scope                 = identifier->ownerScope;
-    inlineNode->alternativeScopes     = funcDecl->alternativeScopes;
-    inlineNode->alternativeScopesVars = funcDecl->alternativeScopesVars;
+    auto inlineNode            = Ast::newInline(identifier->sourceFile, identifier);
+    inlineNode->attributeFlags = funcDecl->attributeFlags;
+    inlineNode->func           = funcDecl;
+    inlineNode->scope          = identifier->ownerScope;
+    inlineNode->allocateExtension();
+
+    if (funcDecl->extension)
+    {
+        inlineNode->extension->alternativeScopes     = funcDecl->extension->alternativeScopes;
+        inlineNode->extension->alternativeScopesVars = funcDecl->extension->alternativeScopesVars;
+    }
 
     // We need to add the parent scope of the inline function (the global one), in order for
     // the inline content to be resolved in the same context as the original function
     auto globalScope = funcDecl->ownerScope;
     while (!globalScope->isGlobalOrImpl())
         globalScope = globalScope->parentScope;
-    inlineNode->alternativeScopes.push_back(globalScope);
+    inlineNode->extension->alternativeScopes.push_back(globalScope);
 
     // If function has generic parameters, then the block resolution of identifiers needs to be able to find the generic parameters
     // so we register all those generic parameters in a special scope (we cannot just register the scope of the function because
@@ -834,7 +839,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     if (funcDecl->genericParameters)
     {
         Scope* scope = Ast::newScope(inlineNode, "", ScopeKind::Statement, nullptr);
-        inlineNode->alternativeScopes.push_back(scope);
+        inlineNode->extension->alternativeScopes.push_back(scope);
         for (auto child : funcDecl->genericParameters->childs)
         {
             auto symName = scope->symTable.registerSymbolNameNoLock(context, child, SymbolKind::Variable);

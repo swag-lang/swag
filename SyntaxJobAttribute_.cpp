@@ -128,7 +128,8 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
     // Add original scope
     if (topStmt)
     {
-        topStmt->alternativeScopes.push_back(currentScope);
+        topStmt->allocateExtension();
+        topStmt->extension->alternativeScopes.push_back(currentScope);
     }
 
     return true;

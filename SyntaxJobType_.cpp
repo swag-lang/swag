@@ -149,7 +149,8 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
         rootScope = sourceFile->scopePrivate;
     else
         rootScope = sourceFile->astRoot->ownerScope;
-    structNode->alternativeScopes.push_back(currentScope);
+    structNode->allocateExtension();
+    structNode->extension->alternativeScopes.push_back(currentScope);
     auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
     structNode->scope = newScope;
 

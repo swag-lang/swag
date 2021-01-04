@@ -25,8 +25,9 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
         {
-            regNode->alternativeScopes.push_back(typeStruct->scope);
-            regNode->alternativeScopesVars.push_back({varNode, typeStruct->scope});
+            regNode->allocateExtension();
+            regNode->extension->alternativeScopes.push_back(typeStruct->scope);
+            regNode->extension->alternativeScopesVars.push_back({varNode, typeStruct->scope});
         }
     }
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
@@ -39,8 +40,9 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         SWAG_VERIFY(typePointer->finalType->kind == TypeInfoKind::Struct, context->report({node, node->token, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct, TypeInfoKind::TypeSet);
         {
-            regNode->alternativeScopes.push_back(typeStruct->scope);
-            regNode->alternativeScopesVars.push_back({varNode, typeStruct->scope});
+            regNode->allocateExtension();
+            regNode->extension->alternativeScopes.push_back(typeStruct->scope);
+            regNode->extension->alternativeScopesVars.push_back({varNode, typeStruct->scope});
         }
     }
     else
@@ -74,21 +76,24 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     {
         auto typeInfo = CastTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
-        node->parent->alternativeScopes.push_back(scope);
+        node->parent->allocateExtension();
+        node->parent->extension->alternativeScopes.push_back(scope);
         break;
     }
     case TypeInfoKind::Enum:
     {
         auto typeInfo = CastTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
-        node->parent->alternativeScopes.push_back(scope);
+        node->parent->allocateExtension();
+        node->parent->extension->alternativeScopes.push_back(scope);
         break;
     }
     case TypeInfoKind::Struct:
     {
         auto typeInfo = CastTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
-        node->parent->alternativeScopes.push_back(scope);
+        node->parent->allocateExtension();
+        node->parent->extension->alternativeScopes.push_back(scope);
         break;
     }
     default:

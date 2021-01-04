@@ -349,24 +349,23 @@ struct AstNode
     void             setOwnerAttrUse(AstAttrUse* attrUse);
     void             allocateExtension();
 
-    VectorNative<Scope*>           alternativeScopes;
-    VectorNative<AlternativeScope> alternativeScopesVars;
-    VectorNative<AstNode*>         childs;
-
-    Token         token;
-    shared_mutex  mutex;
-    ComputedValue computedValue;
-
     struct Extension
     {
-        SemanticFct       semanticBeforeFct;
-        SemanticFct       semanticAfterFct;
-        ByteCodeNotifyFct byteCodeBeforeFct;
-        ByteCodeNotifyFct byteCodeAfterFct;
-        ByteCodeGenJob*   byteCodeJob;
-        ByteCode*         bc;
-        SymbolOverload*   resolvedUserOpSymbolOverload;
+        VectorNative<Scope*>           alternativeScopes;
+        VectorNative<AlternativeScope> alternativeScopesVars;
+        SemanticFct                    semanticBeforeFct;
+        SemanticFct                    semanticAfterFct;
+        ByteCodeNotifyFct              byteCodeBeforeFct;
+        ByteCodeNotifyFct              byteCodeAfterFct;
+        ByteCodeGenJob*                byteCodeJob;
+        ByteCode*                      bc;
+        SymbolOverload*                resolvedUserOpSymbolOverload;
     };
+
+    shared_mutex           mutex;
+    Token                  token;
+    VectorNative<AstNode*> childs;
+    ComputedValue          computedValue;
 
     Scope*              ownerScope;
     AstBreakable*       ownerBreakable;

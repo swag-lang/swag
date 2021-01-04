@@ -1698,11 +1698,11 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
                 // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
                 // relevant and we should not use it
-                if (startScope->kind != ScopeKind::Namespace)
+                if (startScope->kind != ScopeKind::Namespace && startScope->owner->extension)
                 {
-                    for (auto s : startScope->owner->alternativeScopes)
+                    for (auto s : startScope->owner->extension->alternativeScopes)
                         scopeHierarchy.insert(s);
-                    scopeHierarchyVars.append(startScope->owner->alternativeScopesVars);
+                    scopeHierarchyVars.append(startScope->owner->extension->alternativeScopesVars);
                 }
             }
         }
@@ -2471,13 +2471,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
 void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
 {
-    if (!startNode->alternativeScopes.empty())
+    if (startNode->extension && !startNode->extension->alternativeScopes.empty())
     {
         auto  job  = context->job;
         auto& here = job->scopesHere;
 
         {
-            for (auto p : startNode->alternativeScopes)
+            for (auto p : startNode->extension->alternativeScopes)
             {
                 if (!scopes.contains(p))
                 {
@@ -2486,7 +2486,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
                 }
             }
 
-            scopesVars.append(startNode->alternativeScopesVars);
+            scopesVars.append(startNode->extension->alternativeScopesVars);
         }
     }
 
