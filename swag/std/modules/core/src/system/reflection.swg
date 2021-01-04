@@ -16,27 +16,6 @@ using swag
         func isSlice(t: typeinfo)       => t.kind == TypeInfoKind.Slice
     }
 
-    // Type names are scoped (i.e. "A.B.C"). This function will return the last
-    // part, which is in fact the real simple name
-    func scopedNameToName(type: typeinfo)->string
-    {
-        dataof := @dataof(type.name)
-        countof := @countof(type.name)
-        if !countof return type.name
-
-        buffer := dataof + (countof - 1)
-        count := 0'u32
-        while buffer != dataof && :buffer != "."'u8
-        {
-            buffer -= 1
-            count += 1
-        }
-
-        if buffer == dataof
-            return type.name
-        return cast(string) @mkslice(buffer + 1, cast(uint) count)
-    }
-
     // Get information about a specific method in a given struct
     // Returns null if the method does not exist
     func getMethod(type: typeinfo, name: string)->const* TypeInfoParam
@@ -133,7 +112,7 @@ using swag
         default: return result
         }
 
-        simpleName := scopedNameToName(type)
+        simpleName := type.flatName
 
         visit it: typeEnum.values
         {
