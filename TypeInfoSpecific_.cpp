@@ -385,6 +385,8 @@ void TypeInfoArray::computeScopedNameExport()
 void TypeInfoArray::computeName()
 {
     unique_lock lk(mutex);
+    if (!name.empty())
+        return;
 
     computePreName(name);
     pointedType->computeName();
@@ -402,6 +404,8 @@ void TypeInfoSlice::computePreName(Utf8& preName)
 void TypeInfoSlice::computeName()
 {
     unique_lock lk(mutex);
+    if (!name.empty())
+        return;
 
     computePreName(name);
     pointedType->computeName();
@@ -512,8 +516,9 @@ TypeInfo* TypeInfoVariadic::clone()
 void TypeInfoVariadic::computeName()
 {
     unique_lock lk(mutex);
+    if (!name.empty())
+        return;
 
-    name.clear();
     if (rawType)
     {
         rawType->computeName();

@@ -101,7 +101,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
             typeVariadic          = CastTypeInfo<TypeInfoVariadic>(typeVariadic->clone(), TypeInfoKind::TypedVariadic);
             typeVariadic->rawType = newType;
             typeVariadic->flags &= ~TYPEINFO_GENERIC;
-            typeVariadic->computeName();
+            typeVariadic->forceComputeName();
             return typeVariadic;
         }
 
@@ -117,7 +117,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
             typeAlias          = CastTypeInfo<TypeInfoAlias>(typeAlias->clone(), TypeInfoKind::Alias);
             typeAlias->rawType = newType;
             typeAlias->flags &= ~TYPEINFO_GENERIC;
-            typeAlias->computeName();
+            typeAlias->forceComputeName();
             return typeAlias;
         }
 
@@ -156,7 +156,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
             typeArray->pointedType = newPointedType;
             typeArray->finalType   = newFinalType;
             typeArray->flags &= ~TYPEINFO_GENERIC;
-            typeArray->computeName();
+            typeArray->forceComputeName();
             return typeArray;
         }
 
@@ -172,7 +172,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
             typeSlice              = CastTypeInfo<TypeInfoSlice>(typeSlice->clone(), TypeInfoKind::Slice);
             typeSlice->pointedType = newType;
             typeSlice->flags &= ~TYPEINFO_GENERIC;
-            typeSlice->computeName();
+            typeSlice->forceComputeName();
             return typeSlice;
         }
 
@@ -215,7 +215,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
 
         if (newLambda)
         {
-            newLambda->computeName();
+            newLambda->forceComputeName();
             return newLambda;
         }
 
