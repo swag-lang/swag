@@ -170,6 +170,8 @@ void TypeInfoReference::computeScopedNameExport()
 void TypeInfoReference::computeName()
 {
     unique_lock lk(mutex);
+    if (!name.empty())
+        return;
 
     computePreName(name);
     pointedType->computeName();
@@ -208,7 +210,7 @@ void TypeInfoPointer::computePointedType()
     {
         auto result = (TypeInfoPointer*) clone();
         result->ptrCount--;
-        result->computeName();
+        result->forceComputeName();
         result->computePointedType();
         pointedType = result;
     }
@@ -258,6 +260,8 @@ void TypeInfoPointer::computeScopedNameExport()
 void TypeInfoPointer::computeName()
 {
     unique_lock lk(mutex);
+    if (!name.empty())
+        return;
 
     computePreName(name);
     finalType->computeName();

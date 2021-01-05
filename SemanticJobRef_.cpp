@@ -295,7 +295,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         {
             auto newTypePtr = (TypeInfoPointer*) typePtr->clone();
             newTypePtr->ptrCount--;
-            newTypePtr->computeName();
+            newTypePtr->forceComputeName();
             newTypePtr->computePointedType();
             arrayNode->typeInfo = newTypePtr;
         }
@@ -434,7 +434,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         {
             auto newType = CastTypeInfo<TypeInfoPointer>(typePtr->clone(), TypeInfoKind::Pointer);
             newType->ptrCount--;
-            newType->computeName();
+            newType->forceComputeName();
             newType->computePointedType();
             arrayNode->typeInfo = newType;
         }

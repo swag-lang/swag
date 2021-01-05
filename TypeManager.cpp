@@ -485,7 +485,6 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
     {
         typeConst = typeInfo->clone();
         typeConst->setConst();
-        typeConst->computeName();
     }
 
     return typeConst;

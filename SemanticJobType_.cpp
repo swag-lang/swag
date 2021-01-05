@@ -211,7 +211,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
             ptrPointer->flags |= TYPEINFO_SELF;
 
         ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
-        ptrPointer->computeName();
+        ptrPointer->forceComputeName();
         ptrPointer->computePointedType();
         typeNode->typeInfo = ptrPointer;
 
@@ -222,10 +222,10 @@ bool SemanticJob::resolveType(SemanticContext* context)
             ptrPointer->ptrCount  = typeNode->ptrConstCount;
             ptrPointer->finalType = typeNode->typeInfo;
             ptrPointer->finalType->flags |= TYPEINFO_CONST;
-            ptrPointer->finalType->computeName();
+            ptrPointer->finalType->forceComputeName();
             ptrPointer->sizeOf = sizeof(void*);
             ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
-            ptrPointer->computeName();
+            ptrPointer->forceComputeName();
             ptrPointer->computePointedType();
             typeNode->typeInfo = ptrPointer;
         }
