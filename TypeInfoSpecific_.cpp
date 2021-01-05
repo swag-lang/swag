@@ -139,7 +139,7 @@ TypeInfo* TypeInfoReference::clone()
 
 void TypeInfoReference::computeScopedName()
 {
-    unique_lock lk(mutexScopeName);
+    unique_lock lk(mutex);
     if (!scopedName.empty())
         return;
 
@@ -150,7 +150,7 @@ void TypeInfoReference::computeScopedName()
 
 void TypeInfoReference::computeScopedNameExport()
 {
-    unique_lock lk(mutexScopeName);
+    unique_lock lk(mutex);
     if (!scopedNameExport.empty())
         return;
 
@@ -216,7 +216,7 @@ void TypeInfoPointer::computePointedType()
 
 void TypeInfoPointer::computeScopedName()
 {
-    unique_lock lk(mutexScopeName);
+    unique_lock lk(mutex);
     if (!scopedName.empty())
         return;
 
@@ -232,7 +232,7 @@ void TypeInfoPointer::computeScopedName()
 
 void TypeInfoPointer::computeScopedNameExport()
 {
-    unique_lock lk(mutexScopeName);
+    unique_lock lk(mutex);
     if (!scopedNameExport.empty())
         return;
 
@@ -333,7 +333,7 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 void TypeInfoArray::computeScopedName()
 {
-    unique_lock lk(mutexScopeName);
+    unique_lock lk(mutex);
     if (!scopedName.empty())
         return;
 
@@ -344,7 +344,7 @@ void TypeInfoArray::computeScopedName()
 
 void TypeInfoArray::computeScopedNameExport()
 {
-    unique_lock lk(mutexScopeName);
+    unique_lock lk(mutex);
     if (!scopedNameExport.empty())
         return;
 
@@ -899,7 +899,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 void TypeInfoStruct::computeScopedName()
 {
-    unique_lock lk(mutexScopeName);
+    unique_lock lk(mutex);
     if (!scopedName.empty())
         return;
 
@@ -924,7 +924,7 @@ void TypeInfoStruct::computeScopedName()
 
 void TypeInfoStruct::computeScopedNameExport()
 {
-    unique_lock lk(mutexScopeName);
+    unique_lock lk(mutex);
     if (!scopedNameExport.empty())
         return;
 

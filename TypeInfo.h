@@ -140,7 +140,6 @@ struct TypeInfo
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
     shared_mutex mutex;
-    shared_mutex mutexScopeName;
 
     Utf8 preName;          // List const, *, [] ...
     Utf8 nakedName;        // The simple type name

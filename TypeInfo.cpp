@@ -32,7 +32,7 @@ void TypeInfo::getScopedName(Utf8& newName, bool forExport)
 
 void TypeInfo::computeScopedName()
 {
-    scoped_lock lk(mutexScopeName);
+    scoped_lock lk(mutex);
     if (!scopedName.empty())
         return;
 
@@ -52,7 +52,7 @@ void TypeInfo::computeScopedName()
 
 void TypeInfo::computeScopedNameExport()
 {
-    scoped_lock lk(mutexScopeName);
+    scoped_lock lk(mutex);
     if (!scopedNameExport.empty())
         return;
 
