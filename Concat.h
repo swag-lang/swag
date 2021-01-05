@@ -8,6 +8,7 @@ struct ConcatBucket
     uint8_t*      datas      = nullptr;
     ConcatBucket* nextBucket = nullptr;
     int           countBytes = 0;
+    int           capacity   = 0;
 };
 
 struct Concat

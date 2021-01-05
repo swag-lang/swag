@@ -14,9 +14,10 @@ void Concat::init(int size)
         return;
     }
 
-    bucketSize         = size;
-    firstBucket        = g_Allocator.alloc<ConcatBucket>();
-    firstBucket->datas = (uint8_t*) g_Allocator.alloc(bucketSize);
+    bucketSize            = size;
+    firstBucket           = g_Allocator.alloc<ConcatBucket>();
+    firstBucket->datas    = (uint8_t*) g_Allocator.alloc(bucketSize);
+    firstBucket->capacity = size;
 
     if (g_CommandLine.stats)
     {
@@ -41,7 +42,7 @@ void Concat::release()
     auto p = firstBucket;
     while (p)
     {
-        g_Allocator.free(p->datas, bucketSize);
+        g_Allocator.free(p->datas, p->capacity);
         auto n = p->nextBucket;
         g_Allocator.free(p, sizeof(ConcatBucket));
         p = n;
@@ -56,13 +57,13 @@ void Concat::release()
 bool Concat::hasEnoughSpace(uint32_t numBytes)
 {
     auto count = (int) (currentSP - lastBucket->datas);
-    return bucketSize - count >= (int) numBytes;
+    return lastBucket->capacity - count >= (int) numBytes;
 }
 
 void Concat::ensureSpace(int numBytes)
 {
     auto count = (int) (currentSP - lastBucket->datas);
-    if (count + numBytes <= bucketSize)
+    if (count + numBytes <= lastBucket->capacity)
         return;
     totalCountBytes += count;
     lastBucket->countBytes = count;
@@ -73,6 +74,7 @@ void Concat::ensureSpace(int numBytes)
         lastBucket             = lastBucket->nextBucket;
         currentSP              = lastBucket->datas;
         lastBucket->countBytes = 0;
+        SWAG_ASSERT(numBytes <= lastBucket->capacity);
         return;
     }
 
@@ -82,13 +84,14 @@ void Concat::ensureSpace(int numBytes)
     lastBucket->nextBucket = newBucket;
     lastBucket             = newBucket;
 
-    SWAG_ASSERT(numBytes < bucketSize);
-    lastBucket->datas = (uint8_t*) g_Allocator.alloc(bucketSize);
+    lastBucket->capacity = max(numBytes, bucketSize);
+    lastBucket->capacity = (int) Allocator::alignSize(lastBucket->capacity);
+    lastBucket->datas    = (uint8_t*) g_Allocator.alloc(lastBucket->capacity);
 
     if (g_CommandLine.stats)
     {
         g_Stats.memConcat += sizeof(ConcatBucket);
-        g_Stats.memConcat += bucketSize;
+        g_Stats.memConcat += lastBucket->capacity;
     }
 
     currentSP = lastBucket->datas;
