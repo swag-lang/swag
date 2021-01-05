@@ -363,10 +363,9 @@ JobResult SyntaxJob::execute()
     bool ok = tokenizer.getToken(token);
     while (true)
     {
-        // Recover from last syntax error
+        // If there's an error, then we must stop at syntax pass
         if (!ok)
         {
-            // If there's an error, then we must stop at syntax pass
             sourceFile->buildPass = min(sourceFile->buildPass, BuildPass::Syntax);
             sourceFile->module->setBuildPass(sourceFile->buildPass);
             return JobResult::ReleaseJob;
@@ -377,12 +376,9 @@ JobResult SyntaxJob::execute()
 
         // Ask for lexer only
         if (sourceFile->buildPass < BuildPass::Syntax)
-        {
             ok = tokenizer.getToken(token);
-            continue;
-        }
-
-        ok = doTopLevelInstruction(sourceFile->astRoot);
+        else
+            ok = doTopLevelInstruction(sourceFile->astRoot);
     }
 
     timer.stop();
