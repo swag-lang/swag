@@ -181,7 +181,6 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     auto typeInfo        = allocType<TypeInfoStruct>();
     typeInfo->declNode   = structNode;
     typeInfo->name       = structNode->token.text;
-    typeInfo->nakedName  = structNode->token.text;
     typeInfo->structName = structNode->token.text;
     typeInfo->scope      = newScope;
     typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;

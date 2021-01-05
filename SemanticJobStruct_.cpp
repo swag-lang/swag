@@ -754,7 +754,6 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
     typeInterface->declNode   = node;
     typeInterface->name       = node->token.text;
-    typeInterface->nakedName  = node->token.text;
     typeInterface->structName = node->token.text;
 
     uint32_t storageOffset = 0;
@@ -770,7 +769,6 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     // itable
     auto typeITable        = allocType<TypeInfoStruct>();
     typeITable->name       = node->token.text;
-    typeITable->nakedName  = node->token.text;
     typeITable->structName = node->token.text;
     typeITable->scope      = Ast::newScope(node, node->token.text, ScopeKind::Struct, nullptr);
 
@@ -895,7 +893,6 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
 
     typeSet->declNode   = node;
     typeSet->name       = node->token.text;
-    typeSet->nakedName  = node->token.text;
     typeSet->structName = node->token.text;
     typeSet->sizeOf     = 2 * sizeof(Register);
 

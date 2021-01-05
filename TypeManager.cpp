@@ -39,15 +39,13 @@ void TypeManager::setup()
     typeInfoUntypedFloat = (TypeInfoNative*) typeInfoF32->clone();
     typeInfoUntypedFloat->flags |= TYPEINFO_UNTYPED_FLOAT;
 
-    typeInfoVariadic            = new TypeInfoVariadic();
-    typeInfoVariadic->nakedName = "...";
-    typeInfoVariadic->name      = "...";
-    typeInfoVariadic->sizeOf    = 2 * sizeof(Register);
+    typeInfoVariadic         = new TypeInfoVariadic();
+    typeInfoVariadic->name   = "...";
+    typeInfoVariadic->sizeOf = 2 * sizeof(Register);
 
-    typeInfoNull            = new TypeInfoPointer();
-    typeInfoNull->nakedName = "null";
-    typeInfoNull->name      = "null";
-    typeInfoNull->sizeOf    = sizeof(Register);
+    typeInfoNull         = new TypeInfoPointer();
+    typeInfoNull->name   = "null";
+    typeInfoNull->sizeOf = sizeof(Register);
 
     typeInfoPVoid              = new TypeInfoPointer();
     typeInfoPVoid->finalType   = typeInfoVoid;
@@ -363,8 +361,8 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 
 TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
 {
-    auto typeStruct       = allocType<TypeInfoStruct>();
-    typeStruct->nakedName = typeList->computeTupleName(context);
+    auto typeStruct  = allocType<TypeInfoStruct>();
+    typeStruct->name = typeList->computeTupleName(context);
 
     typeStruct->fields.reserve((int) typeList->subTypes.size());
     for (int idx = 0; idx < typeList->subTypes.size(); idx++)
@@ -375,9 +373,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
         typeStruct->fields.push_back((TypeInfoParam*) one->clone());
     }
 
-    typeStruct->name       = typeStruct->nakedName;
     typeStruct->structName = typeStruct->name;
-
     return typeStruct;
 }
 

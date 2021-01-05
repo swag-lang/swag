@@ -27,10 +27,10 @@ bool SemanticJob::resolveExplicitNoInit(SemanticContext* context)
 
 bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNode* node)
 {
-    auto typeInfo       = allocType<TypeInfoList>();
-    typeInfo->kind      = TypeInfoKind::TypeListTuple;
-    typeInfo->nakedName = "{";
-    typeInfo->sizeOf    = 0;
+    auto typeInfo    = allocType<TypeInfoList>();
+    typeInfo->kind   = TypeInfoKind::TypeListTuple;
+    typeInfo->name   = "{";
+    typeInfo->sizeOf = 0;
 
     int idx = 0;
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
@@ -39,7 +39,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
         SWAG_CHECK(checkIsConcrete(context, child));
 
         if (!typeInfo->subTypes.empty())
-            typeInfo->nakedName += ", ";
+            typeInfo->name += ", ";
 
         auto typeParam      = allocType<TypeInfoParam>();
         typeParam->typeInfo = child->typeInfo;
@@ -48,12 +48,12 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
         // Value has been named
         if (!child->token.text.empty() && (child->flags & AST_IS_NAMED))
         {
-            typeInfo->nakedName += child->token.text;
-            typeInfo->nakedName += ": ";
+            typeInfo->name += child->token.text;
+            typeInfo->name += ": ";
             typeParam->namedParam = child->token.text;
         }
 
-        typeInfo->nakedName += child->typeInfo->name;
+        typeInfo->name += child->typeInfo->name;
 
         if (child->castOffset)
             typeInfo->sizeOf += child->castOffset;
@@ -68,8 +68,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
         idx++;
     }
 
-    typeInfo->nakedName += "}";
-    typeInfo->name = typeInfo->nakedName;
+    typeInfo->name += "}";
     node->typeInfo = typeInfo;
     return true;
 }
@@ -103,8 +102,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     auto typeInfo  = allocType<TypeInfoList>();
     typeInfo->kind = TypeInfoKind::TypeListArray;
     SWAG_ASSERT(node->childs.size());
-    typeInfo->nakedName = format("[%u] %s", node->childs.size(), node->childs.front()->typeInfo->name.c_str());
-    typeInfo->name      = typeInfo->nakedName;
+    typeInfo->name = format("[%u] %s", node->childs.size(), node->childs.front()->typeInfo->name.c_str());
 
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
     for (auto child : node->childs)

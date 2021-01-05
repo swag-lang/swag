@@ -109,7 +109,6 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         auto newScope        = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
         typeInfo->declNode   = structNode;
         typeInfo->name       = structNode->token.text;
-        typeInfo->nakedName  = structNode->token.text;
         typeInfo->structName = structNode->token.text;
         typeInfo->scope      = newScope;
         typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
@@ -518,17 +517,15 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_GENERIC;
         if (genericType && node->assignment)
         {
-            auto typeGeneric       = allocType<TypeInfoGeneric>();
-            typeGeneric->name      = node->token.text;
-            typeGeneric->nakedName = node->token.text;
-            typeGeneric->rawType   = node->typeInfo;
-            node->typeInfo         = typeGeneric;
+            auto typeGeneric     = allocType<TypeInfoGeneric>();
+            typeGeneric->name    = node->token.text;
+            typeGeneric->rawType = node->typeInfo;
+            node->typeInfo       = typeGeneric;
         }
         else if (!node->typeInfo)
         {
-            node->typeInfo            = allocType<TypeInfoGeneric>();
-            node->typeInfo->name      = node->token.text;
-            node->typeInfo->nakedName = node->token.text;
+            node->typeInfo       = allocType<TypeInfoGeneric>();
+            node->typeInfo->name = node->token.text;
         }
     }
 

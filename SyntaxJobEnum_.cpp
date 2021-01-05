@@ -50,11 +50,10 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             }
 
             SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Enum);
-            typeInfo->declNode  = enumNode;
-            typeInfo->name      = enumNode->token.text;
-            typeInfo->nakedName = enumNode->token.text;
-            typeInfo->scope     = newScope;
-            enumNode->typeInfo  = typeInfo;
+            typeInfo->declNode = enumNode;
+            typeInfo->name     = enumNode->token.text;
+            typeInfo->scope    = newScope;
+            enumNode->typeInfo = typeInfo;
             typeInfo->computeName();
             currentScope->symTable.registerSymbolNameNoLock(&context, enumNode, SymbolKind::Enum);
         }

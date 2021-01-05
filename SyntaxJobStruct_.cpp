@@ -81,7 +81,6 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             {
                 auto typeEnum             = allocType<TypeInfoEnum>();
                 typeEnum->scope           = newScope;
-                typeEnum->nakedName       = structName;
                 typeEnum->name            = structName;
                 newScope->owner->typeInfo = typeEnum;
             }
@@ -89,7 +88,6 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             {
                 auto typeStruct           = allocType<TypeInfoStruct>();
                 typeStruct->scope         = newScope;
-                typeStruct->nakedName     = structName;
                 typeStruct->name          = structName;
                 typeStruct->structName    = structName;
                 newScope->owner->typeInfo = typeStruct;
@@ -120,7 +118,6 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
             subScope             = Ast::newScope(implNode, itfName, ScopeKind::Impl, newScope, false);
             auto typeInfo        = allocType<TypeInfoStruct>();
             typeInfo->name       = implNode->identifier->childs.back()->token.text;
-            typeInfo->nakedName  = typeInfo->name;
             typeInfo->structName = typeInfo->name;
             typeInfo->scope      = subScope;
             typeInfo->declNode   = implNode;
@@ -249,7 +246,6 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
             typeInfo->declNode   = structNode;
             newScope->owner      = structNode;
             typeInfo->name       = structNode->token.text;
-            typeInfo->nakedName  = structNode->token.text;
             typeInfo->structName = structNode->token.text;
             typeInfo->scope      = newScope;
 

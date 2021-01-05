@@ -166,7 +166,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
         typeNode->resolvedSymbolOverload = typeNode->identifier->resolvedSymbolOverload;
         typeNode->typeInfo               = allocType<TypeInfoGeneric>();
         typeNode->typeInfo->name         = typeNode->resolvedSymbolName->name;
-        typeNode->typeInfo->nakedName    = typeNode->resolvedSymbolName->name;
         typeNode->typeInfo               = typeNode->typeInfo;
     }
 
@@ -405,12 +404,11 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     // Collect all attributes for the variable
     SWAG_CHECK(collectAttributes(context, node, nullptr));
 
-    auto typeInfo       = allocType<TypeInfoAlias>();
-    typeInfo->declNode  = node;
-    typeInfo->rawType   = node->childs.front()->typeInfo;
-    typeInfo->nakedName = node->token.text;
-    typeInfo->name      = node->token.text;
-    typeInfo->sizeOf    = typeInfo->rawType->sizeOf;
+    auto typeInfo      = allocType<TypeInfoAlias>();
+    typeInfo->declNode = node;
+    typeInfo->rawType  = node->childs.front()->typeInfo;
+    typeInfo->name     = node->token.text;
+    typeInfo->sizeOf   = typeInfo->rawType->sizeOf;
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_RETURN_BY_COPY);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);

@@ -105,8 +105,7 @@ struct TypeInfo
         if (flags & TYPEINFO_CONST)
             return;
         flags |= TYPEINFO_CONST;
-        preName = "const " + preName;
-        name    = "const " + name;
+        name = "const " + name;
     }
 
     virtual int numRegisters()
@@ -118,12 +117,8 @@ struct TypeInfo
 
     void copyFrom(TypeInfo* from)
     {
-        preName   = from->preName;
-        nakedName = from->nakedName;
-        name      = from->name;
-
-        declNode = from->declNode;
-
+        name       = from->name;
+        declNode   = from->declNode;
         kind       = from->kind;
         nativeType = from->nativeType;
         flags      = from->flags;
@@ -141,11 +136,9 @@ struct TypeInfo
 
     shared_mutex mutex;
 
-    Utf8 preName;          // List const, *, [] ...
-    Utf8 nakedName;        // The simple type name
-    Utf8 name;             // preName + nakedName
-    Utf8 scopedName;       // preName + scope name + nakedName
-    Utf8 scopedNameExport; // preName + scope name + nakedName
+    Utf8 name;
+    Utf8 scopedName;
+    Utf8 scopedNameExport;
 
     AstNode* declNode = nullptr;
 
@@ -168,7 +161,6 @@ struct TypeInfoNative : public TypeInfo
         kind         = TypeInfoKind::Native;
         nativeType   = type;
         name         = tname;
-        nakedName    = name;
         sizeOf       = sof;
         flags        = fl;
         valueInteger = 0;
@@ -373,6 +365,7 @@ struct TypeInfoPointer : public TypeInfo
     }
 
     void      computeName() override;
+    void      computePreName(Utf8& preName);
     void      computeScopedName() override;
     void      computeScopedNameExport() override;
     void      computePointedType();
@@ -394,6 +387,7 @@ struct TypeInfoReference : public TypeInfo
     }
 
     void      computeName() override;
+    void      computePreName(Utf8& preName);
     void      computeScopedName() override;
     void      computeScopedNameExport() override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
@@ -417,6 +411,7 @@ struct TypeInfoArray : public TypeInfo
     }
 
     void      computeName() override;
+    void      computePreName(Utf8& preName);
     void      computeScopedName() override;
     void      computeScopedNameExport() override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
@@ -438,6 +433,7 @@ struct TypeInfoSlice : public TypeInfo
     }
 
     void      computeName() override;
+    void      computePreName(Utf8& preName);
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
@@ -565,9 +561,8 @@ struct TypeInfoCode : public TypeInfo
 {
     TypeInfoCode()
     {
-        name      = "code";
-        nakedName = "code";
-        kind      = TypeInfoKind::Code;
+        name = "code";
+        kind = TypeInfoKind::Code;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
@@ -580,9 +575,8 @@ struct TypeInfoNameAlias : public TypeInfo
 {
     TypeInfoNameAlias()
     {
-        name      = "alias";
-        nakedName = "alias";
-        kind      = TypeInfoKind::NameAlias;
+        name = "alias";
+        kind = TypeInfoKind::NameAlias;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
