@@ -163,7 +163,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)\\b(unittest|assert|print|import|mixin|macro|inline|placeholder|if|else|elif)\\b"
+          "match": "(#)\\b(assert|print|import|mixin|macro|inline|placeholder|if|else|elif)\\b"
         }
       ]
     },

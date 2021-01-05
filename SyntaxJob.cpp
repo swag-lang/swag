@@ -375,14 +375,6 @@ JobResult SyntaxJob::execute()
         if (token.id == TokenId::EndOfFile)
             break;
 
-        // Top level
-        switch (token.id)
-        {
-        case TokenId::CompilerUnitTest:
-            ok = doCompilerUnitTest();
-            continue;
-        }
-
         // Ask for lexer only
         if (sourceFile->buildPass < BuildPass::Syntax)
         {

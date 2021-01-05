@@ -74,7 +74,6 @@ struct SyntaxJob : public Job
     bool isValidScopeForCompilerRun(AstNode* node);
     bool doCompilerRunTopLevel(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunEmbedded(AstNode* parent, AstNode** result = nullptr);
-    bool doCompilerUnitTest();
     bool doCompilerGlobal(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerSpecialFunction(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerDefined(AstNode* parent, AstNode** result = nullptr);
