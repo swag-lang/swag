@@ -1,8 +1,6 @@
+#global testerror;
 
-;
 using swag;
-
-#unittest error;
 
 #run
 {

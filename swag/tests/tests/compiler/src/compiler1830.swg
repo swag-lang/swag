@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 alias X = func()->s32
 

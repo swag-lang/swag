@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 func getCharCount(buffer: *u8)
 {

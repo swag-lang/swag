@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 func toto()->{x: s32, y: s32}
 {

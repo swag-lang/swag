@@ -1,11 +1,10 @@
-
+#global testerror
 
 struct Point
 {
 	x, y: s32
 }
 //#[swag.printbc]
-#unittest error
 #test
 {
 	var pt : Point

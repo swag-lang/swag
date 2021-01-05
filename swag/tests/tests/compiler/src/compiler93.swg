@@ -1,6 +1,4 @@
-
-;
-
+#global testerror;
 namespace A
 {
 	namespace B
@@ -9,7 +7,4 @@ namespace A
 	}
 }
 
-#unittest error;
 var a: A.B.tt1 = true;
-#unittest error;
-var b: A;

@@ -1,6 +1,4 @@
-
-
-;
+#global testerror;
 
 enum A: bool
 {
@@ -9,7 +7,6 @@ enum A: bool
 	Blue = true;
 }
 
-#unittest error;
 enum B: bool
 {
 	Red = true;

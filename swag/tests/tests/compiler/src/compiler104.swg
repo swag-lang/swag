@@ -2,7 +2,7 @@
 
 ;
 
-#unittest error;
+#global testerror;
 enum A: u8
 {
 	Red = 0;

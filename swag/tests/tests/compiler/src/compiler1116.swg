@@ -1,6 +1,6 @@
 
 
-#unittest error
+#global testerror
 #test
 {
 	x := 5 % 0

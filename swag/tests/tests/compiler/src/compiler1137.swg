@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 var b: s32
 

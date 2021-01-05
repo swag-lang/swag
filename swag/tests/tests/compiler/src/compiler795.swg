@@ -1,4 +1,4 @@
-
+#global testerror
 
 //#[swag.printbc]
 func(T) toto()
@@ -7,7 +7,6 @@ func(T) toto()
 
 
 //#[swag.printbc]
-#unittest error
 #test
 {
 	toto!"s32"()

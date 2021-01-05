@@ -1,3 +1,3 @@
 
-#unittest error
+#global testerror
 var @toto = 0

@@ -1,4 +1,4 @@
-
+#global testerror
 
 struct Point
 {
@@ -7,7 +7,6 @@ struct Point
 
 func new()->Point { return @{1}; }
 
-#unittest error
 //#[swag.printbc]
 #test
 {

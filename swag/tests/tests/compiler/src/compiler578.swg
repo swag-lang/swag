@@ -1,5 +1,4 @@
-
-
+#global testerror
 
 struct Point
 {
@@ -9,7 +8,6 @@ struct Point
 
 alias toto = s32
 
-#unittest error
 impl Point
 {
 	func opEquals(self, other: Point)->toto

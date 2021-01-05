@@ -1,4 +1,4 @@
-
+#global testerror;
 #global testpass lexer;
 
 "A"'char
@@ -7,5 +7,4 @@
 "\u1234"'char
 "\U12345678"'char
 
-#unittest error;
 "\xFFF"'char

@@ -1,6 +1,6 @@
 
 #global testpass lexer;
-//#unittest error
+//#global testerror
 //"tototo\oθθθθ"
 
 "totototoθθθθ"

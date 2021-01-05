@@ -1,4 +1,5 @@
-
+#global testerror
+#global testerror
 
 struct Point
 {
@@ -15,8 +16,6 @@ struct Point
 	@assert(pt1.y == 2)
 }
 
-#unittest error
-#unittest error
 impl Point
 {
 	func opAffect(self, other: Self)

@@ -1,9 +1,8 @@
-
+#global testerror
 
 using swag
 
 //#[swag.printbc]
-#unittest error
 #test
 {
 	let x: any = 6

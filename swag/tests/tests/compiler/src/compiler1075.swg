@@ -1,6 +1,6 @@
 
 
-#unittest error
+#global testerror
 #main
 {
 	@assert(true)

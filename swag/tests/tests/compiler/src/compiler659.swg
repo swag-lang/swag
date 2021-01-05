@@ -1,5 +1,4 @@
-
-
+#global testerror
 
 enum OT
 {
@@ -8,7 +7,6 @@ enum OT
 }
 
 //#[swag.printbc]
-#unittest error
 #test
 {
 	var pt: [1] OT

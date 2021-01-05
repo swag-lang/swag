@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 func contains(x: f32)
 {

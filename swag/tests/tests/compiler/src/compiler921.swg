@@ -1,6 +1,6 @@
 
 
-#unittest error
+#global testerror
 func average(x: any)
 {
 	t := @dataof(any)

@@ -1,5 +1,4 @@
-
-
+#global testerror
 
 struct Point
 {
@@ -7,7 +6,6 @@ struct Point
 	y: s32
 }
 
-#unittest error
 //#[swag.printbc]
 #test
 {
@@ -19,7 +17,7 @@ struct Point
 	@assert(pt1 != pt2)
 }
 
-#unittest error
+#global testerror
 impl Point
 {
 	func opEqual(self, other: Point) -> bool

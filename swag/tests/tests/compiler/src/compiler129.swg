@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 using swag
 
 #[attributeUsage(AttributeUsage.Field)]

@@ -1,4 +1,4 @@
-
+#global testerror
 
 struct Point
 {
@@ -6,6 +6,5 @@ struct Point
 	y: s32
 }
 
-#unittest error
 var pt: Point
 using pt

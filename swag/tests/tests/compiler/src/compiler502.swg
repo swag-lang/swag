@@ -2,7 +2,7 @@
 
 
 //#[swag.printbc]
-#unittest error
+#global testerror
 func T(xx: string, a: ...)
 {
 	@assert(@countof(a) == 3)

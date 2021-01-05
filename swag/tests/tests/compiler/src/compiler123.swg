@@ -3,13 +3,13 @@
 
 attr toto() -> "func", "var"
 
-#unittest error;
+#global testerror;
 attr toto() -> "func",
 
 #global testpass syntax;
-#unittest error;
+#global testerror;
 attr toto() -> "func", "func"
 
 #global testpass syntax;
-#unittest error;
+#global testerror;
 attr toto() -> "var", "var"*/

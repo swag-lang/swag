@@ -1,7 +1,7 @@
 
 
 //#[swag.printbc]
-#unittest error
+#global testerror
 #test
 {
 	const a = [0,1,2,3]

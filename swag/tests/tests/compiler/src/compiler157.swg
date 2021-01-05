@@ -1,5 +1,5 @@
 
 #global testpass syntax;
 
-#unittest error;
+#global testerror;
 var xxxx;

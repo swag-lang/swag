@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 #[swag.strict]
 alias T = toto

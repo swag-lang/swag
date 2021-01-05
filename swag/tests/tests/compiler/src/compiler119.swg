@@ -1,5 +1,5 @@
 /*
 ;
-#unittest error;
+#global testerror;
 #print 2 / 4;
 */

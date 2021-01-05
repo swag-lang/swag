@@ -1,5 +1,5 @@
 
-#unittest error;
+#global testerror;
 
 #[swag.foreign]
 func main (){}

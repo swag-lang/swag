@@ -3,7 +3,7 @@
 
 
 //#[swag.printbc]
-#unittest error
+#global testerror
 #test
 {
 	pair := [s32]

@@ -1,3 +1,3 @@
 
-#unittest error
+#global testerror
 var @alias = 0

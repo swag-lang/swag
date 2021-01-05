@@ -1,5 +1,4 @@
-
-
+#global testerror
 
 struct(T) Point
 {
@@ -7,5 +6,4 @@ struct(T) Point
 	y: T = 10
 }
 
-#unittest error
 type Point2f: Point

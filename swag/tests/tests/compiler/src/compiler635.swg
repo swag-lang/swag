@@ -1,7 +1,7 @@
 
 
 
-#unittest error
+#global testerror
 struct(T) Point
 {
 }

@@ -1,13 +1,13 @@
 
 ;
 
-#unittest error;
+#global testerror;
 #assert '1' / '2';
-#unittest error;
+#global testerror;
 #assert "1" / "2";
-#unittest error;
+#global testerror;
 #assert '1' * '2';
-#unittest error;
+#global testerror;
 #assert true / false;
-#unittest error;
+#global testerror;
 #assert true + false;

@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 //#[swag.printbc]
 #[swag.safety(true)]

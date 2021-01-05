@@ -1,5 +1,5 @@
 //
-//#unittest error
+//#global testerror
 
 //#[swag.printbc]
 func arithmeticMean(x: string, numbers: string...)->string

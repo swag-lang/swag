@@ -1,7 +1,7 @@
 
 ;
 
-#unittest error;
+#global testerror;
 #run
 {
 	var a = 1;

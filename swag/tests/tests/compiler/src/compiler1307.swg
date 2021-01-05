@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 #[swag.macro]
 func toto(t: s32, x: code)

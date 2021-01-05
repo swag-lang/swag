@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 #[swag.inline]
 func toto() => 0

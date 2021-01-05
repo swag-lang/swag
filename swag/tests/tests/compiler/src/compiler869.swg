@@ -1,9 +1,8 @@
-
+#global testerror
 
 var G: s32 = 0
 
 //#[swag.printbc]
-#unittest error
 #test
 {
 	G = 0

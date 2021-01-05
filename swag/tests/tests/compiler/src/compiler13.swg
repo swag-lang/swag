@@ -1,3 +1,3 @@
 
-#unittest error;
+#global testerror;
 0xFFFFFFFF'

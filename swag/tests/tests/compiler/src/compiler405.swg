@@ -3,7 +3,7 @@
 //#[swag.printbc]
 //#assert true
 
-#unittest error;
+#global testerror;
 enum TOTO
 {
 	A = 0 B = 1

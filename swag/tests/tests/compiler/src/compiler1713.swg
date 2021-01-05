@@ -1,4 +1,4 @@
-#unittest error
+#global testerror
 
 alias point = string
 func toto(x: point)

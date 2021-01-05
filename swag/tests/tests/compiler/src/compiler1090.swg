@@ -1,4 +1,4 @@
-
+#global testerror
 
 enum TITI
 {
@@ -15,7 +15,6 @@ enum TOTO : u32
 	F3 = F1 | F2
 }*/
 
-#unittest error
 #test
 {
 	let x : TITI = TITI.F1 | TITI.F2

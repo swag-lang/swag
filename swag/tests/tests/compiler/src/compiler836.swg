@@ -1,5 +1,5 @@
 //#[swag.printbc]
-//#unittest error
+//#global testerror
 #test
 {
 	if false

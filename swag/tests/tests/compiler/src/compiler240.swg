@@ -1,9 +1,8 @@
-
+#global testerror;
 ;
 using swag;
 
 //#[printbc]
-#unittest error;
 func main ()
 {
 	var a = 10;

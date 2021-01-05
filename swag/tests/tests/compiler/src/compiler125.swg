@@ -1,9 +1,8 @@
-
+#global testerror;
 
 #[swag.attributeUsage(swag.AttributeUsage.GlobalVariable)]
 attr toto();
 
-#unittest error;
 #[toto]
 func main ()
 {
@@ -12,6 +11,6 @@ func main ()
 #[swag.attributeUsage(swag.AttributeUsage.Function)]
 attr toto: ();
 
-/*#unittest error;
+/*#global testerror;
 #[toto1]
 var a: bool;*/

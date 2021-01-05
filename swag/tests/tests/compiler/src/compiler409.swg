@@ -1,4 +1,4 @@
-#unittest error
+#global testerror
 
 //#[swag.printbc]
 #test

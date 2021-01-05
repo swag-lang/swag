@@ -1,5 +1,5 @@
 //
-//#unittest error
+//#global testerror
 
 using A
 namespace A

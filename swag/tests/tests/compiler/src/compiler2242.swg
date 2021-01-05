@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 func mix(v, val: alias)
 {

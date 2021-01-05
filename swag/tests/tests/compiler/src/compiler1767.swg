@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 //#[swag.printbc]
 func toto(x: [2] s32)

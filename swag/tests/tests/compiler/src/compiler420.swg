@@ -2,7 +2,7 @@
 
 
 //#[swag.printbc]
-#unittest error;
+#global testerror;
 #test
 {
 	let d: s32;

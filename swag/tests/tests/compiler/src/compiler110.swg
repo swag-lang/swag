@@ -1,8 +1,8 @@
 
 
-#unittest error;
-#unittest error;
-#unittest error;
+#global testerror;
+#global testerror;
+#global testerror;
 enum A : u8
 {
 	Red = B.Red;
@@ -10,7 +10,7 @@ enum A : u8
 	Blue;
 }
 
-//#unittest error;
+//#global testerror;
 enum B : u8
 {
 	Red = C.Red;
@@ -18,7 +18,7 @@ enum B : u8
 	Blue;
 }
 
-//#unittest error;
+//#global testerror;
 enum C : u8
 {
 	Red = A.Red;

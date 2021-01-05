@@ -1,6 +1,6 @@
 ﻿
 ;
-#unittest error;
+#global testerror;
 namespace A
 {
 	var a: bool;

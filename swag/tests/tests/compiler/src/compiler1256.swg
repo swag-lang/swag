@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 func toto() -> {f32, bool}
 {

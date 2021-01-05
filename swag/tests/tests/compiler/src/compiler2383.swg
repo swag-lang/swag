@@ -1,4 +1,4 @@
-#unittest error
+#global testerror
 
 //#[swag.constexpr]
 func isStruct(t: typeinfo) => t.kind == swag.TypeInfoKind.Struct

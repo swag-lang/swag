@@ -1,3 +1,4 @@
+#global testerror
 
 #[swag.enumflags]
 enum TITI
@@ -7,7 +8,6 @@ enum TITI
 	F3
 }
 
-#unittest error
 #test
 {
 	let x : TITI = TITI.F1 + TITI.F2

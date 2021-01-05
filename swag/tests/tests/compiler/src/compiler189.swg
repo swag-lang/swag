@@ -1,7 +1,7 @@
 
 ;
 
-#unittest error;
+#global testerror;
 #assert 1 ^ 1.0 == 0;
-#unittest error;
+#global testerror;
 #assert 1.0 << 1;

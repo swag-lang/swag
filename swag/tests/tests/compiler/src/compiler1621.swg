@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 #[swag.mixin]
 func mac(stmt: code)

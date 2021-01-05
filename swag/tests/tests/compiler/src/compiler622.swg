@@ -1,7 +1,7 @@
 
 ;
 
-#unittest error;
+#global testerror;
 namespace A
 {
 	namespace B

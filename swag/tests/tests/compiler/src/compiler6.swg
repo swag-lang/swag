@@ -1,4 +1,4 @@
 
-#unittest error
-#unittest error
+#global testerror
+#global testerror
 aaaa	¤

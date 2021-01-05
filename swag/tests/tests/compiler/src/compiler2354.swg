@@ -1,4 +1,4 @@
-#unittest error
+#global testerror
 
 //#[swag.mixin]
 func mkVar(name: string, value: s32)

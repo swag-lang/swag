@@ -1,7 +1,7 @@
 
 
 //#[swag.printbc]
-#unittest error
+#global testerror
 func(T) toto(x: T)->s32
 {
 	switch T

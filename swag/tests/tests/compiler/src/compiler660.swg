@@ -7,7 +7,7 @@ enum OT
 }
 
 //#[swag.printbc]
-//#unittest error
+//#global testerror
 #test
 {
 	var pt: [2] OT = @[OT.A, OT.B]

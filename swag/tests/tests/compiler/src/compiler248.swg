@@ -1,4 +1,4 @@
-
+#global testerror;
 ;
 using swag;
 
@@ -9,7 +9,6 @@ func main (a: s32 = 6)->s32
 	return a;
 }
 
-#unittest error;
 func main (a: s32, b: s32 = 0)->s32
 {
 	//@print("2");

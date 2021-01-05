@@ -9,7 +9,7 @@ func(T) toto()
 }
 
 //#[swag.printbc]
-//#unittest error
+//#global testerror
 #test
 {
 	toto's32()

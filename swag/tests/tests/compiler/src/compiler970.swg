@@ -4,7 +4,7 @@ struct pt
 }
 
 //#[swag.printbc]
-//#unittest error
+//#global testerror
 #test
 {
 	var x: {s32, s32} = @{666}

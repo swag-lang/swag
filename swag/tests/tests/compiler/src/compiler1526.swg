@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 func(T) toto(x: T)
 {

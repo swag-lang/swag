@@ -3,7 +3,7 @@
 using swag
 
 //#[swag.printbc]
-#unittest error
+#global testerror
 #test
 {
 	var x: any = 6

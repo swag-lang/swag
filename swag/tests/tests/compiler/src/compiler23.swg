@@ -1,6 +1,6 @@
 
-#global testpass lexer;
-#unittest error;
+#global testerror
+#global testpass lexer
 "tototo
-#unittest error
+#global testerror
 to"

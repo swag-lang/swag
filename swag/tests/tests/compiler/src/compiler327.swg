@@ -1,7 +1,7 @@
 
 #global testpass syntax;
 
-#unittest error;
+#global testerror;
 #test
 {
 	var a: [4] s32 = {};

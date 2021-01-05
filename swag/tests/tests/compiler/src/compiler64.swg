@@ -1,12 +1,12 @@
 ﻿
 
-#unittest error;
+#global testerror;
 #test
 {
 	var a: s8 = 127's8 + 1's8;
 }
 
-#unittest error;
+#global testerror;
 #test
 {
 	var b: u8 = 255'u8 + 1'u8;

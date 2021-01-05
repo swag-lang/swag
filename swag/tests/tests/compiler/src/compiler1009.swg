@@ -1,8 +1,7 @@
-
+#global testerror
 
 using swag
 
-#unittest error
 //#[swag.printbc]
 #test
 {

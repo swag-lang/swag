@@ -1,5 +1,4 @@
-
-
+#global testerror
 
 struct(T) Point
 {
@@ -13,7 +12,6 @@ struct(T) Point
 }*/
 
 //#[swag.printbc]
-#unittest error
 #test
 {
 	var pt: Point

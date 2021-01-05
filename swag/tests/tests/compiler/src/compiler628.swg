@@ -1,5 +1,4 @@
-
-
+#global testerror
 
 struct Point
 {
@@ -7,7 +6,6 @@ struct Point
 	y: s32
 }
 
-#unittest error
 impl Point
 {
 	func(op: string) opIndexAssign(self, i: f32, v: s32)

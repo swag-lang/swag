@@ -1,11 +1,9 @@
-
-
+#global testerror
 
 func(op: s32) toto()
 {
 }
 
-#unittest error
 #test
 {
 	c := 0

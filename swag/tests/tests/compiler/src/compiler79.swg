@@ -1,2 +1,2 @@
-﻿#unittest error
+﻿#global testerror
 type str: 1

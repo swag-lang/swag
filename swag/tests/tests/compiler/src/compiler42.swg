@@ -1,6 +1,6 @@
 ﻿
 ;
-#unittest error;
+#global testerror;
 namespace toto
 {
 	var a: s32;

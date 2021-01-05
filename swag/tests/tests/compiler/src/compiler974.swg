@@ -1,7 +1,7 @@
 
 
 
-#unittest error
+#global testerror
 struct Point
 {
 	x: s32 = 10

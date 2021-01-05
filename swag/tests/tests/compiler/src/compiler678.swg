@@ -1,5 +1,4 @@
-
-
+#global testerror
 
 struct Point
 {
@@ -8,7 +7,6 @@ struct Point
 	z: f32
 }
 
-#unittest error
 //#[swag.printbc]
 #test
 {

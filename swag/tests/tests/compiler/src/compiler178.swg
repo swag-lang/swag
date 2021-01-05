@@ -1,7 +1,5 @@
-
-;
+#global testerror;
 
 namespace A{}
-#unittest error;
 
 #assert A && A;

@@ -1,9 +1,9 @@
 
 #global testpass syntax;
 
-#unittest error;
+#global testerror;
 attr toto() -> ;
 
 #global testpass syntax;
-#unittest error;
+#global testerror;
 attr toto() -> "coucou"

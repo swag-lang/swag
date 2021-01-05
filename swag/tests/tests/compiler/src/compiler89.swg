@@ -1,4 +1,4 @@
-//#unittest error
+//#global testerror
 
 var b: bool
 namespace c

@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 #[swag.mixin, swag.macro]
 func toto()

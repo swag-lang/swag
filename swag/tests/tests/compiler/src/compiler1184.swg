@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 #[swag.attributeUsage(AttributeUsage.Field)]
 attr T();

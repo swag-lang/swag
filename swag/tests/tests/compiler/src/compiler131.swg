@@ -1,10 +1,10 @@
+#global testerror
 
 using swag
 
 #[attributeUsage(AttributeUsage.Field)]
 attr toto();
 
-#unittest error
 struct TT
 {
 	#[toto, toto]

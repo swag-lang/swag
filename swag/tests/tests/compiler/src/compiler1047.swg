@@ -1,8 +1,7 @@
-
+#global testerror
 
 func new() => @{1}
 
-#unittest error
 //#[swag.printbc]
 #test
 {

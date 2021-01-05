@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 const TOTO = false
 #if TOTO

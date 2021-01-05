@@ -1,7 +1,5 @@
-
+#global testerror;
 using swag;
-
-#unittest error;
 
 #[compiler]
 func main ()

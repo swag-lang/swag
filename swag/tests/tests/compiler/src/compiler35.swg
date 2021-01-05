@@ -1,8 +1,8 @@
 ﻿
 #global testpass syntax;
-#unittest error;
+#global testerror;
 var 1: s32;
-#unittest error;
+#global testerror;
 var a;
 
 var a: s32;

@@ -1,4 +1,4 @@
-//#unittest error
+//#global testerror
 var main: bool
 namespace A
 {

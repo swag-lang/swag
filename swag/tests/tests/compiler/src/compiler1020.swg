@@ -1,6 +1,6 @@
 
 
-#unittest error
+#global testerror
 func @toto()
 {
 }

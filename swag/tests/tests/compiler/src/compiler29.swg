@@ -1,8 +1,3 @@
-﻿
-#global testpass lexer;
-#unittest error;
+﻿#global testerror
+#global testpass lexer
 0b112
-#unittest error;
-0xAG
-#unittest error;
-0b11A

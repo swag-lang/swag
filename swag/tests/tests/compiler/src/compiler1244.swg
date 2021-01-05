@@ -1,6 +1,6 @@
 
-#unittest error
-#unittest error
+#global testerror
+#global testerror
 
 const SmallSizeInternal = @sizeof(Utf8.size)
 struct Utf8

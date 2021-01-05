@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 alias A = [2] s32
 var x: A

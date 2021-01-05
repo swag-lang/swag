@@ -1,4 +1,4 @@
-#unittest error
+#global testerror
 func toto();
 
 var G = 0

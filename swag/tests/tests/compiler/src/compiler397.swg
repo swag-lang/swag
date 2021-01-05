@@ -1,7 +1,7 @@
 
 
 //#[swag.printbc]
-#unittest error;
+#global testerror;
 #test
 {
 	var d = [[1], 1, 2];

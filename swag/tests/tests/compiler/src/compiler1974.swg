@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 struct(K, V) HashTableEntry
 {

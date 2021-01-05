@@ -1,7 +1,7 @@
 
 
 //#[swag.printbc]
-#unittest error
+#global testerror
 #test
 {
 	var d: const [..] s32 = @{1, 2, 3, 4};

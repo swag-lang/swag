@@ -1,10 +1,8 @@
-
-
+#global testerror
 
 alias toto = s32
 
 //#[swag.printbc]
-#unittest error
 #test
 {
 	a := 0

@@ -1,5 +1,5 @@
 ﻿;
 
 var a: bool = true && true;
-//#unittest error
+//#global testerror
 //var b: bool = 1;

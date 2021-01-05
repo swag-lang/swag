@@ -1,4 +1,4 @@
-
+#global testerror
 
 struct Point
 {
@@ -7,7 +7,6 @@ struct Point
 }
 
 //#[swag.printbc]
-#unittest error
 func toto(using pt: **Point)
 {
 	x = 10

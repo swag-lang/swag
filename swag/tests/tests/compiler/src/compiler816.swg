@@ -1,6 +1,6 @@
 
 
-#unittest error
+#global testerror
 func toto(x: [4] s32)
 {
 }

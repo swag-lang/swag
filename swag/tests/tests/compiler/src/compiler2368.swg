@@ -1,4 +1,4 @@
-#unittest error
+#global testerror
 #[swag.macro]
 func toto(stmt: code)
 {

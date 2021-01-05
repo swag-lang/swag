@@ -1,4 +1,4 @@
-
+#global testerror
 
 //#[swag.printbc]
 struct Point
@@ -17,7 +17,6 @@ func Print(x: s64)
 }
 
 //#[swag.printbc]
-#unittest error
 #test
 {
 	Print(s32)

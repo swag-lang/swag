@@ -1,7 +1,7 @@
 
 
 //#[swag.printbc]
-#unittest error
+#global testerror
 #test
 {
 	x := 0

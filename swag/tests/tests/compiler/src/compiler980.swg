@@ -1,5 +1,4 @@
-
-
+#global testerror
 
 struct Point
 {
@@ -10,7 +9,6 @@ struct Point
 const nullPoint: Point{10, 50}
 
 //#[swag.printbc]
-#unittest error
 #test
 {
 	nullPoint.x = 10

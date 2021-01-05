@@ -1,4 +1,4 @@
-
+#global testerror
 
 struct Array
 {
@@ -6,7 +6,6 @@ struct Array
 }
 
 //#[swag.printbc]
-#unittest error
 #test
 {
 	var arr: Array

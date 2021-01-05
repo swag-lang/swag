@@ -2,7 +2,7 @@
 
 
 //#[swag.printbc]
-#unittest error
+#global testerror
 #test
 {
 	var a: (s32, bool)->s32 = &F;

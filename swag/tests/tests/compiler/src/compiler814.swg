@@ -1,6 +1,6 @@
 
 
-#unittest error
+#global testerror
 #test
 {
 	let a = 0

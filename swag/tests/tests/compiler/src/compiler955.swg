@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 func toto()->s32 => 666
 

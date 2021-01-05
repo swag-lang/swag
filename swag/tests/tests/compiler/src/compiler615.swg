@@ -2,7 +2,7 @@
 
 
 //#[swag.printbc]
-#unittest error
+#global testerror
 func(T) Print(x: T, y: T)
 {
 }

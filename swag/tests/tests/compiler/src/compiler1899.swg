@@ -1,5 +1,5 @@
 
-#unittest error
+#global testerror
 
 public struct(T) TOTOcompiler1899
 {

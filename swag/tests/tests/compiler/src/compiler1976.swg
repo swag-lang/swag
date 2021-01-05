@@ -1,5 +1,5 @@
 //
-//#unittest error
+//#global testerror
 using swag
 
 struct(T) AA1976

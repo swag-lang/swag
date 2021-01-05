@@ -416,8 +416,30 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             return false;
         }
 
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(eatSemiCol("after '#global testpass'"));
+    }
+
+    /////////////////////////////////
+    else if (token.text == "testerror")
+    {
+        // Put the file in its own module, because of errors
+        if (!moduleSpecified)
+        {
+            moduleSpecified = true;
+            auto newModule  = g_Workspace.createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
+            sourceFile->module->removeFile(sourceFile);
+            newModule->addFile(sourceFile);
+        }
+
+        if (g_CommandLine.test)
+        {
+            sourceFile->testErrors++;
+            sourceFile->module->hasTtestErrors = true;
+        }
+
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatSemiCol("after '#unittest' expression"));
     }
 
     return true;

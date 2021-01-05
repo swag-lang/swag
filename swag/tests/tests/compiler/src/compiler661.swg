@@ -5,7 +5,7 @@ enum OT
 }
 
 //#[swag.printbc]
-//#unittest error
+//#global testerror
 #test
 {
 	pt := @{x: OT.A}

@@ -1,0 +1,6 @@
+#global testpass lexer;
+0x7F's8
+0x00000007F's8
+0xFFFF's16
+0xFFFF_FFFF's32
+0xFFFF_FFFF_FFFF_FFFF's64

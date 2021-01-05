@@ -1,5 +1,5 @@
 //
-//#unittest error
+//#global testerror
 //#import "core"
 
 //#[swag.printbc]

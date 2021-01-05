@@ -1,4 +1,4 @@
-
+#global testerror
 
 //#[swag.enumflags]
 enum Days
@@ -6,7 +6,6 @@ enum Days
 	A = 1
 }
 
-#unittest error
 #test
 {
 	x := ~Days.A

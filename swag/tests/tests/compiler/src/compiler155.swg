@@ -1,7 +1,7 @@
 
 ;
 
-#unittest error;
+#global testerror;
 func main () -> bool
 {
 }
