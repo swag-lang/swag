@@ -1,6 +1,6 @@
 /*
 
-#unittest pass syntax;
+#global testpass syntax;
 
 #version(toto)
 {

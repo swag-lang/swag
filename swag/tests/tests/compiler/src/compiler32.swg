@@ -1,2 +1,2 @@
 ﻿
-#unittest pass lexer;
+#global testpass lexer;

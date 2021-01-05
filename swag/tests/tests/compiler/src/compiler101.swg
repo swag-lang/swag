@@ -1,5 +1,5 @@
 
-#unittest pass syntax;
+#global testpass syntax;
 
 enum A: u8
 {

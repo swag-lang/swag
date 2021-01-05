@@ -1,5 +1,5 @@
 
-#unittest pass syntax;
+#global testpass syntax;
 
 #unittest error;
 attr toto(b: ) -> var;

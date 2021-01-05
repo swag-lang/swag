@@ -1,5 +1,5 @@
 
-#unittest pass syntax;
+#global testpass syntax;
 
 #[toto(true)]
 #[toto(true, 1 + 5)]

@@ -386,36 +386,8 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_CHECK(doGlobalAttributeExpose(parent, result, true));
     }
 
-    return true;
-}
-
-bool SyntaxJob::doCompilerUnitTest()
-{
-    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#unittest' can only be declared in the top level scope"}));
-    SWAG_VERIFY(sourceFile->fromTests, sourceFile->report({sourceFile, token, "'#unittest' can only be used in a test module"}));
-    SWAG_CHECK(tokenizer.getToken(token));
-
-    // ERROR
-    if (token.text == "error")
-    {
-        // Put the file in its own module, because of errors
-        if (!moduleSpecified)
-        {
-            moduleSpecified = true;
-            auto newModule  = g_Workspace.createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
-            sourceFile->module->removeFile(sourceFile);
-            newModule->addFile(sourceFile);
-        }
-
-        if (g_CommandLine.test)
-        {
-            sourceFile->testErrors++;
-            sourceFile->module->hasTtestErrors = true;
-        }
-    }
-
-    // PASS
-    else if (token.text == "pass")
+    /////////////////////////////////
+    else if (token.text == "testpass")
     {
         SWAG_CHECK(tokenizer.getToken(token));
         if (token.text == "lexer")
@@ -442,6 +414,37 @@ bool SyntaxJob::doCompilerUnitTest()
         {
             sourceFile->report({sourceFile, token, format("invalid pass name '%s'", token.text.c_str())});
             return false;
+        }
+
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatSemiCol("after '#global testpass'"));
+    }
+
+    return true;
+}
+
+bool SyntaxJob::doCompilerUnitTest()
+{
+    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#unittest' can only be declared in the top level scope"}));
+    SWAG_VERIFY(sourceFile->fromTests, sourceFile->report({sourceFile, token, "'#unittest' can only be used in a test module"}));
+    SWAG_CHECK(tokenizer.getToken(token));
+
+    // ERROR
+    if (token.text == "error")
+    {
+        // Put the file in its own module, because of errors
+        if (!moduleSpecified)
+        {
+            moduleSpecified = true;
+            auto newModule  = g_Workspace.createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
+            sourceFile->module->removeFile(sourceFile);
+            newModule->addFile(sourceFile);
+        }
+
+        if (g_CommandLine.test)
+        {
+            sourceFile->testErrors++;
+            sourceFile->module->hasTtestErrors = true;
         }
     }
 

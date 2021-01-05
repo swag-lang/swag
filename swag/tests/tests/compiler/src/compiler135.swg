@@ -1,5 +1,5 @@
 
-#unittest pass syntax;
+#global testpass syntax;
 
 attr toto(b: bool);
 attr toto(b: bool, b: bool);

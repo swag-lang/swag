@@ -1,5 +1,5 @@
 
-#unittest pass lexer;
+#global testpass lexer;
 
 #unittest error;
 0xFFFFFFFF'u8
@@ -22,7 +22,7 @@
 #unittest error;
 0xFFFFFFFFF'f64
 
-#unittest pass lexer;
+#global testpass lexer;
 0x7F's8
 0x00000007F's8
 0xFFFF's16

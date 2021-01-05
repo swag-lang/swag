@@ -1,5 +1,5 @@
 ﻿
-#unittest pass lexer;
+#global testpass lexer;
 #unittest error;
 0xFFFFFFFF_FFFFFFFF'char;
 

@@ -1,4 +1,4 @@
 
-#unittest pass lexer;
+#global testpass lexer;
 #unittest error;
 "c

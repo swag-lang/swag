@@ -1,5 +1,5 @@
 
-#unittest pass lexer;
+#global testpass lexer;
 
 "A"'char
 "0"'char "\n"'char"\r"'char

@@ -1,5 +1,5 @@
 
-#unittest pass lexer;
+#global testpass lexer;
 
 "totototoθθθθ"
 @"tototot

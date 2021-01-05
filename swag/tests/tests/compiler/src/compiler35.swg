@@ -1,5 +1,5 @@
 ﻿
-#unittest pass syntax;
+#global testpass syntax;
 #unittest error;
 var 1: s32;
 #unittest error;

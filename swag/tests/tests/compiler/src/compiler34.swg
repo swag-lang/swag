@@ -1,4 +1,2 @@
-﻿
-;
-#unittest pass syntax;
-#unittest pass lexer;
+﻿#global testpass syntax;
+#global testpass lexer;

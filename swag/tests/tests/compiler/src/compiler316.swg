@@ -1,5 +1,5 @@
 
-#unittest pass syntax;
+#global testpass syntax;
 
 var a: [6] s32;
 var a: [6, 6] s32;

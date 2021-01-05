@@ -477,7 +477,7 @@ bool SyntaxJob::doLabel(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
 {
-    if (token.id != TokenId::CompilerGlobal)
+    if (token.id != TokenId::CompilerGlobal && token.id != TokenId::SymSemiColon)
         afterGlobal = true;
 
     switch (token.id)

@@ -1,5 +1,5 @@
 
-#unittest pass syntax
+#global testpass syntax
 
 func F(a: s32, b: s32)
 {

@@ -1,5 +1,5 @@
 ﻿
-#unittest pass syntax;
+#global testpass syntax;
 namespace toto
 {
 	var a: s32;
