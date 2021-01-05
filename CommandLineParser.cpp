@@ -7,11 +7,11 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 {
     addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats, nullptr, "display build statistics at the end");
     addArg("--silent", "-s", CommandLineType::Bool, &cmdLine->silent, nullptr, "do not log messages");
-    addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose, nullptr, "verbose mode, log all kind of informations");
-    addArg("--verbose-cmdline", nullptr, CommandLineType::Bool, &cmdLine->verboseCmdLine, nullptr, "log swag command line when --verbose is true");
-    addArg("--verbose-path", nullptr, CommandLineType::Bool, &cmdLine->verbosePath, nullptr, "log global paths when --verbose is true");
-    addArg("--verbose-link", nullptr, CommandLineType::Bool, &cmdLine->verboseLink, nullptr, "log linker/compiler command line when --verbose is true");
-    addArg("--verbose-pass", nullptr, CommandLineType::Bool, &cmdLine->verbosePass, nullptr, "log compile passes when --verbose is true");
+    addArg("--verbose-cmdline", nullptr, CommandLineType::Bool, &cmdLine->verboseCmdLine, nullptr, "log swag command line");
+    addArg("--verbose-path", nullptr, CommandLineType::Bool, &cmdLine->verbosePath, nullptr, "log global paths");
+    addArg("--verbose-link", nullptr, CommandLineType::Bool, &cmdLine->verboseLink, nullptr, "log linker/compiler");
+    addArg("--verbose-pass", nullptr, CommandLineType::Bool, &cmdLine->verbosePass, nullptr, "log compile passes");
+    addArg("--verbose-ctypes", nullptr, CommandLineType::Bool, &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
     addArg("--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut, nullptr, "display source code when an error is raised");
     addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
 
@@ -49,7 +49,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--os", nullptr, CommandLineType::EnumInt, &cmdLine->os, "windows", "set the target operating system");
     addArg("--tag", nullptr, CommandLineType::StringSet, &cmdLine->tags, nullptr, "set a build tag, with an optional associated type and value");
     addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
-    
+
     addArg("--max-recurse", nullptr, CommandLineType::Int, &cmdLine->maxRecurse, nullptr, "maximum recursion level in bytecode (0 for no limit)");
     addArg("--stack-size", nullptr, CommandLineType::Int, &cmdLine->stackSize, nullptr, "set the stack size for bytecode and backend");
 

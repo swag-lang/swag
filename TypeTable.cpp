@@ -242,7 +242,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     if (!(cflags & CONCRETE_FOR_COMPILER))
     {
-        //printf("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str());
+        if (g_CommandLine.verboseConcreteTypes)
+            g_Log.verbose(format("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
         g_Stats.totalConcreteTypes++;
     }
 
