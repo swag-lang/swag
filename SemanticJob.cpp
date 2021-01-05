@@ -118,7 +118,6 @@ JobResult SemanticJob::execute()
         case AstNodeResolveState::Enter:
         {
             // Some nodes need to spawn a new semantic job
-            //if (node != firstNode && !(node->flags & AST_NO_SEMANTIC))
             if (canSpawn && node != originalNode)
             {
                 switch (node->kind)
@@ -131,7 +130,9 @@ JobResult SemanticJob::execute()
                     // trigger the resolve of the sub function by just removing AST_NO_SEMANTIC or by hand.
                     scoped_lock lk(node->mutex);
 
-                    if (canDoSem && !(node->doneFlags & AST_DONE_FILE_JOB_PASS))
+                    // Do NOT use canDoSem here, because we need to test the flag with the node locked, as it can be changed
+                    // in registerFuncSymbol by another thread
+                    if (!(node->flags & AST_NO_SEMANTIC) && !(node->doneFlags & AST_DONE_FILE_JOB_PASS))
                     {
                         auto job          = g_Pool_semanticJob.alloc();
                         job->sourceFile   = sourceFile;
