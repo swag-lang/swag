@@ -589,6 +589,8 @@ TypeInfo* TypeInfoFuncAttr::clone()
 void TypeInfoFuncAttr::computeName()
 {
     unique_lock lk(mutex);
+    if (!name.empty())
+        return;
 
     name.clear();
     if (genericParameters.size())

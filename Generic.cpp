@@ -379,7 +379,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     }
 
     // Replace generic types and values in the function generic parameters
-    newTypeFunc->computeName();
+    newTypeFunc->forceComputeName();
 
     scoped_lock lk(newFunc->resolvedSymbolName->mutex);
     auto        newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
@@ -474,7 +474,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     // Replace generic types and values in the function generic parameters
     SWAG_CHECK(updateGenericParameters(context, true, true, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
-    newTypeFunc->computeName();
+    newTypeFunc->forceComputeName();
 
     auto job = end(context, context->job, match.symbolName, newFunc, true);
     context->job->jobsToAdd.push_back(job);
