@@ -86,20 +86,23 @@ struct VectorNative
 
     T* reserve_back()
     {
-        reserve(count + 1);
+        if (count + 1 > allocated)
+            reserve(count + 1);
         count++;
         return buffer + count - 1;
     }
 
     void push_back(const T& val)
     {
-        reserve(count + 1);
+        if (count + 1 > allocated)
+            reserve(count + 1);
         buffer[count++] = val;
     }
 
     void push_front(const T& val)
     {
-        reserve(count + 1);
+        if (count + 1 > allocated)
+            reserve(count + 1);
         memmove(buffer + 1, buffer, count * sizeof(T));
         buffer[0] = val;
         count++;
@@ -108,7 +111,8 @@ struct VectorNative
     void insertAtIndex(const T& val, int index)
     {
         SWAG_ASSERT(index < count);
-        reserve(count + 1);
+        if (count + 1 > allocated)
+            reserve(count + 1);
         memmove(buffer + index + 1, buffer + index, (count - index) * sizeof(T));
         buffer[index] = val;
         count++;
