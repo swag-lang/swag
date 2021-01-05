@@ -393,6 +393,7 @@ struct SemanticJob : public Job
     MatchResult       bestMatchResult;
     BadSignatureInfos bestSignatureInfos;
     SymbolOverload*   bestOverload;
+    bool              canSpawn;
 
     void reset() override
     {
@@ -407,6 +408,7 @@ struct SemanticJob : public Job
         clearTryMatch();
         clearMatch();
         clearGenericMatch();
+        canSpawn = false;
     }
 
     void release() override

@@ -88,9 +88,16 @@ JobResult SemanticJob::execute()
         return JobResult::ReleaseJob;
 
     if (!originalNode)
+    {
         originalNode = nodes.front();
 
-    auto firstNode     = nodes.front();
+        canSpawn = originalNode->kind == AstNodeKind::Impl ||
+                   originalNode->kind == AstNodeKind::File ||
+                   originalNode->kind == AstNodeKind::StatementNoScope ||
+                   originalNode->kind == AstNodeKind::AttrUse ||
+                   originalNode->kind == AstNodeKind::CompilerIf;
+    }
+
     baseContext        = &context;
     context.baseJob    = this;
     context.job        = this;
@@ -99,8 +106,9 @@ JobResult SemanticJob::execute()
 
     while (!nodes.empty())
     {
-        auto node    = nodes.back();
-        context.node = node;
+        auto node     = nodes.back();
+        context.node  = node;
+        bool canDoSem = !(node->flags & AST_NO_SEMANTIC);
 
         // Some attribute flags must propagate from parent to childs, whatever
         propagateAttributes(node);
@@ -108,74 +116,67 @@ JobResult SemanticJob::execute()
         switch (node->semanticState)
         {
         case AstNodeResolveState::Enter:
-
+        {
             // Some nodes need to spawn a new semantic job
             //if (node != firstNode && !(node->flags & AST_NO_SEMANTIC))
-            if (node != firstNode)
+            if (canSpawn && node != originalNode)
             {
-                if (firstNode->kind == AstNodeKind::Impl ||
-                    firstNode->kind == AstNodeKind::File ||
-                    firstNode->kind == AstNodeKind::StatementNoScope ||
-                    firstNode->kind == AstNodeKind::AttrUse ||
-                    (firstNode->kind == AstNodeKind::CompilerIf && node->ownerScope->isGlobal()))
+                switch (node->kind)
                 {
-                    switch (node->kind)
-                    {
-                    case AstNodeKind::FuncDecl:
-                    {
-                        // A sub function can be waiting for the owner function to be resolved.
-                        // We inform the parent function that we have seen the sub function, and that
-                        // the attributes context is now fine for it. That way, the parent function can
-                        // trigger the resolve of the sub function by just removing AST_NO_SEMANTIC or by hand.
-                        scoped_lock lk(node->mutex);
+                case AstNodeKind::FuncDecl:
+                {
+                    // A sub function can be waiting for the owner function to be resolved.
+                    // We inform the parent function that we have seen the sub function, and that
+                    // the attributes context is now fine for it. That way, the parent function can
+                    // trigger the resolve of the sub function by just removing AST_NO_SEMANTIC or by hand.
+                    scoped_lock lk(node->mutex);
 
-                        if (!(node->flags & AST_NO_SEMANTIC) && !(node->doneFlags & AST_DONE_FILE_JOB_PASS))
-                        {
-                            auto job          = g_Pool_semanticJob.alloc();
-                            job->sourceFile   = sourceFile;
-                            job->module       = module;
-                            job->dependentJob = dependentJob;
-                            job->nodes.push_back(node);
-                            g_ThreadMgr.addJob(job);
-                        }
-
-                        node->doneFlags |= AST_DONE_FILE_JOB_PASS;
-                        nodes.pop_back();
-                        continue;
+                    if (canDoSem && !(node->doneFlags & AST_DONE_FILE_JOB_PASS))
+                    {
+                        auto job          = g_Pool_semanticJob.alloc();
+                        job->sourceFile   = sourceFile;
+                        job->module       = module;
+                        job->dependentJob = dependentJob;
+                        job->nodes.push_back(node);
+                        g_ThreadMgr.addJob(job);
                     }
 
-                    case AstNodeKind::AttrUse:
-                        if (!node->ownerScope->isGlobalOrImpl())
-                            break;
+                    node->doneFlags |= AST_DONE_FILE_JOB_PASS;
+                    nodes.pop_back();
+                    continue;
+                }
 
-                    case AstNodeKind::VarDecl:
-                    case AstNodeKind::ConstDecl:
-                    case AstNodeKind::Alias:
-                    case AstNodeKind::EnumDecl:
-                    case AstNodeKind::StructDecl:
-                    case AstNodeKind::InterfaceDecl:
-                    case AstNodeKind::TypeSet:
-                    case AstNodeKind::CompilerAssert:
-                    case AstNodeKind::CompilerPrint:
-                    case AstNodeKind::CompilerRun:
-                    case AstNodeKind::AttrDecl:
-                    case AstNodeKind::CompilerIf:
-                    case AstNodeKind::Impl:
+                case AstNodeKind::AttrUse:
+                    if (!node->ownerScope->isGlobalOrImpl())
+                        break;
+
+                case AstNodeKind::VarDecl:
+                case AstNodeKind::ConstDecl:
+                case AstNodeKind::Alias:
+                case AstNodeKind::EnumDecl:
+                case AstNodeKind::StructDecl:
+                case AstNodeKind::InterfaceDecl:
+                case AstNodeKind::TypeSet:
+                case AstNodeKind::CompilerAssert:
+                case AstNodeKind::CompilerPrint:
+                case AstNodeKind::CompilerRun:
+                case AstNodeKind::AttrDecl:
+                case AstNodeKind::CompilerIf:
+                case AstNodeKind::Impl:
+                {
+                    if (canDoSem)
                     {
-                        if (!(node->flags & AST_NO_SEMANTIC))
-                        {
-                            auto job          = g_Pool_semanticJob.alloc();
-                            job->sourceFile   = sourceFile;
-                            job->module       = module;
-                            job->dependentJob = dependentJob;
-                            job->nodes.push_back(node);
-                            g_ThreadMgr.addJob(job);
-                        }
+                        auto job          = g_Pool_semanticJob.alloc();
+                        job->sourceFile   = sourceFile;
+                        job->module       = module;
+                        job->dependentJob = dependentJob;
+                        job->nodes.push_back(node);
+                        g_ThreadMgr.addJob(job);
+                    }
 
-                        nodes.pop_back();
-                        continue;
-                    }
-                    }
+                    nodes.pop_back();
+                    continue;
+                }
                 }
             }
 
@@ -185,41 +186,46 @@ JobResult SemanticJob::execute()
             if (node->extension && node->extension->semanticBeforeFct && !node->extension->semanticBeforeFct(&context))
                 return JobResult::ReleaseJob;
 
-            if (!node->childs.empty() && !(node->flags & AST_NO_SEMANTIC))
+            if (!canDoSem)
             {
-                if (node->flags & AST_REVERSE_SEMANTIC)
+                nodes.pop_back();
+                break;
+            }
+
+            auto countChilds = (int) node->childs.size();
+            if (node->flags & AST_REVERSE_SEMANTIC)
+            {
+                for (int i = 0; i < countChilds; i++)
                 {
-                    for (int i = 0; i < (int) node->childs.size(); i++)
-                    {
-                        auto child = node->childs[i];
-                        if (child->flags & AST_NO_SEMANTIC)
-                            continue;
+                    auto child = node->childs[i];
+                    if (child->flags & AST_NO_SEMANTIC)
+                        continue;
 
-                        enterState(child);
-                        nodes.push_back(child);
-                    }
-                }
-                else
-                {
-                    for (int i = (int) node->childs.size() - 1; i >= 0; i--)
-                    {
-                        auto child = node->childs[i];
-
-                        // If the child has the AST_NO_SEMANTIC flag, do not push it.
-                        // Special case for function in the root file, because we need to deal with AST_DONE_FILE_JOB_PASS
-                        if ((child->flags & AST_NO_SEMANTIC) &&
-                            (originalNode->kind != AstNodeKind::File || child->kind != AstNodeKind::FuncDecl))
-                            continue;
-
-                        enterState(child);
-                        nodes.push_back(child);
-                    }
+                    enterState(child);
+                    nodes.push_back(child);
                 }
             }
-            break;
+            else
+            {
+                for (int i = countChilds - 1; i >= 0; i--)
+                {
+                    auto child = node->childs[i];
+
+                    // If the child has the AST_NO_SEMANTIC flag, do not push it.
+                    // Special case for function in the root file, because we need to deal with AST_DONE_FILE_JOB_PASS
+                    if ((child->flags & AST_NO_SEMANTIC) &&
+                        (originalNode->kind != AstNodeKind::File || child->kind != AstNodeKind::FuncDecl))
+                        continue;
+
+                    enterState(child);
+                    nodes.push_back(child);
+                }
+            }
+        }
+        break;
 
         case AstNodeResolveState::ProcessingChilds:
-            if (node->semanticFct && !(node->flags & AST_NO_SEMANTIC))
+            if (node->semanticFct)
             {
                 if (!node->semanticFct(&context))
                     return JobResult::ReleaseJob;
@@ -232,7 +238,7 @@ JobResult SemanticJob::execute()
             node->semanticState = AstNodeResolveState::PostChilds;
 
         case AstNodeResolveState::PostChilds:
-            if (node->extension && node->extension->semanticAfterFct && !(node->flags & AST_NO_SEMANTIC))
+            if (node->extension && node->extension->semanticAfterFct)
             {
                 if (!node->extension->semanticAfterFct(&context))
                     return JobResult::ReleaseJob;
