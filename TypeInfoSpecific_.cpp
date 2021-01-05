@@ -598,7 +598,7 @@ void TypeInfoFuncAttr::computeName()
         nakedName += ")";
     }
 
-    nakedName += format("(");
+    nakedName += "(";
     for (int i = 0; i < parameters.size(); i++)
     {
         if (i)
