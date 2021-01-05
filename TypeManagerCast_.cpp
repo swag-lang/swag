@@ -1897,7 +1897,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
     TypeInfoParam* done = nullptr;
     for (auto field : fromStruct->fields)
     {
-        if (!field->hasUsing)
+        if (!(field->flags & TYPEINFO_HAS_USING))
             continue;
         if (field->typeInfo != toStruct && !field->typeInfo->isPointerTo(toStruct))
             continue;

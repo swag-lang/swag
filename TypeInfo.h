@@ -48,6 +48,7 @@ static const uint32_t TYPEINFO_UNDEFINED                = 0x01000000;
 static const uint32_t TYPEINFO_ENUM_INDEX               = 0x02000000;
 static const uint32_t TYPEINFO_STRICT                   = 0x04000000;
 static const uint32_t TYPEINFO_FAKE_ALIAS               = 0x08000000;
+static const uint32_t TYPEINFO_HAS_USING                = 0x10000000;
 
 static const uint32_t ISSAME_EXACT     = 0x00000001;
 static const uint32_t ISSAME_CAST      = 0x00000002;
@@ -217,9 +218,8 @@ struct TypeInfoParam : public TypeInfo
 
     TypeInfo* typeInfo = nullptr;
 
-    int  index    = 0;
-    int  offset   = 0;
-    bool hasUsing = false;
+    int index  = 0;
+    int offset = 0;
 };
 
 struct TypeInfoEnum : public TypeInfo
