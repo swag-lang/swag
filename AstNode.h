@@ -439,7 +439,6 @@ struct AstFuncDecl : public AstNode
 
     DependentJobs          dependentJobs;
     Utf8                   fullnameForeign;
-    map<Utf8, TypeInfo*>   replaceTypes;
     VectorNative<AstNode*> subFunctions;
 
     AstNode*       parameters;
@@ -722,12 +721,11 @@ struct AstStruct : public AstNode
 
     DependentJobs dependentJobs;
 
-    AstNode*             genericParameters;
-    AstNode*             content;
-    Scope*               scope;
-    AstNode*             ownerGeneric;
-    AstNode*             originalParent;
-    map<Utf8, TypeInfo*> replaceTypes;
+    AstNode* genericParameters;
+    AstNode* content;
+    Scope*   scope;
+    AstNode* ownerGeneric;
+    AstNode* originalParent;
 
     uint32_t packing = sizeof(uint64_t);
 };

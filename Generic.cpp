@@ -292,7 +292,6 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags |= AST_FROM_GENERIC;
     structNode->content->flags &= ~AST_NO_SEMANTIC;
-    structNode->replaceTypes = cloneContext.replaceTypes;
     Ast::addChildBack(sourceNode->parent, structNode);
 
     newType->scope           = structNode->scope;
@@ -448,7 +447,6 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     auto newFunc  = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
     newFunc->flags |= AST_FROM_GENERIC;
     newFunc->content->flags &= ~AST_NO_SEMANTIC;
-    newFunc->replaceTypes = cloneContext.replaceTypes;
     Ast::addChildBack(funcNode->parent, newFunc);
 
     // If we are calling the function in a struct context (struct.func), then add the struct as
@@ -467,8 +465,9 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     {
         newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo->clone(), newFunc->typeInfo->kind);
         newTypeFunc->flags &= ~TYPEINFO_GENERIC;
-        newTypeFunc->declNode = newFunc;
-        newFunc->typeInfo     = newTypeFunc;
+        newTypeFunc->declNode     = newFunc;
+        newTypeFunc->replaceTypes = cloneContext.replaceTypes;
+        newFunc->typeInfo         = newTypeFunc;
         if (noReplaceTypes)
             newTypeFunc->flags |= TYPEINFO_UNDEFINED;
     }

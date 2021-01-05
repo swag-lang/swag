@@ -824,7 +824,8 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
         if (one->kind == AstNodeKind::FuncDecl)
         {
             auto nodeFunc = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
-            for (auto oneReplace : nodeFunc->replaceTypes)
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
+            for (auto oneReplace : typeFunc->replaceTypes)
             {
                 oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
             }
@@ -833,7 +834,8 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
         if (one->kind == AstNodeKind::StructDecl)
         {
             auto nodeStruct = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
-            for (auto oneReplace : nodeStruct->replaceTypes)
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);
+            for (auto oneReplace : typeStruct->replaceTypes)
             {
                 oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
             }

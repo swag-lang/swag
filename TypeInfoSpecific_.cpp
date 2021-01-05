@@ -648,14 +648,16 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
         // If the types does not match, then the two functions are not the same.
         if (declNode && declNode->kind == AstNodeKind::FuncDecl && other->declNode && other->declNode->kind == AstNodeKind::FuncDecl)
         {
-            auto myFunc    = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
-            auto otherFunc = CastAst<AstFuncDecl>(other->declNode, AstNodeKind::FuncDecl);
-            if (myFunc->replaceTypes.size() != otherFunc->replaceTypes.size())
+            auto myFunc        = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
+            auto typeMyFunc    = CastTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
+            auto otherFunc     = CastAst<AstFuncDecl>(other->declNode, AstNodeKind::FuncDecl);
+            auto typeOtherFunc = CastTypeInfo<TypeInfoFuncAttr>(otherFunc->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeMyFunc->replaceTypes.size() != typeOtherFunc->replaceTypes.size())
                 return false;
-            for (auto r : myFunc->replaceTypes)
+            for (auto r : typeMyFunc->replaceTypes)
             {
-                auto it = otherFunc->replaceTypes.find(r.first);
-                if (it == otherFunc->replaceTypes.end())
+                auto it = typeOtherFunc->replaceTypes.find(r.first);
+                if (it == typeOtherFunc->replaceTypes.end())
                     return false;
                 if (r.second != it->second)
                     return false;

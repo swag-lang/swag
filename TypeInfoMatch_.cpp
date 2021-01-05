@@ -471,13 +471,14 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         {
             if (myTypeInfo->declNode->kind == AstNodeKind::FuncDecl)
             {
-                auto myFunc = CastAst<AstFuncDecl>(myTypeInfo->declNode, AstNodeKind::FuncDecl);
-                if (!(myFunc->replaceTypes.empty()))
+                auto myFunc     = CastAst<AstFuncDecl>(myTypeInfo->declNode, AstNodeKind::FuncDecl);
+                auto typeMyFunc = CastTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
+                if (!(typeMyFunc->replaceTypes.empty()))
                 {
                     for (auto one : context.genericReplaceTypes)
                     {
-                        auto it = myFunc->replaceTypes.find(one.first);
-                        if (it == myFunc->replaceTypes.end() || it->second != one.second)
+                        auto it = typeMyFunc->replaceTypes.find(one.first);
+                        if (it == typeMyFunc->replaceTypes.end() || it->second != one.second)
                         {
                             context.result = MatchResult::NotEnoughGenericParameters;
                             return;
