@@ -66,7 +66,7 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
     return true;
 }
 
-TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* typeInfo)
+TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeInfo* typeInfo)
 {
     if (!typeInfo)
         return nullptr;
@@ -74,8 +74,8 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
         return typeInfo;
 
     // Search if the type has a corresponding replacement
-    auto it = cloneContext.replaceTypes.find(typeInfo->name);
-    if (it != cloneContext.replaceTypes.end())
+    auto it = replaceTypes.find(typeInfo->name);
+    if (it != replaceTypes.end())
     {
         // We can have a match on a lambda for a function attribute, when function has been generated
         // In that case, we want to be sure that the kind is function
@@ -95,7 +95,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     case TypeInfoKind::TypedVariadic:
     {
         auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
-        auto newType      = doTypeSubstitution(cloneContext, typeVariadic->rawType);
+        auto newType      = doTypeSubstitution(replaceTypes, typeVariadic->rawType);
         if (newType != typeVariadic->rawType)
         {
             typeVariadic          = CastTypeInfo<TypeInfoVariadic>(typeVariadic->clone(), TypeInfoKind::TypedVariadic);
@@ -111,7 +111,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     case TypeInfoKind::Alias:
     {
         auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
-        auto newType   = doTypeSubstitution(cloneContext, typeAlias->rawType);
+        auto newType   = doTypeSubstitution(replaceTypes, typeAlias->rawType);
         if (newType != typeAlias->rawType)
         {
             typeAlias          = CastTypeInfo<TypeInfoAlias>(typeAlias->clone(), TypeInfoKind::Alias);
@@ -127,7 +127,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        auto newType     = doTypeSubstitution(cloneContext, typePointer->finalType);
+        auto newType     = doTypeSubstitution(replaceTypes, typePointer->finalType);
         if (newType != typePointer->finalType)
         {
             typePointer            = CastTypeInfo<TypeInfoPointer>(typePointer->clone(), TypeInfoKind::Pointer);
@@ -144,12 +144,12 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     case TypeInfoKind::Array:
     {
         auto      typeArray      = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        auto      newPointedType = doTypeSubstitution(cloneContext, typeArray->pointedType);
+        auto      newPointedType = doTypeSubstitution(replaceTypes, typeArray->pointedType);
         TypeInfo* newFinalType;
         if (typeArray->pointedType == typeArray->finalType)
             newFinalType = newPointedType;
         else
-            newFinalType = doTypeSubstitution(cloneContext, typeArray->finalType);
+            newFinalType = doTypeSubstitution(replaceTypes, typeArray->finalType);
         if (newPointedType != typeArray->pointedType || newFinalType != typeArray->finalType)
         {
             typeArray              = CastTypeInfo<TypeInfoArray>(typeArray->clone(), TypeInfoKind::Array);
@@ -166,7 +166,7 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
     case TypeInfoKind::Slice:
     {
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        auto newType   = doTypeSubstitution(cloneContext, typeSlice->pointedType);
+        auto newType   = doTypeSubstitution(replaceTypes, typeSlice->pointedType);
         if (newType != typeSlice->pointedType)
         {
             typeSlice              = CastTypeInfo<TypeInfoSlice>(typeSlice->clone(), TypeInfoKind::Slice);
@@ -185,27 +185,27 @@ TypeInfo* Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo* type
         TypeInfoFuncAttr* newLambda  = nullptr;
         auto              typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
 
-        auto newType = doTypeSubstitution(cloneContext, typeLambda->returnType);
+        auto newType = doTypeSubstitution(replaceTypes, typeLambda->returnType);
         if (newType != typeLambda->returnType)
         {
             newLambda = CastTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), typeLambda->kind);
             newLambda->flags &= ~TYPEINFO_GENERIC;
             newLambda->returnType   = newType;
-            newLambda->replaceTypes = cloneContext.replaceTypes;
+            newLambda->replaceTypes = replaceTypes;
         }
 
         auto numParams = typeLambda->parameters.size();
         for (int idx = 0; idx < numParams; idx++)
         {
             auto param = CastTypeInfo<TypeInfoParam>(typeLambda->parameters[idx], TypeInfoKind::Param);
-            newType    = doTypeSubstitution(cloneContext, param->typeInfo);
+            newType    = doTypeSubstitution(replaceTypes, param->typeInfo);
             if (newType != param->typeInfo)
             {
                 if (!newLambda)
                 {
                     newLambda = CastTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
                     newLambda->flags &= ~TYPEINFO_GENERIC;
-                    newLambda->replaceTypes = cloneContext.replaceTypes;
+                    newLambda->replaceTypes = replaceTypes;
                 }
 
                 auto newParam      = CastTypeInfo<TypeInfoParam>(newLambda->parameters[idx], TypeInfoKind::Param);
