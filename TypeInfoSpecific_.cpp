@@ -5,6 +5,7 @@
 #include "AstNode.h"
 #include "Ast.h"
 #include "Module.h"
+#include "Generic.h"
 
 TypeInfo* TypeInfoNative::clone()
 {
@@ -780,6 +781,7 @@ TypeInfo* TypeInfoStruct::clone()
     newType->itable            = itable;
     newType->alignOf           = alignOf;
     newType->structName        = structName;
+    newType->replaceTypes      = replaceTypes;
 
     int size = (int) genericParameters.size();
     newType->genericParameters.reserve(size);

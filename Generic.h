@@ -4,6 +4,7 @@ struct SemanticContext;
 struct SymbolOverload;
 struct OneGenericMatch;
 struct AstVarDecl;
+struct CloneContext;
 
 struct Generic
 {

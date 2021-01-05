@@ -518,6 +518,7 @@ struct TypeInfoStruct : public TypeInfo
     VectorNative<TypeInfoParam*> consts;
     VectorNative<TypeInfoParam*> methods;
     VectorNative<TypeInfoParam*> interfaces;
+    map<Utf8, TypeInfo*>         replaceTypes;
     SymbolAttributes             attributes;
     Utf8                         structName;
 

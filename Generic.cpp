@@ -297,6 +297,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     newType->scope           = structNode->scope;
     newType->declNode        = structNode;
+    newType->replaceTypes    = cloneContext.replaceTypes;
     structNode->typeInfo     = newType;
     structNode->ownerGeneric = context->node;
 

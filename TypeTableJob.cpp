@@ -3,6 +3,7 @@
 #include "ThreadManager.h"
 #include "SourceFile.h"
 #include "TypeTableJob.h"
+#include "Generic.h"
 
 thread_local Pool<TypeTableJob> g_Pool_typeTableJob;
 
@@ -22,6 +23,21 @@ bool TypeTableJob::computeStruct()
     // First and main pass, by locking only the type segment
     {
         unique_lock lk1(segment->mutex);
+
+        // Update methods with types if generic
+        if (!realType->replaceTypes.empty())
+        {
+            for (auto method : realType->methods)
+            {
+                method->typeInfo = Generic::doTypeSubstitution(realType->replaceTypes, method->typeInfo);
+            }
+
+            // Update field  with types if generic
+            for (auto field : realType->fields)
+            {
+                field->typeInfo = Generic::doTypeSubstitution(realType->replaceTypes, field->typeInfo);
+            }
+        }
 
         SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes), cflags));
 
