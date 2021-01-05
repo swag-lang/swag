@@ -319,7 +319,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
         }
 
         // Search inside a sub structure marked with 'using'
-        if (parameters[j]->typeInfo->kind == TypeInfoKind::Struct && parameters[j]->node->flags & AST_DECL_USING)
+        if (parameters[j]->typeInfo->kind == TypeInfoKind::Struct && parameters[j]->declNode->flags & AST_DECL_USING)
         {
             auto subStruct = CastTypeInfo<TypeInfoStruct>(parameters[j]->typeInfo, TypeInfoKind::Struct);
             matchNamedParameter(context, callParameter, parameterIndex, subStruct->fields, forceCastFlags);

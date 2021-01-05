@@ -85,7 +85,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             typeParamItf->namedParam = typeBaseInterface->scopedName;
             SWAG_ASSERT(!typeParamItf->namedParam.empty());
             typeParamItf->typeInfo = typeBaseInterface;
-            typeParamItf->node     = typeBaseInterface->declNode;
+            typeParamItf->declNode = typeBaseInterface->declNode;
             typeParamItf->declNode = node;
             typeStruct->interfaces.push_back(typeParamItf);
         }
@@ -135,17 +135,17 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (!typeLambda->isSame(typeFunc, ISSAME_EXACT | ISSAME_INTERFACE))
         {
             Diagnostic diag{child, child->token, format("function '%s' has an incorrect signature for interface '%s'", child->token.text.c_str(), typeBaseInterface->name.c_str())};
-            Diagnostic note{symbolName->node, symbolName->node->token, "should be", DiagnosticLevel::Note};
+            Diagnostic note{symbolName->declNode, symbolName->declNode->token, "should be", DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
         // First parameter in the impl block must be a pointer to the struct
         SWAG_VERIFY(typeFunc->parameters.size(), context->report({child, child->token, format("missing first parameter 'self' for interface function '%s'", child->token.text.c_str())}));
         auto firstParamType = typeFunc->parameters[0]->typeInfo;
-        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->node, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->declNode, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
         auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(firstParamPtr->ptrCount == 1, context->report({typeFunc->parameters[0]->node, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
-        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->node, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+        SWAG_VERIFY(firstParamPtr->ptrCount == 1, context->report({typeFunc->parameters[0]->declNode, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
 
         // use resolvedUserOpSymbolOverload to store the match
         mapItToFunc[symbolName]           = child;
@@ -167,7 +167,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (mapItIdxToFunc[idx] == nullptr)
         {
             auto missingNode = typeInterface->fields[idx];
-            notes.push_back(new Diagnostic({missingNode->node, missingNode->node->token, format("missing '%s'", missingNode->namedParam.c_str()), DiagnosticLevel::Note}));
+            notes.push_back(new Diagnostic({missingNode->declNode, missingNode->declNode->token, format("missing '%s'", missingNode->namedParam.c_str()), DiagnosticLevel::Note}));
         }
     }
 
@@ -519,7 +519,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         else
             typeParam = typeInfo->consts[storageIndexConst];
         typeParam->typeInfo = child->typeInfo;
-        typeParam->node     = child;
+        typeParam->declNode = child;
 
         if (child->kind != AstNodeKind::VarDecl)
         {
@@ -789,7 +789,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             typeParam->name       = child->typeInfo->name;
             typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
-            typeParam->node       = child;
+            typeParam->declNode   = child;
             SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
             typeITable->fields.push_back(typeParam);
 
@@ -799,15 +799,15 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
             SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({child, format("missing parameters for interface member '%s' ('self' expected as first parameter)", child->token.text.c_str())}));
             auto firstParamType = typeLambda->parameters[0]->typeInfo;
-            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->node, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->declNode, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
             auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-            SWAG_VERIFY(firstParamPtr->ptrCount == 1, context->report({typeLambda->parameters[0]->node, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
-            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->node, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+            SWAG_VERIFY(firstParamPtr->ptrCount == 1, context->report({typeLambda->parameters[0]->declNode, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
         }
 
         typeParam           = typeITable->fields[storageIndex];
         typeParam->typeInfo = child->typeInfo;
-        typeParam->node     = child;
+        typeParam->declNode = child;
         typeParam->index    = storageIndex;
 
         SWAG_VERIFY(!varDecl->assignment, context->report({varDecl->assignment, "cannot initialize an interface member"}));
@@ -929,14 +929,14 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
             typeParam->namedParam = child->token.text;
             typeParam->name       = child->typeInfo->name;
             typeParam->sizeOf     = 0;
-            typeParam->node       = child;
+            typeParam->declNode   = child;
             SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
             typeSet->fields.push_back(typeParam);
         }
 
         typeParam           = typeSet->fields[storageIndex];
         typeParam->typeInfo = child->typeInfo;
-        typeParam->node     = child;
+        typeParam->declNode = child;
         typeParam->index    = storageIndex;
 
         if (!(node->flags & AST_IS_GENERIC))

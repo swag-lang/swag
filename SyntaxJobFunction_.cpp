@@ -426,7 +426,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         auto typeParam        = allocType<TypeInfoParam>();
         typeParam->namedParam = funcNode->token.text;
         typeParam->typeInfo   = funcNode->typeInfo;
-        typeParam->node       = funcNode;
+        typeParam->declNode = funcNode;
+        typeParam->declNode = funcNode;
         funcNode->methodParam = typeParam;
 
         unique_lock lk(typeStruct->mutex);

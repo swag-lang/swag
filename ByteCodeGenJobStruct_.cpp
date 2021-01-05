@@ -65,7 +65,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
     for (auto param : typeInfoStruct->fields)
     {
-        auto varDecl = CastAst<AstVarDecl>(param->node, AstNodeKind::VarDecl);
+        auto varDecl = CastAst<AstVarDecl>(param->declNode, AstNodeKind::VarDecl);
         auto typeVar = TypeManager::concreteType(param->typeInfo);
 
         // Reference to the field

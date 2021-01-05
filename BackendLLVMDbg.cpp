@@ -166,7 +166,7 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     auto                          typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     for (auto& field : typeStruct->fields)
     {
-        auto fieldLine = field->node->token.startLocation.line + 1;
+        auto fieldLine = field->declNode->token.startLocation.line + 1;
         auto fieldType = getType(field->typeInfo, file);
         auto typeField = dbgBuilder->createMemberType(result, field->namedParam.c_str(), file, fieldLine, field->sizeOf * 8, 0, field->offset * 8, noFlag, fieldType);
         subscripts.push_back(typeField);

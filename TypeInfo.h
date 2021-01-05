@@ -216,7 +216,6 @@ struct TypeInfoParam : public TypeInfo
     SymbolAttributes attributes;
 
     TypeInfo* typeInfo = nullptr;
-    AstNode*  node     = nullptr;
 
     int  index    = 0;
     int  offset   = 0;

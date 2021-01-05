@@ -166,7 +166,7 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
     auto numFields = typeStruct->fields.size();
     for (auto field : typeStruct->fields)
     {
-        auto child    = field->node;
+        auto child    = field->declNode;
         auto varDecl  = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
         auto typeInfo = TypeManager::concreteType(varDecl->typeInfo);
         if (varDecl->assignment)

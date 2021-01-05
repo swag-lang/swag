@@ -114,7 +114,6 @@ TypeInfo* TypeInfoParam::clone()
     newType->index      = index;
     newType->offset     = offset;
     newType->attributes = attributes;
-    newType->node       = node;
     newType->hasUsing   = hasUsing;
     newType->copyFrom(this);
     return newType;

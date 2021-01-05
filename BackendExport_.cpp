@@ -99,9 +99,9 @@ bool Backend::emitTypeTuple(TypeInfo* typeInfo, int indent)
         if (idx)
             bufferSwg.addString(", ");
 
-        if (field->node && field->node->kind == AstNodeKind::VarDecl)
+        if (field->declNode && field->declNode->kind == AstNodeKind::VarDecl)
         {
-            auto varDecl = CastAst<AstVarDecl>(field->node, AstNodeKind::VarDecl);
+            auto varDecl = CastAst<AstVarDecl>(field->declNode, AstNodeKind::VarDecl);
             SWAG_CHECK(emitVarSwg(nullptr, varDecl, 0));
         }
         else
@@ -404,9 +404,9 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
         SWAG_CHECK(emitAttributes(p, indent + 1));
 
         // Struct/interface content
-        if (p->node->kind == AstNodeKind::VarDecl)
+        if (p->declNode->kind == AstNodeKind::VarDecl)
         {
-            auto varDecl = CastAst<AstVarDecl>(p->node, AstNodeKind::VarDecl);
+            auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::VarDecl);
             SWAG_CHECK(emitVarSwg(nullptr, varDecl, indent + 1));
             bufferSwg.addEol();
         }
@@ -414,7 +414,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
         // Typeset content
         else
         {
-            SWAG_ASSERT(p->node->kind == AstNodeKind::StructDecl);
+            SWAG_ASSERT(p->declNode->kind == AstNodeKind::StructDecl);
             SWAG_ASSERT(node->kind == AstNodeKind::TypeSet);
             bufferSwg.addIndent(indent + 1);
             bufferSwg.addString(p->namedParam);
@@ -425,7 +425,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
 
     for (auto p : typeStruct->consts)
     {
-        auto varDecl = CastAst<AstVarDecl>(p->node, AstNodeKind::ConstDecl);
+        auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::ConstDecl);
         SWAG_CHECK(emitAttributes(p, indent + 1));
         SWAG_CHECK(emitVarSwg("const ", varDecl, indent + 1));
         bufferSwg.addEol();

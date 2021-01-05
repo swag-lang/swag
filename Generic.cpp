@@ -312,9 +312,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Force instantiation of all special functions
     for (auto method : newType->methods)
     {
-        if (method->node->flags & AST_IS_SPECIAL_FUNC)
+        if (method->declNode->flags & AST_IS_SPECIAL_FUNC)
         {
-            auto specFunc = CastAst<AstFuncDecl>(method->node, AstNodeKind::FuncDecl);
+            auto specFunc = CastAst<AstFuncDecl>(method->declNode, AstNodeKind::FuncDecl);
             if (specFunc != genericStructType->opUserDropFct &&
                 specFunc != genericStructType->opUserPostCopyFct &&
                 specFunc != genericStructType->opUserPostMoveFct &&
@@ -334,8 +334,8 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         newType->interfaces.push_back(typeItf);
 
         SWAG_ASSERT(itf->declNode);
-        auto newItf   = itf->declNode->clone(cloneContext);
-        typeItf->node = newItf;
+        auto newItf       = itf->declNode->clone(cloneContext);
+        typeItf->declNode = newItf;
 
         auto implJob = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, newItf, false);
         structJob->addDependentJob(implJob);

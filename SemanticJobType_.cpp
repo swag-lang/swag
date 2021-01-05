@@ -80,7 +80,7 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
         {
             auto typeParam      = allocType<TypeInfoParam>();
             typeParam->typeInfo = param->typeInfo;
-            typeParam->node     = param;
+            typeParam->declNode = param;
             if (typeParam->typeInfo->flags & TYPEINFO_GENERIC)
                 typeInfo->flags |= TYPEINFO_GENERIC;
             typeInfo->parameters.push_back(typeParam);
