@@ -172,7 +172,6 @@ struct SyntaxJob : public Job
     AstNode*            currentMainNode        = nullptr;
     AstInline*          currentInline          = nullptr;
     uint64_t            currentFlags           = 0;
-    bool                canChangeModule        = true;
     bool                moduleSpecified        = false;
     bool                inFunCall              = false;
     bool                afterGlobal            = false;
@@ -191,7 +190,6 @@ struct SyntaxJob : public Job
         currentInline          = nullptr;
         currentTokenLocation   = nullptr;
         currentFlags           = 0;
-        canChangeModule        = true;
         moduleSpecified        = false;
         inFunCall              = false;
         afterGlobal            = false;

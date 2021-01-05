@@ -390,8 +390,7 @@ JobResult SyntaxJob::execute()
             continue;
         }
 
-        canChangeModule = false;
-        ok              = doTopLevelInstruction(sourceFile->astRoot);
+        ok = doTopLevelInstruction(sourceFile->astRoot);
     }
 
     timer.stop();
