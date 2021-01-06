@@ -26,6 +26,7 @@ impl Timer
         debug.assert(handle == null)
         debug.assert(elapsedTimeMs > 0)
         debug.assert(lambda != null)
+        userLambda = lambda
 
         if !CreateTimerQueueTimer(&handle, null, @mkcallback(&timerEntry), self, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
         {
@@ -33,7 +34,6 @@ impl Timer
             return error.last()
         }
 
-        userLambda = lambda
         return null
     }
 
