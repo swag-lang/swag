@@ -699,6 +699,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].u64 = 0;
         break;
     }
+    case ByteCodeOp::ClearRA2:
+    {
+        registersRC[ip->a.u32].u64 = 0;
+        registersRC[ip->b.u32].u64 = 0;
+        break;
+    }
 
     case ByteCodeOp::IncrementRA32:
     {
@@ -2132,7 +2138,10 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
 
     __try
     {
-        if (!module->runner.runLoop(runContext))
+        runContext->bc->running = true;
+        auto res                = module->runner.runLoop(runContext);
+        runContext->bc->running = false;
+        if (!res)
             return false;
     }
     __except (exceptionHandler(runContext, GetExceptionInformation()))

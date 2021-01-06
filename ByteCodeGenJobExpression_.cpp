@@ -238,8 +238,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
             node->typeInfo->kind == TypeInfoKind::Interface)
         {
             reserveLinearRegisterRC2(context, regList);
-            emitInstruction(context, ByteCodeOp::ClearRA, regList[0]);
-            emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
+            emitInstruction(context, ByteCodeOp::ClearRA2, regList[0], regList[1]);
             return true;
         }
     }
@@ -311,8 +310,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         if (toType && (toType->kind == TypeInfoKind::Slice || toType->isNative(NativeTypeKind::String)))
         {
             reserveLinearRegisterRC2(context, regList);
-            emitInstruction(context, ByteCodeOp::ClearRA, regList[0]);
-            emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
+            emitInstruction(context, ByteCodeOp::ClearRA2, regList[0], regList[1]);
         }
         else
         {

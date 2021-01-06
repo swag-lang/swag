@@ -83,6 +83,7 @@ struct ByteCode
     bool         compilerGenerated = false;
     bool         isPostMove        = false;
     bool         addedToList       = false;
+    atomic<bool> running;
     atomic<bool> isEmpty;
 
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);

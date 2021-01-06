@@ -226,6 +226,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
 {
     AstNode* node = context->node;
     auto     bc   = context->bc;
+    SWAG_ASSERT(!bc->running);
 
     if (bc->numInstructions == bc->maxInstructions)
     {

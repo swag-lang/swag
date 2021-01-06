@@ -615,8 +615,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
         transformResultToLinear2(context, exprNode);
-        emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[0]);
-        emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
+        emitInstruction(context, ByteCodeOp::ClearRA2, exprNode->resultRegisterRC[0], exprNode->resultRegisterRC[1]);
         return true;
     }
 
