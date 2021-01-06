@@ -710,7 +710,6 @@ JobResult ByteCodeGenJob::execute()
     {
         unique_lock lk(originalNode->mutex);
         originalNode->flags |= AST_BYTECODE_RESOLVED;
-        SWAG_ASSERT(originalNode->flags & AST_BYTECODE_RESOLVED);
         originalNode->extension->byteCodeJob = nullptr;
     }
 
