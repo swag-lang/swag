@@ -1263,8 +1263,15 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             auto numRegs = typeInfoFunc->returnType->numRegisters();
             reserveRegisterRC(context, node->resultRegisterRC, numRegs);
             context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
-            for (int idx = 0; idx < numRegs; idx++)
-                emitInstruction(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[idx], idx);
+            if (numRegs == 1)
+            {
+                emitInstruction(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0], 0);
+            }
+            else
+            {
+                SWAG_ASSERT(numRegs == 2);
+                emitInstruction(context, ByteCodeOp::CopyRTtoRC2, node->resultRegisterRC[0], 0, node->resultRegisterRC[1], 1);
+            }
         }
     }
 

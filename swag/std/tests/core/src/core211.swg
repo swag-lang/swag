@@ -8,11 +8,12 @@ func entry(t: Timer)
     G += 1
 }
 
+//#[swag.printbc]
 #test
 {
     var timer: Timer
     @assert(timer.init(10, &entry, true) == null)
     defer timer.release()
-    thread.sleep(30)
+    thread.sleep(31)
     //@assert(G >= 1)
 }

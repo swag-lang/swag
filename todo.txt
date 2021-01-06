@@ -46,8 +46,6 @@ OPTIMS
 ****************************************
 
 -------------------------------------
-CopyRTtoRC2
--------------------------------------
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?
 rc[0] = r12 etc...
 -------------------------------------

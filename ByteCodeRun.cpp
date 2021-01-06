@@ -759,6 +759,14 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32] = registersRR[ip->b.u32];
         break;
     }
+    case ByteCodeOp::CopyRTtoRC2:
+    {
+        SWAG_ASSERT(ip->b.u32 < ByteCodeRunContext::MAX_ALLOC_RR);
+        registersRC[ip->a.u32] = registersRR[ip->b.u32];
+        SWAG_ASSERT(ip->d.u32 < ByteCodeRunContext::MAX_ALLOC_RR);
+        registersRC[ip->c.u32] = registersRR[ip->d.u32];
+        break;
+    }
     case ByteCodeOp::PushBP:
     {
         context->push(context->bp);
@@ -2095,7 +2103,10 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
     // Hardware exception
     if (g_CommandLine.devMode)
+    {
+        runContext->bc->print();
         OS::errorBox("[Developer Mode]", "Exception raised !");
+    }
 
     auto       ip = runContext->ip - 1;
     Diagnostic diag{ip->node, ip->node->token, "exception during bytecode execution !"};
