@@ -231,7 +231,7 @@ Utf8 AstNode::getKindName(AstNode* node)
         return "intrinsic";
     }
 
-    return "<node>";
+    return format("<%d>", node->kind);
 }
 
 AstNode* AstNode::clone(CloneContext& context)

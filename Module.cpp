@@ -190,7 +190,7 @@ void Module::allocateBackend()
 
     // Allocate backend, even if we do not want to output, because the backend can be used
     // to know if a build is necessary
-    if (!hasTtestErrors && buildPass >= BuildPass::Backend && kind != ModuleKind::Runtime && kind != ModuleKind::BootStrap)
+    if (!hasTestErrors && buildPass >= BuildPass::Backend && kind != ModuleKind::Runtime && kind != ModuleKind::BootStrap)
     {
         switch (g_CommandLine.backendType)
         {
@@ -719,7 +719,7 @@ bool Module::mustOutputSomething()
     else if (files.size() == exportSourceFiles.size())
         mustOutput = false;
     // module must have unittest errors, so no output
-    else if (hasTtestErrors)
+    else if (hasTestErrors)
         mustOutput = false;
     // a test module needs swag to be in test mode
     else if (kind == ModuleKind::Test && !g_CommandLine.outputTest)

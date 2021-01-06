@@ -435,7 +435,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         if (g_CommandLine.test)
         {
             sourceFile->testErrors++;
-            sourceFile->module->hasTtestErrors = true;
+            sourceFile->module->hasTestErrors = true;
         }
 
         SWAG_CHECK(eatToken());

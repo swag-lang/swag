@@ -87,6 +87,7 @@ struct Job : public PoolElem
     SourceFile* sourceFile          = nullptr;
     Module*     module              = nullptr;
     Job*        dependentJob        = nullptr;
+    Job*        wakeUpBy            = nullptr;
     JobContext* baseContext         = nullptr;
 
     int32_t  waitingJobIndex = -1;
@@ -110,6 +111,7 @@ struct Job : public PoolElem
         module              = nullptr;
         dependentJob        = nullptr;
         baseContext         = nullptr;
+        wakeUpBy            = nullptr;
         flags               = 0;
         waitingJobIndex     = -1;
         waitOnJobs          = 0;

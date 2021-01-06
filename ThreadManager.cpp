@@ -41,6 +41,7 @@ void ThreadManager::addJobNoLock(Job* job)
 {
     if (job->flags & JOB_IS_IN_THREAD)
     {
+        SWAG_ASSERT(job->waitOnJobs == 0);
         job->flags |= JOB_IS_PENDING_RUN;
         return;
     }
@@ -55,6 +56,7 @@ void ThreadManager::addJobNoLock(Job* job)
         {
             job->flags |= JOB_IS_PENDING;
             job->dependentJob->waitOnJobs++;
+            job->dependentJob->flags &= ~JOB_IS_PENDING_RUN;
         }
     }
 
@@ -66,6 +68,8 @@ void ThreadManager::addJobNoLock(Job* job)
         waitingJobs.pop_back();
         job->waitingJobIndex = -1;
     }
+
+    SWAG_ASSERT(job->waitOnJobs == 0);
 
     if (job->flags & JOB_IS_IO)
         queueJobsIO.push_back(job);
@@ -91,10 +95,15 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     SWAG_ASSERT(job->flags & JOB_IS_IN_THREAD);
     job->flags &= ~JOB_IS_IN_THREAD;
     jobsInThreads--;
+    job->wakeUpBy = nullptr;
 
     // Some jobs have been registered to be pushed
     for (auto toRun : job->jobsToAdd)
+    {
+        toRun->wakeUpBy = job;
         addJobNoLock(toRun);
+    }
+
     job->jobsToAdd.clear();
 
     // A request has been made to run the job, and the job was not ended
@@ -104,7 +113,6 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         job->flags &= ~JOB_IS_PENDING_RUN;
         if (result != JobResult::ReleaseJob)
         {
-            job->flags &= ~JOB_IS_PENDING_RUN;
             addJobNoLock(job);
             return;
         }
@@ -115,7 +123,11 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     {
         scoped_lock lk1(job->mutexDependent);
         for (auto toRun : job->dependentJobs.list)
+        {
+            toRun->wakeUpBy = job;
             addJobNoLock(toRun);
+        }
+
         job->dependentJobs.clear();
     }
 
@@ -140,7 +152,10 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         job->dependentJob->waitOnJobs--;
         job->flags &= ~JOB_IS_PENDING;
         if (!job->dependentJob->waitOnJobs)
+        {
+            job->dependentJob->wakeUpBy = job;
             g_ThreadMgr.addJobNoLock(job->dependentJob);
+        }
     }
 
     // We are not really done. Just keep a trace of us
