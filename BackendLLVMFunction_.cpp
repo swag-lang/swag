@@ -2636,6 +2636,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, func->getArg(ip->a.u32));
             break;
         }
+        case ByteCodeOp::CopyRCtoRR2:
+        {
+            auto r1 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(r1, func->getArg(ip->a.u32));
+            r1 = builder.CreateLoad(GEP_I32(allocR, ip->d.u32));
+            builder.CreateStore(r1, func->getArg(ip->c.u32));
+            break;
+        }
         case ByteCodeOp::CopyRCtoRT:
         {
             auto r0 = GEP_I32(allocRR, ip->a.u32);

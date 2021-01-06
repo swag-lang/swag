@@ -221,16 +221,19 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 auto child = node->childs.front();
                 if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
                     emitInstruction(context, ByteCodeOp::CloneString, child->resultRegisterRC[0], child->resultRegisterRC[1]);
-                emitInstruction(context, ByteCodeOp::CopyRCtoRR, 0, child->resultRegisterRC[0]);
-                emitInstruction(context, ByteCodeOp::CopyRCtoRR, 1, child->resultRegisterRC[1]);
+                emitInstruction(context, ByteCodeOp::CopyRCtoRR2, 0, child->resultRegisterRC[0], 1, child->resultRegisterRC[1]);
             }
             else
             {
                 SWAG_ASSERT(node->childs.size() == 1);
                 auto child = node->childs.front();
                 SWAG_ASSERT(child->resultRegisterRC.size() >= returnType->numRegisters());
-                for (int r = 0; r < returnType->numRegisters(); r++)
-                    emitInstruction(context, ByteCodeOp::CopyRCtoRR, r, child->resultRegisterRC[r]);
+                auto numRetReg = returnType->numRegisters();
+                SWAG_ASSERT(numRetReg <= 2);
+                if (numRetReg == 1)
+                    emitInstruction(context, ByteCodeOp::CopyRCtoRR, 0, child->resultRegisterRC[0]);
+                else if (numRetReg == 2)
+                    emitInstruction(context, ByteCodeOp::CopyRCtoRR2, 0, child->resultRegisterRC[0], 1, child->resultRegisterRC[1]);
             }
         }
     }
