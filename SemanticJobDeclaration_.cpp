@@ -108,6 +108,14 @@ bool SemanticJob::resolveScopedStmtBefore(SemanticContext* context)
     auto node                        = context->node;
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
     node->allocateExtension();
-    node->extension->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+
+    // Can already been set in some cases... So be sure to not overwrite it.
+    if (node->extension->byteCodeAfterFct != ByteCodeGenJob::emitIfAfterIf &&
+        node->extension->byteCodeAfterFct != ByteCodeGenJob::emitLeaveScope)
+    {
+        SWAG_ASSERT(!node->extension->byteCodeAfterFct);
+        node->extension->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+    }
+
     return true;
 }
