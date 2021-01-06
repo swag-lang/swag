@@ -10,7 +10,9 @@ void ByteCodeStack::log()
 {
     if (steps.empty())
         return;
-    for (int i = (int) steps.size() - 1; i >= 0; i--)
+
+    int maxSteps = min((int) steps.size() - 1, 20);
+    for (int i = maxSteps; i >= 0; i--)
     {
         const auto& step = steps[i];
 
