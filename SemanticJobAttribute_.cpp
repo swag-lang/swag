@@ -218,7 +218,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.pack", "value", attrValue);
-                SWAG_VERIFY(attrValue.reg.u8 <= 8, context->report({child, format("'swag.pack' value must be in the range [0, 8] ('%d' provided)", attrValue.reg.u8)}));
+                SWAG_VERIFY(!attrValue.reg.u8 || isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.pack' value must be 0 or a power of two ('%d' provided)", attrValue.reg.u8)}));
             }
             else if (child->token.text == "align")
             {
