@@ -5,7 +5,7 @@ namespace swag
     {
         Enum            = 0x00000001
         EnumValue       = 0x00000002
-        Field           = 0x00000004
+        StructVariable  = 0x00000004
         GlobalVariable  = 0x00000008
         Struct          = 0x00000010
         Function        = 0x00000020
@@ -54,6 +54,9 @@ namespace swag
     // Hardcoded for local variables
     attr global()
 
+    // Hardcoded for struct and variables
+    attr align(value: u8)
+
     #[attributeUsage(AttributeUsage.Function)]
     attr noreturn()
 
@@ -63,7 +66,7 @@ namespace swag
     #[attributeUsage(AttributeUsage.Struct)]
     attr pack(value: u8)
 
-    #[attributeUsage(AttributeUsage.Field)]
+    #[attributeUsage(AttributeUsage.StructVariable)]
     attr offset(name: string)
 
     #[attributeUsage(AttributeUsage.Enum)]

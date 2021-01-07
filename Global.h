@@ -6,9 +6,9 @@
 struct Global
 {
     void        setup();
-    atomic<int> uniqueID  = 0;
+    atomic<int> uniqueID        = 0;
     atomic<int> compilerAllocTh = 0;
-    bool        exiting   = false;
+    bool        exiting         = false;
 };
 
 extern Utf8   format(const char* format, ...);
@@ -23,6 +23,13 @@ extern void*  undoByteCodeLambda(void* ptr);
 extern bool   isByteCodeLambda(void* ptr);
 extern Utf8   toStringF64(double v);
 extern Utf8   toNiceSize(size_t size);
+
+inline bool isPowerOfTwo(size_t v)
+{
+    if (!v)
+        return false;
+    return (v & (v - 1)) == 0;
+}
 
 extern struct Global g_Global;
 

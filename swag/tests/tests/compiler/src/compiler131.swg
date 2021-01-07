@@ -2,7 +2,7 @@
 
 using swag
 
-#[attributeUsage(AttributeUsage.Field)]
+#[attributeUsage(AttributeUsage.StructVariable)]
 attr toto();
 
 struct TT

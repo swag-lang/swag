@@ -1,7 +1,7 @@
 
 #global testerror
 
-#[swag.attributeUsage(AttributeUsage.Field)]
+#[swag.attributeUsage(AttributeUsage.StructVariable)]
 attr T();
 
 #[T]

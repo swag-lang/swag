@@ -9,7 +9,7 @@ enum AttributeUsage
     // Usage
     Enum           = 0x00000001,
     EnumValue      = 0x00000002,
-    Field          = 0x00000004,
+    StructVariable          = 0x00000004,
     GlobalVariable = 0x00000008,
     Struct         = 0x00000010,
     Function       = 0x00000020,

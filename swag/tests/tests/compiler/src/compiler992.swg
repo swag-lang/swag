@@ -1,5 +1,5 @@
 using swag
-#[attributeUsage(AttributeUsage.Field)]
+#[attributeUsage(AttributeUsage.StructVariable)]
 attr NC1(x: s32);
-#[attributeUsage(AttributeUsage.Field)]
+#[attributeUsage(AttributeUsage.StructVariable)]
 attr NC2(x: s32);

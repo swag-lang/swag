@@ -60,6 +60,8 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
         if (oneAttribute->token.text == "printbc" && kind == AstNodeKind::CompilerAst)
             return true;
+        if (oneAttribute->token.text == "align" && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::StructDecl))
+            return true;
     }
 
     if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
@@ -74,7 +76,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if ((typeInfo->attributeUsage & AttributeUsage::EnumValue) && (kind == AstNodeKind::EnumValue))
         return true;
 
-    if ((typeInfo->attributeUsage & AttributeUsage::Field) && (kind == AstNodeKind::VarDecl))
+    if ((typeInfo->attributeUsage & AttributeUsage::StructVariable) && (kind == AstNodeKind::VarDecl))
         if (checkNode->ownerMainNode && checkNode->ownerMainNode->kind == AstNodeKind::StructDecl)
             return true;
 
@@ -217,6 +219,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.pack", "value", attrValue);
                 SWAG_VERIFY(attrValue.reg.u8 <= 8, context->report({child, format("'swag.pack' value must be in the range [0, 8] ('%d' provided)", attrValue.reg.u8)}));
+            }
+            else if (child->token.text == "align")
+            {
+                ComputedValue attrValue;
+                curAttr->attributes.getValue("swag.align", "value", attrValue);
+                SWAG_VERIFY(isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.align' value must be a power of two ('%d' provided)", attrValue.reg.u8)}));
             }
         }
 

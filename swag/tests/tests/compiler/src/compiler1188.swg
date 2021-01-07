@@ -1,11 +1,11 @@
-#[swag.attributeUsage(swag.AttributeUsage.Field)]
+#[swag.attributeUsage(swag.AttributeUsage.StructVariable)]
 attr T();
 
 struct TOTO
 {
     #[T]
     {
-        x: s32 = 4 
+        x: s32 = 4
         y: s32 = 10
     }
 }

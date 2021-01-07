@@ -1,5 +1,5 @@
 using swag
-#[attributeUsage(AttributeUsage.Field)]
+#[attributeUsage(AttributeUsage.StructVariable)]
 attr T();
 
 struct TOTO
@@ -7,6 +7,6 @@ struct TOTO
     #[T]
     {
         A: s32
-        B: s32   
+        B: s32
     }
 }

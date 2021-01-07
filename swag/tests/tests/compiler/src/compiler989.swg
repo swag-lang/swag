@@ -4,7 +4,7 @@ using swag
 attr NC();
 #[attributeUsage(AttributeUsage.Struct)]
 attr NC0();
-#[attributeUsage(AttributeUsage.Field)]
+#[attributeUsage(AttributeUsage.StructVariable)]
 attr NC1();
 
 #[NC, NC0]
