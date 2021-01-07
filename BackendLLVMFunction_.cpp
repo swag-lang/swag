@@ -381,6 +381,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     llvm::FunctionType* funcType = createFunctionTypeInternal(buildParameters, typeFunc);
     llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->callName().c_str(), funcType).getCallee();
 
+    // No pointer aliasing, as this are registers, and the same register cannot be used more 
+    // than once as a parameter
+    for (int i = 0; i < func->arg_size(); i++)
+        func->getArg(i)->addAttr(llvm::Attribute::NoAlias);
+
     // Content
     llvm::BasicBlock* block         = llvm::BasicBlock::Create(context, "entry", func);
     bool              blockIsClosed = false;
