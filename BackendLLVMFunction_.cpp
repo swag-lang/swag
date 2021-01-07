@@ -399,11 +399,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Stack
     llvm::AllocaInst* allocStack = nullptr;
     if (typeFunc->stackSize)
+    {
         allocStack = builder.CreateAlloca(builder.getInt8Ty(), builder.getInt32(typeFunc->stackSize));
+        allocStack->setAlignment(llvm::Align(16));
+    }
 
     // Reserve room to pass parameters to embedded intrinsics
     const int ALLOCT_NUM = 5;
-    auto      allocT     = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(ALLOCT_NUM)));
+    auto      allocT     = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(ALLOCT_NUM));
 
     // Debug infos
     if (pp.dbg && bc->node)
