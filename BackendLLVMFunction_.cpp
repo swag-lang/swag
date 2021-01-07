@@ -806,20 +806,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetZeroStackX:
         {
-            auto r0 = builder.CreateInBoundsGEP(allocStack, CST_RA32);
-            auto p0 = GEP_I32(allocT, 0);
-            builder.CreateStore(r0, TO_PTR_PTR_I8(p0));
-
-            auto r1 = pp.cst0_i8;
-            auto p1 = GEP_I32(allocT, 1);
-            builder.CreateStore(r1, TO_PTR_I8(p1));
-
-            auto r2 = builder.getInt32(ip->b.u32);
-            auto p2 = GEP_I32(allocT, 2);
-            builder.CreateStore(r2, TO_PTR_I32(p2));
-
-            auto typeF = createFunctionTypeInternal(buildParameters, 3);
-            builder.CreateCall(modu.getOrInsertFunction("@memset", typeF), {p0, p1, p2});
+            builder.CreateMemSet(builder.CreateInBoundsGEP(allocStack, CST_RA32), pp.cst0_i8, ip->b.u32, llvm::Align{});
             break;
         }
 
@@ -856,35 +843,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetZeroAtPointerX:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-
-            auto r1 = pp.cst0_i8;
-            auto p1 = GEP_I32(allocT, 0);
-            builder.CreateStore(r1, TO_PTR_I8(p1));
-
-            auto r2 = builder.getInt64(ip->b.u64);
-            auto p2 = GEP_I32(allocT, 1);
-            builder.CreateStore(r2, p2);
-
-            auto typeF = createFunctionTypeInternal(buildParameters, 3);
-            builder.CreateCall(modu.getOrInsertFunction("@memset", typeF), {r0, p1, p2});
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateMemSet(builder.CreateLoad(r0), pp.cst0_i8, ip->b.u64, llvm::Align{});
             break;
         }
         case ByteCodeOp::SetZeroAtPointerXRB:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-
-            auto r1 = pp.cst0_i8;
-            auto p1 = GEP_I32(allocT, 0);
-            builder.CreateStore(r1, TO_PTR_I8(p1));
-
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r2 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
             auto v2 = builder.CreateMul(r2, builder.getInt64(ip->c.u64));
-            auto p2 = GEP_I32(allocT, 1);
-            builder.CreateStore(v2, p2);
-
-            auto typeF = createFunctionTypeInternal(buildParameters, 3);
-            builder.CreateCall(modu.getOrInsertFunction("@memset", typeF), {r0, p1, p2});
+            builder.CreateMemSet(builder.CreateLoad(r0), pp.cst0_i8, v2, llvm::Align{});
             break;
         }
 
