@@ -688,13 +688,18 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         typeInfo->alignOf = 1;
     }
 
+    // User specific alignment
+    ComputedValue userAlignOf;
+    auto          hasUserAlignOf = typeInfo->attributes.getValue("swag.align", "value", userAlignOf);
+    if (hasUserAlignOf)
+        typeInfo->alignOf = userAlignOf.reg.u8;
+    else if (node->packing)
+        typeInfo->alignOf = min(typeInfo->alignOf, node->packing);
+    typeInfo->alignOf = max(1, typeInfo->alignOf);
+
     // Align structure size
-    else if (node->packing > 1 && !(typeInfo->flags & TYPEINFO_GENERIC))
-    {
-        SWAG_ASSERT(typeInfo->alignOf);
-        auto alignOf     = min(typeInfo->alignOf, node->packing);
-        typeInfo->sizeOf = (uint32_t) TypeManager::align(typeInfo->sizeOf, alignOf);
-    }
+    if (typeInfo->alignOf > 1 && !(typeInfo->flags & TYPEINFO_GENERIC))
+        typeInfo->sizeOf = (uint32_t) TypeManager::align(typeInfo->sizeOf, typeInfo->alignOf);
 
     // Check public
     if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE))

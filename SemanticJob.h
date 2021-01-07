@@ -127,6 +127,7 @@ struct SemanticJob : public Job
     static SymbolName*  hasUserOp(const char* name, TypeInfoStruct* leftStruct);
     static SymbolName*  hasUserOp(SemanticContext* context, const char* name, AstNode* left);
     static SymbolName*  waitUserOp(SemanticContext* context, const char* name, AstNode* left);
+    static uint32_t     alignOf(AstVarDecl* node);
 
     static void enterState(AstNode* node);
     static void propagateAttributes(AstNode* child);

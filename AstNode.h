@@ -407,10 +407,11 @@ struct AstVarDecl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    Utf8     publicName;
-    AstNode* type;
-    AstNode* assignment;
-    bool     constAssign;
+    SymbolAttributes attributes;
+    Utf8             publicName;
+    AstNode*         type;
+    AstNode*         assignment;
+    bool             constAssign;
 };
 
 struct AstIdentifierRef : public AstNode

@@ -6,6 +6,14 @@
 #include "TypeManager.h"
 #include "Generic.h"
 
+uint32_t SemanticJob::alignOf(AstVarDecl* node)
+{
+    ComputedValue value;
+    if (node->attributes.getValue("swag.align", "value", value))
+        return value.reg.u8;
+    return TypeManager::alignOf(TypeManager::concreteType(node->typeInfo));
+}
+
 bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* assignment, AstStruct** result)
 {
     auto       sourceFile = context->sourceFile;
@@ -319,7 +327,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         return true;
 
     // Collect all attributes for the variable
-    SWAG_CHECK(collectAttributes(context, node, nullptr));
+    SWAG_CHECK(collectAttributes(context, node, &node->attributes));
 
     bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
     bool isLocalConstant    = false;
@@ -689,7 +697,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         if (!(symbolFlags & OVERLOAD_RETVAL))
         {
-            auto alignOf                     = TypeManager::alignOf(node->typeInfo);
+            auto alignOf                     = SemanticJob::alignOf(node);
             node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
             storageOffset                    = node->ownerScope->startStackSize;
             node->ownerScope->startStackSize += typeInfo->sizeOf;
