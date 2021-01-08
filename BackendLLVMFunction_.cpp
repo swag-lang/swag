@@ -9,6 +9,7 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "OS.h"
+#include "Workspace.h"
 
 TypeInfo* registerIdxToType(TypeInfoFuncAttr* typeFunc, int ii)
 {
@@ -2115,20 +2116,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicStrCmp:
         {
-            auto                       typeFuncBC = g_TypeMgr.createFunctionType("@strcmp", g_TypeMgr.typeInfoBool, {g_TypeMgr.typeInfoString, g_TypeMgr.typeInfoString});
+            auto                       typeFuncBC = g_Workspace.runtimeModule->getRuntimeTypeFct("@strcmp");
             auto                       FT         = createFunctionTypeInternal(buildParameters, typeFuncBC);
             VectorNative<llvm::Value*> fctParams;
             pushRAParams = {ip->d.u32, ip->c.u32, ip->b.u32, ip->a.u32, ip->d.u32}; // From right to left params order, starting with return registers
             getLocalCallParameters(buildParameters, allocR, nullptr, fctParams, typeFuncBC, pushRAParams);
             builder.CreateCall(modu.getOrInsertFunction("@strcmp", FT), {fctParams.begin(), fctParams.end()});
-
-            /*auto rr    = GEP_I32(allocR, ip->d.u32);
-            auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto r1    = GEP_I32(allocR, ip->b.u32);
-            auto r2    = GEP_I32(allocR, ip->c.u32);
-            auto r3    = GEP_I32(allocR, ip->d.u32);
-            auto typeF = createFunctionTypeInternal(buildParameters, 5);
-            builder.CreateCall(modu.getOrInsertFunction("@strcmp", typeF), {rr, r0, r1, r2, r3});*/
             break;
         }
         case ByteCodeOp::IntrinsicTypeCmp:

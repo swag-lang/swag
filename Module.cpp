@@ -782,3 +782,10 @@ void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result
         return n2->module->hasDependencyTo(n1->module);
     });
 }
+
+TypeInfoFuncAttr* Module::getRuntimeTypeFct(const char* fctName)
+{
+    auto it = mapRuntimeFcts.find(fctName);
+    SWAG_ASSERT(it != mapRuntimeFcts.end());
+    return it->second;
+}

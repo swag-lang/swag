@@ -273,6 +273,13 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     if (genByteCode)
         ByteCodeGenJob::askForByteCode(context->job, node, 0);
 
+    // Register runtime function type, by name
+    if (sourceFile->isRuntimeFile)
+    {
+        unique_lock lk(sourceFile->module->mutexFile);
+        sourceFile->module->mapRuntimeFcts[node->token.text] = typeInfo;
+    }
+
     return true;
 }
 
