@@ -31,6 +31,18 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             ip[1].b.u64                   = 1;
         }
 
+        // If we deref a pointer, and increment that same pointer just after, just
+        // set reg.d.u32 of the deref to the increment
+        if (ip[0].op == ByteCodeOp::DeRefPointer &&
+            ip[1].op == ByteCodeOp::IncPointer64 &&
+            ip[0].b.u32 == ip[1].a.u32 &&
+            ip[1].flags & BCI_IMM_B)
+        {
+            ip[0].b.u32 = ip[1].c.u32;
+            ip[0].d.u32 = ip[1].b.u32;
+            setNop(context, ip + 1);
+        }
+
         // Remove operators which do nothing
         if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C) && ip->a.u32 == ip->c.u32)
         {

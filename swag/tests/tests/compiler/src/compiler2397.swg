@@ -4,23 +4,26 @@ struct VV
     v: [4] f32
 }
 
-func add(s: *VV, v: f32)
+#[swag.printbc]
+#[swag.safety(false)]
+func add(s: *f32, v: f32)
 {
-    s.v[0] += v
-    s.v[1] += v
-    s.v[2] += v
-    s.v[3] += v
+    s[0] += v
+    s[1] += v
+    s[2] += v
+    s[3] += v
 }
 
+var G = 100
 //#[swag.printbc]
 #test
 {
-    var b: bool
-    //#[swag.align(16)]
-    var vv: VV
-    add(&vv, 1)
-    @print(cast(f64) vv.v[0])
-    @print(cast(f64) vv.v[1])
-    @print(cast(f64) vv.v[2])
-    @print(cast(f64) vv.v[3])
+    var vv: [4] f32
+    loop G
+    add(&vv[0], 1)
+
+    @print(cast(f64) vv[0])
+    @print(cast(f64) vv[1])
+    @print(cast(f64) vv[2])
+    @print(cast(f64) vv[3])
 }

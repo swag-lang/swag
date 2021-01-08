@@ -381,7 +381,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     llvm::FunctionType* funcType = createFunctionTypeInternal(buildParameters, typeFunc);
     llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->callName().c_str(), funcType).getCallee();
 
-    // No pointer aliasing, as this are registers, and the same register cannot be used more 
+    // No pointer aliasing, as this are registers, and the same register cannot be used more
     // than once as a parameter
     for (int i = 0; i < func->arg_size(); i++)
         func->getArg(i)->addAttr(llvm::Attribute::NoAlias);
@@ -735,11 +735,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::DeRefPointer:
         {
             auto r0   = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1   = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
             auto ptr  = builder.CreateLoad(r0);
-            auto ptr8 = builder.CreateInBoundsGEP(ptr, CST_RC32);
+            auto ptr8 = GEP_I32(ptr, ip->c.u32);
             auto v8   = builder.CreateLoad(TO_PTR_PTR_I8(ptr8));
-            builder.CreateStore(v8, r1);
+            ptr8      = GEP_I32(v8, ip->d.u32);
+
+            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(ptr8, r1);
             break;
         }
         case ByteCodeOp::DeRefStringSlice:
