@@ -6,7 +6,7 @@ struct VV
 
 #[swag.printbc]
 #[swag.safety(false)]
-func add(s: *f32, v: f32)
+func add(xx: string, s: *f32, v: f32)
 {
     s[0] += v
     s[1] += v
@@ -20,7 +20,7 @@ var G = 100
 {
     var vv: [4] f32
     loop G
-    add(&vv[0], 1)
+    add("toto", &vv[0], 1)
 
     @print(cast(f64) vv[0])
     @print(cast(f64) vv[1])

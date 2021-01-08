@@ -10,6 +10,29 @@
 #include "Ast.h"
 #include "OS.h"
 
+TypeInfo* registerIdxToType(TypeInfoFuncAttr* typeFunc, int ii)
+{
+    if (typeFunc->flags & TYPEINFO_VARIADIC)
+    {
+        if (ii < 2)
+            return typeFunc->parameters.back();
+        ii -= 2;
+    }
+
+    int argNo = 0;
+    while (true)
+    {
+        auto typeParam = TypeManager::concreteType(typeFunc->parameters[argNo]->typeInfo);
+        auto n         = typeParam->numRegisters();
+        if (ii < n)
+            return typeParam;
+        ii -= n;
+        argNo++;
+    }
+
+    return nullptr;
+}
+
 inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Value* v, NativeTypeKind k)
 {
     switch (k)
@@ -99,10 +122,11 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        if (typeInfoPointer->pointedType->isNative(NativeTypeKind::Void))
+        auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
+        if (pointedType->isNative(NativeTypeKind::Void))
             *llvmType = llvm::Type::getInt8Ty(context);
         else
-            SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, TypeManager::concreteType(typeInfoPointer->pointedType), llvmType));
+            SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, pointedType, llvmType));
         *llvmType = (*llvmType)->getPointerTo();
         return true;
     }
@@ -213,9 +237,6 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
 
     auto allocRR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(n));
 
-    // Affect registers
-    int idx = typeFunc->numReturnRegisters();
-
     // Return by copy
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnByCopy)
@@ -229,6 +250,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     auto numParams = typeFunc->parameters.size();
 
     // Variadic must be pushed first
+    int idx    = typeFunc->numReturnRegisters();
     int argIdx = 0;
     if (numParams)
     {
@@ -249,6 +271,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
     }
 
+    // Affect registers
     for (int i = 0; i < numParams; i++)
     {
         auto param     = typeFunc->parameters[i];
@@ -284,10 +307,16 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
-            auto r = TO_PTR_NATIVE(rr0, typeParam->nativeType);
-            if (!r)
-                return moduleToGen->internalError("emitFuncWrapperPublic, invalid param type");
-            builder.CreateStore(func->getArg(argIdx), r);
+            if (typeParam->isNative(NativeTypeKind::F32))
+            {
+            }
+            else
+            {
+                auto r = TO_PTR_NATIVE(rr0, typeParam->nativeType);
+                if (!r)
+                    return moduleToGen->internalError("emitFuncWrapperPublic, invalid param type");
+                builder.CreateStore(func->getArg(argIdx), r);
+            }
         }
         else
         {
@@ -302,8 +331,22 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     VectorNative<llvm::Value*> args;
     for (int i = 0; i < n; i++)
     {
-        auto rr0 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(i));
-        args.push_back(rr0);
+        if (i < typeFunc->numReturnRegisters())
+        {
+            auto rr0 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(i));
+            args.push_back(rr0);
+        }
+        else
+        {
+            auto typeParam = registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
+            if (typeParam->isNative(NativeTypeKind::F32))
+                args.push_back(func->getArg(i - typeFunc->numReturnRegisters()));
+            else
+            {
+                auto rr0 = builder.CreateInBoundsGEP(allocRR, builder.getInt32(i));
+                args.push_back(rr0);
+            }
+        }
     }
 
     auto fcc = modu.getFunction(bc->callName().c_str());
@@ -384,7 +427,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // No pointer aliasing, as this are registers, and the same register cannot be used more
     // than once as a parameter
     for (int i = 0; i < func->arg_size(); i++)
-        func->getArg(i)->addAttr(llvm::Attribute::NoAlias);
+    {
+        auto arg = func->getArg(i);
+        if (arg->getType()->isPointerTy())
+            arg->addAttr(llvm::Attribute::NoAlias);
+    }
 
     // Content
     llvm::BasicBlock* block         = llvm::BasicBlock::Create(context, "entry", func);
@@ -2261,8 +2308,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto r1 = GEP_I32(allocT, 0);
                 for (int iparam = 1; iparam < typeFunc->parameters.size() + typeFunc->numReturnRegisters(); iparam++)
                 {
-                    auto r0 = builder.CreateLoad(func->getArg(iparam));
-                    builder.CreateStore(r0, r1);
+                    //                    auto r0 = builder.CreateLoad(func->getArg(iparam));
+                    //                    builder.CreateStore(r0, r1);
                 }
             }
 
@@ -2665,15 +2712,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::GetFromStackParam64:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(func->getArg(ip->c.u32 + typeFunc->numReturnRegisters()));
-            builder.CreateStore(r1, r0);
+            auto r0     = GEP_I32(allocR, ip->a.u32);
+            auto param  = registerIdxToType(typeFunc, ip->c.u32);
+            auto offArg = ip->c.u32 + typeFunc->numReturnRegisters();
+            auto arg    = func->getArg(offArg);
+            if (param->isNative(NativeTypeKind::F32))
+                builder.CreateStore(arg, TO_PTR_F32(r0));
+            else
+                builder.CreateStore(builder.CreateLoad(arg), r0);
             break;
         }
         case ByteCodeOp::MakeStackPointerParam:
         {
-            auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
-            auto r1 = func->getArg(ip->c.u32 + typeFunc->numReturnRegisters());
+            auto r0     = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
+            auto offArg = ip->c.u32 + typeFunc->numReturnRegisters();
+            auto r1     = func->getArg(offArg);
             builder.CreateStore(r1, r0);
             break;
         }
@@ -3267,6 +3320,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&                 
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
+    auto& context         = *pp.context;
 
     for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
     {
@@ -3276,15 +3330,37 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&                 
 
     int popRAidx      = (int) pushRAParams.size() - 1;
     int numCallParams = (int) typeFuncBC->parameters.size();
-    for (int idxCall = numCallParams - 1; idxCall >= 0; idxCall--)
+
+    // 2 registers for variadics first
+    if (typeFuncBC->flags & TYPEINFO_VARIADIC)
+    {
+        auto index = pushRAParams[popRAidx--];
+        auto r0    = GEP_I32(allocR, index);
+        params.push_back(r0);
+        index = pushRAParams[popRAidx--];
+        r0    = GEP_I32(allocR, index);
+        params.push_back(r0);
+        numCallParams--;
+    }
+
+    for (int idxCall = 0; idxCall < numCallParams; idxCall++)
     {
         auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
         typeParam      = TypeManager::concreteReferenceType(typeParam);
-        for (int j = 0; j < typeParam->numRegisters(); j++)
+        if (typeParam->isNative(NativeTypeKind::F32))
         {
             auto index = pushRAParams[popRAidx--];
-            auto r0    = GEP_I32(allocR, index);
-            params.push_back(r0);
+            auto r0    = TO_PTR_F32(GEP_I32(allocR, index));
+            params.push_back(builder.CreateLoad(r0));
+        }
+        else
+        {
+            for (int j = 0; j < typeParam->numRegisters(); j++)
+            {
+                auto index = pushRAParams[popRAidx--];
+                auto r0    = GEP_I32(allocR, index);
+                params.push_back(r0);
+            }
         }
     }
 }
@@ -3316,12 +3392,26 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
     for (int i = 0; i < typeFuncBC->numReturnRegisters(); i++)
         params.push_back(llvm::Type::getInt64PtrTy(context));
 
-    // Registers for parameters
-    for (auto param : typeFuncBC->parameters)
+    // Variadics first
+    int numParams = (int) typeFuncBC->parameters.size();
+    if (typeFuncBC->flags & TYPEINFO_VARIADIC)
     {
+        params.push_back(llvm::Type::getInt64PtrTy(context));
+        params.push_back(llvm::Type::getInt64PtrTy(context));
+        numParams--;
+    }
+
+    for (int i = 0; i < numParams; i++)
+    {
+        auto param     = typeFuncBC->parameters[i];
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        for (int i = 0; i < typeParam->numRegisters(); i++)
-            params.push_back(llvm::Type::getInt64PtrTy(context));
+        if (typeParam->isNative(NativeTypeKind::F32))
+            params.push_back(llvm::Type::getFloatTy(context));
+        else
+        {
+            for (int r = 0; r < typeParam->numRegisters(); r++)
+                params.push_back(llvm::Type::getInt64PtrTy(context));
+        }
     }
 
     return llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, false);

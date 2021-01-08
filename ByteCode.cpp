@@ -30,7 +30,7 @@ void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** f
     *file     = bc->sourceFile;
     *location = force ? ip->location : nullptr;
 
-    if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl || (ip->flags & BCI_SAFETY))
+    if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl)
         return;
 
     if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN))
