@@ -2297,7 +2297,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             // Hack thanks to llvm in debug mode : we need to force the usage of function parameters until the very end of the function (i.e. each return),
             // otherwhise :
             // - parameters not used in the function body will be removed by llvm (even without optims activated !)
-            // - a parameter will not be visible anymore ("optimized away") after it's last usage.
+            // - a parameter will not be visible anymore ("optimized away") after its last usage.
             // So we force a read/write of each parameter just before the "ret" to avoid that debug mess.
             // RIDICULOUS !!
             //
@@ -2306,10 +2306,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             if (isDebug && buildParameters.buildCfg->backendDebugInformations)
             {
                 auto r1 = GEP_I32(allocT, 0);
-                for (int iparam = 1; iparam < typeFunc->parameters.size() + typeFunc->numReturnRegisters(); iparam++)
+                for (int iparam = 0; iparam < typeFunc->parameters.size(); iparam++)
                 {
-                    //                    auto r0 = builder.CreateLoad(func->getArg(iparam));
-                    //                    builder.CreateStore(r0, r1);
+                    storeLocalParam(context, builder, func, typeFunc, iparam, r1);
                 }
             }
 
@@ -2712,16 +2711,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::GetFromStackParam64:
         {
-            auto r0     = GEP_I32(allocR, ip->a.u32);
-            auto param  = registerIdxToType(typeFunc, ip->c.u32);
-            auto offArg = ip->c.u32 + typeFunc->numReturnRegisters();
-            auto arg    = func->getArg(offArg);
-            if (param->isNative(NativeTypeKind::F32))
-                builder.CreateStore(arg, TO_PTR_F32(r0));
-            else
-                builder.CreateStore(builder.CreateLoad(arg), r0);
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            storeLocalParam(context, builder, func, typeFunc, ip->c.u32, r0);
             break;
         }
+
         case ByteCodeOp::MakeStackPointerParam:
         {
             auto r0     = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
@@ -3713,4 +3707,15 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     SWAG_CHECK(getForeignCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, result));
 
     return true;
+}
+
+void BackendLLVM::storeLocalParam(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0)
+{
+    auto param  = registerIdxToType(typeFunc, idx);
+    auto offArg = idx + typeFunc->numReturnRegisters();
+    auto arg    = func->getArg(offArg);
+    if (param->isNative(NativeTypeKind::F32))
+        builder.CreateStore(arg, TO_PTR_F32(r0));
+    else
+        builder.CreateStore(builder.CreateLoad(arg), r0);
 }
