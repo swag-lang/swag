@@ -209,10 +209,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     auto typeF = createFunctionTypeInternal(buildParameters, 0);
     builder.CreateCall(modu.getOrInsertFunction("__exit", typeF), {});
 
-    uint32_t value  = 0;
-    auto     retVal = llvm::ConstantInt::get(context, llvm::APInt(32, value));
-    builder.CreateRet(retVal);
-
+    builder.CreateRetVoid();
     return true;
 }
 
