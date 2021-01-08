@@ -3391,12 +3391,16 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
 
 llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
-
+    int                       ct              = buildParameters.compileType;
+    int                       precompileIndex = buildParameters.precompileIndex;
+    auto&                     pp              = *perThread[ct][precompileIndex];
+    auto&                     context         = *pp.context;
     VectorNative<llvm::Type*> params;
+
+    // Already done ?
+    auto it = pp.mapFctTypeInternal.find(typeFuncBC);
+    if (it != pp.mapFctTypeInternal.end())
+        return it->second;
 
     // Registers to get the result
     for (int i = 0; i < typeFuncBC->numReturnRegisters(); i++)
@@ -3424,7 +3428,9 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
         }
     }
 
-    return llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, false);
+    auto result               = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, false);
+    pp.mapFctTypeInternal[typeFuncBC] = result;
+    return result;
 }
 
 bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, llvm::FunctionType** result)

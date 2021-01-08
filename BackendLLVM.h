@@ -68,7 +68,8 @@ struct LLVMPerThread
     llvm::FunctionCallee fn_powf32;
     llvm::FunctionCallee fn_powf64;
 
-    map<int32_t, llvm::BasicBlock*> labels;
+    map<int32_t, llvm::BasicBlock*>             labels;
+    map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternal;
 
     // Debug infos
     BackendLLVMDbg* dbg = nullptr;
