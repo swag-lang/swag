@@ -93,6 +93,8 @@ struct TypeManager
     static uint64_t  align(uint64_t value, uint32_t align);
     static uint32_t  alignOf(TypeInfo* typeInfo);
 
+    TypeInfoFuncAttr* createFunctionType(const char* name, TypeInfo* returnType, const vector<TypeInfo*>& params);
+
     TypeInfoNative*    typeInfoUInt;
     TypeInfoNative*    typeInfoInt;
     TypeInfoNative*    typeInfoS8;

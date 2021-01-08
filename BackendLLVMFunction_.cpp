@@ -2115,13 +2115,20 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicStrCmp:
         {
-            auto rr    = GEP_I32(allocR, ip->d.u32);
+            auto                       typeFuncBC = g_TypeMgr.createFunctionType("@strcmp", g_TypeMgr.typeInfoBool, {g_TypeMgr.typeInfoString, g_TypeMgr.typeInfoString});
+            auto                       FT         = createFunctionTypeInternal(buildParameters, typeFuncBC);
+            VectorNative<llvm::Value*> fctParams;
+            pushRAParams = {ip->d.u32, ip->c.u32, ip->b.u32, ip->a.u32, ip->d.u32}; // From right to left params order, starting with return registers
+            getLocalCallParameters(buildParameters, allocR, nullptr, fctParams, typeFuncBC, pushRAParams);
+            builder.CreateCall(modu.getOrInsertFunction("@strcmp", FT), {fctParams.begin(), fctParams.end()});
+
+            /*auto rr    = GEP_I32(allocR, ip->d.u32);
             auto r0    = GEP_I32(allocR, ip->a.u32);
             auto r1    = GEP_I32(allocR, ip->b.u32);
             auto r2    = GEP_I32(allocR, ip->c.u32);
             auto r3    = GEP_I32(allocR, ip->d.u32);
             auto typeF = createFunctionTypeInternal(buildParameters, 5);
-            builder.CreateCall(modu.getOrInsertFunction("@strcmp", typeF), {rr, r0, r1, r2, r3});
+            builder.CreateCall(modu.getOrInsertFunction("@strcmp", typeF), {rr, r0, r1, r2, r3});*/
             break;
         }
         case ByteCodeOp::IntrinsicTypeCmp:
@@ -3031,7 +3038,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto                       PT = llvm::PointerType::getUnqual(FT);
                 auto                       r1 = builder.CreatePointerCast(r0, PT);
                 VectorNative<llvm::Value*> fctParams;
-                getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams, pushRVParams);
+                getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
                 builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
                 builder.CreateBr(blockNext);
             }
@@ -3044,7 +3051,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst3_i32})));
                 auto PT = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
                 auto r2 = builder.CreatePointerCast(r1, PT);
-                getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams, pushRVParams);
+                getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
                 builder.CreateCall(pp.bytecodeRunTy, r2, {fctParams.begin(), fctParams.end()});
                 builder.CreateBr(blockNext);
             }
@@ -3067,7 +3074,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             auto                       FT = createFunctionTypeInternal(buildParameters, typeFuncBC);
             VectorNative<llvm::Value*> fctParams;
-            getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams, pushRVParams);
+            getLocalCallParameters(buildParameters, allocR, allocRR, fctParams, typeFuncBC, pushRAParams);
             builder.CreateCall(modu.getOrInsertFunction(funcBC->callName().c_str(), FT), {fctParams.begin(), fctParams.end()});
             pushRAParams.clear();
             pushRVParams.clear();
@@ -3308,28 +3315,38 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     return ok;
 }
 
-void BackendLLVM::getLocalCallParameters(const BuildParameters&                  buildParameters,
-                                         llvm::AllocaInst*                       allocR,
-                                         llvm::AllocaInst*                       allocRR,
-                                         VectorNative<llvm::Value*>&             params,
-                                         TypeInfoFuncAttr*                       typeFuncBC,
-                                         VectorNative<uint32_t>&                 pushRAParams,
-                                         VectorNative<pair<uint32_t, uint32_t>>& pushRVParams)
+void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParameters,
+                                         llvm::AllocaInst*           allocR,
+                                         llvm::AllocaInst*           allocRR,
+                                         VectorNative<llvm::Value*>& params,
+                                         TypeInfoFuncAttr*           typeFuncBC,
+                                         VectorNative<uint32_t>&     pushRAParams)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
     auto& context         = *pp.context;
+    int   popRAidx        = (int) pushRAParams.size() - 1;
+    int   numCallParams   = (int) typeFuncBC->parameters.size();
 
-    for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
+    if (allocRR)
     {
-        auto r0 = GEP_I32(allocRR, j);
-        params.push_back(r0);
+        for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
+        {
+            auto r0 = GEP_I32(allocRR, j);
+            params.push_back(r0);
+        }
     }
-
-    int popRAidx      = (int) pushRAParams.size() - 1;
-    int numCallParams = (int) typeFuncBC->parameters.size();
+    else
+    {
+        for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
+        {
+            auto index = pushRAParams[popRAidx--];
+            auto r0    = GEP_I32(allocR, index);
+            params.push_back(r0);
+        }
+    }
 
     // 2 registers for variadics first
     if (typeFuncBC->flags & TYPEINFO_VARIADIC)

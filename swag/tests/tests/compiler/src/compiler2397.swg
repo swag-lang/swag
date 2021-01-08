@@ -4,7 +4,7 @@ struct VV
     v: [4] f32
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #[swag.safety(false)]
 func add(xx: string, s: *f32, v: f32)
 {

@@ -2,6 +2,7 @@
 #include "TypeManager.h"
 #include "Tokenizer.h"
 #include "Workspace.h"
+#include "TypeInfo.h"
 
 TypeManager g_TypeMgr;
 
@@ -525,4 +526,28 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
     }
 
     return max(1, typeInfo->sizeOf);
+}
+
+TypeInfoFuncAttr* TypeManager::createFunctionType(const char* name, TypeInfo* returnType, const vector<TypeInfo*>& params)
+{
+    static mutex                               m;
+    static map<const char*, TypeInfoFuncAttr*> mapCreateType;
+
+    unique_lock lk(m);
+    auto        it = mapCreateType.find(name);
+    if (it != mapCreateType.end())
+        return it->second;
+
+    auto result        = allocType<TypeInfoFuncAttr>();
+    result->returnType = returnType;
+
+    for (int i = 0; i < params.size(); i++)
+    {
+        auto p      = allocType<TypeInfoParam>();
+        p->typeInfo = params[i];     
+        result->parameters.push_back(p);
+    }
+
+    mapCreateType[name] = result;
+    return result;
 }
