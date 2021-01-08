@@ -70,6 +70,7 @@ struct LLVMPerThread
 
     map<int32_t, llvm::BasicBlock*>             labels;
     map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternal;
+    map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeign;
 
     // Debug infos
     BackendLLVMDbg* dbg = nullptr;

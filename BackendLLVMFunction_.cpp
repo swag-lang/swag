@@ -3391,11 +3391,10 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
 
 llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC)
 {
-    int                       ct              = buildParameters.compileType;
-    int                       precompileIndex = buildParameters.precompileIndex;
-    auto&                     pp              = *perThread[ct][precompileIndex];
-    auto&                     context         = *pp.context;
-    VectorNative<llvm::Type*> params;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
 
     // Already done ?
     auto it = pp.mapFctTypeInternal.find(typeFuncBC);
@@ -3403,6 +3402,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
         return it->second;
 
     // Registers to get the result
+    VectorNative<llvm::Type*> params;
     for (int i = 0; i < typeFuncBC->numReturnRegisters(); i++)
         params.push_back(llvm::Type::getInt64PtrTy(context));
 
@@ -3428,7 +3428,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
         }
     }
 
-    auto result               = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, false);
+    auto result                       = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, false);
     pp.mapFctTypeInternal[typeFuncBC] = result;
     return result;
 }
@@ -3440,11 +3440,18 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
     auto& pp              = *perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
 
-    VectorNative<llvm::Type*> params;
+    // Already done ?
+    auto it = pp.mapFctTypeForeign.find(typeFunc);
+    if (it != pp.mapFctTypeForeign.end())
+    {
+        *result = it->second;
+        return true;
+    }
 
-    llvm::Type* llvmRealReturnType = nullptr;
-    llvm::Type* returnType         = nullptr;
-    bool        returnByCopy       = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
+    VectorNative<llvm::Type*> params;
+    llvm::Type*               llvmRealReturnType = nullptr;
+    llvm::Type*               returnType         = nullptr;
+    bool                      returnByCopy       = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
 
     SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, typeFunc->returnType, &llvmRealReturnType));
     if (returnByCopy)
@@ -3499,6 +3506,9 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
     }
 
     *result = llvm::FunctionType::get(returnType, {params.begin(), params.end()}, false);
+
+    pp.mapFctTypeForeign[typeFunc] = *result;
+
     return true;
 }
 
