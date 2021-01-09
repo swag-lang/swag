@@ -275,6 +275,8 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     pmb.Inliner            = isDebug ? nullptr : llvm::createFunctionInliningPass(pmb.OptLevel, pmb.SizeLevel, true);
     pmb.LibraryInfo        = new llvm::TargetLibraryInfoImpl(llvm::Triple(modu.getTargetTriple()));
 
+    if (!isDebug)
+        llvmPass.add(new llvm::TargetTransformInfoWrapperPass(targetMachine->getTargetIRAnalysis()));
     pmb.populateModulePassManager(llvmPass);
 
     // Generate obj file pass

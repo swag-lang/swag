@@ -445,7 +445,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         auto typeParam = registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
-        if (!passByValue(typeParam))
+        //if (!passByValue(typeParam))
             arg->addAttr(llvm::Attribute::NoAlias);
     }
 
@@ -801,10 +801,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto ptr  = builder.CreateLoad(r0);
             auto ptr8 = GEP_I32(ptr, ip->c.u32);
             auto v8   = builder.CreateLoad(TO_PTR_PTR_I8(ptr8));
-            ptr8      = GEP_I32(v8, ip->d.u32);
-
-            auto r1 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            builder.CreateStore(ptr8, r1);
+            auto r1   = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(v8, r1);
             break;
         }
         case ByteCodeOp::DeRefStringSlice:

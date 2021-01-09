@@ -35,14 +35,10 @@ void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** f
 
     if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN))
     {
-        if (force)
-        {
-            auto n = ip->node;
-            while (n->ownerInline)
-                n = n->ownerInline;
-            *location = &n->token.startLocation;
-        }
-
+        auto n = ip->node;
+        while (n->ownerInline)
+            n = n->ownerInline;
+        *location = &n->token.startLocation;
         return;
     }
 
