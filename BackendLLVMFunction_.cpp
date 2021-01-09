@@ -3379,13 +3379,11 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
     {
         auto param     = typeFuncBC->parameters[i];
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        if (typeParam->isPointerTo(NativeTypeKind::F32))
+        if (passByCopy(typeParam))
         {
-            params.push_back(llvm::Type::getFloatTy(context)->getPointerTo());
-        }
-        else if (typeParam->isNative(NativeTypeKind::F32))
-        {
-            params.push_back(llvm::Type::getFloatTy(context));
+            llvm::Type* ty;
+            swagTypeToLLVMType(buildParameters, module, typeParam, &ty);
+            params.push_back(ty);
         }
         else
         {
