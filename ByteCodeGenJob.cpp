@@ -352,9 +352,10 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     unique_lock lk(node->mutex);
 
     // If this is a foreign function, we do not need bytecode
+    AstFuncDecl* funcDecl = nullptr;
     if (node->kind == AstNodeKind::FuncDecl)
     {
-        auto funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         if (funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
         {
             // Need to wait for function full semantic resolve
@@ -382,7 +383,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
         {
             if (!(node->flags & AST_FULL_RESOLVE))
             {
-                auto funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+                SWAG_ASSERT(funcDecl);
                 funcDecl->dependentJobs.add(job);
                 job->setPending(funcDecl->resolvedSymbolName, "AST_FULL_RESOLVE", funcDecl, nullptr);
                 return;
@@ -420,9 +421,10 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
                 extension->byteCodeJob->dependentJob = job->dependentJob;
             extension->byteCodeJob->context.expansionNode = job->baseContext->expansionNode;
             extension->byteCodeJob->nodes.push_back(node);
-            extension->bc             = g_Allocator.alloc<ByteCode>();
-            extension->bc->node       = node;
-            extension->bc->sourceFile = node->sourceFile;
+            extension->bc               = g_Allocator.alloc<ByteCode>();
+            extension->bc->node         = node;
+            extension->bc->sourceFile   = node->sourceFile;
+            extension->bc->typeInfoFunc = funcDecl ? (TypeInfoFuncAttr*) funcDecl->typeInfo : nullptr;
             if (node->flags & AST_DEFINED_INTRINSIC)
                 extension->bc->name = node->token.text;
             else if (node->sourceFile->isRuntimeFile)
@@ -723,6 +725,14 @@ JobResult ByteCodeGenJob::execute()
     {
         if (originalNode->attributeFlags & ATTRIBUTE_AST_FUNC || originalNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
             context.bc->print();
+    }
+
+    // Register runtime function type, by name
+    if (sourceFile->isRuntimeFile)
+    {
+        unique_lock lk(sourceFile->module->mutexFile);
+        SWAG_ASSERT(context.bc->typeInfoFunc);
+        sourceFile->module->mapRuntimeFcts[context.bc->callName()] = context.bc->typeInfoFunc;
     }
 
     return JobResult::ReleaseJob;

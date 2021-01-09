@@ -2295,39 +2295,26 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicPrintS64:
         case ByteCodeOp::IntrinsicPrintF64:
         {
-            auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
-            auto typeF = createFunctionTypeInternal(buildParameters, 1);
-            builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0});
+            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
+            localCall(buildParameters, allocR, bcF->callName().c_str(), {ip->a.u32});
             break;
         }
         case ByteCodeOp::IntrinsicPrintString:
         {
-            auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto r1    = GEP_I32(allocR, ip->b.u32);
-            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
-            auto typeF = createFunctionTypeInternal(buildParameters, 2);
-            builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0, r1});
+            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
+            localCall(buildParameters, allocR, bcF->callName().c_str(), {ip->a.u32, ip->b.u32});
             break;
         }
         case ByteCodeOp::IntrinsicError:
         {
-            auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto r1    = GEP_I32(allocR, ip->b.u32);
-            auto r2    = GEP_I32(allocR, ip->c.u32);
-            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
-            auto typeF = createFunctionTypeInternal(buildParameters, 3);
-            builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0, r1, r2});
+            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
+            localCall(buildParameters, allocR, bcF->callName().c_str(), {ip->a.u32, ip->b.u32, ip->c.u32});
             break;
         }
         case ByteCodeOp::IntrinsicAssertMsg:
         {
-            auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto r1    = GEP_I32(allocR, ip->b.u32);
-            auto r2    = GEP_I32(allocR, ip->c.u32);
-            auto bcF   = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
-            auto typeF = createFunctionTypeInternal(buildParameters, 3);
-            builder.CreateCall(modu.getOrInsertFunction(bcF->callName().c_str(), typeF), {r0, r1, r2});
+            auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
+            localCall(buildParameters, allocR, bcF->callName().c_str(), {ip->a.u32, ip->b.u32, ip->c.u32});
             break;
         }
 
