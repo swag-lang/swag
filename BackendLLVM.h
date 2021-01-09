@@ -117,7 +117,7 @@ struct BackendLLVM : public Backend
     llvm::FunctionType* createFunctionTypeInternal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC);
     bool                createFunctionTypeForeign(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, llvm::FunctionType** result);
     bool                emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
-    void                getLocalCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, VectorNative<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams);
+    void                getLocalCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, llvm::AllocaInst* allocT, VectorNative<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams, const vector<llvm::Value*>& values);
 
     bool getForeignCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<llvm::Value*>& params, const VectorNative<uint32_t>& pushParams);
     bool getForeignCallReturnValue(const BuildParameters& buildParameters, llvm::AllocaInst* allocRR, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, llvm::Value* callResult);
@@ -138,7 +138,7 @@ struct BackendLLVM : public Backend
 
     llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int32_t ip);
     void              storeLocalParam(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0);
-    void              localCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, const char* name, const vector<uint32_t>& regs);
+    void              localCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* name, const vector<uint32_t>& regs, const vector<llvm::Value*>& values);
 
     LLVMPerThread* perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

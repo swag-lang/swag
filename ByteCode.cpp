@@ -63,7 +63,7 @@ Utf8 ByteCode::callName()
     if (node && node->sourceFile->isRuntimeFile)
     {
         SWAG_ASSERT(node->resolvedSymbolName);
-        if (node->resolvedSymbolName->overloads.size() == 1)
+        if (node->resolvedSymbolName->cptOverloadsInit == 1)
             return name;
     }
 
