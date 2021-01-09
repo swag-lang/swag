@@ -969,43 +969,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicMemCpy:
         {
-            auto typeF = createFunctionTypeInternal(buildParameters, 3);
-            auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto r1    = GEP_I32(allocR, ip->b.u32);
             if (ip->flags & BCI_IMM_C)
-            {
-                auto r2 = builder.getInt64(ip->c.u64);
-                auto p0 = GEP_I32(allocT, 0);
-                builder.CreateStore(r2, p0);
-                builder.CreateCall(modu.getOrInsertFunction("@memcpy", typeF), {r0, r1, p0});
-            }
+                localCall(buildParameters, allocR, allocT, "@memcpy", {ip->a.u32, ip->b.u32, (uint32_t) -1}, {0, 0, builder.getInt64(ip->c.u64)});
             else
-            {
-                auto r2 = GEP_I32(allocR, ip->c.u32);
-                builder.CreateCall(modu.getOrInsertFunction("@memcpy", typeF), {r0, r1, r2});
-            }
-
+                localCall(buildParameters, allocR, allocT, "@memcpy", {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
 
         case ByteCodeOp::IntrinsicMemMove:
         {
-            auto typeF = createFunctionTypeInternal(buildParameters, 3);
-            auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto r1    = GEP_I32(allocR, ip->b.u32);
             if (ip->flags & BCI_IMM_C)
-            {
-                auto r2 = builder.getInt64(ip->c.u64);
-                auto p0 = GEP_I32(allocT, 0);
-                builder.CreateStore(r2, p0);
-                builder.CreateCall(modu.getOrInsertFunction("@memmove", typeF), {r0, r1, p0});
-            }
+                localCall(buildParameters, allocR, allocT, "@memmove", {ip->a.u32, ip->b.u32, (uint32_t) -1}, {0, 0, builder.getInt64(ip->c.u64)});
             else
-            {
-                auto r2 = GEP_I32(allocR, ip->c.u32);
-                builder.CreateCall(modu.getOrInsertFunction("@memmove", typeF), {r0, r1, r2});
-            }
-
+                localCall(buildParameters, allocR, allocT, "@memmove", {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
 
@@ -3719,9 +3695,12 @@ void BackendLLVM::localCall(const BuildParameters& buildParameters, llvm::Alloca
     VectorNative<uint32_t> pushRAParams;
     for (int i = (int) regs.size() - 1; i >= 0; i--)
         pushRAParams.push_back(regs[i]);
+    vector<llvm::Value*> pushVParams;
+    for (int i = (int) values.size() - 1; i >= 0; i--)
+        pushVParams.push_back(values[i]);
 
     VectorNative<llvm::Value*> fctParams;
-    getLocalCallParameters(buildParameters, allocR, nullptr, allocT, fctParams, typeFuncBC, pushRAParams, values);
+    getLocalCallParameters(buildParameters, allocR, nullptr, allocT, fctParams, typeFuncBC, pushRAParams, pushVParams);
 
     builder.CreateCall(modu.getOrInsertFunction(name, FT), {fctParams.begin(), fctParams.end()});
 }
