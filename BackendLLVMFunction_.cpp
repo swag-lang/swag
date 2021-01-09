@@ -956,6 +956,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::IntrinsicStrCmp:
+        {
+            localCall(buildParameters, allocR, "@strcmp", {ip->d.u32, ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32});
+            break;
+        }
+        case ByteCodeOp::IntrinsicTypeCmp:
+        {
+            localCall(buildParameters, allocR, "@typecmp", {ip->d.u32, ip->a.u32, ip->b.u32, ip->c.u32});
+            break;
+        }
+
         case ByteCodeOp::IntrinsicMemCpy:
         {
             auto typeF = createFunctionTypeInternal(buildParameters, 3);
@@ -2112,26 +2123,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto v0 = builder.CreateICmpEQ(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
-            break;
-        }
-        case ByteCodeOp::IntrinsicStrCmp:
-        {
-            auto                       typeFuncBC = g_Workspace.runtimeModule->getRuntimeTypeFct("@strcmp");
-            auto                       FT         = createFunctionTypeInternal(buildParameters, typeFuncBC);
-            VectorNative<llvm::Value*> fctParams;
-            pushRAParams = {ip->d.u32, ip->c.u32, ip->b.u32, ip->a.u32, ip->d.u32}; // From right to left params order, starting with return registers
-            getLocalCallParameters(buildParameters, allocR, nullptr, fctParams, typeFuncBC, pushRAParams);
-            builder.CreateCall(modu.getOrInsertFunction("@strcmp", FT), {fctParams.begin(), fctParams.end()});
-            break;
-        }
-        case ByteCodeOp::IntrinsicTypeCmp:
-        {
-            auto rr    = GEP_I32(allocR, ip->d.u32);
-            auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto r1    = GEP_I32(allocR, ip->b.u32);
-            auto r2    = GEP_I32(allocR, ip->c.u32);
-            auto typeF = createFunctionTypeInternal(buildParameters, 4);
-            builder.CreateCall(modu.getOrInsertFunction("@typecmp", typeF), {rr, r0, r1, r2});
             break;
         }
 
@@ -3718,4 +3709,26 @@ void BackendLLVM::storeLocalParam(llvm::LLVMContext& context, llvm::IRBuilder<>&
         builder.CreateStore(arg, TO_PTR_F32(r0));
     else
         builder.CreateStore(builder.CreateLoad(arg), r0);
+}
+
+void BackendLLVM::localCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, const char* name, const vector<uint32_t>& regs)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& builder         = *pp.builder;
+    auto& modu            = *pp.module;
+
+    auto typeFuncBC = g_Workspace.runtimeModule->getRuntimeTypeFct(name);
+    auto FT         = createFunctionTypeInternal(buildParameters, typeFuncBC);
+
+    // Invert regs
+    VectorNative<uint32_t> pushRAParams;
+    for (int i = (int) regs.size() - 1; i >= 0; i--)
+        pushRAParams.push_back(regs[i]);
+
+    VectorNative<llvm::Value*> fctParams;
+    getLocalCallParameters(buildParameters, allocR, nullptr, fctParams, typeFuncBC, pushRAParams);
+
+    builder.CreateCall(modu.getOrInsertFunction(name, FT), {fctParams.begin(), fctParams.end()});
 }

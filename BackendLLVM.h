@@ -138,6 +138,7 @@ struct BackendLLVM : public Backend
 
     llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int32_t ip);
     void              storeLocalParam(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0);
+    void              localCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, const char* name, const vector<uint32_t>& regs);
 
     LLVMPerThread* perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };
