@@ -7,17 +7,16 @@
 #include "ByteCode.h"
 #include "ByteCodeOp.h"
 #include "TypeManager.h"
-#include "Ast.h"
-#include "OS.h"
 #include "Workspace.h"
 
-TypeInfo* registerIdxToType(TypeInfoFuncAttr* typeFunc, int ii)
+// argIdx is the argument index of an llvm function, starting after the return arguments
+TypeInfo* registerIdxToType(TypeInfoFuncAttr* typeFunc, int argIdx)
 {
     if (typeFunc->flags & TYPEINFO_VARIADIC)
     {
-        if (ii < 2)
+        if (argIdx < 2)
             return typeFunc->parameters.back();
-        ii -= 2;
+        argIdx -= 2;
     }
 
     int argNo = 0;
@@ -25,9 +24,9 @@ TypeInfo* registerIdxToType(TypeInfoFuncAttr* typeFunc, int ii)
     {
         auto typeParam = TypeManager::concreteReferenceType(typeFunc->parameters[argNo]->typeInfo);
         auto n         = typeParam->numRegisters();
-        if (ii < n)
+        if (argIdx < n)
             return typeParam;
-        ii -= n;
+        argIdx -= n;
         argNo++;
     }
 
