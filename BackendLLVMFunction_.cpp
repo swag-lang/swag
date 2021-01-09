@@ -23,7 +23,7 @@ TypeInfo* registerIdxToType(TypeInfoFuncAttr* typeFunc, int ii)
     int argNo = 0;
     while (true)
     {
-        auto typeParam = TypeManager::concreteType(typeFunc->parameters[argNo]->typeInfo);
+        auto typeParam = TypeManager::concreteReferenceType(typeFunc->parameters[argNo]->typeInfo);
         auto n         = typeParam->numRegisters();
         if (ii < n)
             return typeParam;
@@ -308,10 +308,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
-            if (typeParam->isNative(NativeTypeKind::F32))
-            {
-            }
-            else
+            if (!typeParam->isNative(NativeTypeKind::F32) && !typeParam->isPointerTo(NativeTypeKind::F32))
             {
                 auto r = TO_PTR_NATIVE(rr0, typeParam->nativeType);
                 if (!r)
@@ -340,7 +337,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         else
         {
             auto typeParam = registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
-            if (typeParam->isNative(NativeTypeKind::F32))
+            if (typeParam->isNative(NativeTypeKind::F32) || typeParam->isPointerTo(NativeTypeKind::F32))
                 args.push_back(func->getArg(i - typeFunc->numReturnRegisters()));
             else
             {
@@ -431,7 +428,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     {
         auto arg = func->getArg(i);
         if (arg->getType()->isPointerTy())
-            arg->addAttr(llvm::Attribute::NoAlias);
+        {
+            if (i < typeFunc->numReturnRegisters())
+                arg->addAttr(llvm::Attribute::NoAlias);
+            else
+            {
+                auto typeParam = registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
+                if (!typeParam->isPointerTo(NativeTypeKind::F32))
+                    arg->addAttr(llvm::Attribute::NoAlias);
+            }
+        }
     }
 
     // Content
@@ -2334,7 +2340,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicGetContext:
         {
-            auto rr = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
             auto v0 = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
             localCall(buildParameters, allocR, nullptr, "__tlsGetValue", {ip->a.u32, (uint32_t) -1}, {0, v0});
             break;
@@ -3273,20 +3278,17 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
             auto index = pushRAParams[popRAidx--];
 
             // By value
+            if (typeParam->isPointerTo(NativeTypeKind::F32))
+            {
+                SWAG_ASSERT(index != -1);
+                params.push_back(builder.CreateLoad(TO_PTR_PTR_F32(GEP_I32(allocR, index))));
+                continue;
+            }
+
             if (typeParam->isNative(NativeTypeKind::F32))
             {
-                if (index == -1)
-                {
-                    auto v0 = values[popRAidx + 1];
-                    SWAG_ASSERT(v0);
-                    params.push_back(v0);
-                }
-                else
-                {
-                    auto v0 = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, index)));
-                    params.push_back(v0);
-                }
-
+                SWAG_ASSERT(index != -1);
+                params.push_back(builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, index))));
                 continue;
             }
 
@@ -3368,8 +3370,14 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
     {
         auto param     = typeFuncBC->parameters[i];
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        if (typeParam->isNative(NativeTypeKind::F32))
+        if (typeParam->isPointerTo(NativeTypeKind::F32))
+        {
+            params.push_back(llvm::Type::getFloatTy(context)->getPointerTo());
+        }
+        else if (typeParam->isNative(NativeTypeKind::F32))
+        {
             params.push_back(llvm::Type::getFloatTy(context));
+        }
         else
         {
             for (int r = 0; r < typeParam->numRegisters(); r++)
@@ -3669,7 +3677,9 @@ void BackendLLVM::storeLocalParam(llvm::LLVMContext& context, llvm::IRBuilder<>&
     auto param  = registerIdxToType(typeFunc, idx);
     auto offArg = idx + typeFunc->numReturnRegisters();
     auto arg    = func->getArg(offArg);
-    if (param->isNative(NativeTypeKind::F32))
+    if (param->isPointerTo(NativeTypeKind::F32))
+        builder.CreateStore(arg, TO_PTR_PTR_F32(r0));
+    else if (param->isNative(NativeTypeKind::F32))
         builder.CreateStore(arg, TO_PTR_F32(r0));
     else
         builder.CreateStore(builder.CreateLoad(arg), r0);

@@ -179,6 +179,18 @@ bool TypeInfo::isPointerConstVoid()
     return isPointerVoid() && isConst();
 }
 
+bool TypeInfo::isPointerTo(NativeTypeKind pointerKind)
+{
+    if (kind != TypeInfoKind::Pointer)
+        return false;
+    auto ptr = (TypeInfoPointer*) this;
+    if (ptr->ptrCount != 1)
+        return false;
+    if (!ptr->finalType->isNative(pointerKind))
+        return false;
+    return true;
+}
+
 bool TypeInfo::isPointerTo(TypeInfoKind pointerKind)
 {
     if (kind != TypeInfoKind::Pointer)

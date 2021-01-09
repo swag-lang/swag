@@ -59,11 +59,18 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         if ((node->forceTakeAddress()) && typeInfo->kind != TypeInfoKind::Lambda && typeInfo->kind != TypeInfoKind::Array)
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointerParam, node->resultRegisterRC);
-            inst->b.u64 = resolved->storageOffset;
-            inst->c.u64 = resolved->storageIndex;
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+            {
+                auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC);
+                inst->b.u64 = resolved->storageOffset;
+                inst->c.u64 = resolved->storageIndex;
+            }
+            else
+            {
+                auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointerParam, node->resultRegisterRC);
+                inst->b.u64 = resolved->storageOffset;
+                inst->c.u64 = resolved->storageIndex;
+            }
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
