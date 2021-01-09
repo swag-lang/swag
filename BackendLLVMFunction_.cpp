@@ -11,17 +11,20 @@
 
 bool passByValue(TypeInfo* typeInfo)
 {
-    if (typeInfo->isPointerTo(NativeTypeKind::F32))
+    if (typeInfo->isPointerTo(NativeTypeKind::F32) || typeInfo->isPointerTo(NativeTypeKind::F64))
         return true;
-    if (typeInfo->isNative(NativeTypeKind::F32))
+    if (typeInfo->isNative(NativeTypeKind::F32) || typeInfo->isNative(NativeTypeKind::F64))
         return true;
+    if (typeInfo->isNative(NativeTypeKind::Bool))
+        return true;
+
     return false;
 }
 
 // argIdx is the argument index of an llvm function, starting after the return arguments
 TypeInfo* registerIdxToType(TypeInfoFuncAttr* typeFunc, int argIdx)
 {
-    if (typeFunc->flags & TYPEINFO_VARIADIC)
+    if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
         if (argIdx < 2)
             return typeFunc->parameters.back();
@@ -3254,7 +3257,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
     }
 
     // 2 registers for variadics first
-    if (typeFuncBC->flags & TYPEINFO_VARIADIC)
+    if (typeFuncBC->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
         auto index = pushRAParams[popRAidx--];
         auto r0    = GEP_I32(allocR, index);
@@ -3352,7 +3355,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
 
     // Variadics first
     int numParams = (int) typeFuncBC->parameters.size();
-    if (typeFuncBC->flags & TYPEINFO_VARIADIC)
+    if (typeFuncBC->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
         params.push_back(llvm::Type::getInt64PtrTy(context));
         params.push_back(llvm::Type::getInt64PtrTy(context));
