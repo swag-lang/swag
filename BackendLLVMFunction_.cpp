@@ -2406,12 +2406,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicArguments:
         {
-            auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto r1    = GEP_I32(allocR, ip->b.u32);
-            auto typeF = createFunctionTypeInternal(buildParameters, 2);
-            builder.CreateCall(modu.getOrInsertFunction("@args", typeF), {r0, r1});
+            localCall(buildParameters, allocR, "@args", {ip->a.u32, ip->b.u32});
             break;
         }
+
         case ByteCodeOp::IntrinsicIsByteCode:
         {
             auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
