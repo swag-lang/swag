@@ -1011,41 +1011,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicMemSet:
         {
-            auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto r1    = GEP_I32(allocR, ip->b.u32);
-            auto r2    = GEP_I32(allocR, ip->c.u32);
-            auto typeF = createFunctionTypeInternal(buildParameters, 3);
-            builder.CreateCall(modu.getOrInsertFunction("@memset", typeF), {r0, r1, r2});
+            localCall(buildParameters, allocR, "@memset", {ip->a.u32, ip->b.u32, ip->c.u32});
             break;
         }
 
         case ByteCodeOp::IntrinsicMemCmp:
         {
-            auto rr    = GEP_I32(allocR, ip->a.u32);
-            auto r0    = GEP_I32(allocR, ip->b.u32);
-            auto r1    = GEP_I32(allocR, ip->c.u32);
-            auto r2    = GEP_I32(allocR, ip->d.u32);
-            auto typeF = createFunctionTypeInternal(buildParameters, 4);
-            builder.CreateCall(modu.getOrInsertFunction("@memcmp", typeF), {rr, r0, r1, r2});
+            localCall(buildParameters, allocR, "@memcmp", {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32});
             break;
         }
 
         case ByteCodeOp::IntrinsicCStrLen:
         {
-            auto rr    = GEP_I32(allocR, ip->a.u32);
-            auto r0    = GEP_I32(allocR, ip->b.u32);
-            auto typeF = createFunctionTypeInternal(buildParameters, 2);
-            builder.CreateCall(modu.getOrInsertFunction("@cstrlen", typeF), {rr, r0});
+            localCall(buildParameters, allocR, "@cstrlen", {ip->a.u32, ip->b.u32});
             break;
         }
 
         case ByteCodeOp::IntrinsicInterfaceOf:
         {
-            auto rr    = GEP_I32(allocR, ip->c.u32);
-            auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto r1    = GEP_I32(allocR, ip->b.u32);
-            auto typeF = createFunctionTypeInternal(buildParameters, 3);
-            builder.CreateCall(modu.getOrInsertFunction("@interfaceof", typeF), {rr, r0, r1});
+            localCall(buildParameters, allocR, "@interfaceof", {ip->c.u32, ip->a.u32, ip->b.u32});
             break;
         }
 
