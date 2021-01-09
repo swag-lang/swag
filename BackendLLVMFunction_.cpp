@@ -2366,26 +2366,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicAlloc:
         {
-            auto rr    = GEP_I32(allocR, ip->a.u32);
-            auto r0    = GEP_I32(allocR, ip->b.u32);
-            auto typeF = createFunctionTypeInternal(buildParameters, 2);
-            builder.CreateCall(modu.getOrInsertFunction("__alloc", typeF), {rr, r0});
+            localCall(buildParameters, allocR, "__alloc", {ip->a.u32, ip->b.u32});
             break;
         }
         case ByteCodeOp::IntrinsicRealloc:
         {
-            auto rr    = GEP_I32(allocR, ip->a.u32);
-            auto r0    = GEP_I32(allocR, ip->b.u32);
-            auto r1    = GEP_I32(allocR, ip->c.u32);
-            auto typeF = createFunctionTypeInternal(buildParameters, 3);
-            builder.CreateCall(modu.getOrInsertFunction("__realloc", typeF), {rr, r0, r1});
+            localCall(buildParameters, allocR, "__realloc", {ip->a.u32, ip->b.u32, ip->c.u32});
             break;
         }
         case ByteCodeOp::IntrinsicFree:
         {
-            auto r0    = GEP_I32(allocR, ip->a.u32);
-            auto typeF = createFunctionTypeInternal(buildParameters, 1);
-            builder.CreateCall(modu.getOrInsertFunction("__free", typeF), {r0});
+            localCall(buildParameters, allocR, "__free", {ip->a.u32});
             break;
         }
         case ByteCodeOp::IntrinsicGetContext:
