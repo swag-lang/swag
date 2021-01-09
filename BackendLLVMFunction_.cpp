@@ -2274,7 +2274,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto r1 = GEP_I32(allocT, 0);
                 for (int iparam = 0; iparam < typeFunc->parameters.size(); iparam++)
                 {
-                    storeLocalParam(context, builder, func, typeFunc, iparam, r1);
+                    storeLocalParam(buildParameters, func, typeFunc, iparam, r1);
                 }
             }
 
@@ -2640,7 +2640,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::GetFromStackParam64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            storeLocalParam(context, builder, func, typeFunc, ip->c.u32, r0);
+            storeLocalParam(buildParameters, func, typeFunc, ip->c.u32, r0);
             break;
         }
 
@@ -3674,17 +3674,28 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     return true;
 }
 
-void BackendLLVM::storeLocalParam(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0)
+void BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0)
 {
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& builder         = *pp.builder;
+
     auto param  = registerIdxToType(typeFunc, idx);
     auto offArg = idx + typeFunc->numReturnRegisters();
     auto arg    = func->getArg(offArg);
-    if (param->isPointerTo(NativeTypeKind::F32))
-        builder.CreateStore(arg, TO_PTR_PTR_F32(r0));
-    else if (param->isNative(NativeTypeKind::F32))
-        builder.CreateStore(arg, TO_PTR_F32(r0));
+
+    if (passByValue(param))
+    {
+        llvm::Type* ty;
+        swagTypeToLLVMType(buildParameters, module, param, &ty);
+        r0 = builder.CreatePointerCast(r0, ty->getPointerTo());
+        builder.CreateStore(arg, r0);
+    }
     else
+    {
         builder.CreateStore(builder.CreateLoad(arg), r0);
+    }
 }
 
 void BackendLLVM::localCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* name, const vector<uint32_t>& regs, const vector<llvm::Value*>& values)
