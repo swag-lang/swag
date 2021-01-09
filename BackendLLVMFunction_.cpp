@@ -9,7 +9,7 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-bool passByCopy(TypeInfo* typeInfo)
+bool passByValue(TypeInfo* typeInfo)
 {
     if (typeInfo->isPointerTo(NativeTypeKind::F32))
         return true;
@@ -316,7 +316,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
-            if (!passByCopy(typeParam))
+            if (!passByValue(typeParam))
             {
                 auto r = TO_PTR_NATIVE(rr0, typeParam->nativeType);
                 if (!r)
@@ -345,7 +345,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         else
         {
             auto typeParam = registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
-            if (passByCopy(typeParam))
+            if (passByValue(typeParam))
                 args.push_back(func->getArg(i - typeFunc->numReturnRegisters()));
             else
             {
@@ -445,7 +445,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         auto typeParam = registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
-        if (!passByCopy(typeParam))
+        if (!passByValue(typeParam))
             arg->addAttr(llvm::Attribute::NoAlias);
     }
 
@@ -3243,7 +3243,6 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
-    auto& context         = *pp.context;
     int   popRAidx        = (int) pushRAParams.size() - 1;
     int   numCallParams   = (int) typeFuncBC->parameters.size();
 
@@ -3287,17 +3286,13 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
             auto index = pushRAParams[popRAidx--];
 
             // By value
-            if (typeParam->isPointerTo(NativeTypeKind::F32))
+            if (passByValue(typeParam))
             {
                 SWAG_ASSERT(index != -1);
-                params.push_back(builder.CreateLoad(TO_PTR_PTR_F32(GEP_I32(allocR, index))));
-                continue;
-            }
-
-            if (typeParam->isNative(NativeTypeKind::F32))
-            {
-                SWAG_ASSERT(index != -1);
-                params.push_back(builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, index))));
+                llvm::Type* ty;
+                swagTypeToLLVMType(buildParameters, module, typeParam, &ty);
+                auto r0 = builder.CreatePointerCast(GEP_I32(allocR, index), ty->getPointerTo());
+                params.push_back(builder.CreateLoad(r0));
                 continue;
             }
 
@@ -3379,7 +3374,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeInternal(const BuildParameter
     {
         auto param     = typeFuncBC->parameters[i];
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
-        if (passByCopy(typeParam))
+        if (passByValue(typeParam))
         {
             llvm::Type* ty;
             swagTypeToLLVMType(buildParameters, module, typeParam, &ty);
