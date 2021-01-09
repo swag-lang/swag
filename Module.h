@@ -153,7 +153,7 @@ struct Module
     atomic<int> numCompilerFunctions;
     ByteCode*   byteCodeMainFunc = nullptr;
     AstNode*    mainIsDefined    = nullptr;
-    bool        hasTestErrors    = false;
+    int         numTestErrors    = 0;
     bool        setupDone        = false;
     bool        dependenciesDone = false;
 

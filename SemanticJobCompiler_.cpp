@@ -299,6 +299,10 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
     block->flags |= AST_NO_BYTECODE;
     block->flags |= AST_NO_SEMANTIC;
 
+    // Revert test errors in case #global testerror is inside a disabled #if branch
+    context->sourceFile->numTestErrors -= block->numTestErrors;
+    context->sourceFile->module->numTestErrors -= block->numTestErrors;
+
     // Unregister one overload
     for (auto symbol : block->symbols)
     {

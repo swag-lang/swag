@@ -430,23 +430,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     llvm::FunctionType* funcType = createFunctionTypeInternal(buildParameters, typeFunc);
     llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->callName().c_str(), funcType).getCallee();
 
-    // No pointer aliasing, as this are registers, and the same register cannot be used more
-    // than once as a parameter
+    // No pointer aliasing, on all pointers. Is this correct ??
+    // Note that without the NoAlias flag, some optims will not trigger (like vectorisation)
     for (int i = 0; i < func->arg_size(); i++)
     {
         auto arg = func->getArg(i);
         if (!arg->getType()->isPointerTy())
             continue;
-
-        if (i < typeFunc->numReturnRegisters())
-        {
-            arg->addAttr(llvm::Attribute::NoAlias);
-            continue;
-        }
-
-        auto typeParam = registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
-        //if (!passByValue(typeParam))
-            arg->addAttr(llvm::Attribute::NoAlias);
+        arg->addAttr(llvm::Attribute::NoAlias);
     }
 
     // Content

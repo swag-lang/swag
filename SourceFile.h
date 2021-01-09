@@ -47,7 +47,7 @@ struct SourceFile : public File
 
     uint64_t  writeTime       = 0;
     int       numErrors       = 0;
-    int       testErrors   = 0;
+    int       numTestErrors   = 0;
     int       silent          = 0;
     uint32_t  indexInModule   = UINT32_MAX;
     BuildPass buildPass       = BuildPass::Full;

@@ -434,12 +434,14 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
 
         if (g_CommandLine.test)
         {
-            sourceFile->testErrors++;
-            sourceFile->module->hasTestErrors = true;
+            sourceFile->numTestErrors++;
+            sourceFile->module->numTestErrors++;
+            if (currentCompilerIfBlock)
+                currentCompilerIfBlock->numTestErrors++;
         }
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("after '#unittest' expression"));
+        SWAG_CHECK(eatSemiCol("after '#global testerror"));
     }
 
     return true;

@@ -1235,7 +1235,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicAssert:
     {
-        if (context->sourceFile->testErrors)
+        if (context->sourceFile->numTestErrors)
             context->error(ip->d.pointer ? (const char*) ip->d.pointer : "assertion failed");
         else
         {
