@@ -2314,17 +2314,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             else
                 r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
 
-            // The intrinsic function needs pointers to u64 values, so we need to convert
-            builder.CreateStore(builder.CreatePtrToInt(r1, builder.getInt64Ty()), GEP_I32(allocT, 0));
-            builder.CreateStore(r2, GEP_I32(allocT, 1));
-            builder.CreateStore(r3, GEP_I32(allocT, 2));
-            builder.CreateStore(builder.CreatePtrToInt(r4, builder.getInt64Ty()), GEP_I32(allocT, 3));
-            auto p0    = GEP_I32(allocT, 0);
-            auto p1    = GEP_I32(allocT, 1);
-            auto p2    = GEP_I32(allocT, 2);
-            auto p3    = GEP_I32(allocT, 3);
-            auto typeF = createFunctionTypeInternal(buildParameters, 4);
-            builder.CreateCall(modu.getOrInsertFunction("__assert", typeF), {p0, p1, p2, p3});
+            localCall(buildParameters, allocR, allocT, "__assert", {(uint32_t) -1, (uint32_t) -1, (uint32_t) -1, (uint32_t) -1}, {r1, r2, r3, r4});
             break;
         }
         case ByteCodeOp::IntrinsicAlloc:
@@ -2344,18 +2334,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicGetContext:
         {
-            auto rr    = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
-            auto v0    = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
-            auto typeF = createFunctionTypeInternal(buildParameters, 2);
-            builder.CreateCall(modu.getOrInsertFunction("__tlsGetValue", typeF), {rr, v0});
+            auto rr = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
+            auto v0 = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
+            localCall(buildParameters, allocR, nullptr, "__tlsGetValue", {ip->a.u32, (uint32_t) -1}, {0, v0});
             break;
         }
         case ByteCodeOp::IntrinsicSetContext:
         {
-            auto v0    = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
-            auto v1    = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
-            auto typeF = createFunctionTypeInternal(buildParameters, 2);
-            builder.CreateCall(modu.getOrInsertFunction("__tlsSetValue", typeF), {v0, v1});
+            auto v0 = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
+            localCall(buildParameters, allocR, nullptr, "__tlsSetValue", {(uint32_t) -1, ip->a.u32}, {v0, 0});
             break;
         }
         case ByteCodeOp::IntrinsicArguments:
@@ -3308,9 +3295,17 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
             {
                 auto v0 = values[popRAidx + 1];
                 SWAG_ASSERT(v0);
-                auto p0 = GEP_I32(allocT, allocTidx++);
-                builder.CreateStore(v0, p0);
-                params.push_back(p0);
+                if (allocT)
+                {
+                    auto p0 = GEP_I32(allocT, allocTidx++);
+                    if (v0->getType()->isPointerTy())
+                        v0 = builder.CreatePtrToInt(v0, builder.getInt64Ty());
+                    builder.CreateStore(v0, p0);
+                    params.push_back(p0);
+                    continue;
+                }
+
+                params.push_back(v0);
                 continue;
             }
 
