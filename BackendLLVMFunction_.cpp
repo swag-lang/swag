@@ -9,6 +9,15 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
+bool passByCopy(TypeInfo* typeInfo)
+{
+    if (typeInfo->isPointerTo(NativeTypeKind::F32))
+        return true;
+    if (typeInfo->isNative(NativeTypeKind::F32))
+        return true;
+    return false;
+}
+
 // argIdx is the argument index of an llvm function, starting after the return arguments
 TypeInfo* registerIdxToType(TypeInfoFuncAttr* typeFunc, int argIdx)
 {
@@ -307,7 +316,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
-            if (!typeParam->isNative(NativeTypeKind::F32) && !typeParam->isPointerTo(NativeTypeKind::F32))
+            if (!passByCopy(typeParam))
             {
                 auto r = TO_PTR_NATIVE(rr0, typeParam->nativeType);
                 if (!r)
@@ -336,7 +345,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         else
         {
             auto typeParam = registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
-            if (typeParam->isNative(NativeTypeKind::F32) || typeParam->isPointerTo(NativeTypeKind::F32))
+            if (passByCopy(typeParam))
                 args.push_back(func->getArg(i - typeFunc->numReturnRegisters()));
             else
             {
@@ -426,17 +435,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     for (int i = 0; i < func->arg_size(); i++)
     {
         auto arg = func->getArg(i);
-        if (arg->getType()->isPointerTy())
+        if (!arg->getType()->isPointerTy())
+            continue;
+
+        if (i < typeFunc->numReturnRegisters())
         {
-            if (i < typeFunc->numReturnRegisters())
-                arg->addAttr(llvm::Attribute::NoAlias);
-            else
-            {
-                auto typeParam = registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
-                if (!typeParam->isPointerTo(NativeTypeKind::F32))
-                    arg->addAttr(llvm::Attribute::NoAlias);
-            }
+            arg->addAttr(llvm::Attribute::NoAlias);
+            continue;
         }
+
+        auto typeParam = registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
+        if (!passByCopy(typeParam))
+            arg->addAttr(llvm::Attribute::NoAlias);
     }
 
     // Content
