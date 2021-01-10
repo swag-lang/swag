@@ -3246,7 +3246,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
     {
         auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
         typeParam      = TypeManager::concreteReferenceType(typeParam);
-        if (typeParam->numRegisters() == 1)
+        for (int j = 0; j < typeParam->numRegisters(); j++)
         {
             auto index = pushRAParams[popRAidx--];
 
@@ -3293,15 +3293,6 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
 
             // By register pointer.
             params.push_back(GEP_I32(allocR, index));
-            continue;
-        }
-
-        for (int j = 0; j < typeParam->numRegisters(); j++)
-        {
-            auto index = pushRAParams[popRAidx--];
-            SWAG_ASSERT(index != -1);
-            auto r0 = GEP_I32(allocR, index);
-            params.push_back(r0);
         }
     }
 }

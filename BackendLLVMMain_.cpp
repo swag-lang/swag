@@ -133,13 +133,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown + OS::getDllFileExtension();
         auto ptrStr  = builder.CreateGlobalStringPtr(nameLib.c_str());
-
-        builder.CreateStore(builder.CreatePtrToInt(ptrStr, builder.getInt64Ty()), GEP_I32(allocT, 0));
-        builder.CreateStore(builder.getInt64(nameLib.length()), GEP_I32(allocT, 1));
-        auto typeF = createFunctionTypeInternal(buildParameters, 2);
-        auto p0    = GEP_I32(allocT, 0);
-        auto p1    = GEP_I32(allocT, 1);
-        builder.CreateCall(modu.getOrInsertFunction("__loaddll", typeF), {p0, p1});
+        localCall(buildParameters, nullptr, allocT, "__loaddll", {(uint32_t) -1, (uint32_t) -1}, {ptrStr, builder.getInt64(nameLib.length())});
     }
 
     // Call to global init of all dependencies
