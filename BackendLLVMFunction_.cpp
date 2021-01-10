@@ -3233,10 +3233,12 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
     if (typeFuncBC->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
         auto index = pushRAParams[popRAidx--];
-        auto r0    = GEP_I32(allocR, index);
+        SWAG_ASSERT(index != UINT32_MAX);
+        auto r0 = GEP_I32(allocR, index);
         params.push_back(r0);
         index = pushRAParams[popRAidx--];
-        r0    = GEP_I32(allocR, index);
+        SWAG_ASSERT(index != UINT32_MAX);
+        r0 = GEP_I32(allocR, index);
         params.push_back(r0);
         numCallParams--;
     }
