@@ -222,18 +222,8 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
 
     // __process_infos = *processInfos;
     {
-        auto typeF  = createFunctionTypeInternal(buildParameters, 3);
-        auto allocT = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(3)));
-        auto r0     = builder.CreatePtrToInt(pp.processInfos, builder.getInt64Ty());
-        auto r1     = builder.CreatePtrToInt(fct->getArg(0), builder.getInt64Ty());
-        auto r2     = builder.getInt64(sizeof(SwagProcessInfos));
-        auto p0     = GEP_I32(allocT, 0);
-        auto p1     = GEP_I32(allocT, 1);
-        auto p2     = GEP_I32(allocT, 2);
-        builder.CreateStore(r0, p0);
-        builder.CreateStore(r1, p1);
-        builder.CreateStore(r2, p2);
-        builder.CreateCall(modu.getOrInsertFunction("@memcpy", typeF), {p0, p1, p2});
+        auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(3));
+        localCall(buildParameters, nullptr, allocT, "@memcpy", {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {pp.processInfos, fct->getArg(0), builder.getInt64(sizeof(SwagProcessInfos))});
     }
 
     // Initialize data segments
