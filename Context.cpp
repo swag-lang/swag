@@ -16,7 +16,7 @@ SwagContext                     g_defaultContext;
 SwagProcessInfos                g_processInfos = {0};
 thread_local ByteCodeRunContext g_runContext;
 
-static void byteCodeRun(void* byteCodePtr, ...)
+static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
 {
     ByteCode*         bc       = (ByteCode*) undoByteCodeLambda(byteCodePtr);
     TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
@@ -24,9 +24,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
     VectorNative<Register*> returnRegisters;
     VectorNative<Register*> paramRegisters;
     VectorNative<Register>  fakeRegisters;
-    va_list                 valist;
 
-    va_start(valist, byteCodePtr);
     for (int i = 0; i < typeFunc->numReturnRegisters(); i++)
     {
         auto r = va_arg(valist, Register*);
@@ -55,7 +53,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
         // a bytecode callback.
         // In that case, we store the value in a fakeRegister, because bytecode execution is all about
         // registers.
-        if (Backend::passByValue(typeParam))
+        if (!forCallback && Backend::passByValue(typeParam))
         {
             fakeRegisters.reserve(typeFunc->numParamsRegisters());
             fakeRegisters.count++;
@@ -104,6 +102,20 @@ static void byteCodeRun(void* byteCodePtr, ...)
         auto r = returnRegisters[i];
         *r     = g_runContext.registersRR[i];
     }
+}
+
+static void byteCodeRun(void* byteCodePtr, ...)
+{
+    va_list valist;
+    va_start(valist, byteCodePtr);
+    byteCodeRun(false, byteCodePtr, valist);
+}
+
+static void byteCodeRunCB(void* byteCodePtr, ...)
+{
+    va_list valist;
+    va_start(valist, byteCodePtr);
+    byteCodeRun(true, byteCodePtr, valist);
 }
 
 // Callback stuff. This is tricky !
@@ -185,9 +197,9 @@ static void* doCallback(void* cb, void* p1, void* p2, void* p3, void* p4, void* 
     SWAG_ASSERT(typeFunc->numReturnRegisters() <= 1);
 
     if (typeFunc->numReturnRegisters())
-        byteCodeRun(g_callbackArr[cbIndex].bytecode, &result, &p1, &p2, &p3, &p4, &p5, &p6);
+        byteCodeRunCB(g_callbackArr[cbIndex].bytecode, &result, &p1, &p2, &p3, &p4, &p5, &p6);
     else
-        byteCodeRun(g_callbackArr[cbIndex].bytecode, &p1, &p2, &p3, &p4, &p5, &p6);
+        byteCodeRunCB(g_callbackArr[cbIndex].bytecode, &p1, &p2, &p3, &p4, &p5, &p6);
 
     return result;
 }
