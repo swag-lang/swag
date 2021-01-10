@@ -2305,14 +2305,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicGetContext:
         {
-            auto v0 = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
-            localCall(buildParameters, allocR, nullptr, "__tlsGetValue", {ip->a.u32, (uint32_t) -1}, {0, v0});
+            auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
+            localCall(buildParameters, allocR, allocT, "__tlsGetValue", {ip->a.u32, (uint32_t) -1}, {0, v0});
             break;
         }
         case ByteCodeOp::IntrinsicSetContext:
         {
-            auto v0 = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
-            localCall(buildParameters, allocR, nullptr, "__tlsSetValue", {(uint32_t) -1, ip->a.u32}, {v0, 0});
+            auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
+            localCall(buildParameters, allocR, allocT, "__tlsSetValue", {(uint32_t) -1, ip->a.u32}, {v0, 0});
             break;
         }
         case ByteCodeOp::IntrinsicArguments:
@@ -3215,8 +3215,17 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
         for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
         {
             auto index = pushRAParams[popRAidx--];
-            auto r0    = GEP_I32(allocR, index);
-            params.push_back(r0);
+            if (index == -1)
+            {
+                auto v0 = values[popRAidx + 1];
+                SWAG_ASSERT(v0);
+                params.push_back(v0);
+            }
+            else
+            {
+                auto r0 = GEP_I32(allocR, index);
+                params.push_back(r0);
+            }
         }
     }
 

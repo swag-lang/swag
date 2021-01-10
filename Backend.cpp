@@ -134,6 +134,8 @@ bool Backend::passByValue(TypeInfo* typeInfo)
         return true;
     if (typeInfo->isNative(NativeTypeKind::U32))
         return true;
+    //if (typeInfo->isNative(NativeTypeKind::U64))
+    //    return true;
 
     return false;
 }

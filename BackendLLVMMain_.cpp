@@ -81,7 +81,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     builder.SetInsertPoint(BB);
 
     // Reserve room to pass parameters to embedded intrinsics
-    auto allocT = TO_PTR_I64(builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2)));
+    auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2));
 
     // Main context
     SWAG_ASSERT(g_defaultContext.allocator.itable);
@@ -106,9 +106,8 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
     {
-        auto typeF   = createFunctionTypeInternal(buildParameters, 1);
-        auto toTlsId = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32});
-        builder.CreateCall(modu.getOrInsertFunction("__tlsAlloc", typeF), {toTlsId});
+        auto toTlsId = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
+        localCall(buildParameters, nullptr, allocT, "__tlsAlloc", {(uint32_t) -1}, {toTlsId});
     }
 
     // __process_infos.defaultContext = &mainContext
