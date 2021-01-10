@@ -941,7 +941,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicMemCpy:
         {
             if (ip->flags & BCI_IMM_C)
-                localCall(buildParameters, allocR, allocT, "@memcpy", {ip->a.u32, ip->b.u32, (uint32_t) -1}, {0, 0, builder.getInt64(ip->c.u64)});
+                localCall(buildParameters, allocR, allocT, "@memcpy", {ip->a.u32, ip->b.u32, UINT32_MAX}, {0, 0, builder.getInt64(ip->c.u64)});
             else
                 localCall(buildParameters, allocR, allocT, "@memcpy", {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
@@ -950,7 +950,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicMemMove:
         {
             if (ip->flags & BCI_IMM_C)
-                localCall(buildParameters, allocR, allocT, "@memmove", {ip->a.u32, ip->b.u32, (uint32_t) -1}, {0, 0, builder.getInt64(ip->c.u64)});
+                localCall(buildParameters, allocR, allocT, "@memmove", {ip->a.u32, ip->b.u32, UINT32_MAX}, {0, 0, builder.getInt64(ip->c.u64)});
             else
                 localCall(buildParameters, allocR, allocT, "@memmove", {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
@@ -2285,7 +2285,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             else
                 r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
 
-            localCall(buildParameters, allocR, allocT, "__assert", {(uint32_t) -1, (uint32_t) -1, (uint32_t) -1, (uint32_t) -1}, {r1, r2, r3, r4});
+            localCall(buildParameters, allocR, allocT, "__assert", {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
             break;
         }
         case ByteCodeOp::IntrinsicAlloc:
@@ -2306,13 +2306,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicGetContext:
         {
             auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
-            localCall(buildParameters, allocR, allocT, "__tlsGetValue", {ip->a.u32, (uint32_t) -1}, {0, v0});
+            localCall(buildParameters, allocR, allocT, "__tlsGetValue", {ip->a.u32, UINT32_MAX}, {0, v0});
             break;
         }
         case ByteCodeOp::IntrinsicSetContext:
         {
             auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
-            localCall(buildParameters, allocR, allocT, "__tlsSetValue", {(uint32_t) -1, ip->a.u32}, {v0, 0});
+            localCall(buildParameters, allocR, allocT, "__tlsSetValue", {UINT32_MAX, ip->a.u32}, {v0, 0});
             break;
         }
         case ByteCodeOp::IntrinsicArguments:
@@ -3215,7 +3215,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
         for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
         {
             auto index = pushRAParams[popRAidx--];
-            if (index == -1)
+            if (index == UINT32_MAX)
             {
                 auto v0 = values[popRAidx + 1];
                 SWAG_ASSERT(v0);
@@ -3255,7 +3255,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
             {
                 llvm::Type* ty;
                 swagTypeToLLVMType(buildParameters, module, typeParam, &ty);
-                if (index == -1)
+                if (index == UINT32_MAX)
                 {
                     auto v0 = values[popRAidx + 1];
                     SWAG_ASSERT(v0);
@@ -3271,7 +3271,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
             }
 
             // By register pointer. If we have a value and not a register, store the value in a temporary register
-            if (index == -1)
+            if (index == UINT32_MAX)
             {
                 auto v0 = values[popRAidx + 1];
                 SWAG_ASSERT(v0);
@@ -3284,15 +3284,17 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
                         v0 = builder.CreateIntCast(v0, builder.getInt64Ty(), false);
                     builder.CreateStore(v0, p0);
                     params.push_back(p0);
-                    continue;
                 }
-
-                params.push_back(v0);
-                continue;
+                else
+                {
+                    params.push_back(v0);
+                }
             }
-
             // By register pointer.
-            params.push_back(GEP_I32(allocR, index));
+            else
+            {
+                params.push_back(GEP_I32(allocR, index));
+            }
         }
     }
 }

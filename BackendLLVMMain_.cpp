@@ -107,7 +107,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
     {
         auto toTlsId = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
-        localCall(buildParameters, nullptr, allocT, "__tlsAlloc", {(uint32_t) -1}, {toTlsId});
+        localCall(buildParameters, nullptr, allocT, "__tlsAlloc", {UINT32_MAX}, {toTlsId});
     }
 
     // __process_infos.defaultContext = &mainContext
@@ -120,7 +120,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     {
         auto toTlsId   = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
         auto toContext = builder.CreatePointerCast(pp.mainContext, llvm::Type::getInt8PtrTy(context));
-        localCall(buildParameters, nullptr, allocT, "__tlsSetValue", {(uint32_t) -1, (uint32_t) -1}, {toTlsId, toContext});
+        localCall(buildParameters, nullptr, allocT, "__tlsSetValue", {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
     }
 
     // Load all dependencies
@@ -133,7 +133,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown + OS::getDllFileExtension();
         auto ptrStr  = builder.CreateGlobalStringPtr(nameLib.c_str());
-        localCall(buildParameters, nullptr, allocT, "__loaddll", {(uint32_t) -1, (uint32_t) -1}, {ptrStr, builder.getInt64(nameLib.length())});
+        localCall(buildParameters, nullptr, allocT, "__loaddll", {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.length())});
     }
 
     // Call to global init of all dependencies
