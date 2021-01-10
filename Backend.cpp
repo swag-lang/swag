@@ -3,6 +3,7 @@
 #include "Workspace.h"
 #include "OS.h"
 #include "Module.h"
+#include "TypeManager.h"
 
 string Backend::linkerExe;
 string Backend::linkerPath;
@@ -107,4 +108,50 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     }
 
     return true;
+}
+
+bool Backend::passByValue(TypeInfo* typeInfo)
+{
+    if (typeInfo->isPointerTo(NativeTypeKind::F32) || typeInfo->isPointerTo(NativeTypeKind::F64))
+        return true;
+    if (typeInfo->isNative(NativeTypeKind::F32) || typeInfo->isNative(NativeTypeKind::F64))
+        return true;
+    if (typeInfo->isNative(NativeTypeKind::Bool))
+        return true;
+    if (typeInfo->isNative(NativeTypeKind::Char))
+        return true;
+    if (typeInfo->isNative(NativeTypeKind::S8))
+        return true;
+    if (typeInfo->isNative(NativeTypeKind::S16))
+        return true;
+    if (typeInfo->isNative(NativeTypeKind::S32))
+        return true;
+    if (typeInfo->isNative(NativeTypeKind::S64))
+        return true;
+
+    return false;
+}
+
+// argIdx is the argument index of an llvm function, starting after the return arguments
+TypeInfo* Backend::registerIdxToType(TypeInfoFuncAttr* typeFunc, int argIdx)
+{
+    if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+    {
+        if (argIdx < 2)
+            return typeFunc->parameters.back();
+        argIdx -= 2;
+    }
+
+    int argNo = 0;
+    while (true)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(typeFunc->parameters[argNo]->typeInfo);
+        auto n         = typeParam->numRegisters();
+        if (argIdx < n)
+            return typeParam;
+        argIdx -= n;
+        argNo++;
+    }
+
+    return nullptr;
 }

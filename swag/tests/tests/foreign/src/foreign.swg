@@ -342,6 +342,11 @@ public func tcf_callret1(v: s64, fct: func(s64)->string)->string
     return fct(v)
 }
 
+public func tcf_callret2(v: f32, fct: func(f32)->string)->string
+{
+    return fct(v)
+}
+
 public func tcf_manualcall(x: s64)->s64
 {
     return x

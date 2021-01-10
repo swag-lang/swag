@@ -71,11 +71,13 @@ struct Backend
     Ast::OutputContext outputContext;
     bool               mustCompile = true;
 
-    static string compilerExe;
-    static string compilerPath;
-    static string linkerExe;
-    static string linkerPath;
-    static void   setup();
-    static string getCacheFolder(const BuildParameters& buildParameters);
-    static string getOutputFileName(const BuildParameters& buildParameters);
+    static string    compilerExe;
+    static string    compilerPath;
+    static string    linkerExe;
+    static string    linkerPath;
+    static void      setup();
+    static string    getCacheFolder(const BuildParameters& buildParameters);
+    static string    getOutputFileName(const BuildParameters& buildParameters);
+    static bool      passByValue(TypeInfo* typeInfo);
+    static TypeInfo* registerIdxToType(TypeInfoFuncAttr* typeFunc, int argIdx);
 };

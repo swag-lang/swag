@@ -9,42 +9,6 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-bool passByValue(TypeInfo* typeInfo)
-{
-    if (typeInfo->isPointerTo(NativeTypeKind::F32) || typeInfo->isPointerTo(NativeTypeKind::F64))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::F32) || typeInfo->isNative(NativeTypeKind::F64))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::Bool))
-        return true;
-
-    return false;
-}
-
-// argIdx is the argument index of an llvm function, starting after the return arguments
-TypeInfo* registerIdxToType(TypeInfoFuncAttr* typeFunc, int argIdx)
-{
-    if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
-    {
-        if (argIdx < 2)
-            return typeFunc->parameters.back();
-        argIdx -= 2;
-    }
-
-    int argNo = 0;
-    while (true)
-    {
-        auto typeParam = TypeManager::concreteReferenceType(typeFunc->parameters[argNo]->typeInfo);
-        auto n         = typeParam->numRegisters();
-        if (argIdx < n)
-            return typeParam;
-        argIdx -= n;
-        argNo++;
-    }
-
-    return nullptr;
-}
-
 inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Value* v, NativeTypeKind k)
 {
     switch (k)

@@ -9,6 +9,7 @@
 #include "Module.h"
 #include "ByteCodeStack.h"
 #include "ByteCodeOp.h"
+#include "Backend.h"
 
 uint64_t                        g_tlsContextId = 0;
 SwagContext                     g_defaultContext;
@@ -22,6 +23,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
 
     VectorNative<Register*> returnRegisters;
     VectorNative<Register*> paramRegisters;
+    VectorNative<Register>  fakeRegisters;
     va_list                 valist;
 
     va_start(valist, byteCodePtr);
@@ -47,8 +49,44 @@ static void byteCodeRun(void* byteCodePtr, ...)
     // Parameters
     for (int i = 0; i < typeFunc->numParamsRegisters(); i++)
     {
-        auto r = va_arg(valist, Register*);
-        paramRegisters.push_back(r);
+        auto typeParam = Backend::registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
+
+        // We are called from native code, which must respect the passByValue calling convention when calling
+        // a bytecode callback.
+        // In that case, we store the value in a fakeRegister, because bytecode execution is all about
+        // registers.
+        if (Backend::passByValue(typeParam))
+        {
+            fakeRegisters.reserve(typeFunc->numParamsRegisters());
+            fakeRegisters.count++;
+
+            auto& r = fakeRegisters.back();
+            switch (typeParam->sizeOf)
+            {
+            case 1:
+                r.u8 = va_arg(valist, uint8_t);
+                break;
+            case 2:
+                r.u16 = va_arg(valist, uint16_t);
+                break;
+            case 4:
+                r.u32 = va_arg(valist, uint32_t);
+                break;
+            case 8:
+                r.u64 = va_arg(valist, uint64_t);
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
+            }
+
+            paramRegisters.push_back(&fakeRegisters.back());
+        }
+        else
+        {
+            auto r = va_arg(valist, Register*);
+            paramRegisters.push_back(r);
+        }
     }
 
     auto saveSp      = g_runContext.sp;
