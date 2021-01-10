@@ -118,12 +118,9 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // swag_runtime_tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext)
     {
-        auto typeF     = createFunctionTypeInternal(buildParameters, 2);
-        auto toTlsId   = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32});
-        auto toContext = builder.CreatePtrToInt(builder.CreatePointerCast(pp.mainContext, llvm::Type::getInt64PtrTy(context)), builder.getInt64Ty());
-        builder.CreateStore(toContext, GEP_I32(allocT, 0));
-        auto p0 = GEP_I32(allocT, 0);
-        builder.CreateCall(modu.getOrInsertFunction("__tlsSetValue", typeF), {toTlsId, p0});
+        auto toTlsId   = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
+        auto toContext = builder.CreatePointerCast(pp.mainContext, llvm::Type::getInt8PtrTy(context));
+        localCall(buildParameters, nullptr, allocT, "__tlsSetValue", {(uint32_t) -1, (uint32_t) -1}, {toTlsId, toContext});
     }
 
     // Load all dependencies
