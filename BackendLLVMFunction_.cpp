@@ -2272,8 +2272,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             r1              = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32}));
 
             // Line & column
-            auto r2 = builder.getInt64(ip->node->token.startLocation.line);
-            auto r3 = builder.getInt64(ip->node->token.startLocation.column);
+            auto r2 = builder.getInt32(ip->node->token.startLocation.line);
+            auto r3 = builder.getInt32(ip->node->token.startLocation.column);
 
             // Message
             llvm::Value* r4;
@@ -3244,11 +3244,20 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
             // By value
             if (passByValue(typeParam))
             {
-                SWAG_ASSERT(index != -1);
                 llvm::Type* ty;
                 swagTypeToLLVMType(buildParameters, module, typeParam, &ty);
-                auto r0 = builder.CreatePointerCast(GEP_I32(allocR, index), ty->getPointerTo());
-                params.push_back(builder.CreateLoad(r0));
+                if (index == -1)
+                {
+                    auto v0 = values[popRAidx + 1];
+                    SWAG_ASSERT(v0);
+                    params.push_back(v0);
+                }
+                else
+                {
+                    auto r0 = builder.CreatePointerCast(GEP_I32(allocR, index), ty->getPointerTo());
+                    params.push_back(builder.CreateLoad(r0));
+                }
+
                 continue;
             }
 
@@ -3262,6 +3271,8 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
                     auto p0 = GEP_I32(allocT, allocTidx++);
                     if (v0->getType()->isPointerTy())
                         v0 = builder.CreatePtrToInt(v0, builder.getInt64Ty());
+                    else if (v0->getType()->isIntegerTy())
+                        v0 = builder.CreateIntCast(v0, builder.getInt64Ty(), false);
                     builder.CreateStore(v0, p0);
                     params.push_back(p0);
                     continue;
