@@ -22,7 +22,7 @@ enum class CoffSymbolKind
 
 struct CoffSymbol
 {
-    Utf8        name;
+    Utf8           name;
     CoffSymbolKind kind;
     uint32_t       value;
     uint32_t       index;
@@ -162,8 +162,8 @@ struct X64PerThread
     CoffRelocationTable        relocTablePDSection;
     CoffRelocationTable        relocTableDBGSSection;
     vector<CoffSymbol>         allSymbols;
-    map<Utf8, uint32_t>     mapSymbols;
-    map<Utf8, uint32_t>     globalStrings;
+    map<Utf8, uint32_t>        mapSymbols;
+    map<Utf8, uint32_t>        globalStrings;
     map<uint32_t, int32_t>     labels;
     DataSegment                globalSegment;
     DataSegment                stringSegment;
@@ -321,6 +321,7 @@ struct BackendX64 : public Backend
     bool         dbgEmitDataDebugT(const BuildParameters& buildParameters);
     bool         dbgEmitFctDebugS(const BuildParameters& buildParameters);
     bool         emitDebug(const BuildParameters& buildParameters);
+    void         emitByteCodeLambdaParams(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
 
     bool saveObjFile(const BuildParameters& buildParameters);
 

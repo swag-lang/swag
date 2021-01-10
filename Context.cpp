@@ -61,25 +61,7 @@ static void byteCodeRun(void* byteCodePtr, ...)
             fakeRegisters.count++;
 
             auto& r = fakeRegisters.back();
-            switch (typeParam->sizeOf)
-            {
-            case 1:
-                r.u8 = va_arg(valist, uint8_t);
-                break;
-            case 2:
-                r.u16 = va_arg(valist, uint16_t);
-                break;
-            case 4:
-                r.u32 = va_arg(valist, uint32_t);
-                break;
-            case 8:
-                r.u64 = va_arg(valist, uint64_t);
-                break;
-            default:
-                SWAG_ASSERT(false);
-                break;
-            }
-
+            r.u64   = va_arg(valist, uint64_t);
             paramRegisters.push_back(&fakeRegisters.back());
         }
         else

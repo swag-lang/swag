@@ -143,18 +143,6 @@ public func tcf_toto18(x, y: s64, fct: func(s64, s64))
 
 public func tcf_toto19(v, w, x, y, z: s64, fct: func(s64, s64, s64, s64, s64))
 {
-    /*@print("toto19: ")
-    @print(cast(s64) v)
-    @print(" ")
-    @print(cast(s64) w)
-    @print(" ")
-    @print(cast(s64) x)
-    @print(" ")
-    @print(cast(s64) y)
-    @print(" ")
-    @print(cast(s64) z)
-    @print("\n")*/
-
     @assert(v == 333)
     @assert(w == 444)
     @assert(x == 555)
@@ -350,4 +338,16 @@ public func tcf_callret2(v: f32, fct: func(f32)->string)->string
 public func tcf_manualcall(x: s64)->s64
 {
     return x
+}
+
+//#[swag.printbc]
+public func tcf_toto22(v: s8, w: s16, x: s32, y: string, z: s64, fct: func(s8, s16, s32, string, s64))
+{
+    @assert(v == 33)
+    @assert(w == 44)
+    @assert(x == 55)
+    @assert(y == "666")
+    @assert(z == 777)
+
+    fct(v,w,x,y,z)
 }

@@ -347,20 +347,32 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     if (debug)
         dbgSetLocation(coffFct, bc, nullptr, 0);
 
+    // In order, starting at RSP, we have :
+    //
+    // sizeParamsStack to store function call parameters
+    // ...padding to 16...
+
+    // All registers:       bc->maxReservedRegisterRC
+    // offsetRT:            bc->maxCallResults
+    // offsetStack:         stackSize, function local stack
+    // offsetRR:            2 * sizeof(Register), the result registers of a function call
+    // offsetFLT:           sizeof(Register)
+    // ...padding to 16... => total is sizeStack
+
+    uint32_t offsetRT    = bc->maxReservedRegisterRC * sizeof(Register);
+    uint32_t offsetStack = offsetRT + bc->maxCallResults * sizeof(Register);
+    uint32_t offsetRR    = offsetStack + typeFunc->stackSize;
+
     // For float load
     // (should be reserved only if we have floating point operations in that function)
-    // In order we have :
-    // RC at 0 (bc->maxReservedRegisterRC)
-    // RT (max call results)
-    // Local function stack
-    // FLT
-    uint32_t offsetRT        = bc->maxReservedRegisterRC * sizeof(Register);
-    uint32_t offsetStack     = offsetRT + bc->maxCallResults * sizeof(Register);
-    uint32_t offsetRR        = offsetStack + typeFunc->stackSize;
-    uint32_t offsetFLT       = offsetRR + 2 * sizeof(Register);
-    uint32_t sizeStack       = offsetFLT + 8;
-    uint32_t sizeParamsStack = max(4 * sizeof(Register), bc->maxCallParams * sizeof(Register));
+    uint32_t offsetFLT = offsetRR + 2 * sizeof(Register);
+
+    uint32_t sizeStack = offsetFLT + 8;
     MK_ALIGN16(sizeStack);
+
+    // x64 calling convention, space for at least 4 parameters when calling a function
+    // (should ideally be reserved only if we have a call)
+    uint32_t sizeParamsStack = max(4 * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register));
     MK_ALIGN16(sizeParamsStack);
 
     auto     beforeProlog = concat.totalCount();
@@ -373,8 +385,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     sizeProlog       = concat.totalCount() - beforeProlog;
     uint16_t unwind0 = computeUnwindPushRDI(sizeProlog);
 
-    // x64 calling convention, space for at least 4 parameters when calling a function
-    // (should ideally be reserved only if we have a call)
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, sizeStack + sizeParamsStack);
 
     coffFct->offsetStack  = offsetStack;
@@ -2143,44 +2153,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
 
             BackendX64Inst::emit_Copy64(pp, RAX, RCX);
-
-            int idxReg = 0;
-            for (int idxParam = typeFuncBC->numReturnRegisters() - 1; idxParam >= 0; idxParam--, idxReg++)
-            {
-                switch (idxReg)
-                {
-                case 0:
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRT, RDX, RDI);
-                    break;
-                case 1:
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRT + sizeof(Register), R8, RDI);
-                    break;
-                }
-            }
-
-            for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--, idxReg++)
-            {
-                switch (idxReg)
-                {
-                case 0:
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RDX, RDI);
-                    break;
-                case 1:
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), R8, RDI);
-                    break;
-                case 2:
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), R9, RDI);
-                    break;
-                default:
-                {
-                    BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
-                    int idx = (int) pushRAParams.size() - idxParam;
-                    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(idx), RAX, RSP);
-                    break;
-                }
-                }
-            }
-
+            emitByteCodeLambdaParams(pp, typeFuncBC, offsetRT, pushRAParams);
             BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_byteCodeRun, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             concat.addString2("\xff\xd0"); // call rax
@@ -2926,4 +2899,61 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
     }
 
     return true;
+}
+
+void BackendX64::emitByteCodeLambdaParams(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+{
+    int idxReg = 0;
+    for (int idxParam = typeFuncBC->numReturnRegisters() - 1; idxParam >= 0; idxParam--, idxReg++)
+    {
+        switch (idxReg)
+        {
+        case 0:
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRT, RDX, RDI);
+            break;
+        case 1:
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRT + sizeof(Register), R8, RDI);
+            break;
+        }
+    }
+
+    // When calling a bytecode callback in x64, we must respect the passByValue convention, even if it's not
+    // the case internaly for local calls.
+    uint32_t stackOffset = 0;
+    for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--, idxReg++)
+    {
+        auto typeParam = registerIdxToType(typeFuncBC, idxReg - typeFuncBC->numReturnRegisters());
+
+        static const uint8_t idxToReg[4] = {RDX, R8, R9};
+
+        // Pass by value
+        if (passByValue(typeParam))
+        {
+            stackOffset += sizeof(Register);
+            if (idxReg <= 2)
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), idxToReg[idxReg], RDI);
+            }
+            else
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
+                BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RSP);
+            }
+        }
+
+        // Pass by register pointer
+        else
+        {
+            stackOffset += sizeof(Register);
+            if (idxReg <= 2)
+            {
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), idxToReg[idxReg], RDI);
+            }
+            else
+            {
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
+                BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RSP);
+            }
+        }
+    }
 }

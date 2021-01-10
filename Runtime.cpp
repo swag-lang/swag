@@ -197,7 +197,7 @@ namespace Runtime
         }
 
         print("error: ");
-        print(location->fileName.buffer, (uint32_t) location->fileName.count);
+        print(location->fileName.buffer, (uint32_t) location->fileName.count); 
         print(":");
         print((int64_t)(location->lineStart + 1));
         print(": ");
