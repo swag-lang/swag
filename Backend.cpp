@@ -112,36 +112,7 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
 
 bool Backend::passByValue(TypeInfo* typeInfo)
 {
-    if (typeInfo->isPointerTo(NativeTypeKind::F32) || typeInfo->isPointerTo(NativeTypeKind::F64))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::F32) || typeInfo->isNative(NativeTypeKind::F64))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::Bool))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::Char))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::S8))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::S16))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::S32))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::S64))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::U8))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::U16))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::U32))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::U64))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::Int))
-        return true;
-    if (typeInfo->isNative(NativeTypeKind::UInt))
-        return true;
-
-    return false;
+    return typeInfo->numRegisters() == 1;
 }
 
 // argIdx is the argument index of an llvm function, starting after the return arguments
