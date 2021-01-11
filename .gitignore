@@ -22,8 +22,6 @@ bld/
 [Oo]bj/
 [Ll]og/
 
-llvm/
-llvm-bin/
 VTune Profiler Results/
 
 # Visual Studio 2015 cache/options directory
@@ -277,3 +275,4 @@ doc/
 **/modules/**/public
 **/examples/**/public
 **/tests/**/public
+llvm/
