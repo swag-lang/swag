@@ -15,6 +15,11 @@
 #include "BackendLLVM.h"
 #include "Workspace.h"
 
+static llvm::DILocation* debugLocGet(unsigned Line, unsigned Col, const llvm::MDNode* Scope, const llvm::MDNode* InlinedAt = nullptr, bool ImplicitCode = false)
+{
+    return llvm::DILocation::get(Scope->getContext(), Line, Col, const_cast<llvm::MDNode*>(Scope), const_cast<llvm::MDNode*>(InlinedAt), ImplicitCode);
+}
+
 void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
 {
     llvm             = m;
@@ -423,7 +428,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             auto          child     = decl->parameters->childs.back();
             const auto&   loc       = child->token.startLocation;
             auto          typeParam = typeFunc->parameters.back()->typeInfo;
-            auto          location  = llvm::DebugLoc::get(loc.line + 1, loc.column, SP);
+            auto          location  = debugLocGet(loc.line + 1, loc.column, SP);
             llvm::DIType* type      = getType(typeParam, file);
 
             llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, child->token.text.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, llvm::DINode::FlagZero);
@@ -439,7 +444,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             const auto& loc       = child->token.startLocation;
             auto        typeParam = typeFunc->parameters[i]->typeInfo;
             auto        scope     = SP;
-            auto        location  = llvm::DebugLoc::get(loc.line + 1, loc.column, scope);
+            auto        location  = debugLocGet(loc.line + 1, loc.column, scope);
 
             llvm::DINode::DIFlags flags = llvm::DINode::FlagZero;
             if (typeParam->flags & TYPEINFO_SELF)
@@ -494,7 +499,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
                 llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, localVar->token.text.c_str(), 1, file, loc.line + 1, type, !isOptimized);
                 auto                   v     = func->getArg(0);
                 vector<int64_t>        expr;
-                dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(expr), llvm::DebugLoc::get(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+                dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(expr), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
             }
         }
         else
@@ -503,7 +508,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             auto                   scope = getOrCreateScope(file, localVar->ownerScope);
             llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.text.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
             auto                   v     = builder.CreateInBoundsGEP(stack, pp.builder->getInt32(overload->storageOffset));
-            dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), llvm::DebugLoc::get(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
+            dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
         }
     }
 }
@@ -526,7 +531,7 @@ void BackendLLVMDbg::startWrapperFunction(LLVMPerThread& pp, ByteCode* bc, AstFu
     llvm::DISubprogram* SP = dbgBuilder->createFunction(file, name.c_str(), llvm::StringRef(), file, lineNo, dbgFuncType, lineNo, diFlags, spFlags);
     func->setSubprogram(SP);
 
-    pp.builder->SetCurrentDebugLocation(llvm::DebugLoc::get(lineNo, 0, SP));
+    pp.builder->SetCurrentDebugLocation(debugLocGet(lineNo, 0, SP));
 }
 
 void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip)
@@ -544,7 +549,7 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteC
 
     llvm::DIFile*  file  = getOrCreateFile(sourceFile);
     llvm::DIScope* scope = getOrCreateScope(file, ip->node->ownerScope);
-    builder->SetCurrentDebugLocation(llvm::DebugLoc::get(location->line + 1, 0, scope));
+    builder->SetCurrentDebugLocation(debugLocGet(location->line + 1, 0, scope));
 }
 
 llvm::DIScope* BackendLLVMDbg::getOrCreateScope(llvm::DIFile* file, Scope* scope)

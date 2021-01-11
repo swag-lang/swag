@@ -230,8 +230,9 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     // Target machine
     auto targetTriple = llvm::sys::getDefaultTargetTriple();
     modu.setTargetTriple(targetTriple);
-    std::string         error;
-    auto                target   = llvm::TargetRegistry::lookupTarget(targetTriple, error);
+    std::string error;
+    auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, error);
+    SWAG_ASSERT(target);
     auto                cpu      = "generic";
     auto                features = "";
     llvm::TargetOptions opt;

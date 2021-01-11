@@ -1,22 +1,6 @@
 #include "pch.h"
 
-#pragma comment(lib, "LLVMBinaryFormat.lib")
-#pragma comment(lib, "LLVMBitstreamReader.lib")
-#pragma comment(lib, "LLVMCore.lib")
-#pragma comment(lib, "LLVMMC.lib")
-#pragma comment(lib, "LLVMRemarks.lib")
-#pragma comment(lib, "LLVMSupport.lib")
-#pragma comment(lib, "LLVMTarget.lib")
-#pragma comment(lib, "LLVMX86AsmParser.lib")
-#pragma comment(lib, "LLVMX86CodeGen.lib")
-#pragma comment(lib, "LLVMX86Desc.lib")
-#pragma comment(lib, "LLVMX86Disassembler.lib")
-#pragma comment(lib, "LLVMX86Info.lib")
-#pragma comment(lib, "LLVMAVRAsmParser.lib")
-#pragma comment(lib, "LLVMAVRCodeGen.lib")
-#pragma comment(lib, "LLVMAVRDesc.lib")
-#pragma comment(lib, "LLVMAVRDisassembler.lib")
-#pragma comment(lib, "LLVMAVRInfo.lib")
+//#pragma comment(lib, "LLVM-C.lib")
 #pragma comment(lib, "LLVMAArch64AsmParser.lib")
 #pragma comment(lib, "LLVMAArch64CodeGen.lib")
 #pragma comment(lib, "LLVMAArch64Desc.lib")
@@ -35,6 +19,11 @@
 #pragma comment(lib, "LLVMARMDisassembler.lib")
 #pragma comment(lib, "LLVMARMInfo.lib")
 #pragma comment(lib, "LLVMARMUtils.lib")
+#pragma comment(lib, "LLVMAVRAsmParser.lib")
+#pragma comment(lib, "LLVMAVRCodeGen.lib")
+#pragma comment(lib, "LLVMAVRDesc.lib")
+#pragma comment(lib, "LLVMAVRDisassembler.lib")
+#pragma comment(lib, "LLVMAVRInfo.lib")
 #pragma comment(lib, "LLVMAggressiveInstCombine.lib")
 #pragma comment(lib, "LLVMAnalysis.lib")
 #pragma comment(lib, "LLVMAsmParser.lib")
@@ -44,10 +33,13 @@
 #pragma comment(lib, "LLVMBPFDesc.lib")
 #pragma comment(lib, "LLVMBPFDisassembler.lib")
 #pragma comment(lib, "LLVMBPFInfo.lib")
+#pragma comment(lib, "LLVMBinaryFormat.lib")
 #pragma comment(lib, "LLVMBitReader.lib")
 #pragma comment(lib, "LLVMBitWriter.lib")
+#pragma comment(lib, "LLVMBitstreamReader.lib")
 #pragma comment(lib, "LLVMCFGuard.lib")
 #pragma comment(lib, "LLVMCodeGen.lib")
+#pragma comment(lib, "LLVMCore.lib")
 #pragma comment(lib, "LLVMCoroutines.lib")
 #pragma comment(lib, "LLVMCoverage.lib")
 #pragma comment(lib, "LLVMDWARFLinker.lib")
@@ -59,9 +51,13 @@
 #pragma comment(lib, "LLVMDemangle.lib")
 #pragma comment(lib, "LLVMDlltoolDriver.lib")
 #pragma comment(lib, "LLVMExecutionEngine.lib")
+#pragma comment(lib, "LLVMExtensions.lib")
+#pragma comment(lib, "LLVMFileCheck.lib")
+#pragma comment(lib, "LLVMFrontendOpenACC.lib")
 #pragma comment(lib, "LLVMFrontendOpenMP.lib")
 #pragma comment(lib, "LLVMFuzzMutate.lib")
 #pragma comment(lib, "LLVMGlobalISel.lib")
+#pragma comment(lib, "LLVMHelloNew.lib")
 #pragma comment(lib, "LLVMHexagonAsmParser.lib")
 #pragma comment(lib, "LLVMHexagonCodeGen.lib")
 #pragma comment(lib, "LLVMHexagonDesc.lib")
@@ -70,6 +66,7 @@
 #pragma comment(lib, "LLVMIRReader.lib")
 #pragma comment(lib, "LLVMInstCombine.lib")
 #pragma comment(lib, "LLVMInstrumentation.lib")
+#pragma comment(lib, "LLVMInterfaceStub.lib")
 #pragma comment(lib, "LLVMInterpreter.lib")
 #pragma comment(lib, "LLVMJITLink.lib")
 #pragma comment(lib, "LLVMLTO.lib")
@@ -81,6 +78,7 @@
 #pragma comment(lib, "LLVMLibDriver.lib")
 #pragma comment(lib, "LLVMLineEditor.lib")
 #pragma comment(lib, "LLVMLinker.lib")
+#pragma comment(lib, "LLVMMC.lib")
 #pragma comment(lib, "LLVMMCA.lib")
 #pragma comment(lib, "LLVMMCDisassembler.lib")
 #pragma comment(lib, "LLVMMCJIT.lib")
@@ -105,6 +103,8 @@
 #pragma comment(lib, "LLVMOption.lib")
 #pragma comment(lib, "LLVMOrcError.lib")
 #pragma comment(lib, "LLVMOrcJIT.lib")
+#pragma comment(lib, "LLVMOrcShared.lib")
+#pragma comment(lib, "LLVMOrcTargetProcess.lib")
 #pragma comment(lib, "LLVMPasses.lib")
 #pragma comment(lib, "LLVMPowerPCAsmParser.lib")
 #pragma comment(lib, "LLVMPowerPCCodeGen.lib")
@@ -118,6 +118,7 @@
 #pragma comment(lib, "LLVMRISCVDisassembler.lib")
 #pragma comment(lib, "LLVMRISCVInfo.lib")
 #pragma comment(lib, "LLVMRISCVUtils.lib")
+#pragma comment(lib, "LLVMRemarks.lib")
 #pragma comment(lib, "LLVMRuntimeDyld.lib")
 #pragma comment(lib, "LLVMScalarOpts.lib")
 #pragma comment(lib, "LLVMSelectionDAG.lib")
@@ -126,6 +127,7 @@
 #pragma comment(lib, "LLVMSparcDesc.lib")
 #pragma comment(lib, "LLVMSparcDisassembler.lib")
 #pragma comment(lib, "LLVMSparcInfo.lib")
+#pragma comment(lib, "LLVMSupport.lib")
 #pragma comment(lib, "LLVMSymbolize.lib")
 #pragma comment(lib, "LLVMSystemZAsmParser.lib")
 #pragma comment(lib, "LLVMSystemZCodeGen.lib")
@@ -134,6 +136,7 @@
 #pragma comment(lib, "LLVMSystemZInfo.lib")
 #pragma comment(lib, "LLVMTableGen.lib")
 #pragma comment(lib, "LLVMTableGenGlobalISel.lib")
+#pragma comment(lib, "LLVMTarget.lib")
 #pragma comment(lib, "LLVMTestingSupport.lib")
 #pragma comment(lib, "LLVMTextAPI.lib")
 #pragma comment(lib, "LLVMTransformUtils.lib")
@@ -144,6 +147,11 @@
 #pragma comment(lib, "LLVMWebAssemblyDisassembler.lib")
 #pragma comment(lib, "LLVMWebAssemblyInfo.lib")
 #pragma comment(lib, "LLVMWindowsManifest.lib")
+#pragma comment(lib, "LLVMX86AsmParser.lib")
+#pragma comment(lib, "LLVMX86CodeGen.lib")
+#pragma comment(lib, "LLVMX86Desc.lib")
+#pragma comment(lib, "LLVMX86Disassembler.lib")
+#pragma comment(lib, "LLVMX86Info.lib")
 #pragma comment(lib, "LLVMXCoreCodeGen.lib")
 #pragma comment(lib, "LLVMXCoreDesc.lib")
 #pragma comment(lib, "LLVMXCoreDisassembler.lib")
@@ -166,11 +174,11 @@ namespace LLVM
 {
     void setup()
     {
-//         llvm::InitializeAllTargets();
-//         llvm::InitializeAllTargetInfos();
-//         llvm::InitializeAllTargetMCs();
-//         llvm::InitializeAllAsmPrinters();
-//         llvm::InitializeAllAsmParsers();
+        //llvm::InitializeAllTargets();
+        //llvm::InitializeAllTargetInfos();
+        //llvm::InitializeAllTargetMCs();
+        //llvm::InitializeAllAsmPrinters();
+        //llvm::InitializeAllAsmParsers();
         llvm::InitializeNativeTarget();
         llvm::InitializeNativeTargetAsmPrinter();
     }
