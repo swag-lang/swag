@@ -313,7 +313,7 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
 
     VectorNative<llvm::Metadata*> params;
 
-    params.push_back(getType(g_TypeMgr.typeInfoPVoid, file));
+    params.push_back(nullptr); // void
 
     if (typeFunc->returnType)
     {
@@ -323,8 +323,18 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
 
     for (auto one : typeFunc->parameters)
     {
-        for (int r = 0; r < one->typeInfo->numRegisters(); r++)
-            params.push_back(getType(g_TypeMgr.typeInfoPVoid, file));
+        auto typeInfo = TypeManager::concreteType(one->typeInfo);
+        if (Backend::passByValue(typeInfo))
+        {
+            params.push_back(getType(typeInfo, file));
+        }
+        else
+        {
+            for (int r = 0; r < one->typeInfo->numRegisters(); r++)
+            {
+                params.push_back(getType(g_TypeMgr.typeInfoPVoid, file));
+            }
+        }
     }
 
     auto typeArray = dbgBuilder->getOrCreateTypeArray({params.begin(), params.end()});
@@ -428,7 +438,8 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             auto        child     = decl->parameters->childs[i];
             const auto& loc       = child->token.startLocation;
             auto        typeParam = typeFunc->parameters[i]->typeInfo;
-            auto        location  = llvm::DebugLoc::get(loc.line + 1, loc.column, SP);
+            auto        scope     = SP;
+            auto        location  = llvm::DebugLoc::get(loc.line + 1, loc.column, scope);
 
             llvm::DINode::DIFlags flags = llvm::DINode::FlagZero;
             if (typeParam->flags & TYPEINFO_SELF)
@@ -446,25 +457,20 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
                 break;
             }
 
-            llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, child->token.text.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
+            llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(scope, child->token.text.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
             llvm::Value*           value = func->getArg(idxParam);
 
-            // Sometime, don't ask me why (probably because of parameters passed as registers or as pointers), non scalar types are forced by
-            // llvm to be references, and sometimes not. Which means that the debug value is correct/wrong, depending on whatever...
+            // Parameters are "optimized away" by the debugger, most of the time.
+            // The only way to have correct values seems to make a local copy of the parameter on the stack,
+            // and make the debugger use that copy instead of the parameter.
             // Crap !
-            // The code below forces a local copy on the stack of the parameter, as it seams to correct the issue.
-            // What a mess !
-            //
-            // If we request an optimized code, do not do that crap.
+            // So make a copy, except if we are in optimized mode...
             bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
             if (isDebug)
             {
-                if (typeParam->numRegisters() > 1)
-                {
-                    auto allocA = builder.CreateAlloca(builder.getInt64Ty()->getPointerTo(), nullptr, func->getArg(idxParam)->getName());
-                    builder.CreateStore(value, GEP_I32(allocA, 0));
-                    value = GEP_I32(allocA, 0);
-                }
+                auto allocA = builder.CreateAlloca(value->getType(), nullptr, func->getArg(idxParam)->getName());
+                builder.CreateStore(value, allocA);
+                value = allocA;
             }
 
             dbgBuilder->insertDeclare(value, var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
