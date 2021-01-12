@@ -110,19 +110,18 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
                     Utf8 name = funcParam->token.text;
                     SWAG_ASSERT(node->parametersScope);
                     node->parametersScope->symTable.addSymbolTypeInfo(context,
-                                                                    callParam,
-                                                                    funcParam->typeInfo,
-                                                                    SymbolKind::Variable,
-                                                                    &callParam->computedValue,
-                                                                    OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE,
-                                                                    nullptr,
-                                                                    callParam->computedValue.reg.offset,
-                                                                    &name);
+                                                                      callParam,
+                                                                      funcParam->typeInfo,
+                                                                      SymbolKind::Variable,
+                                                                      &callParam->computedValue,
+                                                                      OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN | OVERLOAD_COMPUTED_VALUE,
+                                                                      nullptr,
+                                                                      callParam->computedValue.reg.offset,
+                                                                      &name);
                     continue;
                 }
             }
 
-            //node->scope->symTable.addSymbolTypeInfo(context, funcParam, funcParam->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN);
             node->parametersScope->symTable.addSymbolTypeInfo(context, funcParam, funcParam->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN);
         }
     }

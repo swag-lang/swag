@@ -2497,6 +2497,8 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
         }
     }
 
+    // An inline block contains a specific scope that contains the parameters.
+    // That scope does not have a parent, so the hierarchy scan will stop at it.
     if (startNode->kind == AstNodeKind::Inline)
     {
         auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
