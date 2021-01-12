@@ -1293,7 +1293,10 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         bool forcedFine = false;
         if (node && node->parent && node->parent->parent && symbol->kind == SymbolKind::Function)
         {
-            if (oneOverload.symMatchContext.result != MatchResult::NotEnoughGenericParameters)
+            // Be sure this is not because of a generic error
+            if (oneOverload.symMatchContext.result != MatchResult::NotEnoughGenericParameters &&
+                oneOverload.symMatchContext.result != MatchResult::TooManyGenericParameters &&
+                oneOverload.symMatchContext.result != MatchResult::BadGenericSignature)
             {
                 auto grandParent = node->parent->parent;
                 if (grandParent->kind == AstNodeKind::MakePointer ||
