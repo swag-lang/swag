@@ -601,7 +601,16 @@ void TypeInfoFuncAttr::computeName()
         {
             if (i)
                 name += ", ";
-            name += genericParameters[i]->typeInfo ? genericParameters[i]->typeInfo->name : genericParameters[i]->name;
+
+            auto genParam = genericParameters[i];
+            if (genParam->flags & TYPEINFO_DEFINED_VALUE)
+            {
+                SWAG_ASSERT(genParam->typeInfo);
+                auto str = Ast::literalToString(genParam->typeInfo, genParam->value.text, genParam->value.reg);
+                name += str;
+            }
+            else
+                name += genParam->typeInfo ? genParam->typeInfo->name : genParam->name;
         }
 
         name += ")";
@@ -925,8 +934,18 @@ void TypeInfoStruct::computeScopedName()
         {
             if (i)
                 scopedName += ", ";
-            genericParameters[i]->typeInfo->computeScopedName();
-            scopedName += genericParameters[i]->typeInfo->scopedName;
+
+            auto genParam = genericParameters[i];
+            if (genParam->flags & TYPEINFO_DEFINED_VALUE)
+            {
+                auto str = Ast::literalToString(genParam->typeInfo, genParam->value.text, genParam->value.reg);
+                scopedName += str;
+            }
+            else
+            {
+                genParam->typeInfo->computeScopedName();
+                scopedName += genParam->typeInfo->scopedName;
+            }
         }
 
         scopedName += ")";
@@ -974,8 +993,19 @@ void TypeInfoStruct::computeScopedNameExport()
         {
             if (i)
                 scopedNameExport += ", ";
-            genericParameters[i]->typeInfo->computeScopedNameExport();
-            scopedNameExport += genericParameters[i]->typeInfo->scopedNameExport;
+
+            auto genParam = genericParameters[i];
+            if (genParam->flags & TYPEINFO_DEFINED_VALUE)
+            {
+                SWAG_ASSERT(genParam->typeInfo);
+                auto str = Ast::literalToString(genParam->typeInfo, genParam->value.text, genParam->value.reg);
+                scopedNameExport += str;
+            }
+            else
+            {
+                genParam->typeInfo->computeScopedNameExport();
+                scopedNameExport += genParam->typeInfo->scopedNameExport;
+            }
         }
 
         if (genericParameters.size() > 1)
@@ -997,7 +1027,15 @@ void TypeInfoStruct::computeName()
         {
             if (i)
                 name += ", ";
-            name += genericParameters[i]->typeInfo ? genericParameters[i]->typeInfo->name : genericParameters[i]->name;
+            auto genParam = genericParameters[i];
+            if (genParam->flags & TYPEINFO_DEFINED_VALUE)
+            {
+                SWAG_ASSERT(genParam->typeInfo);
+                auto str = Ast::literalToString(genParam->typeInfo, genParam->value.text, genParam->value.reg);
+                name += str;
+            }
+            else
+                name += genParam->typeInfo ? genParam->typeInfo->name : genParam->name;
         }
 
         name += ")";

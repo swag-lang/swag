@@ -16,6 +16,12 @@ namespace Ast
         Utf8 result;
         result.reserve(text.capacity());
 
+        if (typeInfo->kind == TypeInfoKind::Struct)
+        {
+            result = format("%u", reg.offset);
+            return result;
+        }
+
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         switch (typeInfo->nativeType)
         {

@@ -16,8 +16,11 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
             // If the user has specified a generic type, take it
             if (callGenericParameters)
             {
-                param->typeInfo = callGenericParameters->childs[i]->typeInfo;
-                param->value    = callGenericParameters->childs[i]->computedValue;
+                auto genParam   = callGenericParameters->childs[i];
+                param->typeInfo = genParam->typeInfo;
+                param->value    = genParam->computedValue;
+                if ((genParam->flags & AST_VALUE_COMPUTED) && !(genParam->flags & AST_VALUE_IS_TYPEINFO))
+                    param->flags |= TYPEINFO_DEFINED_VALUE;
             }
 
             // If we have a calltype filled with the match, take it
