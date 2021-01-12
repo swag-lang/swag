@@ -390,7 +390,7 @@ namespace Ast
                 {
                     if (i)
                         result += ", ";
-                    auto param = typeFunc->parameters[i];
+                    auto param = typeFunc->genericParameters[i];
                     result += param->typeInfo->name;
                 }
                 result += ")";
