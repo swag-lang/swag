@@ -14,15 +14,24 @@ impl NumericArray
         return buf[idx]
     }
 
+    #[safety(false), complete]
+    func opAffect(using self, slice: const [..] T)
+    {
+        debug.assert(@countof(slice) == N)
+        loop N buf[@index] = slice[@index]
+    }
+
     // Set all values
-    #[swag.safety(false)]
+    #[safety(false)]
     func set(using self, value: T)
     {
-        #ast
-        {
-            var v: String
-            loop N v += format.toString("buf[%] = value\n", @index)
-            return v.toString()
-        }
+        loop N buf[@index] = value
+    }
+
+    // Add one value
+    #[safety(false)]
+    func add(using self, value: T)
+    {
+        loop N buf[@index] += value
     }
 }
