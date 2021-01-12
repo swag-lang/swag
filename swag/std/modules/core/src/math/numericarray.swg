@@ -9,18 +9,19 @@ struct(T, N: u32) NumericArray
 
 impl NumericArray
 {
-    //#[swag.printbc]
+    func opIndex(using self, idx: uint)->T
+    {
+        return buf[idx]
+    }
+
+    // Set all values
+    #[swag.safety(false)]
     func set(using self, value: T)
     {
         #ast
         {
             var v: String
-            loop N
-            {
-                x := format.toString("buf[%] = value\n", @index)
-                v += x.toString()
-            }
-
+            loop N v += format.toString("buf[%] = value\n", @index)
             return v.toString()
         }
     }

@@ -6,6 +6,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "Generic.h"
+#include "SemanticJob.h"
 
 TypeInfo* TypeInfoNative::clone()
 {
@@ -22,10 +23,6 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (isSameFlags & ISSAME_CAST)
     {
         if (to->kind == TypeInfoKind::Generic)
-            return true;
-        if ((flags & TYPEINFO_INTEGER) && (to->flags & TYPEINFO_UNTYPED_INTEGER))
-            return true;
-        if ((flags & TYPEINFO_FLOAT) && (to->flags & TYPEINFO_UNTYPED_FLOAT))
             return true;
     }
 
@@ -893,8 +890,16 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
                 continue;
         }
 
-        if (!myGenParam->typeInfo->isSame(otherGenParam->typeInfo, isSameFlags))
+        if (myGenParam->flags & TYPEINFO_DEFINED_VALUE || otherGenParam->flags & TYPEINFO_DEFINED_VALUE)
+        {
+            SemanticContext cxt;
+            if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_BIJECTIF))
+                return false;
+        }
+        else if (!myGenParam->typeInfo->isSame(otherGenParam->typeInfo, isSameFlags))
+        {
             return false;
+        }
     }
 
     // Compare field by field
