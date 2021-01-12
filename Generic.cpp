@@ -399,10 +399,14 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     if (context->node->kind == AstNodeKind::Identifier)
     {
         auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
-        if (identifier->identifierRef->resolvedSymbolOverload && identifier->identifierRef->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::Struct)
+        if (identifier->identifierRef->resolvedSymbolOverload)
         {
-            contextualNode   = identifier->identifierRef->previousResolvedNode;
-            contextualStruct = CastAst<AstStruct>(identifier->identifierRef->resolvedSymbolOverload->typeInfo->declNode, AstNodeKind::StructDecl);
+            auto concreteType = TypeManager::concreteType(identifier->identifierRef->resolvedSymbolOverload->typeInfo);
+            if (concreteType->kind == TypeInfoKind::Struct)
+            {
+                contextualNode   = identifier->identifierRef->previousResolvedNode;
+                contextualStruct = CastAst<AstStruct>(concreteType->declNode, AstNodeKind::StructDecl);
+            }
         }
     }
 
