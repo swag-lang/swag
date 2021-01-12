@@ -63,11 +63,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
             {
                 auto funcParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
                 auto callParam = allParams->childs[i];
-                auto symbol    = node->scope->symTable.find(funcParam->token.text);
-                if (!symbol)
-                    symbol = node->constantScope->symTable.find(funcParam->token.text);
+                auto symbol    = node->parametersScope->symTable.find(funcParam->token.text);
                 SWAG_ASSERT(symbol);
-
                 for (auto overload : symbol->overloads)
                 {
                     if (overload->flags & OVERLOAD_VAR_INLINE)
@@ -93,9 +90,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     auto callParam = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
                     if (callParam->index == i)
                     {
-                        auto symbol = node->scope->symTable.find(funcParam->token.text);
-                        if (!symbol)
-                            symbol = node->constantScope->symTable.find(funcParam->token.text);
+                        auto symbol = node->parametersScope->symTable.find(funcParam->token.text);
                         SWAG_ASSERT(symbol);
                         for (auto overload : symbol->overloads)
                         {
@@ -120,9 +115,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     auto defaultParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
                     SWAG_ASSERT(defaultParam->assignment);
 
-                    auto symbol = node->scope->symTable.find(defaultParam->token.text);
-                    if (!symbol)
-                        symbol = node->constantScope->symTable.find(defaultParam->token.text);
+                    auto symbol = node->parametersScope->symTable.find(defaultParam->token.text);
                     SWAG_ASSERT(symbol);
                     for (auto overload : symbol->overloads)
                     {

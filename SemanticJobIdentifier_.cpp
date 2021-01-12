@@ -2500,8 +2500,8 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
     if (startNode->kind == AstNodeKind::Inline)
     {
         auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
-        SWAG_ASSERT(inlineNode->constantScope);
-        scopes.push_back(inlineNode->constantScope);
+        SWAG_ASSERT(inlineNode->parametersScope);
+        scopes.push_back(inlineNode->parametersScope);
     }
 
     if (startNode->kind == AstNodeKind::CompilerMacro)

@@ -108,8 +108,8 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
                 if (callParam->flags & AST_VALUE_COMPUTED)
                 {
                     Utf8 name = funcParam->token.text;
-                    SWAG_ASSERT(node->constantScope);
-                    node->constantScope->symTable.addSymbolTypeInfo(context,
+                    SWAG_ASSERT(node->parametersScope);
+                    node->parametersScope->symTable.addSymbolTypeInfo(context,
                                                                     callParam,
                                                                     funcParam->typeInfo,
                                                                     SymbolKind::Variable,
@@ -123,7 +123,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
             }
 
             //node->scope->symTable.addSymbolTypeInfo(context, funcParam, funcParam->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN);
-            node->constantScope->symTable.addSymbolTypeInfo(context, funcParam, funcParam->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN);
+            node->parametersScope->symTable.addSymbolTypeInfo(context, funcParam, funcParam->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN);
         }
     }
 

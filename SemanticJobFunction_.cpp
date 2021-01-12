@@ -856,9 +856,9 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         inlineNode->scope = newScope;
     }
 
-    // Create a constant scope that will contain all constant parameters.
-    // Constant scope is specific to each inline block, that's why we create it even for mixins
-    inlineNode->constantScope = Ast::newScope(inlineNode, "", ScopeKind::Statement, nullptr);
+    // Create a scope that will contain all parameters.
+    // Parameters are specific to each inline block, that's why we create it even for mixins
+    inlineNode->parametersScope = Ast::newScope(inlineNode, "", ScopeKind::Statement, nullptr);
 
     // Clone the function body
     cloneContext.parent         = inlineNode;

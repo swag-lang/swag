@@ -1078,7 +1078,7 @@ AstNode* AstInline::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstInline>();
     newNode->copyFrom(context, this, false);
     newNode->func          = func;
-    newNode->constantScope = Ast::newScope(newNode, "", ScopeKind::Statement, nullptr);
+    newNode->parametersScope = Ast::newScope(newNode, "", ScopeKind::Statement, nullptr);
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
