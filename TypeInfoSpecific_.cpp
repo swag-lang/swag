@@ -23,6 +23,10 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
     {
         if (to->kind == TypeInfoKind::Generic)
             return true;
+        if ((flags & TYPEINFO_INTEGER) && (to->flags & TYPEINFO_UNTYPED_INTEGER))
+            return true;
+        if ((flags & TYPEINFO_FLOAT) && (to->flags & TYPEINFO_UNTYPED_FLOAT))
+            return true;
     }
 
     if (to->kind == TypeInfoKind::Alias)
@@ -881,13 +885,15 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
     for (int i = 0; i < numGenParams; i++)
     {
+        auto myGenParam    = genericParameters[i];
+        auto otherGenParam = other->genericParameters[i];
         if (isSameFlags & ISSAME_CAST)
         {
-            if (other->genericParameters[i]->typeInfo->kind == TypeInfoKind::Generic)
+            if (otherGenParam->typeInfo->kind == TypeInfoKind::Generic)
                 continue;
         }
 
-        if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo, isSameFlags))
+        if (!myGenParam->typeInfo->isSame(otherGenParam->typeInfo, isSameFlags))
             return false;
     }
 

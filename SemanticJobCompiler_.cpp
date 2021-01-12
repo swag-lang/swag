@@ -206,10 +206,13 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
 
     if (!(node->flags & AST_FROM_GENERIC))
     {
-        // If we are inside a generic structure, do not evaluate the instruction.
-        // Will be done during instantiation
-        if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
-            node->flags |= AST_IS_GENERIC;
+        if (!node->ownerFct || !(node->ownerFct->flags & AST_FROM_GENERIC))
+        {
+            // If we are inside a generic structure, do not evaluate the instruction.
+            // Will be done during instantiation
+            if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
+                node->flags |= AST_IS_GENERIC;
+        }
     }
 
     if (node->flags & AST_IS_GENERIC)
