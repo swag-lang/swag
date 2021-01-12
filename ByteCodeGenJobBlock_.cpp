@@ -121,6 +121,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     SWAG_ASSERT(defaultParam->assignment);
 
                     auto symbol = node->scope->symTable.find(defaultParam->token.text);
+                    if (!symbol)
+                        symbol = node->constantScope->symTable.find(defaultParam->token.text);
                     SWAG_ASSERT(symbol);
                     for (auto overload : symbol->overloads)
                     {

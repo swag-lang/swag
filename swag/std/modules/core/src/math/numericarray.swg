@@ -9,14 +9,18 @@ struct(T, N: u32) NumericArray
 
 impl NumericArray
 {
-    #[swag.printbc]
+    //#[swag.printbc]
     func set(using self, value: T)
     {
-        @print("toto")
         #ast
         {
             var v: String
-            loop N v += format.toString("buf[%] = %", @index, value)
+            loop N
+            {
+                x := format.toString("buf[%] = value\n", @index)
+                v += x.toString()
+            }
+
             return v.toString()
         }
     }

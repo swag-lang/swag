@@ -879,6 +879,10 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     switch (match.result)
     {
+    default:
+        SWAG_ASSERT(false);
+        return;
+
     case MatchResult::MissingNamedParameter:
     {
         SWAG_ASSERT(failedParam);
@@ -1142,6 +1146,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
 
         vector<const Diagnostic*> errs0, errs1;
         getDiagnosticForMatch(context, *overloads[0], errs0, errs1);
+        SWAG_ASSERT(!errs0.empty());
         return context->report(*errs0[0], errs1);
     }
 
@@ -2120,22 +2125,6 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             }
         }
 
-        // Priority to the same inline scope
-        if (node->ownerInline)
-        {
-            if (!over->node->ownerScope->isParentOf(node->ownerInline->ownerScope))
-            {
-                for (int j = 0; j < matches.size(); j++)
-                {
-                    if (matches[j]->symbolOverload->node->ownerScope->isParentOf(node->ownerInline->ownerScope))
-                    {
-                        matches[i]->remove = true;
-                        break;
-                    }
-                }
-            }
-        }
-
         // Priority to the same stack frame
         if (!node->isSameStackFrame(over))
         {
@@ -2145,6 +2134,22 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
                 {
                     matches[i]->remove = true;
                     break;
+                }
+            }
+        }
+
+        // Priority to the same inline scope
+        if (node->ownerInline)
+        {
+            if (!node->ownerInline->scope->isParentOf(over->node->ownerScope))
+            {
+                for (int j = 0; j < matches.size(); j++)
+                {
+                    if (node->ownerInline->scope->isParentOf(matches[j]->symbolOverload->node->ownerScope))
+                    {
+                        matches[i]->remove = true;
+                        break;
+                    }
                 }
             }
         }
