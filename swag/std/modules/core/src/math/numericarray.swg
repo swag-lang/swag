@@ -1,13 +1,12 @@
-/*#global export
+#global export
 #global namespace math
 using swag
 
-struct(T, N: u8) NumericArray
+struct(T, N: u32) NumericArray
 {
     buf: [N] T
 }
 
 impl NumericArray
 {
-
-}*/
+}
