@@ -218,8 +218,6 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
         identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
         identifier->token.startLocation = node->token.startLocation;
         identifier->token.endLocation   = node->token.endLocation;
-        //if (funcNode->ownerFct)
-        //    funcNode->attributeFlags |= ATTRIBUTE_MACRO;
     }
     else
     {
