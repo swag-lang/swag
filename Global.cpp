@@ -69,13 +69,26 @@ void tokenizeBlanks(const char* str, vector<Utf8>& tokens)
 
 string normalizePath(const fs::path& path)
 {
-    auto str = path.string();
-    auto len = str.length();
+    string str;
+    auto   source      = path.string();
+    auto   len         = source.length();
+    bool   lastIsSlash = false;
     for (int i = 0; i < len; i++)
     {
-        char c = str[i];
-        if (c == '\\')
-            str[i] = '/';
+        char c = source[i];
+        if (c == '\\' || c == '/')
+        {
+            if (lastIsSlash)
+                continue;
+            lastIsSlash = true;
+            str += '/';
+            continue;
+        }
+        else
+        {
+            lastIsSlash = false;
+            str += c;
+        }
     }
 
     return str;
