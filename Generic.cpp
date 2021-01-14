@@ -234,7 +234,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     // Need to wait for the struct/function to be semantic resolved
     symbol->cptOverloads++;
     symbol->cptOverloadsInit++;
-    if (waitSymbol)
+    if (waitSymbol && context->result == ContextResult::Done)
         job->waitForSymbolNoLock(symbol);
 
     // Run semantic on that struct/function
@@ -389,7 +389,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     structJob->dependentJobs.add(newJob);
 }
 
-bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
+bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool selectIf)
 {
     auto       node             = context->node;
     AstStruct* contextualStruct = nullptr;
@@ -453,7 +453,14 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     auto funcNode = overload->node;
     auto newFunc  = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
     newFunc->flags |= AST_FROM_GENERIC;
-    newFunc->content->flags &= ~AST_NO_SEMANTIC;
+
+    // If this is for testing a #selectif match, we must not evaluate the function content until the
+    // #selectif has passed
+    if (selectIf)
+        newFunc->content->flags |= AST_NO_SEMANTIC;
+    else
+        newFunc->content->flags &= ~AST_NO_SEMANTIC;
+
     Ast::addChildBack(funcNode->parent, newFunc);
 
     // If we are calling the function in a struct context (struct.func), then add the struct as

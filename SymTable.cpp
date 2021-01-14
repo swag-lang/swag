@@ -324,7 +324,10 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     if (overload)
     {
         // This is fine to define an empty function multiple times, if the signatures are the same
-        if (!(node->flags & AST_EMPTY_FCT) && !(overload->node->flags & AST_EMPTY_FCT))
+        if (!(node->flags & AST_EMPTY_FCT) &&
+            !(overload->node->flags & AST_EMPTY_FCT) &&
+            !(node->flags & AST_HAS_SELECT_IF) &&
+            !(overload->node->flags & AST_HAS_SELECT_IF))
         {
             auto       firstOverload = overload;
             Utf8       msg           = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());

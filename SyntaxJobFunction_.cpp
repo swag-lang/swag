@@ -426,8 +426,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         auto typeParam        = allocType<TypeInfoParam>();
         typeParam->namedParam = funcNode->token.text;
         typeParam->typeInfo   = funcNode->typeInfo;
-        typeParam->declNode = funcNode;
-        typeParam->declNode = funcNode;
+        typeParam->declNode   = funcNode;
+        typeParam->declNode   = funcNode;
         funcNode->methodParam = typeParam;
 
         unique_lock lk(typeStruct->mutex);
@@ -503,6 +503,14 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
     if (isIntrinsic)
         funcNode->flags |= AST_DEFINED_INTRINSIC;
+
+    // '#selectif' block
+    if (token.id == TokenId::CompilerSelectIf)
+    {
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        SWAG_CHECK(doCompilerSelectIf(funcNode, &funcNode->selectIf));
+    }
 
     // Content of function
     {

@@ -194,6 +194,40 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode<AstCompilerAst>(this, AstNodeKind::CompilerSelectIf, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->allocateExtension();
+    node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+    node->semanticFct                  = SemanticJob::resolveCompilerSelectIfExpression;
+    SWAG_CHECK(eatToken());
+    parent->flags |= AST_HAS_SELECT_IF;
+
+    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
+    if (token.id == TokenId::SymLeftCurly)
+    {
+        AstNode* funcNode;
+        SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerSelectIf));
+
+        auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
+        idRef->token.startLocation      = node->token.startLocation;
+        idRef->token.endLocation        = node->token.endLocation;
+        auto identifier                 = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+        identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
+        identifier->token.startLocation = node->token.startLocation;
+        identifier->token.endLocation   = node->token.endLocation;
+    }
+    else
+    {
+        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(eatSemiCol("after '#selectif' expression"));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind kind)
 {
     auto node = Ast::newNode<AstCompilerAst>(this, AstNodeKind::CompilerAst, sourceFile, parent);

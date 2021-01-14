@@ -245,6 +245,7 @@ enum class MatchResult
     InvalidNamedParameter,
     MissingNamedParameter,
     DuplicatedNamedParameter,
+    SelectIfFailed,
 };
 
 struct BadSignatureInfos

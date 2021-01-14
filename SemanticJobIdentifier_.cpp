@@ -883,6 +883,16 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(false);
         return;
 
+    case MatchResult::SelectIfFailed:
+    {
+        SWAG_ASSERT(destFuncDecl);
+        auto diag = new Diagnostic{node, format("cannot select function '%s' because '#selectif' has failed", destFuncDecl->token.text.c_str())};
+        result0.push_back(diag);
+        auto note = new Diagnostic{destFuncDecl->selectIf, destFuncDecl->selectIf->token, "this is the '#selectif'", DiagnosticLevel::Note};
+        result1.push_back(note);
+        return;
+    }
+
     case MatchResult::MissingNamedParameter:
     {
         SWAG_ASSERT(failedParam);
@@ -1088,6 +1098,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             case MatchResult::MissingParameters:
             case MatchResult::NotEnoughParameters:
             case MatchResult::TooManyParameters:
+            case MatchResult::SelectIfFailed:
                 n.push_back(oneMatch);
                 break;
             }
@@ -1363,14 +1374,44 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 match->solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
                 match->dependentVar     = dependentVar;
                 match->ufcs             = oneOverload.ufcs;
+                match->oneOverload      = &oneOverload;
                 matches.push_back(match);
             }
         }
     }
 
+    auto prevMatchesCount = matches.size();
     SWAG_CHECK(filterMatches(context, matches));
     if (context->result != ContextResult::Done)
         return true;
+
+    // All choices were removed
+    if (genericMatches.size() && matches.size() == 0 && prevMatchesCount)
+    {
+        return cannotMatchIdentifierError(context, overloads, node);
+    }
+
+    // Multi instantation in case of #selectif
+    if (genericMatches.size() && matches.size() == 0)
+    {
+        int cptSelectIf = 0;
+        for (auto& g : genericMatches)
+        {
+            if (!(g->symbolOverload->node->flags & AST_HAS_SELECT_IF))
+                break;
+            cptSelectIf++;
+        }
+
+        if (cptSelectIf == genericMatches.size())
+        {
+            for (auto& g : genericMatches)
+            {
+                SWAG_CHECK(Generic::instantiateFunction(context, g->genericParameters, *g, true));
+            }
+
+            return true;
+        }
+    }
 
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
@@ -1378,6 +1419,10 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         SWAG_CHECK(instantiateGenericSymbol(context, *genericMatches[0], forStruct));
         return true;
     }
+
+    // Done !!!
+    if (matches.size() == 1)
+        return true;
 
     // Ambiguity with generics
     if (genericMatches.size() > 1)
@@ -1410,10 +1455,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         context->report(diag, notes);
         return false;
     }
-
-    // Done !!!
-    if (matches.size() == 1)
-        return true;
 
     // We remove all generated nodes, because if they exist, they do not participate to the
     // error
@@ -1486,7 +1527,8 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
     // Be sure we don't have more overloads waiting to be solved
     if (symbol->cptOverloads)
     {
-        job->waitForSymbolNoLock(symbol);
+        if (context->result == ContextResult::Done)
+            job->waitForSymbolNoLock(symbol);
         return true;
     }
 
@@ -2038,14 +2080,53 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
 
 bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
-    if (matches.size() == 1)
-        return true;
-
     auto node = context->node;
     for (int i = 0; i < matches.size(); i++)
     {
         auto over    = matches[i]->symbolOverload;
         auto overSym = over->symbol;
+
+        if (overSym->kind == SymbolKind::Function)
+        {
+            auto funcDecl = CastAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
+            if (funcDecl->selectIf)
+            {
+                auto expr = funcDecl->selectIf->childs.front();
+                SWAG_CHECK(executeNode(context, expr, true));
+                if (context->result != ContextResult::Done)
+                    return true;
+                if (!expr->computedValue.reg.b)
+                {
+                    matches[i]->remove                              = true;
+                    matches[i]->oneOverload->symMatchContext.result = MatchResult::SelectIfFailed;
+                    continue;
+                }
+                else if (funcDecl->content->flags & AST_NO_SEMANTIC)
+                {
+                    scoped_lock lk(funcDecl->mutex);
+                    funcDecl->content->flags &= ~AST_NO_SEMANTIC;
+
+                    // If AST_DONE_FILE_JOB_PASS is set, then the file job has already seen the sub function, ignored it
+                    // because of AST_NO_SEMANTIC, but the attribute context is ok. So we need to trigger the job by hand.
+                    // If AST_DONE_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
+                    // file job will trigger the resolve itself
+                    //if (funcDecl->doneFlags & AST_DONE_FILE_JOB_PASS)
+                    {
+                        auto job                = g_Pool_semanticJob.alloc();
+                        job->sourceFile         = context->sourceFile;
+                        job->module             = context->sourceFile->module;
+                        job->dependentJob       = context->job->dependentJob;
+                        funcDecl->semanticState = AstNodeResolveState::ProcessingChilds;
+                        job->nodes.push_back(funcDecl);
+                        job->nodes.push_back(funcDecl->content);
+                        g_ThreadMgr.addJob(job);
+                    }
+                }
+            }
+        }
+
+        if (matches.size() == 1)
+            return true;
 
         // In case of an alias, we take the first one, which should be the 'closest' one.
         // Not sure this is true, perhaps one day will have to change the way we find it.

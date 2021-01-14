@@ -356,6 +356,9 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     if (node->kind == AstNodeKind::FuncDecl)
     {
         funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        if (funcDecl->content && (funcDecl->content->flags & AST_NO_SEMANTIC))
+            return;
+
         if (funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
         {
             // Need to wait for function full semantic resolve

@@ -130,6 +130,7 @@ enum class AstNodeKind : uint8_t
     CompilerPrint,
     CompilerRun,
     CompilerAst,
+    CompilerSelectIf,
     CompilerCode,
     CompilerImport,
     CompilerPlaceHolder,
@@ -446,6 +447,7 @@ struct AstFuncDecl : public AstNode
     AstNode*       genericParameters;
     AstNode*       returnType;
     AstNode*       content;
+    AstNode*       selectIf;
     Scope*         scope;
     TypeInfoParam* methodParam;
     Job*           pendingLambdaJob;
@@ -831,6 +833,11 @@ struct AstCompilerAst : public AstNode
     AstNode* clone(CloneContext& context) override;
 
     CompilerAstKind embeddedKind;
+};
+
+struct AstCompilerSelectIf : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
 };
 
 struct AstCompilerRun : public AstNode

@@ -62,6 +62,7 @@ struct OneMatch
 
     SymbolOverload* symbolOverload = nullptr;
     AstNode*        dependentVar   = nullptr;
+    OneTryMatch*    oneOverload    = nullptr;
 
     bool ufcs   = false;
     bool remove = false;
@@ -230,6 +231,7 @@ struct SemanticJob : public Job
     static bool resolveCompilerForeignLib(SemanticContext* context);
     static bool resolveCompilerRun(SemanticContext* context);
     static bool preResolveCompilerInstruction(SemanticContext* context);
+    static bool resolveCompilerSelectIfExpression(SemanticContext* context);
     static bool resolveCompilerAstExpression(SemanticContext* context);
     static bool resolveCompilerSpecialFunction(SemanticContext* context);
     static bool resolveCompilerDefined(SemanticContext* context);

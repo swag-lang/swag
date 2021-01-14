@@ -14,6 +14,6 @@ struct Generic
 
     static void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** funcNode);
     static bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match);
-    static bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match);
+    static bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool selectIf = false);
     static bool instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* node);
 };

@@ -255,6 +255,11 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         }
     }
 
+    // Content semantic can have been disabled (#selectif). In that case, we're not done yet, so
+    // do not set the FULL_RESOLVE flag and do not generate bytecode
+    if (node->content && (node->content->flags & AST_NO_SEMANTIC))
+        return true;
+
     // Now the full function has been solved, so we wakeup jobs depending on that
     SWAG_CHECK(setFullResolve(context, node));
 

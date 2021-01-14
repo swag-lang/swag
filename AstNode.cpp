@@ -555,6 +555,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     cloneContext.parentScope   = functionScope;
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
+    newNode->selectIf          = selectIf ? selectIf->clone(cloneContext) : nullptr;
 
     //cloneContext.parentScope = context.parentScope;
     newNode->returnType = returnType ? returnType->clone(cloneContext) : nullptr;
@@ -1077,7 +1078,7 @@ AstNode* AstInline::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstInline>();
     newNode->copyFrom(context, this, false);
-    newNode->func          = func;
+    newNode->func            = func;
     newNode->parametersScope = Ast::newScope(newNode, "", ScopeKind::Statement, nullptr);
 
     auto cloneContext        = context;
@@ -1097,13 +1098,20 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
     return newNode;
 }
 
+AstNode* AstCompilerSelectIf::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstCompilerSelectIf>();
+    newNode->copyFrom(context, this);
+    return newNode;
+}
+
 AstNode* AstCompilerAst::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstCompilerAst>();
     newNode->copyFrom(context, this, false);
 
     // Clone childs by hand, because an #ast block can contain a sub function, and this sub
-    // function shouldn't have the ownerLine set (if the #ast is in an inline block)
+    // function shouldn't have the ownerInline set (if the #ast is in an inline block)
     auto cloneContext   = context;
     cloneContext.parent = newNode;
     for (auto p : childs)

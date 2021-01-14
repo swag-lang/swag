@@ -63,6 +63,19 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveCompilerSelectIfExpression(SemanticContext* context)
+{
+    auto node = CastAst<AstCompilerSelectIf>(context->node, AstNodeKind::CompilerSelectIf);
+    if (node->flags & AST_IS_GENERIC)
+        return true;
+
+    auto expression = context->node->childs.back();
+    auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::Bool), context->report({expression, format("'#selectif' expression is not 'bool' ('%s' provided)", expression->typeInfo->name.c_str())}));
+
+    return true;
+}
+
 bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
 {
     auto node = CastAst<AstCompilerAst>(context->node, AstNodeKind::CompilerAst);
@@ -211,6 +224,10 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
             // If we are inside a generic structure, do not evaluate the instruction.
             // Will be done during instantiation
             if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
+                node->flags |= AST_IS_GENERIC;
+
+            // Same for a function
+            if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
                 node->flags |= AST_IS_GENERIC;
         }
     }
