@@ -828,7 +828,7 @@ enum class CompilerAstKind
     EnumValue,
 };
 
-struct AstCompilerAst : public AstNode
+struct AstCompilerSpecFunc : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 

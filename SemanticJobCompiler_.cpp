@@ -49,7 +49,7 @@ bool SemanticJob::resolveCompilerForeignLib(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
-    auto node = CastAst<AstCompilerAst>(context->node, AstNodeKind::CompilerRun);
+    auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerRun);
     if (node->flags & AST_IS_GENERIC)
         return true;
 
@@ -65,7 +65,7 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerSelectIfExpression(SemanticContext* context)
 {
-    auto node = CastAst<AstCompilerAst>(context->node, AstNodeKind::CompilerSelectIf);
+    auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerSelectIf);
     if (node->flags & AST_IS_GENERIC)
         return true;
 
@@ -78,7 +78,7 @@ bool SemanticJob::resolveCompilerSelectIfExpression(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
 {
-    auto node = CastAst<AstCompilerAst>(context->node, AstNodeKind::CompilerAst);
+    auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerAst);
     if (node->flags & AST_IS_GENERIC)
         return true;
 

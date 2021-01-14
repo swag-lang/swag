@@ -196,7 +196,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstCompilerAst>(this, AstNodeKind::CompilerSelectIf, sourceFile, parent);
+    auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerSelectIf, sourceFile, parent);
     if (result)
         *result = node;
     node->allocateExtension();
@@ -230,7 +230,7 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind kind)
 {
-    auto node = Ast::newNode<AstCompilerAst>(this, AstNodeKind::CompilerAst, sourceFile, parent);
+    auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerAst, sourceFile, parent);
     if (result)
         *result = node;
     node->embeddedKind = kind;
@@ -271,7 +271,7 @@ bool SyntaxJob::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
         return true;
     }
 
-    auto node = Ast::newNode<AstCompilerAst>(this, AstNodeKind::CompilerRun, sourceFile, parent);
+    auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRun, sourceFile, parent);
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
@@ -283,7 +283,7 @@ bool SyntaxJob::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstCompilerAst>(this, AstNodeKind::CompilerRun, sourceFile, parent);
+    auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRun, sourceFile, parent);
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;

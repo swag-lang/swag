@@ -5,7 +5,7 @@ func(T) toto(v: T)
 {
     #run
     {
-        @print(@typeof(T).name)
+        G += 1
     }
 }
 

@@ -1098,9 +1098,9 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstCompilerAst::clone(CloneContext& context)
+AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstCompilerAst>();
+    auto newNode = Ast::newNode<AstCompilerSpecFunc>();
     newNode->copyFrom(context, this, false);
 
     // Clone childs by hand, because a compiler block can contain a sub function, and this sub
