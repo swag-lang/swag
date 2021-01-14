@@ -2085,6 +2085,17 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             auto funcDecl = CastAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
             if (funcDecl->selectIf)
             {
+                // Be sure selectIf block has been solved
+                {
+                    scoped_lock lk(funcDecl->mutex);
+                    if (!(funcDecl->semFlags & AST_SEM_PARTIAL_RESOLVE))
+                    {
+                        funcDecl->dependentJobs.add(context->job);
+                        context->job->setPending(funcDecl->resolvedSymbolName, "AST_SEM_PARTIAL_RESOLVE", funcDecl, nullptr);
+                        return true;
+                    }
+                }
+
                 auto expr = funcDecl->selectIf->childs.back();
                 SWAG_CHECK(executeNode(context, expr, true));
                 if (context->result != ContextResult::Done)

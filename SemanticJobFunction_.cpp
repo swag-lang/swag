@@ -258,7 +258,12 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     // Content semantic can have been disabled (#selectif). In that case, we're not done yet, so
     // do not set the FULL_RESOLVE flag and do not generate bytecode
     if (node->content && (node->content->flags & AST_NO_SEMANTIC))
+    {
+        scoped_lock lk(node->mutex);
+        node->semFlags |= AST_SEM_PARTIAL_RESOLVE;
+        node->dependentJobs.setRunning();
         return true;
+    }
 
     // Now the full function has been solved, so we wakeup jobs depending on that
     SWAG_CHECK(setFullResolve(context, node));
@@ -285,6 +290,7 @@ bool SemanticJob::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode
 {
     scoped_lock lk(funcNode->mutex);
     funcNode->flags |= AST_FULL_RESOLVE;
+    funcNode->semFlags |= AST_SEM_PARTIAL_RESOLVE;
     funcNode->dependentJobs.setRunning();
     return true;
 }

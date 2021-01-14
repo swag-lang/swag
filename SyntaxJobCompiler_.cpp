@@ -204,6 +204,7 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
     node->semanticFct                  = SemanticJob::resolveCompilerSelectIfExpression;
     SWAG_CHECK(eatToken());
     parent->flags |= AST_HAS_SELECT_IF;
+    node->flags |= AST_NO_BYTECODE_CHILDS;
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     if (token.id == TokenId::SymLeftCurly)
