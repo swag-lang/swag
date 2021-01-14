@@ -271,7 +271,7 @@ bool SyntaxJob::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
         return true;
     }
 
-    auto node = Ast::newNode<AstCompilerRun>(this, AstNodeKind::CompilerRun, sourceFile, parent);
+    auto node = Ast::newNode<AstCompilerAst>(this, AstNodeKind::CompilerRun, sourceFile, parent);
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
@@ -283,7 +283,7 @@ bool SyntaxJob::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstCompilerRun>(this, AstNodeKind::CompilerRun, sourceFile, parent);
+    auto node = Ast::newNode<AstCompilerAst>(this, AstNodeKind::CompilerRun, sourceFile, parent);
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;

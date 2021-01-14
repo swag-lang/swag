@@ -1150,23 +1150,6 @@ AstNode* AstCompilerAst::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstCompilerRun::clone(CloneContext& context)
-{
-    auto newNode = Ast::newNode<AstCompilerRun>();
-    newNode->copyFrom(context, this);
-
-    // If #run has an embedded function, we need to restore the semantic pass on that function
-    // content now
-    if (newNode->childs.size() > 1)
-    {
-        auto func = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
-        func->flags &= ~AST_NO_SEMANTIC;
-        func->content->flags &= ~AST_NO_SEMANTIC;
-    }
-
-    return newNode;
-}
-
 AstNode* AstNameSpace::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstNameSpace>();

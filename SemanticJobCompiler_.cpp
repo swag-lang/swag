@@ -49,7 +49,7 @@ bool SemanticJob::resolveCompilerForeignLib(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
-    auto node = CastAst<AstCompilerRun>(context->node, AstNodeKind::CompilerRun);
+    auto node = CastAst<AstCompilerAst>(context->node, AstNodeKind::CompilerRun);
     if (node->flags & AST_IS_GENERIC)
         return true;
 
