@@ -289,8 +289,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 bool SemanticJob::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode)
 {
     scoped_lock lk(funcNode->mutex);
-    funcNode->flags |= AST_FULL_RESOLVE;
-    funcNode->semFlags |= AST_SEM_PARTIAL_RESOLVE;
+    funcNode->semFlags |= AST_SEM_FULL_RESOLVE | AST_SEM_PARTIAL_RESOLVE;
     funcNode->dependentJobs.setRunning();
     return true;
 }

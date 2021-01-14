@@ -718,10 +718,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 auto funcDecl = static_cast<AstFuncDecl*>(overload->node);
                 {
                     scoped_lock lk(funcDecl->mutex);
-                    if (!(funcDecl->flags & AST_FULL_RESOLVE))
+                    if (!(funcDecl->semFlags & AST_SEM_FULL_RESOLVE))
                     {
                         funcDecl->dependentJobs.add(context->job);
-                        context->job->setPending(funcDecl->resolvedSymbolName, "AST_FULL_RESOLVE", funcDecl, nullptr);
+                        context->job->setPending(funcDecl->resolvedSymbolName, "AST_SEM_FULL_RESOLVE", funcDecl, nullptr);
                         return true;
                     }
                 }

@@ -541,7 +541,7 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
         // Need to wait for function full semantic resolve
         {
             scoped_lock lk(funcDecl->mutex);
-            if (!(funcDecl->flags & AST_FULL_RESOLVE))
+            if (!(funcDecl->semFlags & AST_SEM_FULL_RESOLVE))
             {
                 funcDecl->dependentJobs.add(context->job);
                 context->job->setPending(funcDecl->resolvedSymbolName, "EMIT_USER_OP", funcDecl, nullptr);
