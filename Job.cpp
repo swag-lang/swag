@@ -101,10 +101,8 @@ bool JobContext::report(const Diagnostic& diag, const Diagnostic* note, const Di
     return report(diag, notes);
 }
 
-bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
+void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic*>& notes)
 {
-    auto copyNotes = notes;
-
     if (expansionNode.size())
     {
         auto  first = expansionNode[0];
@@ -114,12 +112,12 @@ bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         if (!name.empty())
         {
             auto note = new Diagnostic{first, first->token, format("occurred during expansion of '%s'", name.c_str()), DiagnosticLevel::Note};
-            copyNotes.push_back(note);
+            notes.push_back(note);
         }
         else
         {
             auto note = new Diagnostic{first, first->token, "occurred during an expansion here", DiagnosticLevel::Note};
-            copyNotes.push_back(note);
+            notes.push_back(note);
         }
     }
 
@@ -127,9 +125,14 @@ bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     {
         auto sourceNode = diag.sourceNode->sourceFile->sourceNode;
         auto note       = new Diagnostic{sourceNode, sourceNode->token, "occurred in generated code", DiagnosticLevel::Note};
-        copyNotes.push_back(note);
+        notes.push_back(note);
     }
+}
 
+bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
+{
+    auto copyNotes = notes;
+    setErrorContext(diag, copyNotes);
     SWAG_ASSERT(sourceFile);
     return sourceFile->report(diag, copyNotes);
 }

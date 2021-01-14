@@ -55,8 +55,23 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Function parameter : it's a register on the stack
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
-        SWAG_CHECK(sameStackFrame(context, resolved));
         node->resultRegisterRC = reserveRegisterRC(context);
+
+        // Get a parameter from a #selectif block... this is special
+        if (node->flags & AST_IN_SELECTIF && !context->node->isSameStackFrame(resolved))
+        {
+            if (typeInfo->numRegisters() == 2)
+                reserveLinearRegisterRC2(context, node->resultRegisterRC);
+            auto inst       = emitInstruction(context, ByteCodeOp::GetParam64SelectIf, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+            inst->c.u64     = resolved->storageIndex;
+            inst->d.pointer = (uint8_t*) resolved;
+
+            identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
+            node->parent->resultRegisterRC              = node->resultRegisterRC;
+            return true;
+        }
+
+        SWAG_CHECK(sameStackFrame(context, resolved));
         if ((node->forceTakeAddress()) && typeInfo->kind != TypeInfoKind::Lambda && typeInfo->kind != TypeInfoKind::Array)
         {
             if (node->parent->flags & AST_ARRAY_POINTER_REF)

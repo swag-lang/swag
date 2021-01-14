@@ -21,5 +21,6 @@ struct ByteCodeRun
     bool runLoop(ByteCodeRunContext* context);
     bool run(ByteCodeRunContext* runContext);
 
+    void        executeSelectIfParam(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     static bool executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc);
 };

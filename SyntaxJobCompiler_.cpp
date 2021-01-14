@@ -206,7 +206,7 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
     parent->flags |= AST_HAS_SELECT_IF;
     node->flags |= AST_NO_BYTECODE_CHILDS;
 
-    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
+    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND | AST_IN_SELECTIF);
     if (token.id == TokenId::SymLeftCurly)
     {
         AstNode* funcNode;

@@ -305,6 +305,15 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
     return true;
 }
 
+void ByteCodeRun::executeSelectIfParam(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+{
+    auto registersRC = context->registersRC[context->curRC].buffer;
+    auto callParams  = context->callerContext->selectIfParameters;
+    SWAG_ASSERT(callParams);
+
+    registersRC[ip->a.u32].u64 = callParams->childs[ip->c.u32]->computedValue.reg.u64;
+}
+
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto registersRC = context->registersRC[context->curRC].buffer;
@@ -800,6 +809,10 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::CopySPVaargs:
         registersRC[ip->a.u32].pointer = context->sp + ip->b.u32;
+        break;
+
+    case ByteCodeOp::GetParam64SelectIf:
+        executeSelectIfParam(context, ip);
         break;
 
     case ByteCodeOp::GetFromStack64:
@@ -2103,17 +2116,22 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
                 runContext->bc->addCallStack(runContext);
         }
 
-        SourceFile dummyFile;
-        dummyFile.path = fileName;
+        SourceFile     dummyFile;
         SourceLocation sourceLocation;
+        dummyFile.path        = fileName;
         sourceLocation.line   = location->lineStart;
         sourceLocation.column = location->colStart;
         Diagnostic diag{&dummyFile, sourceLocation, userMsg};
 
+        // Retreive calling context, like current expension
+        vector<const Diagnostic*> notes;
+        if (runContext->callerContext)
+            runContext->callerContext->setErrorContext(diag, notes);
+
         if (g_byteCodeStack.steps.size())
-            g_byteCodeStack.steps[0].bc->sourceFile->report(diag);
+            g_byteCodeStack.steps[0].bc->sourceFile->report(diag, notes);
         else
-            runContext->bc->sourceFile->report(diag);
+            runContext->bc->sourceFile->report(diag, notes);
 
         return EXCEPTION_EXECUTE_HANDLER;
     }
