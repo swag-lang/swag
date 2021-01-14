@@ -365,6 +365,7 @@ struct SemanticJob : public Job
         for (auto p : cacheGenericMatches)
             cacheFreeGenericMatches.push_back(p);
         cacheGenericMatches.clear();
+        cacheGenericMatchesSI.clear();
     }
 
     OneGenericMatch* getOneGenericMatch()
@@ -387,6 +388,7 @@ struct SemanticJob : public Job
     VectorNative<OneMatch*>        cacheMatches;
     VectorNative<OneMatch*>        cacheFreeMatches;
     VectorNative<OneGenericMatch*> cacheGenericMatches;
+    VectorNative<OneGenericMatch*> cacheGenericMatchesSI;
     VectorNative<OneGenericMatch*> cacheFreeGenericMatches;
     VectorNative<OneTryMatch*>     cacheListTryMatch;
     VectorNative<OneTryMatch*>     cacheFreeTryMatch;

@@ -1187,9 +1187,10 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
 
 bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node)
 {
-    auto  job            = context->job;
-    auto& matches        = job->cacheMatches;
-    auto& genericMatches = job->cacheGenericMatches;
+    auto  job              = context->job;
+    auto& matches          = job->cacheMatches;
+    auto& genericMatches   = job->cacheGenericMatches;
+    auto& genericMatchesSI = job->cacheGenericMatchesSI;
 
     job->clearMatch();
     job->clearGenericMatch();
@@ -1365,7 +1366,10 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 match->genericReplaceTypes          = move(oneOverload.symMatchContext.genericReplaceTypes);
                 match->genericParameters            = genericParameters;
                 match->matchNumOverloadsWhenChecked = oneOverload.cptOverloads;
-                genericMatches.push_back(match);
+                if (overload->node->flags & AST_HAS_SELECT_IF)
+                    genericMatchesSI.push_back(match);
+                else
+                    genericMatches.push_back(match);
             }
             else
             {
@@ -1386,35 +1390,24 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         return true;
 
     // All choices were removed
-    if (genericMatches.size() && matches.size() == 0 && prevMatchesCount)
+    if (!genericMatches.size() && genericMatchesSI.size() && matches.empty() && prevMatchesCount)
     {
         return cannotMatchIdentifierError(context, overloads, node);
     }
 
     // Multi instantation in case of #selectif
-    if (genericMatches.size() && matches.size() == 0)
+    if (genericMatchesSI.size() && matches.empty() && !prevMatchesCount)
     {
-        int cptSelectIf = 0;
-        for (auto& g : genericMatches)
+        for (auto& g : genericMatchesSI)
         {
-            if (!(g->symbolOverload->node->flags & AST_HAS_SELECT_IF))
-                break;
-            cptSelectIf++;
+            SWAG_CHECK(Generic::instantiateFunction(context, g->genericParameters, *g, true));
         }
 
-        if (cptSelectIf == genericMatches.size())
-        {
-            for (auto& g : genericMatches)
-            {
-                SWAG_CHECK(Generic::instantiateFunction(context, g->genericParameters, *g, true));
-            }
-
-            return true;
-        }
+        return true;
     }
 
     // This is a generic
-    if (genericMatches.size() == 1 && matches.size() == 0)
+    if (genericMatches.size() == 1 && matches.empty())
     {
         SWAG_CHECK(instantiateGenericSymbol(context, *genericMatches[0], forStruct));
         return true;
