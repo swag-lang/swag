@@ -835,11 +835,6 @@ struct AstCompilerAst : public AstNode
     CompilerAstKind embeddedKind;
 };
 
-struct AstCompilerSelectIf : public AstNode
-{
-    AstNode* clone(CloneContext& context) override;
-};
-
 struct AstCompilerRun : public AstNode
 {
     AstNode* clone(CloneContext& context) override;

@@ -327,6 +327,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         typeFuncId == TokenId::CompilerFuncMain ||
         typeFuncId == TokenId::CompilerFuncCompiler ||
         typeFuncId == TokenId::CompilerAst ||
+        typeFuncId == TokenId::CompilerSelectIf ||
         typeFuncId == TokenId::CompilerGeneratedRun ||
         typeFuncId == TokenId::CompilerRun)
         funcForCompiler = true;
@@ -380,6 +381,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->token.text = "__ast" + to_string(id);
             funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC;
+            break;
+        case TokenId::CompilerSelectIf:
+            funcNode->token.text = "#selectif";
+            funcNode->token.text = "__selectif" + to_string(id);
+            funcNode->flags |= AST_GENERATED;
+            funcNode->attributeFlags |= ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC;
             break;
         }
     }
@@ -488,6 +495,14 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         ScopedFct scopedFct(this, funcNode);
         auto      typeExpression    = Ast::newTypeExpression(sourceFile, typeNode, this);
         typeExpression->literalType = g_TypeMgr.typeInfoString;
+    }
+    else if (typeFuncId == TokenId::CompilerSelectIf)
+    {
+        typeNode->flags |= AST_FUNC_RETURN_DEFINED;
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        auto      typeExpression    = Ast::newTypeExpression(sourceFile, typeNode, this);
+        typeExpression->literalType = g_TypeMgr.typeInfoBool;
     }
 
     funcNode->typeInfo->computeName();

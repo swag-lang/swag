@@ -2079,12 +2079,13 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         auto over    = matches[i]->symbolOverload;
         auto overSym = over->symbol;
 
+        // Take care of #selectif
         if (overSym->kind == SymbolKind::Function)
         {
             auto funcDecl = CastAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
             if (funcDecl->selectIf)
             {
-                auto expr = funcDecl->selectIf->childs.front();
+                auto expr = funcDecl->selectIf->childs.back();
                 SWAG_CHECK(executeNode(context, expr, true));
                 if (context->result != ContextResult::Done)
                     return true;
@@ -2099,21 +2100,15 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
                     scoped_lock lk(funcDecl->mutex);
                     funcDecl->content->flags &= ~AST_NO_SEMANTIC;
 
-                    // If AST_DONE_FILE_JOB_PASS is set, then the file job has already seen the sub function, ignored it
-                    // because of AST_NO_SEMANTIC, but the attribute context is ok. So we need to trigger the job by hand.
-                    // If AST_DONE_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
-                    // file job will trigger the resolve itself
-                    //if (funcDecl->doneFlags & AST_DONE_FILE_JOB_PASS)
-                    {
-                        auto job                = g_Pool_semanticJob.alloc();
-                        job->sourceFile         = context->sourceFile;
-                        job->module             = context->sourceFile->module;
-                        job->dependentJob       = context->job->dependentJob;
-                        funcDecl->semanticState = AstNodeResolveState::ProcessingChilds;
-                        job->nodes.push_back(funcDecl);
-                        job->nodes.push_back(funcDecl->content);
-                        g_ThreadMgr.addJob(job);
-                    }
+                    // Need to restart semantic on instantiated function, because the #selectif has passed
+                    auto job                = g_Pool_semanticJob.alloc();
+                    job->sourceFile         = context->sourceFile;
+                    job->module             = context->sourceFile->module;
+                    job->dependentJob       = context->job->dependentJob;
+                    funcDecl->semanticState = AstNodeResolveState::ProcessingChilds;
+                    job->nodes.push_back(funcDecl);
+                    job->nodes.push_back(funcDecl->content);
+                    g_ThreadMgr.addJob(job);
                 }
             }
         }

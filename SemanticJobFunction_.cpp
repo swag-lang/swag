@@ -517,6 +517,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         funcNode->ownerStructScope &&
         funcNode->parent->kind != AstNodeKind::CompilerAst &&
         funcNode->parent->kind != AstNodeKind::CompilerRun &&
+        funcNode->parent->kind != AstNodeKind::CompilerSelectIf &&
         !(funcNode->flags & AST_FROM_GENERIC) &&
         (funcNode->ownerScope->kind == ScopeKind::Struct) &&
         (funcNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct))

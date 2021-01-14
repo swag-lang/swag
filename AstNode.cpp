@@ -1098,19 +1098,12 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstCompilerSelectIf::clone(CloneContext& context)
-{
-    auto newNode = Ast::newNode<AstCompilerSelectIf>();
-    newNode->copyFrom(context, this);
-    return newNode;
-}
-
 AstNode* AstCompilerAst::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstCompilerAst>();
     newNode->copyFrom(context, this, false);
 
-    // Clone childs by hand, because an #ast block can contain a sub function, and this sub
+    // Clone childs by hand, because a compiler block can contain a sub function, and this sub
     // function shouldn't have the ownerInline set (if the #ast is in an inline block)
     auto cloneContext   = context;
     cloneContext.parent = newNode;
@@ -1132,15 +1125,15 @@ AstNode* AstCompilerAst::clone(CloneContext& context)
 
     newNode->embeddedKind = embeddedKind;
 
-    // If #ast has an embedded function, we need to restore the semantic pass on that function
+    // If the compiler block has an embedded function, we need to restore the semantic pass on that function
     // content now
     if (newNode->childs.size() > 1)
     {
         // We also want to replace the name of the function (and the reference to it) in case
-        // the #ast is in a mixin block, because in that case the ast function can be registered
+        // the block is in a mixin block, because in that case the function can be registered
         // more than once in the same scope.
         int  id      = g_Global.uniqueID.fetch_add(1);
-        Utf8 newName = "__ast" + to_string(id);
+        Utf8 newName = "__cmpfunc" + to_string(id);
 
         auto func        = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
         func->token.text = newName;
