@@ -458,6 +458,8 @@ Utf8 AstFuncDecl::getNameForMessage()
         return "'#main' block";
     if (attributeFlags & ATTRIBUTE_COMPILER_FUNC)
         return "'#compiler' block";
+    if (attributeFlags & ATTRIBUTE_SELECTIF_FUNC)
+        return "'#selectif' block";
     if (flags & AST_SPECIAL_COMPILER_FUNC)
         return format("'%s' block", token.text.c_str());
     if (attributeFlags & ATTRIBUTE_MIXIN)
