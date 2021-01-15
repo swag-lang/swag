@@ -11,6 +11,7 @@
 #include "CompilerItf.h"
 #include "ByteCodeStack.h"
 #include "Runtime.h"
+#include "SemanticJob.h"
 
 #define IMMA_B(ip) ((ip->flags & BCI_IMM_A) ? ip->a.b : registersRC[ip->a.u32].b)
 #define IMMB_B(ip) ((ip->flags & BCI_IMM_B) ? ip->b.b : registersRC[ip->b.u32].b)
@@ -315,21 +316,46 @@ void ByteCodeRun::executeSelectIfParam(ByteCodeRunContext* context, ByteCodeInst
     // Be sure value has been computed
     auto solved = (SymbolOverload*) ip->d.pointer;
     auto child  = callParams->childs[ip->c.u32];
-    if (!(child->flags & AST_VALUE_COMPUTED))
+    if (!(child->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR)))
     {
         context->hasError = true;
         context->errorMsg = format("'%s' cannot be evaluated at compile time", solved->symbol->name.c_str());
         return;
     }
 
-    if (solved->typeInfo->isNative(NativeTypeKind::String))
+    if (solved->typeInfo->kind != TypeInfoKind::Native)
     {
+        context->hasError = true;
+        context->errorMsg = format("evaluation of a function parameter of type '%s' is not supported at compile time", solved->typeInfo->name.c_str());
+        return;
+    }
+
+    switch (solved->typeInfo->nativeType)
+    {
+    case NativeTypeKind::String:
         registersRC[ip->a.u32].pointer = (uint8_t*) child->computedValue.text.c_str();
         registersRC[ip->b.u32].u64     = child->computedValue.text.length();
-    }
-    else
-    {
+        break;
+
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
+    case NativeTypeKind::UInt:
+    case NativeTypeKind::Int:
+    case NativeTypeKind::Char:
+    case NativeTypeKind::Bool:
         registersRC[ip->a.u32].u64 = child->computedValue.reg.u64;
+        break;
+
+    default:
+        context->hasError = true;
+        context->errorMsg = format("evaluation of a function parameter of type '%s' is not supported at compile time", solved->typeInfo->name.c_str());
+        break;
     }
 }
 
@@ -834,7 +860,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         auto callParams = context->callerContext->selectIfParameters;
         SWAG_ASSERT(callParams && ip->b.u32 < callParams->childs.size());
-        registersRC[ip->a.u32].b = callParams->childs[ip->b.u32]->flags & AST_VALUE_COMPUTED;
+        registersRC[ip->a.u32].b = callParams->childs[ip->b.u32]->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR);
         break;
     }
 

@@ -11,7 +11,7 @@ bool SemanticJob::reserveAndStoreToSegment(JobContext* context, uint32_t& storag
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
 
-    if (seg == &module->constantSegment || seg == &module->bssSegment)
+    if (seg == &module->constantSegment || seg == &module->bssSegment || seg == &module->tempSegment)
         seg->mutex.lock();
 
     // Need to lock both data and constant segments, as both can be modified if 'seg' is a data
@@ -24,7 +24,7 @@ bool SemanticJob::reserveAndStoreToSegment(JobContext* context, uint32_t& storag
 
     auto result = reserveAndStoreToSegmentNoLock(context, storageOffset, seg, value, typeInfo, assignment);
 
-    if (seg == &module->constantSegment || seg == &module->bssSegment)
+    if (seg == &module->constantSegment || seg == &module->bssSegment || seg == &module->tempSegment)
         seg->mutex.unlock();
     else
     {
