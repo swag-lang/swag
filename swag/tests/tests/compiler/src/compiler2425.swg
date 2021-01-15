@@ -1,7 +1,6 @@
 #[swag.constexpr]
 func toto() => 1
 
-#[swag.printbc]
 #test
 {
     @assert(@isconstexpr(1))

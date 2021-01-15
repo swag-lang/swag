@@ -58,7 +58,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
 
         // Get a parameter from a #selectif block... this is special
-        if (node->flags & AST_IN_SELECTIF && !context->node->isSameStackFrame(resolved))
+        if (node->isSelectIfParam(resolved))
         {
             if (typeInfo->numRegisters() == 2)
                 reserveLinearRegisterRC2(context, node->resultRegisterRC);

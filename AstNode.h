@@ -334,6 +334,7 @@ struct AstNode
     bool isConstant1();
 
     bool             isParentOf(AstNode* child);
+    bool             isSelectIfParam(SymbolOverload* overload);
     bool             isSameStackFrame(SymbolOverload* overload);
     void             setPassThrough();
     void             inheritLocationFromChilds();

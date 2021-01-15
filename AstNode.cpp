@@ -108,6 +108,19 @@ bool AstNode::isParentOf(AstNode* child)
     return false;
 }
 
+bool AstNode::isSelectIfParam(SymbolOverload* overload)
+{
+    if (!(flags & AST_IN_SELECTIF))
+        return false;
+    if (!overload)
+        return false;
+    if (!(overload->flags & OVERLOAD_VAR_FUNC_PARAM))
+        return false;
+    if (isSameStackFrame(overload))
+        return false;
+    return true;
+}
+
 bool AstNode::isSameStackFrame(SymbolOverload* overload)
 {
     if (overload->symbol->kind != SymbolKind::Variable)
