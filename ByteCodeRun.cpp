@@ -314,14 +314,23 @@ void ByteCodeRun::executeSelectIfParam(ByteCodeRunContext* context, ByteCodeInst
 
     // Be sure value has been computed
     auto solved = (SymbolOverload*) ip->d.pointer;
-    if (!(callParams->childs[ip->c.u32]->flags & AST_VALUE_COMPUTED))
+    auto child  = callParams->childs[ip->c.u32];
+    if (!(child->flags & AST_VALUE_COMPUTED))
     {
         context->hasError = true;
         context->errorMsg = format("'%s' cannot be evaluated at compile time", solved->symbol->name.c_str());
         return;
     }
 
-    registersRC[ip->a.u32].u64 = callParams->childs[ip->c.u32]->computedValue.reg.u64;
+    if (solved->typeInfo->isNative(NativeTypeKind::String))
+    {
+        registersRC[ip->a.u32].pointer = (uint8_t*) child->computedValue.text.c_str();
+        registersRC[ip->b.u32].u64     = child->computedValue.text.length();
+    }
+    else
+    {
+        registersRC[ip->a.u32].u64 = child->computedValue.reg.u64;
+    }
 }
 
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)

@@ -2097,17 +2097,23 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
                 }
 
                 // Execute #selectif block
-                auto expr                   = funcDecl->selectIf->childs.back();
+                auto expr = funcDecl->selectIf->childs.back();
+
+                expr->flags &= ~AST_VALUE_COMPUTED;
                 context->selectIfParameters = matches[i]->oneOverload->callParameters;
                 context->expansionNode.push_back(context->selectIfParameters->parent);
+
                 auto result = executeNode(context, expr, true);
+
                 context->selectIfParameters = nullptr;
                 context->expansionNode.pop_back();
+
                 if (!result)
                     return false;
                 if (context->result != ContextResult::Done)
                     return true;
 
+                // Result
                 if (!expr->computedValue.reg.b)
                 {
                     matches[i]->remove                              = true;
