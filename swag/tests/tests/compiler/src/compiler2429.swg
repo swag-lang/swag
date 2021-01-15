@@ -1,3 +1,5 @@
+#global testerror
+
 func print(s: string, f: ...)
     #selectif
     {
@@ -10,5 +12,5 @@ func print(s: string, f: ...)
 #[swag.optim(false)]
 #test
 {
-    print("toto", 1, 2, 3)
+    print("toto", 1, 2)
 }

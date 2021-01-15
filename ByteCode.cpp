@@ -81,6 +81,9 @@ TypeInfoFuncAttr* ByteCode::callType()
 
 void ByteCode::addCallStack(ByteCodeRunContext* context)
 {
+    if (context->bc && context->bc->node && context->bc->node->flags & AST_NO_CALLSTACK)
+        return;
+
     ByteCodeStackStep stackStep;
     stackStep.bc = context->bc;
     stackStep.ip = context->ip;

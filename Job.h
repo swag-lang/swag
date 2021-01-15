@@ -47,7 +47,14 @@ struct JobContext
         expansionNode.clear();
     }
 
-    VectorNative<AstNode*> expansionNode;
+    enum class ExpansionType
+    {
+        Generic,
+        Inline,
+        SelectIf,
+    };
+
+    VectorNative<pair<AstNode*, ExpansionType>> expansionNode;
 
     Job*        baseJob            = nullptr;
     AstNode*    node               = nullptr;

@@ -2102,7 +2102,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
 
                 expr->flags &= ~AST_VALUE_COMPUTED;
                 context->selectIfParameters = matches[i]->oneOverload->callParameters;
-                context->expansionNode.push_back(context->selectIfParameters->parent);
+                context->expansionNode.push_back({context->selectIfParameters->parent, JobContext::ExpansionType::SelectIf});
 
                 auto result = executeNode(context, expr, true);
 

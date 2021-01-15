@@ -245,7 +245,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     auto srcCxt  = context;
     auto destCxt = &newJob->context;
     destCxt->expansionNode.append(srcCxt->expansionNode);
-    destCxt->expansionNode.push_back(context->node);
+    destCxt->expansionNode.push_back({context->node, JobContext::ExpansionType::Generic});
 
     return newJob;
 }
@@ -315,7 +315,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Force instantiation of all special functions
     for (auto method : newType->methods)
     {
-        if (method->declNode->flags & AST_IS_SPECIAL_FUNC)
+        if (method->declNode->isSpecialFunction())
         {
             auto specFunc = CastAst<AstFuncDecl>(method->declNode, AstNodeKind::FuncDecl);
             if (specFunc != genericStructType->opUserDropFct &&

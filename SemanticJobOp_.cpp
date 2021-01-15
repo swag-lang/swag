@@ -80,17 +80,11 @@ bool SemanticJob::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDec
 
 bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
 {
-    // Check operators
-    const auto& name = node->token.text;
-    if (name.length() < 3)
+    if (!node->isSpecialFunction())
         return true;
 
-    // A special function starts with 'op', and then there's an upper case letter
-    if (name[0] != 'o' || name[1] != 'p' || name[2] < 'A' || name[2] > 'Z')
-        return true;
-
-    node->flags |= AST_IS_SPECIAL_FUNC;
-    auto parent = node->parent;
+    auto& name   = node->token.text;
+    auto  parent = node->parent;
     while (parent && parent->kind != AstNodeKind::Impl)
         parent = parent->parent;
 

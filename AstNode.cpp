@@ -8,6 +8,20 @@
 #include "SourceFile.h"
 #include "Module.h"
 
+bool AstNode::isSpecialFunction()
+{
+    // Check operators
+    const auto& name = token.text;
+    if (name.length() < 3)
+        return false;
+
+    // A special function starts with 'op', and then there's an upper case letter
+    if (name[0] != 'o' || name[1] != 'p' || name[2] < 'A' || name[2] > 'Z')
+        return false;
+
+    return true;
+}
+
 void AstNode::allocateExtension()
 {
     if (extension)

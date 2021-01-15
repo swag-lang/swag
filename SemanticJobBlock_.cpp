@@ -71,7 +71,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 {
     auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
 
-    context->expansionNode.push_back(node->parent);
+    context->expansionNode.push_back({node->parent, JobContext::ExpansionType::Inline});
     if (node->doneFlags & AST_DONE_RESOLVE_INLINED)
         return true;
     node->doneFlags |= AST_DONE_RESOLVE_INLINED;

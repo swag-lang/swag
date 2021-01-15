@@ -105,18 +105,34 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
 {
     if (expansionNode.size())
     {
-        auto  first = expansionNode[0];
-        auto& name  = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->token.text;
+        auto& exp = expansionNode[0];
+
+        auto        first    = exp.first;
+        const char* kindName = nullptr;
+        switch (exp.second)
+        {
+        case JobContext::ExpansionType::Generic:
+            kindName = "generic expansion";
+            break;
+        case JobContext::ExpansionType::Inline:
+            kindName = "inline expansion";
+            break;
+        case JobContext::ExpansionType::SelectIf:
+            kindName = "'#selectif' validation of function call";
+            break;
+        }
+
+        auto& name = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->token.text;
         if (name.empty())
             name = first->token.text;
         if (!name.empty())
         {
-            auto note = new Diagnostic{first, first->token, format("occurred during expansion of '%s'", name.c_str()), DiagnosticLevel::Note};
+            auto note = new Diagnostic{first, first->token, format("occurred during %s ('%s')", kindName, name.c_str()), DiagnosticLevel::Note};
             notes.push_back(note);
         }
         else
         {
-            auto note = new Diagnostic{first, first->token, "occurred during an expansion here", DiagnosticLevel::Note};
+            auto note = new Diagnostic{first, first->token, format("occurred during %s", kindName), DiagnosticLevel::Note};
             notes.push_back(note);
         }
     }
