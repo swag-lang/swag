@@ -327,8 +327,10 @@ void ByteCodeRun::executeSelectIfParam(ByteCodeRunContext* context, ByteCodeInst
 
     if (solved->typeInfo->kind == TypeInfoKind::Variadic || solved->typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
-        auto numParamsCall = callParams->childs.size();
-        auto numParamsFunc = paramIdx;
+        auto numParamsCall             = callParams->childs.size();
+        auto numParamsFunc             = paramIdx;
+        registersRC[ip->a.u32].pointer = nullptr;
+        registersRC[ip->b.u32].u64     = numParamsCall - numParamsFunc;
         return;
     }
 

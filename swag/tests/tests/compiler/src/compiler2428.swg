@@ -1,0 +1,14 @@
+func print(s: string, f: ...)
+    #selectif
+    {
+        @assert(@countof(f) == 3)
+        return true
+    }
+{
+}
+
+#[swag.optim(false)]
+#test
+{
+    print("toto", 1, 2, 3)
+}
