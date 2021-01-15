@@ -194,6 +194,9 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
 
     if (pp.pass == BackendPreCompilePass::End)
     {
+        if(module->numErrors)
+            return JobResult::ReleaseJob;
+
         if (precompileIndex == 0)
         {
             emitInitMutableSeg(buildParameters);

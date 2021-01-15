@@ -2230,7 +2230,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto r1 = GEP_I32(allocT, 0);
                 for (int iparam = 0; iparam < typeFunc->parameters.size(); iparam++)
                 {
-                    storeLocalParam(buildParameters, func, typeFunc, iparam, r1);
+                    SWAG_CHECK(storeLocalParam(buildParameters, func, typeFunc, iparam, r1));
                 }
             }
 
@@ -2596,7 +2596,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::GetFromStackParam64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            storeLocalParam(buildParameters, func, typeFunc, ip->c.u32, r0);
+            SWAG_CHECK(storeLocalParam(buildParameters, func, typeFunc, ip->c.u32, r0));
             break;
         }
 
@@ -3645,7 +3645,7 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     return true;
 }
 
-void BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0)
+bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -3658,8 +3658,8 @@ void BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::
 
     if (passByValue(param))
     {
-        llvm::Type* ty;
-        swagTypeToLLVMType(buildParameters, module, param, &ty);
+        llvm::Type* ty = nullptr;
+        SWAG_CHECK(swagTypeToLLVMType(buildParameters, module, param, &ty));
         r0 = builder.CreatePointerCast(r0, ty->getPointerTo());
         builder.CreateStore(arg, r0);
     }
@@ -3667,6 +3667,8 @@ void BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::
     {
         builder.CreateStore(builder.CreateLoad(arg), r0);
     }
+
+    return true;
 }
 
 void BackendLLVM::localCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* name, const vector<uint32_t>& regs, const vector<llvm::Value*>& values)

@@ -762,7 +762,7 @@ TypeInfo* TypeInfoFuncAttr::registerIdxToType(int argIdx)
     auto argNo = registerIdxToParamIdx(argIdx);
     if (argNo >= parameters.size())
         return nullptr;
-    return parameters[argNo];
+    return TypeManager::concreteReferenceType(parameters[argNo]->typeInfo);
 }
 
 TypeInfo* TypeInfoEnum::clone()
