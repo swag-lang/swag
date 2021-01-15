@@ -5,9 +5,14 @@ func print(f: f32)
         return true
     }
 {
+
 }
+
+#[swag.constexpr]
+func tt() => 3.14
 
 #test
 {
-    print(3.14)
+    x := 3.14
+    print(tt())
 }

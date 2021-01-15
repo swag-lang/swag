@@ -310,6 +310,16 @@ void ByteCodeRun::executeSelectIfParam(ByteCodeRunContext* context, ByteCodeInst
     auto registersRC = context->registersRC[context->curRC].buffer;
     auto callParams  = context->callerContext->selectIfParameters;
     SWAG_ASSERT(callParams);
+    SWAG_ASSERT(ip->c.u32 < callParams->childs.size());
+
+    // Be sure value has been computed
+    auto solved = (SymbolOverload*) ip->d.pointer;
+    if (!(callParams->childs[ip->c.u32]->flags & AST_VALUE_COMPUTED))
+    {
+        context->hasError = true;
+        context->errorMsg = format("'%s' cannot be evaluated at compile time", solved->symbol->name.c_str());
+        return;
+    }
 
     registersRC[ip->a.u32].u64 = callParams->childs[ip->c.u32]->computedValue.reg.u64;
 }
