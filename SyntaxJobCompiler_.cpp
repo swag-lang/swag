@@ -482,6 +482,25 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doCompilerLocation(AstNode* parent, AstNode** result)
+{
+    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
+    if (result)
+        *result = exprNode;
+    SWAG_CHECK(eatToken());
+
+    // Parameter
+    if (token.id == TokenId::SymLeftParen)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doIdentifierRef(exprNode, nullptr, false));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    }
+
+    exprNode->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
+    return true;
+}
+
 bool SyntaxJob::doCompilerSpecialFunction(AstNode* parent, AstNode** result)
 {
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);

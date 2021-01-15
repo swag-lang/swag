@@ -556,7 +556,14 @@ namespace Ast
                 break;
             case TokenId::CompilerLocation:
                 CONCAT_FIXED_STR(concat, "#location");
+                if (!node->childs.empty())
+                {
+                    concat.addChar('(');
+                    SWAG_CHECK(output(context, concat, node->childs[0]));
+                    concat.addChar(')');
+                }
                 break;
+
             case TokenId::CompilerOs:
                 CONCAT_FIXED_STR(concat, "#os");
                 break;

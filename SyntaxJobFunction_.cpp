@@ -39,7 +39,7 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
             break;
 
         case TokenId::CompilerLocation:
-            SWAG_CHECK(doCompilerSpecialFunction(param));
+            SWAG_CHECK(doCompilerLocation(param));
             break;
 
         default:

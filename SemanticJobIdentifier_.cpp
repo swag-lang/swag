@@ -1314,8 +1314,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 if (grandParent->kind == AstNodeKind::MakePointer ||
                     grandParent->kind == AstNodeKind::MakePointerLambda ||
                     grandParent->kind == AstNodeKind::Alias ||
-                    (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstIntrinsicProp>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicTypeOf) ||
-                    (grandParent->kind == AstNodeKind::IntrinsicProp && CastAst<AstIntrinsicProp>(grandParent, AstNodeKind::IntrinsicProp)->token.id == TokenId::IntrinsicKindOf))
+                    (grandParent->kind == AstNodeKind::CompilerSpecialFunction && grandParent->token.id == TokenId::CompilerLocation) ||
+                    (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicTypeOf) ||
+                    (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicKindOf))
                 {
                     if (callParameters)
                         return context->report({callParameters, "cannot take the address of a function with call parameters"});
@@ -2080,7 +2081,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         auto overSym = over->symbol;
 
         // Take care of #selectif
-        if (overSym->kind == SymbolKind::Function)
+        if (overSym->kind == SymbolKind::Function && !(context->node->flags & AST_IN_SELECTIF))
         {
             auto funcDecl = CastAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
             if (funcDecl->selectIf)
