@@ -1,0 +1,1 @@
+cloc --no3 f:/swag --exclude-dir=.git,llvm,std,tests,ffi,vscode --by-file --exclude-ext=filters,recipe,exe,bat,json,md,user,config,vcxproj,sln,clang-format,rc,natvis

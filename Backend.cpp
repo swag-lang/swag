@@ -28,7 +28,7 @@ void Backend::setup()
 {
     OS::setupBackend();
 
-    if (g_CommandLine.output)
+    if (g_CommandLine.output && !g_CommandLine.linkStatic)
     {
         auto fullPath = Backend::linkerPath + Backend::linkerExe;
         if (!fs::exists(fullPath))

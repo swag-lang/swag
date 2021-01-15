@@ -276,3 +276,4 @@ doc/
 **/examples/**/public
 **/tests/**/public
 llvm/
+lld/

@@ -98,7 +98,6 @@ namespace BackendLinkerWin32
 
 namespace OS
 {
-    /*
     class MyOStream : public llvm::raw_ostream
     {
     public:
@@ -121,7 +120,7 @@ namespace OS
         size_t pos;
     };
 
-    bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
+    bool link_static(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
         SWAG_PROFILE(PRF_LINK, format("link %s", module->name.c_str()));
 
@@ -149,10 +148,20 @@ namespace OS
         static mutex oo;
         unique_lock  lk(oo);
         auto         result = lld::coff::link(array_ref_args, false, diag_stdout, diag_stderr);
-        return result;
-    }*/
 
-    bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
+        if (!result && g_CommandLine.devMode)
+            OS::errorBox("[Developer Mode]", "Error raised !");
+
+        if (!result)
+        {
+            g_Workspace.numErrors += 1;
+            module->numErrors += 1;
+        }
+
+        return result;
+    }
+
+    bool link_process(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
         SWAG_PROFILE(PRF_LINK, format("link %s", module->name.c_str()));
 
@@ -186,6 +195,13 @@ namespace OS
         g_Workspace.numErrors += numErrors;
         module->numErrors += numErrors;
         return result;
+    }
+
+    bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
+    {
+        if (g_CommandLine.linkStatic)
+            return link_static(buildParameters, module, objectFiles);
+        return link_process(buildParameters, module, objectFiles);
     }
 
 } // namespace OS

@@ -55,6 +55,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("--backend", nullptr, CommandLineType::EnumInt, &cmdLine->backendType, "llvm|x64", "the type of backend to use");
     addArg("--script", nullptr, CommandLineType::Bool, &cmdLine->script, nullptr, "run full bytecode");
+    addArg("--link-static", "-ls", CommandLineType::Bool, &cmdLine->linkStatic, nullptr, "");
 }
 
 void CommandLineParser::logArguments()

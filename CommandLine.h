@@ -21,11 +21,12 @@ enum class BackendType
 struct CommandLine
 {
     // Compiler
-    int       numCores  = 0;
-    BuildPass buildPass = BuildPass::Full;
-    bool      rebuild   = false;
-    bool      run       = false;
-    bool      script    = false;
+    int       numCores   = 0;
+    BuildPass buildPass  = BuildPass::Full;
+    bool      rebuild    = false;
+    bool      run        = false;
+    bool      script     = false;
+    bool      linkStatic = true;
 
     // Input
     string workspacePath;
