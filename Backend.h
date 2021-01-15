@@ -79,5 +79,4 @@ struct Backend
     static string    getCacheFolder(const BuildParameters& buildParameters);
     static string    getOutputFileName(const BuildParameters& buildParameters);
     static bool      passByValue(TypeInfo* typeInfo);
-    static TypeInfo* registerIdxToType(TypeInfoFuncAttr* typeFunc, int argIdx);
 };

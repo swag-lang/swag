@@ -1,14 +1,17 @@
-func print(f: ...)
+func print(s, s1: string, f: ...)
     #selectif
     {
-        @print(cast(s64) @countof(f))
+        //@print(cast(s64) @countof(f))
+        @assert(s == "toto")
+        @assert(s1 == "titi")
         return true
     }
 {
 }
 
-#[swag.printbc, swag.optim(false)]
+#[swag.optim(false)]
 #test
 {
-    print(1, 2, 3)
+    //print("toto", 1, 2, 3)
+    print("toto", "titi")
 }

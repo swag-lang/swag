@@ -47,7 +47,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     // Parameters
     for (int i = 0; i < typeFunc->numParamsRegisters(); i++)
     {
-        auto typeParam = Backend::registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
+        auto typeParam = typeFunc->registerIdxToType(i - typeFunc->numReturnRegisters());
 
         // We are called from native code, which must respect the passByValue calling convention when calling
         // a bytecode callback.

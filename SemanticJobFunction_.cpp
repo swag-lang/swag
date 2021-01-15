@@ -486,6 +486,33 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
+    // Set storageIndex of each parameters
+    if (funcNode->parameters)
+    {
+        int storageIndex = 0;
+        if (funcNode->typeInfo->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+        {
+            auto param             = funcNode->parameters->childs.back();
+            auto resolved          = param->resolvedSymbolOverload;
+            resolved->storageIndex = 0; // Always the first one
+            storageIndex += 2;
+        }
+
+        auto childSize = funcNode->parameters->childs.size();
+        for (int i = 0; i < childSize; i++)
+        {
+            if ((i == childSize - 1) && funcNode->typeInfo->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+                break;
+            auto param             = funcNode->parameters->childs[i];
+            auto resolved          = param->resolvedSymbolOverload;
+            resolved->storageIndex = storageIndex;
+
+            auto typeParam    = TypeManager::concreteType(resolved->typeInfo);
+            int  numRegisters = typeParam->numRegisters();
+            storageIndex += numRegisters;
+        }
+    }
+
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we
     // need to infer it from the lambda expression
     SWAG_CHECK(registerFuncSymbol(context, funcNode, shortLambda ? OVERLOAD_INCOMPLETE : 0));

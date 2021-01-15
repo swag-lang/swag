@@ -2922,7 +2922,7 @@ void BackendX64::emitByteCodeLambdaParams(X64PerThread& pp, TypeInfoFuncAttr* ty
     uint32_t stackOffset = 0;
     for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--, idxReg++)
     {
-        auto typeParam = registerIdxToType(typeFuncBC, idxReg - typeFuncBC->numReturnRegisters());
+        auto typeParam = typeFuncBC->registerIdxToType(idxReg - typeFuncBC->numReturnRegisters());
 
         static const uint8_t idxToReg[4] = {RDX, R8, R9};
 

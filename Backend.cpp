@@ -114,27 +114,3 @@ bool Backend::passByValue(TypeInfo* typeInfo)
 {
     return typeInfo->numRegisters() == 1;
 }
-
-// argIdx is the argument index of an llvm function, starting after the return arguments
-TypeInfo* Backend::registerIdxToType(TypeInfoFuncAttr* typeFunc, int argIdx)
-{
-    if (typeFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
-    {
-        if (argIdx < 2)
-            return typeFunc->parameters.back();
-        argIdx -= 2;
-    }
-
-    int argNo = 0;
-    while (true)
-    {
-        auto typeParam = TypeManager::concreteReferenceType(typeFunc->parameters[argNo]->typeInfo);
-        auto n         = typeParam->numRegisters();
-        if (argIdx < n)
-            return typeParam;
-        argIdx -= n;
-        argNo++;
-    }
-
-    return nullptr;
-}

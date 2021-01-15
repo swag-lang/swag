@@ -346,6 +346,8 @@ struct TypeInfoFuncAttr : public TypeInfo
     void      computeName() override;
     void      match(SymbolMatchContext& context);
     bool      isSame(TypeInfoFuncAttr* from, uint32_t isSameFlags);
+    uint32_t  registerIdxToParamIdx(int argIdx);
+    TypeInfo* registerIdxToType(int argIdx);
 
     VectorNative<TypeInfoParam*> genericParameters;
     VectorNative<TypeInfoParam*> parameters;

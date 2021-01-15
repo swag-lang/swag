@@ -733,6 +733,38 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
     return true;
 }
 
+// argIdx is the argument index of an llvm function, starting after the return arguments
+uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(int argIdx)
+{
+    if (flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+    {
+        if (argIdx < 2)
+            return (uint32_t) parameters.size() - 1;
+        argIdx -= 2;
+    }
+
+    int argNo = 0;
+    while (true)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(parameters[argNo]->typeInfo);
+        auto n         = typeParam->numRegisters();
+        if (argIdx < n)
+            return argNo;
+        argIdx -= n;
+        argNo++;
+    }
+
+    return UINT32_MAX;
+}
+
+TypeInfo* TypeInfoFuncAttr::registerIdxToType(int argIdx)
+{
+    auto argNo = registerIdxToParamIdx(argIdx);
+    if (argNo >= parameters.size())
+        return nullptr;
+    return parameters[argNo];
+}
+
 TypeInfo* TypeInfoEnum::clone()
 {
     auto newType        = allocType<TypeInfoEnum>();

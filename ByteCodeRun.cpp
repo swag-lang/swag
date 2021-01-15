@@ -311,15 +311,24 @@ void ByteCodeRun::executeSelectIfParam(ByteCodeRunContext* context, ByteCodeInst
     auto registersRC = context->registersRC[context->curRC].buffer;
     auto callParams  = context->callerContext->selectIfParameters;
     SWAG_ASSERT(callParams);
-    SWAG_ASSERT(ip->c.u32 < callParams->childs.size());
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(context->bc->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+    auto paramIdx = typeFunc->registerIdxToParamIdx(ip->c.u32);
+    SWAG_ASSERT(paramIdx < callParams->childs.size());
 
     // Be sure value has been computed
     auto solved = (SymbolOverload*) ip->d.pointer;
-    auto child  = callParams->childs[ip->c.u32];
+    auto child  = callParams->childs[paramIdx];
     if (!(child->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR)))
     {
         context->hasError = true;
         context->errorMsg = format("'%s' cannot be evaluated at compile time", solved->symbol->name.c_str());
+        return;
+    }
+
+    if (solved->typeInfo->kind == TypeInfoKind::Variadic || solved->typeInfo->kind == TypeInfoKind::TypedVariadic)
+    {
+        auto numParamsCall = callParams->childs.size();
+        auto numParamsFunc = paramIdx;
         return;
     }
 
@@ -349,6 +358,8 @@ void ByteCodeRun::executeSelectIfParam(ByteCodeRunContext* context, ByteCodeInst
     case NativeTypeKind::Int:
     case NativeTypeKind::Char:
     case NativeTypeKind::Bool:
+    case NativeTypeKind::F32:
+    case NativeTypeKind::F64:
         registersRC[ip->a.u32].u64 = child->computedValue.reg.u64;
         break;
 

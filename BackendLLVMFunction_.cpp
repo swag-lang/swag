@@ -311,7 +311,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
         else
         {
-            auto typeParam = registerIdxToType(typeFunc, i - typeFunc->numReturnRegisters());
+            auto typeParam = typeFunc->registerIdxToType(i - typeFunc->numReturnRegisters());
             if (passByValue(typeParam))
                 args.push_back(func->getArg(i - typeFunc->numReturnRegisters()));
             else
@@ -3652,7 +3652,7 @@ void BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::
     auto& pp              = *perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
 
-    auto param  = registerIdxToType(typeFunc, idx);
+    auto param  = typeFunc->registerIdxToType(idx);
     auto offArg = idx + typeFunc->numReturnRegisters();
     auto arg    = func->getArg(offArg);
 
