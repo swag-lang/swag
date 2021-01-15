@@ -124,6 +124,7 @@ void LanguageSpec::setup()
     keywords["@mkcallback"]  = TokenId::IntrinsicMakeCallback;
     keywords["@mkforeign"]   = TokenId::IntrinsicMakeForeign;
     keywords["@index"]       = TokenId::IntrinsicIndex;
+    keywords["@isconstexpr"] = TokenId::IntrinsicIsConstExpr;
 
     keywords["@print"]       = TokenId::IntrinsicPrint;
     keywords["@assert"]      = TokenId::IntrinsicAssert;

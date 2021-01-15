@@ -102,7 +102,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(init|drop|index|mkany|mkslice|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|postcopy|postmove|spread)\\b"
+          "match": "(@)\\b(init|drop|index|mkany|mkslice|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|postcopy|postmove|spread|isconstexpr)\\b"
         }
       ]
     },

@@ -117,6 +117,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, bool acceptPa
     case TokenId::IntrinsicMakeInterface:
     case TokenId::IntrinsicMakeCallback:
     case TokenId::IntrinsicMakeForeign:
+    case TokenId::IntrinsicIsConstExpr:
         SWAG_CHECK(doIntrinsicProp(identifierRef));
         break;
 

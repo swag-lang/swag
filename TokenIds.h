@@ -161,6 +161,7 @@ DEFINE_TOKEN_ID(IntrinsicMakeCallback)
 DEFINE_TOKEN_ID(IntrinsicMakeForeign)
 DEFINE_TOKEN_ID(IntrinsicMakeAny)
 DEFINE_TOKEN_ID(IntrinsicMakeInterface)
+DEFINE_TOKEN_ID(IntrinsicIsConstExpr)
 
 DEFINE_TOKEN_ID(IntrinsicPrint)
 DEFINE_TOKEN_ID(IntrinsicAssert)

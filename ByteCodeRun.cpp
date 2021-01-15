@@ -821,7 +821,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = context->sp + ip->b.u32;
         break;
 
-    case ByteCodeOp::GetParam64SelectIf:
+    case ByteCodeOp::IntrinsicIsConstExprSI:
+    {
+        auto callParams = context->callerContext->selectIfParameters;
+        SWAG_ASSERT(callParams && ip->b.u32 < callParams->childs.size());
+        registersRC[ip->a.u32].b = callParams->childs[ip->b.u32]->flags & AST_VALUE_COMPUTED;
+        break;
+    }
+
+    case ByteCodeOp::GetFromStackParam64SI:
         executeSelectIfParam(context, ip);
         break;
 

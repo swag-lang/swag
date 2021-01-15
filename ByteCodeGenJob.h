@@ -298,6 +298,7 @@ struct ByteCodeGenJob : public Job
     static bool emitIntrinsicCountOf(ByteCodeGenContext* context);
     static bool emitIntrinsicDataOf(ByteCodeGenContext* context);
     static bool emitIntrinsicKindOf(ByteCodeGenContext* context);
+    static bool emitIntrinsicIsConstExpr(ByteCodeGenContext* context);
     static bool emitIntrinsicMakeAny(ByteCodeGenContext* context);
     static bool emitIntrinsicMakeSlice(ByteCodeGenContext* context);
     static bool emitIntrinsicMakeCallback(ByteCodeGenContext* context);

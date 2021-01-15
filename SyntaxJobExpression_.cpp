@@ -209,6 +209,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicAtomicXor:
     case TokenId::IntrinsicAtomicXchg:
     case TokenId::IntrinsicAtomicCmpXchg:
+    case TokenId::IntrinsicIsConstExpr:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 

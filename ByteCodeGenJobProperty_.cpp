@@ -99,6 +99,19 @@ bool ByteCodeGenJob::emitIntrinsicSpread(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitIntrinsicIsConstExpr(ByteCodeGenContext* context)
+{
+    auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto front = node->childs.front();
+
+    node->resultRegisterRC = reserveRegisterRC(context);
+    auto inst              = emitInstruction(context, ByteCodeOp::IntrinsicIsConstExprSI, node->resultRegisterRC);
+    SWAG_ASSERT(front->resolvedSymbolOverload);
+    inst->b.u32 = front->resolvedSymbolOverload->storageIndex;
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
 {
     auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);

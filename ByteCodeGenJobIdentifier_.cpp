@@ -62,7 +62,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             if (typeInfo->numRegisters() == 2)
                 reserveLinearRegisterRC2(context, node->resultRegisterRC);
-            auto inst       = emitInstruction(context, ByteCodeOp::GetParam64SelectIf, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+            auto inst       = emitInstruction(context, ByteCodeOp::GetFromStackParam64SI, node->resultRegisterRC[0], node->resultRegisterRC[1]);
             inst->c.u64     = resolved->storageIndex;
             inst->d.pointer = (uint8_t*) resolved;
 
