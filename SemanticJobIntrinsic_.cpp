@@ -465,11 +465,11 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr      = node->childs.front();
         node->typeInfo = g_TypeMgr.typeInfoBool;
+        expr->flags |= AST_NO_BYTECODE;
 
         // Special case for a function parameter in a selectif block, should be done at runtime
         if ((expr->flags & AST_IN_SELECTIF) && expr->resolvedSymbolOverload && expr->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
         {
-            expr->flags |= AST_NO_BYTECODE;
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicIsConstExpr;
             break;
         }
