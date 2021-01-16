@@ -342,6 +342,14 @@ bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction
         return true;
     }
 
+    if (child->typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto typeArray = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
+        if (regCount)
+            regCount->u64 = typeArray->totalCount;
+        return true;
+    }
+
     return false;
 }
 
