@@ -316,27 +316,16 @@ namespace Ast
         }
 
         case AstNodeKind::CompilerRun:
-        {
-            CONCAT_FIXED_STR(concat, "#run ");
-            auto front = node->childs.front();
-            if (front->kind == AstNodeKind::FuncDecl)
-            {
-                AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(front, AstNodeKind::FuncDecl);
-                incIndentStatement(funcDecl->content, context.indent);
-                concat.addEolIndent(context.indent);
-                SWAG_CHECK(output(context, concat, funcDecl->content));
-                decIndentStatement(funcDecl->content, context.indent);
-            }
-            else
-            {
-                SWAG_CHECK(output(context, concat, front));
-            }
-            break;
-        }
-
         case AstNodeKind::CompilerAst:
+        case AstNodeKind::CompilerSelectIf:
         {
-            CONCAT_FIXED_STR(concat, "#ast ");
+            if(node->kind == AstNodeKind::CompilerRun)
+                CONCAT_FIXED_STR(concat, "#run ");
+            else if (node->kind == AstNodeKind::CompilerAst)
+                CONCAT_FIXED_STR(concat, "#ast ");
+            else if (node->kind == AstNodeKind::CompilerSelectIf)
+                CONCAT_FIXED_STR(concat, "#selectif ");
+
             auto front = node->childs.front();
             if (front->kind == AstNodeKind::FuncDecl)
             {

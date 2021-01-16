@@ -250,6 +250,14 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
         emitType(typeFunc->returnType, indent);
     }
 
+    if (node->selectIf)
+    {
+        bufferSwg.addEolIndent(indent + 1);
+        outputContext.indent++;
+        SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->selectIf));
+        outputContext.indent--;
+    }
+
     CONCAT_FIXED_STR(bufferSwg, ";");
     bufferSwg.addEol();
     return true;

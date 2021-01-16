@@ -1,4 +1,4 @@
-func append(buf: *void, fmt: string, values: ...)
+public func append2430(buf: *void, fmt: string, values: ...)
     #selectif
     {
         if !@isconstexpr(fmt) return true
@@ -10,5 +10,5 @@ func append(buf: *void, fmt: string, values: ...)
 
 #test
 {
-    append(null, "toto")
+    append2430(null, "toto")
 }

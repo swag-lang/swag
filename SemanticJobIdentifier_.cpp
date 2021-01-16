@@ -2121,7 +2121,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
                     matches[i]->oneOverload->symMatchContext.result = MatchResult::SelectIfFailed;
                     continue;
                 }
-                else if (funcDecl->content->flags & AST_NO_SEMANTIC)
+                else if (funcDecl->content && funcDecl->content->flags & AST_NO_SEMANTIC)
                 {
                     scoped_lock lk(funcDecl->mutex);
                     funcDecl->content->flags &= ~AST_NO_SEMANTIC;

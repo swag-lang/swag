@@ -507,6 +507,14 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
     funcNode->typeInfo->computeName();
 
+    // '#selectif' block
+    if (token.id == TokenId::CompilerSelectIf)
+    {
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        SWAG_CHECK(doCompilerSelectIf(funcNode, &funcNode->selectIf));
+    }
+
     // If we have now a semi colon, then this is an empty function, like a forward decl in c++
     if (token.id == TokenId::SymSemiColon)
     {
@@ -518,14 +526,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
     if (isIntrinsic)
         funcNode->flags |= AST_DEFINED_INTRINSIC;
-
-    // '#selectif' block
-    if (token.id == TokenId::CompilerSelectIf)
-    {
-        Scoped    scoped(this, newScope);
-        ScopedFct scopedFct(this, funcNode);
-        SWAG_CHECK(doCompilerSelectIf(funcNode, &funcNode->selectIf));
-    }
 
     // Content of function
     {
