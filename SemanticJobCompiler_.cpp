@@ -477,13 +477,6 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 
     switch (node->token.id)
     {
-    case TokenId::CompilerFunction:
-        SWAG_VERIFY(node->ownerFct, context->report({node, "'#function' can only be called inside a function"}));
-        node->computedValue.text = node->ownerFct->token.text;
-        node->typeInfo           = g_TypeMgr.typeInfoString;
-        node->setFlagsValueIsComputed();
-        return true;
-
     case TokenId::CompilerBuildCfg:
         node->computedValue.text = g_CommandLine.buildCfg;
         node->typeInfo           = g_TypeMgr.typeInfoString;
@@ -572,6 +565,28 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerfunction' can only be set in a function parameter declaration"}));
         node->typeInfo = g_TypeMgr.typeInfoString;
         return true;
+
+    case TokenId::CompilerFunction:
+    {
+        SWAG_VERIFY(node->ownerFct, context->report({node, "'#function' can only be called inside a function"}));
+        node->computedValue.text = node->ownerFct->token.text;
+        node->typeInfo           = g_TypeMgr.typeInfoString;
+        node->setFlagsValueIsComputed();
+
+        // If we are inside a generated function, try to find another parent one
+        if (node->ownerFct->attributeFlags & ATTRIBUTE_GENERATED_FUNC)
+        {
+            auto fct = node->ownerFct->parent;
+            while (fct && (fct->kind != AstNodeKind::FuncDecl || fct->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
+                fct = fct->parent;
+            if (fct)
+                node->computedValue.text = fct->token.text;
+            else
+                node->computedValue.text = node->ownerFct->getNameForMessage();
+        }
+
+        return true;
+    }
 
     default:
         return internalError(context, "resolveCompilerFunction, unknown token");

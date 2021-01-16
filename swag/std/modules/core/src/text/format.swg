@@ -37,7 +37,7 @@ func toString(fmt: string, values: ...)->String
     #selectif
     {
         if !@isconstexpr(fmt) return true
-        checkFormat("format.toString", fmt, values)
+        checkFormat(#function, fmt, values)
         return true
     }
 {
@@ -52,7 +52,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
     #selectif
     {
         if !@isconstexpr(fmt) return true
-        checkFormat("format.append", fmt, values)
+        checkFormat(#function, fmt, values)
         return true
     }
 {
