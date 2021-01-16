@@ -25,6 +25,6 @@ impl IConvert for TOTO
     @assert(cast(string) buf.toString() == "toto")
 
     buf.clear()
-    format.append(&buf, "{ABC}toto", x)
+    format.append(&buf, "{ABC}toto")
     @assert(cast(string) buf.toString() == "{ABC}toto")
 }

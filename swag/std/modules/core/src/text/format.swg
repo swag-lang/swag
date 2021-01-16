@@ -34,7 +34,14 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
     {
         if !@isconstexpr(fmt) return true
         cptPercent := countPercent(fmt)
-        if cptPercent != @countof(values) return true//@error(toString("bad number of arguments %", cptPercent), #location(fmt))
+        if cptPercent != @countof(values)
+        {
+            var buf: ConcatBuffer
+            append(&buf, "bad number of arguments to 'format.append' ('%' requested, '%' provided)", cptPercent, @countof(values))
+            str := buf.moveToString()
+            @error(str, #location(values))
+        }
+
         return true
     }
 {
