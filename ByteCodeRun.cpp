@@ -405,7 +405,12 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     /////////////////////////////////////////
     if (solved->typeInfo->kind == TypeInfoKind::Variadic || solved->typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
-        getVariadicSI(context, ip, &registersRC[ip->a.u32], &registersRC[ip->b.u32]);
+        if (!getVariadicSI(context, ip, &registersRC[ip->a.u32], &registersRC[ip->b.u32]))
+        {
+            context->hasError = true;
+            context->errorMsg = format("cannot evaluate function parameter at compile time (type is '%s')", solved->typeInfo->name.c_str());
+        }
+
         return;
     }
 
@@ -430,6 +435,10 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
             registersRC[ip->b.u32].u64     = typeList->subTypes.size();
             return;
         }
+
+        context->hasError = true;
+        context->errorMsg = format("cannot evaluate function parameter at compile time (type is '%s')", solved->typeInfo->name.c_str());
+        return;
     }
 
     // Native
