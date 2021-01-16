@@ -78,6 +78,9 @@ namespace swag
     #[attributeUsage(AttributeUsage.All)]
     attr safety(value: bool)
 
+    #[attributeUsage(AttributeUsage.All)]
+    attr selectif(value: bool)
+
     #[attributeUsage(AttributeUsage.Function)]
     attr optim(value: bool)
 

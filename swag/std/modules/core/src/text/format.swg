@@ -1,12 +1,16 @@
 #global public
 #global namespace format
+using swag
 
-// Format a string and returns the result as a String
-func toString(fmt: string, values: ...)->String
+func checkFormat(fmt: string, values: ...)
 {
-    var buf: ConcatBuffer
-    append(&buf, fmt, values)
-    return buf.moveToString()
+    cptPercent := countPercent(fmt)
+    if cptPercent != @countof(values)
+    {
+        #[selectif(false)]
+        str := toString("bad number of arguments to 'format.append' ('%' requested, '%' provided)", cptPercent, @countof(values))
+        @error(str, #location(values))
+    }
 }
 
 // Count the number of valid '%' placeholders in the string format
@@ -28,20 +32,27 @@ func countPercent(fmt: string)->u32
     return cptPercent
 }
 
+// Format a string and returns the result as a String
+func toString(fmt: string, values: ...)->String
+    #selectif
+    {
+        if !@isconstexpr(fmt) return true
+        checkFormat(fmt, values)
+        return true
+    }
+{
+    var buf: ConcatBuffer
+    #[selectif(false)]
+    append(&buf, fmt, values)
+    return buf.moveToString()
+}
+
 // Format a string and put the result in a ConcatBuffer
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
     #selectif
     {
         if !@isconstexpr(fmt) return true
-        cptPercent := countPercent(fmt)
-        if cptPercent != @countof(values)
-        {
-            var buf: ConcatBuffer
-            append(&buf, "bad number of arguments to 'format.append' ('%' requested, '%' provided)", cptPercent, @countof(values))
-            str := buf.moveToString()
-            @error(str, #location(values))
-        }
-
+        checkFormat(fmt, values)
         return true
     }
 {

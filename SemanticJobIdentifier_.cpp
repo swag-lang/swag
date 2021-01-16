@@ -2081,7 +2081,9 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         auto overSym = over->symbol;
 
         // Take care of #selectif
-        if (overSym->kind == SymbolKind::Function && !(context->node->flags & AST_IN_SELECTIF))
+        if (overSym->kind == SymbolKind::Function &&
+            !(context->node->flags & AST_IN_SELECTIF) &&
+            !(context->node->attributeFlags & ATTRIBUTE_SELECTIF_OFF))
         {
             auto funcDecl = CastAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
             if (funcDecl->selectIf)

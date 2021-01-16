@@ -8,7 +8,12 @@ void SemanticJob::propagateAttributes(AstNode* child)
 {
     if (!child->parent)
         return;
-    child->attributeFlags |= child->parent->attributeFlags & (ATTRIBUTE_SAFETY_OFF | ATTRIBUTE_SAFETY_ON | ATTRIBUTE_NO_RETURN);
+    child->attributeFlags |= child->parent->attributeFlags &
+                             (ATTRIBUTE_SAFETY_OFF |
+                              ATTRIBUTE_SAFETY_ON |
+                              ATTRIBUTE_NO_RETURN |
+                              ATTRIBUTE_SELECTIF_OFF |
+                              ATTRIBUTE_SELECTIF_ON);
 }
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
@@ -213,6 +218,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.optim", "value", attrValue);
                 flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_ON : ATTRIBUTE_OPTIM_OFF;
+            }
+            else if (child->token.text == "selectif")
+            {
+                ComputedValue attrValue;
+                curAttr->attributes.getValue("swag.selectif", "value", attrValue);
+                flags |= attrValue.reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
             }
             else if (child->token.text == "pack")
             {

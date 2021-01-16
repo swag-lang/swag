@@ -34,6 +34,8 @@ static const uint64_t ATTRIBUTE_COMPILER_FUNC  = 0x0000000010000000;
 static const uint64_t ATTRIBUTE_GENERATED_FUNC = 0x0000000020000000;
 static const uint64_t ATTRIBUTE_OPTIM_ON       = 0x0000000040000000;
 static const uint64_t ATTRIBUTE_OPTIM_OFF      = 0x0000000080000000;
+static const uint64_t ATTRIBUTE_SELECTIF_ON    = 0x0000000100000000;
+static const uint64_t ATTRIBUTE_SELECTIF_OFF   = 0x0000000200000000;
 
 struct TypeInfoFuncAttr;
 struct AstNode;
