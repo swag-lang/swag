@@ -107,18 +107,22 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
     {
         auto& exp = expansionNode[0];
 
-        auto        first    = exp.first;
-        const char* kindName = nullptr;
+        auto        first       = exp.first;
+        const char* kindName    = nullptr;
+        const char* kindArticle = "";
         switch (exp.second)
         {
         case JobContext::ExpansionType::Generic:
-            kindName = "generic expansion";
+            kindName    = "generic expansion";
+            kindArticle = "of";
             break;
         case JobContext::ExpansionType::Inline:
-            kindName = "inline expansion";
+            kindName    = "inline expansion";
+            kindArticle = "of";
             break;
         case JobContext::ExpansionType::SelectIf:
-            kindName = "'#selectif' validation of function call";
+            kindName    = "'#selectif' validation of function call";
+            kindArticle = "to";
             break;
         }
 
@@ -127,7 +131,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
             name = first->token.text;
         if (!name.empty())
         {
-            auto note = new Diagnostic{first, first->token, format("occurred during %s ('%s')", kindName, name.c_str()), DiagnosticLevel::Note};
+            auto note = new Diagnostic{first, first->token, format("occurred during %s %s '%s'", kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
             notes.push_back(note);
         }
         else

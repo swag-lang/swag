@@ -319,7 +319,7 @@ namespace Ast
         case AstNodeKind::CompilerAst:
         case AstNodeKind::CompilerSelectIf:
         {
-            if(node->kind == AstNodeKind::CompilerRun)
+            if (node->kind == AstNodeKind::CompilerRun)
                 CONCAT_FIXED_STR(concat, "#run ");
             else if (node->kind == AstNodeKind::CompilerAst)
                 CONCAT_FIXED_STR(concat, "#ast ");
@@ -537,6 +537,9 @@ namespace Ast
         {
             switch (node->token.id)
             {
+            case TokenId::CompilerFunction:
+                CONCAT_FIXED_STR(concat, "#function");
+                break;
             case TokenId::CompilerCallerFunction:
                 CONCAT_FIXED_STR(concat, "#callerfunction");
                 break;

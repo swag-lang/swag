@@ -2,13 +2,13 @@
 #global namespace format
 using swag
 
-func checkFormat(fmt: string, values: ...)
+func checkFormat(fct: string, fmt: string, values: ...)
 {
     cptPercent := countPercent(fmt)
     if cptPercent != @countof(values)
     {
         #[selectif(false)]
-        str := toString("bad number of arguments to 'format.append' ('%' requested, '%' provided)", cptPercent, @countof(values))
+        str := toString("bad number of arguments to '%' ('%' requested, '%' provided)", fct, cptPercent, @countof(values))
         @error(str, #location(values))
     }
 }
@@ -37,7 +37,7 @@ func toString(fmt: string, values: ...)->String
     #selectif
     {
         if !@isconstexpr(fmt) return true
-        checkFormat(fmt, values)
+        checkFormat("format.toString", fmt, values)
         return true
     }
 {
@@ -52,7 +52,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
     #selectif
     {
         if !@isconstexpr(fmt) return true
-        checkFormat(fmt, values)
+        checkFormat("format.append", fmt, values)
         return true
     }
 {
