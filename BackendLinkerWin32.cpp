@@ -120,7 +120,7 @@ namespace OS
         size_t pos;
     };
 
-    bool link_static(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
+    bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
         SWAG_PROFILE(PRF_LINK, format("link %s", module->name.c_str()));
 
@@ -159,49 +159,6 @@ namespace OS
         }
 
         return result;
-    }
-
-    bool link_process(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
-    {
-        SWAG_PROFILE(PRF_LINK, format("link %s", module->name.c_str()));
-
-        vector<Utf8> linkArgumentsList;
-        BackendLinkerWin32::getArguments(buildParameters, module, linkArgumentsList, true);
-        Utf8 linkArguments;
-        for (auto& one : linkArgumentsList)
-            linkArguments += one + " ";
-
-        // Add all object files
-        auto targetPath = Backend::getCacheFolder(buildParameters);
-        for (auto& file : objectFiles)
-        {
-            SWAG_ASSERT(!file.empty());
-            auto path = targetPath + "/" + file.c_str();
-            linkArguments += path + " ";
-        }
-
-        bool     verbose   = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
-        uint32_t numErrors = 0;
-        auto     cmdLine   = "\"" + Backend::linkerPath + Backend::linkerExe + "\" " + linkArguments;
-
-        if (g_CommandLine.verbose && g_CommandLine.verboseLink)
-            g_Log.verbose(cmdLine);
-
-        auto result = OS::doProcess(cmdLine, Backend::linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL ");
-
-        if (!result && g_CommandLine.devMode)
-            OS::errorBox("[Developer Mode]", "Error raised !");
-
-        g_Workspace.numErrors += numErrors;
-        module->numErrors += numErrors;
-        return result;
-    }
-
-    bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
-    {
-        if (g_CommandLine.linkStatic)
-            return link_static(buildParameters, module, objectFiles);
-        return link_process(buildParameters, module, objectFiles);
     }
 
 } // namespace OS

@@ -27,22 +27,6 @@ BackendFunctionBodyJob* Backend::newFunctionJob()
 void Backend::setup()
 {
     OS::setupBackend();
-
-    if (g_CommandLine.output && !g_CommandLine.linkStatic)
-    {
-        auto fullPath = Backend::linkerPath + Backend::linkerExe;
-        if (!fs::exists(fullPath))
-        {
-            g_Log.error(format("error: backend: cannot locate linker '%s'", fullPath.c_str()));
-            exit(-1);
-        }
-
-        if (g_CommandLine.verbose && g_CommandLine.verbosePath)
-        {
-            g_Log.verbose(format("linkerPath is '%s'\n", Backend::linkerPath.c_str()));
-            g_Log.verbose(format("linkerExe is '%s'\n", Backend::linkerExe.c_str()));
-        }
-    }
 }
 
 string Backend::getCacheFolder(const BuildParameters& buildParameters)
