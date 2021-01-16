@@ -108,8 +108,9 @@ bool ByteCodeGenJob::emitIntrinsicIsConstExpr(ByteCodeGenContext* context)
     auto inst              = emitInstruction(context, ByteCodeOp::IntrinsicIsConstExprSI, node->resultRegisterRC);
     SWAG_ASSERT(front->resolvedSymbolOverload);
     SWAG_ASSERT(front->resolvedSymbolOverload->node->ownerFct);
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-    inst->b.u32   = typeFunc->registerIdxToParamIdx(front->resolvedSymbolOverload->storageIndex);
+    auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+    inst->c.u32     = typeFunc->registerIdxToParamIdx(front->resolvedSymbolOverload->storageIndex);
+    inst->d.pointer = (uint8_t*) front->resolvedSymbolOverload;
 
     return true;
 }

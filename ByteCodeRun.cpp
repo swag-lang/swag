@@ -306,70 +306,116 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
     return true;
 }
 
-void ByteCodeRun::executeSelectIfParam(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction* ip, Register* regPtr, Register* regCount)
 {
-    auto registersRC = context->registersRC[context->curRC].buffer;
-    auto callParams  = context->callerContext->selectIfParameters;
-    SWAG_ASSERT(callParams);
-    auto paramIdx = ip->c.u32;
+    auto paramIdx   = ip->c.u32;
+    auto callParams = context->callerContext->selectIfParameters;
 
-    // Be sure value has been computed
-    auto solved = (SymbolOverload*) ip->d.pointer;
+    if (regPtr)
+        regPtr->pointer = nullptr;
 
-    if (solved->typeInfo->kind == TypeInfoKind::Variadic || solved->typeInfo->kind == TypeInfoKind::TypedVariadic)
+    // Count
+    auto numParamsCall = callParams->childs.size();
+    auto numParamsFunc = ip->c.u32;
+    auto count         = numParamsCall - numParamsFunc;
+    if (regCount)
+        regCount->u64 = numParamsCall - numParamsFunc;
+    if (count != 1)
+        return true;
+
+    // Try to deal with @spread
+    auto child = callParams->childs[paramIdx];
+    if (!(child->typeInfo->flags & TYPEINFO_SPREAD))
+        return true;
+
+    child = child->childs.front();
+    SWAG_ASSERT(child->kind == AstNodeKind::IdentifierRef);
+    child = child->childs.front();
+    SWAG_ASSERT(child->kind == AstNodeKind::IntrinsicProp);
+    child = child->childs.front();
+
+    if (child->typeInfo->kind == TypeInfoKind::TypeListArray)
     {
-        auto numParamsCall             = callParams->childs.size();
-        auto numParamsFunc             = paramIdx;
-        registersRC[ip->a.u32].pointer = nullptr;
-        registersRC[ip->b.u32].u64     = numParamsCall - numParamsFunc;
-        return;
+        auto typeList = CastTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
+        if (regCount)
+            regCount->u64 = typeList->subTypes.size();
+        return true;
     }
 
-    SWAG_ASSERT(paramIdx < callParams->childs.size());
-    auto child = callParams->childs[paramIdx];
-    if (!(child->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR)))
+    return false;
+}
+
+bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+{
+    auto solved = (SymbolOverload*) ip->d.pointer;
+    if (solved->typeInfo->kind == TypeInfoKind::Variadic || solved->typeInfo->kind == TypeInfoKind::TypedVariadic)
+        return getVariadicSI(context, ip, nullptr, nullptr);
+
+    uint32_t paramIdx   = ip->c.u32;
+    auto     callParams = context->callerContext->selectIfParameters;
+    SWAG_ASSERT(callParams && paramIdx < callParams->childs.size());
+
+    if (callParams->childs[paramIdx]->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR))
+        return true;
+
+    return false;
+}
+
+void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+{
+    // Is this constexpr ?
+    auto solved = (SymbolOverload*) ip->d.pointer;
+    if (!executeIsConstExprSI(context, ip))
     {
         context->hasError = true;
         context->errorMsg = format("'%s' cannot be evaluated at compile time", solved->symbol->name.c_str());
         return;
     }
 
-    if (solved->typeInfo->kind != TypeInfoKind::Native)
+    auto paramIdx   = ip->c.u32;
+    auto callParams = context->callerContext->selectIfParameters;
+    SWAG_ASSERT(callParams);
+    auto registersRC = context->registersRC[context->curRC].buffer;
+
+    // Be sure value has been computed
+    if (solved->typeInfo->kind == TypeInfoKind::Variadic || solved->typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
-        context->hasError = true;
-        context->errorMsg = format("evaluation of a function parameter of type '%s' is not supported at compile time", solved->typeInfo->name.c_str());
+        getVariadicSI(context, ip, &registersRC[ip->a.u32], &registersRC[ip->b.u32]);
         return;
     }
 
-    switch (solved->typeInfo->nativeType)
+    SWAG_ASSERT(paramIdx < callParams->childs.size());
+    auto child = callParams->childs[paramIdx];
+    if (solved->typeInfo->kind == TypeInfoKind::Native)
     {
-    case NativeTypeKind::String:
-        registersRC[ip->a.u32].pointer = (uint8_t*) child->computedValue.text.c_str();
-        registersRC[ip->b.u32].u64     = child->computedValue.text.length();
-        break;
+        switch (solved->typeInfo->nativeType)
+        {
+        case NativeTypeKind::String:
+            registersRC[ip->a.u32].pointer = (uint8_t*) child->computedValue.text.c_str();
+            registersRC[ip->b.u32].u64     = child->computedValue.text.length();
+            return;
 
-    case NativeTypeKind::S8:
-    case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U8:
-    case NativeTypeKind::U16:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::Char:
-    case NativeTypeKind::Bool:
-    case NativeTypeKind::F32:
-    case NativeTypeKind::F64:
-        registersRC[ip->a.u32].u64 = child->computedValue.reg.u64;
-        break;
-
-    default:
-        context->hasError = true;
-        context->errorMsg = format("evaluation of a function parameter of type '%s' is not supported at compile time", solved->typeInfo->name.c_str());
-        break;
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
+        case NativeTypeKind::Int:
+        case NativeTypeKind::Char:
+        case NativeTypeKind::Bool:
+        case NativeTypeKind::F32:
+        case NativeTypeKind::F64:
+            registersRC[ip->a.u32].u64 = child->computedValue.reg.u64;
+            return;
+        }
     }
+
+    context->hasError = true;
+    context->errorMsg = format("evaluation of a function parameter of type '%s' is not supported at compile time", solved->typeInfo->name.c_str());
 }
 
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
@@ -871,14 +917,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IntrinsicIsConstExprSI:
     {
-        auto callParams = context->callerContext->selectIfParameters;
-        SWAG_ASSERT(callParams && ip->b.u32 < callParams->childs.size());
-        registersRC[ip->a.u32].b = callParams->childs[ip->b.u32]->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR);
+        registersRC[ip->a.u32].b = executeIsConstExprSI(context, ip);
         break;
     }
 
     case ByteCodeOp::GetFromStackParam64SI:
-        executeSelectIfParam(context, ip);
+        executeGetFromStackSI(context, ip);
         break;
 
     case ByteCodeOp::GetFromStack64:
