@@ -312,17 +312,9 @@ void ByteCodeRun::executeSelectIfParam(ByteCodeRunContext* context, ByteCodeInst
     auto callParams  = context->callerContext->selectIfParameters;
     SWAG_ASSERT(callParams);
     auto paramIdx = ip->c.u32;
-    SWAG_ASSERT(paramIdx < callParams->childs.size());
 
     // Be sure value has been computed
     auto solved = (SymbolOverload*) ip->d.pointer;
-    auto child  = callParams->childs[paramIdx];
-    if (!(child->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR)))
-    {
-        context->hasError = true;
-        context->errorMsg = format("'%s' cannot be evaluated at compile time", solved->symbol->name.c_str());
-        return;
-    }
 
     if (solved->typeInfo->kind == TypeInfoKind::Variadic || solved->typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
@@ -330,6 +322,15 @@ void ByteCodeRun::executeSelectIfParam(ByteCodeRunContext* context, ByteCodeInst
         auto numParamsFunc             = paramIdx;
         registersRC[ip->a.u32].pointer = nullptr;
         registersRC[ip->b.u32].u64     = numParamsCall - numParamsFunc;
+        return;
+    }
+
+    SWAG_ASSERT(paramIdx < callParams->childs.size());
+    auto child = callParams->childs[paramIdx];
+    if (!(child->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR)))
+    {
+        context->hasError = true;
+        context->errorMsg = format("'%s' cannot be evaluated at compile time", solved->symbol->name.c_str());
         return;
     }
 

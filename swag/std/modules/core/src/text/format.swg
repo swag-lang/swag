@@ -9,18 +9,32 @@ func toString(fmt: string, values: ...)->String
     return buf.moveToString()
 }
 
+// Count the number of valid '%' placeholders in the string format
+// Note that %% will not count, as this represents the '%' character
+func countPercent(fmt: string)->u32
+{
+    cptPercent := 0'u32
+    for i := 0; i < @countof(fmt); i += 1
+    {
+        if fmt[i] != "%"'u8
+            continue
+
+        if i == @countof(fmt) - 1 || fmt[i + 1] != "%"'u8
+            cptPercent += 1
+        else
+            i += 1
+    }
+
+    return cptPercent
+}
+
 // Format a string and put the result in a ConcatBuffer
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
     #selectif
     {
-        if !@isconstexpr(fmt)
-        {
-            @print("XXXXXXXXXX\n")
-            return true
-        }
-
-        @print(fmt)
-        @print("\n")
+        if !@isconstexpr(fmt) return true
+        cptPercent := countPercent(fmt)
+        if cptPercent != @countof(values) return true//@error(toString("bad number of arguments %", cptPercent), #location(fmt))
         return true
     }
 {
