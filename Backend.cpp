@@ -40,6 +40,7 @@ string Backend::getOutputFileName(const BuildParameters& buildParameters)
     SWAG_ASSERT(!buildParameters.outputFileName.empty());
     string destFile = g_Workspace.targetPath.string() + buildParameters.outputFileName;
     destFile += OS::getOutputFileExtension(buildParameters.outputType);
+    destFile = normalizePath(fs::path(destFile.c_str()));
     return destFile;
 }
 

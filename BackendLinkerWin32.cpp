@@ -50,7 +50,8 @@ namespace BackendLinkerWin32
         for (const auto& dep : module->moduleDependencies)
         {
             auto libName  = dep->name + ".lib";
-            auto fullName = g_Workspace.targetPath.string(); // oneLibPath;
+            auto fullName = g_Workspace.targetPath.string();
+            fullName      = normalizePath(fs::path(fullName.c_str()));
             fullName += "/";
             fullName += libName;
 
@@ -67,10 +68,11 @@ namespace BackendLinkerWin32
 
         for (const auto& oneLibPath : libPath)
         {
+            auto normalizedLibPath = normalizePath(fs::path(oneLibPath.c_str()));
             if (addQuote)
-                arguments.push_back("/LIBPATH:\"" + oneLibPath + "\"");
+                arguments.push_back("/LIBPATH:\"" + normalizedLibPath + "\"");
             else
-                arguments.push_back("/LIBPATH:" + oneLibPath);
+                arguments.push_back("/LIBPATH:" + normalizedLibPath);
         }
 
         arguments.push_back("/INCREMENTAL:NO");
@@ -90,9 +92,6 @@ namespace BackendLinkerWin32
             arguments.push_back("/OUT:\"" + resultFile + "\"");
         else
             arguments.push_back("/OUT:" + resultFile);
-
-        //printf(arguments.c_str());
-        //printf("\n");
     }
 } // namespace BackendLinkerWin32
 
@@ -108,7 +107,11 @@ namespace OS
         }
         void write_impl(const char* ptr, size_t len) override
         {
+            g_Log.lock();
+            g_Log.setColor(LogColor::Red);
             g_Log.print(ptr);
+            g_Log.setDefaultColor();
+            g_Log.unlock();
             pos += len;
         }
 
@@ -131,14 +134,28 @@ namespace OS
         auto targetPath = Backend::getCacheFolder(buildParameters);
         for (auto& file : objectFiles)
         {
-            auto path = targetPath + "/" + file.c_str();
-            linkArguments.push_back(path);
+            auto path              = targetPath + "/" + file.c_str();
+            auto normalizedLibPath = normalizePath(fs::path(path.c_str()));
+            linkArguments.push_back(normalizedLibPath);
         }
 
         VectorNative<const char*> linkArgumentsPtr;
         linkArgumentsPtr.push_back("lld");
         for (auto& one : linkArguments)
             linkArgumentsPtr.push_back(one.c_str());
+
+        // Log linker parameters
+        if (g_CommandLine.verboseLink)
+        {
+            Utf8 linkStr;
+            for (auto& one : linkArguments)
+            {
+                linkStr += one;
+                linkStr += " ";
+            }
+
+            g_Log.verbose(linkStr);
+        }
 
         llvm::ArrayRef<const char*> array_ref_args(linkArgumentsPtr.buffer, linkArgumentsPtr.size());
 
