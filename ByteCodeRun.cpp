@@ -2192,7 +2192,21 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         // Retreive calling context, like current expension
         vector<const Diagnostic*> notes;
         if (runContext->callerContext)
+        {
             runContext->callerContext->setErrorContext(diag, notes);
+
+            // If we have an expansion, and the first expansion requests test error, then raise
+            // in its context to dismiss the error (like an error during a #selectif for example)
+            if (runContext->callerContext->expansionNode.size())
+            {
+                auto firstSrcFile = runContext->callerContext->expansionNode[0].first->sourceFile;
+                if (firstSrcFile->numTestErrors)
+                {
+                    firstSrcFile->report(diag, notes);
+                    return EXCEPTION_EXECUTE_HANDLER;
+                }
+            }
+        }
 
         if (g_byteCodeStack.steps.size())
             g_byteCodeStack.steps[0].bc->sourceFile->report(diag, notes);
