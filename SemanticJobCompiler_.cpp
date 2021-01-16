@@ -574,15 +574,13 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->setFlagsValueIsComputed();
 
         // If we are inside a generated function, try to find another parent one
-        if (node->ownerFct->attributeFlags & ATTRIBUTE_GENERATED_FUNC)
+        if (node->ownerFct->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         {
             auto fct = node->ownerFct->parent;
-            while (fct && (fct->kind != AstNodeKind::FuncDecl || fct->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
+            while (fct && (fct->kind != AstNodeKind::FuncDecl || fct->attributeFlags & ATTRIBUTE_SHARP_FUNC))
                 fct = fct->parent;
             if (fct)
                 node->computedValue.text = fct->token.text;
-            else
-                node->computedValue.text = node->ownerFct->getNameForMessage();
         }
 
         return true;

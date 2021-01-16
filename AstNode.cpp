@@ -477,22 +477,26 @@ Utf8 AstFuncDecl::getNameForMessage()
 {
     if (attributeFlags & ATTRIBUTE_AST_FUNC)
         return "'#ast' block";
-    if (attributeFlags & ATTRIBUTE_TEST_FUNC)
-        return "'#test' block";
     if (attributeFlags & ATTRIBUTE_RUN_FUNC)
         return "'#run' block";
+    if (attributeFlags & ATTRIBUTE_SELECTIF_FUNC)
+        return "'#selectif' block";
+
+    if (attributeFlags & ATTRIBUTE_TEST_FUNC)
+        return "'#test' block";
     if (attributeFlags & ATTRIBUTE_MAIN_FUNC)
         return "'#main' block";
     if (attributeFlags & ATTRIBUTE_COMPILER_FUNC)
         return "'#compiler' block";
-    if (attributeFlags & ATTRIBUTE_SELECTIF_FUNC)
-        return "'#selectif' block";
+
     if (flags & AST_SPECIAL_COMPILER_FUNC)
         return format("'%s' block", token.text.c_str());
+
     if (attributeFlags & ATTRIBUTE_MIXIN)
         return format("mixin '%s'", token.text.c_str());
     if (attributeFlags & ATTRIBUTE_MACRO)
         return format("macro '%s'", token.text.c_str());
+
     return format("function '%s'", token.text.c_str());
 }
 

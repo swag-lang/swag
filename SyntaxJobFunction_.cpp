@@ -342,51 +342,51 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         case TokenId::CompilerFuncTest:
             funcNode->token.text = "#test";
             funcNode->token.text = "__test" + to_string(id);
-            funcNode->attributeFlags |= ATTRIBUTE_TEST_FUNC;
+            funcNode->attributeFlags |= ATTRIBUTE_TEST_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerFuncInit:
             funcNode->token.text = "#init";
             funcNode->token.text = "__init" + to_string(id);
-            funcNode->attributeFlags |= ATTRIBUTE_INIT_FUNC;
+            funcNode->attributeFlags |= ATTRIBUTE_INIT_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerFuncDrop:
             funcNode->token.text = "#drop";
             funcNode->token.text = "__drop" + to_string(id);
-            funcNode->attributeFlags |= ATTRIBUTE_DROP_FUNC;
+            funcNode->attributeFlags |= ATTRIBUTE_DROP_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerRun:
             funcNode->token.text = "#run";
             funcNode->token.text = "__run" + to_string(id);
-            funcNode->attributeFlags |= ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER;
+            funcNode->attributeFlags |= ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerGeneratedRun:
             funcNode->token.text = "#run";
             funcNode->token.text = "__run" + to_string(id);
             funcNode->flags |= AST_GENERATED;
-            funcNode->attributeFlags |= ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER;
+            funcNode->attributeFlags |= ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerFuncMain:
             funcNode->token.text = "#main";
             funcNode->token.text = "__main" + to_string(id);
-            funcNode->attributeFlags |= ATTRIBUTE_MAIN_FUNC;
+            funcNode->attributeFlags |= ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerFuncCompiler:
             funcNode->token.text = "#compiler";
             funcNode->token.text = "__compiler" + to_string(id);
-            funcNode->attributeFlags |= ATTRIBUTE_COMPILER_FUNC | ATTRIBUTE_COMPILER;
+            funcNode->attributeFlags |= ATTRIBUTE_COMPILER_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;
             module->numCompilerFunctions++;
             break;
         case TokenId::CompilerAst:
             funcNode->token.text = "#ast";
             funcNode->token.text = "__ast" + to_string(id);
             funcNode->flags |= AST_GENERATED;
-            funcNode->attributeFlags |= ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC;
+            funcNode->attributeFlags |= ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerSelectIf:
             funcNode->token.text = "#selectif";
             funcNode->token.text = "__selectif" + to_string(id);
             funcNode->flags |= AST_GENERATED;
-            funcNode->attributeFlags |= ATTRIBUTE_SELECTIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC;
+            funcNode->attributeFlags |= ATTRIBUTE_SELECTIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
         }
     }
