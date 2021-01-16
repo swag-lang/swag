@@ -569,20 +569,9 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     case TokenId::CompilerFunction:
     {
         SWAG_VERIFY(node->ownerFct, context->report({node, "'#function' can only be called inside a function"}));
-        node->computedValue.text = node->ownerFct->token.text;
-        node->typeInfo           = g_TypeMgr.typeInfoString;
+        node->typeInfo = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
-
-        // If we are inside a generated function, try to find another parent one
-        if (node->ownerFct->attributeFlags & ATTRIBUTE_SHARP_FUNC)
-        {
-            auto fct = node->ownerFct->parent;
-            while (fct && (fct->kind != AstNodeKind::FuncDecl || fct->attributeFlags & ATTRIBUTE_SHARP_FUNC))
-                fct = fct->parent;
-            if (fct)
-                node->computedValue.text = fct->token.text;
-        }
-
+        node->computedValue.text = node->ownerFct->getNameForUserCompiler();
         return true;
     }
 

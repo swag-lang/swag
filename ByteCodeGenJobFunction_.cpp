@@ -836,7 +836,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerCallerFunction:
         {
             reserveLinearRegisterRC2(context, regList);
-            const auto& str    = node->ownerFct->computeScopedName();
+            const auto& str    = node->ownerFct->getNameForUserCompiler();
             auto        offset = context->sourceFile->module->constantSegment.addString(str);
             SWAG_ASSERT(offset != UINT32_MAX);
             emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0], offset);

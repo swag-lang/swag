@@ -473,6 +473,20 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     return newNode;
 }
 
+Utf8 AstFuncDecl::getNameForUserCompiler()
+{
+    if (attributeFlags & ATTRIBUTE_SHARP_FUNC)
+    {
+        auto fct = parent;
+        while (fct && (fct->kind != AstNodeKind::FuncDecl || fct->attributeFlags & ATTRIBUTE_SHARP_FUNC))
+            fct = fct->parent;
+        if (fct)
+            return fct->computeScopedName();
+    }
+
+    return computeScopedName();
+}
+
 Utf8 AstFuncDecl::getNameForMessage()
 {
     if (attributeFlags & ATTRIBUTE_AST_FUNC)

@@ -1,7 +1,7 @@
 func append()
     #selectif
     {
-        @assert(#function == "append")
+        @assert(#function == "__compiler2433.append")
         return true
     }
 {
