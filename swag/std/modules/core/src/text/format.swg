@@ -11,6 +11,11 @@ func toString(fmt: string, values: ...)->String
 
 // Format a string and put the result in a ConcatBuffer
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
+    #selectif
+    {
+        if !@isconstexpr(fmt) return true
+        return true
+    }
 {
     ptr := @dataof(fmt)
     cpt := @countof(fmt)

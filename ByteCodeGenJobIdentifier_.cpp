@@ -62,8 +62,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             if (typeInfo->numRegisters() == 2)
                 reserveLinearRegisterRC2(context, node->resultRegisterRC);
-            auto inst       = emitInstruction(context, ByteCodeOp::GetFromStackParam64SI, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-            inst->c.u64     = resolved->storageIndex;
+            auto inst = emitInstruction(context, ByteCodeOp::GetFromStackParam64SI, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+
+            auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(resolved->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+            inst->c.u64     = typeFunc->registerIdxToParamIdx(resolved->storageIndex);
             inst->d.pointer = (uint8_t*) resolved;
 
             identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;

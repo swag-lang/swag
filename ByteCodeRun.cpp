@@ -311,8 +311,7 @@ void ByteCodeRun::executeSelectIfParam(ByteCodeRunContext* context, ByteCodeInst
     auto registersRC = context->registersRC[context->curRC].buffer;
     auto callParams  = context->callerContext->selectIfParameters;
     SWAG_ASSERT(callParams);
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(context->bc->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-    auto paramIdx = typeFunc->registerIdxToParamIdx(ip->c.u32);
+    auto paramIdx = ip->c.u32;
     SWAG_ASSERT(paramIdx < callParams->childs.size());
 
     // Be sure value has been computed
