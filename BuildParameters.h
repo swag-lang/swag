@@ -22,6 +22,7 @@ enum class BackendVendor
 enum class BackendAbi
 {
     Msvc,
+    Gnu,
 };
 
 enum class BackendType
@@ -52,6 +53,28 @@ enum BackendCompileType
     Example,
     Count,
 };
+
+inline bool isAbiGnu(BackendAbi abi)
+{
+    switch (abi)
+    {
+    case BackendAbi::Gnu:
+        return true;
+    }
+
+    return false;
+}
+
+inline bool isOsDarwin(BackendOs os)
+{
+    switch (os)
+    {
+    case BackendOs::MacOSX:
+        return true;
+    }
+
+    return false;
+}
 
 struct BuildParameters
 {

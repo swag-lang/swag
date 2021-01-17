@@ -93,11 +93,22 @@ string Backend::getOutputFileExtension(BackendOutputType type)
     switch (type)
     {
     case BackendOutputType::Binary:
-        return ".exe";
+        if (g_CommandLine.os == BackendOs::Windows)
+            return ".exe";
+        return "";
+
     case BackendOutputType::StaticLib:
-        return ".lib";
+        if (g_CommandLine.os == BackendOs::Windows && !isAbiGnu(g_CommandLine.abi))
+            return ".lib";
+        return ".a";
+
     case BackendOutputType::DynamicLib:
-        return ".dll";
+        if (g_CommandLine.os == BackendOs::Windows && !isAbiGnu(g_CommandLine.abi))
+            return ".dll";
+        if (isOsDarwin(g_CommandLine.os))
+            return ".dylib";
+        return ".so";
+
     default:
         SWAG_ASSERT(false);
         return "";
@@ -106,7 +117,10 @@ string Backend::getOutputFileExtension(BackendOutputType type)
 
 string Backend::getObjectFileExtension()
 {
-    return ".obj";
+    if (g_CommandLine.abi == BackendAbi::Msvc ||
+        (g_CommandLine.os == BackendOs::Windows && !isAbiGnu(g_CommandLine.abi)))
+        return ".obj";
+    return ".o";
 }
 
 BackendObjType Backend::getObjType(BackendOs os)
@@ -163,6 +177,8 @@ const char* Backend::GetAbiName()
     {
     case BackendAbi::Msvc:
         return "Msvc";
+    case BackendAbi::Gnu:
+        return "Gnu";
     default:
         return "?";
     }
