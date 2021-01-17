@@ -38,31 +38,6 @@ private
 }
 
 ////////////////////////////////////////////////////////////
-// LIBC
-////////////////////////////////////////////////////////////
-#[swag.callback]
-{
-    func memcpy(dst: *void, src: const *void, size: uint)
-    {
-        RtlCopyMemory(dst, src, size)
-    }
-
-    func memmove(dst: *void, src: const *void, size: uint)
-    {
-        RtlMoveMemory(dst, src, size)
-    }
-
-    func memcmp(dst, src: const *void, size: uint)->s32
-    {
-        len := RtlCompareMemory(dst, src, size)
-        if len == size return 0
-        p1 := cast(const *s8) dst
-        p2 := cast(const *s8) src
-        return p1[len] - p2[len]
-    }
-}
-
-////////////////////////////////////////////////////////////
 func @print(message: string)
 {
     if !@dataof(message) || !@countof(message)
@@ -136,5 +111,30 @@ func __assertBox(msg, title: string)
             DebugBreak();
         case IDCONTINUE:
             break
+    }
+}
+
+////////////////////////////////////////////////////////////
+// LIBC
+////////////////////////////////////////////////////////////
+#[swag.callback]
+{
+    func memcpy(dst: *void, src: const *void, size: uint)
+    {
+        RtlCopyMemory(dst, src, size)
+    }
+
+    func memmove(dst: *void, src: const *void, size: uint)
+    {
+        RtlMoveMemory(dst, src, size)
+    }
+
+    func memcmp(dst, src: const *void, size: uint)->s32
+    {
+        len := RtlCompareMemory(dst, src, size)
+        if len == size return 0
+        p1 := cast(const *s8) dst
+        p2 := cast(const *s8) src
+        return p1[len] - p2[len]
     }
 }

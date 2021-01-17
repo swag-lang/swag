@@ -991,7 +991,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicCStrLen:
         {
-            localCall(buildParameters, allocR, allocT, "@cstrlen", {ip->a.u32, ip->b.u32}, {});
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            builder.CreateStore(builder.CreateCall(pp.fn_strlen, {r1}), r0);
             break;
         }
 

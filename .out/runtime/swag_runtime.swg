@@ -73,14 +73,6 @@ func __ftoa(result: *u8, value: f64)
 }
 
 ////////////////////////////////////////////////////////////
-func @cstrlen(value: const *u8)->uint
-{
-    idx := 0'uint
-    while value[idx] idx += 1
-    return idx
-}
-
-////////////////////////////////////////////////////////////
 func @strcmp(str1: string, str2: string)->bool
 {
     num1 := @countof(str1)

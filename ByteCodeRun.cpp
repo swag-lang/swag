@@ -835,13 +835,14 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         void*  dst                 = (void*) registersRC[ip->b.u32].pointer;
         void*  src                 = (void*) registersRC[ip->c.u32].pointer;
         size_t size                = registersRC[ip->d.u32].u64;
-        registersRC[ip->a.u32].s32 = Runtime::memcmp(dst, src, size);
+        registersRC[ip->a.u32].s32 = memcmp(dst, src, size);
         break;
     }
+
     case ByteCodeOp::IntrinsicCStrLen:
     {
         void* src                  = (void*) registersRC[ip->b.u32].pointer;
-        registersRC[ip->a.u32].u32 = Runtime::cstrlen((const char*) src);
+        registersRC[ip->a.u32].u64 = strlen((const char*) src);
         break;
     }
 

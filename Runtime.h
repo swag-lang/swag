@@ -9,7 +9,7 @@ enum AttributeUsage
     // Usage
     Enum           = 0x00000001,
     EnumValue      = 0x00000002,
-    StructVariable          = 0x00000004,
+    StructVariable = 0x00000004,
     GlobalVariable = 0x00000008,
     Struct         = 0x00000010,
     Function       = 0x00000020,
@@ -345,9 +345,7 @@ static const uint64_t SWAG_LAMBDA_MARKER_MASK    = 0xC000000000000000;
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 namespace Runtime
 {
-    int      memcmp(const void* b1, const void* b2, size_t n);
     bool     strcmp(const void* str1, uint32_t num1, const void* str2, uint32_t num2);
-    uint32_t cstrlen(const char* str);
     float    abs(float value);
     void     print(const void* message, uint32_t len);
     void     print(int64_t value);

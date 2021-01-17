@@ -485,10 +485,12 @@ func @getcontext()->*swag.Context;
 func @setcontext(context: const *swag.Context);
 func @isbytecode()->bool;
 func @compiler()->swag.ICompiler;
+
 func @memset(dst: *void, value: u8, size: uint);
 func @memcpy(dst: *void, src: const *void, size: uint);
 func @memmove(dst: *void, src: const *void, size: uint);
 func @memcmp(dst, src: const *void, size: uint)->s32;
+func @cstrlen(value: const *u8)->uint;
 
 func @atomadd(addr: *s8, value: s8)->s8;
 func @atomadd(addr: *s16, value: s16)->s16;
