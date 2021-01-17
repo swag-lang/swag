@@ -10,6 +10,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
+#include "Backend.h"
 #include "ByteCodeOptimizerJob.h"
 
 Workspace g_Workspace;
@@ -146,7 +147,7 @@ void Workspace::setupInternalTags()
     // swag.endian = "little" or "big" depending on the architecture
     switch (g_CommandLine.arch)
     {
-    case BackendArch::X64:
+    case BackendArch::X86_64:
         oneTag.type       = g_TypeMgr.typeInfoString;
         oneTag.value.text = "little";
         oneTag.name       = "swag.endian";
@@ -372,28 +373,6 @@ void Workspace::deleteFolderContent(const fs::path& path)
     });
 }
 
-Utf8 Workspace::GetArchName()
-{
-    switch (g_CommandLine.arch)
-    {
-    case BackendArch::X64:
-        return "x64";
-    default:
-        return "?";
-    }
-}
-
-Utf8 Workspace::GetOsName()
-{
-    switch (g_CommandLine.os)
-    {
-    case BackendOs::Windows:
-        return "windows";
-    default:
-        return "?";
-    }
-}
-
 void Workspace::setupCachePath()
 {
     // Cache directory
@@ -412,7 +391,7 @@ void Workspace::setupCachePath()
 
 Utf8 Workspace::getTargetFolder()
 {
-    return g_CommandLine.buildCfg + "-" + GetOsName().c_str() + "-" + GetArchName().c_str();
+    return g_CommandLine.buildCfg + "-" + Backend::GetOsName().c_str() + "-" + Backend::GetArchName().c_str();
 }
 
 Utf8 Workspace::getPublicPath(Module* module, bool forWrite)

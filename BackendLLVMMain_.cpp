@@ -47,7 +47,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        module->error(format("llvm backend unsupported os '%s'", g_Workspace.GetOsName().c_str()));
+        module->error(format("llvm backend unsupported os '%s'", Backend::GetOsName().c_str()));
         return false;
     }
 }
@@ -70,7 +70,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(format("llvm backend unsupported os '%s'", g_Workspace.GetOsName().c_str()));
+        module->error(format("llvm backend unsupported os '%s'", Backend::GetOsName().c_str()));
         return false;
     }
 

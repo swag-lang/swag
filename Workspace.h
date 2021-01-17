@@ -43,8 +43,6 @@ struct Workspace
     void    setup();
     Module* getModuleByName(const Utf8& moduleName);
     void    deleteFolderContent(const fs::path& path);
-    Utf8    GetArchName();
-    Utf8    GetOsName();
     OneTag* hasTag(const Utf8& name);
     void    cleanPublic(const fs::path& basePath);
     void    clean();

@@ -112,3 +112,29 @@ BackendObjType Backend::getObjType(BackendOs os)
         return BackendObjType::Elf;
     }
 }
+
+Utf8 Backend::GetArchName()
+{
+    switch (g_CommandLine.arch)
+    {
+    case BackendArch::X86_64:
+        return "x86_64";
+    default:
+        return "?";
+    }
+}
+
+Utf8 Backend::GetOsName()
+{
+    switch (g_CommandLine.os)
+    {
+    case BackendOs::Windows:
+        return "windows";
+    case BackendOs::Linux:
+        return "linux";
+    case BackendOs::MacOSX:
+        return "osx";
+    default:
+        return "?";
+    }
+}

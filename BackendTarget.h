@@ -2,7 +2,7 @@
 
 enum class BackendArch
 {
-    X64,
+    X86_64,
 };
 
 enum class BackendOs

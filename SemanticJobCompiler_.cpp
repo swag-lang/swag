@@ -7,6 +7,7 @@
 #include "Workspace.h"
 #include "LoadFileJob.h"
 #include "ByteCode.h"
+#include "Backend.h"
 
 bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
@@ -484,13 +485,13 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         return true;
 
     case TokenId::CompilerArch:
-        node->computedValue.text = g_Workspace.GetArchName();
+        node->computedValue.text = Backend::GetArchName();
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
         return true;
 
     case TokenId::CompilerOs:
-        node->computedValue.text = g_Workspace.GetOsName();
+        node->computedValue.text = Backend::GetOsName();
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
         return true;

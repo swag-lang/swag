@@ -60,7 +60,7 @@ struct CommandLine
     string      buildCfgOptimSpeed = "default";
     string      buildCfgOptimSize  = "default";
     BackendOs   os                 = BackendOs::Windows;
-    BackendArch arch               = BackendArch::X64;
+    BackendArch arch               = BackendArch::X86_64;
     set<string> tags;
 
     uint32_t stackSize  = 1024 * 1024;

@@ -585,9 +585,9 @@ void ModuleBuildJob::publishFilesToTarget()
     // Everything in a sub folder named 'os-arch' will be copied only if this matches the current os and arch
     auto osArchPath = publishPath;
     osArchPath += "/";
-    osArchPath += g_Workspace.GetOsName();
+    osArchPath += Backend::GetOsName();
     osArchPath += "-";
-    osArchPath += g_Workspace.GetArchName();
+    osArchPath += Backend::GetArchName();
     if (fs::exists(osArchPath))
     {
         OS::visitFiles(osArchPath.c_str(), [&](const char* cFileName) {
