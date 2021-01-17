@@ -2,7 +2,6 @@
 #include "Workspace.h"
 #include "Backend.h"
 #include "OS.h"
-#include "BackendSetupWin32.h"
 #include "Module.h"
 #include "Profile.h"
 #include "lld/Common/Driver.h"
@@ -50,23 +49,23 @@ namespace BackendLinker
 
     void getArgumentsCoff(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments)
     {
-        vector<Utf8> libPath;
+        vector<Utf8> libPaths;
 
-        // Windows sdk library paths
-        const char* target = isArchArm(g_CommandLine.arch) ? "arm64" : "x64";
-        libPath.push_back(format(R"(%slib\%s\um\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
-        libPath.push_back(format(R"(%slib\%s\ucrt\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
         arguments.push_back("kernel32.lib");
         arguments.push_back("ucrt.lib");
         arguments.push_back("user32.lib");
 
+        // System library paths
+        for (auto p : g_CommandLine.libPaths)
+            libPaths.push_back(p);
+
         // Modules
-        libPath.push_back(g_Workspace.targetPath.string());
+        libPaths.push_back(g_Workspace.targetPath.string());
 
         // Runtime
-        libPath.push_back(g_CommandLine.exePath.parent_path().string());
+        libPaths.push_back(g_CommandLine.exePath.parent_path().string());
 
-        for (const auto& oneLibPath : libPath)
+        for (const auto& oneLibPath : libPaths)
         {
             auto normalizedLibPath = normalizePath(fs::path(oneLibPath.c_str()));
             arguments.push_back("/LIBPATH:" + normalizedLibPath);

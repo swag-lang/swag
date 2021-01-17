@@ -626,9 +626,6 @@
     <ClInclude Include="BackendFunctionBodyJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="BackendSetupWin32.h">
-      <Filter>Win32</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleRunJob.h">
       <Filter>Backend</Filter>
     </ClInclude>

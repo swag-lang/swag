@@ -65,7 +65,8 @@ struct CommandLine
     BackendOs     os     = BackendOs::Windows;
     BackendAbi    abi    = BackendAbi::Msvc;
 
-    set<string> tags;
+    set<string>  tags;
+    vector<Utf8> libPaths;
 
     uint32_t stackSize  = 1024 * 1024;
     uint32_t maxRecurse = 16 * 1024;

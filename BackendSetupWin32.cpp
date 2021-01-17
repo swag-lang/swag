@@ -6,11 +6,6 @@
 #include "Backend.h"
 #include "ComWin32.hpp"
 
-namespace BackendSetupWin32
-{
-    string winSdkPath, winSdkVersion;
-} // namespace BackendSetupWin32
-
 namespace OS
 {
     static string getStringRegKey(HKEY hKey, const string& strValueName)
@@ -80,8 +75,9 @@ namespace OS
 
     void setupBackend()
     {
-        // Windows sdk folders and version
-        if (!getWinSdkFolder(BackendSetupWin32::winSdkPath, BackendSetupWin32::winSdkVersion))
+        string winSdkPath;
+        string winSdkVersion;
+        if (!getWinSdkFolder(winSdkPath, winSdkVersion))
         {
             g_Log.error("error: backend: cannot locate windows sdk folder");
             exit(-1);
@@ -89,9 +85,13 @@ namespace OS
 
         if (g_CommandLine.verbose && g_CommandLine.verbosePath)
         {
-            g_Log.verbose(format("winSdkPath is '%s'\n", BackendSetupWin32::winSdkPath.c_str()));
-            g_Log.verbose(format("winSdkVersion is '%s'\n", BackendSetupWin32::winSdkVersion.c_str()));
+            g_Log.verbose(format("winSdkPath is '%s'\n", winSdkPath.c_str()));
+            g_Log.verbose(format("winSdkVersion is '%s'\n", winSdkVersion.c_str()));
         }
+
+        const char* target = isArchArm(g_CommandLine.arch) ? "arm64" : "x64";
+        g_CommandLine.libPaths.push_back(format(R"(%slib\%s\um\%s)", winSdkPath.c_str(), winSdkVersion.c_str(), target));
+        g_CommandLine.libPaths.push_back(format(R"(%slib\%s\ucrt\%s)", winSdkPath.c_str(), winSdkVersion.c_str(), target));
     }
 } // namespace OS
 #endif
