@@ -77,7 +77,7 @@ struct Backend
     static string getOutputFileName(const BuildParameters& buildParameters);
     static bool   passByValue(TypeInfo* typeInfo);
 
-    static string         getDllFileExtension();
+    static string         getObjectFileExtension();
     static string         getOutputFileExtension(BackendOutputType type);
     static BackendObjType getObjType(BackendOs os);
     static const char*    GetArchName();

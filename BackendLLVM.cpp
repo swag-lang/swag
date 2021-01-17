@@ -163,7 +163,7 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
         pp.filename = format("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
-        pp.filename += ".obj";
+        pp.filename += Backend::getObjectFileExtension();
 
         pp.context = new llvm::LLVMContext();
         pp.module  = new llvm::Module(pp.filename.c_str(), *pp.context);

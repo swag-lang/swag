@@ -88,24 +88,6 @@ bool Backend::passByValue(TypeInfo* typeInfo)
     return typeInfo->numRegisters() == 1;
 }
 
-BackendObjType Backend::getObjType(BackendOs os)
-{
-    switch (os)
-    {
-    case BackendOs::Windows:
-        return BackendObjType::Coff;
-    case BackendOs::MacOSX:
-        return BackendObjType::MachO;
-    default:
-        return BackendObjType::Elf;
-    }
-}
-
-string Backend::getDllFileExtension()
-{
-    return ".dll";
-}
-
 string Backend::getOutputFileExtension(BackendOutputType type)
 {
     switch (type)
@@ -119,6 +101,24 @@ string Backend::getOutputFileExtension(BackendOutputType type)
     default:
         SWAG_ASSERT(false);
         return "";
+    }
+}
+
+string Backend::getObjectFileExtension()
+{
+    return ".obj";
+}
+
+BackendObjType Backend::getObjType(BackendOs os)
+{
+    switch (os)
+    {
+    case BackendOs::Windows:
+        return BackendObjType::Coff;
+    case BackendOs::MacOSX:
+        return BackendObjType::MachO;
+    default:
+        return BackendObjType::Elf;
     }
 }
 
