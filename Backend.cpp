@@ -113,7 +113,7 @@ BackendObjType Backend::getObjType(BackendOs os)
     }
 }
 
-Utf8 Backend::GetArchName()
+const char* Backend::GetArchName()
 {
     switch (g_CommandLine.arch)
     {
@@ -124,7 +124,7 @@ Utf8 Backend::GetArchName()
     }
 }
 
-Utf8 Backend::GetOsName()
+const char* Backend::GetOsName()
 {
     switch (g_CommandLine.os)
     {
@@ -134,6 +134,28 @@ Utf8 Backend::GetOsName()
         return "linux";
     case BackendOs::MacOSX:
         return "osx";
+    default:
+        return "?";
+    }
+}
+
+const char* Backend::GetAbiName()
+{
+    switch (g_CommandLine.abi)
+    {
+    case BackendAbi::Msvc:
+        return "Msvc";
+    default:
+        return "?";
+    }
+}
+
+const char* Backend::GetVendorName()
+{
+    switch (g_CommandLine.vendor)
+    {
+    case BackendVendor::Pc:
+        return "Pc";
     default:
         return "?";
     }

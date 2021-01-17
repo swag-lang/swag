@@ -289,7 +289,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, error);
     if (!target)
     {
-        g_Log.error(format("LLVM backend cannot create target '%s'", targetTriple.c_str()));
+        g_Log.error(format("llvm backend cannot create target '%s'", targetTriple.c_str()));
         return false;
     }
 

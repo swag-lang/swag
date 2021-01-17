@@ -81,6 +81,8 @@ struct Backend
     static string         getOutputFileName(const BuildParameters& buildParameters);
     static bool           passByValue(TypeInfo* typeInfo);
     static BackendObjType getObjType(BackendOs os);
-    static Utf8           GetArchName();
-    static Utf8           GetOsName();
+    static const char*    GetArchName();
+    static const char*    GetOsName();
+    static const char*    GetAbiName();
+    static const char*    GetVendorName();
 };

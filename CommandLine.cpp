@@ -3,6 +3,7 @@
 #include "Allocator.h"
 #include "Log.h"
 #include "Global.h"
+#include "Backend.h"
 
 CommandLine g_CommandLine;
 
@@ -19,6 +20,34 @@ bool CommandLine::check()
     // Force verbose
     if (verboseCmdLine || verbosePath || verboseLink || verboseTestErrors || verbosePass || verboseConcreteTypes)
         verbose = true;
+
+    // Check special backend X64
+    if (backendType == BackendType::X64)
+    {
+        if (abi != BackendAbi::Msvc)
+        {
+            g_Log.error(format("command line error: invalid abi '%s' for x64 backend", Backend::GetAbiName()));
+            return false;
+        }
+
+        if (vendor != BackendVendor::Pc)
+        {
+            g_Log.error(format("command line error: invalid vendor '%s' for x64 backend", Backend::GetVendorName()));
+            return false;
+        }
+
+        if (os != BackendOs::Windows)
+        {
+            g_Log.error(format("command line error: invalid os '%s' for x64 backend", Backend::GetOsName()));
+            return false;
+        }
+
+        if (arch != BackendArch::X86_64)
+        {
+            g_Log.error(format("command line error: invalid arch '%s' for x64 backend", Backend::GetArchName()));
+            return false;
+        }
+    }
 
     return true;
 }

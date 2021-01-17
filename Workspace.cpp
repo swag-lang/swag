@@ -391,7 +391,7 @@ void Workspace::setupCachePath()
 
 Utf8 Workspace::getTargetFolder()
 {
-    return g_CommandLine.buildCfg + "-" + Backend::GetOsName().c_str() + "-" + Backend::GetArchName().c_str();
+    return g_CommandLine.buildCfg + "-" + Backend::GetOsName() + "-" + Backend::GetArchName();
 }
 
 Utf8 Workspace::getPublicPath(Module* module, bool forWrite)
