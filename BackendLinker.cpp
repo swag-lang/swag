@@ -53,9 +53,6 @@ namespace BackendLinker
     {
         vector<Utf8> libPaths;
 
-        // LibC
-        arguments.push_back("ucrt.lib");
-
         // System library paths
         for (auto p : g_CommandLine.libPaths)
             libPaths.push_back(p);

@@ -106,6 +106,7 @@ void Workspace::addRuntime()
 
     addRuntimeFile("swag_runtime.swg");
     addRuntimeFile("swag_runtime_win32.swg");
+    addRuntimeFile("swag_runtime_msvc.swg");
 }
 
 void Workspace::setupPaths()
