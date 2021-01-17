@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) Christophe Beaudet
+ *
+ * This file is part of swag, which is MIT licensed.
+ * See http://opensource.org/licenses/MIT
+ */
+
 ////////////////////////////////////////////////////////////
 func __itoa(result: *u8, value: s64)->*u8
 {

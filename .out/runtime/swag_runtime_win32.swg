@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) Christophe Beaudet
+ *
+ * This file is part of swag, which is MIT licensed.
+ * See http://opensource.org/licenses/MIT
+ */
+
 #global if #os == "windows"
 #global foreignlib "kernel32"
 #global foreignlib "user32"
@@ -20,7 +27,6 @@ private
         func WriteFile(hFile: HANDLE, lpBuffer: const *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *void)->u32;
         func ExitProcess(uExitCode: u32);
         func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: *const *void);
-        func MessageBoxA(hWnd: const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
         func DebugBreak();
         func LoadLibraryA(name: const *u8);
         func GetCommandLineA()->const *u8;
@@ -31,6 +37,11 @@ private
         func HeapReAlloc(hHeap: HANDLE, dwFlags: DWORD, mem: *void, dwBytes: uint)->*void;
         func HeapFree(hHeap: HANDLE, dwFlags: DWORD, mem: *void);
         func GetProcessHeap()->HANDLE;
+    }
+
+    #[swag.foreign("user32")]
+    {
+        func MessageBoxA(hWnd: const *void, lpText: const *void, lpCaption: const *void, uType: u32)->s32;
     }
 }
 

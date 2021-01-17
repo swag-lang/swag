@@ -7,7 +7,8 @@
 
 // Contains ucrt.lib missing functions from libc
 
-#global if #os == "windows" && #swagos == "windows"
+#global if #swagos == "windows"
+#global if #os == "windows"
 #global foreignlib "ucrt"
 
 private
