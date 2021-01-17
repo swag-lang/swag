@@ -194,7 +194,7 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
 
     if (pp.pass == BackendPreCompilePass::End)
     {
-        if(module->numErrors)
+        if (module->numErrors)
             return JobResult::ReleaseJob;
 
         if (precompileIndex == 0)
@@ -230,12 +230,69 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     if (pp.dbg)
         pp.dbg->finalize();
 
-    // Target machine
-    auto targetTriple = llvm::sys::getDefaultTargetTriple();
+    // Target triple
+    string archName;
+    switch (g_CommandLine.arch)
+    {
+    case BackendArch::X86_64:
+        archName = (const char*) llvm::Triple::getArchTypeName(llvm::Triple::x86_64).bytes_begin();
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    string vendorName;
+    switch (g_CommandLine.vendor)
+    {
+    case BackendVendor::Pc:
+        vendorName = (const char*) llvm::Triple::getVendorTypeName(llvm::Triple::PC).bytes_begin();
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    string osName;
+    switch (g_CommandLine.os)
+    {
+    case BackendOs::Windows:
+        osName = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::Win32).bytes_begin();
+        break;
+    case BackendOs::Linux:
+        osName = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::Linux).bytes_begin();
+        break;
+    case BackendOs::MacOSX:
+        osName = (const char*) llvm::Triple::getOSTypeName(llvm::Triple::MacOSX).bytes_begin();
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    string abiName;
+    switch (g_CommandLine.abi)
+    {
+    case BackendAbi::Msvc:
+        abiName = (const char*) llvm::Triple::getEnvironmentTypeName(llvm::Triple::MSVC).bytes_begin();
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    string targetTriple = format("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
+
+    // Setup target
     modu.setTargetTriple(targetTriple);
     std::string error;
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, error);
-    SWAG_ASSERT(target);
+    if (!target)
+    {
+        g_Log.error(format("LLVM backend cannot create target '%s'", targetTriple.c_str()));
+        return false;
+    }
+
     auto                cpu      = "generic";
     auto                features = "";
     llvm::TargetOptions opt;

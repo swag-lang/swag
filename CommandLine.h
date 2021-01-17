@@ -52,15 +52,19 @@ struct CommandLine
     bool watch = false;
 
     // Output
-    string      buildCfg           = "debug";
-    string      buildCfgDebug      = "default";
-    string      buildCfgSafety     = "default";
-    string      buildCfgInlineBC   = "default";
-    string      buildCfgOptimBC    = "default";
-    string      buildCfgOptimSpeed = "default";
-    string      buildCfgOptimSize  = "default";
-    BackendOs   os                 = BackendOs::Windows;
-    BackendArch arch               = BackendArch::X86_64;
+    string buildCfg           = "debug";
+    string buildCfgDebug      = "default";
+    string buildCfgSafety     = "default";
+    string buildCfgInlineBC   = "default";
+    string buildCfgOptimBC    = "default";
+    string buildCfgOptimSpeed = "default";
+    string buildCfgOptimSize  = "default";
+
+    BackendArch   arch   = BackendArch::X86_64;
+    BackendVendor vendor = BackendVendor::Pc;
+    BackendOs     os     = BackendOs::Windows;
+    BackendAbi    abi    = BackendAbi::Msvc;
+
     set<string> tags;
 
     uint32_t stackSize  = 1024 * 1024;

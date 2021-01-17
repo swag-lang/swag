@@ -12,6 +12,16 @@ enum class BackendOs
     MacOSX,
 };
 
+enum class BackendVendor
+{
+    Pc,
+};
+
+enum class BackendAbi
+{
+    Msvc,
+};
+
 enum class BackendType
 {
     LLVM,
