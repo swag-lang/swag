@@ -9,21 +9,38 @@
 
 namespace BackendLinker
 {
-#if defined(_M_ARM) || defined(__arm_)
-    static const char* target = "arm";
-#endif
-#if defined(_M_IX86) || defined(__i386__)
-    static const char* target = "x86";
-#endif
-#if defined(_M_X64) || defined(__x86_64__)
-    static const char* target = "x64";
-#endif
+    class MyOStream : public llvm::raw_ostream
+    {
+    public:
+        MyOStream()
+            : raw_ostream(true)
+            , pos(0)
+        {
+        }
+        void write_impl(const char* ptr, size_t len) override
+        {
+            g_Log.lock();
+            g_Log.setColor(LogColor::Red);
+            g_Log.print(ptr);
+            g_Log.setDefaultColor();
+            g_Log.unlock();
+            pos += len;
+        }
 
-    void getArguments(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments, bool addQuote)
+        uint64_t current_pos() const override
+        {
+            return pos;
+        }
+
+        size_t pos;
+    };
+
+    void getArgumentsCoff(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments)
     {
         vector<Utf8> libPath;
 
         // Windows sdk library paths
+        static const char* target = "x64";
         libPath.push_back(format(R"(%slib\%s\um\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
         libPath.push_back(format(R"(%slib\%s\ucrt\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
 
@@ -64,10 +81,7 @@ namespace BackendLinker
         for (const auto& oneLibPath : libPath)
         {
             auto normalizedLibPath = normalizePath(fs::path(oneLibPath.c_str()));
-            if (addQuote)
-                arguments.push_back("/LIBPATH:\"" + normalizedLibPath + "\"");
-            else
-                arguments.push_back("/LIBPATH:" + normalizedLibPath);
+            arguments.push_back("/LIBPATH:" + normalizedLibPath);
         }
 
         arguments.push_back("/INCREMENTAL:NO");
@@ -83,44 +97,35 @@ namespace BackendLinker
         auto resultFile = Backend::getOutputFileName(buildParameters);
         if (buildParameters.outputType == BackendOutputType::DynamicLib)
             arguments.push_back("/DLL");
-        if (addQuote)
-            arguments.push_back("/OUT:\"" + resultFile + "\"");
-        else
-            arguments.push_back("/OUT:" + resultFile);
+        arguments.push_back("/OUT:" + resultFile);
     }
 
-    class MyOStream : public llvm::raw_ostream
+    void getArguments(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments)
     {
-    public:
-        MyOStream()
-            : raw_ostream(true)
-            , pos(0)
+        auto objFileType = Backend::getObjType(g_CommandLine.os);
+        switch (objFileType)
         {
+        case BackendObjType::Coff:
+            getArgumentsCoff(buildParameters, module, arguments);
+            break;
+        case BackendObjType::Elf:
+            SWAG_ASSERT(false);
+            break;
+        case BackendObjType::MachO:
+            SWAG_ASSERT(false);
+            break;
+        case BackendObjType::Wasm:
+            SWAG_ASSERT(false);
+            break;
         }
-        void write_impl(const char* ptr, size_t len) override
-        {
-            g_Log.lock();
-            g_Log.setColor(LogColor::Red);
-            g_Log.print(ptr);
-            g_Log.setDefaultColor();
-            g_Log.unlock();
-            pos += len;
-        }
-
-        uint64_t current_pos() const override
-        {
-            return pos;
-        }
-
-        size_t pos;
-    };
+    }
 
     bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
         SWAG_PROFILE(PRF_LINK, format("link %s", module->name.c_str()));
 
         vector<Utf8> linkArguments;
-        getArguments(buildParameters, module, linkArguments, false);
+        getArguments(buildParameters, module, linkArguments);
 
         // Add all object files
         auto targetPath = Backend::getCacheFolder(buildParameters);
@@ -157,9 +162,9 @@ namespace BackendLinker
         static mutex oo;
         unique_lock  lk(oo);
 
-        auto objFile = Backend::getObjType(g_CommandLine.os);
-        bool result  = true;
-        switch (objFile)
+        auto objFileType = Backend::getObjType(g_CommandLine.os);
+        bool result      = true;
+        switch (objFileType)
         {
         case BackendObjType::Coff:
             result = lld::coff::link(array_ref_args, false, diag_stdout, diag_stderr);
