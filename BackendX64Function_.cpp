@@ -1679,16 +1679,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IntrinsicMemCmp:
-            SWAG_ASSERT(sizeParamsStack >= 4 * sizeof(Register));
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, "@memcmp");
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->d.u32), R8, RDI);
+            emitCall(pp, "memcmp");
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
         case ByteCodeOp::IntrinsicCStrLen:
