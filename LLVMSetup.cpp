@@ -169,6 +169,7 @@
 #pragma comment(lib, "lldMinGW.lib")
 #pragma comment(lib, "lldReaderWriter.lib")
 #pragma comment(lib, "lldWasm.lib")
+#pragma comment(lib, "lldYAML.lib")
 
 namespace LLVM
 {

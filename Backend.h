@@ -1,6 +1,7 @@
 #pragma once
 #include "OutputFile.h"
 #include "Ast.h"
+#include "BackendTarget.h"
 struct Module;
 struct BuildParameters;
 struct TypeInfoFuncAttr;
@@ -71,12 +72,13 @@ struct Backend
     Ast::OutputContext outputContext;
     bool               mustCompile = true;
 
-    static string    compilerExe;
-    static string    compilerPath;
-    static string    linkerExe;
-    static string    linkerPath;
-    static void      setup();
-    static string    getCacheFolder(const BuildParameters& buildParameters);
-    static string    getOutputFileName(const BuildParameters& buildParameters);
-    static bool      passByValue(TypeInfo* typeInfo);
+    static string         compilerExe;
+    static string         compilerPath;
+    static string         linkerExe;
+    static string         linkerPath;
+    static void           setup();
+    static string         getCacheFolder(const BuildParameters& buildParameters);
+    static string         getOutputFileName(const BuildParameters& buildParameters);
+    static bool           passByValue(TypeInfo* typeInfo);
+    static BackendObjType getObjType(BackendOs os);
 };

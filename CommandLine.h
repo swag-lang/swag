@@ -1,22 +1,7 @@
 #pragma once
 #include "BuildPass.h"
 #include "Utf8.h"
-
-enum class BackendArch
-{
-    X64,
-};
-
-enum class BackendOs
-{
-    Windows,
-};
-
-enum class BackendType
-{
-    LLVM,
-    X64,
-};
+#include "BackendTarget.h"
 
 struct CommandLine
 {

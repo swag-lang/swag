@@ -99,3 +99,16 @@ bool Backend::passByValue(TypeInfo* typeInfo)
 {
     return typeInfo->numRegisters() == 1;
 }
+
+BackendObjType Backend::getObjType(BackendOs os)
+{
+    switch (os)
+    {
+    case BackendOs::Windows:
+        return BackendObjType::Coff;
+    case BackendOs::MacOSX:
+        return BackendObjType::MachO;
+    default:
+        return BackendObjType::Elf;
+    }
+}

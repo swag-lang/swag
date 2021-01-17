@@ -156,7 +156,24 @@ namespace BackendLinker
 
         static mutex oo;
         unique_lock  lk(oo);
-        auto         result = lld::coff::link(array_ref_args, false, diag_stdout, diag_stderr);
+
+        auto objFile = Backend::getObjType(g_CommandLine.os);
+        bool result  = true;
+        switch (objFile)
+        {
+        case BackendObjType::Coff:
+            result = lld::coff::link(array_ref_args, false, diag_stdout, diag_stderr);
+            break;
+        case BackendObjType::Elf:
+            result = lld::elf::link(array_ref_args, false, diag_stdout, diag_stderr);
+            break;
+        case BackendObjType::MachO:
+            result = lld::mach_o::link(array_ref_args, false, diag_stdout, diag_stderr);
+            break;
+        case BackendObjType::Wasm:
+            result = lld::wasm::link(array_ref_args, false, diag_stdout, diag_stderr);
+            break;
+        }
 
         if (!result && g_CommandLine.devMode)
             OS::errorBox("[Developer Mode]", "Error raised !");

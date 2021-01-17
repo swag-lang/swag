@@ -740,6 +740,9 @@
     <ClInclude Include="BackendLinker.h">
       <Filter>Backend</Filter>
     </ClInclude>
+    <ClInclude Include="BackendTarget.h">
+      <Filter>Backend</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
