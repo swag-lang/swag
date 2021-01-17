@@ -171,7 +171,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(#)\\b(load|defined|scopefct|file|line|hastag|tagval|cfg|arch|os|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|code)"
+          "match": "(#)\\b(load|defined|scopefct|file|line|hastag|tagval|cfg|arch|os|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code)"
         }
       ]
     },

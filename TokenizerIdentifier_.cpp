@@ -64,6 +64,15 @@ void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
         token.literalType      = LiteralType::TT_S32;
         token.literalValue.s32 = SWAG_BUILD_NUM;
         return;
+    case TokenId::CompilerSwagOs:
+        token.id          = TokenId::LiteralNumber;
+        token.literalType = LiteralType::TT_STRING;
+#ifdef _WIN32
+        token.text = "windows";
+#else
+        token.text = "?";
+#endif
+        return;
     case TokenId::NativeType:
         token.literalType = g_LangSpec.nativeTypes[token.text];
         return;

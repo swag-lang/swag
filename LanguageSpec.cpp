@@ -26,6 +26,7 @@ void LanguageSpec::setup()
     keywords["#swagversion"]    = TokenId::CompilerBuildVersion;
     keywords["#swagrevision"]   = TokenId::CompilerBuildRevision;
     keywords["#swagbuildnum"]   = TokenId::CompilerBuildNum;
+    keywords["#swagos"]         = TokenId::CompilerSwagOs;
     keywords["#import"]         = TokenId::CompilerImport;
     keywords["#test"]           = TokenId::CompilerFuncTest;
     keywords["#init"]           = TokenId::CompilerFuncInit;
