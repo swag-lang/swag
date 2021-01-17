@@ -76,14 +76,14 @@ namespace BackendLinker
         // As this is defined by the user, we consider the library must exists
         for (auto fl : buildParameters.foreignLibs)
         {
-            Utf8 one = fl + ".lib";
+            Utf8 one = fl + Backend::getOutputFileExtension(BackendOutputType::StaticLib);
             arguments.push_back(one);
         }
 
         // Registered #import dependencies
         for (const auto& dep : module->moduleDependencies)
         {
-            auto libName  = dep->name + ".lib";
+            auto libName  = dep->name + Backend::getOutputFileExtension(BackendOutputType::StaticLib);
             auto fullName = g_Workspace.targetPath.string();
             fullName      = normalizePath(fs::path(fullName.c_str()));
             fullName += "/";
