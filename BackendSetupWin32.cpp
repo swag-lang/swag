@@ -75,23 +75,27 @@ namespace OS
 
     void setupBackend()
     {
-        string winSdkPath;
-        string winSdkVersion;
-        if (!getWinSdkFolder(winSdkPath, winSdkVersion))
+        // Add the windows sdk access to crt libs
+        if (g_CommandLine.os == BackendOs::Windows && !isAbiGnu(g_CommandLine.abi))
         {
-            g_Log.error("error: backend: cannot locate windows sdk folder");
-            exit(-1);
-        }
+            string winSdkPath;
+            string winSdkVersion;
+            if (!getWinSdkFolder(winSdkPath, winSdkVersion))
+            {
+                g_Log.error("error: backend: cannot locate windows sdk folder");
+                exit(-1);
+            }
 
-        if (g_CommandLine.verbose && g_CommandLine.verbosePath)
-        {
-            g_Log.verbose(format("winSdkPath is '%s'\n", winSdkPath.c_str()));
-            g_Log.verbose(format("winSdkVersion is '%s'\n", winSdkVersion.c_str()));
-        }
+            if (g_CommandLine.verbose && g_CommandLine.verbosePath)
+            {
+                g_Log.verbose(format("winSdkPath is '%s'\n", winSdkPath.c_str()));
+                g_Log.verbose(format("winSdkVersion is '%s'\n", winSdkVersion.c_str()));
+            }
 
-        const char* target = isArchArm(g_CommandLine.arch) ? "arm64" : "x64";
-        g_CommandLine.libPaths.push_back(format(R"(%slib\%s\um\%s)", winSdkPath.c_str(), winSdkVersion.c_str(), target));
-        g_CommandLine.libPaths.push_back(format(R"(%slib\%s\ucrt\%s)", winSdkPath.c_str(), winSdkVersion.c_str(), target));
+            const char* target = isArchArm(g_CommandLine.arch) ? "arm64" : "x64";
+            g_CommandLine.libPaths.push_back(format(R"(%slib\%s\um\%s)", winSdkPath.c_str(), winSdkVersion.c_str(), target));
+            g_CommandLine.libPaths.push_back(format(R"(%slib\%s\ucrt\%s)", winSdkPath.c_str(), winSdkVersion.c_str(), target));
+        }
     }
 } // namespace OS
 #endif
