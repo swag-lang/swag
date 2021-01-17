@@ -63,8 +63,8 @@ namespace BackendLinker
         // Runtime
         libPath.push_back(g_CommandLine.exePath.parent_path().string());
 
-        // Registered #foreignlib
-        // As this is defined by the user, the consider the library must exists
+        // Registered #global foreignlib
+        // As this is defined by the user, we consider the library must exists
         for (auto fl : buildParameters.foreignLibs)
         {
             Utf8 one = fl + ".lib";
