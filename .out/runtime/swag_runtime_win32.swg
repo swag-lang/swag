@@ -48,16 +48,19 @@ func @memcmp(dst, src: const *void, size: uint)->s32
 }
 
 ////////////////////////////////////////////////////////////
-#[swag.callback]
-func memcpy(dst: *void, src: const *void, size: uint)
-{
-    RtlCopyMemory(dst, src, size)
-}
-
+// LIBC
 ////////////////////////////////////////////////////////////
-func @memmove(dst: *void, src: const *void, size: uint)
+#[swag.callback]
 {
-    RtlMoveMemory(dst, src, size)
+    func memcpy(dst: *void, src: const *void, size: uint)
+    {
+        RtlCopyMemory(dst, src, size)
+    }
+
+    func memmove(dst: *void, src: const *void, size: uint)
+    {
+        RtlMoveMemory(dst, src, size)
+    }
 }
 
 ////////////////////////////////////////////////////////////

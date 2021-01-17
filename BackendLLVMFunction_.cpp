@@ -956,10 +956,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicMemMove:
         {
+            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+
             if (ip->flags & BCI_IMM_C)
-                localCall(buildParameters, allocR, allocT, "@memmove", {ip->a.u32, ip->b.u32, UINT32_MAX}, {0, 0, builder.getInt64(ip->c.u64)});
+                builder.CreateMemMove(r0, llvm::Align{}, r1, llvm::Align{}, builder.getInt64(ip->c.u64));
             else
-                localCall(buildParameters, allocR, allocT, "@memmove", {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            {
+                auto r2 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32)));
+                builder.CreateMemMove(r0, llvm::Align{}, r1, llvm::Align{}, r2);
+            }
+
             break;
         }
 
