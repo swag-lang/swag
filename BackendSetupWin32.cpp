@@ -3,7 +3,6 @@
 #include <comdef.h>
 #include <windows.h>
 #include "Log.h"
-#include "LLVMSetup.h"
 #include "Backend.h"
 #include "ComWin32.hpp"
 
@@ -81,23 +80,11 @@ namespace OS
 
     void setupBackend()
     {
-        if (!g_CommandLine.output)
-            return;
-
         // Windows sdk folders and version
         if (!getWinSdkFolder(BackendSetupWin32::winSdkPath, BackendSetupWin32::winSdkVersion))
         {
             g_Log.error("error: backend: cannot locate windows sdk folder");
             exit(-1);
-        }
-
-        // Compiler
-        switch (g_CommandLine.backendType)
-        {
-        case BackendType::LLVM:
-        case BackendType::X64:
-            LLVM::setup();
-            break;
         }
 
         if (g_CommandLine.verbose && g_CommandLine.verbosePath)

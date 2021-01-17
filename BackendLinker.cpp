@@ -53,15 +53,24 @@ namespace BackendLinker
         vector<Utf8> libPath;
 
         // Windows sdk library paths
-        static const char* target = "x64";
+        const char* target = isArchArm(g_CommandLine.arch) ? "arm64" : "x64";
         libPath.push_back(format(R"(%slib\%s\um\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
         libPath.push_back(format(R"(%slib\%s\ucrt\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
+        arguments.push_back("kernel32.lib");
+        arguments.push_back("ucrt.lib");
+        arguments.push_back("user32.lib");
 
         // Modules
         libPath.push_back(g_Workspace.targetPath.string());
 
         // Runtime
         libPath.push_back(g_CommandLine.exePath.parent_path().string());
+
+        for (const auto& oneLibPath : libPath)
+        {
+            auto normalizedLibPath = normalizePath(fs::path(oneLibPath.c_str()));
+            arguments.push_back("/LIBPATH:" + normalizedLibPath);
+        }
 
         // Registered #global foreignlib
         // As this is defined by the user, we consider the library must exists
@@ -86,30 +95,24 @@ namespace BackendLinker
                 arguments.push_back(libName);
         }
 
-        // External libraries from windows sdk
-        arguments.push_back("kernel32.lib");
-        arguments.push_back("ucrt.lib");
-        arguments.push_back("user32.lib");
-
-        for (const auto& oneLibPath : libPath)
-        {
-            auto normalizedLibPath = normalizePath(fs::path(oneLibPath.c_str()));
-            arguments.push_back("/LIBPATH:" + normalizedLibPath);
-        }
-
         arguments.push_back("/INCREMENTAL:NO");
         arguments.push_back("/NOLOGO");
         arguments.push_back("/SUBSYSTEM:CONSOLE");
         arguments.push_back("/NODEFAULTLIB");
-        arguments.push_back(format("/MACHINE:%s", target));
-        arguments.push_back(format("/STACK:%d", g_CommandLine.stackSize));
 
+        if (isArchArm(g_CommandLine.arch))
+            arguments.push_back("/MACHINE:ARM64");
+        else
+            arguments.push_back("/MACHINE:X64");
+
+        if (buildParameters.outputType == BackendOutputType::Binary)
+            arguments.push_back(format("/STACK:%d", g_CommandLine.stackSize));
         if (buildParameters.buildCfg->backendDebugInformations)
             arguments.push_back("/DEBUG");
-
-        auto resultFile = Backend::getOutputFileName(buildParameters);
         if (buildParameters.outputType == BackendOutputType::DynamicLib)
             arguments.push_back("/DLL");
+
+        auto resultFile = Backend::getOutputFileName(buildParameters);
         arguments.push_back("/OUT:" + resultFile);
     }
 

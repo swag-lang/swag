@@ -4,6 +4,7 @@
 #include "OS.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "LLVMSetup.h"
 
 JobResult Backend::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
 {
@@ -23,6 +24,18 @@ BackendFunctionBodyJob* Backend::newFunctionJob()
 
 void Backend::setup()
 {
+    if (!g_CommandLine.output)
+        return;
+
+    // Compiler
+    switch (g_CommandLine.backendType)
+    {
+    case BackendType::LLVM:
+    case BackendType::X64:
+        LLVM::setup();
+        break;
+    }
+
     OS::setupBackend();
 }
 

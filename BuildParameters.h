@@ -76,6 +76,17 @@ inline bool isOsDarwin(BackendOs os)
     return false;
 }
 
+inline bool isArchArm(BackendArch arch)
+{
+    switch (arch)
+    {
+    case BackendArch::X86_64:
+        return false;
+    }
+
+    return true;
+}
+
 struct BuildParameters
 {
     BackendOutputType  outputType = BackendOutputType::Binary;
