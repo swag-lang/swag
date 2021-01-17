@@ -83,6 +83,7 @@ JobResult ModuleBuildJob::execute()
             module->mutableSegment.initFrom(&g_Workspace.runtimeModule->mutableSegment);
             module->bssSegment.initFrom(&g_Workspace.runtimeModule->bssSegment);
             module->typeSegment.initFrom(&g_Workspace.runtimeModule->typeSegment);
+            module->buildParameters.foreignLibs = g_Workspace.runtimeModule->buildParameters.foreignLibs;
         }
 
         pass = ModuleBuildPass::Publish;
@@ -420,7 +421,7 @@ JobResult ModuleBuildJob::execute()
                     continue;
                 if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
                 {
-                    auto nb          = file->numTestErrors;
+                    auto nb             = file->numTestErrors;
                     file->numTestErrors = 0;
                     file->report({file, format("missing unittest errors: %d (%d raised)", nb, file->numErrors)});
                 }

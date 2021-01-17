@@ -1,4 +1,6 @@
 #global if #os == "windows"
+#global foreignlib "kernel32"
+#global foreignlib "user32"
 
 ////////////////////////////////////////////////////////////
 private

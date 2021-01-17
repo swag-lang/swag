@@ -29,7 +29,9 @@ namespace BackendLinker
             if (strstr(ptr, "\n"))
             {
                 errMsg.replaceAll('\n', ' ');
-                module->error(errMsg);
+                errMsg.trim();
+                if (!errMsg.empty())
+                    module->error(errMsg);
                 startLine = true;
             }
 
@@ -51,9 +53,8 @@ namespace BackendLinker
     {
         vector<Utf8> libPaths;
 
-        arguments.push_back("kernel32.lib");
+        // LibC
         arguments.push_back("ucrt.lib");
-        arguments.push_back("user32.lib");
 
         // System library paths
         for (auto p : g_CommandLine.libPaths)
