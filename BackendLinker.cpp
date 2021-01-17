@@ -28,10 +28,25 @@ namespace BackendLinker
 
             if (strstr(ptr, "\n"))
             {
-                errMsg.replaceAll('\n', ' ');
-                errMsg.trim();
-                if (!errMsg.empty())
-                    module->error(errMsg);
+                vector<Utf8> subNames;
+                tokenize(errMsg.c_str(), '\n', subNames);
+
+                g_Log.lock();
+                for (auto& l : subNames)
+                {
+                    if (strstr(l.c_str(), ": error"))
+                    {
+                        errCount++;
+                        g_Log.setColor(LogColor::Red);
+                    }
+                    else
+                        g_Log.setColor(LogColor::Gray);
+                    l += "\n";
+                    g_Log.print(l);
+                }
+
+                g_Log.setDefaultColor();
+                g_Log.unlock();
                 startLine = true;
             }
 
@@ -43,10 +58,11 @@ namespace BackendLinker
             return pos;
         }
 
-        Utf8    errMsg;
-        size_t  pos;
-        Module* module    = nullptr;
-        bool    startLine = true;
+        Utf8     errMsg;
+        size_t   pos;
+        uint32_t errCount  = 0;
+        Module*  module    = nullptr;
+        bool     startLine = true;
     };
 
     void getArgumentsCoff(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments)
@@ -96,6 +112,7 @@ namespace BackendLinker
         arguments.push_back("/NOLOGO");
         arguments.push_back("/SUBSYSTEM:CONSOLE");
         arguments.push_back("/NODEFAULTLIB");
+        arguments.push_back("/ERRORLIMIT:0");
 
         if (isArchArm(g_CommandLine.arch))
             arguments.push_back("/MACHINE:ARM64");
@@ -200,8 +217,8 @@ namespace BackendLinker
 
         if (!result)
         {
-            g_Workspace.numErrors += 1;
-            module->numErrors += 1;
+            g_Workspace.numErrors += diag_stderr.errCount;
+            module->numErrors += diag_stderr.errCount;
         }
 
         return result;
