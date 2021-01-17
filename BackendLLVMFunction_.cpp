@@ -958,7 +958,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicMemSet:
         {
-            localCall(buildParameters, allocR, allocT, "@memset", {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            auto r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            auto r2 = builder.CreateLoad(GEP_I32(allocR, ip->c.u32));
+            builder.CreateMemSet(r0, r1, r2, llvm::Align{});
             break;
         }
 
