@@ -1,7 +1,7 @@
 #pragma once
 #include "BuildPass.h"
 #include "Utf8.h"
-#include "BackendTarget.h"
+#include "BuildParameters.h"
 
 struct CommandLine
 {

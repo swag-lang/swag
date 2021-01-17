@@ -318,27 +318,6 @@ namespace OS
         ::SetErrorMode(errmode);
     }
 
-    string getDllFileExtension()
-    {
-        return ".dll";
-    }
-
-    string getOutputFileExtension(BackendOutputType type)
-    {
-        switch (type)
-        {
-        case BackendOutputType::Binary:
-            return ".exe";
-        case BackendOutputType::StaticLib:
-            return ".lib";
-        case BackendOutputType::DynamicLib:
-            return ".dll";
-        default:
-            SWAG_ASSERT(false);
-            return "";
-        }
-    }
-
     Utf8 getLastErrorAsString()
     {
         // Get the error message, if any.

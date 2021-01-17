@@ -97,9 +97,6 @@ namespace OS
         case BackendType::LLVM:
         case BackendType::X64:
             LLVM::setup();
-            Backend::linkerPath = g_CommandLine.exePath.parent_path().string();
-            Backend::linkerPath += "\\";
-            Backend::linkerExe = "lld-link.exe";
             break;
         }
 

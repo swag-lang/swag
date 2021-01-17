@@ -122,7 +122,6 @@
     <ClInclude Include="BackendSetupWin32.h" />
     <ClInclude Include="BackendLinker.h" />
     <ClInclude Include="BackendLLVM.h" />
-    <ClInclude Include="BackendTarget.h" />
     <ClInclude Include="BackendX64.h" />
     <ClInclude Include="BackendX64FunctionBodyJob.h" />
     <ClInclude Include="BackendX64FunctionMacros_.h" />

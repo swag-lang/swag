@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "Timer.h"
 #include "Profile.h"
+#include "Backend.h"
 
 thread_local Pool<ModuleRunJob> g_Pool_moduleRunJob;
 
@@ -13,7 +14,7 @@ JobResult ModuleRunJob::execute()
     SWAG_PROFILE(PRF_RUN, format("run %s", module->name.c_str()));
 
     fs::path path = g_Workspace.targetPath.string() + buildParameters.outputFileName;
-    path += OS::getOutputFileExtension(BackendOutputType::Binary);
+    path += Backend::getOutputFileExtension(BackendOutputType::Binary);
     if (!fs::exists(path))
         return JobResult::ReleaseJob;
 

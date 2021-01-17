@@ -5,9 +5,6 @@
 #include "Module.h"
 #include "TypeManager.h"
 
-string Backend::linkerExe;
-string Backend::linkerPath;
-
 JobResult Backend::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
 {
     return JobResult::ReleaseJob;
@@ -33,15 +30,6 @@ string Backend::getCacheFolder(const BuildParameters& buildParameters)
 {
     auto targetPath = g_Workspace.cachePath.string();
     return targetPath;
-}
-
-string Backend::getOutputFileName(const BuildParameters& buildParameters)
-{
-    SWAG_ASSERT(!buildParameters.outputFileName.empty());
-    string destFile = g_Workspace.targetPath.string() + buildParameters.outputFileName;
-    destFile += OS::getOutputFileExtension(buildParameters.outputType);
-    destFile = normalizePath(fs::path(destFile.c_str()));
-    return destFile;
 }
 
 void Backend::setMustCompile()
@@ -111,6 +99,36 @@ BackendObjType Backend::getObjType(BackendOs os)
     default:
         return BackendObjType::Elf;
     }
+}
+
+string Backend::getDllFileExtension()
+{
+    return ".dll";
+}
+
+string Backend::getOutputFileExtension(BackendOutputType type)
+{
+    switch (type)
+    {
+    case BackendOutputType::Binary:
+        return ".exe";
+    case BackendOutputType::StaticLib:
+        return ".lib";
+    case BackendOutputType::DynamicLib:
+        return ".dll";
+    default:
+        SWAG_ASSERT(false);
+        return "";
+    }
+}
+
+string Backend::getOutputFileName(const BuildParameters& buildParameters)
+{
+    SWAG_ASSERT(!buildParameters.outputFileName.empty());
+    string destFile = g_Workspace.targetPath.string() + buildParameters.outputFileName;
+    destFile += getOutputFileExtension(buildParameters.outputType);
+    destFile = normalizePath(fs::path(destFile.c_str()));
+    return destFile;
 }
 
 const char* Backend::GetArchName()
