@@ -1,5 +1,4 @@
 #include "pch.h"
-#ifdef _WIN32
 #include "Workspace.h"
 #include "Backend.h"
 #include "OS.h"
@@ -8,7 +7,7 @@
 #include "Profile.h"
 #include "lld/Common/Driver.h"
 
-namespace BackendLinkerWin32
+namespace BackendLinker
 {
 #if defined(_M_ARM) || defined(__arm_)
     static const char* target = "arm";
@@ -20,8 +19,10 @@ namespace BackendLinkerWin32
     static const char* target = "x64";
 #endif
 
-    void getLibPaths(vector<Utf8>& libPath)
+    void getArguments(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments, bool addQuote)
     {
+        vector<Utf8> libPath;
+
         // Windows sdk library paths
         libPath.push_back(format(R"(%slib\%s\um\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
         libPath.push_back(format(R"(%slib\%s\ucrt\%s)", BackendSetupWin32::winSdkPath.c_str(), BackendSetupWin32::winSdkVersion.c_str(), target));
@@ -31,12 +32,6 @@ namespace BackendLinkerWin32
 
         // Runtime
         libPath.push_back(g_CommandLine.exePath.parent_path().string());
-    }
-
-    void getArguments(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments, bool addQuote)
-    {
-        vector<Utf8> libPath;
-        getLibPaths(libPath);
 
         // Registered #foreignlib
         // As this is defined by the user, the consider the library must exists
@@ -93,10 +88,7 @@ namespace BackendLinkerWin32
         else
             arguments.push_back("/OUT:" + resultFile);
     }
-} // namespace BackendLinkerWin32
 
-namespace OS
-{
     class MyOStream : public llvm::raw_ostream
     {
     public:
@@ -128,7 +120,7 @@ namespace OS
         SWAG_PROFILE(PRF_LINK, format("link %s", module->name.c_str()));
 
         vector<Utf8> linkArguments;
-        BackendLinkerWin32::getArguments(buildParameters, module, linkArguments, false);
+        getArguments(buildParameters, module, linkArguments, false);
 
         // Add all object files
         auto targetPath = Backend::getCacheFolder(buildParameters);
@@ -178,6 +170,4 @@ namespace OS
         return result;
     }
 
-} // namespace OS
-
-#endif
+} // namespace BackendLinker

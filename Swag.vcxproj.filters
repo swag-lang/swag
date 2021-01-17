@@ -299,9 +299,6 @@
     <ClCompile Include="BackendLLVMDbg.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="BackendLinkerWin32.cpp">
-      <Filter>Win32</Filter>
-    </ClCompile>
     <ClCompile Include="BackendSetupWin32.cpp">
       <Filter>Win32</Filter>
     </ClCompile>
@@ -445,6 +442,9 @@
     </ClCompile>
     <ClCompile Include="BackendX64Dbg_.cpp">
       <Filter>Backend\X64</Filter>
+    </ClCompile>
+    <ClCompile Include="BackendLinker.cpp">
+      <Filter>Backend</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -626,9 +626,6 @@
     <ClInclude Include="BackendFunctionBodyJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="BackendLinkerWin32.h">
-      <Filter>Win32</Filter>
-    </ClInclude>
     <ClInclude Include="BackendSetupWin32.h">
       <Filter>Win32</Filter>
     </ClInclude>
@@ -739,6 +736,9 @@
     </ClInclude>
     <ClInclude Include="Limit.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendLinker.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

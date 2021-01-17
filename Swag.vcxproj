@@ -120,7 +120,7 @@
     <ClInclude Include="BackendLLVMFunctionBodyJob.h" />
     <ClInclude Include="BackendLLVMFunctionMacros_.h" />
     <ClInclude Include="BackendSetupWin32.h" />
-    <ClInclude Include="BackendLinkerWin32.h" />
+    <ClInclude Include="BackendLinker.h" />
     <ClInclude Include="BackendLLVM.h" />
     <ClInclude Include="BackendX64.h" />
     <ClInclude Include="BackendX64FunctionBodyJob.h" />
@@ -222,7 +222,7 @@
     <ClCompile Include="BackendLLVMMain_.cpp" />
     <ClCompile Include="BackendNative_.cpp" />
     <ClCompile Include="BackendSetupWin32.cpp" />
-    <ClCompile Include="BackendLinkerWin32.cpp" />
+    <ClCompile Include="BackendLinker.cpp" />
     <ClCompile Include="BackendLLVM.cpp" />
     <ClCompile Include="BackendX64.cpp" />
     <ClCompile Include="BackendX64Data_.cpp" />
