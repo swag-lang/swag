@@ -199,12 +199,11 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     computeUnwindStack(40, sizeProlog, unwind);
 
     // Copy process infos
-    BackendX64Inst::emit_Store64_Indirect(pp, 8, RCX, RSP);
+    BackendX64Inst::emit_Copy64(pp, RCX, RDX);
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_processInfos, 0);
-    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-    BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), RAX);
-    BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
-    emitCall(pp, "@memcpy");
+    BackendX64Inst::emit_Copy64(pp, RAX, RCX);
+    BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
+    emitCall(pp, "memcpy");
 
     // Reloc functions
     for (auto& k : module->constantSegment.initFuncPtr)

@@ -48,7 +48,8 @@ func @memcmp(dst, src: const *void, size: uint)->s32
 }
 
 ////////////////////////////////////////////////////////////
-func @memcpy(dst: *void, src: const *void, size: uint)
+#[swag.callback]
+func memcpy(dst: *void, src: const *void, size: uint)
 {
     RtlCopyMemory(dst, src, size)
 }

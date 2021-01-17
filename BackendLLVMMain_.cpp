@@ -222,10 +222,9 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
 
     // __process_infos = *processInfos;
     {
-        auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(3));
-        auto p0     = TO_PTR_I8(pp.processInfos);
-        auto p1     = TO_PTR_I8(fct->getArg(0));
-        localCall(buildParameters, nullptr, allocT, "@memcpy", {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {p0, p1, builder.getInt64(sizeof(SwagProcessInfos))});
+        auto p0 = TO_PTR_I8(pp.processInfos);
+        auto p1 = TO_PTR_I8(fct->getArg(0));
+        builder.CreateMemCpy(p0, llvm::Align{}, p1, llvm::Align{}, builder.getInt64(sizeof(SwagProcessInfos)));
     }
 
     // Initialize data segments
