@@ -19,11 +19,21 @@ namespace BackendLinker
         }
         void write_impl(const char* ptr, size_t len) override
         {
-            g_Log.lock();
-            g_Log.setColor(LogColor::Red);
-            g_Log.print(ptr);
-            g_Log.setDefaultColor();
-            g_Log.unlock();
+            if (startLine)
+            {
+                errMsg.clear();
+                startLine = false;
+            }
+
+            errMsg += ptr;
+
+            if (strstr(ptr, "\n"))
+            {
+                errMsg.replaceAll('\n', ' ');
+                module->error(errMsg);
+                startLine = true;
+            }
+
             pos += len;
         }
 
@@ -32,7 +42,10 @@ namespace BackendLinker
             return pos;
         }
 
-        size_t pos;
+        Utf8    errMsg;
+        size_t  pos;
+        Module* module    = nullptr;
+        bool    startLine = true;
     };
 
     void getArgumentsCoff(const BuildParameters& buildParameters, Module* module, vector<Utf8>& arguments)
@@ -158,6 +171,8 @@ namespace BackendLinker
 
         MyOStream diag_stdout;
         MyOStream diag_stderr;
+        diag_stdout.module = module;
+        diag_stderr.module = module;
 
         static mutex oo;
         unique_lock  lk(oo);
