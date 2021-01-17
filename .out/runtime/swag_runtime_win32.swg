@@ -30,7 +30,6 @@ private
         func RtlCopyMemory(destination: *void, source: const *void, length: uint);
         func RtlMoveMemory(destination: *void, source: const *void, length: uint);
         func RtlCompareMemory(destination, source: const *void, length: uint)->uint;
-        func RtlFillMemory(destination: *void, length: uint, fill: u32);
         func HeapAlloc(hHeap: HANDLE, dwFlags: DWORD, dwBytes: uint)->*void;
         func HeapReAlloc(hHeap: HANDLE, dwFlags: DWORD, mem: *void, dwBytes: uint)->*void;
         func HeapFree(hHeap: HANDLE, dwFlags: DWORD, mem: *void);
@@ -58,12 +57,6 @@ func @memcpy(dst: *void, src: const *void, size: uint)
 func @memmove(dst: *void, src: const *void, size: uint)
 {
     RtlMoveMemory(dst, src, size)
-}
-
-////////////////////////////////////////////////////////////
-func @memset(dst: *void, value: u8, size: uint)
-{
-    RtlFillMemory(dst, size, cast(u32) value)
 }
 
 ////////////////////////////////////////////////////////////
