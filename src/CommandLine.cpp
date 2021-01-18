@@ -49,11 +49,17 @@ bool CommandLine::check()
         }
     }
 
-    // Make workspace path canonical
+    // Make some paths canonical
     if (!workspacePath.empty())
     {
         workspacePath = fs::absolute(workspacePath).string();
         workspacePath = fs::canonical(workspacePath).string();
+    }
+
+    if (!cachePath.empty())
+    {
+        cachePath = fs::absolute(cachePath).string();
+        cachePath = fs::canonical(cachePath).string();
     }
 
     return true;
