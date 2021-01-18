@@ -1,5 +1,5 @@
 #pragma once
-#include "../ffi/ffi.h"
+#include "ffi/ffi.h"
 #include "VectorNative.h"
 struct ByteCodeRunContext;
 struct ByteCodeInstruction;

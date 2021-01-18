@@ -311,19 +311,19 @@
     <ClCompile Include="../src/ByteCodeGenJobSafety_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="../ffi/closures.c">
+    <ClCompile Include="../src/ffi/closures.c">
       <Filter>FFI</Filter>
     </ClCompile>
-    <ClCompile Include="../ffi/ffi.c">
+    <ClCompile Include="../src/ffi/ffi.c">
       <Filter>FFI</Filter>
     </ClCompile>
-    <ClCompile Include="../ffi/ffi64.c">
+    <ClCompile Include="../src/ffi/ffi64.c">
       <Filter>FFI</Filter>
     </ClCompile>
-    <ClCompile Include="../ffi/prep_cif.c">
+    <ClCompile Include="../src/ffi/prep_cif.c">
       <Filter>FFI</Filter>
     </ClCompile>
-    <ClCompile Include="../ffi/types.c">
+    <ClCompile Include="../src/ffi/types.c">
       <Filter>FFI</Filter>
     </ClCompile>
     <ClCompile Include="../src/CompilerItf.cpp">
@@ -635,16 +635,16 @@
     <ClInclude Include="../src/Timer.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="../ffi/ffi.h">
+    <ClInclude Include="../src/ffi/ffi.h">
       <Filter>FFI</Filter>
     </ClInclude>
-    <ClInclude Include="../ffi/ffi_common.h">
+    <ClInclude Include="../src/ffi/ffi_common.h">
       <Filter>FFI</Filter>
     </ClInclude>
-    <ClInclude Include="../ffi/fficonfig.h">
+    <ClInclude Include="../src/ffi/fficonfig.h">
       <Filter>FFI</Filter>
     </ClInclude>
-    <ClInclude Include="../ffi/ffitarget.h">
+    <ClInclude Include="../src/ffi/ffitarget.h">
       <Filter>FFI</Filter>
     </ClInclude>
     <ClInclude Include="../src/CompilerItf.h">
@@ -777,7 +777,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="../ffi/win64.S">
+    <CustomBuild Include="../src/ffi/win64.S">
       <Filter>FFI</Filter>
     </CustomBuild>
   </ItemGroup>
