@@ -8,7 +8,7 @@ func toto(T: s32)->s32
         loop i: T
             az[i + 7] = "1"'u8
 
-        str1 := cast(string) @mkslice(&az[0], 16)
+        str1 := @mkstring(&az[0], 16)
         return str1
     }
 }

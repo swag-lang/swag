@@ -51,7 +51,7 @@ impl String
 
     func opCast(using self)->string
     {
-        return cast(string) @mkslice(buffer, length)
+        return @mkstring(buffer, length)
     }
 
     func opCast(using self)->const [..] u8
@@ -62,7 +62,7 @@ impl String
     func opSlice(using self, lower, upper: uint)->string
     {
         debug.assert(lower <= upper && lower < length && upper < length)
-        return cast(string) @mkslice(buffer + lower, (upper + 1) - lower)
+        return @mkstring(buffer + lower, (upper + 1) - lower)
     }
 
     func opAffect(using self, value: string)
@@ -465,7 +465,7 @@ impl String
     #[swag.inline]
     func toString(using self)->string
     {
-        return cast(string) @mkslice(buffer, length)
+        return @mkstring(buffer, length)
     }
 
     // Returns a slice type

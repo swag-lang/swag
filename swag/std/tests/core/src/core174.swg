@@ -19,7 +19,7 @@ struct ST
 
     loop 20
     {
-        x.str = cast(string) @mkslice(dataof, 2)
+        x.str = @mkstring(dataof, 2)
         result.add(x)
     }
 

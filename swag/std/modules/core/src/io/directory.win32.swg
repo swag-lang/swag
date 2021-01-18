@@ -41,7 +41,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
 
         while true
         {
-            filename := cast(string) @mkslice(dataof, @cstrlen(dataof))
+            filename := @mkstring(dataof, @cstrlen(dataof))
 
             // Filter by file/folder
             mustAdd := false

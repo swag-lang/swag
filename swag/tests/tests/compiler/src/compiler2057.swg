@@ -79,7 +79,7 @@ func ftoa(result: *u8, value: f64)
 {
     var arr: [100] u8
     ftoa(&arr[0], -3.1415)
-    var str: string = cast(string) @mkslice(&arr[0], 7)
+    var str: string = @mkstring(&arr[0], 7)
     //@print(str)
     @assert(str == "-3.1415")
 }

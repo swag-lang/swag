@@ -45,6 +45,13 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
     return true;
 }
 
+bool SemanticJob::resolveIntrinsicMakeString(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+{
+    SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, typeInfo));
+    node->typeInfo = g_TypeMgr.typeInfoString;
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     auto first  = node->childs.front();
@@ -558,6 +565,14 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, expr->typeInfo));
+        break;
+    }
+
+    case TokenId::IntrinsicMakeString:
+    {
+        auto expr = node->childs.front();
+        SWAG_CHECK(checkIsConcrete(context, expr));
+        SWAG_CHECK(resolveIntrinsicMakeString(context, node, expr->typeInfo));
         break;
     }
 

@@ -31,5 +31,5 @@ func cstr(x: string)->CStr
 #test
 {
     v := cstr("toto")
-    @assert(cast(string) @mkslice(v.buffer, cast(uint) v.length) == "toto")
+    @assert(@mkstring(v.buffer, cast(uint) v.length) == "toto")
 }

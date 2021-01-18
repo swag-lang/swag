@@ -121,6 +121,7 @@ void LanguageSpec::setup()
     keywords["@countof"]     = TokenId::IntrinsicCountOf;
     keywords["@dataof"]      = TokenId::IntrinsicDataOf;
     keywords["@mkslice"]     = TokenId::IntrinsicMakeSlice;
+    keywords["@mkstring"]    = TokenId::IntrinsicMakeString;
     keywords["@mkany"]       = TokenId::IntrinsicMakeAny;
     keywords["@mkinterface"] = TokenId::IntrinsicMakeInterface;
     keywords["@mkcallback"]  = TokenId::IntrinsicMakeCallback;

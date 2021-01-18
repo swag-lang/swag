@@ -43,6 +43,6 @@ func swag_runtime_itoa(result: *u8, value: s64)->*u8
 {
     var arr: [100] u8
     swag_runtime_itoa(&arr[0], -123456)
-    var str: string = cast(string) @mkslice(&arr[0], 7)
+    var str: string = @mkstring(&arr[0], 7)
     @assert(str == "-123456")
 }

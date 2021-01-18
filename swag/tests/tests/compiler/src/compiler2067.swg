@@ -16,14 +16,14 @@ func init(x: string)
             cmdLine += 1
             start := cmdLine
             while :cmdLine && :cmdLine != "\""'u8 cmdLine += 1
-            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
+            g_Argv[g_Argc] = @mkstring(start, cast(uint) (cmdLine - start))
             if :cmdLine cmdLine += 1
         }
         else
         {
             start := cmdLine
             while :cmdLine && :cmdLine != " "'u8 cmdLine += 1
-            g_Argv[g_Argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
+            g_Argv[g_Argc] = @mkstring(start, cast(uint) (cmdLine - start))
         }
 
         g_Argc += 1

@@ -224,7 +224,7 @@ func split(src: const [..] u8, separators: const [..] char) -> Array'string
             count -= eat
         }
 
-        oneString := cast(string) @mkslice(dataof + startbyteIdx, endbyteIdx - startbyteIdx)
+        oneString := @mkstring(dataof + startbyteIdx, endbyteIdx - startbyteIdx)
         result.add(oneString)
 
         if eat == 0 break // done

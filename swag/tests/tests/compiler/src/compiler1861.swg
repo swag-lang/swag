@@ -1,6 +1,6 @@
 func toto(ptr: const *u8)
 {
-    x := cast(string) @mkslice(ptr, 4)
+    x := @mkstring(ptr, 4)
     //@print(@typeof(x).name)
     //@print("x")
     @assert(x == "toto")

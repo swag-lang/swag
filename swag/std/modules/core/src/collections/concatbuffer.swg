@@ -201,7 +201,7 @@ impl ConcatBuffer
         ptr := firstBucket
         while ptr != lastBucket.next
         {
-            result.append(cast(string) @mkslice(ptr.datas, ptr.count))
+            result.append(@mkstring(ptr.datas, ptr.count))
             ptr = ptr.next
         }
 

@@ -12,7 +12,7 @@ enum Color
         arr[0] = cast(u8) "A"'char
         arr[1] = cast(u8) "A"'char
         arr[2] = 0
-        return cast(string) @mkslice(&arr[0], 2)
+        return @mkstring(&arr[0], 2)
     }
 }
 
