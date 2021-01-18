@@ -1,0 +1,10 @@
+F:/swag/swag/std/modules/zlib/foreign/out/build/x64-Debug (default)/CMakeFiles/zlib.dir
+F:/swag/swag/std/modules/zlib/foreign/out/build/x64-Debug (default)/CMakeFiles/zlibstatic.dir
+F:/swag/swag/std/modules/zlib/foreign/out/build/x64-Debug (default)/CMakeFiles/example.dir
+F:/swag/swag/std/modules/zlib/foreign/out/build/x64-Debug (default)/CMakeFiles/list_install_components.dir
+F:/swag/swag/std/modules/zlib/foreign/out/build/x64-Debug (default)/CMakeFiles/minigzip.dir
+F:/swag/swag/std/modules/zlib/foreign/out/build/x64-Debug (default)/CMakeFiles/rebuild_cache.dir
+F:/swag/swag/std/modules/zlib/foreign/out/build/x64-Debug (default)/CMakeFiles/test.dir
+F:/swag/swag/std/modules/zlib/foreign/out/build/x64-Debug (default)/CMakeFiles/install.dir
+F:/swag/swag/std/modules/zlib/foreign/out/build/x64-Debug (default)/CMakeFiles/edit_cache.dir
+F:/swag/swag/std/modules/zlib/foreign/out/build/x64-Debug (default)/CMakeFiles/install/local.dir

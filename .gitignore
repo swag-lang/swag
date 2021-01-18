@@ -269,11 +269,9 @@ __pycache__/
 .out/*.ipdb
 .out/*.bat
 .out/.vs/
-doc/
 **/output/
 **/dependencies/**/public
 **/modules/**/public
 **/examples/**/public
 **/tests/**/public
 llvm/
-lld/
