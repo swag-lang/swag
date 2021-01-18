@@ -781,7 +781,4 @@
       <Filter>FFI</Filter>
     </CustomBuild>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="../src/todo.txt" />
-  </ItemGroup>
 </Project>
