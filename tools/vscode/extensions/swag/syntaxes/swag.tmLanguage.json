@@ -12,6 +12,7 @@
     { "include": "#op-invalid" },
     { "include": "#function-call" },
     { "include": "#function-call1" },
+    { "include": "#function-call2" },
     { "include": "#raw-strings" },
     { "include": "#intrinsics" },
     { "include": "#intrinsics-buildin" },
@@ -249,6 +250,18 @@
             },
             "3": {
               "name": "entity.name.class"
+            }
+          }
+        }
+      ]
+    },
+    "function-call2": {
+      "patterns": [
+        {
+          "match": "([A-Za-z_][A-Za-z_0-9]*)\\s*\\'",
+          "captures": {
+            "1": {
+              "name": "entity.name.function"
             }
           }
         }

@@ -5,17 +5,17 @@
         value := 6
         switch value
         {
-            case 0:  @assert(false)
-            case 5:  @assert(false)
-            case 6:  @assert(true)
-            default: @assert(false)
+        case 0:  @assert(false)
+        case 5:  @assert(false)
+        case 6:  @assert(true)
+        default: @assert(false)
         }
 
         ch := "A"'char
         switch ch
         {
-            case "B"'char: @assert(false)
-            case "A"'char: break
+        case "B"'char: @assert(false)
+        case "A"'char: break
         }
     }
 
@@ -24,18 +24,18 @@
         value := 6
         switch value
         {
-            case 2, 4, 6:   @assert(true)
-            default:        @assert(false)
+        case 2, 4, 6:   @assert(true)
+        default:        @assert(false)
         }
 
         switch value
         {
-            case 2,
-                 4,
-                 6:
-                @assert(true)
-            default:
-                @assert(false)
+        case 2,
+             4,
+             6:
+            @assert(true)
+        default:
+            @assert(false)
         }
     }
 
@@ -44,9 +44,9 @@
         value := "myString"
         switch value
         {
-            case "myString":    @assert(true)
-            case "otherString": @assert(false)
-            default:            @assert(false)
+        case "myString":    @assert(true)
+        case "otherString": @assert(false)
+        default:            @assert(false)
         }
     }
 
@@ -55,12 +55,12 @@
         value := 6
         switch value
         {
-            case 6:
-                fallthrough
-            case 7:
-                @assert(value == 6)
-            default:
-                @assert(true)
+        case 6:
+            fallthrough
+        case 7:
+            @assert(value == 6)
+        default:
+            @assert(true)
         }
     }
 
@@ -69,12 +69,12 @@
         value := 6
         switch value
         {
-            case 6:
-                if value == 6
-                    break
-                @assert(false)
-            default:
-                @assert(false)
+        case 6:
+            if value == 6
+                break
+            @assert(false)
+        default:
+            @assert(false)
         }
     }
 
@@ -83,9 +83,9 @@
         value := 6
         switch value
         {
-            case 5:     @assert(false)
-            case 6:     break
-            default:    @assert(false)
+        case 5:     @assert(false)
+        case 6:     break
+        default:    @assert(false)
         }
     }
 
@@ -97,9 +97,9 @@
         #[swag.complete]
         switch color
         {
-            case Color.Red:     break
-            case Color.Green:   @assert(false)
-            case Color.Blue:    @assert(false)
+        case Color.Red:     break
+        case Color.Green:   @assert(false)
+        case Color.Blue:    @assert(false)
         }
     }
 
@@ -110,13 +110,13 @@
         value1 := "true"
         switch
         {
-            case value == 6 || value == 7:
-                @assert(true)
-                fallthrough
-            case value1 == "true":
-                @assert(true)
-            default:
-                @assert(false)
+        case value == 6 || value == 7:
+            @assert(true)
+            fallthrough
+        case value1 == "true":
+            @assert(true)
+        default:
+            @assert(false)
         }
     }
 }
