@@ -16,7 +16,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
 
     addArg("--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
-    addArg("--module", "-m", CommandLineType::String, &cmdLine->moduleFilter, nullptr, "the module to work with");
+    addArg("--module", "-m", CommandLineType::String, &cmdLine->moduleFilter, nullptr, "the module to work with (all modules if not specified)");
 
     addArg("--cache", "-t", CommandLineType::String, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
