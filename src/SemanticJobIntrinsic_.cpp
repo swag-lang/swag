@@ -45,27 +45,20 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicMakeString(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
-{
-    SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, typeInfo));
-    node->typeInfo = g_TypeMgr.typeInfoString;
-    return true;
-}
-
-bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* name)
 {
     auto first  = node->childs.front();
     auto second = node->childs.back();
 
     // Must start with a pointer of the same type as the slice
     if (first->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({first, "'@mkslice' must have a pointer as a first parameter"});
+        return context->report({first, format("'%s' must have a pointer as a first parameter", name)});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (ptrPointer->ptrCount == 0)
-        return context->report({first, "'@mkslice' cannot have 'null' as first parameter"});
+        return context->report({first, format("'%s' cannot have 'null' as first parameter", name)});
     if (ptrPointer->ptrCount != 1)
-        return context->report({first, "'@mkslice' must have a one dimension pointer as a first parameter"});
+        return context->report({first, format("'%s' must have a one dimension pointer as a first parameter", name)});
 
     // Slice count
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, second->typeInfo, nullptr, second, CASTFLAG_COERCE_FULL));
@@ -564,7 +557,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
-        SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, expr->typeInfo));
+        SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, expr->typeInfo, "@mkslice"));
         break;
     }
 
@@ -572,7 +565,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
-        SWAG_CHECK(resolveIntrinsicMakeString(context, node, expr->typeInfo));
+        SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, expr->typeInfo, "@mkstring"));
+        node->typeInfo = g_TypeMgr.typeInfoString;
         break;
     }
 
