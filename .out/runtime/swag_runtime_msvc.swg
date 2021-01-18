@@ -1,10 +1,3 @@
-/*
- * Copyright (c) Christophe Beaudet
- *
- * This file is part of swag, which is MIT licensed.
- * See http://opensource.org/licenses/MIT
- */
-
 // Contains ucrt.lib missing functions from libc
 
 #global if #swagos == "windows"

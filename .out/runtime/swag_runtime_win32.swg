@@ -1,10 +1,3 @@
-/*
- * Copyright (c) Christophe Beaudet
- *
- * This file is part of swag, which is MIT licensed.
- * See http://opensource.org/licenses/MIT
- */
-
 #global if #os == "windows"
 #global foreignlib "kernel32"
 #global foreignlib "user32"
