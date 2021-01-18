@@ -3,7 +3,7 @@
 #include "Log.h"
 #include "SourceFile.h"
 #include "Job.h"
-#include "ffi/ffi.h"
+#include "../ffi/ffi.h"
 struct SemanticContext;
 struct AstNode;
 struct ByteCodeRunContext;
