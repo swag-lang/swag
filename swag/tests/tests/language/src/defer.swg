@@ -37,7 +37,7 @@
         @assert(G == 3)
     }
 
-    // It's typically used to unregister/destroy a resource, but putting the release
+    // It's typically used to unregister/destroy a resource, by putting the release
     // code just after the creation one
     {
         func createResource() => true
