@@ -76,8 +76,8 @@ func(T) new(allocator: IAllocator = null, alignement: u32 = 0, hint: string = nu
 // Drop and release memory of the given type
 func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
-    if !ptr return
-
+    if !ptr
+        return
     userHint := hint ?? @typeof(T).name
     @drop(ptr)
     free(ptr, @sizeof(T), allocator, userHint, loc)
@@ -94,10 +94,11 @@ func(T) new(num: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: 
     return ptr
 }
 
-// Drop and release memory an array of of the given type
+// Drop and release memory of an array of the given type
 func(T) delete(ptr: *T, num: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
-    if !ptr return
+    if !ptr
+        return
     debug.assert(num > 0)
 
     userHint := hint ?? @typeof(T).name

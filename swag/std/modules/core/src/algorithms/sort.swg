@@ -114,6 +114,8 @@ func(T) isSorted(values: const [..] T, cb: func(T, T)->s32 = null)->bool
 // The slice must be sorted in ascending order
 func(T) find(values: const [..] T, value: T) -> {index: uint, success: bool}
 {
+    var result: retval
+
     min := 0'uint
     countof := @countof(values)
     max := @countof(values)
@@ -125,12 +127,17 @@ func(T) find(values: const [..] T, value: T) -> {index: uint, success: bool}
             break
         res := values[mid] <=> value
         if res == 0
-            return @{mid, true}
+        {
+            result.index = mid
+            result.success = true
+            return result
+        }
+
         if res < 0
             min = mid + 1
         else
             max = mid - 1
     }
 
-    return @{0, false}
+    return result
 }
