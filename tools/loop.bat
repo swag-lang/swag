@@ -1,4 +1,4 @@
 :loop
-swag test -w:f:/swag/swag/tests --backend:x64 --rebuild %1 --devmode --num-cores:0
-swag test -w:f:/swag/swag/std   --backend:x64 --rebuild %1 --devmode --num-cores:0
+swag test -w:../swag/tests --backend:x64 --rebuild --devmode %1 %2 %3 %4
+swag test -w:../swag/std   --backend:x64 --rebuild --devmode %1 %2 %3 %4
 goto loop

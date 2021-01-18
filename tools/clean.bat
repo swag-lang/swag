@@ -1,2 +1,2 @@
-swag clean -w:f:/swag/swag/tests
-swag clean -w:f:/swag/swag/std
+swag clean -w:../swag/tests
+swag clean -w:../swag/std
