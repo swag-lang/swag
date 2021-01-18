@@ -315,7 +315,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Force instantiation of all special functions
     for (auto method : newType->methods)
     {
-        if (method->declNode->isSpecialFunction())
+        if (method->declNode->isSpecialFunctionName())
         {
             auto specFunc = CastAst<AstFuncDecl>(method->declNode, AstNodeKind::FuncDecl);
             if (specFunc != genericStructType->opUserDropFct &&

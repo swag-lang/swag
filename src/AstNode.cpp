@@ -8,7 +8,14 @@
 #include "SourceFile.h"
 #include "Module.h"
 
-bool AstNode::isSpecialFunction()
+bool AstNode::hasSpecialFuncCall()
+{
+    return extension &&
+           extension->resolvedUserOpSymbolOverload &&
+           extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function;
+}
+
+bool AstNode::isSpecialFunctionName()
 {
     // Check operators
     const auto& name = token.text;

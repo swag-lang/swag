@@ -80,7 +80,7 @@ bool SemanticJob::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDec
 
 bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
 {
-    if (!node->isSpecialFunction())
+    if (!node->isSpecialFunctionName())
         return true;
 
     auto& name   = node->token.text;

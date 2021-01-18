@@ -79,9 +79,8 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
         node->doneFlags |= AST_DONE_CAST1;
     }
 
-    if (node->extension &&
-        node->extension->resolvedUserOpSymbolOverload &&
-        node->extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
+    // User special function
+    if (node->hasSpecialFuncCall())
     {
         SWAG_CHECK(emitUserOp(context));
         if (context->result != ContextResult::Done)

@@ -603,9 +603,8 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
         leftNode->typeInfo = rightNode->typeInfo;
     }
 
-    if (node->extension &&
-        node->extension->resolvedUserOpSymbolOverload &&
-        node->extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
+    // User special function
+    if (node->hasSpecialFuncCall())
     {
         if (node->doneFlags & AST_DONE_FLAT_PARAMS)
         {

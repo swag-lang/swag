@@ -428,9 +428,8 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
         auto r0 = node->childs[0]->resultRegisterRC;
         auto r1 = node->childs[1]->resultRegisterRC;
 
-        if (node->extension &&
-            node->extension->resolvedUserOpSymbolOverload &&
-            node->extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function)
+        // User special function
+        if (node->hasSpecialFuncCall())
         {
             SWAG_CHECK(emitUserOp(context));
             if (context->result != ContextResult::Done)
