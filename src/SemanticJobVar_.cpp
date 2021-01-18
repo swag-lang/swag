@@ -548,7 +548,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
             // AST_PENDING_LAMBDA_TYPING will stop semantic, forcing to not evaluate the content of the function,
             // until types are known
-            if (node->ownerFct)
+            if (node->ownerFct && node->ownerScope->kind != ScopeKind::Struct)
                 node->ownerFct->flags |= AST_PENDING_LAMBDA_TYPING;
         }
     }

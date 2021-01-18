@@ -545,11 +545,15 @@ void Workspace::checkPendingJobs()
             doneIds.insert(doneId);
         }
 
+        if (node->kind == AstNodeKind::FuncDeclType)
+            node = node->parent;
+        Utf8 name = node->token.text;
+
         // Job is not done, and we do not wait for a specific identifier
         auto toSolve = pendingJob->waitingSymbolSolved;
         if (!toSolve && !node->token.text.empty())
         {
-            Diagnostic diag{node, node->token, format("module '%s', cannot resolve %s '%s'", pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.text.c_str())};
+            Diagnostic diag{node, node->token, format("module '%s', cannot resolve %s '%s'", pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), name.c_str())};
             diag.codeComment = id;
             sourceFile->report(diag);
         }
@@ -724,7 +728,7 @@ bool Workspace::buildTarget()
 
 bool Workspace::build()
 {
-    auto result         = true;
+    auto result = true;
 
     {
         Timer timer(&g_Stats.totalTime);
