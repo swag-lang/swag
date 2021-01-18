@@ -1,4 +1,6 @@
-public struct ConcatBufferBucket
+#global public
+
+struct ConcatBufferBucket
 {
     datas:  *u8
     next:   *ConcatBufferBucket
@@ -7,7 +9,7 @@ public struct ConcatBufferBucket
 
 // Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
 // the buffer needs to increase its size. This is the main difference with Array
-public struct ConcatBuffer
+struct ConcatBuffer
 {
     allocator:      swag.IAllocator
 
@@ -19,7 +21,7 @@ public struct ConcatBuffer
     totalCount:     uint
 }
 
-public impl ConcatBuffer
+impl ConcatBuffer
 {
     private func release(using self)
     {
