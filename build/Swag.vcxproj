@@ -393,12 +393,8 @@ ml64.exe /c /Cx /Fo ../.tmp/swag/$(Configuration)/win64.obj ../ffi/win64_plain.a
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include=".clang-format" />
     <ClCompile Include="../src/CopyFileJob.cpp" />
     <ClInclude Include="../src/CopyFileJob.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Natvis Include="../swag.natvis" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="../src/todo.txt" />

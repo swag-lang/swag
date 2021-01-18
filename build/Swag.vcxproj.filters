@@ -777,12 +777,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include=".clang-format" />
-  </ItemGroup>
-  <ItemGroup>
-    <Natvis Include="../swag.natvis" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="../ffi/win64.S">
       <Filter>FFI</Filter>
     </CustomBuild>
