@@ -1,6 +1,6 @@
 #global if WINDOWS
 #global public
-#global namespace environment
+#global namespace env
 using win32
 
 const EndLine = "\r\n"

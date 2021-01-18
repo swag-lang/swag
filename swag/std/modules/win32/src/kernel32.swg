@@ -19,6 +19,7 @@ alias LPCVOID =			const *void
 alias LPCSTR =			const *u8
 alias LPCWSTR =			const *u16
 alias LPCTSTR =			const *u16
+alias LPWSTR =          *u16
 alias LPDWORD =			*DWORD
 alias LPOVERLAPPED =	*DWORD
 alias DWORD_PTR =		uint
@@ -320,4 +321,6 @@ struct PROCESS_INFORMATION
     func FindClose(hFindFile: HANDLE)->BOOL;
     func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
     func SetCurrentDirectoryA(lpPathName: LPCSTR)->BOOL;
+    func GetFullPathNameA(lpFileName: LPCSTR, nBufferLength: DWORD, lpBuffer: LPSTR, lpFilePart: *LPSTR)->DWORD;
+    func GetFullPathNameW(lpFileName: LPCTSTR, nBufferLength: DWORD, lpBuffer: LPWSTR, lpFilePart: *LPWSTR)->DWORD;
 }

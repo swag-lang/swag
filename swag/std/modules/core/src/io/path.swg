@@ -2,8 +2,8 @@
 #global namespace path
 using swag
 
-const DirectorySeparatorChar    = "\\"'u8
-const AltDirectorySeparatorChar = "/"'u8
+const DirectorySeparatorChar    = "/"'u8
+const AltDirectorySeparatorChar = "\\"'u8
 const VolumeSeparatorChar       = ":"'u8
 
 // Returns true if the given character is a directory separator
@@ -164,11 +164,18 @@ func combine(fullnames: string...)->String
         {
             c := result[result.length - 1]
             if !isDirectorySeparator(c) && c != VolumeSeparatorChar
-                result += AltDirectorySeparatorChar
+                result += DirectorySeparatorChar
         }
 
         result += one
     }
 
     return result
+}
+
+// Normalize path
+// '\' are replaced with '/' as this is the std norm for paths
+func normalize(fullname: String)
+{
+    fullname.replace("\\", "/")
 }

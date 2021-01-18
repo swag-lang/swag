@@ -1,4 +1,4 @@
-#global namespace environment
+#global namespace env
 
 // Get the program command line arguments as a [..] string
 public func getCommandLineArgs() => g_cmdLineArgs

@@ -95,10 +95,11 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
 // Returns the current directory
 func getCurrent()->String
 {
-    length := GetCurrentDirectoryA(0, null)
     var result: retval
+    length := GetCurrentDirectoryA(0, null)
     result.reserve(cast(uint) length + 1)
     result.length = GetCurrentDirectoryA(length + 1, result.buffer)
+    path.normalize(result)
     return result
 }
 

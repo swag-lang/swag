@@ -113,3 +113,34 @@ func getRootLength(fullname: string)->u32
 
     return i
 }
+
+// Transform 'fullname' to an absolute path
+func getAbsolute(fullname: string) -> {name: String, err: ErrorId }
+{
+    var result: retval
+
+    result.name.reserve(100)
+    res := cast(uint) GetFullPathNameA(@dataof(fullname), cast(DWORD) result.name.capacity, result.name.buffer, null)
+    if res == 0
+    {
+        error.setLastErrorId()
+        result.err = error.last()
+        return result
+    }
+
+    if(res >= 100)
+    {
+        result.name.reserve(res + 1)
+        res = cast(uint) GetFullPathNameA(@dataof(fullname), cast(DWORD) result.name.capacity, result.name.buffer, null)
+        if res == 0
+        {
+            error.setLastErrorId()
+            result.err = error.last()
+            return result
+        }
+    }
+
+    result.name.length = res
+    normalize(result.name)
+    return result
+}
