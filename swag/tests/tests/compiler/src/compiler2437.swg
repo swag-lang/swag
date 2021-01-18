@@ -10,8 +10,9 @@ impl A
     }
 }
 
+//#[swag.printbc]
 #test
 {
     var x: A
-    //@assert("toto" == x)
+    @assert("toto" == x)
 }

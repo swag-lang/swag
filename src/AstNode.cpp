@@ -8,6 +8,16 @@
 #include "SourceFile.h"
 #include "Module.h"
 
+void AstNode::swap2Childs()
+{
+    SWAG_ASSERT(childs.size() == 2);
+    auto tmp  = childs[0];
+    childs[0] = childs[1];
+    childs[1] = tmp;
+    childs[0]->childParentIdx = 0;
+    childs[1]->childParentIdx = 1;
+}
+
 bool AstNode::hasSpecialFuncCall()
 {
     return extension &&

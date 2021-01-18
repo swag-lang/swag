@@ -350,6 +350,7 @@ struct AstNode
     bool             mustInline();
     void             setOwnerAttrUse(AstAttrUse* attrUse);
     void             allocateExtension();
+    void             swap2Childs();
     bool             hasSpecialFuncCall();
     bool             isSpecialFunctionName();
 
