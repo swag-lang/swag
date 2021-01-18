@@ -355,9 +355,6 @@ namespace Runtime
     uint64_t tlsAlloc();
     void     tlsSetValue(uint64_t id, void* value);
     void*    tlsGetValue(uint64_t id);
-    void*    alloc(size_t size);
-    void*    realloc(void* ptr, size_t size);
-    void     free(void* ptr);
 
     const uint32_t COMPARE_STRICT   = 0x00000000;
     const uint32_t COMPARE_CAST_ANY = 0x00000001;

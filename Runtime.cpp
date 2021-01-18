@@ -281,20 +281,4 @@ namespace Runtime
 #endif
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    void* alloc(size_t size)
-    {
-        return OS::alloc(size);
-    }
-
-    void* realloc(void* ptr, size_t size)
-    {
-        return OS::realloc(ptr, size);
-    }
-
-    void free(void* ptr)
-    {
-        return OS::free(ptr);
-    }
-
 } // namespace Runtime

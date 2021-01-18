@@ -69,6 +69,9 @@ struct LLVMPerThread
     llvm::FunctionCallee fn_powf64;
     llvm::FunctionCallee fn_memcmp;
     llvm::FunctionCallee fn_strlen;
+    llvm::FunctionCallee fn_malloc;
+    llvm::FunctionCallee fn_realloc;
+    llvm::FunctionCallee fn_free;
 
     map<int32_t, llvm::BasicBlock*>             labels;
     map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternal;

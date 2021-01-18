@@ -478,14 +478,14 @@ namespace swag
 //
 
 func @assert(value: bool);
-func @alloc(size: uint)->*void;
-func @realloc(ptr: *void, size: uint)->*void;
-func @free(ptr: *void);
 func @getcontext()->*swag.Context;
 func @setcontext(context: const *swag.Context);
 func @isbytecode()->bool;
 func @compiler()->swag.ICompiler;
 
+func @alloc(size: uint)->*void;
+func @realloc(ptr: *void, size: uint)->*void;
+func @free(ptr: *void);
 func @memset(dst: *void, value: u8, size: uint);
 func @memcpy(dst: *void, src: const *void, size: uint);
 func @memmove(dst: *void, src: const *void, size: uint);

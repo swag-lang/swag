@@ -26,10 +26,6 @@ private
         func TlsAlloc()->u32;
         func TlsSetValue(dwTlsIndex: u32, lpTlsValue: *void);
         func TlsGetValue(dwTlsIndex: u32)->*void;
-        func HeapAlloc(hHeap: HANDLE, dwFlags: DWORD, dwBytes: uint)->*void;
-        func HeapReAlloc(hHeap: HANDLE, dwFlags: DWORD, mem: *void, dwBytes: uint)->*void;
-        func HeapFree(hHeap: HANDLE, dwFlags: DWORD, mem: *void);
-        func GetProcessHeap()->HANDLE;
     }
 
     #[swag.foreign("user32")]
@@ -71,25 +67,6 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
     @print("\n")
 
     ExitProcess(cast(u32) -666)
-}
-
-////////////////////////////////////////////////////////////
-func __alloc(size: uint)->*void
-{
-    if !size return null
-    return HeapAlloc(GetProcessHeap(), 0, size)
-}
-
-func __realloc(ptr: *void, size: uint)->*void
-{
-    if !ptr return __alloc(size)
-    return HeapReAlloc(GetProcessHeap(), 0, ptr, size)
-}
-
-func __free(ptr: *void)
-{
-    if !ptr return
-    HeapFree(GetProcessHeap(), 0, ptr)
 }
 
 ////////////////////////////////////////////////////////////

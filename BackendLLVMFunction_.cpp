@@ -997,6 +997,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::IntrinsicAlloc:
+        {
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(builder.CreateCall(pp.fn_malloc, {r1}), r0);
+            break;
+        }
+        case ByteCodeOp::IntrinsicRealloc:
+        {
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            auto r2 = builder.CreateLoad(GEP_I32(allocR, ip->c.u32));
+            builder.CreateStore(builder.CreateCall(pp.fn_realloc, {r1, r2}), r0);
+            break;
+        }
+        case ByteCodeOp::IntrinsicFree:
+        {
+            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            builder.CreateCall(pp.fn_free, {r0});
+            break;
+        }
+
         case ByteCodeOp::IntrinsicInterfaceOf:
         {
             localCall(buildParameters, allocR, allocT, "@interfaceof", {ip->c.u32, ip->a.u32, ip->b.u32}, {});
@@ -2311,21 +2333,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             localCall(buildParameters, allocR, allocT, "__assert", {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
             break;
         }
-        case ByteCodeOp::IntrinsicAlloc:
-        {
-            localCall(buildParameters, allocR, allocT, "__alloc", {ip->a.u32, ip->b.u32}, {});
-            break;
-        }
-        case ByteCodeOp::IntrinsicRealloc:
-        {
-            localCall(buildParameters, allocR, allocT, "__realloc", {ip->a.u32, ip->b.u32, ip->c.u32}, {});
-            break;
-        }
-        case ByteCodeOp::IntrinsicFree:
-        {
-            localCall(buildParameters, allocR, allocT, "__free", {ip->a.u32}, {});
-            break;
-        }
+
         case ByteCodeOp::IntrinsicGetContext:
         {
             auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));

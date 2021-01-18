@@ -122,6 +122,9 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         pp.fn_powf64  = modu.getOrInsertFunction("pow", ::llvm::FunctionType::get(llvm::Type::getDoubleTy(context), {llvm::Type::getDoubleTy(context), llvm::Type::getDoubleTy(context)}, false));
         pp.fn_memcmp  = modu.getOrInsertFunction("memcmp", ::llvm::FunctionType::get(llvm::Type::getInt32Ty(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context)}, false));
         pp.fn_strlen  = modu.getOrInsertFunction("strlen", ::llvm::FunctionType::get(llvm::Type::getInt64Ty(context), {llvm::Type::getInt8PtrTy(context)}, false));
+        pp.fn_malloc  = modu.getOrInsertFunction("malloc", ::llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt64Ty(context)}, false));
+        pp.fn_realloc = modu.getOrInsertFunction("realloc", ::llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {llvm::Type::getInt8PtrTy(context), llvm::Type::getInt64Ty(context)}, false));
+        pp.fn_free    = modu.getOrInsertFunction("free", ::llvm::FunctionType::get(llvm::Type::getVoidTy(context), {llvm::Type::getInt8PtrTy(context)}, false));
     }
 
     // Cache things

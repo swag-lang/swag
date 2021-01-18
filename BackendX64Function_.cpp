@@ -1692,6 +1692,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
+        case ByteCodeOp::IntrinsicAlloc:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            emitCall(pp, "malloc");
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::IntrinsicRealloc:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
+            emitCall(pp, "realloc");
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::IntrinsicFree:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            emitCall(pp, "free");
+            break;
+
         case ByteCodeOp::IntrinsicAssert:
         {
             SWAG_ASSERT(sizeParamsStack >= 4 * sizeof(Register));
@@ -1731,29 +1747,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             emitCall(pp, "@args");
-            break;
-
-        case ByteCodeOp::IntrinsicAlloc:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, "__alloc");
-            break;
-        case ByteCodeOp::IntrinsicRealloc:
-            SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, "__realloc");
-            break;
-        case ByteCodeOp::IntrinsicFree:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            emitCall(pp, "__free");
             break;
 
         case ByteCodeOp::IntrinsicCompiler:

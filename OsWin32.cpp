@@ -691,27 +691,6 @@ namespace OS
         return "";
     }
 
-    void* alloc(size_t size)
-    {
-        if (!size)
-            return nullptr;
-        return HeapAlloc(GetProcessHeap(), 0, size);
-    }
-
-    void* realloc(void* ptr, size_t size)
-    {
-        if (!ptr)
-            return alloc(size);
-        return HeapReAlloc(GetProcessHeap(), 0, ptr, size);
-    }
-
-    void free(void* ptr)
-    {
-        if (!ptr)
-            return;
-        HeapFree(GetProcessHeap(), 0, ptr);
-    }
-
     uint64_t timerNow()
     {
         LARGE_INTEGER res;
