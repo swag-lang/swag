@@ -496,6 +496,12 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         node->setFlagsValueIsComputed();
         return true;
 
+    case TokenId::CompilerAbi:
+        node->computedValue.text = Backend::GetAbiName();
+        node->typeInfo = g_TypeMgr.typeInfoString;
+        node->setFlagsValueIsComputed();
+        return true;
+
     case TokenId::CompilerHasTag:
     {
         auto front = node->childs.front();

@@ -189,9 +189,9 @@ const char* Backend::GetAbiName()
     switch (g_CommandLine.abi)
     {
     case BackendAbi::Msvc:
-        return "Msvc";
+        return "msvc";
     case BackendAbi::Gnu:
-        return "Gnu";
+        return "gnu";
     default:
         return "?";
     }
@@ -202,7 +202,7 @@ const char* Backend::GetVendorName()
     switch (g_CommandLine.vendor)
     {
     case BackendVendor::Pc:
-        return "Pc";
+        return "pc";
     default:
         return "?";
     }

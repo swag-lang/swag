@@ -15,6 +15,7 @@ void LanguageSpec::setup()
     keywords["#cfg"]            = TokenId::CompilerBuildCfg;
     keywords["#arch"]           = TokenId::CompilerArch;
     keywords["#os"]             = TokenId::CompilerOs;
+    keywords["#abi"]            = TokenId::CompilerAbi;
     keywords["#hastag"]         = TokenId::CompilerHasTag;
     keywords["#tagval"]         = TokenId::CompilerTagVal;
     keywords["#file"]           = TokenId::CompilerFile;
