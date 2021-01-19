@@ -557,7 +557,20 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoNull, context->report({node, node->token, "cannot deduce type from 'null'"}));
 
     // We should have a type here !
-    SWAG_VERIFY(node->typeInfo, context->report({node, node->token, format("unable to deduce type of %s '%s'", AstNode::getKindName(node).c_str(), node->token.text.c_str())}));
+    SWAG_VERIFY(node->typeInfo, context->report({ node, node->token, format("unable to deduce type of %s '%s'", AstNode::getKindName(node).c_str(), node->token.text.c_str()) }));
+
+    // If this is a tuple destructuration, make a reference in case the type is a struct, to avoid copy/move stuff
+    if (node->assignment && node->assignment->flags & AST_TUPLE_DESTRUCT)
+    {
+        if (node->typeInfo->kind == TypeInfoKind::Struct)
+        {
+            auto typeRef         = allocType<TypeInfoReference>();
+            typeRef->flags       = node->typeInfo->flags;
+            typeRef->pointedType = node->typeInfo;
+            typeRef->computeName();
+            node->typeInfo = typeRef;
+        }
+    }
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS

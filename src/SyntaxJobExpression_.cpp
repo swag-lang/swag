@@ -1122,7 +1122,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             identifier          = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
             varNode->assignment = identifier;
             SemanticJob::setVarDeclResolve(varNode);
-            varNode->assignment->flags |= AST_NO_LEFT_DROP | AST_FORCE_MOVE;
+            varNode->assignment->flags |= AST_TUPLE_DESTRUCT;
         }
 
         orgVarNode->publicName += ")";
