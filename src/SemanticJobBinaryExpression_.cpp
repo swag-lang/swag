@@ -403,8 +403,9 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 
 bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto node          = context->node;
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -412,6 +413,10 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         node->typeInfo = leftTypeInfo;
         return true;
     }
+
+    SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_FULL));
+    node->typeInfo = TypeManager::concreteType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
     {
@@ -760,9 +765,6 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         SWAG_CHECK(resolveBinaryOpDiv(context, left, right));
         break;
     case TokenId::SymPercent:
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_FULL));
-        node->typeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBinaryOpModulo(context, left, right));
         break;
 

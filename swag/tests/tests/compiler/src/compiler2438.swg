@@ -13,6 +13,8 @@ impl A
             return @{v * o}
         #if op == "/"
             return @{v / o}
+        #if op == "%"
+            return @{v % o}
     }
 }
 
@@ -39,5 +41,10 @@ impl A
     {
         res := x / 2
         @assert(res.v == 5)
+    }
+
+    {
+        res := x % 3
+        @assert(res.v == 1)
     }
 }
