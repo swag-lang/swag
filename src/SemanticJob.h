@@ -160,7 +160,7 @@ struct SemanticJob : public Job
     static void setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload);
     static void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
     static bool cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node);
-    static bool matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node);
+    static bool matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, bool justCheck = false);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t num, bool exact = true);
     static bool checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncDecl* node, TypeInfo* wanted);
@@ -237,8 +237,9 @@ struct SemanticJob : public Job
     static bool resolveCompilerDefined(SemanticContext* context);
     static bool resolveCompilerScopeFct(SemanticContext* context);
     static bool resolveCompilerLoad(SemanticContext* context);
-    static bool resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool optionnal);
-    static bool resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool optionnal);
+    static bool resolveUserOpBijectif(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right);
+    static bool resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool justCheck);
+    static bool resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool justCheck);
     static bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNode* right);

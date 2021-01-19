@@ -751,6 +751,15 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         }
     }
 
+    // If both are struct, and left does not have 'opBinary', then swap if right has one
+    if (leftTypeInfo->kind == TypeInfoKind::Struct && rightTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        if (!hasUserOp(context, "opBinary", left) && hasUserOp(context, "opBinary", right))
+        {
+            left = left;
+        }
+    }
+
     switch (node->token.id)
     {
     case TokenId::SymPlus:

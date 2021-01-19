@@ -220,14 +220,47 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     return true;
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool optionnal)
+bool SemanticJob::resolveUserOpBijectif(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right)
+{
+    auto node          = context->node;
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+
+    // Simple case
+    if (leftTypeInfo->kind == TypeInfoKind::Struct && rightTypeInfo->kind != TypeInfoKind::Struct)
+        return resolveUserOp(context, name, opConst, opType, left, right, false);
+
+    bool okLeft  = false;
+    bool okRight = false;
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        okLeft = resolveUserOp(context, name, opConst, opType, left, right, true);
+        if (context->result != ContextResult::Done)
+            return true;
+    }
+
+    if (rightTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        okRight = resolveUserOp(context, name, opConst, opType, right, left, true);
+        if (context->result != ContextResult::Done)
+            return true;
+    }
+
+    if (okLeft || (!okRight && leftTypeInfo->kind == TypeInfoKind::Struct))
+        return resolveUserOp(context, name, opConst, opType, left, right, false);
+
+    node->semFlags |= AST_SEM_INVERSE_PARAMS;
+    return resolveUserOp(context, name, opConst, opType, right, left, false);
+}
+
+bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool justCheck)
 {
     VectorNative<AstNode*> params;
     SWAG_ASSERT(left);
     params.push_back(left);
     if (right)
         params.push_back(right);
-    return resolveUserOp(context, name, opConst, opType, left, params, optionnal);
+    return resolveUserOp(context, name, opConst, opType, left, params, justCheck);
 }
 
 SymbolName* SemanticJob::hasUserOp(const char* name, TypeInfoStruct* leftStruct)
@@ -259,14 +292,14 @@ SymbolName* SemanticJob::waitUserOp(SemanticContext* context, const char* name, 
     return symbol;
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool optionnal)
+bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool justCheck)
 {
     auto symbol = waitUserOp(context, name, left);
 
     if (!symbol)
     {
-        if (optionnal)
-            return true;
+        if (justCheck)
+            return false;
 
         auto leftType = TypeManager::concreteType(left->typeInfo);
         return context->report({left->parent, format("cannot find special function '%s' in '%s'", name, leftType->name.c_str())});
@@ -325,7 +358,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
             }
         }
 
-        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr));
+        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck));
         if (context->result == ContextResult::Pending)
             return true;
         if (context->result != ContextResult::NewChilds)
@@ -333,30 +366,33 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         context->result = ContextResult::Done;
     }
 
-    // Make the real cast for all the call parameters
+    uint32_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST;
+    if (justCheck)
+        castFlags |= CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR;
     auto oneMatch = job->cacheMatches[0];
     for (int i = 0; i < params.size(); i++)
     {
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
-            SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, params[i], CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, params[i], castFlags));
     }
 
-    auto overload = oneMatch->symbolOverload;
-    if (!optionnal)
+    // Make the real cast for all the call parameters
+    if (!justCheck)
     {
+        auto overload  = oneMatch->symbolOverload;
         node->typeInfo = overload->typeInfo;
         node->allocateExtension();
         node->extension->resolvedUserOpSymbolOverload = overload;
         SWAG_ASSERT(symbol && symbol->kind == SymbolKind::Function);
-    }
 
-    // Allocate room on the stack to store the result of the function call
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-    if (typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY)
-    {
-        node->concreteTypeInfoStorage = node->ownerScope->startStackSize;
-        node->ownerScope->startStackSize += typeFunc->returnType->sizeOf;
-        node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+        // Allocate room on the stack to store the result of the function call
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+        if (typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY)
+        {
+            node->concreteTypeInfoStorage = node->ownerScope->startStackSize;
+            node->ownerScope->startStackSize += typeFunc->returnType->sizeOf;
+            node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+        }
     }
 
     return true;

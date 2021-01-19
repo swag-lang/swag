@@ -781,4 +781,7 @@
       <Filter>FFI</Filter>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="swag.natvis" />
+  </ItemGroup>
 </Project>

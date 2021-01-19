@@ -1185,7 +1185,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     return context->report(diag, notes);
 }
 
-bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node)
+bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, bool justCheck)
 {
     auto  job              = context->job;
     auto& matches          = job->cacheMatches;
@@ -1393,12 +1393,17 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     // All choices were removed
     if (!genericMatches.size() && genericMatchesSI.size() && matches.empty() && prevMatchesCount)
     {
+        if (justCheck)
+            return false;
         return cannotMatchIdentifierError(context, overloads, node);
     }
 
     // Multi instantation in case of #selectif
     if (genericMatchesSI.size() && matches.empty() && !prevMatchesCount)
     {
+        if (justCheck)
+            return true;
+
         for (auto& g : genericMatchesSI)
         {
             SWAG_CHECK(Generic::instantiateFunction(context, g->genericParameters, *g, true));
@@ -1410,6 +1415,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     // This is a generic
     if (genericMatches.size() == 1 && matches.empty())
     {
+        if (justCheck)
+            return true;
+
         SWAG_CHECK(instantiateGenericSymbol(context, *genericMatches[0], forStruct));
         return true;
     }
@@ -1421,6 +1429,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     // Ambiguity with generics
     if (genericMatches.size() > 1)
     {
+        if (justCheck)
+            return false;
+
         auto                      symbol = overloads[0]->overload->symbol;
         Diagnostic                diag{node, node->token, format("ambiguous resolution of generic %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
         vector<const Diagnostic*> notes;
@@ -1470,11 +1481,18 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
     // There's no match at all
     if (matches.size() == 0)
+    {
+        if (justCheck)
+            return false;
         return cannotMatchIdentifierError(context, overloads, node);
+    }
 
     // There is more than one possible match
     if (matches.size() > 1)
     {
+        if (justCheck)
+            return false;
+
         if (!node)
             node = context->node;
         auto                      symbol = overloads[0]->overload->symbol;

@@ -396,6 +396,9 @@ ml64.exe /c /Cx /Fo ../.tmp/swag/$(Configuration)/win64.obj ../src/ffi/win64_pla
     <ClCompile Include="../src/CopyFileJob.cpp" />
     <ClInclude Include="../src/CopyFileJob.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="swag.natvis" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

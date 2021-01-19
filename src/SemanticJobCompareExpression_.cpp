@@ -9,8 +9,9 @@
 
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto node          = context->node;
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
     // Compile time compare of two types
     if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
@@ -67,9 +68,9 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             return context->report({context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    else if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOp(context, "opEquals", nullptr, nullptr, left, right, false));
+        SWAG_CHECK(resolveUserOpBijectif(context, "opEquals", nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
