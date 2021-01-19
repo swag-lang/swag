@@ -11,9 +11,9 @@
 void AstNode::swap2Childs()
 {
     SWAG_ASSERT(childs.size() == 2);
-    auto tmp  = childs[0];
-    childs[0] = childs[1];
-    childs[1] = tmp;
+    auto tmp                  = childs[0];
+    childs[0]                 = childs[1];
+    childs[1]                 = tmp;
     childs[0]->childParentIdx = 0;
     childs[1]->childParentIdx = 1;
 }
@@ -390,7 +390,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         cloneChilds(context, from);
 
         // Force semantic on specific nodes on generic instantiation
-        if ((from->flags & AST_IS_GENERIC) && (from->flags & AST_SEMANTIC_ON_CLONE))
+        if ((from->flags & AST_IS_GENERIC) && (from->semFlags & AST_SEM_ON_CLONE))
         {
             for (auto one : childs)
                 one->flags &= ~AST_NO_SEMANTIC;

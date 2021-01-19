@@ -236,7 +236,7 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
     {
         node->childs.back()->flags |= AST_NO_SEMANTIC;
-        node->flags |= AST_SEMANTIC_ON_CLONE;
+        node->semFlags |= AST_SEM_ON_CLONE;
     }
 
     return true;
