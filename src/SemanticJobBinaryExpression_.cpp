@@ -745,6 +745,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         case TokenId::SymPlus:
         case TokenId::SymAsterisk:
             swap(left, right);
+            swap(leftTypeInfo, rightTypeInfo);
             node->semFlags |= AST_SEM_INVERSE_PARAMS;
             break;
         }
@@ -767,31 +768,29 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     case TokenId::SymPercent:
         SWAG_CHECK(resolveBinaryOpModulo(context, left, right));
         break;
-
-    case TokenId::SymVertical:
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
-        node->typeInfo       = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(leftTypeInfoBeforePromote);
-        node->castedTypeInfo = TypeManager::concreteType(left->typeInfo);
-        SWAG_CHECK(resolveBitmaskOr(context, left, right));
-        break;
-    case TokenId::SymAmpersand:
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
-        node->typeInfo       = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(leftTypeInfoBeforePromote);
-        node->castedTypeInfo = TypeManager::concreteType(left->typeInfo);
-        SWAG_CHECK(resolveBitmaskAnd(context, left, right));
-        break;
-    case TokenId::SymCircumflex:
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
-        node->typeInfo       = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(leftTypeInfoBeforePromote);
-        node->castedTypeInfo = TypeManager::concreteType(left->typeInfo);
-        SWAG_CHECK(resolveXor(context, left, right));
-        break;
     case TokenId::SymTilde:
         SWAG_CHECK(resolveTilde(context, left, right));
         break;
+
+    case TokenId::SymVertical:
+    case TokenId::SymAmpersand:
+    case TokenId::SymCircumflex:
+        if (leftTypeInfo->kind != TypeInfoKind::Struct)
+        {
+            SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
+            node->typeInfo       = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(leftTypeInfoBeforePromote);
+            node->castedTypeInfo = TypeManager::concreteType(left->typeInfo);
+        }
+
+        if (node->token.id == TokenId::SymVertical)
+            SWAG_CHECK(resolveBitmaskOr(context, left, right));
+        else if (node->token.id == TokenId::SymAmpersand)
+            SWAG_CHECK(resolveBitmaskAnd(context, left, right));
+        else
+            SWAG_CHECK(resolveXor(context, left, right));
+        break;
+
     default:
         return internalError(context, "resolveFactorExpression, token not supported");
     }

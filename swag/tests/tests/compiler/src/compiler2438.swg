@@ -15,6 +15,12 @@ impl A
             return @{v / o}
         #if op == "%"
             return @{v % o}
+        #if op == "|"
+            return @{v | o}
+        #if op == "&"
+            return @{v & o}
+        #if op == "^"
+            return @{v ^ o}
     }
 }
 
@@ -46,5 +52,20 @@ impl A
     {
         res := x % 3
         @assert(res.v == 1)
+    }
+
+    {
+        res := x | 1
+        @assert(res.v == 11)
+    }
+
+    {
+        res := x & 1
+        @assert(res.v == 0)
+    }
+
+    {
+        res := x ^ 1
+        @assert(res.v == 11)
     }
 }
