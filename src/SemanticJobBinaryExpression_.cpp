@@ -17,7 +17,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOp(context, "opBinary", "+", nullptr, left, right, false));
+        SWAG_CHECK(resolveUserOpBijectif(context, "opBinary", "+", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -229,7 +229,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOp(context, "opBinary", "*", nullptr, left, right, false));
+        SWAG_CHECK(resolveUserOpBijectif(context, "opBinary", "*", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -748,15 +748,6 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
             swap(leftTypeInfo, rightTypeInfo);
             node->semFlags |= AST_SEM_INVERSE_PARAMS;
             break;
-        }
-    }
-
-    // If both are struct, and left does not have 'opBinary', then swap if right has one
-    if (leftTypeInfo->kind == TypeInfoKind::Struct && rightTypeInfo->kind == TypeInfoKind::Struct)
-    {
-        if (!hasUserOp(context, "opBinary", left) && hasUserOp(context, "opBinary", right))
-        {
-            left = left;
         }
     }
 
