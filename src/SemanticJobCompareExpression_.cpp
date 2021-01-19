@@ -133,7 +133,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOp(context, "opCmp", nullptr, nullptr, left, right, false));
+        SWAG_CHECK(resolveUserOpBijectif(context, "opCmp", nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoS32;
     }
 
@@ -193,7 +193,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOp(context, "opCmp", nullptr, nullptr, left, right, false));
+        SWAG_CHECK(resolveUserOpBijectif(context, "opCmp", nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
@@ -253,7 +253,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOp(context, "opCmp", nullptr, nullptr, left, right, false));
+        SWAG_CHECK(resolveUserOpBijectif(context, "opCmp", nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
