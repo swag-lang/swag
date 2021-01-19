@@ -221,10 +221,11 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
 bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node         = context->node;
-    auto sourceFile   = context->sourceFile;
-    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
-    auto module       = sourceFile->module;
+    auto node          = context->node;
+    auto sourceFile    = context->sourceFile;
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto module        = sourceFile->module;
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -232,6 +233,10 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         node->typeInfo = leftTypeInfo;
         return true;
     }
+
+    SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_FULL));
+    node->typeInfo = TypeManager::concreteType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
     {
@@ -316,8 +321,9 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 
 bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
+    auto node          = context->node;
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -325,6 +331,10 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         node->typeInfo = leftTypeInfo;
         return true;
     }
+
+    SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
+    node->typeInfo = TypeManager::concreteType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
     {
@@ -719,8 +729,21 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     TypeManager::promote(left, right);
 
     // Must do move and not copy
-    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
         node->flags |= AST_TRANSIENT;
+
+    // Must invert if bijectif
+    if (leftTypeInfo->kind != TypeInfoKind::Struct && rightTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        switch (node->token.id)
+        {
+        case TokenId::SymPlus:
+        case TokenId::SymAsterisk:
+            swap(left, right);
+            node->semFlags |= AST_SEM_INVERSE_PARAMS;
+            break;
+        }
+    }
 
     switch (node->token.id)
     {
@@ -731,15 +754,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         SWAG_CHECK(resolveBinaryOpMinus(context, left, right));
         break;
     case TokenId::SymAsterisk:
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_FULL));
-        node->typeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBinaryOpMul(context, left, right));
         break;
     case TokenId::SymSlash:
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
-        node->typeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBinaryOpDiv(context, left, right));
         break;
     case TokenId::SymPercent:
