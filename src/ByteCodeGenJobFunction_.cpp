@@ -965,6 +965,11 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             return p1->index < p2->index;
         });
     }
+    else if (allParams && (allParams->semFlags & AST_SEM_INVERSE_PARAMS))
+    {
+        SWAG_ASSERT(allParams->childs.size() == 2);
+        allParams->swap2Childs();
+    }
 
     // For a untyped variadic, we need to store all parameters as 'any'
     VectorNative<uint32_t> toFree;

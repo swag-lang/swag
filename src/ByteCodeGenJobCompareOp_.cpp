@@ -262,23 +262,47 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
             return true;
 
         auto r2 = node->resultRegisterRC;
-        switch (node->token.id)
+        if (node->semFlags & AST_SEM_INVERSE_PARAMS)
         {
-        case TokenId::SymLower:
-            emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);
-            break;
-        case TokenId::SymGreater:
-            emitInstruction(context, ByteCodeOp::GreaterZeroToTrue, r2);
-            break;
-        case TokenId::SymLowerEqual:
-            emitInstruction(context, ByteCodeOp::LowerEqZeroToTrue, r2);
-            break;
-        case TokenId::SymGreaterEqual:
-            emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
-            break;
-        case TokenId::SymExclamEqual:
-            emitInstruction(context, ByteCodeOp::NegBool, r2);
-            break;
+            switch (node->token.id)
+            {
+            case TokenId::SymLowerEqualGreater:
+                emitInstruction(context, ByteCodeOp::NegS32, r2);
+                break;
+            case TokenId::SymGreater:
+                emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);
+                break;
+            case TokenId::SymGreaterEqual:
+                emitInstruction(context, ByteCodeOp::LowerEqZeroToTrue, r2);
+                break;
+            case TokenId::SymLower:
+                emitInstruction(context, ByteCodeOp::GreaterZeroToTrue, r2);
+                break;
+            case TokenId::SymLowerEqual:
+                emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
+                break;
+            }
+        }
+        else
+        {
+            switch (node->token.id)
+            {
+            case TokenId::SymLower:
+                emitInstruction(context, ByteCodeOp::LowerZeroToTrue, r2);
+                break;
+            case TokenId::SymGreater:
+                emitInstruction(context, ByteCodeOp::GreaterZeroToTrue, r2);
+                break;
+            case TokenId::SymLowerEqual:
+                emitInstruction(context, ByteCodeOp::LowerEqZeroToTrue, r2);
+                break;
+            case TokenId::SymGreaterEqual:
+                emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
+                break;
+            case TokenId::SymExclamEqual:
+                emitInstruction(context, ByteCodeOp::NegBool, r2);
+                break;
+            }
         }
     }
     else

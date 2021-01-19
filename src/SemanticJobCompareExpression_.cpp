@@ -9,9 +9,8 @@
 
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = context->node;
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto node         = context->node;
+    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     // Compile time compare of two types
     if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
@@ -71,12 +70,6 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
         SWAG_CHECK(resolveUserOp(context, "opEquals", nullptr, nullptr, left, right, false));
-        node->typeInfo = g_TypeMgr.typeInfoBool;
-    }
-    else if (rightTypeInfo->kind == TypeInfoKind::Struct)
-    {
-        SWAG_CHECK(resolveUserOp(context, "opEquals", nullptr, nullptr, right, left, false));
-        context->node->swap2Childs();
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
@@ -356,6 +349,13 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     if (leftTypeInfo->kind != TypeInfoKind::Struct && rightTypeInfo->kind != TypeInfoKind::Struct)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_BIJECTIF | CASTFLAG_FORCE_UNCONST | CASTFLAG_COMPARE | CASTFLAG_COERCE_FULL));
+    }
+
+    // Struct is on the right, so we need to inverse the test
+    else if (leftTypeInfo->kind != TypeInfoKind::Struct)
+    {
+        swap(left, right);
+        node->semFlags |= AST_SEM_INVERSE_PARAMS;
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitCompareOp;

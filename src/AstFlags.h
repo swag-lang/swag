@@ -94,3 +94,4 @@ static const uint32_t AST_SEM_USING                 = 0x00000040;
 static const uint32_t AST_SEM_FORCE_SCOPE           = 0x00000080;
 static const uint32_t AST_SEM_PARTIAL_RESOLVE       = 0x00000100;
 static const uint64_t AST_SEM_FULL_RESOLVE          = 0x00000200;
+static const uint64_t AST_SEM_INVERSE_PARAMS        = 0x00000400;
