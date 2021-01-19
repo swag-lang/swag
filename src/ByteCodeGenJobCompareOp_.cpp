@@ -281,6 +281,9 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
             case TokenId::SymLowerEqual:
                 emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
                 break;
+            case TokenId::SymExclamEqual:
+                emitInstruction(context, ByteCodeOp::NegBool, r2);
+                break;
             }
         }
         else

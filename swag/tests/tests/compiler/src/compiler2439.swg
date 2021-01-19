@@ -8,18 +8,30 @@ struct B
     v = 5
 }
 
+var G = 0
+
 impl A
 {
     func opEquals(using self, o: B)->bool
     {
+        G += 1
         return v == o.v
     }
 }
 
+impl B
+{
+    func opEquals(using self, o: string)->bool
+    {
+        return false
+    }
+}
+
+//#[swag.printbc]
 #test
 {
     var x: A
     var y: B
-    @assert(x != y)
-    //@assert(y != x)
+    @assert(y != x)
+    @assert(G == 1)
 }
