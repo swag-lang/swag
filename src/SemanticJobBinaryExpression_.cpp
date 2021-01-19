@@ -17,7 +17,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOpBijectif(context, "opBinary", "+", nullptr, left, right));
+        SWAG_CHECK(resolveUserOpCommutative(context, "opBinary", "+", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -229,7 +229,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOpBijectif(context, "opBinary", "*", nullptr, left, right));
+        SWAG_CHECK(resolveUserOpCommutative(context, "opBinary", "*", nullptr, left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -737,7 +737,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
         node->flags |= AST_TRANSIENT;
 
-    // Must invert if bijectif
+    // Must invert if commutative operation
     if (leftTypeInfo->kind != TypeInfoKind::Struct && rightTypeInfo->kind == TypeInfoKind::Struct)
     {
         switch (node->token.id)

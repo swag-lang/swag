@@ -70,7 +70,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOpBijectif(context, "opEquals", nullptr, nullptr, left, right));
+        SWAG_CHECK(resolveUserOpCommutative(context, "opEquals", nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
@@ -133,7 +133,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOpBijectif(context, "opCmp", nullptr, nullptr, left, right));
+        SWAG_CHECK(resolveUserOpCommutative(context, "opCmp", nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoS32;
     }
 
@@ -193,7 +193,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOpBijectif(context, "opCmp", nullptr, nullptr, left, right));
+        SWAG_CHECK(resolveUserOpCommutative(context, "opCmp", nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
@@ -253,7 +253,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserOpBijectif(context, "opCmp", nullptr, nullptr, left, right));
+        SWAG_CHECK(resolveUserOpCommutative(context, "opCmp", nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
@@ -349,7 +349,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     // a opEquals function
     if (leftTypeInfo->kind != TypeInfoKind::Struct && rightTypeInfo->kind != TypeInfoKind::Struct)
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_BIJECTIF | CASTFLAG_FORCE_UNCONST | CASTFLAG_COMPARE | CASTFLAG_COERCE_FULL));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UNCONST | CASTFLAG_COMPARE | CASTFLAG_COERCE_FULL));
     }
 
     // Struct is on the right, so we need to inverse the test

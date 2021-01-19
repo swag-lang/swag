@@ -220,7 +220,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     return true;
 }
 
-bool SemanticJob::resolveUserOpBijectif(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right)
+bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);

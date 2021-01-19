@@ -1555,7 +1555,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
 bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
 {
     // Pick the best order
-    if (castFlags & CASTFLAG_BIJECTIF)
+    if (castFlags & CASTFLAG_COMMUTATIVE)
     {
         if ((toType->flags & TYPEINFO_UNTYPED_INTEGER) && !(fromType->flags & TYPEINFO_UNTYPED_INTEGER))
         {
@@ -1855,7 +1855,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 {
     if (toType->isNative(NativeTypeKind::Any))
     {
-        if (castFlags & CASTFLAG_BIJECTIF)
+        if (castFlags & CASTFLAG_COMMUTATIVE)
         {
             if (toNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {

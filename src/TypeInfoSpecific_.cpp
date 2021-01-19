@@ -925,7 +925,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         if (myGenParam->flags & TYPEINFO_DEFINED_VALUE || otherGenParam->flags & TYPEINFO_DEFINED_VALUE)
         {
             SemanticContext cxt;
-            if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_BIJECTIF))
+            if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
                 return false;
         }
         else if (!myGenParam->typeInfo->isSame(otherGenParam->typeInfo, isSameFlags))

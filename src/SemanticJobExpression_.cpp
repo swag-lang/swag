@@ -209,7 +209,7 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     }
     else
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, ifFalse, ifTrue, CASTFLAG_BIJECTIF | CASTFLAG_STRICT));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, ifFalse, ifTrue, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
         node->typeInfo = ifTrue->typeInfo;
     }
 
@@ -289,7 +289,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
             return context->report({expression, format("cannot use operator '??' on type '%s'", typeInfo->name.c_str())});
         }
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_BIJECTIF | CASTFLAG_STRICT));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
 
         node->typeInfo    = expression->typeInfo;
         node->byteCodeFct = ByteCodeGenJob::emitNullConditionalOp;
