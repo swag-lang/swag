@@ -19,6 +19,6 @@ using core
         @assert(!err)
 
         //console.print("%\n%\n", path.getDirectoryName(cur), @countof(full))
-        @assert(full == path.getDirectoryName(cur))
+        @assert(path.getDirectoryName(cur) == full)
     }
 }
