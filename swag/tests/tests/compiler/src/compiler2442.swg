@@ -11,7 +11,7 @@ func toto()->{GG, string}
     return result
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     (v, err) := toto()
