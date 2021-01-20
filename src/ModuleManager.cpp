@@ -5,8 +5,7 @@
 #include "Ast.h"
 #include "Profile.h"
 #include "Timer.h"
-#include "TypeInfo.h"
-#include "DataSegment.h"
+#include "Module.h"
 
 ModuleManager g_ModuleMgr;
 

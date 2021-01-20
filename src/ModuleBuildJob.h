@@ -32,7 +32,7 @@ struct ModuleBuildJob : public Job
         affinity = AFFINITY_ALL ^ AFFINITY_EXECBC;
     }
 
-    bool      addDependency(ModuleDependency* dep);
+    bool      loadDependency(ModuleDependency* dep);
     void      publishFilesToTarget();
     void      publishFilesToPublic();
     JobResult execute() override;

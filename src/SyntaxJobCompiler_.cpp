@@ -571,7 +571,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     }
 
     SWAG_CHECK(eatSemiCol("after '#import' expression"));
-    SWAG_CHECK(sourceFile->module->addDependency(node, forceNameSpace));
+    SWAG_CHECK(sourceFile->module->loadDependency(node, forceNameSpace));
     return true;
 }
 

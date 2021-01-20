@@ -8,15 +8,14 @@
 #include "SemanticJob.h"
 #include "Module.h"
 #include "ModuleRunJob.h"
-#include "ThreadManager.h"
 #include "Profile.h"
 #include "ByteCodeOptimizer.h"
 #include "Context.h"
-#include "Workspace.h"
+#include "ModuleManager.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
-bool ModuleBuildJob::addDependency(ModuleDependency* dep)
+bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
 {
     auto depModule = dep->module;
     if (dep->importDone)
@@ -27,8 +26,6 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
     {
         depModule = g_Workspace.getModuleByName(dep->name);
         depModule->allocateBackend();
-        if (!depModule)
-            return module->error(format("unknown module dependency '%s'", dep->name.c_str()));
         dep->module = depModule;
     }
 
@@ -37,10 +34,10 @@ bool ModuleBuildJob::addDependency(ModuleDependency* dep)
     VectorNative<SourceFile*> files;
     SWAG_ASSERT(depModule->backend);
 
+    // Add all public files from the dependency module
     string publicPath = g_Workspace.getPublicPath(depModule, false).c_str();
     if (fs::exists(publicPath))
     {
-        // Add all public files from the dependency module
         OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
             auto file  = g_Allocator.alloc<SourceFile>();
             file->name = filename;
@@ -120,6 +117,7 @@ JobResult ModuleBuildJob::execute()
             if (depModule->numErrors)
                 return JobResult::ReleaseJob;
 
+            // If this module is not done, wait for it
             unique_lock lk1(depModule->mutexDependency);
             if ((depModule->hasBeenBuilt & BUILDRES_EXPORT) == 0)
             {
@@ -131,7 +129,7 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::IncludeSwg;
     }
 
-    // We add the all export files that corresponds
+    // We add the all public files that corresponds
     // to each module we want to import
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::IncludeSwg)
@@ -150,7 +148,7 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto& dep : module->moduleDependencies)
             {
-                if (!addDependency(dep))
+                if (!loadDependency(dep))
                     return JobResult::ReleaseJob;
             }
 

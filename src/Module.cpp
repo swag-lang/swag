@@ -521,7 +521,7 @@ void Module::addForeignLib(const Utf8& text)
     buildParameters.foreignLibs.insert(text);
 }
 
-bool Module::addDependency(AstNode* importNode, const Utf8& forceNamespace)
+bool Module::loadDependency(AstNode* importNode, const Utf8& forceNamespace)
 {
     Utf8 nameSpaceName = forceNamespace.empty() ? importNode->token.text : forceNamespace;
 

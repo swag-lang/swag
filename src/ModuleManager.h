@@ -1,10 +1,9 @@
 #pragma once
 #include "Utf8.h"
 
-struct DataSegment;
 struct AstFuncDecl;
-
 struct ByteCodeRunContext;
+struct ModuleDependency;
 
 struct ModuleManager
 {

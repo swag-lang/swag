@@ -157,7 +157,7 @@ struct Module
     bool        dependenciesDone = false;
 
     void     addForeignLib(const Utf8& text);
-    bool     addDependency(AstNode* importNode, const Utf8& forceNamespace);
+    bool     loadDependency(AstNode* importNode, const Utf8& forceNamespace);
     void     setHasBeenBuilt(uint32_t buildResult);
     uint32_t getHasBeenBuilt();
     bool     isOnlyPublic();
