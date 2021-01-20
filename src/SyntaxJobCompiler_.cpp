@@ -566,7 +566,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     {
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid import alias name '%s'", token.text.c_str())));
-        forceNameSpace = node->token.text;
+        forceNameSpace = token.text;
         SWAG_CHECK(eatToken());
     }
 

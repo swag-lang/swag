@@ -532,8 +532,8 @@ bool Module::addDependency(AstNode* importNode, const Utf8& forceNamespace)
         {
             if (!forceNamespace.empty() && dep->forceNamespace != forceNamespace)
             {
-                Diagnostic diag{importNode, importNode->token, format("#import namespace alias already done with a different name ('%s')", dep->forceNamespace.c_str())};
-                Diagnostic note{dep->node, dep->node->token, "this is the previous definition", DiagnosticLevel::Note};
+                Diagnostic diag{importNode, format("'#import' namespace alias already done with a different name ('%s')", dep->forceNamespace.c_str())};
+                Diagnostic note{dep->node, "this is the previous definition", DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
 
