@@ -26,6 +26,15 @@ struct ByteCodeOptimizer
                inst->op == ByteCodeOp::JumpIfZero64;
     }
 
+    inline static bool isJumpBlock(ByteCodeInstruction* inst)
+    {
+        if (!isJump(inst))
+            return false;
+        if (inst->op == ByteCodeOp::JumpIfNotZero8 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+            return false;
+        return true;
+    }
+
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void optimizePassJumps(ByteCodeOptContext* context);
     static void optimizePassDeadCode(ByteCodeOptContext* context);
