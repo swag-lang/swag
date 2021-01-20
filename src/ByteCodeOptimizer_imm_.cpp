@@ -139,7 +139,7 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
         if (flags & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D))
             regs[ip->d.u32] = nullptr;
 
-        if (isJump(ip))
+        if (isJumpBlock(ip))
             memset(regs.buffer, 0, maxReg * sizeof(void*));
     }
 }
