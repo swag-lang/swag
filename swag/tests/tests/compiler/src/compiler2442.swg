@@ -3,11 +3,10 @@ struct A
     x, y: u64
 }
 
-alias GG = A
-
-func toto()->{GG, string}
+func toto()->{A, err: string}
 {
     var result: retval
+    result.err = "err"
     return result
 }
 
@@ -15,4 +14,5 @@ func toto()->{GG, string}
 #test
 {
     (v, err) := toto()
+    @assert(err == "err")
 }

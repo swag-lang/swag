@@ -557,20 +557,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoNull, context->report({node, node->token, "cannot deduce type from 'null'"}));
 
     // We should have a type here !
-    SWAG_VERIFY(node->typeInfo, context->report({ node, node->token, format("unable to deduce type of %s '%s'", AstNode::getKindName(node).c_str(), node->token.text.c_str()) }));
-
-    // If this is a tuple destructuration, make a reference in case the type is a struct, to avoid copy/move stuff
-    if (node->assignment && node->assignment->flags & AST_TUPLE_DESTRUCT)
-    {
-        if (node->typeInfo->kind == TypeInfoKind::Struct)
-        {
-            auto typeRef         = allocType<TypeInfoReference>();
-            typeRef->flags       = node->typeInfo->flags;
-            typeRef->pointedType = node->typeInfo;
-            typeRef->computeName();
-            node->typeInfo = typeRef;
-        }
-    }
+    SWAG_VERIFY(node->typeInfo, context->report({node, node->token, format("unable to deduce type of %s '%s'", AstNode::getKindName(node).c_str(), node->token.text.c_str())}));
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
@@ -709,7 +696,23 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 symbolFlags |= OVERLOAD_RETVAL;
         }
 
-        if (!(symbolFlags & OVERLOAD_RETVAL))
+        // If this is a tuple destructuration, then we just compute the stack offset of the item
+        // inside the tuple, so we do not have to generate bytecode !
+        if (node->assignment && node->assignment->flags & AST_TUPLE_DESTRUCT)
+        {
+            node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+            SWAG_ASSERT(node->assignment->kind == AstNodeKind::IdentifierRef);
+            symbolFlags |= OVERLOAD_TUPLE_DESTRUCT;
+            storageOffset = 0;
+            for (auto& c : node->assignment->childs)
+            {
+                SWAG_ASSERT(c->resolvedSymbolOverload);
+                storageOffset += c->resolvedSymbolOverload->storageOffset;
+            }
+        }
+
+        // Reserse room on the stack, except for a retval
+        else if (!(symbolFlags & OVERLOAD_RETVAL))
         {
             auto alignOf                     = SemanticJob::alignOf(node);
             node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
