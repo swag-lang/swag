@@ -10,15 +10,53 @@
 #include "Scope.h"
 #include "Module.h"
 
-void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* theModule)
+void EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime)
 {
+    auto file         = g_Allocator.alloc<SourceFile>();
+    file->fromTests   = theModule->kind == ModuleKind::Test;
+    file->name        = fileName;
+    fs::path pathFile = dirName.c_str();
+    pathFile.append(fileName);
+    file->path      = normalizePath(pathFile);
+    file->writeTime = writeTime;
+
+    // If we have only one core, then we will sort files in alphabetical order to always
+    // treat them in a reliable order. That way, --randomize and --seed can work.
+    if (g_CommandLine.numCores == 1)
+        allFiles.push_back(file);
+    else
+    {
+        theModule->addFile(file);
+        auto job        = g_Pool_syntaxJob.alloc();
+        job->sourceFile = file;
+        g_ThreadMgr.addJob(job);
+    }
+}
+
+void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module* theModule)
+{
+    vector<SourceFile*> allFiles;
+
+    // If there is a 'module.swg' at the root, take it
+    auto modPath = basePath;
+    modPath.append(SWAG_MODULE_SWG_NAME);
+    if (fs::exists(modPath))
+    {
+        auto writeTime = OS::getFileWriteTime(modPath.string().c_str());
+        addFileToModule(theModule, allFiles, basePath.string(), SWAG_MODULE_SWG_NAME, writeTime);
+    }
+
+    auto path = basePath;
+    path += "/";
+    path += SWAG_SRC_FOLDER;
+    path += "/";
+
     // Scan source folder
     vector<string> directories;
     directories.push_back(path.string());
 
-    vector<SourceFile*> allFiles;
-    string              tmp, tmp1;
-    fs::path            modulePath;
+    string   tmp, tmp1;
+    fs::path modulePath;
     while (directories.size())
     {
         tmp = move(directories.back());
@@ -37,25 +75,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& path, Module* th
                 {
                     if (g_CommandLine.fileFilter.empty() || strstr(cFileName, g_CommandLine.fileFilter.c_str()))
                     {
-                        auto file         = g_Allocator.alloc<SourceFile>();
-                        file->fromTests   = theModule->kind == ModuleKind::Test;
-                        file->name        = cFileName;
-                        fs::path pathFile = tmp.c_str();
-                        pathFile.append(cFileName);
-                        file->path      = normalizePath(pathFile);
-                        file->writeTime = writeTime;
-
-                        // If we have only one core, then we will sort files in alphabetical order to always
-                        // treat them in a reliable order. That way, --randomize and --seed can work.
-                        if (g_CommandLine.numCores == 1)
-                            allFiles.push_back(file);
-                        else
-                        {
-                            theModule->addFile(file);
-                            auto job        = g_Pool_syntaxJob.alloc();
-                            job->sourceFile = file;
-                            g_ThreadMgr.addJob(job);
-                        }
+                        addFileToModule(theModule, allFiles, tmp, cFileName, writeTime);
                     }
                 }
             }
@@ -121,11 +141,7 @@ Module* EnumerateModuleJob::addModule(const fs::path& path)
     auto theModule = g_Workspace.createOrUseModule(moduleName, path.string(), kind);
 
     // Parse all files in the source tree
-    string tmp = path.string();
-    tmp += "/";
-    tmp += SWAG_SRC_FOLDER;
-    tmp += "/";
-    enumerateFilesInModule(tmp, theModule);
+    enumerateFilesInModule(path, theModule);
     return theModule;
 }
 
