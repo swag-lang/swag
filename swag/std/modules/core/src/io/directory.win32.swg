@@ -68,7 +68,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
                 fi.attributes = FileAttributes.fromDWORD(findfile.dwFileAttributes)
                 if !(fi.attributes & options.skipAttributes)
                 {
-                    fi.fullname = path.combine(toScan.toString(), filename)
+                    fi.fullname = path.combine(toScan, filename)
 
                     fi.size = findfile.nFileSizeLow + (cast(u64) findfile.nFileSizeHigh << 32)
                     FileTimeToSystemTime(&findfile.ftCreationTime, &fileTime)
