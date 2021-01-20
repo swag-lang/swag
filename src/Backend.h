@@ -49,18 +49,20 @@ struct Backend
     JobResult generateExportFile(Job* ownerJob);
     bool      saveExportFile();
     bool      setupExportFile(bool force = false);
-    bool      emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent);
-    bool      emitAttributes(TypeInfo* typeInfo, int indent);
-    bool      emitTypeTuple(TypeInfo* typeInfo, int indent);
-    void      emitType(TypeInfo* typeInfo, int indent);
-    bool      emitGenericParameters(AstNode* node, int indent);
-    bool      emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent);
-    bool      emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent);
-    bool      emitVarSwg(const char* kindName, AstVarDecl* node, int indent);
-    bool      emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent);
-    bool      emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent);
-    bool      emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int indent);
-    bool      emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent);
+
+    void emitDependencies();
+    bool emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent);
+    bool emitAttributes(TypeInfo* typeInfo, int indent);
+    bool emitTypeTuple(TypeInfo* typeInfo, int indent);
+    void emitType(TypeInfo* typeInfo, int indent);
+    bool emitGenericParameters(AstNode* node, int indent);
+    bool emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int indent);
+    bool emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, int indent);
+    bool emitVarSwg(const char* kindName, AstVarDecl* node, int indent);
+    bool emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent);
+    bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent);
+    bool emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int indent);
+    bool emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent);
 
     OutputFile bufferSwg;
 

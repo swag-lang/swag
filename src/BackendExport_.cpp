@@ -697,6 +697,15 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
     return true;
 }
 
+void Backend::emitDependencies()
+{
+    for (const auto& dep : module->moduleDependencies)
+    {
+        bufferSwg.addStringFormat("#import \"%s\"", dep->name.c_str());
+        bufferSwg.addEol();
+    }
+}
+
 bool Backend::setupExportFile(bool force)
 {
     if (!bufferSwg.path.empty())
@@ -741,11 +750,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
         module->isSwag = true;
         bufferSwg.addEol();
 
-        for (const auto& dep : module->moduleDependencies)
-        {
-            bufferSwg.addStringFormat("#import \"%s\"", dep->name.c_str());
-            bufferSwg.addEol();
-        }
+        emitDependencies();
 
         CONCAT_FIXED_STR(bufferSwg, "using swag");
         bufferSwg.addEol();
