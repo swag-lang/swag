@@ -37,7 +37,6 @@ struct ModuleDependency
     Utf8     name;
     Utf8     forceNamespace;
     AstNode* node       = nullptr;
-    AstNode* aliasDone  = nullptr;
     Module*  module     = nullptr;
     bool     importDone = false;
 };
@@ -157,12 +156,12 @@ struct Module
     bool        setupDone        = false;
     bool        dependenciesDone = false;
 
-    void              addForeignLib(const Utf8& text);
-    ModuleDependency* addDependency(AstNode* importNode);
-    void              setHasBeenBuilt(uint32_t buildResult);
-    uint32_t          getHasBeenBuilt();
-    bool              isOnlyPublic();
-    bool              mustOutputSomething();
+    void     addForeignLib(const Utf8& text);
+    bool     addDependency(AstNode* importNode, const Utf8& forceNamespace);
+    void     setHasBeenBuilt(uint32_t buildResult);
+    uint32_t getHasBeenBuilt();
+    bool     isOnlyPublic();
+    bool     mustOutputSomething();
 
     shared_mutex                    mutexDependency;
     VectorNative<ModuleDependency*> moduleDependencies;

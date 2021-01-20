@@ -43,10 +43,4 @@
         short += 2
         @assert(myLongVariableName == 2)
     }
-
-    // alias can also be used to force the namespace name of an
-    // imported module
-    {
-        // alias MyStd = #import "std"
-    }
 }

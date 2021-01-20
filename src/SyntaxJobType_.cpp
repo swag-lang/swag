@@ -26,42 +26,20 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymEqual));
 
-    // Aliasing a module importation
-    if (token.id == TokenId::CompilerImport)
+    AstNode* expr;
+    SWAG_CHECK(doPrimaryExpression(node, &expr));
+    SWAG_CHECK(eatSemiCol("after alias"));
+
+    // This is a type alias
+    if (expr->kind == AstNodeKind::TypeExpression || expr->kind == AstNodeKind::TypeLambda)
     {
-        SWAG_CHECK(doCompilerImport(node));
-
-        auto dep = sourceFile->module->addDependency(node->childs.front());
-        if (dep->aliasDone && dep->forceNamespace != node->token.text)
-        {
-            Diagnostic diag{node, node->token, format("#import namespace alias already done with a different name ('%s')", dep->forceNamespace.c_str())};
-            Diagnostic note{dep->aliasDone, dep->aliasDone->token, "this is the previous definition", DiagnosticLevel::Note};
-            return sourceFile->report(diag, &note);
-        }
-
-        dep->aliasDone      = node;
-        dep->forceNamespace = node->token.text;
-
-        node->kind        = AstNodeKind::AliasImport;
-        node->semanticFct = nullptr;
+        node->semanticFct = SemanticJob::resolveTypeAlias;
+        currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
     }
     else
     {
-        AstNode* expr;
-        SWAG_CHECK(doPrimaryExpression(node, &expr));
-        SWAG_CHECK(eatSemiCol("after alias"));
-
-        // This is a type alias
-        if (expr->kind == AstNodeKind::TypeExpression || expr->kind == AstNodeKind::TypeLambda)
-        {
-            node->semanticFct = SemanticJob::resolveTypeAlias;
-            currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
-        }
-        else
-        {
-            node->semanticFct        = SemanticJob::resolveAlias;
-            node->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::Alias);
-        }
+        node->semanticFct        = SemanticJob::resolveAlias;
+        node->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::Alias);
     }
 
     return true;

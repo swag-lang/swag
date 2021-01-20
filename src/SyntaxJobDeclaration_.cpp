@@ -29,7 +29,6 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 case AstNodeKind::Using:
                 case AstNodeKind::IdentifierRef:
                 case AstNodeKind::Namespace:
-                case AstNodeKind::AliasImport:
                     break;
 
                 default:

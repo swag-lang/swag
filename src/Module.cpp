@@ -521,21 +521,32 @@ void Module::addForeignLib(const Utf8& text)
     buildParameters.foreignLibs.insert(text);
 }
 
-ModuleDependency* Module::addDependency(AstNode* importNode)
+bool Module::addDependency(AstNode* importNode, const Utf8& forceNamespace)
 {
+    Utf8 nameSpaceName = forceNamespace.empty() ? importNode->token.text : forceNamespace;
+
     scoped_lock lk(mutexDependency);
     for (auto& dep : moduleDependencies)
     {
         if (dep->name == importNode->token.text)
-            return dep;
+        {
+            if (!forceNamespace.empty() && dep->forceNamespace != forceNamespace)
+            {
+                Diagnostic diag{importNode, importNode->token, format("#import namespace alias already done with a different name ('%s')", dep->forceNamespace.c_str())};
+                Diagnostic note{dep->node, dep->node->token, "this is the previous definition", DiagnosticLevel::Note};
+                return importNode->sourceFile->report(diag, &note);
+            }
+
+            return true;
+        }
     }
 
     ModuleDependency* dep = g_Allocator.alloc<ModuleDependency>();
     dep->node             = importNode;
     dep->name             = importNode->token.text;
-    dep->forceNamespace   = importNode->token.text;
+    dep->forceNamespace   = nameSpaceName;
     moduleDependencies.push_front(dep);
-    return dep;
+    return true;
 }
 
 void Module::setHasBeenBuilt(uint32_t buildResult)

@@ -559,9 +559,19 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatSemiCol("after '#import' expression"));
 
-    sourceFile->module->addDependency(node);
+    // Aliasing a module importation
+    Utf8 forceNameSpace;
+    if (token.id == TokenId::KwdAs)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid import alias name '%s'", token.text.c_str())));
+        forceNameSpace = node->token.text;
+        SWAG_CHECK(eatToken());
+    }
+
+    SWAG_CHECK(eatSemiCol("after '#import' expression"));
+    SWAG_CHECK(sourceFile->module->addDependency(node, forceNameSpace));
     return true;
 }
 
