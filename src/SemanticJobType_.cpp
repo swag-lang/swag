@@ -383,6 +383,24 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
+    // Constraints with alias on a variable
+    if (symbol->kind == SymbolKind::Variable)
+    {
+        // alias x = struct.x is not possible
+        if (back->kind == AstNodeKind::IdentifierRef)
+        {
+            int cptVar = 0;
+            for (auto& c : back->childs)
+            {
+                if (c->resolvedSymbolName && c->resolvedSymbolName->kind == SymbolKind::Variable)
+                {
+                    SWAG_VERIFY(cptVar == 0, context->report({back, "cannot alias multiple variables"}));
+                    cptVar++;
+                }
+            }
+        }
+    }
+
     switch (symbol->kind)
     {
     case SymbolKind::Namespace:
