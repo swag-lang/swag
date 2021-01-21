@@ -16,6 +16,47 @@
 
 Workspace g_Workspace;
 
+void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind)
+{
+    auto parent    = path.parent_path().filename();
+    auto cFileName = path.filename().string();
+
+    // Be sure module name is valid
+    Utf8 errorStr;
+    if (!Module::isValidName(cFileName, errorStr))
+    {
+        errorStr = "fatal error: " + errorStr;
+        errorStr += format(" (path is '%s')", path.string().c_str());
+        g_Log.error(errorStr);
+        exit(-1);
+    }
+
+    // Module name is equivalent to the folder name, except for the tests folder where
+    // we prepend SWAG_TESTS_FOLDER
+    if (parent == SWAG_TESTS_FOLDER)
+    {
+        moduleName = SWAG_TESTS_FOLDER;
+        moduleName += "_";
+    }
+
+    moduleName += cFileName;
+
+    // Kind
+    kind = ModuleKind::Module;
+    if (parent == SWAG_TESTS_FOLDER)
+        kind = ModuleKind::Test;
+    else if (parent == SWAG_EXAMPLES_FOLDER)
+        kind = ModuleKind::Example;
+    else if (parent == SWAG_DEPENDENCIES_FOLDER)
+        kind = ModuleKind::Dependency;
+    else if (parent == SWAG_MODULES_FOLDER)
+        kind = ModuleKind::Module;
+    else
+        SWAG_ASSERT(false);
+
+    moduleFolder = path.string();
+}
+
 Module* Workspace::getModuleByName(const Utf8& moduleName)
 {
     shared_lock lk(mutexModules);
@@ -437,7 +478,6 @@ Utf8 Workspace::getPublicPath(Module* module, bool forWrite)
 void Workspace::setupTarget()
 {
     targetPath = workspacePath;
-    SWAG_ASSERT(targetPath != "f:\\swag"); // @remove
 
     targetPath.append(SWAG_OUTPUT_FOLDER);
     targetPath.append("/");

@@ -13,9 +13,13 @@ ModuleCfgManager g_ModuleCfgMgr;
 
 void ModuleCfgManager::registerCfgFile(SourceFile* file)
 {
+    Utf8       moduleName, moduleFolder;
+    ModuleKind kind;
+    g_Workspace.computeModuleName(fs::path(file->path).parent_path(), moduleName, moduleFolder, kind);
+
     auto cfgModule  = g_Allocator.alloc<Module>();
     cfgModule->kind = ModuleKind::Config;
-    cfgModule->setup("", "");
+    cfgModule->setup(moduleName, moduleFolder);
     cfgModule->addFile(file);
 
     auto buildJob    = g_Pool_moduleBuildJob.alloc();

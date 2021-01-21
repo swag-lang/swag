@@ -89,47 +89,14 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
 
 Module* EnumerateModuleJob::addModule(const fs::path& path)
 {
-    auto parent    = path.parent_path().filename();
-    auto cFileName = path.filename().string();
+    Utf8       moduleName, moduleFolder;
+    ModuleKind kind;
 
-    // Be sure module name is valid
-    Utf8 errorStr;
-    if (!Module::isValidName(cFileName, errorStr))
-    {
-        errorStr = "fatal error: " + errorStr;
-        errorStr += format(" (path is '%s')", path.string().c_str());
-        g_Log.error(errorStr);
-        exit(-1);
-    }
-
-    // Module name is equivalent to the folder name, except for the tests folder where
-    // we prepend SWAG_TESTS_FOLDER
-    string moduleName;
-    if (parent == SWAG_TESTS_FOLDER)
-    {
-        moduleName = SWAG_TESTS_FOLDER;
-        moduleName += "_";
-    }
-
-    moduleName += cFileName;
-
-    // Kind
-    ModuleKind kind = ModuleKind::Module;
-    if (parent == SWAG_TESTS_FOLDER)
-        kind = ModuleKind::Test;
-    else if (parent == SWAG_EXAMPLES_FOLDER)
-        kind = ModuleKind::Example;
-    else if (parent == SWAG_DEPENDENCIES_FOLDER)
-        kind = ModuleKind::Dependency;
-    else if (parent == SWAG_MODULES_FOLDER)
-        kind = ModuleKind::Module;
-    else
-    {
-        SWAG_ASSERT(false);
-    }
+    // Get infos about module, depending on where it is located
+    g_Workspace.computeModuleName(path, moduleName, moduleFolder, kind);
 
     // Create theModule
-    auto theModule = g_Workspace.createOrUseModule(moduleName, path.string(), kind);
+    auto theModule = g_Workspace.createOrUseModule(moduleName, moduleFolder, kind);
 
     // Parse all files in the source tree
     enumerateFilesInModule(path, theModule);

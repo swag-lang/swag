@@ -445,26 +445,31 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        // Do not run native tests or command in script mode, it's already done in bytecode
-        if (g_CommandLine.script || module->kind == ModuleKind::Config)
+        if (module->kind == ModuleKind::Config)
             pass = ModuleBuildPass::Done;
         else
-            pass = ModuleBuildPass::RunNative;
-
-        if (module->mustOutputSomething())
         {
-            if (g_CommandLine.output)
+            // Do not run native tests or command in script mode, it's already done in bytecode
+            if (g_CommandLine.script)
+                pass = ModuleBuildPass::Done;
+            else
+                pass = ModuleBuildPass::RunNative;
+
+            if (module->mustOutputSomething())
             {
-                module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput, this);
-                auto outputJob          = g_Pool_moduleOutputJob.alloc();
-                outputJob->module       = module;
-                outputJob->dependentJob = this;
-                jobsToAdd.push_back(outputJob);
-                return JobResult::KeepJobAlive;
-            }
-            else if (module->backend->mustCompile)
-            {
-                OS::touchFile(module->backend->bufferSwg.path);
+                if (g_CommandLine.output)
+                {
+                    module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput, this);
+                    auto outputJob          = g_Pool_moduleOutputJob.alloc();
+                    outputJob->module       = module;
+                    outputJob->dependentJob = this;
+                    jobsToAdd.push_back(outputJob);
+                    return JobResult::KeepJobAlive;
+                }
+                else if (module->backend->mustCompile)
+                {
+                    OS::touchFile(module->backend->bufferSwg.path);
+                }
             }
         }
     }
