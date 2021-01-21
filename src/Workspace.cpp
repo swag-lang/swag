@@ -91,7 +91,11 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& moduleP
     // Setup from the config module, if it exists
     auto cfgModule = g_ModuleCfgMgr.getCfgModule(moduleName);
     if (cfgModule)
-        module->buildCfg = cfgModule->buildCfg;
+    {
+        module->buildCfg                    = cfgModule->buildCfg;
+        module->buildParameters.foreignLibs = cfgModule->buildParameters.foreignLibs;
+        module->moduleDependencies          = cfgModule->moduleDependencies;
+    }
 
     // Is this the module we want to build ?
     if (g_CommandLine.moduleFilter == moduleName)

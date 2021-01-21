@@ -76,11 +76,12 @@ JobResult ModuleBuildJob::execute()
     {
         if (module != g_Workspace.bootstrapModule && module != g_Workspace.runtimeModule)
         {
-            module->constantSegment.initFrom(&g_Workspace.runtimeModule->constantSegment);
-            module->mutableSegment.initFrom(&g_Workspace.runtimeModule->mutableSegment);
-            module->bssSegment.initFrom(&g_Workspace.runtimeModule->bssSegment);
-            module->typeSegment.initFrom(&g_Workspace.runtimeModule->typeSegment);
-            module->buildParameters.foreignLibs = g_Workspace.runtimeModule->buildParameters.foreignLibs;
+            auto rtMod = g_Workspace.runtimeModule;
+            module->constantSegment.initFrom(&rtMod->constantSegment);
+            module->mutableSegment.initFrom(&rtMod->mutableSegment);
+            module->bssSegment.initFrom(&rtMod->bssSegment);
+            module->typeSegment.initFrom(&rtMod->typeSegment);
+            module->buildParameters.foreignLibs.insert(rtMod->buildParameters.foreignLibs.begin(), rtMod->buildParameters.foreignLibs.end());
         }
 
         if (module->kind == ModuleKind::Config)

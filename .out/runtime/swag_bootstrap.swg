@@ -409,6 +409,9 @@ namespace swag
 
     struct BuildCfg
     {
+        // Module infos
+        moduleVersion: string
+
         // Add guard code
         safetyGuards: bool = true
 
