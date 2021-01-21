@@ -382,13 +382,5 @@ JobResult SyntaxJob::execute()
     }
 
     timer.stop();
-
-    // If this is the config file, then we launch the semantic right away
-    if (sourceFile->cfgFile)
-    {
-        auto semJob = SemanticJob::newJob(nullptr, sourceFile, sourceFile->astRoot, false);
-        jobsToAdd.push_back(semJob);
-    }
-
     return JobResult::ReleaseJob;
 }

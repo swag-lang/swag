@@ -7,15 +7,24 @@
 #include "Timer.h"
 #include "Module.h"
 #include "ThreadManager.h"
+#include "ModuleBuildJob.h"
 
 ModuleCfgManager g_ModuleCfgMgr;
 
 void ModuleCfgManager::registerCfgFile(SourceFile* file)
 {
+    auto cfgModule  = g_Allocator.alloc<Module>();
+    cfgModule->kind = ModuleKind::Config;
+    cfgModule->setup("", "");
     cfgModule->addFile(file);
+
+    auto buildJob    = g_Pool_moduleBuildJob.alloc();
+    buildJob->module = cfgModule;
 
     auto syntaxJob        = g_Pool_syntaxJob.alloc();
     syntaxJob->sourceFile = file;
+    syntaxJob->addDependentJob(buildJob);
+
     g_ThreadMgr.addJob(syntaxJob);
 }
 
@@ -72,19 +81,14 @@ bool ModuleCfgManager::execute()
     if (g_CommandLine.verbose)
         g_Log.verbosePass(LogPassType::PassBegin, "Config Manager", "");
 
-    // Creates a special module that will hold all the configurations
-    cfgModule       = g_Allocator.alloc<Module>();
-    cfgModule->kind = ModuleKind::Config;
-    if (!cfgModule->setup("", ""))
-        return false;
-
-    // Enumerate existing module.swag files
+    // Enumerate existing module.swag files, and do syntax for all of them
     enumerateCfgFiles(g_Workspace.dependenciesPath);
     enumerateCfgFiles(g_Workspace.modulesPath);
     enumerateCfgFiles(g_Workspace.examplesPath);
     if (g_CommandLine.test)
         enumerateCfgFiles(g_Workspace.testsPath);
     g_ThreadMgr.waitEndJobs();
+    g_Workspace.checkPendingJobs();
 
     if (g_CommandLine.verbose)
         g_Log.verbosePass(LogPassType::PassEnd, "Config Manager", "", g_Stats.cfgTime.load());

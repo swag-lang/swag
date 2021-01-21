@@ -60,7 +60,7 @@ static const uint32_t BUILDRES_FULL     = BUILDRES_EXPORT | BUILDRES_COMPILER;
 struct Module
 {
     static bool isValidName(const Utf8& name, Utf8& errorStr);
-    bool        setup(const Utf8& moduleName, const Utf8& modulePath);
+    void        setup(const Utf8& moduleName, const Utf8& modulePath);
     void        release();
     void        allocateBackend();
     void        addExportSourceFile(SourceFile* file);

@@ -14,11 +14,11 @@
 #include "SemanticJob.h"
 #include "ModuleManager.h"
 
-bool Module::setup(const Utf8& moduleName, const Utf8& modulePath)
+void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
 {
     unique_lock lk(mutexFile);
     if (setupDone)
-        return true;
+        return;
     setupDone = true;
 
     constantSegmentCompiler.compilerOnly = true;
@@ -85,8 +85,6 @@ bool Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.backendOptimizeSize = g_CommandLine.buildCfgOptimSize == "true" ? true : false;
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? true : false;
-
-    return true;
 }
 
 bool Module::isValidName(const Utf8& name, Utf8& errorStr)

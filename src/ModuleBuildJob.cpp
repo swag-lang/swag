@@ -83,7 +83,10 @@ JobResult ModuleBuildJob::execute()
             module->buildParameters.foreignLibs = g_Workspace.runtimeModule->buildParameters.foreignLibs;
         }
 
-        pass = ModuleBuildPass::Publish;
+        if (module->kind == ModuleKind::Config)
+            pass = ModuleBuildPass::SemanticModule;
+        else
+            pass = ModuleBuildPass::Publish;
     }
 
     //////////////////////////////////////////////////
@@ -129,7 +132,7 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::IncludeSwg;
     }
 
-    // We add the all public files that corresponds
+    // We add all public files that corresponds
     // to each module we want to import
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::IncludeSwg)
@@ -198,7 +201,11 @@ JobResult ModuleBuildJob::execute()
         if (context.result != ContextResult::Done)
             return JobResult::KeepJobAlive;
 
-        pass = ModuleBuildPass::WaitForDependencies;
+        if (module->kind == ModuleKind::Config)
+            pass = ModuleBuildPass::OptimizeBc;
+        else
+            pass = ModuleBuildPass::WaitForDependencies;
+
         module->sendCompilerMessage(CompilerMsgKind::PassAfterSemantic, this);
 
         // This is a dummy job, in case the user code does not trigger new jobs during the
@@ -439,7 +446,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // Do not run native tests or command in script mode, it's already done in bytecode
-        if (g_CommandLine.script)
+        if (g_CommandLine.script || module->kind == ModuleKind::Config)
             pass = ModuleBuildPass::Done;
         else
             pass = ModuleBuildPass::RunNative;

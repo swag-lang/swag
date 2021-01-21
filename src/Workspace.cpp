@@ -63,8 +63,7 @@ void Workspace::addBootstrap()
     // for all modules
     bootstrapModule       = g_Allocator.alloc<Module>();
     bootstrapModule->kind = ModuleKind::BootStrap;
-    if (!bootstrapModule->setup("", ""))
-        exit(-1);
+    bootstrapModule->setup("", "");
     modules.push_back(bootstrapModule);
 
     auto     file         = g_Allocator.alloc<SourceFile>();
@@ -101,8 +100,7 @@ void Workspace::addRuntime()
     // for all modules
     runtimeModule       = g_Allocator.alloc<Module>();
     runtimeModule->kind = ModuleKind::Runtime;
-    if (!runtimeModule->setup("", ""))
-        exit(-1);
+    runtimeModule->setup("", "");
     modules.push_back(runtimeModule);
 
     addRuntimeFile("swag_runtime.swg");
@@ -601,24 +599,8 @@ void Workspace::checkPendingJobs()
 
 bool Workspace::buildTarget()
 {
-    // Config pass (compute/fetch dependencies...
-    //////////////////////////////////////////////////
-    SWAG_CHECK(g_ModuleCfgMgr.execute());
-
-    // Ask for a syntax pass on all files of all modules
-    //////////////////////////////////////////////////
-
-    if (g_CommandLine.verbose)
-        g_Log.verbosePass(LogPassType::PassBegin, "Syntax", "");
-
-    {
-        auto enumJob = new EnumerateModuleJob;
-        g_ThreadMgr.addJob(enumJob);
-        g_ThreadMgr.waitEndJobs();
-    }
-
-    if (g_CommandLine.verbose)
-        g_Log.verbosePass(LogPassType::PassEnd, "Syntax", "", g_Stats.syntaxTime.load());
+    // Wait for runtime/bootstrap syntax to be done
+    g_ThreadMgr.waitEndJobs();
 
     // Bootstrap module semantic pass
     //////////////////////////////////////////////////
@@ -681,6 +663,26 @@ bool Workspace::buildTarget()
             return false;
         }
     }
+
+    // Config pass (compute/fetch dependencies...
+    //////////////////////////////////////////////////
+    g_ThreadMgr.waitEndJobs();
+    SWAG_CHECK(g_ModuleCfgMgr.execute());
+
+    // Ask for a syntax pass on all files of all modules
+    //////////////////////////////////////////////////
+
+    if (g_CommandLine.verbose)
+        g_Log.verbosePass(LogPassType::PassBegin, "Syntax", "");
+
+    {
+        auto enumJob = new EnumerateModuleJob;
+        g_ThreadMgr.addJob(enumJob);
+        g_ThreadMgr.waitEndJobs();
+    }
+
+    if (g_CommandLine.verbose)
+        g_Log.verbosePass(LogPassType::PassEnd, "Syntax", "", g_Stats.syntaxTime.load());
 
     // Filter modules to build
     //////////////////////////////////////////////////

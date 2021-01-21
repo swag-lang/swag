@@ -1,2 +1,8 @@
-const AA = 0
-#print "cfg !!!"
+#import "toto"
+
+#run
+{
+    @print("toto")
+    itf := @compiler()
+    cfg := itf.getBuildCfg()
+}
