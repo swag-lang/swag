@@ -31,15 +31,22 @@ enum class GlobalVarKind
     Constant,
 };
 
+enum class DependencyFetchKind
+{
+    FileSystem,
+    Invalid,
+};
+
 struct ModuleDependency
 {
-    Utf8     name;
-    Utf8     forceNamespace;
-    Utf8     location;
-    Utf8     version;
-    AstNode* node       = nullptr;
-    Module*  module     = nullptr;
-    bool     importDone = false;
+    Utf8                name;
+    Utf8                forceNamespace;
+    Utf8                location;
+    Utf8                version;
+    AstNode*            node       = nullptr;
+    Module*             module     = nullptr;
+    bool                importDone = false;
+    DependencyFetchKind fetchKind  = DependencyFetchKind::Invalid;
 };
 
 enum class ModuleKind
@@ -151,13 +158,14 @@ struct Module
     ByteCodeRun             runner;
     mutex                   mutexExecuteNode;
 
-    atomic<int> numCompilerFunctions;
-    ByteCode*   byteCodeMainFunc = nullptr;
-    AstNode*    mainIsDefined    = nullptr;
-    int         numTestErrors    = 0;
-    bool        setupDone        = false;
-    bool        dependenciesDone = false;
-    bool        mustFetch        = false;
+    atomic<int>       numCompilerFunctions;
+    ByteCode*         byteCodeMainFunc = nullptr;
+    AstNode*          mainIsDefined    = nullptr;
+    int               numTestErrors    = 0;
+    bool              setupDone        = false;
+    bool              dependenciesDone = false;
+    bool              mustFetch        = false;
+    ModuleDependency* fetchDep         = nullptr;
 
     void     addForeignLib(const Utf8& text);
     bool     addDependency(AstNode* importNode, const Utf8& forceNamespace, const Utf8& location, const Utf8& version);

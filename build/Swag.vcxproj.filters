@@ -449,6 +449,9 @@
     <ClCompile Include="..\src\ModuleCfgManager.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ModuleFetchJob.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -741,6 +744,9 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ModuleCfgManager.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ModuleFetchJob.h">
       <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>

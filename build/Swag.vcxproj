@@ -23,6 +23,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -30,6 +31,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -205,6 +207,7 @@
     <ClInclude Include="../src/ComWin32.hpp" />
     <ClInclude Include="../src/Workspace.h" />
     <ClInclude Include="..\src\ModuleCfgManager.h" />
+    <ClInclude Include="..\src\ModuleFetchJob.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/Allocator.cpp" />
@@ -376,6 +379,7 @@
     <ClCompile Include="../src/Utf8.cpp" />
     <ClCompile Include="../src/Workspace.cpp" />
     <ClCompile Include="..\src\ModuleCfgManager.cpp" />
+    <ClCompile Include="..\src\ModuleFetchJob.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="../src/ffi/win64.S">

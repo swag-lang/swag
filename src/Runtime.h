@@ -31,8 +31,8 @@ enum class ContextFlags : uint64_t
 
 typedef struct SwagInterface
 {
-    void* data;
-    void* itable;
+    void* data   = nullptr;
+    void* itable = nullptr;
 } SwagInterface;
 
 static const auto MAX_LEN_ERROR_MSG = 128;
@@ -47,8 +47,8 @@ typedef struct SwagContext
 
 typedef struct SwagSlice
 {
-    void*    addr;
-    uint64_t count;
+    void*    addr  = nullptr;
+    uint64_t count = 0;
 } SwagSlice;
 
 typedef void (*SwagBytecodeRun)(void*, ...);

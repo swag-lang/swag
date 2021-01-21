@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "ThreadManager.h"
 #include "ModuleBuildJob.h"
+#include "ModuleFetchJob.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
 
@@ -106,10 +107,8 @@ bool ModuleCfgManager::dependencyIsMatching(ModuleDependency* dep, Module* modul
     return true;
 }
 
-bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, bool& done, Utf8& cfgFilePath, Utf8& cfgFileName)
+bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
 {
-    done = false;
-
     // Determin if this is a valid folder path
     auto remotePath = normalizePath(dep->location.c_str());
     remotePath += "/";
@@ -121,30 +120,33 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, bool& done, Ut
     if (!fs::exists(remotePath))
         return true;
 
-    done = true;
+    dep->fetchKind = DependencyFetchKind::FileSystem;
 
     remotePath += "/";
     remotePath.append(SWAG_CFG_FILE);
 
-    // No cfg file, we are done, and this is ok, we have found a local module without
+    // No cfg file, we are done, and this is ok, we have found a module without
     // a specific configuration file. This is legit.
     if (!fs::exists(remotePath))
         return true;
 
+    // Otherwise we copy the config file to the cache path, with a unique name.
+    // Then later we will parse that file to get informations from the module
     FILE* fsrc = nullptr;
     File::openFile(&fsrc, remotePath.c_str(), "rbN");
     if (!fsrc)
         return dep->node->sourceFile->report({dep->node, dep->node->token, format("cannot access file '%s'", remotePath.c_str())});
 
+    // Remove source configuration file
     FILE* fdest    = nullptr;
     auto  destPath = g_Workspace.cachePath.string();
     destPath += "/";
     cfgFilePath = destPath;
 
+    // Generate a unique name for the configuration file
     static int cacheNum = 0;
     cfgFileName         = format("module%u.swg", cacheNum++).c_str();
     destPath += cfgFileName;
-
     File::openFile(&fdest, destPath.c_str(), "wbN");
     if (!fdest)
     {
@@ -177,9 +179,8 @@ bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
     cfgFileName.clear();
 
     // Local module, as a filepath
-    bool done = false;
-    SWAG_CHECK(fetchModuleCfgLocal(dep, done, cfgFilePath, cfgFileName));
-    if (done)
+    SWAG_CHECK(fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName));
+    if (dep->fetchKind != DependencyFetchKind::Invalid)
         return true;
 
     return dep->node->sourceFile->report({dep->node, dep->node->token, format("cannot resolve module dependency '%s'", dep->name.c_str())});
@@ -201,6 +202,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* cfgModule, ModuleDependen
     }
 
     cfgModule->mustFetch = true;
+    cfgModule->fetchDep  = dep;
 
     // Module exists without a config file. This is fine. Set default values.
     if (cfgFileName.empty())
@@ -220,7 +222,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* cfgModule, ModuleDependen
         fs::path pathFile = cfgFilePath.c_str();
         pathFile.append(cfgFileName.c_str());
         file->path = normalizePath(pathFile);
-        allNewCfgFiles.push_back(file);
+        pendingCfgModules.insert(cfgModule);
         return true;
     }
 
@@ -252,7 +254,7 @@ bool ModuleCfgManager::execute()
     {
         dirty = false;
 
-        allNewCfgFiles.clear();
+        pendingCfgModules.clear();
         for (auto m : allModules)
         {
             auto module = m.second;
@@ -269,10 +271,11 @@ bool ModuleCfgManager::execute()
             }
         }
 
-        if (!allNewCfgFiles.empty())
+        // We have modules to parse again
+        if (!pendingCfgModules.empty())
         {
-            for (auto f : allNewCfgFiles)
-                parseCfgFile(f->module);
+            for (auto f : pendingCfgModules)
+                parseCfgFile(f);
             g_ThreadMgr.waitEndJobs();
             g_Workspace.checkPendingJobs();
             continue;
@@ -286,7 +289,14 @@ bool ModuleCfgManager::execute()
         {
             if (!m.second->mustFetch)
                 continue;
+
+            auto newJob    = g_Pool_moduleFetchJob.alloc();
+            newJob->module = m.second;
+            g_ThreadMgr.addJob(newJob);
         }
+
+        g_ThreadMgr.waitEndJobs();
+        ok = g_Workspace.numErrors.load() == 0;
     }
 
     if (g_CommandLine.verbose)
