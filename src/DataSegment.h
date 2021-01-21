@@ -53,7 +53,7 @@ struct DataSegment
     enum class RelocType
     {
         Foreign,
-        FileSystem,
+        Local,
         ByteCode
     };
 
