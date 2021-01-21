@@ -8,6 +8,8 @@
 #include "Module.h"
 #include "ThreadManager.h"
 #include "ModuleBuildJob.h"
+#include "Diagnostic.h"
+#include "SourceFile.h"
 
 ModuleCfgManager g_ModuleCfgMgr;
 
@@ -96,6 +98,17 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
     }
 }
 
+bool ModuleCfgManager::dependencyIsMatching(ModuleDependency* dep, Module* module)
+{
+    return true;
+}
+
+bool ModuleCfgManager::resolveModuleDependency(Module* cfgModule, ModuleDependency* dep)
+{
+    dep->node->sourceFile->report({dep->node, dep->node->token, format("cannot resolve module dependency '%s'", dep->name.c_str())});
+    return false;
+}
+
 bool ModuleCfgManager::execute()
 {
     Timer timer(&g_Stats.cfgTime);
@@ -113,8 +126,31 @@ bool ModuleCfgManager::execute()
     g_ThreadMgr.waitEndJobs();
     g_Workspace.checkPendingJobs();
 
+    // Populate the list of all modules dependencies, until everything is done
+    bool ok    = true;
+    bool dirty = true;
+    while (ok && dirty)
+    {
+        dirty = false;
+        for (auto m : allModules)
+        {
+            auto module = m.second;
+            for (auto dep : module->moduleDependencies)
+            {
+                auto cfgModule = getCfgModule(dep->name);
+
+                // Invalid module dependency
+                if (!cfgModule || !dependencyIsMatching(dep, cfgModule))
+                {
+                    dirty = true;
+                    ok &= resolveModuleDependency(cfgModule, dep);
+                }
+            }
+        }
+    }
+
     if (g_CommandLine.verbose)
         g_Log.verbosePass(LogPassType::PassEnd, "Config Manager", "", g_Stats.cfgTime.load());
 
-    return true;
+    return ok;
 }
