@@ -49,6 +49,7 @@ enum class ModuleKind
     Dependency,
     BootStrap,
     Runtime,
+    Config,
 };
 
 static const uint32_t BUILDRES_NONE     = 0x00000000;

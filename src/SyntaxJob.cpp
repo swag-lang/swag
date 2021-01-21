@@ -353,8 +353,8 @@ JobResult SyntaxJob::execute()
     sourceFile->scopePrivate->parentScope = currentScope;
     sourceFile->scopePrivate->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
 
-    // By default, everything is private if it comes from the test folder
-    if (sourceFile->fromTests)
+    // By default, everything is private if it comes from the test folder, or for the configuration file
+    if (sourceFile->fromTests || sourceFile->cfgFile)
         currentScope = sourceFile->scopePrivate;
     else
         currentScope = parentScope;
@@ -382,5 +382,13 @@ JobResult SyntaxJob::execute()
     }
 
     timer.stop();
+
+    // If this is the config file, then we launch the semantic right away
+    if (sourceFile->cfgFile)
+    {
+        auto semJob = SemanticJob::newJob(nullptr, sourceFile, sourceFile->astRoot, false);
+        jobsToAdd.push_back(semJob);
+    }
+
     return JobResult::ReleaseJob;
 }

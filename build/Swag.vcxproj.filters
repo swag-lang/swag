@@ -446,6 +446,9 @@
     <ClCompile Include="../src/BackendLinker.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ModuleCfgManager.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -736,6 +739,9 @@
     </ClInclude>
     <ClInclude Include="../src/BackendLinker.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ModuleCfgManager.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

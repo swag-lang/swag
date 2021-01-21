@@ -12,6 +12,7 @@
 #include "LanguageSpec.h"
 #include "Backend.h"
 #include "ByteCodeOptimizerJob.h"
+#include "ModuleCfgManager.h"
 
 Workspace g_Workspace;
 
@@ -438,6 +439,8 @@ Utf8 Workspace::getPublicPath(Module* module, bool forWrite)
 void Workspace::setupTarget()
 {
     targetPath = workspacePath;
+    SWAG_ASSERT(targetPath != "f:\\swag"); // @remove
+
     targetPath.append(SWAG_OUTPUT_FOLDER);
     targetPath.append("/");
     targetPath.append(getTargetFolder().c_str());
@@ -598,6 +601,10 @@ void Workspace::checkPendingJobs()
 
 bool Workspace::buildTarget()
 {
+    // Config pass (compute/fetch dependencies...
+    //////////////////////////////////////////////////
+    SWAG_CHECK(g_ModuleCfgMgr.execute());
+
     // Ask for a syntax pass on all files of all modules
     //////////////////////////////////////////////////
 

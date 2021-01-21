@@ -204,6 +204,7 @@
     <ClInclude Include="../src/Version.h" />
     <ClInclude Include="../src/ComWin32.hpp" />
     <ClInclude Include="../src/Workspace.h" />
+    <ClInclude Include="..\src\ModuleCfgManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/Allocator.cpp" />
@@ -374,6 +375,7 @@
     <ClCompile Include="../src/TypeTableJob.cpp" />
     <ClCompile Include="../src/Utf8.cpp" />
     <ClCompile Include="../src/Workspace.cpp" />
+    <ClCompile Include="..\src\ModuleCfgManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="../src/ffi/win64.S">

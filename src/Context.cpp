@@ -1,14 +1,7 @@
 #include "pch.h"
-#include "Os.h"
 #include "Context.h"
-#include "Workspace.h"
-#include "ByteCodeRun.h"
 #include "ByteCode.h"
-#include "AstNode.h"
-#include "Global.h"
 #include "Module.h"
-#include "ByteCodeStack.h"
-#include "ByteCodeOp.h"
 #include "Backend.h"
 
 uint64_t                        g_tlsContextId = 0;
