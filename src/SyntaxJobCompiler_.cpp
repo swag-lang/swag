@@ -560,18 +560,53 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
 
-    // Aliasing a module importation
+    // Specific dependency stuff
     Utf8 forceNameSpace;
-    if (token.id == TokenId::KwdAs)
+    Utf8 location;
+    Utf8 version;
+    if (sourceFile->cfgFile)
     {
-        SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid import alias name '%s'", token.text.c_str())));
-        forceNameSpace = token.text;
-        SWAG_CHECK(eatToken());
+        while (true)
+        {
+            if (token.text == "name")
+            {
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(eatToken(TokenId::SymEqual));
+                SWAG_VERIFY(forceNameSpace.empty(), error(token, "'#import' namespace defined twice"));
+                SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid namespace name '%s'", token.text.c_str())));
+                forceNameSpace = token.text;
+                SWAG_CHECK(eatToken());
+                continue;
+            }
+
+            if (token.text == "location")
+            {
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(eatToken(TokenId::SymEqual));
+                SWAG_VERIFY(location.empty(), error(token, "'#import' location defined twice"));
+                SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, format("invalid location '%s'", token.text.c_str())));
+                location = token.text;
+                SWAG_CHECK(eatToken());
+                continue;
+            }
+
+            if (token.text == "version")
+            {
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(eatToken(TokenId::SymEqual));
+                SWAG_VERIFY(version.empty(), error(token, "'#import' version defined twice"));
+                SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, format("invalid version '%s'", token.text.c_str())));
+                version = token.text;
+                SWAG_CHECK(eatToken());
+                continue;
+            }
+
+            break;
+        }
     }
 
     SWAG_CHECK(eatSemiCol("after '#import' expression"));
-    SWAG_CHECK(sourceFile->module->loadDependency(node, forceNameSpace));
+    SWAG_CHECK(sourceFile->module->addDependency(node, forceNameSpace, location, version));
     return true;
 }
 

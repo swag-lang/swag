@@ -519,7 +519,7 @@ void Module::addForeignLib(const Utf8& text)
     buildParameters.foreignLibs.insert(text);
 }
 
-bool Module::loadDependency(AstNode* importNode, const Utf8& forceNamespace)
+bool Module::addDependency(AstNode* importNode, const Utf8& forceNamespace, const Utf8& location, const Utf8& version)
 {
     Utf8 nameSpaceName = forceNamespace.empty() ? importNode->token.text : forceNamespace;
 
@@ -530,7 +530,21 @@ bool Module::loadDependency(AstNode* importNode, const Utf8& forceNamespace)
         {
             if (dep->forceNamespace != nameSpaceName)
             {
-                Diagnostic diag{importNode, format("'#import' namespace alias already done with a different name ('%s')", dep->forceNamespace.c_str())};
+                Diagnostic diag{importNode, format("'#import' namespace already defined as '%s'", dep->forceNamespace.c_str())};
+                Diagnostic note{dep->node, "this is the previous definition", DiagnosticLevel::Note};
+                return importNode->sourceFile->report(diag, &note);
+            }
+
+            if (dep->location != location && !location.empty() && !dep->location.empty())
+            {
+                Diagnostic diag{importNode, format("'#import' location already defined as '%s'", dep->location.c_str())};
+                Diagnostic note{dep->node, "this is the previous definition", DiagnosticLevel::Note};
+                return importNode->sourceFile->report(diag, &note);
+            }
+
+            if (dep->version != version && !version.empty() && !dep->version.empty())
+            {
+                Diagnostic diag{importNode, format("'#import' version already defined as '%s'", dep->version.c_str())};
                 Diagnostic note{dep->node, "this is the previous definition", DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
@@ -543,6 +557,8 @@ bool Module::loadDependency(AstNode* importNode, const Utf8& forceNamespace)
     dep->node             = importNode;
     dep->name             = importNode->token.text;
     dep->forceNamespace   = nameSpaceName;
+    dep->location         = location;
+    dep->version          = version;
     moduleDependencies.push_front(dep);
     return true;
 }

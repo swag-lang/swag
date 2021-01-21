@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "ByteCodeRunContext.h"
 #include "ByteCodeRun.h"
 #include "Pool.h"
@@ -36,6 +35,8 @@ struct ModuleDependency
 {
     Utf8     name;
     Utf8     forceNamespace;
+    Utf8     location;
+    Utf8     version;
     AstNode* node       = nullptr;
     Module*  module     = nullptr;
     bool     importDone = false;
@@ -158,7 +159,7 @@ struct Module
     bool        dependenciesDone = false;
 
     void     addForeignLib(const Utf8& text);
-    bool     loadDependency(AstNode* importNode, const Utf8& forceNamespace);
+    bool     addDependency(AstNode* importNode, const Utf8& forceNamespace, const Utf8& location, const Utf8& version);
     void     setHasBeenBuilt(uint32_t buildResult);
     uint32_t getHasBeenBuilt();
     bool     isOnlyPublic();
