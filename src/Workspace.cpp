@@ -88,6 +88,11 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& moduleP
     module->kind = kind;
     module->setup(moduleName, modulePath);
 
+    // Setup from the config module, if it exists
+    auto cfgModule = g_ModuleCfgMgr.getCfgModule(moduleName);
+    if (cfgModule)
+        module->buildCfg = cfgModule->buildCfg;
+
     // Is this the module we want to build ?
     if (g_CommandLine.moduleFilter == moduleName)
         filteredModule = module;

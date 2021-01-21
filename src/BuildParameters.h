@@ -89,10 +89,10 @@ inline bool isArchArm(BackendArch arch)
 
 struct BuildParameters
 {
-    BackendOutputType  outputType = BackendOutputType::Binary;
     set<Utf8>          foreignLibs;
-    BuildCfg*          buildCfg = nullptr;
     string             outputFileName;
+    BuildCfg*          buildCfg        = nullptr;
     int                precompileIndex = 0;
-    BackendCompileType compileType;
+    BackendOutputType  outputType      = BackendOutputType::Binary;
+    BackendCompileType compileType     = BackendCompileType::Normal;
 };

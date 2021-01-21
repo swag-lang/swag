@@ -11,6 +11,14 @@
 
 ModuleCfgManager g_ModuleCfgMgr;
 
+Module* ModuleCfgManager::getCfgModule(const Utf8& name)
+{
+    auto it = allModules.find(name);
+    if (it != allModules.end())
+        return it->second;
+    return nullptr;
+}
+
 void ModuleCfgManager::registerCfgFile(SourceFile* file)
 {
     Utf8       moduleName, moduleFolder;
@@ -22,6 +30,17 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     cfgModule->setup(moduleName, moduleFolder);
     cfgModule->addFile(file);
 
+    // Register it
+    if (getCfgModule(moduleName))
+    {
+        auto errorStr = format("more than one module with name '%s' is present in the workspace (path is '%s')", moduleName.c_str(), moduleFolder.c_str());
+        g_Log.error(errorStr);
+        exit(-1);
+    }
+
+    allModules[moduleName] = cfgModule;
+
+    // Do the syntax job, and when it's done, "build" it
     auto buildJob    = g_Pool_moduleBuildJob.alloc();
     buildJob->module = cfgModule;
 
