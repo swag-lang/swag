@@ -1,0 +1,1 @@
+#print "core module cfg"

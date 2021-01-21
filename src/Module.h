@@ -157,6 +157,7 @@ struct Module
     int         numTestErrors    = 0;
     bool        setupDone        = false;
     bool        dependenciesDone = false;
+    bool        mustFetch        = false;
 
     void     addForeignLib(const Utf8& text);
     bool     addDependency(AstNode* importNode, const Utf8& forceNamespace, const Utf8& location, const Utf8& version);

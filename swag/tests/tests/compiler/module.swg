@@ -1,4 +1,4 @@
-//#import "toto" name = titi version = "1.0.0" location = "f:/swag/swag/std/modules/core"
+//#import "core" name = titi version = "1.0.0" location = "f:/swag/swag/std"
 
 #run
 {
