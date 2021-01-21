@@ -17,8 +17,6 @@ enum class ModuleKind;
 #define SWAG_PUBLIC_FOLDER "public"
 #define SWAG_PUBLISH_FOLDER "publish"
 
-#define SWAG_MODULE_SWG_NAME "module.swg"
-
 struct OneTag
 {
     Utf8          cmdLine;

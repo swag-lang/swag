@@ -37,15 +37,6 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
 {
     vector<SourceFile*> allFiles;
 
-    // If there is a 'module.swg' at the root, take it
-    auto modPath = basePath;
-    modPath.append(SWAG_MODULE_SWG_NAME);
-    if (fs::exists(modPath))
-    {
-        auto writeTime = OS::getFileWriteTime(modPath.string().c_str());
-        addFileToModule(theModule, allFiles, basePath.string(), SWAG_MODULE_SWG_NAME, writeTime);
-    }
-
     auto path = basePath;
     path += "/";
     path += SWAG_SRC_FOLDER;
