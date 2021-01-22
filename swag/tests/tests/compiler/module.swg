@@ -4,5 +4,7 @@
 {
     itf := @compiler()
     cfg := itf.getBuildCfg()
-    cfg.moduleVersion = "1.0.0"
+    cfg.moduleVersion = 1
+    cfg.moduleRevision = 0
+    cfg.moduleBuildNum = 0
 }

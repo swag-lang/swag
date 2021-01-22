@@ -410,7 +410,9 @@ namespace swag
     struct BuildCfg
     {
         // Module infos
-        moduleVersion: string
+        moduleVersion:  u32 = 1
+        moduleRevision: u32 = 0
+        moduleBuildNum: u32 = 0
 
         // Add guard code
         safetyGuards: bool = true

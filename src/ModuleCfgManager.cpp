@@ -216,7 +216,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         dep->module       = g_Allocator.alloc<Module>();
         dep->module->kind = ModuleKind::Config;
         dep->module->setup(dep->name, "");
-        allModules[dep->name]       = dep->module;
+        allModules[dep->name] = dep->module;
     }
 
     // Now we case set the location of the module as the location of the dependency
@@ -225,10 +225,6 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     auto cfgModule       = dep->module;
     cfgModule->mustFetch = true;
     cfgModule->fetchDep  = dep;
-
-    // Set default module version, in case the cfg file does not set it
-    cfgModule->buildCfg.moduleVersion.addr  = (void*) "1.0.0";
-    cfgModule->buildCfg.moduleVersion.count = 5;
 
     // Module exists without a config file. This is fine. Set default values.
     if (!cfgFileName.empty())

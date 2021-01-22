@@ -84,7 +84,9 @@ struct BuildCfgBackendX64
 struct BuildCfg
 {
     // Module informations
-    SwagSlice moduleVersion;
+    uint32_t moduleVersion  = 1;
+    uint32_t moduleRevision = 0;
+    uint32_t moduleBuildNum = 0;
 
     // Debug
     bool safetyGuards = true;
