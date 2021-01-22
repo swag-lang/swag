@@ -8,7 +8,7 @@
 #include "Module.h"
 #include "ThreadManager.h"
 #include "ModuleBuildJob.h"
-#include "ModuleFetchJob.h"
+#include "FetchModuleJobFileSystem.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
 
@@ -104,7 +104,7 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
 
 bool ModuleCfgManager::dependencyIsMatching(ModuleDependency* dep, Module* module)
 {
-    return true;
+    return false;
 }
 
 bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
@@ -121,6 +121,7 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
         return true;
 
     dep->fetchKind = DependencyFetchKind::FileSystem;
+    dep->location  = remotePath;
 
     remotePath += "/";
     remotePath.append(SWAG_CFG_FILE);
@@ -214,14 +215,17 @@ bool ModuleCfgManager::resolveModuleDependency(Module* cfgModule, ModuleDependen
     else
     {
         cfgModule->files.clear(); // memleak
+
         auto file = g_Allocator.alloc<SourceFile>();
         cfgModule->files.push_back(file);
+
         file->name        = cfgFileName;
         file->cfgFile     = true;
         file->module      = cfgModule;
         fs::path pathFile = cfgFilePath.c_str();
         pathFile.append(cfgFileName.c_str());
         file->path = normalizePath(pathFile);
+
         pendingCfgModules.insert(cfgModule);
         return true;
     }
@@ -263,10 +267,13 @@ bool ModuleCfgManager::execute()
                 auto cfgModule = getCfgModule(dep->name);
 
                 // Invalid module dependency
-                if (!cfgModule || !dependencyIsMatching(dep, cfgModule))
+                if (!cfgModule || !cfgModule->mustFetch)
                 {
-                    dirty = true;
-                    ok &= resolveModuleDependency(cfgModule, dep);
+                    if (!cfgModule || !dependencyIsMatching(dep, cfgModule))
+                    {
+                        dirty = true;
+                        ok &= resolveModuleDependency(cfgModule, dep);
+                    }
                 }
             }
         }
@@ -290,9 +297,17 @@ bool ModuleCfgManager::execute()
             if (!m.second->mustFetch)
                 continue;
 
-            auto newJob    = g_Pool_moduleFetchJob.alloc();
-            newJob->module = m.second;
-            g_ThreadMgr.addJob(newJob);
+            Job* fetchJob = nullptr;
+            switch (m.second->fetchDep->fetchKind)
+            {
+            case DependencyFetchKind::FileSystem:
+                fetchJob = g_Pool_moduleFetchJobFileSystem.alloc();
+                break;
+            }
+
+            SWAG_ASSERT(fetchJob);
+            fetchJob->module = m.second;
+            g_ThreadMgr.addJob(fetchJob);
         }
 
         g_ThreadMgr.waitEndJobs();

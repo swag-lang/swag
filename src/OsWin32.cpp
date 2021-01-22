@@ -152,7 +152,7 @@ namespace OS
                                   &si,
                                   &pi))
             {
-                g_Log.error(format("cannot create '%s' process (%s)", cmdline.c_str(), getLastErrorAsString().c_str()));
+                g_Log.error(format("cannot create process '%s': %s", cmdline.c_str(), getLastErrorAsString().c_str()));
                 return false;
             }
         }
@@ -303,7 +303,7 @@ namespace OS
                                   &si,
                                   &pi))
             {
-                g_Log.error(format("cannot create '%s' process (%s)", cmdline.c_str(), getLastErrorAsString().c_str()));
+                g_Log.error(format("cannot create process '%s': %s", cmdline.c_str(), getLastErrorAsString().c_str()));
                 return;
             }
         }
@@ -453,7 +453,43 @@ namespace OS
 
                 uint64_t writeTime = ((uint64_t) findfile.ftLastWriteTime.dwHighDateTime) << 32;
                 writeTime |= findfile.ftLastWriteTime.dwLowDateTime;
-                user(writeTime, findfile.cFileName, findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+
+                bool isFolder = findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
+                user(writeTime, findfile.cFileName, isFolder);
+
+            } while (::FindNextFileA(h, &findfile));
+
+            ::FindClose(h);
+        }
+    }
+
+    void visitFilesRec(const char* folder, function<void(const char*)> user)
+    {
+        WIN32_FIND_DATAA findfile;
+        string           searchPath = folder;
+        searchPath += "/*";
+
+        auto   path = string(folder);
+        HANDLE h    = ::FindFirstFileA(searchPath.c_str(), &findfile);
+        if (h != INVALID_HANDLE_VALUE)
+        {
+            do
+            {
+                path = folder;
+                path += "/";
+                path += findfile.cFileName;
+
+                if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                {
+                    if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
+                        continue;
+                    visitFilesRec(path.c_str(), user);
+                }
+                else
+                {
+                    user(path.c_str());
+                }
+
             } while (::FindNextFileA(h, &findfile));
 
             ::FindClose(h);

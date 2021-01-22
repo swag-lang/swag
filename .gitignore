@@ -269,8 +269,8 @@ __pycache__/
 .out/*.ipdb
 .out/*.bat
 .out/.vs/
+dependencies/
 **/output/
-**/dependencies/**/public
 **/modules/**/public
 **/examples/**/public
 **/tests/**/public

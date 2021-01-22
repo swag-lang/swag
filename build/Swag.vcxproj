@@ -207,7 +207,7 @@
     <ClInclude Include="../src/ComWin32.hpp" />
     <ClInclude Include="../src/Workspace.h" />
     <ClInclude Include="..\src\ModuleCfgManager.h" />
-    <ClInclude Include="..\src\ModuleFetchJob.h" />
+    <ClInclude Include="..\src\FetchModuleJobFileSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/Allocator.cpp" />
@@ -379,7 +379,7 @@
     <ClCompile Include="../src/Utf8.cpp" />
     <ClCompile Include="../src/Workspace.cpp" />
     <ClCompile Include="..\src\ModuleCfgManager.cpp" />
-    <ClCompile Include="..\src\ModuleFetchJob.cpp" />
+    <ClCompile Include="..\src\FetchModuleJobFileSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="../src/ffi/win64.S">

@@ -447,10 +447,10 @@
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ModuleCfgManager.cpp">
-      <Filter>Main</Filter>
+      <Filter>CfgManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ModuleFetchJob.cpp">
-      <Filter>Main</Filter>
+    <ClCompile Include="..\src\FetchModuleJobFileSystem.cpp">
+      <Filter>CfgManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -744,10 +744,10 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ModuleCfgManager.h">
-      <Filter>Main</Filter>
+      <Filter>CfgManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ModuleFetchJob.h">
-      <Filter>Main</Filter>
+    <ClInclude Include="..\src\FetchModuleJobFileSystem.h">
+      <Filter>CfgManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -786,6 +786,9 @@
     </Filter>
     <Filter Include="Backend\ByteCode\Optimize">
       <UniqueIdentifier>{78754e10-947b-4b7b-bdfa-8eb19470f27d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CfgManager">
+      <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

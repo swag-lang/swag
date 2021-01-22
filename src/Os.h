@@ -22,6 +22,7 @@ namespace OS
     extern void     visitFiles(const char* folder, function<void(const char*)> user);
     extern void     visitFolders(const char* folder, function<void(const char*)> user);
     extern void     visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user);
+    extern void     visitFilesRec(const char* folder, function<void(const char*)> user);
     extern void     setThreadName(thread* thread, const char* threadName);
     extern uint64_t getFileWriteTime(const char* fileName);
     extern void     errorBox(const char* expr, const char* title);

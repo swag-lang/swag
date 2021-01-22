@@ -3,16 +3,15 @@
 #include "Diagnostic.h"
 #include "File.h"
 #include "Stats.h"
+#include "OS.h"
 
 void File::openFile(FILE** fileHandle, const char* path, const char* mode)
 {
     *fileHandle = nullptr;
-    auto err    = fopen_s(fileHandle, path, mode);
+    fopen_s(fileHandle, path, mode);
     if (*fileHandle == nullptr)
     {
-        char buf[256];
-        strerror_s(buf, err);
-        g_Log.error(format("error opening file '%s': '%s'", path, buf));
+        g_Log.error(format("cannot open file '%s': %s", path, OS::getLastErrorAsString().c_str()));
         return;
     }
 
