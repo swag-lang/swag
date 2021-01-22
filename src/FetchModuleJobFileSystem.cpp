@@ -17,8 +17,8 @@ JobResult FetchModuleJobFileSystem::execute()
 
     // Collect list of source files
     set<string> srcFiles;
-    OS::visitFilesRec(dep->location, [&](const char* fileName) {
-        auto n = normalizePath(fileName + dep->location.length());
+    OS::visitFilesRec(dep->resolvedLocation, [&](const char* fileName) {
+        auto n = normalizePath(fileName + dep->resolvedLocation.length());
         srcFiles.insert(n);
     });
 
@@ -49,7 +49,7 @@ JobResult FetchModuleJobFileSystem::execute()
     // Copy all files
     for (auto& f : srcFiles)
     {
-        fs::path srcFileName  = string(dep->location) + f;
+        fs::path srcFileName  = string(dep->resolvedLocation) + f;
         fs::path destFileName = destPath + f;
 
         auto folder = destFileName.parent_path();

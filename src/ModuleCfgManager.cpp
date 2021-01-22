@@ -54,6 +54,8 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     }
 
     allModules[moduleName] = cfgModule;
+
+    // Ask to parse/resolved the config file
     parseCfgFile(cfgModule);
 }
 
@@ -83,12 +85,19 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
     OS::visitFolders(path.string().c_str(), [&](const char* cFileName) {
         auto cfgPath = path;
         cfgPath.append(cFileName);
+
         auto cfgName = cfgPath;
         cfgName.append(SWAG_CFG_FILE);
-        if (fs::exists(cfgName))
+
+        // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
+        if (!fs::exists(cfgName))
         {
-            newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
+            g_Log.error(format("invalid module '%s', '%s' is missing", cfgPath.string().c_str(), SWAG_CFG_FILE));
+            g_Workspace.numErrors++;
+            return;
         }
+
+        newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
     });
 
     // Sort files, and register them in a constant order
@@ -120,8 +129,8 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     if (!fs::exists(remotePath))
         return true;
 
-    dep->fetchKind = DependencyFetchKind::FileSystem;
-    dep->location  = remotePath;
+    dep->fetchKind        = DependencyFetchKind::FileSystem;
+    dep->resolvedLocation = remotePath;
 
     remotePath += "/";
     remotePath.append(SWAG_CFG_FILE);
@@ -187,32 +196,34 @@ bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
     return dep->node->sourceFile->report({dep->node, dep->node->token, format("cannot resolve module dependency '%s'", dep->name.c_str())});
 }
 
-bool ModuleCfgManager::resolveModuleDependency(Module* cfgModule, ModuleDependency* dep)
+bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependency* dep)
 {
+    if (dep->location.empty())
+        dep->location = srcModule->path;
+
     // Get the remote config file in cache (if it exists)
     Utf8 cfgFilePath, cfgFileName;
     SWAG_CHECK(fetchModuleCfg(dep, cfgFilePath, cfgFileName));
 
     // Module not here : add it.
-    if (!cfgModule)
+    if (!dep->module)
     {
-        cfgModule       = g_Allocator.alloc<Module>();
-        cfgModule->kind = ModuleKind::Config;
-        cfgModule->setup(dep->name, "");
-        allModules[dep->name] = cfgModule;
+        dep->module       = g_Allocator.alloc<Module>();
+        dep->module->kind = ModuleKind::Config;
+        dep->module->setup(dep->name, dep->location);
+        allModules[dep->name] = dep->module;
     }
 
+    auto cfgModule       = dep->module;
     cfgModule->mustFetch = true;
     cfgModule->fetchDep  = dep;
 
+    // Set default module version, in case the cfg file does not set it
+    cfgModule->buildCfg.moduleVersion.addr  = (void*) "1.0.0";
+    cfgModule->buildCfg.moduleVersion.count = 5;
+
     // Module exists without a config file. This is fine. Set default values.
-    if (cfgFileName.empty())
-    {
-        SWAG_ASSERT(false); // todo
-        cfgModule->buildCfg.moduleVersion.addr  = (void*) "1.0.0";
-        cfgModule->buildCfg.moduleVersion.count = 5;
-    }
-    else
+    if (!cfgFileName.empty())
     {
         cfgModule->files.clear(); // memleak
 
@@ -227,11 +238,9 @@ bool ModuleCfgManager::resolveModuleDependency(Module* cfgModule, ModuleDependen
         file->path = normalizePath(pathFile);
 
         pendingCfgModules.insert(cfgModule);
-        return true;
     }
 
-    dep->node->sourceFile->report({dep->node, dep->node->token, format("cannot resolve module dependency '%s'", dep->name.c_str())});
-    return false;
+    return true;
 }
 
 bool ModuleCfgManager::execute()
@@ -242,7 +251,7 @@ bool ModuleCfgManager::execute()
     if (g_CommandLine.verbose)
         g_Log.verbosePass(LogPassType::PassBegin, "Config Manager", "");
 
-    // Enumerate existing module.swag files, and do syntax for all of them
+    // Enumerate existing configuration files, and do syntax/semantic for all of them
     enumerateCfgFiles(g_Workspace.dependenciesPath);
     enumerateCfgFiles(g_Workspace.modulesPath);
     enumerateCfgFiles(g_Workspace.examplesPath);
@@ -250,6 +259,8 @@ bool ModuleCfgManager::execute()
         enumerateCfgFiles(g_Workspace.testsPath);
     g_ThreadMgr.waitEndJobs();
     g_Workspace.checkPendingJobs();
+    if (g_Workspace.numErrors)
+        return false;
 
     // Populate the list of all modules dependencies, until everything is done
     bool ok    = true;
@@ -261,18 +272,18 @@ bool ModuleCfgManager::execute()
         pendingCfgModules.clear();
         for (auto m : allModules)
         {
-            auto module = m.second;
-            for (auto dep : module->moduleDependencies)
+            auto parentModule = m.second;
+            for (auto dep : parentModule->moduleDependencies)
             {
-                auto cfgModule = getCfgModule(dep->name);
+                dep->module = getCfgModule(dep->name);
 
                 // Invalid module dependency
-                if (!cfgModule || !cfgModule->mustFetch)
+                if (!dep->module || !dep->module->mustFetch)
                 {
-                    if (!cfgModule || !dependencyIsMatching(dep, cfgModule))
+                    if (!dep->module || !dependencyIsMatching(dep, dep->module))
                     {
                         dirty = true;
-                        ok &= resolveModuleDependency(cfgModule, dep);
+                        ok &= resolveModuleDependency(parentModule, dep);
                     }
                 }
             }

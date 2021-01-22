@@ -42,6 +42,7 @@ struct ModuleDependency
     Utf8                name;
     Utf8                forceNamespace;
     Utf8                location;
+    Utf8                resolvedLocation;
     Utf8                version;
     AstNode*            node       = nullptr;
     Module*             module     = nullptr;

@@ -12,7 +12,7 @@ struct ModuleCfgManager
     void    enumerateCfgFiles(const fs::path& path);
     bool    fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName);
     bool    fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName);
-    bool    resolveModuleDependency(Module* cfgModule, ModuleDependency* dep);
+    bool    resolveModuleDependency(Module* srcModule, ModuleDependency* dep);
     bool    dependencyIsMatching(ModuleDependency* dep, Module* module);
     void    parseCfgFile(Module* cfgModule);
     bool    execute();
