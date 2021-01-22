@@ -561,9 +561,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     SWAG_CHECK(eatToken());
 
     // Specific dependency stuff
-    Utf8 forceNameSpace;
-    Utf8 location;
-    Utf8 version;
+    Token tokenNameSpace, tokenLocation, tokenVersion;
     if (sourceFile->cfgFile)
     {
         while (true)
@@ -572,9 +570,9 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
-                SWAG_VERIFY(forceNameSpace.empty(), error(token, "'#import' namespace defined twice"));
+                SWAG_VERIFY(tokenNameSpace.text.empty(), error(token, "'#import' namespace defined twice"));
                 SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid namespace name '%s'", token.text.c_str())));
-                forceNameSpace = token.text;
+                tokenNameSpace = token;
                 SWAG_CHECK(eatToken());
                 continue;
             }
@@ -583,9 +581,9 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
-                SWAG_VERIFY(location.empty(), error(token, "'#import' location defined twice"));
+                SWAG_VERIFY(tokenLocation.text.empty(), error(token, "'#import' location defined twice"));
                 SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, format("invalid location '%s'", token.text.c_str())));
-                location = token.text;
+                tokenLocation = token;
                 SWAG_CHECK(eatToken());
                 continue;
             }
@@ -594,9 +592,9 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
-                SWAG_VERIFY(version.empty(), error(token, "'#import' version defined twice"));
+                SWAG_VERIFY(tokenVersion.text.empty(), error(token, "'#import' version defined twice"));
                 SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, format("invalid version '%s'", token.text.c_str())));
-                version = token.text;
+                tokenVersion = token;
                 SWAG_CHECK(eatToken());
                 continue;
             }
@@ -606,7 +604,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     }
 
     SWAG_CHECK(eatSemiCol("after '#import' expression"));
-    SWAG_CHECK(sourceFile->module->addDependency(node, forceNameSpace, location, version));
+    SWAG_CHECK(sourceFile->module->addDependency(node, tokenNameSpace, tokenLocation, tokenVersion));
     return true;
 }
 

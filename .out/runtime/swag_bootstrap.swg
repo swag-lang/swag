@@ -410,7 +410,7 @@ namespace swag
     struct BuildCfg
     {
         // Module infos
-        moduleVersion:  u32 = 1
+        moduleVersion:  u32 = 0
         moduleRevision: u32 = 0
         moduleBuildNum: u32 = 0
 

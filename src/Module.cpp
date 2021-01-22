@@ -519,9 +519,9 @@ void Module::addForeignLib(const Utf8& text)
     buildParameters.foreignLibs.insert(text);
 }
 
-bool Module::addDependency(AstNode* importNode, const Utf8& forceNamespace, const Utf8& location, const Utf8& version)
+bool Module::addDependency(AstNode* importNode, const Token& tokenNamespace, const Token& tokenLocation, const Token& tokenVersion)
 {
-    Utf8 nameSpaceName = forceNamespace.empty() ? importNode->token.text : forceNamespace;
+    Utf8 nameSpaceName = tokenNamespace.text.empty() ? importNode->token.text : tokenNamespace.text;
 
     scoped_lock lk(mutexDependency);
     for (auto& dep : moduleDependencies)
@@ -530,21 +530,21 @@ bool Module::addDependency(AstNode* importNode, const Utf8& forceNamespace, cons
         {
             if (dep->forceNamespace != nameSpaceName)
             {
-                Diagnostic diag{importNode, format("'#import' namespace already defined as '%s'", dep->forceNamespace.c_str())};
+                Diagnostic diag{importNode, tokenNamespace, format("'#import' namespace already defined as '%s'", dep->forceNamespace.c_str())};
                 Diagnostic note{dep->node, "this is the previous definition", DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
 
-            if (dep->location != location && !location.empty() && !dep->location.empty())
+            if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                Diagnostic diag{importNode, format("'#import' location already defined as '%s'", dep->location.c_str())};
+                Diagnostic diag{importNode, tokenLocation, format("'#import' location already defined as '%s'", dep->location.c_str())};
                 Diagnostic note{dep->node, "this is the previous definition", DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
 
-            if (dep->version != version && !version.empty() && !dep->version.empty())
+            if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                Diagnostic diag{importNode, format("'#import' version already defined as '%s'", dep->version.c_str())};
+                Diagnostic diag{importNode, tokenVersion, format("'#import' version already defined as '%s'", dep->version.c_str())};
                 Diagnostic note{dep->node, "this is the previous definition", DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
@@ -557,9 +557,67 @@ bool Module::addDependency(AstNode* importNode, const Utf8& forceNamespace, cons
     dep->node             = importNode;
     dep->name             = importNode->token.text;
     dep->forceNamespace   = nameSpaceName;
-    dep->location         = location;
-    dep->version          = version;
+    dep->location         = tokenLocation.text;
+    dep->version          = tokenVersion.text.empty() ? "?.?.?" : tokenVersion.text;
     moduleDependencies.push_front(dep);
+
+    // Check version
+    bool         invalidVersion = false;
+    vector<Utf8> splits;
+    tokenize(dep->version.c_str(), '.', splits);
+
+    while (true)
+    {
+        if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
+        {
+            invalidVersion = true;
+            break;
+        }
+
+        int* setVer = nullptr;
+        for (int i = 0; i < 3; i++)
+        {
+            switch (i)
+            {
+            case 0:
+                setVer = &dep->verNum;
+                break;
+            case 1:
+                setVer = &dep->revNum;
+                break;
+            case 2:
+                setVer = &dep->buildNum;
+                break;
+            }
+
+            if (splits[i] == "?")
+            {
+                *setVer = -1;
+                continue;
+            }
+
+            for (int j = 0; j < splits[i].length(); j++)
+            {
+                if (!isdigit(splits[i][j]))
+                    invalidVersion = true;
+            }
+
+            *setVer = atoi(splits[i]);
+            if (*setVer < 0)
+                invalidVersion = true;
+        }
+
+        break;
+    }
+
+    if (invalidVersion)
+    {
+        Diagnostic diag{importNode, tokenVersion, "'#import' invalid version format"};
+        Diagnostic note{dep->node, "version must be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character", DiagnosticLevel::Note};
+        return importNode->sourceFile->report(diag, &note);
+        return false;
+    }
+
     return true;
 }
 

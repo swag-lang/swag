@@ -44,6 +44,7 @@ struct ModuleDependency
     Utf8                location;
     Utf8                resolvedLocation;
     Utf8                version;
+    int                 verNum, revNum, buildNum;
     AstNode*            node       = nullptr;
     Module*             module     = nullptr;
     bool                importDone = false;
@@ -171,7 +172,7 @@ struct Module
     Utf8              remoteLocation;
 
     void     addForeignLib(const Utf8& text);
-    bool     addDependency(AstNode* importNode, const Utf8& forceNamespace, const Utf8& location, const Utf8& version);
+    bool     addDependency(AstNode* importNode, const Token& tokenNamespace, const Token& tokenLocation, const Token& tokenVersion);
     void     setHasBeenBuilt(uint32_t buildResult);
     uint32_t getHasBeenBuilt();
     bool     isOnlyPublic();
