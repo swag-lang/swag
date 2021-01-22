@@ -199,7 +199,7 @@ void ThreadManager::executeOneJob(Job* job)
 
 bool ThreadManager::doneWithJobs()
 {
-    return queueJobs.empty() && jobsInThreads == 0;
+    return queueJobs.empty() && queueJobsIO.empty() && jobsInThreads == 0;
 }
 
 void ThreadManager::waitEndJobs()

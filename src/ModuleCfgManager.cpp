@@ -116,7 +116,7 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
 
 bool ModuleCfgManager::dependencyIsMatching(ModuleDependency* dep, Module* module)
 {
-    return false;
+    return true;
 }
 
 bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
