@@ -45,6 +45,9 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     cfgModule->setup(moduleName, moduleFolder);
     cfgModule->addFile(file);
 
+    if (kind != ModuleKind::Dependency)
+        cfgModule->remoteLocation = moduleFolder;
+
     // Register it
     if (getCfgModule(moduleName))
     {
@@ -92,7 +95,7 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
         // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
         if (!fs::exists(cfgName))
         {
-            g_Log.error(format("fatal error: invalid module '%s', '%s' is missing", cfgPath.string().c_str(), SWAG_CFG_FILE));
+            g_Log.error(format("fatal error: invalid module '%s', configuration file '%s' is missing", cfgPath.string().c_str(), SWAG_CFG_FILE));
             g_Workspace.numErrors++;
             return;
         }
@@ -198,8 +201,10 @@ bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
 
 bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependency* dep)
 {
+    // If location dependency is not defined, then we take the remove location of the module
+    // with that dependency
     if (dep->location.empty())
-        dep->location = srcModule->path;
+        dep->location = srcModule->remoteLocation;
 
     // Get the remote config file in cache (if it exists)
     Utf8 cfgFilePath, cfgFileName;
@@ -210,9 +215,12 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     {
         dep->module       = g_Allocator.alloc<Module>();
         dep->module->kind = ModuleKind::Config;
-        dep->module->setup(dep->name, dep->location);
-        allModules[dep->name] = dep->module;
+        dep->module->setup(dep->name, "");
+        allModules[dep->name]       = dep->module;
     }
+
+    // Now we case set the location of the module as the location of the dependency
+    dep->module->remoteLocation = dep->location;
 
     auto cfgModule       = dep->module;
     cfgModule->mustFetch = true;
@@ -273,6 +281,13 @@ bool ModuleCfgManager::execute()
         for (auto m : allModules)
         {
             auto parentModule = m.second;
+
+            // Do not treat dependencies of a module without a remote location.
+            // The remote location will be initialized when know, starting with
+            // local modules
+            if (parentModule->remoteLocation.empty())
+                continue;
+
             for (auto dep : parentModule->moduleDependencies)
             {
                 dep->module = getCfgModule(dep->name);

@@ -159,14 +159,16 @@ struct Module
     ByteCodeRun             runner;
     mutex                   mutexExecuteNode;
 
-    atomic<int>       numCompilerFunctions;
-    ByteCode*         byteCodeMainFunc = nullptr;
-    AstNode*          mainIsDefined    = nullptr;
-    int               numTestErrors    = 0;
-    bool              setupDone        = false;
-    bool              dependenciesDone = false;
-    bool              mustFetch        = false;
-    ModuleDependency* fetchDep         = nullptr;
+    atomic<int> numCompilerFunctions;
+    ByteCode*   byteCodeMainFunc = nullptr;
+    AstNode*    mainIsDefined    = nullptr;
+    int         numTestErrors    = 0;
+    bool        setupDone        = false;
+    bool        dependenciesDone = false;
+
+    bool              mustFetch = false;
+    ModuleDependency* fetchDep  = nullptr;
+    Utf8              remoteLocation;
 
     void     addForeignLib(const Utf8& text);
     bool     addDependency(AstNode* importNode, const Utf8& forceNamespace, const Utf8& location, const Utf8& version);
