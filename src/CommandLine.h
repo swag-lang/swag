@@ -79,6 +79,8 @@ struct CommandLine
 
     // Dependencies
     bool updateDep = false;
+    bool cleanDep  = false;
+    bool cleanLog  = false;
 
     fs::path exePath;
     string   exePathStr;

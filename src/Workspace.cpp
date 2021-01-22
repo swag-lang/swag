@@ -416,8 +416,11 @@ void Workspace::setup()
     g_ThreadMgr.init();
 }
 
-void Workspace::deleteFolderContent(const fs::path& path)
+void Workspace::cleanFolderContent(const fs::path& path)
 {
+    if (g_CommandLine.cleanLog)
+        return;
+
     OS::visitFiles(path.string().c_str(), [&](const char* cFileName) {
         auto folder = path.string() + "/";
         folder += cFileName;
@@ -431,6 +434,8 @@ void Workspace::deleteFolderContent(const fs::path& path)
             exit(-1);
         }
     });
+
+    fs::remove_all(path);
 }
 
 void Workspace::setupCachePath()
@@ -846,15 +851,13 @@ void Workspace::cleanPublic(const fs::path& basePath)
                     if (fs::exists(path))
                     {
                         g_Log.messageHeaderCentered("Cleaning", cfgpath);
-                        deleteFolderContent(cfgpath);
-                        fs::remove_all(cfgpath);
+                        cleanFolderContent(cfgpath);
                     }
                 });
 
                 // Clean public folder itself
                 g_Log.messageHeaderCentered("Cleaning", path);
-                deleteFolderContent(path);
-                fs::remove_all(path);
+                cleanFolderContent(path);
             }
         });
     }
@@ -874,8 +877,7 @@ void Workspace::clean()
             auto path = targetPath.string() + folder;
             path      = normalizePath(path);
             g_Log.messageHeaderCentered("Cleaning", path);
-            deleteFolderContent(path);
-            fs::remove_all(path);
+            cleanFolderContent(path);
         });
     }
 
@@ -894,8 +896,7 @@ void Workspace::clean()
                 auto path = cachePath.string() + folder;
                 path      = normalizePath(path);
                 g_Log.messageHeaderCentered("Cleaning", path);
-                deleteFolderContent(path);
-                fs::remove_all(path);
+                cleanFolderContent(path);
             }
         });
     }
@@ -904,7 +905,22 @@ void Workspace::clean()
     cleanPublic(modulesPath);
     cleanPublic(examplesPath);
     cleanPublic(testsPath);
-    cleanPublic(dependenciesPath);
+
+    // Clean the full content of the dependency path
+    if (g_CommandLine.cleanDep)
+    {
+        if (fs::exists(dependenciesPath))
+        {
+            auto path = normalizePath(dependenciesPath.string());
+            g_Log.messageHeaderCentered("Cleaning", path);
+            if (!g_CommandLine.cleanLog)
+                fs::remove_all(dependenciesPath);
+        }
+    }
+
+    // Otherwise just clean tmp files in it
+    else
+        cleanPublic(dependenciesPath);
 
     g_Log.messageHeaderCentered("Done", "");
 }

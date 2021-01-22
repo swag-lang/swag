@@ -45,7 +45,7 @@ struct Workspace
     void    setup();
     void    computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind);
     Module* getModuleByName(const Utf8& moduleName);
-    void    deleteFolderContent(const fs::path& path);
+    void    cleanFolderContent(const fs::path& path);
     OneTag* hasTag(const Utf8& name);
     void    cleanPublic(const fs::path& basePath);
     void    clean();
