@@ -116,6 +116,16 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
 
 bool ModuleCfgManager::dependencyIsMatching(ModuleDependency* dep, Module* module)
 {
+    if (dep->verNum != -1 && (uint32_t) dep->verNum != module->buildCfg.moduleVersion)
+        return false;
+
+    if (dep->revNum != -1 && (uint32_t) dep->revNum > module->buildCfg.moduleRevision)
+        return false;
+    if (dep->revNum != -1 && (uint32_t) dep->revNum < module->buildCfg.moduleRevision)
+        return true;
+
+    if (dep->buildNum != -1 && (uint32_t) dep->buildNum > module->buildCfg.moduleRevision)
+        return false;
     return true;
 }
 
@@ -289,13 +299,10 @@ bool ModuleCfgManager::execute()
                 dep->module = getCfgModule(dep->name);
 
                 // Invalid module dependency
-                if (!dep->module || !dep->module->mustFetch)
+                if (!dep->module || !dependencyIsMatching(dep, dep->module))
                 {
-                    if (!dep->module || !dependencyIsMatching(dep, dep->module))
-                    {
-                        dirty = true;
-                        ok &= resolveModuleDependency(parentModule, dep);
-                    }
+                    dirty = true;
+                    ok &= resolveModuleDependency(parentModule, dep);
                 }
             }
         }
