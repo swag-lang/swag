@@ -92,7 +92,7 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
         // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
         if (!fs::exists(cfgName))
         {
-            g_Log.error(format("invalid module '%s', '%s' is missing", cfgPath.string().c_str(), SWAG_CFG_FILE));
+            g_Log.error(format("fatal error: invalid module '%s', '%s' is missing", cfgPath.string().c_str(), SWAG_CFG_FILE));
             g_Workspace.numErrors++;
             return;
         }

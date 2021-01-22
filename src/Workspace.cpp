@@ -350,6 +350,17 @@ void Workspace::createNew()
         exit(-1);
     }
 
+    // Create a configuration file
+    auto cfgFileName = modulePath;
+    cfgFileName.append(SWAG_CFG_FILE);
+    ofstream fileCfg(cfgFileName);
+    if (!fileCfg.is_open())
+    {
+        g_Log.error(format("fatal error: cannot create file '%s'", cfgFileName.string().c_str()));
+        exit(-1);
+    }
+
+    // Create an hello world file
     modulePath.append(SWAG_SRC_FOLDER);
     if (!fs::create_directories(modulePath, errorCode))
     {
@@ -357,7 +368,6 @@ void Workspace::createNew()
         exit(-1);
     }
 
-    // Create an empty file
     modulePath.append("main.swg");
     ofstream file(modulePath);
     if (!file.is_open())
