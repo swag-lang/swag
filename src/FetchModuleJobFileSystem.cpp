@@ -12,7 +12,7 @@ JobResult FetchModuleJobFileSystem::execute()
 {
     auto dep = module->fetchDep;
 
-    auto depName = format("%s %s", dep->name.c_str(), dep->version.c_str());
+    auto depName = format("%s %u.%d.%d", dep->name.c_str(), dep->module->buildCfg.moduleVersion, dep->module->buildCfg.moduleRevision, dep->module->buildCfg.moduleBuildNum);
     g_Log.messageHeaderCentered("Copying", depName.c_str());
 
     // Collect list of source files

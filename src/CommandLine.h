@@ -77,6 +77,9 @@ struct CommandLine
     bool        outputTest  = true;
     bool        outputLegit = true;
 
+    // Dependencies
+    bool updateDep = false;
+
     fs::path exePath;
     string   exePathStr;
 

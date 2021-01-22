@@ -46,7 +46,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     cfgModule->addFile(file);
 
     if (kind != ModuleKind::Dependency)
-        cfgModule->remoteLocation = moduleFolder;
+        cfgModule->remoteLocationDep = moduleFolder;
 
     // Register it
     if (getCfgModule(moduleName))
@@ -112,21 +112,6 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
             registerCfgFile(file);
         }
     }
-}
-
-bool ModuleCfgManager::dependencyIsMatching(ModuleDependency* dep, Module* module)
-{
-    if (dep->verNum != -1 && (uint32_t) dep->verNum != module->buildCfg.moduleVersion)
-        return false;
-
-    if (dep->revNum != -1 && (uint32_t) dep->revNum > module->buildCfg.moduleRevision)
-        return false;
-    if (dep->revNum != -1 && (uint32_t) dep->revNum < module->buildCfg.moduleRevision)
-        return true;
-
-    if (dep->buildNum != -1 && (uint32_t) dep->buildNum > module->buildCfg.moduleRevision)
-        return false;
-    return true;
 }
 
 bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
@@ -214,11 +199,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     // If location dependency is not defined, then we take the remove location of the module
     // with that dependency
     if (dep->location.empty())
-        dep->location = srcModule->remoteLocation;
-
-    // Get the remote config file in cache (if it exists)
-    Utf8 cfgFilePath, cfgFileName;
-    SWAG_CHECK(fetchModuleCfg(dep, cfgFilePath, cfgFileName));
+        dep->location = srcModule->remoteLocationDep;
 
     // Module not here : add it.
     if (!dep->module)
@@ -227,34 +208,96 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         dep->module->kind = ModuleKind::Config;
         dep->module->setup(dep->name, "");
         allModules[dep->name] = dep->module;
+
+        dep->module->mustFetchDep      = true;
+        dep->module->wasAddedDep       = true;
+        dep->module->remoteLocationDep = dep->location;
+        dep->module->fetchDep          = dep;
+        pendingCfgModules.insert(dep->module);
+        return true;
     }
 
-    // Now we case set the location of the module as the location of the dependency
-    dep->module->remoteLocation = dep->location;
+    // Now we can set the location of the module with the location of the dependency
+    dep->module->remoteLocationDep = dep->location;
 
-    auto cfgModule       = dep->module;
-    cfgModule->mustFetch = true;
-    cfgModule->fetchDep  = dep;
+    auto cfgModule = dep->module;
 
-    // Module exists without a config file. This is fine. Set default values.
-    if (!cfgFileName.empty())
+    if (!cfgModule->fetchDep)
     {
-        cfgModule->files.clear(); // memleak
+        cfgModule->fetchDep = dep;
+        auto cmp            = compareVersions(dep->verNum,
+                                   dep->revNum,
+                                   dep->buildNum,
+                                   cfgModule->buildCfg.moduleVersion,
+                                   cfgModule->buildCfg.moduleRevision,
+                                   cfgModule->buildCfg.moduleBuildNum);
 
-        auto file = g_Allocator.alloc<SourceFile>();
-        cfgModule->files.push_back(file);
+        switch (cmp)
+        {
+        case CompareVersionResult::VERSION_GREATER:
+        case CompareVersionResult::REVISION_GREATER:
+        case CompareVersionResult::BUILDNUM_GREATER:
+            if (cfgModule->wasAddedDep || g_CommandLine.updateDep)
+            {
+                cfgModule->mustFetchDep = true;
+                pendingCfgModules.insert(cfgModule);
+            }
 
-        file->name        = cfgFileName;
-        file->cfgFile     = true;
-        file->module      = cfgModule;
-        fs::path pathFile = cfgFilePath.c_str();
-        pathFile.append(cfgFileName.c_str());
-        file->path = normalizePath(pathFile);
+            break;
+        }
+    }
+    else
+    {
+        auto cmp = compareVersions(dep->verNum,
+                                   dep->revNum,
+                                   dep->buildNum,
+                                   cfgModule->fetchDep->verNum,
+                                   cfgModule->fetchDep->revNum,
+                                   cfgModule->fetchDep->buildNum);
+        switch (cmp)
+        {
+        case CompareVersionResult::VERSION_GREATER:
+        case CompareVersionResult::VERSION_LOWER:
+        {
+            Diagnostic diag{dep->node, format("cannot resolve dependency to module '%s' because of two different major versions ('%d' and '%d')", dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
+            Diagnostic note{cfgModule->fetchDep->node, "this is the other '#import'", DiagnosticLevel::Note};
+            dep->node->sourceFile->report(diag, &note);
+            return false;
+        }
 
-        pendingCfgModules.insert(cfgModule);
+        case CompareVersionResult::REVISION_GREATER:
+        case CompareVersionResult::BUILDNUM_GREATER:
+            cfgModule->fetchDep = dep;
+            if (cfgModule->wasAddedDep || g_CommandLine.updateDep)
+            {
+                cfgModule->mustFetchDep = true;
+                pendingCfgModules.insert(cfgModule);
+            }
+            break;
+        }
     }
 
     return true;
+}
+
+CompareVersionResult ModuleCfgManager::compareVersions(uint32_t depVer, uint32_t depRev, uint32_t devBuildNum, uint32_t modVer, uint32_t modRev, uint32_t modBuildNum)
+{
+    if (depVer != UINT32_MAX && depVer > modVer)
+        return CompareVersionResult::VERSION_GREATER;
+    if (depVer != UINT32_MAX && depVer < modVer)
+        return CompareVersionResult::VERSION_LOWER;
+
+    if (depRev != UINT32_MAX && depRev < modRev)
+        return CompareVersionResult::REVISION_LOWER;
+    if (depRev != UINT32_MAX && depRev > modRev)
+        return CompareVersionResult::REVISION_GREATER;
+
+    if (devBuildNum != UINT32_MAX && devBuildNum > modBuildNum)
+        return CompareVersionResult::BUILDNUM_GREATER;
+    if (devBuildNum != UINT32_MAX && devBuildNum < modBuildNum)
+        return CompareVersionResult::BUILDNUM_LOWER;
+
+    return CompareVersionResult::EQUAL;
 }
 
 bool ModuleCfgManager::execute()
@@ -277,45 +320,57 @@ bool ModuleCfgManager::execute()
         return false;
 
     // Populate the list of all modules dependencies, until everything is done
-    bool ok    = true;
-    bool dirty = true;
-    while (ok && dirty)
+    bool ok = true;
+    while (ok)
     {
-        dirty = false;
-
         pendingCfgModules.clear();
         for (auto m : allModules)
         {
             auto parentModule = m.second;
 
             // Do not treat dependencies of a module without a remote location.
-            // The remote location will be initialized when know, starting with
+            // The remote location will be initialized when known, starting with
             // local modules
-            if (parentModule->remoteLocation.empty())
+            if (parentModule->remoteLocationDep.empty())
                 continue;
 
             for (auto dep : parentModule->moduleDependencies)
             {
                 dep->module = getCfgModule(dep->name);
-
-                // Invalid module dependency
-                if (!dep->module || !dependencyIsMatching(dep, dep->module))
-                {
-                    dirty = true;
-                    ok &= resolveModuleDependency(parentModule, dep);
-                }
+                ok &= resolveModuleDependency(parentModule, dep);
             }
         }
 
+        if (!ok)
+            break;
+        if (pendingCfgModules.empty())
+            break;
+
         // We have modules to parse again
-        if (!pendingCfgModules.empty())
+        for (auto cfgModule : pendingCfgModules)
         {
-            for (auto f : pendingCfgModules)
-                parseCfgFile(f);
-            g_ThreadMgr.waitEndJobs();
-            g_Workspace.checkPendingJobs();
-            continue;
+            // Get the remote config file in cache (if it exists), that depends on the dependency
+            Utf8 cfgFilePath, cfgFileName;
+            SWAG_CHECK(fetchModuleCfg(cfgModule->fetchDep, cfgFilePath, cfgFileName));
+
+            cfgModule->files.clear(); // memleak
+
+            auto file = g_Allocator.alloc<SourceFile>();
+            cfgModule->files.push_back(file);
+
+            file->name        = cfgFileName;
+            file->cfgFile     = true;
+            file->module      = cfgModule;
+            fs::path pathFile = cfgFilePath.c_str();
+            pathFile.append(cfgFileName.c_str());
+            file->path = normalizePath(pathFile);
+
+            parseCfgFile(cfgModule);
         }
+
+        g_ThreadMgr.waitEndJobs();
+        g_Workspace.checkPendingJobs();
+        ok = g_Workspace.numErrors.load() == 0;
     }
 
     // Fetch all modules
@@ -323,7 +378,7 @@ bool ModuleCfgManager::execute()
     {
         for (auto m : allModules)
         {
-            if (!m.second->mustFetch)
+            if (!m.second->mustFetchDep)
                 continue;
 
             Job* fetchJob = nullptr;
