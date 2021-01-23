@@ -109,6 +109,18 @@ bool SemanticJob::resolveType(SemanticContext* context)
 {
     auto typeNode = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
+    // Array with predefined dimensions, we evaluate all dimensions as const
+    if (typeNode->arrayDim && typeNode->arrayDim != UINT8_MAX)
+    {
+        for (int i = typeNode->arrayDim - 1; i >= 0; i--)
+        {
+            auto child = typeNode->childs[i];
+            SWAG_CHECK(evaluateConstExpression(context, child));
+            if (context->result == ContextResult::Pending)
+                return true;
+        }
+    }
+
     // Already solved
     if ((typeNode->flags & AST_FROM_GENERIC) && typeNode->typeInfo && !typeNode->typeInfo->isNative(NativeTypeKind::Undefined))
     {
@@ -285,10 +297,10 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
                 SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, "array dimension cannot be evaluated at compile time"}));
                 SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->report({child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
-                SWAG_CHECK(checkSizeOverflow(context, "array", child->computedValue.reg.u64 * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
+                SWAG_CHECK(checkSizeOverflow(context, "array", child->computedValue.reg.u32 * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
 
                 auto ptrArray   = allocType<TypeInfoArray>();
-                ptrArray->count = (uint32_t) child->computedValue.reg.u64;
+                ptrArray->count = (uint32_t) child->computedValue.reg.u32;
                 totalCount *= ptrArray->count;
                 SWAG_CHECK(checkSizeOverflow(context, "array", totalCount * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
                 ptrArray->totalCount  = totalCount;
