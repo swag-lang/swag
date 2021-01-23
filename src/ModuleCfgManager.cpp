@@ -390,21 +390,7 @@ bool ModuleCfgManager::execute()
         ok = g_Workspace.numErrors.load() == 0;
     }
 
-    if (ok && g_CommandLine.listDep)
-    {
-        for (auto m : allModules)
-        {
-            auto module = m.second;
-            Utf8 msg = module->name;
-            if (module->fetchDep)
-                msg += format(" %d.%d.%d", module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum);
-            else
-                msg += format(" %d.%d.%d", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
-            g_Log.message(msg);
-        }
-    }
-
-    if (ok && g_CommandLine.fetchDep)
+    if (ok)
     {
         for (auto m : allModules)
         {
@@ -431,6 +417,23 @@ bool ModuleCfgManager::execute()
                     module->mustFetchDep = true;
                 }
             }
+        }
+    }
+
+    // List all dependencies
+    if (ok && g_CommandLine.listDep)
+    {
+        for (auto m : allModules)
+        {
+            auto module = m.second;
+            Utf8 msg    = module->name;
+            if (module->fetchDep)
+                msg += format(" %d.%d.%d", module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum);
+            else
+                msg += format(" %d.%d.%d", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
+            if (module->mustFetchDep)
+                msg += format(" => %d.%d.%d", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
+            g_Log.message(msg);
         }
     }
 
