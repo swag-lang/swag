@@ -202,6 +202,11 @@ bool Backend::emitGenericParameters(AstNode* node, int indent)
 
 bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, int indent)
 {
+    return emitFuncSignatureSwg(typeFunc, node, node->parameters, node->selectIf, indent);
+}
+
+bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstNode* node, AstNode* parameters, AstNode* selectIf, int indent)
+{
     if (node->kind == AstNodeKind::AttrDecl)
         CONCAT_FIXED_STR(bufferSwg, "attr ");
     else
@@ -209,12 +214,12 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     bufferSwg.addString(node->token.text.c_str());
     CONCAT_FIXED_STR(bufferSwg, "(");
 
-    if (node->parameters)
+    if (parameters)
     {
         uint32_t idx = 0;
         for (auto p : typeFunc->parameters)
         {
-            AstVarDecl* varDecl = CastAst<AstVarDecl>(node->parameters->childs[idx], AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
+            AstVarDecl* varDecl = CastAst<AstVarDecl>(parameters->childs[idx], AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
 
             // Name
             if (varDecl->token.text == "self" && p->typeInfo->isConst())
@@ -236,7 +241,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
                 SWAG_CHECK(Ast::output(outputContext, bufferSwg, varDecl->assignment));
             }
 
-            if (idx != node->parameters->childs.size() - 1)
+            if (idx != parameters->childs.size() - 1)
                 CONCAT_FIXED_STR(bufferSwg, ", ");
             idx++;
         }
@@ -250,11 +255,11 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
         emitType(typeFunc->returnType, indent);
     }
 
-    if (node->selectIf)
+    if (selectIf)
     {
         bufferSwg.addEolIndent(indent + 1);
         outputContext.indent++;
-        SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->selectIf));
+        SWAG_CHECK(Ast::output(outputContext, bufferSwg, selectIf));
         outputContext.indent--;
     }
 
@@ -583,11 +588,11 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
     {
         for (auto func : publicSet->publicAttr)
         {
-            AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::AttrDecl);
+            auto              node     = CastAst<AstAttrDecl>(func, AstNodeKind::AttrDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             emitAttributesUsage(typeFunc, indent);
             bufferSwg.addIndent(indent);
-            SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node, indent));
+            SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node, node->parameters, nullptr, indent));
         }
     }
 
