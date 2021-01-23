@@ -707,7 +707,9 @@ bool Workspace::buildTarget()
     //////////////////////////////////////////////////
     g_ThreadMgr.waitEndJobs();
     SWAG_CHECK(g_ModuleCfgMgr.execute());
-    if (g_CommandLine.listDep)
+
+    // Exit now (do not really build) in case of "get", "list" commands
+    if (g_CommandLine.listDep || g_CommandLine.getDep)
         return true;
 
     // Ask for a syntax pass on all files of all modules

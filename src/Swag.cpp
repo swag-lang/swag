@@ -60,6 +60,7 @@ int main(int argc, const char* argv[])
         command != "new" &&
         command != "clean" &&
         command != "list" &&
+        command != "get" &&
         command != "version" &&
         command != "env")
     {
@@ -115,6 +116,13 @@ int main(int argc, const char* argv[])
         g_CommandLine.listDep   = true;
         g_CommandLine.updateDep = true;
         g_CommandLine.fetchDep  = false;
+        g_Workspace.build();
+    }
+    else if (command == "get")
+    {
+        g_CommandLine.getDep    = true;
+        g_CommandLine.updateDep = true;
+        g_CommandLine.fetchDep  = true;
         g_Workspace.build();
     }
     else if (command == "watch")

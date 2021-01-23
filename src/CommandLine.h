@@ -75,9 +75,10 @@ struct CommandLine
     bool        outputLegit = true;
 
     // Dependencies
-    bool updateDep = true;
-    bool fetchDep  = true;
+    bool getDep    = false;
     bool listDep   = false;
+    bool updateDep = false;
+    bool fetchDep  = true;
 
     // Clean
     bool cleanDep = false;

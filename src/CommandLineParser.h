@@ -54,6 +54,9 @@ struct CommandLineArgument
 
             if (p == "all" || p == "li")
                 cmds.push_back("list");
+
+            if (p == "all" || p == "ge")
+                cmds.push_back("get");
         }
     }
 };

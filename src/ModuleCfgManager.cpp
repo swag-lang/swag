@@ -322,7 +322,7 @@ bool ModuleCfgManager::execute()
     enumerateCfgFiles(g_Workspace.dependenciesPath);
     enumerateCfgFiles(g_Workspace.modulesPath);
     enumerateCfgFiles(g_Workspace.examplesPath);
-    if (g_CommandLine.test || g_CommandLine.listDep)
+    if (g_CommandLine.test || g_CommandLine.listDep || g_CommandLine.fetchDep)
         enumerateCfgFiles(g_Workspace.testsPath);
     g_ThreadMgr.waitEndJobs();
     g_Workspace.checkPendingJobs();

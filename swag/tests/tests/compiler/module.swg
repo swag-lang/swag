@@ -1,4 +1,4 @@
-#import "core" version = "0.0.?" location = "f:/swag/swag/std"
+#import "core" version = "0.0.0" location = "f:/swag/swag/std"
 
 #run
 {
