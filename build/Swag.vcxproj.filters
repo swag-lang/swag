@@ -458,6 +458,9 @@
     <ClCompile Include="..\src\Workspace_watch_.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Workspace_new_.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
