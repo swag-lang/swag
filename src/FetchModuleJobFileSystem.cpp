@@ -19,6 +19,11 @@ JobResult FetchModuleJobFileSystem::execute()
     set<string> srcFiles;
     OS::visitFilesRec(dep->resolvedLocation, [&](const char* fileName) {
         auto n = normalizePath(fileName + dep->resolvedLocation.length());
+
+        // Do not copy public folder
+        if (strstr(n.c_str(), SWAG_PUBLIC_FOLDER) == n.c_str() + 1)
+            return;
+
         srcFiles.insert(n);
     });
 
