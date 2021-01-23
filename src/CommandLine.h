@@ -48,9 +48,6 @@ struct CommandLine
     bool errorSourceOut        = true;
     bool errorNoteOut          = true;
 
-    // Watch
-    bool watch = false;
-
     // Output
     string buildCfg           = "debug";
     string buildCfgDebug      = "default";

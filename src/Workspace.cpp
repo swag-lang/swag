@@ -776,6 +776,53 @@ bool Workspace::buildTarget()
 
 bool Workspace::build()
 {
+    g_Global.setup();
+
+    // [devmode] stuff
+    if (g_CommandLine.devMode)
+    {
+        g_Log.setColor(LogColor::DarkBlue);
+        g_Log.print("[devmode] is activated\n");
+        g_Log.setDefaultColor();
+    }
+
+    // Dev mode randomize/seed
+    if (g_CommandLine.randomize)
+    {
+        if (!g_CommandLine.randSeed)
+        {
+            using namespace std::chrono;
+            milliseconds ms        = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+            g_CommandLine.randSeed = (int) ms.count() & 0x7FFFFFFF;
+            srand(g_CommandLine.randSeed);
+            g_CommandLine.randSeed = rand() & 0x7FFFFFFF;
+        }
+
+        srand(g_CommandLine.randSeed);
+        g_Log.setColor(LogColor::DarkBlue);
+        g_Log.print(format("[devmode] randomize seed is %d\n", g_CommandLine.randSeed));
+        g_Log.setDefaultColor();
+    }
+
+    // User arguments that can be retrieved with '@args'
+    pair<void*, void*> oneArg;
+    g_CommandLine.exePathStr = g_CommandLine.exePath.string();
+    oneArg.first             = (void*) g_CommandLine.exePathStr.c_str();
+    oneArg.second            = (void*) g_CommandLine.exePathStr.size();
+    g_CommandLine.userArgumentsStr.push_back(oneArg);
+
+    tokenizeBlanks(g_CommandLine.userArguments.c_str(), g_CommandLine.userArgumentsVec);
+    for (auto& arg : g_CommandLine.userArgumentsVec)
+    {
+        oneArg.first  = (void*) arg.c_str();
+        oneArg.second = (void*) (size_t) arg.length();
+        g_CommandLine.userArgumentsStr.push_back(oneArg);
+    }
+
+    g_CommandLine.userArgumentsSlice.first  = &g_CommandLine.userArgumentsStr[0];
+    g_CommandLine.userArgumentsSlice.second = (void*) g_CommandLine.userArgumentsStr.size();
+
+    // Build !
     auto result = true;
 
     {
