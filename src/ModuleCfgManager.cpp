@@ -225,13 +225,8 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     if (!cfgModule->fetchDep)
     {
         cfgModule->fetchDep = dep;
-        auto cmp            = compareVersions(dep->verNum,
-                                   dep->revNum,
-                                   dep->buildNum,
-                                   cfgModule->buildCfg.moduleVersion,
-                                   cfgModule->buildCfg.moduleRevision,
-                                   cfgModule->buildCfg.moduleBuildNum);
 
+        auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, cfgModule->buildCfg.moduleVersion, cfgModule->buildCfg.moduleRevision, cfgModule->buildCfg.moduleBuildNum);
         switch (cmp)
         {
         case CompareVersionResult::VERSION_GREATER:
@@ -244,16 +239,21 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
             }
 
             break;
+
+        case CompareVersionResult::EQUAL:
+            if (g_CommandLine.updateDep)
+            {
+                if (dep->verNum == UINT32_MAX || dep->revNum == UINT32_MAX || dep->buildNum == UINT32_MAX)
+                {
+                    pendingCfgModules.insert(cfgModule);
+                }
+            }
+            break;
         }
     }
-    else
+    else if (cfgModule->fetchDep != dep)
     {
-        auto cmp = compareVersions(dep->verNum,
-                                   dep->revNum,
-                                   dep->buildNum,
-                                   cfgModule->fetchDep->verNum,
-                                   cfgModule->fetchDep->revNum,
-                                   cfgModule->fetchDep->buildNum);
+        auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, cfgModule->fetchDep->verNum, cfgModule->fetchDep->revNum, cfgModule->fetchDep->buildNum);
         switch (cmp)
         {
         case CompareVersionResult::VERSION_GREATER:
@@ -272,6 +272,17 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
             {
                 cfgModule->mustFetchDep = true;
                 pendingCfgModules.insert(cfgModule);
+            }
+            break;
+
+        case CompareVersionResult::EQUAL:
+            if (g_CommandLine.updateDep)
+            {
+                if (dep->verNum == UINT32_MAX || dep->revNum == UINT32_MAX || dep->buildNum == UINT32_MAX)
+                {
+                    cfgModule->fetchDep = dep;
+                    pendingCfgModules.insert(cfgModule);
+                }
             }
             break;
         }
@@ -317,6 +328,13 @@ bool ModuleCfgManager::execute()
     g_Workspace.checkPendingJobs();
     if (g_Workspace.numErrors)
         return false;
+
+    // Remember the configuration of the local module
+    for (auto m : allModules)
+    {
+        auto module         = m.second;
+        module->localCfgDep = module->buildCfg;
+    }
 
     // Populate the list of all modules dependencies, until everything is done
     bool ok = true;
@@ -372,8 +390,38 @@ bool ModuleCfgManager::execute()
         ok = g_Workspace.numErrors.load() == 0;
     }
 
+    if (ok && g_CommandLine.fetchDep)
+    {
+        for (auto m : allModules)
+        {
+            auto module = m.second;
+            auto dep    = module->fetchDep;
+            if (!dep)
+                continue;
+
+            // Verify that all fetch dep match with the corresponding module
+            auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
+            if (cmp != CompareVersionResult::EQUAL)
+            {
+                Diagnostic diag{dep->node, format("cannot resolve dependency to module '%s', version '%s' cannot be found at location '%s'", dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
+                dep->node->sourceFile->report(diag);
+                ok = false;
+            }
+
+            // Compare the fetch version with the original local one. If they do not match, then we must fetch the module content
+            if (!module->wasAddedDep && !module->mustFetchDep)
+            {
+                cmp = compareVersions(module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
+                if (cmp != CompareVersionResult::EQUAL)
+                {
+                    module->mustFetchDep = true;
+                }
+            }
+        }
+    }
+
     // Fetch all modules
-    if (ok)
+    if (ok && g_CommandLine.fetchDep)
     {
         for (auto m : allModules)
         {

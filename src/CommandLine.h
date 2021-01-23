@@ -78,9 +78,12 @@ struct CommandLine
     bool        outputLegit = true;
 
     // Dependencies
-    bool updateDep = false;
-    bool cleanDep  = false;
-    bool cleanLog  = false;
+    bool updateDep = true;
+    bool fetchDep  = true;
+
+    // Clean
+    bool cleanDep = false;
+    bool cleanLog = false;
 
     fs::path exePath;
     string   exePathStr;

@@ -171,6 +171,7 @@ struct Module
     bool              wasAddedDep  = false;
     ModuleDependency* fetchDep     = nullptr;
     Utf8              remoteLocationDep;
+    BuildCfg          localCfgDep;
 
     void     addForeignLib(const Utf8& text);
     bool     addDependency(AstNode* importNode, const Token& tokenNamespace, const Token& tokenLocation, const Token& tokenVersion);
