@@ -30,26 +30,26 @@ struct CommandLineArgument
         , help{help}
     {
         vector<Utf8> all;
-        tokenize(commands, ',', all);
+        tokenize(commands, ' ', all);
 
         for (auto& p : all)
         {
-            if (p == "all" || p == "build")
+            if (p == "all" || p == "bu")
             {
                 cmds.push_back("build");
                 cmds.push_back("run");
             }
 
-            if (p == "all" || p == "build" || p == "test")
+            if (p == "all" || p == "bu" || p == "te")
                 cmds.push_back("test");
 
-            if (p == "all" || p == "clean")
+            if (p == "all" || p == "cl")
                 cmds.push_back("clean");
 
-            if (p == "all" || p == "watch")
+            if (p == "all" || p == "wa")
                 cmds.push_back("watch");
 
-            if (p == "all" || p == "new")
+            if (p == "all" || p == "ne")
                 cmds.push_back("new");
         }
     }

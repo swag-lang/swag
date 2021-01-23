@@ -8,60 +8,60 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("all", "--stats", nullptr, CommandLineType::Bool, &cmdLine->stats, nullptr, "display build statistics at the end");
     addArg("all", "--silent", "-s", CommandLineType::Bool, &cmdLine->silent, nullptr, "do not log messages");
 
-    addArg("build", "--verbose-cmdline", nullptr, CommandLineType::Bool, &cmdLine->verboseCmdLine, nullptr, "log swag command line");
-    addArg("build", "--verbose-path", nullptr, CommandLineType::Bool, &cmdLine->verbosePath, nullptr, "log global paths");
-    addArg("build", "--verbose-link", nullptr, CommandLineType::Bool, &cmdLine->verboseLink, nullptr, "log linker command line");
-    addArg("build", "--verbose-pass", nullptr, CommandLineType::Bool, &cmdLine->verbosePass, nullptr, "log compile passes");
-    addArg("build", "--verbose-ctypes", nullptr, CommandLineType::Bool, &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
-    addArg("build", "--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut, nullptr, "display source code when an error is raised");
-    addArg("build", "--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
+    addArg("all", "--verbose-cmdline", nullptr, CommandLineType::Bool, &cmdLine->verboseCmdLine, nullptr, "log swag command line");
+    addArg("bu", "--verbose-path", nullptr, CommandLineType::Bool, &cmdLine->verbosePath, nullptr, "log global paths");
+    addArg("bu", "--verbose-link", nullptr, CommandLineType::Bool, &cmdLine->verboseLink, nullptr, "log linker command line");
+    addArg("bu", "--verbose-pass", nullptr, CommandLineType::Bool, &cmdLine->verbosePass, nullptr, "log compile passes");
+    addArg("bu", "--verbose-ctypes", nullptr, CommandLineType::Bool, &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
+    addArg("bu", "--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut, nullptr, "display source code when an error is raised");
+    addArg("bu", "--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
 
-    addArg("build,new,watch", "--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
-    addArg("build", "--module", "-m", CommandLineType::String, &cmdLine->moduleFilter, nullptr, "the module to work with (all modules if not specified)");
+    addArg("bu ne wa cl", "--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
+    addArg("bu", "--module", "-m", CommandLineType::String, &cmdLine->moduleFilter, nullptr, "the module to work with (all modules if not specified)");
 
-    addArg("build", "--cache", "-t", CommandLineType::String, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
-    addArg("build", "--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
+    addArg("bu", "--cache", "-t", CommandLineType::String, &cmdLine->cachePath, nullptr, "specify the cache folder (system specific if empty)");
+    addArg("bu", "--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores, nullptr, "max number of cpu to use (0 = automatic)");
 
-    addArg("build", "--output", "-o", CommandLineType::Bool, &cmdLine->output, nullptr, "output backend");
-    addArg("build", "--output-legit", "-ol", CommandLineType::Bool, &cmdLine->outputLegit, nullptr, "output legit backend");
-    addArg("build", "--output-test", "-ot", CommandLineType::Bool, &cmdLine->outputTest, nullptr, "output test backend");
+    addArg("bu", "--output", "-o", CommandLineType::Bool, &cmdLine->output, nullptr, "output backend");
+    addArg("bu", "--output-legit", "-ol", CommandLineType::Bool, &cmdLine->outputLegit, nullptr, "output legit backend");
+    addArg("bu", "--output-test", "-ot", CommandLineType::Bool, &cmdLine->outputTest, nullptr, "output test backend");
 
-    addArg("test", "--test-bytecode", "-tb", CommandLineType::Bool, &cmdLine->runByteCodeTests, nullptr, "run #test functions as bytecode");
-    addArg("test", "--test-native", "-tn", CommandLineType::Bool, &cmdLine->runBackendTests, nullptr, "run #test functions as native");
+    addArg("te", "--test-bytecode", "-tb", CommandLineType::Bool, &cmdLine->runByteCodeTests, nullptr, "run #test functions as bytecode");
+    addArg("te", "--test-native", "-tn", CommandLineType::Bool, &cmdLine->runBackendTests, nullptr, "run #test functions as native");
 
-    addArg("build", "--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild, nullptr, "full rebuild");
+    addArg("bu", "--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild, nullptr, "full rebuild");
 
-    addArg("build", "--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter, nullptr, nullptr);
-    addArg("test", "--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, nullptr);
+    addArg("bu", "--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter, nullptr, nullptr);
+    addArg("te", "--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, nullptr);
 
-    addArg("build", "--devmode", nullptr, CommandLineType::Bool, &cmdLine->devMode, nullptr, "swag compiler developer mode, add some assertions");
-    addArg("build", "--randomize", nullptr, CommandLineType::Bool, &cmdLine->randomize, nullptr, "swag compiler developer mode, randomize behavior");
-    addArg("build", "--seed", nullptr, CommandLineType::Int, &cmdLine->randSeed, nullptr, "swag compiler developer mode, set seed for randomize behavior");
+    addArg("bu", "--devmode", nullptr, CommandLineType::Bool, &cmdLine->devMode, nullptr, "swag compiler developer mode, add some assertions");
+    addArg("bu", "--randomize", nullptr, CommandLineType::Bool, &cmdLine->randomize, nullptr, "swag compiler developer mode, randomize behavior");
+    addArg("bu", "--seed", nullptr, CommandLineType::Int, &cmdLine->randSeed, nullptr, "swag compiler developer mode, set seed for randomize behavior");
 
-    addArg("build", "--cfg", nullptr, CommandLineType::String, &cmdLine->buildCfg, nullptr, "set the build configuration (debug|fast-debug|release are predefined)");
-    addArg("build", "--cfg-debug", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgDebug, "true|false|default", "force the build configuration to (not) have debug informations");
-    addArg("build", "--cfg-safety", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgSafety, "true|false|default", "force the build configuration to (not) have safety guards");
-    addArg("build", "--cfg-inline-bc", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgInlineBC, "true|false|default", "inline marked functions");
-    addArg("build", "--cfg-optim-bc", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptimBC, "true|false|default", "optimize the generated bytecode");
-    addArg("build", "--cfg-optim-speed", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptimSpeed, "true|false|default", "force the build configuration to (not) be optimized for speed");
-    addArg("build", "--cfg-optim-size", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptimSize, "true|false|default", "force the build configuration to (not) be optimized for size");
+    addArg("bu cl", "--cfg", nullptr, CommandLineType::String, &cmdLine->buildCfg, nullptr, "set the build configuration (debug|fast-debug|release are predefined)");
+    addArg("bu cl", "--cfg-debug", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgDebug, "true|false|default", "force the build configuration to (not) have debug informations");
+    addArg("bu cl", "--cfg-safety", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgSafety, "true|false|default", "force the build configuration to (not) have safety guards");
+    addArg("bu cl", "--cfg-inline-bc", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgInlineBC, "true|false|default", "inline marked functions");
+    addArg("bu cl", "--cfg-optim-bc", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptimBC, "true|false|default", "optimize the generated bytecode");
+    addArg("bu cl", "--cfg-optim-speed", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptimSpeed, "true|false|default", "force the build configuration to (not) be optimized for speed");
+    addArg("bu cl", "--cfg-optim-size", nullptr, CommandLineType::EnumString, &cmdLine->buildCfgOptimSize, "true|false|default", "force the build configuration to (not) be optimized for size");
 
-    addArg("build", "--arch", nullptr, CommandLineType::EnumInt, &cmdLine->arch, "x86_64", "set the target architecture");
-    addArg("build", "--os", nullptr, CommandLineType::EnumInt, &cmdLine->os, "windows", "set the target operating system");
-    addArg("build", "--abi", nullptr, CommandLineType::EnumInt, &cmdLine->abi, "msvc", "set the target abi");
-    addArg("build", "--vendor", nullptr, CommandLineType::EnumInt, &cmdLine->vendor, "pc", "set the target vendoor");
+    addArg("bu cl", "--arch", nullptr, CommandLineType::EnumInt, &cmdLine->arch, "x86_64", "set the target architecture");
+    addArg("bu cl", "--os", nullptr, CommandLineType::EnumInt, &cmdLine->os, "windows", "set the target operating system");
+    addArg("bu cl", "--abi", nullptr, CommandLineType::EnumInt, &cmdLine->abi, "msvc", "set the target abi");
+    addArg("bu cl", "--vendor", nullptr, CommandLineType::EnumInt, &cmdLine->vendor, "pc", "set the target vendoor");
 
-    addArg("build", "--tag", nullptr, CommandLineType::StringSet, &cmdLine->tags, nullptr, "add a build tag, with an optional associated type and value");
-    addArg("build", "--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
+    addArg("bu", "--tag", nullptr, CommandLineType::StringSet, &cmdLine->tags, nullptr, "add a build tag, with an optional associated type and value");
+    addArg("bu", "--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
 
-    addArg("build", "--max-recurse", nullptr, CommandLineType::Int, &cmdLine->maxRecurse, nullptr, "maximum recursion level in bytecode (0 for no limit)");
-    addArg("build", "--stack-size", nullptr, CommandLineType::Int, &cmdLine->stackSize, nullptr, "set the stack size for bytecode and backend");
+    addArg("bu", "--max-recurse", nullptr, CommandLineType::Int, &cmdLine->maxRecurse, nullptr, "maximum recursion level in bytecode (0 for no limit)");
+    addArg("bu", "--stack-size", nullptr, CommandLineType::Int, &cmdLine->stackSize, nullptr, "set the stack size for bytecode and backend");
 
-    addArg("build", "--backend", nullptr, CommandLineType::EnumInt, &cmdLine->backendType, "llvm|x64", "the type of backend to use");
-    addArg("build", "--script", nullptr, CommandLineType::Bool, &cmdLine->script, nullptr, "run full bytecode");
+    addArg("bu", "--backend", nullptr, CommandLineType::EnumInt, &cmdLine->backendType, "llvm|x64", "the type of backend to use");
+    addArg("bu", "--script", nullptr, CommandLineType::Bool, &cmdLine->script, nullptr, "run full bytecode");
 
-    addArg("clean", "--clean-dep", nullptr, CommandLineType::Bool, &cmdLine->cleanDep, nullptr, "removes the content of the dependency folder");
-    addArg("clean", "--clean-log", nullptr, CommandLineType::Bool, &cmdLine->cleanLog, nullptr, "display what will be removed, without actually cleaning");
+    addArg("cl", "--clean-dep", nullptr, CommandLineType::Bool, &cmdLine->cleanDep, nullptr, "removes the content of the dependency folder");
+    addArg("cl", "--clean-log", nullptr, CommandLineType::Bool, &cmdLine->cleanLog, nullptr, "display what will be removed, without actually cleaning");
 }
 
 void CommandLineParser::logArguments()

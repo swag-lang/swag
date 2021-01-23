@@ -484,7 +484,7 @@ void Workspace::setupTarget()
     targetPath.append("/");
     targetPath.append(getTargetFolder().c_str());
 
-    if (g_CommandLine.verbose && g_CommandLine.verbosePath)
+    if (g_CommandLine.verbosePath)
         g_Log.verbose(format("target path is '%s'", targetPath.string().c_str()));
 
     // Be sure folders exists
@@ -517,10 +517,8 @@ void Workspace::setupTarget()
         exit(-1);
     }
 
-    if (g_CommandLine.verbose && g_CommandLine.verbosePath)
-    {
+    if (g_CommandLine.verbosePath)
         g_Log.verbose(format("cache path is '%s'", cachePath.string().c_str()));
-    }
 
     targetPath += "/";
     cachePath += "/";
@@ -713,8 +711,7 @@ bool Workspace::buildTarget()
     // Ask for a syntax pass on all files of all modules
     //////////////////////////////////////////////////
 
-    if (g_CommandLine.verbose)
-        g_Log.verbosePass(LogPassType::PassBegin, "Syntax", "");
+    g_Log.verbosePass(LogPassType::PassBegin, "Syntax", "");
 
     {
         auto enumJob = new EnumerateModuleJob;
@@ -722,8 +719,7 @@ bool Workspace::buildTarget()
         g_ThreadMgr.waitEndJobs();
     }
 
-    if (g_CommandLine.verbose)
-        g_Log.verbosePass(LogPassType::PassEnd, "Syntax", "", g_Stats.syntaxTime.load());
+    g_Log.verbosePass(LogPassType::PassEnd, "Syntax", "", g_Stats.syntaxTime.load());
 
     // Filter modules to build
     //////////////////////////////////////////////////
@@ -786,7 +782,7 @@ bool Workspace::build()
 
         setup();
 
-        if (g_CommandLine.verbose && g_CommandLine.verbosePath)
+        if (g_CommandLine.verbosePath)
             g_Log.verbose(format("workspace path is '%s'", workspacePath.string().c_str()));
 
         g_Log.messageHeaderCentered("Workspace", format("%s [%s]", workspacePath.filename().string().c_str(), g_Workspace.getTargetFolder().c_str()));

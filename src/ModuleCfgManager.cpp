@@ -305,8 +305,7 @@ bool ModuleCfgManager::execute()
     Timer timer(&g_Stats.cfgTime);
     timer.start();
 
-    if (g_CommandLine.verbose)
-        g_Log.verbosePass(LogPassType::PassBegin, "Config Manager", "");
+    g_Log.verbosePass(LogPassType::PassBegin, "Config Manager", "");
 
     // Enumerate existing configuration files, and do syntax/semantic for all of them
     enumerateCfgFiles(g_Workspace.dependenciesPath);

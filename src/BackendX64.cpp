@@ -307,8 +307,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         pp.filename = format("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
         pp.filename += Backend::getObjectFileExtension();
 
-        if (g_CommandLine.verbose)
-            g_Log.verbosePass(LogPassType::Info, "X64 precompile", pp.filename);
+        g_Log.verbosePass(LogPassType::Info, "X64 precompile", pp.filename);
 
         emitHeader(buildParameters);
         createRuntime(buildParameters);

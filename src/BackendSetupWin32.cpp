@@ -86,10 +86,10 @@ namespace OS
                 exit(-1);
             }
 
-            if (g_CommandLine.verbose && g_CommandLine.verbosePath)
+            if (g_CommandLine.verbosePath)
             {
-                g_Log.verbose(format("winSdkPath is '%s'\n", winSdkPath.c_str()));
-                g_Log.verbose(format("winSdkVersion is '%s'\n", winSdkVersion.c_str()));
+                g_Log.verbose(format("windows sdk path is '%s'\n", winSdkPath.c_str()));
+                g_Log.verbose(format("windows sdk version is '%s'\n", winSdkVersion.c_str()));
             }
 
             const char* target = isArchArm(g_CommandLine.arch) ? "arm64" : "x64";

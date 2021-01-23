@@ -29,15 +29,13 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     if (isModuleFailedLoaded(name))
         return false;
 
-    bool verbose = g_CommandLine.verbose;
-
     // First try in the target folder (local modules)
     fs::path path = g_Workspace.targetPath;
     path += name.c_str();
     path += ".dll";
 
     Timer loadLibTimer;
-    if (verbose)
+    if (g_CommandLine.verbosePass)
         loadLibTimer.start();
 
     auto h = OS::loadLibrary(path.string().c_str());
@@ -55,13 +53,13 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         {
             unique_lock lk(mutexLoaded);
             failedLoadedModules.insert(name);
-            if (verbose)
+            if (g_CommandLine.verbosePass)
                 g_Log.verbose(format("   load module '%s': FAIL\n", name.c_str()), false);
             return false;
         }
     }
 
-    if (verbose)
+    if (g_CommandLine.verbosePass)
     {
         loadLibTimer.stop();
         g_Log.verbosePass(LogPassType::Info, "LoadModule", name.c_str(), loadLibTimer.elapsed);

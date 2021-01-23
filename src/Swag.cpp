@@ -137,7 +137,7 @@ int main(int argc, const char* argv[])
     }
 
     // Output command line in verbose mode
-    if (g_CommandLine.verbose && g_CommandLine.verboseCmdLine)
+    if (g_CommandLine.verboseCmdLine)
     {
         g_Log.verbose(cmdParser.buildString(true));
     }

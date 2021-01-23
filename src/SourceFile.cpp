@@ -279,7 +279,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     if (numTestErrors && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError)
     {
         numTestErrors--;
-        if (g_CommandLine.verbose && g_CommandLine.verboseTestErrors)
+        if (g_CommandLine.verboseTestErrors)
         {
             diag.report(true);
             if (g_CommandLine.errorNoteOut)

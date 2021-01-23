@@ -93,9 +93,7 @@ void Log::message(const Utf8& message)
 
 void Log::verbosePass(LogPassType type, const Utf8& passName, const Utf8& moduleName, uint64_t time)
 {
-    if (g_CommandLine.silent || !g_CommandLine.verbose)
-        return;
-    if (!g_CommandLine.verbosePass)
+    if (g_CommandLine.silent || !g_CommandLine.verbosePass)
         return;
 
     lock();
