@@ -51,6 +51,9 @@ struct CommandLineArgument
 
             if (p == "all" || p == "ne")
                 cmds.push_back("new");
+
+            if (p == "all" || p == "li")
+                cmds.push_back("list");
         }
     }
 };

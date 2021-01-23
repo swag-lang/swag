@@ -29,8 +29,6 @@ struct OneTag
 
 struct Workspace
 {
-    void createNew();
-
     void    checkPendingJobs();
     bool    buildTarget();
     bool    build();
@@ -47,14 +45,15 @@ struct Workspace
     Module* getModuleByName(const Utf8& moduleName);
     void    cleanFolderContent(const fs::path& path);
     OneTag* hasTag(const Utf8& name);
-    void    cleanPublic(const fs::path& basePath);
-    void    clean();
     void    setupCachePath();
     Utf8    getTargetFolder();
     Utf8    getPublicPath(Module* module, bool forWrite);
     void    setupTarget();
 
-    bool watch();
+    void cleanPublic(const fs::path& basePath);
+    void cleanCommand();
+    void newCommand();
+    bool watchCommand();
 
     fs::path              workspacePath;
     fs::path              targetPath;

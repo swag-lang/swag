@@ -292,7 +292,7 @@ void Workspace::setupUserTags()
     }
 }
 
-void Workspace::createNew()
+void Workspace::newCommand()
 {
     setupPaths();
 
@@ -707,6 +707,8 @@ bool Workspace::buildTarget()
     //////////////////////////////////////////////////
     g_ThreadMgr.waitEndJobs();
     SWAG_CHECK(g_ModuleCfgMgr.execute());
+    if (g_CommandLine.listDep)
+        return true;
 
     // Ask for a syntax pass on all files of all modules
     //////////////////////////////////////////////////

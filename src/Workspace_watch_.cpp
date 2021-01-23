@@ -3,7 +3,7 @@
 #include "ModuleBuildJob.h"
 #include "CommandLineParser.h"
 
-bool Workspace::watch()
+bool Workspace::watchCommand()
 {
     setup();
 

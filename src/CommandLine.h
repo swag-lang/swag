@@ -80,6 +80,7 @@ struct CommandLine
     // Dependencies
     bool updateDep = true;
     bool fetchDep  = true;
+    bool listDep   = false;
 
     // Clean
     bool cleanDep = false;

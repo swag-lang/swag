@@ -55,7 +55,7 @@ void Workspace::cleanPublic(const fs::path& basePath)
     }
 }
 
-void Workspace::clean()
+void Workspace::cleanCommand()
 {
     setup();
 

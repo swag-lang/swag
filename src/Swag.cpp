@@ -18,9 +18,10 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("build        build the specified workspace\n");
     g_Log.message("run          build and run the specified workspace\n");
     g_Log.message("test         build and test the specified workspace\n");
-    g_Log.message("new          creates a new workspace\n");
     g_Log.message("clean        clean the specified workspace of cache files, binaries and dependencies (fresh start)\n");
+    g_Log.message("new          creates a new workspace\n");
     g_Log.message("watch        spy workspace and check it at each file change (never ends)\n");
+    g_Log.message("list         list all modules and their dependencies\n");
 
     g_Log.message("\n");
     cmdParser.logArguments();
@@ -79,6 +80,12 @@ int main(int argc, const char* argv[])
     else if (command == "run")
     {
         g_CommandLine.run = true;
+    }
+    else if (command == "list")
+    {
+        g_CommandLine.listDep   = true;
+        g_CommandLine.updateDep = true;
+        g_CommandLine.fetchDep  = false;
     }
     else if (command == "version")
     {
@@ -142,10 +149,10 @@ int main(int argc, const char* argv[])
         g_Log.verbose(cmdParser.buildString(true));
     }
 
-    // Creates a new workspace, and exit
+    // Creates a new workspace
     if (command == "new")
     {
-        g_Workspace.createNew();
+        g_Workspace.newCommand();
         exit(0);
     }
 
@@ -172,9 +179,9 @@ int main(int argc, const char* argv[])
 
     // Let's go...
     if (command == "clean")
-        g_Workspace.clean();
+        g_Workspace.cleanCommand();
     else if (g_CommandLine.watch)
-        g_Workspace.watch();
+        g_Workspace.watchCommand();
     else
         g_Workspace.build();
 
