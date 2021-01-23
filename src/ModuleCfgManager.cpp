@@ -462,8 +462,8 @@ bool ModuleCfgManager::execute()
         ok = g_Workspace.numErrors.load() == 0;
     }
 
-    if (g_CommandLine.verbose)
-        g_Log.verbosePass(LogPassType::PassEnd, "Config Manager", "", g_Stats.cfgTime.load());
+    timer.stop();
+    g_Log.verbosePass(LogPassType::PassEnd, "Config Manager", "", g_Stats.cfgTime.load());
 
     return ok;
 }

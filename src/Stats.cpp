@@ -38,6 +38,7 @@ void Stats::print()
     g_Log.messageHeaderDot("concrete types", format("%d", totalConcreteTypes.load()));
     g_Log.print("\n");
 
+    g_Log.messageHeaderDot("cfg time", format("%.3fs", OS::timerToSeconds(cfgTime.load())));
     g_Log.messageHeaderDot("syntax time", format("%.3fs", OS::timerToSeconds(syntaxTime.load())));
     g_Log.messageHeaderDot("read files", format("%.3fs", OS::timerToSeconds(readFilesTime.load())));
     g_Log.messageHeaderDot("semantic time", format("%.3fs", OS::timerToSeconds(semanticModuleTime.load())));
