@@ -426,14 +426,14 @@ bool ModuleCfgManager::execute()
         for (auto m : allModules)
         {
             auto module = m.second;
-            Utf8 msg    = module->name;
+            Utf8 msg;
             if (module->fetchDep)
-                msg += format(" %d.%d.%d", module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum);
+                msg += format("%d.%d.%d", module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum);
             else
-                msg += format(" %d.%d.%d", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
+                msg += format("%d.%d.%d", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
             if (module->mustFetchDep)
                 msg += format(" => %d.%d.%d", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
-            g_Log.message(msg);
+            g_Log.messageHeaderDot(module->name, msg);
         }
     }
 

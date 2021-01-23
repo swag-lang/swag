@@ -836,7 +836,11 @@ bool Workspace::build()
         if (g_CommandLine.verbosePath)
             g_Log.verbose(format("workspace path is '%s'", workspacePath.string().c_str()));
 
-        g_Log.messageHeaderCentered("Workspace", format("%s [%s]", workspacePath.filename().string().c_str(), g_Workspace.getTargetFolder().c_str()));
+        if(g_CommandLine.listDep || g_CommandLine.getDep)
+            g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
+        else
+            g_Log.messageHeaderCentered("Workspace", format("%s [%s]", workspacePath.filename().string().c_str(), g_Workspace.getTargetFolder().c_str()));
+
         addBootstrap();
         addRuntime();
         setupTarget();
@@ -845,6 +849,7 @@ bool Workspace::build()
         timer.stop(true);
     }
 
+    // Results
     if (g_Stats.skippedModules.load() > 0)
         g_Log.messageHeaderCentered("Skipped modules", format("%d", g_Stats.skippedModules.load()));
 
