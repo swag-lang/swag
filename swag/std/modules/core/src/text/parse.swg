@@ -98,15 +98,15 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32}
 
     // Does the number starts with the negative/positive sign ?
     signed := false
-    (c, eat) := utf8.decodeChar(str)
+    c := :str
     if c == g_CultureInfo.numberFormat.negativeSign
     {
-        buffer, cpt += eat
+        buffer, cpt += 1
         signed = true
     }
     else if c == g_CultureInfo.numberFormat.positiveSign
     {
-        buffer, cpt += eat
+        buffer, cpt += 1
     }
 
     // Parse the rest
@@ -119,8 +119,10 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32}
         buffer, cpt += 1
     }
 
-    if !hasDigits return @{0, 0}
-    if signed value = -value
+    if !hasDigits
+        return result
+    if signed
+        value = -value
 
     result.value = value
     result.eat = cpt
@@ -194,8 +196,10 @@ func parseF64(str: const [..] u8) -> {value: f64, eat: u32}
         }
     }
 
-    if !hasDigits return @{0, 0}
-    if signed value = -value
+    if !hasDigits
+        return result
+    if signed
+        value = -value
 
     result.value = value
     result.eat = cpt
