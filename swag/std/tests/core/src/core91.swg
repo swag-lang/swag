@@ -4,5 +4,5 @@ using core
 #test
 {
     ci := core.globalization.getCultureInfo()
-    @assert(ci.numberFormat.decimalSeparator == "."'char)
+    @assert(ci.numberFormat.decimalSeparator == "."'u8)
 }

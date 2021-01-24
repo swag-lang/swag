@@ -142,19 +142,19 @@ func parseF64(str: const [..] u8) -> {value: f64, eat: u32}
 
     // Does the number starts with the negative/positive sign ?
     signed := false
-    (c, eat) := utf8.decodeChar(str)
+    c := :buffer
     if c == g_CultureInfo.numberFormat.negativeSign
     {
         // Skip negative sign
-        buffer, cpt += eat
-        countof -= eat
+        buffer, cpt += 1
+        countof -= 1
         signed = true
     }
     else if c == g_CultureInfo.numberFormat.positiveSign
     {
         // Skip positive sign
-        buffer, cpt += eat
-        countof -= eat
+        buffer, cpt += 1
+        countof -= 1
     }
 
     // Integer part
@@ -171,12 +171,12 @@ func parseF64(str: const [..] u8) -> {value: f64, eat: u32}
     // Fractional part
     if countof
     {
-        (c, eat) = utf8.decodeChar(@mkslice(buffer, cast(uint) countof))
+        c = :buffer
         if c == g_CultureInfo.numberFormat.decimalSeparator
         {
             // Skip decimal separator
-            buffer, cpt += eat
-            countof -= eat
+            buffer, cpt += 1
+            countof -= 1
 
             fract := 0'u64
             divisor := 1.0'f64
