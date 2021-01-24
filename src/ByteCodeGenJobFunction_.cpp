@@ -60,6 +60,15 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         auto backExpression   = node->childs.back();
         auto exprType         = TypeManager::concreteReference(returnExpression->typeInfo);
 
+        // Implicit cast
+        if (!(returnExpression->doneFlags & AST_DONE_CAST1))
+        {
+            SWAG_CHECK(emitCast(context, returnExpression, TypeManager::concreteType(returnExpression->typeInfo), returnExpression->castedTypeInfo));
+            if (context->result == ContextResult::Pending)
+                return true;
+            returnExpression->doneFlags |= AST_DONE_CAST1;
+        }
+
         // If this is an array of struct, we will have to loop
         TypeInfoArray*  typeArray       = nullptr;
         TypeInfoStruct* typeArrayStruct = nullptr;
