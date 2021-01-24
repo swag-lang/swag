@@ -120,7 +120,8 @@ namespace BackendLinker
             arguments.push_back("/MACHINE:X64");
 
         if (buildParameters.outputType == BackendOutputType::Binary)
-            arguments.push_back(format("/STACK:%d", g_CommandLine.stackSize));
+            arguments.push_back(format("/STACK:%d,%d", g_CommandLine.stackSize, g_CommandLine.stackSize));
+
         if (buildParameters.buildCfg->backendDebugInformations)
             arguments.push_back("/DEBUG");
         if (buildParameters.outputType == BackendOutputType::DynamicLib)
