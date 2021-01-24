@@ -120,9 +120,22 @@ bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
     auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto front = node->childs.front();
     SWAG_ASSERT(front->resultRegisterRC.size() == 2);
+
     node->resultRegisterRC         = front->resultRegisterRC[1];
     node->parent->resultRegisterRC = node->resultRegisterRC;
     freeRegisterRC(context, front->resultRegisterRC[0]);
+
+    // Deref the type from the itable
+    if (front->typeInfo->kind == TypeInfoKind::Interface)
+    {
+        emitSafetyNullPointer(context, node->resultRegisterRC);
+        auto inst   = emitInstruction(context, ByteCodeOp::DecPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+        inst->b.u64 = sizeof(void*);
+        inst->flags |= BCI_IMM_B;
+        emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        return true;
+    }
+
     return true;
 }
 

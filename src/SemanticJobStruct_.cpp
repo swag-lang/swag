@@ -26,13 +26,31 @@ bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 bool SemanticJob::resolveImplForType(SemanticContext* context)
 {
     auto node       = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->childs[1]->typeInfo, TypeInfoKind::Struct);
+    auto sourceFile = node->sourceFile;
+    auto module     = sourceFile->module;
+    auto back       = node->childs[1];
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(back->typeInfo, TypeInfoKind::Struct);
+
+    if (node->identifierFor->typeInfo->flags & TYPEINFO_GENERIC)
+        return true;
 
     // Make a concrete type for the given struct
     auto& typeTable = node->sourceFile->module->typeTable;
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeStruct, nullptr, &node->childs[1]->concreteTypeInfoStorage, CONCRETE_SHOULD_WAIT));
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeStruct, nullptr, &back->concreteTypeInfoStorage, CONCRETE_SHOULD_WAIT));
     if (context->result != ContextResult::Done)
         return true;
+
+    auto typeBaseInterface = CastTypeInfo<TypeInfoStruct>(node->childs[0]->typeInfo, TypeInfoKind::Interface);
+    auto typeParamItf      = typeStruct->hasInterface(typeBaseInterface);
+    SWAG_ASSERT(typeParamItf);
+
+    auto itable = (void**) sourceFile->module->constantSegment.address(typeParamItf->offset);
+
+    // Move back to concrete type, and iniialize it
+    itable--;
+    *itable = sourceFile->module->typeSegment.address(back->concreteTypeInfoStorage);
+    SWAG_ASSERT(typeParamItf->offset);
+    module->constantSegment.addInitPtr(typeParamItf->offset - sizeof(void*), back->concreteTypeInfoStorage, SegmentKind::Type);
 
     return true;
 }
@@ -190,9 +208,14 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // Construct itable in the constant segment
     auto     module       = context->job->sourceFile->module;
-    uint32_t itableOffset = module->constantSegment.reserve(numFctInterface * sizeof(void*), sizeof(void*));
+    uint32_t itableOffset = module->constantSegment.reserve((numFctInterface + 1) * sizeof(void*), sizeof(void*));
     void**   ptrITable    = (void**) module->constantSegment.address(itableOffset);
     auto     offset       = itableOffset;
+
+    // The first value will be the concrete type to the corresponding struct, filled in resolveImplForType
+    *ptrITable++ = nullptr;
+    offset += sizeof(void*);
+
     for (uint32_t i = 0; i < numFctInterface; i++)
     {
         auto funcChild = mapItIdxToFunc[i];
@@ -217,8 +240,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         offset += sizeof(void*);
     }
 
-    // Setup constant segment offset
-    typeParamItf->offset = itableOffset;
+    // Setup constant segment offset. We put the offset to start the of the functions, not the concrete type
+    typeParamItf->offset = itableOffset + sizeof(void*);
     decreaseInterfaceCount(typeStruct);
 
     return true;

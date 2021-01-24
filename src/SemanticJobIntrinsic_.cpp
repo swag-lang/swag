@@ -362,7 +362,9 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
 
     // Will be runtime for an 'any' type, or a typeset
-    if (expr->typeInfo->isNative(NativeTypeKind::Any) || expr->typeInfo->kind == TypeInfoKind::TypeSet)
+    if (expr->typeInfo->isNative(NativeTypeKind::Any) ||
+        expr->typeInfo->kind == TypeInfoKind::TypeSet ||
+        expr->typeInfo->kind == TypeInfoKind::Interface)
     {
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32, CONCRETE_SHOULD_WAIT));
