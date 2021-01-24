@@ -817,7 +817,17 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_RETVAL)
         node->typeInfo = child->typeInfo;
     else
+    {
+        // If we are returning an interface, be sure they are defined before casting
+        if (returnType && returnType->kind == TypeInfoKind::Interface)
+        {
+            context->job->waitForAllStructInterfaces(child->typeInfo);
+            if (context->result != ContextResult::Done)
+                return true;
+        }
+
         SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, CASTFLAG_UNCONST));
+    }
 
     // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
     if (returnType && returnType->kind == TypeInfoKind::Struct)
