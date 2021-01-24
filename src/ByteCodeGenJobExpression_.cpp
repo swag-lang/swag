@@ -35,21 +35,27 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
     }
     else
     {
+        int regIdx = 0;
         reserveRegisterRC(context, node->resultRegisterRC, child0->resultRegisterRC.size());
+
+        // For an interface, check the itable pointer
+        if (child0->typeInfo->kind == TypeInfoKind::Interface)
+            regIdx = 1;
+
         ByteCodeInstruction* inst = nullptr;
         switch (typeInfo->sizeOf)
         {
         case 1:
-            inst = emitInstruction(context, ByteCodeOp::JumpIfZero8, child0->resultRegisterRC);
+            inst = emitInstruction(context, ByteCodeOp::JumpIfZero8, child0->resultRegisterRC[regIdx]);
             break;
         case 2:
-            inst = emitInstruction(context, ByteCodeOp::JumpIfZero16, child0->resultRegisterRC);
+            inst = emitInstruction(context, ByteCodeOp::JumpIfZero16, child0->resultRegisterRC[regIdx]);
             break;
         case 4:
-            inst = emitInstruction(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRC);
+            inst = emitInstruction(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRC[regIdx]);
             break;
         default:
-            inst = emitInstruction(context, ByteCodeOp::JumpIfZero64, child0->resultRegisterRC);
+            inst = emitInstruction(context, ByteCodeOp::JumpIfZero64, child0->resultRegisterRC[regIdx]);
             break;
         }
 
