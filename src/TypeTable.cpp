@@ -409,7 +409,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
             job->dependentJob = context->baseJob->dependentJob;
             while (job->dependentJob && job->dependentJob->dependentJob)
                 job->dependentJob = job->dependentJob->dependentJob;
-            SWAG_ASSERT(dynamic_cast<ModuleBuildJob*>(job->dependentJob) != nullptr);
             g_ThreadMgr.addJob(job);
         }
 

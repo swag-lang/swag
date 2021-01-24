@@ -35,13 +35,18 @@ void DataSegment::initFrom(DataSegment* other)
         addInitPtr(it.patchOffset, it.srcOffset, it.fromSegment);
     for (auto& it : other->initFuncPtr)
         addInitPtrFunc(it.first, it.second.first, it.second.second);
+
     for (auto& it : other->mapString)
         mapString[it.first] = it.second;
 
-    SWAG_ASSERT(other->storedValues8.size() == 0);
-    SWAG_ASSERT(other->storedValues16.size() == 0);
-    SWAG_ASSERT(other->storedValues32.size() == 0);
-    SWAG_ASSERT(other->storedValues64.size() == 0);
+    for (auto& it : other->storedValues8)
+        storedValues8[it.first] = it.second;
+    for (auto& it : other->storedValues16)
+        storedValues16[it.first] = it.second;
+    for (auto& it : other->storedValues32)
+        storedValues32[it.first] = it.second;
+    for (auto& it : other->storedValues64)
+        storedValues64[it.first] = it.second;
 }
 
 uint32_t DataSegment::reserveNoLock(TypeInfo* typeInfo)

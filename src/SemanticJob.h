@@ -256,6 +256,7 @@ struct SemanticJob : public Job
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool CheckImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
     static bool resolveImpl(SemanticContext* context);
+    static bool resolveImplForType(SemanticContext* context);
     static bool resolveImplFor(SemanticContext* context);
     static bool instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
     static bool filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches);

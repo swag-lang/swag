@@ -43,6 +43,8 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor));
         implNode->semanticFct = SemanticJob::resolveImplFor;
+        implNode->allocateExtension();
+        implNode->extension->semanticAfterFct = SemanticJob::resolveImplForType;
         identifierStruct      = implNode->identifierFor;
         implInterface         = true;
 

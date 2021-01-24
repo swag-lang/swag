@@ -23,6 +23,20 @@ bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
     return true;
 }
 
+bool SemanticJob::resolveImplForType(SemanticContext* context)
+{
+    auto node       = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->childs[1]->typeInfo, TypeInfoKind::Struct);
+
+    // Make a concrete type for the given struct
+    auto& typeTable = node->sourceFile->module->typeTable;
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeStruct, nullptr, &node->childs[1]->concreteTypeInfoStorage, CONCRETE_SHOULD_WAIT));
+    if (context->result != ContextResult::Done)
+        return true;
+
+    return true;
+}
+
 bool SemanticJob::resolveImplFor(SemanticContext* context)
 {
     auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
@@ -54,12 +68,6 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     SWAG_ASSERT(node->childs[1]->kind == AstNodeKind::IdentifierRef);
     auto typeBaseInterface = CastTypeInfo<TypeInfoStruct>(node->childs[0]->typeInfo, TypeInfoKind::Interface);
     auto typeStruct        = CastTypeInfo<TypeInfoStruct>(node->childs[1]->typeInfo, TypeInfoKind::Struct);
-
-    // Make a concrete type for the given struct
-    /*auto& typeTable = node->sourceFile->module->typeTable;
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeStruct, nullptr, &node->childs[1]->concreteTypeInfoStorage, CONCRETE_SHOULD_WAIT));
-    if (context->result != ContextResult::Done)
-        return true;*/
 
     // Be sure interface has been fully solved
     {
