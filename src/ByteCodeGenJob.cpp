@@ -489,7 +489,7 @@ JobResult ByteCodeGenJob::execute()
     if (pass == Pass::Generate)
     {
         // Register SystemAllocator interface to the default bytecode context
-        if (sourceFile->isBootstrapFile && (originalNode->token.text == "SystemAllocator"))
+        if (sourceFile->isRuntimeFile && (originalNode->token.text == "SystemAllocator"))
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
             context.result  = ContextResult::Done;
@@ -731,7 +731,7 @@ JobResult ByteCodeGenJob::execute()
     }
 
     // Register runtime function type, by name
-    if (sourceFile->isRuntimeFile)
+    if (sourceFile->isRuntimeFile && context.bc)
     {
         unique_lock lk(sourceFile->module->mutexFile);
         SWAG_ASSERT(context.bc->typeInfoFunc);
