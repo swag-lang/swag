@@ -181,7 +181,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         node->typeInfo    = ptrType;
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
-    else if (typeInfo->isNative(NativeTypeKind::Any))
+    else if (typeInfo->isNative(NativeTypeKind::Any) || typeInfo->kind == TypeInfoKind::Interface)
     {
         auto ptrType         = allocType<TypeInfoPointer>();
         ptrType->ptrCount    = 1;

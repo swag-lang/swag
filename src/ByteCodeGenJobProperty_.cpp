@@ -171,6 +171,7 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
     if (typeInfo->isNative(NativeTypeKind::String) ||
         typeInfo->isNative(NativeTypeKind::Any) ||
         typeInfo->kind == TypeInfoKind::Slice ||
+        typeInfo->kind == TypeInfoKind::Interface ||
         typeInfo->kind == TypeInfoKind::Array)
     {
         truncRegisterRC(context, front->resultRegisterRC, 1);
