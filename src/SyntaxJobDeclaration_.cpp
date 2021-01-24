@@ -4,6 +4,8 @@
 #include "SourceFile.h"
 #include "Ast.h"
 #include "SemanticJob.h"
+#include "Workspace.h"
+#include "Module.h"
 
 bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
@@ -65,6 +67,11 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
     Scope*   oldScope = currentScope;
     Scope*   newScope = nullptr;
     bool     first    = true;
+
+    // There'is only one swag namespace, defined in the bootstrap. So if we redeclared it
+    // in runtime, use the one from the bootstrap
+    if (sourceFile->isRuntimeFile && token.text == "swag")
+        currentScope = g_Workspace.bootstrapModule->files[0]->astRoot->ownerScope;
 
     while (true)
     {

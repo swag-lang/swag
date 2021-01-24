@@ -122,10 +122,6 @@ void Workspace::addBootstrap()
     file->module          = bootstrapModule;
     file->isBootstrapFile = true;
     bootstrapModule->addFile(file);
-
-    auto job        = g_Pool_syntaxJob.alloc();
-    job->sourceFile = file;
-    g_ThreadMgr.addJob(job);
 }
 
 void Workspace::addRuntimeFile(const char* fileName)
@@ -137,10 +133,6 @@ void Workspace::addRuntimeFile(const char* fileName)
     file->module        = runtimeModule;
     file->isRuntimeFile = true;
     runtimeModule->addFile(file);
-
-    auto job        = g_Pool_syntaxJob.alloc();
-    job->sourceFile = file;
-    g_ThreadMgr.addJob(job);
 }
 
 void Workspace::addRuntime()
@@ -548,12 +540,18 @@ void Workspace::checkPendingJobs()
 
 bool Workspace::buildTarget()
 {
-    // Wait for runtime/bootstrap syntax to be done
-    g_ThreadMgr.waitEndJobs();
-
     // Bootstrap module semantic pass
     //////////////////////////////////////////////////
     {
+        for (auto f : bootstrapModule->files)
+        {
+            auto job        = g_Pool_syntaxJob.alloc();
+            job->sourceFile = f;
+            g_ThreadMgr.addJob(job);
+        }
+
+        g_ThreadMgr.waitEndJobs();
+
         if (bootstrapModule->numErrors)
         {
             g_Log.error("some errors have been found in compiler bootstrap !!! exiting...");
@@ -583,6 +581,15 @@ bool Workspace::buildTarget()
     // Runtime module semantic pass
     //////////////////////////////////////////////////
     {
+        for (auto f : runtimeModule->files)
+        {
+            auto job        = g_Pool_syntaxJob.alloc();
+            job->sourceFile = f;
+            g_ThreadMgr.addJob(job);
+        }
+
+        g_ThreadMgr.waitEndJobs();
+
         if (runtimeModule->numErrors)
         {
             g_Log.error("some errors have been found in compiler runtime !!! exiting...");
@@ -746,7 +753,7 @@ bool Workspace::build()
         if (g_CommandLine.verbosePath)
             g_Log.verbose(format("workspace path is '%s'", workspacePath.string().c_str()));
 
-        if(g_CommandLine.listDep || g_CommandLine.getDep)
+        if (g_CommandLine.listDep || g_CommandLine.getDep)
             g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
         else
             g_Log.messageHeaderCentered("Workspace", format("%s [%s]", workspacePath.filename().string().c_str(), g_Workspace.getTargetFolder().c_str()));

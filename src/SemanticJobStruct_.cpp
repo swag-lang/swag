@@ -55,6 +55,12 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     auto typeBaseInterface = CastTypeInfo<TypeInfoStruct>(node->childs[0]->typeInfo, TypeInfoKind::Interface);
     auto typeStruct        = CastTypeInfo<TypeInfoStruct>(node->childs[1]->typeInfo, TypeInfoKind::Struct);
 
+    // Make a concrete type for the given struct
+    /*auto& typeTable = node->sourceFile->module->typeTable;
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeStruct, nullptr, &node->childs[1]->concreteTypeInfoStorage, CONCRETE_SHOULD_WAIT));
+    if (context->result != ContextResult::Done)
+        return true;*/
+
     // Be sure interface has been fully solved
     {
         scoped_lock lk(node->identifier->mutex);
