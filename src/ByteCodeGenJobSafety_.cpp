@@ -153,7 +153,18 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerEqU64(ByteCodeGenContext* context,
     emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, re);
     emitInstruction(context, ByteCodeOp::NegBool, re);
     emitAssert(context, re, "index out of range");
-    freeRegisterRC(context, re);
+}
+
+void ByteCodeGenJob::emitSafetyAddEqIntOverflow(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, int sizeInBytes, const char* message)
+{
+    if (!mustEmitSafety(context))
+        return;
+}
+
+void ByteCodeGenJob::emitSafetySubEqIntOverflow(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, int sizeInBytes, const char* message)
+{
+    if (!mustEmitSafety(context))
+        return;
 }
 
 void ByteCodeGenJob::emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
