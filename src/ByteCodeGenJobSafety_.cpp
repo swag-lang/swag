@@ -74,7 +74,7 @@ void ByteCodeGenJob::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, 
     emitSafetyNotZero(context, r, bits, "division by zero");
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+void ByteCodeGenJob::emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     PushICFlags ic(context, BCI_SAFETY);
 
@@ -84,16 +84,17 @@ void ByteCodeGenJob::emitSafetyBoundCheckLower(ByteCodeGenContext* context, uint
     freeRegisterRC(context, re);
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckLower64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     PushICFlags ic(context, BCI_SAFETY);
-    auto        re = reserveRegisterRC(context);
+
+    auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, re);
     emitAssert(context, re, "index out of range");
     freeRegisterRC(context, re);
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckLowerEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+void ByteCodeGenJob::emitSafetyBoundCheckLowerEqU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     PushICFlags ic(context, BCI_SAFETY);
 
@@ -109,7 +110,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckString(ByteCodeGenContext* context, uin
     if (!mustEmitSafety(context))
         return;
 
-    emitSafetyBoundCheckLowerEq(context, r0, r1);
+    emitSafetyBoundCheckLowerEqU32(context, r0, r1);
 }
 
 void ByteCodeGenJob::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
@@ -117,7 +118,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint
     if (!mustEmitSafety(context))
         return;
 
-    emitSafetyBoundCheckLower64(context, r0, r1);
+    emitSafetyBoundCheckLowerU64(context, r0, r1);
 }
 
 void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfoArray)
@@ -129,7 +130,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint
     auto        r1   = reserveRegisterRC(context);
     auto        inst = emitInstruction(context, ByteCodeOp::SetImmediate64, r1);
     inst->b.u64      = typeInfoArray->count;
-    emitSafetyBoundCheckLower64(context, r0, r1);
+    emitSafetyBoundCheckLowerU64(context, r0, r1);
     freeRegisterRC(context, r1);
 }
 
