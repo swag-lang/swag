@@ -514,10 +514,13 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         return alignOf(typeArray->finalType);
     }
+    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        return typeInfo->sizeOf;
+    }
     else if (typeInfo->kind == TypeInfoKind::Slice ||
              typeInfo->kind == TypeInfoKind::Interface ||
              typeInfo->kind == TypeInfoKind::TypeSet ||
-             typeInfo->kind == TypeInfoKind::Pointer ||
              typeInfo->kind == TypeInfoKind::Reference ||
              typeInfo->isNative(NativeTypeKind::Any) ||
              typeInfo->isNative(NativeTypeKind::String))

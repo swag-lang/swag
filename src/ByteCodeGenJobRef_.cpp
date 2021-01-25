@@ -151,14 +151,84 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::FuncAttr)
+    if (typeInfo->kind == TypeInfoKind::FuncAttr)
     {
         truncRegisterRC(context, node->resultRegisterRC, 1);
         emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         return true;
     }
 
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        truncRegisterRC(context, node->resultRegisterRC, 1);
+        if (typeInfo->flags & TYPEINFO_RELATIVE)
+            SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC, typeInfo));
+        else
+            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        return true;
+    }
+
     SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, typeInfo));
+    return true;
+}
+
+bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo)
+{
+    auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+    emitInstruction(context, ByteCodeOp::BinOpMinusS64, r1, r0, r1);
+    switch (typePtr->sizeOf)
+    {
+    case 1:
+        emitInstruction(context, ByteCodeOp::SetAtPointer8, r0, r1);
+        break;
+    case 2:
+        emitInstruction(context, ByteCodeOp::SetAtPointer16, r0, r1);
+        break;
+    case 4:
+        emitInstruction(context, ByteCodeOp::SetAtPointer32, r0, r1);
+        break;
+    case 8:
+        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+        break;
+    }
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitUnwrapRelativePointer(ByteCodeGenContext* context, RegisterList& rr, TypeInfo* typeInfo)
+{
+    auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+    auto r0      = reserveRegisterRC(context);
+    switch (typePtr->sizeOf)
+    {
+    case 1:
+        emitInstruction(context, ByteCodeOp::DeRef8, r0, rr);
+        emitSafetyNotZero(context, rr, 8, "relative pointer is null or points to itself");
+        emitInstruction(context, ByteCodeOp::CastS8S16, r0);
+        emitInstruction(context, ByteCodeOp::CastS16S32, r0);
+        emitInstruction(context, ByteCodeOp::CastS32S64, r0);
+        emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
+        break;
+    case 2:
+        emitInstruction(context, ByteCodeOp::DeRef16, r0, rr);
+        emitSafetyNotZero(context, rr, 16, "relative pointer is null or points to itself");
+        emitInstruction(context, ByteCodeOp::CastS16S32, r0);
+        emitInstruction(context, ByteCodeOp::CastS32S64, r0);
+        emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
+        break;
+    case 4:
+        emitInstruction(context, ByteCodeOp::DeRef32, r0, rr);
+        emitSafetyNotZero(context, rr, 32, "relative pointer is null or points to itself");
+        emitInstruction(context, ByteCodeOp::CastS32S64, r0);
+        emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
+        break;
+    case 8:
+        emitInstruction(context, ByteCodeOp::DeRef64, r0, rr);
+        emitSafetyNotZero(context, rr, 64, "relative pointer is null or points to itself");
+        emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
+        break;
+    }
+
     return true;
 }
 

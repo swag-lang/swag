@@ -126,6 +126,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u64 = resolved->storageOffset + 8;
             inst->c.u64 = resolved->storageIndex + 1;
         }
+        else if (typeInfo->kind == TypeInfoKind::Pointer && typeInfo->flags & TYPEINFO_RELATIVE)
+        {
+            return internalError(context, "function arguments relative pointers are not supported yet");
+        }
         else
         {
             SWAG_ASSERT(typeInfo->numRegisters() == 1);
@@ -209,6 +213,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC[1])->b.u64 = resolved->storageOffset + 8;
             }
         }
+        else if (typeInfo->kind == TypeInfoKind::Pointer && typeInfo->flags & TYPEINFO_RELATIVE)
+        {
+            return internalError(context, "global variables relative pointers are not supported yet");
+        }
         else
         {
             ByteCodeInstruction* inst;
@@ -278,10 +286,14 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[0])->b.u64 = resolved->storageOffset;
             emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[1])->b.u64 = resolved->storageOffset + 8;
         }
+        else if (typeInfo->kind == TypeInfoKind::Pointer && typeInfo->flags & TYPEINFO_RELATIVE)
+        {
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->storageOffset;
+            SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC, typeInfo));
+        }
         else
         {
             SWAG_ASSERT(typeInfo->sizeOf <= sizeof(uint64_t));
-
             auto inst   = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
             inst->b.u64 = resolved->storageOffset;
         }

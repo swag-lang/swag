@@ -57,6 +57,9 @@ namespace swag
     // Hardcoded for struct and variables
     attr align(value: u8)
 
+    // Hardcoded for struct and variables
+    attr relative(value: u8)
+
     #[attributeUsage(AttributeUsage.Function)]
     attr noreturn()
 

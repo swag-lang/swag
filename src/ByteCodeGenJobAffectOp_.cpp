@@ -40,7 +40,10 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+        if (typeInfo->flags & TYPEINFO_RELATIVE)
+            SWAG_CHECK(emitWrapRelativePointer(context, r0, r1, typeInfo));
+        else
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
         return true;
     }
 

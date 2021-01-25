@@ -154,10 +154,11 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
 
 void SemanticJob::setVarDeclResolve(AstVarDecl* varNode)
 {
+    varNode->allocateExtension();
+    varNode->extension->semanticBeforeFct = SemanticJob::resolveVarDeclBefore;
+
     if (varNode->assignment)
     {
-        varNode->allocateExtension();
-        varNode->extension->semanticBeforeFct = SemanticJob::resolveVarDeclBefore;
         varNode->assignment->allocateExtension();
         varNode->assignment->extension->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
     }
@@ -205,9 +206,11 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
 bool SemanticJob::resolveVarDeclBefore(SemanticContext* context)
 {
     auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-    SWAG_ASSERT(node->assignment);
 
-    if (node->kind == AstNodeKind::ConstDecl)
+    // Collect all attributes for the variable
+    SWAG_CHECK(collectAttributes(context, node, &node->attributes));
+
+    if (node->assignment && node->kind == AstNodeKind::ConstDecl)
     {
         bool isGeneric = node->ownerMainNode && (node->ownerMainNode->flags & AST_IS_GENERIC);
         if (isGeneric)
@@ -325,9 +328,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Variable));
     if (context->result == ContextResult::Pending)
         return true;
-
-    // Collect all attributes for the variable
-    SWAG_CHECK(collectAttributes(context, node, &node->attributes));
 
     bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
     bool isLocalConstant    = false;

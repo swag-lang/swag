@@ -227,6 +227,17 @@ bool SemanticJob::resolveType(SemanticContext* context)
         ptrPointer->computePointedType();
         typeNode->typeInfo = ptrPointer;
 
+        if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE_MASK)
+            ptrPointer->flags |= TYPEINFO_RELATIVE;
+        if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE1)
+            ptrPointer->sizeOf = 1;
+        else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE2)
+            ptrPointer->sizeOf = 2;
+        else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE4)
+            ptrPointer->sizeOf = 4;
+        else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE8)
+            ptrPointer->sizeOf = 8;
+
         // In fact no, this is a pointer on a const pointer
         if (typeNode->ptrConstCount)
         {
@@ -240,6 +251,17 @@ bool SemanticJob::resolveType(SemanticContext* context)
             ptrPointer->forceComputeName();
             ptrPointer->computePointedType();
             typeNode->typeInfo = ptrPointer;
+
+            if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE_MASK)
+                ptrPointer->flags |= TYPEINFO_RELATIVE;
+            if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE1)
+                ptrPointer->sizeOf = 1;
+            else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE2)
+                ptrPointer->sizeOf = 2;
+            else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE4)
+                ptrPointer->sizeOf = 4;
+            else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE8)
+                ptrPointer->sizeOf = 8;
         }
     }
 

@@ -23,6 +23,9 @@ bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context)
 
 void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message)
 {
+    if (!mustEmitSafety(context))
+        return;
+
     PushICFlags ic(context, BCI_SAFETY);
     auto        r0 = reserveRegisterRC(context);
     if (bits == 8)
