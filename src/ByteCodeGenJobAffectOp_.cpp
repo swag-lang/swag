@@ -176,25 +176,21 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
         {
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            emitSafetyAddEqIntOverflow(context, r0, r1, 1, "integer arithmetic overflow (8 bits)");
             emitInstruction(context, ByteCodeOp::AffectOpPlusEqS8, r0, r1);
             return true;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            emitSafetyAddEqIntOverflow(context, r0, r1, 2, "integer arithmetic overflow (16 bits)");
             emitInstruction(context, ByteCodeOp::AffectOpPlusEqS16, r0, r1);
             return true;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            emitSafetyAddEqIntOverflow(context, r0, r1, 4, "integer arithmetic overflow (32 bits)");
             emitInstruction(context, ByteCodeOp::AffectOpPlusEqS32, r0, r1);
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            emitSafetyAddEqIntOverflow(context, r0, r1, 8, "integer arithmetic overflow (64 bits)");
             emitInstruction(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
             return true;
         case NativeTypeKind::F32:
@@ -219,26 +215,21 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
             switch (leftTypeInfo->sizeOf)
             {
             case 1:
-                emitSafetyAddEqIntOverflow(context, r0, r1, 1, "relative pointer arithmetic overflow (8 bits)");
                 emitInstruction(context, ByteCodeOp::AffectOpPlusEqS8, r0, r1);
                 break;
             case 2:
-                emitSafetyAddEqIntOverflow(context, r0, r1, 2, "relative pointer arithmetic overflow (16 bits)");
                 emitInstruction(context, ByteCodeOp::AffectOpPlusEqS16, r0, r1);
                 break;
             case 4:
-                emitSafetyAddEqIntOverflow(context, r0, r1, 4, "relative pointer arithmetic overflow (32 bits)");
                 emitInstruction(context, ByteCodeOp::AffectOpPlusEqS32, r0, r1);
                 break;
             case 8:
-                emitSafetyAddEqIntOverflow(context, r0, r1, 8, "relative pointer arithmetic overflow (64 bits)");
                 emitInstruction(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
                 break;
             }
         }
         else
         {
-            emitSafetyAddEqIntOverflow(context, r0, r1, 8, "pointer arithmetic overflow (64 bits)");
             emitInstruction(context, ByteCodeOp::AffectOpPlusEqPointer, r0, r1);
         }
 
@@ -258,25 +249,21 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
         {
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            emitSafetySubEqIntOverflow(context, r0, r1, 1, "integer arithmetic overflow (8 bits)");
             emitInstruction(context, ByteCodeOp::AffectOpMinusEqS8, r0, r1);
             return true;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            emitSafetySubEqIntOverflow(context, r0, r1, 2, "integer arithmetic overflow (16 bits)");
             emitInstruction(context, ByteCodeOp::AffectOpMinusEqS16, r0, r1);
             return true;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            emitSafetySubEqIntOverflow(context, r0, r1, 4, "integer arithmetic overflow (32 bits)");
             emitInstruction(context, ByteCodeOp::AffectOpMinusEqS32, r0, r1);
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            emitSafetySubEqIntOverflow(context, r0, r1, 8, "integer arithmetic overflow (64 bits)");
             emitInstruction(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
             return true;
         case NativeTypeKind::F32:
@@ -301,26 +288,21 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
             switch (leftTypeInfo->sizeOf)
             {
             case 1:
-                emitSafetySubEqIntOverflow(context, r0, r1, 1, "relative pointer arithmetic overflow (8 bits)");
                 emitInstruction(context, ByteCodeOp::AffectOpMinusEqS8, r0, r1);
                 break;
             case 2:
-                emitSafetySubEqIntOverflow(context, r0, r1, 2, "relative pointer arithmetic overflow (16 bits)");
                 emitInstruction(context, ByteCodeOp::AffectOpMinusEqS16, r0, r1);
                 break;
             case 4:
-                emitSafetySubEqIntOverflow(context, r0, r1, 4, "relative pointer arithmetic overflow (32 bits)");
                 emitInstruction(context, ByteCodeOp::AffectOpMinusEqS32, r0, r1);
                 break;
             case 8:
-                emitSafetySubEqIntOverflow(context, r0, r1, 8, "relative pointer arithmetic overflow (64 bits)");
                 emitInstruction(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
                 break;
             }
         }
         else
         {
-            emitSafetySubEqIntOverflow(context, r0, r1, 8, "pointer arithmetic overflow (64 bits)");
             emitInstruction(context, ByteCodeOp::AffectOpMinusEqPointer, r0, r1);
         }
 
