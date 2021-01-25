@@ -276,8 +276,7 @@ bool ByteCodeGenJob::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* e
         emitInstruction(context, ByteCodeOp::CastS8S64, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::S16:
-        emitInstruction(context, ByteCodeOp::CastS16S32, exprNode->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::CastS32S64, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastS16S64, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::S32:
         emitInstruction(context, ByteCodeOp::CastS32S64, exprNode->resultRegisterRC);
@@ -460,8 +459,7 @@ bool ByteCodeGenJob::emitCastToNativeS64(ByteCodeGenContext* context, AstNode* e
         emitInstruction(context, ByteCodeOp::CastS8S64, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::S16:
-        emitInstruction(context, ByteCodeOp::CastS16S32, exprNode->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::CastS32S64, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastS16S64, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::S32:
         emitInstruction(context, ByteCodeOp::CastS32S64, exprNode->resultRegisterRC);

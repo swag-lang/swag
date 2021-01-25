@@ -2512,6 +2512,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
+        case ByteCodeOp::CastS16S64:
+        {
+            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt64Ty(), true);
+            r0      = TO_PTR_I32(r0);
+            builder.CreateStore(v0, r0);
+            break;
+        }
         case ByteCodeOp::CastS32S64:
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));

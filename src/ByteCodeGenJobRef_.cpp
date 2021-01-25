@@ -214,8 +214,7 @@ bool ByteCodeGenJob::emitUnwrapRelativePointer(ByteCodeGenContext* context, Regi
     case 2:
         emitInstruction(context, ByteCodeOp::DeRef16, r0, rr);
         emitSafetyNotZero(context, rr, 16, "relative pointer is null or points to itself");
-        emitInstruction(context, ByteCodeOp::CastS16S32, r0);
-        emitInstruction(context, ByteCodeOp::CastS32S64, r0);
+        emitInstruction(context, ByteCodeOp::CastS16S64, r0);
         emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
         break;
     case 4:
