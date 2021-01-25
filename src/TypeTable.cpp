@@ -8,7 +8,7 @@
 #include "Module.h"
 #include "ModuleBuildJob.h"
 
-DataSegment* TypeTable::getConstantSegment(Module* module, uint32_t flags)
+DataSegment* TypeTable::getSegmentStorage(Module* module, uint32_t flags)
 {
     if (flags & CONCRETE_FOR_COMPILER)
         return &module->constantSegmentCompiler;
@@ -25,7 +25,7 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
 
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    auto segment    = getConstantSegment(module, cflags);
+    auto segment    = getSegmentStorage(module, cflags);
 
     TypeInfo* typePtr;
     uint32_t  tmpStorageOffset;
@@ -41,7 +41,7 @@ bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, uint32
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    auto segment    = getConstantSegment(module, cflags);
+    auto segment    = getSegmentStorage(module, cflags);
 
     if (typeInfo->kind == TypeInfoKind::Native)
     {
@@ -61,7 +61,7 @@ bool TypeTable::makeConcreteParam(JobContext* context, void* concreteTypeInfoVal
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    auto segment    = getConstantSegment(module, cflags);
+    auto segment    = getSegmentStorage(module, cflags);
 
     ConcreteTypeInfoParam* concreteType = (ConcreteTypeInfoParam*) concreteTypeInfoValue;
 
@@ -89,7 +89,7 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
 
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    auto segment    = getConstantSegment(module, cflags);
+    auto segment    = getSegmentStorage(module, cflags);
 
     result->count = attributes.size();
 
@@ -157,7 +157,7 @@ bool TypeTable::makeConcreteString(JobContext* context, ConcreteSlice* result, c
 
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    auto segment    = getConstantSegment(module, cflags);
+    auto segment    = getSegmentStorage(module, cflags);
 
     auto offset = segment->addStringNoLock(str);
     segment->addInitPtr(offsetInBuffer, offset);
@@ -182,7 +182,7 @@ bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, Ty
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    auto segment    = getConstantSegment(module, cflags);
+    auto segment    = getSegmentStorage(module, cflags);
 
     unique_lock lk(segment->mutex);
     SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, ptrTypeInfo, storage, cflags));
@@ -250,7 +250,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     auto node       = context->node;
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    auto segment    = getConstantSegment(module, cflags);
+    auto segment    = getSegmentStorage(module, cflags);
 
     auto&           swagScope  = g_Workspace.swagScope;
     TypeInfoStruct* typeStruct = nullptr;
