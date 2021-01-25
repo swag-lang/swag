@@ -179,15 +179,19 @@ bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, Regist
     switch (typePtr->sizeOf)
     {
     case 1:
+        emitSafetyRelativePointerS64(context, r1, 1);
         emitInstruction(context, ByteCodeOp::SetAtPointer8, r0, r1);
         break;
     case 2:
+        emitSafetyRelativePointerS64(context, r1, 2);
         emitInstruction(context, ByteCodeOp::SetAtPointer16, r0, r1);
         break;
     case 4:
+        emitSafetyRelativePointerS64(context, r1, 4);
         emitInstruction(context, ByteCodeOp::SetAtPointer32, r0, r1);
         break;
     case 8:
+        emitSafetyRelativePointerS64(context, r1, 8);
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
         break;
     }

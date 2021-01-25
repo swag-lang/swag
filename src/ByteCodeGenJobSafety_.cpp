@@ -94,12 +94,63 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, u
     freeRegisterRC(context, re);
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckLowerEqU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+void ByteCodeGenJob::emitSafetyRelativePointerS64(ByteCodeGenContext* context, uint32_t r0, int offsetSize)
+{
+    if (!mustEmitSafety(context))
+        return;
+
+    PushICFlags ic(context, BCI_SAFETY);
+
+    auto re = reserveRegisterRC(context);
+
+    int64_t     minValue = 0, maxValue = 0;
+    const char* msg = nullptr;
+    switch (offsetSize)
+    {
+    case 1:
+        minValue = INT8_MIN;
+        maxValue = INT8_MAX;
+        msg      = "relative pointer out of range (8 bits)";
+        break;
+    case 2:
+        minValue = INT16_MIN;
+        maxValue = INT16_MAX;
+        msg      = "relative pointer out of range (16 bits)";
+        break;
+    case 4:
+        minValue = INT32_MIN;
+        maxValue = INT32_MAX;
+        msg      = "relative pointer out of range (32 bits)";
+        break;
+    case 8:
+        minValue = INT64_MIN;
+        maxValue = INT64_MAX;
+        msg      = "relative pointer out of range (64 bits)";
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterS64, r0, 0, re);
+    inst->flags |= BCI_IMM_B;
+    inst->b.s64 = minValue;
+    emitAssert(context, re, msg);
+
+    inst = emitInstruction(context, ByteCodeOp::CompareOpLowerS64, r0, 0, re);
+    inst->flags |= BCI_IMM_B;
+    inst->b.s64 = maxValue;
+    emitAssert(context, re, msg);
+
+    freeRegisterRC(context, re);
+}
+
+void ByteCodeGenJob::emitSafetyBoundCheckLowerEqU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     PushICFlags ic(context, BCI_SAFETY);
 
     auto re = reserveRegisterRC(context);
-    emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, r0, r1, re);
+    emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, re);
     emitInstruction(context, ByteCodeOp::NegBool, re);
     emitAssert(context, re, "index out of range");
     freeRegisterRC(context, re);
@@ -110,7 +161,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckString(ByteCodeGenContext* context, uin
     if (!mustEmitSafety(context))
         return;
 
-    emitSafetyBoundCheckLowerEqU32(context, r0, r1);
+    emitSafetyBoundCheckLowerEqU64(context, r0, r1);
 }
 
 void ByteCodeGenJob::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
