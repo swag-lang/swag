@@ -737,7 +737,10 @@ namespace BackendX64Inst
 
     // clang-format off
     inline void emit_SignedExtend_AL_To_AX(X64PerThread& pp) { pp.concat.addString2("\x66\x98"); } // cbw
+    inline void emit_SignedExtend_AL_To_EAX(X64PerThread& pp) { pp.concat.addString3("\x0F\xBE\xC0"); } // movsx eax, al
+    inline void emit_SignedExtend_AL_To_RAX(X64PerThread& pp) { pp.concat.addString4("\x48\x0F\xBE\xC0"); } // movsx rax, al
     inline void emit_SignedExtend_AX_To_EAX(X64PerThread& pp) { pp.concat.addU8(0x98); } // cwde
+    inline void emit_SignedExtend_AX_To_RAX(X64PerThread& pp) { pp.concat.addString4("\x48\x0F\xBF\xC0"); } // movsx rax, ax
     inline void emit_SignedExtend_BX_To_EBX(X64PerThread& pp) { pp.concat.addString3("\x0f\xbf\xdb"); } // movsx ebx, bx
     inline void emit_SignedExtend_EAX_To_RAX(X64PerThread& pp) { pp.concat.addString2("\x48\x98"); } // cdqe
     inline void emit_SignedExtend_ECX_To_RCX(X64PerThread& pp) { pp.concat.addString3("\x48\x63\xC9"); } // movsx rcx, ecx

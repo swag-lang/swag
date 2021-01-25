@@ -454,6 +454,16 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->b.s16 = ip->b.s8;
                 OK();
                 break;
+            case ByteCodeOp::CastS8S32:
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.s32 = ip->b.s8;
+                OK();
+                break;
+            case ByteCodeOp::CastS8S64:
+                ip->op    = ByteCodeOp::SetImmediate64;
+                ip->b.s64 = ip->b.s8;
+                OK();
+                break;
             case ByteCodeOp::CastS16S32:
                 ip->op    = ByteCodeOp::SetImmediate32;
                 ip->b.s32 = ip->b.s16;

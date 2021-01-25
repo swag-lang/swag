@@ -514,6 +514,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_SignedExtend_AL_To_AX(pp);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
+        case ByteCodeOp::CastS8S32:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_SignedExtend_AL_To_EAX(pp);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CastS8S64:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_SignedExtend_AL_To_RAX(pp);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
         case ByteCodeOp::CastS16S32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_SignedExtend_AX_To_EAX(pp);

@@ -1771,6 +1771,16 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].s16 = static_cast<int16_t>(registersRC[ip->a.u32].s8);
         break;
     }
+    case ByteCodeOp::CastS8S32:
+    {
+        registersRC[ip->a.u32].s32 = static_cast<int32_t>(registersRC[ip->a.u32].s8);
+        break;
+    }
+    case ByteCodeOp::CastS8S64:
+    {
+        registersRC[ip->a.u32].s64 = static_cast<int64_t>(registersRC[ip->a.u32].s8);
+        break;
+    }
     case ByteCodeOp::CastS32S64:
     {
         registersRC[ip->a.u32].s64 = static_cast<int64_t>(registersRC[ip->a.u32].s32);
