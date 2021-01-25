@@ -313,6 +313,7 @@ struct SemanticJob : public Job
     static bool resolveCase(SemanticContext* context);
     static bool resolveLoop(SemanticContext* context);
     static bool resolveVisit(SemanticContext* context);
+    static bool checkRelativePointerOverflow(SemanticContext* context, TypeInfo* typeInfo, AstNode* right);
     static bool resolveAffect(SemanticContext* context);
     static bool resolveMove(SemanticContext* context);
     static bool resolveMakePointer(SemanticContext* context);

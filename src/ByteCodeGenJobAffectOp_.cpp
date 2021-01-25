@@ -209,7 +209,30 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
         auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
             emitInstruction(context, ByteCodeOp::Mul64byVB64, r1)->b.u64 = sizeOf;
-        emitInstruction(context, ByteCodeOp::AffectOpPlusEqPointer, r0, r1);
+
+        if (leftTypeInfo->flags & TYPEINFO_RELATIVE)
+        {
+            switch (leftTypeInfo->sizeOf)
+            {
+            case 1:
+                emitInstruction(context, ByteCodeOp::AffectOpPlusEqS8, r0, r1);
+                break;
+            case 2:
+                emitInstruction(context, ByteCodeOp::AffectOpPlusEqS16, r0, r1);
+                break;
+            case 4:
+                emitInstruction(context, ByteCodeOp::AffectOpPlusEqS32, r0, r1);
+                break;
+            case 8:
+                emitInstruction(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
+                break;
+            }
+        }
+        else
+        {
+            emitInstruction(context, ByteCodeOp::AffectOpPlusEqPointer, r0, r1);
+        }
+
         return true;
     }
 
@@ -259,7 +282,30 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
         auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
             emitInstruction(context, ByteCodeOp::Mul64byVB64, r1)->b.u64 = sizeOf;
-        emitInstruction(context, ByteCodeOp::AffectOpMinusEqPointer, r0, r1);
+
+        if (leftTypeInfo->flags & TYPEINFO_RELATIVE)
+        {
+            switch (leftTypeInfo->sizeOf)
+            {
+            case 1:
+                emitInstruction(context, ByteCodeOp::AffectOpMinusEqS8, r0, r1);
+                break;
+            case 2:
+                emitInstruction(context, ByteCodeOp::AffectOpMinusEqS16, r0, r1);
+                break;
+            case 4:
+                emitInstruction(context, ByteCodeOp::AffectOpMinusEqS32, r0, r1);
+                break;
+            case 8:
+                emitInstruction(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
+                break;
+            }
+        }
+        else
+        {
+            emitInstruction(context, ByteCodeOp::AffectOpMinusEqPointer, r0, r1);
+        }
+
         return true;
     }
 
