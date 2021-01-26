@@ -96,3 +96,39 @@ inline bool addOverflow(AstNode* node, uint64_t x, uint64_t y)
 
     return false;
 }
+
+inline bool subOverflow(AstNode* node, int8_t x, int8_t y)
+{
+    if (node->sourceFile->module->mustEmitSafetyOF(node))
+    {
+        int32_t result = (int32_t) x - (int32_t) y;
+        if (result < INT8_MIN || result > INT8_MAX)
+            return true;
+    }
+
+    return false;
+}
+
+inline bool subOverflow(AstNode* node, int16_t x, int16_t y)
+{
+    if (node->sourceFile->module->mustEmitSafetyOF(node))
+    {
+        int32_t result = (int32_t) x - (int32_t) y;
+        if (result < INT16_MIN || result > INT16_MAX)
+            return true;
+    }
+
+    return false;
+}
+
+inline bool subOverflow(AstNode* node, int32_t x, int32_t y)
+{
+    if (node->sourceFile->module->mustEmitSafetyOF(node))
+    {
+        int64_t result = (int64_t) x - (int64_t) y;
+        if (result < INT32_MIN || result > INT32_MAX)
+            return true;
+    }
+
+    return false;
+}

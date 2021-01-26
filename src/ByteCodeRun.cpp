@@ -1901,6 +1901,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::AffectOpMinusEqS8:
     {
+        if (subOverflow(ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
         *(int8_t*) registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
     }
@@ -1911,6 +1916,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::AffectOpMinusEqS16:
     {
+        if (subOverflow(ip->node, *(int16_t*) registersRC[ip->a.u32].pointer, IMMB_S16(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
         *(int16_t*) registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
         break;
     }
@@ -1921,6 +1931,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::AffectOpMinusEqS32:
     {
+        if (subOverflow(ip->node, *(int32_t*) registersRC[ip->a.u32].pointer, IMMB_S32(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
         *(int32_t*) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
     }
