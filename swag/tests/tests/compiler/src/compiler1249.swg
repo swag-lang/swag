@@ -1,4 +1,4 @@
-var silentMode: u32
+var silentMode: s32
 
 func silent(value: bool)
 {

@@ -16,11 +16,11 @@ TODO
 -------------------------------------
 char => rune ?
 -------------------------------------
-2114 bug random opPostMove est parfois appelé
--------------------------------------
 shift left/right doit pas etre supérieur a 255 (a tester en compiler si constant, et safety en runtime)
 -------------------------------------
 int overflow safety (chiant)
+-------------------------------------
+runtime cast safety (s32 => s8 par ex)
 -------------------------------------
 slice/cstrings and foreign
 -------------------------------------

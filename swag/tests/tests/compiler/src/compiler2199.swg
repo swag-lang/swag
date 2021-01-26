@@ -4,7 +4,8 @@
     {
         var x: u32 = 10'u8
         var y: s8 = -1
-        x += y
+        #[swag.safety("of", false)]
+        x += cast(u32) y
         @assert(x == 9)
     }
 

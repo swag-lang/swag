@@ -1851,12 +1851,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::AffectOpPlusEqS32:
     {
-        *(int32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
+        OPEQ_SIGNED(+=, int32_t, 0x80000000, IMMB_S32);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqU32:
     {
-        *(int32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
+        OPEQ_UNSIGNED(+=, uint32_t, IMMB_S32);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS64:

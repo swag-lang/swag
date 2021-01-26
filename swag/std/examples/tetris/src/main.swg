@@ -139,7 +139,7 @@ func main()
     nPieceCount := 0
     bGameOver := false
     bForceDown := false
-    nScore := 0
+    nScore := 0'u32
 
     var vLines: Array's32
     var rand: random.Rng

@@ -19,7 +19,7 @@ public enum Color
     DarkMagenta
 }
 
-var g_silentMode: u32
+var g_silentMode: s32
 
 public func silent(value: bool)
 {
