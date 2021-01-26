@@ -61,12 +61,10 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-        {
             if (addOverflow(node, left->computedValue.reg.s32, right->computedValue.reg.s32))
                 return context->report({node, node->token, "integer overflow"});
             node->computedValue.reg.s64 = left->computedValue.reg.s32 + right->computedValue.reg.s32;
             break;
-        }
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (addOverflow(node, left->computedValue.reg.s64, right->computedValue.reg.s64))
@@ -75,12 +73,10 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-        {
             if (addOverflow(node, left->computedValue.reg.u32, right->computedValue.reg.u32))
                 return context->report({node, node->token, "integer overflow"});
             node->computedValue.reg.u64 = left->computedValue.reg.u32 + right->computedValue.reg.u32;
             break;
-        }
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (addOverflow(node, left->computedValue.reg.u64, right->computedValue.reg.u64))
@@ -180,12 +176,10 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-        {
             if (subOverflow(node, left->computedValue.reg.s32, right->computedValue.reg.s32))
                 return context->report({node, node->token, "integer overflow"});
             node->computedValue.reg.s64 = left->computedValue.reg.s32 - right->computedValue.reg.s32;
             break;
-        }
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (subOverflow(node, left->computedValue.reg.s64, right->computedValue.reg.s64))
@@ -194,12 +188,10 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-        {
             if (subOverflow(node, left->computedValue.reg.u32, right->computedValue.reg.u32))
                 return context->report({node, node->token, "integer overflow"});
             node->computedValue.reg.u64 = left->computedValue.reg.u32 - right->computedValue.reg.u32;
             break;
-        }
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (subOverflow(node, left->computedValue.reg.u64, right->computedValue.reg.u64))
