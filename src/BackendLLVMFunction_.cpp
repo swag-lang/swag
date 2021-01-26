@@ -1551,15 +1551,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqS64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r1), r2);
-            builder.CreateStore(v0, r1);
+            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, getInt64Ty());
             break;
         }
         case ByteCodeOp::AffectOpPlusEqU64:
         {
             MK_BINOPEQ64_CAB();
-            auto v0 = builder.CreateAdd(builder.CreateLoad(r1), r2);
-            builder.CreateStore(v0, r1);
+            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt64Ty());
             break;
         }
         case ByteCodeOp::AffectOpPlusEqF32:
