@@ -36,7 +36,8 @@ enum class X64Op : uint8_t
     SUB  = 0x29,
     XOR  = 0x31,
     IDIV = 0xF7,
-    MUL  = 0xC1,
+    MUL  = 0xC0,
+    IMUL = 0xC1,
     FADD = 0x58,
     FSUB = 0x5C,
     FMUL = 0x59,
@@ -830,12 +831,23 @@ namespace BackendX64Inst
     {
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
         {
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             if (op == X64Op::MUL)
-                pp.concat.addString2("\x0F\xAF"); // imul ecx, ecx
+            {
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                pp.concat.addString1("\xF7"); // mul
+                // need to pass rsp here, don't know why, but the encoding should be 0x67 for a small stack offset
+                emit_ModRM(pp, regOffset(ip->b.u32), RSP, RDI);
+                emit_Copy32(pp, RAX, RCX);
+            }
             else
-                pp.concat.addU8((uint8_t) op | 2);
-            emit_ModRM(pp, regOffset(ip->b.u32), RCX, RDI);
+            {
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+                if (op == X64Op::IMUL)
+                    pp.concat.addString2("\x0F\xAF"); // imul
+                else
+                    pp.concat.addU8((uint8_t) op | 2);
+                emit_ModRM(pp, regOffset(ip->b.u32), RCX, RDI); // rcx, [rdi+?]
+            }
         }
         else
         {
@@ -849,7 +861,14 @@ namespace BackendX64Inst
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             if (op == X64Op::MUL)
             {
-                pp.concat.addString2("\x0F\xAF"); // imul ecx, ecx
+                // mul rcx
+                pp.concat.addString3("\x48\xF7\xE1");
+                emit_Copy32(pp, RAX, RCX);
+            }
+            else if (op == X64Op::IMUL)
+            {
+                // imul ecx, eax
+                pp.concat.addString2("\x0F\xAF");
                 pp.concat.addU8(0xC8);
             }
             else
@@ -867,13 +886,25 @@ namespace BackendX64Inst
     {
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
         {
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            pp.concat.addU8(0x48);
             if (op == X64Op::MUL)
-                pp.concat.addU16(0xAF0F);
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                pp.concat.addU8(0x48);
+                pp.concat.addString1("\xF7"); // mul
+                // need to pass rsp here, don't know why, but the encoding should be 0x67 for a small stack offset
+                emit_ModRM(pp, regOffset(ip->b.u32), RSP, RDI);
+                emit_Copy32(pp, RAX, RCX);
+            }
             else
-                pp.concat.addU8((uint8_t) op | 2);
-            emit_ModRM(pp, regOffset(ip->b.u32), RCX, RDI);
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+                pp.concat.addU8(0x48);
+                if (op == X64Op::IMUL)
+                    pp.concat.addU16(0xAF0F);
+                else
+                    pp.concat.addU8((uint8_t) op | 2);
+                emit_ModRM(pp, regOffset(ip->b.u32), RCX, RDI);
+            }
         }
         else
         {
@@ -886,6 +917,12 @@ namespace BackendX64Inst
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             if (op == X64Op::MUL)
+            {
+                // mul rcx
+                pp.concat.addString3("\x48\xF7\xE1");
+                emit_Copy64(pp, RAX, RCX);
+            }
+            else if (op == X64Op::IMUL)
             {
                 // imul rcx, rax
                 pp.concat.addU8(0x48);

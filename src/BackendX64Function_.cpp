@@ -706,16 +706,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::BinOpMulS32:
-            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::MUL);
+            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::IMUL);
+            emitOverflowSigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::BinOpMulU32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::MUL);
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::BinOpMulS64:
-            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::MUL);
+            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::IMUL);
+            emitOverflowSigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::BinOpMulU64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::MUL);
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::BinOpMulF32:
             BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FMUL);
@@ -758,15 +762,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpPlusS32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::ADD);
+            emitOverflowSigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::BinOpPlusU32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::ADD);
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::BinOpPlusS64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::ADD);
+            emitOverflowSigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::BinOpPlusU64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::ADD);
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::BinOpPlusF32:
             BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FADD);
@@ -777,15 +785,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpMinusS32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::SUB);
+            emitOverflowSigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::BinOpMinusU32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::SUB);
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::BinOpMinusS64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::SUB);
+            emitOverflowSigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::BinOpMinusU64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::SUB);
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::BinOpMinusF32:
             BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FSUB);
