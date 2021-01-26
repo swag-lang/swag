@@ -188,34 +188,22 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         }
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            if (sourceFile->module->mustEmitSafetyOF(node))
-            {
-                if (-right->computedValue.reg.s64 < 0 && left->computedValue.reg.s64 < INT64_MIN + right->computedValue.reg.s64)
-                    return context->report({node, node->token, "integer overflow"});
-                if (-right->computedValue.reg.s64 > 0 && left->computedValue.reg.s64 > INT64_MAX + right->computedValue.reg.s64)
-                    return context->report({node, node->token, "integer overflow"});
-            }
+            if (subOverflow(node, left->computedValue.reg.s64, right->computedValue.reg.s64))
+                return context->report({node, node->token, "integer overflow"});
             node->computedValue.reg.s64 = left->computedValue.reg.s64 - right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
         {
-            uint64_t result = (uint64_t) left->computedValue.reg.u32 - (uint64_t) right->computedValue.reg.u32;
-            if (sourceFile->module->mustEmitSafetyOF(node))
-            {
-                if (result > UINT32_MAX)
-                    return context->report({node, node->token, "integer overflow"});
-            }
-            node->computedValue.reg.u64 = result;
+            if (subOverflow(node, left->computedValue.reg.u32, right->computedValue.reg.u32))
+                return context->report({node, node->token, "integer overflow"});
+            node->computedValue.reg.u64 = left->computedValue.reg.u32 - right->computedValue.reg.u32;
             break;
         }
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (sourceFile->module->mustEmitSafetyOF(node))
-            {
-                if (right->computedValue.reg.u64 > left->computedValue.reg.u64)
-                    return context->report({node, node->token, "integer overflow"});
-            }
+            if (subOverflow(node, left->computedValue.reg.u64, right->computedValue.reg.u64))
+                return context->report({node, node->token, "integer overflow"});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
             break;
         case NativeTypeKind::F32:
