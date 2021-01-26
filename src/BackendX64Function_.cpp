@@ -320,6 +320,30 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     return true;
 }
 
+void BackendX64::emitOverflowSigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node)
+{
+    if (!module->mustEmitSafety(node, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))
+        return;
+    concat.addString2("\x0f\x81"); // jno
+    concat.addU32(0);
+    auto addr      = (uint32_t*) concat.getSeekPtr() - 1;
+    auto prevCount = concat.totalCount();
+    emitAssert(buildParameters, node, "integer overflow");
+    *addr = concat.totalCount() - prevCount;
+}
+
+void BackendX64::emitOverflowUnsigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node)
+{
+    if (!module->mustEmitSafety(node, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))
+        return;
+    concat.addString2("\x0f\x83"); // jnc
+    concat.addU32(0);
+    auto addr      = (uint32_t*) concat.getSeekPtr() - 1;
+    auto prevCount = concat.totalCount();
+    emitAssert(buildParameters, node, "integer overflow");
+    *addr = concat.totalCount() - prevCount;
+}
+
 void BackendX64::emitAssert(const BuildParameters& buildParameters, AstNode* node, const char* msg)
 {
     int   ct              = buildParameters.compileType;
@@ -1104,25 +1128,28 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::AffectOpPlusEqS8:
-        case ByteCodeOp::AffectOpPlusEqU8:
-        {
             MK_BINOPEQ8_CAB(X64Op::ADD);
-            /*concat.addString2("\x0f\x81");
-            auto addr = concat.getSeekPtr();
-            concat.addU32(0);
-            emitAssert(buildParameters, ip->node, "integer overflow");
-            *(int*) addr = (int) (concat.getSeekPtr() - addr) - 4;*/
+            emitOverflowSigned(buildParameters, concat, ip->node);
             break;
-        }
+        case ByteCodeOp::AffectOpPlusEqU8:
+            MK_BINOPEQ8_CAB(X64Op::ADD);
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            break;
         case ByteCodeOp::AffectOpPlusEqS16:
+            MK_BINOPEQ16_CAB(X64Op::ADD);
+            break;
         case ByteCodeOp::AffectOpPlusEqU16:
             MK_BINOPEQ16_CAB(X64Op::ADD);
             break;
         case ByteCodeOp::AffectOpPlusEqS32:
+            MK_BINOPEQ32_CAB(X64Op::ADD);
+            break;
         case ByteCodeOp::AffectOpPlusEqU32:
             MK_BINOPEQ32_CAB(X64Op::ADD);
             break;
         case ByteCodeOp::AffectOpPlusEqS64:
+            MK_BINOPEQ64_CAB(X64Op::ADD);
+            break;
         case ByteCodeOp::AffectOpPlusEqU64:
             MK_BINOPEQ64_CAB(X64Op::ADD);
             break;

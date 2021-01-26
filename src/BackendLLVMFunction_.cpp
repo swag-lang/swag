@@ -9,6 +9,30 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
+#define OPEQ_OVERFLOW(__intr, __inst, __type)                                                                                       \
+    if (module->mustEmitSafety(ip->node, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))                                          \
+    {                                                                                                                               \
+        auto vs = builder.CreateIntrinsic(llvm::Intrinsic::__intr, {builder.__type, builder.__type}, {builder.CreateLoad(r1), r2}); \
+        auto v0 = builder.CreateExtractValue(vs, {0});                                                                              \
+        auto v1 = builder.CreateExtractValue(vs, {1});                                                                              \
+                                                                                                                                    \
+        llvm::BasicBlock* blockOk  = llvm::BasicBlock::Create(context, "", func);                                                   \
+        llvm::BasicBlock* blockErr = llvm::BasicBlock::Create(context, "", func);                                                   \
+                                                                                                                                    \
+        auto v2 = builder.CreateIsNull(v1);                                                                                         \
+        builder.CreateCondBr(v2, blockOk, blockErr);                                                                                \
+        builder.SetInsertPoint(blockErr);                                                                                           \
+        emitAssert(buildParameters, allocR, allocT, ip->node, "integer overflow");                                                  \
+        builder.CreateBr(blockOk);                                                                                                  \
+        builder.SetInsertPoint(blockOk);                                                                                            \
+        builder.CreateStore(v0, r1);                                                                                                \
+    }                                                                                                                               \
+    else                                                                                                                            \
+    {                                                                                                                               \
+        auto v0 = builder.__inst(builder.CreateLoad(r1), r2);                                                                       \
+        builder.CreateStore(v0, r1);                                                                                                \
+    }
+
 inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Value* v, NativeTypeKind k)
 {
     switch (k)
@@ -377,21 +401,49 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     return true;
 }
 
+void BackendLLVM::emitAssert(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, AstNode* node, const char* message)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& builder         = *pp.builder;
+
+    // Filename
+    llvm::Value* r1 = builder.CreateGlobalString(normalizePath(node->sourceFile->path).c_str());
+    r1              = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32}));
+
+    // Line & column
+    auto r2 = builder.getInt32(node->token.startLocation.line);
+    auto r3 = builder.getInt32(node->token.startLocation.column);
+
+    // Message
+    llvm::Value* r4;
+    if (message)
+    {
+        r4 = builder.CreateGlobalString(message);
+        r4 = TO_PTR_I8(builder.CreateInBoundsGEP(r4, {pp.cst0_i32}));
+    }
+    else
+        r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
+
+    localCall(buildParameters, allocR, allocT, "__assert", {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
+}
+
 bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
         return true;
 
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
-
-    auto& pp       = *perThread[ct][precompileIndex];
-    auto& context  = *pp.context;
-    auto& builder  = *pp.builder;
-    auto& modu     = *pp.module;
-    auto  typeFunc = bc->callType();
-    bool  ok       = true;
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& builder         = *pp.builder;
+    auto& modu            = *pp.module;
+    auto  typeFunc        = bc->callType();
+    bool  ok              = true;
 
     // Function prototype
     llvm::FunctionType* funcType = createFunctionTypeInternal(buildParameters, typeFunc);
@@ -1461,14 +1513,24 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::AffectOpPlusEqS8:
+        {
+            MK_BINOPEQ8_CAB();
+            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, getInt8Ty());
+            break;
+        }
         case ByteCodeOp::AffectOpPlusEqU8:
         {
             MK_BINOPEQ8_CAB();
+            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt8Ty());
+            break;
+        }
+        case ByteCodeOp::AffectOpPlusEqS16:
+        {
+            MK_BINOPEQ16_CAB();
             auto v0 = builder.CreateAdd(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpPlusEqS16:
         case ByteCodeOp::AffectOpPlusEqU16:
         {
             MK_BINOPEQ16_CAB();
@@ -1477,6 +1539,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS32:
+        {
+            MK_BINOPEQ32_CAB();
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r1), r2);
+            builder.CreateStore(v0, r1);
+            break;
+        }
         case ByteCodeOp::AffectOpPlusEqU32:
         {
             MK_BINOPEQ32_CAB();
@@ -1485,6 +1553,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS64:
+        {
+            MK_BINOPEQ64_CAB();
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r1), r2);
+            builder.CreateStore(v0, r1);
+            break;
+        }
         case ByteCodeOp::AffectOpPlusEqU64:
         {
             MK_BINOPEQ64_CAB();
@@ -2316,25 +2390,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicAssert:
         {
-            // Filename
-            llvm::Value* r1 = builder.CreateGlobalString(normalizePath(ip->node->sourceFile->path).c_str());
-            r1              = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32}));
-
-            // Line & column
-            auto r2 = builder.getInt32(ip->node->token.startLocation.line);
-            auto r3 = builder.getInt32(ip->node->token.startLocation.column);
-
-            // Message
-            llvm::Value* r4;
-            if (ip->d.pointer)
-            {
-                r4 = builder.CreateGlobalString((const char*) ip->d.pointer);
-                r4 = TO_PTR_I8(builder.CreateInBoundsGEP(r4, {pp.cst0_i32}));
-            }
-            else
-                r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
-
-            localCall(buildParameters, allocR, allocT, "__assert", {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
+            emitAssert(buildParameters, allocR, allocT, ip->node, (const char*) ip->d.pointer);
             break;
         }
 
@@ -2496,7 +2552,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt32Ty(), true);
-            r0      = TO_PTR_I16(r0);
+            r0      = TO_PTR_I32(r0);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2504,7 +2560,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt64Ty(), true);
-            r0      = TO_PTR_I16(r0);
+            r0      = TO_PTR_I64(r0);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2520,7 +2576,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateIntCast(builder.CreateLoad(r0), builder.getInt64Ty(), true);
-            r0      = TO_PTR_I32(r0);
+            r0      = TO_PTR_I64(r0);
             builder.CreateStore(v0, r0);
             break;
         }

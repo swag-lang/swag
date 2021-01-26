@@ -44,6 +44,38 @@
 #define IMMC_U32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32)
 #define IMMC_U64(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u64 : registersRC[ip->c.u32].u64)
 
+#define OPEQ_SIGNED(__op, __cast, __mask, __imm)                                                                \
+    if (context->sourceFile->module->mustEmitSafety(ip->node, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF)) \
+    {                                                                                                           \
+        auto      ptr = (__cast*) registersRC[ip->a.u32].pointer;                                               \
+        auto      sf0 = *ptr & __mask;                                                                          \
+        *ptr __op __imm(ip);                                                                                    \
+        auto      sf1 = *ptr & __mask;                                                                          \
+        if (sf0 != sf1)                                                                                         \
+        {                                                                                                       \
+            context->hasError = true;                                                                           \
+            context->errorMsg = "integer overflow";                                                             \
+        }                                                                                                       \
+    }                                                                                                           \
+    else                                                                                                        \
+        *(__cast*) registersRC[ip->a.u32].pointer += __imm(ip);
+
+#define OPEQ_UNSIGNED(__op, __cast, __imm)                                                                      \
+    if (context->sourceFile->module->mustEmitSafety(ip->node, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF)) \
+    {                                                                                                           \
+        auto      ptr = (__cast*) registersRC[ip->a.u32].pointer;                                               \
+        auto      sf0 = *ptr;                                                                                   \
+        *ptr __op __imm(ip);                                                                                    \
+        auto      sf1 = *ptr;                                                                                   \
+        if (sf1 < sf0)                                                                                          \
+        {                                                                                                       \
+            context->hasError = true;                                                                           \
+            context->errorMsg = "integer overflow";                                                             \
+        }                                                                                                       \
+    }                                                                                                           \
+    else                                                                                                        \
+        *(__cast*) registersRC[ip->a.u32].pointer += __imm(ip);
+
 bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc)
 {
     switch (ip->op)
@@ -1798,24 +1830,40 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
 
     case ByteCodeOp::AffectOpPlusEqS8:
+    {
+        OPEQ_SIGNED(+=, int8_t, 0x80, IMMB_S8);
+        break;
+    }
     case ByteCodeOp::AffectOpPlusEqU8:
     {
-        *(int8_t*) registersRC[ip->a.u32].pointer += IMMB_S8(ip);
+        OPEQ_UNSIGNED(+=, uint8_t, IMMB_S8);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS16:
+    {
+        *(int16_t*) registersRC[ip->a.u32].pointer += IMMB_S16(ip);
+        break;
+    }
     case ByteCodeOp::AffectOpPlusEqU16:
     {
         *(int16_t*) registersRC[ip->a.u32].pointer += IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS32:
+    {
+        *(int32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
+        break;
+    }
     case ByteCodeOp::AffectOpPlusEqU32:
     {
         *(int32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS64:
+    {
+        *(int64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
+        break;
+    }
     case ByteCodeOp::AffectOpPlusEqU64:
     {
         *(int64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
