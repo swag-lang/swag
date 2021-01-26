@@ -1884,15 +1884,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         *(uint8_t**) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
         break;
     }
-    case ByteCodeOp::AffectOpMinusEqPointer:
-    {
-        *(uint8_t**) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
-        break;
-    }
 
     case ByteCodeOp::AffectOpMinusEqS8:
     {
         *(int8_t*) registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqU8:
+    {
+        *(int8_t*)registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqS16:
@@ -1900,14 +1900,29 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         *(int16_t*) registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
         break;
     }
+    case ByteCodeOp::AffectOpMinusEqU16:
+    {
+        *(int16_t*)registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
+        break;
+    }
     case ByteCodeOp::AffectOpMinusEqS32:
     {
         *(int32_t*) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
     }
+    case ByteCodeOp::AffectOpMinusEqU32:
+    {
+        *(int32_t*)registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
+        break;
+    }
     case ByteCodeOp::AffectOpMinusEqS64:
     {
         *(int64_t*) registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqU64:
+    {
+        *(int64_t*)registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqF32:
@@ -1918,6 +1933,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::AffectOpMinusEqF64:
     {
         *(double*) registersRC[ip->a.u32].pointer -= IMMB_F64(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqPointer:
+    {
+        *(uint8_t**) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
     }
 
