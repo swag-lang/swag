@@ -82,6 +82,7 @@ func trailingZeros(x: u32)->u32
     if x == 0 return 32
     vx := x
     vx &= (~vx + 1)
+    #[swag.safety("of", false)]
     return cast(u32) DeBruijn32[(vx * DeBruijn32Cst) >> 27]
 }
 
@@ -92,6 +93,7 @@ func trailingZeros(x: u64)->u32
     if x == 0 return 64
     vx := x
     vx &= (~vx + 1)
+    #[swag.safety("of", false)]
     return cast(u32) DeBruijn64[(vx * DeBruijn64Cst) >> 58]
 }
 

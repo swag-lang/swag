@@ -279,6 +279,7 @@ func caseChangeTo(wCase: WantedCase, r: char, caseRange: const [..] CaseRange) -
                 return result
 			}
 
+            #[swag.safety("of", false)]
             result.mappedRune = r + cast(char) delta
             result.foundMapping = true
             return result

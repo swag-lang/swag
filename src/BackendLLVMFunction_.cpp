@@ -33,6 +33,30 @@
         builder.CreateStore(v0, r1);                                                                                                \
     }
 
+#define OP_OVERFLOW(__intr, __inst, __cast, __type)                                                             \
+    if (module->mustEmitSafetyOF(ip->node))                                                                     \
+    {                                                                                                           \
+        auto vs = builder.CreateIntrinsic(llvm::Intrinsic::__intr, {builder.__type, builder.__type}, {r1, r2}); \
+        auto v0 = builder.CreateExtractValue(vs, {0});                                                          \
+        auto v1 = builder.CreateExtractValue(vs, {1});                                                          \
+                                                                                                                \
+        llvm::BasicBlock* blockOk  = llvm::BasicBlock::Create(context, "", func);                               \
+        llvm::BasicBlock* blockErr = llvm::BasicBlock::Create(context, "", func);                               \
+                                                                                                                \
+        auto v2 = builder.CreateIsNull(v1);                                                                     \
+        builder.CreateCondBr(v2, blockOk, blockErr);                                                            \
+        builder.SetInsertPoint(blockErr);                                                                       \
+        emitAssert(buildParameters, allocR, allocT, ip->node, "integer overflow");                              \
+        builder.CreateBr(blockOk);                                                                              \
+        builder.SetInsertPoint(blockOk);                                                                        \
+        builder.CreateStore(v0, __cast(r0));                                                                    \
+    }                                                                                                           \
+    else                                                                                                        \
+    {                                                                                                           \
+        auto v0 = builder.__inst(r1, r2);                                                                       \
+        builder.CreateStore(v0, __cast(r0));                                                                    \
+    }
+
 inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Value* v, NativeTypeKind k)
 {
     switch (k)
@@ -1217,29 +1241,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpPlusS32:
         {
             MK_BINOP32_CAB();
-            auto v0 = builder.CreateAdd(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            OP_OVERFLOW(sadd_with_overflow, CreateAdd, TO_PTR_I32, getInt32Ty());
             break;
         }
         case ByteCodeOp::BinOpPlusU32:
         {
             MK_BINOP32_CAB();
-            auto v0 = builder.CreateAdd(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            OP_OVERFLOW(uadd_with_overflow, CreateAdd, TO_PTR_I32, getInt32Ty());
             break;
         }
         case ByteCodeOp::BinOpPlusS64:
         {
             MK_BINOP64_CAB();
-            auto v0 = builder.CreateAdd(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            OP_OVERFLOW(sadd_with_overflow, CreateAdd, TO_PTR_I64, getInt64Ty());
             break;
         }
         case ByteCodeOp::BinOpPlusU64:
         {
             MK_BINOP64_CAB();
-            auto v0 = builder.CreateAdd(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            OP_OVERFLOW(uadd_with_overflow, CreateAdd, TO_PTR_I64, getInt64Ty());
             break;
         }
         case ByteCodeOp::BinOpPlusF32:
@@ -1260,29 +1280,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpMinusS32:
         {
             MK_BINOP32_CAB();
-            auto v0 = builder.CreateSub(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            OP_OVERFLOW(ssub_with_overflow, CreateSub, TO_PTR_I32, getInt32Ty());
             break;
         }
         case ByteCodeOp::BinOpMinusU32:
         {
             MK_BINOP32_CAB();
-            auto v0 = builder.CreateSub(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            OP_OVERFLOW(usub_with_overflow, CreateSub, TO_PTR_I32, getInt32Ty());
             break;
         }
         case ByteCodeOp::BinOpMinusS64:
         {
             MK_BINOP64_CAB();
-            auto v0 = builder.CreateSub(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            OP_OVERFLOW(ssub_with_overflow, CreateSub, TO_PTR_I64, getInt64Ty());
             break;
         }
         case ByteCodeOp::BinOpMinusU64:
         {
             MK_BINOP64_CAB();
-            auto v0 = builder.CreateSub(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            OP_OVERFLOW(usub_with_overflow, CreateSub, TO_PTR_I64, getInt64Ty());
             break;
         }
         case ByteCodeOp::BinOpMinusF32:
@@ -1303,29 +1319,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpMulS32:
         {
             MK_BINOP32_CAB();
-            auto v0 = builder.CreateMul(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            OP_OVERFLOW(smul_with_overflow, CreateMul, TO_PTR_I32, getInt32Ty());
             break;
         }
         case ByteCodeOp::BinOpMulU32:
         {
             MK_BINOP32_CAB();
-            auto v0 = builder.CreateMul(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            OP_OVERFLOW(umul_with_overflow, CreateMul, TO_PTR_I32, getInt32Ty());
             break;
         }
         case ByteCodeOp::BinOpMulS64:
         {
             MK_BINOP64_CAB();
-            auto v0 = builder.CreateMul(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            OP_OVERFLOW(smul_with_overflow, CreateMul, TO_PTR_I64, getInt64Ty());
             break;
         }
         case ByteCodeOp::BinOpMulU64:
         {
             MK_BINOP64_CAB();
-            auto v0 = builder.CreateMul(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            OP_OVERFLOW(umul_with_overflow, CreateMul, TO_PTR_I64, getInt64Ty());
             break;
         }
         case ByteCodeOp::BinOpMulF32:

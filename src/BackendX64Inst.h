@@ -832,7 +832,7 @@ namespace BackendX64Inst
         {
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             if (op == X64Op::MUL)
-                pp.concat.addU16(0xAF0F);
+                pp.concat.addString2("\x0F\xAF"); // imul ecx, ecx
             else
                 pp.concat.addU8((uint8_t) op | 2);
             emit_ModRM(pp, regOffset(ip->b.u32), RCX, RDI);
@@ -849,7 +849,7 @@ namespace BackendX64Inst
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             if (op == X64Op::MUL)
             {
-                pp.concat.addU16(0xAF0F);
+                pp.concat.addString2("\x0F\xAF"); // imul ecx, ecx
                 pp.concat.addU8(0xC8);
             }
             else
