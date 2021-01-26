@@ -1105,15 +1105,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::AffectOpMinusEqS8:
             MK_BINOPEQ8_CAB(X64Op::SUB);
+            emitOverflowSigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::AffectOpMinusEqU8:
             MK_BINOPEQ8_CAB(X64Op::SUB);
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::AffectOpMinusEqS16:
             MK_BINOPEQ16_CAB(X64Op::SUB);
+            emitOverflowSigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::AffectOpMinusEqU16:
             MK_BINOPEQ16_CAB(X64Op::SUB);
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::AffectOpMinusEqS32:
             MK_BINOPEQ32_CAB(X64Op::SUB);
