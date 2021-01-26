@@ -320,6 +320,26 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     return true;
 }
 
+void BackendX64::emitAssert(const BuildParameters& buildParameters, AstNode* node, const char* msg)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+
+    emitGlobalString(pp, precompileIndex, normalizePath(node->sourceFile->path), RAX);
+    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+    BackendX64Inst::emit_Load64_Immediate(pp, node->token.startLocation.line, RAX);
+    BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+    BackendX64Inst::emit_Load64_Immediate(pp, node->token.startLocation.column, RAX);
+    BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
+    if (msg)
+        emitGlobalString(pp, precompileIndex, msg, RAX);
+    else
+        BackendX64Inst::emit_Clear64(pp, RAX);
+    BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
+    emitCall(pp, "__assert");
+}
+
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
@@ -1084,8 +1104,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::AffectOpPlusEqS8:
+        {
             MK_BINOPEQ8_CAB(X64Op::ADD);
+            /*concat.addString2("\x0f\x81");
+            auto addr = concat.getSeekPtr();
+            concat.addU32(0);
+            emitAssert(buildParameters, ip->node, "integer overflow");
+            *(int*) addr = (int) (concat.getSeekPtr() - addr) - 4;*/
             break;
+        }
         case ByteCodeOp::AffectOpPlusEqS16:
             MK_BINOPEQ16_CAB(X64Op::ADD);
             break;
@@ -1724,22 +1751,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IntrinsicAssert:
-        {
-            SWAG_ASSERT(sizeParamsStack >= 4 * sizeof(Register));
-            emitGlobalString(pp, precompileIndex, normalizePath(ip->node->sourceFile->path), RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->node->token.startLocation.line, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->node->token.startLocation.column, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
-            if (ip->d.pointer)
-                emitGlobalString(pp, precompileIndex, (const char*) ip->d.pointer, RAX);
-            else
-                BackendX64Inst::emit_Clear64(pp, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
-            emitCall(pp, "__assert");
+            emitAssert(buildParameters, ip->node, (const char*) ip->d.pointer);
             break;
-        }
 
         case ByteCodeOp::IntrinsicGetContext:
             BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symPI_contextTlsId, 0);
