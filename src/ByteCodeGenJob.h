@@ -324,9 +324,9 @@ struct ByteCodeGenJob : public Job
     static bool emitDefer(ByteCodeGenContext* context);
 
     static void emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg = nullptr);
-    static bool mustEmitSafety(ByteCodeGenContext* context);
+    static bool mustEmitSafety(ByteCodeGenContext* context, uint64_t whatOn, uint64_t whatOff);
     static void emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);
-    static void emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message = "dereferencing a null pointer");
+    static void emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message = "dereferencing a null pointer", int sizeInBits = 64);
     static void emitSafetyNullLambda(ByteCodeGenContext* context, uint32_t r, const char* message = "dereferencing a null pointer");
     static void emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits);
     static void emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);

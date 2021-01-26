@@ -5,6 +5,6 @@
 #test
 {
     var ptr: *u8
-    #[swag.safety(true)]
+    #[swag.safety("", true)]
     ptr[0] = 0
 }

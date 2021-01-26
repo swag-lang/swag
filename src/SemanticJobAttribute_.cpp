@@ -9,12 +9,11 @@ void SemanticJob::propagateAttributes(AstNode* child)
     if (!child->parent)
         return;
     child->attributeFlags |= child->parent->attributeFlags &
-                             (ATTRIBUTE_SAFETY_OFF |
-                              ATTRIBUTE_SAFETY_ON |
+                             (ATTRIBUTE_SAFETY_MASK |
+                              ATTRIBUTE_RELATIVE_MASK |
                               ATTRIBUTE_NO_RETURN |
                               ATTRIBUTE_SELECTIF_OFF |
-                              ATTRIBUTE_SELECTIF_ON |
-                              ATTRIBUTE_RELATIVE_MASK);
+                              ATTRIBUTE_SELECTIF_ON);
 }
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
@@ -212,9 +211,39 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_CALLBACK;
             else if (child->token.text == "safety")
             {
+                ComputedValue attrWhat;
+                curAttr->attributes.getValue("swag.safety", "what", attrWhat);
+                attrWhat.text.trim();
+                vector<Utf8> what;
+                tokenize(attrWhat.text, '|', what);
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.safety", "value", attrValue);
-                flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_ON : ATTRIBUTE_SAFETY_OFF;
+
+                if (attrWhat.text.empty())
+                {
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NP_ON : ATTRIBUTE_SAFETY_NP_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BC_ON : ATTRIBUTE_SAFETY_BC_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OF_ON : ATTRIBUTE_SAFETY_OF_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MT_ON : ATTRIBUTE_SAFETY_MT_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_AN_ON : ATTRIBUTE_SAFETY_AN_OFF;
+                }
+
+                for (auto& w : what)
+                {
+                    w.trim();
+                    if (w == "np")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NP_ON : ATTRIBUTE_SAFETY_NP_OFF;
+                    else if (w == "bc")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BC_ON : ATTRIBUTE_SAFETY_BC_OFF;
+                    else if (w == "of")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OF_ON : ATTRIBUTE_SAFETY_OF_OFF;
+                    else if (w == "mt")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MT_ON : ATTRIBUTE_SAFETY_MT_OFF;
+                    else if (w == "an")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_AN_ON : ATTRIBUTE_SAFETY_AN_OFF;
+                    else
+                        return context->report({child, format("'swag.safety' invalid value '%s'", w.c_str())});
+                }
             }
             else if (child->token.text == "optim")
             {

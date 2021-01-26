@@ -48,7 +48,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     {
         buildCfg.byteCodeOptimize         = true;
         buildCfg.byteCodeInline           = true;
-        buildCfg.safetyGuards             = true;
+        buildCfg.safetyGuards             = 0xFFFFFFFF'FFFFFFFF;
         buildCfg.backendOptimizeSpeed     = false;
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
@@ -57,7 +57,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     {
         buildCfg.byteCodeOptimize         = true;
         buildCfg.byteCodeInline           = true;
-        buildCfg.safetyGuards             = true;
+        buildCfg.safetyGuards             = 0xFFFFFFFF'FFFFFFFF;
         buildCfg.backendOptimizeSpeed     = true;
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
@@ -66,7 +66,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     {
         buildCfg.byteCodeOptimize         = true;
         buildCfg.byteCodeInline           = true;
-        buildCfg.safetyGuards             = false;
+        buildCfg.safetyGuards             = 0;
         buildCfg.backendOptimizeSpeed     = true;
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = false;
@@ -718,14 +718,9 @@ void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
     }
 }
 
-bool Module::mustEmitSafety(AstNode* node)
+bool Module::mustEmitSafety(AstNode* node, uint64_t whatOn, uint64_t whatOff)
 {
-    bool safety = buildCfg.safetyGuards;
-    if (node->attributeFlags & ATTRIBUTE_SAFETY_ON)
-        safety = true;
-    else if (node->attributeFlags & ATTRIBUTE_SAFETY_OFF)
-        safety = false;
-    return safety;
+    return ((buildCfg.safetyGuards & whatOn) || (node->attributeFlags & whatOn)) && !(node->attributeFlags & whatOff);
 }
 
 bool Module::mustOptimizeBC(AstNode* node)

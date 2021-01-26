@@ -25,14 +25,14 @@ impl NumericArray
         return true
     }
 
-    #[safety(false), complete]
+    #[safety("bc", false), complete]
     func opAffect(using self, slice: const [..] T)
     {
         debug.assert(@countof(slice) == N)
         loop N buf[@index] = slice[@index]
     }
 
-    #[safety(false)]
+    #[safety("bc", false)]
     func from(values: T...)->Self
     {
         debug.assert(@countof(values) == N)
@@ -42,14 +42,14 @@ impl NumericArray
     }
 
     // Set all values
-    #[safety(false)]
+    #[safety("bc", false)]
     func setAll(using self, value: T)
     {
         loop N buf[@index] = value
     }
 
     // Set all values
-    #[safety(false)]
+    #[safety("bc", false)]
     func set(using self, values: T...)
     {
         debug.assert(@countof(values) == N)
@@ -57,42 +57,42 @@ impl NumericArray
     }
 
     // Add
-    #[safety(false)]
+    #[safety("bc", false)]
     func add(using self, value: T)
     {
         loop N buf[@index] += value
     }
 
     // Multiply
-    #[safety(false)]
+    #[safety("bc", false)]
     func mul(using self, value: T)
     {
         loop N buf[@index] *= value
     }
 
     // Multiply & add
-    #[safety(false)]
+    #[safety("bc", false)]
     func mulAdd(using self, value1, value2: T)
     {
         loop N buf[@index] = (buf[@index] * value1) + value2
     }
 
     // Add
-    #[safety(false)]
+    #[safety("bc", false)]
     func add(using self, value: Self)
     {
         loop N buf[@index] += value.buf[@index]
     }
 
     // Multiply
-    #[safety(false)]
+    #[safety("bc", false)]
     func mul(using self, value: Self)
     {
         loop N buf[@index] *= value.buf[@index]
     }
 
     // Multiply & Add
-    #[safety(false)]
+    #[safety("bc", false)]
     func mulAdd(using self, value1, value2: Self)
     {
         loop N buf[@index] = (buf[@index] * value1[@index]) + value2.buf[@index]

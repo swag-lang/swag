@@ -2,7 +2,7 @@
 #global testerror
 
 //#[swag.printbc]
-#[swag.safety(true)]
+#[swag.safety("", true)]
 #test
 {
     x := [1, 2]

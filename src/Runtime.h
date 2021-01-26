@@ -1,4 +1,5 @@
 #pragma once
+#include "Attribute.h"
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // Should match bootstrap.swg
@@ -89,7 +90,12 @@ struct BuildCfg
     uint32_t moduleBuildNum = 0;
 
     // Debug
-    bool safetyGuards = true;
+    static const auto SAFETY_NP    = ATTRIBUTE_SAFETY_NP_ON;
+    static const auto SAFETY_BC    = ATTRIBUTE_SAFETY_BC_ON;
+    static const auto SAFETY_OF    = ATTRIBUTE_SAFETY_OF_ON;
+    static const auto SAFETY_MT    = ATTRIBUTE_SAFETY_MT_ON;
+    static const auto SAFETY_AN    = ATTRIBUTE_SAFETY_AN_ON;
+    uint64_t          safetyGuards = 0xFFFFFFFF'FFFFFFFF;
 
     // Bytecode
     bool byteCodeOptimize = true;

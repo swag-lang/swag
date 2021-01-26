@@ -4,7 +4,7 @@
 //#[swag.printbc]
 func arithmeticMean(numbers: s32...)
 {
-    #[swag.safety(true)]
+    #[swag.safety("", true)]
     {
 	    cpt := numbers[1]
     }

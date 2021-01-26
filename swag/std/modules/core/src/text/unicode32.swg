@@ -172,7 +172,7 @@ func compare(src, dst: const [..] char, ignoreCase = false)->s32
     var result: s32
     if ignoreCase
     {
-        #[swag.safety(false)]
+        #[swag.safety("bc", false)]
         loop i: minLen
         {
             c1 := toLower(src[i])

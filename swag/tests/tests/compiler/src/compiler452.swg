@@ -5,7 +5,7 @@
 #test
 {
 	var a: string = null;
-    #[swag.safety(true)]
+    #[swag.safety("", true)]
 	if(a[0] == 1)
 	{
 	}

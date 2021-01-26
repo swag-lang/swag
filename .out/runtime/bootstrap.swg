@@ -79,7 +79,7 @@ namespace swag
     attr enumindex()
 
     #[attributeUsage(AttributeUsage.All)]
-    attr safety(value: bool)
+    attr safety(what: string, value: bool)
 
     #[attributeUsage(AttributeUsage.All)]
     attr selectif(value: bool)
@@ -373,7 +373,13 @@ namespace swag
         moduleBuildNum: u32 = 0
 
         // Add guard code
-        safetyGuards: bool = true
+        const SafetyNP  = 0x0000100000000000
+        const SafetyBC  = 0x0000200000000000
+        const SafetyOF  = 0x0000400000000000
+        const SafetyMT  = 0x0000800000000000
+        const SafetyAN  = 0x0001000000000000
+        const SafetyAll = 0x000FF00000000000
+        safetyGuards: u64 = SafetyAll
 
         // Bytecode
         byteCodeOptimize: bool  = true
