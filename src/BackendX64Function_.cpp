@@ -904,7 +904,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            concat.addString2("\xf6\xe9"); // imul cl
+            concat.addString2("\xf6\xe1"); // mul cl
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store8_Indirect(pp, 0, RAX, RCX);
             break;
@@ -921,7 +922,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            concat.addString3("\x66\xf7\xe9"); // imul cx
+            concat.addString3("\x66\xf7\xe1"); // mul cx
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store16_Indirect(pp, 0, RAX, RCX);
             break;
@@ -938,7 +940,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            concat.addString2("\xf7\xe9"); // imul ecx
+            concat.addString2("\xf7\xe1"); // mul ecx
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store32_Indirect(pp, 0, RAX, RCX);
             break;
@@ -955,7 +958,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            concat.addString3("\x48\xf7\xe9"); // imul rcx
+            concat.addString3("\x48\xf7\xe1"); // mul rcx
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
             break;

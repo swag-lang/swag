@@ -242,6 +242,30 @@ inline bool mulOverflow(AstNode* node, int64_t x, int64_t y)
     return false;
 }
 
+inline bool mulOverflow(AstNode* node, uint8_t x, uint8_t y)
+{
+    if (node->sourceFile->module->mustEmitSafetyOF(node))
+    {
+        uint32_t result = (uint32_t) x * (uint32_t) y;
+        if (result > UINT8_MAX)
+            return true;
+    }
+
+    return false;
+}
+
+inline bool mulOverflow(AstNode* node, uint16_t x, uint16_t y)
+{
+    if (node->sourceFile->module->mustEmitSafetyOF(node))
+    {
+        uint32_t result = (uint32_t) x * (uint32_t) y;
+        if (result > UINT16_MAX)
+            return true;
+    }
+
+    return false;
+}
+
 inline bool mulOverflow(AstNode* node, uint32_t x, uint32_t y)
 {
     if (node->sourceFile->module->mustEmitSafetyOF(node))
@@ -251,5 +275,16 @@ inline bool mulOverflow(AstNode* node, uint32_t x, uint32_t y)
             return true;
     }
 
+    return false;
+}
+
+inline bool mulOverflow(AstNode* node, uint64_t x, uint64_t y)
+{
+    if (node->sourceFile->module->mustEmitSafetyOF(node))
+    {
+        auto res = x * y;
+        if (res > 0 && (UINT64_MAX / y) < x)
+            return true;
+    }
     return false;
 }
