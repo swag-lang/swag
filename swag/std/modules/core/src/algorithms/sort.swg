@@ -57,7 +57,9 @@ func(T) quick(values: [..] T, cb: func(T, T)->s32)
         swap(&buffer[end], &buffer[high])
 
         // To avoid too much recursions, we recurse only for the smaller partition
+        #[swag.safety("of", false)]
         set1 := cast(int) ((low - 1) - begin)
+        #[swag.safety("of", false)]
         set2 := cast(int) (end - (high + 1))
         if set1 > 0 && set2 > 0
         {

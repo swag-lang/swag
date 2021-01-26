@@ -4,6 +4,7 @@
     {
         var x: u32 = 10'u8
         var y: s8 = -1
+        #[swag.safety("of", false)]
         z := x + y
         @assert(z == 9)
         #[swag.safety("of", false)]
@@ -14,6 +15,7 @@
     {
         var x: u32 = 10'u8
         var y: s8 = -1
+        #[swag.safety("of", false)]
         z := x - y
         @assert(z == 11)
         #[swag.safety("of", false)]
