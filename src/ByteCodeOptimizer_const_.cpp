@@ -77,9 +77,11 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 BINOP_U64(%);
                 break;
             case ByteCodeOp::BinOpPlusS32:
+            case ByteCodeOp::BinOpPlusU32:
                 BINOP_S32(+);
                 break;
             case ByteCodeOp::BinOpPlusS64:
+            case ByteCodeOp::BinOpPlusU64:
                 BINOP_S64(+);
                 break;
             case ByteCodeOp::BinOpPlusF32:
@@ -89,9 +91,11 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 BINOP_F64(+);
                 break;
             case ByteCodeOp::BinOpMinusS32:
+            case ByteCodeOp::BinOpMinusU32:
                 BINOP_S32(-);
                 break;
             case ByteCodeOp::BinOpMinusS64:
+            case ByteCodeOp::BinOpMinusU64:
                 BINOP_S64(-);
                 break;
             case ByteCodeOp::BinOpMinusF32:
@@ -101,9 +105,11 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 BINOP_F64(-);
                 break;
             case ByteCodeOp::BinOpMulS32:
+            case ByteCodeOp::BinOpMulU32:
                 BINOP_S32(*);
                 break;
             case ByteCodeOp::BinOpMulS64:
+            case ByteCodeOp::BinOpMulU64:
                 BINOP_S64(*);
                 break;
             case ByteCodeOp::BinOpMulF32:

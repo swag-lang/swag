@@ -51,12 +51,16 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             {
             case ByteCodeOp::BinOpPlusS32:
             case ByteCodeOp::BinOpMinusS32:
+            case ByteCodeOp::BinOpPlusU32:
+            case ByteCodeOp::BinOpMinusU32:
                 if (ip->b.u32 == 0)
                     setNop(context, ip);
                 break;
 
             case ByteCodeOp::BinOpPlusS64:
+            case ByteCodeOp::BinOpPlusU64:
             case ByteCodeOp::BinOpMinusS64:
+            case ByteCodeOp::BinOpMinusU64:
             case ByteCodeOp::IncPointer64:
             case ByteCodeOp::DecPointer64:
                 if (ip->b.u64 == 0)

@@ -1221,7 +1221,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
+        case ByteCodeOp::BinOpPlusU32:
+        {
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateAdd(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
+            break;
+        }
         case ByteCodeOp::BinOpPlusS64:
+        {
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateAdd(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
+            break;
+        }
+        case ByteCodeOp::BinOpPlusU64:
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateAdd(r1, r2);
@@ -1250,7 +1264,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
+        case ByteCodeOp::BinOpMinusU32:
+        {
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateSub(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
+            break;
+        }
         case ByteCodeOp::BinOpMinusS64:
+        {
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateSub(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
+            break;
+        }
+        case ByteCodeOp::BinOpMinusU64:
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateSub(r1, r2);
@@ -1279,7 +1307,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
+        case ByteCodeOp::BinOpMulU32:
+        {
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateMul(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I32(r0));
+            break;
+        }
         case ByteCodeOp::BinOpMulS64:
+        {
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateMul(r1, r2);
+            builder.CreateStore(v0, TO_PTR_I64(r0));
+            break;
+        }
+        case ByteCodeOp::BinOpMulU64:
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateMul(r1, r2);

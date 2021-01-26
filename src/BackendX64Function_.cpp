@@ -708,7 +708,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpMulS32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::MUL);
             break;
+        case ByteCodeOp::BinOpMulU32:
+            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::MUL);
+            break;
         case ByteCodeOp::BinOpMulS64:
+            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::MUL);
+            break;
+        case ByteCodeOp::BinOpMulU64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::MUL);
             break;
         case ByteCodeOp::BinOpMulF32:
@@ -753,7 +759,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpPlusS32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::ADD);
             break;
+        case ByteCodeOp::BinOpPlusU32:
+            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::ADD);
+            break;
         case ByteCodeOp::BinOpPlusS64:
+            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::ADD);
+            break;
+        case ByteCodeOp::BinOpPlusU64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::ADD);
             break;
         case ByteCodeOp::BinOpPlusF32:
@@ -766,7 +778,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpMinusS32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::SUB);
             break;
+        case ByteCodeOp::BinOpMinusU32:
+            BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::SUB);
+            break;
         case ByteCodeOp::BinOpMinusS64:
+            BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::SUB);
+            break;
+        case ByteCodeOp::BinOpMinusU64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::SUB);
             break;
         case ByteCodeOp::BinOpMinusF32:
