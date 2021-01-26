@@ -338,23 +338,31 @@ bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-    case NativeTypeKind::U8:
         emitInstruction(context, ByteCodeOp::AffectOpMulEqS8, r0, r1);
         return true;
+    case NativeTypeKind::U8:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqU8, r0, r1);
+        return true;
     case NativeTypeKind::S16:
-    case NativeTypeKind::U16:
         emitInstruction(context, ByteCodeOp::AffectOpMulEqS16, r0, r1);
         return true;
+    case NativeTypeKind::U16:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqU16, r0, r1);
+        return true;
     case NativeTypeKind::S32:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqS32, r0, r1);
+        return true;
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::AffectOpMulEqS32, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::Int:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqS64, r0, r1);
+        return true;
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
-        emitInstruction(context, ByteCodeOp::AffectOpMulEqS64, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqU64, r0, r1);
         return true;
     case NativeTypeKind::F32:
         emitInstruction(context, ByteCodeOp::AffectOpMulEqF32, r0, r1);

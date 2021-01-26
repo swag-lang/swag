@@ -1616,11 +1616,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqS8:
         {
             MK_BINOPEQ8_CAB();
+            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt8Ty());
+            break;
+        }
+        case ByteCodeOp::AffectOpMulEqU8:
+        {
+            MK_BINOPEQ8_CAB();
             auto v0 = builder.CreateMul(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpMulEqS16:
+        {
+            MK_BINOPEQ16_CAB();
+            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt16Ty());
+            break;
+        }
+        case ByteCodeOp::AffectOpMulEqU16:
         {
             MK_BINOPEQ16_CAB();
             auto v0 = builder.CreateMul(builder.CreateLoad(r1), r2);
@@ -1630,11 +1642,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqS32:
         {
             MK_BINOPEQ32_CAB();
+            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt32Ty());
+            break;
+        }
+        case ByteCodeOp::AffectOpMulEqU32:
+        {
+            MK_BINOPEQ32_CAB();
             auto v0 = builder.CreateMul(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpMulEqS64:
+        {
+            MK_BINOPEQ64_CAB();
+            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt64Ty());
+            break;
+        }
+        case ByteCodeOp::AffectOpMulEqU64:
         {
             MK_BINOPEQ64_CAB();
             auto v0 = builder.CreateMul(builder.CreateLoad(r1), r2);

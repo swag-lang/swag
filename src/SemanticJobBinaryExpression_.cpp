@@ -264,42 +264,22 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-        {
-            int64_t result = (int64_t) left->computedValue.reg.s32 * (int64_t) right->computedValue.reg.s32;
-            if (sourceFile->module->mustEmitSafetyOF(node))
-            {
-                if (result < INT32_MIN || result > INT32_MAX)
-                    return context->report({node, node->token, "integer overflow"});
-            }
-            node->computedValue.reg.s64 = result;
+            if (mulOverflow(node, left->computedValue.reg.s32, right->computedValue.reg.s32))
+                return context->report({node, node->token, "integer overflow"});
+            node->computedValue.reg.s64 = left->computedValue.reg.s32 * right->computedValue.reg.s32;
             break;
-        }
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            if (sourceFile->module->mustEmitSafetyOF(node))
-            {
-                auto x = left->computedValue.reg.s64;
-                auto y = right->computedValue.reg.s64;
-                if ((x > 0 && y > 0 && x > INT64_MAX / y) ||
-                    (x < 0 && y > 0 && x < INT64_MIN / y) ||
-                    (x > 0 && y < 0 && y < INT64_MIN / x) ||
-                    (x < 0 && y < 0 && (x <= INT64_MIN || y <= INT64_MIN || -x > INT64_MAX / -y)))
-                    return context->report({node, node->token, "integer overflow"});
-            }
+            if (mulOverflow(node, left->computedValue.reg.s64, right->computedValue.reg.s64))
+                return context->report({node, node->token, "integer overflow"});
             node->computedValue.reg.s64 = left->computedValue.reg.s64 * right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-        {
-            uint64_t result = (uint64_t) left->computedValue.reg.u32 * (uint64_t) right->computedValue.reg.u32;
-            if (sourceFile->module->mustEmitSafetyOF(node))
-            {
-                if (result > UINT32_MAX)
-                    return context->report({node, node->token, "integer overflow"});
-            }
-            node->computedValue.reg.u64 = result;
+            if (mulOverflow(node, left->computedValue.reg.u32, right->computedValue.reg.u32))
+                return context->report({node, node->token, "integer overflow"});
+            node->computedValue.reg.u64 = left->computedValue.reg.u32 * right->computedValue.reg.u32;
             break;
-        }
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;

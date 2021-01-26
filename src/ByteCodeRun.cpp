@@ -1992,20 +1992,60 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::AffectOpMulEqS8:
     {
+        if (mulOverflow(ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
+        *(int8_t*) registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqU8:
+    {
         *(int8_t*) registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqS16:
+    {
+        if (mulOverflow(ip->node, *(int16_t*) registersRC[ip->a.u32].pointer, IMMB_S16(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
+        *(int16_t*) registersRC[ip->a.u32].pointer *= IMMB_S16(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqU16:
     {
         *(int16_t*) registersRC[ip->a.u32].pointer *= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqS32:
     {
+        if (mulOverflow(ip->node, *(int32_t*) registersRC[ip->a.u32].pointer, IMMB_S32(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
+        *(int32_t*) registersRC[ip->a.u32].pointer *= IMMB_S32(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqU32:
+    {
         *(int32_t*) registersRC[ip->a.u32].pointer *= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMulEqS64:
+    {
+        if (mulOverflow(ip->node, *(int64_t*) registersRC[ip->a.u32].pointer, IMMB_S64(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
+        *(int64_t*) registersRC[ip->a.u32].pointer *= IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqU64:
     {
         *(int64_t*) registersRC[ip->a.u32].pointer *= IMMB_S64(ip);
         break;
