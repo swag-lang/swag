@@ -58,7 +58,7 @@
         }                                                         \
     }                                                             \
     else                                                          \
-        *(__cast*) registersRC[ip->a.u32].pointer += __imm(ip);
+        *(__cast*) registersRC[ip->a.u32].pointer __op __imm(ip);
 
 #define OPEQ_UNSIGNED(__op, __cast, __imm)                        \
     if (context->sourceFile->module->mustEmitSafetyOF(ip->node))  \
@@ -74,7 +74,7 @@
         }                                                         \
     }                                                             \
     else                                                          \
-        *(__cast*) registersRC[ip->a.u32].pointer += __imm(ip);
+        *(__cast*) registersRC[ip->a.u32].pointer __op __imm(ip);
 
 bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc)
 {

@@ -70,6 +70,13 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 + right->computedValue.reg.s64;
+            if (sourceFile->module->mustEmitSafetyOF(node))
+            {
+                if (left->computedValue.reg.s64 < 0 && right->computedValue.reg.s64 < 0 && node->computedValue.reg.s64 > 0)
+                    return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+                if (left->computedValue.reg.s64 > 0 && right->computedValue.reg.s64 > 0 && node->computedValue.reg.s64 < 0)
+                    return context->report({ sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow" });
+            }
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
