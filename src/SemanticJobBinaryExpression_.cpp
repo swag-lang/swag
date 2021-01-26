@@ -72,14 +72,14 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         }
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 + right->computedValue.reg.s64;
             if (sourceFile->module->mustEmitSafetyOF(node))
             {
-                if (left->computedValue.reg.s64 < 0 && right->computedValue.reg.s64 < 0 && node->computedValue.reg.s64 > 0)
+                if (right->computedValue.reg.s64 < 0 && left->computedValue.reg.s64 < INT64_MIN - right->computedValue.reg.s64)
                     return context->report({node, node->token, "integer overflow"});
-                if (left->computedValue.reg.s64 > 0 && right->computedValue.reg.s64 > 0 && node->computedValue.reg.s64 < 0)
+                if (right->computedValue.reg.s64 > 0 && left->computedValue.reg.s64 > INT64_MAX - right->computedValue.reg.s64)
                     return context->report({node, node->token, "integer overflow"});
             }
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 + right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
@@ -207,6 +207,13 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         }
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
+            if (sourceFile->module->mustEmitSafetyOF(node))
+            {
+                if (-right->computedValue.reg.s64 < 0 && left->computedValue.reg.s64 < INT64_MIN + right->computedValue.reg.s64)
+                    return context->report({node, node->token, "integer overflow"});
+                if (-right->computedValue.reg.s64 > 0 && left->computedValue.reg.s64 > INT64_MAX + right->computedValue.reg.s64)
+                    return context->report({node, node->token, "integer overflow"});
+            }
             node->computedValue.reg.s64 = left->computedValue.reg.s64 - right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
