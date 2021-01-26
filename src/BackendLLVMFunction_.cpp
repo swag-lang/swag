@@ -10,7 +10,7 @@
 #include "Workspace.h"
 
 #define OPEQ_OVERFLOW(__intr, __inst, __type)                                                                                       \
-    if (module->mustEmitSafety(ip->node, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))                                          \
+    if (module->mustEmitSafetyOF(ip->node))                                                                                         \
     {                                                                                                                               \
         auto vs = builder.CreateIntrinsic(llvm::Intrinsic::__intr, {builder.__type, builder.__type}, {builder.CreateLoad(r1), r2}); \
         auto v0 = builder.CreateExtractValue(vs, {0});                                                                              \
@@ -1471,25 +1471,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqS8:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, getInt8Ty());
+            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt8Ty());
             break;
         }
         case ByteCodeOp::AffectOpMinusEqU8:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt8Ty());
+            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt8Ty());
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS16:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, getInt16Ty());
+            OPEQ_OVERFLOW(sadd_with_overflow, CreateSub, getInt16Ty());
             break;
         }
         case ByteCodeOp::AffectOpMinusEqU16:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt16Ty());
+            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt16Ty());
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS32:

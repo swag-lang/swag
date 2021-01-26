@@ -718,6 +718,11 @@ void Module::addGlobalVar(AstNode* node, GlobalVarKind varKind)
     }
 }
 
+bool Module::mustEmitSafetyOF(AstNode* node)
+{
+    return mustEmitSafety(node, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF);
+}
+
 bool Module::mustEmitSafety(AstNode* node, uint64_t whatOn, uint64_t whatOff)
 {
     return ((buildCfg.safetyGuards & whatOn) || (node->attributeFlags & whatOn)) && !(node->attributeFlags & whatOff);

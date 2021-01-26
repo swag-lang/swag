@@ -61,22 +61,25 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         {
         case NativeTypeKind::S32:
         {
-            auto result = left->computedValue.reg.s32 + right->computedValue.reg.s32;
-            if (result < INT32_MIN || result > INT32_MAX)
-                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's32'"});
-            node->computedValue.reg.s32 = left->computedValue.reg.s32 + right->computedValue.reg.s32;
+            int64_t result = (int64_t) left->computedValue.reg.s32 + (int64_t) right->computedValue.reg.s32;
+            if ((result < INT32_MIN || result > INT32_MAX) && sourceFile->module->mustEmitSafetyOF(node))
+                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+            node->computedValue.reg.s64 = result;
+            break;
         }
-        break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 + right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            if (left->computedValue.reg.u64 + right->computedValue.reg.u64 > UINT32_MAX)
-                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u32'"});
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
+        {
+            uint64_t result = (uint64_t) left->computedValue.reg.u32 + (uint64_t) right->computedValue.reg.u32;
+            if (result > UINT32_MAX && sourceFile->module->mustEmitSafetyOF(node))
+                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+            node->computedValue.reg.u64 = result;
             break;
+        }
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
@@ -175,22 +178,25 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         {
         case NativeTypeKind::S32:
         {
-            auto result = left->computedValue.reg.s32 - right->computedValue.reg.s32;
-            if (result < INT32_MIN || result > INT32_MAX)
-                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's32'"});
-            node->computedValue.reg.s32 = left->computedValue.reg.s32 - right->computedValue.reg.s32;
+            int64_t result = (int64_t) left->computedValue.reg.s32 - (int64_t) right->computedValue.reg.s32;
+            if ((result < INT32_MIN || result > INT32_MAX) && sourceFile->module->mustEmitSafetyOF(node))
+                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+            node->computedValue.reg.s64 = result;
+            break;
         }
-        break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 - right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            if (left->computedValue.reg.u64 - right->computedValue.reg.u64 > UINT32_MAX)
-                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u32'"});
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
+        {
+            uint64_t result = (uint64_t) left->computedValue.reg.u32 - (uint64_t) right->computedValue.reg.u32;
+            if (result > UINT32_MAX && sourceFile->module->mustEmitSafetyOF(node))
+                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+            node->computedValue.reg.u64 = result;
             break;
+        }
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
@@ -262,22 +268,25 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         {
         case NativeTypeKind::S32:
         {
-            auto result = left->computedValue.reg.s32 * right->computedValue.reg.s32;
-            if (result < INT32_MIN || result > INT32_MAX)
-                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's32'"});
-            node->computedValue.reg.s32 = result;
+            int64_t result = (int64_t) left->computedValue.reg.s32 * (int64_t) right->computedValue.reg.s32;
+            if ((result < INT32_MIN || result > INT32_MAX) && sourceFile->module->mustEmitSafetyOF(node))
+                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+            node->computedValue.reg.s64 = result;
+            break;
         }
-        break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 * right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            if (left->computedValue.reg.u64 * right->computedValue.reg.u64 > UINT32_MAX)
-                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u32'"});
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
+        {
+            uint64_t result = (uint64_t) left->computedValue.reg.u32 * (uint64_t) right->computedValue.reg.u32;
+            if (result > UINT32_MAX && sourceFile->module->mustEmitSafetyOF(node))
+                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+            node->computedValue.reg.u64 = result;
             break;
+        }
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;

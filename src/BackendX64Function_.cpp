@@ -322,7 +322,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
 
 void BackendX64::emitOverflowSigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node)
 {
-    if (!module->mustEmitSafety(node, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))
+    if (!module->mustEmitSafetyOF(node))
         return;
     concat.addString2("\x0f\x81"); // jno
     concat.addU32(0);
@@ -334,7 +334,7 @@ void BackendX64::emitOverflowSigned(const BuildParameters& buildParameters, Conc
 
 void BackendX64::emitOverflowUnsigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node)
 {
-    if (!module->mustEmitSafety(node, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))
+    if (!module->mustEmitSafetyOF(node))
         return;
     concat.addString2("\x0f\x83"); // jnc
     concat.addU32(0);

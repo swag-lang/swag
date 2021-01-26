@@ -81,6 +81,7 @@ struct Module
     bool        internalError(const Utf8& msg);
     bool        internalError(AstNode* node, Token& token, const Utf8& msg);
     bool        mustOptimizeBC(AstNode* node);
+    bool        mustEmitSafetyOF(AstNode* node);
     bool        mustEmitSafety(AstNode* node, uint64_t whatOn, uint64_t whatOff);
     bool        mustGenerateTestExe();
     bool        canGenerateLegit();

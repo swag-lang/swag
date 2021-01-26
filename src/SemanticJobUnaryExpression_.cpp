@@ -26,18 +26,24 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
+            op->computedValue.reg.s64 = -op->computedValue.reg.s8;
+            break;
         case NativeTypeKind::S16:
+            op->computedValue.reg.s64 = -op->computedValue.reg.s16;
+            break;
         case NativeTypeKind::S32:
-        case NativeTypeKind::S64:
-        case NativeTypeKind::Int:
-            op->computedValue.reg.s64 = -op->computedValue.reg.s64;
+            op->computedValue.reg.s64 = -op->computedValue.reg.s32;
             if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
             {
                 int32_t newValue = -CastTypeInfo<TypeInfoNative>(typeInfo, typeInfo->kind)->valueInteger;
                 op->typeInfo     = TypeManager::makeUntypedType(typeInfo, *(uint32_t*) &newValue);
             }
-
             break;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
+            op->computedValue.reg.s64 = -op->computedValue.reg.s64;
+            break;
+
         case NativeTypeKind::F32:
             op->computedValue.reg.f32 = -op->computedValue.reg.f32;
             if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
