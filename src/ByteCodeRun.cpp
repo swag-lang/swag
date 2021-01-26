@@ -12,6 +12,7 @@
 #include "ByteCodeStack.h"
 #include "Runtime.h"
 #include "SemanticJob.h"
+#include "Math.h"
 
 #define IMMA_B(ip) ((ip->flags & BCI_IMM_A) ? ip->a.b : registersRC[ip->a.u32].b)
 #define IMMB_B(ip) ((ip->flags & BCI_IMM_B) ? ip->b.b : registersRC[ip->b.u32].b)
@@ -43,38 +44,6 @@
 
 #define IMMC_U32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32)
 #define IMMC_U64(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u64 : registersRC[ip->c.u32].u64)
-
-#define OPEQ_SIGNED(__op, __cast, __mask, __imm)                  \
-    if (context->sourceFile->module->mustEmitSafetyOF(ip->node))  \
-    {                                                             \
-        auto      ptr = (__cast*) registersRC[ip->a.u32].pointer; \
-        auto      sf0 = *ptr & __mask;                            \
-        *ptr __op __imm(ip);                                      \
-        auto      sf1 = *ptr & __mask;                            \
-        if (sf0 != sf1)                                           \
-        {                                                         \
-            context->hasError = true;                             \
-            context->errorMsg = "integer overflow";               \
-        }                                                         \
-    }                                                             \
-    else                                                          \
-        *(__cast*) registersRC[ip->a.u32].pointer __op __imm(ip);
-
-#define OPEQ_UNSIGNED(__op, __cast, __imm)                        \
-    if (context->sourceFile->module->mustEmitSafetyOF(ip->node))  \
-    {                                                             \
-        auto      ptr = (__cast*) registersRC[ip->a.u32].pointer; \
-        auto      sf0 = *ptr;                                     \
-        *ptr __op __imm(ip);                                      \
-        auto      sf1 = *ptr;                                     \
-        if (sf1 < sf0)                                            \
-        {                                                         \
-            context->hasError = true;                             \
-            context->errorMsg = "integer overflow";               \
-        }                                                         \
-    }                                                             \
-    else                                                          \
-        *(__cast*) registersRC[ip->a.u32].pointer __op __imm(ip);
 
 bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc)
 {
@@ -1831,42 +1800,82 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::AffectOpPlusEqS8:
     {
-        OPEQ_SIGNED(+=, int8_t, 0x80, IMMB_S8);
+        if (addOverflow(ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
+        *(int8_t*) registersRC[ip->a.u32].pointer += IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqU8:
     {
-        OPEQ_UNSIGNED(+=, uint8_t, IMMB_S8);
+        if (addOverflow(ip->node, *(uint8_t*) registersRC[ip->a.u32].pointer, (uint8_t) IMMB_S8(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
+        *(int8_t*) registersRC[ip->a.u32].pointer += IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS16:
     {
-        OPEQ_SIGNED(+=, int16_t, 0x8000, IMMB_S16);
+        if (addOverflow(ip->node, *(int16_t*) registersRC[ip->a.u32].pointer, IMMB_S16(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
+        *(int16_t*) registersRC[ip->a.u32].pointer += IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqU16:
     {
-        OPEQ_UNSIGNED(+=, uint16_t, IMMB_S16);
+        if (addOverflow(ip->node, *(uint16_t*) registersRC[ip->a.u32].pointer, (uint16_t) IMMB_S16(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
+        *(int16_t*) registersRC[ip->a.u32].pointer += IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS32:
     {
-        OPEQ_SIGNED(+=, int32_t, 0x80000000, IMMB_S32);
+        if (addOverflow(ip->node, *(int32_t*) registersRC[ip->a.u32].pointer, IMMB_S32(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
+        *(int32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqU32:
     {
-        OPEQ_UNSIGNED(+=, uint32_t, IMMB_S32);
+        if (addOverflow(ip->node, *(uint32_t*) registersRC[ip->a.u32].pointer, (uint32_t) IMMB_S32(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
+        *(int32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS64:
     {
-        OPEQ_SIGNED(+=, int64_t, 0x80000000'00000000, IMMB_S64);
+        if (addOverflow(ip->node, *(int64_t*) registersRC[ip->a.u32].pointer, IMMB_S64(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
+        *(int64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqU64:
     {
-        OPEQ_UNSIGNED(+=, uint64_t, IMMB_S64);
+        if (addOverflow(ip->node, *(uint64_t*) registersRC[ip->a.u32].pointer, (uint64_t) IMMB_S64(ip)))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
+        *(int64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqF32:
@@ -1884,25 +1893,30 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         *(uint8_t**) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
         break;
     }
+    case ByteCodeOp::AffectOpMinusEqPointer:
+    {
+        *(uint8_t**) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
+        break;
+    }
 
     case ByteCodeOp::AffectOpMinusEqS8:
     {
-        OPEQ_SIGNED(-=, int8_t, 0x80, IMMB_S8);
+        *(int8_t*) registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqU8:
     {
-        OPEQ_UNSIGNED(-=, int8_t, IMMB_S8);
+        *(int8_t*) registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqS16:
     {
-        OPEQ_SIGNED(-=, int16_t, 0x8000, IMMB_S16);
+        *(int16_t*) registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqU16:
     {
-        OPEQ_UNSIGNED(-=, int16_t, IMMB_S16);
+        *(int16_t*) registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqS32:
@@ -1922,7 +1936,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::AffectOpMinusEqU64:
     {
-        *(int64_t*) registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
+        *(int32_t*) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqF32:
@@ -1933,11 +1947,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::AffectOpMinusEqF64:
     {
         *(double*) registersRC[ip->a.u32].pointer -= IMMB_F64(ip);
-        break;
-    }
-    case ByteCodeOp::AffectOpMinusEqPointer:
-    {
-        *(uint8_t**) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
     }
 

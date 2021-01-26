@@ -758,6 +758,9 @@
     <ClInclude Include="..\src\FetchModuleJobFileSystem.h">
       <Filter>CfgManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Math.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

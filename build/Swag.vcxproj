@@ -206,6 +206,7 @@
     <ClInclude Include="../src/Version.h" />
     <ClInclude Include="../src/ComWin32.hpp" />
     <ClInclude Include="../src/Workspace.h" />
+    <ClInclude Include="..\src\Math.h" />
     <ClInclude Include="..\src\ModuleCfgManager.h" />
     <ClInclude Include="..\src\FetchModuleJobFileSystem.h" />
   </ItemGroup>
