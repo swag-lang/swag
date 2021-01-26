@@ -62,8 +62,11 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         case NativeTypeKind::S32:
         {
             int64_t result = (int64_t) left->computedValue.reg.s32 + (int64_t) right->computedValue.reg.s32;
-            if ((result < INT32_MIN || result > INT32_MAX) && sourceFile->module->mustEmitSafetyOF(node))
-                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+            if (sourceFile->module->mustEmitSafetyOF(node))
+            {
+                if (result < INT32_MIN || result > INT32_MAX)
+                    return context->report({node, node->token, "integer overflow"});
+            }
             node->computedValue.reg.s64 = result;
             break;
         }
@@ -73,23 +76,31 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             if (sourceFile->module->mustEmitSafetyOF(node))
             {
                 if (left->computedValue.reg.s64 < 0 && right->computedValue.reg.s64 < 0 && node->computedValue.reg.s64 > 0)
-                    return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+                    return context->report({node, node->token, "integer overflow"});
                 if (left->computedValue.reg.s64 > 0 && right->computedValue.reg.s64 > 0 && node->computedValue.reg.s64 < 0)
-                    return context->report({ sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow" });
+                    return context->report({node, node->token, "integer overflow"});
             }
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
         {
             uint64_t result = (uint64_t) left->computedValue.reg.u32 + (uint64_t) right->computedValue.reg.u32;
-            if (result > UINT32_MAX && sourceFile->module->mustEmitSafetyOF(node))
-                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+            if (sourceFile->module->mustEmitSafetyOF(node))
+            {
+                if (result > UINT32_MAX)
+                    return context->report({node, node->token, "integer overflow"});
+            }
             node->computedValue.reg.u64 = result;
             break;
         }
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
+            if (sourceFile->module->mustEmitSafetyOF(node))
+            {
+                if (right->computedValue.reg.u64 > UINT64_MAX - left->computedValue.reg.u64)
+                    return context->report({node, node->token, "integer overflow"});
+            }
             break;
         case NativeTypeKind::F32:
             node->computedValue.reg.f32 = left->computedValue.reg.f32 + right->computedValue.reg.f32;
@@ -186,8 +197,11 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         case NativeTypeKind::S32:
         {
             int64_t result = (int64_t) left->computedValue.reg.s32 - (int64_t) right->computedValue.reg.s32;
-            if ((result < INT32_MIN || result > INT32_MAX) && sourceFile->module->mustEmitSafetyOF(node))
-                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+            if (sourceFile->module->mustEmitSafetyOF(node))
+            {
+                if (result < INT32_MIN || result > INT32_MAX)
+                    return context->report({node, node->token, "integer overflow"});
+            }
             node->computedValue.reg.s64 = result;
             break;
         }
@@ -199,8 +213,11 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         case NativeTypeKind::Char:
         {
             uint64_t result = (uint64_t) left->computedValue.reg.u32 - (uint64_t) right->computedValue.reg.u32;
-            if (result > UINT32_MAX && sourceFile->module->mustEmitSafetyOF(node))
-                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+            if (sourceFile->module->mustEmitSafetyOF(node))
+            {
+                if (result > UINT32_MAX)
+                    return context->report({node, node->token, "integer overflow"});
+            }
             node->computedValue.reg.u64 = result;
             break;
         }
@@ -276,8 +293,11 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         case NativeTypeKind::S32:
         {
             int64_t result = (int64_t) left->computedValue.reg.s32 * (int64_t) right->computedValue.reg.s32;
-            if ((result < INT32_MIN || result > INT32_MAX) && sourceFile->module->mustEmitSafetyOF(node))
-                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+            if (sourceFile->module->mustEmitSafetyOF(node))
+            {
+                if (result < INT32_MIN || result > INT32_MAX)
+                    return context->report({node, node->token, "integer overflow"});
+            }
             node->computedValue.reg.s64 = result;
             break;
         }
@@ -289,8 +309,11 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         case NativeTypeKind::Char:
         {
             uint64_t result = (uint64_t) left->computedValue.reg.u32 * (uint64_t) right->computedValue.reg.u32;
-            if (result > UINT32_MAX && sourceFile->module->mustEmitSafetyOF(node))
-                return context->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer overflow"});
+            if (sourceFile->module->mustEmitSafetyOF(node))
+            {
+                if (result > UINT32_MAX)
+                    return context->report({node, node->token, "integer overflow"});
+            }
             node->computedValue.reg.u64 = result;
             break;
         }
