@@ -3,30 +3,30 @@
 #global testerror
 #global testerror
 
+#[swag.safety("of", true)]
 #test
 {
-    #[swag.safety("of", true)]
     var x: s8 = swag.MaxS8
     x *= 2
 }
 
+#[swag.safety("of", true)]
 #test
 {
-    #[swag.safety("of", true)]
     var x: s16 = swag.MaxS16
     x *= 2
 }
 
+#[swag.safety("of", true)]
 #test
 {
-    #[swag.safety("of", true)]
     var x: s32 = swag.MaxS32
     x *= 2
 }
 
+#[swag.safety("of", true)]
 #test
 {
-    #[swag.safety("of", true)]
     var x: s64 = swag.MaxS64
     x *= 2
 }

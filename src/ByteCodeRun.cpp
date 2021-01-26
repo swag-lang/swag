@@ -1165,15 +1165,25 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::BinOpPlusS32:
     {
-        auto val1                  = IMMA_S32(ip);
-        auto val2                  = IMMB_S32(ip);
+        auto val1 = IMMA_S32(ip);
+        auto val2 = IMMB_S32(ip);
+        if (addOverflow(ip->node, val1, val2))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
         registersRC[ip->c.u32].s32 = val1 + val2;
         break;
     }
     case ByteCodeOp::BinOpPlusS64:
     {
-        auto val1                  = IMMA_S64(ip);
-        auto val2                  = IMMB_S64(ip);
+        auto val1 = IMMA_S64(ip);
+        auto val2 = IMMB_S64(ip);
+        if (addOverflow(ip->node, val1, val2))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
         registersRC[ip->c.u32].s64 = val1 + val2;
         break;
     }
@@ -1194,15 +1204,25 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::BinOpMinusS32:
     {
-        auto val1                  = IMMA_S32(ip);
-        auto val2                  = IMMB_S32(ip);
+        auto val1 = IMMA_S32(ip);
+        auto val2 = IMMB_S32(ip);
+        if (subOverflow(ip->node, val1, val2))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
         registersRC[ip->c.u32].s32 = val1 - val2;
         break;
     }
     case ByteCodeOp::BinOpMinusS64:
     {
-        auto val1                  = IMMA_S64(ip);
-        auto val2                  = IMMB_S64(ip);
+        auto val1 = IMMA_S64(ip);
+        auto val2 = IMMB_S64(ip);
+        if (subOverflow(ip->node, val1, val2))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
         registersRC[ip->c.u32].s64 = val1 - val2;
         break;
     }
@@ -1223,15 +1243,25 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::BinOpMulS32:
     {
-        auto val1                  = IMMA_S32(ip);
-        auto val2                  = IMMB_S32(ip);
+        auto val1 = IMMA_S32(ip);
+        auto val2 = IMMB_S32(ip);
+        if (mulOverflow(ip->node, val1, val2))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
         registersRC[ip->c.u32].s32 = val1 * val2;
         break;
     }
     case ByteCodeOp::BinOpMulS64:
     {
-        auto val1                  = IMMA_S64(ip);
-        auto val2                  = IMMB_S64(ip);
+        auto val1 = IMMA_S64(ip);
+        auto val2 = IMMB_S64(ip);
+        if (mulOverflow(ip->node, val1, val2))
+        {
+            context->hasError = true;
+            context->errorMsg = "integer overflow";
+        }
         registersRC[ip->c.u32].s64 = val1 * val2;
         break;
     }
