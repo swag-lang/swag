@@ -212,10 +212,11 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == "safety")
             {
                 ComputedValue attrWhat;
+                vector<Utf8>  what;
                 curAttr->attributes.getValue("swag.safety", "what", attrWhat);
                 attrWhat.text.trim();
-                vector<Utf8> what;
                 tokenize(attrWhat.text, '|', what);
+
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.safety", "value", attrValue);
 
@@ -247,9 +248,31 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             }
             else if (child->token.text == "optim")
             {
+                ComputedValue attrWhat;
+                vector<Utf8>  what;
+                curAttr->attributes.getValue("swag.optim", "what", attrWhat);
+                attrWhat.text.trim();
+                tokenize(attrWhat.text, '|', what);
+
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.optim", "value", attrValue);
-                flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_ON : ATTRIBUTE_OPTIM_OFF;
+
+                if (attrWhat.text.empty())
+                {
+                    flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BC_ON : ATTRIBUTE_OPTIM_BC_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BK_ON : ATTRIBUTE_OPTIM_BK_OFF;
+                }
+
+                for (auto& w : what)
+                {
+                    w.trim();
+                    if (w == "bc")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BC_ON : ATTRIBUTE_OPTIM_BC_OFF;
+                    else if (w == "bk")
+                        flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BK_ON : ATTRIBUTE_OPTIM_BK_OFF;
+                    else
+                        return context->report({child, format("'swag.optim' invalid value '%s'", w.c_str())});
+                }
             }
             else if (child->token.text == "selectif")
             {

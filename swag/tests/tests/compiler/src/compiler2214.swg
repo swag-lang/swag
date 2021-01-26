@@ -39,7 +39,7 @@ func titi()->A
 }
 
 //#[swag.printbc]
-#[swag.optim(true)]
+#[swag.optim("", true)]
 #test
 {
     {

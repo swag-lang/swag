@@ -1,5 +1,5 @@
 //#[swag.printbc]
-#[swag.optim(false)]
+#[swag.optim("", false)]
 #test
 {
     c := 0'u8

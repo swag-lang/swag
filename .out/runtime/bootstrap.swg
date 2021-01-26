@@ -85,7 +85,7 @@ namespace swag
     attr selectif(value: bool)
 
     #[attributeUsage(AttributeUsage.Function)]
-    attr optim(value: bool)
+    attr optim(what: string, value: bool)
 
     #[attributeUsage(AttributeUsage.Function)]
     attr callback()

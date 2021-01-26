@@ -9,7 +9,7 @@ func print(s: string, f: ...)
 {
 }
 
-#[swag.optim(false)]
+#[swag.optim("", false)]
 #test
 {
     print("toto", 1, 2)

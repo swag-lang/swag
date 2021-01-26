@@ -725,12 +725,9 @@ bool Module::mustEmitSafety(AstNode* node, uint64_t whatOn, uint64_t whatOff)
 
 bool Module::mustOptimizeBC(AstNode* node)
 {
-    if (node && node->attributeFlags & ATTRIBUTE_OPTIM_ON)
-        return true;
-    if (node && node->attributeFlags & ATTRIBUTE_OPTIM_OFF)
-        return false;
-
-    return buildCfg.byteCodeOptimize != 0;
+    if (!node)
+        return buildCfg.byteCodeOptimize;
+    return (buildCfg.byteCodeOptimize || (node->attributeFlags & ATTRIBUTE_OPTIM_BC_ON)) && !(node->attributeFlags & ATTRIBUTE_OPTIM_BC_OFF);
 }
 
 bool Module::hasBytecodeToRun()

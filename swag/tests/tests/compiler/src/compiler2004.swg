@@ -5,7 +5,7 @@ func toto()->bool
 }
 
 //#[swag.printbc]
-#[swag.optim(false)]
+#[swag.optim("", false)]
 #test
 {
     a := 0
