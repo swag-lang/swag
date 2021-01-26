@@ -315,6 +315,16 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         }
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
+            if (sourceFile->module->mustEmitSafetyOF(node))
+            {
+                auto x = left->computedValue.reg.s64;
+                auto y = right->computedValue.reg.s64;
+                if ((x > 0 && y > 0 && x > INT64_MAX / y) ||
+                    (x < 0 && y > 0 && x < INT64_MIN / y) ||
+                    (x > 0 && y < 0 && y < INT64_MIN / x) ||
+                    (x < 0 && y < 0 && (x <= INT64_MIN || y <= INT64_MIN || -x > INT64_MAX / -y)))
+                    return context->report({node, node->token, "integer overflow"});
+            }
             node->computedValue.reg.s64 = left->computedValue.reg.s64 * right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
@@ -332,6 +342,11 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
+            if (sourceFile->module->mustEmitSafetyOF(node))
+            {
+                if (node->computedValue.reg.u64 > 0 && (UINT64_MAX / right->computedValue.reg.u64) < left->computedValue.reg.u64)
+                    return context->report({node, node->token, "integer overflow"});
+            }
             break;
         case NativeTypeKind::F32:
             node->computedValue.reg.f32 = left->computedValue.reg.f32 * right->computedValue.reg.f32;
