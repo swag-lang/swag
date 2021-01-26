@@ -1104,6 +1104,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::AffectOpPlusEqS8:
+        case ByteCodeOp::AffectOpPlusEqU8:
         {
             MK_BINOPEQ8_CAB(X64Op::ADD);
             /*concat.addString2("\x0f\x81");
@@ -1114,12 +1115,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS16:
+        case ByteCodeOp::AffectOpPlusEqU16:
             MK_BINOPEQ16_CAB(X64Op::ADD);
             break;
         case ByteCodeOp::AffectOpPlusEqS32:
+        case ByteCodeOp::AffectOpPlusEqU32:
             MK_BINOPEQ32_CAB(X64Op::ADD);
             break;
         case ByteCodeOp::AffectOpPlusEqS64:
+        case ByteCodeOp::AffectOpPlusEqU64:
             MK_BINOPEQ64_CAB(X64Op::ADD);
             break;
         case ByteCodeOp::AffectOpPlusEqF32:

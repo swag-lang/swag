@@ -1461,6 +1461,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::AffectOpPlusEqS8:
+        case ByteCodeOp::AffectOpPlusEqU8:
         {
             MK_BINOPEQ8_CAB();
             auto v0 = builder.CreateAdd(builder.CreateLoad(r1), r2);
@@ -1468,6 +1469,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS16:
+        case ByteCodeOp::AffectOpPlusEqU16:
         {
             MK_BINOPEQ16_CAB();
             auto v0 = builder.CreateAdd(builder.CreateLoad(r1), r2);
@@ -1475,6 +1477,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS32:
+        case ByteCodeOp::AffectOpPlusEqU32:
         {
             MK_BINOPEQ32_CAB();
             auto v0 = builder.CreateAdd(builder.CreateLoad(r1), r2);
@@ -1482,6 +1485,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS64:
+        case ByteCodeOp::AffectOpPlusEqU64:
         {
             MK_BINOPEQ64_CAB();
             auto v0 = builder.CreateAdd(builder.CreateLoad(r1), r2);

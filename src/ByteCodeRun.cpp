@@ -1798,21 +1798,25 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
 
     case ByteCodeOp::AffectOpPlusEqS8:
+    case ByteCodeOp::AffectOpPlusEqU8:
     {
         *(int8_t*) registersRC[ip->a.u32].pointer += IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS16:
+    case ByteCodeOp::AffectOpPlusEqU16:
     {
         *(int16_t*) registersRC[ip->a.u32].pointer += IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS32:
+    case ByteCodeOp::AffectOpPlusEqU32:
     {
         *(int32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS64:
+    case ByteCodeOp::AffectOpPlusEqU64:
     {
         *(int64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
         break;
