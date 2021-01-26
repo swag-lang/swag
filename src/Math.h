@@ -145,6 +145,30 @@ inline bool subOverflow(AstNode* node, int64_t x, int64_t y)
     return false;
 }
 
+inline bool subOverflow(AstNode* node, uint8_t x, uint8_t y)
+{
+    uint32_t result = (uint32_t) x - (uint32_t) y;
+    if (node->sourceFile->module->mustEmitSafetyOF(node))
+    {
+        if (result > UINT8_MAX)
+            return true;
+    }
+
+    return false;
+}
+
+inline bool subOverflow(AstNode* node, uint16_t x, uint16_t y)
+{
+    uint32_t result = (uint32_t) x - (uint32_t) y;
+    if (node->sourceFile->module->mustEmitSafetyOF(node))
+    {
+        if (result > UINT16_MAX)
+            return true;
+    }
+
+    return false;
+}
+
 inline bool subOverflow(AstNode* node, uint32_t x, uint32_t y)
 {
     uint64_t result = (uint64_t) x - (uint64_t) y;
