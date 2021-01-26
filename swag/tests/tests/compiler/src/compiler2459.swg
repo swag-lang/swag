@@ -3,7 +3,7 @@
 #[swag.safety("of", true)]
 #test
 {
-    var x: u8 = 0
+    var x: s8 = 0
     x += 100
-    x += 200
+    x += 100
 }
