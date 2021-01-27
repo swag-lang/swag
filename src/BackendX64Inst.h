@@ -837,7 +837,6 @@ namespace BackendX64Inst
                 pp.concat.addString1("\xF7"); // mul
                 // need to pass rsp here, don't know why, but the encoding should be 0x67 for a small stack offset
                 emit_ModRM(pp, regOffset(ip->b.u32), RSP, RDI);
-                emit_Copy32(pp, RAX, RCX);
             }
             else
             {
@@ -863,7 +862,6 @@ namespace BackendX64Inst
             {
                 // mul rcx
                 pp.concat.addString3("\x48\xF7\xE1");
-                emit_Copy32(pp, RAX, RCX);
             }
             else if (op == X64Op::IMUL)
             {
@@ -879,7 +877,10 @@ namespace BackendX64Inst
     inline void emit_BinOpInt32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
         emit_BinOpInt32(pp, ip, op);
-        BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);
+        if (op == X64Op::MUL)
+            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+        else
+            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);
     }
 
     inline void emit_BinOpInt64(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
@@ -893,14 +894,13 @@ namespace BackendX64Inst
                 pp.concat.addString1("\xF7"); // mul
                 // need to pass rsp here, don't know why, but the encoding should be 0x67 for a small stack offset
                 emit_ModRM(pp, regOffset(ip->b.u32), RSP, RDI);
-                emit_Copy32(pp, RAX, RCX);
             }
             else
             {
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
                 pp.concat.addU8(0x48);
                 if (op == X64Op::IMUL)
-                    pp.concat.addU16(0xAF0F);
+                    pp.concat.addString2("\x0F\xAF"); // imul
                 else
                     pp.concat.addU8((uint8_t) op | 2);
                 emit_ModRM(pp, regOffset(ip->b.u32), RCX, RDI);
@@ -920,7 +920,6 @@ namespace BackendX64Inst
             {
                 // mul rcx
                 pp.concat.addString3("\x48\xF7\xE1");
-                emit_Copy64(pp, RAX, RCX);
             }
             else if (op == X64Op::IMUL)
             {
@@ -938,7 +937,10 @@ namespace BackendX64Inst
     inline void emit_BinOpInt64_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
         emit_BinOpInt64(pp, ip, op);
-        BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);
+        if (op == X64Op::MUL)
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+        else
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);
     }
 
     /////////////////////////////////////////////////////////////////////
