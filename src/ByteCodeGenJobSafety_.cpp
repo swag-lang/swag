@@ -150,6 +150,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerEqU64(ByteCodeGenContext* context,
     emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, re);
     emitInstruction(context, ByteCodeOp::NegBool, re);
     emitAssert(context, re, "index out of range");
+    freeRegisterRC(context, re);
 }
 
 void ByteCodeGenJob::emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
@@ -253,4 +254,32 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
         if (freeMaxBoundReg)
             freeRegisterRC(context, maxBoundReg);
     }
+}
+
+void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, AstNode* exprNode)
+{
+    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))
+        return;
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return;
+
+    PushICFlags ic(context, BCI_SAFETY);
+    auto        re = reserveRegisterRC(context);
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeTypeKind::U8:
+        if (fromTypeInfo->nativeType == NativeTypeKind::U32)
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerU32, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = UINT8_MAX;
+            emitAssert(context, re, "[safety] integer cast truncated bits");
+            break;
+        }
+
+        break;
+    }
+
+    freeRegisterRC(context, re);
 }

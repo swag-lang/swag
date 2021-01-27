@@ -832,6 +832,8 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitCast, cast type not native");
 
+    emitSafetyCast(context, typeInfo, fromTypeInfo, exprNode);
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::Bool:

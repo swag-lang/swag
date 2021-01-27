@@ -321,7 +321,7 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerTestError(AstNode* parent, AstNode** result)
+bool SyntaxJob::doCompilerTestError(AstNode* parent, AstNode** result, bool embedded)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerTestError, sourceFile, parent);
     if (result)
@@ -331,14 +331,16 @@ bool SyntaxJob::doCompilerTestError(AstNode* parent, AstNode** result)
     node->token = move(token);
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(doExpression(node));
-    SWAG_CHECK(eatSemiCol("after '#testerror' expression"));
-
     SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#testerror' is invalid outside a test module (in the './tests' folder of the workspace)"}));
     SWAG_ASSERT(g_CommandLine.test);
     SWAG_VERIFY(!currentCompilerIfBlock, sourceFile->report({sourceFile, token, "'#testerror' cannot be in a '#if' block"}));
-    sourceFile->numTestErrors++;
 
+    if (embedded)
+        SWAG_CHECK(doEmbeddedInstruction(node));
+    else
+        SWAG_CHECK(doTopLevelInstruction(node));
+
+    sourceFile->numTestErrors++;
     return true;
 }
 
