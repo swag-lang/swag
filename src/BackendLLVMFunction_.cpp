@@ -22,7 +22,7 @@
         auto v2 = builder.CreateIsNull(v1);                                                                                         \
         builder.CreateCondBr(v2, blockOk, blockErr);                                                                                \
         builder.SetInsertPoint(blockErr);                                                                                           \
-        emitAssert(buildParameters, allocR, allocT, ip->node, "[safety] integer overflow");                                                  \
+        emitAssert(buildParameters, allocR, allocT, ip->node, "[safety] integer overflow");                                         \
         builder.CreateBr(blockOk);                                                                                                  \
         builder.SetInsertPoint(blockOk);                                                                                            \
         builder.CreateStore(v0, r1);                                                                                                \
@@ -46,7 +46,7 @@
         auto v2 = builder.CreateIsNull(v1);                                                                     \
         builder.CreateCondBr(v2, blockOk, blockErr);                                                            \
         builder.SetInsertPoint(blockErr);                                                                       \
-        emitAssert(buildParameters, allocR, allocT, ip->node, "[safety] integer overflow");                              \
+        emitAssert(buildParameters, allocR, allocT, ip->node, "[safety] integer overflow");                     \
         builder.CreateBr(blockOk);                                                                              \
         builder.SetInsertPoint(blockOk);                                                                        \
         builder.CreateStore(v0, __cast(r0));                                                                    \
@@ -2446,6 +2446,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             builder.CreateRetVoid();
             blockIsClosed = true;
+            break;
+        }
+
+        case ByteCodeOp::CompilerRunError:
+        {
+            Utf8         msg = format("#runerror: %s:%d:%d\n", bc->sourceFile->path.c_str(), ip->location->line + 1, ip->location->column + 1);
+            llvm::Value* r1  = builder.CreateGlobalString(msg.c_str());
+            r1               = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32}));
+            auto r2          = builder.getInt64(msg.length());
+            localCall(buildParameters, allocR, allocT, "__compilerRunError", {UINT32_MAX, UINT32_MAX}, {r1, r2});
             break;
         }
 

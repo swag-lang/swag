@@ -1914,6 +1914,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store32_Immediate(pp, 0, 0, RAX);
             break;
+        case ByteCodeOp::CompilerRunError:
+        {
+            Utf8 msg = format("#runerror: %s:%d:%d\n", bc->sourceFile->path.c_str(), ip->location->line + 1, ip->location->column + 1);
+            emitGlobalString(pp, precompileIndex, msg, RAX);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+            BackendX64Inst::emit_Load64_Immediate(pp, msg.length(), RAX);
+            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+            emitCall(pp, "__compilerRunError");
+            break;
+        }
         case ByteCodeOp::IntrinsicPrintString:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);

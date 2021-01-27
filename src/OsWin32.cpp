@@ -160,6 +160,7 @@ namespace OS
         // Wait until child process exits
         bool ok  = true;
         chBuf[0] = 0;
+        Utf8 lastRunError;
         while (1)
         {
             ::PeekNamedPipe(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr, nullptr);
@@ -188,7 +189,26 @@ namespace OS
                     if (oneLine.back() == '\r')
                         oneLine.pop_back();
 
-                    auto pz = strstr(oneLine.c_str(), ": error");
+                    const char* pz = nullptr;
+
+                    // Remember a #runerror directive
+                    pz = strstr(oneLine.c_str(), "#runerror:");
+                    if (pz)
+                    {
+                        if (!lastRunError.empty())
+                        {
+                            numErrors++;
+                            ok = false;
+                            g_Log.setColor(LogColor::Red);
+                            lastRunError += ": didn't catch an error\n";
+                            g_Log.print(lastRunError);
+                        }
+
+                        lastRunError = oneLine;
+                        continue;
+                    }
+
+                    pz = strstr(oneLine.c_str(), ": error");
                     if (!pz)
                         pz = strstr(oneLine.c_str(), ": Command line error");
                     if (!pz)
@@ -201,11 +221,19 @@ namespace OS
                     // Error
                     if (pz)
                     {
-                        numErrors++;
-                        ok = false;
-
-                        g_Log.setColor(LogColor::Red);
-                        g_Log.print(oneLine + "\n");
+                        if (!lastRunError.empty())
+                        {
+                            lastRunError.clear();
+                            if (g_CommandLine.verboseTestErrors)
+                                g_Log.verbose(oneLine + "\n");
+                        }
+                        else
+                        {
+                            numErrors++;
+                            ok = false;
+                            g_Log.setColor(LogColor::Red);
+                            g_Log.print(oneLine + "\n");
+                        }
                     }
 
                     // Messages
@@ -265,6 +293,16 @@ namespace OS
         ::CloseHandle(pi.hThread);
 
         ::SetErrorMode(errmode);
+
+        // One remaining #runerror ?
+        if (!lastRunError.empty())
+        {
+            numErrors++;
+            ok = false;
+            g_Log.setColor(LogColor::Red);
+            lastRunError += ": didn't catch an error\n";
+            g_Log.print(lastRunError);
+        }
 
         return ok;
     }

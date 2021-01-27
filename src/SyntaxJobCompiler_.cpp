@@ -4,6 +4,7 @@
 #include "Ast.h"
 #include "Scoped.h"
 #include "Module.h"
+#include "ByteCodeGenJob.h"
 
 bool SyntaxJob::doCompilerTag(AstNode* parent, AstNode** result)
 {
@@ -326,6 +327,8 @@ bool SyntaxJob::doCompilerRunError(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerRunError, sourceFile, parent);
     if (result)
         *result = node;
+    node->allocateExtension();
+    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitCompilerRunErrorBefore;
     node->token = move(token);
     SWAG_CHECK(eatToken());
 
