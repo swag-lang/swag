@@ -39,6 +39,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
         error = fromNode->computedValue.reg.s64 < INT32_MIN || fromNode->computedValue.reg.s64 > INT32_MAX;
         break;
     case NativeTypeKind::S64:
+    case NativeTypeKind::Int:
         error = fromNode->computedValue.reg.u64 > INT64_MAX;
         break;
     }
