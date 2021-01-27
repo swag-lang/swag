@@ -270,13 +270,37 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         return false;
 
     scoped_lock lock(g_Log.mutexAccess);
-    numErrors++;
-    module->numErrors++;
+
     if (diag.exceptionError)
         module->criticalErrors++;
 
+    // Are we in the #testerror block.
+    // If so, we do not count the error, as we want to continue
+    bool inTestError = false;
+    bool isTestError = false;
+    if (diag.sourceNode)
+    {
+        // If we have raised an error for AstNodeKind::CompilerTestError, then this is a real error
+        if (diag.sourceNode->kind == AstNodeKind::CompilerTestError)
+            isTestError = true;
+        else
+        {
+            auto parent = diag.sourceNode->parent;
+            while (parent && parent->kind != AstNodeKind::CompilerTestError)
+                parent = parent->parent;
+            if (parent)
+                inTestError = true;
+        }
+    }
+
+    if (!inTestError || diag.exceptionError)
+    {
+        numErrors++;
+        module->numErrors++;
+    }
+
     // Do not raise an error if we are waiting for one, during tests
-    if (numTestErrors && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError)
+    if (numTestErrors && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError && !isTestError)
     {
         numTestErrors--;
         if (g_CommandLine.verboseTestErrors)

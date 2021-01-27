@@ -34,6 +34,7 @@ func toto()-> {x: AA}
 }
 
 //#[swag.printbc]
+#[swag.optim("bc", true)]
 #test
 {
     {

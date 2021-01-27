@@ -159,6 +159,7 @@ JobResult SemanticJob::execute()
                 case AstNodeKind::InterfaceDecl:
                 case AstNodeKind::TypeSet:
                 case AstNodeKind::CompilerAssert:
+                case AstNodeKind::CompilerTestError:
                 case AstNodeKind::CompilerPrint:
                 case AstNodeKind::CompilerRun:
                 case AstNodeKind::AttrDecl:
@@ -229,10 +230,14 @@ JobResult SemanticJob::execute()
             if (node->semanticFct)
             {
                 if (!node->semanticFct(&context))
-                    return JobResult::ReleaseJob;
-                if (context.result == ContextResult::Pending)
+                {
+                    node = backToTestError();
+                    if (!node)
+                        return JobResult::ReleaseJob;
+                }
+                else if (context.result == ContextResult::Pending)
                     return JobResult::KeepJobAlive;
-                if (context.result == ContextResult::NewChilds)
+                else if (context.result == ContextResult::NewChilds)
                     continue;
             }
 
@@ -255,4 +260,20 @@ JobResult SemanticJob::execute()
     }
 
     return JobResult::ReleaseJob;
+}
+
+AstNode* SemanticJob::backToTestError()
+{
+    for (int i = (int) nodes.size() - 1; i >= 0; i--)
+    {
+        auto node = nodes[i];
+        if (node->kind == AstNodeKind::CompilerTestError)
+        {
+            while (nodes.size() != i + 1)
+                nodes.pop_back();
+            return node;
+        }
+    }
+
+    return nullptr;
 }

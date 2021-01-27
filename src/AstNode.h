@@ -124,6 +124,7 @@ enum class AstNodeKind : uint8_t
     CompilerIf,
     CompilerIfBlock,
     CompilerAssert,
+    CompilerTestError,
     CompilerMixin,
     CompilerMacro,
     CompilerInline,

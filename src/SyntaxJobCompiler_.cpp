@@ -321,6 +321,30 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doCompilerTestError(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerTestError, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->semanticFct = SemanticJob::resolveCompilerTestError;
+    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+    node->token = move(token);
+    SWAG_CHECK(eatToken());
+
+    SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(eatSemiCol("after '#testerror' expression"));
+
+    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({ sourceFile, token, "'#testerror' is invalid outside a test module (in the './tests' folder of the workspace)" }));
+    SWAG_ASSERT(g_CommandLine.test);
+
+    sourceFile->numTestErrors++;
+    sourceFile->module->numTestErrors++;
+    if (currentCompilerIfBlock)
+        currentCompilerIfBlock->numTestErrors++;
+
+    return true;
+}
+
 bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPrint, sourceFile, parent);
@@ -471,13 +495,13 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             newModule->addFile(sourceFile);
         }
 
-        if (g_CommandLine.test)
-        {
-            sourceFile->numTestErrors++;
-            sourceFile->module->numTestErrors++;
-            if (currentCompilerIfBlock)
-                currentCompilerIfBlock->numTestErrors++;
-        }
+        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#global testerror' is invalid outside a test module (in the './tests' folder of the workspace)"}));
+        SWAG_ASSERT(g_CommandLine.test);
+
+        sourceFile->numTestErrors++;
+        sourceFile->module->numTestErrors++;
+        if (currentCompilerIfBlock)
+            currentCompilerIfBlock->numTestErrors++;
 
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatSemiCol("after '#global testerror"));

@@ -894,6 +894,19 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
     return castError(context, g_TypeMgr.typeInfoUInt, fromType, fromNode, castFlags);
 }
 
+bool checkIntRange(SemanticContext* context, AstNode* node, int64_t minValue, int64_t maxValue, uint32_t castFlags)
+{
+    if (!(castFlags & CASTFLAG_NO_ERROR) && node->sourceFile->module->mustEmitSafetyOF(node))
+    {
+        if (node->computedValue.reg.s64 < minValue || node->computedValue.reg.s64 > maxValue)
+        {
+            //return context->report({context->node, "[safety] integer cast truncated bits"});
+        }
+    }
+
+    return true;
+}
+
 bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::S8)
@@ -920,6 +933,8 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
                     fromNode->typeInfo = g_TypeMgr.typeInfoS8;
+                    if (!checkIntRange(context, fromNode, INT8_MIN, INT8_MAX, castFlags))
+                        return false;
                 }
             }
             return true;
@@ -929,8 +944,10 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.s8 = static_cast<int8_t>(fromNode->computedValue.reg.f32);
-                    fromNode->typeInfo             = g_TypeMgr.typeInfoS8;
+                    fromNode->computedValue.reg.s64 = static_cast<int8_t>(fromNode->computedValue.reg.f32);
+                    fromNode->typeInfo              = g_TypeMgr.typeInfoS8;
+                    if (!checkIntRange(context, fromNode, INT8_MIN, INT8_MAX, castFlags))
+                        return false;
                 }
             }
             return true;
@@ -940,8 +957,10 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.s8 = static_cast<int8_t>(fromNode->computedValue.reg.f64);
-                    fromNode->typeInfo             = g_TypeMgr.typeInfoS8;
+                    fromNode->computedValue.reg.s64 = static_cast<int8_t>(fromNode->computedValue.reg.f64);
+                    fromNode->typeInfo              = g_TypeMgr.typeInfoS8;
+                    if (!checkIntRange(context, fromNode, INT8_MIN, INT8_MAX, castFlags))
+                        return false;
                 }
             }
             return true;

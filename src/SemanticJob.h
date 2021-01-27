@@ -228,6 +228,7 @@ struct SemanticJob : public Job
     static bool resolveCompilerMixin(SemanticContext* context);
     static bool resolveCompilerAssert(SemanticContext* context);
     static bool resolveCompilerPrint(SemanticContext* context);
+    static bool resolveCompilerTestError(SemanticContext* context);
     static bool resolveCompilerForeignLib(SemanticContext* context);
     static bool resolveCompilerRun(SemanticContext* context);
     static bool preResolveCompilerInstruction(SemanticContext* context);
@@ -329,6 +330,7 @@ struct SemanticJob : public Job
     static bool resolveNullConditionalOp(SemanticContext* context);
     static bool resolveInit(SemanticContext* context);
     static bool resolveDropCopyMove(SemanticContext* context);
+    AstNode*    backToTestError();
 
     void clearTryMatch()
     {

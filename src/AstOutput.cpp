@@ -399,6 +399,11 @@ namespace Ast
             SWAG_CHECK(output(context, concat, node->childs.front()));
             break;
 
+        case AstNodeKind::CompilerTestError:
+            CONCAT_FIXED_STR(concat, "#testerror ");
+            SWAG_CHECK(output(context, concat, node->childs.front()));
+            break;
+
         case AstNodeKind::CompilerAssert:
             CONCAT_FIXED_STR(concat, "#assert(");
             SWAG_CHECK(output(context, concat, node->childs[0]));

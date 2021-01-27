@@ -376,6 +376,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerAssert:
         SWAG_CHECK(doCompilerAssert(parent, result));
         break;
+    case TokenId::CompilerTestError:
+        SWAG_CHECK(doCompilerTestError(parent, result));
+        break;
     case TokenId::CompilerInline:
         SWAG_CHECK(doCompilerInline(parent, result));
         break;
@@ -558,6 +561,9 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::CompilerAssert:
         SWAG_CHECK(doCompilerAssert(parent, result));
+        break;
+    case TokenId::CompilerTestError:
+        SWAG_CHECK(doCompilerTestError(parent, result));
         break;
     case TokenId::CompilerPrint:
         SWAG_CHECK(doCompilerPrint(parent, result));

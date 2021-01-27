@@ -242,6 +242,12 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveCompilerTestError(SemanticContext* context)
+{
+    // Should never be reached
+    return context->report({ context->node, context->node->token, "'#testerror' has not triggered an error" });
+}
+
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 {
     auto node = context->node;
@@ -498,7 +504,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 
     case TokenId::CompilerAbi:
         node->computedValue.text = Backend::GetAbiName();
-        node->typeInfo = g_TypeMgr.typeInfoString;
+        node->typeInfo           = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
         return true;
 
