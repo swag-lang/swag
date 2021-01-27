@@ -132,5 +132,5 @@ func countOnes(x: u64)->u32
 	vx += vx >> 8
 	vx += vx >> 16
 	vx += vx >> 32
-	return cast(u32) vx & ((1 << 7) - 1)
+	return bitcast(u32) vx & ((1 << 7) - 1)
 }

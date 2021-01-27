@@ -262,20 +262,61 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
         return;
     if (typeInfo->kind != TypeInfoKind::Native)
         return;
+    if (fromTypeInfo->kind != TypeInfoKind::Native)
+        return;
 
     PushICFlags ic(context, BCI_SAFETY);
-    auto        re = reserveRegisterRC(context);
+    auto        re  = reserveRegisterRC(context);
+    const char* msg = "[safety] integer cast truncated bits";
 
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::U8:
-        if (fromTypeInfo->nativeType == NativeTypeKind::U32)
+        switch (fromTypeInfo->nativeType)
+        {
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerU32, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = UINT8_MAX;
-            emitAssert(context, re, "[safety] integer cast truncated bits");
+            emitAssert(context, re, msg);
             break;
+        }
+
+        break;
+        }
+        break;
+
+    case NativeTypeKind::U16:
+        switch (fromTypeInfo->nativeType)
+        {
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerU32, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = UINT16_MAX;
+            emitAssert(context, re, msg);
+            break;
+        }
+
+        break;
+        }
+
+    case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
+        switch (fromTypeInfo->nativeType)
+        {
+        case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerU64, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = UINT32_MAX;
+            emitAssert(context, re, msg);
+            break;
+        }
         }
 
         break;

@@ -548,9 +548,13 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
     auto typeInfo     = TypeManager::concreteType(typeNode->typeInfo);
     auto exprTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
 
-    SWAG_VERIFY(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT), context->report({typeNode, format("invalid bitcast type '%s' (should be native integer or float)", typeInfo->name.c_str())}));
-    SWAG_VERIFY(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT), context->report({exprNode, format("cannot bitcast from type '%s' (should be native integer or float)", exprTypeInfo->name.c_str())}));
-    SWAG_VERIFY(typeInfo->sizeOf == exprTypeInfo->sizeOf, context->report({exprNode, format("cannot bitcast two types of different sizes ('%s' and '%s')", typeInfo->name.c_str(), exprTypeInfo->name.c_str())}));
+    if (!(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
+        (!typeInfo->isNative(NativeTypeKind::Char)))
+        return context->report({typeNode, format("invalid bitcast type '%s' (should be native integer, char or float)", typeInfo->name.c_str())});
+
+    if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
+        (!exprTypeInfo->isNative(NativeTypeKind::Char)))
+        return context->report({exprNode, format("cannot bitcast from type '%s' (should be native integer, char or float)", exprTypeInfo->name.c_str())});
 
     node->typeInfo = typeNode->typeInfo;
     node->setPassThrough();

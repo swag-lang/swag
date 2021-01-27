@@ -30,19 +30,19 @@ public
 
     func isSpace(c: char)->bool
     {
-        if isLatin1(c) return latin1.isSpace(cast(u8) c)
+        if isLatin1(c) return latin1.isSpace(bitcast(u8) c)
         return isInTable(TableWhiteSpace, c)
     }
 
     func isLetter(c: char)->bool
     {
-        if isLatin1(c) return latin1.isLetter(cast(u8) c)
+        if isLatin1(c) return latin1.isLetter(bitcast(u8) c)
         return isInTable(TableLetter, c)
     }
 
     func isSymbol(c: char)->bool
     {
-        if isLatin1(c) return latin1.isSymbol(cast(u8) c)
+        if isLatin1(c) return latin1.isSymbol(bitcast(u8) c)
         return isInTable(TableSymbol, c)
     }
 
