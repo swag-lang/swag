@@ -1,4 +1,5 @@
 //#[swag.printbc]
+#[swag.safety("of", true)]
 #test
 {
     x := 0xFFFF
