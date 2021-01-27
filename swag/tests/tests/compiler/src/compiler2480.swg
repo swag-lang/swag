@@ -4,4 +4,5 @@
 {
     x := 10'u8
     #runerror x += 255
+    #runerror x += 255
 }

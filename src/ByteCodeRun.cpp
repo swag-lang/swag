@@ -2517,6 +2517,8 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
         // Error ?
         if (context->hasError)
         {
+            context->hasError = false;
+
             // Are we in a #runerror
             bool inRunError = false;
             auto parent     = ip->node;
@@ -2556,7 +2558,8 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 }
             }
 
-            return false;
+            if (!inRunError)
+                return false;
         }
     }
 
