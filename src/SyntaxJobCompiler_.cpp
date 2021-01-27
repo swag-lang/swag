@@ -334,13 +334,10 @@ bool SyntaxJob::doCompilerTestError(AstNode* parent, AstNode** result)
     SWAG_CHECK(doExpression(node));
     SWAG_CHECK(eatSemiCol("after '#testerror' expression"));
 
-    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({ sourceFile, token, "'#testerror' is invalid outside a test module (in the './tests' folder of the workspace)" }));
+    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#testerror' is invalid outside a test module (in the './tests' folder of the workspace)"}));
     SWAG_ASSERT(g_CommandLine.test);
-
+    SWAG_VERIFY(!currentCompilerIfBlock, sourceFile->report({sourceFile, token, "'#testerror' cannot be in a '#if' block"}));
     sourceFile->numTestErrors++;
-    sourceFile->module->numTestErrors++;
-    if (currentCompilerIfBlock)
-        currentCompilerIfBlock->numTestErrors++;
 
     return true;
 }

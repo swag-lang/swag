@@ -900,7 +900,7 @@ bool checkIntRange(SemanticContext* context, AstNode* node, int64_t minValue, in
     {
         if (node->computedValue.reg.s64 < minValue || node->computedValue.reg.s64 > maxValue)
         {
-            //return context->report({context->node, "[safety] integer cast truncated bits"});
+            return context->report({context->node, "[safety] integer cast truncated bits"});
         }
     }
 
