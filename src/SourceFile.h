@@ -24,7 +24,7 @@ struct SourceFile : public File
     uint32_t getCharExtended(char c, unsigned& offset);
     Utf8     getLine(long lineNo);
     bool     report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
-    bool     report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
+    bool     report(const Diagnostic& diag, const vector<const Diagnostic*>& notes, bool inRunError = false);
     void     load(LoadRequest* request);
 
     void cleanCache();
@@ -55,10 +55,11 @@ struct SourceFile : public File
     bool        isBootstrapFile = false;
     bool        isRuntimeFile   = false;
 
-    char*    buffer       = nullptr;
-    Scope*   scopePrivate = nullptr;
-    AstNode* sourceNode   = nullptr;
-    Module*  imported     = nullptr;
+    char*                  buffer       = nullptr;
+    Scope*                 scopePrivate = nullptr;
+    AstNode*               sourceNode   = nullptr;
+    Module*                imported     = nullptr;
+    VectorNative<AstNode*> allRunErrors;
 
     int          headerSize    = 0;
     long         fileSeek      = 0;
@@ -71,5 +72,5 @@ struct SourceFile : public File
     bool         cfgFile       = false;
     bool         generated     = false;
     bool         forceExport   = false;
-    shared_mutex mutexGetLine;
+    shared_mutex mutex;
 };

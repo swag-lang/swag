@@ -335,6 +335,8 @@ bool SyntaxJob::doCompilerRunError(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(doEmbeddedInstruction(node));
 
+    unique_lock lk(sourceFile->mutex);
+    sourceFile->allRunErrors.push_back(node);
     sourceFile->numRunErrors++;
     return true;
 }

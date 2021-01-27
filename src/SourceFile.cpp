@@ -220,7 +220,7 @@ uint32_t SourceFile::getCharExtended(char c, unsigned& offset)
 
 Utf8 SourceFile::getLine(long lineNo)
 {
-    scoped_lock lk(mutexGetLine);
+    scoped_lock lk(mutex);
     if (isExternal)
     {
         if (allLines.empty())
@@ -264,7 +264,7 @@ Utf8 SourceFile::getLine(long lineNo)
     return allLines[lineNo];
 }
 
-bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
+bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes, bool inRunError)
 {
     if (silent > 0 && !diag.exceptionError)
         return false;
@@ -291,6 +291,14 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
             if (parent)
                 inTestError = true;
         }
+    }
+
+    // If inside a runtime error, simulate a test error, to dismiss it
+    if (inRunError)
+    {
+        inTestError = true;
+        numTestErrors++;
+        numRunErrors--;
     }
 
     if (!inTestError || diag.exceptionError)
@@ -374,7 +382,7 @@ void SourceFile::load(LoadRequest* request)
 
 void SourceFile::computePrivateScopeName()
 {
-    unique_lock lk(mutexGetLine);
+    unique_lock lk(mutex);
     if (!scopeName.empty())
         return;
     scopeName = "__" + name;

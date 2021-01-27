@@ -2569,8 +2569,19 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             userMsg.append("assertion failed");
 
         // Add current context
+        bool inRunError = false;
         if (runContext->ip && runContext->ip->node && runContext->ip->node->sourceFile)
         {
+            // Are we in a #runerror
+            auto parent = runContext->ip->node;
+            while (parent && parent->kind != AstNodeKind::CompilerRunError)
+                parent = parent->parent;
+            if (parent)
+            {
+                parent->doneFlags |= AST_DONE_RUN_ERROR;
+                inRunError = true;
+            }
+
             runContext->ip--; // ip is the next pointer instruction
             auto path1 = normalizePath(fs::path(runContext->ip->node->sourceFile->path.c_str()));
             auto path2 = normalizePath(fs::path(fileName.c_str()));
@@ -2609,12 +2620,14 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             }
         }
 
+        SourceFile* sourceFile;
         if (g_byteCodeStack.steps.size())
-            g_byteCodeStack.steps[0].bc->sourceFile->report(diag, notes);
+            sourceFile = g_byteCodeStack.steps[0].bc->sourceFile;
         else
-            runContext->bc->sourceFile->report(diag, notes);
+            sourceFile = runContext->bc->sourceFile;
+        sourceFile->report(diag, notes, inRunError);
 
-        tryContinue = true;
+        tryContinue = inRunError;
         return EXCEPTION_EXECUTE_HANDLER;
     }
 
@@ -2651,9 +2664,10 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
         }
         __except (exceptionHandler(runContext, GetExceptionInformation(), tryContinue))
         {
-            return false;
-            //if (tryContinue)
-            //    runContext->ip++;
+            if (tryContinue)
+                runContext->ip++;
+            else
+                return false;
         }
     } while (tryContinue);
 

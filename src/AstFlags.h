@@ -83,6 +83,7 @@ static const uint32_t AST_DONE_EXPRLIST_CST              = 0x00008000;
 static const uint32_t AST_DONE_FILE_JOB_PASS             = 0x00010000;
 static const uint32_t AST_DONE_ASSIGN_COMPUTED           = 0x00020000;
 static const uint32_t AST_DONE_LOAD                      = 0x00040000;
+static const uint32_t AST_DONE_RUN_ERROR                 = 0x00080000;
 
 static const uint32_t AST_SEM_FORCE_TAKE_ADDRESS    = 0x00000001;
 static const uint32_t AST_SEM_FORCE_NO_TAKE_ADDRESS = 0x00000002;

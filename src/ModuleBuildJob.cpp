@@ -423,13 +423,25 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto file : module->files)
             {
-                if (!file->numTestErrors)
-                    continue;
-                if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
+                if (file->numTestErrors || file->numRunErrors)
                 {
-                    auto nb             = file->numTestErrors.load();
-                    file->numTestErrors = 0;
-                    file->report({file, format("missing unittest errors: %d (%d raised)", nb, file->numErrors)});
+                    if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
+                    {
+                        if (file->numTestErrors)
+                        {
+                            auto nb             = file->numTestErrors.load();
+                            file->numTestErrors = 0;
+                            file->report({file, format("missing test errors: %d (%d raised)", nb, file->numErrors)});
+                        }
+
+                        for (auto n : file->allRunErrors)
+                        {
+                            if (!(n->doneFlags & AST_DONE_RUN_ERROR))
+                            {
+                                file->report({n, n->token, "'#runerror' didn't catch an error"});
+                            }
+                        }
+                    }
                 }
             }
         }
