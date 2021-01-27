@@ -427,7 +427,7 @@ JobResult ModuleBuildJob::execute()
                     continue;
                 if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
                 {
-                    auto nb             = file->numTestErrors;
+                    auto nb             = file->numTestErrors.load();
                     file->numTestErrors = 0;
                     file->report({file, format("missing unittest errors: %d (%d raised)", nb, file->numErrors)});
                 }

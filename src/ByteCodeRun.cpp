@@ -2551,7 +2551,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
     return true;
 }
 
-static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
+static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args, bool& tryContinue)
 {
     // Special exception raised by @error, to simply log an error message
     // This is called by assertion too, in certain conditions (if we do not want dialog boxes, when running tests for example)
@@ -2614,6 +2614,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         else
             runContext->bc->sourceFile->report(diag, notes);
 
+        tryContinue = true;
         return EXCEPTION_EXECUTE_HANDLER;
     }
 
@@ -2634,20 +2635,27 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
 bool ByteCodeRun::run(ByteCodeRunContext* runContext)
 {
-    auto module = runContext->sourceFile->module;
+    auto module      = runContext->sourceFile->module;
+    bool tryContinue = false;
 
-    __try
+    do
     {
-        runContext->bc->running = true;
-        auto res                = module->runner.runLoop(runContext);
-        runContext->bc->running = false;
-        if (!res)
+        tryContinue = false;
+        __try
+        {
+            runContext->bc->running = true;
+            auto res                = module->runner.runLoop(runContext);
+            runContext->bc->running = false;
+            if (!res)
+                return false;
+        }
+        __except (exceptionHandler(runContext, GetExceptionInformation(), tryContinue))
+        {
             return false;
-    }
-    __except (exceptionHandler(runContext, GetExceptionInformation()))
-    {
-        return false;
-    }
+            //if (tryContinue)
+            //    runContext->ip++;
+        }
+    } while (tryContinue);
 
     return true;
 }

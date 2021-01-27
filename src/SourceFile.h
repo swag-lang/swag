@@ -45,14 +45,15 @@ struct SourceFile : public File
     Utf8           forceNamespace;
     bool           isExternal = false;
 
-    uint64_t  writeTime       = 0;
-    int       numErrors       = 0;
-    int       numTestErrors   = 0;
-    int       silent          = 0;
-    uint32_t  indexInModule   = UINT32_MAX;
-    BuildPass buildPass       = BuildPass::Full;
-    bool      isBootstrapFile = false;
-    bool      isRuntimeFile   = false;
+    uint64_t    writeTime       = 0;
+    int         numErrors       = 0;
+    atomic<int> numTestErrors   = 0;
+    atomic<int> numRunErrors    = 0;
+    int         silent          = 0;
+    uint32_t    indexInModule   = UINT32_MAX;
+    BuildPass   buildPass       = BuildPass::Full;
+    bool        isBootstrapFile = false;
+    bool        isRuntimeFile   = false;
 
     char*    buffer       = nullptr;
     Scope*   scopePrivate = nullptr;

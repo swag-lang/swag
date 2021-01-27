@@ -212,11 +212,17 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
     // If we are running bytecode, then just let the runner deal with the assertion,
     // we will have more usefull information
     if(contextFlags & swag.ContextFlags.ByteCode)
+    {
         @error(message, loc)
+        return
+    }
     // During tests, and if not in devmode, then just raise an error without
     // a dialog box
     else if((contextFlags & swag.ContextFlags.Test) && !(contextFlags & swag.ContextFlags.DevMode))
+    {
         @error(message, loc)
+        return
+    }
 
     // Build message
     var str: [1024] u8

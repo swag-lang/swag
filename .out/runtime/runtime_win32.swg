@@ -56,6 +56,7 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
         g_exceptionParams[1] = cast(const *void) @dataof(message)
         g_exceptionParams[2] = cast(const *void) cast(uint) @countof(message)
         RaiseException(666, 0, 3, &g_exceptionParams[0])
+        return
     }
 
     @print("error: ")
@@ -65,8 +66,6 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
     @print(": ")
     @print(message)
     @print("\n")
-
-    ExitProcess(bitcast(u32) -666)
 }
 
 ////////////////////////////////////////////////////////////

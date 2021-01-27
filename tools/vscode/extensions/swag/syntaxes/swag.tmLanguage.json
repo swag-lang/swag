@@ -164,7 +164,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)\\b(assert|print|import|mixin|macro|inline|placeholder|if|else|elif|selectif|testerror)\\b"
+          "match": "(#)\\b(assert|print|import|mixin|macro|inline|placeholder|if|else|elif|selectif)\\b"
         }
       ]
     },
@@ -172,7 +172,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(#)\\b(load|defined|scopefct|file|line|hastag|tagval|cfg|arch|os|abi|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code)"
+          "match": "(#)\\b(load|defined|scopefct|file|line|hastag|tagval|cfg|arch|os|abi|function|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code|semerror|runerror)"
         }
       ]
     },

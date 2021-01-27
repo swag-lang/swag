@@ -231,7 +231,7 @@ JobResult SemanticJob::execute()
             {
                 if (!node->semanticFct(&context))
                 {
-                    node = backToTestError();
+                    node = backToSemError();
                     if (!node)
                         return JobResult::ReleaseJob;
                 }
@@ -262,7 +262,7 @@ JobResult SemanticJob::execute()
     return JobResult::ReleaseJob;
 }
 
-AstNode* SemanticJob::backToTestError()
+AstNode* SemanticJob::backToSemError()
 {
     for (int i = (int) nodes.size() - 1; i >= 0; i--)
     {
