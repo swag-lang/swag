@@ -9,7 +9,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
 {
     if (!fromNode || !(fromNode->flags & AST_VALUE_COMPUTED))
         return true;
-    if (castFlags & (CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK))
+    if (castFlags & (CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_COERCE))
         return true;
     if (!(castFlags & CASTFLAG_EXPLICIT))
         return true;
@@ -26,6 +26,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
         error = fromNode->computedValue.reg.u64 > UINT16_MAX;
         break;
     case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
         error = fromNode->computedValue.reg.u64 > UINT32_MAX;
         break;
     case NativeTypeKind::S8:
@@ -36,6 +37,9 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
         break;
     case NativeTypeKind::S32:
         error = fromNode->computedValue.reg.s64 < INT32_MIN || fromNode->computedValue.reg.s64 > INT32_MAX;
+        break;
+    case NativeTypeKind::S64:
+        error = fromNode->computedValue.reg.u64 > INT64_MAX;
         break;
     }
 
