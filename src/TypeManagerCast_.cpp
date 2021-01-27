@@ -13,8 +13,6 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
         return true;
     if (!(castFlags & CASTFLAG_EXPLICIT))
         return true;
-    if (!fromNode->sourceFile->module->mustEmitSafetyOF(fromNode))
-        return true;
 
     bool error = false;
     switch (toType->nativeType)
@@ -45,7 +43,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     }
 
     if (error)
-        return context->report({context->node, "[safety] integer cast truncated bits"});
+        return context->report({context->node, "integer cast truncated bits"});
     return true;
 }
 
