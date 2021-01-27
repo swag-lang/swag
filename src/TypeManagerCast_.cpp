@@ -19,8 +19,23 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     bool error = false;
     switch (toType->nativeType)
     {
+    case NativeTypeKind::U8:
+        error = fromNode->computedValue.reg.u64 > UINT8_MAX;
+        break;
+    case NativeTypeKind::U16:
+        error = fromNode->computedValue.reg.u64 > UINT16_MAX;
+        break;
+    case NativeTypeKind::U32:
+        error = fromNode->computedValue.reg.u64 > UINT32_MAX;
+        break;
     case NativeTypeKind::S8:
         error = fromNode->computedValue.reg.s64 < INT8_MIN || fromNode->computedValue.reg.s64 > INT8_MAX;
+        break;
+    case NativeTypeKind::S16:
+        error = fromNode->computedValue.reg.s64 < INT16_MIN || fromNode->computedValue.reg.s64 > INT16_MAX;
+        break;
+    case NativeTypeKind::S32:
+        error = fromNode->computedValue.reg.s64 < INT32_MIN || fromNode->computedValue.reg.s64 > INT32_MAX;
         break;
     }
 
@@ -288,7 +303,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u32 = static_cast<uint32_t>(fromNode->computedValue.reg.f32);
+                    fromNode->computedValue.reg.u64 = static_cast<uint32_t>(fromNode->computedValue.reg.f32);
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU32;
                 }
             }
@@ -299,7 +314,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u32 = static_cast<uint32_t>(fromNode->computedValue.reg.f64);
+                    fromNode->computedValue.reg.u64 = static_cast<uint32_t>(fromNode->computedValue.reg.f64);
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU32;
                 }
             }
@@ -308,13 +323,13 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
         case NativeTypeKind::String:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
-                char32_t ch;
+                uint32_t ch;
                 if (fromNode->computedValue.text.toChar32(ch))
                 {
                     if (!(castFlags & CASTFLAG_JUST_CHECK))
                     {
-                        fromNode->computedValue.reg.ch = ch;
-                        fromNode->typeInfo             = g_TypeMgr.typeInfoChar;
+                        fromNode->computedValue.reg.u64 = ch;
+                        fromNode->typeInfo              = g_TypeMgr.typeInfoChar;
                     }
 
                     return true;
@@ -333,13 +348,13 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
         case NativeTypeKind::String:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
-                char32_t ch;
+                uint32_t ch;
                 if (fromNode->computedValue.text.toChar32(ch))
                 {
                     if (!(castFlags & CASTFLAG_JUST_CHECK))
                     {
-                        fromNode->computedValue.reg.ch = ch;
-                        fromNode->typeInfo             = g_TypeMgr.typeInfoChar;
+                        fromNode->computedValue.reg.u64 = ch;
+                        fromNode->typeInfo              = g_TypeMgr.typeInfoChar;
                     }
 
                     return true;
@@ -399,8 +414,8 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u8 = static_cast<uint8_t>(fromNode->computedValue.reg.f32);
-                    fromNode->typeInfo             = g_TypeMgr.typeInfoU8;
+                    fromNode->computedValue.reg.u64 = static_cast<uint8_t>(fromNode->computedValue.reg.f32);
+                    fromNode->typeInfo              = g_TypeMgr.typeInfoU8;
                 }
             }
             return true;
@@ -410,8 +425,8 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u8 = static_cast<uint8_t>(fromNode->computedValue.reg.f64);
-                    fromNode->typeInfo             = g_TypeMgr.typeInfoU8;
+                    fromNode->computedValue.reg.u64 = static_cast<uint8_t>(fromNode->computedValue.reg.f64);
+                    fromNode->typeInfo              = g_TypeMgr.typeInfoU8;
                 }
             }
             return true;
@@ -516,7 +531,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u16 = static_cast<uint16_t>(fromNode->computedValue.reg.f32);
+                    fromNode->computedValue.reg.u64 = static_cast<uint16_t>(fromNode->computedValue.reg.f32);
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU16;
                 }
             }
@@ -527,7 +542,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u16 = static_cast<uint16_t>(fromNode->computedValue.reg.f64);
+                    fromNode->computedValue.reg.u64 = static_cast<uint16_t>(fromNode->computedValue.reg.f64);
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU16;
                 }
             }
@@ -633,7 +648,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u32 = static_cast<uint32_t>(fromNode->computedValue.reg.f32);
+                    fromNode->computedValue.reg.u64 = static_cast<uint32_t>(fromNode->computedValue.reg.f32);
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU32;
                 }
             }
@@ -644,7 +659,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u32 = static_cast<uint32_t>(fromNode->computedValue.reg.f64);
+                    fromNode->computedValue.reg.u64 = static_cast<uint32_t>(fromNode->computedValue.reg.f64);
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU32;
                 }
             }
@@ -1042,7 +1057,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.s16 = static_cast<int16_t>(fromNode->computedValue.reg.f32);
+                    fromNode->computedValue.reg.s64 = static_cast<int16_t>(fromNode->computedValue.reg.f32);
                     fromNode->typeInfo              = g_TypeMgr.typeInfoS16;
                 }
             }
@@ -1051,7 +1066,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::F64:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
-                fromNode->computedValue.reg.s16 = static_cast<int16_t>(fromNode->computedValue.reg.f64);
+                fromNode->computedValue.reg.s64 = static_cast<int16_t>(fromNode->computedValue.reg.f64);
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                     fromNode->typeInfo = g_TypeMgr.typeInfoS16;
             }
@@ -1129,7 +1144,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::F32:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
-                fromNode->computedValue.reg.s32 = static_cast<int32_t>(fromNode->computedValue.reg.f32);
+                fromNode->computedValue.reg.s64 = static_cast<int32_t>(fromNode->computedValue.reg.f32);
                 fromNode->typeInfo              = g_TypeMgr.typeInfoS32;
             }
             return true;
@@ -1137,7 +1152,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::F64:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
-                fromNode->computedValue.reg.s32 = static_cast<int32_t>(fromNode->computedValue.reg.f64);
+                fromNode->computedValue.reg.s64 = static_cast<int32_t>(fromNode->computedValue.reg.f64);
                 fromNode->typeInfo              = g_TypeMgr.typeInfoS32;
             }
             return true;

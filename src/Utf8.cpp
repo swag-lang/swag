@@ -9,7 +9,7 @@ uint32_t Utf8::hash() const
     uint32_t hash = 0;
 
     auto s = buffer;
-    for(int i = 0; i < count; i++)
+    for (int i = 0; i < count; i++)
     {
         hash += *s;
         hash += (hash << 10);
@@ -347,13 +347,13 @@ bool operator!=(const Utf8& str1, const Utf8& str2)
     return strcmp(str1.buffer, str2.buffer) != 0;
 }
 
-void Utf8::operator=(char32_t c)
+void Utf8::operator=(uint32_t c)
 {
     clear();
     append(c);
 }
 
-void Utf8::operator+=(char32_t c)
+void Utf8::operator+=(uint32_t c)
 {
     if (c <= 0x7F)
     {
@@ -447,10 +447,10 @@ int Utf8::find(const char* str) const
     return (int) (pz - buffer);
 }
 
-bool Utf8::toChar32(char32_t& ch)
+bool Utf8::toChar32(uint32_t& ch)
 {
     ch = 0;
-    VectorNative<char32_t> uni;
+    VectorNative<uint32_t> uni;
     toUni32(uni, 2);
     if (uni.size() != 1)
         return false;
@@ -458,9 +458,9 @@ bool Utf8::toChar32(char32_t& ch)
     return true;
 }
 
-const char* Utf8::transformUtf8ToChar32(const char* pz, char32_t& wc)
+const char* Utf8::transformUtf8ToChar32(const char* pz, uint32_t& wc)
 {
-    auto c = *pz++;
+    uint8_t c = *pz++;
 
     if ((c & 0x80) == 0)
     {
@@ -517,7 +517,7 @@ const char* Utf8::transformUtf8ToChar32(const char* pz, char32_t& wc)
     return pz;
 }
 
-void Utf8::toUni32(VectorNative<char32_t>& uni, int maxChars)
+void Utf8::toUni32(VectorNative<uint32_t>& uni, int maxChars)
 {
     uni.clear();
     const char* pz = buffer;
@@ -525,13 +525,13 @@ void Utf8::toUni32(VectorNative<char32_t>& uni, int maxChars)
     {
         if (maxChars != -1 && uni.size() >= maxChars)
             return;
-        char32_t c;
+        uint32_t c;
         pz = transformUtf8ToChar32(pz, c);
         uni.push_back(c);
     }
 }
 
-void Utf8::toUni16(VectorNative<char16_t>& uni, int maxChars)
+void Utf8::toUni16(VectorNative<uint16_t>& uni, int maxChars)
 {
     uni.clear();
     const char* pz = buffer;
@@ -539,13 +539,13 @@ void Utf8::toUni16(VectorNative<char16_t>& uni, int maxChars)
     {
         if (maxChars != -1 && uni.size() >= maxChars)
             return;
-        char32_t c;
+        uint32_t c;
         pz = transformUtf8ToChar32(pz, c);
-        uni.push_back((char16_t) c);
+        uni.push_back((uint16_t) c);
     }
 }
 
-void Utf8::append(char32_t utf)
+void Utf8::append(uint32_t utf)
 {
     if (utf <= 0x7F)
     {

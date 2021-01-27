@@ -317,7 +317,7 @@ bool Tokenizer::doHexLiteral(Token& token)
     return true;
 }
 
-bool Tokenizer::doFloatLiteral(char32_t c, Token& token)
+bool Tokenizer::doFloatLiteral(uint32_t c, Token& token)
 {
     token.literalValue.f64 = 0;
     int    rank            = 0;
@@ -365,7 +365,7 @@ bool Tokenizer::doFloatLiteral(char32_t c, Token& token)
     return true;
 }
 
-bool Tokenizer::doIntLiteral(char32_t c, Token& token)
+bool Tokenizer::doIntLiteral(uint32_t c, Token& token)
 {
     token.literalValue.u64 = 0;
     int rank               = 0;
@@ -412,7 +412,7 @@ bool Tokenizer::doIntLiteral(char32_t c, Token& token)
     return true;
 }
 
-bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
+bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
 {
     unsigned offset = 1;
     Token    tokenFrac;
@@ -535,7 +535,7 @@ bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
     return true;
 }
 
-bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
+bool Tokenizer::doNumberLiteral(uint32_t c, Token& token)
 {
     token.text = c;
     if (c == '0')

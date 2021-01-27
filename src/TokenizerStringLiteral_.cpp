@@ -27,7 +27,7 @@ bool Tokenizer::getDigitHexa(Token& token, int& result, const char* errMsg)
     return true;
 }
 
-bool Tokenizer::isEscape(char32_t& c, Token& token, bool& asIs)
+bool Tokenizer::isEscape(uint32_t& c, Token& token, bool& asIs)
 {
     asIs                = false;
     auto locationBefore = location;
@@ -266,7 +266,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
         getIdentifier(tokenSuffix, c, offset);
         SWAG_VERIFY(tokenSuffix.id == TokenId::NativeType, error(tokenSuffix, format("invalid literal string suffix '%s'", tokenSuffix.text.c_str())));
 
-        VectorNative<char32_t> uni;
+        VectorNative<uint32_t> uni;
         token.text.toUni32(uni);
         SWAG_VERIFY(uni.size() == 1, sourceFile->report({sourceFile, token, format("invalid character literal '%s', this is a string, not a character", token.text.c_str())}));
 
@@ -279,14 +279,14 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             break;
 
         case LiteralType::TT_U8:
-            SWAG_VERIFY(uni[0] <= UINT8_MAX, sourceFile->report({sourceFile, token, format("cannot convert character literal '%s' to 'u8', value '%d' is too big", token.text.c_str(), uni[0])}));
+            SWAG_VERIFY(uni[0] <= UINT8_MAX, sourceFile->report({sourceFile, token, format("cannot convert character literal to 'u8', value '%u' is too big", uni[0])}));
             token.id              = TokenId::LiteralNumber;
             token.literalType     = LiteralType::TT_U8;
             token.literalValue.u8 = (uint8_t) uni[0];
             break;
 
         case LiteralType::TT_U16:
-            SWAG_VERIFY(uni[0] <= UINT16_MAX, sourceFile->report({sourceFile, token, format("cannot convert character literal '%s' to 'u16', value '%d' is too big", token.text.c_str(), uni[0])}));
+            SWAG_VERIFY(uni[0] <= UINT16_MAX, sourceFile->report({sourceFile, token, format("cannot convert character literal to 'u16', value '%u' is too big", uni[0])}));
             token.id               = TokenId::LiteralNumber;
             token.literalType      = LiteralType::TT_U16;
             token.literalValue.u16 = (uint16_t) uni[0];

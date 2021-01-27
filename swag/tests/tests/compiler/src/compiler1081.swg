@@ -6,6 +6,6 @@
     func GetStdHandle(nStdHandle: u32)->HANDLE;
     #test
     {
-        GetStdHandle(cast(u32) -10)
+        GetStdHandle(bitcast(u32) -10)
     }
 }

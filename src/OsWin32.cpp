@@ -29,7 +29,7 @@ namespace OS
         for (int i = 0; i < MAX_PROFILE_STACK; i++)
         {
             Utf8                   name = format("%d", i);
-            VectorNative<char16_t> uni16;
+            VectorNative<uint16_t> uni16;
             name.toUni16(uni16);
             g_Profile[i] = new Concurrency::diagnostic::marker_series((LPCTSTR) uni16.buffer);
         }

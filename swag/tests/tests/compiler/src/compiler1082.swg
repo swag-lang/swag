@@ -6,8 +6,8 @@ alias LPCVOID=		const *void
 alias LPDWORD=		*DWORD
 alias LPOVERLAPPED= *DWORD
 
-const STD_INPUT_HANDLE 	= cast(DWORD) -10
-const STD_OUTPUT_HANDLE = cast(DWORD) -11
+const STD_INPUT_HANDLE 	= bitcast(DWORD) -10
+const STD_OUTPUT_HANDLE = bitcast(DWORD) -11
 
 #[swag.foreign("kernel32")]
 {

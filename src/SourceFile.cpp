@@ -155,7 +155,7 @@ char SourceFile::getPrivateChar()
     return buffer[bufferCurSeek++];
 }
 
-char32_t SourceFile::getChar(unsigned& offset)
+uint32_t SourceFile::getChar(unsigned& offset)
 {
     char c = bufferCurSeek >= bufferSize ? loadAndGetPrivateChar() : buffer[bufferCurSeek++];
     offset = 1;
@@ -164,9 +164,9 @@ char32_t SourceFile::getChar(unsigned& offset)
     return getCharExtended(c, offset);
 }
 
-char32_t SourceFile::getCharExtended(char c, unsigned& offset)
+uint32_t SourceFile::getCharExtended(char c, unsigned& offset)
 {
-    char32_t wc;
+    uint32_t wc;
     if ((c & 0xE0) == 0xC0)
     {
         wc = (c & 0x1F) << 6;

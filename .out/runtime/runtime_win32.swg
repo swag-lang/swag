@@ -7,7 +7,7 @@ private
 {
     alias HANDLE = *void
     alias DWORD  = u32
-    const STD_OUTPUT_HANDLE     = cast(u32) -11
+    const STD_OUTPUT_HANDLE     = bitcast(u32) -11
     const MB_CANCELTRYCONTINUE  = 0x00000006
     const MB_ICONERROR          = 0x00000010
     const IDCANCEL    = 2
@@ -66,7 +66,7 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
     @print(message)
     @print("\n")
 
-    ExitProcess(cast(u32) -666)
+    ExitProcess(bitcast(u32) -666)
 }
 
 ////////////////////////////////////////////////////////////
@@ -84,7 +84,7 @@ func __assertBox(msg, title: string)
     switch result
     {
         case IDCANCEL:
-            ExitProcess(cast(u32) -666)
+            ExitProcess(bitcast(u32) -666)
         case IDTRYAGAIN:
             DebugBreak();
         case IDCONTINUE:

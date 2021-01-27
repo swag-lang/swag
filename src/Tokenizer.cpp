@@ -22,7 +22,7 @@ void Tokenizer::setFile(SourceFile* file)
     sourceFile      = file;
 }
 
-inline void Tokenizer::treatChar(char32_t c, unsigned offset)
+inline void Tokenizer::treatChar(uint32_t c, unsigned offset)
 {
     if (!c)
         return;
@@ -47,24 +47,24 @@ inline void Tokenizer::treatChar(char32_t c, unsigned offset)
     }
 }
 
-inline char32_t Tokenizer::getChar()
+inline uint32_t Tokenizer::getChar()
 {
     unsigned offset;
     return getChar(offset, true);
 }
 
-inline char32_t Tokenizer::getCharNoSeek(unsigned& offset)
+inline uint32_t Tokenizer::getCharNoSeek(unsigned& offset)
 {
     return getChar(offset, false);
 }
 
-inline char32_t Tokenizer::getChar(unsigned& offset, bool seekMove, bool useCache)
+inline uint32_t Tokenizer::getChar(unsigned& offset, bool seekMove, bool useCache)
 {
     if (endReached)
         return 0;
 
     // One character is already there, no need to read
-    char32_t c = 0;
+    uint32_t c = 0;
     offset     = 1;
     if (useCache && cacheChar[0])
     {

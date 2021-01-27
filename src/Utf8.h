@@ -31,7 +31,7 @@ struct Utf8
     void        append(const char* txt);
     void        append(const Utf8& txt);
     void        append(char c);
-    void        append(char32_t utf);
+    void        append(uint32_t utf);
     const char* begin() const;
     const char* end() const;
     operator const char*();
@@ -58,11 +58,11 @@ struct Utf8
     friend bool operator==(const Utf8& str1, const Utf8& str2);
     friend bool operator!=(const Utf8& str1, const Utf8& str2);
     void        operator=(Utf8&& from);
-    void        operator=(char32_t c);
-    void        operator+=(char32_t c);
+    void        operator=(uint32_t c);
+    void        operator+=(uint32_t c);
 
-    void               toUni16(VectorNative<char16_t>& uni, int maxChars = -1);
-    void               toUni32(VectorNative<char32_t>& uni, int maxChars = -1);
-    static const char* transformUtf8ToChar32(const char* pz, char32_t& c);
-    bool               toChar32(char32_t& ch);
+    void               toUni16(VectorNative<uint16_t>& uni, int maxChars = -1);
+    void               toUni32(VectorNative<uint32_t>& uni, int maxChars = -1);
+    static const char* transformUtf8ToChar32(const char* pz, uint32_t& c);
+    bool               toChar32(uint32_t& ch);
 };

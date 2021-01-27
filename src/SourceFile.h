@@ -20,8 +20,8 @@ struct SourceFile : public File
 {
     SourceFile();
 
-    char32_t getChar(unsigned& offset);
-    char32_t getCharExtended(char c, unsigned& offset);
+    uint32_t getChar(unsigned& offset);
+    uint32_t getCharExtended(char c, unsigned& offset);
     Utf8     getLine(long lineNo);
     bool     report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool     report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);

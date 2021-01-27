@@ -32,8 +32,8 @@ alias LPSTR =           *CHAR
 alias SIZE_T =          uint
 alias va_list =         *u8
 
-const STD_INPUT_HANDLE 	= cast(DWORD) -10
-const STD_OUTPUT_HANDLE = cast(DWORD) -11
+const STD_INPUT_HANDLE 	= bitcast(DWORD) -10
+const STD_OUTPUT_HANDLE = bitcast(DWORD) -11
 
 const ERROR_SUCCESS = 0
 const FALSE = 0
@@ -85,9 +85,9 @@ const GENERIC_ALL     = 0x10000000
 const FILE_BEGIN   = 0'u32
 const FILE_CURRENT = 1'u32
 const FILE_END     = 2'u32
-const INVALID_FILE_SIZE         = cast(DWORD) -1
-const INVALID_SET_FILE_POINTER  = cast(DWORD) -1
-const INVALID_FILE_ATTRIBUTES   = cast(DWORD) -1
+const INVALID_FILE_SIZE         = bitcast(DWORD) -1
+const INVALID_SET_FILE_POINTER  = bitcast(DWORD) -1
+const INVALID_FILE_ATTRIBUTES   = bitcast(DWORD) -1
 
 const CREATE_NEW          = 1'u32
 const CREATE_ALWAYS       = 2'u32

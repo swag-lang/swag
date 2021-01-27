@@ -1,6 +1,6 @@
 using swag;
 
-#[constexpr] 
+#[constexpr]
 {
 	func main_u8  ()->u8  { return 45; }
 	func main_u16 ()->u16 { return 45; }
@@ -19,6 +19,8 @@ using swag;
     @assert(cast(u8) (main_s8() ) == 0xD3)
 }
 
+#[swag.safety("of", false)]
+{
 #assert cast(u8) (main_u8() ) == 45;
 #assert cast(u8) (main_s8() ) == 0xD3;
 #assert cast(u8) (-45's8  ) == 0xD3;
@@ -44,3 +46,4 @@ using swag;
 #assert cast(u64) (-45's16 ) == 0xFFFFFFFF_FFFFFFD3;
 #assert cast(u64) (main_s32()) == 0xFFFFFFFF_FFFFFFD3;
 #assert cast(u64) (-45's32 ) == 0xFFFFFFFF_FFFFFFD3;
+}

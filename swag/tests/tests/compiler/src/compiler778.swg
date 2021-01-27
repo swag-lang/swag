@@ -9,8 +9,8 @@
             func SetConsoleTextAttribute(hConsoleOutput: *void, wAttributes: u16)->bool;
         }
 
-        const STD_INPUT_HANDLE 			= cast(u32) -10
-        const STD_OUTPUT_HANDLE 		= cast(u32) -11
+        const STD_INPUT_HANDLE 			= bitcast(u32) -10
+        const STD_OUTPUT_HANDLE 		= bitcast(u32) -11
 
         const FOREGROUND_BLUE: u16 		= 0x0001 // text color contains blue.
         const FOREGROUND_GREEN: u16 	= 0x0002 // text color contains green.

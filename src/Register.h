@@ -15,7 +15,7 @@ union Register
     int8_t            s8;
     float             f32;
     double            f64;
-    char32_t          ch;
+    uint32_t          ch;
     bool              b;
 };
 

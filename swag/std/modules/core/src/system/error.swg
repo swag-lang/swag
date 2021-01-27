@@ -24,6 +24,6 @@ namespace error
     func fatal(msg: string, args: ...)
     {
         console.print(msg, args)
-        process.exit(cast(u32) -1)
+        process.exit(bitcast(u32) -1)
     }
 }

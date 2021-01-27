@@ -78,7 +78,7 @@ impl Thread
     func start(using self)->ErrorId
     {
         debug.assert(isValid())
-        if ResumeThread(handle) == cast(DWORD) -1
+        if ResumeThread(handle) == bitcast(DWORD) -1
         {
             error.setLastErrorId()
             return error.last()

@@ -6,7 +6,7 @@
 #include "Version.h"
 #include "Timer.h"
 
-void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
+void Tokenizer::getIdentifier(Token& token, uint32_t c, unsigned offset)
 {
     while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')
     {

@@ -68,8 +68,8 @@ enum SimpleTypeKind : DbgTypeIndex
     UnsignedCharacter = 0x0020, // 8 bit unsigned
     NarrowCharacter   = 0x0070, // really a char
     WideCharacter     = 0x0071, // wide char
-    Character16       = 0x007a, // char16_t
-    Character32       = 0x007b, // char32_t
+    Character16       = 0x007a, // uint16_t
+    Character32       = 0x007b, // uint32_t
 
     SByte       = 0x0068, // 8 bit signed int
     Byte        = 0x0069, // 8 bit unsigned int
