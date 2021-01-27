@@ -159,7 +159,7 @@ JobResult SemanticJob::execute()
                 case AstNodeKind::InterfaceDecl:
                 case AstNodeKind::TypeSet:
                 case AstNodeKind::CompilerAssert:
-                case AstNodeKind::CompilerTestError:
+                case AstNodeKind::CompilerSemError:
                 case AstNodeKind::CompilerPrint:
                 case AstNodeKind::CompilerRun:
                 case AstNodeKind::AttrDecl:
@@ -267,7 +267,7 @@ AstNode* SemanticJob::backToTestError()
     for (int i = (int) nodes.size() - 1; i >= 0; i--)
     {
         auto node = nodes[i];
-        if (node->kind == AstNodeKind::CompilerTestError)
+        if (node->kind == AstNodeKind::CompilerSemError)
         {
             while (nodes.size() != i + 1)
                 nodes.pop_back();

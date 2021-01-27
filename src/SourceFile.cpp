@@ -274,19 +274,19 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     if (diag.exceptionError)
         module->criticalErrors++;
 
-    // Are we in the #testerror block.
+    // Are we in the #semerror block.
     // If so, we do not count the error, as we want to continue
     bool inTestError = false;
     bool isTestError = false;
     if (diag.sourceNode)
     {
-        // If we have raised an error for AstNodeKind::CompilerTestError, then this is a real error
-        if (diag.sourceNode->kind == AstNodeKind::CompilerTestError)
+        // If we have raised an error for AstNodeKind::CompilerSemError, then this is a real error
+        if (diag.sourceNode->kind == AstNodeKind::CompilerSemError)
             isTestError = true;
         else
         {
             auto parent = diag.sourceNode->parent;
-            while (parent && parent->kind != AstNodeKind::CompilerTestError)
+            while (parent && parent->kind != AstNodeKind::CompilerSemError)
                 parent = parent->parent;
             if (parent)
                 inTestError = true;

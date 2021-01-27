@@ -245,7 +245,7 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
 bool SemanticJob::resolveCompilerTestError(SemanticContext* context)
 {
     // Should never be reached
-    return context->report({ context->node, context->node->token, "'#testerror' has not triggered an error" });
+    return context->report({ context->node, context->node->token, "'#semerror' has not triggered an error" });
 }
 
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)

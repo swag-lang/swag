@@ -323,7 +323,7 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerTestError(AstNode* parent, AstNode** result, bool embedded)
 {
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerTestError, sourceFile, parent);
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSemError, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticFct = SemanticJob::resolveCompilerTestError;
@@ -331,9 +331,9 @@ bool SyntaxJob::doCompilerTestError(AstNode* parent, AstNode** result, bool embe
     node->token = move(token);
     SWAG_CHECK(eatToken());
 
-    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#testerror' is invalid outside a test module (in the './tests' folder of the workspace)"}));
+    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#semerror' is invalid outside a test module (in the './tests' folder of the workspace)"}));
     SWAG_ASSERT(g_CommandLine.test);
-    SWAG_VERIFY(!currentCompilerIfBlock, sourceFile->report({sourceFile, token, "'#testerror' cannot be in a '#if' block"}));
+    SWAG_VERIFY(!currentCompilerIfBlock, sourceFile->report({sourceFile, token, "'#semerror' cannot be in a '#if' block"}));
 
     if (embedded)
         SWAG_CHECK(doEmbeddedInstruction(node));
