@@ -1170,7 +1170,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (addOverflow(ip->node, val1, val2))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         registersRC[ip->c.u32].s32 = val1 + val2;
         break;
@@ -1182,7 +1182,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (addOverflow(ip->node, val1, val2))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         registersRC[ip->c.u32].s32 = val1 + val2;
         break;
@@ -1194,7 +1194,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (addOverflow(ip->node, val1, val2))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         registersRC[ip->c.u32].s64 = val1 + val2;
         break;
@@ -1206,7 +1206,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (addOverflow(ip->node, val1, val2))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         registersRC[ip->c.u32].s64 = val1 + val2;
         break;
@@ -1233,7 +1233,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (subOverflow(ip->node, val1, val2))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         registersRC[ip->c.u32].s32 = val1 - val2;
         break;
@@ -1245,7 +1245,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (subOverflow(ip->node, val1, val2))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         registersRC[ip->c.u32].s32 = val1 - val2;
         break;
@@ -1257,7 +1257,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (subOverflow(ip->node, val1, val2))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         registersRC[ip->c.u32].s64 = val1 - val2;
         break;
@@ -1269,7 +1269,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (subOverflow(ip->node, val1, val2))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         registersRC[ip->c.u32].s64 = val1 - val2;
         break;
@@ -1296,7 +1296,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (mulOverflow(ip->node, val1, val2))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         registersRC[ip->c.u32].s32 = val1 * val2;
         break;
@@ -1308,7 +1308,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (mulOverflow(ip->node, val1, val2))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         registersRC[ip->c.u32].s32 = val1 * val2;
         break;
@@ -1320,7 +1320,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (mulOverflow(ip->node, val1, val2))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         registersRC[ip->c.u32].s64 = val1 * val2;
         break;
@@ -1332,7 +1332,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (mulOverflow(ip->node, val1, val2))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         registersRC[ip->c.u32].s64 = val1 * val2;
         break;
@@ -1905,7 +1905,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (addOverflow(ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int8_t*) registersRC[ip->a.u32].pointer += IMMB_S8(ip);
         break;
@@ -1915,7 +1915,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (addOverflow(ip->node, *(uint8_t*) registersRC[ip->a.u32].pointer, (uint8_t) IMMB_S8(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int8_t*) registersRC[ip->a.u32].pointer += IMMB_S8(ip);
         break;
@@ -1925,7 +1925,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (addOverflow(ip->node, *(int16_t*) registersRC[ip->a.u32].pointer, IMMB_S16(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int16_t*) registersRC[ip->a.u32].pointer += IMMB_S16(ip);
         break;
@@ -1935,7 +1935,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (addOverflow(ip->node, *(uint16_t*) registersRC[ip->a.u32].pointer, (uint16_t) IMMB_S16(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int16_t*) registersRC[ip->a.u32].pointer += IMMB_S16(ip);
         break;
@@ -1945,7 +1945,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (addOverflow(ip->node, *(int32_t*) registersRC[ip->a.u32].pointer, IMMB_S32(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
         break;
@@ -1955,7 +1955,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (addOverflow(ip->node, *(uint32_t*) registersRC[ip->a.u32].pointer, (uint32_t) IMMB_S32(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
         break;
@@ -1965,7 +1965,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (addOverflow(ip->node, *(int64_t*) registersRC[ip->a.u32].pointer, IMMB_S64(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
         break;
@@ -1975,7 +1975,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (addOverflow(ip->node, *(uint64_t*) registersRC[ip->a.u32].pointer, (uint64_t) IMMB_S64(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
         break;
@@ -2006,7 +2006,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (subOverflow(ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int8_t*) registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
@@ -2016,7 +2016,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (subOverflow(ip->node, *(uint8_t*) registersRC[ip->a.u32].pointer, (uint8_t) IMMB_S8(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int8_t*) registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
@@ -2026,7 +2026,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (subOverflow(ip->node, *(int16_t*) registersRC[ip->a.u32].pointer, IMMB_S16(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int16_t*) registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
         break;
@@ -2036,7 +2036,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (subOverflow(ip->node, *(uint16_t*) registersRC[ip->a.u32].pointer, (uint16_t) IMMB_S16(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int16_t*) registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
         break;
@@ -2046,7 +2046,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (subOverflow(ip->node, *(int32_t*) registersRC[ip->a.u32].pointer, IMMB_S32(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int32_t*) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
@@ -2056,7 +2056,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (subOverflow(ip->node, *(uint32_t*) registersRC[ip->a.u32].pointer, (uint32_t) IMMB_S32(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int32_t*) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
@@ -2066,7 +2066,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (subOverflow(ip->node, *(int64_t*) registersRC[ip->a.u32].pointer, IMMB_S64(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int64_t*) registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
         break;
@@ -2076,7 +2076,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (subOverflow(ip->node, *(uint64_t*) registersRC[ip->a.u32].pointer, (uint64_t) IMMB_S64(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int64_t*) registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
         break;
@@ -2097,7 +2097,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (mulOverflow(ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int8_t*) registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
         break;
@@ -2107,7 +2107,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (mulOverflow(ip->node, *(uint8_t*) registersRC[ip->a.u32].pointer, (uint8_t) IMMB_S8(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int8_t*) registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
         break;
@@ -2117,7 +2117,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (mulOverflow(ip->node, *(int16_t*) registersRC[ip->a.u32].pointer, IMMB_S16(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int16_t*) registersRC[ip->a.u32].pointer *= IMMB_S16(ip);
         break;
@@ -2127,7 +2127,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (mulOverflow(ip->node, *(uint16_t*) registersRC[ip->a.u32].pointer, (uint16_t) IMMB_S16(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int16_t*) registersRC[ip->a.u32].pointer *= IMMB_S16(ip);
         break;
@@ -2137,7 +2137,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (mulOverflow(ip->node, *(int32_t*) registersRC[ip->a.u32].pointer, IMMB_S32(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int32_t*) registersRC[ip->a.u32].pointer *= IMMB_S32(ip);
         break;
@@ -2147,7 +2147,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (mulOverflow(ip->node, *(uint32_t*) registersRC[ip->a.u32].pointer, (uint32_t) IMMB_S32(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int32_t*) registersRC[ip->a.u32].pointer *= IMMB_S32(ip);
         break;
@@ -2157,7 +2157,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (mulOverflow(ip->node, *(int64_t*) registersRC[ip->a.u32].pointer, IMMB_S64(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int64_t*) registersRC[ip->a.u32].pointer *= IMMB_S64(ip);
         break;
@@ -2167,7 +2167,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (mulOverflow(ip->node, *(uint64_t*) registersRC[ip->a.u32].pointer, (uint64_t) IMMB_S64(ip)))
         {
             context->hasError = true;
-            context->errorMsg = "integer overflow";
+            context->errorMsg = "[safety] integer overflow";
         }
         *(int64_t*) registersRC[ip->a.u32].pointer *= IMMB_S64(ip);
         break;

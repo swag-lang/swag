@@ -22,7 +22,7 @@
         auto v2 = builder.CreateIsNull(v1);                                                                                         \
         builder.CreateCondBr(v2, blockOk, blockErr);                                                                                \
         builder.SetInsertPoint(blockErr);                                                                                           \
-        emitAssert(buildParameters, allocR, allocT, ip->node, "integer overflow");                                                  \
+        emitAssert(buildParameters, allocR, allocT, ip->node, "[safety] integer overflow");                                                  \
         builder.CreateBr(blockOk);                                                                                                  \
         builder.SetInsertPoint(blockOk);                                                                                            \
         builder.CreateStore(v0, r1);                                                                                                \
@@ -46,7 +46,7 @@
         auto v2 = builder.CreateIsNull(v1);                                                                     \
         builder.CreateCondBr(v2, blockOk, blockErr);                                                            \
         builder.SetInsertPoint(blockErr);                                                                       \
-        emitAssert(buildParameters, allocR, allocT, ip->node, "integer overflow");                              \
+        emitAssert(buildParameters, allocR, allocT, ip->node, "[safety] integer overflow");                              \
         builder.CreateBr(blockOk);                                                                              \
         builder.SetInsertPoint(blockOk);                                                                        \
         builder.CreateStore(v0, __cast(r0));                                                                    \

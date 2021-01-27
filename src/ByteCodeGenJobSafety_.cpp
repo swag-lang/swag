@@ -68,7 +68,7 @@ void ByteCodeGenJob::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, 
     if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_MT_ON, ATTRIBUTE_SAFETY_MT_OFF))
         return;
 
-    emitSafetyNotZero(context, r, bits, "division by zero");
+    emitSafetyNotZero(context, r, bits, "[safety] division by zero");
 }
 
 void ByteCodeGenJob::emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
@@ -77,7 +77,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, u
 
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r0, r1, re);
-    emitAssert(context, re, "index out of range");
+    emitAssert(context, re, "[safety] index out of range");
     freeRegisterRC(context, re);
 }
 
@@ -87,7 +87,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, u
 
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, re);
-    emitAssert(context, re, "index out of range");
+    emitAssert(context, re, "[safety] index out of range");
     freeRegisterRC(context, re);
 }
 
@@ -107,22 +107,22 @@ void ByteCodeGenJob::emitSafetyRelativePointerS64(ByteCodeGenContext* context, u
     case 1:
         minValue = INT8_MIN;
         maxValue = INT8_MAX;
-        msg      = "relative pointer out of range (8 bits)";
+        msg      = "[safety] relative pointer out of range (8 bits)";
         break;
     case 2:
         minValue = INT16_MIN;
         maxValue = INT16_MAX;
-        msg      = "relative pointer out of range (16 bits)";
+        msg      = "[safety] relative pointer out of range (16 bits)";
         break;
     case 4:
         minValue = INT32_MIN;
         maxValue = INT32_MAX;
-        msg      = "relative pointer out of range (32 bits)";
+        msg      = "[safety] relative pointer out of range (32 bits)";
         break;
     case 8:
         minValue = INT64_MIN;
         maxValue = INT64_MAX;
-        msg      = "relative pointer out of range (64 bits)";
+        msg      = "[safety] relative pointer out of range (64 bits)";
         break;
     default:
         SWAG_ASSERT(false);
@@ -196,7 +196,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     inst                = emitInstruction(context, ByteCodeOp::SetImmediate32, result);
     inst->b.u32         = Runtime::COMPARE_CAST_ANY;
     inst                = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], result, result);
-    emitAssert(context, result, "invalid dynamic cast");
+    emitAssert(context, result, "[safety] invalid dynamic cast");
 
     freeRegisterRC(context, result);
     freeRegisterRC(context, r0);
@@ -236,7 +236,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
         context->pushLocation(&node->lowerBound->token.startLocation);
         emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC, re);
         emitInstruction(context, ByteCodeOp::NegBool, re);
-        emitAssert(context, re, "bad slicing, lower bound is greater than upper bound");
+        emitAssert(context, re, "[safety] bad slicing, lower bound is greater than upper bound");
         context->popLocation();
         freeRegisterRC(context, re);
     }
@@ -247,7 +247,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
         auto re = reserveRegisterRC(context);
         context->pushLocation(&node->upperBound->token.startLocation);
         emitInstruction(context, ByteCodeOp::CompareOpLowerU64, node->upperBound->resultRegisterRC, maxBoundReg, re);
-        emitAssert(context, re, "bad slicing, upper bound is out of range");
+        emitAssert(context, re, "[safety] bad slicing, upper bound is out of range");
         context->popLocation();
         freeRegisterRC(context, re);
         if (freeMaxBoundReg)

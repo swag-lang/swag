@@ -328,7 +328,7 @@ void BackendX64::emitOverflowSigned(const BuildParameters& buildParameters, Conc
     concat.addU32(0);
     auto addr      = (uint32_t*) concat.getSeekPtr() - 1;
     auto prevCount = concat.totalCount();
-    emitAssert(buildParameters, node, "integer overflow");
+    emitAssert(buildParameters, node, "[safety] integer overflow");
     *addr = concat.totalCount() - prevCount;
 }
 
@@ -340,7 +340,7 @@ void BackendX64::emitOverflowUnsigned(const BuildParameters& buildParameters, Co
     concat.addU32(0);
     auto addr      = (uint32_t*) concat.getSeekPtr() - 1;
     auto prevCount = concat.totalCount();
-    emitAssert(buildParameters, node, "integer overflow");
+    emitAssert(buildParameters, node, "[safety] integer overflow");
     *addr = concat.totalCount() - prevCount;
 }
 

@@ -384,8 +384,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, "destination pointer of '@memcpy' is null");
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "source pointer of '@memcpy' is null");
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, "[safety] destination pointer of '@memcpy' is null");
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "[safety] source pointer of '@memcpy' is null");
         emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
@@ -397,8 +397,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, "destination pointer of '@memmove' is null");
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "source pointer of '@memmove' is null");
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, "[safety] destination pointer of '@memmove' is null");
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "[safety] source pointer of '@memmove' is null");
         emitInstruction(context, ByteCodeOp::IntrinsicMemMove, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
@@ -410,7 +410,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest  = callParams->childs[0];
         auto childValue = callParams->childs[1];
         auto childSize  = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, "destination pointer of '@memset' is null");
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, "[safety] destination pointer of '@memset' is null");
         emitInstruction(context, ByteCodeOp::IntrinsicMemSet, childDest->resultRegisterRC, childValue->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childValue);
@@ -422,8 +422,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, "first pointer of '@memcmp' is null");
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "second pointer of '@memcmp' is null");
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, "[safety] first pointer of '@memcmp' is null");
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "[safety] second pointer of '@memcmp' is null");
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicMemCmp, node->resultRegisterRC, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
@@ -434,7 +434,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicCStrLen:
     {
         auto childSrc = callParams->childs[0];
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "pointer of '@cstrlen' is null");
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "[safety] pointer of '@cstrlen' is null");
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicCStrLen, node->resultRegisterRC, childSrc->resultRegisterRC);
         freeRegisterRC(context, childSrc);
