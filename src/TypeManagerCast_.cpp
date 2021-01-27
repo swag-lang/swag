@@ -5,6 +5,30 @@
 #include "Ast.h"
 #include "SemanticJob.h"
 
+bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    if (!fromNode || !(fromNode->flags & AST_VALUE_COMPUTED))
+        return true;
+    if (castFlags & (CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK))
+        return true;
+    if (!(castFlags & CASTFLAG_EXPLICIT))
+        return true;
+    if (!fromNode->sourceFile->module->mustEmitSafetyOF(fromNode))
+        return true;
+
+    bool error = false;
+    switch (toType->nativeType)
+    {
+    case NativeTypeKind::S8:
+        error = fromNode->computedValue.reg.s64 < INT8_MIN || fromNode->computedValue.reg.s64 > INT8_MAX;
+        break;
+    }
+
+    if (error)
+        return context->report({context->node, "[safety] integer cast truncated bits"});
+    return true;
+}
+
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     // Last minute change : opCast, with a structure
@@ -894,19 +918,6 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
     return castError(context, g_TypeMgr.typeInfoUInt, fromType, fromNode, castFlags);
 }
 
-bool checkIntRange(SemanticContext* context, AstNode* node, int64_t minValue, int64_t maxValue, uint32_t castFlags)
-{
-    if (!(castFlags & CASTFLAG_NO_ERROR) && node->sourceFile->module->mustEmitSafetyOF(node))
-    {
-        if (node->computedValue.reg.s64 < minValue || node->computedValue.reg.s64 > maxValue)
-        {
-            return context->report({context->node, "[safety] integer cast truncated bits"});
-        }
-    }
-
-    return true;
-}
-
 bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     if (fromType->nativeType == NativeTypeKind::S8)
@@ -931,11 +942,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     fromNode->typeInfo = g_TypeMgr.typeInfoS8;
-                    if (!checkIntRange(context, fromNode, INT8_MIN, INT8_MAX, castFlags))
-                        return false;
-                }
             }
             return true;
 
@@ -946,8 +953,6 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                 {
                     fromNode->computedValue.reg.s64 = static_cast<int8_t>(fromNode->computedValue.reg.f32);
                     fromNode->typeInfo              = g_TypeMgr.typeInfoS8;
-                    if (!checkIntRange(context, fromNode, INT8_MIN, INT8_MAX, castFlags))
-                        return false;
                 }
             }
             return true;
@@ -959,8 +964,6 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                 {
                     fromNode->computedValue.reg.s64 = static_cast<int8_t>(fromNode->computedValue.reg.f64);
                     fromNode->typeInfo              = g_TypeMgr.typeInfoS8;
-                    if (!checkIntRange(context, fromNode, INT8_MIN, INT8_MAX, castFlags))
-                        return false;
                 }
             }
             return true;
@@ -1664,6 +1667,8 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     default:
         return castError(context, toType, fromType, fromNode, castFlags);
     }
+
+    SWAG_CHECK(safetyComputedValue(context, toType, fromType, fromNode, castFlags));
 
     // Automatic cast has been done
     if (castFlags & CASTFLAG_COERCE)

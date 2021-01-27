@@ -16,7 +16,7 @@ static const uint32_t CASTFLAG_JUST_CHECK      = 0x00000008;
 static const uint32_t CASTFLAG_UNCONST         = 0x00000010;
 static const uint32_t CASTFLAG_AUTO_BOOL       = 0x00000020;
 static const uint32_t CASTFLAG_NO_COLLECT      = 0x00000040;
-static const uint32_t CASTFLAG_COMMUTATIVE        = 0x00000080;
+static const uint32_t CASTFLAG_COMMUTATIVE     = 0x00000080;
 static const uint32_t CASTFLAG_INDEX           = 0x00000100;
 static const uint32_t CASTFLAG_FORCE_UNCONST   = 0x00000200;
 static const uint32_t CASTFLAG_COMPARE         = 0x00000400;
@@ -38,6 +38,7 @@ struct TypeManager
 {
     void setup();
 
+    static bool safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castError(SemanticContext* context, TypeInfo* requestedType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
 
     static bool castToNativeBool(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
