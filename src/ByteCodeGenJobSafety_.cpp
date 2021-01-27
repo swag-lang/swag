@@ -271,9 +271,23 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
 
     switch (typeInfo->nativeType)
     {
+    // To U8
+    ////////////////////////////////////////////////////
     case NativeTypeKind::U8:
         switch (fromTypeInfo->nativeType)
         {
+        case NativeTypeKind::U16:
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::ClearMaskU32, re);
+            inst->b.u64 = 0xFFFF;
+            inst        = emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = UINT8_MAX;
+            emitInstruction(context, ByteCodeOp::NegBool, re);
+            emitAssert(context, re, msg);
+            break;
+        }
+
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
         {
@@ -285,10 +299,20 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
             break;
         }
 
-        break;
+        case NativeTypeKind::U64:
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = UINT8_MAX;
+            emitInstruction(context, ByteCodeOp::NegBool, re);
+            emitAssert(context, re, msg);
+            break;
+        }
         }
         break;
 
+    // To U16
+    ////////////////////////////////////////////////////
     case NativeTypeKind::U16:
         switch (fromTypeInfo->nativeType)
         {
@@ -303,9 +327,21 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
             break;
         }
 
-        break;
+        case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = UINT16_MAX;
+            emitInstruction(context, ByteCodeOp::NegBool, re);
+            emitAssert(context, re, msg);
+            break;
         }
+        }
+        break;
 
+    // To U32
+    ////////////////////////////////////////////////////
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
         switch (fromTypeInfo->nativeType)
@@ -321,7 +357,6 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
             break;
         }
         }
-
         break;
     }
 
