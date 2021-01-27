@@ -2517,6 +2517,17 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
         // Error ?
         if (context->hasError)
         {
+            // Are we in a #runerror
+            bool inRunError = false;
+            auto parent     = ip->node;
+            while (parent && parent->kind != AstNodeKind::CompilerRunError)
+                parent = parent->parent;
+            if (parent)
+            {
+                parent->doneFlags |= AST_DONE_RUN_ERROR;
+                inRunError = true;
+            }
+
             JobContext* errorContext = context->callerContext ? context->callerContext : context;
             if (context->errorLoc)
             {
@@ -2524,24 +2535,24 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 SourceLocation end   = {context->errorLoc->lineEnd, context->errorLoc->colEnd};
                 Diagnostic     diag{ip->node->sourceFile, start, end, context->errorMsg};
                 errorContext->sourceFile = ip->node->sourceFile;
-                errorContext->report(diag);
+                errorContext->report(diag, inRunError);
             }
             else
             {
                 SourceFile*     sourceFile;
                 SourceLocation* location;
                 ByteCode::getLocation(context->bc, ip, &sourceFile, &location);
-                if (location)
+                if (location || !ip->node)
                 {
                     Diagnostic diag{sourceFile, *location, "error during bytecode execution, " + context->errorMsg};
                     errorContext->sourceFile = sourceFile;
-                    errorContext->report(diag);
+                    errorContext->report(diag, inRunError);
                 }
                 else
                 {
                     Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
                     errorContext->sourceFile = ip->node->sourceFile;
-                    errorContext->report(diag);
+                    errorContext->report(diag, inRunError);
                 }
             }
 
