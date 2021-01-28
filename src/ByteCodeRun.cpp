@@ -1718,7 +1718,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::CompareOpLowerEqS32:
     {
-        registersRC[ip->c.u32].b = IMMA_S32(ip) < IMMB_S32(ip);
+        registersRC[ip->c.u32].b = IMMA_S32(ip) <= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::CompareOpLowerEqS64:

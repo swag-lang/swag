@@ -190,6 +190,51 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0
     return true;
 }
 
+bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteReferenceType(node->childs[0]->typeInfo);
+    if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::S32:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerEqS32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerEqU32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerEqS64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::F32:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerEqF32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::F64:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerEqF64, r0, r1, r2);
+            return true;
+        default:
+            return internalError(context, "emitCompareOpLowerEq, type not supported");
+        }
+    }
+    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, r2);
+    }
+    else
+    {
+        return internalError(context, "emitCompareOpLowerEq, type not native");
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
@@ -230,6 +275,51 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
     else
     {
         return internalError(context, "emitCompareOpGreater, type not native");
+    }
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteReferenceType(node->childs[0]->typeInfo);
+    if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::S32:
+            emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
+            emitInstruction(context, ByteCodeOp::CompareOpGreaterEqU32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
+            emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
+            emitInstruction(context, ByteCodeOp::CompareOpGreaterEqU64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::F32:
+            emitInstruction(context, ByteCodeOp::CompareOpGreaterEqF32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::F64:
+            emitInstruction(context, ByteCodeOp::CompareOpGreaterEqF64, r0, r1, r2);
+            return true;
+        default:
+            return internalError(context, "emitCompareOpGreaterEq, type not supported");
+        }
+    }
+    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        emitInstruction(context, ByteCodeOp::CompareOpGreaterEqU64, r0, r1, r2);
+    }
+    else
+    {
+        return internalError(context, "emitCompareOpEqGreater, type not native");
     }
 
     return true;
@@ -335,12 +425,10 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
             SWAG_CHECK(emitCompareOpGreater(context, r0, r1, r2));
             break;
         case TokenId::SymLowerEqual:
-            SWAG_CHECK(emitCompareOpGreater(context, r0, r1, r2));
-            emitInstruction(context, ByteCodeOp::NegBool, r2);
+            SWAG_CHECK(emitCompareOpLowerEq(context, r0, r1, r2));
             break;
         case TokenId::SymGreaterEqual:
-            SWAG_CHECK(emitCompareOpLower(context, r0, r1, r2));
-            emitInstruction(context, ByteCodeOp::NegBool, r2);
+            SWAG_CHECK(emitCompareOpGreaterEq(context, r0, r1, r2));
             break;
         default:
             return internalError(context, "emitCompareOpGreater, invalid token op");
