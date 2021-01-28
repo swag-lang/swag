@@ -11,11 +11,11 @@
     @assert(~a64 == 0xFFFF_FFFF_FFFF_FFFF)
 
     var sa8: s8 = 0
-    @assert(cast(u8) ~sa8 == 0xFF)
+    @assert(bitcast(u8) ~sa8 == 0xFF)
     var sa16: s16 = 0
-    @assert(cast(u16) ~sa16 == 0xFFFF)
+    @assert(bitcast(u16) ~sa16 == 0xFFFF)
     var sa32: s32 = 0
-    @assert(cast(u32) ~sa32 == 0xFFFF_FFFF)
+    @assert(bitcast(u32) ~sa32 == 0xFFFF_FFFF)
     var sa64: s64 = 0
-    @assert(cast(u64) ~sa64 == 0xFFFF_FFFF_FFFF_FFFF)
+    @assert(bitcast(u64) ~sa64 == 0xFFFF_FFFF_FFFF_FFFF)
 }

@@ -16,11 +16,11 @@ using swag;
 
 #test
 {
-    @assert(cast(u8) (main_s8() ) == 0xD3)
+    @assert(bitcast(u8) (main_s8() ) == 0xD3)
 }
 
 #assert cast(u8) (main_u8() ) == 45;
-#assert cast(u8) (main_s8() ) == 0xD3;
+#assert bitcast(u8) (main_s8() ) == 0xD3;
 #assert bitcast(u8) (-45's8  ) == 0xD3;
 
 #assert cast(u16) (main_u8()) == 45;
@@ -38,9 +38,9 @@ using swag;
 #assert cast(u64) (main_u32()) == 45;
 #assert cast(u64) (45'u32  ) == 45;
 
-#assert cast(u64) (main_s8() ) == 0xFFFFFFFF_FFFFFFD3;
-#assert bitcast(u64) (-45's8  ) == 0xFFFFFFFF_FFFFFFD3;
-#assert cast(u64) (main_s16()) == 0xFFFFFFFF_FFFFFFD3;
-#assert bitcast(u64) (-45's16 ) == 0xFFFFFFFF_FFFFFFD3;
-#assert cast(u64) (main_s32()) == 0xFFFFFFFF_FFFFFFD3;
-#assert bitcast(u64) (-45's32 ) == 0xFFFFFFFF_FFFFFFD3;
+#assert bitcast(u64) cast(s64) (main_s8() ) == 0xFFFFFFFF_FFFFFFD3;
+#assert bitcast(u64) cast(s64) (-45's8  ) == 0xFFFFFFFF_FFFFFFD3;
+#assert bitcast(u64) cast(s64) (main_s16()) == 0xFFFFFFFF_FFFFFFD3;
+#assert bitcast(u64) cast(s64) (-45's16 ) == 0xFFFFFFFF_FFFFFFD3;
+#assert bitcast(u64) cast(s64) (main_s32()) == 0xFFFFFFFF_FFFFFFD3;
+#assert bitcast(u64) cast(s64) (-45's32 ) == 0xFFFFFFFF_FFFFFFD3;

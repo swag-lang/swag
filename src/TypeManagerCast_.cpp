@@ -38,7 +38,8 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
         break;
     case NativeTypeKind::S64:
     case NativeTypeKind::Int:
-        error = fromNode->computedValue.reg.u64 > INT64_MAX;
+        if (!fromType->isNativeIntegerSigned())
+            error = fromNode->computedValue.reg.u64 > INT64_MAX;
         break;
     }
 

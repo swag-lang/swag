@@ -12,6 +12,7 @@ public func(T) hash32(value: T)->u32
 {
     #if reflection.isInteger(T)
     {
+        #[swag.safety("of", false)]
         return cast(u32) value
     }
     #elif reflection.isFloat(T)

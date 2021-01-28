@@ -274,6 +274,7 @@ func caseChangeTo(wCase: WantedCase, r: char, caseRange: const [..] CaseRange) -
 				// bit in the sequence offset.
 				// The constants UpperCase and TitleCase are even while LowerCase
 				// is odd so we take the low bit from _case.
+                #[swag.safety("of", false)]
 				result.mappedRune = cr.lo + ((r - cr.lo) & ~1 | (cast(char) wCase & 1))
                 result.foundMapping = true
                 return result

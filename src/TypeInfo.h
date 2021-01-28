@@ -87,20 +87,14 @@ struct TypeInfo
     bool isPointerToTypeInfo();
     bool isInitializerList();
 
-    bool isNative(NativeTypeKind native)
-    {
-        return (kind == TypeInfoKind::Native) && (nativeType == native);
-    }
-
-    bool isNativeInteger()
-    {
-        return flags & TYPEINFO_INTEGER;
-    }
-
-    bool isConst()
-    {
-        return flags & TYPEINFO_CONST;
-    }
+    // clang-format off
+    bool isNative(NativeTypeKind native)    { return (kind == TypeInfoKind::Native) && (nativeType == native); }
+    bool isNativeInteger()                  { return (flags & TYPEINFO_INTEGER); }
+    bool isNativeUnsignedOrChar()           { return (flags & TYPEINFO_UNSIGNED) || isNative(NativeTypeKind::Char); }
+    bool isNativeIntegerSigned()            { return !(flags & TYPEINFO_UNSIGNED); }
+    bool isNativeIntegerOrChar()            { return (flags & TYPEINFO_INTEGER) || isNative(NativeTypeKind::Char); }
+    bool isConst()                          { return (flags & TYPEINFO_CONST); }
+    // clang-format on
 
     void setConst()
     {
