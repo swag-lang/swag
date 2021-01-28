@@ -244,18 +244,6 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
 
-            case ByteCodeOp::CompareOpLowerU32:
-                ip->op    = ByteCodeOp::SetImmediate32;
-                ip->b.u64 = (ip->a.u32 < ip->b.u32);
-                ip->a.u32 = ip->c.u32;
-                OK();
-                break;
-            case ByteCodeOp::CompareOpLowerU64:
-                ip->op    = ByteCodeOp::SetImmediate32;
-                ip->b.u64 = (ip->a.u64 < ip->b.u64);
-                ip->a.u32 = ip->c.u32;
-                OK();
-                break;
             case ByteCodeOp::CompareOpLowerS32:
                 ip->op    = ByteCodeOp::SetImmediate32;
                 ip->b.u64 = (ip->a.s32 < ip->b.s32);
@@ -265,6 +253,18 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::CompareOpLowerS64:
                 ip->op    = ByteCodeOp::SetImmediate32;
                 ip->b.u64 = (ip->a.s64 < ip->b.s64);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpLowerU32:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.u32 < ip->b.u32);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpLowerU64:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.u64 < ip->b.u64);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
@@ -281,18 +281,43 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
 
-            case ByteCodeOp::CompareOpGreaterU32:
-                ip->op    = ByteCodeOp::SetImmediate32;
-                ip->b.u64 = (ip->a.u32 > ip->b.u32);
+            case ByteCodeOp::CompareOpLowerEqS32:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.s32 <= ip->b.s32);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
-            case ByteCodeOp::CompareOpGreaterU64:
-                ip->op    = ByteCodeOp::SetImmediate32;
-                ip->b.u64 = (ip->a.u64 > ip->b.u64);
+            case ByteCodeOp::CompareOpLowerEqS64:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.s64 <= ip->b.s64);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
+            case ByteCodeOp::CompareOpLowerEqU32:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.u32 <= ip->b.u32);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpLowerEqU64:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.u64 <= ip->b.u64);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpLowerEqF32:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.f32 <= ip->b.f32);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpLowerEqF64:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.f64 <= ip->b.f64);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+
             case ByteCodeOp::CompareOpGreaterS32:
                 ip->op    = ByteCodeOp::SetImmediate32;
                 ip->b.u64 = (ip->a.s32 > ip->b.s32);
@@ -305,6 +330,18 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
+            case ByteCodeOp::CompareOpGreaterU32:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.u32 > ip->b.u32);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpGreaterU64:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.u64 > ip->b.u64);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
             case ByteCodeOp::CompareOpGreaterF32:
                 ip->op    = ByteCodeOp::SetImmediate32;
                 ip->b.u64 = (ip->a.f32 > ip->b.f32);
@@ -314,6 +351,43 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::CompareOpGreaterF64:
                 ip->op    = ByteCodeOp::SetImmediate32;
                 ip->b.u64 = (ip->a.f64 > ip->b.f64);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+
+            case ByteCodeOp::CompareOpGreaterEqS32:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.s32 >= ip->b.s32);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpGreaterEqS64:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.s64 >= ip->b.s64);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpGreaterEqU32:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.u32 >= ip->b.u32);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpGreaterEqU64:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.u64 >= ip->b.u64);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpGreaterEqF32:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.f32 >= ip->b.f32);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpGreaterEqF64:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.f64 >= ip->b.f64);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;

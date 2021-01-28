@@ -1716,6 +1716,37 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::CompareOpLowerEqS32:
+    {
+        registersRC[ip->c.u32].b = IMMA_S32(ip) < IMMB_S32(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerEqS64:
+    {
+        registersRC[ip->c.u32].b = IMMA_S64(ip) <= IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerEqU32:
+    {
+        registersRC[ip->c.u32].b = IMMA_U32(ip) <= IMMB_U32(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerEqU64:
+    {
+        registersRC[ip->c.u32].b = IMMA_U64(ip) <= IMMB_U64(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerEqF32:
+    {
+        registersRC[ip->c.u32].b = IMMA_F32(ip) <= IMMB_F32(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerEqF64:
+    {
+        registersRC[ip->c.u32].b = IMMA_F64(ip) <= IMMB_F64(ip);
+        break;
+    }
+
     case ByteCodeOp::CompareOpGreaterS32:
     {
         registersRC[ip->c.u32].b = IMMA_S32(ip) > IMMB_S32(ip);
@@ -1744,6 +1775,37 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::CompareOpGreaterF64:
     {
         registersRC[ip->c.u32].b = IMMA_F64(ip) > IMMB_F64(ip);
+        break;
+    }
+
+    case ByteCodeOp::CompareOpGreaterEqS32:
+    {
+        registersRC[ip->c.u32].b = IMMA_S32(ip) >= IMMB_S32(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterEqS64:
+    {
+        registersRC[ip->c.u32].b = IMMA_S64(ip) >= IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterEqU32:
+    {
+        registersRC[ip->c.u32].b = IMMA_U32(ip) >= IMMB_U32(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterEqU64:
+    {
+        registersRC[ip->c.u32].b = IMMA_U64(ip) >= IMMB_U64(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterEqF32:
+    {
+        registersRC[ip->c.u32].b = IMMA_F32(ip) >= IMMB_F32(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterEqF64:
+    {
+        registersRC[ip->c.u32].b = IMMA_F64(ip) >= IMMB_F64(ip);
         break;
     }
 

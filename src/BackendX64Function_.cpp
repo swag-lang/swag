@@ -1285,16 +1285,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
-        case ByteCodeOp::CompareOpGreaterU32:
-            MK_BINOP32_CAB(emit_Cmp32_Indirect, emit_Cmp32);
-            BackendX64Inst::emit_SetA(pp);
-            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-            break;
-        case ByteCodeOp::CompareOpGreaterU64:
-            MK_BINOP64_CAB(emit_Cmp64_Indirect, emit_Cmp64);
-            BackendX64Inst::emit_SetA(pp);
-            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-            break;
         case ByteCodeOp::CompareOpGreaterS32:
             MK_BINOP32_CAB(emit_Cmp32_Indirect, emit_Cmp32);
             BackendX64Inst::emit_SetG(pp);
@@ -1303,6 +1293,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOpGreaterS64:
             MK_BINOP64_CAB(emit_Cmp64_Indirect, emit_Cmp64);
             BackendX64Inst::emit_SetG(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpGreaterU32:
+            MK_BINOP32_CAB(emit_Cmp32_Indirect, emit_Cmp32);
+            BackendX64Inst::emit_SetA(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpGreaterU64:
+            MK_BINOP64_CAB(emit_Cmp64_Indirect, emit_Cmp64);
+            BackendX64Inst::emit_SetA(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOpGreaterF32:
@@ -1316,16 +1316,37 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
 
-        case ByteCodeOp::CompareOpLowerU32:
+        case ByteCodeOp::CompareOpGreaterEqS32:
             MK_BINOP32_CAB(emit_Cmp32_Indirect, emit_Cmp32);
-            BackendX64Inst::emit_SetB(pp);
+            BackendX64Inst::emit_SetGE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
-        case ByteCodeOp::CompareOpLowerU64:
+        case ByteCodeOp::CompareOpGreaterEqS64:
             MK_BINOP64_CAB(emit_Cmp64_Indirect, emit_Cmp64);
-            BackendX64Inst::emit_SetB(pp);
+            BackendX64Inst::emit_SetGE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
+        case ByteCodeOp::CompareOpGreaterEqU32:
+            MK_BINOP32_CAB(emit_Cmp32_Indirect, emit_Cmp32);
+            BackendX64Inst::emit_SetAE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpGreaterEqU64:
+            MK_BINOP64_CAB(emit_Cmp64_Indirect, emit_Cmp64);
+            BackendX64Inst::emit_SetAE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpGreaterEqF32:
+            MK_BINOPF32_CAB(emit_CmpF32_Indirect, emit_CmpF32);
+            BackendX64Inst::emit_SetAE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpGreaterEqF64:
+            MK_BINOPF64_CAB(emit_CmpF64_Indirect, emit_CmpF64);
+            BackendX64Inst::emit_SetAE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+
         case ByteCodeOp::CompareOpLowerS32:
             MK_BINOP32_CAB(emit_Cmp32_Indirect, emit_Cmp32);
             BackendX64Inst::emit_SetL(pp);
@@ -1336,6 +1357,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_SetL(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
+        case ByteCodeOp::CompareOpLowerU32:
+            MK_BINOP32_CAB(emit_Cmp32_Indirect, emit_Cmp32);
+            BackendX64Inst::emit_SetB(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpLowerU64:
+            MK_BINOP64_CAB(emit_Cmp64_Indirect, emit_Cmp64);
+            BackendX64Inst::emit_SetB(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
         case ByteCodeOp::CompareOpLowerF32:
             MK_BINOPF32_CAB(emit_CmpF32_Indirect, emit_CmpF32);
             BackendX64Inst::emit_SetB(pp);
@@ -1344,6 +1375,37 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOpLowerF64:
             MK_BINOPF64_CAB(emit_CmpF64_Indirect, emit_CmpF64);
             BackendX64Inst::emit_SetB(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+
+        case ByteCodeOp::CompareOpLowerEqS32:
+            MK_BINOP32_CAB(emit_Cmp32_Indirect, emit_Cmp32);
+            BackendX64Inst::emit_SetLE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpLowerEqS64:
+            MK_BINOP64_CAB(emit_Cmp64_Indirect, emit_Cmp64);
+            BackendX64Inst::emit_SetLE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpLowerEqU32:
+            MK_BINOP32_CAB(emit_Cmp32_Indirect, emit_Cmp32);
+            BackendX64Inst::emit_SetBE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpLowerEqU64:
+            MK_BINOP64_CAB(emit_Cmp64_Indirect, emit_Cmp64);
+            BackendX64Inst::emit_SetBE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpLowerEqF32:
+            MK_BINOPF32_CAB(emit_CmpF32_Indirect, emit_CmpF32);
+            BackendX64Inst::emit_SetBE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpLowerEqF64:
+            MK_BINOPF64_CAB(emit_CmpF64_Indirect, emit_CmpF64);
+            BackendX64Inst::emit_SetBE(pp);
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
 

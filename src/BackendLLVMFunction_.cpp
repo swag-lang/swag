@@ -2140,6 +2140,55 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::CompareOpGreaterEqS32:
+        {
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateICmpSGE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpGreaterEqS64:
+        {
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateICmpSGE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpGreaterEqU32:
+        {
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateICmpUGE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpGreaterEqU64:
+        {
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateICmpUGE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpGreaterEqF32:
+        {
+            MK_BINOPF32_CAB();
+            auto v0 = builder.CreateFCmpUGE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpGreaterEqF64:
+        {
+            MK_BINOPF64_CAB();
+            auto v0 = builder.CreateFCmpUGE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::CompareOpLowerS32:
         {
             MK_BINOP32_CAB();
@@ -2185,6 +2234,55 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpULT(r1, r2);
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
+        case ByteCodeOp::CompareOpLowerEqS32:
+        {
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateICmpSLE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpLowerEqS64:
+        {
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateICmpSLE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpLowerEqU32:
+        {
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateICmpULE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpLowerEqU64:
+        {
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateICmpULE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpLowerEqF32:
+        {
+            MK_BINOPF32_CAB();
+            auto v0 = builder.CreateFCmpULE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpLowerEqF64:
+        {
+            MK_BINOPF64_CAB();
+            auto v0 = builder.CreateFCmpULE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }

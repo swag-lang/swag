@@ -354,6 +354,14 @@ namespace BackendX64Inst
         pp.concat.addU8(0xC0 | regDst);
     }
 
+    inline void emit_SetAE(X64PerThread& pp, uint8_t regDst = RAX)
+    {
+        SWAG_ASSERT(regDst < R8);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x93);
+        pp.concat.addU8(0xC0 | regDst);
+    }
+
     inline void emit_SetNA(X64PerThread& pp)
     {
         pp.concat.addU8(0x0F);
@@ -365,6 +373,13 @@ namespace BackendX64Inst
     {
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0x92);
+        pp.concat.addU8(0xC0);
+    }
+
+    inline void emit_SetBE(X64PerThread& pp)
+    {
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x96);
         pp.concat.addU8(0xC0);
     }
 
@@ -382,10 +397,24 @@ namespace BackendX64Inst
         pp.concat.addU8(0xC0);
     }
 
+    inline void emit_SetGE(X64PerThread& pp)
+    {
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x9D);
+        pp.concat.addU8(0xC0);
+    }
+
     inline void emit_SetL(X64PerThread& pp)
     {
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0x9C);
+        pp.concat.addU8(0xC0);
+    }
+
+    inline void emit_SetLE(X64PerThread& pp)
+    {
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0x9E);
         pp.concat.addU8(0xC0);
     }
 
