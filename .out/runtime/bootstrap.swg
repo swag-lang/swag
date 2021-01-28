@@ -94,8 +94,8 @@ namespace swag
     // Constants
     // #########################################################
 
-    const MinS8  = -127's8 - 1
-    const MinS16 = -32767's16 - 1
+    const MinS8  = bitcast(s8) (-127's8 - 1)
+    const MinS16 = bitcast(s16) (-32767's16 - 1)
     const MinS32 = -2147483647's32 - 1
     const MinS64 = -9223372036854775807's64 - 1
     const MinInt = MinS64
