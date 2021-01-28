@@ -556,6 +556,8 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
         (!exprTypeInfo->isNative(NativeTypeKind::Char)))
         return context->report({exprNode, format("cannot bitcast from type '%s' (should be native integer, char or float)", exprTypeInfo->name.c_str())});
 
+    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({ exprNode, format("cannot bitcast to a type with a bigger size ('%s' from '%s')", typeInfo->name.c_str(), exprTypeInfo->name.c_str()) }));
+
     node->typeInfo = typeNode->typeInfo;
     node->setPassThrough();
     node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE);
