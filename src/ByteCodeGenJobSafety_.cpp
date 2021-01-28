@@ -277,6 +277,50 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
     case NativeTypeKind::S8:
         switch (fromTypeInfo->nativeType)
         {
+        case NativeTypeKind::U8:
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC);
+            inst->b.u64 = 0xFF;
+            inst        = emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = INT8_MAX;
+            emitInstruction(context, ByteCodeOp::NegBool, re);
+            emitAssert(context, re, msg);
+            break;
+        }
+
+        case NativeTypeKind::U16:
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC);
+            inst->b.u64 = 0xFFFF;
+            inst        = emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = INT8_MAX;
+            emitInstruction(context, ByteCodeOp::NegBool, re);
+            emitAssert(context, re, msg);
+            break;
+        }
+
+        case NativeTypeKind::U32:
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = INT8_MAX;
+            emitInstruction(context, ByteCodeOp::NegBool, re);
+            emitAssert(context, re, msg);
+            break;
+        }
+
+        case NativeTypeKind::U64:
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = INT8_MAX;
+            emitInstruction(context, ByteCodeOp::NegBool, re);
+            emitAssert(context, re, msg);
+            break;
+        }
+
         case NativeTypeKind::S16:
         {
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, r1, exprNode->resultRegisterRC);
@@ -363,6 +407,38 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
             inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterS64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
             inst->b.s64 = INT16_MAX;
+            emitInstruction(context, ByteCodeOp::NegBool, re);
+            emitAssert(context, re, msg);
+            break;
+        }
+
+        case NativeTypeKind::U16:
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC);
+            inst->b.u64 = 0xFFFF;
+            inst        = emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = INT16_MAX;
+            emitInstruction(context, ByteCodeOp::NegBool, re);
+            emitAssert(context, re, msg);
+            break;
+        }
+
+        case NativeTypeKind::U32:
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = INT16_MAX;
+            emitInstruction(context, ByteCodeOp::NegBool, re);
+            emitAssert(context, re, msg);
+            break;
+        }
+
+        case NativeTypeKind::U64:
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = INT16_MAX;
             emitInstruction(context, ByteCodeOp::NegBool, re);
             emitAssert(context, re, msg);
             break;
