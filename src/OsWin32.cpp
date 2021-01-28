@@ -195,6 +195,12 @@ namespace OS
                     pz = strstr(oneLine.c_str(), "#runerror:");
                     if (pz)
                     {
+                        if (g_CommandLine.verboseTestErrors)
+                        {
+                            g_Log.setColor(LogColor::DarkCyan);
+                            g_Log.print(oneLine + "\n");
+                        }
+
                         if (!lastRunError.empty())
                         {
                             numErrors++;
@@ -225,7 +231,10 @@ namespace OS
                         {
                             lastRunError.clear();
                             if (g_CommandLine.verboseTestErrors)
-                                g_Log.verbose(oneLine + "\n");
+                            {
+                                g_Log.setColor(LogColor::DarkCyan);
+                                g_Log.print(oneLine + "\n");
+                            }
                         }
                         else
                         {

@@ -59,13 +59,34 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
         return
     }
 
-    @print("error: ")
-    @print(loc.fileName)
-    @print(":")
-    @print(cast(s64) (loc.lineStart + 1))
-    @print(": ")
-    @print(message)
-    @print("\n")
+    // Construct error message, to print it in one instruction
+    var msg: [1024] u8
+    ptr := &msg[0]
+
+    @memcpy(ptr, @dataof("error: "), 7)
+    ptr += 7
+
+    @memcpy(ptr, @dataof(loc.fileName), @countof(loc.fileName))
+    ptr += @countof(loc.fileName)
+
+    ptr[0] = ":"'u8
+    ptr += 1
+    ptr = __itoa(ptr, cast(s64) loc.lineStart + 1)
+    ptr[0] = ":"'u8
+    ptr[1] = " "'u8
+    ptr += 2
+
+    lenMsg := @countof(message)
+    if lenMsg > 512 lenMsg = 512
+    @memcpy(ptr, @dataof(message), lenMsg)
+    ptr += lenMsg
+    ptr[0] = "\n"'u8
+    ptr[1] = 0
+    ptr += 1
+
+    lenTotal := ptr - @dataof(msg)
+    @assert(lenTotal < @countof(msg))
+    @print(@mkstring(&msg[0], lenTotal))
 }
 
 ////////////////////////////////////////////////////////////
