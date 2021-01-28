@@ -27,5 +27,6 @@ using swag
         #runerror x0 := cast(s8) x
         #runerror x1 := cast(s16) x
         #runerror x2 := cast(s32) x
+        #runerror x3 := cast(s64) x
     }
 }
