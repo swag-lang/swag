@@ -1,16 +1,9 @@
 #include "pch.h"
-#include "Global.h"
 #include "AstNode.h"
 #include "ByteCodeGenJob.h"
-#include "TypeInfo.h"
-#include "SourceFile.h"
-#include "Module.h"
 #include "TypeManager.h"
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
-#include "CommandLine.h"
-#include "SymTable.h"
-#include "Runtime.h"
 
 bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
