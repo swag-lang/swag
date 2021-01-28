@@ -1637,6 +1637,28 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->c.u32].b = IMMA_U64(ip) == IMMB_U64(ip);
         break;
     }
+
+    case ByteCodeOp::CompareOpNotEqual8:
+    {
+        registersRC[ip->c.u32].b = IMMA_U8(ip) != IMMB_U8(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpNotEqual16:
+    {
+        registersRC[ip->c.u32].b = IMMA_U16(ip) != IMMB_U16(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpNotEqual32:
+    {
+        registersRC[ip->c.u32].b = IMMA_U32(ip) != IMMB_U32(ip);
+        break;
+    }
+    case ByteCodeOp::CompareOpNotEqual64:
+    {
+        registersRC[ip->c.u32].b = IMMA_U64(ip) != IMMB_U64(ip);
+        break;
+    }
+
     case ByteCodeOp::IntrinsicStrCmp:
     {
         registersRC[ip->d.u32].b = Runtime::strcmp((void*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32, (void*) registersRC[ip->c.u32].pointer, registersRC[ip->d.u32].u32);

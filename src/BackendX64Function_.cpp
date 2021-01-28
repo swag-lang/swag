@@ -1475,6 +1475,27 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
 
+        case ByteCodeOp::CompareOpNotEqual8:
+            MK_BINOP8_CAB(emit_Cmp8_Indirect, emit_Cmp8);
+            BackendX64Inst::emit_SetNE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpNotEqual16:
+            MK_BINOP16_CAB(emit_Cmp16_Indirect, emit_Cmp16);
+            BackendX64Inst::emit_SetNE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpNotEqual32:
+            MK_BINOP32_CAB(emit_Cmp32_Indirect, emit_Cmp32);
+            BackendX64Inst::emit_SetNE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CompareOpNotEqual64:
+            MK_BINOP64_CAB(emit_Cmp64_Indirect, emit_Cmp64);
+            BackendX64Inst::emit_SetNE(pp);
+            BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+
         case ByteCodeOp::IntrinsicStrCmp:
             SWAG_ASSERT(sizeParamsStack >= 5 * sizeof(Register));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);

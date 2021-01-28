@@ -2365,6 +2365,39 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::CompareOpNotEqual8:
+        {
+            MK_BINOP8_CAB();
+            auto v0 = builder.CreateICmpNE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpNotEqual16:
+        {
+            MK_BINOP16_CAB();
+            auto v0 = builder.CreateICmpNE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpNotEqual32:
+        {
+            MK_BINOP32_CAB();
+            auto v0 = builder.CreateICmpNE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CompareOpNotEqual64:
+        {
+            MK_BINOP64_CAB();
+            auto v0 = builder.CreateICmpNE(r1, r2);
+            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::TestNotZero8:
         {
             auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));

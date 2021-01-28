@@ -207,6 +207,31 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
 
+            case ByteCodeOp::CompareOpNotEqual8:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.u8 != ip->b.u8);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpNotEqual16:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.u16 != ip->b.u16);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpNotEqual32:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.u32 != ip->b.u32);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::CompareOpNotEqual64:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ip->b.u64 = (ip->a.u64 != ip->b.u64);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+
             case ByteCodeOp::CompareOp3WayU32:
                 ip->op    = ByteCodeOp::SetImmediate32;
                 ip->b.s32 = CMP3(ip->a.u32, ip->b.u32);

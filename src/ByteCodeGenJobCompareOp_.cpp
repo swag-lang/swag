@@ -91,12 +91,102 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
     return true;
 }
 
+bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
+{
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+
+    if (leftTypeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (leftTypeInfo->nativeType)
+        {
+        case NativeTypeKind::Bool:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
+            emitInstruction(context, ByteCodeOp::CompareOpNotEqual8, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
+            emitInstruction(context, ByteCodeOp::CompareOpNotEqual16, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::F32:
+        case NativeTypeKind::Char:
+            emitInstruction(context, ByteCodeOp::CompareOpNotEqual32, r0, r1, r2);
+            return true;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
+        case NativeTypeKind::F64:
+            emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+            return true;
+        case NativeTypeKind::String:
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1[1]);
+            emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r0[0], r0[1], r1[0], r2);
+            emitInstruction(context, ByteCodeOp::NegBool, r2);
+            return true;
+        default:
+            return internalError(context, "emitCompareOpNotEqual, type not supported");
+        }
+    }
+    else if (leftTypeInfo->kind == TypeInfoKind::Pointer)
+    {
+        // Special case for typeinfos, as this is not safe to just compare pointers.
+        // The same typeinfo can be different if defined in two different modules, so we need
+        // to make a compare by name too
+        if (leftTypeInfo->isPointerToTypeInfo() || rightTypeInfo->isPointerToTypeInfo())
+        {
+            auto rflags = reserveRegisterRC(context);
+            auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, rflags);
+            inst->b.u64 = Runtime::COMPARE_STRICT;
+            inst        = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, r2);
+            freeRegisterRC(context, rflags);
+            emitInstruction(context, ByteCodeOp::NegBool, r2);
+        }
+
+        // Simple pointer compare
+        else
+            emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+    }
+    else if (leftTypeInfo->kind == TypeInfoKind::Lambda)
+    {
+        emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+    }
+    else if (leftTypeInfo->kind == TypeInfoKind::Interface)
+    {
+        // Just compare pointers. This is enough for now, as we can only compare an interface to 'null'
+        emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
+    }
+    else if (leftTypeInfo->kind == TypeInfoKind::Slice)
+    {
+        // Just compare pointers. This is enough for now, as we can only compare a slice to 'null'
+        emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
+    }
+    else
+    {
+        return internalError(context, "emitCompareOpNotEqual, invalid type");
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
     auto node  = context->node;
     auto left  = node->childs.front();
     auto right = node->childs.back();
     SWAG_CHECK(emitCompareOpEqual(context, left, right, r0, r1, r2));
+    return true;
+}
+
+bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, RegisterList& r2)
+{
+    auto node  = context->node;
+    auto left  = node->childs.front();
+    auto right = node->childs.back();
+    SWAG_CHECK(emitCompareOpNotEqual(context, left, right, r0, r1, r2));
     return true;
 }
 
@@ -412,8 +502,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
             SWAG_CHECK(emitCompareOpEqual(context, r0, r1, r2));
             break;
         case TokenId::SymExclamEqual:
-            SWAG_CHECK(emitCompareOpEqual(context, r0, r1, r2));
-            emitInstruction(context, ByteCodeOp::NegBool, r2);
+            SWAG_CHECK(emitCompareOpNotEqual(context, r0, r1, r2));
             break;
         case TokenId::SymLowerEqualGreater:
             SWAG_CHECK(emitCompareOp3Way(context, r0, r1, r2));
