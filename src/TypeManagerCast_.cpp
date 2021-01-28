@@ -9,11 +9,9 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
 {
     if (!fromNode || !(fromNode->flags & AST_VALUE_COMPUTED))
         return true;
-    if (castFlags & (CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK)) // | CASTFLAG_COERCE))
+    if (castFlags & (CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK))
         return true;
-    //if (castFlags & CASTFLAG_COERCE)
-    //    return true;
-    if(!fromNode->sourceFile->module->mustEmitSafetyOF(fromNode))
+    if (!fromNode->sourceFile->module->mustEmitSafetyOF(fromNode))
         return true;
     if (!(castFlags & CASTFLAG_EXPLICIT))
         return true;
