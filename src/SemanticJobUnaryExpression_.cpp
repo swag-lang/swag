@@ -132,12 +132,24 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* op)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
-        case NativeTypeKind::S16:
-        case NativeTypeKind::S32:
-        case NativeTypeKind::S64:
         case NativeTypeKind::U8:
+            op->computedValue.reg.u64 = op->computedValue.reg.u8;
+            op->computedValue.reg.u8  = ~op->computedValue.reg.u8;
+            break;
+
+        case NativeTypeKind::S16:
         case NativeTypeKind::U16:
+            op->computedValue.reg.u64 = op->computedValue.reg.u16;
+            op->computedValue.reg.u16 = ~op->computedValue.reg.u16;
+            break;
+
+        case NativeTypeKind::S32:
         case NativeTypeKind::U32:
+            op->computedValue.reg.u64 = op->computedValue.reg.u32;
+            op->computedValue.reg.u32 = ~op->computedValue.reg.u32;
+            break;
+
+        case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::Int:
         case NativeTypeKind::UInt:

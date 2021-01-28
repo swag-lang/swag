@@ -522,7 +522,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
             break;
         }
 
-            /*case NativeTypeKind::S32:
+        /*case NativeTypeKind::S32:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;

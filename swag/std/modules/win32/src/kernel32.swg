@@ -95,7 +95,7 @@ const OPEN_EXISTING       = 3'u32
 const OPEN_ALWAYS         = 4'u32
 const TRUNCATE_EXISTING   = 5'u32
 
-const INVALID_HANDLE_VALUE = cast(HANDLE) cast(uint) -1
+const INVALID_HANDLE_VALUE = cast(HANDLE) bitcast(uint) -1'int
 const CONSOLE_TEXTMODE_BUFFER = 1'u32
 const MAX_PATH = 260
 const INFINITE = 0xFFFFFFFF

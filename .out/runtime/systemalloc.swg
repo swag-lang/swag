@@ -18,7 +18,7 @@ impl IAllocator for SystemAllocator
             case AllocatorMode.Free:
                 if !request.address break
                 ptr := cast(**void) request.address
-                @free(ptr[-1])
+                @free(ptr[bitcast(uint) -1'int])
                 request.address = null
 
             case AllocatorMode.Alloc:
@@ -32,14 +32,14 @@ impl IAllocator for SystemAllocator
                 size += alignement - 1
 
                 storePtr := cast(**void) request.address
-                realPtr := cast(*u8) @realloc(storePtr ? storePtr[-1] : null, size)
+                realPtr := cast(*u8) @realloc(storePtr ? storePtr[bitcast(uint) -1'int] : null, size)
 
                 userPtr := cast(*u8) (cast(uint) realPtr & ~(cast(uint) alignement - 1))
                 if userPtr != realPtr userPtr += alignement
                 userPtr += @sizeof(*void)
 
                 storePtr = cast(**void) userPtr
-                storePtr[-1] = realPtr
+                storePtr[bitcast(uint) -1'int] = realPtr
                 request.address = userPtr
         }
     }

@@ -3,6 +3,6 @@
 {
     var tt: [2] *void
     ptr := &tt[1]
-    ptr[-1] = ptr
+    ptr[bitcast(uint) -1'int] = ptr
     @assert(tt[0] == ptr)
 }

@@ -9,7 +9,11 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
 {
     if (!fromNode || !(fromNode->flags & AST_VALUE_COMPUTED))
         return true;
-    if (castFlags & (CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_COERCE))
+    if (castFlags & (CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK)) // | CASTFLAG_COERCE))
+        return true;
+    //if (castFlags & CASTFLAG_COERCE)
+    //    return true;
+    if(!fromNode->sourceFile->module->mustEmitSafetyOF(fromNode))
         return true;
     if (!(castFlags & CASTFLAG_EXPLICIT))
         return true;
@@ -41,10 +45,17 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
         if (!fromType->isNativeIntegerSigned())
             error = fromNode->computedValue.reg.u64 > INT64_MAX;
         break;
+
+    case NativeTypeKind::U64:
+    case NativeTypeKind::UInt:
+        if (fromType->isNativeIntegerSigned())
+            error = fromNode->computedValue.reg.u64 > INT64_MAX;
+        break;
     }
 
     if (error)
-        return context->report({context->node, "integer cast truncated bits"});
+        return context->report({fromNode ? fromNode : context->node, "integer cast truncated bits"});
+
     return true;
 }
 
