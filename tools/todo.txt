@@ -29,6 +29,8 @@ y'a forcement des merdes avec les typeinfo compiler dans leur propre segment
 -------------------------------------
 attributes flags qui sont à la fois on et off => error
 -------------------------------------
+x := -128's8
+-------------------------------------
 
 
 ****************************************
