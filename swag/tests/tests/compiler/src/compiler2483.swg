@@ -19,11 +19,13 @@ using swag
         x := swag.MaxU32
         #runerror x0 := cast(s8) x
         #runerror x1 := cast(s16) x
+        #runerror x2 := cast(s32) x
     }
 
     {
         x := swag.MaxU64
         #runerror x0 := cast(s8) x
         #runerror x1 := cast(s16) x
+        #runerror x2 := cast(s32) x
     }
 }

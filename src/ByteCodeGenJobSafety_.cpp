@@ -451,6 +451,26 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
     case NativeTypeKind::S32:
         switch (fromTypeInfo->nativeType)
         {
+        case NativeTypeKind::U32:
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = INT32_MAX;
+            emitInstruction(context, ByteCodeOp::NegBool, re);
+            emitAssert(context, re, msg);
+            break;
+        }
+
+        case NativeTypeKind::U64:
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, exprNode->resultRegisterRC, 0, re);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = INT32_MAX;
+            emitInstruction(context, ByteCodeOp::NegBool, re);
+            emitAssert(context, re, msg);
+            break;
+        }
+
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
         {
