@@ -1,7 +1,7 @@
 using swag
 
 #[safety("of", true)]
-#[printbc]
+//#[printbc]
 #test
 {
     {
