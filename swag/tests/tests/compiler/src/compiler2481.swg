@@ -26,12 +26,15 @@ using swag
     }
 
     {
-        x := 256's32
+        x := swag.MaxS32
         #runerror x0 := cast(u8) x
+        #runerror x1 := cast(u16) x
     }
 
     {
-        x := 256's64
+        x := swag.MaxS64
         #runerror x0 := cast(u8) x
+        #runerror x1 := cast(u16) x
+        #runerror x2 := cast(u32) x
     }
 }
