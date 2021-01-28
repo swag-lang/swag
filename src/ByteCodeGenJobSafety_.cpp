@@ -532,7 +532,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
             break;
         }*/
 
-            /*case NativeTypeKind::S64:
+        case NativeTypeKind::S64:
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
@@ -540,7 +540,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
             emitInstruction(context, ByteCodeOp::NegBool, re);
             emitAssert(context, re, msg);
             break;
-        }*/
+        }
         }
         break;
     }
