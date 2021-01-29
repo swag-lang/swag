@@ -316,7 +316,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u64 = static_cast<uint32_t>(fromNode->computedValue.reg.f32);
+                    fromNode->computedValue.reg.u64 = (uint64_t) fromNode->computedValue.reg.f32;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU32;
                 }
             }
@@ -327,7 +327,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u64 = static_cast<uint32_t>(fromNode->computedValue.reg.f64);
+                    fromNode->computedValue.reg.u64 = (uint64_t) fromNode->computedValue.reg.f64;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU32;
                 }
             }
@@ -427,7 +427,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u64 = static_cast<uint8_t>(fromNode->computedValue.reg.f32);
+                    fromNode->computedValue.reg.u64 = (uint64_t) fromNode->computedValue.reg.f32;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU8;
                 }
             }
@@ -438,7 +438,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u64 = static_cast<uint8_t>(fromNode->computedValue.reg.f64);
+                    fromNode->computedValue.reg.u64 = (uint64_t) fromNode->computedValue.reg.f64;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU8;
                 }
             }
@@ -544,7 +544,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u64 = static_cast<uint16_t>(fromNode->computedValue.reg.f32);
+                    fromNode->computedValue.reg.u64 = (uint64_t) fromNode->computedValue.reg.f32;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU16;
                 }
             }
@@ -555,7 +555,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u64 = static_cast<uint16_t>(fromNode->computedValue.reg.f64);
+                    fromNode->computedValue.reg.u64 = (uint64_t) fromNode->computedValue.reg.f64;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU16;
                 }
             }
@@ -661,7 +661,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u64 = static_cast<uint32_t>(fromNode->computedValue.reg.f32);
+                    fromNode->computedValue.reg.u64 = (uint32_t) fromNode->computedValue.reg.f32;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU32;
                 }
             }
@@ -672,7 +672,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u64 = static_cast<uint32_t>(fromNode->computedValue.reg.f64);
+                    fromNode->computedValue.reg.u64 = (uint32_t) fromNode->computedValue.reg.f64;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU32;
                 }
             }
@@ -769,7 +769,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u64 = static_cast<uint64_t>(fromNode->computedValue.reg.f32);
+                    fromNode->computedValue.reg.u64 = (uint64_t) fromNode->computedValue.reg.f32;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU64;
                 }
             }
@@ -780,7 +780,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u64 = static_cast<uint64_t>(fromNode->computedValue.reg.f64);
+                    fromNode->computedValue.reg.u64 = (uint64_t) fromNode->computedValue.reg.f64;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoU64;
                 }
             }
@@ -879,7 +879,7 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u64 = static_cast<uint64_t>(fromNode->computedValue.reg.f32);
+                    fromNode->computedValue.reg.u64 = (uint64_t) fromNode->computedValue.reg.f32;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoUInt;
                 }
             }
@@ -890,7 +890,7 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.u64 = static_cast<uint64_t>(fromNode->computedValue.reg.f64);
+                    fromNode->computedValue.reg.u64 = (uint64_t) fromNode->computedValue.reg.f64;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoUInt;
                 }
             }
@@ -979,7 +979,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.s64 = static_cast<int8_t>(fromNode->computedValue.reg.f32);
+                    fromNode->computedValue.reg.s64 = (int64_t) fromNode->computedValue.reg.f32;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoS8;
                 }
             }
@@ -990,7 +990,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.s64 = static_cast<int8_t>(fromNode->computedValue.reg.f64);
+                    fromNode->computedValue.reg.s64 = (int64_t) fromNode->computedValue.reg.f64;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoS8;
                 }
             }
@@ -1070,7 +1070,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    fromNode->computedValue.reg.s64 = static_cast<int16_t>(fromNode->computedValue.reg.f32);
+                    fromNode->computedValue.reg.s64 = (int64_t) fromNode->computedValue.reg.f32;
                     fromNode->typeInfo              = g_TypeMgr.typeInfoS16;
                 }
             }
@@ -1079,7 +1079,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::F64:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
-                fromNode->computedValue.reg.s64 = static_cast<int16_t>(fromNode->computedValue.reg.f64);
+                fromNode->computedValue.reg.s64 = (int64_t) fromNode->computedValue.reg.f64;
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                     fromNode->typeInfo = g_TypeMgr.typeInfoS16;
             }
@@ -1157,7 +1157,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::F32:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
-                fromNode->computedValue.reg.s64 = static_cast<int32_t>(fromNode->computedValue.reg.f32);
+                fromNode->computedValue.reg.s64 = (int64_t) fromNode->computedValue.reg.f32;
                 fromNode->typeInfo              = g_TypeMgr.typeInfoS32;
             }
             return true;
@@ -1165,7 +1165,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::F64:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
-                fromNode->computedValue.reg.s64 = static_cast<int32_t>(fromNode->computedValue.reg.f64);
+                fromNode->computedValue.reg.s64 = (int64_t) fromNode->computedValue.reg.f64;
                 fromNode->typeInfo              = g_TypeMgr.typeInfoS32;
             }
             return true;
@@ -1233,7 +1233,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::F32:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
-                fromNode->computedValue.reg.s64 = static_cast<int64_t>(fromNode->computedValue.reg.f32);
+                fromNode->computedValue.reg.s64 = (int64_t) fromNode->computedValue.reg.f32;
                 fromNode->typeInfo              = g_TypeMgr.typeInfoS64;
             }
             return true;
@@ -1241,7 +1241,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::F64:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
-                fromNode->computedValue.reg.s64 = static_cast<int64_t>(fromNode->computedValue.reg.f64);
+                fromNode->computedValue.reg.s64 = (int64_t) fromNode->computedValue.reg.f64;
                 fromNode->typeInfo              = g_TypeMgr.typeInfoS64;
             }
             return true;
@@ -1308,7 +1308,7 @@ bool TypeManager::castToNativeInt(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::F32:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
-                fromNode->computedValue.reg.s64 = static_cast<int64_t>(fromNode->computedValue.reg.f32);
+                fromNode->computedValue.reg.s64 = (int64_t) fromNode->computedValue.reg.f32;
                 fromNode->typeInfo              = g_TypeMgr.typeInfoInt;
             }
             return true;
@@ -1316,7 +1316,7 @@ bool TypeManager::castToNativeInt(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::F64:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
-                fromNode->computedValue.reg.s64 = static_cast<int64_t>(fromNode->computedValue.reg.f64);
+                fromNode->computedValue.reg.s64 = (int64_t) fromNode->computedValue.reg.f64;
                 fromNode->typeInfo              = g_TypeMgr.typeInfoInt;
             }
             return true;
@@ -1371,8 +1371,8 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
         {
             if (!(castFlags & CASTFLAG_EXPLICIT))
             {
-                float   tmpF = static_cast<float>(fromNode->computedValue.reg.s64);
-                int64_t tmpI = static_cast<int64_t>(tmpF);
+                float   tmpF = (float) fromNode->computedValue.reg.s64;
+                int64_t tmpI = (int64_t) tmpF;
                 if (tmpI != fromNode->computedValue.reg.s64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
@@ -1383,7 +1383,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 
             if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
-                fromNode->computedValue.reg.f32 = static_cast<float>(fromNode->computedValue.reg.s64);
+                fromNode->computedValue.reg.f32 = (float) fromNode->computedValue.reg.s64;
                 fromNode->typeInfo              = g_TypeMgr.typeInfoF32;
             }
             return true;
@@ -1393,8 +1393,8 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
             if (!fromNode)
             {
                 auto    value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
-                float   tmpF  = static_cast<float>(value);
-                int64_t tmpI  = static_cast<int64_t>(tmpF);
+                float   tmpF  = (float) value;
+                int64_t tmpI  = (int64_t) tmpF;
                 if (tmpI != value)
                     return false;
             }
@@ -1428,8 +1428,8 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
         {
             if (!(castFlags & CASTFLAG_EXPLICIT))
             {
-                float    tmpF = static_cast<float>(fromNode->computedValue.reg.u64);
-                uint64_t tmpI = static_cast<uint64_t>(tmpF);
+                float    tmpF = (float) fromNode->computedValue.reg.u64;
+                uint64_t tmpI = (uint64_t) tmpF;
                 if (tmpI != fromNode->computedValue.reg.u64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
@@ -1440,7 +1440,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
-                fromNode->computedValue.reg.f32 = static_cast<float>(fromNode->computedValue.reg.u64);
+                fromNode->computedValue.reg.f32 = (float) fromNode->computedValue.reg.u64;
                 fromNode->typeInfo              = g_TypeMgr.typeInfoF32;
             }
 
@@ -1457,8 +1457,8 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
         {
             if (!(castFlags & CASTFLAG_EXPLICIT))
             {
-                float  tmpF = static_cast<float>(fromNode->computedValue.reg.f64);
-                double tmpD = static_cast<double>(tmpF);
+                float  tmpF = (float) fromNode->computedValue.reg.f64;
+                double tmpD = (double) tmpF;
                 if (tmpD != fromNode->computedValue.reg.f64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
@@ -1469,7 +1469,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 
             if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
-                fromNode->computedValue.reg.f32 = static_cast<float>(fromNode->computedValue.reg.f64);
+                fromNode->computedValue.reg.f32 = (float) fromNode->computedValue.reg.f64;
                 fromNode->typeInfo              = g_TypeMgr.typeInfoF32;
             }
 
@@ -1501,8 +1501,8 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
         {
             if (!(castFlags & CASTFLAG_EXPLICIT))
             {
-                double  tmpF = static_cast<double>(fromNode->computedValue.reg.s64);
-                int64_t tmpI = static_cast<int64_t>(tmpF);
+                double  tmpF = (double) fromNode->computedValue.reg.s64;
+                int64_t tmpI = (int64_t) tmpF;
                 if (tmpI != fromNode->computedValue.reg.s64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
@@ -1513,7 +1513,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
 
             if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
-                fromNode->computedValue.reg.f64 = static_cast<double>(fromNode->computedValue.reg.s64);
+                fromNode->computedValue.reg.f64 = (double) fromNode->computedValue.reg.s64;
                 fromNode->typeInfo              = g_TypeMgr.typeInfoF64;
             }
             return true;
@@ -1523,8 +1523,8 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
             if (!fromNode)
             {
                 auto    value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
-                double  tmpF  = static_cast<double>(value);
-                int64_t tmpI  = static_cast<int64_t>(tmpF);
+                double  tmpF  = (double) value;
+                int64_t tmpI  = (int64_t) tmpF;
                 if (tmpI != value)
                     return false;
             }
@@ -1558,8 +1558,8 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
         {
             if (!(castFlags & CASTFLAG_EXPLICIT))
             {
-                double   tmpF = static_cast<double>(fromNode->computedValue.reg.u64);
-                uint64_t tmpI = static_cast<uint64_t>(tmpF);
+                double   tmpF = (double) fromNode->computedValue.reg.u64;
+                uint64_t tmpI = (uint64_t) tmpF;
                 if (tmpI != fromNode->computedValue.reg.u64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
@@ -1570,7 +1570,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
 
             if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
-                fromNode->computedValue.reg.f64 = static_cast<double>(fromNode->computedValue.reg.u64);
+                fromNode->computedValue.reg.f64 = (double) fromNode->computedValue.reg.u64;
                 fromNode->typeInfo              = g_TypeMgr.typeInfoF64;
             }
 
@@ -1586,7 +1586,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
         {
             if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
-                fromNode->computedValue.reg.f64 = static_cast<double>(fromNode->computedValue.reg.f32);
+                fromNode->computedValue.reg.f64 = (double) fromNode->computedValue.reg.f32;
                 fromNode->typeInfo              = g_TypeMgr.typeInfoF64;
             }
 
@@ -2490,27 +2490,27 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
     {
     case NativeTypeKind::U8:
         if (newLeft == NativeTypeKind::U32)
-            left->computedValue.reg.u32 = left->computedValue.reg.u8;
+            left->computedValue.reg.u64 = left->computedValue.reg.u8;
         else if (newLeft == NativeTypeKind::U64)
             left->computedValue.reg.u64 = left->computedValue.reg.u8;
         else if (newLeft == NativeTypeKind::UInt)
             left->computedValue.reg.u64 = left->computedValue.reg.u8;
         else if (newLeft == NativeTypeKind::F32)
-            left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.u8);
+            left->computedValue.reg.f32 = (float) left->computedValue.reg.u8;
         else if (newLeft == NativeTypeKind::F64)
-            left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.u8);
+            left->computedValue.reg.f64 = (double) left->computedValue.reg.u8;
         break;
     case NativeTypeKind::U16:
         if (newLeft == NativeTypeKind::U32)
-            left->computedValue.reg.u32 = left->computedValue.reg.u16;
+            left->computedValue.reg.u64 = left->computedValue.reg.u16;
         else if (newLeft == NativeTypeKind::U64)
             left->computedValue.reg.u64 = left->computedValue.reg.u16;
         else if (newLeft == NativeTypeKind::UInt)
             left->computedValue.reg.u64 = left->computedValue.reg.u16;
         else if (newLeft == NativeTypeKind::F32)
-            left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.u16);
+            left->computedValue.reg.f32 = (float) left->computedValue.reg.u16;
         else if (newLeft == NativeTypeKind::F64)
-            left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.u16);
+            left->computedValue.reg.f64 = (double) left->computedValue.reg.u16;
         break;
     case NativeTypeKind::U32:
         if (newLeft == NativeTypeKind::U64)
@@ -2518,38 +2518,38 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
         else if (newLeft == NativeTypeKind::UInt)
             left->computedValue.reg.u64 = left->computedValue.reg.u32;
         else if (newLeft == NativeTypeKind::F32)
-            left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.u32);
+            left->computedValue.reg.f32 = (float) left->computedValue.reg.u32;
         else if (newLeft == NativeTypeKind::F64)
-            left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.u32);
+            left->computedValue.reg.f64 = (double) left->computedValue.reg.u32;
         break;
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
         if (newLeft == NativeTypeKind::F64)
-            left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.u64);
+            left->computedValue.reg.f64 = (double) left->computedValue.reg.u64;
         break;
     case NativeTypeKind::S8:
         if (newLeft == NativeTypeKind::S32)
-            left->computedValue.reg.s32 = left->computedValue.reg.s8;
+            left->computedValue.reg.s64 = left->computedValue.reg.s8;
         else if (newLeft == NativeTypeKind::S64)
             left->computedValue.reg.s64 = left->computedValue.reg.s8;
         else if (newLeft == NativeTypeKind::Int)
             left->computedValue.reg.s64 = left->computedValue.reg.s8;
         else if (newLeft == NativeTypeKind::F32)
-            left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.s8);
+            left->computedValue.reg.f32 = (float) left->computedValue.reg.s8;
         else if (newLeft == NativeTypeKind::F64)
-            left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.s8);
+            left->computedValue.reg.f64 = (double) left->computedValue.reg.s8;
         break;
     case NativeTypeKind::S16:
         if (newLeft == NativeTypeKind::S32)
-            left->computedValue.reg.s32 = left->computedValue.reg.s16;
+            left->computedValue.reg.s64 = left->computedValue.reg.s16;
         else if (newLeft == NativeTypeKind::S64)
             left->computedValue.reg.s64 = left->computedValue.reg.s16;
         else if (newLeft == NativeTypeKind::Int)
             left->computedValue.reg.s64 = left->computedValue.reg.s16;
         else if (newLeft == NativeTypeKind::F32)
-            left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.s16);
+            left->computedValue.reg.f32 = (float) left->computedValue.reg.s16;
         else if (newLeft == NativeTypeKind::F64)
-            left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.s16);
+            left->computedValue.reg.f64 = (double) left->computedValue.reg.s16;
         break;
     case NativeTypeKind::S32:
         if (newLeft == NativeTypeKind::S64)
@@ -2557,14 +2557,14 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
         else if (newLeft == NativeTypeKind::S64)
             left->computedValue.reg.s64 = left->computedValue.reg.s32;
         else if (newLeft == NativeTypeKind::F32)
-            left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.s32);
+            left->computedValue.reg.f32 = (float) left->computedValue.reg.s32;
         else if (newLeft == NativeTypeKind::F64)
-            left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.s32);
+            left->computedValue.reg.f64 = (double) left->computedValue.reg.s32;
         break;
     case NativeTypeKind::S64:
     case NativeTypeKind::Int:
         if (newLeft == NativeTypeKind::F64)
-            left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.s64);
+            left->computedValue.reg.f64 = (double) left->computedValue.reg.s64;
         break;
     case NativeTypeKind::F32:
         if (newLeft == NativeTypeKind::F64)
