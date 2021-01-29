@@ -85,6 +85,7 @@ struct Module
     bool        mustEmitSafety(AstNode* node, uint64_t whatOn, uint64_t whatOff);
     bool        mustGenerateTestExe();
     bool        canGenerateLegit();
+    SourceFile* findFile(const Utf8& fileName);
 
     string                       path;
     Utf8                         name;

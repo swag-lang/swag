@@ -10,6 +10,8 @@
 #include "Workspace.h"
 #include "Profile.h"
 #include "ProfileWin32.h"
+#include "Module.h"
+#include "Diagnostic.h"
 
 namespace OS
 {
@@ -105,7 +107,7 @@ namespace OS
         ::SetConsoleTextAttribute(consoleHandle, attributes | back);
     }
 
-    bool doProcess(const Utf8& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor, const char* logPrefix)
+    bool doProcess(Module* module, const Utf8& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor, const char* logPrefix)
     {
         STARTUPINFOA        si;
         PROCESS_INFORMATION pi;
@@ -179,13 +181,10 @@ namespace OS
                 }
 
                 // Process result
-                g_Log.lock();
                 vector<Utf8> lines;
                 tokenize(strout.c_str(), '\n', lines);
                 for (auto oneLine : lines)
                 {
-                    g_Log.setDefaultColor();
-
                     if (oneLine.back() == '\r')
                         oneLine.pop_back();
 
@@ -197,34 +196,31 @@ namespace OS
                     {
                         if (g_CommandLine.verboseTestErrors)
                         {
+                            g_Log.lock();
                             g_Log.setColor(LogColor::DarkCyan);
                             g_Log.print(oneLine + "\n");
+                            g_Log.setDefaultColor();
+                            g_Log.unlock();
                         }
 
                         if (!lastRunError.empty())
                         {
                             numErrors++;
                             ok = false;
+                            g_Log.lock();
                             g_Log.setColor(LogColor::Red);
                             lastRunError += ": didn't catch an error\n";
                             g_Log.print(lastRunError);
+                            g_Log.setDefaultColor();
+                            g_Log.unlock();
                         }
 
                         lastRunError = oneLine;
                         continue;
                     }
 
-                    pz = strstr(oneLine.c_str(), ": error");
-                    if (!pz)
-                        pz = strstr(oneLine.c_str(), ": Command line error");
-                    if (!pz)
-                        pz = strstr(oneLine.c_str(), ": fatal error");
-                    if (!pz)
-                        pz = strstr(oneLine.c_str(), ": warning");
-                    if (!pz)
-                        pz = strstr(oneLine.c_str(), "error:");
-
                     // Error
+                    pz = strstr(oneLine.c_str(), "error:");
                     if (pz)
                     {
                         if (!lastRunError.empty())
@@ -232,31 +228,71 @@ namespace OS
                             lastRunError.clear();
                             if (g_CommandLine.verboseTestErrors)
                             {
+                                g_Log.lock();
                                 g_Log.setColor(LogColor::DarkCyan);
                                 g_Log.print(oneLine + "\n");
+                                g_Log.setDefaultColor();
+                                g_Log.unlock();
+                            }
+                        }
+                        else if (module)
+                        {
+                            ok = false;
+
+                            // Extract file and location
+                            vector<Utf8> tokens;
+                            tokenize(oneLine, ':', tokens);
+                            for (auto& t : tokens)
+                                t.trim();
+                            auto fileName = tokens[1] + ":";
+                            fileName += tokens[2];
+                            auto sourceFile = module->findFile(fileName);
+                            if (sourceFile && tokens.size() == 6) // error: drive letter: path: line: column: message
+                            {
+                                SourceLocation startLoc;
+                                startLoc.line         = atoi(tokens[tokens.size() - 3]) - 1;
+                                startLoc.column       = atoi(tokens[tokens.size() - 2]) - 1;
+                                SourceLocation endLoc = startLoc;
+                                auto           msg    = tokens.back();
+                                msg                   = "error during native execution, " + msg;
+                                Diagnostic diag({sourceFile, startLoc, endLoc, msg});
+                                sourceFile->report(diag);
+                            }
+                            else
+                            {
+                                numErrors++;
+                                g_Log.lock();
+                                g_Log.setColor(LogColor::Red);
+                                g_Log.print(oneLine + "\n");
+                                g_Log.setDefaultColor();
+                                g_Log.unlock();
                             }
                         }
                         else
                         {
                             numErrors++;
                             ok = false;
+
+                            g_Log.lock();
                             g_Log.setColor(LogColor::Red);
                             g_Log.print(oneLine + "\n");
+                            g_Log.setDefaultColor();
+                            g_Log.unlock();
                         }
                     }
 
                     // Messages
                     else if (logAll)
                     {
+                        g_Log.lock();
                         g_Log.setColor(logColor);
                         if (logPrefix)
                             g_Log.print(logPrefix);
                         g_Log.print(oneLine + "\n");
+                        g_Log.setDefaultColor();
+                        g_Log.unlock();
                     }
                 }
-
-                g_Log.setDefaultColor();
-                g_Log.unlock();
 
                 continue;
             }

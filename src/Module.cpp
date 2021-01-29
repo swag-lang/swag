@@ -180,6 +180,17 @@ bool Module::canGenerateLegit()
     return true;
 }
 
+SourceFile* Module::findFile(const Utf8& fileName)
+{
+    for (auto p : files)
+    {
+        if (p->path == fileName)
+            return p;
+    }
+
+    return nullptr;
+}
+
 void Module::allocateBackend()
 {
     scoped_lock lk(mutexFile);

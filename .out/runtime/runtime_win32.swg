@@ -73,6 +73,9 @@ func @error(message: string, loc: swag.CompilerSourceLocation)
     ptr += 1
     ptr = __itoa(ptr, cast(s64) loc.lineStart + 1)
     ptr[0] = ":"'u8
+    ptr += 1
+    ptr = __itoa(ptr, cast(s64) loc.colStart + 1)
+    ptr[0] = ":"'u8
     ptr[1] = " "'u8
     ptr += 2
 

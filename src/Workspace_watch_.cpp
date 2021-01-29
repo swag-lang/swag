@@ -16,7 +16,7 @@ bool Workspace::watchCommand()
 
     OS::watch([&](const string& moduleName) {
         uint32_t errors = 0;
-        OS::doProcess(format("swag.exe test %s", cmdLine.c_str()), g_Workspace.workspacePath.string(), false, errors);
+        OS::doProcess(nullptr, format("swag.exe test %s", cmdLine.c_str()), g_Workspace.workspacePath.string(), false, errors);
     });
 
     return true;

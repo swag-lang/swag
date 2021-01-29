@@ -32,7 +32,7 @@ JobResult ModuleRunJob::execute()
     if (buildParameters.compileType == BackendCompileType::Test)
     {
         uint32_t numErrors = 0;
-        OS::doProcess(path.string(), path.parent_path().parent_path().string(), true, numErrors, LogColor::Default);
+        OS::doProcess(module, path.string(), path.parent_path().parent_path().string(), true, numErrors, LogColor::Default);
         g_Workspace.numErrors += numErrors;
         module->numErrors += numErrors;
     }
