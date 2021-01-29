@@ -63,6 +63,112 @@ void ByteCodeGenJob::emitSafetyNullLambda(ByteCodeGenContext* context, uint32_t 
     freeRegisterRC(context, re);
 }
 
+void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
+{
+    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_NP_ON, ATTRIBUTE_SAFETY_NP_OFF))
+        return;
+
+    PushICFlags ic(context, BCI_SAFETY);
+
+    auto re = reserveRegisterRC(context);
+    switch (typeInfo->sizeOf)
+    {
+    case 1:
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, re);
+        emitInstruction(context, ByteCodeOp::ClearMaskU32, re)->b.u64 = 0xFF;
+        emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, re, r1, re);
+        emitInstruction(context, ByteCodeOp::CompareOpEqual8, re, r0, re);
+        break;
+    case 2:
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, re);
+        emitInstruction(context, ByteCodeOp::ClearMaskU32, re)->b.u64 = 0xFFFF;
+        emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, re, r1, re);
+        emitInstruction(context, ByteCodeOp::CompareOpEqual16, re, r0, re);
+        break;
+    case 4:
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, re);
+        emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, re, r1, re);
+        emitInstruction(context, ByteCodeOp::CompareOpEqual32, re, r0, re);
+        break;
+    case 8:
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, re);
+        emitInstruction(context, ByteCodeOp::BinOpShiftRightU64, re, r1, re);
+        emitInstruction(context, ByteCodeOp::CompareOpEqual64, re, r0, re);
+        break;
+    }
+
+    emitAssert(context, re, "[safety] left shift overflow");
+    freeRegisterRC(context, re);
+}
+
+void ByteCodeGenJob::emitSafetyRightShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
+{
+    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_NP_ON, ATTRIBUTE_SAFETY_NP_OFF))
+        return;
+
+    PushICFlags ic(context, BCI_SAFETY);
+}
+
+void ByteCodeGenJob::emitSafetyLeftShiftEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
+{
+    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_NP_ON, ATTRIBUTE_SAFETY_NP_OFF))
+        return;
+
+    PushICFlags ic(context, BCI_SAFETY);
+    auto        re = reserveRegisterRC(context);
+    switch (typeInfo->sizeOf)
+    {
+    case 1:
+        emitInstruction(context, ByteCodeOp::DeRef8, re, r0);
+        break;
+    case 2:
+        emitInstruction(context, ByteCodeOp::DeRef16, re, r0);
+        break;
+    case 4:
+        emitInstruction(context, ByteCodeOp::DeRef32, re, r0);
+        break;
+    case 8:
+        emitInstruction(context, ByteCodeOp::DeRef64, re, r0);
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    emitSafetyLeftShift(context, re, r1, typeInfo);
+    freeRegisterRC(context, re);
+}
+
+void ByteCodeGenJob::emitSafetyRightShiftEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
+{
+    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_NP_ON, ATTRIBUTE_SAFETY_NP_OFF))
+        return;
+
+    PushICFlags ic(context, BCI_SAFETY);
+    auto        re = reserveRegisterRC(context);
+    switch (typeInfo->sizeOf)
+    {
+    case 1:
+        emitInstruction(context, ByteCodeOp::DeRef8, re, r0);
+        break;
+    case 2:
+        emitInstruction(context, ByteCodeOp::DeRef16, re, r0);
+        break;
+    case 4:
+        emitInstruction(context, ByteCodeOp::DeRef32, re, r0);
+        break;
+    case 8:
+        emitInstruction(context, ByteCodeOp::DeRef64, re, r0);
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    emitSafetyRightShift(context, re, r1, typeInfo);
+    freeRegisterRC(context, re);
+}
+
 void ByteCodeGenJob::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits)
 {
     if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_MT_ON, ATTRIBUTE_SAFETY_MT_OFF))
