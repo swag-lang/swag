@@ -107,6 +107,34 @@ void ByteCodeGenJob::emitSafetyRightShift(ByteCodeGenContext* context, uint32_t 
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
+
+    auto re = reserveRegisterRC(context);
+    switch (typeInfo->sizeOf)
+    {
+    case 1:
+        emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, re);
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, re, r1, re);
+        emitInstruction(context, ByteCodeOp::CompareOpEqual8, re, r0, re);
+        break;
+    case 2:
+        emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, re);
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, re, r1, re);
+        emitInstruction(context, ByteCodeOp::CompareOpEqual16, re, r0, re);
+        break;
+    case 4:
+        emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, re);
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, re, r1, re);
+        emitInstruction(context, ByteCodeOp::CompareOpEqual32, re, r0, re);
+        break;
+    case 8:
+        emitInstruction(context, ByteCodeOp::BinOpShiftRightU64, r0, r1, re);
+        emitInstruction(context, ByteCodeOp::BinOpShiftLeftU64, re, r1, re);
+        emitInstruction(context, ByteCodeOp::CompareOpEqual64, re, r0, re);
+        break;
+    }
+
+    emitAssert(context, re, "[safety] right shift overflow");
+    freeRegisterRC(context, re);
 }
 
 void ByteCodeGenJob::emitSafetyLeftShiftEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
