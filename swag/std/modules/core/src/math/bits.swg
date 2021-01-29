@@ -108,6 +108,7 @@ func countOnes(x: u8)->u32
 #[swag.constexpr]
 func countOnes(x: u16)->u32
 {
+    #[swag.safety("of", false)]
     return cast(u32) CountOnes8[x >> 8] + CountOnes8[x & 0xFF]
 }
 
@@ -115,11 +116,13 @@ func countOnes(x: u16)->u32
 #[swag.constexpr]
 func countOnes(x: u32)->u32
 {
+    #[swag.safety("of", false)]
     return cast(u32) CountOnes8[x >> 24] + CountOnes8[x >> 16 & 0xFF] + CountOnes8[x >> 8 & 0xFF] + CountOnes8[x & 0xFF]
 }
 
 // Returns the number of bits to 1
 #[swag.constexpr]
+#[swag.safety("of", false)]
 func countOnes(x: u64)->u32
 {
     const M0 = 0X5555555555555555

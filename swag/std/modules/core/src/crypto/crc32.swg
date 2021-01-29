@@ -534,6 +534,7 @@ impl Crc32
                 four  := current[3]
                 current += 4
 
+                #[swag.safety("of", false)]
                 cur = lookupTable[0, four & 0xFF] ^ lookupTable[1, (four >> 8) & 0xFF] ^
                         lookupTable[2, (four >> 16) & 0xFF] ^ lookupTable[3, (four >> 24) & 0xFF] ^
                         lookupTable[4, three & 0xFF] ^ lookupTable[5, (three >> 8) & 0xFF] ^
@@ -551,6 +552,7 @@ impl Crc32
                 four  := current[3]
                 current += 4
 
+                #[swag.safety("of", false)]
                 cur = lookupTable[0, (four >> 24) & 0xFF] ^ lookupTable[1, (four >> 16) & 0xFF] ^
                         lookupTable[2, (four >> 8) & 0xFF] ^ lookupTable[3, four & 0xFF] ^
                         lookupTable[4, (three >> 24) & 0xFF] ^ lookupTable[5, (three >> 16) & 0xFF] ^
@@ -568,6 +570,7 @@ impl Crc32
         currentChar := cast(const *u8) current
         while length
         {
+            #[swag.safety("of", false)]
             cur = (cur >> 8) ^ lookupTable[0, (cur & 0xFF) ^ currentChar[0]]
             currentChar += 1
             length -= 1

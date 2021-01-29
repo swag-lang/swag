@@ -18,8 +18,10 @@ impl Mwc
         carry = 1234567
     }
 
+    #[swag.safety("of", false)]
     public func next(using self)->u32
     {
+
         xhi := x >> 16
         xlo := x & 0xFFFF
 

@@ -65,7 +65,7 @@ void ByteCodeGenJob::emitSafetyNullLambda(ByteCodeGenContext* context, uint32_t 
 
 void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_NP_ON, ATTRIBUTE_SAFETY_NP_OFF))
+    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -103,7 +103,7 @@ void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r
 
 void ByteCodeGenJob::emitSafetyRightShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_NP_ON, ATTRIBUTE_SAFETY_NP_OFF))
+    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -139,7 +139,7 @@ void ByteCodeGenJob::emitSafetyRightShift(ByteCodeGenContext* context, uint32_t 
 
 void ByteCodeGenJob::emitSafetyLeftShiftEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_NP_ON, ATTRIBUTE_SAFETY_NP_OFF))
+    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -157,9 +157,6 @@ void ByteCodeGenJob::emitSafetyLeftShiftEq(ByteCodeGenContext* context, uint32_t
         break;
     case 8:
         emitInstruction(context, ByteCodeOp::DeRef64, re, r0);
-        break;
-    default:
-        SWAG_ASSERT(false);
         break;
     }
 
@@ -169,7 +166,7 @@ void ByteCodeGenJob::emitSafetyLeftShiftEq(ByteCodeGenContext* context, uint32_t
 
 void ByteCodeGenJob::emitSafetyRightShiftEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
 {
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_NP_ON, ATTRIBUTE_SAFETY_NP_OFF))
+    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -187,9 +184,6 @@ void ByteCodeGenJob::emitSafetyRightShiftEq(ByteCodeGenContext* context, uint32_
         break;
     case 8:
         emitInstruction(context, ByteCodeOp::DeRef64, re, r0);
-        break;
-    default:
-        SWAG_ASSERT(false);
         break;
     }
 

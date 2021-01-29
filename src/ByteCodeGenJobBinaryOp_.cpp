@@ -283,6 +283,7 @@ bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeIn
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitShiftLeft, type not native");
 
+    emitSafetyLeftShift(context, r0, r1, typeInfo);
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S32:
@@ -308,6 +309,7 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeI
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitShiftRight, type not native");
 
+    emitSafetyRightShift(context, r0, r1, typeInfo);
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S32:

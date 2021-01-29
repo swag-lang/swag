@@ -119,6 +119,7 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     days := leapYear ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
     // All months have less than 32 days, so n >> 5 is a good conservative
     // estimate for the month
+    #[swag.safety("of", false)]
     m := (n >> 5) + 1
     // m = 1-based month number
     while n >= days[m] m += 1

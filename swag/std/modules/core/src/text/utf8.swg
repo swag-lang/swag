@@ -96,6 +96,7 @@ func countBytesAt(buffer: const [..] u8)->u32
 	if countof < sz
         return 1
 
+    #[swag.safety("of", false)]
 	accept := AcceptRanges[x >> 4]
 
 	b1 := dataof[1]
@@ -180,6 +181,7 @@ func decodeLastChar(buffer: const [..] u8) -> {c: char, eat: u32}
     while true
     {
         c = :ptr
+        #[swag.safety("of", false)]
         if c >> 6 != 2
             break
         if ptr == dataof
@@ -224,6 +226,7 @@ func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
 	if countof < sz
         return @{CharError, 1}
 
+    #[swag.safety("of", false)]
 	accept := AcceptRanges[x >> 4]
 
     // Length == 2
@@ -355,6 +358,7 @@ func visitChars(buffer: const [..] u8, stmt: code)
 //
 // For speed reasons, this function never fails, even if 'src' is invalid.
 // Use 'fromCharSafe' if you're not sure of the validity of 'src'
+#[swag.safety("of", false)]
 func fromChar(dest: [..] u8, src: char)->u32
 {
     debug.assert(@countof(dest) >= 4, "destination buffer is too small")
@@ -371,12 +375,9 @@ func fromChar(dest: [..] u8, src: char)->u32
         return 2
 
     case !isValidChar(src):
-        #[swag.safety("of", false)]
-        {
-            dest[0] = cast(u8) (((CharError >> 12) & 0x0F) | 0xE0)
-            dest[1] = cast(u8) (((CharError >> 6) & 0x3F) | 0x80)
-            dest[2] = cast(u8) (((CharError >> 0) & 0x3F) | 0x80)
-        }
+        dest[0] = cast(u8) (((CharError >> 12) & 0x0F) | 0xE0)
+        dest[1] = cast(u8) (((CharError >> 6) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((CharError >> 0) & 0x3F) | 0x80)
         return 3
 
     case src <= 0xFFFF:
@@ -456,6 +457,7 @@ func isValid(buffer: const [..] u8)->bool
         if countof < sz
             return false
 
+        #[swag.safety("of", false)]
         accept := AcceptRanges[x >> 4]
 
         b1 := p[1]
