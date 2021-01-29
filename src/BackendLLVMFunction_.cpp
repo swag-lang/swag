@@ -1387,22 +1387,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::BinOpShiftRightS32:
-        {
-            MK_BINOP32_CAB();
-            auto v0 = builder.CreateAShr(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
-            break;
-        }
-        case ByteCodeOp::BinOpShiftRightS64:
-        {
-            MK_BINOP64_CAB();
-            auto vb = builder.CreateIntCast(r2, builder.getInt32Ty(), false);
-            vb      = builder.CreateIntCast(r2, builder.getInt64Ty(), false);
-            auto v0 = builder.CreateAShr(r1, vb);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
-            break;
-        }
         case ByteCodeOp::BinOpShiftRightU32:
         {
             MK_BINOP32_CAB();

@@ -163,15 +163,6 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
-            case ByteCodeOp::BinOpShiftRightS32:
-                BINOP_S32(>>);
-                break;
-            case ByteCodeOp::BinOpShiftRightS64:
-                ip->op    = ByteCodeOp::SetImmediate64;
-                ip->b.s64 = ip->a.s64 >> ip->b.u32;
-                ip->a.u32 = ip->c.u32;
-                OK();
-                break;
             case ByteCodeOp::BinOpShiftRightU32:
                 BINOP_U32(>>);
                 break;

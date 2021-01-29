@@ -11,4 +11,5 @@ using swag
     #semerror x3 := swag.MaxU32 << 1
     #semerror x4 := swag.MaxU64 << 1
     #semerror x5 := 1'u32 >> 1
+    #semerror x6 := 1'u64 >> 1
 }
