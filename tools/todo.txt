@@ -27,6 +27,13 @@ attributes flags qui sont à la fois on et off => error
 -------------------------------------
 x := -128's8
 -------------------------------------
+safety float => int int <= float
+-------------------------------------
+cast any avec struct, ca fait quoi (et avec les using ?)
+-------------------------------------
+cast interface vers struct (avec safety)
+-------------------------------------
+
 
 
 ****************************************

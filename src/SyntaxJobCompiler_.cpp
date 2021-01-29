@@ -363,7 +363,6 @@ bool SyntaxJob::doCompilerSemError(AstNode* parent, AstNode** result, bool embed
     else
         SWAG_CHECK(doTopLevelInstruction(node));
 
-    sourceFile->numTestErrors++;
     return true;
 }
 

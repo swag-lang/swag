@@ -283,7 +283,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (mulOverflow(node, left->computedValue.reg.u64, right->computedValue.reg.u64))
-                return context->report({ node, node->token, "[safety] integer overflow" });
+                return context->report({node, node->token, "[safety] integer overflow"});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
             break;
         case NativeTypeKind::F32:
@@ -847,6 +847,8 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
             node->computedValue.reg.s32 = left->computedValue.reg.s32 << right->computedValue.reg.u32;
+            if (node->computedValue.reg.s32 >> right->computedValue.reg.u32 != left->computedValue.reg.s32)
+                return context->report({right, "left shift overflow"});
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
@@ -988,6 +990,22 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
 
     TypeManager::promote(left, right);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right, CASTFLAG_COERCE_SAMESIGN));
+
+    if (right->flags & AST_VALUE_COMPUTED)
+    {
+        switch (leftTypeInfo->sizeOf)
+        {
+        case 1:
+        case 2:
+        case 4:
+            SWAG_VERIFY(right->computedValue.reg.u32 < 32, context->report({right, format("shift operand too big '%u''", right->computedValue.reg.u32)}));
+            break;
+        case 8:
+            SWAG_VERIFY(right->computedValue.reg.u32 < 64, context->report({right, format("shift operand too big '%u''", right->computedValue.reg.u32)}));
+            break;
+        }
+    }
+
     node->typeInfo = left->typeInfo;
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;

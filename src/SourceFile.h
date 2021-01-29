@@ -49,6 +49,7 @@ struct SourceFile : public File
     int         numErrors       = 0;
     atomic<int> numTestErrors   = 0;
     atomic<int> numRunErrors    = 0;
+    atomic<int> numSemErrors    = 0;
     int         silent          = 0;
     uint32_t    indexInModule   = UINT32_MAX;
     BuildPass   buildPass       = BuildPass::Full;

@@ -276,41 +276,37 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
 
     // Are we in the #semerror block.
     // If so, we do not count the error, as we want to continue
-    bool inTestError = false;
-    bool isTestError = false;
+    bool inSemError = false;
+    bool isSemError = false;
     if (diag.sourceNode)
     {
         // If we have raised an error for AstNodeKind::CompilerSemError, then this is a real error
         if (diag.sourceNode->kind == AstNodeKind::CompilerSemError)
-            isTestError = true;
+            isSemError = true;
         else
         {
             auto parent = diag.sourceNode->parent;
             while (parent && parent->kind != AstNodeKind::CompilerSemError)
                 parent = parent->parent;
             if (parent)
-                inTestError = true;
+                inSemError = true;
         }
     }
 
-    // If inside a runtime error, simulate a test error, to dismiss it
     if (inRunError)
-    {
-        inTestError = true;
-        numTestErrors++;
         numRunErrors--;
-    }
 
-    if (!inTestError || diag.exceptionError)
+    if ((!inSemError && !inRunError) || diag.exceptionError)
     {
         numErrors++;
         module->numErrors++;
     }
 
     // Do not raise an error if we are waiting for one, during tests
-    if (numTestErrors && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError && !isTestError)
+    if ((numTestErrors || inRunError || inSemError) && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError && !isSemError)
     {
-        numTestErrors--;
+        if (!inRunError && !inSemError)
+            numTestErrors--;
         if (g_CommandLine.verboseTestErrors)
         {
             diag.report(true);
