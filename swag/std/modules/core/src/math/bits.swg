@@ -71,8 +71,7 @@ func trailingZeros(x: u16)->u32
     if x == 0 return 16
     vx := cast(u32) x
     vx &= (~vx + 1)
-    #[swag.safety("of", false)]
-    return cast(u32) DeBruijn32[(vx * DeBruijn32Cst) >> 27]
+    return cast(u32) DeBruijn32[(vx * DeBruijn32Cst) >>% 27]
 }
 
 // Returns the number of trailing zero bits. Result is 32 for x == 0
@@ -82,8 +81,7 @@ func trailingZeros(x: u32)->u32
     if x == 0 return 32
     vx := x
     vx &= (~vx + 1)
-    #[swag.safety("of", false)]
-    return cast(u32) DeBruijn32[(vx * DeBruijn32Cst) >> 27]
+    return cast(u32) DeBruijn32[(vx * DeBruijn32Cst) >>% 27]
 }
 
 // Returns the number of trailing zero bits. Result is 64 for x == 0
@@ -93,8 +91,7 @@ func trailingZeros(x: u64)->u32
     if x == 0 return 64
     vx := x
     vx &= (~vx + 1)
-    #[swag.safety("of", false)]
-    return cast(u32) DeBruijn64[(vx * DeBruijn64Cst) >> 58]
+    return cast(u32) DeBruijn64[(vx * DeBruijn64Cst) >>% 58]
 }
 
 // Returns the number of bits to 1
@@ -108,32 +105,29 @@ func countOnes(x: u8)->u32
 #[swag.constexpr]
 func countOnes(x: u16)->u32
 {
-    #[swag.safety("of", false)]
-    return cast(u32) CountOnes8[x >> 8] + CountOnes8[x & 0xFF]
+    return cast(u32) CountOnes8[x >>% 8] + CountOnes8[x & 0xFF]
 }
 
 // Returns the number of bits to 1
 #[swag.constexpr]
 func countOnes(x: u32)->u32
 {
-    #[swag.safety("of", false)]
-    return cast(u32) CountOnes8[x >> 24] + CountOnes8[x >> 16 & 0xFF] + CountOnes8[x >> 8 & 0xFF] + CountOnes8[x & 0xFF]
+    return cast(u32) CountOnes8[x >>% 24] + CountOnes8[x >>% 16 & 0xFF] + CountOnes8[x >>% 8 & 0xFF] + CountOnes8[x & 0xFF]
 }
 
 // Returns the number of bits to 1
 #[swag.constexpr]
-#[swag.safety("of", false)]
 func countOnes(x: u64)->u32
 {
     const M0 = 0X5555555555555555
     const M1 = 0X3333333333333333
     const M2 = 0X0F0F0F0F0F0F0F0F
     vx := x
-	vx = ((vx >> 1) & M0) + (vx & M0)
-	vx = ((vx >> 2) & M1) + (vx & M1)
-	vx = ((vx >> 4) + vx) & M2
-	vx += vx >> 8
-	vx += vx >> 16
-	vx += vx >> 32
+	vx = ((vx >>% 1) & M0) + (vx & M0)
+	vx = ((vx >>% 2) & M1) + (vx & M1)
+	vx = ((vx >>% 4) + vx) & M2
+	vx += vx >>% 8
+	vx += vx >>% 16
+	vx += vx >>% 32
 	return bitcast(u32) vx & ((1 << 7) - 1)
 }

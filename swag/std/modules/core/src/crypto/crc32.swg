@@ -570,8 +570,7 @@ impl Crc32
         currentChar := cast(const *u8) current
         while length
         {
-            #[swag.safety("of", false)]
-            cur = (cur >> 8) ^ lookupTable[0, (cur & 0xFF) ^ currentChar[0]]
+            cur = (cur >>% 8) ^ lookupTable[0, (cur & 0xFF) ^ currentChar[0]]
             currentChar += 1
             length -= 1
         }
