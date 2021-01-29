@@ -52,7 +52,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     }
 
     if (error)
-        return context->report({fromNode ? fromNode : context->node, "integer cast truncated bits"});
+        return context->report({fromNode ? fromNode : context->node, "[safety] integer cast truncated bits"});
 
     return true;
 }

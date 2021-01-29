@@ -371,9 +371,12 @@ func fromChar(dest: [..] u8, src: char)->u32
         return 2
 
     case !isValidChar(src):
-        dest[0] = cast(u8) (((CharError >> 12) & 0x0F) | 0xE0)
-        dest[1] = cast(u8) (((CharError >> 6) & 0x3F) | 0x80)
-        dest[2] = cast(u8) (((CharError >> 0) & 0x3F) | 0x80)
+        #[swag.safety("of", false)]
+        {
+            dest[0] = cast(u8) (((CharError >> 12) & 0x0F) | 0xE0)
+            dest[1] = cast(u8) (((CharError >> 6) & 0x3F) | 0x80)
+            dest[2] = cast(u8) (((CharError >> 0) & 0x3F) | 0x80)
+        }
         return 3
 
     case src <= 0xFFFF:

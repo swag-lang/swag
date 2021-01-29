@@ -9,7 +9,7 @@ public struct Mwc
 impl Mwc
 {
     const mult: u32 = 2083801278
-    const mhi = mult >> 16
+    const mhi = (mult & 0xFFFF0000) >> 16
     const mlo = mult & 0xFFFF
 
     public func seed(using self, value: u32)

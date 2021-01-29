@@ -846,14 +846,22 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            node->computedValue.reg.s32 = left->computedValue.reg.s32 << right->computedValue.reg.u32;
-            if (node->computedValue.reg.s32 >> right->computedValue.reg.u32 != left->computedValue.reg.s32)
-                return context->report({right, "left shift overflow"});
+            node->computedValue.reg.u32 = left->computedValue.reg.u32 << right->computedValue.reg.u32;
+            if (module->mustEmitSafetyOF(node))
+            {
+                if (node->computedValue.reg.u32 >> right->computedValue.reg.u32 != left->computedValue.reg.u32)
+                    return context->report({node, "[safety] left shift overflow"});
+            }
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 << right->computedValue.reg.u32;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 << right->computedValue.reg.u32;
+            if (module->mustEmitSafetyOF(node))
+            {
+                if (node->computedValue.reg.u64 >> right->computedValue.reg.u32 != left->computedValue.reg.u64)
+                    return context->report({node, "[safety] left shift overflow"});
+            }
             break;
         default:
             return internalError(context, "resolveShiftLeft, type not supported");
@@ -921,18 +929,24 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            node->computedValue.reg.s32 = left->computedValue.reg.s32 >> right->computedValue.reg.u32;
-            break;
-        case NativeTypeKind::S64:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 >> right->computedValue.reg.u32;
-            break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
             node->computedValue.reg.u32 = left->computedValue.reg.u32 >> right->computedValue.reg.u32;
+            if (module->mustEmitSafetyOF(node))
+            {
+                if (node->computedValue.reg.u32 << right->computedValue.reg.u32 != left->computedValue.reg.u32)
+                    return context->report({ node, "[safety] right shift overflow" });
+            }
             break;
+        case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 >> right->computedValue.reg.u32;
+            if (module->mustEmitSafetyOF(node))
+            {
+                if (node->computedValue.reg.u64 << right->computedValue.reg.u32 != left->computedValue.reg.u64)
+                    return context->report({ node, "[safety] right shift overflow" });
+            }
             break;
         default:
             return internalError(context, "resolveShiftRight, type not supported");
