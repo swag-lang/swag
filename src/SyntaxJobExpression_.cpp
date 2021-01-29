@@ -378,14 +378,19 @@ static int getPrecedence(TokenId id)
     case TokenId::SymTilde:
         return 0;
     case TokenId::SymAsterisk:
+    case TokenId::SymAsteriskPercent:
     case TokenId::SymSlash:
     case TokenId::SymPercent:
         return 1;
     case TokenId::SymPlus:
+    case TokenId::SymPlusPercent:
     case TokenId::SymMinus:
+    case TokenId::SymMinusPercent:
         return 2;
     case TokenId::SymGreaterGreater:
+    case TokenId::SymGreaterGreaterPercent:
     case TokenId::SymLowerLower:
+    case TokenId::SymLowerLowerPercent:
         return 3;
     case TokenId::SymAmpersand:
         return 4;
@@ -413,7 +418,9 @@ static bool isAssociative(TokenId id)
     switch (id)
     {
     case TokenId::SymPlus:
+    case TokenId::SymPlusPercent:
     case TokenId::SymAsterisk:
+    case TokenId::SymAsteriskPercent:
     case TokenId::SymVertical:
     case TokenId::SymCircumflex:
     case TokenId::SymTilde:
@@ -493,23 +500,42 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, AstNode** result)
 
     bool isBinary = false;
     if ((token.id == TokenId::SymPlus) ||
+        (token.id == TokenId::SymPlusPercent) ||
         (token.id == TokenId::SymMinus) ||
+        (token.id == TokenId::SymMinusPercent) ||
         (token.id == TokenId::SymAsterisk) ||
+        (token.id == TokenId::SymAsteriskPercent) ||
         (token.id == TokenId::SymSlash) ||
         (token.id == TokenId::SymPercent) ||
         (token.id == TokenId::SymAmpersand) ||
         (token.id == TokenId::SymVertical) ||
         (token.id == TokenId::SymGreaterGreater) ||
+        (token.id == TokenId::SymGreaterGreaterPercent) ||
         (token.id == TokenId::SymLowerLower) ||
+        (token.id == TokenId::SymLowerLowerPercent) ||
         (token.id == TokenId::SymTilde) ||
         (token.id == TokenId::SymCircumflex))
     {
         auto binaryNode = Ast::newNode<AstNode>(this, AstNodeKind::FactorOp, sourceFile, parent ? *parent : nullptr, 2);
-        if (token.id == TokenId::SymGreaterGreater || token.id == TokenId::SymLowerLower)
+        if (token.id == TokenId::SymGreaterGreater ||
+            token.id == TokenId::SymGreaterGreaterPercent ||
+            token.id == TokenId::SymLowerLower ||
+            token.id == TokenId::SymLowerLowerPercent)
             binaryNode->semanticFct = SemanticJob::resolveShiftExpression;
         else
             binaryNode->semanticFct = SemanticJob::resolveFactorExpression;
         binaryNode->token = move(token);
+
+        switch (binaryNode->token.id)
+        {
+        case TokenId::SymGreaterGreaterPercent:
+        case TokenId::SymLowerLowerPercent:
+        case TokenId::SymPlusPercent:
+        case TokenId::SymMinusPercent:
+        case TokenId::SymAsteriskPercent:
+            binaryNode->attributeFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
+            break;
+        }
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
@@ -1171,15 +1197,20 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     // Affect operator
     else if (token.id == TokenId::SymEqual ||
              token.id == TokenId::SymPlusEqual ||
+             token.id == TokenId::SymPlusPercentEqual ||
              token.id == TokenId::SymMinusEqual ||
+             token.id == TokenId::SymMinusPercentEqual ||
              token.id == TokenId::SymAsteriskEqual ||
+             token.id == TokenId::SymAsteriskPercentEqual ||
              token.id == TokenId::SymSlashEqual ||
              token.id == TokenId::SymAmpersandEqual ||
              token.id == TokenId::SymVerticalEqual ||
              token.id == TokenId::SymCircumflexEqual ||
              token.id == TokenId::SymPercentEqual ||
              token.id == TokenId::SymLowerLowerEqual ||
-             token.id == TokenId::SymGreaterGreaterEqual)
+             token.id == TokenId::SymLowerLowerPercentEqual ||
+             token.id == TokenId::SymGreaterGreaterEqual ||
+             token.id == TokenId::SymGreaterGreaterPercentEqual)
     {
         // Multiple affectation
         // like in a, b, c = 0

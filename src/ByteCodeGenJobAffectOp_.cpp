@@ -704,12 +704,15 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
             return true;
         break;
     case TokenId::SymPlusEqual:
+    case TokenId::SymPlusPercentEqual:
         SWAG_CHECK(emitAffectPlusEqual(context, r0, r1));
         break;
     case TokenId::SymMinusEqual:
+    case TokenId::SymMinusPercentEqual:
         SWAG_CHECK(emitAffectMinusEqual(context, r0, r1));
         break;
     case TokenId::SymAsteriskEqual:
+    case TokenId::SymAsteriskPercentEqual:
         SWAG_CHECK(emitAffectMulEqual(context, r0, r1));
         break;
     case TokenId::SymSlashEqual:
@@ -725,9 +728,11 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
         SWAG_CHECK(emitAffectXorEqual(context, r0, r1));
         break;
     case TokenId::SymLowerLowerEqual:
+    case TokenId::SymLowerLowerPercentEqual:
         SWAG_CHECK(emitAffectShiftLeftEqual(context, r0, r1));
         break;
     case TokenId::SymGreaterGreaterEqual:
+    case TokenId::SymGreaterGreaterPercentEqual:
         SWAG_CHECK(emitAffectShiftRightEqual(context, r0, r1));
         break;
     case TokenId::SymPercentEqual:

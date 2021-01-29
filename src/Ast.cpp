@@ -292,6 +292,18 @@ namespace Ast
         auto node         = Ast::newNode<AstNode>(syntaxJob, AstNodeKind::AffectOp, sourceFile, parent, 2);
         node->semanticFct = SemanticJob::resolveAffect;
         node->flags |= AST_REVERSE_SEMANTIC;
+
+        switch (node->token.id)
+        {
+        case TokenId::SymGreaterGreaterPercentEqual:
+        case TokenId::SymLowerLowerPercentEqual:
+        case TokenId::SymPlusPercentEqual:
+        case TokenId::SymMinusPercentEqual:
+        case TokenId::SymAsteriskPercentEqual:
+            node->attributeFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
+            break;
+        }
+
         return node;
     }
 

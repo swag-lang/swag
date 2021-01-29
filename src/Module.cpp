@@ -725,6 +725,10 @@ bool Module::mustEmitSafetyOF(AstNode* node)
 
 bool Module::mustEmitSafety(AstNode* node, uint64_t whatOn, uint64_t whatOff)
 {
+    // Special operator version without overflow checking
+    if (whatOff == ATTRIBUTE_SAFETY_OF_OFF && node->attributeFlags & ATTRIBUTE_SAFETY_OFF_OPERATOR)
+        return false;
+
     return ((buildCfg.safetyGuards & whatOn) || (node->attributeFlags & whatOn)) && !(node->attributeFlags & whatOff);
 }
 

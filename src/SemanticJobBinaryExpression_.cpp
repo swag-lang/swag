@@ -747,7 +747,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         switch (node->token.id)
         {
         case TokenId::SymPlus:
+        case TokenId::SymPlusPercent:
         case TokenId::SymAsterisk:
+        case TokenId::SymAsteriskPercent:
             swap(left, right);
             swap(leftTypeInfo, rightTypeInfo);
             node->semFlags |= AST_SEM_INVERSE_PARAMS;
@@ -758,12 +760,15 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     switch (node->token.id)
     {
     case TokenId::SymPlus:
+    case TokenId::SymPlusPercent:
         SWAG_CHECK(resolveBinaryOpPlus(context, left, right));
         break;
     case TokenId::SymMinus:
+    case TokenId::SymMinusPercent:
         SWAG_CHECK(resolveBinaryOpMinus(context, left, right));
         break;
     case TokenId::SymAsterisk:
+    case TokenId::SymAsteriskPercent:
         SWAG_CHECK(resolveBinaryOpMul(context, left, right));
         break;
     case TokenId::SymSlash:
@@ -935,7 +940,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             if (module->mustEmitSafetyOF(node))
             {
                 if (node->computedValue.reg.u32 << right->computedValue.reg.u32 != left->computedValue.reg.u32)
-                    return context->report({ node, "[safety] right shift overflow" });
+                    return context->report({node, "[safety] right shift overflow"});
             }
             break;
         case NativeTypeKind::S64:
@@ -945,7 +950,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             if (module->mustEmitSafetyOF(node))
             {
                 if (node->computedValue.reg.u64 << right->computedValue.reg.u32 != left->computedValue.reg.u64)
-                    return context->report({ node, "[safety] right shift overflow" });
+                    return context->report({node, "[safety] right shift overflow"});
             }
             break;
         default:
@@ -1028,9 +1033,11 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     switch (node->token.id)
     {
     case TokenId::SymLowerLower:
+    case TokenId::SymLowerLowerPercent:
         SWAG_CHECK(resolveShiftLeft(context, left, right));
         break;
     case TokenId::SymGreaterGreater:
+    case TokenId::SymGreaterGreaterPercent:
         SWAG_CHECK(resolveShiftRight(context, left, right));
         break;
     default:

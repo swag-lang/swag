@@ -229,7 +229,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         break;
 
     case TokenId::SymLowerLowerEqual:
+    case TokenId::SymLowerLowerPercentEqual:
     case TokenId::SymGreaterGreaterEqual:
+    case TokenId::SymGreaterGreaterPercentEqual:
         if (forTuple)
             return context->report({node, node->token, "invalid operation on a tuple type"});
         else if (forStruct)
@@ -283,7 +285,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         break;
 
     case TokenId::SymPlusEqual:
+    case TokenId::SymPlusPercentEqual:
     case TokenId::SymMinusEqual:
+    case TokenId::SymMinusPercentEqual:
         if (forTuple)
             return context->report({node, node->token, "invalid operation on a tuple type"});
         else if (forStruct)
@@ -339,6 +343,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     case TokenId::SymPercentEqual:
     case TokenId::SymAsteriskEqual:
+    case TokenId::SymAsteriskPercentEqual:
         if (forTuple)
             return context->report({node, node->token, "invalid operation on a tuple type"});
         else if (forStruct)

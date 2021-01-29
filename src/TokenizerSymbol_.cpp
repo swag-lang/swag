@@ -19,6 +19,11 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
     token.text.buffer[3] = 0;             \
     token.text.count     = 3;
 
+#define ADDC4(__c)                        \
+    token.text.buffer[3] = (uint8_t) __c; \
+    token.text.buffer[4] = 0;             \
+    token.text.count     = 4;
+
     switch (c)
     {
     case '\'':
@@ -156,6 +161,19 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
             ADDC2(c);
             treatChar(c, offset);
         }
+        else if (c == '%')
+        {
+            token.id = TokenId::SymMinusPercent;
+            ADDC2(c);
+            treatChar(c, offset);
+            c = getCharNoSeek(offset);
+            if (c == '=')
+            {
+                token.id = TokenId::SymMinusPercentEqual;
+                ADDC3(c);
+                treatChar(c, offset);
+            }
+        }
         return true;
 
     case '+':
@@ -167,6 +185,19 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
             ADDC2(c);
             treatChar(c, offset);
         }
+        else if (c == '%')
+        {
+            token.id = TokenId::SymPlusPercent;
+            ADDC2(c);
+            treatChar(c, offset);
+            c = getCharNoSeek(offset);
+            if (c == '=')
+            {
+                token.id = TokenId::SymPlusPercentEqual;
+                ADDC3(c);
+                treatChar(c, offset);
+            }
+        }
         return true;
 
     case '*':
@@ -177,6 +208,19 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
             token.id = TokenId::SymAsteriskEqual;
             ADDC2(c);
             treatChar(c, offset);
+        }
+        else if (c == '%')
+        {
+            token.id = TokenId::SymAsteriskPercent;
+            ADDC2(c);
+            treatChar(c, offset);
+            c = getCharNoSeek(offset);
+            if (c == '=')
+            {
+                token.id = TokenId::SymAsteriskPercentEqual;
+                ADDC3(c);
+                treatChar(c, offset);
+            }
         }
         return true;
 
@@ -275,6 +319,20 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
                 treatChar(c, offset);
                 ADDC3(c);
             }
+            else if (c == '%')
+            {
+                token.id = TokenId::SymLowerLowerPercent;
+                ADDC3(c);
+                treatChar(c, offset);
+
+                c = getCharNoSeek(offset);
+                if (c == '=')
+                {
+                    token.id = TokenId::SymLowerLowerPercentEqual;
+                    ADDC4(c);
+                    treatChar(c, offset);
+                }
+            }
         }
         return true;
 
@@ -298,6 +356,20 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
                 token.id = TokenId::SymGreaterGreaterEqual;
                 ADDC3(c);
                 treatChar(c, offset);
+            }
+            else if (c == '%')
+            {
+                token.id = TokenId::SymGreaterGreaterPercent;
+                ADDC3(c);
+                treatChar(c, offset);
+
+                c = getCharNoSeek(offset);
+                if (c == '=')
+                {
+                    token.id = TokenId::SymGreaterGreaterPercentEqual;
+                    ADDC4(c);
+                    treatChar(c, offset);
+                }
             }
         }
         return true;

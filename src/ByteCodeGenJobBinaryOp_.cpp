@@ -467,12 +467,15 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             switch (node->token.id)
             {
             case TokenId::SymPlus:
+            case TokenId::SymPlusPercent:
                 SWAG_CHECK(emitBinaryOpPlus(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymMinus:
+            case TokenId::SymMinusPercent:
                 SWAG_CHECK(emitBinaryOpMinus(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymAsterisk:
+            case TokenId::SymAsteriskPercent:
                 SWAG_CHECK(emitBinaryOpMul(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymSlash:
@@ -488,9 +491,11 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
                 SWAG_CHECK(emitBitmaskAnd(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymLowerLower:
+            case TokenId::SymLowerLowerPercent:
                 SWAG_CHECK(emitShiftLeft(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymGreaterGreater:
+            case TokenId::SymGreaterGreaterPercent:
                 SWAG_CHECK(emitShiftRight(context, typeInfoExpr, r0, r1, r2));
                 break;
             case TokenId::SymCircumflex:

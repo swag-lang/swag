@@ -5,7 +5,9 @@ using swag
 #test
 {
     {
-        var x: s8 = -1
-        #runerror x >>= 1
+        var x: s8 = 1
+        x >>%= 1
+        #assert 1 >>% 1 == 0
+        #assert swag.MaxU32 <<% 1 == 0xFFFFFFFE
     }
 }
