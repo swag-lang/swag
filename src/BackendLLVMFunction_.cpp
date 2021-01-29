@@ -2639,28 +2639,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::InvertS8:
+        case ByteCodeOp::InvertU8:
         {
             auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateNot(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::InvertS16:
+        case ByteCodeOp::InvertU16:
         {
             auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateNot(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::InvertS32:
+        case ByteCodeOp::InvertU32:
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateNot(builder.CreateLoad(r0));
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::InvertS64:
+        case ByteCodeOp::InvertU64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateNot(builder.CreateLoad(r0));

@@ -50,8 +50,7 @@ impl DateTime
     {
         m := (month + 9) % 12
         y := year - m/10
-        #[swag.safety("of", false)]
-        dn := 365*y + y/4 + y/400 + (m*306 + 5)/10 + day-1 - y/100
+        dn := 365*y +% y/4 +% y/400 +% (m*306 + 5)/10 +% day-1 -% y/100
         dn += 3
         return cast(DayOfWeek) (dn % 7)
     }

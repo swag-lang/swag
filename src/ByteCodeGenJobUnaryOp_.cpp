@@ -44,21 +44,21 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0)
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::InvertS8, r0);
+        emitInstruction(context, ByteCodeOp::InvertU8, r0);
         return true;
     case NativeTypeKind::S16:
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::InvertS16, r0);
+        emitInstruction(context, ByteCodeOp::InvertU16, r0);
         return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
-        emitInstruction(context, ByteCodeOp::InvertS32, r0);
+        emitInstruction(context, ByteCodeOp::InvertU32, r0);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
     case NativeTypeKind::Int:
     case NativeTypeKind::UInt:
-        emitInstruction(context, ByteCodeOp::InvertS64, r0);
+        emitInstruction(context, ByteCodeOp::InvertU64, r0);
         return true;
     default:
         return internalError(context, "emitUnaryOpInvert, type not supported");

@@ -1536,22 +1536,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
 
-        case ByteCodeOp::InvertS8:
+        case ByteCodeOp::InvertU8:
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             concat.addString2("\xf6\xd0"); // not al
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
-        case ByteCodeOp::InvertS16:
+        case ByteCodeOp::InvertU16:
             BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             concat.addString3("\x66\xf7\xd0"); // not ax
             BackendX64Inst::emit_Store16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
-        case ByteCodeOp::InvertS32:
+        case ByteCodeOp::InvertU32:
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             concat.addString2("\xf7\xd0"); // not eax
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
-        case ByteCodeOp::InvertS64:
+        case ByteCodeOp::InvertU64:
             BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             concat.addString3("\x48\xf7\xd0"); // not rax
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);

@@ -82,8 +82,7 @@ func dateToTicks(year, month, day: u16)->Ticks
 
     days := isLeapYear(year) ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
     y := cast(u64) (year - 1)
-    #[swag.safety("of", false)]
-    n := y*365 + y/4 + y/400 + days[month-1] + day-1 - y/100
+    n := y*365 +% y/4 +% y/400 +% days[month-1] +% day-1 -% y/100
     return n * TicksPerDay
 }
 
