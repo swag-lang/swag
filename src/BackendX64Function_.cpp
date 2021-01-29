@@ -796,47 +796,27 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::OR);
             break;
 
-        case ByteCodeOp::AffectOpShiftLeftEqS8:
+        case ByteCodeOp::AffectOpShiftLeftEqU8:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xd2\x20"); // sal byte ptr [rax], cl
             break;
-        case ByteCodeOp::AffectOpShiftLeftEqS16:
+        case ByteCodeOp::AffectOpShiftLeftEqU16:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x66\xd3\x20"); // sal word ptr [rax], cl
             break;
-        case ByteCodeOp::AffectOpShiftLeftEqS32:
+        case ByteCodeOp::AffectOpShiftLeftEqU32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xd3\x20"); // sal dword ptr [rax], cl
             break;
-        case ByteCodeOp::AffectOpShiftLeftEqS64:
+        case ByteCodeOp::AffectOpShiftLeftEqU64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x48\xd3\x20"); // sal qword ptr [rax], cl
             break;
 
-        case ByteCodeOp::AffectOpShiftRightEqS8:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            concat.addString2("\xd2\x38"); // sar byte ptr [rax], cl
-            break;
-        case ByteCodeOp::AffectOpShiftRightEqS16:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            concat.addString3("\x66\xd3\x38"); // sar word ptr [rax], cl
-            break;
-        case ByteCodeOp::AffectOpShiftRightEqS32:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            concat.addString2("\xd3\x38"); // sar dword ptr [rax], cl
-            break;
-        case ByteCodeOp::AffectOpShiftRightEqS64:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            concat.addString3("\x48\xd3\x38"); // sar qword ptr [rax], cl
-            break;
         case ByteCodeOp::AffectOpShiftRightEqU8:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
