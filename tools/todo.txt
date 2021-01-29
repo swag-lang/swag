@@ -16,8 +16,6 @@ TODO
 -------------------------------------
 char => rune ?
 -------------------------------------
-shift left/right doit pas etre supérieur a 255 (a tester en compiler si constant, et safety en runtime)
--------------------------------------
 slice/cstrings and foreign
 -------------------------------------
 y'a forcement des merdes avec les typeinfo compiler dans leur propre segment
