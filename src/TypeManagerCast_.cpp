@@ -2123,7 +2123,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
-    // Struct/Interface to pointer
+    // Struct/Interface/Typeset to pointer
     if (fromType->kind == TypeInfoKind::Struct || fromType->kind == TypeInfoKind::Interface || fromType->kind == TypeInfoKind::TypeSet)
     {
         if ((castFlags & CASTFLAG_EXPLICIT) || (toTypePointer->flags & TYPEINFO_SELF) || toTypePointer->isConst() || (castFlags & CASTFLAG_UFCS))
@@ -2143,6 +2143,26 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
                     return true;
                 }
             }
+        }
+    }
+
+    // Interface back to struct pointer
+    if (fromType->kind == TypeInfoKind::Interface && toTypePointer->isPointerTo(TypeInfoKind::Struct))
+    {
+        if (castFlags & CASTFLAG_EXPLICIT)
+        {
+            auto fromTypeItf  = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Interface);
+            auto toTypeStruct = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
+            if (!toTypeStruct->hasInterface(fromTypeItf))
+                return castError(context, toType, fromType, fromNode, castFlags);
+
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfo       = toType;
+            }
+
+            return true;
         }
     }
 
