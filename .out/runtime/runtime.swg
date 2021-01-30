@@ -218,9 +218,8 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
         return
     }
 
-    // During tests, and if not in devmode, then just raise an error without
-    // a dialog box
-    if((contextFlags & swag.ContextFlags.Test) && !(contextFlags & swag.ContextFlags.DevMode))
+    // During tests just raise an error without a dialog box
+    if(contextFlags & swag.ContextFlags.Test)
     {
         @error(message, loc)
         return
