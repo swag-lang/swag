@@ -8,6 +8,44 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        // Cast to bool, followed by a bool negation : replace with cast to inverse bool
+        // and remove the negation
+        if (ip[0].op == ByteCodeOp::CastBool8 &&
+            ip[1].op == ByteCodeOp::NegBool &&
+            !(ip[1].flags & BCI_JUMP_DEST) &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            ip[0].op = ByteCodeOp::CastInvBool8;
+            setNop(context, ip + 1);
+        }
+
+        if (ip[0].op == ByteCodeOp::CastBool16 &&
+            ip[1].op == ByteCodeOp::NegBool &&
+            !(ip[1].flags & BCI_JUMP_DEST) &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            ip[0].op = ByteCodeOp::CastInvBool16;
+            setNop(context, ip + 1);
+        }
+
+        if (ip[0].op == ByteCodeOp::CastBool32 &&
+            ip[1].op == ByteCodeOp::NegBool &&
+            !(ip[1].flags & BCI_JUMP_DEST) &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            ip[0].op = ByteCodeOp::CastInvBool32;
+            setNop(context, ip + 1);
+        }
+
+        if (ip[0].op == ByteCodeOp::CastBool64 &&
+            ip[1].op == ByteCodeOp::NegBool &&
+            !(ip[1].flags & BCI_JUMP_DEST) &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            ip[0].op = ByteCodeOp::CastInvBool64;
+            setNop(context, ip + 1);
+        }
+
         // Testing if a stack pointer is not null is irrelevant. This can happen often because of
         // safety checks, when dereferencing a struct on the stack
         if ((ip[0].op == ByteCodeOp::MakeStackPointer || ip[0].op == ByteCodeOp::GetFromStackParam64) &&
