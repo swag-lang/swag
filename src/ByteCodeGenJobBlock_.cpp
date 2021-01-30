@@ -554,8 +554,10 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
         return true;
 
     // Jump to exit the switch
+    context->setNoLocation();
     auto inst   = emitInstruction(context, ByteCodeOp::Jump);
     inst->b.s32 = blockNode->ownerCase->ownerSwitch->seekJumpExpression - context->bc->numInstructions;
+    context->restoreNoLocation();
 
     // Resolve jump from case to case
     inst        = context->bc->out + blockNode->seekJumpNextCase;
