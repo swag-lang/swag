@@ -8,6 +8,43 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        // GetFromStack8/16/32 clear the other bits by convention, so no need to
+        // have a ClearMaskU64 after
+        if (ip[0].op == ByteCodeOp::GetFromStack8 &&
+            ip[1].op == ByteCodeOp::ClearMaskU64 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+        }
+
+        if (ip[0].op == ByteCodeOp::GetFromStack16 &&
+            ip[1].op == ByteCodeOp::ClearMaskU64 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+        }
+
+        if (ip[0].op == ByteCodeOp::GetFromStack8 &&
+            ip[1].op == ByteCodeOp::ClearMaskU32 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+        }
+
+        if (ip[0].op == ByteCodeOp::GetFromStack16 &&
+            ip[1].op == ByteCodeOp::ClearMaskU32 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+        }
+
+        if (ip[0].op == ByteCodeOp::GetFromStack32 &&
+            ip[1].op == ByteCodeOp::ClearMaskU64 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+        }
+
         // Cast to bool, followed by a bool negation : replace with cast to inverse bool
         // and remove the negation
         if (ip[0].op == ByteCodeOp::CastBool8 &&
