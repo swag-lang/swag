@@ -294,7 +294,23 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else
         {
             SWAG_ASSERT(typeInfo->sizeOf <= sizeof(uint64_t));
-            auto inst   = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
+            ByteCodeInstruction* inst = nullptr;
+            switch (typeInfo->sizeOf)
+            {
+            case 1:
+                inst = emitInstruction(context, ByteCodeOp::GetFromStack8, node->resultRegisterRC);
+                break;
+            case 2:
+                inst = emitInstruction(context, ByteCodeOp::GetFromStack16, node->resultRegisterRC);
+                break;
+            case 4:
+                inst = emitInstruction(context, ByteCodeOp::GetFromStack32, node->resultRegisterRC);
+                break;
+            case 8:
+                inst = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);
+                break;
+            }
+
             inst->b.u64 = resolved->storageOffset;
         }
 

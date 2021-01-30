@@ -50,6 +50,7 @@ func toString(fmt: string, values: ...)->String
 }
 
 // Format a string and put the result in a ConcatBuffer
+#[swag.printbc]
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
     #selectif
     {

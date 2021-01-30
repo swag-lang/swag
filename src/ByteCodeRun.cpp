@@ -986,7 +986,21 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         executeGetFromStackSI(context, ip);
         break;
 
+    case ByteCodeOp::GetFromStack8:
+        registersRC[ip->a.u32].u64 = 0;
+        registersRC[ip->a.u32].u8  = *(uint8_t*) (context->bp + ip->b.u32);
+        break;
+    case ByteCodeOp::GetFromStack16:
+        registersRC[ip->a.u32].u64 = 0;
+        registersRC[ip->a.u32].u16 = *(uint16_t*) (context->bp + ip->b.u32);
+        break;
+    case ByteCodeOp::GetFromStack32:
+        registersRC[ip->a.u32].u64 = 0;
+        registersRC[ip->a.u32].u32 = *(uint32_t*) (context->bp + ip->b.u32);
+        break;
     case ByteCodeOp::GetFromStack64:
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
+        break;
     case ByteCodeOp::GetFromStackParam64:
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;

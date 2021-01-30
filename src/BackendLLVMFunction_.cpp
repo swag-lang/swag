@@ -995,6 +995,31 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::GetFromStack8:
+        {
+            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::GetFromStack16:
+        {
+            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
+            auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::GetFromStack32:
+        {
+            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
+            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::GetFromStack64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
@@ -2092,7 +2117,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSGE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2100,7 +2125,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpSGE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2108,7 +2133,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpUGE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2116,7 +2141,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpUGE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2124,7 +2149,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpUGE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2132,7 +2157,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpUGE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2190,7 +2215,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpSLE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2198,7 +2223,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpSLE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2206,7 +2231,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpULE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2214,7 +2239,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpULE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2222,7 +2247,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF32_CAB();
             auto v0 = builder.CreateFCmpULE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2230,7 +2255,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOPF64_CAB();
             auto v0 = builder.CreateFCmpULE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2317,7 +2342,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP8_CAB();
             auto v0 = builder.CreateICmpNE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2325,7 +2350,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP16_CAB();
             auto v0 = builder.CreateICmpNE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2333,7 +2358,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateICmpNE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2341,7 +2366,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateICmpNE(r1, r2);
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, r0);
             break;
         }
@@ -2720,7 +2745,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateIsNull(builder.CreateLoad(TO_PTR_I8(r0)));
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2728,7 +2753,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateIsNull(builder.CreateLoad(TO_PTR_I16(r0)));
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2736,7 +2761,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateIsNull(builder.CreateLoad(TO_PTR_I32(r0)));
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
@@ -2744,7 +2769,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto v0 = builder.CreateIsNull(builder.CreateLoad(TO_PTR_I64(r0)));
-            v0 = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
+            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
         }
