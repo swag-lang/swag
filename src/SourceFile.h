@@ -38,8 +38,9 @@ struct SourceFile : public File
     void computePrivateScopeName();
 
     vector<string> allLines;
-    Module*        module  = nullptr;
-    AstNode*       astRoot = nullptr;
+    int            getLineOffset = 0;
+    Module*        module        = nullptr;
+    AstNode*       astRoot       = nullptr;
     Utf8           externalContent;
     Utf8           scopeName;
     Utf8           forceNamespace;

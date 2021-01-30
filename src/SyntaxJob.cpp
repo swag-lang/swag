@@ -214,7 +214,6 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
 
         unique_lock lk(modl->mutexGeneratedFile);
 
-        previousLogLine = modl->countLinesGeneratedFile;
         if (!modl->handleGeneratedFile)
         {
             if (modl->firstGenerated)
@@ -233,6 +232,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
         Utf8 sourceCode = format("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
         fwrite(sourceCode.c_str(), sourceCode.length(), 1, modl->handleGeneratedFile);
         modl->countLinesGeneratedFile += 1;
+        previousLogLine = modl->countLinesGeneratedFile;
 
         fwrite(content.c_str(), content.length(), 1, modl->handleGeneratedFile);
         modl->countLinesGeneratedFile += countEol;
@@ -246,9 +246,10 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     SourceFile* tmpFile      = g_Allocator.alloc<SourceFile>();
     tmpFile->externalContent = content;
     tmpFile->setExternalBuffer((char*) tmpFile->externalContent.c_str(), tmpFile->externalContent.length());
-    tmpFile->module     = parent->sourceFile->module;
-    tmpFile->name       = tmpFileName;
-    tmpFile->path       = tmpFilePath;
+    tmpFile->module = parent->sourceFile->module;
+    tmpFile->name   = tmpFileName;
+    tmpFile->path   = tmpFilePath;
+    tmpFile->path += tmpFileName;
     tmpFile->sourceNode = fromNode;
     sourceFile          = tmpFile;
     currentScope        = parent->ownerScope;
@@ -260,6 +261,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     tokenizer.setFile(sourceFile);
     if (logGenerated)
     {
+        tmpFile->getLineOffset    = previousLogLine;
         tokenizer.location.column = 0;
         tokenizer.location.line   = previousLogLine;
     }

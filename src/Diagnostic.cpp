@@ -76,20 +76,25 @@ void Diagnostic::report(bool verboseMode) const
     // Source code
     if (hasFile && !sourceFile->path.empty() && hasLocation && printSource && g_CommandLine.errorSourceOut)
     {
+        auto location0 = startLocation;
+        auto location1 = endLocation;
+        location0.line -= sourceFile->getLineOffset;
+        location1.line -= sourceFile->getLineOffset;
+
         // Get all lines of code
         vector<Utf8> lines;
         if (showMultipleCodeLines)
         {
             for (int i = -2; i <= 0; i++)
             {
-                if (startLocation.line + i < 0)
+                if (location0.line + i < 0)
                     continue;
-                lines.push_back(sourceFile->getLine(startLocation.line + i));
+                lines.push_back(sourceFile->getLine(location0.line + i));
             }
         }
         else
         {
-            lines.push_back(sourceFile->getLine(startLocation.line));
+            lines.push_back(sourceFile->getLine(location0.line));
         }
 
         // Remove blanks on the left, but keep indentation
@@ -136,7 +141,7 @@ void Diagnostic::report(bool verboseMode) const
             int range = 1;
             if (!hasRangeLocation)
                 range = 1;
-            else if (endLocation.line == startLocation.line)
+            else if (location1.line == location0.line)
                 range = endLocation.column - startLocation.column;
             else
                 range = (int) lines.back().length() - startLocation.column;
