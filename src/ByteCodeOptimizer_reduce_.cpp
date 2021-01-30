@@ -8,26 +8,6 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        // NegBool followed by JumpIfTrue, then transform to JumpIfFalse, and remove
-        // the negation
-        if (ip->op == ByteCodeOp::NegBool && ip[1].op == ByteCodeOp::JumpIfTrue)
-        {
-            if (ip->a.u32 == ip[1].a.u32)
-            {
-                //setNop(context, ip);
-                //ip[1].op = ByteCodeOp::JumpIfFalse;
-            }
-        }
-
-        if (ip->op == ByteCodeOp::NegBool && ip[1].op == ByteCodeOp::JumpIfFalse)
-        {
-            if (ip->a.u32 == ip[1].a.u32)
-            {
-                //setNop(context, ip);
-                //ip[1].op = ByteCodeOp::JumpIfTrue;
-            }
-        }
-
         // Testing if a stack pointer is not null is irrelevant. This can happen often because of
         // safety checks, when dereferencing a struct on the stack
         if ((ip[0].op == ByteCodeOp::MakeStackPointer || ip[0].op == ByteCodeOp::GetFromStackParam64) &&
