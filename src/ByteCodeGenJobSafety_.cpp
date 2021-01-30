@@ -270,8 +270,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerEqU64(ByteCodeGenContext* context,
     PushICFlags ic(context, BCI_SAFETY);
 
     auto re = reserveRegisterRC(context);
-    emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, re);
-    emitInstruction(context, ByteCodeOp::NegBool, re);
+    emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, re);
     emitAssert(context, re, "[safety] index out of range");
     freeRegisterRC(context, re);
 }
@@ -358,8 +357,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
     {
         auto re = reserveRegisterRC(context);
         context->pushLocation(&node->lowerBound->token.startLocation);
-        emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC, re);
-        emitInstruction(context, ByteCodeOp::NegBool, re);
+        emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC, re);
         emitAssert(context, re, "[safety] bad slicing, lower bound is greater than upper bound");
         context->popLocation();
         freeRegisterRC(context, re);
