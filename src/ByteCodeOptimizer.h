@@ -10,6 +10,12 @@ struct Job;
 
 struct ByteCodeOptimizer
 {
+    inline static bool isMemCpy(ByteCodeInstruction* inst)
+    {
+        return inst->op == ByteCodeOp::MemCpy64 ||
+               inst->op == ByteCodeOp::MemCpyX;
+    }
+
     inline static bool isJump(ByteCodeInstruction* inst)
     {
         return inst->op == ByteCodeOp::Jump ||
