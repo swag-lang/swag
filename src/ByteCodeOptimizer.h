@@ -12,7 +12,10 @@ struct ByteCodeOptimizer
 {
     inline static bool isMemCpy(ByteCodeInstruction* inst)
     {
-        return inst->op == ByteCodeOp::MemCpy64 ||
+        return inst->op == ByteCodeOp::MemCpy8 ||
+               inst->op == ByteCodeOp::MemCpy16 ||
+               inst->op == ByteCodeOp::MemCpy32 ||
+               inst->op == ByteCodeOp::MemCpy64 ||
                inst->op == ByteCodeOp::MemCpyX;
     }
 

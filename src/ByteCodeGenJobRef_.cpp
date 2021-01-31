@@ -837,6 +837,15 @@ void ByteCodeGenJob::emitMemCpy(ByteCodeGenContext* context, uint32_t r0, uint32
 {
     switch (sizeOf)
     {
+    case 1:
+        emitInstruction(context, ByteCodeOp::MemCpy8, r0, r1);
+        break;
+    case 2:
+        emitInstruction(context, ByteCodeOp::MemCpy16, r0, r1);
+        break;
+    case 4:
+        emitInstruction(context, ByteCodeOp::MemCpy32, r0, r1);
+        break;
     case 8:
         emitInstruction(context, ByteCodeOp::MemCpy64, r0, r1);
         break;

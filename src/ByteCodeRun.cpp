@@ -805,6 +805,27 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::MemCpy8:
+    {
+        auto dst = (uint8_t*) registersRC[ip->a.u32].pointer;
+        auto src = (uint8_t*) registersRC[ip->b.u32].pointer;
+        *dst     = *src;
+        break;
+    }
+    case ByteCodeOp::MemCpy16:
+    {
+        auto dst = (uint16_t*) registersRC[ip->a.u32].pointer;
+        auto src = (uint16_t*) registersRC[ip->b.u32].pointer;
+        *dst     = *src;
+        break;
+    }
+    case ByteCodeOp::MemCpy32:
+    {
+        auto dst = (uint32_t*) registersRC[ip->a.u32].pointer;
+        auto src = (uint32_t*) registersRC[ip->b.u32].pointer;
+        *dst     = *src;
+        break;
+    }
     case ByteCodeOp::MemCpy64:
     {
         auto dst = (uint64_t*) registersRC[ip->a.u32].pointer;

@@ -1903,6 +1903,24 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             break;
 
+        case ByteCodeOp::MemCpy8:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
+            BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RDX);
+            BackendX64Inst::emit_Store8_Indirect(pp, 0, RAX, RCX);
+            break;
+        case ByteCodeOp::MemCpy16:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
+            BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RDX);
+            BackendX64Inst::emit_Store16_Indirect(pp, 0, RAX, RCX);
+            break;
+        case ByteCodeOp::MemCpy32:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
+            BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RDX);
+            BackendX64Inst::emit_Store32_Indirect(pp, 0, RAX, RCX);
+            break;
         case ByteCodeOp::MemCpy64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
