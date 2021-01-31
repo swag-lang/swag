@@ -48,6 +48,8 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
     }
     else
     {
+        dataSegment->applyPatchPtr();
+
         // Collect datas
         VectorNative<llvm::Constant*> values;
         values.reserve(totalCount);

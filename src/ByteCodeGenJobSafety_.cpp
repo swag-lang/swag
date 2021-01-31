@@ -252,12 +252,12 @@ void ByteCodeGenJob::emitSafetyRelativePointerS64(ByteCodeGenContext* context, u
         break;
     }
 
-    auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterS64, r0, 0, re);
+    auto inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS64, r0, 0, re);
     inst->flags |= BCI_IMM_B;
     inst->b.s64 = minValue;
     emitAssert(context, re, "[safety] relative pointer out of range");
 
-    inst = emitInstruction(context, ByteCodeOp::CompareOpLowerS64, r0, 0, re);
+    inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqS64, r0, 0, re);
     inst->flags |= BCI_IMM_B;
     inst->b.s64 = maxValue;
     emitAssert(context, re, "[safety] relative pointer out of range");

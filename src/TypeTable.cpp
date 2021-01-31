@@ -32,8 +32,35 @@ bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeI
     SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, &typePtr, &tmpStorageOffset, cflags));
     *result = (ConcreteTypeInfo*) segment->addressNoLock(tmpStorageOffset);
 
-    // We have a pointer in the constant segment, so we need to register it for backend setup
+    // We have a pointer in the type segment, so we need to register it for backend setup
     segment->addInitPtr(concreteTypeInfoValue ? OFFSETOF(*result) : storageOffset, tmpStorageOffset);
+    return true;
+}
+
+bool TypeTable::makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, int64_t* result, TypeInfo* typeInfo, uint32_t cflags)
+{
+    if (!typeInfo)
+    {
+        *result = 0;
+        return true;
+    }
+
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+    auto segment    = getSegmentStorage(module, cflags);
+
+    TypeInfo* typePtr;
+    uint32_t  tmpStorageOffset;
+    SWAG_CHECK(makeConcreteTypeInfoNoLock(context, typeInfo, &typePtr, &tmpStorageOffset, cflags));
+
+    // Offset for bytecode run
+    auto ptr = segment->addressNoLock(tmpStorageOffset);
+    *result  = (int64_t) ptr - (int64_t) result;
+
+    // Offset for native
+    int64_t offsetNative = tmpStorageOffset - OFFSETOFR(result);
+    segment->addPatchPtr(result, offsetNative);
+
     return true;
 }
 

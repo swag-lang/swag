@@ -21,6 +21,7 @@ static uint32_t CONCRETE_FORCE_NO_SCOPE = 0x00000004;
 struct TypeTable
 {
     bool makeConcreteParam(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags);
+    bool makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, int64_t* result, TypeInfo* typeInfo, uint32_t cflags);
     bool makeConcreteSubTypeInfo(JobContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo, uint32_t cflags);
     bool makeConcreteAny(JobContext* context, struct ConcreteAny* ptrAny, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags);
     bool makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, ConcreteSlice* result, uint32_t offset, uint32_t cflags);
@@ -43,3 +44,4 @@ struct TypeTable
 };
 
 #define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
+#define OFFSETOFR(__field) (storageOffset + ((int64_t) __field - (int64_t) concreteTypeInfoValue))

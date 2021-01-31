@@ -22,11 +22,17 @@ enum class SegmentKind
     Type,
 };
 
-struct DataSegmentRef
+struct SegmentInitPtrRef
 {
     uint32_t    patchOffset;
     uint32_t    srcOffset;
     SegmentKind fromSegment;
+};
+
+struct SegmentPatchPtrRef
+{
+    int64_t* addr;
+    int64_t  value;
 };
 
 struct DataSegment
@@ -57,21 +63,24 @@ struct DataSegment
         ByteCode
     };
 
-    uint32_t            addString(const Utf8& str);
-    uint32_t            addStringNoLock(const Utf8& str);
-    void                addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);
-    void                addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocType relocType);
-    shared_mutex        mutexPtr;
-    map<Utf8, uint32_t> mapString;
+    uint32_t addString(const Utf8& str);
+    uint32_t addStringNoLock(const Utf8& str);
+    void     addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);
+    void     addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocType relocType);
+    void     addPatchPtr(int64_t* addr, int64_t value);
+    void     applyPatchPtr();
 
+    shared_mutex                         mutexPtr;
+    map<Utf8, uint32_t>                  mapString;
     map<uint32_t, pair<Utf8, RelocType>> initFuncPtr;
+    vector<SegmentPatchPtrRef>           patchPtr;
 
     const char* name       = nullptr;
     Module*     module     = nullptr;
     bool        overflow   = false;
     uint32_t    totalCount = 0;
 
-    VectorNative<DataSegmentRef> initPtr;
+    VectorNative<SegmentInitPtrRef> initPtr;
     SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 
     struct Seek

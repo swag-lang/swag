@@ -73,6 +73,7 @@ bool BackendX64::buildRelocTypeSegment(const BuildParameters& buildParameters, D
         relocTable.table.push_back(reloc);
     }
 
+    dataSegment->applyPatchPtr();
     return true;
 }
 

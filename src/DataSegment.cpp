@@ -251,12 +251,29 @@ uint32_t DataSegment::addString(const Utf8& str)
     return addStringNoLock(str);
 }
 
+void DataSegment::addPatchPtr(int64_t* addr, int64_t value)
+{
+    if (compilerOnly)
+        return;
+
+    SegmentPatchPtrRef st;
+    st.addr  = addr;
+    st.value = value;
+    patchPtr.push_back(st);
+}
+
+void DataSegment::applyPatchPtr()
+{
+    for (auto& it : patchPtr)
+        *it.addr = it.value;
+}
+
 void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg)
 {
     if (compilerOnly)
         return;
 
-    DataSegmentRef ref;
+    SegmentInitPtrRef ref;
     ref.patchOffset = patchOffset;
     ref.srcOffset   = srcOffset;
     ref.fromSegment = seg;
