@@ -62,7 +62,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
             {
                 ptrType = (TypeInfoPointer*) typeInfoPtr->clone();
                 ptrType->ptrCount++;
-                ptrType->computeName();
+                ptrType->forceComputeName();
                 done = true;
             }
         }
