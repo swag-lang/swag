@@ -835,7 +835,7 @@ void ByteCodeGenJob::emitSetZeroAtPointer(ByteCodeGenContext* context, uint64_t 
 
 void ByteCodeGenJob::emitMemCpy(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint64_t sizeOf)
 {
-    auto inst = emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, r0, r1);
+    auto inst = emitInstruction(context, ByteCodeOp::MemCpyX, r0, r1);
     inst->flags |= BCI_IMM_C;
     inst->c.u64 = sizeOf;
 }

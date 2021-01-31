@@ -1039,6 +1039,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::MemCpyX:
+        {
+            auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            builder.CreateMemCpy(r0, llvm::Align{}, r1, llvm::Align{}, builder.getInt64(ip->c.u64));
+            break;
+        }
+
         case ByteCodeOp::IntrinsicMemCpy:
         {
             auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
