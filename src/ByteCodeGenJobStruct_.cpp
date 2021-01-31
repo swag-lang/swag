@@ -7,12 +7,130 @@
 #include "Module.h"
 #include "TypeManager.h"
 
+void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
+{
+    if (!funcDecl && !bc)
+        return;
+
+    if (pushParam)
+    {
+        emitInstruction(context, ByteCodeOp::GetFromStackParam64, 0, 24);
+        if (offset)
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, 0, 0, 0);
+            inst->b.u64 = offset;
+            inst->flags |= BCI_IMM_B;
+        }
+
+        emitInstruction(context, ByteCodeOp::PushRAParam, 0);
+    }
+
+    if (funcDecl && !bc && funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
+    {
+        auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
+        inst->a.pointer = (uint8_t*) funcDecl;
+        inst->b.pointer = (uint8_t*) funcDecl->typeInfo;
+        SWAG_ASSERT(inst->a.pointer);
+    }
+    else
+    {
+        auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
+        SWAG_ASSERT(bc || (funcDecl && funcDecl->extension && funcDecl->extension->bc));
+        inst->a.pointer = (uint8_t*) (bc ? bc : funcDecl->extension->bc);
+        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
+        SWAG_ASSERT(inst->a.pointer);
+    }
+
+    emitInstruction(context, ByteCodeOp::IncSPPostCall, numParams * 8);
+}
+
+bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+{
+    scoped_lock lk(typeInfoStruct->mutex);
+    if (typeInfoStruct->opReloc)
+        return true;
+    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
+        return true;
+
+    // Be sure sub structs are generated too
+    for (auto typeParam : typeInfoStruct->fields)
+    {
+        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        if (typeVar->kind == TypeInfoKind::Array)
+            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
+        if (typeVar->kind != TypeInfoKind::Struct)
+            continue;
+        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        context->job->waitStructGenerated(typeStructVar);
+        if (context->result == ContextResult::Pending)
+            return true;
+        generateStruct_opReloc(context, typeStructVar);
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
+
+    auto sourceFile = context->sourceFile;
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+
+    ByteCode* opReloc     = g_Allocator.alloc<ByteCode>();
+    opReloc->sourceFile   = context->sourceFile;
+    opReloc->typeInfoFunc = g_TypeMgr.typeInfoOpCall2;
+    opReloc->name         = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opReloc";
+    opReloc->name.replaceAll('.', '_');
+    opReloc->maxReservedRegisterRC = 2;
+    opReloc->compilerGenerated     = true;
+    sourceFile->module->addByteCodeFunc(opReloc);
+    typeInfoStruct->opReloc = opReloc;
+
+    ByteCodeGenContext cxt{*context};
+    cxt.bc = opReloc;
+
+    for (auto param : typeInfoStruct->fields)
+    {
+        auto varDecl = CastAst<AstVarDecl>(param->declNode, AstNodeKind::VarDecl);
+        if (!(varDecl->attributeFlags & ATTRIBUTE_RELATIVE_MASK))
+            continue;
+
+        auto typeVar = TypeManager::concreteType(param->typeInfo);
+
+        // Reference to the field of the other struct
+        emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 1, 32, 1);
+        if (param->offset)
+        {
+            auto inst   = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 1, 0, 1);
+            inst->b.u64 = param->offset;
+            inst->flags |= BCI_IMM_B;
+        }
+
+        emitUnwrapRelativePointer(&cxt, 1, typeVar);
+
+        // Reference to the field of myself
+        emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 0, 24, 0);
+        if (param->offset)
+        {
+            auto inst   = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
+            inst->b.u64 = param->offset;
+            inst->flags |= BCI_IMM_B;
+        }
+
+        emitWrapRelativePointer(&cxt, 0, 1, typeVar, typeVar);
+    }
+
+    emitInstruction(&cxt, ByteCodeOp::Ret);
+    emitInstruction(&cxt, ByteCodeOp::End);
+
+    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+        cxt.bc->print();
+    return true;
+}
+
 bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     scoped_lock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->opInit)
         return true;
 
+    // Be sure sub structs are generated too
     for (auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
@@ -50,6 +168,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     {
         emitInstruction(&cxt, ByteCodeOp::Ret);
         emitInstruction(&cxt, ByteCodeOp::End);
+        if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+            cxt.bc->print();
         return true;
     }
 
@@ -60,6 +180,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         emitSetZeroAtPointer(&cxt, typeInfoStruct->sizeOf, 0);
         emitInstruction(&cxt, ByteCodeOp::Ret);
         emitInstruction(&cxt, ByteCodeOp::End);
+        if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+            cxt.bc->print();
         return true;
     }
 
@@ -193,46 +315,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
 
-    //opInit->print();
+    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+        cxt.bc->print();
     return true;
-}
-
-void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset)
-{
-    if (!funcDecl && !bc)
-        return;
-
-    if (pushParam)
-    {
-        emitInstruction(context, ByteCodeOp::GetFromStackParam64, 0, 24);
-        if (offset)
-        {
-            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, 0, 0, 0);
-            inst->b.u64 = offset;
-            inst->flags |= BCI_IMM_B;
-        }
-
-        emitInstruction(context, ByteCodeOp::PushRAParam, 0);
-    }
-
-    if (funcDecl && !bc && funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
-    {
-        auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
-        inst->a.pointer = (uint8_t*) funcDecl;
-        inst->b.pointer = (uint8_t*) funcDecl->typeInfo;
-        SWAG_ASSERT(inst->a.pointer);
-    }
-    else
-    {
-
-        auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(bc || (funcDecl && funcDecl->extension && funcDecl->extension->bc));
-        inst->a.pointer = (uint8_t*) (bc ? bc : funcDecl->extension->bc);
-        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
-        SWAG_ASSERT(inst->a.pointer);
-    }
-
-    emitInstruction(context, ByteCodeOp::IncSPPostCall, 8);
 }
 
 bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
@@ -327,7 +412,8 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
 
-    //opDrop->print();
+    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+        cxt.bc->print();
     return true;
 }
 
@@ -422,6 +508,9 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
+
+    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+        cxt.bc->print();
     return true;
 }
 
@@ -515,6 +604,9 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
+
+    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+        cxt.bc->print();
     return true;
 }
 
@@ -533,6 +625,9 @@ bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)
     if (context->result == ContextResult::Pending)
         return true;
     SWAG_CHECK(generateStruct_opPostMove(context, typeInfoStruct));
+    if (context->result == ContextResult::Pending)
+        return true;
+    SWAG_CHECK(generateStruct_opReloc(context, typeInfoStruct));
     if (context->result == ContextResult::Pending)
         return true;
 
@@ -560,6 +655,13 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
 
     // Shallow copy
     emitMemCpy(context, r0, r1, typeInfoStruct->sizeOf);
+
+    // Reloc
+    if (typeInfoStruct->opReloc)
+    {
+        emitInstruction(context, ByteCodeOp::PushRAParam2, r1, r0);
+        emitOpCallUser(context, nullptr, typeInfoStruct->opReloc, false, 0, 2);
+    }
 
     // A copy
     bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;

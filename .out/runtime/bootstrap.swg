@@ -23,7 +23,7 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr constexpr()
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[attributeUsage(AttributeUsage.Function|AttributeUsage.Struct)]
     attr printbc()
 
     #[attributeUsage(AttributeUsage.Function)]

@@ -815,6 +815,7 @@ TypeInfo* TypeInfoStruct::clone()
     auto newType               = allocType<TypeInfoStruct>();
     newType->scope             = scope;
     newType->opInit            = opInit;
+    newType->opReloc           = opReloc;
     newType->opUserPostCopyFct = opUserPostCopyFct;
     newType->opPostCopy        = opPostCopy;
     newType->opUserPostMoveFct = opUserPostMoveFct;

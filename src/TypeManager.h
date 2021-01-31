@@ -121,6 +121,7 @@ struct TypeManager
     TypeInfoNative*    typeInfoUntypedBinHexa;
     TypeInfoNative*    typeInfoUntypedFloat;
     TypeInfoFuncAttr*  typeInfoOpCall;
+    TypeInfoFuncAttr*  typeInfoOpCall2;
     TypeInfoCode*      typeInfoCode;
     TypeInfoNameAlias* typeInfoNameAlias;
 

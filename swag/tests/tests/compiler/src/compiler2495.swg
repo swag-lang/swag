@@ -1,5 +1,6 @@
 //#global testerror
 
+//#[swag.printbc]
 struct Node
 {
     #[swag.relative(4)]
@@ -16,5 +17,6 @@ struct Node
     @assert(a.next.value == 666)
 
     c := a
-    //@assert(c.next.value == 666)
+    //@print(cast(s64) c.next.value)
+    @assert(c.next.value == 666)
 }

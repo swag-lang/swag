@@ -571,11 +571,16 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
             structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
 
+        // Relative pointer
+        if (varDecl->attributeFlags & ATTRIBUTE_RELATIVE_MASK)
+            structFlags |= TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS;
+
         // Var is a struct
         if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
         {
-            if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
-                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+            structFlags |= varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
+            structFlags |= varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS;
+
             if (!(varDecl->typeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
                 structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
 
@@ -596,8 +601,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             auto varTypeArray = CastTypeInfo<TypeInfoArray>(varDecl->typeInfo, TypeInfoKind::Array);
             if (varTypeArray->pointedType->kind == TypeInfoKind::Struct)
             {
-                if (varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
-                    structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+                structFlags |= varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
+                structFlags |= varTypeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS;
+
                 if (!(varTypeArray->pointedType->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
                     structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
             }
@@ -756,6 +762,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_ALL_UNINITIALIZED);
     typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_HAS_INIT_VALUES);
+    typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS);
 
     // Register symbol with its type
     node->typeInfo               = typeInfo;

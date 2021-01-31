@@ -78,6 +78,14 @@ void TypeManager::setup()
     typeInfoOpCall->parameters[0]->typeInfo = typePtr;
     typeInfoOpCall->computeName();
 
+    typeInfoOpCall2             = new TypeInfoFuncAttr();
+    typeInfoOpCall2->returnType = typeInfoVoid;
+    typeInfoOpCall2->parameters.push_back(new TypeInfoParam());
+    typeInfoOpCall2->parameters.push_back(new TypeInfoParam());
+    typeInfoOpCall2->parameters[0]->typeInfo = typePtr;
+    typeInfoOpCall2->parameters[1]->typeInfo = typePtr;
+    typeInfoOpCall2->computeName();
+
     memset(g_LiteralTypeToType, 0, sizeof(g_LiteralTypeToType));
     g_LiteralTypeToType[(int) LiteralType::TT_UINT]            = typeInfoUInt;
     g_LiteralTypeToType[(int) LiteralType::TT_INT]             = typeInfoInt;

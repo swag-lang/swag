@@ -172,7 +172,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
+bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
@@ -206,7 +206,7 @@ bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, Regist
     return true;
 }
 
-bool ByteCodeGenJob::emitUnwrapRelativePointer(ByteCodeGenContext* context, RegisterList& rr, TypeInfo* typeInfo)
+bool ByteCodeGenJob::emitUnwrapRelativePointer(ByteCodeGenContext* context, uint32_t rr, TypeInfo* typeInfo)
 {
     auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
     auto r0      = reserveRegisterRC(context);

@@ -183,7 +183,7 @@ struct ByteCodeGenJob : public Job
     static uint32_t             computeSourceLocation(AstNode* node);
     static bool                 emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
 
-    static void emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr, bool pushParam = true, uint32_t offset = 0);
+    static void emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
     static bool emitExpressionListBefore(ByteCodeGenContext* context);
     static bool emitExpressionList(ByteCodeGenContext* context);
     static bool emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeInfo* toType, RegisterList& regList);
@@ -291,8 +291,8 @@ struct ByteCodeGenJob : public Job
     static bool emitMakePointer(ByteCodeGenContext* context);
     static bool emitMakeArrayPointerSlicing(ByteCodeGenContext* context);
     static bool emitMakeLambda(ByteCodeGenContext* context);
-    static bool emitWrapRelativePointer(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, TypeInfo* frommTypeInfo);
-    static bool emitUnwrapRelativePointer(ByteCodeGenContext* context, RegisterList& rr, TypeInfo* typeInfo);
+    static bool emitWrapRelativePointer(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
+    static bool emitUnwrapRelativePointer(ByteCodeGenContext* context, uint32_t rr, TypeInfo* typeInfo);
     static bool emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo, bool safety = true);
     static bool emitPointerDeRef(ByteCodeGenContext* context);
     static bool emitStructDeRef(ByteCodeGenContext* context);
@@ -354,6 +354,7 @@ struct ByteCodeGenJob : public Job
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
+    static bool generateStruct_opReloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool emitStructCopyMoveCall(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
 
     static void     transformResultToLinear2(ByteCodeGenContext* context, AstNode* node);
