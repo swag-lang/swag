@@ -177,21 +177,7 @@ bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, Regist
     auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
-        switch (typePtr->sizeOf)
-        {
-        case 1:
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer8, r0);
-            break;
-        case 2:
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer16, r0);
-            break;
-        case 4:
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer32, r0);
-            break;
-        case 8:
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
-            break;
-        }
+        emitSetZeroAtPointer(context, typePtr->sizeOf, r0);
     }
     else
     {
