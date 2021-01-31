@@ -207,25 +207,25 @@ bool ByteCodeGenJob::emitUnwrapRelativePointer(ByteCodeGenContext* context, Regi
     {
     case 1:
         emitInstruction(context, ByteCodeOp::DeRef8, r0, rr);
-        emitSafetyNullPointer(context, rr, "relative pointer is null or points to itself", 8);
+        emitSafetyNullPointer(context, r0, "relative pointer is null or points to itself", 8);
         emitInstruction(context, ByteCodeOp::CastS8S64, r0);
         emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
         break;
     case 2:
         emitInstruction(context, ByteCodeOp::DeRef16, r0, rr);
-        emitSafetyNullPointer(context, rr, "relative pointer is null or points to itself", 16);
+        emitSafetyNullPointer(context, r0, "relative pointer is null or points to itself", 16);
         emitInstruction(context, ByteCodeOp::CastS16S64, r0);
         emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
         break;
     case 4:
         emitInstruction(context, ByteCodeOp::DeRef32, r0, rr);
-        emitSafetyNullPointer(context, rr, "relative pointer is null or points to itself", 32);
+        emitSafetyNullPointer(context, r0, "relative pointer is null or points to itself", 32);
         emitInstruction(context, ByteCodeOp::CastS32S64, r0);
         emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
         break;
     case 8:
         emitInstruction(context, ByteCodeOp::DeRef64, r0, rr);
-        emitSafetyNullPointer(context, rr, "relative pointer is null or points to itself", 64);
+        emitSafetyNullPointer(context, r0, "relative pointer is null or points to itself", 64);
         emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
         break;
     }
