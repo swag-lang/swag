@@ -17,4 +17,5 @@ struct Node
 
     c := a
     //@assert(c.next.value == 666)
+    @memmove(&a, &b, @sizeof(a))
 }

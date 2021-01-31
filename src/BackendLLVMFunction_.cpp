@@ -997,7 +997,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::GetFromStack8:
         {
-            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RB32));
             auto v0 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
             builder.CreateStore(v0, r0);
@@ -1005,7 +1005,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::GetFromStack16:
         {
-            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
+            auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RB32));
             auto v0 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
             builder.CreateStore(v0, r0);
@@ -1013,7 +1013,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::GetFromStack32:
         {
-            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
+            auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RB32));
             auto v0 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
             builder.CreateStore(v0, r0);
@@ -1048,7 +1048,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 builder.CreateMemCpy(r0, llvm::Align{}, r1, llvm::Align{}, builder.getInt64(ip->c.u64));
             else
             {
-                auto r2 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32)));
+                auto r2 = builder.CreateLoad(GEP_I32(allocR, ip->c.u32));
                 builder.CreateMemCpy(r0, llvm::Align{}, r1, llvm::Align{}, r2);
             }
 
@@ -1059,15 +1059,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32)));
-
-            if (ip->flags & BCI_IMM_C)
-                builder.CreateMemMove(r0, llvm::Align{}, r1, llvm::Align{}, builder.getInt64(ip->c.u64));
-            else
-            {
-                auto r2 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32)));
-                builder.CreateMemMove(r0, llvm::Align{}, r1, llvm::Align{}, r2);
-            }
-
+            auto r2 = builder.CreateLoad(GEP_I32(allocR, ip->c.u32));
+            builder.CreateMemMove(r0, llvm::Align{}, r1, llvm::Align{}, r2);
             break;
         }
 
