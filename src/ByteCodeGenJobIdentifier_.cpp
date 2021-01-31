@@ -325,6 +325,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
         SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, format("emitIdentifier, cannot reference identifier '%s'", identifier->token.text.c_str()).c_str()));
+
+        emitSafetyNullPointer(context, node->resultRegisterRC);
         if (node->resolvedSymbolOverload->storageOffset > 0)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
