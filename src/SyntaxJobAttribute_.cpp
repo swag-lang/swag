@@ -146,7 +146,10 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
         while (token.id == TokenId::Identifier)
         {
-            SWAG_CHECK(doIdentifierRef(attrBlockNode));
+            AstNode* params;
+            SWAG_CHECK(doIdentifierRef(attrBlockNode, &params));
+            params->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+
             if (token.id != TokenId::SymRightSquare)
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma));

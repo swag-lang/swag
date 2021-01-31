@@ -172,28 +172,49 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo)
+bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-    emitInstruction(context, ByteCodeOp::BinOpMinusS64, r1, r0, r1);
-    switch (typePtr->sizeOf)
+    if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
-    case 1:
-        emitSafetyRelativePointerS64(context, r1, 1);
-        emitInstruction(context, ByteCodeOp::SetAtPointer8, r0, r1);
-        break;
-    case 2:
-        emitSafetyRelativePointerS64(context, r1, 2);
-        emitInstruction(context, ByteCodeOp::SetAtPointer16, r0, r1);
-        break;
-    case 4:
-        emitSafetyRelativePointerS64(context, r1, 4);
-        emitInstruction(context, ByteCodeOp::SetAtPointer32, r0, r1);
-        break;
-    case 8:
-        emitSafetyRelativePointerS64(context, r1, 8);
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
-        break;
+        switch (typePtr->sizeOf)
+        {
+        case 1:
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer8, r0);
+            break;
+        case 2:
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer16, r0);
+            break;
+        case 4:
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer32, r0);
+            break;
+        case 8:
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            break;
+        }
+    }
+    else
+    {
+        emitInstruction(context, ByteCodeOp::BinOpMinusS64, r1, r0, r1);
+        switch (typePtr->sizeOf)
+        {
+        case 1:
+            emitSafetyRelativePointerS64(context, r1, 1);
+            emitInstruction(context, ByteCodeOp::SetAtPointer8, r0, r1);
+            break;
+        case 2:
+            emitSafetyRelativePointerS64(context, r1, 2);
+            emitInstruction(context, ByteCodeOp::SetAtPointer16, r0, r1);
+            break;
+        case 4:
+            emitSafetyRelativePointerS64(context, r1, 4);
+            emitInstruction(context, ByteCodeOp::SetAtPointer32, r0, r1);
+            break;
+        case 8:
+            emitSafetyRelativePointerS64(context, r1, 8);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+            break;
+        }
     }
 
     return true;
@@ -207,29 +228,24 @@ bool ByteCodeGenJob::emitUnwrapRelativePointer(ByteCodeGenContext* context, Regi
     {
     case 1:
         emitInstruction(context, ByteCodeOp::DeRef8, r0, rr);
-        emitSafetyNullPointer(context, r0, "relative pointer is null or points to itself", 8);
         emitInstruction(context, ByteCodeOp::CastS8S64, r0);
-        emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
         break;
     case 2:
         emitInstruction(context, ByteCodeOp::DeRef16, r0, rr);
-        emitSafetyNullPointer(context, r0, "relative pointer is null or points to itself", 16);
         emitInstruction(context, ByteCodeOp::CastS16S64, r0);
-        emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
         break;
     case 4:
         emitInstruction(context, ByteCodeOp::DeRef32, r0, rr);
-        emitSafetyNullPointer(context, r0, "relative pointer is null or points to itself", 32);
         emitInstruction(context, ByteCodeOp::CastS32S64, r0);
-        emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
         break;
     case 8:
         emitInstruction(context, ByteCodeOp::DeRef64, r0, rr);
-        emitSafetyNullPointer(context, r0, "relative pointer is null or points to itself", 64);
-        emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
         break;
     }
 
+    emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = 1;
+    emitInstruction(context, ByteCodeOp::ClearRA, rr);
+    emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
     return true;
 }
 

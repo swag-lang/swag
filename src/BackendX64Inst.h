@@ -201,7 +201,7 @@ namespace BackendX64Inst
         pp.concat.addU8(0x66);
         pp.concat.addU8(0xC7);
         emit_ModRM(pp, offset, 0, reg);
-        pp.concat.addU32((uint32_t) val);
+        pp.concat.addU16(val);
     }
 
     inline void emit_Store32_Immediate(X64PerThread& pp, uint32_t offset, uint32_t val, uint8_t reg)
