@@ -143,9 +143,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             }
             else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
             {
-                auto inst   = emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC);
-                inst->c.u64 = returnExpression->typeInfo->sizeOf;
-                inst->flags |= BCI_IMM_C;
+                emitMemCpy(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, returnExpression->typeInfo->sizeOf);
                 freeRegisterRC(context, returnExpression);
             }
             else
@@ -220,9 +218,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             {
                 auto r0 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
-                auto inst   = emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, r0, returnExpression->resultRegisterRC);
-                inst->c.u64 = returnExpression->typeInfo->sizeOf;
-                inst->flags |= BCI_IMM_C;
+                emitMemCpy(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo->sizeOf);
                 freeRegisterRC(context, r0);
             }
             else if (returnType->isNative(NativeTypeKind::String))

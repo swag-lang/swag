@@ -32,9 +32,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
     {
-        auto inst = emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, r0, r1);
-        inst->flags |= BCI_IMM_C;
-        inst->c.u64 = typeInfo->sizeOf;
+        emitMemCpy(context, r0, r1, typeInfo->sizeOf);
         return true;
     }
 
