@@ -37,7 +37,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
         SWAG_ASSERT(bc || (funcDecl && funcDecl->extension && funcDecl->extension->bc));
         inst->a.pointer = (uint8_t*) (bc ? bc : funcDecl->extension->bc);
-        inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
+        inst->b.pointer = numParams == 1 ? (uint8_t*) g_TypeMgr.typeInfoOpCall : (uint8_t*) g_TypeMgr.typeInfoOpCall2;
         SWAG_ASSERT(inst->a.pointer);
     }
 
