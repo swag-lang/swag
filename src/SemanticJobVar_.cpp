@@ -615,6 +615,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             realType     = typeArr->finalType;
         }
+        else if (typeInfo->kind == TypeInfoKind::Slice)
+        {
+            auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+            realType       = typeSlice->pointedType;
+        }
 
         if (realType->kind != TypeInfoKind::Pointer)
             return context->report({node, node->token, format("'swag.relative' attribute cannot be applied to type '%s'", typeInfo->name.c_str())});
