@@ -606,6 +606,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
+    // Relative pointers check
+    if (node->attributeFlags & ATTRIBUTE_RELATIVE_MASK)
+    {
+        if (typeInfo->kind != TypeInfoKind::Pointer)
+            return context->report({node, node->token, format("'swag.relative' attribute cannot be applied to type '%s'", typeInfo->name.c_str())});
+    }
+
     typeInfo               = TypeManager::concreteType(node->typeInfo);
     uint32_t storageOffset = UINT32_MAX;
     if (isCompilerConstant)
