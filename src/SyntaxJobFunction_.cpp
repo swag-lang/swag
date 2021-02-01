@@ -29,7 +29,7 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
         {
         case TokenId::Identifier:
         {
-            SWAG_CHECK(doIdentifierRef(param, nullptr, false));
+            SWAG_CHECK(doIdentifierRef(param, nullptr, IDENTIFIER_NO_PARAMS));
             break;
         }
         case TokenId::LiteralCharacter:

@@ -542,7 +542,7 @@ bool SyntaxJob::doCompilerLocation(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doIdentifierRef(exprNode, nullptr, false));
+        SWAG_CHECK(doIdentifierRef(exprNode, nullptr, IDENTIFIER_NO_PARAMS));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
@@ -570,7 +570,7 @@ bool SyntaxJob::doCompilerDefined(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
 
     ScopedFlags sc(this, AST_SILENT_CHECK);
-    SWAG_CHECK(doIdentifierRef(exprNode, nullptr, false));
+    SWAG_CHECK(doIdentifierRef(exprNode, nullptr, IDENTIFIER_NO_PARAMS));
 
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     exprNode->semanticFct = SemanticJob::resolveCompilerDefined;

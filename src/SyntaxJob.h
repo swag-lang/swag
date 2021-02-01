@@ -36,6 +36,9 @@ enum class SyntaxStructType
     Tuple
 };
 
+static const uint32_t IDENTIFIER_NO_PARAMS = 0x00000001;
+static const uint32_t IDENTIFIER_TYPE_DECL = 0x00000002;
+
 struct SyntaxContext : public JobContext
 {
     SyntaxJob* job = nullptr;
@@ -97,8 +100,8 @@ struct SyntaxJob : public Job
     bool checkIsValidVarName(AstNode* node);
     bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doIdentifier(AstNode* parent, bool acceptParameters = true);
-    bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, bool acceptParameters = true);
+    bool doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
+    bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint32_t identifierFlags = 0);
     bool doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool forGlobal);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent, AstNode** result, bool forGlobal);
@@ -157,7 +160,7 @@ struct SyntaxJob : public Job
     bool doFallThrough(AstNode* parent, AstNode** result = nullptr);
     bool doContinue(AstNode* parent, AstNode** result = nullptr);
     bool doArrayPointerIndex(AstNode** exprNode);
-    bool doLeftExpressionVar(AstNode** result, bool acceptParameters = true);
+    bool doLeftExpressionVar(AstNode** result, uint32_t identifierFlags = 0);
     bool doLeftExpression(AstNode** result);
     bool doInit(AstNode* parent, AstNode** result = nullptr);
     bool doDropCopyMove(AstNode* parent, AstNode** result = nullptr);

@@ -873,7 +873,7 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLeftExpressionVar(AstNode** result, bool acceptParameters)
+bool SyntaxJob::doLeftExpressionVar(AstNode** result, uint32_t identifierFlags)
 {
     switch (token.id)
     {
@@ -885,7 +885,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result, bool acceptParameters)
         while (true)
         {
             SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, syntaxError(token, "variable name or '?' expected in tuple destructuration"));
-            SWAG_CHECK(doIdentifierRef(multi, nullptr, acceptParameters));
+            SWAG_CHECK(doIdentifierRef(multi, nullptr, identifierFlags));
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
@@ -903,7 +903,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result, bool acceptParameters)
         AstNode* multi    = nullptr;
         while (true)
         {
-            SWAG_CHECK(doIdentifierRef(multi, &exprNode, acceptParameters));
+            SWAG_CHECK(doIdentifierRef(multi, &exprNode, identifierFlags));
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());

@@ -20,7 +20,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
     AstNode* leftNode;
     while (true)
     {
-        SWAG_CHECK(doLeftExpressionVar(&leftNode, false));
+        SWAG_CHECK(doLeftExpressionVar(&leftNode, IDENTIFIER_NO_PARAMS));
 
         SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid affect operator '==', did you mean '=' ?"));
         SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, syntaxError(token, format("invalid token '%s' in variable declaration, ':' or '=' are expected here", token.text.c_str())));

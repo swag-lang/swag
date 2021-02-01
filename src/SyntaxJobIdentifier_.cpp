@@ -19,7 +19,7 @@ bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
     return true;
 }
 
-bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
+bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 {
     bool backTick = false;
 
@@ -53,7 +53,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
             identifier->token.text = parent->ownerStructScope->name;
     }
 
-    if (acceptParameters && !tokenizer.lastTokenIsEOL)
+    if (!(identifierFlags & IDENTIFIER_NO_PARAMS) && !tokenizer.lastTokenIsEOL)
     {
         // Generic arguments
         if (token.id == TokenId::SymQuote)
@@ -83,15 +83,21 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
     AstNode* expr = identifier;
 
     // Array index
-    if (acceptParameters && token.id == TokenId::SymLeftSquare)
-        SWAG_CHECK(doArrayPointerIndex(&expr));
+    if (token.id == TokenId::SymLeftSquare)
+    {
+        if (identifierFlags & IDENTIFIER_TYPE_DECL)
+            return sourceFile->report({identifier, token, "array size must be defined before the type name"});
+
+        if (!(identifierFlags & IDENTIFIER_NO_PARAMS))
+            SWAG_CHECK(doArrayPointerIndex(&expr));
+    }
 
     Ast::addChildBack(parent, expr);
 
     return true;
 }
 
-bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, bool acceptParameters)
+bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags)
 {
     auto identifierRef         = Ast::newNode<AstIdentifierRef>(this, AstNodeKind::IdentifierRef, sourceFile, parent);
     identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
@@ -123,14 +129,14 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, bool acceptPa
         break;
 
     default:
-        SWAG_CHECK(doIdentifier(identifierRef, acceptParameters));
+        SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
         break;
     }
 
     while (token.id == TokenId::SymDot)
     {
         SWAG_CHECK(eatToken(TokenId::SymDot));
-        SWAG_CHECK(doIdentifier(identifierRef, acceptParameters));
+        SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
     }
 
     return true;
