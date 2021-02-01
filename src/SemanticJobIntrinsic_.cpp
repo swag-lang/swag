@@ -55,17 +55,15 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
         return context->report({first, format("'%s' must have a pointer as a first parameter", name)});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
-    if (ptrPointer->ptrCount == 0)
+    if (!ptrPointer->pointedType)
         return context->report({first, format("'%s' cannot have 'null' as first parameter", name)});
-    if (ptrPointer->ptrCount != 1)
-        return context->report({first, format("'%s' must have a one dimension pointer as a first parameter", name)});
 
     // Slice count
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, second->typeInfo, nullptr, second, CASTFLAG_COERCE_FULL));
 
     // Create slice type
     auto ptrSlice         = allocType<TypeInfoSlice>();
-    ptrSlice->pointedType = ptrPointer->finalType;
+    ptrSlice->pointedType = ptrPointer->pointedType;
     if (ptrPointer->isConst())
         ptrSlice->flags |= TYPEINFO_CONST;
     ptrSlice->computeName();
@@ -85,10 +83,8 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
         return context->report({first, "'@mkany' must have a pointer as a first parameter"});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
-    if (ptrPointer->ptrCount == 0)
+    if (!ptrPointer->pointedType)
         return context->report({first, "'@mkany' cannot have 'null' as first parameter"});
-    if (ptrPointer->ptrCount != 1)
-        return context->report({first, "'@mkany' must have a one dimension pointer as a first parameter"});
 
     // Check second parameter
     if (second->flags & AST_VALUE_IS_TYPEINFO)
@@ -126,7 +122,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
         return true;
 
     auto firstTypeInfo = TypeManager::concreteReferenceType(first->typeInfo, CONCRETE_ALIAS);
-    SWAG_VERIFY(firstTypeInfo->isPointer1() || firstTypeInfo->kind == TypeInfoKind::Struct, context->report({first, "'@mkinterface' must have a one dimension pointer or a struct as a first parameter"}));
+    SWAG_VERIFY(firstTypeInfo->kind == TypeInfoKind::Pointer || firstTypeInfo->kind == TypeInfoKind::Struct, context->report({first, "'@mkinterface' must have a one dimension pointer or a struct as a first parameter"}));
     SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({second, "'@mkinterface' must have a typeinfo as a second parameter"}));
     auto thirdTypeInfo = TypeManager::concreteReferenceType(third->typeInfo, CONCRETE_ALIAS);
     SWAG_VERIFY(thirdTypeInfo->kind == TypeInfoKind::Interface, context->report({third, "'@mkinterface' must have an interface as a third parameter"}));
@@ -144,8 +140,6 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     if (typeInfo->isNative(NativeTypeKind::String))
     {
         auto ptrType         = allocType<TypeInfoPointer>();
-        ptrType->ptrCount    = 1;
-        ptrType->finalType   = g_TypeMgr.typeInfoU8;
         ptrType->pointedType = g_TypeMgr.typeInfoU8;
         ptrType->sizeOf      = sizeof(void*);
         ptrType->computeName();
@@ -157,8 +151,6 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     {
         auto ptrSlice        = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto ptrType         = allocType<TypeInfoPointer>();
-        ptrType->ptrCount    = 1;
-        ptrType->finalType   = ptrSlice->pointedType;
         ptrType->pointedType = ptrSlice->pointedType;
         ptrType->sizeOf      = sizeof(void*);
         ptrType->computeName();
@@ -171,8 +163,6 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     {
         auto ptrArray        = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto ptrType         = allocType<TypeInfoPointer>();
-        ptrType->ptrCount    = 1;
-        ptrType->finalType   = ptrArray->pointedType;
         ptrType->pointedType = ptrArray->pointedType;
         ptrType->sizeOf      = sizeof(void*);
         ptrType->computeName();
@@ -184,8 +174,6 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     else if (typeInfo->isNative(NativeTypeKind::Any) || typeInfo->kind == TypeInfoKind::Interface)
     {
         auto ptrType         = allocType<TypeInfoPointer>();
-        ptrType->ptrCount    = 1;
-        ptrType->finalType   = g_TypeMgr.typeInfoVoid;
         ptrType->pointedType = g_TypeMgr.typeInfoVoid;
         ptrType->sizeOf      = sizeof(void*);
         ptrType->computeName();

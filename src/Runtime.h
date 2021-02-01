@@ -225,9 +225,7 @@ struct ConcreteTypeInfoNative
 struct ConcreteTypeInfoPointer
 {
     ConcreteTypeInfo  base;
-    ConcreteTypeInfo* finalType;
     ConcreteTypeInfo* pointedType;
-    uint32_t          ptrCount;
 };
 
 struct ConcreteTypeInfoReference

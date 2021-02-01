@@ -49,16 +49,12 @@ void TypeManager::setup()
     typeInfoNull->sizeOf = sizeof(Register);
 
     typeInfoPVoid              = new TypeInfoPointer();
-    typeInfoPVoid->finalType   = typeInfoVoid;
     typeInfoPVoid->pointedType = typeInfoVoid;
-    typeInfoPVoid->ptrCount    = 1;
     typeInfoPVoid->computeName();
     typeInfoPVoid->sizeOf = sizeof(Register);
 
     typeInfoConstPVoid              = new TypeInfoPointer();
-    typeInfoConstPVoid->finalType   = typeInfoVoid;
     typeInfoConstPVoid->pointedType = typeInfoVoid;
-    typeInfoConstPVoid->ptrCount    = 1;
     typeInfoConstPVoid->computeName();
     typeInfoConstPVoid->setConst();
     typeInfoConstPVoid->sizeOf = sizeof(Register);
@@ -70,8 +66,6 @@ void TypeManager::setup()
     typeInfoOpCall->returnType = typeInfoVoid;
     typeInfoOpCall->parameters.push_back(new TypeInfoParam());
     auto typePtr         = new TypeInfoPointer();
-    typePtr->ptrCount    = 1;
-    typePtr->finalType   = typeInfoVoid;
     typePtr->pointedType = typeInfoVoid;
     typePtr->sizeOf      = sizeof(void*);
     typePtr->computeName();
@@ -451,9 +445,7 @@ void TypeManager::registerTypeType()
     // Generate the alias for 'const *TypeInfo'
     typeInfoTypeType = allocType<TypeInfoPointer>();
     typeInfoTypeType->flags |= TYPEINFO_CONST;
-    typeInfoTypeType->ptrCount    = 1;
-    typeInfoTypeType->finalType   = g_Workspace.swagScope.regTypeInfo;
-    typeInfoTypeType->pointedType = typeInfoTypeType->finalType;
+    typeInfoTypeType->pointedType = g_Workspace.swagScope.regTypeInfo;
     typeInfoTypeType->computeName();
     typeInfoTypeType->sizeOf                        = sizeof(void*);
     g_LiteralTypeToType[(int) LiteralType::TT_TYPE] = typeInfoTypeType;

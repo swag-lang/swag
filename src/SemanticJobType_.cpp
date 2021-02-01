@@ -212,11 +212,10 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // In fact, this is a pointer
     if (typeNode->ptrCount)
     {
-        auto firstType        = typeNode->typeInfo;
-        auto ptrPointer       = allocType<TypeInfoPointer>();
-        ptrPointer->ptrCount  = 1;
-        ptrPointer->finalType = firstType;
-        ptrPointer->sizeOf    = sizeof(void*);
+        auto firstType          = typeNode->typeInfo;
+        auto ptrPointer         = allocType<TypeInfoPointer>();
+        ptrPointer->pointedType = firstType;
+        ptrPointer->sizeOf      = sizeof(void*);
         ptrPointer->flags |= (firstType->flags & TYPEINFO_GENERIC);
         if (typeNode->ptrFlags[0] & AstTypeExpression::PTR_CONST)
             ptrPointer->flags |= TYPEINFO_CONST;
@@ -237,24 +236,20 @@ bool SemanticJob::resolveType(SemanticContext* context)
             ptrPointer->sizeOf = 8;
 
         ptrPointer->forceComputeName();
-        ptrPointer->computePointedType();
         typeNode->typeInfo = ptrPointer;
 
         for (int i = 1; i < typeNode->ptrCount; i++)
         {
-            auto ptrPointer1       = allocType<TypeInfoPointer>();
-            ptrPointer1->ptrCount  = 1;
-            ptrPointer1->finalType = firstType;
-            ptrPointer1->sizeOf    = sizeof(void*);
+            auto ptrPointer1         = allocType<TypeInfoPointer>();
+            ptrPointer1->pointedType = firstType;
+            ptrPointer1->sizeOf      = sizeof(void*);
             ptrPointer1->flags |= (firstType->flags & TYPEINFO_GENERIC);
             if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST)
                 ptrPointer1->flags |= TYPEINFO_CONST;
             ptrPointer1->forceComputeName();
-            ptrPointer1->computePointedType();
 
-            ptrPointer->finalType = ptrPointer1;
+            ptrPointer->pointedType = ptrPointer1;
             ptrPointer->forceComputeName();
-            ptrPointer->computePointedType();
 
             ptrPointer = ptrPointer1;
         }
@@ -354,7 +349,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        if (typePtr->finalType->flags & TYPEINFO_STRUCT_TYPEINFO)
+        if (typePtr->pointedType->flags & TYPEINFO_STRUCT_TYPEINFO)
         {
             SWAG_VERIFY(typeInfo->isConst(), context->report({typeNode, "pointer to 'swag.TypeInfo' must be const"}));
         }

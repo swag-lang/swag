@@ -100,14 +100,11 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        if (typePointer->ptrCount == 1)
-        {
-            auto subType = TypeManager::concreteReferenceType(typePointer->finalType);
-            if (subType->kind == TypeInfoKind::Struct)
-                identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
-            else if (subType->kind == TypeInfoKind::Interface)
-                identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->itable->scope;
-        }
+        auto subType = TypeManager::concreteReferenceType(typePointer->pointedType);
+        if (subType->kind == TypeInfoKind::Struct)
+            identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
+        else if (subType->kind == TypeInfoKind::Interface)
+            identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->itable->scope;
 
         node->typeInfo = typeInfo;
         break;

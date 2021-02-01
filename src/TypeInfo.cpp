@@ -150,26 +150,14 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
     return "<type>";
 }
 
-bool TypeInfo::isPointer1()
-{
-    if (kind != TypeInfoKind::Pointer)
-        return false;
-    auto ptr = (TypeInfoPointer*) this;
-    if (ptr->ptrCount != 1)
-        return false;
-    return true;
-}
-
 bool TypeInfo::isPointerVoid()
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
     auto ptr = (TypeInfoPointer*) this;
-    if (ptr->ptrCount != 1)
+    if (ptr->pointedType->kind != TypeInfoKind::Native)
         return false;
-    if (ptr->finalType->kind != TypeInfoKind::Native)
-        return false;
-    if (ptr->finalType->nativeType != NativeTypeKind::Void)
+    if (ptr->pointedType->nativeType != NativeTypeKind::Void)
         return false;
     return true;
 }
@@ -184,9 +172,9 @@ bool TypeInfo::isPointerTo(NativeTypeKind pointerKind)
     if (kind != TypeInfoKind::Pointer)
         return false;
     auto ptr = (TypeInfoPointer*) this;
-    if (ptr->ptrCount != 1)
+    if (!ptr->pointedType)
         return false;
-    if (!ptr->finalType->isNative(pointerKind))
+    if (!ptr->pointedType->isNative(pointerKind))
         return false;
     return true;
 }
@@ -196,9 +184,9 @@ bool TypeInfo::isPointerTo(TypeInfoKind pointerKind)
     if (kind != TypeInfoKind::Pointer)
         return false;
     auto ptr = (TypeInfoPointer*) this;
-    if (ptr->ptrCount != 1)
+    if (!ptr->pointedType)
         return false;
-    if (ptr->finalType->kind != pointerKind)
+    if (ptr->pointedType->kind != pointerKind)
         return false;
     return true;
 }
@@ -208,9 +196,9 @@ bool TypeInfo::isPointerTo(TypeInfo* finalType)
     if (kind != TypeInfoKind::Pointer)
         return false;
     auto ptr = (TypeInfoPointer*) this;
-    if (ptr->ptrCount != 1)
+    if (!ptr->pointedType)
         return false;
-    if (ptr->finalType != finalType)
+    if (ptr->pointedType != finalType)
         return false;
     return true;
 }
@@ -220,9 +208,9 @@ bool TypeInfo::isPointerToTypeInfo()
     if (kind != TypeInfoKind::Pointer)
         return false;
     auto ptr = (TypeInfoPointer*) this;
-    if (ptr->ptrCount != 1)
+    if (!ptr->pointedType)
         return false;
-    return ptr->finalType->flags & TYPEINFO_STRUCT_TYPEINFO;
+    return ptr->pointedType->flags & TYPEINFO_STRUCT_TYPEINFO;
 }
 
 bool TypeInfo::isInitializerList()

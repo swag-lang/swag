@@ -130,14 +130,13 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        auto newType     = doTypeSubstitution(replaceTypes, typePointer->finalType);
-        if (newType != typePointer->finalType)
+        auto newType     = doTypeSubstitution(replaceTypes, typePointer->pointedType);
+        if (newType != typePointer->pointedType)
         {
-            typePointer            = CastTypeInfo<TypeInfoPointer>(typePointer->clone(), TypeInfoKind::Pointer);
-            typePointer->finalType = newType;
+            typePointer              = CastTypeInfo<TypeInfoPointer>(typePointer->clone(), TypeInfoKind::Pointer);
+            typePointer->pointedType = newType;
             typePointer->flags &= ~TYPEINFO_GENERIC;
             typePointer->forceComputeName();
-            typePointer->computePointedType();
             return typePointer;
         }
 

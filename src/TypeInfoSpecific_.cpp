@@ -195,27 +195,9 @@ bool TypeInfoReference::isSame(TypeInfo* to, uint32_t isSameFlags)
 TypeInfo* TypeInfoPointer::clone()
 {
     auto newType         = allocType<TypeInfoPointer>();
-    newType->finalType   = finalType;
     newType->pointedType = pointedType;
-    newType->ptrCount    = ptrCount;
     newType->copyFrom(this);
     return newType;
-}
-
-void TypeInfoPointer::computePointedType()
-{
-    if (ptrCount == 1)
-    {
-        pointedType = finalType;
-    }
-    else
-    {
-        auto result = (TypeInfoPointer*) clone();
-        result->ptrCount--;
-        result->forceComputeName();
-        result->computePointedType();
-        pointedType = result;
-    }
 }
 
 void TypeInfoPointer::computePreName(Utf8& preName)
@@ -223,8 +205,7 @@ void TypeInfoPointer::computePreName(Utf8& preName)
     preName.clear();
     if (flags & TYPEINFO_CONST)
         preName = "const ";
-    for (uint32_t i = 0; i < ptrCount; i++)
-        preName += "*";
+    preName += "*";
 }
 
 void TypeInfoPointer::computeScopedName()
@@ -233,13 +214,13 @@ void TypeInfoPointer::computeScopedName()
     if (!scopedName.empty())
         return;
 
-    if (!finalType) // "null"
+    if (!pointedType) // "null"
         scopedName = name;
     else
     {
         computePreName(scopedName);
-        finalType->computeScopedName();
-        scopedName += finalType->scopedName;
+        pointedType->computeScopedName();
+        scopedName += pointedType->scopedName;
     }
 }
 
@@ -249,13 +230,13 @@ void TypeInfoPointer::computeScopedNameExport()
     if (!scopedNameExport.empty())
         return;
 
-    if (!finalType) // "null"
+    if (!pointedType) // "null"
         scopedNameExport = name;
     else
     {
         computePreName(scopedNameExport);
-        finalType->computeScopedNameExport();
-        scopedNameExport += finalType->scopedNameExport;
+        pointedType->computeScopedNameExport();
+        scopedNameExport += pointedType->scopedNameExport;
     }
 }
 
@@ -266,8 +247,8 @@ void TypeInfoPointer::computeName()
         return;
 
     computePreName(name);
-    finalType->computeName();
-    name += finalType->name;
+    pointedType->computeName();
+    name += pointedType->name;
 }
 
 bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
@@ -300,14 +281,12 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     }
 
     auto other = static_cast<TypeInfoPointer*>(to);
-    if (ptrCount != other->ptrCount)
-        return false;
 
     // Anonymous pointers
-    if ((isSameFlags & ISSAME_CAST) && other->finalType == g_TypeMgr.typeInfoVoid)
+    if ((isSameFlags & ISSAME_CAST) && other->pointedType == g_TypeMgr.typeInfoVoid)
         return true;
 
-    return finalType->isSame(other->finalType, isSameFlags);
+    return pointedType->isSame(other->pointedType, isSameFlags);
 }
 
 TypeInfo* TypeInfoArray::clone()

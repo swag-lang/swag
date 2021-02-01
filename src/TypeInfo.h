@@ -79,7 +79,6 @@ struct TypeInfo
         return true;
     }
 
-    bool isPointer1();
     bool isPointerTo(NativeTypeKind pointerKind);
     bool isPointerTo(TypeInfoKind pointerKind);
     bool isPointerTo(TypeInfo* finalType);
@@ -368,14 +367,10 @@ struct TypeInfoPointer : public TypeInfo
     void      computePreName(Utf8& preName);
     void      computeScopedName() override;
     void      computeScopedNameExport() override;
-    void      computePointedType();
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* finalType   = nullptr;
     TypeInfo* pointedType = nullptr;
-
-    uint32_t ptrCount = 0;
 };
 
 struct TypeInfoReference : public TypeInfo

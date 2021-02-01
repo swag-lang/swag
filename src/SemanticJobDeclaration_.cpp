@@ -33,12 +33,10 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePointer->finalType->kind != TypeInfoKind::TypeSet, context->report({node, node->token, "'using' cannot be used on a typeset variable"}));
-        SWAG_VERIFY(typePointer->finalType->kind != TypeInfoKind::Enum, context->report({node, node->token, "'using' cannot be used on an enum variable"}));
-
-        SWAG_VERIFY(typePointer->ptrCount == 1, context->report({node, node->token, format("'using' cannot be used on a variable of type '%s'", typePointer->name.c_str())}));
-        SWAG_VERIFY(typePointer->finalType->kind == TypeInfoKind::Struct, context->report({node, node->token, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct, TypeInfoKind::TypeSet);
+        SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::TypeSet, context->report({node, node->token, "'using' cannot be used on a typeset variable"}));
+        SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::Enum, context->report({node, node->token, "'using' cannot be used on an enum variable"}));
+        SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, node->token, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct, TypeInfoKind::TypeSet);
         {
             regNode->allocateExtension();
             regNode->extension->alternativeScopes.push_back(typeStruct->scope);

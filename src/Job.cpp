@@ -22,7 +22,7 @@ void Job::waitForSymbolNoLock(SymbolName* symbol)
 void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
 {
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
-        typeInfo = ((TypeInfoPointer*) typeInfo)->finalType;
+        typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
     if (typeInfo->kind != TypeInfoKind::Struct)
         return;
 
@@ -40,7 +40,7 @@ void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
 void Job::waitForAllStructMethods(TypeInfo* typeInfo)
 {
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
-        typeInfo = ((TypeInfoPointer*) typeInfo)->finalType;
+        typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
     if (typeInfo->kind != TypeInfoKind::Struct)
         return;
 
@@ -58,7 +58,7 @@ void Job::waitForAllStructMethods(TypeInfo* typeInfo)
 void Job::waitStructGenerated(TypeInfo* typeInfo)
 {
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
-        typeInfo = ((TypeInfoPointer*) typeInfo)->finalType;
+        typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
     if (typeInfo->kind != TypeInfoKind::Struct)
         return;
     if (typeInfo->flags & TYPEINFO_GENERIC)

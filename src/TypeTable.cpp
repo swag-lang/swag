@@ -360,9 +360,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     // Build pointer type to structure
     typePtr->flags |= TYPEINFO_CONST;
-    typePtr->ptrCount    = 1;
-    typePtr->finalType   = typeStruct;
-    typePtr->pointedType = typePtr->finalType;
+    typePtr->pointedType = typeStruct;
     typePtr->computeName();
     typePtr->sizeOf = sizeof(void*);
 
@@ -382,10 +380,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     case TypeInfoKind::Pointer:
     {
-        auto concreteType      = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
-        auto realType          = (TypeInfoPointer*) typeInfo;
-        concreteType->ptrCount = realType->ptrCount;
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->finalType, realType->finalType, cflags));
+        auto concreteType = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
+        auto realType     = (TypeInfoPointer*) typeInfo;
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType, cflags));
         break;
     }

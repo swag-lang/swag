@@ -255,9 +255,7 @@ namespace swag
     struct TypeInfoPointer
     {
         using base: 	TypeInfo
-        finalType:		const *TypeInfo
         pointedType:	const *TypeInfo
-        ptrCount:		u32
     }
 
     struct TypeInfoAlias

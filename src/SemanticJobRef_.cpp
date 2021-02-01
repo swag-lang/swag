@@ -54,8 +54,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         TypeInfoPointer* ptrType = nullptr;
 
         // A new pointer
-        ptrType           = allocType<TypeInfoPointer>();
-        ptrType->ptrCount = 1;
+        ptrType = allocType<TypeInfoPointer>();
 
         // If this is an array, then this is legit, the pointer will address the first
         // element : need to find it's type
@@ -65,7 +64,6 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
             typeInfo       = typeArray->pointedType;
         }
 
-        ptrType->finalType   = typeInfo;
         ptrType->pointedType = typeInfo;
         ptrType->sizeOf      = sizeof(void*);
         ptrType->computeName();
@@ -271,18 +269,8 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, "cannot dereference a 'void' pointer"}));
-        if (typePtr->ptrCount == 1)
-            arrayNode->typeInfo = typePtr->finalType;
-        else
-        {
-            auto newTypePtr = (TypeInfoPointer*) typePtr->clone();
-            newTypePtr->ptrCount--;
-            newTypePtr->forceComputeName();
-            newTypePtr->computePointedType();
-            arrayNode->typeInfo = newTypePtr;
-        }
-
+        SWAG_VERIFY(typePtr->pointedType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, "cannot dereference a 'void' pointer"}));
+        arrayNode->typeInfo = typePtr->pointedType;
         arrayNode->flags |= AST_ARRAY_POINTER_REF;
         arrayNode->array->flags |= AST_ARRAY_POINTER_REF;
         arrayNode->byteCodeFct = ByteCodeGenJob::emitPointerRef;
@@ -408,20 +396,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, "cannot dereference a 'void' pointer"}));
-        if (typePtr->ptrCount == 1)
-        {
-            arrayNode->typeInfo = typePtr->finalType;
-        }
-        else
-        {
-            auto newType = CastTypeInfo<TypeInfoPointer>(typePtr->clone(), TypeInfoKind::Pointer);
-            newType->ptrCount--;
-            newType->forceComputeName();
-            newType->computePointedType();
-            arrayNode->typeInfo = newType;
-        }
-
+        SWAG_VERIFY(typePtr->pointedType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, "cannot dereference a 'void' pointer"}));
+        arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
         break;
     }
