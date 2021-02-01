@@ -70,8 +70,9 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
             {
                 SWAG_CHECK(eatToken());
                 SWAG_VERIFY(currentScope->kind == ScopeKind::Struct, sourceFile->report({sourceFile, "invalid 'self' usage in that context"}));
-                auto typeNode      = Ast::newTypeExpression(sourceFile, params);
-                typeNode->ptrCount = 1;
+                auto typeNode         = Ast::newTypeExpression(sourceFile, params);
+                typeNode->ptrCount    = 1;
+                typeNode->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;
                 typeNode->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
                 typeNode->typeFlags |= TYPEFLAG_ISSELF;
                 typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentScope->name, typeNode, this);
@@ -243,10 +244,12 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     }
 
     // Const keyword
-    bool isConst = false;
+    bool isConst    = false;
+    bool isPtrConst = false;
     if (token.id == TokenId::KwdConst)
     {
-        isConst = true;
+        isConst    = true;
+        isPtrConst = true;
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
@@ -274,6 +277,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     // Array
     if (token.id == TokenId::SymLeftSquare)
     {
+        isPtrConst = false;
+
         SWAG_CHECK(tokenizer.getToken(token));
         while (true)
         {
@@ -302,14 +307,14 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+    }
 
-        // Array of const stuff
-        if (token.id == TokenId::KwdConst)
-        {
-            node->typeFlags |= TYPEFLAG_ISPTRCONST;
-            SWAG_CHECK(tokenizer.getToken(token));
-            SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, syntaxError(token, "'const' must be followed by a pointer or a reference"));
-        }
+    // Const after array
+    if (token.id == TokenId::KwdConst)
+    {
+        isPtrConst = true;
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_VERIFY(token.id == TokenId::SymAsterisk, syntaxError(token, "missing pointer declaration '*' after 'const'"));
     }
 
     // Pointers
@@ -317,25 +322,18 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     {
         while (token.id == TokenId::SymAsterisk)
         {
-            if (node->ptrCount == 254)
-                return syntaxError(token, "too many pointer dimensions (max is 254)");
+            if (node->ptrCount == AstTypeExpression::MAX_PTR_COUNT)
+                return syntaxError(token, format("too many pointer dimensions (max is %u)", AstTypeExpression::MAX_PTR_COUNT));
+            node->ptrFlags[node->ptrCount] = isPtrConst ? AstTypeExpression::PTR_CONST : 0;
             node->ptrCount++;
             SWAG_CHECK(tokenizer.getToken(token));
-        }
+            isPtrConst = false;
 
-        if (token.id == TokenId::KwdConst)
-        {
-            node->ptrConstCount = node->ptrCount;
-            node->ptrCount      = 0;
-            SWAG_VERIFY(!isConst, syntaxError(token, "'const' already defined"));
-            SWAG_CHECK(tokenizer.getToken(token));
-            SWAG_VERIFY(token.id == TokenId::SymAsterisk, syntaxError(token, "missing pointer declaration '*' after 'const'"));
-            while (token.id == TokenId::SymAsterisk)
+            if (token.id == TokenId::KwdConst)
             {
-                if (node->ptrCount == 254)
-                    return syntaxError(token, "too many pointer dimensions (max is 254)");
-                node->ptrCount++;
                 SWAG_CHECK(tokenizer.getToken(token));
+                SWAG_VERIFY(token.id == TokenId::SymAsterisk, syntaxError(token, "missing pointer declaration '*' after 'const'"));
+                isPtrConst = true;
             }
         }
     }

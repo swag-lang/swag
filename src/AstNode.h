@@ -659,7 +659,7 @@ struct AstSwitchCaseBlock : public AstNode
 const uint16_t TYPEFLAG_ISREF       = 0x0001;
 const uint16_t TYPEFLAG_ISSLICE     = 0x0002;
 const uint16_t TYPEFLAG_ISCONST     = 0x0004;
-const uint16_t TYPEFLAG_ISPTRCONST  = 0x0008;
+//const uint16_t TYPEFLAG_ISPTRCONST  = 0x0008;
 const uint16_t TYPEFLAG_ISTYPEOF    = 0x0010;
 const uint16_t TYPEFLAG_ISCODE      = 0x0020;
 const uint16_t TYPEFLAG_FORCECONST  = 0x0040;
@@ -674,10 +674,12 @@ struct AstTypeExpression : public AstNode
     AstNode*  identifier;
     TypeInfo* literalType;
 
-    uint16_t typeFlags;
-    uint8_t  ptrCount;
-    uint8_t  ptrConstCount;
-    uint8_t  arrayDim;
+    uint16_t             typeFlags;
+    static const int     MAX_PTR_COUNT = 4;
+    static const uint8_t PTR_CONST     = 0x01;
+    uint8_t              ptrFlags[MAX_PTR_COUNT];
+    uint8_t              ptrCount;
+    uint8_t              arrayDim;
 };
 
 struct AstTypeLambda : public AstNode

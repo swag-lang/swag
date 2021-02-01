@@ -1,5 +1,4 @@
-
-#global testpass syntax;
+#global testerror
 
 func main ()
 {

@@ -910,12 +910,12 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstTypeExpression>();
     newNode->copyFrom(context, this);
 
-    newNode->identifier    = findChildRef(identifier, newNode);
-    newNode->literalType   = literalType;
-    newNode->ptrCount      = ptrCount;
-    newNode->ptrConstCount = ptrConstCount;
-    newNode->arrayDim      = arrayDim;
-    newNode->typeFlags     = typeFlags;
+    newNode->identifier  = findChildRef(identifier, newNode);
+    newNode->literalType = literalType;
+    newNode->ptrCount    = ptrCount;
+    memcpy(newNode->ptrFlags, ptrFlags, sizeof(ptrFlags));
+    newNode->arrayDim  = arrayDim;
+    newNode->typeFlags = typeFlags;
     return newNode;
 }
 

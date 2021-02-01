@@ -212,20 +212,18 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // In fact, this is a pointer
     if (typeNode->ptrCount)
     {
+        auto firstType        = typeNode->typeInfo;
         auto ptrPointer       = allocType<TypeInfoPointer>();
-        ptrPointer->ptrCount  = typeNode->ptrCount;
-        ptrPointer->finalType = typeNode->typeInfo;
+        ptrPointer->ptrCount  = 1;
+        ptrPointer->finalType = firstType;
         ptrPointer->sizeOf    = sizeof(void*);
-
-        if ((typeNode->arrayDim == 0 && (typeNode->typeFlags & TYPEFLAG_ISCONST)) || (typeNode->typeFlags & TYPEFLAG_ISPTRCONST))
+        ptrPointer->flags |= (firstType->flags & TYPEINFO_GENERIC);
+        if (typeNode->ptrFlags[0] & AstTypeExpression::PTR_CONST)
+            ptrPointer->flags |= TYPEINFO_CONST;
+        if (typeNode->typeFlags & TYPEFLAG_ISCONST)
             ptrPointer->flags |= TYPEINFO_CONST;
         if (typeNode->typeFlags & TYPEFLAG_ISSELF)
             ptrPointer->flags |= TYPEINFO_SELF;
-
-        ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
-        ptrPointer->forceComputeName();
-        ptrPointer->computePointedType();
-        typeNode->typeInfo = ptrPointer;
 
         if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE_MASK)
             ptrPointer->flags |= TYPEINFO_RELATIVE;
@@ -238,30 +236,27 @@ bool SemanticJob::resolveType(SemanticContext* context)
         else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE8)
             ptrPointer->sizeOf = 8;
 
-        // In fact no, this is a pointer on a const pointer
-        if (typeNode->ptrConstCount)
+        ptrPointer->forceComputeName();
+        ptrPointer->computePointedType();
+        typeNode->typeInfo = ptrPointer;
+
+        for (int i = 1; i < typeNode->ptrCount; i++)
         {
-            ptrPointer            = allocType<TypeInfoPointer>();
-            ptrPointer->ptrCount  = typeNode->ptrConstCount;
-            ptrPointer->finalType = typeNode->typeInfo;
-            ptrPointer->finalType->flags |= TYPEINFO_CONST;
-            ptrPointer->finalType->forceComputeName();
-            ptrPointer->sizeOf = sizeof(void*);
-            ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
+            auto ptrPointer1       = allocType<TypeInfoPointer>();
+            ptrPointer1->ptrCount  = 1;
+            ptrPointer1->finalType = firstType;
+            ptrPointer1->sizeOf    = sizeof(void*);
+            ptrPointer1->flags |= (firstType->flags & TYPEINFO_GENERIC);
+            if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST)
+                ptrPointer1->flags |= TYPEINFO_CONST;
+            ptrPointer1->forceComputeName();
+            ptrPointer1->computePointedType();
+
+            ptrPointer->finalType = ptrPointer1;
             ptrPointer->forceComputeName();
             ptrPointer->computePointedType();
-            typeNode->typeInfo = ptrPointer;
 
-            if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE_MASK)
-                ptrPointer->flags |= TYPEINFO_RELATIVE;
-            if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE1)
-                ptrPointer->sizeOf = 1;
-            else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE2)
-                ptrPointer->sizeOf = 2;
-            else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE4)
-                ptrPointer->sizeOf = 4;
-            else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE8)
-                ptrPointer->sizeOf = 8;
+            ptrPointer = ptrPointer1;
         }
     }
 
@@ -558,7 +553,7 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
         (!exprTypeInfo->isNative(NativeTypeKind::Char)))
         return context->report({exprNode, format("cannot bitcast from type '%s' (should be native integer, char or float)", exprTypeInfo->name.c_str())});
 
-    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({ exprNode, format("cannot bitcast to a type with a bigger size ('%s' from '%s')", typeInfo->name.c_str(), exprTypeInfo->name.c_str()) }));
+    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, format("cannot bitcast to a type with a bigger size ('%s' from '%s')", typeInfo->name.c_str(), exprTypeInfo->name.c_str())}));
 
     node->typeInfo = typeNode->typeInfo;
     node->setPassThrough();

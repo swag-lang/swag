@@ -53,39 +53,22 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
         TypeInfoPointer* ptrType = nullptr;
 
-        // Pointer on a pointer
-        bool done = false;
-        if (typeInfo->kind == TypeInfoKind::Pointer)
-        {
-            TypeInfoPointer* typeInfoPtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-            if (!typeInfoPtr->isConst())
-            {
-                ptrType = (TypeInfoPointer*) typeInfoPtr->clone();
-                ptrType->ptrCount++;
-                ptrType->forceComputeName();
-                done = true;
-            }
-        }
-
         // A new pointer
-        if (!done)
+        ptrType           = allocType<TypeInfoPointer>();
+        ptrType->ptrCount = 1;
+
+        // If this is an array, then this is legit, the pointer will address the first
+        // element : need to find it's type
+        while (typeInfo->kind == TypeInfoKind::Array)
         {
-            ptrType           = allocType<TypeInfoPointer>();
-            ptrType->ptrCount = 1;
-
-            // If this is an array, then this is legit, the pointer will address the first
-            // element : need to find it's type
-            while (typeInfo->kind == TypeInfoKind::Array)
-            {
-                auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-                typeInfo       = typeArray->pointedType;
-            }
-
-            ptrType->finalType   = typeInfo;
-            ptrType->pointedType = typeInfo;
-            ptrType->sizeOf      = sizeof(void*);
-            ptrType->computeName();
+            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            typeInfo       = typeArray->pointedType;
         }
+
+        ptrType->finalType   = typeInfo;
+        ptrType->pointedType = typeInfo;
+        ptrType->sizeOf      = sizeof(void*);
+        ptrType->computeName();
 
         // Type is constant if we take address of a readonly variable
         if (child->resolvedSymbolOverload &&

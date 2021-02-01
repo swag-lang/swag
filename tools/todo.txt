@@ -31,7 +31,8 @@ cast any avec struct, ca fait quoi (et avec les using ?)
 -------------------------------------
 cast interface vers struct (avec safety)
 -------------------------------------
-
+1367 seul crash !
+-------------------------------------
 
 
 ****************************************

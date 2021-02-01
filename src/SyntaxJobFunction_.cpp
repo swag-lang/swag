@@ -150,8 +150,9 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         else
         {
             SWAG_VERIFY(paramNode->ownerStructScope->kind == ScopeKind::Struct, error(token, "'self' can only be used in an 'impl' block"));
-            auto typeNode      = Ast::newTypeExpression(sourceFile, paramNode);
-            typeNode->ptrCount = 1;
+            auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
+            typeNode->ptrCount    = 1;
+            typeNode->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;
             typeNode->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
             typeNode->typeFlags |= TYPEFLAG_ISSELF;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);

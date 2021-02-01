@@ -64,9 +64,9 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         case TypeInfoKind::Pointer:
         {
             auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
-            SWAG_ASSERT(typeInfoPointer->ptrCount <= 255);
-            typeExpression->ptrCount = (uint8_t) typeInfoPointer->ptrCount;
-            typeExpression->typeFlags |= typeInfoPointer->isConst() ? TYPEFLAG_ISCONST : 0;
+            SWAG_ASSERT(typeInfoPointer->ptrCount == 1);
+            typeExpression->ptrCount    = 1;
+            typeExpression->ptrFlags[0] = typeInfoPointer->isConst() ? AstTypeExpression::PTR_CONST : 0;
             if (typeInfoPointer->finalType->kind != TypeInfoKind::Native)
                 return internalError(context, format("convertAssignementToStruct, cannot convert type '%s'", typeInfoPointer->finalType->name.c_str()).c_str(), assignment->childs[idx]);
             typeExpression->token.id    = TokenId::NativeType;
