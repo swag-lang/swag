@@ -154,10 +154,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 }
             }
 
-            // Append attributes
-            if (result)
-                result->isHere.insert(typeInfo);
-
             // Attribute on an attribute : usage
             if (forNode->kind == AstNodeKind::AttrDecl)
             {
@@ -173,6 +169,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     typeAttr->attributeUsage |= AttributeUsage::Multi;
                 }
             }
+
+            bool regAttr = true;
 
             // Predefined attributes will mark some flags (to speed up detection)
             if (child->token.text == "constexpr")
@@ -209,110 +207,127 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_STRICT;
             else if (child->token.text == "callback")
                 flags |= ATTRIBUTE_CALLBACK;
-            else if (child->token.text == "safety")
+
+            // All attributes with parameters : do not evaluate in generic, as a parameter
+            // can be parametric
+            else if (!(curAttr->flags & AST_IS_GENERIC))
             {
-                ComputedValue attrWhat;
-                vector<Utf8>  what;
-                curAttr->attributes.getValue("swag.safety", "what", attrWhat);
-                attrWhat.text.trim();
-                tokenize(attrWhat.text, '|', what);
-
-                ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.safety", "value", attrValue);
-
-                if (attrWhat.text.empty())
+                if (child->token.text == "safety")
                 {
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NP_ON : ATTRIBUTE_SAFETY_NP_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BC_ON : ATTRIBUTE_SAFETY_BC_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OF_ON : ATTRIBUTE_SAFETY_OF_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MT_ON : ATTRIBUTE_SAFETY_MT_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_AN_ON : ATTRIBUTE_SAFETY_AN_OFF;
-                }
+                    ComputedValue attrWhat;
+                    vector<Utf8>  what;
+                    curAttr->attributes.getValue("swag.safety", "what", attrWhat);
+                    attrWhat.text.trim();
+                    tokenize(attrWhat.text, '|', what);
 
-                for (auto& w : what)
-                {
-                    w.trim();
-                    if (w == "np")
+                    ComputedValue attrValue;
+                    curAttr->attributes.getValue("swag.safety", "value", attrValue);
+
+                    if (attrWhat.text.empty())
+                    {
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NP_ON : ATTRIBUTE_SAFETY_NP_OFF;
-                    else if (w == "bc")
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BC_ON : ATTRIBUTE_SAFETY_BC_OFF;
-                    else if (w == "of")
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OF_ON : ATTRIBUTE_SAFETY_OF_OFF;
-                    else if (w == "mt")
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MT_ON : ATTRIBUTE_SAFETY_MT_OFF;
-                    else if (w == "an")
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_AN_ON : ATTRIBUTE_SAFETY_AN_OFF;
-                    else
-                        return context->report({child, format("'swag.safety' invalid value '%s'", w.c_str())});
+                    }
+
+                    for (auto& w : what)
+                    {
+                        w.trim();
+                        if (w == "np")
+                            flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NP_ON : ATTRIBUTE_SAFETY_NP_OFF;
+                        else if (w == "bc")
+                            flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BC_ON : ATTRIBUTE_SAFETY_BC_OFF;
+                        else if (w == "of")
+                            flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OF_ON : ATTRIBUTE_SAFETY_OF_OFF;
+                        else if (w == "mt")
+                            flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MT_ON : ATTRIBUTE_SAFETY_MT_OFF;
+                        else if (w == "an")
+                            flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_AN_ON : ATTRIBUTE_SAFETY_AN_OFF;
+                        else
+                            return context->report({child, format("'swag.safety' invalid value '%s'", w.c_str())});
+                    }
                 }
-            }
-            else if (child->token.text == "optim")
-            {
-                ComputedValue attrWhat;
-                vector<Utf8>  what;
-                curAttr->attributes.getValue("swag.optim", "what", attrWhat);
-                attrWhat.text.trim();
-                tokenize(attrWhat.text, '|', what);
-
-                ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.optim", "value", attrValue);
-
-                if (attrWhat.text.empty())
+                else if (child->token.text == "optim")
                 {
-                    flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BC_ON : ATTRIBUTE_OPTIM_BC_OFF;
-                    flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BK_ON : ATTRIBUTE_OPTIM_BK_OFF;
-                }
+                    ComputedValue attrWhat;
+                    vector<Utf8>  what;
+                    curAttr->attributes.getValue("swag.optim", "what", attrWhat);
+                    attrWhat.text.trim();
+                    tokenize(attrWhat.text, '|', what);
 
-                for (auto& w : what)
-                {
-                    w.trim();
-                    if (w == "bc")
+                    ComputedValue attrValue;
+                    curAttr->attributes.getValue("swag.optim", "value", attrValue);
+
+                    if (attrWhat.text.empty())
+                    {
                         flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BC_ON : ATTRIBUTE_OPTIM_BC_OFF;
-                    else if (w == "bk")
                         flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BK_ON : ATTRIBUTE_OPTIM_BK_OFF;
-                    else
-                        return context->report({child, format("'swag.optim' invalid value '%s'", w.c_str())});
+                    }
+
+                    for (auto& w : what)
+                    {
+                        w.trim();
+                        if (w == "bc")
+                            flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BC_ON : ATTRIBUTE_OPTIM_BC_OFF;
+                        else if (w == "bk")
+                            flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BK_ON : ATTRIBUTE_OPTIM_BK_OFF;
+                        else
+                            return context->report({child, format("'swag.optim' invalid value '%s'", w.c_str())});
+                    }
                 }
-            }
-            else if (child->token.text == "selectif")
-            {
-                ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.selectif", "value", attrValue);
-                flags |= attrValue.reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
-            }
-            else if (child->token.text == "pack")
-            {
-                ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.pack", "value", attrValue);
-                SWAG_VERIFY(!attrValue.reg.u8 || isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.pack' value must be 0 or a power of two ('%d' provided)", attrValue.reg.u8)}));
-            }
-            else if (child->token.text == "align")
-            {
-                ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.align", "value", attrValue);
-                SWAG_VERIFY(isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.align' value must be a power of two ('%d' provided)", attrValue.reg.u8)}));
-            }
-            else if (child->token.text == "relative")
-            {
-                ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.relative", "value", attrValue);
-                SWAG_VERIFY(attrValue.reg.u8 == 1 || attrValue.reg.u8 == 2 || attrValue.reg.u8 == 4 || attrValue.reg.u8 == 8, context->report({child, format("'swag.relative' value must be 1, 2, 4 or 8", attrValue.reg.u8)}));
-                switch (attrValue.reg.u8)
+                else if (child->token.text == "selectif")
                 {
-                case 1:
-                    flags |= ATTRIBUTE_RELATIVE1;
-                    break;
-                case 2:
-                    flags |= ATTRIBUTE_RELATIVE2;
-                    break;
-                case 4:
-                    flags |= ATTRIBUTE_RELATIVE4;
-                    break;
-                case 8:
-                    flags |= ATTRIBUTE_RELATIVE8;
-                    break;
+                    ComputedValue attrValue;
+                    curAttr->attributes.getValue("swag.selectif", "value", attrValue);
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
+                }
+                else if (child->token.text == "pack")
+                {
+                    ComputedValue attrValue;
+                    curAttr->attributes.getValue("swag.pack", "value", attrValue);
+                    SWAG_VERIFY(!attrValue.reg.u8 || isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.pack' value must be 0 or a power of two ('%d' provided)", attrValue.reg.u8)}));
+                }
+                else if (child->token.text == "align")
+                {
+                    ComputedValue attrValue;
+                    curAttr->attributes.getValue("swag.align", "value", attrValue);
+                    SWAG_VERIFY(isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.align' value must be a power of two ('%d' provided)", attrValue.reg.u8)}));
+                }
+                else if (child->token.text == "relative")
+                {
+                    ComputedValue attrValue;
+                    curAttr->attributes.getValue("swag.relative", "value", attrValue);
+
+                    // 0 is a special value that says 'not relative'. This can be usefull if the parameter comes from a generic.
+                    SWAG_VERIFY(attrValue.reg.u8 == 0 || attrValue.reg.u8 == 1 || attrValue.reg.u8 == 2 || attrValue.reg.u8 == 4 || attrValue.reg.u8 == 8, context->report({child, format("'swag.relative' value must be 0, 1, 2, 4 or 8", attrValue.reg.u8)}));
+                    switch (attrValue.reg.u8)
+                    {
+                    case 1:
+                        flags |= ATTRIBUTE_RELATIVE1;
+                        break;
+                    case 2:
+                        flags |= ATTRIBUTE_RELATIVE2;
+                        break;
+                    case 4:
+                        flags |= ATTRIBUTE_RELATIVE4;
+                        break;
+                    case 8:
+                        flags |= ATTRIBUTE_RELATIVE8;
+                        break;
+                    }
                 }
             }
+            else
+            {
+                // Generic with parameters, do not register it
+                regAttr = false;
+            }
+
+            // Append attributes
+            if (result && regAttr)
+                result->isHere.insert(typeInfo);
         }
 
         // Merge the result
@@ -359,67 +374,70 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
     auto node = CastAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
     SWAG_VERIFY(node->content, context->report({node, "invalid attribute usage"}));
 
-    for (auto child : node->childs)
+    if (!(node->flags & AST_IS_GENERIC))
     {
-        if (child == node->content)
-            continue;
-
-        SWAG_CHECK(checkAttribute(context, child, node->content));
-
-        // Collect parameters
-        auto identifierRef = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
-        auto identifier    = static_cast<AstIdentifier*>(identifierRef->childs.back());
-
-        // Be sure this is an attribute
-        auto resolvedName = identifier->resolvedSymbolName;
-        auto resolved     = identifier->resolvedSymbolOverload;
-        if (resolvedName->kind != SymbolKind::Attribute)
+        for (auto child : node->childs)
         {
-            Diagnostic diag{identifier, format("invalid attribute '%s'", resolvedName->name.c_str())};
-            Diagnostic note{resolved->node, resolved->node->token, format("this is the definition of '%s'", resolvedName->name.c_str()), DiagnosticLevel::Note};
-            context->report(diag, &note);
-            return false;
-        }
+            if (child == node->content)
+                continue;
 
-        // Register attribute itself
-        OneAttribute oneAttribute;
-        oneAttribute.name = resolvedName->getFullName();
-        oneAttribute.node = node;
+            SWAG_CHECK(checkAttribute(context, child, node->content));
 
-        // Register all call parameters, and their value
-        uint32_t numParams = 0;
-        if (identifier->callParameters)
-        {
-            numParams = identifier->callParameters->childs.count;
-            for (auto one : identifier->callParameters->childs)
+            // Collect parameters
+            auto identifierRef = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+            auto identifier    = static_cast<AstIdentifier*>(identifierRef->childs.back());
+
+            // Be sure this is an attribute
+            auto resolvedName = identifier->resolvedSymbolName;
+            auto resolved     = identifier->resolvedSymbolOverload;
+            if (resolvedName->kind != SymbolKind::Attribute)
             {
-                auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
-                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, "attribute parameter cannot be evaluated at compile time"}));
+                Diagnostic diag{identifier, format("invalid attribute '%s'", resolvedName->name.c_str())};
+                Diagnostic note{resolved->node, resolved->node->token, format("this is the definition of '%s'", resolvedName->name.c_str()), DiagnosticLevel::Note};
+                context->report(diag, &note);
+                return false;
+            }
+
+            // Register attribute itself
+            OneAttribute oneAttribute;
+            oneAttribute.name = resolvedName->getFullName();
+            oneAttribute.node = node;
+
+            // Register all call parameters, and their value
+            uint32_t numParams = 0;
+            if (identifier->callParameters)
+            {
+                numParams = identifier->callParameters->childs.count;
+                for (auto one : identifier->callParameters->childs)
+                {
+                    auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
+                    SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, "attribute parameter cannot be evaluated at compile time"}));
+
+                    AttributeParameter attrParam;
+                    attrParam.name     = param->resolvedParameter->namedParam;
+                    attrParam.typeInfo = param->resolvedParameter->typeInfo;
+                    attrParam.value    = param->computedValue;
+                    oneAttribute.parameters.emplace_back(move(attrParam));
+                }
+            }
+
+            // The rest (default parameters)
+            auto funcDecl = CastAst<AstAttrDecl>(resolved->node, AstNodeKind::AttrDecl);
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(resolved->typeInfo, TypeInfoKind::FuncAttr);
+            for (int i = numParams; i < (int) typeFunc->parameters.size(); i++)
+            {
+                auto param = CastAst<AstVarDecl>(funcDecl->parameters->childs[i], AstNodeKind::FuncDeclParam);
+                SWAG_ASSERT(param->assignment);
 
                 AttributeParameter attrParam;
-                attrParam.name     = param->resolvedParameter->namedParam;
-                attrParam.typeInfo = param->resolvedParameter->typeInfo;
-                attrParam.value    = param->computedValue;
+                attrParam.name     = param->token.text;
+                attrParam.typeInfo = param->typeInfo;
+                attrParam.value    = param->assignment->computedValue;
                 oneAttribute.parameters.emplace_back(move(attrParam));
             }
+
+            node->attributes.attributes.emplace_back(move(oneAttribute));
         }
-
-        // The rest (default parameters)
-        auto funcDecl = CastAst<AstAttrDecl>(resolved->node, AstNodeKind::AttrDecl);
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(resolved->typeInfo, TypeInfoKind::FuncAttr);
-        for (int i = numParams; i < (int) typeFunc->parameters.size(); i++)
-        {
-            auto param = CastAst<AstVarDecl>(funcDecl->parameters->childs[i], AstNodeKind::FuncDeclParam);
-            SWAG_ASSERT(param->assignment);
-
-            AttributeParameter attrParam;
-            attrParam.name     = param->token.text;
-            attrParam.typeInfo = param->typeInfo;
-            attrParam.value    = param->assignment->computedValue;
-            oneAttribute.parameters.emplace_back(move(attrParam));
-        }
-
-        node->attributes.attributes.emplace_back(move(oneAttribute));
     }
 
     SWAG_CHECK(collectAttributes(context, node, nullptr, node));

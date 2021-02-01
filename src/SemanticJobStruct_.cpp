@@ -518,7 +518,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         flattenStructChilds(context, node->content, job->tmpNodes);
     }
 
-    typeInfo->sizeOf = 0;
+    typeInfo->alignOf = 0;
+    typeInfo->sizeOf  = 0;
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];

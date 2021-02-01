@@ -235,7 +235,9 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
 
     if (node->flags & AST_IS_GENERIC)
     {
-        node->childs.back()->flags |= AST_NO_SEMANTIC;
+        if (node->kind != AstNodeKind::AttrUse)
+            node->childs.back()->flags |= AST_NO_SEMANTIC;
+
         node->semFlags |= AST_SEM_ON_CLONE;
     }
 
@@ -245,7 +247,7 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
 bool SemanticJob::resolveCompilerTestError(SemanticContext* context)
 {
     // Should never be reached
-    return context->report({ context->node, context->node->token, "'#semerror' has not triggered an error" });
+    return context->report({context->node, context->node->token, "'#semerror' has not triggered an error"});
 }
 
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
