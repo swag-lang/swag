@@ -16,8 +16,9 @@ func toto()->Node
     return x
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     x := toto()
+    @assert(x.next[0] == 666)
 }
