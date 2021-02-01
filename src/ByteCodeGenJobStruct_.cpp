@@ -14,6 +14,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
 
     if (pushParam)
     {
+        SWAG_ASSERT(numParams == 1);
         emitInstruction(context, ByteCodeOp::GetFromStackParam64, 0, 24);
         if (offset)
         {
@@ -37,6 +38,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
         SWAG_ASSERT(bc || (funcDecl && funcDecl->extension && funcDecl->extension->bc));
         inst->a.pointer = (uint8_t*) (bc ? bc : funcDecl->extension->bc);
+        SWAG_ASSERT(numParams <= 2);
         inst->b.pointer = numParams == 1 ? (uint8_t*) g_TypeMgr.typeInfoOpCall : (uint8_t*) g_TypeMgr.typeInfoOpCall2;
         SWAG_ASSERT(inst->a.pointer);
     }
@@ -101,14 +103,25 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
             if (!(typeVarStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
                 continue;
         }
+        else if (typeVar->kind == TypeInfoKind::Array)
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+            auto typeInVar = typeArray->pointedType;
+            if (typeInVar->kind == TypeInfoKind::Struct)
+            {
+                auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeInVar, TypeInfoKind::Struct);
+                if (!(typeVarStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
+                    continue;
+            }
+        }
         else
             continue;
 
         // Reference to the field of the other struct
-        emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 1, 32, 1);
+        auto inst = emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 1, 32, 1);
         if (param->offset)
         {
-            auto inst   = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 1, 0, 1);
+            inst        = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 1, 0, 1);
             inst->b.u64 = param->offset;
             inst->flags |= BCI_IMM_B;
         }
@@ -117,7 +130,7 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
         emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 0, 24, 0);
         if (param->offset)
         {
-            auto inst   = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
+            inst        = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
             inst->b.u64 = param->offset;
             inst->flags |= BCI_IMM_B;
         }
@@ -132,6 +145,33 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
             auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             emitInstruction(&cxt, ByteCodeOp::PushRAParam2, 1, 0);
             emitOpCallUser(&cxt, nullptr, typeVarStruct->opReloc, false, 0, 2);
+        }
+        else if (typeVar->kind == TypeInfoKind::Array)
+        {
+            auto typeArray     = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+            auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct);
+
+            // Need to loop on every element of the array in order to reloc them
+            RegisterList r0 = reserveRegisterRC(&cxt);
+
+            inst          = emitInstruction(&cxt, ByteCodeOp::SetImmediate32, r0);
+            inst->b.u64   = typeArray->totalCount;
+            auto seekJump = cxt.bc->numInstructions;
+
+            emitInstruction(&cxt, ByteCodeOp::PushRAParam2, 1, 0);
+            emitOpCallUser(&cxt, nullptr, typeVarStruct->opReloc, false, 0, 2);
+
+            inst = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = typeVarStruct->sizeOf;
+            inst        = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 1, 0, 1);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = typeVarStruct->sizeOf;
+
+            emitInstruction(&cxt, ByteCodeOp::DecrementRA32, r0);
+            emitInstruction(&cxt, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - cxt.bc->numInstructions - 1;
+
+            freeRegisterRC(&cxt, r0);
         }
     }
 
@@ -300,14 +340,18 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                     // Need to loop on every element of the array in order to initialize them
                     RegisterList r0 = reserveRegisterRC(&cxt);
 
-                    emitInstruction(&cxt, ByteCodeOp::SetImmediate64, r0)->b.u64 = typeArray->totalCount;
-                    auto seekJump                                                = cxt.bc->numInstructions;
+                    auto inst     = emitInstruction(&cxt, ByteCodeOp::SetImmediate32, r0);
+                    inst->b.u64   = typeArray->totalCount;
+                    auto seekJump = cxt.bc->numInstructions;
 
                     emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
                     emitOpCallUser(&cxt, nullptr, typeInVarStruct->opInit, false);
 
+                    inst = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
+                    inst->flags |= BCI_IMM_B;
+                    inst->b.u64 = typeInVarStruct->sizeOf;
+
                     emitInstruction(&cxt, ByteCodeOp::DecrementRA32, r0);
-                    emitInstruction(&cxt, ByteCodeOp::Add32byVB32, 0)->b.u32      = typeInVarStruct->sizeOf;
                     emitInstruction(&cxt, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - cxt.bc->numInstructions - 1;
 
                     freeRegisterRC(&cxt, r0);

@@ -181,6 +181,15 @@ bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, uint32
     }
     else
     {
+        auto jumpToDo = context->bc->numInstructions;
+        emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r1);
+        auto seekJumpNotZero = context->bc->numInstructions;
+        emitSetZeroAtPointer(context, typePtr->sizeOf, r0);
+        auto jumpAfter = context->bc->numInstructions; 
+        emitInstruction(context, ByteCodeOp::Jump);
+        auto seekJump  = context->bc->numInstructions;
+
+        context->bc->out[jumpToDo].b.s32 = context->bc->numInstructions - seekJumpNotZero;
         emitInstruction(context, ByteCodeOp::BinOpMinusS64, r1, r0, r1);
         switch (typePtr->sizeOf)
         {
@@ -201,6 +210,8 @@ bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, uint32
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
             break;
         }
+
+        context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - seekJump;
     }
 
     return true;
