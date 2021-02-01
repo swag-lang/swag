@@ -573,9 +573,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
 
         // Relative pointer
-        if (child->typeInfo->flags & TYPEINFO_RELATIVE)
+        if (varDecl->typeInfo->flags & TYPEINFO_RELATIVE)
             structFlags |= TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS;
-        if (child->typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) child->typeInfo)->finalType->flags & TYPEINFO_RELATIVE)
+        if (varDecl->typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) varDecl->typeInfo)->finalType->flags & TYPEINFO_RELATIVE)
             structFlags |= TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS;
 
         // Var is a struct
