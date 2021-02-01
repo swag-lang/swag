@@ -89,38 +89,32 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
 
     for (auto param : typeInfoStruct->fields)
     {
-        auto varDecl = CastAst<AstVarDecl>(param->declNode, AstNodeKind::VarDecl);
         auto typeVar = TypeManager::concreteType(param->typeInfo);
 
-        if (typeVar->kind == TypeInfoKind::Pointer)
+        if (!(typeVar->flags & TYPEINFO_RELATIVE))
         {
-            if (!(varDecl->attributeFlags & ATTRIBUTE_RELATIVE_MASK))
-                continue;
-        }
-        else if (typeVar->kind == TypeInfoKind::Struct)
-        {
-            auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-            if (!(typeVarStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
-                continue;
-        }
-        else if (typeVar->kind == TypeInfoKind::Array)
-        {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
-            auto typeInVar = typeArray->pointedType;
-            if (typeInVar->kind == TypeInfoKind::Struct)
+            if (typeVar->kind == TypeInfoKind::Struct)
             {
-                auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeInVar, TypeInfoKind::Struct);
+                auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
                 if (!(typeVarStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
                     continue;
             }
-            else if (typeInVar->kind == TypeInfoKind::Pointer)
+            else if (typeVar->kind == TypeInfoKind::Array)
             {
-                if (!(varDecl->attributeFlags & ATTRIBUTE_RELATIVE_MASK))
+                auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+                auto typeInVar = typeArray->finalType;
+                if (typeInVar->kind == TypeInfoKind::Struct)
+                {
+                    auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeInVar, TypeInfoKind::Struct);
+                    if (!(typeVarStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
+                        continue;
+                }
+                else if (!(typeInVar->flags & TYPEINFO_RELATIVE))
                     continue;
             }
+            else
+                continue;
         }
-        else
-            continue;
 
         // Reference to the field of the other struct
         auto inst = emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 1, 32, 1);
@@ -165,13 +159,13 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
             if (typeArray->pointedType->kind == TypeInfoKind::Pointer)
             {
                 inst = emitInstruction(&cxt, ByteCodeOp::CopyRBtoRA, 2, 1);
-                emitUnwrapRelativePointer(&cxt, 2, typeArray->pointedType);
-                emitWrapRelativePointer(&cxt, 0, 2, typeArray->pointedType, typeArray->pointedType);
+                emitUnwrapRelativePointer(&cxt, 2, typeArray->finalType);
+                emitWrapRelativePointer(&cxt, 0, 2, typeArray->finalType, typeArray->finalType);
             }
             else
             {
                 SWAG_ASSERT(typeArray->pointedType->kind == TypeInfoKind::Struct);
-                auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct);
+                auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
                 emitInstruction(&cxt, ByteCodeOp::PushRAParam2, 1, 0);
                 emitOpCallUser(&cxt, nullptr, typeVarStruct->opReloc, false, 0, 2);
             }
