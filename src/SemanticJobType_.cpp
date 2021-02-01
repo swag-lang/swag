@@ -337,6 +337,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
             }
         }
     }
+
+    // In fact, this is a slice
     else if (typeNode->typeFlags & TYPEFLAG_ISSLICE)
     {
         auto ptrSlice         = allocType<TypeInfoSlice>();

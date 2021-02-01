@@ -609,7 +609,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Relative pointers check
     if (node->attributeFlags & ATTRIBUTE_RELATIVE_MASK)
     {
-        if (typeInfo->kind != TypeInfoKind::Pointer)
+        auto realType = typeInfo;
+        if (typeInfo->kind == TypeInfoKind::Array)
+        {
+            auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            realType     = typeArr->finalType;
+        }
+
+        if (realType->kind != TypeInfoKind::Pointer)
             return context->report({node, node->token, format("'swag.relative' attribute cannot be applied to type '%s'", typeInfo->name.c_str())});
     }
 

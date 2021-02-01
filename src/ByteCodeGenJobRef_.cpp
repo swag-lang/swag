@@ -185,9 +185,9 @@ bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, uint32
         emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r1);
         auto seekJumpNotZero = context->bc->numInstructions;
         emitSetZeroAtPointer(context, typePtr->sizeOf, r0);
-        auto jumpAfter = context->bc->numInstructions; 
+        auto jumpAfter = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::Jump);
-        auto seekJump  = context->bc->numInstructions;
+        auto seekJump = context->bc->numInstructions;
 
         context->bc->out[jumpToDo].b.s32 = context->bc->numInstructions - seekJumpNotZero;
         emitInstruction(context, ByteCodeOp::BinOpMinusS64, r1, r0, r1);
@@ -405,7 +405,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         if (typeInfoArray->pointedType->isNative(NativeTypeKind::String))
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType, false));
-        else if ((!(node->forceTakeAddress()) && typeInfoArray->pointedType->kind != TypeInfoKind::Array) || (typeInfoArray->pointedType->kind == TypeInfoKind::Pointer))
+        else if (typeInfoArray->pointedType->kind == TypeInfoKind::Pointer)
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType, false));
+        else if (!node->forceTakeAddress() && typeInfoArray->pointedType->kind != TypeInfoKind::Array)
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoArray->pointedType, false));
 
         node->resultRegisterRC         = node->array->resultRegisterRC;

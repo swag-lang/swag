@@ -1,0 +1,15 @@
+//#global testerror
+
+//#[swag.printbc, swag.optim("bc", false)]
+#test
+{
+    #[swag.relative(1)]
+    var x: [2] *s32
+    //#assert @sizeof(x) == 2
+
+    v := @[10, 20]
+    x[0] = &v[0]
+    x[1] = &v[1]
+
+    //@assert(x[0, 0] == 10)
+}
