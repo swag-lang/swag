@@ -91,19 +91,53 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         if (checkNode->ownerScope->isGlobalOrImpl())
             return true;
 
-    auto nakedName = AstNode::getArticleKindName(checkNode);
-    if (nakedName == "<node>")
+    const char* specificMsg = nullptr;
+    switch (typeInfo->attributeUsage)
     {
-        Diagnostic diag{oneAttribute, format("attribute '%s' cannot be used in that context", oneAttribute->token.text.c_str())};
-        Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
-        return context->report(diag, &note1);
+    case AttributeUsage::Function:
+        specificMsg = "a function";
+        break;
+    case AttributeUsage::Struct:
+        specificMsg = "a struct";
+        break;
+    case AttributeUsage::Enum:
+        specificMsg = "an enum";
+        break;
+    case AttributeUsage::EnumValue:
+        specificMsg = "an enum value";
+        break;
+    case AttributeUsage::StructVariable:
+        specificMsg = "a struct variable";
+        break;
+    case AttributeUsage::GlobalVariable:
+        specificMsg = "a global variable";
+        break;
+    }
+
+    if (specificMsg)
+    {
+        auto       nakedName = AstNode::getKindName(checkNode);
+        Diagnostic diag{oneAttribute, format("attribute '%s' can only be applied to %s", oneAttribute->token.text.c_str(), specificMsg)};
+        Diagnostic note1{checkNode, checkNode->token, format("it is applied on this %s", nakedName.c_str()), DiagnosticLevel::Note};
+        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is attribute '%s'", oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
+        return context->report(diag, &note1, &note2);
     }
     else
     {
-        Diagnostic diag{oneAttribute, format("attribute '%s' cannot be applied to %s", oneAttribute->token.text.c_str(), nakedName.c_str())};
-        Diagnostic note1{checkNode, checkNode->token, format("this is the %s", nakedName.c_str()), DiagnosticLevel::Note};
-        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
-        return context->report(diag, &note1, &note2);
+        auto nakedName = AstNode::getArticleKindName(checkNode);
+        if (nakedName == "<node>")
+        {
+            Diagnostic diag{oneAttribute, format("attribute '%s' cannot be used in that context", oneAttribute->token.text.c_str())};
+            Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is attribute '%s'", oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
+            return context->report(diag, &note1);
+        }
+        else
+        {
+            Diagnostic diag{oneAttribute, format("attribute '%s' cannot be applied to %s", oneAttribute->token.text.c_str(), nakedName.c_str())};
+            Diagnostic note1{checkNode, checkNode->token, format("this is the %s", nakedName.c_str()), DiagnosticLevel::Note};
+            Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is attribute '%s'", oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
+            return context->report(diag, &note1, &note2);
+        }
     }
 }
 
