@@ -88,10 +88,21 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
     for (auto param : typeInfoStruct->fields)
     {
         auto varDecl = CastAst<AstVarDecl>(param->declNode, AstNodeKind::VarDecl);
-        if (!(varDecl->attributeFlags & ATTRIBUTE_RELATIVE_MASK))
-            continue;
-
         auto typeVar = TypeManager::concreteType(param->typeInfo);
+
+        if (typeVar->kind == TypeInfoKind::Pointer)
+        {
+            if (!(varDecl->attributeFlags & ATTRIBUTE_RELATIVE_MASK))
+                continue;
+        }
+        else if (typeVar->kind == TypeInfoKind::Struct)
+        {
+            auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+            if (!(typeVarStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
+                continue;
+        }
+        else
+            continue;
 
         // Reference to the field of the other struct
         emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 1, 32, 1);
@@ -102,8 +113,6 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
             inst->flags |= BCI_IMM_B;
         }
 
-        emitUnwrapRelativePointer(&cxt, 1, typeVar);
-
         // Reference to the field of myself
         emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 0, 24, 0);
         if (param->offset)
@@ -113,7 +122,17 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
             inst->flags |= BCI_IMM_B;
         }
 
-        emitWrapRelativePointer(&cxt, 0, 1, typeVar, typeVar);
+        if (typeVar->kind == TypeInfoKind::Pointer)
+        {
+            emitUnwrapRelativePointer(&cxt, 1, typeVar);
+            emitWrapRelativePointer(&cxt, 0, 1, typeVar, typeVar);
+        }
+        else if (typeVar->kind == TypeInfoKind::Struct)
+        {
+            auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+            emitInstruction(&cxt, ByteCodeOp::PushRAParam2, 1, 0);
+            emitOpCallUser(&cxt, nullptr, typeVarStruct->opReloc, false, 0, 2);
+        }
     }
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
