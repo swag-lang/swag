@@ -341,8 +341,8 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
         if (node->typeInfo->isNative(NativeTypeKind::String))
         {
             SWAG_ASSERT(node->resultRegisterRC.size() == 2);
-            const char* pz  = (const char*) runContext.registersRC[0][node->resultRegisterRC[0]].pointer;
-            uint32_t    len = runContext.registersRC[0][node->resultRegisterRC[1]].u32;
+            const char* pz  = (const char*) runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].pointer;
+            uint32_t    len = runContext.registersRC[0]->buffer[node->resultRegisterRC[1]].u32;
             node->computedValue.text.reserve(len + 1);
             node->computedValue.text.count = len;
             memcpy(node->computedValue.text.buffer, pz, len);
@@ -350,7 +350,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
         }
         else
         {
-            node->computedValue.reg = runContext.registersRC[0][node->resultRegisterRC[0]];
+            node->computedValue.reg = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]];
         }
 
         node->setFlagsValueIsComputed();

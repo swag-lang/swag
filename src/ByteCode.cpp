@@ -101,13 +101,10 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context)
 
     context->curRC++;
     if (context->curRC >= context->registersRC.size())
-    {
-        VectorNative<Register> rc;
-        context->registersRC.emplace_back(rc);
-    }
+        context->registersRC.emplace_back(new VectorNative<Register>());
 
-    context->registersRC[context->curRC].reserve(maxReservedRegisterRC, false);
-    context->registersRC[context->curRC].count = maxReservedRegisterRC;
+    context->registersRC[context->curRC]->reserve(maxReservedRegisterRC, false);
+    context->registersRC[context->curRC]->count = maxReservedRegisterRC;
 }
 
 void ByteCode::leaveByteCode(ByteCodeRunContext* context, bool popCallStack)

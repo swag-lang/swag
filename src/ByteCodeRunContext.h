@@ -66,10 +66,10 @@ struct ByteCodeRunContext : public JobContext
         sp -= offset;
     }
 
-    VectorNative<ffi_type*>        ffiArgs;
-    VectorNative<void*>            ffiArgsValues;
-    Utf8                           errorMsg;
-    vector<VectorNative<Register>> registersRC;
+    VectorNative<ffi_type*>         ffiArgs;
+    VectorNative<void*>             ffiArgsValues;
+    Utf8                            errorMsg;
+    vector<VectorNative<Register>*> registersRC;
 
     ConcreteCompilerSourceLocation* errorLoc      = nullptr;
     JobContext*                     callerContext = nullptr;

@@ -400,7 +400,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     auto paramIdx   = ip->c.u32;
     auto callParams = context->callerContext->selectIfParameters;
     SWAG_ASSERT(callParams);
-    auto registersRC = context->registersRC[context->curRC].buffer;
+    auto registersRC = context->registersRC[context->curRC]->buffer;
 
     // Variadic
     /////////////////////////////////////////
@@ -479,7 +479,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
 
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    auto registersRC = context->registersRC[context->curRC].buffer;
+    auto registersRC = context->registersRC[context->curRC]->buffer;
     auto registersRR = context->registersRR;
 
     switch (ip->op)
