@@ -259,6 +259,18 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     typeInfo = TypeManager::concreteReference(typeInfo);
     typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
 
+    // Type is relative
+    if (typeInfo->flags & TYPEINFO_RELATIVE)
+    {
+        if (typeInfo->kind == TypeInfoKind::Pointer)
+        {
+            emitUnwrapRelativePointer(context, r0, typeInfo);
+            return true;
+        }
+
+        return internalError(context, "emitTypeDeRef, unknown relative type");
+    }
+
     if (typeInfo->numRegisters() == 2)
     {
         if (safety)
