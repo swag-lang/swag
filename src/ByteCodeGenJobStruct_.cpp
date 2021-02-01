@@ -722,6 +722,7 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
     // Reloc
     if (typeInfoStruct->opReloc)
     {
+        PushICFlags sf(context, BCI_POST_COPYMOVE);
         emitInstruction(context, ByteCodeOp::PushRAParam2, r1, r0);
         emitOpCallUser(context, nullptr, typeInfoStruct->opReloc, false, 0, 2);
     }
