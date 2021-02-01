@@ -68,6 +68,9 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         {
             if (token.id == TokenId::SymLeftParen)
             {
+                if (identifierFlags & IDENTIFIER_TYPE_DECL)
+                    return sourceFile->report({identifier, token, "a struct initialization must be done with '{}' and not parenthesis (this is reserved for function calls)"});
+
                 SWAG_CHECK(eatToken(TokenId::SymLeftParen));
                 SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
             }
