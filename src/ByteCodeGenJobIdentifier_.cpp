@@ -60,9 +60,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         // Get a parameter from a #selectif block... this is special
         if (node->isSelectIfParam(resolved))
         {
+            ByteCodeInstruction* inst;
             if (typeInfo->numRegisters() == 2)
+            {
                 reserveLinearRegisterRC2(context, node->resultRegisterRC);
-            auto inst = emitInstruction(context, ByteCodeOp::GetFromStackParam64SI, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+                inst = emitInstruction(context, ByteCodeOp::GetFromStackParam64SI, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+            }
+            else
+            {
+                inst = emitInstruction(context, ByteCodeOp::GetFromStackParam64SI, node->resultRegisterRC[0]);
+            }
 
             auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(resolved->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
             inst->c.u64     = typeFunc->registerIdxToParamIdx(resolved->storageIndex);
@@ -280,16 +287,23 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             else if (node->flags & AST_TO_UFCS) // Get the structure pointer
                 emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         }
+        else if (typeInfo->kind == TypeInfoKind::Pointer && typeInfo->flags & TYPEINFO_RELATIVE)
+        {
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->storageOffset;
+            SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC, typeInfo->relative));
+        }
+        else if (typeInfo->kind == TypeInfoKind::Slice && typeInfo->flags & TYPEINFO_RELATIVE)
+        {
+            reserveLinearRegisterRC2(context, node->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->storageOffset;
+            SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC[0], typeInfo->relative));
+            emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[1])->b.u64 = resolved->storageOffset + 8;
+        }
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[0])->b.u64 = resolved->storageOffset;
             emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[1])->b.u64 = resolved->storageOffset + 8;
-        }
-        else if (typeInfo->kind == TypeInfoKind::Pointer && typeInfo->flags & TYPEINFO_RELATIVE)
-        {
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->storageOffset;
-            SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC, typeInfo->relative));
         }
         else
         {

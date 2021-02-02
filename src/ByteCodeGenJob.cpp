@@ -566,14 +566,17 @@ JobResult ByteCodeGenJob::execute()
                 }
 
             case AstNodeResolveState::PostChilds:
-                if (node->extension && node->extension->byteCodeAfterFct)
+                if (!(node->flags & AST_NO_BYTECODE))
                 {
-                    if (!node->extension->byteCodeAfterFct(&context))
-                        return JobResult::ReleaseJob;
-                    if (context.result == ContextResult::Pending)
-                        return JobResult::KeepJobAlive;
-                    if (context.result == ContextResult::NewChilds)
-                        continue;
+                    if (node->extension && node->extension->byteCodeAfterFct)
+                    {
+                        if (!node->extension->byteCodeAfterFct(&context))
+                            return JobResult::ReleaseJob;
+                        if (context.result == ContextResult::Pending)
+                            return JobResult::KeepJobAlive;
+                        if (context.result == ContextResult::NewChilds)
+                            continue;
+                    }
                 }
 
                 nodes.pop_back();

@@ -32,7 +32,7 @@ struct RegisterList
 
     uint32_t operator[](int index) const
     {
-        SWAG_ASSERT(index < MAX_STATIC);
+        SWAG_ASSERT(index < countResults);
         return oneResult[index];
     }
 

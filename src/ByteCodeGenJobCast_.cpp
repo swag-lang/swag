@@ -597,6 +597,8 @@ bool ByteCodeGenJob::emitCastToNativeF64(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
+    auto node = context->node;
+
     if (fromTypeInfo->isNative(NativeTypeKind::String))
     {
         return true;
@@ -604,7 +606,8 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
 
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
-        transformResultToLinear2(context, exprNode);
+        transformResultToLinear2(context, exprNode);    
+        node->resultRegisterRC = exprNode->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::ClearRA2, exprNode->resultRegisterRC[0], exprNode->resultRegisterRC[1]);
         return true;
     }
@@ -618,6 +621,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         transformResultToLinear2(context, exprNode);
+        node->resultRegisterRC = exprNode->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::SetImmediate64, exprNode->resultRegisterRC[1])->b.u64 = typeArray->count;
         return true;
     }
@@ -629,6 +633,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         SWAG_ASSERT(typeList->subTypes[0]->typeInfo->kind == TypeInfoKind::Pointer || typeList->subTypes[0]->typeInfo->kind == TypeInfoKind::Array);
         SWAG_ASSERT(typeList->subTypes[1]->typeInfo->kind == TypeInfoKind::Native);
         transformResultToLinear2(context, exprNode);
+        node->resultRegisterRC = exprNode->resultRegisterRC;
         return true;
     }
 
@@ -670,17 +675,15 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     else if (fromTypeInfo->kind == TypeInfoKind::Array)
     {
         auto fromTypeArray     = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
+        transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
-        if (node->resultRegisterRC.size() == 1)
-            node->resultRegisterRC += reserveRegisterRC(context);
         auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
         inst->b.u64 = fromTypeArray->count;
-        transformResultToLinear2(context, node);
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Pointer)
     {
+        transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
-        transformResultToLinear2(context, node);
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
     }
     else

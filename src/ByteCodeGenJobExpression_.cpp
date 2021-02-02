@@ -98,6 +98,7 @@ bool ByteCodeGenJob::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
 {
     auto ifTrue  = context->node;
     auto binNode = CastAst<AstConditionalOpNode>(ifTrue->parent, AstNodeKind::ConditionalExpression);
+    auto ifFalse = binNode->childs.back();
 
     // Reserve registers in the main node to copy the result
     reserveRegisterRC(context, binNode->resultRegisterRC, ifTrue->resultRegisterRC.size());

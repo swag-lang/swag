@@ -72,12 +72,18 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     {
         if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
         {
-            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            if (typeInfo->relative)
+                emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
+            else
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64OffVB32, r0, 8);
         }
         else if (node->childs.size() > 1 && node->childs[1]->typeInfo->kind == TypeInfoKind::Array)
         {
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+            if (typeInfo->relative)
+                emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
+            else
+                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
 
             auto typeArray = CastTypeInfo<TypeInfoArray>(node->childs[1]->typeInfo, TypeInfoKind::Array);
             auto r2        = reserveRegisterRC(context);
@@ -90,7 +96,10 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+            if (typeInfo->relative)
+                emitWrapRelativePointer(context, r0, r1[0], typeInfo->relative, fromTypeInfo);
+            else
+                emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
             emitInstruction(context, ByteCodeOp::IncPointer64, r0, 8, r1[0])->flags |= BCI_IMM_B;
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r1[0], r1[1]);
         }

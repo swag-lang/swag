@@ -326,6 +326,10 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+
+        // Relative slice
+        if (token.id == TokenId::SymTilde && node->typeFlags & TYPEFLAG_ISSLICE)
+            SWAG_CHECK(doRelativePointer(node, &node->relId, &node->relValue));
     }
 
     // Const after array

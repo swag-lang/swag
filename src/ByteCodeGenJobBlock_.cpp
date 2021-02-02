@@ -184,6 +184,9 @@ bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
     auto ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
 
     SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
+    if (context->result != ContextResult::Done)
+        return true;
+
     ifNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
     freeRegisterRC(context, node);

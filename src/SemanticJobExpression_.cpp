@@ -196,16 +196,23 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expression, CASTFLAG_AUTO_BOOL));
     if (expression->flags & AST_VALUE_COMPUTED)
     {
+        node->childs.clear();
+
         if (expression->computedValue.reg.b)
         {
             node->inheritComputedValue(ifTrue);
             node->typeInfo = ifTrue->typeInfo;
+            node->childs.push_back(ifTrue);
         }
         else
         {
             node->inheritComputedValue(ifFalse);
             node->typeInfo = ifFalse->typeInfo;
+            node->childs.push_back(ifFalse);
         }
+
+        node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+        return true;
     }
     else
     {

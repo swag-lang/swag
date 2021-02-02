@@ -923,6 +923,9 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
 
     newNode->arrayDim  = arrayDim;
     newNode->typeFlags = typeFlags;
+    newNode->relValue  = relValue;
+    newNode->relId     = findChildRef(relId, newNode);
+
     return newNode;
 }
 

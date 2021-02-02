@@ -158,9 +158,8 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
 
             if (typeArray->pointedType->kind == TypeInfoKind::Pointer)
             {
-                inst = emitInstruction(&cxt, ByteCodeOp::CopyRBtoRA, 2, 1);
-                emitUnwrapRelativePointer(&cxt, 2, typeArray->finalType->relative);
-                emitWrapRelativePointer(&cxt, 0, 2, typeArray->finalType->relative, typeArray->finalType);
+                emitUnwrapRelativePointer(&cxt, 1, typeArray->finalType->relative);
+                emitWrapRelativePointer(&cxt, 0, 1, typeArray->finalType->relative, typeArray->finalType);
             }
             else
             {

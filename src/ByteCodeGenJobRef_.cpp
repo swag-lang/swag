@@ -189,28 +189,30 @@ bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, uint32
         auto seekJump = context->bc->numInstructions;
 
         context->bc->out[jumpToDo].b.s32 = context->bc->numInstructions - seekJumpNotZero;
-        emitInstruction(context, ByteCodeOp::BinOpMinusS64, r1, r0, r1);
+        auto r2 = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::BinOpMinusS64, r1, r0, r2);
         switch (sizeOf)
         {
         case 1:
-            emitSafetyRelativePointerS64(context, r1, 1);
-            emitInstruction(context, ByteCodeOp::SetAtPointer8, r0, r1);
+            emitSafetyRelativePointerS64(context, r2, 1);
+            emitInstruction(context, ByteCodeOp::SetAtPointer8, r0, r2);
             break;
         case 2:
-            emitSafetyRelativePointerS64(context, r1, 2);
-            emitInstruction(context, ByteCodeOp::SetAtPointer16, r0, r1);
+            emitSafetyRelativePointerS64(context, r2, 2);
+            emitInstruction(context, ByteCodeOp::SetAtPointer16, r0, r2);
             break;
         case 4:
-            emitSafetyRelativePointerS64(context, r1, 4);
-            emitInstruction(context, ByteCodeOp::SetAtPointer32, r0, r1);
+            emitSafetyRelativePointerS64(context, r2, 4);
+            emitInstruction(context, ByteCodeOp::SetAtPointer32, r0, r2);
             break;
         case 8:
-            emitSafetyRelativePointerS64(context, r1, 8);
-            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+            emitSafetyRelativePointerS64(context, r2, 8);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r2);
             break;
         }
 
         context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - seekJump;
+        freeRegisterRC(context, r2);
     }
 
     return true;

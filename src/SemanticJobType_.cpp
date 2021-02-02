@@ -351,6 +351,12 @@ bool SemanticJob::resolveType(SemanticContext* context)
         ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
         ptrSlice->computeName();
         typeNode->typeInfo = ptrSlice;
+
+        // Relative pointer
+        ptrSlice->relative = typeNode->relValue;
+        SWAG_CHECK(getRelativeSize(context, typeNode->relId, ptrSlice->relative));
+        if (ptrSlice->relative)
+            ptrSlice->flags |= TYPEINFO_RELATIVE;
     }
 
     typeNode->computedValue.reg.pointer = (uint8_t*) typeNode->typeInfo;
