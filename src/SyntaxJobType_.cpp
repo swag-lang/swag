@@ -179,6 +179,25 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     return true;
 }
 
+bool SyntaxJob::doRelativePointer(AstNode* parent, AstNode** identifier, uint8_t* value)
+{
+    SWAG_CHECK(eatToken(TokenId::SymTilde));
+    SWAG_VERIFY(token.id == TokenId::LiteralNumber || token.id == TokenId::Identifier, syntaxError(token, "relative type must be followed by a number of an identifier"));
+    if (token.id == TokenId::LiteralNumber)
+    {
+        SWAG_VERIFY(token.literalType == LiteralType::TT_UNTYPED_INT, syntaxError(token, "relative type must be followed by an untyped integer"));
+        SWAG_VERIFY(token.literalValue.u64 <= 8, syntaxError(token, "relative type invalid size"));
+        *value = token.literalValue.u8;
+        SWAG_CHECK(eatToken());
+    }
+    else
+    {
+        SWAG_CHECK(doIdentifierRef(parent, identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_PARAMS));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
     // Code
@@ -330,21 +349,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
             // Relative syntax
             if (token.id == TokenId::SymTilde)
-            {
-                SWAG_CHECK(eatToken());
-                SWAG_VERIFY(token.id == TokenId::LiteralNumber || token.id == TokenId::Identifier, syntaxError(token, "relative type must be followed by a number of an identifier"));
-                if (token.id == TokenId::LiteralNumber)
-                {
-                    SWAG_VERIFY(token.literalType == LiteralType::TT_UNTYPED_INT, syntaxError(token, "relative type must be followed by an untyped integer"));
-                    SWAG_VERIFY(token.literalValue.u64 <= 8, syntaxError(token, "relative type invalid size"));
-                    node->ptrRel[node->ptrCount] = token.literalValue.u8;
-                    SWAG_CHECK(eatToken());
-                }
-                else
-                {
-                    SWAG_CHECK(doIdentifierRef(node, &node->ptrRelIds[node->ptrCount], IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_PARAMS));
-                }
-            }
+                SWAG_CHECK(doRelativePointer(node, &node->ptrRelIds[node->ptrCount], &node->ptrRel[node->ptrCount]));
 
             if (token.id == TokenId::KwdConst)
             {

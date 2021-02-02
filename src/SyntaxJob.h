@@ -92,6 +92,7 @@ struct SyntaxJob : public Job
     bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doAlias(AstNode* parent, AstNode** result = nullptr);
     bool convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion);
+    bool doRelativePointer(AstNode* parent, AstNode** identifier, uint8_t* value);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr, bool inTypeVarDecl = false);
     bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
     void forceTakeAddress(AstNode* node);
