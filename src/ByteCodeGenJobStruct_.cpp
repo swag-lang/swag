@@ -161,12 +161,15 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
                 emitUnwrapRelativePointer(&cxt, 1, typeArray->finalType->relative);
                 emitWrapRelativePointer(&cxt, 0, 1, typeArray->finalType->relative, typeArray->finalType);
             }
-            else
+            else if (typeArray->pointedType->kind == TypeInfoKind::Struct)
             {
-                SWAG_ASSERT(typeArray->pointedType->kind == TypeInfoKind::Struct);
                 auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
                 emitInstruction(&cxt, ByteCodeOp::PushRAParam2, 1, 0);
                 emitOpCallUser(&cxt, nullptr, typeVarStruct->opReloc, false, 0, 2);
+            }
+            else
+            {
+                internalError(context, "generateStruct_opReloc, unknown array relative type");
             }
 
             inst = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
@@ -180,6 +183,15 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
             emitInstruction(&cxt, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - cxt.bc->numInstructions - 1;
 
             freeRegisterRC(&cxt, r0);
+        }
+        else if (typeVar->kind == TypeInfoKind::Slice)
+        {
+            emitUnwrapRelativePointer(&cxt, 1, typeVar->relative);
+            emitWrapRelativePointer(&cxt, 0, 1, typeVar->relative, typeVar);
+        }
+        else
+        {
+            internalError(context, "generateStruct_opReloc, unknown relative type");
         }
     }
 

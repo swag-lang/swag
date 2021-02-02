@@ -139,7 +139,23 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Slice || typeInfo->kind == TypeInfoKind::Interface)
+    if (typeInfo->kind == TypeInfoKind::Slice)
+    {
+        transformResultToLinear2(context, node);
+        if (typeInfo->flags & TYPEINFO_RELATIVE)
+        {
+            auto r0 = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->resultRegisterRC[0]);
+            SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC[0], typeInfo->relative));
+            emitInstruction(context, ByteCodeOp::DeRefPointer, r0, node->resultRegisterRC[1], 8);
+            freeRegisterRC(context, r0);
+        }
+        else
+            emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Interface)
     {
         transformResultToLinear2(context, node);
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
@@ -189,7 +205,7 @@ bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, uint32
         auto seekJump = context->bc->numInstructions;
 
         context->bc->out[jumpToDo].b.s32 = context->bc->numInstructions - seekJumpNotZero;
-        auto r2 = reserveRegisterRC(context);
+        auto r2                          = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::BinOpMinusS64, r1, r0, r2);
         switch (sizeOf)
         {
