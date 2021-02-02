@@ -576,8 +576,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             structFlags |= TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS;
         if (varDecl->typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) varDecl->typeInfo)->finalType->flags & TYPEINFO_RELATIVE)
             structFlags |= TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS;
-        if (varDecl->typeInfo->kind == TypeInfoKind::Slice && ((TypeInfoSlice*) varDecl->typeInfo)->pointedType->flags & TYPEINFO_RELATIVE)
-            structFlags |= TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS;
 
         // Var is a struct
         if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
