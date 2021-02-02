@@ -1,10 +1,9 @@
 //#global testerror
-/*
+
 //#[swag.printbc]
 struct(N: u8) Node
 {
-    #[swag.relative(N)]
-    next: *s32
+    next: *~N s32
 }
 
 //#[swag.printbc]
@@ -20,4 +19,4 @@ struct(N: u8) Node
     #assert @sizeof(x4) == 8
     var x5: Node'0
     #assert @sizeof(x5) == 8
-}*/
+}

@@ -230,9 +230,18 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
             // Relative pointer
             ptrPointer1->relative = typeNode->ptrRel[i];
+            if (typeNode->ptrRelIds[i] && typeNode->ptrRelIds[i]->resolvedSymbolOverload)
+            {
+                if (!(typeNode->ptrRelIds[i]->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
+                {
+                    SWAG_VERIFY(typeNode->ptrRelIds[i]->flags & AST_VALUE_COMPUTED, context->report({typeNode, "cannot evaluate relative size at compile time"}));
+                    SWAG_VERIFY(typeNode->ptrRelIds[i]->computedValue.reg.u64 <= 8, context->report({typeNode, "relative size value must be 0, 1, 2, 4 or 8"}));
+                    ptrPointer1->relative = typeNode->ptrRelIds[i]->computedValue.reg.u8;
+                }
+            }
 
             auto relVal = ptrPointer1->relative;
-            SWAG_VERIFY(relVal == 0 || relVal == 1 || relVal == 2 || relVal == 4 || relVal == 8, context->report({ typeNode, "relative size value must be 0, 1, 2, 4 or 8" }));
+            SWAG_VERIFY(relVal == 0 || relVal == 1 || relVal == 2 || relVal == 4 || relVal == 8, context->report({typeNode, "relative size value must be 0, 1, 2, 4 or 8"}));
             if (ptrPointer1->relative)
             {
                 ptrPointer1->flags |= TYPEINFO_RELATIVE;
