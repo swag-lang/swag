@@ -57,9 +57,6 @@ namespace swag
     // Hardcoded for struct and variables
     attr align(value: u8)
 
-    // Hardcoded for struct and variables
-    attr relative(value: u8)
-
     #[attributeUsage(AttributeUsage.Function)]
     attr noreturn()
 
@@ -177,7 +174,7 @@ namespace swag
         CastAny = 1
     }
 
-    enum TypeInfoKind: u16
+    enum TypeInfoKind: u8
     {
         Invalid
         Native
@@ -203,7 +200,7 @@ namespace swag
         TypeSet
     }
 
-    enum TypeInfoNativeKind
+    enum TypeInfoNativeKind : u8
     {
         Void
         S8
@@ -243,7 +240,6 @@ namespace swag
         sizeof:     uint
         kind: 	    TypeInfoKind = ?
         flags:      TypeInfoFlags = ?
-        padding:    u32
     }
 
     struct TypeInfoNative

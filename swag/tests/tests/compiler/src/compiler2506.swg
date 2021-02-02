@@ -3,11 +3,8 @@
 //#[swag.printbc, swag.optim("bc", false)]
 #test
 {
-    #[swag.relative(4)]
-    var x: [..] *s32
-
-    #[swag.relative(4)]
-    var arr: [2] *s32
+    var x: [..] *~4 s32
+    var arr: [2] *~4 s32
 
     v := @[10, 20]
     arr[0] = &v[0]

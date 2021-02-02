@@ -3,8 +3,7 @@
 //#[swag.printbc]
 struct Node
 {
-    #[swag.relative(4)]
-    next: *Node
+    next: *~4 Node
 
     value = 666
 }

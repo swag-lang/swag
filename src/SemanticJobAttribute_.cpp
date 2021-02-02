@@ -10,7 +10,6 @@ void SemanticJob::propagateAttributes(AstNode* child)
         return;
     child->attributeFlags |= child->parent->attributeFlags &
                              (ATTRIBUTE_SAFETY_MASK |
-                              ATTRIBUTE_RELATIVE_MASK |
                               ATTRIBUTE_NO_RETURN |
                               ATTRIBUTE_SELECTIF_OFF |
                               ATTRIBUTE_SELECTIF_ON);
@@ -328,29 +327,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     ComputedValue attrValue;
                     curAttr->attributes.getValue("swag.align", "value", attrValue);
                     SWAG_VERIFY(isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.align' value must be a power of two ('%d' provided)", attrValue.reg.u8)}));
-                }
-                else if (child->token.text == "relative")
-                {
-                    ComputedValue attrValue;
-                    curAttr->attributes.getValue("swag.relative", "value", attrValue);
-
-                    // 0 is a special value that says 'not relative'. This can be usefull if the parameter comes from a generic.
-                    SWAG_VERIFY(attrValue.reg.u8 == 0 || attrValue.reg.u8 == 1 || attrValue.reg.u8 == 2 || attrValue.reg.u8 == 4 || attrValue.reg.u8 == 8, context->report({child, format("'swag.relative' value must be 0, 1, 2, 4 or 8", attrValue.reg.u8)}));
-                    switch (attrValue.reg.u8)
-                    {
-                    case 1:
-                        flags |= ATTRIBUTE_RELATIVE1;
-                        break;
-                    case 2:
-                        flags |= ATTRIBUTE_RELATIVE2;
-                        break;
-                    case 4:
-                        flags |= ATTRIBUTE_RELATIVE4;
-                        break;
-                    case 8:
-                        flags |= ATTRIBUTE_RELATIVE8;
-                        break;
-                    }
                 }
             }
             else

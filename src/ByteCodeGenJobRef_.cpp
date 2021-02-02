@@ -162,7 +162,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     {
         truncRegisterRC(context, node->resultRegisterRC, 1);
         if (typeInfo->flags & TYPEINFO_RELATIVE)
-            SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC, typeInfo));
+            SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC, typeInfo->relative));
         else
             emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         return true;
@@ -172,26 +172,25 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
+bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t sizeOf, TypeInfo* fromTypeInfo)
 {
-    auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
-        emitSetZeroAtPointer(context, typePtr->sizeOf, r0);
+        emitSetZeroAtPointer(context, sizeOf, r0);
     }
     else
     {
         auto jumpToDo = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r1);
         auto seekJumpNotZero = context->bc->numInstructions;
-        emitSetZeroAtPointer(context, typePtr->sizeOf, r0);
+        emitSetZeroAtPointer(context, sizeOf, r0);
         auto jumpAfter = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::Jump);
         auto seekJump = context->bc->numInstructions;
 
         context->bc->out[jumpToDo].b.s32 = context->bc->numInstructions - seekJumpNotZero;
         emitInstruction(context, ByteCodeOp::BinOpMinusS64, r1, r0, r1);
-        switch (typePtr->sizeOf)
+        switch (sizeOf)
         {
         case 1:
             emitSafetyRelativePointerS64(context, r1, 1);
@@ -217,11 +216,10 @@ bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, uint32
     return true;
 }
 
-bool ByteCodeGenJob::emitUnwrapRelativePointer(ByteCodeGenContext* context, uint32_t rr, TypeInfo* typeInfo)
+bool ByteCodeGenJob::emitUnwrapRelativePointer(ByteCodeGenContext* context, uint32_t rr, uint32_t sizeOf)
 {
-    auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-    auto r0      = reserveRegisterRC(context);
-    switch (typePtr->sizeOf)
+    auto r0 = reserveRegisterRC(context);
+    switch (sizeOf)
     {
     case 1:
         emitInstruction(context, ByteCodeOp::DeRef8, r0, rr);
@@ -264,7 +262,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     {
         if (typeInfo->kind == TypeInfoKind::Pointer)
         {
-            emitUnwrapRelativePointer(context, r0, typeInfo);
+            emitUnwrapRelativePointer(context, r0, typeInfo->relative);
             return true;
         }
 

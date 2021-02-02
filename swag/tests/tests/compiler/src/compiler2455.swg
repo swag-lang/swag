@@ -2,9 +2,7 @@
 #test
 {
     var arr: [4] s32 = @[10, 20, 30, 40]
-
-    #[swag.relative(2)]
-    var ptr: *s32 = &arr[0]
+    var ptr: *~2 s32 = &arr[0]
 
     @assert(@sizeof(ptr) == 2)
     @assert(ptr[0] == 10)

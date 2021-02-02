@@ -228,16 +228,16 @@ bool SemanticJob::resolveType(SemanticContext* context)
             if (typeNode->typeFlags & TYPEFLAG_ISSELF)
                 ptrPointer1->flags |= TYPEINFO_SELF;
 
-            if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE_MASK)
+            // Relative pointer
+            ptrPointer1->relative = typeNode->ptrRel[i];
+
+            auto relVal = ptrPointer1->relative;
+            SWAG_VERIFY(relVal == 0 || relVal == 1 || relVal == 2 || relVal == 4 || relVal == 8, context->report({ typeNode, "relative size value must be 0, 1, 2, 4 or 8" }));
+            if (ptrPointer1->relative)
+            {
                 ptrPointer1->flags |= TYPEINFO_RELATIVE;
-            if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE1)
-                ptrPointer1->sizeOf = 1;
-            else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE2)
-                ptrPointer1->sizeOf = 2;
-            else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE4)
-                ptrPointer1->sizeOf = 4;
-            else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE8)
-                ptrPointer1->sizeOf = 8;
+                ptrPointer1->sizeOf = ptrPointer1->relative;
+            }
 
             ptrPointer1->forceComputeName();
 

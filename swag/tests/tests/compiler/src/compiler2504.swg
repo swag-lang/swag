@@ -3,8 +3,7 @@
 //#[swag.printbc, swag.optim("bc", false)]
 #test
 {
-    #[swag.relative(1)]
-    var x: [2] *s32
+    var x: [2] *~1 s32
     #assert @sizeof(x) == 2
 
     v := @[10, 20]

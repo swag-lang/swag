@@ -4,9 +4,7 @@
 struct Node
 {
     value = 666
-
-    #[swag.relative(4)]
-    next: *s32
+    next: *~4 s32
 }
 
 func toto()->Node

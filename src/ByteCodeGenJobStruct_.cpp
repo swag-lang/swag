@@ -136,8 +136,8 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
 
         if (typeVar->kind == TypeInfoKind::Pointer)
         {
-            emitUnwrapRelativePointer(&cxt, 1, typeVar);
-            emitWrapRelativePointer(&cxt, 0, 1, typeVar, typeVar);
+            emitUnwrapRelativePointer(&cxt, 1, typeVar->relative);
+            emitWrapRelativePointer(&cxt, 0, 1, typeVar->relative, typeVar);
         }
         else if (typeVar->kind == TypeInfoKind::Struct)
         {
@@ -159,8 +159,8 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
             if (typeArray->pointedType->kind == TypeInfoKind::Pointer)
             {
                 inst = emitInstruction(&cxt, ByteCodeOp::CopyRBtoRA, 2, 1);
-                emitUnwrapRelativePointer(&cxt, 2, typeArray->finalType);
-                emitWrapRelativePointer(&cxt, 0, 2, typeArray->finalType, typeArray->finalType);
+                emitUnwrapRelativePointer(&cxt, 2, typeArray->finalType->relative);
+                emitWrapRelativePointer(&cxt, 0, 2, typeArray->finalType->relative, typeArray->finalType);
             }
             else
             {

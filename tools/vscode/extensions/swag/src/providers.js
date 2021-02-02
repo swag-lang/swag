@@ -51,13 +51,13 @@ class GoToDefinitionProvider
     {
         // stderr is sent to stderr of parent process
         // you can set options.stdio if you want it to go elsewhere
-        var cmd = "swag build -w:" + vscode.workspace.rootPath;
+        /*var cmd = "swag build -w:" + vscode.workspace.rootPath;
         let stdout = execSync(cmd);
         let str = stdout.toString()
 
         var uri = vscode.Uri.file("f:/swag/std/modules/std/src/text/latin1.swg")
         var position = new vscode.Position(1, 1)
-        return new vscode.Location(uri, position)
+        return new vscode.Location(uri, position)*/
     }
 }
 

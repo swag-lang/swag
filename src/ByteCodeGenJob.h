@@ -291,8 +291,8 @@ struct ByteCodeGenJob : public Job
     static bool emitMakePointer(ByteCodeGenContext* context);
     static bool emitMakeArrayPointerSlicing(ByteCodeGenContext* context);
     static bool emitMakeLambda(ByteCodeGenContext* context);
-    static bool emitWrapRelativePointer(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
-    static bool emitUnwrapRelativePointer(ByteCodeGenContext* context, uint32_t rr, TypeInfo* typeInfo);
+    static bool emitWrapRelativePointer(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t sizeOf, TypeInfo* fromTypeInfo);
+    static bool emitUnwrapRelativePointer(ByteCodeGenContext* context, uint32_t rr, uint32_t sizeOf);
     static bool emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo, bool safety = true);
     static bool emitPointerDeRef(ByteCodeGenContext* context);
     static bool emitStructDeRef(ByteCodeGenContext* context);

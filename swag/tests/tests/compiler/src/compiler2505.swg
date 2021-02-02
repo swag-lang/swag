@@ -3,8 +3,7 @@
 //#[swag.printbc]
 struct AA
 {
-    #[swag.relative(4)]
-    x: [2] *s32
+    x: [2] *~4 s32
 }
 
 //#[swag.printbc, swag.optim("bc", false)]

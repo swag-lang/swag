@@ -1,9 +1,7 @@
 struct A
 {
     x: s32 = 666
-
-    #[swag.relative(4)]
-    v: *A
+    v: *~4 A
 }
 
 #assert @sizeof(A) == 8

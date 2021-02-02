@@ -3,9 +3,7 @@
 //#[swag.printbc]
 struct Node
 {
-    #[swag.relative(4)]
-    next: *Node
-
+    next: *~4 Node
     value = 666
 }
 
@@ -20,8 +18,7 @@ struct MNode
 #test
 {
     var a: *s32
-    #[swag.relative(4)]
-    var x: *s32 = a
+    var x: *~4 s32 = a
 
     //var a, b: MNode
     //a.node[1].next = &b.node

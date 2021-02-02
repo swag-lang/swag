@@ -390,10 +390,6 @@ void Workspace::setupTarget()
     if (g_CommandLine.verbosePath)
         g_Log.verbose(format("target path is '%s'", targetPath.string().c_str()));
 
-    ///////////////// TEMP //////////////////////
-    // TO TRACK THE OUTPUT BUG
-    SWAG_ASSERT(fs::exists(targetPath));
-
     // Be sure folders exists
     error_code errorCode;
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
