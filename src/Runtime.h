@@ -195,7 +195,6 @@ struct ConcreteTypeInfo
     uint64_t      sizeOf;
     TypeInfoKind  kind;
     uint16_t      flags;
-    uint32_t      padding;
 };
 
 struct ConcreteAny
