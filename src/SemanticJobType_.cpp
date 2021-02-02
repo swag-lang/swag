@@ -105,6 +105,23 @@ void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* no
     }
 }
 
+bool SemanticJob::getRelativeSize(SemanticContext* context, AstNode* identifier, uint8_t& value)
+{
+    auto typeNode = context->node;
+    if (identifier && identifier->resolvedSymbolOverload)
+    {
+        if (!(identifier->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
+        {
+            SWAG_VERIFY(identifier->flags & AST_VALUE_COMPUTED, context->report({typeNode, "cannot evaluate relative size at compile time"}));
+            SWAG_VERIFY(identifier->computedValue.reg.u64 <= 8, context->report({typeNode, "relative size value must be 0, 1, 2, 4 or 8"}));
+            value = identifier->computedValue.reg.u8;
+        }
+    }
+
+    SWAG_VERIFY(value == 0 || value == 1 || value == 2 || value == 4 || value == 8, context->report({typeNode, "relative size value must be 0, 1, 2, 4 or 8"}));
+    return true;
+}
+
 bool SemanticJob::resolveType(SemanticContext* context)
 {
     auto typeNode = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
@@ -230,18 +247,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
             // Relative pointer
             ptrPointer1->relative = typeNode->ptrRel[i];
-            if (typeNode->ptrRelIds[i] && typeNode->ptrRelIds[i]->resolvedSymbolOverload)
-            {
-                if (!(typeNode->ptrRelIds[i]->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
-                {
-                    SWAG_VERIFY(typeNode->ptrRelIds[i]->flags & AST_VALUE_COMPUTED, context->report({typeNode, "cannot evaluate relative size at compile time"}));
-                    SWAG_VERIFY(typeNode->ptrRelIds[i]->computedValue.reg.u64 <= 8, context->report({typeNode, "relative size value must be 0, 1, 2, 4 or 8"}));
-                    ptrPointer1->relative = typeNode->ptrRelIds[i]->computedValue.reg.u8;
-                }
-            }
-
-            auto relVal = ptrPointer1->relative;
-            SWAG_VERIFY(relVal == 0 || relVal == 1 || relVal == 2 || relVal == 4 || relVal == 8, context->report({typeNode, "relative size value must be 0, 1, 2, 4 or 8"}));
+            SWAG_CHECK(getRelativeSize(context, typeNode->ptrRelIds[i], ptrPointer1->relative));
             if (ptrPointer1->relative)
             {
                 ptrPointer1->flags |= TYPEINFO_RELATIVE;
