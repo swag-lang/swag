@@ -115,7 +115,7 @@ struct BuildCfg
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-enum class TypeInfoKind : uint16_t
+enum class TypeInfoKind : uint8_t
 {
     Invalid,
     Native,
@@ -142,7 +142,7 @@ enum class TypeInfoKind : uint16_t
     Count,
 };
 
-enum class NativeTypeKind
+enum class NativeTypeKind : uint8_t
 {
     Void,
     S8,

@@ -325,9 +325,26 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (node->ptrCount == AstTypeExpression::MAX_PTR_COUNT)
                 return syntaxError(token, format("too many pointer dimensions (max is %u)", AstTypeExpression::MAX_PTR_COUNT));
             node->ptrFlags[node->ptrCount] = isPtrConst ? AstTypeExpression::PTR_CONST : 0;
-            node->ptrCount++;
             SWAG_CHECK(tokenizer.getToken(token));
             isPtrConst = false;
+
+            // Relative syntax
+            if (token.id == TokenId::SymTilde)
+            {
+                SWAG_CHECK(eatToken());
+                SWAG_VERIFY(token.id == TokenId::LiteralNumber || token.id == TokenId::Identifier, syntaxError(token, "relative type must be followed by a number of an identifier"));
+                if (token.id == TokenId::LiteralNumber)
+                {
+                    SWAG_VERIFY(token.literalType == LiteralType::TT_UNTYPED_INT, syntaxError(token, "relative type must be followed by an untyped integer"));
+                    SWAG_VERIFY(token.literalValue.u64 <= 8, syntaxError(token, "relative type invalid size"));
+                    node->ptrRel[node->ptrCount] = token.literalValue.u8;
+                    SWAG_CHECK(eatToken());
+                }
+                else
+                {
+                    SWAG_CHECK(doIdentifierRef(node, &node->ptrRelIds[node->ptrCount], IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_PARAMS));
+                }
+            }
 
             if (token.id == TokenId::KwdConst)
             {
@@ -335,6 +352,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
                 SWAG_VERIFY(token.id == TokenId::SymAsterisk, syntaxError(token, "missing pointer declaration '*' after 'const'"));
                 isPtrConst = true;
             }
+
+            node->ptrCount++;
         }
     }
 

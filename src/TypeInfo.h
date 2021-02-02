@@ -119,6 +119,7 @@ struct TypeInfo
         nativeType = from->nativeType;
         flags      = from->flags;
         sizeOf     = from->sizeOf;
+        relative   = from->relative;
     }
 
     void               forceComputeName();
@@ -140,6 +141,7 @@ struct TypeInfo
 
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
     NativeTypeKind nativeType = NativeTypeKind::Void;
+    uint8_t        relative   = 0;
     uint32_t       flags      = 0;
     uint32_t       sizeOf     = 0;
 };

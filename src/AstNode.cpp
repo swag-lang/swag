@@ -913,7 +913,14 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->identifier  = findChildRef(identifier, newNode);
     newNode->literalType = literalType;
     newNode->ptrCount    = ptrCount;
-    memcpy(newNode->ptrFlags, ptrFlags, sizeof(ptrFlags));
+
+    for (int i = 0; i < ptrCount; i++)
+    {
+        newNode->ptrFlags[i]  = ptrFlags[i];
+        newNode->ptrRel[i]    = ptrRel[i];
+        newNode->ptrRelIds[i] = findChildRef(ptrRelIds[i], newNode);
+    }
+
     newNode->arrayDim  = arrayDim;
     newNode->typeFlags = typeFlags;
     return newNode;

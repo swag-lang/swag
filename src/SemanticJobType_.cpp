@@ -212,33 +212,10 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // In fact, this is a pointer
     if (typeNode->ptrCount)
     {
-        auto firstType          = typeNode->typeInfo;
-        auto ptrPointer         = allocType<TypeInfoPointer>();
-        ptrPointer->pointedType = firstType;
-        ptrPointer->sizeOf      = sizeof(void*);
-        ptrPointer->flags |= (firstType->flags & TYPEINFO_GENERIC);
-        if (typeNode->ptrFlags[0] & AstTypeExpression::PTR_CONST)
-            ptrPointer->flags |= TYPEINFO_CONST;
-        if (typeNode->typeFlags & TYPEFLAG_ISCONST)
-            ptrPointer->flags |= TYPEINFO_CONST;
-        if (typeNode->typeFlags & TYPEFLAG_ISSELF)
-            ptrPointer->flags |= TYPEINFO_SELF;
+        auto             firstType  = typeNode->typeInfo;
+        TypeInfoPointer* ptrPointer = nullptr;
 
-        if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE_MASK)
-            ptrPointer->flags |= TYPEINFO_RELATIVE;
-        if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE1)
-            ptrPointer->sizeOf = 1;
-        else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE2)
-            ptrPointer->sizeOf = 2;
-        else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE4)
-            ptrPointer->sizeOf = 4;
-        else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE8)
-            ptrPointer->sizeOf = 8;
-
-        ptrPointer->forceComputeName();
-        typeNode->typeInfo = ptrPointer;
-
-        for (int i = 1; i < typeNode->ptrCount; i++)
+        for (int i = 0; i < typeNode->ptrCount; i++)
         {
             auto ptrPointer1         = allocType<TypeInfoPointer>();
             ptrPointer1->pointedType = firstType;
@@ -246,12 +223,33 @@ bool SemanticJob::resolveType(SemanticContext* context)
             ptrPointer1->flags |= (firstType->flags & TYPEINFO_GENERIC);
             if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST)
                 ptrPointer1->flags |= TYPEINFO_CONST;
+            if (typeNode->typeFlags & TYPEFLAG_ISCONST && i == 0)
+                ptrPointer1->flags |= TYPEINFO_CONST;
+            if (typeNode->typeFlags & TYPEFLAG_ISSELF)
+                ptrPointer1->flags |= TYPEINFO_SELF;
+
+            if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE_MASK)
+                ptrPointer1->flags |= TYPEINFO_RELATIVE;
+            if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE1)
+                ptrPointer1->sizeOf = 1;
+            else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE2)
+                ptrPointer1->sizeOf = 2;
+            else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE4)
+                ptrPointer1->sizeOf = 4;
+            else if (typeNode->attributeFlags & ATTRIBUTE_RELATIVE8)
+                ptrPointer1->sizeOf = 8;
+
             ptrPointer1->forceComputeName();
 
-            ptrPointer->pointedType = ptrPointer1;
-            ptrPointer->forceComputeName();
+            if (ptrPointer)
+            {
+                ptrPointer->pointedType = ptrPointer1;
+                ptrPointer->forceComputeName();
+            }
 
             ptrPointer = ptrPointer1;
+            if (i == 0)
+                typeNode->typeInfo = ptrPointer;
         }
     }
 
