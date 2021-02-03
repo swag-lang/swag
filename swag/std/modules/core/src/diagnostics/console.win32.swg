@@ -8,21 +8,21 @@ var g_colorToWin: [@countof(Color)] u16 = ?
 func colorToWin()
 {
     using Color
-    g_colorToWin[cast(u32) Black] 		= 0
-    g_colorToWin[cast(u32) White] 		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY
-    g_colorToWin[cast(u32) Gray]  		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
-    g_colorToWin[cast(u32) Red]  		= FOREGROUND_RED | FOREGROUND_INTENSITY
-    g_colorToWin[cast(u32) Green] 		= FOREGROUND_GREEN | FOREGROUND_INTENSITY
-    g_colorToWin[cast(u32) Blue]  		= FOREGROUND_BLUE | FOREGROUND_INTENSITY
-    g_colorToWin[cast(u32) Cyan]  		= FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY
-    g_colorToWin[cast(u32) Magenta] 	= FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY
-    g_colorToWin[cast(u32) Yellow] 		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY
-    g_colorToWin[cast(u32) DarkRed] 	= FOREGROUND_RED
-    g_colorToWin[cast(u32) DarkGreen] 	= FOREGROUND_GREEN
-    g_colorToWin[cast(u32) DarkBlue] 	= FOREGROUND_BLUE
-    g_colorToWin[cast(u32) DarkCyan] 	= FOREGROUND_BLUE | FOREGROUND_GREEN
-    g_colorToWin[cast(u32) DarkMagenta] = FOREGROUND_BLUE | FOREGROUND_RED
-    g_colorToWin[cast(u32) DarkYellow] 	= FOREGROUND_RED | FOREGROUND_GREEN
+    g_colorToWin[Black] 		= 0
+    g_colorToWin[White] 		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY
+    g_colorToWin[Gray]  		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+    g_colorToWin[Red]  		    = FOREGROUND_RED | FOREGROUND_INTENSITY
+    g_colorToWin[Green] 		= FOREGROUND_GREEN | FOREGROUND_INTENSITY
+    g_colorToWin[Blue]  		= FOREGROUND_BLUE | FOREGROUND_INTENSITY
+    g_colorToWin[Cyan]  		= FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY
+    g_colorToWin[Magenta] 	    = FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY
+    g_colorToWin[Yellow] 		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY
+    g_colorToWin[DarkRed] 	    = FOREGROUND_RED
+    g_colorToWin[DarkGreen] 	= FOREGROUND_GREEN
+    g_colorToWin[DarkBlue] 	    = FOREGROUND_BLUE
+    g_colorToWin[DarkCyan] 	    = FOREGROUND_BLUE | FOREGROUND_GREEN
+    g_colorToWin[DarkMagenta]   = FOREGROUND_BLUE | FOREGROUND_RED
+    g_colorToWin[DarkYellow] 	= FOREGROUND_RED | FOREGROUND_GREEN
 }
 
 var g_stdOutputHandle: HANDLE
@@ -52,7 +52,7 @@ var g_stdOutputCurAttr: u16
 // Set the console foreground color
 public func setTextColor(color: Color)
 {
-    attributes := g_colorToWin[cast(u32) color]
+    attributes := g_colorToWin[color]
     g_stdOutputCurAttr &= BACKGROUND_MASK
     g_stdOutputCurAttr |= attributes
     SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
@@ -61,7 +61,7 @@ public func setTextColor(color: Color)
 // Set the console background color
 public func setBackColor(color: Color)
 {
-    attributes := cast(u16) (g_colorToWin[cast(u32) color] << 4)
+    attributes := cast(u16) (g_colorToWin[color] << 4)
     g_stdOutputCurAttr &= FOREGROUND_MASK
     g_stdOutputCurAttr |= attributes
     SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
