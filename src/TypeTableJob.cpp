@@ -39,7 +39,7 @@ bool TypeTableJob::computeStruct()
             }
         }
 
-        SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes), cflags));
+        SWAG_CHECK(typeTable->makeConcreteAttributes(baseContext, realType->attributes, concreteTypeInfoValue, storageOffset, &concreteType->attributes, cflags));
 
         // Generics
         concreteType->generics.buffer = 0;

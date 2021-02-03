@@ -247,12 +247,12 @@ struct ConcreteTypeInfoAlias
 
 struct ConcreteTypeInfoParam
 {
-    ConcreteSlice name;
-    int64_t       pointedType;
-    void*         value;
-    ConcreteSlice attributes;
-    uint32_t      offsetOf;
-    uint32_t      padding;
+    ConcreteSlice         name;
+    int64_t               pointedType;
+    void*                 value;
+    ConcreteRelativeSlice attributes;
+    uint32_t              offsetOf;
+    uint32_t              padding;
 };
 
 struct ConcreteTypeInfoStruct
@@ -262,7 +262,7 @@ struct ConcreteTypeInfoStruct
     ConcreteRelativeSlice fields;
     ConcreteRelativeSlice methods;
     ConcreteRelativeSlice interfaces;
-    ConcreteSlice         attributes;
+    ConcreteRelativeSlice attributes;
 };
 
 struct ConcreteTypeInfoFunc
@@ -271,7 +271,7 @@ struct ConcreteTypeInfoFunc
     ConcreteRelativeSlice generics;
     ConcreteRelativeSlice parameters;
     int64_t               returnType;
-    ConcreteSlice         attributes;
+    ConcreteRelativeSlice attributes;
 };
 
 struct ConcreteTypeInfoEnum
@@ -279,7 +279,7 @@ struct ConcreteTypeInfoEnum
     ConcreteTypeInfo      base;
     ConcreteRelativeSlice values;
     int64_t               rawType;
-    ConcreteSlice         attributes;
+    ConcreteRelativeSlice attributes;
 };
 
 struct ConcreteTypeInfoArray
