@@ -434,7 +434,6 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
                 extension->bc->name = node->token.text.c_str();
             else
                 extension->bc->name = node->ownerScope->getFullName() + "_" + node->token.text.c_str();
-            extension->bc->name.replaceAll('.', '_');
             if (node->kind == AstNodeKind::FuncDecl)
                 sourceFile->module->addByteCodeFunc(node->extension->bc);
             if (flags & ASKBC_WAIT_DONE)
