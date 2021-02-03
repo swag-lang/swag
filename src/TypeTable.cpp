@@ -478,14 +478,13 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes), cflags));
 
         // Generics
-        concreteType->generics.buffer = nullptr;
+        concreteType->generics.buffer = 0;
         concreteType->generics.count  = realType->genericParameters.size();
         if (concreteType->generics.count)
         {
-            uint32_t               storageArray = segment->reserveNoLock((uint32_t) concreteType->generics.count * sizeof(ConcreteTypeInfoParam));
-            ConcreteTypeInfoParam* addrArray    = (ConcreteTypeInfoParam*) segment->addressNoLock(storageArray);
-            concreteType->generics.buffer       = addrArray;
-            segment->addInitPtr(OFFSETOF(concreteType->generics.buffer), storageArray);
+            uint32_t count = (uint32_t) concreteType->generics.count;
+            uint32_t storageArray;
+            auto     addrArray = (ConcreteTypeInfoParam*) makeConcreteSlice(context, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageOffset, &concreteType->parameters.buffer, cflags, storageArray);
             for (int param = 0; param < concreteType->generics.count; param++)
             {
                 SWAG_CHECK(makeConcreteParam(context, addrArray + param, storageArray, realType->genericParameters[param], cflags));
@@ -519,14 +518,13 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
         SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes), cflags));
 
-        concreteType->values.buffer = nullptr;
+        concreteType->values.buffer = 0;
         concreteType->values.count  = realType->values.size();
         if (concreteType->values.count)
         {
-            uint32_t               storageArray = segment->reserveNoLock((uint32_t) realType->values.size() * sizeof(ConcreteTypeInfoParam));
-            ConcreteTypeInfoParam* addrArray    = (ConcreteTypeInfoParam*) segment->addressNoLock(storageArray);
-            concreteType->values.buffer         = addrArray;
-            segment->addInitPtr(OFFSETOF(concreteType->values.buffer), storageArray);
+            uint32_t count = (uint32_t) realType->values.size();
+            uint32_t storageArray;
+            auto     addrArray = (ConcreteTypeInfoParam*) makeConcreteSlice(context, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageOffset, &concreteType->values.buffer, cflags, storageArray);
             for (int param = 0; param < concreteType->values.count; param++)
             {
                 SWAG_CHECK(makeConcreteParam(context, addrArray + param, storageArray, realType->values[param], cflags));
