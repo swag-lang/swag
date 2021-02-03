@@ -2,7 +2,6 @@
 #include "Global.h"
 #include "DataSegment.h"
 #include "Log.h"
-#include "RaceCondition.h"
 #include "SourceFile.h"
 #include "Module.h"
 #include "Runtime.h"
@@ -73,7 +72,6 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint32_t alignOf)
 uint32_t DataSegment::reserveNoLock(uint32_t size)
 {
     SWAG_ASSERT(size);
-    SWAG_RACE_CONDITION_WRITE(raceCondition);
     DataSegmentHeader* last = nullptr;
     if (buckets.size())
         last = &buckets.back();
@@ -140,7 +138,6 @@ uint8_t* DataSegment::address(uint32_t location)
 uint8_t* DataSegment::addressNoLock(uint32_t location)
 {
     SWAG_ASSERT(location != UINT32_MAX);
-    SWAG_RACE_CONDITION_READ(raceCondition);
     SWAG_ASSERT(buckets.size());
     for (int i = 0; i < buckets.size(); i++)
     {

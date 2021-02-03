@@ -26,8 +26,6 @@ SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, Sym
 
 SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
-    SWAG_RACE_CONDITION_WRITE(raceCondition);
-
     Utf8 alName;
     if (!aliasName)
     {
@@ -96,8 +94,6 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
                                                   uint32_t       storageOffset,
                                                   Utf8*          aliasName)
 {
-    SWAG_RACE_CONDITION_WRITE(raceCondition);
-
     if (!aliasName)
         aliasName = &node->token.text;
 

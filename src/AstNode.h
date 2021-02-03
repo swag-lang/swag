@@ -10,7 +10,6 @@
 #include "SymTable.h"
 #include "Attribute.h"
 #include "Scope.h"
-#include "RaceCondition.h"
 #include "VectorNative.h"
 
 struct AstTypeExpression;

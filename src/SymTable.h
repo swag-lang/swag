@@ -4,7 +4,6 @@
 #include "Register.h"
 #include "RegisterList.h"
 #include "SourceLocation.h"
-#include "RaceCondition.h"
 struct Scope;
 struct SourceFile;
 struct Token;
@@ -140,5 +139,4 @@ struct SymTable
     shared_mutex               mutex;
 
     Scope* scope;
-    SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 };

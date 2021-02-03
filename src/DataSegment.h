@@ -3,7 +3,6 @@
 #include "BuildPass.h"
 #include "BuildParameters.h"
 #include "TypeTable.h"
-#include "RaceCondition.h"
 struct SourceFile;
 struct Module;
 
@@ -81,7 +80,6 @@ struct DataSegment
     uint32_t    totalCount = 0;
 
     VectorNative<SegmentInitPtrRef> initPtr;
-    SWAG_RACE_CONDITION_INSTANCE(raceCondition);
 
     struct Seek
     {
