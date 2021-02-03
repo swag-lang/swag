@@ -248,24 +248,6 @@ namespace swag
         nativeKind:		TypeInfoNativeKind = TypeInfoNativeKind.Void
     }
 
-    struct TypeInfoPointer
-    {
-        using base: 	TypeInfo
-        pointedType:	const *TypeInfo
-    }
-
-    struct TypeInfoAlias
-    {
-        using base: 	TypeInfo
-        rawType:		const *TypeInfo
-    }
-
-    struct TypeInfoReference
-    {
-        using base: 	TypeInfo
-        pointedType:	const *TypeInfo
-    }
-
     struct TypeInfoAttributeParameter
     {
         name:	string
@@ -278,10 +260,28 @@ namespace swag
         params:		const [..] TypeInfoAttributeParameter
     }
 
+    struct TypeInfoPointer
+    {
+        using base: 	TypeInfo
+        pointedType:	const *~8 TypeInfo
+    }
+
+    struct TypeInfoReference
+    {
+        using base: 	TypeInfo
+        pointedType:	const *~8 TypeInfo
+    }
+
+    struct TypeInfoAlias
+    {
+        using base: 	TypeInfo
+        rawType:		const *~8 TypeInfo
+    }
+
     struct TypeInfoParam
     {
         name:		    string
-        pointedType:	const *TypeInfo
+        pointedType:	const *~8 TypeInfo
         value:			const *void
         attributes:	    const [..] TypeInfoAttribute
         offset:			u32
@@ -303,7 +303,7 @@ namespace swag
         using base: 	TypeInfo
         generics:		const [..] TypeInfoParam
         parameters:		const [..] TypeInfoParam
-        returnType:		const *TypeInfo
+        returnType:		const *~8 TypeInfo
         attributes:	    const [..] TypeInfoAttribute
     }
 
@@ -311,21 +311,15 @@ namespace swag
     {
         using base:     TypeInfo
         values:		    const [..] TypeInfoParam
-        rawType:	    const *TypeInfo
+        rawType:	    const *~8 TypeInfo
         attributes:	    const [..] TypeInfoAttribute
-    }
-
-    struct TypeInfoVariadic
-    {
-        using base:	TypeInfo
-        rawType:	const *TypeInfo
     }
 
     struct TypeInfoArray
     {
         using base: 	TypeInfo
-        pointedType:	const *TypeInfo
-        finalType:		const *TypeInfo
+        pointedType:	const *~8 TypeInfo
+        finalType:		const *~8 TypeInfo
         count:			uint
         totalCount:		uint
     }
@@ -333,13 +327,19 @@ namespace swag
     struct TypeInfoSlice
     {
         using base: 	TypeInfo
-        pointedType:	const *TypeInfo
+        pointedType:	const *~8 TypeInfo
+    }
+
+    struct TypeInfoVariadic
+    {
+        using base:	TypeInfo
+        rawType:	const *~8 TypeInfo
     }
 
     struct TypeInfoGeneric
     {
         using base: TypeInfo
-        rawType:	const *TypeInfo
+        rawType:	const *~8 TypeInfo
     }
 
     // #########################################################

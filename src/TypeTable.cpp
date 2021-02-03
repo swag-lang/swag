@@ -532,7 +532,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
             }
         }
 
-        concreteType->rawType = nullptr;
+        concreteType->rawType = 0;
         if (realType->rawType)
             SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->rawType, realType->rawType, cflags));
         break;

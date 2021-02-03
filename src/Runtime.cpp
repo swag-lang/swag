@@ -2,6 +2,7 @@
 #include "runtime.h"
 #include "assert.h"
 #include "context.h"
+#include "TypeTable.h"
 
 namespace Runtime
 {
@@ -109,7 +110,7 @@ namespace Runtime
         if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) TypeInfoFlags::Strict))
             return type1;
         auto typeAlias = (const ConcreteTypeInfoAlias*) type1;
-        return concreteAlias(typeAlias->rawType);
+        return concreteAlias(RLPTR(&typeAlias->rawType));
     }
 
     bool compareType(const void* type1, const void* type2, uint32_t flags)
@@ -130,13 +131,13 @@ namespace Runtime
             if (ctype1->kind == TypeInfoKind::Reference && ctype2->kind != TypeInfoKind::Reference)
             {
                 ConcreteTypeInfoReference* ref = (ConcreteTypeInfoReference*) ctype1;
-                return compareType(ref->pointedType, ctype2, flags);
+                return compareType(RLPTR(&ref->pointedType), ctype2, flags);
             }
 
             if (ctype1->kind != TypeInfoKind::Reference && ctype2->kind == TypeInfoKind::Reference)
             {
                 ConcreteTypeInfoReference* ref = (ConcreteTypeInfoReference*) ctype2;
-                return compareType(ctype1, ref->pointedType, flags);
+                return compareType(ctype1, RLPTR(&ref->pointedType), flags);
             }
         }
 
@@ -182,7 +183,7 @@ namespace Runtime
         }
 
         print("error: ");
-        print(location->fileName.buffer, (uint32_t) location->fileName.count); 
+        print(location->fileName.buffer, (uint32_t) location->fileName.count);
         print(":");
         print((int64_t)(location->lineStart + 1));
         print(": ");

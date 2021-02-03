@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "Runtime.h"
 #include "SemanticJob.h"
+#include "TypeTable.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
@@ -1001,7 +1002,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             {
                 auto                       module    = context->sourceFile->module;
                 ConcreteTypeInfoReference* typeRef   = (ConcreteTypeInfoReference*) module->typeSegment.address(child->concreteTypeInfoStorage);
-                auto                       offsetRef = module->typeSegment.offset((uint8_t*) typeRef->pointedType);
+                auto                       offsetRef = module->typeSegment.offset((uint8_t*) RLPTR(&typeRef->pointedType));
                 auto                       inst      = emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0);
                 inst->b.u64                          = offsetRef;
             }

@@ -209,6 +209,12 @@ struct ConcreteAny
     ConcreteTypeInfo* type;
 };
 
+struct ConcreteTypeInfoNative
+{
+    ConcreteTypeInfo base;
+    NativeTypeKind   nativeKind;
+};
+
 struct ConcreteAttributeParameter
 {
     ConcreteSlice name;
@@ -221,38 +227,32 @@ struct ConcreteAttribute
     ConcreteSlice params;
 };
 
-struct ConcreteTypeInfoNative
-{
-    ConcreteTypeInfo base;
-    NativeTypeKind   nativeKind;
-};
-
 struct ConcreteTypeInfoPointer
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* pointedType;
+    ConcreteTypeInfo base;
+    int64_t          pointedType;
 };
 
 struct ConcreteTypeInfoReference
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* pointedType;
+    ConcreteTypeInfo base;
+    int64_t          pointedType;
 };
 
 struct ConcreteTypeInfoAlias
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* rawType;
+    ConcreteTypeInfo base;
+    int64_t          rawType;
 };
 
 struct ConcreteTypeInfoParam
 {
-    ConcreteSlice     name;
-    ConcreteTypeInfo* pointedType;
-    void*             value;
-    ConcreteSlice     attributes;
-    uint32_t          offsetOf;
-    uint32_t          padding;
+    ConcreteSlice name;
+    int64_t       pointedType;
+    void*         value;
+    ConcreteSlice attributes;
+    uint32_t      offsetOf;
+    uint32_t      padding;
 };
 
 struct ConcreteTypeInfoStruct
@@ -265,48 +265,48 @@ struct ConcreteTypeInfoStruct
     ConcreteSlice    attributes;
 };
 
-struct ConcreteTypeInfoList
-{
-    ConcreteTypeInfo base;
-    ConcreteSlice    types;
-};
-
 struct ConcreteTypeInfoFunc
 {
-    ConcreteTypeInfo  base;
-    ConcreteSlice     generics;
-    ConcreteSlice     parameters;
-    ConcreteTypeInfo* returnType;
-    ConcreteSlice     attributes;
+    ConcreteTypeInfo base;
+    ConcreteSlice    generics;
+    ConcreteSlice    parameters;
+    int64_t          returnType;
+    ConcreteSlice    attributes;
 };
 
 struct ConcreteTypeInfoEnum
 {
-    ConcreteTypeInfo  base;
-    ConcreteSlice     values;
-    ConcreteTypeInfo* rawType;
-    ConcreteSlice     attributes;
+    ConcreteTypeInfo base;
+    ConcreteSlice    values;
+    int64_t          rawType;
+    ConcreteSlice    attributes;
 };
 
 struct ConcreteTypeInfoArray
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* pointedType;
-    ConcreteTypeInfo* finalType;
-    uint64_t          count;
-    uint64_t          totalCount;
+    ConcreteTypeInfo base;
+    int64_t          pointedType;
+    int64_t          finalType;
+    uint64_t         count;
+    uint64_t         totalCount;
 };
 
 struct ConcreteTypeInfoSlice
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* pointedType;
+    ConcreteTypeInfo base;
+    int64_t          pointedType;
 };
 
 struct ConcreteTypeInfoVariadic
 {
-    ConcreteTypeInfo  base;
-    ConcreteTypeInfo* rawType;
+    ConcreteTypeInfo base;
+    int64_t          rawType;
+};
+
+struct ConcreteTypeInfoGeneric
+{
+    ConcreteTypeInfo base;
+    int64_t          rawType;
 };
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
