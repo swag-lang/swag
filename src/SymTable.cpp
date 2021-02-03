@@ -98,12 +98,8 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
 {
     SWAG_RACE_CONDITION_WRITE(raceCondition);
 
-    Utf8 alName;
     if (!aliasName)
-    {
-        alName    = node->token.text;
-        aliasName = &alName;
-    }
+        aliasName = &node->token.text;
 
     auto symbol = findNoLock(*aliasName);
 
