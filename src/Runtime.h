@@ -223,8 +223,8 @@ struct ConcreteAttributeParameter
 
 struct ConcreteAttribute
 {
-    ConcreteSlice name;
-    ConcreteSlice params;
+    ConcreteSlice         name;
+    ConcreteRelativeSlice params;
 };
 
 struct ConcreteTypeInfoPointer

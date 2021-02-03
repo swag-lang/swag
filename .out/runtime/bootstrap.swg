@@ -257,7 +257,7 @@ namespace swag
     struct TypeInfoAttribute
     {
         name:		string
-        params:		const [..] TypeInfoAttributeParameter
+        params:		const [..]~8 TypeInfoAttributeParameter
     }
 
     struct TypeInfoPointer

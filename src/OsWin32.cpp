@@ -194,6 +194,21 @@ namespace OS
                     pz = strstr(oneLine.c_str(), "#runerror:");
                     if (pz)
                     {
+                        // Something can have been printed before with a '@print' without an '\n', so just to not miss anything...
+                        if (pz != oneLine.c_str() && logAll)
+                        {
+                            g_Log.lock();
+                            g_Log.setColor(logColor);
+                            if (logPrefix)
+                                g_Log.print(logPrefix);
+                            auto tmpLine  = oneLine;
+                            tmpLine.count = (int) (pz - oneLine.c_str());
+                            g_Log.print(tmpLine + "\n");
+                            g_Log.setDefaultColor();
+                            g_Log.unlock();
+                            oneLine = pz;
+                        }
+
                         if (g_CommandLine.verboseTestErrors)
                         {
                             g_Log.lock();
@@ -223,6 +238,21 @@ namespace OS
                     pz = strstr(oneLine.c_str(), "error:");
                     if (pz)
                     {
+                        // Something can have been printed before with a '@print' without an '\n', so just to not miss anything...
+                        if (pz != oneLine.c_str() && logAll)
+                        {
+                            g_Log.lock();
+                            g_Log.setColor(logColor);
+                            if (logPrefix)
+                                g_Log.print(logPrefix);
+                            auto tmpLine  = oneLine;
+                            tmpLine.count = (int) (pz - oneLine.c_str());
+                            g_Log.print(tmpLine + "\n");
+                            g_Log.setDefaultColor();
+                            g_Log.unlock();
+                            oneLine = pz;
+                        }
+
                         if (!lastRunError.empty())
                         {
                             lastRunError.clear();
