@@ -110,7 +110,7 @@ namespace Runtime
         if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) TypeInfoFlags::Strict))
             return type1;
         auto typeAlias = (const ConcreteTypeInfoAlias*) type1;
-        return concreteAlias(RLPTR(&typeAlias->rawType));
+        return concreteAlias(RELATIVE_PTR(&typeAlias->rawType));
     }
 
     bool compareType(const void* type1, const void* type2, uint32_t flags)
@@ -131,13 +131,13 @@ namespace Runtime
             if (ctype1->kind == TypeInfoKind::Reference && ctype2->kind != TypeInfoKind::Reference)
             {
                 ConcreteTypeInfoReference* ref = (ConcreteTypeInfoReference*) ctype1;
-                return compareType(RLPTR(&ref->pointedType), ctype2, flags);
+                return compareType(RELATIVE_PTR(&ref->pointedType), ctype2, flags);
             }
 
             if (ctype1->kind != TypeInfoKind::Reference && ctype2->kind == TypeInfoKind::Reference)
             {
                 ConcreteTypeInfoReference* ref = (ConcreteTypeInfoReference*) ctype2;
-                return compareType(ctype1, RLPTR(&ref->pointedType), flags);
+                return compareType(ctype1, RELATIVE_PTR(&ref->pointedType), flags);
             }
         }
 
@@ -151,7 +151,7 @@ namespace Runtime
     {
         auto ctype  = (ConcreteTypeInfoStruct*) structType;
         auto itype  = (ConcreteTypeInfoStruct*) itfType;
-        auto buffer = (ConcreteTypeInfoParam*) ctype->interfaces.buffer;
+        auto buffer = (ConcreteTypeInfoParam*) RELATIVE_PTR(&ctype->interfaces.buffer);
 
         for (uint32_t i = 0; i < ctype->interfaces.count; i++)
         {

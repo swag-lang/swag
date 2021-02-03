@@ -257,29 +257,29 @@ struct ConcreteTypeInfoParam
 
 struct ConcreteTypeInfoStruct
 {
-    ConcreteTypeInfo base;
-    ConcreteSlice    generics;
-    ConcreteSlice    fields;
-    ConcreteSlice    methods;
-    ConcreteSlice    interfaces;
-    ConcreteSlice    attributes;
+    ConcreteTypeInfo      base;
+    ConcreteRelativeSlice generics;
+    ConcreteRelativeSlice fields;
+    ConcreteRelativeSlice methods;
+    ConcreteRelativeSlice interfaces;
+    ConcreteSlice         attributes;
 };
 
 struct ConcreteTypeInfoFunc
 {
-    ConcreteTypeInfo base;
-    ConcreteSlice    generics;
-    ConcreteSlice    parameters;
-    int64_t          returnType;
-    ConcreteSlice    attributes;
+    ConcreteTypeInfo      base;
+    ConcreteRelativeSlice generics;
+    ConcreteRelativeSlice parameters;
+    int64_t               returnType;
+    ConcreteSlice         attributes;
 };
 
 struct ConcreteTypeInfoEnum
 {
-    ConcreteTypeInfo base;
-    ConcreteSlice    values;
-    int64_t          rawType;
-    ConcreteSlice    attributes;
+    ConcreteTypeInfo      base;
+    ConcreteRelativeSlice values;
+    int64_t               rawType;
+    ConcreteSlice         attributes;
 };
 
 struct ConcreteTypeInfoArray

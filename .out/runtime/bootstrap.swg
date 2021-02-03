@@ -291,18 +291,18 @@ namespace swag
     struct TypeInfoStruct
     {
         using base: 	TypeInfo
-        generics:		const [..] TypeInfoParam
-        fields:		    const [..] TypeInfoParam
-        methods:	    const [..] TypeInfoParam
-        interfaces:     const [..] TypeInfoParam
+        generics:		const [..]~8 TypeInfoParam
+        fields:		    const [..]~8 TypeInfoParam
+        methods:	    const [..]~8 TypeInfoParam
+        interfaces:     const [..]~8 TypeInfoParam
         attributes:	    const [..] TypeInfoAttribute
     }
 
     struct TypeInfoFunc
     {
         using base: 	TypeInfo
-        generics:		const [..] TypeInfoParam
-        parameters:		const [..] TypeInfoParam
+        generics:		const [..]~8 TypeInfoParam
+        parameters:		const [..]~8 TypeInfoParam
         returnType:		const *~8 TypeInfo
         attributes:	    const [..] TypeInfoAttribute
     }
@@ -310,7 +310,7 @@ namespace swag
     struct TypeInfoEnum
     {
         using base:     TypeInfo
-        values:		    const [..] TypeInfoParam
+        values:		    const [..]~8 TypeInfoParam
         rawType:	    const *~8 TypeInfo
         attributes:	    const [..] TypeInfoAttribute
     }

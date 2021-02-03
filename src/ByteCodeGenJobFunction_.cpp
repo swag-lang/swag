@@ -1002,7 +1002,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             {
                 auto                       module    = context->sourceFile->module;
                 ConcreteTypeInfoReference* typeRef   = (ConcreteTypeInfoReference*) module->typeSegment.address(child->concreteTypeInfoStorage);
-                auto                       offsetRef = module->typeSegment.offset((uint8_t*) RLPTR(&typeRef->pointedType));
+                auto                       offsetRef = module->typeSegment.offset((uint8_t*) RELATIVE_PTR(&typeRef->pointedType));
                 auto                       inst      = emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0);
                 inst->b.u64                          = offsetRef;
             }

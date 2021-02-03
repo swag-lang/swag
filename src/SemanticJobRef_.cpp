@@ -706,7 +706,7 @@ bool SemanticJob::derefLiteralStruct(SemanticContext* context, uint8_t* ptr, Sym
     auto concreteType = TypeManager::concreteType(overload->typeInfo);
     if (concreteType->kind == TypeInfoKind::Pointer)
     {
-        auto relPtr = (uint8_t*) RLPTR(ptr);
+        auto relPtr = (uint8_t*) RELATIVE_PTR(ptr);
 
         node->computedValue.reg.offset = segment->offset(relPtr);
         node->flags |= AST_VALUE_IS_TYPEINFO;

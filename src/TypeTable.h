@@ -47,4 +47,4 @@ struct TypeTable
 
 #define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
 #define OFFSETOFR(__field) (storageOffset + ((int64_t) __field - (int64_t) concreteTypeInfoValue))
-#define RLPTR(__addr) (ConcreteTypeInfo*) (((uint8_t*) __addr) + *(int64_t*) __addr)
+#define RELATIVE_PTR(__addr) (ConcreteTypeInfo*) (((uint8_t*) __addr) + *(int64_t*) __addr)
