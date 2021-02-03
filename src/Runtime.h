@@ -188,6 +188,12 @@ struct ConcreteSlice
     uint64_t count;
 };
 
+struct ConcreteRelativeSlice
+{
+    int64_t  buffer;
+    uint64_t count;
+};
+
 struct ConcreteTypeInfo
 {
     ConcreteSlice name;

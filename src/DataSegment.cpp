@@ -288,6 +288,9 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
 
     scoped_lock lk(mutexPtr);
     initPtr.push_back(ref);
+
+    if (g_CommandLine.stats)
+        g_Stats.numInitPtr++;
 }
 
 void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocType relocType)

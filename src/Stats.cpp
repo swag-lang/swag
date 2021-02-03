@@ -14,28 +14,29 @@ void Stats::print()
     g_Log.setColor(LogColor::DarkCyan);
     g_Log.print("\n");
 
-    g_Log.messageHeaderDot("swag version", format("%d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-    g_Log.messageHeaderDot("workers", format("%d", numWorkers));
+    g_Log.messageHeaderDot("swag version", format("%u.%u.%u", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+    g_Log.messageHeaderDot("workers", format("%u", numWorkers));
     g_Log.print("\n");
 
-    g_Log.messageHeaderDot("modules", format("%d", numModules.load()));
-    g_Log.messageHeaderDot("files", format("%d", numFiles.load()));
-    g_Log.messageHeaderDot("source lines", format("%d", numLines.load()));
-    g_Log.messageHeaderDot("lines/s", format("%d", (int) (numLines.load() / OS::timerToSeconds(totalTime.load()))));
-    g_Log.messageHeaderDot("open files", format("%d", maxOpenFiles.load()));
+    g_Log.messageHeaderDot("modules", format("%u", numModules.load()));
+    g_Log.messageHeaderDot("files", format("%u", numFiles.load()));
+    g_Log.messageHeaderDot("source lines", format("%u", numLines.load()));
+    g_Log.messageHeaderDot("lines/s", format("%u", (int) (numLines.load() / OS::timerToSeconds(totalTime.load()))));
+    g_Log.messageHeaderDot("open files", format("%u", maxOpenFiles.load()));
     if (g_CommandLine.output)
-        g_Log.messageHeaderDot("output modules", format("%d", numGenModules.load()));
+        g_Log.messageHeaderDot("output modules", format("%u", numGenModules.load()));
     if (g_CommandLine.test)
-        g_Log.messageHeaderDot("executed #test", format("%d", testFunctions.load()));
-    g_Log.messageHeaderDot("executed #run", format("%d", runFunctions.load()));
+        g_Log.messageHeaderDot("executed #test", format("%u", testFunctions.load()));
+    g_Log.messageHeaderDot("executed #run", format("%u", runFunctions.load()));
     if (g_Workspace.numErrors)
-        g_Log.messageHeaderDot("errors", format("%d", g_Workspace.numErrors.load()), LogColor::Red);
+        g_Log.messageHeaderDot("errors", format("%u", g_Workspace.numErrors.load()), LogColor::Red);
     g_Log.print("\n");
 
-    g_Log.messageHeaderDot("instructions", format("%d", numInstructions.load()));
+    g_Log.messageHeaderDot("instructions", format("%u", numInstructions.load()));
     float pc = (totalOptimsBC.load() * 100.0f) / (numInstructions.load());
     g_Log.messageHeaderDot("kicked", format("%d %.1f%%", totalOptimsBC.load(), pc));
-    g_Log.messageHeaderDot("concrete types", format("%d", totalConcreteTypes.load()));
+    g_Log.messageHeaderDot("concrete types", format("%u", totalConcreteTypes.load()));
+    g_Log.messageHeaderDot("init ptr", format("%u", numInitPtr.load()));
     g_Log.print("\n");
 
     g_Log.messageHeaderDot("cfg time", format("%.3fs", OS::timerToSeconds(cfgTime.load())));
