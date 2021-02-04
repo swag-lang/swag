@@ -8,9 +8,10 @@ impl enum FileAttributes
     protected func fromDWORD(attributes: DWORD)->FileAttributes
     {
         using FileAttributes
-        if attributes == 0xFFFFFFFF return None
+        if attributes == 0xFFFFFFFF
+            return None
 
-        var result: FileAttributes = autocast 0
+        var result: FileAttributes = None
         if attributes & FILE_ATTRIBUTE_READONLY
             result |= ReadOnly
         if attributes & FILE_ATTRIBUTE_HIDDEN
@@ -44,8 +45,7 @@ impl enum FileAttributes
 }
 
 // Returns attributes associated to the given filename
-// Returns FileAttribute.None in case of error
-func getAttribute(fullname: string) -> {attributes: FileAttributes = FileAttributes.None, err: ErrorId}
+func getAttributes(fullname: string) -> {attributes: FileAttributes = FileAttributes.None, err: ErrorId}
 {
     var result: retval
 
