@@ -40,7 +40,7 @@ impl ScratchAllocator
             return err
 
         // Allocate the big block to store all allocations
-        fallback = #scopefct.allocator ?? @getcontext().allocator
+        fallback = allocator ?? @getcontext().allocator
         debug.assert(blockSize > 0)
         capacity = blockSize
         block = memory.alloc(blockSize, fallback)
