@@ -4,9 +4,9 @@
 #include "Module.h"
 #include "Backend.h"
 
-uint64_t                        g_tlsContextId = 0;
-SwagContext                     g_defaultContext;
-SwagProcessInfos                g_processInfos = {0};
+uint64_t                        g_tlsContextId   = 0;
+SwagContext                     g_defaultContext = {0};
+SwagProcessInfos                g_processInfos   = {0};
 thread_local ByteCodeRunContext g_runContext;
 
 static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)

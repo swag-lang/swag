@@ -19,6 +19,9 @@ func yield()
 private func threadEntry(param: *void)
 {
     th := cast(*Thread) param
+
+    th.context.tempAllocator.block = null
+    th.context.tempAllocator.used = 0
     @setcontext(th.context)
 
     th.userLambda(:th)
@@ -58,6 +61,7 @@ impl Thread
     {
         debug.assert(!isValid(), "thread already created")
         debug.assert(lambda != null, "lambda parameter is null")
+
         context = :@getcontext()
 
         h := CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)

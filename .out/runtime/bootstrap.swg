@@ -142,6 +142,13 @@ namespace swag
         alloc: func(self, *AllocatorRequest)
     }
 
+    struct TempAllocator
+    {
+        block:      *u8
+        capacity:   uint
+        used:       uint
+    }
+
     #[swag.enumflags]
     enum ContextFlags: u64
     {
@@ -159,6 +166,7 @@ namespace swag
         flags =         ContextFlags.None
 
         // Other fields, can be in any order
+        tempAllocator:  TempAllocator
         errorMsg:       [MaxLenErrorMsg] u8
         errorMsgLen:    u32
     }

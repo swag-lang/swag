@@ -28,13 +28,16 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     {
         llvm::Type* members[] = {
             pp.interfaceTy,
-            llvm::Type::getInt64Ty(context),
+            llvm::Type::getInt64Ty(context),   // Flags
+            llvm::Type::getInt8PtrTy(context), // TempAllocator
+            llvm::Type::getInt64Ty(context),   // TempAllocator
+            llvm::Type::getInt64Ty(context),   // TempAllocator
             llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_LEN_ERROR_MSG),
             llvm::Type::getInt32Ty(context),
             llvm::Type::getInt32Ty(context), // padding
         };
 
-        static_assert(sizeof(SwagContext) == 16 + 8 + MAX_LEN_ERROR_MSG + 4 + 4);
+        static_assert(sizeof(SwagContext) == 16 + 8 + (8 * 3) + MAX_LEN_ERROR_MSG + 4 + 4);
         pp.contextTy = llvm::StructType::create(context, members, "swag_context_t");
         SWAG_ASSERT(pp.contextTy->isSized());
     }

@@ -36,14 +36,22 @@ typedef struct SwagInterface
     void* itable = nullptr;
 } SwagInterface;
 
+typedef struct SwagTempAllocator
+{
+    void*    data     = nullptr;
+    uint64_t capacity = 0;
+    uint64_t used     = 0;
+} SwagTempAllocator;
+
 static const auto MAX_LEN_ERROR_MSG = 128;
 typedef struct SwagContext
 {
-    SwagInterface allocator;
-    uint64_t      flags;
-    uint8_t       errorMsg[MAX_LEN_ERROR_MSG];
-    uint32_t      errorMsgLen;
-    uint32_t      padding;
+    SwagInterface     allocator;
+    uint64_t          flags;
+    SwagTempAllocator tempAllocator;
+    uint8_t           errorMsg[MAX_LEN_ERROR_MSG];
+    uint32_t          errorMsgLen;
+    uint32_t          padding;
 } SwagContext;
 
 typedef struct SwagSlice
