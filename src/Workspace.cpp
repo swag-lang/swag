@@ -147,7 +147,7 @@ void Workspace::addRuntime()
     addRuntimeFile("runtime.swg");
     addRuntimeFile("runtime_win32.swg");
     addRuntimeFile("runtime_msvc.swg");
-    addRuntimeFile("systemalloc.swg");
+    addRuntimeFile("systemallocator.swg");
 }
 
 void Workspace::setupPaths()
