@@ -17,11 +17,11 @@ func getInfo(fullname: string)->FileInfo
 
     var fileTime: SYSTEMTIME
     FileTimeToSystemTime(&attrDatas.ftCreationTime, &fileTime)
-    result.creationTime.fromSYSTEMTIME(fileTime)
+    result.creationTime.setSYSTEMTIME(fileTime)
     FileTimeToSystemTime(&attrDatas.ftLastAccessTime, &fileTime)
-    result.lastAccessTime.fromSYSTEMTIME(fileTime)
+    result.lastAccessTime.setSYSTEMTIME(fileTime)
     FileTimeToSystemTime(&attrDatas.ftLastWriteTime, &fileTime)
-    result.lastWriteTime.fromSYSTEMTIME(fileTime)
+    result.lastWriteTime.setSYSTEMTIME(fileTime)
 
     return result
 }
