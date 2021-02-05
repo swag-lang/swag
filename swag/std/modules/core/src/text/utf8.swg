@@ -352,9 +352,6 @@ func visitChars(buffer: const [..] u8, stmt: code)
 // Convert unicode character 'src' to an utf8 sequence, and returns
 // the number of bytes that were needed to make the conversion.
 // 'dest' must be at least 4 bytes long
-//
-// For speed reasons, this function never fails, even if 'src' is invalid.
-// Use 'fromCharSafe' if you're not sure of the validity of 'src'
 func fromChar(dest: [..] u8, src: char)->u32
 {
     debug.assert(@countof(dest) >= 4, "destination buffer is too small")
