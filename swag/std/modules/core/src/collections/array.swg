@@ -16,7 +16,7 @@ impl Array
         return count
     }
 
-    func opData(using self)->const *void
+    func opData(using self)->const *T
     {
         return buffer
     }

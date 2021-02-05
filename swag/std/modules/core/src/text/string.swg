@@ -44,7 +44,7 @@ impl String
     }
 
     #[inline]
-    func opData(using self)->const *void
+    func opData(using self)->const *u8
     {
         return buffer
     }
