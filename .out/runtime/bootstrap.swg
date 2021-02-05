@@ -147,6 +147,8 @@ namespace swag
         block:      *u8
         capacity:   uint
         used:       uint
+        lastUsed:   uint
+        maxUsed:    uint
     }
 
     #[swag.enumflags]

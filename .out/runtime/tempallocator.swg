@@ -34,6 +34,9 @@ impl IAllocator for TempAllocator
         switch request.mode
         {
         case AllocatorMode.Free:
+            /*ptr := block + used - request.size
+            if ptr == request.address
+                used = lastUsed*/
             break
 
         case AllocatorMode.FreeAll:
@@ -63,7 +66,10 @@ impl IAllocator for TempAllocator
             {
                 oldAddress := request.address
                 request.address = block + usedAlign
+                lastUsed = used
                 used = usedAlign + request.size
+                if used > maxUsed
+                    maxUsed = used
                 if oldAddress
                     @memcpy(request.address, oldAddress, request.oldSize)
             }

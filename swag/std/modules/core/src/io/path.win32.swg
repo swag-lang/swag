@@ -150,8 +150,10 @@ protected func toWin16(src: string)->Array'u16
 {
     var result: retval
 
+    result.allocator = @getcontext().tempAllocator
     result.reserve(@countof(src) + 1)
     result.count = 1 + unicode16.fromUtf8(@mkslice(result.buffer, @countof(src)), src)
     result[result.count - 1] = 0
+
     return result
 }

@@ -41,6 +41,8 @@ typedef struct SwagTempAllocator
     void*    data     = nullptr;
     uint64_t capacity = 0;
     uint64_t used     = 0;
+    uint64_t lastUsed = 0;
+    uint64_t maxUsed  = 0;
 } SwagTempAllocator;
 
 static const auto MAX_LEN_ERROR_MSG = 128;
