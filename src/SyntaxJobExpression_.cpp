@@ -884,14 +884,14 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result, uint32_t identifierFlags)
         SWAG_CHECK(eatToken());
         while (true)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, syntaxError(token, "variable name or '?' expected in tuple destructuration"));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, syntaxError(token, "variable name or '?' expected in tuple unpacking"));
             SWAG_CHECK(doIdentifierRef(multi, nullptr, identifierFlags));
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
         }
 
-        SWAG_CHECK(eatToken(TokenId::SymRightParen, "after tuple destructuration"));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen, "after tuple unpacking"));
         break;
     }
 
@@ -1101,6 +1101,9 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         AstVarDecl*    orgVarNode = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind          = kind;
 
+        orgVarNode->allocateExtension();
+        orgVarNode->extension->semanticAfterFct = SemanticJob::resolveTupleUnpackBefore;
+
         // This will avoid to initialize the tuple before the affectation
         orgVarNode->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
         orgVarNode->flags |= AST_R_VALUE;
@@ -1148,7 +1151,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             identifier          = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode, this);
             varNode->assignment = identifier;
             SemanticJob::setVarDeclResolve(varNode);
-            varNode->assignment->flags |= AST_TUPLE_DESTRUCT;
+            varNode->assignment->flags |= AST_TUPLE_UNPACK;
         }
 
         orgVarNode->publicName += ")";
@@ -1266,7 +1269,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             }
         }
 
-        // Tuple destructuration
+        // Tuple unpacking
         else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
         {
             auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);

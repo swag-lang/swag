@@ -60,7 +60,7 @@ static const uint64_t AST_IS_LAMBDA_EXPRESSION       = 0x02000000'00000000;
 static const uint64_t AST_EMPTY_FCT                  = 0x04000000'00000000;
 static const uint64_t AST_STRUCT_REGISTERED          = 0x08000000'00000000;
 static const uint64_t AST_GENERATED_GENERIC_PARAM    = 0x10000000'00000000;
-static const uint64_t AST_TUPLE_DESTRUCT             = 0x20000000'00000000;
+static const uint64_t AST_TUPLE_UNPACK               = 0x20000000'00000000;
 static const uint64_t AST_CALL_FOR_STRUCT            = 0x40000000'00000000;
 static const uint64_t AST_CAN_MATCH_INCOMPLETE       = 0x80000000'00000000;
 

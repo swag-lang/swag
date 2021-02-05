@@ -151,7 +151,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
             result->flags |= flags;
 
             // Register for dropping in end of scope, if necessary
-            if (!(flags & OVERLOAD_VAR_FUNC_PARAM) && !(flags & OVERLOAD_TUPLE_DESTRUCT) && symbol->kind == SymbolKind::Variable)
+            if (!(flags & OVERLOAD_VAR_FUNC_PARAM) && !(flags & OVERLOAD_TUPLE_UNPACK) && symbol->kind == SymbolKind::Variable)
                 addVarToDrop(result, result->typeInfo, storageOffset);
         }
 

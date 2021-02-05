@@ -331,7 +331,9 @@ struct SemanticJob : public Job
     static bool resolveNullConditionalOp(SemanticContext* context);
     static bool resolveInit(SemanticContext* context);
     static bool resolveDropCopyMove(SemanticContext* context);
-    AstNode*    backToSemError();
+    static bool resolveTupleUnpackBefore(SemanticContext* context);
+
+    AstNode* backToSemError();
 
     void clearTryMatch()
     {

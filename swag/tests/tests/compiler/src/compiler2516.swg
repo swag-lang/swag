@@ -9,7 +9,9 @@ func toto()->AA
     return result
 }
 
+func titi() => 0
+
 #test
 {
-    //(x, y) := toto()
+    (x, y) := titi()
 }

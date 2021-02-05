@@ -14,6 +14,17 @@ uint32_t SemanticJob::alignOf(AstVarDecl* node)
     return TypeManager::alignOf(TypeManager::concreteType(node->typeInfo));
 }
 
+// Will be called after solving the initial var affect, but before tuple unpacking
+bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
+{
+    auto scopeNode = CastAst<AstNode>(context->node->parent, AstNodeKind::StatementNoScope);
+    auto varDecl   = CastAst<AstVarDecl>(scopeNode->childs.front(), AstNodeKind::VarDecl);
+
+    auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
+    SWAG_VERIFY(typeVar->kind == TypeInfoKind::Struct, context->report({varDecl, format("cannot unpack type '%s' which is not a struct", typeVar->name.c_str())}));
+    return true;
+}
+
 bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* assignment, AstStruct** result)
 {
     auto       sourceFile = context->sourceFile;
@@ -695,13 +706,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 symbolFlags |= OVERLOAD_RETVAL;
         }
 
-        // If this is a tuple destructuration, then we just compute the stack offset of the item
+        // If this is a tuple unpacking, then we just compute the stack offset of the item
         // inside the tuple, so we do not have to generate bytecode !
-        if (node->assignment && node->assignment->flags & AST_TUPLE_DESTRUCT)
+        if (node->assignment && node->assignment->flags & AST_TUPLE_UNPACK)
         {
             node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
             SWAG_ASSERT(node->assignment->kind == AstNodeKind::IdentifierRef);
-            symbolFlags |= OVERLOAD_TUPLE_DESTRUCT;
+            symbolFlags |= OVERLOAD_TUPLE_UNPACK;
             storageOffset = 0;
             for (auto& c : node->assignment->childs)
             {
