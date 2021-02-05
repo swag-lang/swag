@@ -9,11 +9,12 @@ const SurrSelf  = 0x10000
 
 // Get the unicode character pointed by 'buffer', and the number of u16 to encode it
 // Will return 'CharError' for an invalid utf16 sequence
+//#[swag.printbc]
 func decodeChar(buffer: const [..] u16) -> {c: char, eat: u32}
 {
     var result: retval
 
-    r := buffer[0]
+    r := cast(u32) buffer[0]
     switch
     {
         case r < Surr1, r >= Surr3:
@@ -22,9 +23,9 @@ func decodeChar(buffer: const [..] u16) -> {c: char, eat: u32}
             return result
 
         case Surr1 <= r && r < Surr2 && @countof(buffer) >= 2 && Surr2 <= buffer[1] && buffer[1] < Surr3:
-             result.c = (r - Surr1) << 10 | (buffer[1] - Surr2) + SurrSelf
-             result.eat = 2
-             return result
+            result.c = ((r - Surr1) << 10 | (buffer[1] - Surr2)) + SurrSelf
+            result.eat = 2
+            return result
 
         default:
             result.c = CharError
@@ -35,7 +36,7 @@ func decodeChar(buffer: const [..] u16) -> {c: char, eat: u32}
 // Convert unicode character 'src' to an utf16 sequence, and returns
 // the number of u16 that were needed to make the conversion.
 // 'dest' must be at least 2 u16 long
-func fromChar(dest: [..] u16, src: char)->u32
+func encodeChar(dest: [..] u16, src: char)->u32
 {
     debug.assert(@countof(dest) >= 2, "destination buffer is too small")
     switch
@@ -49,6 +50,7 @@ func fromChar(dest: [..] u16, src: char)->u32
 	        dest[0] = Surr1 + (r >> 10) & 0x3ff
             dest[1] = Surr2 + (r & 0x3ff)
             return 2
+
         default:
             dest[0] = cast(u16) CharError
             return 1
