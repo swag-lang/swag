@@ -35,14 +35,17 @@ namespace Ast
         if (job)
         {
             node->token.id            = job->token.id;
-            node->token.startLocation = job->token.startLocation;
-            node->token.endLocation   = job->token.endLocation;
             node->token.text          = job->token.text;
 
             if (job->currentTokenLocation)
             {
-                node->token.startLocation.line = job->currentTokenLocation->startLocation.line;
-                node->token.endLocation.line   = job->currentTokenLocation->endLocation.line;
+                node->token.startLocation = job->currentTokenLocation->startLocation;
+                node->token.endLocation   = job->currentTokenLocation->endLocation;
+            }
+            else
+            {
+                node->token.startLocation = job->token.startLocation;
+                node->token.endLocation = job->token.endLocation;
             }
 
             node->inheritOwnersAndFlags(job);
