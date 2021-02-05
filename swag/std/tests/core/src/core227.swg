@@ -8,4 +8,7 @@ using core
     (attrs, err) := file.getAttributes(filen)
     @assert(!err)
     @assert(cast(bool) (attrs & file.FileAttributes.Archive))
+
+    (infos, err1) := file.getInfo(filen)
+    @assert(!err1)
 }
