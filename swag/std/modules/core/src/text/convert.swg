@@ -411,6 +411,6 @@ func convertBool(buf: *ConcatBuffer, value: bool, strFormat: string)
 func convertChar(buf: *ConcatBuffer, value: char, strFormat: string)
 {
     var arr: [4] u8
-    var count = utf8.fromChar(arr, value)
+    var count = utf8.encodeChar(arr, value)
     buf.addBytes(@mkslice(&arr[0], cast(uint) count))
 }

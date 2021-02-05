@@ -311,7 +311,7 @@ impl String
     {
         debug.assert(utf8.isValidChar(value))
         var tmp: [4] u8
-        eat := utf8.fromChar(tmp, value)
+        eat := utf8.encodeChar(tmp, value)
         grow(length + eat + 1)
         loop i: eat
             buffer[length + i] = tmp[i]

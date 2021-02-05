@@ -319,6 +319,45 @@ func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
     return result
 }
 
+// Convert unicode character 'src' to an utf8 sequence, and returns
+// the number of bytes that were needed to make the conversion.
+// 'dest' must be at least 4 bytes long
+func encodeChar(dest: [..] u8, src: char)->u32
+{
+    debug.assert(@countof(dest) >= 4, "destination buffer is too small")
+
+    switch
+    {
+    case src <= 0x7F:
+        dest[0] = cast(u8) src
+        return 1
+
+    case src <= 0x07FF:
+        dest[0] = cast(u8) (((src >>% 6) & 0x1F) | 0xC0)
+        dest[1] = cast(u8) (((src >>% 0) & 0x3F) | 0x80)
+        return 2
+
+    case !isValidChar(src):
+        dest[0] = cast(u8) (((CharError >>% 12) & 0x0F) | 0xE0)
+        dest[1] = cast(u8) (((CharError >>% 6) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((CharError >>% 0) & 0x3F) | 0x80)
+        return 3
+
+    case src <= 0xFFFF:
+        dest[0] = cast(u8) (((src >>% 12) & 0x0F) | 0xE0)
+        dest[1] = cast(u8) (((src >>% 6) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((src >>% 0) & 0x3F) | 0x80)
+        return 3
+
+    default:
+        dest[0] = cast(u8) (((src >>% 18) & 0x07) | 0xF0)
+        dest[1] = cast(u8) (((src >>% 12) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((src >>% 6) & 0x3F) | 0x80)
+        dest[3] = cast(u8) (((src >>% 0) & 0x3F) | 0x80)
+        return 4
+    }
+}
+
 public enum ComparisonType
 {
     Latin1
@@ -421,45 +460,6 @@ func visitChars(buffer: const [..] u8, stmt: code)
     }
 }
 
-// Convert unicode character 'src' to an utf8 sequence, and returns
-// the number of bytes that were needed to make the conversion.
-// 'dest' must be at least 4 bytes long
-func fromChar(dest: [..] u8, src: char)->u32
-{
-    debug.assert(@countof(dest) >= 4, "destination buffer is too small")
-
-    switch
-    {
-    case src <= 0x7F:
-        dest[0] = cast(u8) src
-        return 1
-
-    case src <= 0x07FF:
-        dest[0] = cast(u8) (((src >>% 6) & 0x1F) | 0xC0)
-        dest[1] = cast(u8) (((src >>% 0) & 0x3F) | 0x80)
-        return 2
-
-    case !isValidChar(src):
-        dest[0] = cast(u8) (((CharError >>% 12) & 0x0F) | 0xE0)
-        dest[1] = cast(u8) (((CharError >>% 6) & 0x3F) | 0x80)
-        dest[2] = cast(u8) (((CharError >>% 0) & 0x3F) | 0x80)
-        return 3
-
-    case src <= 0xFFFF:
-        dest[0] = cast(u8) (((src >>% 12) & 0x0F) | 0xE0)
-        dest[1] = cast(u8) (((src >>% 6) & 0x3F) | 0x80)
-        dest[2] = cast(u8) (((src >>% 0) & 0x3F) | 0x80)
-        return 3
-
-    default:
-        dest[0] = cast(u8) (((src >>% 18) & 0x07) | 0xF0)
-        dest[1] = cast(u8) (((src >>% 12) & 0x3F) | 0x80)
-        dest[2] = cast(u8) (((src >>% 6) & 0x3F) | 0x80)
-        dest[3] = cast(u8) (((src >>% 0) & 0x3F) | 0x80)
-        return 4
-    }
-}
-
 // Convert a character array (32 bits unicode) to an utf8 buffer
 // Returns the number of bytes written in the destination buffer
 // 'dest' must be at least 4 bytes long
@@ -473,7 +473,7 @@ func fromCharArray(dest: [..] u8, src: const [..] char)->uint
     {
         debug.assert(remain >= 4, "destination buffer is too small")
         slice := @mkslice(dataof + total, remain)
-        cpt := fromChar(slice, ch)
+        cpt := encodeChar(slice, ch)
         total += cpt
         remain -= cpt
     }

@@ -49,7 +49,7 @@ var utf8Map: [] Utf8Map = @[
         @assert(isValidChar(it.c))
 
         var arr: [4] u8
-        eat := fromChar(arr, it.c)
+        eat := encodeChar(arr, it.c)
         @assert(eat == @countof(it.str))
         loop i: eat @assert(arr[i] == it.str[i])
 
