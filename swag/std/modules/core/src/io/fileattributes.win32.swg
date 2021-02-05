@@ -49,7 +49,8 @@ func getAttributes(fullname: string) -> {attributes: FileAttributes = FileAttrib
 {
     var result: retval
 
-    attributes := GetFileAttributesA(@dataof(fullname))
+    winPath := path.toWin16(fullname)
+    attributes := GetFileAttributesW(@dataof(winPath))
     if attributes == INVALID_FILE_ATTRIBUTES
     {
         error.setLastErrorId()

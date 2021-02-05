@@ -42,6 +42,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         emitRetValRef(context, r0);
         identifier->resultRegisterRC                = r0;
         identifier->identifierRef->resultRegisterRC = identifier->resultRegisterRC;
+        identifier->parent->resultRegisterRC        = node->resultRegisterRC;
         return true;
     }
 
