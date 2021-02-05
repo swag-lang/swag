@@ -169,7 +169,8 @@ func countChars(buffer: const [..] u8)->uint
     return cpt
 }
 
-// Get the last utf8 character of the slice, and the number of bytes to encode it
+// Get the last unicode character of the utf8 slice, and the number of
+// bytes to encode it
 func decodeLastChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
     var result: retval
