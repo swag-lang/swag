@@ -1,5 +1,5 @@
 #global public
-#global namespace unicode16
+#global namespace utf16
 
 // Convert an utf8 buffer to a 16 bits unicode sequence, and returns the
 // number of valid elements in the destination buffer
