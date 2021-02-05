@@ -1,5 +1,5 @@
 //https://golang.org/src/unicode/tables.go
-#global namespace unicode32
+#global namespace unicode
 
 const TableWhiteSpace: [] Range =
 @[

@@ -64,13 +64,13 @@ var notletterTest: []char = @[
 //#[swag.printbc]
 #test
 {
-    visit c: spaceTest      @assert(unicode32.isSpace(c))
-    visit c: letterTest     @assert(unicode32.isLetter(c))
-    visit c: notletterTest  @assert(!unicode32.isLetter(c))
-    @assert(unicode32.isLetter("是"'char))
-    @assert(!unicode32.isLetter("‼"'char))
+    visit c: spaceTest      @assert(unicode.isSpace(c))
+    visit c: letterTest     @assert(unicode.isLetter(c))
+    visit c: notletterTest  @assert(!unicode.isLetter(c))
+    @assert(unicode.isLetter("是"'char))
+    @assert(!unicode.isLetter("‼"'char))
 
-    @assert(unicode32.isNumber("௧"'char))
-    @assert(unicode32.isNumber("൧"'char))
-    @assert(unicode32.isNumber("𑄷"'char))
+    @assert(unicode.isNumber("௧"'char))
+    @assert(unicode.isNumber("൧"'char))
+    @assert(unicode.isNumber("𑄷"'char))
 }

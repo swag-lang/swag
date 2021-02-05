@@ -1,4 +1,4 @@
-#global namespace unicode32
+#global namespace unicode
 
 #[swag.inline, swag.constexpr]
 public

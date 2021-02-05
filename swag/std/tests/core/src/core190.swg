@@ -43,6 +43,6 @@ var notupperTest: []char = @[
 //#[swag.printbc]
 #test
 {
-    visit c: upperTest @assert(unicode32.isUpper(c))
-    visit c: notupperTest @assert(!unicode32.isUpper(c))
+    visit c: upperTest @assert(unicode.isUpper(c))
+    visit c: notupperTest @assert(!unicode.isUpper(c))
 }
