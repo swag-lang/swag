@@ -17,11 +17,13 @@ uint32_t SemanticJob::alignOf(AstVarDecl* node)
 // Will be called after solving the initial var affect, but before tuple unpacking
 bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
 {
-    auto scopeNode = CastAst<AstNode>(context->node->parent, AstNodeKind::StatementNoScope);
-    auto varDecl   = CastAst<AstVarDecl>(scopeNode->childs.front(), AstNodeKind::VarDecl);
+    auto scopeNode = CastAst<AstNode>(context->node->parent, AstNodeKind::StatementNoScope, AstNodeKind::Statement);
+    auto varDecl   = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
 
     auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
-    SWAG_VERIFY(typeVar->kind == TypeInfoKind::Struct, context->report({varDecl, format("cannot unpack type '%s' which is not a struct", typeVar->name.c_str())}));
+    SWAG_VERIFY(typeVar->kind == TypeInfoKind::Struct, context->report({varDecl, varDecl->token, format("cannot unpack type '%s' which is not a struct", typeVar->name.c_str())}));
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+
     return true;
 }
 

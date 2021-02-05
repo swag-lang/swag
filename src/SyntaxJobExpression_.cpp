@@ -1101,6 +1101,8 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         AstVarDecl*    orgVarNode = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind          = kind;
 
+        orgVarNode->token.startLocation = leftNode->childs.front()->token.startLocation;
+        orgVarNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
         orgVarNode->allocateExtension();
         orgVarNode->extension->semanticAfterFct = SemanticJob::resolveTupleUnpackBefore;
 
@@ -1286,6 +1288,11 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             SWAG_CHECK(tokenizer.getToken(token));
             SWAG_CHECK(doExpression(varNode, &varNode->assignment));
             varNode->assignment->flags |= AST_NO_LEFT_DROP;
+
+            varNode->token.startLocation = leftNode->childs.front()->token.startLocation;
+            varNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
+            varNode->allocateExtension();
+            varNode->extension->semanticAfterFct = SemanticJob::resolveTupleUnpackBefore;
 
             // And reference that variable, in the form value = __tmp_0.item?
             int idx = 0;

@@ -13,5 +13,6 @@ func titi() => 0
 
 #test
 {
-    (x, y) := titi()
+    var x, y: s32
+    (x, y) = titi()
 }
