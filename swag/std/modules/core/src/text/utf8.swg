@@ -119,11 +119,17 @@ func countBytesAt(buffer: const [..] u8)->u32
 // Returns the byte index of the given character index
 func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success: bool}
 {
+    var result: retval
+
     countof := @countof(buffer)
     if !countof
-        return @{0'u32, false}
+        return result
+
     if !charIndex
-        return @{0'u32, true}
+    {
+        result.success = true
+        return result
+    }
 
     dataof := @dataof(buffer)
 
@@ -139,7 +145,9 @@ func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success:
         countof -= val
     }
 
-    return @{resultByte, resultByte < @countof(buffer)}
+    result.index = resultByte
+    result.success = resultByte < @countof(buffer)
+    return result
 }
 
 // Returns the number of unicode characters in an utf8 buffer
@@ -164,9 +172,14 @@ func countChars(buffer: const [..] u8)->uint
 // Get the last utf8 character of the slice, and the number of bytes to encode it
 func decodeLastChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
+    var result: retval
+
     countof := @countof(buffer)
     if !countof
-        return @{CharError, 0}
+    {
+        result.c = CharError
+        return result
+    }
 
     dataof := @dataof(buffer)
     ptr := dataof + (countof - 1)
@@ -174,7 +187,11 @@ func decodeLastChar(buffer: const [..] u8) -> {c: char, eat: u32}
     // Ascii
     c := cast(char) :ptr
     if c & 0x80 == 0
-        return @{c, 1}
+    {
+        result.c = c
+        result.eat = 1
+        return result
+    }
 
     eat := 1'u32
     while true
@@ -183,17 +200,29 @@ func decodeLastChar(buffer: const [..] u8) -> {c: char, eat: u32}
         if c >>% 6 != 2
             break
         if ptr == dataof
-            return @{CharError, 1}
+        {
+            result.c = CharError
+            result.eat = 1
+            return result
+        }
+
         ptr -= 1
         eat += 1
         if eat > 4
-            return @{CharError, 1}
+        {
+            result.c = CharError
+            result.eat = 1
+            return result
+        }
     }
 
-    var result: retval
     result = decodeChar(@mkslice(ptr, cast(uint) eat))
     if result.eat != eat
-        return @{CharError, 1}
+    {
+        result.c = CharError
+        result.eat = 1
+    }
+
     return result
 }
 
@@ -201,50 +230,92 @@ func decodeLastChar(buffer: const [..] u8) -> {c: char, eat: u32}
 // Will return 'CharError' for an invalid utf8 sequence
 func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
 {
+    var result: retval
+
     countof := @countof(buffer)
     if countof == 0
-        return @{CharError, 0}
+    {
+        result.c = CharError
+        return result
+    }
 
     dataof := @dataof(buffer)
     p0 := cast(char) :dataof
 
     // Ascii
     if (p0 & 0x80) == 0
-        return @{p0, 1}
+    {
+        result.c = p0
+        result.eat = 1
+        return result
+    }
 
     x := First[cast(u8) p0]
 
     // Invalid first byte
     if x == XX
-        return @{CharError, 1}
+    {
+        result.c = CharError
+        result.eat = 1
+        return result
+    }
 
     // Be sure input buffer is large enough to hold the requested
     // encoded size
     sz := x & 7
 	if countof < sz
-        return @{CharError, 1}
+    {
+        result.c = CharError
+        result.eat = 1
+        return result
+    }
 
 	accept := AcceptRanges[x >>% 4]
 
     // Length == 2
 	b1 := dataof[1]
 	if !(accept.lo <= b1 && b1 <= accept.hi)
-        return @{CharError, 1}
-	if sz <= 2
-        return @{(p0 & Mask2) << 6 | (b1 & MaskX), 2}
+    {
+        result.c = CharError
+        result.eat = 1
+        return result
+    }
+
+    if sz <= 2
+    {
+        result.c = (p0 & Mask2) << 6 | (b1 & MaskX)
+        result.eat = 2
+        return result
+    }
 
     // Length == 3
 	b2 := dataof[2]
     if !(LoCB <= b2 && b2 <= HiCB)
-        return @{CharError, 1}
+    {
+        result.c = CharError
+        result.eat = 1
+        return result
+    }
+
 	if sz <= 3
-        return @{(p0 & Mask3) << 12 | (b1 & MaskX) << 6 | (b2 & MaskX), 3}
+    {
+        result.c = (p0 & Mask3) << 12 | (b1 & MaskX) << 6 | (b2 & MaskX)
+        result.eat = 3
+        return result
+    }
 
     // Length == 4
 	b3 := dataof[3]
 	if !(LoCB <= b3 && b3 <= HiCB)
-        return @{CharError, 1}
-	return @{(p0 & Mask4) << 18 | (b1 & MaskX) << 12 | (b2 & MaskX) << 6 | (b3 & MaskX), 4}
+    {
+        result.c = CharError
+        result.eat = 1
+        return result
+    }
+
+	result.c = (p0 & Mask4) << 18 | (b1 & MaskX) << 12 | (b2 & MaskX) << 6 | (b3 & MaskX)
+    result.eat = 4
+    return result
 }
 
 public enum ComparisonType
