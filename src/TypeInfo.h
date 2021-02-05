@@ -509,6 +509,7 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName);
     TypeInfoParam* hasInterface(TypeInfoStruct* itf);
     TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);
+    Utf8           getDisplayName();
 
     VectorNative<TypeInfoParam*> genericParameters;
     VectorNative<TypeInfoParam*> fields;

@@ -23,7 +23,9 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
     SWAG_VERIFY(typeVar->kind == TypeInfoKind::Struct, context->report({varDecl, varDecl->token, format("cannot unpack type '%s' which is not a struct", typeVar->name.c_str())}));
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-
+    auto numUnpack  = scopeNode->childs.size() - 1;
+    SWAG_VERIFY(typeStruct->fields.size(), context->report({varDecl, varDecl->token, format("cannot unpack %s because it does not contain any field", typeStruct->getDisplayName().c_str())}));
+    SWAG_VERIFY(numUnpack <= typeStruct->fields.size(), context->report({varDecl, varDecl->token, format("attempt to unpack '%u' variables, but %s contains only '%u' field(s)", numUnpack, typeStruct->getDisplayName().c_str(), typeStruct->fields.size())}));
     return true;
 }
 

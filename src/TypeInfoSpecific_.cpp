@@ -941,6 +941,16 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     return true;
 }
 
+Utf8 TypeInfoStruct::getDisplayName()
+{
+    Utf8 typeName;
+    if (flags & TYPEINFO_STRUCT_IS_TUPLE)
+        typeName = "tuple";
+    else
+        typeName = format("struct '%s'", name.c_str());
+    return typeName;
+}
+
 void TypeInfoStruct::computeScopedName()
 {
     unique_lock lk(mutex);

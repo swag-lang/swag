@@ -11,10 +11,7 @@ func toto()->AA
     return result
 }
 
-func titi() => 0
-
 #test
 {
-    var x, y: s32
-    (x, y) = titi()
+    (x, y) := toto()
 }
