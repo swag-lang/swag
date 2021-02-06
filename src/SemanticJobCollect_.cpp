@@ -253,12 +253,7 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(JobContext* context, uint32_t b
         if (child->flags & AST_GENERATED)
             continue;
 
-        if (child->kind == AstNodeKind::ExpressionList)
-        {
-            SWAG_CHECK(collectLiteralsToSegmentNoLock(context, baseOffset, offset, child, segment));
-            continue;
-        }
-
+        // In case of a struct to field match
         auto typeInfo    = child->typeInfo;
         auto assignement = child;
         if (child->kind == AstNodeKind::FuncCallParam)
