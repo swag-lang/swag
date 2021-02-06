@@ -5,7 +5,7 @@ using core
 #test
 {
     var str: String = "toto"
-    u := utf16.fromUtf8(str.toString())
+    u := utf16.fromUtf8(str)
 
     v := 0
     switch v

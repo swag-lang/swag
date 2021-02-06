@@ -65,15 +65,16 @@ func fromUtf8(dest: [..] u16, src: const [..] u8)->u32
     srcPtr := @dataof(src)
     destPtr := @dataof(dest)
     srcLength := @countof(src)
+    destLength := @countof(dest)
 
     (c, eat) := utf8.decodeChar(src)
     while eat != 0
     {
-        debug.assert(count != @countof(dest), "destination buffer is too small")
-        debug.assert(c <= autocast swag.MaxU16, "utf8 character overflow")
+        debug.assert(count != destLength, "destination buffer is too small")
 
-        :destPtr = cast(u16) c
-        destPtr, count += 1
+        eatDest := encodeChar(@mkslice(destPtr, destLength), c)
+        destPtr, count += eatDest
+        destLength -= eatDest
 
         srcPtr += eat
         srcLength -= eat
@@ -87,7 +88,7 @@ func fromUtf8(dest: [..] u16, src: const [..] u8)->u32
 func fromUtf8(src: const [..] u8)->Array'u16
 {
     var result: retval
-    result.reserve(@countof(src))
-    result.count = fromUtf8(@mkslice(result.buffer, @countof(src)), src)
+    result.reserve(2 * @countof(src))
+    result.count = fromUtf8(@mkslice(result.buffer, result.capacity), src)
     return result
 }

@@ -12,6 +12,7 @@ var t: [] struct {
     {[0xd800, "a"'u16], 0xfffd},
 ]
 
+//#[swag.printbc]
 #test
 {
     visit *p: t
