@@ -259,14 +259,21 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(JobContext* context, uint32_t b
             continue;
         }
 
+        auto typeInfo    = child->typeInfo;
+        auto assignement = child;
         if (child->kind == AstNodeKind::FuncCallParam)
         {
             auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
             if (param->resolvedParameter)
-                offset = baseOffset + param->resolvedParameter->offset;
+            {
+                offset   = baseOffset + param->resolvedParameter->offset;
+                typeInfo = param->resolvedParameter->typeInfo;
+            }
+
+            assignement = child->childs.front();
         }
 
-        SWAG_CHECK(storeToSegmentNoLock(context, offset, segment, &child->computedValue, child->typeInfo, child));
+        SWAG_CHECK(storeToSegmentNoLock(context, offset, segment, &child->computedValue, typeInfo, assignement));
 
         // castOffset can store the padding between one field and one other, in case we collect for a struct
         if (child->castOffset)
