@@ -108,6 +108,27 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
         return true;
     }
 
+    if (typeInfo->kind == TypeInfoKind::Slice)
+    {
+        if (assignment)
+        {
+            SWAG_VERIFY(assignment->kind == AstNodeKind::ExpressionList, context->report({assignment, "expression cannot be evaluated at compile time"}));
+            SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, "expression cannot be evaluated at compile time"}));
+
+            // Store value in constant segment
+            uint32_t storageOffsetValue;
+            SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, storageOffsetValue, &module->constantSegment, value, assignment->typeInfo, assignment));
+
+            // Then setup the pointer to that data, and the data count
+            auto ptrStorage                        = module->constantSegment.addressNoLock(storageOffsetValue);
+            *(void**) ptrDest                      = ptrStorage;
+            *(uint64_t*) (ptrDest + sizeof(void*)) = assignment->childs.size();
+            seg->addInitPtr(storageOffset, storageOffsetValue, SegmentKind::Constant);
+        }
+
+        return true;
+    }
+
     if (assignment && assignment->kind == AstNodeKind::FuncCallParams)
     {
         SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, "expression cannot be evaluated at compile time"}));

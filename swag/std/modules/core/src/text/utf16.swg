@@ -92,3 +92,33 @@ func fromUtf8(src: const [..] u8)->Array'u16
     result.count = fromUtf8(@mkslice(result.buffer, result.capacity), src)
     return result
 }
+
+// Convert a character array (32 bits unicode) to an utf16 buffer
+// Returns the number of bytes written in the destination buffer
+// 'dest' must be at least 2 bytes long
+func fromCharArray(dest: [..] u16, src: const [..] char)->uint
+{
+    dataof := @dataof(dest)
+    remain := @countof(dest)
+
+    total := 0'uint
+    visit ch: src
+    {
+        debug.assert(remain >= 2, "destination buffer is too small")
+        slice := @mkslice(dataof + total, remain)
+        cpt := encodeChar(slice, ch)
+        total += cpt
+        remain -= cpt
+    }
+
+    return total
+}
+
+// Convert an utf8 buffer to an utf16 sequence
+func fromCharArray(src: const [..] char)->Array'u16
+{
+    var result: retval
+    result.reserve(2 * @countof(src))
+    result.count = fromCharArray(@mkslice(result.buffer, result.capacity), src)
+    return result
+}
