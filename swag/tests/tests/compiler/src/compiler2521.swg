@@ -1,5 +1,5 @@
 //#[swag.printbc, swag.optim("bc", false)]
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
     visit "toto"

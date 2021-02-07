@@ -24,19 +24,17 @@ bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context, uint64_t whatOn
 void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message)
 {
     PushICFlags ic(context, BCI_SAFETY);
-    auto        r0 = reserveRegisterRC(context);
     if (bits == 8)
-        emitInstruction(context, ByteCodeOp::TestNotZero8, r0, r);
+        emitInstruction(context, ByteCodeOp::JumpIfNotZero8, r)->b.s32 = 1;
     else if (bits == 16)
-        emitInstruction(context, ByteCodeOp::TestNotZero16, r0, r);
+        emitInstruction(context, ByteCodeOp::JumpIfNotZero16, r)->b.s32 = 1;
     else if (bits == 32)
-        emitInstruction(context, ByteCodeOp::TestNotZero32, r0, r);
+        emitInstruction(context, ByteCodeOp::JumpIfNotZero32, r)->b.s32 = 1;
     else if (bits == 64)
-        emitInstruction(context, ByteCodeOp::TestNotZero64, r0, r);
+        emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r)->b.s32 = 1;
     else
         SWAG_ASSERT(false);
-    emitAssert(context, r0, message);
-    freeRegisterRC(context, r0);
+    emitInstruction(context, ByteCodeOp::IntrinsicAssert)->d.pointer = (uint8_t*) message;
 }
 
 void ByteCodeGenJob::emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message, int sizeInBits)
