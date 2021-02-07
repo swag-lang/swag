@@ -185,6 +185,9 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     if (ip->flags & BCI_IMM_D)
         g_Log.print("IMMD ");
 
+    if (ip->flags & BCI_START_STMT)
+        g_Log.print("STMT ");
+
     switch (ip->op)
     {
     case ByteCodeOp::IntrinsicAssert:

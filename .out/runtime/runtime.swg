@@ -149,6 +149,7 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: swag.TypeCmpFlags)->bool
 }
 
 ////////////////////////////////////////////////////////////
+#[swag.safety("", false)]
 func @interfaceof(structType, itfType: const *swag.TypeInfoStruct)->const *void
 {
     loop i: structType.interfaces

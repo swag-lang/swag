@@ -2,6 +2,7 @@
 #include "ByteCodeOptimizer.h"
 #include "TypeInfo.h"
 #include "TypeManager.h"
+#include "SourceFile.h"
 
 // If a CopyRBRA is followed by the same CopyRBRA, and between them there's no write to RA or RB,
 // then the second CopyRBRA is useless
@@ -21,6 +22,15 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
         }
 
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
+
+        // CopyRBRA X, Y followed by CopyRBRA Y, X
+        if (ip->op == ByteCodeOp::CopyRBtoRA &&
+            ip[1].op == ByteCodeOp::CopyRBtoRA &&
+            ip->a.u32 == ip[1].b.u32 &&
+            ip->b.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+        }
 
         if (ip[0].op == ByteCodeOp::CopyRBtoRA)
         {
@@ -73,6 +83,38 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
             auto it1 = mapCopyRB.find(ip->d.u32);
             if (it1 != mapCopyRB.end())
                 mapCopyRB.erase(it1);
+        }
+
+        // If we use a register that comes from a CopyRBRA, then use the initial
+        // register instead (that way, the Copy can become deadstore and removed later)
+        if (ip[0].op != ByteCodeOp::CopyRBtoRA)
+        {
+            if ((flags & OPFLAG_READ_A) && !(ip->flags & BCI_IMM_A))
+            {
+                auto it = mapCopyRA.find(ip->a.u32);
+                if (it != mapCopyRA.end())
+                {
+                    auto it1 = mapCopyRB.find(it->second->b.u32);
+                    if (it1 != mapCopyRB.end())
+                    {
+                        ip->a.u32                     = it->second->b.u32;
+                        context->passHasDoneSomething = true;
+                    }
+                }
+            }
+            else if ((flags & OPFLAG_READ_B) && !(ip->flags & BCI_IMM_B))
+            {
+                auto it = mapCopyRA.find(ip->b.u32);
+                if (it != mapCopyRA.end())
+                {
+                    auto it1 = mapCopyRB.find(it->second->b.u32);
+                    if (it1 != mapCopyRB.end())
+                    {
+                        ip->b.u32                     = it->second->b.u32;
+                        context->passHasDoneSomething = true;
+                    }
+                }
+            }
         }
     }
 }
