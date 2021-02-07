@@ -8,6 +8,8 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        // MakeStackPointer followed by SetAtPointer, replace with SetAtStackPointer, but
+        // leave the MakeStackPointer which will be removed later (?) if no more used
         if (ip[0].op == ByteCodeOp::MakeStackPointer &&
             ip[1].op == ByteCodeOp::SetAtPointer8 &&
             ip[0].a.u32 == ip[1].a.u32)
