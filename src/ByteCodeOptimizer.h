@@ -39,13 +39,13 @@ struct ByteCodeOptimizer
     {
         if (!isJump(inst))
             return false;
-        if (inst->op == ByteCodeOp::JumpIfNotZero8 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+        if (inst->op == ByteCodeOp::JumpIfNotZero8 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
             return false;
-        if (inst->op == ByteCodeOp::JumpIfNotZero16 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+        if (inst->op == ByteCodeOp::JumpIfNotZero16 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
             return false;
-        if (inst->op == ByteCodeOp::JumpIfNotZero32 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+        if (inst->op == ByteCodeOp::JumpIfNotZero32 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
             return false;
-        if (inst->op == ByteCodeOp::JumpIfNotZero64 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+        if (inst->op == ByteCodeOp::JumpIfNotZero64 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
             return false;
         return true;
     }

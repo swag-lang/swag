@@ -48,41 +48,44 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
             mapCopyRA[ip->a.u32] = ip;
             mapCopyRB[ip->b.u32] = ip;
         }
-        else if ((flags & OPFLAG_WRITE_A) && !(ip->flags & BCI_IMM_A))
+        else
         {
-            auto it = mapCopyRA.find(ip->a.u32);
-            if (it != mapCopyRA.end())
-                mapCopyRA.erase(it);
-            auto it1 = mapCopyRB.find(ip->a.u32);
-            if (it1 != mapCopyRB.end())
-                mapCopyRB.erase(it1);
-        }
-        else if ((flags & OPFLAG_WRITE_B) && !(ip->flags & BCI_IMM_B))
-        {
-            auto it = mapCopyRA.find(ip->b.u32);
-            if (it != mapCopyRA.end())
-                mapCopyRA.erase(it);
-            auto it1 = mapCopyRB.find(ip->b.u32);
-            if (it1 != mapCopyRB.end())
-                mapCopyRB.erase(it1);
-        }
-        else if ((flags & OPFLAG_WRITE_C) && !(ip->flags & BCI_IMM_C))
-        {
-            auto it = mapCopyRA.find(ip->c.u32);
-            if (it != mapCopyRA.end())
-                mapCopyRA.erase(it);
-            auto it1 = mapCopyRB.find(ip->c.u32);
-            if (it1 != mapCopyRB.end())
-                mapCopyRB.erase(it1);
-        }
-        else if ((flags & OPFLAG_WRITE_D) && !(ip->flags & BCI_IMM_D))
-        {
-            auto it = mapCopyRA.find(ip->d.u32);
-            if (it != mapCopyRA.end())
-                mapCopyRA.erase(it);
-            auto it1 = mapCopyRB.find(ip->d.u32);
-            if (it1 != mapCopyRB.end())
-                mapCopyRB.erase(it1);
+            if ((flags & OPFLAG_WRITE_A) && !(ip->flags & BCI_IMM_A))
+            {
+                auto it = mapCopyRA.find(ip->a.u32);
+                if (it != mapCopyRA.end())
+                    mapCopyRA.erase(it);
+                auto it1 = mapCopyRB.find(ip->a.u32);
+                if (it1 != mapCopyRB.end())
+                    mapCopyRB.erase(it1);
+            }
+            if ((flags & OPFLAG_WRITE_B) && !(ip->flags & BCI_IMM_B))
+            {
+                auto it = mapCopyRA.find(ip->b.u32);
+                if (it != mapCopyRA.end())
+                    mapCopyRA.erase(it);
+                auto it1 = mapCopyRB.find(ip->b.u32);
+                if (it1 != mapCopyRB.end())
+                    mapCopyRB.erase(it1);
+            }
+            if ((flags & OPFLAG_WRITE_C) && !(ip->flags & BCI_IMM_C))
+            {
+                auto it = mapCopyRA.find(ip->c.u32);
+                if (it != mapCopyRA.end())
+                    mapCopyRA.erase(it);
+                auto it1 = mapCopyRB.find(ip->c.u32);
+                if (it1 != mapCopyRB.end())
+                    mapCopyRB.erase(it1);
+            }
+            if ((flags & OPFLAG_WRITE_D) && !(ip->flags & BCI_IMM_D))
+            {
+                auto it = mapCopyRA.find(ip->d.u32);
+                if (it != mapCopyRA.end())
+                    mapCopyRA.erase(it);
+                auto it1 = mapCopyRB.find(ip->d.u32);
+                if (it1 != mapCopyRB.end())
+                    mapCopyRB.erase(it1);
+            }
         }
 
         // If we use a register that comes from a CopyRBRA, then use the initial
@@ -125,7 +128,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
                     auto it1 = mapCopyRB.find(it->second->b.u32);
                     if (it1 != mapCopyRB.end())
                     {
-                        ip->c.u32 = it->second->b.u32;
+                        ip->c.u32                     = it->second->b.u32;
                         context->passHasDoneSomething = true;
                     }
                 }
@@ -139,7 +142,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
                     auto it1 = mapCopyRB.find(it->second->b.u32);
                     if (it1 != mapCopyRB.end())
                     {
-                        ip->d.u32 = it->second->b.u32;
+                        ip->d.u32                     = it->second->b.u32;
                         context->passHasDoneSomething = true;
                     }
                 }
