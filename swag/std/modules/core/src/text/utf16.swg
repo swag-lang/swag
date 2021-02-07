@@ -113,7 +113,6 @@ func fromCharArray(dest: [..] u16, src: const [..] char)->uint
 }
 
 // Convert an utf8 buffer to an utf16 sequence
-#[swag.printbc]
 func fromCharArray(src: const [..] char)->Array'u16
 {
     var result: retval
