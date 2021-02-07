@@ -28,6 +28,25 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 setNop(context, ip);
         }
 
+        // Jump to a JumpIfZero, which in turns jumps right after the Jump id really zero
+        // (occurs in loops).
+        // Replace Jump with jumpIfNotZero
+        if (ip->op == ByteCodeOp::Jump && ip->b.s32 < 0)
+        {
+            destIp = ip + ip->b.s32 + 1;
+            if (destIp->op == ByteCodeOp::JumpIfZero64)
+            {
+                auto destIp1 = destIp + destIp->b.s32 + 1;
+                if (destIp1 == ip + 1)
+                {
+                    ip->op = ByteCodeOp::JumpIfNotZero64;
+                    ip->a.u32 = destIp->a.u32;
+                    ip->b.s32 += 1;
+                    context->passHasDoneSomething = true;
+                }
+            }
+        }
+
         // Jump if false to a jump if false with the same register
         if (ip->op == ByteCodeOp::JumpIfFalse)
         {
