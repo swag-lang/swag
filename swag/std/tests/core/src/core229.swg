@@ -12,7 +12,6 @@ var t: [] struct {
 
 //#[swag.printbc]
 #test
-
 {
     visit *p: t
     {
