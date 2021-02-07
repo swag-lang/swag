@@ -8,6 +8,39 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::SetAtPointer8 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            ip[1].op                      = ByteCodeOp::SetAtStackPointer8;
+            ip[1].a.u32                   = ip[0].b.u32;
+            context->passHasDoneSomething = true;
+        }
+        if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::SetAtPointer16 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            ip[1].op                      = ByteCodeOp::SetAtStackPointer16;
+            ip[1].a.u32                   = ip[0].b.u32;
+            context->passHasDoneSomething = true;
+        }
+        if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::SetAtPointer32 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            ip[1].op                      = ByteCodeOp::SetAtStackPointer32;
+            ip[1].a.u32                   = ip[0].b.u32;
+            context->passHasDoneSomething = true;
+        }
+        if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::SetAtPointer64 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            ip[1].op                      = ByteCodeOp::SetAtStackPointer64;
+            ip[1].a.u32                   = ip[0].b.u32;
+            context->passHasDoneSomething = true;
+        }
+
         // GetFromStack8/16/32 clear the other bits by convention, so no need to
         // have a ClearMaskU64 after
         if (ip[0].op == ByteCodeOp::GetFromStack8 &&

@@ -1293,6 +1293,51 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::SetAtStackPointer8:
+        {
+            auto         r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            llvm::Value* r1;
+            if (ip->flags & BCI_IMM_B)
+                r1 = builder.getInt8(ip->b.u8);
+            else
+                r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+            builder.CreateStore(r1, r0);
+            break;
+        }
+        case ByteCodeOp::SetAtStackPointer16:
+        {
+            auto         r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            llvm::Value* r1;
+            if (ip->flags & BCI_IMM_B)
+                r1 = builder.getInt16(ip->b.u16);
+            else
+                r1 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
+            builder.CreateStore(r1, r0);
+            break;
+        }
+        case ByteCodeOp::SetAtStackPointer32:
+        {
+            auto         r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            llvm::Value* r1;
+            if (ip->flags & BCI_IMM_B)
+                r1 = builder.getInt32(ip->b.u32);
+            else
+                r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+            builder.CreateStore(r1, r0);
+            break;
+        }
+        case ByteCodeOp::SetAtStackPointer64:
+        {
+            auto         r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            llvm::Value* r1;
+            if (ip->flags & BCI_IMM_B)
+                r1 = builder.getInt64(ip->b.u64);
+            else
+                r1 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(r1, r0);
+            break;
+        }
+
         case ByteCodeOp::BinOpPlusS32:
         {
             MK_BINOP32_CAB();

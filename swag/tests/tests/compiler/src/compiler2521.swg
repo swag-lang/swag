@@ -2,7 +2,7 @@
 #[swag.printbc]
 #test
 {
-    loop "toto"
+    visit "toto"
     {
         @print("x")
     }

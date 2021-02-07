@@ -1824,6 +1824,39 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
             break;
 
+        case ByteCodeOp::SetAtStackPointer8:
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
+            else
+                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            BackendX64Inst::emit_Store8_Indirect(pp, 0, RCX, RAX);
+            break;
+        case ByteCodeOp::SetAtStackPointer16:
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
+            else
+                BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            BackendX64Inst::emit_Store16_Indirect(pp, 0, RCX, RAX);
+            break;
+        case ByteCodeOp::SetAtStackPointer32:
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
+            else
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            BackendX64Inst::emit_Store32_Indirect(pp, 0, RCX, RAX);
+            break;
+        case ByteCodeOp::SetAtStackPointer64:
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
+            break;
+
         case ByteCodeOp::MakeStackPointer:
             BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);

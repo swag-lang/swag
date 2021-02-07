@@ -1654,6 +1654,31 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::SetAtStackPointer8:
+    {
+        auto ptr        = context->bp + ip->a.u32;
+        *(uint8_t*) ptr = IMMB_U8(ip);
+        break;
+    }
+    case ByteCodeOp::SetAtStackPointer16:
+    {
+        auto ptr         = context->bp + ip->a.u32;
+        *(uint16_t*) ptr = IMMB_U16(ip);
+        break;
+    }
+    case ByteCodeOp::SetAtStackPointer32:
+    {
+        auto ptr         = context->bp + ip->a.u32;
+        *(uint32_t*) ptr = IMMB_U32(ip);
+        break;
+    }
+    case ByteCodeOp::SetAtStackPointer64:
+    {
+        auto ptr         = context->bp + ip->a.u32;
+        *(uint64_t*) ptr = IMMB_U64(ip);
+        break;
+    }
+
     case ByteCodeOp::CompareOpEqual8:
     {
         registersRC[ip->c.u32].b = IMMA_U8(ip) == IMMB_U8(ip);
