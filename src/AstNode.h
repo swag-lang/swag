@@ -366,6 +366,7 @@ struct AstNode
         ByteCodeGenJob*                byteCodeJob;
         ByteCode*                      bc;
         SymbolOverload*                resolvedUserOpSymbolOverload;
+        TypeInfo*                      collectTypeInfo;
     };
 
     shared_mutex           mutex;

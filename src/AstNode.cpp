@@ -371,6 +371,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extension->byteCodeAfterFct             = from->extension->byteCodeAfterFct;
         extension->bc                           = from->extension->bc;
         extension->resolvedUserOpSymbolOverload = from->extension->resolvedUserOpSymbolOverload;
+        extension->collectTypeInfo              = from->extension->collectTypeInfo;
     }
 
     computedValue           = from->computedValue;

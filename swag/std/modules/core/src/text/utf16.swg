@@ -47,7 +47,7 @@ func encodeChar(dest: [..] u16, src: char)->u32
 
         case SurrSelf <= src && src <= 0x10FFFF:
             r := src - SurrSelf
-	        dest[0] = Surr1 + (r >> 10) & 0x3ff
+	        dest[0] = Surr1 + ((r >>% 10) & 0x3ff)
             dest[1] = Surr2 + (r & 0x3ff)
             return 2
 
@@ -101,17 +101,15 @@ func fromCharArray(dest: [..] u16, src: const [..] char)->uint
     dataof := @dataof(dest)
     remain := @countof(dest)
 
-    total := 0'uint
     visit ch: src
     {
         debug.assert(remain >= 2, "destination buffer is too small")
-        slice := @mkslice(dataof + total, remain)
-        cpt := encodeChar(slice, ch)
-        total += cpt
+        cpt := encodeChar(@mkslice(dataof, remain), ch)
+        dataof += cpt
         remain -= cpt
     }
 
-    return total
+    return cast(uint) (dataof - @dataof(dest))
 }
 
 // Convert an utf8 buffer to an utf16 sequence

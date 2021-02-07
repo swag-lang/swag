@@ -253,8 +253,13 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(JobContext* context, uint32_t b
         if (child->flags & AST_GENERATED)
             continue;
 
+        auto typeInfo = child->typeInfo;
+
+        // Special type when collecting (like an array collected to a slice)
+        if (child->extension && child->extension->collectTypeInfo)
+            typeInfo = child->extension->collectTypeInfo;
+
         // In case of a struct to field match
-        auto typeInfo    = child->typeInfo;
         auto assignement = child;
         if (child->kind == AstNodeKind::FuncCallParam)
         {
