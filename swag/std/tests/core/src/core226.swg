@@ -14,7 +14,8 @@ using core
     }
 
     {
-        cur := directory.getCurrent()
+        (cur, ?) := directory.getCurrent()
+
         (full, err) := path.getAbsolute("..")
         @assert(!err)
 

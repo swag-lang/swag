@@ -95,14 +95,25 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
 }
 
 // Returns the current directory
-func getCurrent()->String
+func getCurrent()->{name: String, err: ErrorId}
 {
     var result: retval
+    length := GetCurrentDirectoryW(0, null)
+    if !length
+    {
+        error.setLastErrorId()
+        result.err = error.last()
+        return result
+    }
 
-    length := GetCurrentDirectoryA(0, null)
-    result.reserve(cast(uint) length + 1)
-    result.length = GetCurrentDirectoryA(length + 1, result.buffer)
-    path.normalize(result)
+    var arr16: Array'u16
+    arr16.allocator = @getcontext().tempAllocator
+
+    arr16.reserve(cast(uint) length + 1)
+    arr16.count = GetCurrentDirectoryW(length + 1, @dataof(arr16))
+
+    result.name = utf8.fromUtf16(arr16.toSlice())
+    path.normalize(result.name)
     return result
 }
 
