@@ -1279,7 +1279,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
             if (numRegs == 1)
             {
-                emitInstruction(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0], 0);
+                emitInstruction(context, ByteCodeOp::CopyRTtoRC, node->resultRegisterRC[0]);
             }
             else
             {

@@ -2151,7 +2151,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::CopyRTtoRC:
-            BackendX64Inst::emit_Load64_Indirect(pp, offsetRT + regOffset(ip->b.u32), RAX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, offsetRT + regOffset(0), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::CopyRTtoRC2:
