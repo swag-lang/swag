@@ -15,7 +15,7 @@ var t: [] struct {
 {
     visit *p: t
     {
-        r := fromCharArray(p.in)
+        r := fromUnicode(p.in)
         @assert(r.count == @countof(p.out))
         @assert(@memcmp(r.buffer, p.out, @countof(p.out) * 2) == 0)
     }

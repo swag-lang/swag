@@ -9,7 +9,6 @@ const SurrSelf  = 0x10000
 
 // Get the unicode character pointed by 'buffer', and the number of u16 to encode it
 // Will return 'CharError' for an invalid utf16 sequence
-//#[swag.printbc]
 func decodeChar(buffer: const [..] u16) -> {c: char, eat: u32}
 {
     var result: retval
@@ -96,7 +95,7 @@ func fromUtf8(src: const [..] u8)->Array'u16
 // Convert a character array (32 bits unicode) to an utf16 buffer
 // Returns the number of bytes written in the destination buffer
 // 'dest' must be at least 2 bytes long
-func fromCharArray(dest: [..] u16, src: const [..] char)->uint
+func fromUnicode(dest: [..] u16, src: const [..] char)->uint
 {
     dataof := @dataof(dest)
     remain := @countof(dest)
@@ -113,10 +112,10 @@ func fromCharArray(dest: [..] u16, src: const [..] char)->uint
 }
 
 // Convert an utf8 buffer to an utf16 sequence
-func fromCharArray(src: const [..] char)->Array'u16
+func fromUnicode(src: const [..] char)->Array'u16
 {
     var result: retval
     result.reserve(2 * @countof(src))
-    result.count = fromCharArray(@mkslice(result.buffer, result.capacity), src)
+    result.count = fromUnicode(@mkslice(result.buffer, result.capacity), src)
     return result
 }

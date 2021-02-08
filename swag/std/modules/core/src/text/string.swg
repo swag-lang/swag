@@ -490,7 +490,7 @@ impl String
             uni32 := unicode.fromUtf8(toString())
             unicode.makeUpper(uni32.toSlice())
             reserve(uni32.count * 4)
-            length = utf8.fromCharArray(@mkslice(buffer, capacity), uni32.toSlice())
+            length = utf8.fromUnicode(@mkslice(buffer, capacity), uni32.toSlice())
         }
     }
 
@@ -509,7 +509,7 @@ impl String
             uni32 := unicode.fromUtf8(toString())
             unicode.makeLower(uni32.toSlice())
             reserve(uni32.count * 4)
-            length = utf8.fromCharArray(@mkslice(buffer, capacity), uni32.toSlice())
+            length = utf8.fromUnicode(@mkslice(buffer, capacity), uni32.toSlice())
         }
     }
 

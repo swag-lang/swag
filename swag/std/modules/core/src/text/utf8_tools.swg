@@ -1,6 +1,106 @@
 #global public
 #global namespace utf8
 
+// Returns the number of bytes to encode the first character of the
+// utf8 buffer.
+// If it's an invalid encoding, returns 1.
+func countBytesAt(buffer: const [..] u8)->u32
+{
+    dataof := @dataof(buffer)
+    countof := @countof(buffer)
+    if !countof
+        return 1
+
+    p0 := cast(char) :dataof
+
+    // Ascii
+    if (p0 & 0x80) == 0
+        return 1
+
+    // Invalid first byte
+    x := First[cast(u8) p0]
+    if x == XX
+        return 1
+
+    // Be sure input buffer is large enough to hold the requested
+    // encoded size
+    sz := x & 7
+	if countof < sz
+        return 1
+
+	accept := AcceptRanges[x >>% 4]
+
+	b1 := dataof[1]
+	if !(accept.lo <= b1 && b1 <= accept.hi)
+        return 1
+	if sz <= 2
+        return 2
+
+	b2 := dataof[2]
+    if !(LoCB <= b2 && b2 <= HiCB)
+        return 1
+	if sz <= 3
+        return 3
+
+	b3 := dataof[3]
+	if !(LoCB <= b3 && b3 <= HiCB)
+        return 1
+	return 4
+}
+
+// Returns the byte index of the given character index
+func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success: bool}
+{
+    var result: retval
+
+    countof := @countof(buffer)
+    if !countof
+        return result
+
+    if !charIndex
+    {
+        result.success = true
+        return result
+    }
+
+    dataof := @dataof(buffer)
+
+    resultChar := 0'uint
+    resultByte := 0'uint
+    while countof && resultChar != charIndex
+    {
+        val := countBytesAt(@mkslice(dataof, countof))
+        debug.assert(val <= countof, "invalid utf8 character")
+        resultByte += val
+        resultChar += 1
+        dataof += val
+        countof -= val
+    }
+
+    result.index = resultByte
+    result.success = resultByte < @countof(buffer)
+    return result
+}
+
+// Returns the number of unicode characters in an utf8 buffer
+func countChars(buffer: const [..] u8)->uint
+{
+    dataof := @dataof(buffer)
+    countof := @countof(buffer)
+
+    cpt := 0'uint
+    while countof
+    {
+        val := countBytesAt(@mkslice(dataof, countof))
+        debug.assert(val <= countof)
+        cpt += 1
+        dataof += val
+        countof -= val
+    }
+
+    return cpt
+}
+
 // Find the first occurence of character 'what', and returns the byte index of it
 // Returns swag.MaxUINT if not found
 func indexOf(src: const [..] u8, what: char, startByteIndex = 0'uint)->uint
@@ -260,4 +360,179 @@ func eatTo(src: const [..] u8, delimiter: u8, startByteIndex = 0'uint, includeDe
     }
 
     return @mkslice(dataof, 0)
+}
+
+public enum ComparisonType
+{
+    Latin1
+    Latin1NoCase
+    Unicode
+    UnicodeNoCase
+}
+
+// Compare two utf8 buffers with the given algorithm
+func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s32
+{
+    using ComparisonType
+
+    #[swag.complete]
+    switch comparisonType
+    {
+    case Latin1:
+        return latin1.compare(src, dst) // bytes compare
+
+    case Latin1NoCase:
+        return latin1.compare(src, dst, ignoreCase: true)
+
+    case Unicode:
+        return latin1.compare(src, dst) // bytes compare
+
+    case UnicodeNoCase:
+        length := @countof(src)
+        otherLength := @countof(dst)
+        data := @dataof(src)
+        otherData := @dataof(dst)
+
+        var result: s32
+        var c1, c2: char
+        var eat1, eat2: u32
+        while true
+        {
+            (c1, eat1) = decodeChar(@mkslice(data, length))
+            (c2, eat2) = decodeChar(@mkslice(otherData, otherLength))
+            if eat1 == 0 || eat2 == 0
+                break
+
+            if c1 != c2
+            {
+                c1 = unicode.toLower(c1)
+                c2 = unicode.toLower(c2)
+                result = cast(s32) c1 - cast(s32) c2
+                if result != 0
+                    return math.sign(result)
+            }
+
+            length -= eat1
+            otherLength -= eat2
+            data += eat1
+            otherData += eat2
+        }
+
+        if !eat1 && eat2
+            return -1
+        if eat1 && !eat2
+            return 1
+        return 0
+    }
+
+    return 0
+}
+
+// Macro to visit the unicode characters of the utf8 sequence
+// @alias0 will contain the character
+// @alias1 will contain the byte index of that character within the utf8 sequence
+// @alias2 will contain the character index
+#[swag.macro]
+func visitChars(buffer: const [..] u8, stmt: code)
+{
+    count := @countof(buffer)
+    if !count
+        return
+
+    byteIdx := 0'uint
+    charIdx := 0'uint
+    scan := @dataof(buffer)
+    while count
+    {
+        slice := @mkslice(scan, count)
+        (c, eat) := decodeChar(slice)
+        if eat == 0
+            break
+        #macro
+        {
+            @alias0 := `c
+            @alias1 := `byteIdx
+            @alias2 := `charIdx
+            #[swag.noreturn]
+            #mixin `stmt
+        }
+
+        charIdx += 1
+        byteIdx += eat
+        scan += eat
+        count -= eat
+    }
+}
+
+// Returns true if the utf8 sequence is valid
+func isValid(buffer: const [..] u8)->bool
+{
+    p := @dataof(buffer)
+    countof := @countof(buffer)
+    if !countof
+        return true
+
+    // Quick zap ascii characters
+    while countof >= 8
+    {
+        first64 := :cast(const *u64) p
+        if first64 & 0x80808080_80808080
+            break
+        p += 8
+        countof -= 8
+    }
+
+    while countof
+    {
+        p0 := cast(char) :p
+
+        // Ascii
+        if (p0 & 0x80) == 0
+        {
+            p += 1
+            countof -= 1
+            continue
+        }
+
+        // Invalid first byte
+        x := First[cast(u8) p0]
+        if x == XX
+            return false
+
+        // Be sure input buffer is large enough to hold the requested
+        // encoded size
+        sz := x & 7
+        if countof < sz
+            return false
+
+        accept := AcceptRanges[x >>% 4]
+
+        b1 := p[1]
+        if !(accept.lo <= b1 && b1 <= accept.hi)
+            return false
+        if sz <= 2
+        {
+            p += 2
+            countof -= 2
+            continue
+        }
+
+        b2 := p[2]
+        if !(LoCB <= b2 && b2 <= HiCB)
+            return false
+        if sz <= 3
+        {
+            p += 3
+            countof -= 3
+            continue
+        }
+
+        b3 := p[3]
+        if !(LoCB <= b3 && b3 <= HiCB)
+            return false
+        p += 4
+        countof -= 4
+    }
+
+    return true
 }
