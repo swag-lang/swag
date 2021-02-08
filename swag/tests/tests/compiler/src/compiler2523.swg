@@ -1,4 +1,4 @@
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
     x := "toto"

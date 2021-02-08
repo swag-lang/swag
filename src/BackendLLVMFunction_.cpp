@@ -1191,14 +1191,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(pp.cst0_i64, r0);
             break;
         }
-        case ByteCodeOp::ClearRA2:
-        {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            builder.CreateStore(pp.cst0_i64, r0);
-            r0 = GEP_I32(allocR, ip->b.u32);
-            builder.CreateStore(pp.cst0_i64, r0);
-            break;
-        }
 
         case ByteCodeOp::IncrementRA32:
         {

@@ -608,7 +608,8 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     {
         transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
-        emitInstruction(context, ByteCodeOp::ClearRA2, exprNode->resultRegisterRC[0], exprNode->resultRegisterRC[1]);
+        emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[0]);
+        emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
         exprNode->semFlags |= AST_SEM_TYPE_IS_NULL;
         return true;
     }

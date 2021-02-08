@@ -32,15 +32,6 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
             setNop(context, ip + 1);
         }
 
-        // ClearRA2
-        if (ip->op == ByteCodeOp::ClearRA2 &&
-            ip[1].op == ByteCodeOp::ClearRA2 &&
-            ip->a.u32 == ip[1].a.u32 &&
-            ip->b.u32 == ip[1].b.u32)
-        {
-            setNop(context, ip + 1);
-        }
-
         if (ip[0].op == ByteCodeOp::CopyRBtoRA)
         {
             auto it = mapCopyRA.find(ip->a.u32);
