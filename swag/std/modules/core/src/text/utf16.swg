@@ -66,18 +66,17 @@ func fromUtf8(dest: [..] u16, src: const [..] u8)->uint
     srcLength := @countof(src)
     destLength := @countof(dest)
 
-    (c, eat) := utf8.decodeChar(src)
-    while eat != 0
+    while srcLength
     {
-        debug.assert(count != destLength, "destination buffer is too small")
+        (c, eat) := utf8.decodeChar(@mkslice(srcPtr, srcLength))
 
+        debug.assert(destLength >= 2, "destination buffer is too small")
         eatDest := encodeChar(@mkslice(destPtr, destLength), c)
         destPtr, count += eatDest
         destLength -= eatDest
 
         srcPtr += eat
         srcLength -= eat
-        (c, eat) = utf8.decodeChar(@mkslice(srcPtr, srcLength))
     }
 
     return count
