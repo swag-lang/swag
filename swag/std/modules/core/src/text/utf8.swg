@@ -279,12 +279,12 @@ func fromUnicode(dest: [..] u8, src: const [..] char)->uint
     return total
 }
 
-// Convert an unicode buffer to an utf8 sequence
-func fromUnicode(src: const [..] char)->Array'u8
+// Convert an unicode buffer to a String
+func fromUnicode(src: const [..] char)->String
 {
     var result: retval
     result.reserve(4 * @countof(src))
-    result.count = fromUnicode(@mkslice(result.buffer, result.capacity), src)
+    result.length = fromUnicode(@mkslice(result.buffer, result.capacity), src)
     return result
 }
 
@@ -315,12 +315,12 @@ func fromUtf16(dest: [..] u8, src: const [..] u16)->uint
     return count
 }
 
-// Convert an utf16 buffer to an utf8 sequence
-func fromUtf16(src: const [..] u16)->Array'u8
+// Convert an utf16 buffer to a String
+func fromUtf16(src: const [..] u16)->String
 {
     var result: retval
     result.reserve(4 * @countof(src))
-    result.count = fromUtf16(@mkslice(result.buffer, result.capacity), src)
+    result.length = fromUtf16(@mkslice(result.buffer, result.capacity), src)
     return result
 }
 

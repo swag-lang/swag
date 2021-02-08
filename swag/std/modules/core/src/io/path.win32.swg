@@ -119,8 +119,12 @@ func getAbsolute(fullname: string) -> {name: String, err: ErrorId }
 {
     var result: retval
 
-    result.name.reserve(100)
-    res := cast(uint) GetFullPathNameA(@dataof(fullname), cast(DWORD) result.name.capacity, result.name.buffer, null)
+    var tmpArr: Array'u16
+    tmpArr.allocator = @getcontext().tempAllocator
+    tmpArr.reserve(100)
+
+    winPath := path.toWin16(fullname)
+    res := cast(uint) GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
     if res == 0
     {
         error.setLastErrorId()
@@ -130,8 +134,8 @@ func getAbsolute(fullname: string) -> {name: String, err: ErrorId }
 
     if(res >= 100)
     {
-        result.name.reserve(res + 1)
-        res = cast(uint) GetFullPathNameA(@dataof(fullname), cast(DWORD) result.name.capacity, result.name.buffer, null)
+        tmpArr.reserve(res + 1)
+        res = cast(uint) GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
         if res == 0
         {
             error.setLastErrorId()
@@ -140,7 +144,8 @@ func getAbsolute(fullname: string) -> {name: String, err: ErrorId }
         }
     }
 
-    result.name.length = res
+    tmpArr.count = res
+    result.name = utf8.fromUtf16(tmpArr.toSlice())
     normalize(result.name)
     return result
 }
