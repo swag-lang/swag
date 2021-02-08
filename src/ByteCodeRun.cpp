@@ -952,14 +952,14 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::PushRR:
     {
-        SWAG_ASSERT(ip->a.u32 < ByteCodeRunContext::MAX_ALLOC_RR);
-        context->push(registersRR[ip->a.u32].u64);
+        context->push(registersRR[0].u64);
+        context->push(registersRR[1].u64);
         break;
     }
     case ByteCodeOp::PopRR:
     {
-        SWAG_ASSERT(ip->a.u32 < ByteCodeRunContext::MAX_ALLOC_RR);
-        registersRR[ip->a.u32].u64 = context->pop<uint64_t>();
+        registersRR[1].u64 = context->pop<uint64_t>();
+        registersRR[0].u64 = context->pop<uint64_t>();
         break;
     }
 

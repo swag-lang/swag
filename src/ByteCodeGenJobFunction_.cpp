@@ -922,7 +922,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         node->ownerFct->returnType->typeInfo &&
         (node->ownerFct->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
     {
-        emitInstruction(context, ByteCodeOp::PushRR, 0);
+        emitInstruction(context, ByteCodeOp::PushRR);
         rr0Saved = true;
     }
 
@@ -1301,7 +1301,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // If we are in a function that need to keep the RR0 register alive, we need to restore it
     if (rr0Saved)
     {
-        emitInstruction(context, ByteCodeOp::PopRR, 0);
+        emitInstruction(context, ByteCodeOp::PopRR);
     }
 
     // This is usefull when function call is inside an expression like func().something
