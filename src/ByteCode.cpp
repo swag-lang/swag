@@ -139,37 +139,35 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     auto opFlags = g_ByteCodeOpFlags[(int) ip->op];
     if (opFlags & OPFLAG_WRITE_A)
         g_Log.print(format("A [%u] ", ip->a.u32));
-    if (opFlags & OPFLAG_WRITE_B)
-        g_Log.print(format("B [%u] ", ip->b.u32));
-    if (opFlags & OPFLAG_WRITE_C)
-        g_Log.print(format("C [%u] ", ip->c.u32));
-    if (opFlags & OPFLAG_WRITE_D)
-        g_Log.print(format("D [%u] ", ip->d.u32));
-
     if (opFlags & OPFLAG_READ_A && !(ip->flags & BCI_IMM_A))
         g_Log.print(format("A (%u) ", ip->a.u32));
-    if (opFlags & OPFLAG_READ_B && !(ip->flags & BCI_IMM_B))
-        g_Log.print(format("B (%u) ", ip->b.u32));
-    if (opFlags & OPFLAG_READ_C && !(ip->flags & BCI_IMM_C))
-        g_Log.print(format("C (%u) ", ip->c.u32));
-    if (opFlags & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D))
-        g_Log.print(format("D (%u) ", ip->d.u32));
-
     if (opFlags & OPFLAG_READ_VAL32_A)
         g_Log.print(format("A {0x%X} ", ip->a.u32));
     else if (opFlags & OPFLAG_READ_VAL64_A || (ip->flags & BCI_IMM_A))
         g_Log.print(format("A {0x%llx} ", ip->a.u64));
 
+    if (opFlags & OPFLAG_WRITE_B)
+        g_Log.print(format("B [%u] ", ip->b.u32));
+    if (opFlags & OPFLAG_READ_B && !(ip->flags & BCI_IMM_B))
+        g_Log.print(format("B (%u) ", ip->b.u32));
     if (opFlags & OPFLAG_READ_VAL32_B)
         g_Log.print(format("B {0x%x} ", ip->b.u32));
     else if (opFlags & OPFLAG_READ_VAL64_B || (ip->flags & BCI_IMM_B))
         g_Log.print(format("B {0x%llx} ", ip->b.u64));
 
+    if (opFlags & OPFLAG_WRITE_C)
+        g_Log.print(format("C [%u] ", ip->c.u32));
+    if (opFlags & OPFLAG_READ_C && !(ip->flags & BCI_IMM_C))
+        g_Log.print(format("C (%u) ", ip->c.u32));
     if (opFlags & OPFLAG_READ_VAL32_C)
         g_Log.print(format("C {0x%x} ", ip->c.u32));
     else if (opFlags & OPFLAG_READ_VAL64_C || (ip->flags & BCI_IMM_C))
         g_Log.print(format("C {0x%llx} ", ip->c.u64));
 
+    if (opFlags & OPFLAG_WRITE_D)
+        g_Log.print(format("D [%u] ", ip->d.u32));
+    if (opFlags & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D))
+        g_Log.print(format("D (%u) ", ip->d.u32));
     if (opFlags & OPFLAG_READ_VAL32_D)
         g_Log.print(format("D {0x%x} ", ip->d.u32));
     else if (opFlags & OPFLAG_READ_VAL64_D || (ip->flags & BCI_IMM_D))
