@@ -123,9 +123,16 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
             emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
             return true;
         case NativeTypeKind::String:
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1[1]);
-            emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r0[0], r0[1], r1[0], r2);
-            emitInstruction(context, ByteCodeOp::NegBool, r2);
+            if (right->semFlags & AST_SEM_TYPE_IS_NULL)
+            {
+                emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
+            }
+            else
+            {
+                emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1[1]);
+                emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r0[0], r0[1], r1[0], r2);
+                emitInstruction(context, ByteCodeOp::NegBool, r2);
+            }
             return true;
         default:
             return internalError(context, "emitCompareOpNotEqual, type not supported");
