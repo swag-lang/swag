@@ -58,9 +58,9 @@ func encodeChar(dest: [..] u16, src: char)->u32
 
 // Convert an utf8 buffer to a utf16 buffer, and returns the
 // number of valid elements in the destination buffer
-func fromUtf8(dest: [..] u16, src: const [..] u8)->u32
+func fromUtf8(dest: [..] u16, src: const [..] u8)->uint
 {
-    count := 0'u32
+    count := 0'uint
     srcPtr := @dataof(src)
     destPtr := @dataof(dest)
     srcLength := @countof(src)

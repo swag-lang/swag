@@ -279,6 +279,52 @@ func fromUnicode(dest: [..] u8, src: const [..] char)->uint
     return total
 }
 
+// Convert an unicode buffer to an utf8 sequence
+func fromUnicode(src: const [..] char)->Array'u8
+{
+    var result: retval
+    result.reserve(4 * @countof(src))
+    result.count = fromUnicode(@mkslice(result.buffer, result.capacity), src)
+    return result
+}
+
+// Convert an utf16 array to an utf8 buffer
+// Returns the number of bytes written in the destination buffer
+// 'dest' must be at least 4 bytes long
+func fromUtf16(dest: [..] u8, src: const [..] u16)->uint
+{
+    count := 0'uint
+    srcPtr := @dataof(src)
+    destPtr := @dataof(dest)
+    srcLength := @countof(src)
+    destLength := @countof(dest)
+
+    (c, eat) := utf16.decodeChar(src)
+    while eat != 0
+    {
+        debug.assert(count != destLength, "destination buffer is too small")
+
+        eatDest := encodeChar(@mkslice(destPtr, destLength), c)
+        destPtr, count += eatDest
+        destLength -= eatDest
+
+        srcPtr += eat
+        srcLength -= eat
+        (c, eat) = utf16.decodeChar(@mkslice(srcPtr, srcLength))
+    }
+
+    return count
+}
+
+// Convert an utf16 buffer to an utf8 sequence
+func fromUtf16(src: const [..] u16)->Array'u8
+{
+    var result: retval
+    result.reserve(4 * @countof(src))
+    result.count = fromUtf16(@mkslice(result.buffer, result.capacity), src)
+    return result
+}
+
 // Returns true if the given unicode character can be encoded in utf8
 func isValidChar(c: char)->bool
 {
