@@ -43,6 +43,19 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             context->passHasDoneSomething = true;
         }
 
+        // Occurs when setting a string.
+        if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+            ip[2].op == ByteCodeOp::IncPointer64 &&
+            ip[3].op == ByteCodeOp::SetAtPointer64 &&
+            ip[0].a.u32 == ip[2].a.u32 &&
+            ip[2].c.u32 == ip[3].a.u32 &&
+            ip[2].flags & BCI_IMM_B)
+        {
+            ip[3].op                      = ByteCodeOp::SetAtStackPointer64;
+            ip[3].a.u32                   = ip[0].b.u32 + ip[2].b.u32;
+            context->passHasDoneSomething = true;
+        }
+
         // GetFromStack8/16/32 clear the other bits by convention, so no need to
         // have a ClearMaskU64 after
         if (ip[0].op == ByteCodeOp::GetFromStack8 &&
