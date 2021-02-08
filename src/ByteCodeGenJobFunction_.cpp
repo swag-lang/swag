@@ -237,7 +237,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 auto numRetReg = returnType->numRegisters();
                 SWAG_ASSERT(numRetReg <= 2);
                 if (numRetReg == 1)
-                    emitInstruction(context, ByteCodeOp::CopyRCtoRR, 0, child->resultRegisterRC[0]);
+                    emitInstruction(context, ByteCodeOp::CopyRCtoRR, child->resultRegisterRC[0]);
                 else if (numRetReg == 2)
                     emitInstruction(context, ByteCodeOp::CopyRCtoRR2, child->resultRegisterRC[0], child->resultRegisterRC[1]);
             }

@@ -964,6 +964,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
 
     case ByteCodeOp::CopyRCtoRR:
+    {
+        registersRR[0] = registersRC[ip->a.u32];
+        break;
+    }
+
     case ByteCodeOp::CopyRCtoRT:
     {
         SWAG_ASSERT(ip->a.u32 < ByteCodeRunContext::MAX_ALLOC_RR);
