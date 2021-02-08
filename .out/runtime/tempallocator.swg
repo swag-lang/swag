@@ -34,9 +34,12 @@ impl IAllocator for TempAllocator
         switch request.mode
         {
         case AllocatorMode.Free:
-            /*ptr := block + used - request.size
+            ptr := block + used - request.size
             if ptr == request.address
-                used = lastUsed*/
+            {
+                used = lastUsed
+                lastUsed = 0
+            }
             break
 
         case AllocatorMode.FreeAll:
@@ -60,8 +63,6 @@ impl IAllocator for TempAllocator
             usedAlign := used & ~(toAlign - 1)
             if usedAlign < used usedAlign += toAlign
 
-            // If not enough room, returns null. The user will have to deal
-            // with that...
             if usedAlign + request.size <= capacity
             {
                 oldAddress := request.address
@@ -75,7 +76,8 @@ impl IAllocator for TempAllocator
             }
             else
             {
-                request.address = null
+                @error("not enough memory in the temporary allocator", #location)
+                @assert(false)
             }
         }
     }

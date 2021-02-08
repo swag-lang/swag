@@ -23,12 +23,12 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
     if dirname == null return result
     if options.matchPattern == null return result
 
-    var findfile:   WIN32_FIND_DATAA
+    var findfile:   WIN32_FIND_DATAW
     var fi:         FileInfo
     var fileTime:   SYSTEMTIME
     var stackPath:  Array'String
 
-    dataof := cast(const *u8) @dataof(findfile.cFileName)
+    dataof := cast(const *u16) @dataof(findfile.cFileName)
 
     stackPath.add(String.from(dirname))
     while !stackPath.isEmpty()
@@ -36,13 +36,14 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
         toScan := stackPath.popBack()
         searchPath := path.combine(toScan.toString(), options.matchPattern)
 
-        h := FindFirstFileA(searchPath.buffer, &findfile);
+        winPath := path.toWin16(searchPath)
+        h := FindFirstFileW(@dataof(winPath), &findfile);
         if h == INVALID_HANDLE_VALUE
             continue
 
         while true
         {
-            filename := @mkstring(dataof, @cstrlen(dataof))
+            filename := utf8.fromUtf16(@mkslice(dataof, path.lenWin16(dataof)))
 
             // Filter by file/folder
             mustAdd := false
@@ -53,7 +54,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
                     mustAdd = options.wantDirectories
                     if options.recurse
                     {
-                        newPath := path.combine(toScan.toString(), filename)
+                        newPath := path.combine(toScan.toString(), filename.toString())
                         stackPath.emplace(&newPath)
                     }
                 }
@@ -69,7 +70,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
                 fi.attributes = FileAttributes.fromDWORD(findfile.dwFileAttributes)
                 if !(fi.attributes & options.skipAttributes)
                 {
-                    fi.fullname = path.combine(toScan, filename)
+                    fi.fullname = path.combine(toScan, filename.toString())
 
                     fi.size = findfile.nFileSizeLow + (cast(u64) findfile.nFileSizeHigh << 32)
                     FileTimeToSystemTime(&findfile.ftCreationTime, &fileTime)
@@ -83,7 +84,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
                 }
             }
 
-            if !FindNextFileA(h, &findfile)
+            if !FindNextFileW(h, &findfile)
                 break
         }
 

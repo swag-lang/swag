@@ -164,3 +164,12 @@ protected func toWin16(src: string)->Array'u16
 
     return result
 }
+
+protected func lenWin16(buf: const *u16)->uint
+{
+    ptr := buf
+    count := 0'uint
+    while :ptr
+        ptr, count += 1
+    return count
+}
