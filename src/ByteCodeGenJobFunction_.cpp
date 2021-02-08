@@ -934,11 +934,11 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         {
             node->resultRegisterRC = reserveRegisterRC(context);
             if (node->ownerInline)
-                emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->ownerInline->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
             else
             {
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
-                emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
             }
 
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
@@ -950,7 +950,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             node->resultRegisterRC = reserveRegisterRC(context);
             auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u64            = node->concreteTypeInfoStorage;
-            emitInstruction(context, ByteCodeOp::CopyRCtoRT, 0, node->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
             if (node->resolvedSymbolOverload)

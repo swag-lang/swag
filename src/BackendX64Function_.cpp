@@ -2136,9 +2136,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::CopyRCtoRT:
-            SWAG_ASSERT(ip->a.u32 <= 1); // Can only return 2 registers
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetRT + regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetRT + regOffset(0), RAX, RDI);
             break;
 
         case ByteCodeOp::CopyRRtoRC:
