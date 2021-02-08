@@ -7,16 +7,21 @@
 
 bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 {
-    auto node     = static_cast<AstVarDecl*>(context->node);
+    auto node = static_cast<AstVarDecl*>(context->node);
+
+    // Debug
+    context->bc->localVars.push_back(context->node);
+
+    // If this variable comes from a tuple unpacking, then we have nothing to generate
+    if (node->assignment && node->assignment->flags & AST_TUPLE_UNPACK)
+        return true;
+
     auto resolved = node->resolvedSymbolOverload;
 
     resolved->flags |= OVERLOAD_EMITTED;
 
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
     bool retVal   = resolved->flags & OVERLOAD_RETVAL;
-
-    // Debug
-    context->bc->localVars.push_back(context->node);
 
     // Initialize the struct, whatever, before the assignment
     if (typeInfo->kind == TypeInfoKind::Struct)

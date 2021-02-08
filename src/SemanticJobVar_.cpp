@@ -714,7 +714,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // inside the tuple, so we do not have to generate bytecode !
         if (node->assignment && node->assignment->flags & AST_TUPLE_UNPACK)
         {
-            node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+            node->flags |= AST_NO_BYTECODE_CHILDS;
             SWAG_ASSERT(node->assignment->kind == AstNodeKind::IdentifierRef);
             symbolFlags |= OVERLOAD_TUPLE_UNPACK;
             storageOffset = 0;
