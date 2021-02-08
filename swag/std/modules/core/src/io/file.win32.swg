@@ -7,7 +7,8 @@ using win32
 func exists(fullname: string)->bool
 {
     if fullname == null return false
-    attributes := GetFileAttributesA(@dataof(fullname))
+    winPath := path.toWin16(fullname)
+    attributes := GetFileAttributesW(@dataof(winPath))
     if attributes == 0xFFFFFFFF return false
     if attributes & FILE_ATTRIBUTE_DIRECTORY return false
     return true
@@ -55,7 +56,8 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     if share & FileShare.Delete
         wShare |= FILE_SHARE_DELETE
 
-    hFile := CreateFileA(@dataof(fullname), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
+    winPath := path.toWin16(fullname)
+    hFile := CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
     if hFile == INVALID_HANDLE_VALUE
     {
         error.setLastErrorId()

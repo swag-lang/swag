@@ -7,7 +7,8 @@ using win32
 func exists(dirname: string)->bool
 {
     if dirname == null return false
-    attributes := GetFileAttributesA(@dataof(dirname))
+    winPath := path.toWin16(dirname)
+    attributes := GetFileAttributesW(@dataof(winPath))
     if attributes == 0xFFFFFFFF return false
     if !(attributes & FILE_ATTRIBUTE_DIRECTORY) return false
     return true
