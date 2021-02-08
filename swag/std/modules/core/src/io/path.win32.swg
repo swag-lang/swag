@@ -115,7 +115,7 @@ func getRootLength(fullname: string)->u32
 }
 
 // Transform 'fullname' to an absolute path
-func getAbsolute(fullname: string) -> {name: String, err: ErrorId }
+func getAbsolute(fullname: string) -> {name: String, err: ErrorId}
 {
     var result: retval
 
@@ -132,6 +132,7 @@ func getAbsolute(fullname: string) -> {name: String, err: ErrorId }
         return result
     }
 
+    // No enough room in destination, give it another try
     if(res >= 100)
     {
         tmpArr.reserve(res + 1)
@@ -150,7 +151,8 @@ func getAbsolute(fullname: string) -> {name: String, err: ErrorId }
     return result
 }
 
-// Convert path a unicode 16, for windows functions in the 'W' form
+// Convert path to an utf16 temporary array, zero terminated
+// For windows functions in the 'W' form
 protected func toWin16(src: string)->Array'u16
 {
     var result: retval
