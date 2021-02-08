@@ -606,9 +606,10 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
 
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
-        transformResultToLinear2(context, exprNode);    
+        transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::ClearRA2, exprNode->resultRegisterRC[0], exprNode->resultRegisterRC[1]);
+        exprNode->semFlags |= AST_SEM_TYPE_IS_NULL;
         return true;
     }
 
@@ -621,7 +622,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         transformResultToLinear2(context, exprNode);
-        node->resultRegisterRC = exprNode->resultRegisterRC;
+        node->resultRegisterRC                                                                     = exprNode->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::SetImmediate64, exprNode->resultRegisterRC[1])->b.u64 = typeArray->count;
         return true;
     }
@@ -674,11 +675,11 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Array)
     {
-        auto fromTypeArray     = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
+        auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
-        auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
-        inst->b.u64 = fromTypeArray->count;
+        auto inst              = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
+        inst->b.u64            = fromTypeArray->count;
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Pointer)
     {

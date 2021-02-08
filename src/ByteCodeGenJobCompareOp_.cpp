@@ -37,8 +37,15 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
             return true;
         case NativeTypeKind::String:
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1[1]);
-            emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r0[0], r0[1], r1[0], r2);
+            if (right->semFlags & AST_SEM_TYPE_IS_NULL)
+            {
+                emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
+            }
+            else
+            {
+                emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1[1]);
+                emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r0[0], r0[1], r1[0], r2);
+            }
             return true;
         default:
             return internalError(context, "emitCompareOpEqual, type not supported");
@@ -411,6 +418,7 @@ bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, uint32_
 bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
+
     if (!(node->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
