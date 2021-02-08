@@ -98,6 +98,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
 func getCurrent()->String
 {
     var result: retval
+
     length := GetCurrentDirectoryA(0, null)
     result.reserve(cast(uint) length + 1)
     result.length = GetCurrentDirectoryA(length + 1, result.buffer)
@@ -108,7 +109,8 @@ func getCurrent()->String
 // Set the current directory
 func setCurrent(dirname: string)->ErrorId
 {
-    if !SetCurrentDirectoryA(@dataof(dirname))
+    winPath := path.toWin16(dirname)
+    if !SetCurrentDirectoryA(@dataof(winPath))
     {
         error.setLastErrorId()
         return error.last()
