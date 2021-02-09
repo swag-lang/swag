@@ -340,7 +340,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicPrint:
     case TokenId::IntrinsicAssert:
     case TokenId::IntrinsicAssertMsg:
-    case TokenId::IntrinsicError:
+    case TokenId::IntrinsicCompilerError:
     case TokenId::IntrinsicFree:
     case TokenId::IntrinsicMemCpy:
     case TokenId::IntrinsicMemMove:
@@ -353,6 +353,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicAtomicXor:
     case TokenId::IntrinsicAtomicXchg:
     case TokenId::IntrinsicAtomicCmpXchg:
+    case TokenId::IntrinsicSetErr:
     case TokenId::SymLeftParen:
     case TokenId::SymColon:
         SWAG_CHECK(doAffectExpression(parent, result));

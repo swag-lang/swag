@@ -184,6 +184,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIndex(parent, result));
         break;
 
+    case TokenId::IntrinsicGetErr:
+        SWAG_CHECK(doGetErr(parent, result));
+        break;
+
     case TokenId::IntrinsicSpread:
     case TokenId::IntrinsicSizeOf:
     case TokenId::IntrinsicAlignOf:
@@ -933,7 +937,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     case TokenId::IntrinsicPrint:
     case TokenId::IntrinsicAssert:
     case TokenId::IntrinsicAssertMsg:
-    case TokenId::IntrinsicError:
+    case TokenId::IntrinsicCompilerError:
     case TokenId::IntrinsicFree:
     case TokenId::IntrinsicMemCpy:
     case TokenId::IntrinsicMemMove:
@@ -946,6 +950,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     case TokenId::IntrinsicAtomicXor:
     case TokenId::IntrinsicAtomicXchg:
     case TokenId::IntrinsicAtomicCmpXchg:
+    case TokenId::IntrinsicSetErr:
         SWAG_CHECK(doIdentifierRef(nullptr, result));
         return true;
     case TokenId::SymLeftParen:

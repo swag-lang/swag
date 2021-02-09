@@ -192,6 +192,9 @@ namespace Ast
         case AstNodeKind::Index:
             CONCAT_FIXED_STR(concat, "@index");
             break;
+        case AstNodeKind::GetErr:
+            CONCAT_FIXED_STR(concat, "@err");
+            break;
         case AstNodeKind::Init:
             CONCAT_FIXED_STR(concat, "@init(");
             SWAG_CHECK(output(context, concat, node->childs.front()));

@@ -120,6 +120,7 @@ struct SyntaxJob : public Job
     bool doInitializationExpression(AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);
     bool doIntrinsicProp(AstNode* parent, AstNode** result = nullptr);
+    bool doGetErr(AstNode* parent, AstNode** result = nullptr);
     bool doIndex(AstNode* parent, AstNode** result = nullptr);
     bool doSinglePrimaryExpression(AstNode* parent, AstNode** result = nullptr);
     bool doPrimaryExpression(AstNode* parent, AstNode** result = nullptr);

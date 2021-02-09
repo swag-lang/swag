@@ -1534,7 +1534,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].b = true;
         break;
     }
-    case ByteCodeOp::IntrinsicError:
+    case ByteCodeOp::IntrinsicCompilerError:
     {
         Utf8 msg;
         msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
@@ -1594,6 +1594,30 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicSetContext:
     {
         Runtime::tlsSetValue(g_tlsContextId, (void*) registersRC[ip->a.u32].pointer);
+        break;
+    }
+    case ByteCodeOp::IntrinsicSetErr:
+    {
+        auto cxt         = (SwagContext*) Runtime::tlsGetValue(g_tlsContextId);
+        auto ptr         = (void*) registersRC[ip->a.u32].pointer;
+        cxt->errorMsgLen = min(MAX_LEN_ERROR_MSG, registersRC[ip->b.u32].u32);
+        memcpy(cxt->errorMsg, ptr, cxt->errorMsgLen);
+        break;
+    }
+    case ByteCodeOp::IntrinsicGetErr:
+    {
+        auto cxt = (SwagContext*) Runtime::tlsGetValue(g_tlsContextId);
+        if (!cxt->errorMsgLen)
+        {
+            registersRC[ip->a.u32].pointer = nullptr;
+            registersRC[ip->b.u32].u64     = 0;
+        }
+        else
+        {
+            registersRC[ip->a.u32].pointer = cxt->errorMsg;
+            registersRC[ip->b.u32].u64     = cxt->errorMsgLen;
+        }
+
         break;
     }
     case ByteCodeOp::IntrinsicPrintF64:

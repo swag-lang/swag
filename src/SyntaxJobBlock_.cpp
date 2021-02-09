@@ -294,6 +294,16 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doGetErr(AstNode* parent, AstNode** result)
+{
+    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::GetErr, sourceFile, parent);
+    node->semanticFct = SemanticJob::resolveGetErr;
+    if (result)
+        *result = node;
+    SWAG_CHECK(tokenizer.getToken(token));
+    return true;
+}
+
 bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, parent);

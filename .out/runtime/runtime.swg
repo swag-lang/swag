@@ -207,6 +207,29 @@ func @args()->[..] string
 }
 
 ////////////////////////////////////////////////////////////
+func @seterr(value: string)
+{
+    cxt := @getcontext()
+    if value == null
+        cxt.errorMsgLen = 0
+    else
+    {
+        len := @countof(value)
+        if len > swag.MaxLenErrorMsg
+            len = swag.MaxLenErrorMsg
+        @memcpy(&cxt.errorMsg[0], @dataof(value), len)
+        cxt.errorMsgLen = cast(u32) len
+    }
+}
+
+func __geterr()->string
+{
+    cxt := @getcontext()
+    if cxt.errorMsgLen == 0 return null
+    return @mkstring(&cxt.errorMsg[0], cxt.errorMsgLen)
+}
+
+////////////////////////////////////////////////////////////
 func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
 {
     contextFlags := @getcontext().flags

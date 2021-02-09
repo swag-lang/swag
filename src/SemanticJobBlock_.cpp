@@ -491,6 +491,14 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveGetErr(SemanticContext* context)
+{
+    auto node         = context->node;
+    node->typeInfo    = g_TypeMgr.typeInfoString;
+    node->byteCodeFct = ByteCodeGenJob::emitGetErr;
+    return true;
+}
+
 bool SemanticJob::resolveIndex(SemanticContext* context)
 {
     auto node = context->node;

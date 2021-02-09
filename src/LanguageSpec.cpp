@@ -130,11 +130,12 @@ void LanguageSpec::setup()
     keywords["@mkforeign"]   = TokenId::IntrinsicMakeForeign;
     keywords["@index"]       = TokenId::IntrinsicIndex;
     keywords["@isconstexpr"] = TokenId::IntrinsicIsConstExpr;
-
+    keywords["@err"]         = TokenId::IntrinsicGetErr;
+    keywords["@seterr"]      = TokenId::IntrinsicSetErr;
     keywords["@print"]       = TokenId::IntrinsicPrint;
     keywords["@assert"]      = TokenId::IntrinsicAssert;
     keywords["@assertmsg"]   = TokenId::IntrinsicAssertMsg;
-    keywords["@error"]       = TokenId::IntrinsicError;
+    keywords["@error"]       = TokenId::IntrinsicCompilerError;
     keywords["@alloc"]       = TokenId::IntrinsicAlloc;
     keywords["@realloc"]     = TokenId::IntrinsicRealloc;
     keywords["@free"]        = TokenId::IntrinsicFree;
