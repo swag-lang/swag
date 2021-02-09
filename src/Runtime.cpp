@@ -282,4 +282,11 @@ namespace Runtime
 #endif
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    void clearContextError()
+    {
+        auto cxt         = (SwagContext*) tlsGetValue(g_tlsContextId);
+        cxt->errorMsgLen = 0;
+    }
+
 } // namespace Runtime

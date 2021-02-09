@@ -22,22 +22,21 @@ impl ScratchAllocator
     }
 
     // Creates a new allocator
-    func create(blockSize: uint, allocator: IAllocator = null)->{res: Self, err: ErrorId}
+    func create(blockSize: uint, allocator: IAllocator = null)->ScratchAllocator
     {
         var result: retval
-        result.err = result.res.init(blockSize, allocator)
+        result.init(blockSize, allocator)
         return result
     }
 
     // First initialize allocator by allocating a block of memory with
     // the specified allocator.
     // If 'allocator' is null, the current context allocator will be used
-    func init(using self, blockSize: uint, allocator: IAllocator = null)->ErrorId
+    func init(using self, blockSize: uint, allocator: IAllocator = null)
     {
         // Mutex
-        err := mutex.init()
-        if err
-            return err
+        mutex.init()
+        if @err return
 
         // Allocate the big block to store all allocations
         fallback = allocator ?? @getcontext().allocator
@@ -47,7 +46,6 @@ impl ScratchAllocator
 
         // Dynamic array allocator
         leaks.allocator = fallback
-        return null
     }
 
     // Release all allocated memory

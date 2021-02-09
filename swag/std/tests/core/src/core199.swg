@@ -3,8 +3,8 @@ using core.memory, swag
 
 #test
 {
-    (mem, err) := ScratchAllocator.create(16*1024'uint)
-    @assert(!err)
+    mem := ScratchAllocator.create(16*1024'uint)
+    @assert(!@err)
     defer mem.release()
 
     system.pushAllocator(cast(IAllocator) mem)

@@ -6,9 +6,9 @@ using core.file
 {
     loc := #location
     res := readAllLines(loc.fileName)
-    @assert(res.err == null)
-    @assert(res.lines.count > 5)
-    @assert(res.lines[0] == @"#import "core""@)
+    @assert(@err == null)
+    @assert(res.count > 5)
+    @assert(res[0] == @"#import "core""@)
 
     /*visit l: res.lines
     {

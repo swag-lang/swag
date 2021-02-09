@@ -14,7 +14,8 @@ func log(msg: string)   => OutputDebugStringA(cast(const *u8) msg)
 
 // Try to attach to a debugger by calling "vsjitdebugger.exe"
 // If it works, it will open a dialog box to pickup a visual studio instance
-func attach()->ErrorId
+#[swag.haserror]
+func attach()
 {
     var builder: strconv.StringBuilder
     builder.appendString("-p ")
@@ -22,11 +23,10 @@ func attach()->ErrorId
     builder.zeroTerminated()
     arguments := builder.moveToString()
 
-    (proc, err) := process.start("vsjitdebugger.exe", arguments.toString())
-    if err return err
+    proc := process.start("vsjitdebugger.exe", arguments.toString())
+    if @err return
 
-    CloseHandle(proc.handle)
+    CloseHandle(proc)
 
     while !IsDebuggerPresent() thread.sleep(100)
-    return null
 }

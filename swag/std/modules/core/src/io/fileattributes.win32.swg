@@ -45,19 +45,16 @@ impl enum FileAttributes
 }
 
 // Returns attributes associated to the given filename
-func getAttributes(fullname: string) -> {attributes: FileAttributes = FileAttributes.None, err: ErrorId}
+#[swag.haserror]
+func getAttributes(fullname: string)->FileAttributes
 {
-    var result: retval
-
     winPath := path.toWin16(fullname)
     attributes := GetFileAttributesW(@dataof(winPath))
     if attributes == INVALID_FILE_ATTRIBUTES
     {
-        error.setLastErrorId()
-        result.err = error.last()
-        return result
+        error.setErrorWin32(GetLastError())
+        return FileAttributes.None
     }
 
-    result.attributes = FileAttributes.fromDWORD(attributes)
-    return result
+    return FileAttributes.fromDWORD(attributes)
 }

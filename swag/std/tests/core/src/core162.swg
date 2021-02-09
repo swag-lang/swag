@@ -8,8 +8,8 @@ using core.file
     loc := #location
 
     {
-        f := reader.open(loc.fileName)
-        @assert(f == null)
+        reader.open(loc.fileName)
+        @assert(@err == null)
         defer reader.close()
 
         res := reader.readToEnd()
@@ -19,7 +19,8 @@ using core.file
     }
 
     {
-        @assert(reader.open(loc.fileName) == null)
+        reader.open(loc.fileName)
+        @assert(@err == null)
         defer reader.close()
 
         res := reader.readLine()

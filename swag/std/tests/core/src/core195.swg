@@ -28,7 +28,7 @@ var g_cxt: swag.Context
 {
     //#assert reflection.hasDrop(std.file.FileInfo)
 
-    (dbg, err) := DebugAllocator.create()
+    dbg := DebugAllocator.create()
     defer dbg.release()
 
     ptr := alloc(16, dbg)

@@ -1,7 +1,6 @@
 #import "core"
 using core, utf8
 
-var err:        ErrorId
 var lines:      Array'String
 var toProcess:  Array'String
 
@@ -121,8 +120,8 @@ func swapParams(what: string)->String
     ///////////////////
     curPath := path.getDirectoryName(#location.fileName)
     glewPath := path.combine(curPath, "glew.h")
-    (lines, err) = file.readAllLines(glewPath)
-    if err error.fatal("error: cannot read '%' (%)\n", glewPath, err)
+    lines = file.readAllLines(glewPath)
+    if @err error.fatal("error: cannot read '%' (%)\n", glewPath, @err)
 
     findFirstLine(fctExtension)
     visit line1: toProcess

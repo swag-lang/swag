@@ -69,20 +69,17 @@ impl TextReader
 public impl TextReader
 {
     // Open the reader
-    func open(using self, fullname: string, encoding = TextEncoding.Utf8)->ErrorId
+    func open(using self, fullname: string, encoding = TextEncoding.Utf8)
     {
         debug.assert(!stream.isOpen())
 
-        var err: ErrorId
-        (stream, err) = openRead(fullname)
-        if err
-            return err
+        stream = openRead(fullname)
+        if @err return
         debug.assert(stream.isOpen())
 
         byteSeek = 0
         checkPreamble = true
         encodingType = encoding;
-        return null
     }
 
     // Close the reader

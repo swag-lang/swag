@@ -7,7 +7,8 @@ using win32, strconv
 func exit(exitCode: u32) => ExitProcess(exitCode)
 
 // Starts a new process with arguments
-func start(info: StartInfo) -> {proc: Process, err: ErrorId}
+#[swag.haserror]
+func start(info: StartInfo)->Process
 {
     debug.assert(info.fileName != null, "missing process filename")
 
@@ -32,11 +33,10 @@ func start(info: StartInfo) -> {proc: Process, err: ErrorId}
     // Launch
     if !CreateProcessA(null, @dataof(str), null, null, FALSE, 0, null, null, &si, &pi)
     {
-        error.setLastErrorId()
-        result.err = error.last()
+        error.setErrorWin32(GetLastError())
         return result
     }
 
-    result.proc.handle = pi.hProcess
+    result.handle = pi.hProcess
     return result
 }

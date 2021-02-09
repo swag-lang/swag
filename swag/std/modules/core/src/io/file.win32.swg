@@ -15,10 +15,10 @@ func exists(fullname: string)->bool
 }
 
 // Open a new file stream
-func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)-> {stream: FileStream, err: ErrorId}
+#[swag.haserror]
+func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)->FileStream
 {
     var result: retval
-    using result
 
     // Open mode
     var wMode: DWORD
@@ -37,13 +37,13 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     var wAccess: DWORD
     if access & FileAccess.Read
     {
-        stream.canRead = true
+        result.canRead = true
         wAccess |= GENERIC_READ
     }
 
     if access & FileAccess.Write
     {
-        stream.canWrite = true
+        result.canWrite = true
         wAccess |= GENERIC_WRITE
     }
 
@@ -60,20 +60,19 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     hFile := CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
     if hFile == INVALID_HANDLE_VALUE
     {
-        error.setLastErrorId()
-        err = error.last()
+        error.setErrorWin32(GetLastError())
         return result
     }
 
-    stream.name    = fullname
-    stream.handle  = cast(FileHandle) hFile
-    stream.canSeek = true
+    result.name    = fullname
+    result.handle  = cast(FileHandle) hFile
+    result.canSeek = true
 
     return result
 }
 
 // Creates a new file stream for reading
-func openRead(fullname: string) -> {stream: FileStream, err: ErrorId}
+func openRead(fullname: string)->FileStream
 {
     return open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
 }
@@ -101,49 +100,46 @@ func close(stream: *FileStream)
 }
 
 // Returns the given file stream length on disk
-func getSize(stream: FileStream) -> {size: u64, err: ErrorId}
+#[swag.haserror]
+func getSize(stream: FileStream)->u64
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)
 
-    var result: retval
     hFile := cast(HANDLE) stream.handle
     high  := 0'u32
     low   := GetFileSize(hFile, &high)
     if low == INVALID_FILE_SIZE
     {
-        error.setLastErrorId()
-        result.err = error.last()
-        return result
+        error.setErrorWin32(GetLastError())
+        return 0
     }
 
-    result.size = low + (cast(u64) high << 32)
-    return result
+    return low + (cast(u64) high << 32)
 }
 
 // Returns the current seek position of the given file stream
-func getPosition(stream: FileStream) -> {position: u64, err: ErrorId}
+#[swag.haserror]
+func getPosition(stream: FileStream)->u64
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)
 
-    var result: retval
     hFile := cast(HANDLE) stream.handle
     high  := 0
     low   := SetFilePointer(hFile, 0, &high, FILE_CURRENT)
     if low == INVALID_SET_FILE_POINTER
     {
-        error.setLastErrorId()
-        result.err = error.last()
-        return result
+        error.setErrorWin32(GetLastError())
+        return 0
     }
 
-    result.position = low + (cast(u64) high << 32)
-    return result
+    return low + (cast(u64) high << 32)
 }
 
 // Set the current seek position of the given file stream
-func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64) -> ErrorId
+#[swag.haserror]
+func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64)
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)
@@ -164,9 +160,7 @@ func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64) -> ErrorId
     success := SetFilePointer(hFile, low, &high, seekMode)
     if success == INVALID_SET_FILE_POINTER
     {
-        error.setLastErrorId()
-        return error.last()
+        error.setErrorWin32(GetLastError())
+        return
     }
-
-    return null
 }

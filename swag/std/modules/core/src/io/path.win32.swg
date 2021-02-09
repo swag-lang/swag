@@ -115,7 +115,8 @@ func getRootLength(fullname: string)->u32
 }
 
 // Transform 'fullname' to an absolute path
-func getAbsolute(fullname: string) -> {name: String, err: ErrorId}
+#[swag.haserror]
+func getAbsolute(fullname: string)->String
 {
     var result: retval
 
@@ -127,8 +128,7 @@ func getAbsolute(fullname: string) -> {name: String, err: ErrorId}
     res := cast(uint) GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
     if res == 0
     {
-        error.setLastErrorId()
-        result.err = error.last()
+        error.setErrorWin32(GetLastError())
         return result
     }
 
@@ -139,15 +139,14 @@ func getAbsolute(fullname: string) -> {name: String, err: ErrorId}
         res = cast(uint) GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
         if res == 0
         {
-            error.setLastErrorId()
-            result.err = error.last()
+            error.setErrorWin32(GetLastError())
             return result
         }
     }
 
     tmpArr.count = res
-    result.name = utf8.fromUtf16(tmpArr.toSlice())
-    normalize(result.name)
+    result = utf8.fromUtf16(tmpArr.toSlice())
+    normalize(result)
     return result
 }
 

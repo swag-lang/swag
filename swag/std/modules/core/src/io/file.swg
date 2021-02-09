@@ -38,35 +38,33 @@ enum FileShare
 }
 
 // Read a file, and store the result in an utf8 string
-func readAllText(fullname: string, encoding = TextEncoding.Utf8) -> {text: String, err: ErrorId}
+func readAllText(fullname: string, encoding = TextEncoding.Utf8)->String
 {
     var result:     retval
     var textReader: TextReader
 
-    result.err = textReader.open(fullname, encoding)
-    if result.err
-        return result
+    textReader.open(fullname, encoding)
+    if @err return result
     defer textReader.close()
 
-    result.text = textReader.readToEnd()
+    result = textReader.readToEnd()
     return result
 }
 
 // Read all the lines of a file
-func readAllLines(fullname: string, encoding = TextEncoding.Utf8) -> {lines: Array'String, err: ErrorId}
+func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String
 {
     var result:     retval
     var textReader: TextReader
 
-    result.err = textReader.open(fullname, encoding)
-    if result.err
-        return result
+    textReader.open(fullname, encoding)
+    if @err return result
     defer textReader.close()
 
     res := textReader.readLine()
     while !res.isNull()
     {
-        result.lines.add(res)
+        result.add(res)
         res = textReader.readLine()
     }
 
@@ -74,28 +72,20 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8) -> {lines: Arr
 }
 
 // Read a file, and store the result in an array of bytes
-func readAllBytes(fullname: string) -> {bytes: Array'u8, err: ErrorId}
+func readAllBytes(fullname: string)->Array'u8
 {
     var result: retval
 
-    (stream, err) := openRead(fullname)
-    if err
-    {
-        result.err = err
-        return result
-    }
+    stream := openRead(fullname)
+    if @err return result
 
     debug.assert(stream.isOpen())
     defer stream.close()
 
-    (len, err1) := getSize(stream)
-    if err1
-    {
-        result.err = err1
-        return result
-    }
+    len := getSize(stream)
+    if @err return result
 
-    result.bytes.reserve(len)
-    result.bytes.count = read(stream, result.bytes.buffer, len)
+    result.reserve(len)
+    result.count = read(stream, result.buffer, len)
     return result
 }

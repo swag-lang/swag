@@ -57,7 +57,8 @@ func wait(threads: *Thread...)
 impl Thread
 {
     // Initialize a thread in pause state
-    func init(using self, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal)->ErrorId
+    #[swag.haserror]
+    func init(using self, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal)
     {
         debug.assert(!isValid(), "thread already created")
         debug.assert(lambda != null, "lambda parameter is null")
@@ -67,28 +68,26 @@ impl Thread
         h := CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
         if h == null
         {
-            error.setLastErrorId()
-            return error.last()
+            error.setErrorWin32(GetLastError())
+            return
         }
 
         userLambda = lambda
         handle = h
         self.userParam = #scopefct.userParam
         setPriority(#scopefct.priority)
-        return null
     }
 
     // Resume the given thread, if it was paused
-    func start(using self)->ErrorId
+    #[swag.haserror]
+    func start(using self)
     {
         debug.assert(isValid())
         if ResumeThread(handle) == bitcast(DWORD) -1
         {
-            error.setLastErrorId()
-            return error.last()
+            error.setErrorWin32(GetLastError())
+            return
         }
-
-        return null
     }
 
     // Set the thread priority

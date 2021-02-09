@@ -4,12 +4,9 @@
 using win32
 
 // Fill the context error message
-protected func setLastErrorId()
+#[swag.haserror]
+protected func setErrorWin32(errorMessageID: u32)
 {
-    // Should be called first, before @getcontext(), which can reset
-    // the last error id
-    errorMessageID := GetLastError()
-
     cxt := @getcontext()
     cxt.errorMsgLen = 0
     if errorMessageID == 0 return

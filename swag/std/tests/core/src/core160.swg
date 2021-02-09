@@ -20,6 +20,6 @@ using core
     @assert(utf8.compare(ext.toString(), ".SWG", utf8.ComparisonType.Latin1NoCase) == 0)
 
     res := file.readAllText(loc.fileName)
-    @assert(res.text.length > 0)
+    @assert(res.length > 0)
     //console.print("%", res.item0)
 }

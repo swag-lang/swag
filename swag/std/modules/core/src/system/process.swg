@@ -15,7 +15,7 @@ struct Process
 }
 
 // Starts a new process with arguments
-func start(fileName: string, arguments: string = null) -> {proc: Process, err: ErrorId}
+func start(fileName: string, arguments: string = null)->Process
 {
     var info: StartInfo
     info.fileName = fileName

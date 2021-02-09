@@ -95,14 +95,14 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
 }
 
 // Returns the current directory
-func getCurrent()->{name: String, err: ErrorId}
+#[swag.haserror]
+func getCurrent()->String
 {
     var result: retval
     length := GetCurrentDirectoryW(0, null)
     if !length
     {
-        error.setLastErrorId()
-        result.err = error.last()
+        error.setErrorWin32(GetLastError())
         return result
     }
 
@@ -112,20 +112,19 @@ func getCurrent()->{name: String, err: ErrorId}
     arr16.reserve(cast(uint) length + 1)
     arr16.count = GetCurrentDirectoryW(length + 1, @dataof(arr16))
 
-    result.name = utf8.fromUtf16(arr16.toSlice())
-    path.normalize(result.name)
+    result = utf8.fromUtf16(arr16.toSlice())
+    path.normalize(result)
     return result
 }
 
 // Set the current directory
-func setCurrent(dirname: string)->ErrorId
+#[swag.haserror]
+func setCurrent(dirname: string)
 {
     winPath := path.toWin16(dirname)
     if !SetCurrentDirectoryA(@dataof(winPath))
     {
-        error.setLastErrorId()
-        return error.last()
+        error.setErrorWin32(GetLastError())
+        return
     }
-
-    return null
 }
