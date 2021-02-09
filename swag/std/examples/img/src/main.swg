@@ -10,17 +10,14 @@ func display()
 {
     glClearColor(0, 1, 0, 0)
     glClear(GL_COLOR_BUFFER_BIT)
+    glEnable(GL_TEXTURE_2D)
 
-    glBegin(GL_TRIANGLES)
-
-    glVertex2i(-1,  1)
-    glVertex2i(-1, -1)
-    glVertex2i(1, -1)
-
-    glVertex2i(-1,  1)
-    glVertex2i(1, 1)
-    glVertex2i(1, -1)
-
+    glBindTexture(GL_TEXTURE_2D, textureID)
+    glBegin(GL_QUADS)
+    glTexCoord2f(0.0, 0.0); glVertex2f(-1.0, -1.0);  // Bottom Left Of The Texture and Quad
+    glTexCoord2f(1.0, 0.0); glVertex2f( 1.0, -1.0);  // Bottom Right Of The Texture and Quad
+    glTexCoord2f(1.0, 1.0); glVertex2f( 1.0,  1.0);  // Top Right Of The Texture and Quad
+    glTexCoord2f(0.0, 1.0); glVertex2f(-1.0,  1.0);  // Top Left Of The Texture and Quad
     glEnd()
 
     glFlush()
@@ -32,11 +29,12 @@ func loadImg()
 {
     width := 256
     height := 256
-    var data: [256*256*4] u8
+    var data: [256*256*3] u8
+    @memset(&data[0], 128, @sizeof(data))
 
     glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, &data[0])
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, &data[0])
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 }
@@ -79,8 +77,8 @@ func createWindow()->HWND
         @dataof("CLASS_NAME"),
         @dataof("Example"),
         WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
+        100,
+        100,
         512,
         512,
         null,
@@ -132,6 +130,7 @@ func messageLoop()
     hRC := wglCreateContext(hDC)
     wglMakeCurrent(hDC, hRC)
 
+    loadImg()
     display()
     ShowWindow(hWnd, SW_SHOW)
     UpdateWindow(hWnd)
