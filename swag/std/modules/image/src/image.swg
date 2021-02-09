@@ -28,22 +28,35 @@ func create(width, height: s32, pf: PixelFormat)->Image
 
 impl Image
 {
+    #[inline]
+    private func free(using self)
+    {
+        memory.free(pixels, size, allocator)
+    }
+
+    #[inline]
+    private func checkValid(using self)
+    {
+        debug.assert(size != 0, "image is invalid")
+    }
+
     func opDrop(using self)
     {
-        release()
+        free()
     }
 
     // Release the content of the image
     func release(using self)
     {
-        memory.free(pixels, size, allocator)
+        checkValid()
+        free()
         @init(self)
     }
 
     // Clear the content of the image
     func clear(using self)
     {
-        debug.assert(size != 0, "image is invalid")
+        checkValid()
         @memset(pixels, 0, size)
     }
 }
