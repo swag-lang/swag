@@ -2076,6 +2076,10 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         if (castFlags & CASTFLAG_EXPLICIT)
             return true;
 
+        // Pointer to *void
+        if (toTypePointer->isPointerVoid())
+            return true;
+
         // Fine to compare pointers of TypeInfos, even if not of the same type
         if (castFlags & CASTFLAG_COMPARE)
         {
@@ -2085,7 +2089,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
         // From *void
         auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
-        if (fromTypePointer->pointedType->isNative(NativeTypeKind::Void))
+        if (fromTypePointer->isPointerVoid())
             return true;
     }
 

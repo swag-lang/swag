@@ -4,16 +4,41 @@
 #import "ogl"
 using core, win32, ogl, gdi32
 
-var hDC:    HDC
-var frame:  time.FrameTiming
+var hDC: HDC
 
 func display()
 {
-    const SPEED = 100
     glClearColor(0, 1, 0, 0)
     glClear(GL_COLOR_BUFFER_BIT)
+
+    glBegin(GL_TRIANGLES)
+
+    glVertex2i(-1,  1)
+    glVertex2i(-1, -1)
+    glVertex2i(1, -1)
+
+    glVertex2i(-1,  1)
+    glVertex2i(1, 1)
+    glVertex2i(1, -1)
+
+    glEnd()
+
     glFlush()
     SwapBuffers(hDC)
+}
+
+var textureID: GLuint
+func loadImg()
+{
+    width := 256
+    height := 256
+    var data: [256*256*4] u8
+
+    /*glGenTextures(1, &textureID)
+    glBindTexture(GL_TEXTURE_2D, textureID)
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, &data[0])
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)*/
 }
 
 #[swag.callback]
@@ -87,10 +112,6 @@ func messageLoop()
     var msg: MSG
     while true
     {
-        frame.update()
-
-        // Windows messages
-        frame.pause()
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {
             if msg.message == WM_QUIT
@@ -98,7 +119,6 @@ func messageLoop()
             TranslateMessage(&msg)
             DispatchMessageA(&msg)
         }
-        frame.unpause()
 
         display()
     }

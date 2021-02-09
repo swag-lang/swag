@@ -3,6 +3,7 @@
 #include "AstNode.h"
 #include "Scope.h"
 #include "Module.h"
+#include "TypeManager.h"
 
 void TypeInfo::computeName()
 {
@@ -154,10 +155,11 @@ bool TypeInfo::isPointerVoid()
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
-    auto ptr = (TypeInfoPointer*) this;
-    if (ptr->pointedType->kind != TypeInfoKind::Native)
+    auto ptr   = (TypeInfoPointer*) this;
+    auto unref = TypeManager::concreteType(ptr->pointedType, CONCRETE_ALIAS);
+    if (unref->kind != TypeInfoKind::Native)
         return false;
-    if (ptr->pointedType->nativeType != NativeTypeKind::Void)
+    if (unref->nativeType != NativeTypeKind::Void)
         return false;
     return true;
 }
