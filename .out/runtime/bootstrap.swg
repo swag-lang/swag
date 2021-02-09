@@ -27,6 +27,9 @@ namespace swag
     attr printbc()
 
     #[attributeUsage(AttributeUsage.Function)]
+    attr haserror()
+
+    #[attributeUsage(AttributeUsage.Function)]
     attr compiler()
 
     #[attributeUsage(AttributeUsage.Function)]

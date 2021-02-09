@@ -226,6 +226,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_MACRO;
             else if (child->token.text == "mixin")
                 flags |= ATTRIBUTE_MIXIN;
+            else if (child->token.text == "haserror")
+                flags |= ATTRIBUTE_HAS_ERROR;
             else if (child->token.text == "complete")
                 flags |= ATTRIBUTE_COMPLETE;
             else if (child->token.text == "property")
