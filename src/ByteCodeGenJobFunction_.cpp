@@ -1366,12 +1366,20 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     auto node     = context->node;
     auto funcNode = node->ownerFct;
     SWAG_ASSERT(funcNode);
+    PushNode pn(context, funcNode->content);
+
+    if (funcNode->attributeFlags & ATTRIBUTE_HAS_ERROR)
+    {
+        RegisterList r0 = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::ClearRA, r0);
+        emitInstruction(context, ByteCodeOp::IntrinsicSetErr, r0, r0);
+        freeRegisterRC(context, r0);
+    }
 
     if (funcNode->stackSize)
     {
         if (funcNode->stackSize > g_CommandLine.stackSize)
             context->sourceFile->report({funcNode, funcNode->token, format("stack overflow (maximum stack size is '--stack-size:%s')", toNiceSize(g_CommandLine.stackSize).c_str())});
-        PushNode pn(context, funcNode->content);
         emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
     }
 
