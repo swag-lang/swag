@@ -4,6 +4,7 @@ using swag
 // Desribe the layout format of one image pixel
 enum PixelFormat
 {
+    R8G8B8
     A8R8G8B8
 }
 
@@ -16,8 +17,8 @@ impl enum PixelFormat
         #[complete]
         switch self
         {
-            case A8R8G8B8:
-                return 32
+            case R8G8B8:    return 24
+            case A8R8G8B8:  return 32
         }
 
         return 0

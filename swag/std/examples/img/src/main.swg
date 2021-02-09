@@ -27,14 +27,12 @@ func display()
 var textureID: GLuint
 func loadImg()
 {
-    width := 256
-    height := 256
-    var data: [256*256*3] u8
-    @memset(&data[0], 128, @sizeof(data))
+    img := image.create(256, 256, image.PixelFormat.R8G8B8)
+    @memset(img.pixels, 128, img.size)
 
     glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, &data[0])
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img.width, img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.pixels)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 }
