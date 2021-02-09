@@ -1001,6 +1001,16 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
     {
         switch (fromType->nativeType)
         {
+        case NativeTypeKind::U32:
+        {
+            if (!(fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
+                break;
+            auto value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
+            if (value <= UINT8_MAX)
+                return true;
+            break;
+        }
+
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
@@ -1018,7 +1028,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                     fromNode->typeInfo = g_TypeMgr.typeInfoS8;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if ((fromType->flags & TYPEINFO_UNTYPED_INTEGER) || (fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
             {
                 if (!fromNode)
                 {
@@ -1090,6 +1100,16 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
     {
         switch (fromType->nativeType)
         {
+        case NativeTypeKind::U32:
+        {
+            if (!(fromType->flags & TYPEINFO_UNTYPED_BINHEXA))
+                break;
+            auto value = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind)->valueInteger;
+            if (value <= UINT16_MAX)
+                return true;
+            break;
+        }
+
         case NativeTypeKind::S8:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
@@ -1175,6 +1195,10 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
     {
         switch (fromType->nativeType)
         {
+        case NativeTypeKind::U32:
+            if (fromType->flags & TYPEINFO_UNTYPED_BINHEXA)
+                return true;
+
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S64:
@@ -1251,6 +1275,10 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
     {
         switch (fromType->nativeType)
         {
+        case NativeTypeKind::U32:
+            if (fromType->flags & TYPEINFO_UNTYPED_BINHEXA)
+                return true;
+
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:

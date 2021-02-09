@@ -34,11 +34,11 @@ func loadImg()
     height := 256
     var data: [256*256*4] u8
 
-    /*glGenTextures(1, &textureID)
+    glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, &data[0])
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)*/
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 }
 
 #[swag.callback]
