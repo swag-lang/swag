@@ -2,7 +2,7 @@ struct(T, loc: Loc) TOTO
 {
     #ast
     {
-        //@error(#location, "this is a test man !")
+        //@errormsg(#location, "this is a test man !")
         @assert(cast(s64) loc.lineStart == 12)
         return ""
     }

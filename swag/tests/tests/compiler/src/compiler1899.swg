@@ -5,7 +5,7 @@ public struct(T) TOTOcompiler1899
 {
     #ast
     {
-        @error(#location, "this is a test man !")
+        @errormsg(#location, "this is a test man !")
         return ""
     }
 }

@@ -238,14 +238,14 @@ func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
     // we will have more usefull information
     if(contextFlags & swag.ContextFlags.ByteCode)
     {
-        @error(message, loc)
+        @errormsg(message, loc)
         return
     }
 
     // During tests just raise an error without a dialog box
     if(contextFlags & swag.ContextFlags.Test)
     {
-        @error(message, loc)
+        @errormsg(message, loc)
         return
     }
 

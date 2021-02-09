@@ -76,7 +76,7 @@ impl IAllocator for TempAllocator
             }
             else
             {
-                @error("not enough memory in the temporary allocator", #location)
+                @errormsg("not enough memory in the temporary allocator", #location)
                 @assert(false)
             }
         }

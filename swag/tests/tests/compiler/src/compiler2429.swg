@@ -3,7 +3,7 @@
 func print(s: string, f: ...)
     #selectif
     {
-        if @countof(f) != 3 @error("invalid number of arguments", #location(f))
+        if @countof(f) != 3 @errormsg("invalid number of arguments", #location(f))
         return true
     }
 {

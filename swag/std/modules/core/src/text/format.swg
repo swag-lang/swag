@@ -10,7 +10,7 @@ func checkFormat(fct: string, fmt: string, values: ...)
     {
         #[selectif(false)]
         str := toString("bad number of arguments to '%' ('%' requested, '%' provided)", fct, cptPercent, @countof(values))
-        @error(str, #location(values))
+        @errormsg(str, #location(values))
     }
 }
 

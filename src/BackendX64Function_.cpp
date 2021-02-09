@@ -2085,7 +2085,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
-            emitCall(pp, "@error");
+            emitCall(pp, "@errormsg");
             break;
         case ByteCodeOp::IntrinsicAssertMsg:
             SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));

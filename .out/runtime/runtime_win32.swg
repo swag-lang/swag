@@ -46,7 +46,7 @@ func @print(message: string)
 ////////////////////////////////////////////////////////////
 private var g_exceptionLocation: swag.CompilerSourceLocation
 private var g_exceptionParams: [3] const *void
-func @error(message: string, loc: swag.CompilerSourceLocation)
+func @errormsg(message: string, loc: swag.CompilerSourceLocation)
 {
     contextFlags := @getcontext().flags
     if(contextFlags & swag.ContextFlags.ByteCode)
