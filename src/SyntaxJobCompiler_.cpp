@@ -329,7 +329,7 @@ bool SyntaxJob::doCompilerRunError(AstNode* parent, AstNode** result)
         *result = node;
     node->allocateExtension();
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitCompilerRunErrorBefore;
-    node->token = move(token);
+    node->token                        = move(token);
     SWAG_CHECK(eatToken());
 
     SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#runerror' is invalid outside a test module (in the './tests' folder of the workspace)"}));
@@ -386,7 +386,6 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#global' can only be used in the top level scope"}));
     SWAG_VERIFY(!afterGlobal, error(token, "'#global' must be defined first, at the top of the file"));
 
     SWAG_CHECK(tokenizer.getToken(token));
@@ -596,7 +595,7 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
-    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#import' can only be declared in the top level scope"}));
+    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#import' can only be declared at the top level scope"}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerImport, sourceFile, parent);
     SWAG_CHECK(tokenizer.getToken(token));

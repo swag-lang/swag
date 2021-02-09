@@ -124,7 +124,7 @@ const THREAD_PRIORITY_ABOVE_NORMAL  = 1
 const THREAD_PRIORITY_HIGHEST       = 2
 
 func LOWORD(l: u64) => cast(s32) (l & 0xffff)
-func HIWORD(l: u64) => cast(s32) ((l >> 16) & 0xffff)
+func HIWORD(l: u64) => cast(s32) ((l >>% 16) & 0xffff)
 
 struct COORD
 {

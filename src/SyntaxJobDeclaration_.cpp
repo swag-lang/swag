@@ -95,7 +95,8 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
-            SWAG_VERIFY(token.text != "swag", syntaxError(token, "the 'swag' namespace is reserved by the compiler"));
+            SWAG_VERIFY(token.text != "swag", error(token, "the 'swag' namespace is reserved by the compiler"));
+        SWAG_VERIFY(token.text != sourceFile->module->name, error(token, format("a namespace cannot have the same name as the module ('%s')", token.text.c_str())));
 
         // Add/Get namespace
         namespaceNode->inheritTokenName(token);
