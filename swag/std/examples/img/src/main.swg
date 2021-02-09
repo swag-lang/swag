@@ -28,7 +28,7 @@ var textureID: GLuint
 func loadImg()
 {
     img := image.create(256, 256, image.PixelFormat.R8G8B8)
-    @memset(img.pixels, 128, img.size)
+    img.clear()
 
     glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)
