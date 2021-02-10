@@ -9,7 +9,7 @@ func toto()->AA
     return @{1}
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 func titi()->AA
 {
     return toto() try
