@@ -14,7 +14,6 @@ func log(msg: string)   => OutputDebugStringA(cast(const *u8) msg)
 
 // Try to attach to a debugger by calling "vsjitdebugger.exe"
 // If it works, it will open a dialog box to pickup a visual studio instance
-#[swag.haserror]
 func attach()
 {
     var builder: strconv.StringBuilder

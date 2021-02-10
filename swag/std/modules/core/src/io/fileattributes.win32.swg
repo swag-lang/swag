@@ -45,7 +45,6 @@ impl enum FileAttributes
 }
 
 // Returns attributes associated to the given filename
-#[swag.haserror]
 func getAttributes(fullname: string)->FileAttributes
 {
     winPath := path.toWin16(fullname)

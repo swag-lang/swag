@@ -4,7 +4,6 @@
 using win32
 
 // Fill the context error message
-#[swag.haserror]
 protected func setErrorWin32(errorMessageID: u32)
 {
     cxt := @getcontext()

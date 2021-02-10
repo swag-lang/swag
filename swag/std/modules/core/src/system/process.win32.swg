@@ -7,7 +7,6 @@ using win32, strconv
 func exit(exitCode: u32) => ExitProcess(exitCode)
 
 // Starts a new process with arguments
-#[swag.haserror]
 func start(info: StartInfo)->Process
 {
     debug.assert(info.fileName != null, "missing process filename")

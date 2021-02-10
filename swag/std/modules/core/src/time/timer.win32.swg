@@ -21,7 +21,6 @@ impl Timer
     }
 
     // Initialize timer
-    #[swag.haserror]
     func init(using self, elapsedTimeMs: u32, lambda: func(Timer), periodic = false)
     {
         debug.assert(handle == null)

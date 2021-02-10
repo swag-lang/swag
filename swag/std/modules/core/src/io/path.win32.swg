@@ -115,7 +115,6 @@ func getRootLength(fullname: string)->u32
 }
 
 // Transform 'fullname' to an absolute path
-#[swag.haserror]
 func getAbsolute(fullname: string)->String
 {
     var result: retval

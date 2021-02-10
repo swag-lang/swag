@@ -1,6 +1,5 @@
-#global testerror
+//#global testerror
 
-//#[swag.haserror]
 #test
 {
     @seterr("toto")

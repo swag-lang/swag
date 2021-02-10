@@ -626,13 +626,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (identifier->token.text == "opPostMove")
             return context->report({identifier, identifier->token, "cannot reference 'opPostMove' special function (use '@postmove' instead)"});
 
-        // @seterr can only be called inside a function marked with 'swag.haserror'
-        if (identifier->token.text == "@seterr")
-        {
-            if (!identifier->ownerFct || !(identifier->ownerFct->attributeFlags & ATTRIBUTE_HAS_ERROR))
-                return context->report({identifier, identifier->token, "intrinsic '@seterr' can only be used inside a function with the 'swag.haserror' attribute"});
-        }
-
         // Be sure this is not a 'forward' decl
         if (overload->node->flags & AST_EMPTY_FCT && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN) && identifier->token.text[0] != '@')
         {

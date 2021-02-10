@@ -19,7 +19,6 @@ impl Mutex
     }
 
     // Initialize mutex
-    #[swag.haserror]
     func init(using self)
     {
         debug.assert(handle == null)

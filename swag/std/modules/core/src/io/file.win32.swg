@@ -15,7 +15,6 @@ func exists(fullname: string)->bool
 }
 
 // Open a new file stream
-#[swag.haserror]
 func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)->FileStream
 {
     var result: retval
@@ -100,7 +99,6 @@ func close(stream: *FileStream)
 }
 
 // Returns the given file stream length on disk
-#[swag.haserror]
 func getSize(stream: FileStream)->u64
 {
     debug.assert(stream.isOpen())
@@ -119,7 +117,6 @@ func getSize(stream: FileStream)->u64
 }
 
 // Returns the current seek position of the given file stream
-#[swag.haserror]
 func getPosition(stream: FileStream)->u64
 {
     debug.assert(stream.isOpen())
@@ -138,7 +135,6 @@ func getPosition(stream: FileStream)->u64
 }
 
 // Set the current seek position of the given file stream
-#[swag.haserror]
 func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64)
 {
     debug.assert(stream.isOpen())

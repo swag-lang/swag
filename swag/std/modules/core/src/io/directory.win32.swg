@@ -95,7 +95,6 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
 }
 
 // Returns the current directory
-#[swag.haserror]
 func getCurrent()->String
 {
     var result: retval
@@ -118,7 +117,6 @@ func getCurrent()->String
 }
 
 // Set the current directory
-#[swag.haserror]
 func setCurrent(dirname: string)
 {
     winPath := path.toWin16(dirname)

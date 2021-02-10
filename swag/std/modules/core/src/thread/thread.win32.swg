@@ -57,7 +57,6 @@ func wait(threads: *Thread...)
 impl Thread
 {
     // Initialize a thread in pause state
-    #[swag.haserror]
     func init(using self, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal)
     {
         debug.assert(!isValid(), "thread already created")
@@ -79,7 +78,6 @@ impl Thread
     }
 
     // Resume the given thread, if it was paused
-    #[swag.haserror]
     func start(using self)
     {
         debug.assert(isValid())
