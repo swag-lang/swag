@@ -1,26 +1,27 @@
 #global if WINDOWS
 #global public
 #global namespace error
-using win32
+using win32, swag
 
 // Fill the context error message
 protected func setErrorWin32(errorMessageID: u32)
 {
-    cxt := @getcontext()
-    cxt.errorMsgLen = 0
     if errorMessageID == 0 return
 
-    messageBuffer := &cxt.errorMsg[0]
+    var errorMsg: [MaxLenErrorMsg] u8
+    var len: u32
+
     lang := MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)
-    cxt.errorMsgLen = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, null, errorMessageID, lang, cast(LPCSTR) messageBuffer, cast(DWORD) swag.MaxLenErrorMsg, null);
-    if !cxt.errorMsgLen
-        return
+    len = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, null, errorMessageID, lang, cast(LPCSTR) &errorMsg[0], cast(DWORD) MaxLenErrorMsg, null);
+    if !len return
 
     // Trim right, remove trailing dots, remove trailing non printable characters
-    for idx := cxt.errorMsgLen - 1; idx >= 0; idx -= 1
+    for idx := len - 1; idx >= 0; idx -= 1
     {
-        if messageBuffer[idx] > 32 && messageBuffer[idx] != "."'u8
+        if errorMsg[idx] > 32 && errorMsg[idx] != "."'u8
             break
-        cxt.errorMsgLen -= 1
+        len -= 1
     }
+
+    @seterr(@mkstring(&errorMsg[0], len))
 }
