@@ -1368,7 +1368,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     SWAG_ASSERT(funcNode);
     PushNode pn(context, funcNode->content);
 
-    if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+    if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) || (funcNode->funcFlags & FUNC_FLAG_RAISE_MAIN_ERRORS))
     {
         RegisterList r0 = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::ClearRA, r0);

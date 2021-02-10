@@ -444,6 +444,9 @@ struct AstIdentifier : public AstNode
     AstNode*          callParameters;
 };
 
+static const uint32_t FUNC_FLAG_RAISE_ERRORS      = 0x00000001;
+static const uint32_t FUNC_FLAG_RAISE_MAIN_ERRORS = 0x00000002;
+
 struct AstFuncDecl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
@@ -461,6 +464,7 @@ struct AstFuncDecl : public AstNode
     TypeInfoParam* methodParam;
     Job*           pendingLambdaJob;
 
+    uint32_t funcFlags;
     uint32_t stackSize;
     int      exportForeignLine;
 
@@ -856,4 +860,11 @@ struct AstNameSpace : public AstNode
     AstNode* clone(CloneContext& context) override;
 
     Utf8 importedModuleName;
+};
+
+struct AstTry : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+
+    int seekJump;
 };

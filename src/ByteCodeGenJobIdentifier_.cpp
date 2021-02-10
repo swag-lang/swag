@@ -16,10 +16,41 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
+{
+    auto node = context->node;
+    reserveRegisterRC(context, node->resultRegisterRC, 2);
+    emitInstruction(context, ByteCodeOp::IntrinsicGetErr, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+    return true;
+}
+
 bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 {
-    AstNode* node          = context->node;
+    auto node              = CastAst<AstTry>(context->node, AstNodeKind::Try);
     node->resultRegisterRC = node->childs.back()->childs.back()->resultRegisterRC;
+
+    if (!(node->doneFlags & AST_DONE_CAST1))
+    {
+        RegisterList r0;
+        reserveRegisterRC(context, r0, 2);
+        emitInstruction(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
+        node->seekJump = context->bc->numInstructions;
+        emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
+        freeRegisterRC(context, r0);
+        node->doneFlags |= AST_DONE_CAST1;
+    }
+
+    // Leave the current scope
+    SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+    if (context->result != ContextResult::Done)
+        return true;
+
+    // Return a default value if necessary
+    if (node->ownerFct->stackSize)
+        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->ownerFct->stackSize;
+    emitInstruction(context, ByteCodeOp::Ret);
+
+    context->bc->out[node->seekJump].b.s32 = context->bc->numInstructions - node->seekJump - 1;
     return true;
 }
 

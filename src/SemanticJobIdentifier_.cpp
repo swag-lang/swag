@@ -627,14 +627,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             return context->report({identifier, identifier->token, "cannot reference 'opPostMove' special function (use '@postmove' instead)"});
 
         // Error
-        if (identifier->token.text == "@seterr")
-        {
-            if (!identifier->ownerFct)
-                return context->report({identifier, identifier->token, "'@seterr' can only be used inside a function"});
-            identifier->ownerFct->attributeFlags |= ATTRIBUTE_RAISE_ERRORS;
-        }
-
-        if (identifier->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_RAISE_ERRORS)
+        auto funcNode = CastAst<AstFuncDecl>(identifier->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
+        if (funcNode->funcFlags & FUNC_FLAG_RAISE_ERRORS && identifier->parent->parent->kind != AstNodeKind::Try)
         {
             //return context->report({identifier, identifier->token, format("uncatched error when calling function '%s'", identifier->token.text.c_str())});
         }
@@ -2834,11 +2828,14 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
 
 bool SemanticJob::resolveTry(SemanticContext* context)
 {
-    auto node          = context->node;
+    auto node          = CastAst<AstTry>(context->node, AstNodeKind::Try);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.back(), AstNodeKind::IdentifierRef);
     auto lastChild     = identifierRef->childs.back();
-    SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({lastChild, format("'try' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
-    SWAG_VERIFY(lastChild->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_RAISE_ERRORS, context->report({lastChild, format("'try' can only be used after a function call that can raise errors, and '%s' does not", lastChild->token.text.c_str())}));
+
+    SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({node, format("'try' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
+
+    auto funcNode = CastAst<AstFuncDecl>(lastChild->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
+    SWAG_VERIFY(funcNode->funcFlags & FUNC_FLAG_RAISE_ERRORS, context->report({node, format("'try' can only be used after a function call that can raise errors, and '%s' does not", lastChild->token.text.c_str())}));
 
     node->byteCodeFct = ByteCodeGenJob::emitTry;
     node->typeInfo    = lastChild->typeInfo;

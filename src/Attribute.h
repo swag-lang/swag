@@ -38,7 +38,6 @@ static const uint64_t ATTRIBUTE_SELECTIF_ON         = 0x0000000100000000;
 static const uint64_t ATTRIBUTE_SELECTIF_OFF        = 0x0000000200000000;
 static const uint64_t ATTRIBUTE_SHARP_FUNC          = 0x0000000400000000;
 static const uint64_t ATTRIBUTE_SAFETY_OFF_OPERATOR = 0x0000000800000000;
-static const uint64_t ATTRIBUTE_RAISE_ERRORS        = 0x0000001000000000;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN BOOTSTRAP.SWG

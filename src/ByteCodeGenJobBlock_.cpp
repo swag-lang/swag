@@ -622,14 +622,6 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
-{
-    auto node = context->node;
-    reserveRegisterRC(context, node->resultRegisterRC, 2);
-    emitInstruction(context, ByteCodeOp::IntrinsicGetErr, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-    return true;
-}
-
 bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
 {
     auto node              = context->node;

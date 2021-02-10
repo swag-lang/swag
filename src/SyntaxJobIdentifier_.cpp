@@ -131,6 +131,15 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
         SWAG_CHECK(doIntrinsicProp(identifierRef));
         break;
 
+    case TokenId::IntrinsicSetErr:
+    {
+        SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
+        if (!identifierRef->ownerFct)
+            return error(identifierRef->childs.back(), "'@seterr' can only be used inside a function");
+        identifierRef->ownerFct->funcFlags |= FUNC_FLAG_RAISE_ERRORS | FUNC_FLAG_RAISE_MAIN_ERRORS;
+    }
+    break;
+
     default:
         SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
         break;
@@ -144,7 +153,9 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
 
     if (token.id == TokenId::KwdTry)
     {
-        auto tryNode         = Ast::newNode<AstNode>(this, AstNodeKind::Try, sourceFile, parent);
+        auto tryNode = Ast::newNode<AstTry>(this, AstNodeKind::Try, sourceFile, parent);
+        SWAG_VERIFY(tryNode->ownerFct, error(tryNode, "'try' can only be used inside a function"));
+        tryNode->ownerFct->funcFlags |= FUNC_FLAG_RAISE_ERRORS;
         tryNode->semanticFct = SemanticJob::resolveTry;
         if (result)
             *result = tryNode;

@@ -610,6 +610,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->copyFrom(context, this, false);
     newNode->stackSize   = stackSize;
     newNode->methodParam = methodParam;
+    newNode->funcFlags   = funcFlags;
 
     auto cloneContext     = context;
     cloneContext.ownerFct = newNode;
@@ -1230,5 +1231,12 @@ AstNode* AstNameSpace::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstNameSpace>();
     newNode->copyFrom(context, this);
     newNode->importedModuleName = importedModuleName;
+    return newNode;
+}
+
+AstNode* AstTry::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstTry>();
+    newNode->copyFrom(context, this);
     return newNode;
 }
