@@ -2839,6 +2839,9 @@ bool SemanticJob::resolveTry(SemanticContext* context)
 
     node->byteCodeFct = ByteCodeGenJob::emitTry;
     node->typeInfo    = lastChild->typeInfo;
+    node->flags       = identifierRef->flags;
+    node->inheritComputedValue(identifierRef);
+
     return true;
 }
 
@@ -2855,6 +2858,8 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
 
     node->byteCodeFct = ByteCodeGenJob::emitCatch;
     node->typeInfo    = lastChild->typeInfo;
+    node->flags       = identifierRef->flags;
+    node->inheritComputedValue(identifierRef);
 
     auto stmt = node->childs.back();
     stmt->allocateExtension();
