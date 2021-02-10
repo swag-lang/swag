@@ -620,14 +620,32 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
 {
     auto node           = CastAst<AstInit>(context->node, AstNodeKind::Init);
     auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
-    SWAG_CHECK(emitInit(context, typeExpression, node->expression->resultRegisterRC, node->count, node->parameters));
+
+    // Number of values to initialize. 0 is dynamic (comes from a register)
+    uint64_t numToInit = 0;
+    if (!node->count)
+        numToInit = 1;
+    else if (node->count->flags & AST_VALUE_COMPUTED)
+        numToInit = node->count->computedValue.reg.u64;
+    else if (!(node->count->doneFlags & AST_DONE_CAST1))
+    {
+        SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->count->doneFlags |= AST_DONE_CAST1;
+    }
+
+    SWAG_CHECK(emitInit(context, typeExpression, node->expression->resultRegisterRC, numToInit, node->count, node->parameters));
+    if (context->result != ContextResult::Done)
+        return true;
+
     freeRegisterRC(context, node->expression);
     freeRegisterRC(context, node->count);
     freeRegisterRC(context, node->parameters);
     return true;
 }
 
-bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* typeExpression, RegisterList& rExpr, AstNode* count, AstNode* parameters)
+bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* typeExpression, RegisterList& rExpr, uint64_t numToInit, AstNode* count, AstNode* parameters)
 {
     // Determine if we just need to clear the memory
     bool justClear = true;
@@ -655,20 +673,6 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
         if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             justClear = false;
-    }
-
-    // Number of elements to init. If 0, then this is dynamic
-    uint64_t numToInit = 0;
-    if (!count)
-        numToInit = 1;
-    else if (count->flags & AST_VALUE_COMPUTED)
-        numToInit = count->computedValue.reg.u64;
-    else if (!(count->doneFlags & AST_DONE_CAST1))
-    {
-        SWAG_CHECK(emitCast(context, count, count->typeInfo, count->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
-            return true;
-        count->doneFlags |= AST_DONE_CAST1;
     }
 
     if (justClear)
