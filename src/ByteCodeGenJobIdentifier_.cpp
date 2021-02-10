@@ -68,7 +68,18 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
         }
         else if (returnType->kind == TypeInfoKind::Array)
         {
-            internalError(context, "emitTry, unsupported return type");
+            auto typeArr = CastTypeInfo<TypeInfoArray>(returnType, TypeInfoKind::Array);
+            if (typeArr->pointedType->kind != TypeInfoKind::Struct)
+            {
+                auto r0 = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r0)->b.u64 = typeArr->sizeOf;
+                freeRegisterRC(context, r0);
+            }
+            else
+            {
+                internalError(context, "emitTry, unsupported return type");
+            }
         }
         else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
         {

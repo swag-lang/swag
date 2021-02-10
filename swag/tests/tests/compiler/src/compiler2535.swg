@@ -3,22 +3,17 @@ func toto()
     @seterr("toto")
 }
 
-struct AA
-{
-    x, y = 1
-}
-
 //#[swag.printbc]
-func titi()->AA
+func titi()->[2] s32
 {
     toto() try
-    return @{10, 20}
+    return @[10, 20]
 }
 
 //#[swag.printbc]
 #test
 {
     v := titi() catch {}
-    @assert(v.x == 1)
-    @assert(v.y == 1)
+    @assert(v[0] == 0)
+    @assert(v[1] == 0)
 }
