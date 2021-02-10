@@ -356,6 +356,7 @@ struct AstNode
     void             allocateExtension();
     void             swap2Childs();
     bool             hasSpecialFuncCall();
+    AstNode*         inSimpleReturn();
     bool             isSpecialFunctionName();
 
     struct Extension

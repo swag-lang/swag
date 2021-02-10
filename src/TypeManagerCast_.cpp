@@ -2660,7 +2660,7 @@ bool TypeManager::convertLiteralTupleToStruct(SemanticContext* context, TypeInfo
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
     // If this is in a return expression, then force the identifier type to be retval
-    if (fromNode->parent->kind == AstNodeKind::Return)
+    if (fromNode->inSimpleReturn())
         typeNode->typeFlags |= TYPEFLAG_RETVAL;
 
     // And make a reference to that variable

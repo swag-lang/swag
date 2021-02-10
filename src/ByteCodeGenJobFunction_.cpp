@@ -59,7 +59,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     {
         auto returnExpression = node->childs.front();
         auto backExpression   = node->childs.back();
-        auto exprType         = TypeManager::concreteReference(returnExpression->typeInfo);
+        if (backExpression->kind == AstNodeKind::Try || backExpression->kind == AstNodeKind::Catch)
+            backExpression = backExpression->childs.back();
+        auto exprType = TypeManager::concreteReference(returnExpression->typeInfo);
 
         // Implicit cast
         if (!(returnExpression->doneFlags & AST_DONE_CAST1))
@@ -937,7 +939,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     if (returnType && (returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
         // If in a return expression, just push the caller retval
-        if (node->parent && node->parent->parent->kind == AstNodeKind::Return)
+        AstNode* parentReturn = node->parent ? node->parent->inSimpleReturn() : nullptr;
+        if (parentReturn)
         {
             node->resultRegisterRC = reserveRegisterRC(context);
             if (node->ownerInline)
@@ -949,7 +952,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             }
 
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-            node->parent->parent->doneFlags |= AST_DONE_RETVAL;
+            parentReturn->doneFlags |= AST_DONE_RETVAL;
         }
         else
         {

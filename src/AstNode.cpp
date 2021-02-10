@@ -25,6 +25,20 @@ bool AstNode::hasSpecialFuncCall()
            extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function;
 }
 
+AstNode* AstNode::inSimpleReturn()
+{
+    auto test = parent;
+    if (!test)
+        return nullptr;
+    if (test->kind == AstNodeKind::Return)
+        return test;
+    if (test->kind == AstNodeKind::Try && test->parent->kind == AstNodeKind::Return)
+        return test->parent;
+    if (test->kind == AstNodeKind::Catch && test->parent->kind == AstNodeKind::Return)
+        return test->parent;
+    return nullptr;
+}
+
 bool AstNode::isSpecialFunctionName()
 {
     // Check operators

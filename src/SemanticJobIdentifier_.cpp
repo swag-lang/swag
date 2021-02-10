@@ -289,7 +289,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     identifier->callParameters->flags |= AST_NO_SEMANTIC;
 
     // If this is in a return expression, then force the identifier type to be retval
-    if (context->node->parent && context->node->parent->parent && context->node->parent->parent->kind == AstNodeKind::Return)
+    if (context->node->parent && context->node->parent->inSimpleReturn())
         typeNode->typeFlags |= TYPEFLAG_RETVAL;
 
     // And make a reference to that variable
