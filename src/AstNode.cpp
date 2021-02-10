@@ -1234,9 +1234,9 @@ AstNode* AstNameSpace::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstTry::clone(CloneContext& context)
+AstNode* AstTryCatch::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstTry>();
+    auto newNode = Ast::newNode<AstTryCatch>();
     newNode->copyFrom(context, this);
     return newNode;
 }

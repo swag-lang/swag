@@ -153,7 +153,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
 
     if (token.id == TokenId::KwdTry)
     {
-        auto tryNode = Ast::newNode<AstTry>(this, AstNodeKind::Try, sourceFile, parent);
+        auto tryNode = Ast::newNode<AstTryCatch>(this, AstNodeKind::Try, sourceFile, parent);
         SWAG_VERIFY(tryNode->ownerFct, error(tryNode, "'try' can only be used inside a function"));
         tryNode->ownerFct->funcFlags |= FUNC_FLAG_RAISE_ERRORS;
         tryNode->semanticFct = SemanticJob::resolveTry;
@@ -162,6 +162,18 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
         Ast::removeFromParent(identifierRef);
         Ast::addChildBack(tryNode, identifierRef);
         SWAG_CHECK(eatToken());
+    }
+    else if (token.id == TokenId::KwdCatch)
+    {
+        auto catchNode = Ast::newNode<AstTryCatch>(this, AstNodeKind::Catch, sourceFile, parent);
+        SWAG_VERIFY(catchNode->ownerFct, error(catchNode, "'catch' can only be used inside a function"));
+        catchNode->semanticFct = SemanticJob::resolveCatch;
+        if (result)
+            *result = catchNode;
+        Ast::removeFromParent(identifierRef);
+        Ast::addChildBack(catchNode, identifierRef);
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doEmbeddedInstruction(catchNode));
     }
 
     return true;

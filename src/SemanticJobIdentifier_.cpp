@@ -2828,8 +2828,8 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
 
 bool SemanticJob::resolveTry(SemanticContext* context)
 {
-    auto node          = CastAst<AstTry>(context->node, AstNodeKind::Try);
-    auto identifierRef = CastAst<AstIdentifierRef>(node->childs.back(), AstNodeKind::IdentifierRef);
+    auto node          = CastAst<AstTryCatch>(context->node, AstNodeKind::Try);
+    auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
     auto lastChild     = identifierRef->childs.back();
 
     SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({node, format("'try' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
@@ -2844,5 +2844,21 @@ bool SemanticJob::resolveTry(SemanticContext* context)
 
 bool SemanticJob::resolveCatch(SemanticContext* context)
 {
+    auto node          = CastAst<AstTryCatch>(context->node, AstNodeKind::Catch);
+    auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+    auto lastChild     = identifierRef->childs.back();
+
+    SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({node, format("'catch' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
+
+    auto funcNode = CastAst<AstFuncDecl>(lastChild->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
+    SWAG_VERIFY(funcNode->funcFlags & FUNC_FLAG_RAISE_ERRORS, context->report({node, format("'catch' can only be used after a function call that can raise errors, and '%s' does not", lastChild->token.text.c_str())}));
+
+    node->byteCodeFct = ByteCodeGenJob::emitCatch;
+    node->typeInfo    = lastChild->typeInfo;
+
+    auto stmt = node->childs.back();
+    stmt->allocateExtension();
+    stmt->extension->byteCodeBeforeFct = ByteCodeGenJob::emitCatchBeforeStmt;
+
     return true;
 }

@@ -26,8 +26,8 @@ bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 {
-    auto node              = CastAst<AstTry>(context->node, AstNodeKind::Try);
-    node->resultRegisterRC = node->childs.back()->childs.back()->resultRegisterRC;
+    auto node              = CastAst<AstTryCatch>(context->node, AstNodeKind::Try);
+    node->resultRegisterRC = node->childs.front()->childs.back()->resultRegisterRC;
 
     if (!(node->doneFlags & AST_DONE_CAST1))
     {
@@ -56,8 +56,23 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitCatch(ByteCodeGenContext* context)
 {
-    AstNode* node          = context->node;
-    node->resultRegisterRC = node->childs.back()->childs.back()->resultRegisterRC;
+    auto node                              = CastAst<AstTryCatch>(context->node, AstNodeKind::Catch);
+    node->resultRegisterRC                 = node->childs.front()->childs.back()->resultRegisterRC;
+    context->bc->out[node->seekJump].b.s32 = context->bc->numInstructions - node->seekJump - 1;
+    return true;
+}
+
+bool ByteCodeGenJob::emitCatchBeforeStmt(ByteCodeGenContext* context)
+{
+    auto node = CastAst<AstTryCatch>(context->node->parent, AstNodeKind::Catch);
+
+    RegisterList r0;
+    reserveRegisterRC(context, r0, 2);
+    emitInstruction(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
+    node->seekJump = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
+    freeRegisterRC(context, r0);
+
     return true;
 }
 

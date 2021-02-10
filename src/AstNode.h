@@ -862,7 +862,7 @@ struct AstNameSpace : public AstNode
     Utf8 importedModuleName;
 };
 
-struct AstTry : public AstNode
+struct AstTryCatch : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
