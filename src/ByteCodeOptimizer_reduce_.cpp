@@ -8,6 +8,16 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        // Useless multi return
+        if (ip[0].op == ByteCodeOp::IncSP &&
+            ip[1].op == ByteCodeOp::Ret &&
+            ip[2].op == ByteCodeOp::IncSP &&
+            ip[3].op == ByteCodeOp::Ret)
+        {
+            setNop(context, ip);
+            setNop(context, ip + 1);
+        }
+
         // MakeStackPointer followed by SetAtPointer, replace with SetAtStackPointer, but
         // leave the MakeStackPointer which will be removed later (?) if no more used
         if (ip[0].op == ByteCodeOp::MakeStackPointer &&
