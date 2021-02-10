@@ -866,5 +866,6 @@ struct AstTryCatch : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    int seekJump;
+    RegisterList regInit;
+    int          seekJump;
 };

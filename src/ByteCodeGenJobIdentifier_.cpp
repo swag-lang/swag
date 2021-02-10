@@ -29,7 +29,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
     auto node              = CastAst<AstTryCatch>(context->node, AstNodeKind::Try);
     node->resultRegisterRC = node->childs.front()->childs.back()->resultRegisterRC;
 
-    if (!(node->doneFlags & AST_DONE_CAST1))
+    if (!(node->doneFlags & AST_DONE_TRY_1))
     {
         RegisterList r0;
         reserveRegisterRC(context, r0, 2);
@@ -37,7 +37,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
         node->seekJump = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
         freeRegisterRC(context, r0);
-        node->doneFlags |= AST_DONE_CAST1;
+        node->doneFlags |= AST_DONE_TRY_1;
     }
 
     // Leave the current scope
@@ -45,7 +45,56 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    // Return a default value if necessary
+    // Set default value
+    auto returnType = TypeManager::concreteType(node->ownerFct->returnType->typeInfo, CONCRETE_ALIAS);
+    if (!returnType->isNative(NativeTypeKind::Void))
+    {
+        if (returnType->kind == TypeInfoKind::Struct)
+        {
+            if (!(node->doneFlags & AST_DONE_TRY_2))
+            {
+                reserveRegisterRC(context, node->regInit, 1);
+                emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
+                node->doneFlags |= AST_DONE_TRY_2;
+            }
+
+            TypeInfoPointer pt;
+            pt.pointedType = returnType;
+            SWAG_CHECK(emitInit(context, &pt, node->regInit, 1, nullptr, nullptr));
+            if (context->result != ContextResult::Done)
+                return true;
+
+            freeRegisterRC(context, node->regInit);
+        }
+        else if (returnType->kind == TypeInfoKind::Array)
+        {
+            internalError(context, "emitTry, unsupported return type");
+        }
+        else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+        {
+            internalError(context, "emitTry, unsupported return type");
+        }
+        else if (returnType->numRegisters() == 1)
+        {
+            auto r0 = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::ClearRA, r0);
+            emitInstruction(context, ByteCodeOp::CopyRCtoRR, r0);
+            freeRegisterRC(context, r0);
+        }
+        else if (returnType->numRegisters() == 2)
+        {
+            auto r0 = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::ClearRA, r0);
+            emitInstruction(context, ByteCodeOp::CopyRCtoRR2, r0, r0);
+            freeRegisterRC(context, r0);
+        }
+        else
+        {
+            internalError(context, "emitTry, unsupported return type");
+        }
+    }
+
+    // Return from function
     if (node->ownerFct->stackSize)
         emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->ownerFct->stackSize;
     emitInstruction(context, ByteCodeOp::Ret);
