@@ -1,8 +1,7 @@
-//#global testerror
+#global testerror
 
 #test
 {
-    @seterr("toto")
-    @assert(@err == "toto")
-    @seterr(null)
+    y := 0
+    x := y try
 }

@@ -16,6 +16,20 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
+{
+    AstNode* node          = context->node;
+    node->resultRegisterRC = node->childs.back()->childs.back()->resultRegisterRC;
+    return true;
+}
+
+bool ByteCodeGenJob::emitCatch(ByteCodeGenContext* context)
+{
+    AstNode* node          = context->node;
+    node->resultRegisterRC = node->childs.back()->childs.back()->resultRegisterRC;
+    return true;
+}
+
 bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
 {
     if (!context->node->isSameStackFrame(overload))

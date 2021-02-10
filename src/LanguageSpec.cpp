@@ -90,6 +90,8 @@ void LanguageSpec::setup()
     keywords["defer"]       = TokenId::KwdDefer;
     keywords["code"]        = TokenId::KwdCode;
     keywords["label"]       = TokenId::KwdLabel;
+    keywords["try"]         = TokenId::KwdTry;
+    keywords["catch"]       = TokenId::KwdCatch;
 
     keywords["uint"]     = TokenId::NativeType;
     keywords["int"]      = TokenId::NativeType;

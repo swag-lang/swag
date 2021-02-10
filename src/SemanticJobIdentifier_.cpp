@@ -626,6 +626,19 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (identifier->token.text == "opPostMove")
             return context->report({identifier, identifier->token, "cannot reference 'opPostMove' special function (use '@postmove' instead)"});
 
+        // Error
+        if (identifier->token.text == "@seterr")
+        {
+            if (!identifier->ownerFct)
+                return context->report({identifier, identifier->token, "'@seterr' can only be used inside a function"});
+            identifier->ownerFct->attributeFlags |= ATTRIBUTE_RAISE_ERRORS;
+        }
+
+        if (identifier->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_RAISE_ERRORS)
+        {
+            //return context->report({identifier, identifier->token, format("uncatched error when calling function '%s'", identifier->token.text.c_str())});
+        }
+
         // Be sure this is not a 'forward' decl
         if (overload->node->flags & AST_EMPTY_FCT && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN) && identifier->token.text[0] != '@')
         {
@@ -2816,5 +2829,23 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
         SWAG_CHECK(scope->symTable.checkHiddenSymbol(context, node, node->typeInfo, kind));
     }
 
+    return true;
+}
+
+bool SemanticJob::resolveTry(SemanticContext* context)
+{
+    auto node          = context->node;
+    auto identifierRef = CastAst<AstIdentifierRef>(node->childs.back(), AstNodeKind::IdentifierRef);
+    auto lastChild     = identifierRef->childs.back();
+    SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({lastChild, format("'try' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
+    SWAG_VERIFY(lastChild->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_RAISE_ERRORS, context->report({lastChild, format("'try' can only be used after a function call that can raise errors, and '%s' does not", lastChild->token.text.c_str())}));
+
+    node->byteCodeFct = ByteCodeGenJob::emitTry;
+    node->typeInfo    = lastChild->typeInfo;
+    return true;
+}
+
+bool SemanticJob::resolveCatch(SemanticContext* context)
+{
     return true;
 }

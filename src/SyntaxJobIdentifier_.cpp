@@ -138,8 +138,19 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
 
     while (token.id == TokenId::SymDot)
     {
-        SWAG_CHECK(eatToken(TokenId::SymDot));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
+    }
+
+    if (token.id == TokenId::KwdTry)
+    {
+        auto tryNode         = Ast::newNode<AstNode>(this, AstNodeKind::Try, sourceFile, parent);
+        tryNode->semanticFct = SemanticJob::resolveTry;
+        if (result)
+            *result = tryNode;
+        Ast::removeFromParent(identifierRef);
+        Ast::addChildBack(tryNode, identifierRef);
+        SWAG_CHECK(eatToken());
     }
 
     return true;
