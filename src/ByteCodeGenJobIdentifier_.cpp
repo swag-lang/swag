@@ -69,7 +69,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
         else if (returnType->kind == TypeInfoKind::Array)
         {
             auto typeArr = CastTypeInfo<TypeInfoArray>(returnType, TypeInfoKind::Array);
-            if (typeArr->pointedType->kind != TypeInfoKind::Struct)
+            if (typeArr->finalType->kind != TypeInfoKind::Struct)
             {
                 auto r0 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
@@ -78,7 +78,20 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
             }
             else
             {
-                internalError(context, "emitTry, unsupported return type");
+                if (!(node->doneFlags & AST_DONE_TRY_2))
+                {
+                    reserveRegisterRC(context, node->regInit, 1);
+                    emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
+                    node->doneFlags |= AST_DONE_TRY_2;
+                }
+
+                TypeInfoPointer pt;
+                pt.pointedType = typeArr->finalType;
+                SWAG_CHECK(emitInit(context, &pt, node->regInit, typeArr->totalCount, nullptr, nullptr));
+                if (context->result != ContextResult::Done)
+                    return true;
+
+                freeRegisterRC(context, node->regInit);
             }
         }
         else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)

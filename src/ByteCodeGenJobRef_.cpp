@@ -705,12 +705,22 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             if (!generateStruct_opInit(context, typeStruct))
                 return false;
 
+            // Constant loop
+            uint32_t regCount = 0;
+            if (numToInit > 1)
+            {
+                regCount    = reserveRegisterRC(context);
+                auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate64, regCount);
+                inst->b.u64 = numToInit;
+            }
+
             auto startLoop = context->bc->numInstructions;
             emitInstruction(context, ByteCodeOp::PushRAParam, rExpr);
             SWAG_ASSERT(typeStruct->opInit);
             emitOpCallUser(context, nullptr, typeStruct->opInit, false);
 
-            if (numToInit != 1)
+            // Dynamic loop
+            if (numToInit == 0)
             {
                 auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
                 inst->flags |= BCI_IMM_B;
@@ -718,6 +728,18 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
                 emitInstruction(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
                 auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero64, count->resultRegisterRC);
                 instJump->b.s32 = startLoop - context->bc->numInstructions;
+            }
+
+            // Constant loop
+            else if (numToInit > 1)
+            {
+                auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
+                inst->flags |= BCI_IMM_B;
+                inst->b.u64 = typeStruct->sizeOf;
+                emitInstruction(context, ByteCodeOp::DecrementRA64, regCount);
+                auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero64, regCount);
+                instJump->b.s32 = startLoop - context->bc->numInstructions;
+                freeRegisterRC(context, regCount);
             }
         }
     }
