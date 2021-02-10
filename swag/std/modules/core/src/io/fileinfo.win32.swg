@@ -12,10 +12,7 @@ func getInfo(fullname: string)->FileInfo
     winPath := path.toWin16(fullname)
     res := GetFileAttributesExW(@dataof(winPath), GET_FILEEX_INFO_LEVELS.GetFileExInfoStandard, &attrDatas)
     if res == 0
-    {
-        error.setErrorWin32(GetLastError())
-        return result
-    }
+        error.setErrorWin32(GetLastError()) try
 
     result.fullname = fullname
     result.attributes = FileAttributes.fromDWORD(attrDatas.dwFileAttributes)

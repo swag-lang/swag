@@ -14,7 +14,7 @@ impl Mutex
     func create()->Mutex
     {
         var result: retval
-        result.init()
+        result.init() try
         return result
     }
 
@@ -24,10 +24,7 @@ impl Mutex
         debug.assert(handle == null)
         handle = CreateMutexA(null, 0, null)
         if !handle
-        {
-            error.setErrorWin32(GetLastError())
-            return
-        }
+            error.setErrorWin32(GetLastError()) try
     }
 
     // Destroy an existing mutex

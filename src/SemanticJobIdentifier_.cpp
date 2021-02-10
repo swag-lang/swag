@@ -628,9 +628,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Error
         auto funcNode = CastAst<AstFuncDecl>(identifier->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
-        if (funcNode->funcFlags & FUNC_FLAG_RAISE_ERRORS && identifier->parent->parent->kind != AstNodeKind::Try)
+        if (funcNode->funcFlags & FUNC_FLAG_RAISE_ERRORS &&
+            identifier->parent->parent->kind != AstNodeKind::Try &&
+            identifier->parent->parent->kind != AstNodeKind::Catch)
         {
-            //return context->report({identifier, identifier->token, format("uncatched error when calling function '%s'", identifier->token.text.c_str())});
+            return context->report({identifier, identifier->token, format("uncatched error when calling function '%s'", identifier->token.text.c_str())});
         }
 
         // Be sure this is not a 'forward' decl

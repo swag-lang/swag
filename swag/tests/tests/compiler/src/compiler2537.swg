@@ -17,5 +17,5 @@ func titi()->AA
 
 #test
 {
-    x := titi()
+    x := titi() catch {}
 }
