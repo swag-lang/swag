@@ -22,6 +22,7 @@ struct TypeInfoArray;
 struct AstNode;
 struct AstFuncCallParam;
 struct AstArrayPointerSlicing;
+struct TypeInfoPointer;
 enum class ByteCodeOp : uint16_t;
 
 static const uint32_t BCC_FLAG_NOLOCATION = 0x00000001;
@@ -326,6 +327,7 @@ struct ByteCodeGenJob : public Job
     static bool emitNullConditionalOp(ByteCodeGenContext* context);
     static bool emitPassThrough(ByteCodeGenContext* context);
     static bool emitInit(ByteCodeGenContext* context);
+    static bool emitInit(ByteCodeGenContext* context, TypeInfoPointer* typeExpression, RegisterList& rExpr, AstNode* count, AstNode* parameters);
     static bool emitDropCopyMove(ByteCodeGenContext* context);
     static bool emitStruct(ByteCodeGenContext* context);
     static void emitSetZeroAtPointer(ByteCodeGenContext* context, uint64_t sizeOf, uint32_t registerIndex);
