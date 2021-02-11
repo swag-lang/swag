@@ -26,10 +26,10 @@ impl AA
         @print("\n")
     }
 
-    func opPostMove(using self)
+    /*func opPostMove(using self)
     {
         @print("move\n")
-    }
+    }*/
 }
 
 #[swag.printbc]
@@ -43,7 +43,6 @@ func titi()->[1] AA
 }
 
 #[swag.printbc]
-//#[swag.optim("", false)]
 #test
 {
     v := titi()
