@@ -18,13 +18,13 @@ func entry(th: thread.Thread)
 {
     var th: [N] thread.Thread
 
-    mutex.init()
+    mutex.init() catch {}
     @assert(!@err)
     @assert(mutex.isValid())
     defer mutex.release()
 
-    visit *t: th t.init(&entry)
-    visit *t: th t.start()
+    visit *t: th t.init(&entry) catch {}
+    visit *t: th t.start() catch {}
     thread.wait(&th[0], &th[1], &th[2])
     @assert(G == N * ITER)
 }

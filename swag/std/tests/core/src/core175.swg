@@ -5,6 +5,6 @@ using core
 //#[swag.printbc]
 #test
 {
-    res := directory.getCurrent()
+    res := directory.getCurrent() catch {}
     //console.print("%\n", res)
 }

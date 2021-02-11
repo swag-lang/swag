@@ -8,7 +8,7 @@ using core.file
     loc := #location
 
     {
-        reader.open(loc.fileName)
+        reader.open(loc.fileName) catch {}
         @assert(@err == null)
         defer reader.close()
 
@@ -19,7 +19,7 @@ using core.file
     }
 
     {
-        reader.open(loc.fileName)
+        reader.open(loc.fileName) catch {}
         @assert(@err == null)
         defer reader.close()
 

@@ -190,6 +190,11 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         sourceFile->module->mainIsDefined = node;
     }
 
+    if (node->attributeFlags & ATTRIBUTE_RAISE_ERRORS)
+    {
+        node->funcFlags |= FUNC_FLAG_RAISE_ERRORS;
+    }
+
     // No semantic on a generic function, or a macro
     if (node->flags & AST_IS_GENERIC)
     {

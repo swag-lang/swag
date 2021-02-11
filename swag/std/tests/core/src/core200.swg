@@ -3,7 +3,7 @@ using core.memory, swag
 
 #test
 {
-    mem := ScratchAllocator.create(16'uint)
+    mem := ScratchAllocator.create(16'uint) catch {}
     @assert(!@err)
     defer mem.release()
 

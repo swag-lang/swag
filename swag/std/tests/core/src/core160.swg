@@ -19,7 +19,7 @@ using core
     var ext: String = path.getExtension(loc.fileName)
     @assert(utf8.compare(ext.toString(), ".SWG", utf8.ComparisonType.Latin1NoCase) == 0)
 
-    res := file.readAllText(loc.fileName)
+    res := file.readAllText(loc.fileName) catch {}
     @assert(res.length > 0)
     //console.print("%", res.item0)
 }

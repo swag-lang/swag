@@ -9,7 +9,7 @@ func entry(th: thread.Thread)
 #test
 {
     var th: thread.Thread
-    th.init(&entry)
-    th.start()
+    th.init(&entry) catch {}
+    th.start() catch {}
     th.wait()
 }

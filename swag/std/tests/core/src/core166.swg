@@ -5,7 +5,7 @@ using core
 #test
 {
     loc := #location
-    info := file.getInfo(loc.fileName)
+    info := file.getInfo(loc.fileName) catch {}
     /*console.print("size: %\n", info.size)
     console.print("attr: %\n", info.attributes)
     console.print("crt:  %\n", info.creationTime)

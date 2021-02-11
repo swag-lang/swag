@@ -18,8 +18,8 @@ func entry(th: Thread)
 #test
 {
     var th: [N] Thread
-    visit *t: th createThread(t, &entry)
-    visit *t: th t.start()
+    visit *t: th createThread(t, &entry) catch {}
+    visit *t: th t.start() catch {}
     visit *t: th t.wait()
     @assert(G == N * ITER)
 }

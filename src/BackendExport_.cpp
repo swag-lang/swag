@@ -576,6 +576,13 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             bufferSwg.addIndent(indent);
             bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")]", module->name.c_str(), node->fullnameForeign.c_str());
             bufferSwg.addEol();
+            if (node->funcFlags & FUNC_FLAG_RAISE_ERRORS)
+            {
+                bufferSwg.addIndent(indent);
+                bufferSwg.addString("#[raiseerrors]");
+                bufferSwg.addEol();
+            }
+
             SWAG_CHECK(emitAttributes(typeFunc, indent));
             bufferSwg.addIndent(indent);
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node, indent));
