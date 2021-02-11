@@ -1,6 +1,7 @@
-//#global testerror
+/*//#global testerror
+using swag
 
-//#[swag.printbc]
+#[printbc]
 struct Node
 {
     value = 666
@@ -14,9 +15,10 @@ func toto()->Node
     return x
 }
 
-//#[swag.printbc]
+//#[printbc]
+#[optim("bc",false)]
 #test
 {
     x := toto()
     @assert(x.next[0] == 666)
-}
+}*/
