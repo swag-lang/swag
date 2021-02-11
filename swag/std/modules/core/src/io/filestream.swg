@@ -3,6 +3,7 @@
 
 alias FileHandle = const *void
 
+#[swag.nocopy]
 struct FileStream
 {
     name:       String
