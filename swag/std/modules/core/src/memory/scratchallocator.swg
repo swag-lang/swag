@@ -25,7 +25,7 @@ impl ScratchAllocator
     func create(blockSize: uint, allocator: IAllocator = null)->ScratchAllocator
     {
         var result: retval
-        result.init(blockSize, allocator) try
+        try result.init(blockSize, allocator)
         return result
     }
 
@@ -35,7 +35,7 @@ impl ScratchAllocator
     func init(using self, blockSize: uint, allocator: IAllocator = null)
     {
         // Mutex
-        mutex.init() try
+        try mutex.init()
 
         // Allocate the big block to store all allocations
         fallback = allocator ?? @getcontext().allocator

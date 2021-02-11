@@ -17,10 +17,10 @@ func entry(th: Thread)
 #test
 {
     var th: [3] Thread
-    createThread(&th[0], &entry) catch {}
-    createThread(&th[1], &entry) catch {}
-    createThread(&th[2], &entry) catch {}
-    visit *t: th t.start() catch {}
+    catch createThread(&th[0], &entry)
+    catch createThread(&th[1], &entry)
+    catch createThread(&th[2], &entry)
+    visit *t: th catch t.start()
     visit *t: th t.wait()
     @assert(G == 3 * ITER)
 }

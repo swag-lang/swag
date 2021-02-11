@@ -12,10 +12,10 @@ func toto()->AA
 //#[swag.printbc]
 func titi()->AA
 {
-    return toto() try
+    return try toto()
 }
 
 #test
 {
-    x := titi() catch {}
+    x := catch titi()
 }

@@ -5,13 +5,13 @@ func toto()
 
 func titi()->string
 {
-    toto() try
+    try toto()
     return "666"
 }
 
 //#[swag.printbc]
 #test
 {
-    x := titi() catch {}
+    x := catch titi()
     @assert(x == null)
 }

@@ -31,7 +31,7 @@ func start(info: StartInfo)->Process
 
     // Launch
     if !CreateProcessA(null, @dataof(str), null, null, FALSE, 0, null, null, &si, &pi)
-        error.setErrorWin32(GetLastError()) try
+        try error.setErrorWin32(GetLastError())
 
     result.handle = pi.hProcess
     return result

@@ -5,12 +5,12 @@ using core
 #test
 {
     {
-        stream := file.openRead("tolklkjlkjk:jto") catch {}
+        stream := catch file.openRead("tolklkjlkjk:jto")
         @assert(@err != null)
     }
 
     {
-        directory.setCurrent("fkdfjfkjfkdj") catch {}
+        catch directory.setCurrent("fkdfjfkjfkdj")
         @assert(@err != null)
     }
 }

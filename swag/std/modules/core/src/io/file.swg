@@ -43,7 +43,7 @@ func readAllText(fullname: string, encoding = TextEncoding.Utf8)->String
     var result:     retval
     var textReader: TextReader
 
-    textReader.open(fullname, encoding) try
+    try textReader.open(fullname, encoding)
     defer textReader.close()
 
     result = textReader.readToEnd()
@@ -56,7 +56,7 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String
     var result:     retval
     var textReader: TextReader
 
-    textReader.open(fullname, encoding) try
+    try textReader.open(fullname, encoding)
     defer textReader.close()
 
     res := textReader.readLine()
@@ -74,11 +74,11 @@ func readAllBytes(fullname: string)->Array'u8
 {
     var result: retval
 
-    stream := openRead(fullname) try
+    stream := try openRead(fullname)
     debug.assert(stream.isOpen())
     defer stream.close()
 
-    len := getSize(stream) try
+    len := try getSize(stream)
     result.reserve(len)
     result.count = read(stream, result.buffer, len)
 

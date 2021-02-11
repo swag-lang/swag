@@ -50,6 +50,6 @@ func getAttributes(fullname: string)->FileAttributes
     winPath := path.toWin16(fullname)
     attributes := GetFileAttributesW(@dataof(winPath))
     if attributes == INVALID_FILE_ATTRIBUTES
-        error.setErrorWin32(GetLastError()) try
+        try error.setErrorWin32(GetLastError())
     return FileAttributes.fromDWORD(attributes)
 }

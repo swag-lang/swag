@@ -8,16 +8,16 @@ using core
     //console.print("%\n", p)
 
     {
-        full := path.getAbsolute(p) catch {}
+        full := catch path.getAbsolute(p)
         @assert(!@err)
         //console.print("%\n", full)
     }
 
     {
-        cur := directory.getCurrent() catch {}
+        cur := catch directory.getCurrent()
         @assert(!@err)
 
-        full := path.getAbsolute("..") catch {}
+        full := catch path.getAbsolute("..")
         @assert(!@err)
 
         //console.print("%\n%\n", path.getDirectoryName(cur), @countof(full))

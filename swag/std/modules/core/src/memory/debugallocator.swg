@@ -47,7 +47,7 @@ public impl DebugAllocator
     func create(allocator: IAllocator = null)->DebugAllocator
     {
         var result: retval
-        result.init(allocator) try
+        try result.init(allocator)
         return result
     }
 
@@ -55,7 +55,7 @@ public impl DebugAllocator
     func init(using self, allocator: IAllocator = null)
     {
         self.allocator = #scopefct.allocator ?? @getcontext().allocator
-        mutex.init() try
+        try mutex.init()
     }
 
     // Release allocator ressources

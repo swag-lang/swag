@@ -16,7 +16,7 @@ impl Timer
     func create(elapsedTimeMs: u32, lambda: func(Timer), periodic = false)->Timer
     {
         var result: retval
-        result.init(elapsedTimeMs, lambda, periodic) try
+        try result.init(elapsedTimeMs, lambda, periodic)
         return result
     }
 
@@ -28,7 +28,7 @@ impl Timer
         debug.assert(lambda != null)
         userLambda = lambda
         if !CreateTimerQueueTimer(&handle, null, @mkcallback(&timerEntry), self, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
-            error.setErrorWin32(GetLastError()) try
+            try error.setErrorWin32(GetLastError())
     }
 
     // Release the timer

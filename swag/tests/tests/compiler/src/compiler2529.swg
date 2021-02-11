@@ -8,6 +8,6 @@ func toto()->s64
 #test
 {
     g := 0
-    x := toto() catch g = 1
-    @assert(g == 1)
+    x := catch toto()
+    @assert(@err != null)
 }

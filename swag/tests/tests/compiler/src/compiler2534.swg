@@ -11,14 +11,14 @@ struct AA
 //#[swag.printbc]
 func titi()->AA
 {
-    toto() try
+    try toto()
     return @{10, 20}
 }
 
 //#[swag.printbc]
 #test
 {
-    v := titi() catch {}
+    v := catch titi()
     @assert(v.x == 1)
     @assert(v.y == 1)
 }

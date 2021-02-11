@@ -73,7 +73,7 @@ public impl TextReader
     {
         debug.assert(!stream.isOpen())
 
-        stream = openRead(fullname) try
+        stream = try openRead(fullname)
         debug.assert(stream.isOpen())
 
         byteSeek = 0

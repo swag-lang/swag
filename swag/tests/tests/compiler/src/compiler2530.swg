@@ -7,7 +7,6 @@ func toto()->s64
 //#[swag.printbc]
 #test
 {
-    g := 0
-    x := toto() catch g = 1
-    @assert(g == 0)
+    x := catch toto()
+    @assert(@err == null)
 }

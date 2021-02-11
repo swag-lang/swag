@@ -20,5 +20,5 @@ func start(fileName: string, arguments: string = null)->Process
     var info: StartInfo
     info.fileName = fileName
     info.arguments = arguments
-    return start(info) try
+    return try start(info)
 }

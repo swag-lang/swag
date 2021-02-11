@@ -103,6 +103,7 @@ struct SyntaxJob : public Job
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint32_t identifierFlags = 0);
+    bool doTryCatch(AstNode* parent, AstNode** result = nullptr);
     bool doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool forGlobal);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent, AstNode** result, bool forGlobal);

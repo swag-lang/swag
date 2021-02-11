@@ -151,6 +151,11 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
         SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
     }
 
+    return true;
+}
+
+bool SyntaxJob::doTryCatch(AstNode* parent, AstNode** result)
+{
     if (token.id == TokenId::KwdTry)
     {
         auto tryNode = Ast::newNode<AstTryCatch>(this, AstNodeKind::Try, sourceFile, parent);
@@ -159,9 +164,8 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
         tryNode->semanticFct = SemanticJob::resolveTry;
         if (result)
             *result = tryNode;
-        Ast::removeFromParent(identifierRef);
-        Ast::addChildBack(tryNode, identifierRef);
         SWAG_CHECK(eatToken());
+        SWAG_CHECK(doIdentifierRef(tryNode));
     }
     else if (token.id == TokenId::KwdCatch)
     {
@@ -170,10 +174,8 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
         catchNode->semanticFct = SemanticJob::resolveCatch;
         if (result)
             *result = catchNode;
-        Ast::removeFromParent(identifierRef);
-        Ast::addChildBack(catchNode, identifierRef);
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doEmbeddedInstruction(catchNode));
+        SWAG_CHECK(doIdentifierRef(catchNode));
     }
 
     return true;

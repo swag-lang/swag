@@ -3,6 +3,6 @@ using core
 #test
 {
     data := imagePath("image1.bmp")
-    bytes := file.readAllBytes(data) catch {}
+    bytes := catch file.readAllBytes(data)
     @assert(!@err)
 }

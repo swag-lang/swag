@@ -12,7 +12,7 @@ func entry(t: Timer)
 #test
 {
     var timer: Timer
-    timer.init(10, &entry, true) catch {}
+    catch timer.init(10, &entry, true)
     @assert(!@err)
     defer timer.release()
     thread.sleep(31)

@@ -6,7 +6,7 @@ var g_cxt: swag.Context
 
 #init
 {
-    g_dbg.init() catch {}
+    catch g_dbg.init()
     g_cxt = :@getcontext()
     g_cxt.allocator = g_dbg
     @setcontext(g_cxt)
@@ -28,7 +28,7 @@ var g_cxt: swag.Context
 {
     //#assert reflection.hasDrop(std.file.FileInfo)
 
-    dbg := DebugAllocator.create() catch {}
+    dbg := catch DebugAllocator.create()
     defer dbg.release()
 
     ptr := alloc(16, dbg)

@@ -18,10 +18,10 @@ func entry2(th: thread.Thread)
 //#[swag.printbc]
 #test
 {
-    th1.init(&entry1) catch {}
-    thread.Thread.init(&th2, &entry2) catch {}
-    th1.start() catch {}
-    th2.start() catch {}
+    catch th1.init(&entry1)
+    catch thread.Thread.init(&th2, &entry2)
+    catch th1.start()
+    catch th2.start()
     th2.wait()
     //@print("end\n")
 }

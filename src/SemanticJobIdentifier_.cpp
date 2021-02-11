@@ -2859,14 +2859,10 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
     auto funcNode = CastAst<AstFuncDecl>(lastChild->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
     SWAG_VERIFY(funcNode->funcFlags & FUNC_FLAG_RAISE_ERRORS, context->report({node, format("'catch' can only be used after a function call that can raise errors, and '%s' does not", lastChild->token.text.c_str())}));
 
-    node->byteCodeFct = ByteCodeGenJob::emitCatch;
+    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
     node->typeInfo    = lastChild->typeInfo;
     node->flags       = identifierRef->flags;
     node->inheritComputedValue(identifierRef);
-
-    auto stmt = node->childs.back();
-    stmt->allocateExtension();
-    stmt->extension->byteCodeBeforeFct = ByteCodeGenJob::emitCatchBeforeStmt;
 
     return true;
 }

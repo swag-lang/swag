@@ -5,7 +5,7 @@ using core.file
 #test
 {
     loc := #location
-    res := readAllLines(loc.fileName) catch {}
+    res := catch readAllLines(loc.fileName)
     @assert(@err == null)
     @assert(res.count > 5)
     @assert(res[0] == @"#import "core""@)
