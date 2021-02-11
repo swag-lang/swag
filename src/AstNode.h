@@ -864,10 +864,10 @@ struct AstNameSpace : public AstNode
     Utf8 importedModuleName;
 };
 
-struct AstTryCatch : public AstNode
+struct AstTryCatch : public AstReturn
 {
     AstNode* clone(CloneContext& context) override;
 
     RegisterList regInit;
-    int          seekJump;
+    int          seekInsideJump;
 };

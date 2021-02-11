@@ -107,9 +107,18 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
     }
 
     // Return from function
-    if (node->ownerFct->stackSize)
-        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->ownerFct->stackSize;
-    emitInstruction(context, ByteCodeOp::Ret);
+    if (node->ownerInline)
+    {
+        node->seekJump = context->bc->numInstructions;
+        emitInstruction(context, ByteCodeOp::Jump);
+        node->ownerInline->returnList.push_back(node);
+    }
+    else
+    {
+        if (node->ownerFct->stackSize)
+            emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->ownerFct->stackSize;
+        emitInstruction(context, ByteCodeOp::Ret);
+    }
 
     return true;
 }
@@ -142,7 +151,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
         RegisterList r0;
         reserveRegisterRC(context, r0, 2);
         emitInstruction(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
-        node->seekJump = context->bc->numInstructions;
+        node->seekInsideJump = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
         freeRegisterRC(context, r0);
         node->doneFlags |= AST_DONE_TRY_1;
@@ -152,7 +161,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    context->bc->out[node->seekJump].b.s32 = context->bc->numInstructions - node->seekJump - 1;
+    context->bc->out[node->seekInsideJump].b.s32 = context->bc->numInstructions - node->seekInsideJump - 1;
     return true;
 }
 
