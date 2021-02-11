@@ -338,6 +338,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdCatch:
         SWAG_CHECK(doTryCatch(parent, result));
         break;
+    case TokenId::KwdThrow:
+        SWAG_CHECK(doThrow(parent, result));
+        break;
     case TokenId::SymBackTick:
     case TokenId::CompilerScopeFct:
     case TokenId::Identifier:

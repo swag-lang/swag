@@ -1,6 +1,6 @@
 func toto()
 {
-    @seterr("toto")
+    throw "toto"
 }
 
 struct AA

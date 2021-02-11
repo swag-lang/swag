@@ -2866,3 +2866,14 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
 
     return true;
 }
+
+bool SemanticJob::resolveThrow(SemanticContext* context)
+{
+    auto node      = CastAst<AstTryCatch>(context->node, AstNodeKind::Throw);
+    auto back      = node->childs.back();
+    node->typeInfo = back->typeInfo;
+
+    SWAG_VERIFY(node->typeInfo->isNative(NativeTypeKind::String), context->report({back, format("invalid type for 'throw' ('string' expected, '%s' provided)", node->typeInfo->name.c_str())}));
+    node->byteCodeFct = ByteCodeGenJob::emitThrow;
+    return true;
+}

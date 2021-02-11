@@ -1,6 +1,6 @@
 func toto()->s64
 {
-    @seterr("toto")
+    throw "toto"
     return 555
 }
 

@@ -24,21 +24,9 @@ bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
 {
-    auto node              = CastAst<AstTryCatch>(context->node, AstNodeKind::Try);
-    node->resultRegisterRC = node->childs.front()->childs.back()->resultRegisterRC;
-
-    if (!(node->doneFlags & AST_DONE_TRY_1))
-    {
-        RegisterList r0;
-        reserveRegisterRC(context, r0, 2);
-        emitInstruction(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
-        node->seekJump = context->bc->numInstructions;
-        emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
-        freeRegisterRC(context, r0);
-        node->doneFlags |= AST_DONE_TRY_1;
-    }
+    auto node = CastAst<AstTryCatch>(context->node, AstNodeKind::Try, AstNodeKind::Throw);
 
     // Leave the current scope
     SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
@@ -122,6 +110,47 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
     if (node->ownerFct->stackSize)
         emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->ownerFct->stackSize;
     emitInstruction(context, ByteCodeOp::Ret);
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
+{
+    auto node = CastAst<AstTryCatch>(context->node, AstNodeKind::Throw);
+    auto expr = node->childs.back();
+
+    if (!(node->doneFlags & AST_DONE_TRY_1))
+    {
+        emitInstruction(context, ByteCodeOp::IntrinsicSetErr, expr->resultRegisterRC[0], expr->resultRegisterRC[1]);
+        node->doneFlags |= AST_DONE_TRY_1;
+    }
+
+    SWAG_CHECK(emitTryThrowExit(context));
+    if (context->result != ContextResult::Done)
+        return true;
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
+{
+    auto node              = CastAst<AstTryCatch>(context->node, AstNodeKind::Try);
+    node->resultRegisterRC = node->childs.front()->childs.back()->resultRegisterRC;
+
+    if (!(node->doneFlags & AST_DONE_TRY_1))
+    {
+        RegisterList r0;
+        reserveRegisterRC(context, r0, 2);
+        emitInstruction(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
+        node->seekJump = context->bc->numInstructions;
+        emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
+        freeRegisterRC(context, r0);
+        node->doneFlags |= AST_DONE_TRY_1;
+    }
+
+    SWAG_CHECK(emitTryThrowExit(context));
+    if (context->result != ContextResult::Done)
+        return true;
 
     context->bc->out[node->seekJump].b.s32 = context->bc->numInstructions - node->seekJump - 1;
     return true;

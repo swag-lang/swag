@@ -3,9 +3,10 @@ struct AA
     x = 0
 }
 
+//#[swag.printbc]
 func toto()->AA
 {
-    @seterr("t")
+    throw "toto"
     return @{1}
 }
 
@@ -18,4 +19,5 @@ func titi()->AA
 #test
 {
     x := catch titi()
+    @assert(@err == "toto")
 }

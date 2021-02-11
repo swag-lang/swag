@@ -259,6 +259,7 @@ struct SemanticJob : public Job
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool resolveTry(SemanticContext* context);
     static bool resolveCatch(SemanticContext* context);
+    static bool resolveThrow(SemanticContext* context);
     static bool CheckImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
     static bool resolveImpl(SemanticContext* context);
     static bool resolveImplForType(SemanticContext* context);

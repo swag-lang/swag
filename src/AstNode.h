@@ -149,6 +149,7 @@ enum class AstNodeKind : uint8_t
     PostMove,
     Try,
     Catch,
+    Throw,
 };
 
 struct CloneContext

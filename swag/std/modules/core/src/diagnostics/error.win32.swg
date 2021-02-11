@@ -23,5 +23,5 @@ protected func setErrorWin32(errorMessageID: u32)
         len -= 1
     }
 
-    @seterr(@mkstring(&errorMsg[0], len))
+    throw @mkstring(&errorMsg[0], len)
 }

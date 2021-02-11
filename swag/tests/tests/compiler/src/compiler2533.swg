@@ -1,6 +1,6 @@
 func toto()
 {
-    @seterr("toto")
+    throw "toto"
 }
 
 func titi()->string
