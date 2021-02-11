@@ -40,7 +40,27 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
     {
         ip->op    = ByteCodeOp::SetZeroStackX;
         ip->a.u32 = orgOffset;
-        ip->b.u64 = ip[1].c.u32; // Copy the size from the following memcpy
+        switch (ip[1].op)
+        {
+        case ByteCodeOp::MemCpy8:
+            ip->b.u64 = 1;
+            break;
+        case ByteCodeOp::MemCpy16:
+            ip->b.u64 = 2;
+            break;
+        case ByteCodeOp::MemCpy32:
+            ip->b.u64 = 4;
+            break;
+        case ByteCodeOp::MemCpy64:
+            ip->b.u64 = 8;
+            break;
+        case ByteCodeOp::MemCpyX:
+            ip->b.u64 = ip[1].c.u32;
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
     }
     else
     {
