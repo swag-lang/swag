@@ -81,7 +81,9 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
             }
             else
             {
-                if (!(node->doneFlags & AST_DONE_TRY_2))
+                if (node->ownerInline)
+                    node->regInit = node->ownerInline->resultRegisterRC;
+                else if (!(node->doneFlags & AST_DONE_TRY_2))
                 {
                     reserveRegisterRC(context, node->regInit, 1);
                     emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
@@ -94,7 +96,8 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
                 if (context->result != ContextResult::Done)
                     return true;
 
-                freeRegisterRC(context, node->regInit);
+                if (!node->ownerInline)
+                    freeRegisterRC(context, node->regInit);
             }
         }
         else if (returnType->numRegisters() == 1)
