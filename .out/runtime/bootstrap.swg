@@ -72,6 +72,9 @@ namespace swag
     #[attributeUsage(AttributeUsage.Struct)]
     attr pack(value: u8)
 
+    #[attributeUsage(AttributeUsage.Struct)]
+    attr nocopy()
+
     #[attributeUsage(AttributeUsage.StructVariable)]
     attr offset(name: string)
 

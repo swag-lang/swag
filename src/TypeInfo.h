@@ -51,6 +51,7 @@ static const uint32_t TYPEINFO_FAKE_ALIAS                   = 0x08000000;
 static const uint32_t TYPEINFO_HAS_USING                    = 0x10000000;
 static const uint32_t TYPEINFO_RELATIVE                     = 0x20000000;
 static const uint32_t TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS = 0x40000000;
+static const uint32_t TYPEINFO_STRUCT_NO_COPY               = 0x80000000;
 
 static const uint32_t ISSAME_EXACT     = 0x00000001;
 static const uint32_t ISSAME_CAST      = 0x00000002;

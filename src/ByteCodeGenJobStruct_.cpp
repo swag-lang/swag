@@ -6,6 +6,7 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "Diagnostic.h"
 
 void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
 {
@@ -751,6 +752,9 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
     bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;
     if (mustCopy)
     {
+        if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
+            return context->report({context->node, format("copy semantic is forbidden for type '%s'", typeInfo->name.c_str())});
+
         PushICFlags sf(context, BCI_POST_COPYMOVE);
         if (typeInfoStruct->opPostCopy)
         {

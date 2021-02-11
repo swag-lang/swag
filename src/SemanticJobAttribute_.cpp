@@ -242,6 +242,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_CALLBACK;
             else if (child->token.text == "raiseerrors")
                 flags |= ATTRIBUTE_RAISE_ERRORS;
+            else if (child->token.text == "nocopy")
+                flags |= ATTRIBUTE_NO_COPY;
 
             // All attributes with parameters : do not evaluate in generic, as a parameter
             // can be parametric
