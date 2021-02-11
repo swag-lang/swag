@@ -173,6 +173,10 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
     if (!(node->flags & AST_CONST_EXPR))
     {
+        // Will be collected by the top ExpressionList
+        if (node->parent->kind == AstNodeKind::ExpressionList)
+            return true;
+
         job->collectChilds.clear();
         collectLiteralsChilds(node, &job->collectChilds);
 
@@ -185,7 +189,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         for (auto child : job->collectChilds)
         {
             emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = offsetIdx;
-            emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC);
+            emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC, child->typeInfo);
             offsetIdx += oneOffset;
             freeRegisterRC(context, child);
         }
