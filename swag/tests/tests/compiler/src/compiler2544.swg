@@ -1,15 +1,20 @@
 using swag
 
+struct AA
+{
+    x, y = 555
+}
+
 #[inline]
-func toto()->string
+func toto()->AA
 {
     throw "coucou"
-    return "10"
+    return @{1, 2}
 }
 
 //#[printbc]
 #test
 {
     x := catch toto()
-    @assert(x == null)
+    @assert(x.x == 555)
 }

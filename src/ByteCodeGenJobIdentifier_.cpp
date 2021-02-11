@@ -44,7 +44,9 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
     {
         if (returnType->kind == TypeInfoKind::Struct)
         {
-            if (!(node->doneFlags & AST_DONE_TRY_2))
+            if (node->ownerInline)
+                node->regInit = node->ownerInline->resultRegisterRC;
+            else if (!(node->doneFlags & AST_DONE_TRY_2))
             {
                 reserveRegisterRC(context, node->regInit, 1);
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
@@ -57,7 +59,8 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
             if (context->result != ContextResult::Done)
                 return true;
 
-            freeRegisterRC(context, node->regInit);
+            if (!node->ownerInline)
+                freeRegisterRC(context, node->regInit);
         }
         else if (returnType->kind == TypeInfoKind::Array)
         {
@@ -86,10 +89,6 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
 
                 freeRegisterRC(context, node->regInit);
             }
-        }
-        else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
-        {
-            internalError(context, "emitTry, unsupported return type");
         }
         else if (returnType->numRegisters() == 1)
         {
