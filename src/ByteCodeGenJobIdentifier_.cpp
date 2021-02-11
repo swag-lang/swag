@@ -67,10 +67,17 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
             auto typeArr = CastTypeInfo<TypeInfoArray>(returnType, TypeInfoKind::Array);
             if (typeArr->finalType->kind != TypeInfoKind::Struct)
             {
-                auto r0 = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r0)->b.u64 = typeArr->sizeOf;
-                freeRegisterRC(context, r0);
+                if (node->ownerInline)
+                {
+                    emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, node->ownerInline->resultRegisterRC)->b.u64 = typeArr->sizeOf;
+                }
+                else
+                {
+                    auto r0 = reserveRegisterRC(context);
+                    emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
+                    emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r0)->b.u64 = typeArr->sizeOf;
+                    freeRegisterRC(context, r0);
+                }
             }
             else
             {
