@@ -33,8 +33,13 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
+    TypeInfo* returnType = nullptr;
+    if (node->ownerInline)
+        returnType = TypeManager::concreteType(node->ownerInline->func->returnType->typeInfo, CONCRETE_ALIAS);
+    else
+        returnType = TypeManager::concreteType(node->ownerFct->returnType->typeInfo, CONCRETE_ALIAS);
+
     // Set default value
-    auto returnType = TypeManager::concreteType(node->ownerFct->returnType->typeInfo, CONCRETE_ALIAS);
     if (!returnType->isNative(NativeTypeKind::Void))
     {
         if (returnType->kind == TypeInfoKind::Struct)
@@ -88,17 +93,32 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
         }
         else if (returnType->numRegisters() == 1)
         {
-            auto r0 = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::ClearRA, r0);
-            emitInstruction(context, ByteCodeOp::CopyRCtoRR, r0);
-            freeRegisterRC(context, r0);
+            if (node->ownerInline)
+            {
+                emitInstruction(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[0]);
+            }
+            else
+            {
+                auto r0 = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::ClearRA, r0);
+                emitInstruction(context, ByteCodeOp::CopyRCtoRR, r0);
+                freeRegisterRC(context, r0);
+            }
         }
         else if (returnType->numRegisters() == 2)
         {
-            auto r0 = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::ClearRA, r0);
-            emitInstruction(context, ByteCodeOp::CopyRCtoRR2, r0, r0);
-            freeRegisterRC(context, r0);
+            if (node->ownerInline)
+            {
+                emitInstruction(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[0]);
+                emitInstruction(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[1]);
+            }
+            else
+            {
+                auto r0 = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::ClearRA, r0);
+                emitInstruction(context, ByteCodeOp::CopyRCtoRR2, r0, r0);
+                freeRegisterRC(context, r0);
+            }
         }
         else
         {
