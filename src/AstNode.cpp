@@ -1186,6 +1186,9 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstCompilerIfBlock>();
     newNode->copyFrom(context, this);
+    newNode->numTestErrors = numTestErrors;
+    newNode->numThrow      = numThrow;
+    newNode->numTry        = numTry;
     return newNode;
 }
 
