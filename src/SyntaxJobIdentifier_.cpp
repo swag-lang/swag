@@ -151,10 +151,12 @@ bool SyntaxJob::doTryCatch(AstNode* parent, AstNode** result)
     {
         auto tryNode = Ast::newNode<AstTryCatch>(this, AstNodeKind::Try, sourceFile, parent);
         SWAG_VERIFY(tryNode->ownerFct, error(tryNode, "'try' can only be used inside a function"));
-        tryNode->ownerFct->funcFlags |= FUNC_FLAG_RAISE_ERRORS;
+        tryNode->ownerFct->numTry++;
         tryNode->semanticFct = SemanticJob::resolveTry;
         if (result)
             *result = tryNode;
+        if (tryNode->ownerCompilerIfBlock)
+            tryNode->ownerCompilerIfBlock->numTry++;
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(tryNode));
     }
@@ -176,10 +178,12 @@ bool SyntaxJob::doThrow(AstNode* parent, AstNode** result)
 {
     auto throwNode = Ast::newNode<AstTryCatch>(this, AstNodeKind::Throw, sourceFile, parent);
     SWAG_VERIFY(throwNode->ownerFct, error(throwNode, "'throw' can only be used inside a function"));
-    throwNode->ownerFct->funcFlags |= FUNC_FLAG_RAISE_ERRORS | FUNC_FLAG_RAISE_MAIN_ERRORS;
+    throwNode->ownerFct->numThrow++;
     throwNode->semanticFct = SemanticJob::resolveThrow;
     if (result)
         *result = throwNode;
+    if (throwNode->ownerCompilerIfBlock)
+        throwNode->ownerCompilerIfBlock->numThrow++;
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doExpression(throwNode));
     return true;

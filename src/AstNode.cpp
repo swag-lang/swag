@@ -624,7 +624,8 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->copyFrom(context, this, false);
     newNode->stackSize   = stackSize;
     newNode->methodParam = methodParam;
-    newNode->funcFlags   = funcFlags;
+    newNode->numThrow    = numThrow;
+    newNode->numTry      = numTry;
 
     auto cloneContext     = context;
     cloneContext.ownerFct = newNode;

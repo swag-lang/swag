@@ -446,9 +446,6 @@ struct AstIdentifier : public AstNode
     AstNode*          callParameters;
 };
 
-static const uint32_t FUNC_FLAG_RAISE_ERRORS      = 0x00000001;
-static const uint32_t FUNC_FLAG_RAISE_MAIN_ERRORS = 0x00000002;
-
 struct AstFuncDecl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
@@ -466,9 +463,10 @@ struct AstFuncDecl : public AstNode
     TypeInfoParam* methodParam;
     Job*           pendingLambdaJob;
 
-    uint32_t funcFlags;
     uint32_t stackSize;
     int      exportForeignLine;
+    int      numThrow;
+    int      numTry;
 
     void computeFullNameForeign(bool forExport);
     Utf8 getNameForMessage();
@@ -840,6 +838,8 @@ struct AstCompilerIfBlock : public AstNode
     VectorNative<TypeInfoStruct*>            interfacesCount;
     VectorNative<pair<TypeInfoStruct*, int>> methodsCount;
     int                                      numTestErrors;
+    int                                      numThrow;
+    int                                      numTry;
 };
 
 enum class CompilerAstKind

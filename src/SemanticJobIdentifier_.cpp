@@ -628,7 +628,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Error
         auto funcNode = CastAst<AstFuncDecl>(identifier->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
-        if (funcNode->funcFlags & FUNC_FLAG_RAISE_ERRORS &&
+        if ((funcNode->numTry || funcNode->numThrow) &&
             identifier->parent->parent->kind != AstNodeKind::Try &&
             identifier->parent->parent->kind != AstNodeKind::Catch &&
             identifier->parent->parent->kind != AstNodeKind::Alias)
@@ -2838,7 +2838,7 @@ bool SemanticJob::resolveTry(SemanticContext* context)
     SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({node, format("'try' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
 
     auto funcNode = CastAst<AstFuncDecl>(lastChild->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
-    SWAG_VERIFY(funcNode->funcFlags & FUNC_FLAG_RAISE_ERRORS, context->report({node, format("'try' can only be used after a function call that can raise errors, and '%s' does not", lastChild->token.text.c_str())}));
+    SWAG_VERIFY(funcNode->numTry || funcNode->numThrow, context->report({node, format("'try' can only be used after a function call that can raise errors, and '%s' does not", lastChild->token.text.c_str())}));
 
     node->byteCodeFct = ByteCodeGenJob::emitTry;
     node->typeInfo    = lastChild->typeInfo;
@@ -2857,7 +2857,7 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
     SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({node, format("'catch' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
 
     auto funcNode = CastAst<AstFuncDecl>(lastChild->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
-    SWAG_VERIFY(funcNode->funcFlags & FUNC_FLAG_RAISE_ERRORS, context->report({node, format("'catch' can only be used after a function call that can raise errors, and '%s' does not", lastChild->token.text.c_str())}));
+    SWAG_VERIFY(funcNode->numTry || funcNode->numThrow, context->report({node, format("'catch' can only be used after a function call that can raise errors, and '%s' does not", lastChild->token.text.c_str())}));
 
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
     node->typeInfo    = lastChild->typeInfo;
