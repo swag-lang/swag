@@ -1390,7 +1390,8 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     SWAG_ASSERT(funcNode);
     PushNode pn(context, funcNode->content);
 
-    if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) || funcNode->numThrow)
+    // Clear error when entering a #<function> or a function than can raise en error
+    if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) || funcNode->numTry || funcNode->numThrow)
     {
         RegisterList r0 = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::ClearRA, r0);
