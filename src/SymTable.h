@@ -129,6 +129,7 @@ struct SymTable
     void            addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
     void            addVarToDrop(StructToDrop& st);
     static void     decreaseOverloadNoLock(SymbolName* symbol);
+    static void     disabledOverloadNoLock(SymbolName* symbol);
     bool            registerUsingAliasOverload(JobContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
 
     static const char* getArticleKindName(SymbolKind kind);

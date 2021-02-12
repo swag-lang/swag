@@ -15,7 +15,10 @@ SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 
 SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
 {
-    return mapNames.find(name, crc);
+    auto symbol = mapNames.find(name, crc);
+    if (symbol && symbol->cptOverloadsInit == 0)
+        return nullptr;
+    return symbol;
 }
 
 SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
@@ -54,6 +57,17 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
     }
 
     symbol->nodes.push_back(node);
+
+    switch (kind)
+    {
+    case SymbolKind::Function:
+    case SymbolKind::Struct:
+    case SymbolKind::Enum:
+    case SymbolKind::TypeSet:
+        if (node->ownerCompilerIfBlock)
+            node->ownerCompilerIfBlock->addSymbol(node, symbol);
+        break;
+    }
 
     if (!wasPlaceHolder)
     {
@@ -231,6 +245,15 @@ void SymTable::decreaseOverloadNoLock(SymbolName* symbol)
 {
     SWAG_ASSERT(symbol->cptOverloads);
     symbol->cptOverloads--;
+    if (symbol->cptOverloads == 0)
+        symbol->dependentJobs.setRunning();
+}
+
+void SymTable::disabledOverloadNoLock(SymbolName* symbol)
+{
+    SWAG_ASSERT(symbol->cptOverloadsInit);
+    symbol->cptOverloadsInit--;
+    symbol->cptOverloads = min(symbol->cptOverloads, symbol->cptOverloadsInit);
     if (symbol->cptOverloads == 0)
         symbol->dependentJobs.setRunning();
 }

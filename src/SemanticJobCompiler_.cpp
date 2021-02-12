@@ -342,10 +342,12 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
     }
 
     // Unregister one overload
-    for (auto symbol : block->symbols)
+    for (auto it : block->symbols)
     {
-        scoped_lock lk(symbol->mutex);
-        SymTable::decreaseOverloadNoLock(symbol);
+        scoped_lock lk(it.second->mutex);
+        it.first->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE;
+        it.first->semFlags |= AST_SEM_DISABLED;
+        SymTable::disabledOverloadNoLock(it.second);
     }
 
     // Decrease interfaces count to resolve

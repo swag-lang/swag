@@ -578,6 +578,11 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         for (auto f : funcNode->subFunctions)
         {
             scoped_lock lk(f->mutex);
+
+            // Disabled by #if block
+            if (f->semFlags & AST_SEM_DISABLED)
+                continue;
+
             f->flags &= ~AST_NO_SEMANTIC;
 
             // If AST_DONE_FILE_JOB_PASS is set, then the file job has already seen the sub function, ignored it

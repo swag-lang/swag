@@ -829,19 +829,19 @@ struct AstCompilerIfBlock : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    void addSymbol(SymbolName* symbolName)
+    void addSymbol(AstNode* node, SymbolName* symbolName)
     {
         scoped_lock lk(mutex);
-        symbols.push_back(symbolName);
+        symbols.push_back({node, symbolName});
     }
 
-    VectorNative<AstCompilerIfBlock*>        blocks;
-    VectorNative<SymbolName*>                symbols;
-    VectorNative<TypeInfoStruct*>            interfacesCount;
-    VectorNative<pair<TypeInfoStruct*, int>> methodsCount;
-    int                                      numTestErrors;
-    int                                      numThrow;
-    int                                      numTry;
+    VectorNative<AstCompilerIfBlock*>         blocks;
+    VectorNative<pair<AstNode*, SymbolName*>> symbols;
+    VectorNative<TypeInfoStruct*>             interfacesCount;
+    VectorNative<pair<TypeInfoStruct*, int>>  methodsCount;
+    int                                       numTestErrors;
+    int                                       numThrow;
+    int                                       numTry;
 };
 
 enum class CompilerAstKind

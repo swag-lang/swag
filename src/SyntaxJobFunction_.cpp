@@ -419,12 +419,10 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         auto        typeInfo = allocType<TypeInfoFuncAttr>();
         typeInfo->declNode   = funcNode;
 
-        newScope           = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
-        funcNode->typeInfo = typeInfo;
-        funcNode->scope    = newScope;
-        auto symbolName    = currentScope->symTable.registerSymbolNameNoLock(&context, funcNode, SymbolKind::Function);
-        if (funcNode->ownerCompilerIfBlock)
-            funcNode->ownerCompilerIfBlock->addSymbol(symbolName);
+        newScope                     = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
+        funcNode->typeInfo           = typeInfo;
+        funcNode->scope              = newScope;
+        funcNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(&context, funcNode, SymbolKind::Function);
     }
 
     // Count number of methods to resolve
