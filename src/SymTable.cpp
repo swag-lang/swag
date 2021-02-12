@@ -58,15 +58,22 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
 
     symbol->nodes.push_back(node);
 
-    switch (kind)
+    // Register the symbol in the corresponding #if block, in case the block is disabled
+    if (node->ownerCompilerIfBlock)
     {
-    case SymbolKind::Function:
-    case SymbolKind::Struct:
-    case SymbolKind::Enum:
-    case SymbolKind::TypeSet:
-        if (node->ownerCompilerIfBlock)
+        symbol->cptIfBlock++;
+        switch (kind)
+        {
+        case SymbolKind::Function:
+        case SymbolKind::Struct:
+        case SymbolKind::Enum:
+        case SymbolKind::TypeSet:
+        case SymbolKind::Interface:
+        case SymbolKind::Alias:
+        case SymbolKind::TypeAlias:
             node->ownerCompilerIfBlock->addSymbol(node, symbol);
-        break;
+            break;
+        }
     }
 
     if (!wasPlaceHolder)
@@ -251,9 +258,10 @@ void SymTable::decreaseOverloadNoLock(SymbolName* symbol)
 
 void SymTable::disabledOverloadNoLock(SymbolName* symbol)
 {
-    SWAG_ASSERT(symbol->cptOverloadsInit);
-    symbol->cptOverloadsInit--;
-    symbol->cptOverloads = min(symbol->cptOverloads, symbol->cptOverloadsInit);
+    SWAG_ASSERT(symbol->cptIfBlock);
+    symbol->cptIfBlock--;
+    symbol->cptOverloadsInit = min(symbol->cptIfBlock, symbol->cptOverloadsInit);
+    symbol->cptOverloads     = min(symbol->cptOverloads, symbol->cptOverloadsInit);
     if (symbol->cptOverloads == 0)
         symbol->dependentJobs.setRunning();
 }

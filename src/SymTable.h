@@ -87,6 +87,7 @@ struct SymbolName
     SymbolKind kind             = SymbolKind::Invalid;
     uint32_t   cptOverloads     = 0;
     uint32_t   cptOverloadsInit = 0;
+    uint32_t   cptIfBlock       = 0;
 
     VectorNative<AstNode*> nodes;
 };
