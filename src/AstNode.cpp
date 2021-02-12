@@ -351,12 +351,13 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     flags |= context.forceFlags;
     flags &= ~context.removeFlags;
 
-    ownerStructScope = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
-    ownerMainNode    = context.ownerMainNode ? context.ownerMainNode : from->ownerMainNode;
-    ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;
-    ownerBreakable   = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
-    ownerInline      = context.ownerInline ? context.ownerInline : from->ownerInline;
-    ownerFct         = context.ownerFct ? context.ownerFct : from->ownerFct;
+    ownerStructScope     = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
+    ownerMainNode        = context.ownerMainNode ? context.ownerMainNode : from->ownerMainNode;
+    ownerScope           = context.parentScope ? context.parentScope : from->ownerScope;
+    ownerBreakable       = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
+    ownerInline          = context.ownerInline ? context.ownerInline : from->ownerInline;
+    ownerFct             = context.ownerFct ? context.ownerFct : from->ownerFct;
+    ownerCompilerIfBlock = context.ownerCompilerIfBlock ? context.ownerCompilerIfBlock : from->ownerCompilerIfBlock;
 
     // Replace a type by another one during generic instantiation
     typeInfo = Generic::doTypeSubstitution(context.replaceTypes, from->typeInfo);
@@ -1185,7 +1186,19 @@ AstNode* AstInline::clone(CloneContext& context)
 AstNode* AstCompilerIfBlock::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstCompilerIfBlock>();
-    newNode->copyFrom(context, this);
+    newNode->copyFrom(context, this, false);
+
+    auto cloneContext                 = context;
+    cloneContext.parent               = newNode;
+    cloneContext.ownerCompilerIfBlock = newNode;
+    newNode->cloneChilds(cloneContext, this);
+
+    SWAG_ASSERT(symbols.empty());
+    SWAG_ASSERT(interfacesCount.empty());
+    SWAG_ASSERT(methodsCount.empty());
+
+    if (newNode->ownerCompilerIfBlock)
+        newNode->ownerCompilerIfBlock->blocks.push_back(newNode);
     newNode->numTestErrors = numTestErrors;
     newNode->numThrow      = numThrow;
     newNode->numTry        = numTry;

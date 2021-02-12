@@ -32,6 +32,7 @@ struct AstInline;
 struct AstStruct;
 struct TypeInfoStruct;
 struct AstReturn;
+struct AstCompilerIfBlock;
 enum class TypeInfoListKind;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
@@ -158,17 +159,18 @@ struct CloneContext
     map<TokenId, AstNode*> replaceTokens;
     map<Utf8, Utf8>        replaceNames;
 
-    AstInline*    ownerInline            = nullptr;
-    AstBreakable* replaceTokensBreakable = nullptr;
-    AstBreakable* ownerBreakable         = nullptr;
-    AstFuncDecl*  ownerFct               = nullptr;
-    AstNode*      parent                 = nullptr;
-    Scope*        parentScope            = nullptr;
-    Scope*        ownerStructScope       = nullptr;
-    AstNode*      ownerMainNode          = nullptr;
-    uint64_t      forceFlags             = 0;
-    uint64_t      removeFlags            = 0;
-    bool          rawClone               = false;
+    AstInline*          ownerInline            = nullptr;
+    AstBreakable*       replaceTokensBreakable = nullptr;
+    AstBreakable*       ownerBreakable         = nullptr;
+    AstFuncDecl*        ownerFct               = nullptr;
+    AstNode*            parent                 = nullptr;
+    Scope*              parentScope            = nullptr;
+    Scope*              ownerStructScope       = nullptr;
+    AstNode*            ownerMainNode          = nullptr;
+    AstCompilerIfBlock* ownerCompilerIfBlock   = nullptr;
+    uint64_t            forceFlags             = 0;
+    uint64_t            removeFlags            = 0;
+    bool                rawClone               = false;
 };
 
 struct AstNode
