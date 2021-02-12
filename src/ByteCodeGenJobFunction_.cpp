@@ -921,6 +921,25 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     if (context->result == ContextResult::Pending)
         return true;
 
+    // Error, check validity.
+    // Do it very late, and not in semantic, because we need the function to be full solved (numTry or numThrow
+    // can change because of #if inside functions)
+    if (funcNode)
+    {
+        if ((funcNode->numTry || funcNode->numThrow) &&
+            node->parent->parent->kind != AstNodeKind::Try &&
+            node->parent->parent->kind != AstNodeKind::Catch &&
+            node->parent->parent->kind != AstNodeKind::Alias)
+        {
+            return context->report({node, node->token, format("uncatched error when calling function '%s'", node->token.text.c_str())});
+        }
+
+        if ((!funcNode->numTry && !funcNode->numThrow) && node->parent->parent->kind == AstNodeKind::Try)
+            return context->report({node->parent->parent, format("'try' can only be used before a function call that can raise errors, and '%s' does not", funcNode->token.text.c_str())});
+        if ((!funcNode->numTry && !funcNode->numThrow) && node->parent->parent->kind == AstNodeKind::Catch)
+            return context->report({node->parent->parent, format("'catch' can only be used before a function call that can raise errors, and '%s' does not", funcNode->token.text.c_str())});
+    }
+
     int precallStack  = 0;
     int numCallParams = allParams ? (int) allParams->childs.size() : 0;
 

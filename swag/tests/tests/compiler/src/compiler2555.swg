@@ -1,6 +1,8 @@
+#global testerror
+
 #test
 {
-    toto()
+    try toto()
 }
 
 func toto()
