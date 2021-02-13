@@ -207,6 +207,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
             }
 
+            context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
             parentReturn->doneFlags |= AST_DONE_RETVAL;
         }
         else

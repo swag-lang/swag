@@ -773,9 +773,26 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
             emitOpCallUser(context, nullptr, typeInfoStruct->opPostMove, false);
         }
 
+        // If the current scope contains a drop for that variable, then we remove it, because we have
+        // just reset the content
+        bool mustReinit = true;
+        for (auto& toDrop : from->ownerScope->symTable.structVarsToDrop)
+        {
+            if (toDrop.overload && toDrop.overload->symbol->kind == SymbolKind::Function && from->kind == AstNodeKind::IdentifierRef)
+            {
+                if (toDrop.overload == from->resolvedSymbolOverload && toDrop.storageOffset == from->childs.back()->concreteTypeInfoStorage)
+                {
+                    mustReinit        = false;
+                    toDrop.typeStruct = nullptr;
+                    break;
+                }
+            }
+        }
+
         // Reinit source struct, except if AST_NO_RIGHT_DROP, because if we do not drop the
         // right expression, then this is not necessary to reinitialize it
-        if (typeInfoStruct->opDrop && !(from->flags & AST_NO_RIGHT_DROP))
+        // Note that if we have remove the opDrop in the code above, no need to reinitialize the variable.
+        if (mustReinit && typeInfoStruct->opDrop && !(from->flags & AST_NO_RIGHT_DROP))
         {
             if (typeInfoStruct->opInit && (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {
@@ -785,20 +802,6 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
             else
             {
                 emitSetZeroAtPointer(context, typeInfoStruct->sizeOf, r1);
-            }
-        }
-
-        // If the current scope contains a drop for that variable, then we remove it, because we have
-        // just reset the content
-        for (auto& toDrop : from->ownerScope->symTable.structVarsToDrop)
-        {
-            if (toDrop.overload && toDrop.overload->symbol->kind == SymbolKind::Function && from->kind == AstNodeKind::IdentifierRef)
-            {
-                if (toDrop.overload == from->resolvedSymbolOverload && toDrop.storageOffset == from->childs.back()->concreteTypeInfoStorage)
-                {
-                    toDrop.typeStruct = nullptr;
-                    break;
-                }
             }
         }
     }
