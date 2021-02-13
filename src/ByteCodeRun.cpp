@@ -1032,6 +1032,10 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::GetFromStack64:
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;
+    case ByteCodeOp::GetFromStack64x2:
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
+        registersRC[ip->c.u32].u64 = *(uint64_t*) (context->bp + ip->d.u32);
+        break;
     case ByteCodeOp::GetFromStackParam64:
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;

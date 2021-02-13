@@ -481,8 +481,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
-            emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[0])->b.u64 = resolved->storageOffset;
-            emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[1])->b.u64 = resolved->storageOffset + 8;
+            auto inst   = emitInstruction(context, ByteCodeOp::GetFromStack64x2, node->resultRegisterRC[0], 0, node->resultRegisterRC[1], 0);
+            inst->b.u64 = resolved->storageOffset;
+            inst->d.u64 = resolved->storageOffset + 8;
         }
         else
         {

@@ -1028,6 +1028,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::GetFromStack64x2:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
+
+            auto r2 = GEP_I32(allocR, ip->c.u32);
+            auto r3 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RD32));
+            builder.CreateStore(builder.CreateLoad(r3), r2);
+            break;
+        }
+
         case ByteCodeOp::IntrinsicStrCmp:
         {
             localCall(buildParameters, allocR, allocT, "@strcmp", {ip->d.u32, ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
