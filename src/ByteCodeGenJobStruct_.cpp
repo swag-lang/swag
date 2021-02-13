@@ -787,6 +787,20 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
                 emitSetZeroAtPointer(context, typeInfoStruct->sizeOf, r1);
             }
         }
+
+        // If the current scope contains a drop for that variable, then we remove it, because we have
+        // just reset the content
+        for (auto& toDrop : from->ownerScope->symTable.structVarsToDrop)
+        {
+            if (toDrop.overload && toDrop.overload->symbol->kind == SymbolKind::Function && from->kind == AstNodeKind::IdentifierRef)
+            {
+                if (toDrop.overload == from->resolvedSymbolOverload && toDrop.storageOffset == from->childs.back()->concreteTypeInfoStorage)
+                {
+                    toDrop.typeStruct = nullptr;
+                    break;
+                }
+            }
+        }
     }
 
     return true;

@@ -21,7 +21,7 @@ impl AA
     }
 }
 
-#[swag.printbc]
+#[swag.printbc]//, swag.optim("", false)]
 func toto()->[2] AA
 {
     return @[AA.from(), AA.from()]
