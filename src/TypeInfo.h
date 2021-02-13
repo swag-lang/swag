@@ -512,6 +512,7 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfoParam* hasInterface(TypeInfoStruct* itf);
     TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);
     Utf8           getDisplayName();
+    bool           canRawCopy();
 
     VectorNative<TypeInfoParam*> genericParameters;
     VectorNative<TypeInfoParam*> fields;

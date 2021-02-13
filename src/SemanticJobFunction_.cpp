@@ -843,6 +843,11 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, CASTFLAG_UNCONST));
     }
 
+    if (child->kind == AstNodeKind::ExpressionList)
+    {
+        child->flags |= AST_TRANSIENT;
+    }
+
     // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
     if (returnType && (returnType->kind == TypeInfoKind::Struct || returnType->isArrayOfStruct()))
     {

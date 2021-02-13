@@ -5,10 +5,10 @@ struct AA
 
 impl AA
 {
-    func opPostCopy(self)
+    /*func opPostCopy(self)
     {
 @print("copy")
-    }
+    }*/
 }
 
 #[swag.printbc]
