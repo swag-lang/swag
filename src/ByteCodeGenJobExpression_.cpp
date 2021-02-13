@@ -195,16 +195,35 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         // Must be called only on the real node !
         auto listNode = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
+        // If in a return expression, just push the caller retval
+        AstNode* parentReturn = listNode->inSimpleReturn();
+        if (parentReturn)
+        {
+            if (node->ownerInline)
+                emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
+            else
+            {
+                emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
+            }
+
+            parentReturn->doneFlags |= AST_DONE_RETVAL;
+        }
+        else
+        {
+            auto offsetIdx = listNode->computedValue.reg.offset;
+            auto inst      = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+            inst->b.u64    = offsetIdx;
+        }
+
         // Emit one affectation per child
-        auto offsetIdx = listNode->computedValue.reg.offset;
         auto oneOffset = typeList->subTypes.front()->typeInfo->sizeOf;
         for (auto child : job->collectChilds)
         {
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = offsetIdx;
             child->flags |= AST_NO_LEFT_DROP;
             emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC, child->typeInfo, child);
             SWAG_ASSERT(context->result == ContextResult::Done);
-            offsetIdx += oneOffset;
+            emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, oneOffset, node->resultRegisterRC)->flags |= BCI_IMM_B;
             freeRegisterRC(context, child);
         }
 
