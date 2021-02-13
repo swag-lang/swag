@@ -65,7 +65,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             context.result = MatchResult::BadSignature;
         }
 
-        uint32_t castFlags = CASTFLAG_NO_ERROR | CASTFLAG_AUTO_OPCAST;
+        uint32_t castFlags = CASTFLAG_NO_ERROR;
         if (context.flags & SymbolMatchContext::MATCH_UNCONST)
             castFlags |= CASTFLAG_UNCONST;
         if (context.flags & SymbolMatchContext::MATCH_UFCS && i == 0)
@@ -602,7 +602,15 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         return;
     }
 
-    matchParameters(context, parameters);
+    // If function is a generic instantation, then we do not authorize CASTFLAG_AUTO_OPCAST (opCast), because
+    // it can lead to ambiguities depending on the instantation order :
+    // First we instantate A, then B, then we call A which has an opCast to B (2558)
+    uint32_t castFlags = CASTFLAG_AUTO_OPCAST;
+    if (declNode && declNode->flags & AST_IS_GENERIC)
+        castFlags &= ~CASTFLAG_AUTO_OPCAST;
+
+    matchParameters(context, parameters, castFlags);
+
     if (context.result == MatchResult::Ok)
         matchNamedParameters(context, parameters);
 
