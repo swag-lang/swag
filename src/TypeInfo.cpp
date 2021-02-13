@@ -221,3 +221,11 @@ bool TypeInfo::isInitializerList()
         return false;
     return true;
 }
+
+bool TypeInfo::isArrayOfStruct()
+{
+    if (kind != TypeInfoKind::Array)
+        return false;
+    auto ptr = (TypeInfoArray*) this;
+    return ptr->finalType->kind == TypeInfoKind::Struct;
+}

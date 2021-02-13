@@ -273,7 +273,9 @@ SymbolName* SemanticJob::hasUserOp(const char* name, TypeInfoStruct* leftStruct)
 
 SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const char* name, AstNode* left)
 {
-    auto leftType   = TypeManager::concreteReferenceType(left->typeInfo);
+    auto leftType = TypeManager::concreteReferenceType(left->typeInfo);
+    if (leftType->kind == TypeInfoKind::Array)
+        leftType = CastTypeInfo<TypeInfoArray>(leftType, TypeInfoKind::Array)->finalType;
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
     return hasUserOp(name, leftStruct);
 }

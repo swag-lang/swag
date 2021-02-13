@@ -685,7 +685,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
         // For a struct, need to wait for special functions to be found
-        if (typeInfo->kind == TypeInfoKind::Struct)
+        if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->isArrayOfStruct())
         {
             SWAG_CHECK(waitForStructUserOps(context, node));
             if (context->result == ContextResult::Pending)

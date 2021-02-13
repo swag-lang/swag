@@ -844,7 +844,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     }
 
     // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
-    if (returnType && returnType->kind == TypeInfoKind::Struct)
+    if (returnType && (returnType->kind == TypeInfoKind::Struct || returnType->isArrayOfStruct()))
     {
         SWAG_CHECK(waitForStructUserOps(context, funcNode->returnType));
         if (context->result == ContextResult::Pending)

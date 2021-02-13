@@ -87,6 +87,7 @@ struct TypeInfo
     bool isPointerConstVoid();
     bool isPointerToTypeInfo();
     bool isInitializerList();
+    bool isArrayOfStruct();
 
     // clang-format off
     bool isNative(NativeTypeKind native)    { return (kind == TypeInfoKind::Native) && (nativeType == native); }
