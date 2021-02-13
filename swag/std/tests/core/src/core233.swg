@@ -11,4 +11,6 @@ func toto()->[2] String
 #test
 {
     x := toto()
+    @assert(x[0] == "a")
+    @assert(x[1] == "b")
 }
