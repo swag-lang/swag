@@ -1,7 +1,7 @@
-/*#import "core"
+#import "core"
 using core
 
-#[swag.printbc]
+//#[swag.printbc]
 func toto()->[2] String
 {
     return @[String.from("a"),String.from("b")]
@@ -11,4 +11,4 @@ func toto()->[2] String
 #test
 {
     x := toto()
-}*/
+}

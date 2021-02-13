@@ -11,7 +11,7 @@ impl AA
     }*/
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 func toto()->[2] AA
 {
     return @[{1},{1}]

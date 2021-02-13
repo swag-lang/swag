@@ -189,7 +189,8 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         for (auto child : job->collectChilds)
         {
             emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = offsetIdx;
-            emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC, child->typeInfo);
+            child->flags |= AST_NO_LEFT_DROP;
+            emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC, child->typeInfo, child);
             offsetIdx += oneOffset;
             freeRegisterRC(context, child);
         }
