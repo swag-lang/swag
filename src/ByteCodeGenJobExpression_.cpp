@@ -180,6 +180,18 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         job->collectChilds.clear();
         collectLiteralsChilds(node, &job->collectChilds);
 
+        // Wait for generated struct if necessary
+        for (auto child : job->collectChilds)
+        {
+            auto typeChild = TypeManager::concreteReferenceType(child->typeInfo);
+            if (typeChild->kind == TypeInfoKind::Struct)
+            {
+                context->job->waitStructGenerated(typeChild);
+                if (context->result == ContextResult::Pending)
+                    return true;
+            }
+        }
+
         // Must be called only on the real node !
         auto listNode = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
@@ -191,6 +203,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = offsetIdx;
             child->flags |= AST_NO_LEFT_DROP;
             emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC, child->typeInfo, child);
+            SWAG_ASSERT(context->result == ContextResult::Done);
             offsetIdx += oneOffset;
             freeRegisterRC(context, child);
         }
