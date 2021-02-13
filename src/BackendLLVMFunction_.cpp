@@ -1724,25 +1724,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::AffectOpPlusEqPointer:
-        {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_PTR_I8(r0));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r1), builder.CreateLoad(r2));
-            builder.CreateStore(v0, r1);
-            break;
-        }
-        case ByteCodeOp::AffectOpMinusEqPointer:
-        {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_PTR_I8(r0));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r1), builder.CreateNeg(builder.CreateLoad(r2)));
-            builder.CreateStore(v0, r1);
-            break;
-        }
-
         case ByteCodeOp::AffectOpMulEqS8:
         {
             MK_BINOPEQ8_CAB();

@@ -1,6 +1,7 @@
 #import "core"
 using core, directory
 
+#[swag.printbc]
 #test
 {
     var options: EnumerationOptions

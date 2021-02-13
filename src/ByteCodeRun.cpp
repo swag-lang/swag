@@ -2177,16 +2177,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         *(double*) registersRC[ip->a.u32].pointer += IMMB_F64(ip);
         break;
     }
-    case ByteCodeOp::AffectOpPlusEqPointer:
-    {
-        *(uint8_t**) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
-        break;
-    }
-    case ByteCodeOp::AffectOpMinusEqPointer:
-    {
-        *(uint8_t**) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
-        break;
-    }
 
     case ByteCodeOp::AffectOpMinusEqS8:
     {

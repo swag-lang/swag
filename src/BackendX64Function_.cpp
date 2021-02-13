@@ -1187,11 +1187,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMinusEqF64:
             MK_BINOPEQF64_CAB(X64Op::FSUB);
             break;
-        case ByteCodeOp::AffectOpMinusEqPointer:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_Op64_Indirect(pp, 0, RAX, RCX, X64Op::SUB);
-            break;
 
         case ByteCodeOp::AffectOpPlusEqS8:
             MK_BINOPEQ8_CAB(X64Op::ADD);
@@ -1230,11 +1225,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::AffectOpPlusEqF64:
             MK_BINOPEQF64_CAB(X64Op::FADD);
-            break;
-        case ByteCodeOp::AffectOpPlusEqPointer:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_Op64_Indirect(pp, 0, RAX, RCX, X64Op::ADD);
             break;
 
         case ByteCodeOp::LowerZeroToTrue:

@@ -245,7 +245,7 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::AffectOpPlusEqPointer, r0, r1);
+            emitInstruction(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
         }
 
         return true;
@@ -326,7 +326,7 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::AffectOpMinusEqPointer, r0, r1);
+            emitInstruction(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
         }
 
         return true;
