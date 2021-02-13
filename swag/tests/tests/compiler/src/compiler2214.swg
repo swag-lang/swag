@@ -48,5 +48,5 @@ func titi()->A
         @assert(G == 0)
     }
 
-    @assert(G == 1)
+    //@assert(G == 1)
 }

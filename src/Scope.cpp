@@ -267,6 +267,18 @@ void Scope::removeChildNoLock(Scope* child)
     }
 }
 
+bool Scope::isSameOrParentOf(Scope* child)
+{
+    while (child)
+    {
+        if (child == this)
+            return true;
+        child = child->parentScope;
+    }
+
+    return false;
+}
+
 Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate)
 {
     unique_lock lk(mutex);

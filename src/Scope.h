@@ -109,7 +109,7 @@ struct Scope
     }
 
     SymTable                 symTable;
-    Utf8                  name;
+    Utf8                     name;
     Utf8                     fullname;
     Utf8                     fullnameForeign;
     Utf8                     fullnameType;
@@ -134,4 +134,5 @@ struct Scope
     Scope* getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate);
     void   addChildNoLock(Scope* child);
     void   removeChildNoLock(Scope* child);
+    bool   isSameOrParentOf(Scope* child);
 };

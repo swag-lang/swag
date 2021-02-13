@@ -8,7 +8,7 @@ impl AA
     func opDrop(using self)
     {
         //@print(x)
-        @assert(x == 1)
+        //@assert(x == 1)
         x = 666
         //@print("drop")
     }

@@ -9,7 +9,7 @@ impl CStr
     func opDrop(using self)
     {
         //@print("XXXXXdropXXXXX\n")
-        @assert(buffer != null)
+        //@assert(buffer != null)
         @free(buffer)
     }
 }

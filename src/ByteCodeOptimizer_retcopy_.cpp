@@ -48,10 +48,13 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
                     ipe[2].op == ByteCodeOp::LocalCall &&
                     ipe[3].op == ByteCodeOp::IncSPPostCall)
                 {
-                    ByteCodeOptimizer::setNop(context, ipe);
-                    ByteCodeOptimizer::setNop(context, ipe + 1);
-                    ByteCodeOptimizer::setNop(context, ipe + 2);
-                    ByteCodeOptimizer::setNop(context, ipe + 3);
+                    if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
+                    {
+                        ByteCodeOptimizer::setNop(context, ipe);
+                        ByteCodeOptimizer::setNop(context, ipe + 1);
+                        ByteCodeOptimizer::setNop(context, ipe + 2);
+                        ByteCodeOptimizer::setNop(context, ipe + 3);
+                    }
                 }
             }
 
