@@ -34,10 +34,35 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
     }
 
     // Remove the MakeStackPointer
-    // For now we replace it with a reinit of the variable, because of opDrop that can be called
-    // on it.
     if (hasDrop)
     {
+        // Method 1:
+        // Make a nop, and detect all drops of that variable to remove them also.
+        // Not sure this will work in all situations (see method2, which is safe)
+        auto ipe = ip + 1;
+        while (ipe->op != ByteCodeOp::End)
+        {
+            if (ipe[0].op == ByteCodeOp::MakeStackPointer && ipe[0].b.u32 == orgOffset)
+            {
+                if (ipe[1].op == ByteCodeOp::PushRAParam &&
+                    ipe[2].op == ByteCodeOp::LocalCall &&
+                    ipe[3].op == ByteCodeOp::IncSPPostCall)
+                {
+                    ByteCodeOptimizer::setNop(context, ipe);
+                    ByteCodeOptimizer::setNop(context, ipe + 1);
+                    ByteCodeOptimizer::setNop(context, ipe + 2);
+                    ByteCodeOptimizer::setNop(context, ipe + 3);
+                }
+            }
+
+            ipe++;
+        }
+
+        ByteCodeOptimizer::setNop(context, ip);
+
+        // Method 2:
+        // We replace it with a reinit of the variable, because of opDrop that can be called on it later.
+        /*
         ip->op    = ByteCodeOp::SetZeroStackX;
         ip->a.u32 = orgOffset;
         switch (ip[1].op)
@@ -60,7 +85,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
         default:
             SWAG_ASSERT(false);
             break;
-        }
+        }*/
     }
     else
     {
