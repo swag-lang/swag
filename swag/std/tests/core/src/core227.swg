@@ -1,7 +1,7 @@
 #import "core"
 using core
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	filen := #location.fileName

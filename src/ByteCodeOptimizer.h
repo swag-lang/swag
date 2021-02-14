@@ -47,6 +47,14 @@ struct ByteCodeOptimizer
             return false;
         if (inst->op == ByteCodeOp::JumpIfNotZero64 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
             return false;
+        if (inst->op == ByteCodeOp::JumpIfZero8 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+            return false;
+        if (inst->op == ByteCodeOp::JumpIfZero16 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+            return false;
+        if (inst->op == ByteCodeOp::JumpIfZero32 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+            return false;
+        if (inst->op == ByteCodeOp::JumpIfZero64 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+            return false;
         return true;
     }
 

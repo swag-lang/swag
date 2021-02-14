@@ -8,6 +8,48 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        // Compare to 0
+        if (ip->op == ByteCodeOp::CompareOpEqual8 && ip->b.u8 == 0 && ip->flags & BCI_IMM_B)
+        {
+            if (ip[1].op == ByteCodeOp::JumpIfZero8 && ip[1].a.u32 == ip->c.u32)
+            {
+                setNop(context, ip);
+                ip[1].op    = ByteCodeOp::JumpIfZero8;
+                ip[1].a.u32 = ip->a.u32;
+            }
+        }
+
+        if (ip->op == ByteCodeOp::CompareOpEqual16 && ip->b.u8 == 0 && ip->flags & BCI_IMM_B)
+        {
+            if (ip[1].op == ByteCodeOp::JumpIfZero16 && ip[1].a.u32 == ip->c.u32)
+            {
+                setNop(context, ip);
+                ip[1].op    = ByteCodeOp::JumpIfZero16;
+                ip[1].a.u32 = ip->a.u32;
+            }
+        }
+
+        if (ip->op == ByteCodeOp::CompareOpEqual32 && ip->b.u8 == 0 && ip->flags & BCI_IMM_B)
+        {
+            if (ip[1].op == ByteCodeOp::JumpIfZero32 && ip[1].a.u32 == ip->c.u32)
+            {
+                setNop(context, ip);
+                ip[1].op    = ByteCodeOp::JumpIfZero32;
+                ip[1].a.u32 = ip->a.u32;
+            }
+        }
+
+        if (ip->op == ByteCodeOp::CompareOpEqual64 && ip->b.u64 == 0 && ip->flags & BCI_IMM_B)
+        {
+            if (ip[1].op == ByteCodeOp::JumpIfNotZero8 && ip[1].a.u32 == ip->c.u32)
+            {
+                setNop(context, ip);
+                ip[1].op    = ByteCodeOp::JumpIfZero64;
+                ip[1].a.u32 = ip->a.u32;
+            }
+        }
+
+        // SetAtStackPointer x2
         if (ip[0].op == ByteCodeOp::SetAtStackPointer8 &&
             ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
             !(ip[1].flags & BCI_START_STMT))
