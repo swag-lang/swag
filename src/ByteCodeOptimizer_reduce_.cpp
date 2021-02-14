@@ -49,6 +49,42 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             }
         }
 
+        if (ip->op == ByteCodeOp::CastInvBool8)
+        {
+            if (ip[1].op == ByteCodeOp::JumpIfNotZero8 && ip[1].a.u32 == ip->a.u32)
+            {
+                setNop(context, ip);
+                ip[1].op = ByteCodeOp::JumpIfZero8;
+            }
+        }
+
+        if (ip->op == ByteCodeOp::CastInvBool16)
+        {
+            if (ip[1].op == ByteCodeOp::JumpIfNotZero8 && ip[1].a.u32 == ip->a.u32)
+            {
+                setNop(context, ip);
+                ip[1].op = ByteCodeOp::JumpIfZero16;
+            }
+        }
+
+        if (ip->op == ByteCodeOp::CastInvBool32)
+        {
+            if (ip[1].op == ByteCodeOp::JumpIfNotZero8 && ip[1].a.u32 == ip->a.u32)
+            {
+                setNop(context, ip);
+                ip[1].op = ByteCodeOp::JumpIfZero32;
+            }
+        }
+
+        if (ip->op == ByteCodeOp::CastInvBool64)
+        {
+            if (ip[1].op == ByteCodeOp::JumpIfNotZero8 && ip[1].a.u32 == ip->a.u32)
+            {
+                setNop(context, ip);
+                ip[1].op = ByteCodeOp::JumpIfZero64;
+            }
+        }
+
         // SetAtStackPointer x2
         if (ip[0].op == ByteCodeOp::SetAtStackPointer8 &&
             ip[1].op == ByteCodeOp::SetAtStackPointer8 &&

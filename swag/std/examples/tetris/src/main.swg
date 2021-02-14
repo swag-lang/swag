@@ -60,6 +60,7 @@ var nFieldHeight = 18
 var pField: *u8
 var tetromino: [7] string
 
+#[swag.printbc]
 func Rotate(px, py, r: s32)->s32
 {
 	pi := 0
