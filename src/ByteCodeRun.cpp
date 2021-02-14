@@ -45,6 +45,11 @@
 #define IMMC_U32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32)
 #define IMMC_U64(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u64 : registersRC[ip->c.u32].u64)
 
+#define IMMD_U8(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u8 : registersRC[ip->d.u32].u8)
+#define IMMD_U16(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u16 : registersRC[ip->d.u32].u16)
+#define IMMD_U32(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u32 : registersRC[ip->d.u32].u32)
+#define IMMD_U64(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u64 : registersRC[ip->d.u32].u64)
+
 bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc)
 {
     switch (ip->op)
@@ -1698,6 +1703,55 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         auto ptr         = context->bp + ip->a.u32;
         *(uint64_t*) ptr = IMMB_U64(ip);
+        break;
+    }
+
+    case ByteCodeOp::SetAtStackPointer8x2:
+    {
+        {
+            auto ptr        = context->bp + ip->a.u32;
+            *(uint8_t*) ptr = IMMB_U8(ip);
+        }
+        {
+            auto ptr        = context->bp + ip->c.u32;
+            *(uint8_t*) ptr = IMMD_U8(ip);
+        }
+        break;
+    }
+    case ByteCodeOp::SetAtStackPointer16x2:
+    {
+        {
+            auto ptr         = context->bp + ip->a.u32;
+            *(uint16_t*) ptr = IMMB_U16(ip);
+        }
+        {
+            auto ptr         = context->bp + ip->c.u32;
+            *(uint16_t*) ptr = IMMD_U16(ip);
+        }
+        break;
+    }
+    case ByteCodeOp::SetAtStackPointer32x2:
+    {
+        {
+            auto ptr         = context->bp + ip->a.u32;
+            *(uint32_t*) ptr = IMMB_U32(ip);
+        }
+        {
+            auto ptr         = context->bp + ip->c.u32;
+            *(uint32_t*) ptr = IMMD_U32(ip);
+        }
+        break;
+    }
+    case ByteCodeOp::SetAtStackPointer64x2:
+    {
+        {
+            auto ptr         = context->bp + ip->a.u32;
+            *(uint64_t*) ptr = IMMB_U64(ip);
+        }
+        {
+            auto ptr         = context->bp + ip->c.u32;
+            *(uint64_t*) ptr = IMMD_U64(ip);
+        }
         break;
     }
 

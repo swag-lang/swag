@@ -1342,6 +1342,95 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::SetAtStackPointer8x2:
+        {
+            {
+                auto         r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+                llvm::Value* r1;
+                if (ip->flags & BCI_IMM_B)
+                    r1 = builder.getInt8(ip->b.u8);
+                else
+                    r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->b.u32)));
+                builder.CreateStore(r1, r0);
+            }
+            {
+                auto         r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RC32));
+                llvm::Value* r1;
+                if (ip->flags & BCI_IMM_D)
+                    r1 = builder.getInt8(ip->d.u8);
+                else
+                    r1 = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->d.u32)));
+                builder.CreateStore(r1, r0);
+            }
+            break;
+        }
+        case ByteCodeOp::SetAtStackPointer16x2:
+        {
+            {
+                auto         r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+                llvm::Value* r1;
+                if (ip->flags & BCI_IMM_B)
+                    r1 = builder.getInt16(ip->b.u16);
+                else
+                    r1 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->b.u32)));
+                builder.CreateStore(r1, r0);
+            }
+            {
+                auto         r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RC32));
+                llvm::Value* r1;
+                if (ip->flags & BCI_IMM_D)
+                    r1 = builder.getInt16(ip->d.u16);
+                else
+                    r1 = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->d.u32)));
+                builder.CreateStore(r1, r0);
+            }
+            break;
+        }
+        case ByteCodeOp::SetAtStackPointer32x2:
+        {
+            {
+                auto         r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+                llvm::Value* r1;
+                if (ip->flags & BCI_IMM_B)
+                    r1 = builder.getInt32(ip->b.u32);
+                else
+                    r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+                builder.CreateStore(r1, r0);
+            }
+            {
+                auto         r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RC32));
+                llvm::Value* r1;
+                if (ip->flags & BCI_IMM_D)
+                    r1 = builder.getInt32(ip->d.u32);
+                else
+                    r1 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->d.u32)));
+                builder.CreateStore(r1, r0);
+            }
+            break;
+        }
+        case ByteCodeOp::SetAtStackPointer64x2:
+        {
+            {
+                auto         r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+                llvm::Value* r1;
+                if (ip->flags & BCI_IMM_B)
+                    r1 = builder.getInt64(ip->b.u64);
+                else
+                    r1 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
+                builder.CreateStore(r1, r0);
+            }
+            {
+                auto         r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RC32));
+                llvm::Value* r1;
+                if (ip->flags & BCI_IMM_D)
+                    r1 = builder.getInt64(ip->d.u64);
+                else
+                    r1 = builder.CreateLoad(GEP_I32(allocR, ip->d.u32));
+                builder.CreateStore(r1, r0);
+            }
+            break;
+        }
+
         case ByteCodeOp::BinOpPlusS32:
         {
             MK_BINOP32_CAB();
