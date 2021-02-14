@@ -84,9 +84,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Array)
     {
-        // Unsupported (yet ?)
-        SWAG_ASSERT(!typeInfo->isArrayOfRelative());
-        /*auto typeArr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto typeArr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto finalType = typeArr->finalType;
         if (finalType->flags & TYPEINFO_RELATIVE)
         {
@@ -121,7 +119,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             freeRegisterRC(context, toReg);
             freeRegisterRC(context, fromReg);
             return true;
-        }*/
+        }
 
         emitMemCpy(context, r0, r1, typeInfo->sizeOf);
         return true;
