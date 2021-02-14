@@ -1779,6 +1779,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             {
                 auto childJ  = child->childs[j];
                 auto oldType = childJ->typeInfo;
+                if (toTypeStruct->fields[j]->typeInfo->isRelative() || childJ->typeInfo->isRelative())
+                    return context->report({child, format("relative types are not supported in expression lists")});
                 SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeStruct->fields[j]->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags));
                 if (childJ->typeInfo != oldType)
                     hasChanged = true;
@@ -1817,6 +1819,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 SemanticJob::computeExpressionListTupleType(context, child);
         }
 
+        if (convertTo->isRelative() || fromTypeList->subTypes[i]->typeInfo->isRelative())
+            return context->report({child, format("relative types are not supported in expression lists")});
         SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags));
         if (child)
         {

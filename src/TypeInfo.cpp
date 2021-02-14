@@ -229,3 +229,11 @@ bool TypeInfo::isArrayOfStruct()
     auto ptr = (TypeInfoArray*) this;
     return ptr->finalType->kind == TypeInfoKind::Struct;
 }
+
+bool TypeInfo::isArrayOfRelative()
+{
+    if (kind != TypeInfoKind::Array)
+        return false;
+    auto ptr = (TypeInfoArray*) this;
+    return ptr->finalType->isRelative();
+}

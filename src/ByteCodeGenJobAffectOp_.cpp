@@ -82,7 +82,52 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         }
     }
 
-    if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
+    if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        // Unsupported (yet ?)
+        SWAG_ASSERT(!typeInfo->isArrayOfRelative());
+        /*auto typeArr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto finalType = typeArr->finalType;
+        if (finalType->flags & TYPEINFO_RELATIVE)
+        {
+            RegisterList rloop   = reserveRegisterRC(context);
+            RegisterList toReg   = reserveRegisterRC(context);
+            RegisterList fromReg = reserveRegisterRC(context);
+            RegisterList rtmp    = reserveRegisterRC(context);
+
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, toReg, r0);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, fromReg, r1);
+
+            auto inst     = emitInstruction(context, ByteCodeOp::SetImmediate64, rloop);
+            inst->b.u64   = typeArr->totalCount;
+            auto seekJump = context->bc->numInstructions;
+
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, rtmp, fromReg);
+            SWAG_CHECK(emitUnwrapRelativePointer(context, rtmp, finalType->relative));
+            SWAG_CHECK(emitWrapRelativePointer(context, toReg, rtmp, finalType->relative, finalType));
+
+            inst        = emitInstruction(context, ByteCodeOp::IncPointer64, toReg, 0, toReg);
+            inst->b.u64 = finalType->sizeOf;
+            inst->flags |= BCI_IMM_B;
+            inst        = emitInstruction(context, ByteCodeOp::IncPointer64, fromReg, 0, fromReg);
+            inst->b.u64 = finalType->sizeOf;
+            inst->flags |= BCI_IMM_B;
+
+            emitInstruction(context, ByteCodeOp::DecrementRA64, rloop);
+            emitInstruction(context, ByteCodeOp::JumpIfNotZero64, rloop)->b.s32 = seekJump - context->bc->numInstructions - 1;
+
+            freeRegisterRC(context, rtmp);
+            freeRegisterRC(context, rloop);
+            freeRegisterRC(context, toReg);
+            freeRegisterRC(context, fromReg);
+            return true;
+        }*/
+
+        emitMemCpy(context, r0, r1, typeInfo->sizeOf);
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
     {
         emitMemCpy(context, r0, r1, typeInfo->sizeOf);
         return true;

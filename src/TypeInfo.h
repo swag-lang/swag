@@ -88,6 +88,7 @@ struct TypeInfo
     bool isPointerToTypeInfo();
     bool isInitializerList();
     bool isArrayOfStruct();
+    bool isArrayOfRelative();
 
     // clang-format off
     bool isNative(NativeTypeKind native)    { return (kind == TypeInfoKind::Native) && (nativeType == native); }
@@ -96,6 +97,7 @@ struct TypeInfo
     bool isNativeIntegerSigned()            { return !(flags & TYPEINFO_UNSIGNED); }
     bool isNativeIntegerOrChar()            { return (flags & TYPEINFO_INTEGER) || isNative(NativeTypeKind::Char); }
     bool isConst()                          { return (flags & TYPEINFO_CONST); }
+    bool isRelative()                       { return (flags & TYPEINFO_RELATIVE); }
     // clang-format on
 
     void setConst()
