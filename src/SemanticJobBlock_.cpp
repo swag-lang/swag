@@ -295,6 +295,13 @@ bool SemanticJob::resolveCase(SemanticContext* context)
 
     if (node->ownerSwitch->expression)
         node->typeInfo = node->ownerSwitch->expression->typeInfo;
+
+    if (!node->expressions.empty())
+    {
+        node->allocateExtension();
+        node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitSwitchCaseBeforeCase;
+    }
+
     node->block->allocateExtension();
     node->block->extension->byteCodeBeforeFct = ByteCodeGenJob::emitSwitchCaseBeforeBlock;
     node->block->extension->byteCodeAfterFct  = ByteCodeGenJob::emitSwitchCaseAfterBlock;

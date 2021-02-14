@@ -479,6 +479,13 @@ bool ByteCodeGenJob::emitSwitchAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitSwitchCaseBeforeCase(ByteCodeGenContext* context)
+{
+    auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
+    context->pushLocation(&node->ownerSwitch->token.startLocation);
+    return true;
+}
+
 bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 {
     auto node      = context->node;
@@ -492,8 +499,6 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
     VectorNative<uint32_t> allJumps;
     if (!caseNode->expressions.empty())
     {
-        context->setNoLocation();
-
         // Normal switch, with an expression
         if (caseNode->ownerSwitch->expression)
         {
@@ -537,7 +542,8 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
             jump->b.s32               = context->bc->numInstructions - jump->b.u32;
         }
 
-        context->restoreNoLocation();
+        // Pop the location from emitSwitchCaseBeforeCase
+        context->popLocation();
     }
 
     return true;
