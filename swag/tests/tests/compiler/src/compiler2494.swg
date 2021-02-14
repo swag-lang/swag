@@ -9,6 +9,7 @@ struct Node
 }
 
 //#[swag.printbc]
+#[swag.safety("", true)]
 #test
 {
     var a, b: Node

@@ -203,8 +203,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 }
             }
 
-            bool regAttr = true;
-
             // Predefined attributes will mark some flags (to speed up detection)
             if (child->token.text == "constexpr")
                 flags |= ATTRIBUTE_CONSTEXPR;
@@ -333,14 +331,9 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     SWAG_VERIFY(isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.align' value must be a power of two ('%d' provided)", attrValue.reg.u8)}));
                 }
             }
-            else
-            {
-                // Generic with parameters, do not register it
-                regAttr = false;
-            }
 
             // Append attributes
-            if (result && regAttr)
+            if (result)
                 result->isHere.insert(typeInfo);
         }
 
@@ -388,70 +381,67 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
     auto node = CastAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
     SWAG_VERIFY(node->content, context->report({node, "invalid attribute usage"}));
 
-    if (!(node->flags & AST_IS_GENERIC))
+    for (auto child : node->childs)
     {
-        for (auto child : node->childs)
+        if (child == node->content)
+            continue;
+
+        SWAG_CHECK(checkAttribute(context, child, node->content));
+
+        // Collect parameters
+        auto identifierRef = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+        auto identifier    = static_cast<AstIdentifier*>(identifierRef->childs.back());
+
+        // Be sure this is an attribute
+        auto resolvedName = identifier->resolvedSymbolName;
+        auto resolved     = identifier->resolvedSymbolOverload;
+        if (resolvedName->kind != SymbolKind::Attribute)
         {
-            if (child == node->content)
-                continue;
+            Diagnostic diag{identifier, format("invalid attribute '%s'", resolvedName->name.c_str())};
+            Diagnostic note{resolved->node, resolved->node->token, format("this is the definition of '%s'", resolvedName->name.c_str()), DiagnosticLevel::Note};
+            context->report(diag, &note);
+            return false;
+        }
 
-            SWAG_CHECK(checkAttribute(context, child, node->content));
+        // Register attribute itself
+        OneAttribute oneAttribute;
+        oneAttribute.name = resolvedName->getFullName();
+        oneAttribute.node = node;
 
-            // Collect parameters
-            auto identifierRef = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
-            auto identifier    = static_cast<AstIdentifier*>(identifierRef->childs.back());
-
-            // Be sure this is an attribute
-            auto resolvedName = identifier->resolvedSymbolName;
-            auto resolved     = identifier->resolvedSymbolOverload;
-            if (resolvedName->kind != SymbolKind::Attribute)
+        // Register all call parameters, and their value
+        uint32_t numParams = 0;
+        if (identifier->callParameters)
+        {
+            numParams = identifier->callParameters->childs.count;
+            for (auto one : identifier->callParameters->childs)
             {
-                Diagnostic diag{identifier, format("invalid attribute '%s'", resolvedName->name.c_str())};
-                Diagnostic note{resolved->node, resolved->node->token, format("this is the definition of '%s'", resolvedName->name.c_str()), DiagnosticLevel::Note};
-                context->report(diag, &note);
-                return false;
-            }
-
-            // Register attribute itself
-            OneAttribute oneAttribute;
-            oneAttribute.name = resolvedName->getFullName();
-            oneAttribute.node = node;
-
-            // Register all call parameters, and their value
-            uint32_t numParams = 0;
-            if (identifier->callParameters)
-            {
-                numParams = identifier->callParameters->childs.count;
-                for (auto one : identifier->callParameters->childs)
-                {
-                    auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
-                    SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, "attribute parameter cannot be evaluated at compile time"}));
-
-                    AttributeParameter attrParam;
-                    attrParam.name     = param->resolvedParameter->namedParam;
-                    attrParam.typeInfo = param->resolvedParameter->typeInfo;
-                    attrParam.value    = param->computedValue;
-                    oneAttribute.parameters.emplace_back(move(attrParam));
-                }
-            }
-
-            // The rest (default parameters)
-            auto funcDecl = CastAst<AstAttrDecl>(resolved->node, AstNodeKind::AttrDecl);
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(resolved->typeInfo, TypeInfoKind::FuncAttr);
-            for (int i = numParams; i < (int) typeFunc->parameters.size(); i++)
-            {
-                auto param = CastAst<AstVarDecl>(funcDecl->parameters->childs[i], AstNodeKind::FuncDeclParam);
-                SWAG_ASSERT(param->assignment);
+                auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
+                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, "attribute parameter cannot be evaluated at compile time"}));
 
                 AttributeParameter attrParam;
-                attrParam.name     = param->token.text;
-                attrParam.typeInfo = param->typeInfo;
-                attrParam.value    = param->assignment->computedValue;
+                attrParam.name     = param->resolvedParameter->namedParam;
+                attrParam.typeInfo = param->resolvedParameter->typeInfo;
+                attrParam.value    = param->computedValue;
                 oneAttribute.parameters.emplace_back(move(attrParam));
             }
-
-            node->attributes.attributes.emplace_back(move(oneAttribute));
         }
+
+        // The rest (default parameters)
+        auto funcDecl = CastAst<AstAttrDecl>(resolved->node, AstNodeKind::AttrDecl);
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(resolved->typeInfo, TypeInfoKind::FuncAttr);
+        for (int i = numParams; i < (int) typeFunc->parameters.size(); i++)
+        {
+            auto param = CastAst<AstVarDecl>(funcDecl->parameters->childs[i], AstNodeKind::FuncDeclParam);
+            SWAG_ASSERT(param->assignment);
+
+            AttributeParameter attrParam;
+            attrParam.name     = param->token.text;
+            attrParam.typeInfo = param->typeInfo;
+            attrParam.value    = param->assignment->computedValue;
+            oneAttribute.parameters.emplace_back(move(attrParam));
+        }
+
+        node->attributes.attributes.emplace_back(move(oneAttribute));
     }
 
     SWAG_CHECK(collectAttributes(context, node, nullptr, node));

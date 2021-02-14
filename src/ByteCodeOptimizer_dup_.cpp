@@ -58,7 +58,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
             if (it != mapCopyRA.end())
             {
                 auto it1 = mapCopyRB.find(it->second->b.u32);
-                if (it1 != mapCopyRB.end())
+                if (it1 != mapCopyRB.end() && it->second == it1->second)
                 {
                     ip->a.u32                     = it->second->b.u32;
                     context->passHasDoneSomething = true;
@@ -72,7 +72,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
             if (it != mapCopyRA.end())
             {
                 auto it1 = mapCopyRB.find(it->second->b.u32);
-                if (it1 != mapCopyRB.end())
+                if (it1 != mapCopyRB.end() && it->second == it1->second)
                 {
                     ip->b.u32                     = it->second->b.u32;
                     context->passHasDoneSomething = true;
@@ -86,7 +86,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
             if (it != mapCopyRA.end())
             {
                 auto it1 = mapCopyRB.find(it->second->b.u32);
-                if (it1 != mapCopyRB.end())
+                if (it1 != mapCopyRB.end() && it->second == it1->second)
                 {
                     ip->c.u32                     = it->second->b.u32;
                     context->passHasDoneSomething = true;
@@ -100,7 +100,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
             if (it != mapCopyRA.end())
             {
                 auto it1 = mapCopyRB.find(it->second->b.u32);
-                if (it1 != mapCopyRB.end())
+                if (it1 != mapCopyRB.end() && it->second == it1->second)
                 {
                     ip->d.u32                     = it->second->b.u32;
                     context->passHasDoneSomething = true;

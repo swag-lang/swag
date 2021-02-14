@@ -163,10 +163,6 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
     auto back = attrBlockNode->childs.back();
     back->allocateExtension();
     SWAG_ASSERT(!back->extension->semanticAfterFct);
-
-    attrBlockNode->allocateExtension();
-    attrBlockNode->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    back->extension->semanticAfterFct           = SemanticJob::resolveAttrUse;
-
+    back->extension->semanticAfterFct = SemanticJob::resolveAttrUse;
     return true;
 }
