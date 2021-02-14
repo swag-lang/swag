@@ -84,7 +84,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     if (g_CommandLine.buildCfgOptimSize != "default")
         buildCfg.backendOptimizeSize = g_CommandLine.buildCfgOptimSize == "true" ? true : false;
     if (g_CommandLine.buildCfgSafety != "default")
-        buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? true : false;
+        buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? 0xFFFFFFFF'FFFFFFFF : 0;
 }
 
 bool Module::isValidName(const Utf8& name, Utf8& errorStr)
