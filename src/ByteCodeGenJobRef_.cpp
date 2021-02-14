@@ -748,6 +748,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         auto child     = parameters->childs.front();
         auto startLoop = context->bc->numInstructions;
         SWAG_CHECK(emitAffectEqual(context, rExpr, child->resultRegisterRC, child->typeInfo, child));
+        SWAG_ASSERT(context->result == ContextResult::Done);
         if (numToInit != 1)
         {
             auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
@@ -772,6 +773,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             if (typeParam->offset)
                 emitInstruction(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = typeParam->offset;
             emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
+            SWAG_ASSERT(context->result == ContextResult::Done);
         }
 
         if (numToInit != 1)

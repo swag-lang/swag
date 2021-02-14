@@ -111,6 +111,9 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             return true;
 
         emitAffectEqual(context, node->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
+        if (context->result == ContextResult::Pending)
+            return true;
+
         freeRegisterRC(context, node);
         return true;
     }

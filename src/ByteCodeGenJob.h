@@ -273,6 +273,7 @@ struct ByteCodeGenJob : public Job
     static bool emitLoopAfterExpr(ByteCodeGenContext* context);
     static bool emitLabelBeforeBlock(ByteCodeGenContext* context);
     static bool emitLoopAfterBlock(ByteCodeGenContext* context);
+    static bool emitCopyArrayOfStructs(ByteCodeGenContext* context, TypeInfoArray* typeArray, TypeInfoStruct* typeStruct, RegisterList& r1, RegisterList& fromReg, AstNode* from);
     static bool emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo = nullptr, AstNode* from = nullptr);
     static bool emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);

@@ -918,6 +918,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
 
                 child->flags |= AST_NO_LEFT_DROP;
                 emitAffectEqual(context, r0, child->resultRegisterRC, child->typeInfo, child);
+                SWAG_ASSERT(context->result == ContextResult::Done);
                 freeRegisterRC(context, child);
             }
         }

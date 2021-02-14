@@ -7,6 +7,39 @@
 #include "SymTable.h"
 #include "TypeManager.h"
 
+bool ByteCodeGenJob::emitCopyArrayOfStructs(ByteCodeGenContext* context, TypeInfoArray* typeArray, TypeInfoStruct* typeStruct, RegisterList& r1, RegisterList& fromReg, AstNode* from)
+{
+    if (typeArray->totalCount == 1)
+    {
+        SWAG_CHECK(emitStructCopyMoveCall(context, r1, fromReg, typeStruct, from));
+    }
+    else
+    {
+        // Need to loop on every element of the array in order to initialize them
+        RegisterList r0 = reserveRegisterRC(context);
+
+        auto inst     = emitInstruction(context, ByteCodeOp::SetImmediate64, r0);
+        inst->b.u64   = typeArray->totalCount;
+        auto seekJump = context->bc->numInstructions;
+
+        SWAG_CHECK(emitStructCopyMoveCall(context, r1, fromReg, typeStruct, from));
+
+        inst        = emitInstruction(context, ByteCodeOp::IncPointer64, r1, 0, r1);
+        inst->b.u64 = typeStruct->sizeOf;
+        inst->flags |= BCI_IMM_B;
+        inst        = emitInstruction(context, ByteCodeOp::IncPointer64, fromReg, 0, fromReg);
+        inst->b.u64 = typeStruct->sizeOf;
+        inst->flags |= BCI_IMM_B;
+
+        emitInstruction(context, ByteCodeOp::DecrementRA64, r0);
+        emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+
+        freeRegisterRC(context, r0);
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo, AstNode* from)
 {
     AstNode*  node         = context->node;
@@ -28,6 +61,25 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             return true;
         SWAG_CHECK(emitStructCopyMoveCall(context, r0, r1, typeInfo, from));
         return true;
+    }
+
+    if (typeInfo->isArrayOfStruct())
+    {
+        auto typeArr    = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeArr->finalType, TypeInfoKind::Struct);
+
+        context->job->waitStructGenerated(typeStruct);
+        if (context->result == ContextResult::Pending)
+            return true;
+
+        if (!typeStruct->canRawCopy())
+        {
+            // This is only valid because we cannot affect array by hand. It must comes from a function, with a var declaration,
+            // so the variable on the left has not been initialized
+            from->flags |= AST_NO_LEFT_DROP;
+            SWAG_CHECK(emitCopyArrayOfStructs(context, typeArr, typeStruct, r0, r1, from));
+            return true;
+        }
     }
 
     if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)

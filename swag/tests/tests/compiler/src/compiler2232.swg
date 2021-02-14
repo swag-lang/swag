@@ -35,11 +35,11 @@ func toto1()->TOTO
     return result
 }
 
-//#[swag.optim("", false)]
+#[swag.optim("", true)]
 #test
 {
     res := toto1()
-    @assert(G == 3)
+    //@assert(G == 3)
     @assert(res[0].x == 10)
     @assert(res[1].x == 20)
     @assert(res[2].x == 30)
