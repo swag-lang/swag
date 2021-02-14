@@ -39,7 +39,7 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 auto destIp1 = destIp + destIp->b.s32 + 1;
                 if (destIp1 == ip + 1)
                 {
-                    ip->op = ByteCodeOp::JumpIfNotZero64;
+                    ip->op    = ByteCodeOp::JumpIfNotZero64;
                     ip->a.u32 = destIp->a.u32;
                     ip->b.s32 += 1;
                     context->passHasDoneSomething = true;
@@ -73,6 +73,15 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::JumpIfNotZero32 && ip->b.s32 == -2)
         {
             if (ip[-1].op == ByteCodeOp::DecrementRA32 && ip[-1].a.u32 == ip->a.u32)
+            {
+                setNop(context, ip);
+                setNop(context, ip - 1);
+            }
+        }
+
+        if (ip->op == ByteCodeOp::JumpIfNotZero64 && ip->b.s32 == -2)
+        {
+            if (ip[-1].op == ByteCodeOp::DecrementRA64 && ip[-1].a.u32 == ip->a.u32)
             {
                 setNop(context, ip);
                 setNop(context, ip - 1);
