@@ -69,7 +69,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.safetyGuards             = 0;
         buildCfg.backendOptimizeSpeed     = true;
         buildCfg.backendOptimizeSize      = false;
-        buildCfg.backendDebugInformations = false;
+        buildCfg.backendDebugInformations = true;
     }
 
     // Overwrite with command line
