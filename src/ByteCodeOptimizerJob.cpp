@@ -35,7 +35,6 @@ bool ByteCodeOptimizerJob::optimize(bool isAsync)
         for (int i = startIndex; i < endIndex; i++)
         {
             auto bc = module->byteCodeFunc[i];
-
             if (!module->mustOptimizeBC(bc->node))
                 continue;
             optContext.bc = bc;
