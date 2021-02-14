@@ -206,6 +206,8 @@ void TypeInfoPointer::computePreName(Utf8& preName)
     if (flags & TYPEINFO_CONST)
         preName = "const ";
     preName += "*";
+    if (relative)
+        preName += format("~%u ", relative);
 }
 
 void TypeInfoPointer::computeScopedName()
@@ -379,7 +381,10 @@ void TypeInfoSlice::computePreName(Utf8& preName)
     preName.clear();
     if (flags & TYPEINFO_CONST)
         preName = "const ";
-    preName += "[..] ";
+    preName += "[..]";
+    if (relative)
+        preName += format("~%u", relative);
+    preName += " ";
 }
 
 void TypeInfoSlice::computeName()
