@@ -116,10 +116,6 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         context->job->waitStructGenerated(typeInfo);
         if (context->result == ContextResult::Pending)
             return true;
-
-        // This is only valid because we cannot affect array by hand. It must comes from a function, with a var declaration,
-        // so the variable on the left has not been initialized
-        from->flags |= AST_NO_LEFT_DROP;
         SWAG_CHECK(emitCopyArray(context, typeInfo, r0, r1, from));
         return true;
     }

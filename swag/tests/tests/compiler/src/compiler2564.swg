@@ -3,6 +3,14 @@ struct AA
 
 }
 
+impl AA
+{
+    func opDrop(self)
+    {
+        @print("drop")
+    }
+}
+
 //#[swag.printbc]
 #test
 {

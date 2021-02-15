@@ -23,7 +23,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
     bool retVal   = resolved->flags & OVERLOAD_RETVAL;
 
-    // Initialize the struct, whatever, before the assignment
+    bool mustDropLeft = false;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
@@ -40,11 +40,13 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         {
             if (!(node->doneFlags & AST_DONE_VARDECL_STRUCT_PARAMETERS))
             {
+                mustDropLeft = true;
                 if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
                 {
                     // No need to initialize the variable if we are doing a struct to struct copy
+                    // No need to drop the left side either
                     if (node->assignment && node->assignment->typeInfo == typeStruct)
-                        node->assignment->flags |= AST_NO_LEFT_DROP;
+                        mustDropLeft = false;
                     else
                         emitStructInit(context, typeStruct, UINT32_MAX, retVal);
                 }
@@ -110,6 +112,8 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         if (context->result == ContextResult::Pending)
             return true;
 
+        if (!mustDropLeft)
+            node->assignment->flags |= AST_NO_LEFT_DROP;
         emitAffectEqual(context, node->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
         if (context->result == ContextResult::Pending)
             return true;
