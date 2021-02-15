@@ -57,6 +57,8 @@ void Job::waitForAllStructMethods(TypeInfo* typeInfo)
 
 void Job::waitStructGenerated(TypeInfo* typeInfo)
 {
+    if (typeInfo->isArrayOfStruct())
+        typeInfo = ((TypeInfoArray*) typeInfo)->finalType;
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
         typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
     if (typeInfo->kind != TypeInfoKind::Struct)

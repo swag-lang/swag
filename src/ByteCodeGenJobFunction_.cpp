@@ -113,6 +113,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             }
             else if (typeArrayStruct && !typeArrayStruct->canRawCopy())
             {
+                context->job->waitStructGenerated(exprType);
+                if (context->result == ContextResult::Pending)
+                    return true;
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
                 SWAG_CHECK(emitCopyArrayOfStructs(context, typeArray, typeArrayStruct, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, returnExpression));
@@ -145,9 +148,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 context->job->waitStructGenerated(exprType);
                 if (context->result == ContextResult::Pending)
                     return true;
+
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
-
                 RegisterList r0 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
                 SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, exprType, returnExpression));
@@ -155,6 +158,10 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             }
             else if (typeArrayStruct && !typeArrayStruct->canRawCopy())
             {
+                context->job->waitStructGenerated(exprType);
+                if (context->result == ContextResult::Pending)
+                    return true;
+
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
                 RegisterList r1 = reserveRegisterRC(context);
