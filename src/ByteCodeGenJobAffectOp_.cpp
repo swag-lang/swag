@@ -61,7 +61,7 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
 
     if (typeArray->totalCount == 1)
     {
-        SWAG_CHECK(emitStructCopyMoveCall(context, dstReg, srcReg, typeStruct, from));
+        SWAG_CHECK(emitCopyStruct(context, dstReg, srcReg, typeStruct, from));
         return true;
     }
 
@@ -72,7 +72,7 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
     inst->b.u64   = typeArray->totalCount;
     auto seekJump = context->bc->numInstructions;
 
-    SWAG_CHECK(emitStructCopyMoveCall(context, dstReg, srcReg, typeStruct, from));
+    SWAG_CHECK(emitCopyStruct(context, dstReg, srcReg, typeStruct, from));
 
     inst        = emitInstruction(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
     inst->b.u64 = typeStruct->sizeOf;
@@ -107,7 +107,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         context->job->waitStructGenerated(typeInfo);
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_CHECK(emitStructCopyMoveCall(context, r0, r1, typeInfo, from));
+        SWAG_CHECK(emitCopyStruct(context, r0, r1, typeInfo, from));
         return true;
     }
 

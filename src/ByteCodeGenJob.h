@@ -363,7 +363,7 @@ struct ByteCodeGenJob : public Job
     static bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opReloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
-    static bool emitStructCopyMoveCall(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
+    static bool emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
 
     static void     transformResultToLinear2(ByteCodeGenContext* context, AstNode* node);
     static void     transformResultToLinear2(ByteCodeGenContext* context, RegisterList& resultRegisterRC);
