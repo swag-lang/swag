@@ -10,6 +10,63 @@
 #include "Timer.h"
 #include "Profile.h"
 
+uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here)
+{
+    here = false;
+
+    auto it = context->mapInstNode.find(ip);
+    if (it != context->mapInstNode.end())
+    {
+        here = true;
+        return it->second;
+    }
+
+    TreeNode newNode;
+    newNode.start = ip;
+    context->tree.push_back(newNode);
+    uint32_t pos             = (uint32_t) context->tree.size() - 1;
+    context->mapInstNode[ip] = pos;
+    return pos;
+}
+
+void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
+{
+    TreeNode* node = &context->tree[nodeIdx];
+    node->end      = node->start;
+    while (node->end->op != ByteCodeOp::Ret && !isJump(node->end))
+        node->end++;
+    if (node->end->op == ByteCodeOp::Ret)
+        return;
+
+    node->next1 = node->end + node->end->b.s32 + 1;
+    if (node->end->op != ByteCodeOp::Jump)
+        node->next2 = node->end + 1;
+
+    bool here    = false;
+    auto newNode = newTreeNode(context, node->next1, here);
+    if (!here)
+        genTree(context, newNode);
+
+    node = &context->tree[nodeIdx];
+    if (!node->next2)
+        return;
+
+    newNode = newTreeNode(context, node->next2, here);
+    if (!here)
+        genTree(context, newNode);
+}
+
+void ByteCodeOptimizer::genTree(ByteCodeOptContext* context)
+{
+    context->tree.clear();
+    context->mapInstNode.clear();
+
+    auto bc   = context->bc;
+    bool here = false;
+    auto node = newTreeNode(context, bc->out, here);
+    genTree(context, node);
+}
+
 void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     if (ip->op == ByteCodeOp::Nop)
@@ -75,7 +132,6 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 
     context->bc->numInstructions -= (int) context->nops.size();
     context->nops.clear();
-    setJumps(context);
 }
 
 void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)

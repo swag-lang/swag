@@ -39,11 +39,11 @@ bool ByteCodeOptimizerJob::optimize(bool isAsync)
                 continue;
             optContext.bc = bc;
 
-            // Get all jumps
-            ByteCodeOptimizer::setJumps(&optContext);
-
             while (true)
             {
+                ByteCodeOptimizer::genTree(&optContext);
+                ByteCodeOptimizer::setJumps(&optContext);
+
                 if (optContext.hasError)
                     return false;
                 optContext.allPassesHaveDoneSomething = false;

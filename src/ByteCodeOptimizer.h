@@ -58,6 +58,10 @@ struct ByteCodeOptimizer
         return true;
     }
 
+    static uint32_t newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here);
+    static void     genTree(ByteCodeOptContext* context, uint32_t nodeIdx);
+    static void     genTree(ByteCodeOptContext* context);
+
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void optimizePassJumps(ByteCodeOptContext* context);
     static void optimizePassDeadCode(ByteCodeOptContext* context);

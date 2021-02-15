@@ -7,11 +7,22 @@ struct ByteCodeInstruction;
 struct Module;
 struct Job;
 
+struct TreeNode
+{
+    ByteCodeInstruction* start = nullptr;
+    ByteCodeInstruction* end   = nullptr;
+    ByteCodeInstruction* next1 = nullptr;
+    ByteCodeInstruction* next2 = nullptr;
+};
+
 struct ByteCodeOptContext
 {
     ByteCode*                          bc;
     VectorNative<ByteCodeInstruction*> jumps;
     VectorNative<ByteCodeInstruction*> nops;
+
+    vector<TreeNode>                    tree;
+    map<ByteCodeInstruction*, uint32_t> mapInstNode;
 
     VectorNative<ByteCodeInstruction*>                  vecInst;
     VectorNative<uint64_t>                              vecU64;
@@ -36,6 +47,8 @@ struct ByteCodeOptContext
         mapU32InstA.clear();
         mapU32InstB.clear();
         mapCst.clear();
+        tree.clear();
+        mapInstNode.clear();
         allPassesHaveDoneSomething = false;
         passHasDoneSomething       = false;
         hasError                   = false;
