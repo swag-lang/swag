@@ -1,13 +1,11 @@
 #include "pch.h"
 #include "Ast.h"
 #include "ByteCodeGenJob.h"
-#include "Module.h"
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
-#include "SymTable.h"
 #include "TypeManager.h"
 
-bool ByteCodeGenJob::emitCopyArrayOfStructs(ByteCodeGenContext* context, TypeInfo* typeInfo, RegisterList& r1, RegisterList& fromReg, AstNode* from)
+bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, RegisterList& dstReg, RegisterList& srcReg, AstNode* from)
 {
     auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
     auto finalType = typeArray->finalType;
@@ -15,26 +13,26 @@ bool ByteCodeGenJob::emitCopyArrayOfStructs(ByteCodeGenContext* context, TypeInf
     // Copy of relative types
     if (finalType->flags & TYPEINFO_RELATIVE)
     {
-        RegisterList rloop    = reserveRegisterRC(context);
-        RegisterList toReg    = reserveRegisterRC(context);
-        RegisterList fromReg1 = reserveRegisterRC(context);
-        RegisterList rtmp     = reserveRegisterRC(context);
+        RegisterList rloop   = reserveRegisterRC(context);
+        RegisterList toReg   = reserveRegisterRC(context);
+        RegisterList fromReg = reserveRegisterRC(context);
+        RegisterList rtmp    = reserveRegisterRC(context);
 
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, toReg, r1);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, fromReg1, fromReg);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, toReg, dstReg);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, fromReg, srcReg);
 
         auto inst     = emitInstruction(context, ByteCodeOp::SetImmediate64, rloop);
         inst->b.u64   = typeArray->totalCount;
         auto seekJump = context->bc->numInstructions;
 
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, rtmp, fromReg1);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, rtmp, fromReg);
         SWAG_CHECK(emitUnwrapRelativePointer(context, rtmp, finalType->relative));
         SWAG_CHECK(emitWrapRelativePointer(context, toReg, rtmp, finalType->relative, finalType));
 
         inst        = emitInstruction(context, ByteCodeOp::IncPointer64, toReg, 0, toReg);
         inst->b.u64 = finalType->sizeOf;
         inst->flags |= BCI_IMM_B;
-        inst        = emitInstruction(context, ByteCodeOp::IncPointer64, fromReg1, 0, fromReg1);
+        inst        = emitInstruction(context, ByteCodeOp::IncPointer64, fromReg, 0, fromReg);
         inst->b.u64 = finalType->sizeOf;
         inst->flags |= BCI_IMM_B;
 
@@ -44,24 +42,24 @@ bool ByteCodeGenJob::emitCopyArrayOfStructs(ByteCodeGenContext* context, TypeInf
         freeRegisterRC(context, rtmp);
         freeRegisterRC(context, rloop);
         freeRegisterRC(context, toReg);
-        freeRegisterRC(context, fromReg1);
+        freeRegisterRC(context, fromReg);
         return true;
     }
 
     if (typeArray->finalType->kind != TypeInfoKind::Struct)
     {
-        emitMemCpy(context, r1, fromReg, typeArray->sizeOf);
+        emitMemCpy(context, dstReg, srcReg, typeArray->sizeOf);
         return true;
     }
 
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
     if (typeStruct->canRawCopy())
     {
-        emitMemCpy(context, r1, fromReg, typeArray->sizeOf);
+        emitMemCpy(context, dstReg, srcReg, typeArray->sizeOf);
     }
     else if (typeArray->totalCount == 1)
     {
-        SWAG_CHECK(emitStructCopyMoveCall(context, r1, fromReg, typeStruct, from));
+        SWAG_CHECK(emitStructCopyMoveCall(context, dstReg, srcReg, typeStruct, from));
     }
     else
     {
@@ -72,12 +70,12 @@ bool ByteCodeGenJob::emitCopyArrayOfStructs(ByteCodeGenContext* context, TypeInf
         inst->b.u64   = typeArray->totalCount;
         auto seekJump = context->bc->numInstructions;
 
-        SWAG_CHECK(emitStructCopyMoveCall(context, r1, fromReg, typeStruct, from));
+        SWAG_CHECK(emitStructCopyMoveCall(context, dstReg, srcReg, typeStruct, from));
 
-        inst        = emitInstruction(context, ByteCodeOp::IncPointer64, r1, 0, r1);
+        inst        = emitInstruction(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
         inst->b.u64 = typeStruct->sizeOf;
         inst->flags |= BCI_IMM_B;
-        inst        = emitInstruction(context, ByteCodeOp::IncPointer64, fromReg, 0, fromReg);
+        inst        = emitInstruction(context, ByteCodeOp::IncPointer64, srcReg, 0, srcReg);
         inst->b.u64 = typeStruct->sizeOf;
         inst->flags |= BCI_IMM_B;
 
@@ -122,7 +120,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         // This is only valid because we cannot affect array by hand. It must comes from a function, with a var declaration,
         // so the variable on the left has not been initialized
         from->flags |= AST_NO_LEFT_DROP;
-        SWAG_CHECK(emitCopyArrayOfStructs(context, typeInfo, r0, r1, from));
+        SWAG_CHECK(emitCopyArray(context, typeInfo, r0, r1, from));
         return true;
     }
 
