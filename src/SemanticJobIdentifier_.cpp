@@ -2825,6 +2825,7 @@ bool SemanticJob::resolveTry(SemanticContext* context)
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
     auto lastChild     = identifierRef->childs.back();
 
+    SWAG_VERIFY(!node->ownerFct->isSpecialFunctionName(), context->report({node, node->token, "'try' cannot be used inside a struct special function"}));
     SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({node, format("'try' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
 
     node->byteCodeFct = ByteCodeGenJob::emitTry;
@@ -2857,6 +2858,7 @@ bool SemanticJob::resolveThrow(SemanticContext* context)
     auto back      = node->childs.back();
     node->typeInfo = back->typeInfo;
 
+    SWAG_VERIFY(!node->ownerFct->isSpecialFunctionName(), context->report({node, node->token, "'throw' cannot be used inside a struct special function"}));
     SWAG_VERIFY(node->typeInfo->isNative(NativeTypeKind::String), context->report({back, format("invalid type for 'throw' ('string' expected, '%s' provided)", node->typeInfo->name.c_str())}));
     node->byteCodeFct = ByteCodeGenJob::emitThrow;
     return true;
