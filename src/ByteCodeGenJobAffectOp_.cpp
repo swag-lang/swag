@@ -53,10 +53,13 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
     }
 
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
-    if (typeStruct->canRawCopy())
+    if ((from->flags & AST_NO_LEFT_DROP) || !typeStruct->opDrop)
     {
-        emitMemCpy(context, dstReg, srcReg, typeArray->sizeOf);
-        return true;
+        if (typeStruct->canRawCopy())
+        {
+            emitMemCpy(context, dstReg, srcReg, typeArray->sizeOf);
+            return true;
+        }
     }
 
     if (typeArray->totalCount == 1)

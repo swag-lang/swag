@@ -11,9 +11,10 @@ impl AA
     }
 }
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
     var x: [2] AA
     y := x
+    y = x
 }
