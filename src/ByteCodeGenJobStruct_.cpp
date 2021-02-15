@@ -809,13 +809,22 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     return true;
 }
 
-void ByteCodeGenJob::emitRetValRef(ByteCodeGenContext* context, RegisterList& r0)
+void ByteCodeGenJob::emitRetValRef(ByteCodeGenContext* context, RegisterList& r0, bool retVal, uint32_t stackOffset)
 {
     auto node = context->node;
-    if (node->ownerInline)
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->ownerInline->resultRegisterRC);
+    if (retVal)
+    {
+        if (node->ownerInline)
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->ownerInline->resultRegisterRC);
+        else
+            emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
+    }
     else
-        emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
+    {
+        auto inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
+        SWAG_ASSERT(stackOffset != UINT32_MAX);
+        inst->b.s32 = stackOffset;
+    }
 }
 
 bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)
@@ -833,7 +842,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         if (retVal)
         {
             RegisterList r0 = reserveRegisterRC(context);
-            emitRetValRef(context, r0);
+            emitRetValRef(context, r0, true, 0);
             emitSetZeroAtPointer(context, typeInfoStruct->sizeOf, r0);
             freeRegisterRC(context, r0);
         }
@@ -849,17 +858,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     {
         // Push self
         RegisterList r0 = reserveRegisterRC(context);
-
-        if (retVal)
-        {
-            emitRetValRef(context, r0);
-        }
-        else
-        {
-            auto inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
-            SWAG_ASSERT(resolved->storageOffset != UINT32_MAX);
-            inst->b.s32 = resolved->storageOffset;
-        }
+        emitRetValRef(context, r0, retVal, resolved->storageOffset);
 
         // Offset variable reference
         if (regOffset != UINT32_MAX)
@@ -896,21 +895,12 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
                 SWAG_ASSERT(param->resolvedParameter);
                 auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
 
-                if (retVal)
+                emitRetValRef(context, r0, retVal, resolved->storageOffset + typeParam->offset);
+                if (retVal && typeParam->offset)
                 {
-                    emitRetValRef(context, r0);
-                    if (typeParam->offset)
-                    {
-                        auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, r0, 0, r0);
-                        inst->b.u64 = typeParam->offset;
-                        inst->flags |= BCI_IMM_B;
-                    }
-                }
-                else
-                {
-                    auto inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
-                    SWAG_ASSERT(resolved->storageOffset != UINT32_MAX);
-                    inst->b.s32 = resolved->storageOffset + typeParam->offset;
+                    auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, r0, 0, r0);
+                    inst->b.u64 = typeParam->offset;
+                    inst->flags |= BCI_IMM_B;
                 }
 
                 if (regOffset != UINT32_MAX)

@@ -217,7 +217,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_RETVAL)
     {
         RegisterList r0 = reserveRegisterRC(context);
-        emitRetValRef(context, r0);
+        emitRetValRef(context, r0, true, 0);
         identifier->resultRegisterRC                = r0;
         identifier->identifierRef->resultRegisterRC = identifier->resultRegisterRC;
         identifier->parent->resultRegisterRC        = node->resultRegisterRC;

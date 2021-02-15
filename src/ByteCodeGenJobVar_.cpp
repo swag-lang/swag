@@ -64,18 +64,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             if (!(node->doneFlags & AST_DONE_VARDECL_REF_CALL))
             {
                 RegisterList r0 = reserveRegisterRC(context);
-
-                if (retVal)
-                {
-                    emitRetValRef(context, r0);
-                }
-                else
-                {
-                    auto inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, r0);
-                    SWAG_ASSERT(resolved->storageOffset != UINT32_MAX);
-                    inst->b.s32 = resolved->storageOffset;
-                }
-
+                emitRetValRef(context, r0, retVal, resolved->storageOffset);
                 node->type->resultRegisterRC = r0;
                 node->doneFlags |= AST_DONE_VARDECL_REF_CALL;
             }
@@ -95,18 +84,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         {
             node->additionalRegisterRC = reserveRegisterRC(context);
             node->doneFlags |= AST_DONE_PRE_CAST;
-
-            if (retVal)
-            {
-                emitRetValRef(context, node->additionalRegisterRC);
-            }
-            else
-            {
-                auto inst = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->additionalRegisterRC);
-                SWAG_ASSERT(resolved->storageOffset != UINT32_MAX);
-                inst->b.s32 = resolved->storageOffset;
-            }
-
+            emitRetValRef(context, node->additionalRegisterRC, retVal, resolved->storageOffset);
             node->resultRegisterRC = node->assignment->resultRegisterRC;
         }
 
@@ -175,7 +153,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         if (retVal)
         {
             RegisterList r0 = reserveRegisterRC(context);
-            emitRetValRef(context, r0);
+            emitRetValRef(context, r0, true, 0);
             emitSetZeroAtPointer(context, typeInfo->sizeOf, r0);
             freeRegisterRC(context, r0);
         }
