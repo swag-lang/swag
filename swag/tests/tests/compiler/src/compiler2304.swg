@@ -12,6 +12,7 @@ impl AA
 {
     func opDrop(using self)
     {
+        xxx = 4
     }
 }
 

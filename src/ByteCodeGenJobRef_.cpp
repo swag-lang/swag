@@ -705,6 +705,9 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             if (!generateStruct_opInit(context, typeStruct))
                 return false;
 
+            if (!canEmitOpCallUser(context, nullptr, typeStruct->opInit))
+                return true;
+
             // Constant loop
             uint32_t regCount = 0;
             if (numToInit > 1)

@@ -8,6 +8,24 @@
 #include "TypeManager.h"
 #include "Diagnostic.h"
 
+bool ByteCodeGenJob::canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc)
+{
+    if (!funcDecl && !bc)
+        return false;
+
+    auto node        = context->node;
+    auto module      = node->sourceFile->module;
+    bool foreignCall = funcDecl && !bc && (funcDecl->attributeFlags & ATTRIBUTE_FOREIGN);
+    if (foreignCall)
+        return true;
+
+    SWAG_ASSERT(bc || (funcDecl && funcDecl->extension && funcDecl->extension->bc));
+    bc = bc ? bc : funcDecl->extension->bc;
+    if (bc->isDoingNothing() && module->mustOptimizeBC(node))
+        return false;
+    return true;
+}
+
 void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
 {
     if (!funcDecl && !bc)
@@ -476,7 +494,6 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     opDrop->name.replaceAll('.', '_');
     opDrop->maxReservedRegisterRC = 3;
     opDrop->compilerGenerated     = true;
-    sourceFile->module->addByteCodeFunc(opDrop);
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opDrop;
@@ -487,17 +504,30 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        if (!canEmitOpCallUser(&cxt, typeStructVar->opUserDropFct, typeStructVar->opDrop))
+            continue;
         emitOpCallUser(&cxt, typeStructVar->opUserDropFct, typeStructVar->opDrop, true, typeParam->offset);
     }
 
     // Then call user function if defined
-    emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct);
+    if (canEmitOpCallUser(&cxt, typeInfoStruct->opUserDropFct))
+        emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
         cxt.bc->print();
+
+    // Revert back function because it's empty
+    if (!canEmitOpCallUser(&cxt, nullptr, cxt.bc))
+    {
+        typeInfoStruct->opDrop = nullptr;
+        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
+        return true;
+    }
+
+    sourceFile->module->addByteCodeFunc(opDrop);
     return true;
 }
 
@@ -573,7 +603,6 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     opPostMove->maxReservedRegisterRC = 3;
     opPostMove->compilerGenerated     = true;
     opPostMove->isPostMove            = true;
-    sourceFile->module->addByteCodeFunc(opPostMove);
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostMove;
@@ -584,17 +613,30 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        if (!canEmitOpCallUser(&cxt, typeStructVar->opUserPostMoveFct, typeStructVar->opPostMove))
+            continue;
         emitOpCallUser(&cxt, typeStructVar->opUserPostMoveFct, typeStructVar->opPostMove, true, typeParam->offset);
     }
 
     // Then call user function if defined
-    emitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct);
+    if (canEmitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct))
+        emitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
         cxt.bc->print();
+
+    // Revert back function because it's empty
+    if (!canEmitOpCallUser(&cxt, nullptr, cxt.bc))
+    {
+        typeInfoStruct->opPostMove = nullptr;
+        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
+        return true;
+    }
+
+    sourceFile->module->addByteCodeFunc(opPostMove);
     return true;
 }
 
@@ -669,7 +711,6 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     opPostCopy->name.replaceAll('.', '_');
     opPostCopy->maxReservedRegisterRC = 3;
     opPostCopy->compilerGenerated     = true;
-    sourceFile->module->addByteCodeFunc(opPostCopy);
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostCopy;
@@ -680,17 +721,30 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        if (!canEmitOpCallUser(&cxt, typeStructVar->opUserPostCopyFct, typeStructVar->opPostCopy))
+            continue;
         emitOpCallUser(&cxt, typeStructVar->opUserPostCopyFct, typeStructVar->opPostCopy, true, typeParam->offset);
     }
 
     // Then call user function if defined
-    emitOpCallUser(&cxt, typeInfoStruct->opUserPostCopyFct);
+    if (canEmitOpCallUser(&cxt, typeInfoStruct->opUserPostCopyFct))
+        emitOpCallUser(&cxt, typeInfoStruct->opUserPostCopyFct);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
         cxt.bc->print();
+
+    // Revert back function because it's empty
+    if (!canEmitOpCallUser(&cxt, nullptr, cxt.bc))
+    {
+        typeInfoStruct->opPostCopy = nullptr;
+        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
+        return true;
+    }
+
+    sourceFile->module->addByteCodeFunc(opPostCopy);
     return true;
 }
 
