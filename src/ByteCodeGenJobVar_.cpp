@@ -23,13 +23,15 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
     bool retVal   = resolved->flags & OVERLOAD_RETVAL;
 
+    context->job->waitStructGenerated(typeInfo);
+    if (context->result == ContextResult::Pending)
+        return true;
+
+    // Struct initialization
     bool mustDropLeft = false;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        context->job->waitStructGenerated(typeStruct);
-        if (context->result == ContextResult::Pending)
-            return true;
 
         // Generate initialization
         // Do not generate if we have a user define affectation, and the operator is marked as 'complete'
@@ -86,7 +88,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         }
     }
 
-    // User initialization
+    // User specific initialization with a right side
     if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
         if (!(node->doneFlags & AST_DONE_PRE_CAST))
@@ -122,57 +124,51 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Array)
-    {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        if (typeArray->finalType->kind == TypeInfoKind::Struct)
-        {
-            context->job->waitStructGenerated(typeArray->finalType);
-            if (context->result == ContextResult::Pending)
-                return true;
-
-            if ((typeArray->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
-            {
-                if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
-                {
-                    if (typeArray->totalCount == 1)
-                    {
-                        if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
-                            emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct), UINT32_MAX, retVal);
-                        emitStructParameters(context, UINT32_MAX, retVal);
-                    }
-                    else
-                    {
-                        // Need to loop on every element of the array in order to initialize them
-                        RegisterList r0;
-                        reserveRegisterRC(context, r0, 2);
-                        emitInstruction(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
-                        emitInstruction(context, ByteCodeOp::ClearRA, r0[1]);
-                        auto seekJump = context->bc->numInstructions;
-
-                        if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
-                            emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct), r0[1], retVal);
-                        emitStructParameters(context, r0[1], retVal);
-
-                        emitInstruction(context, ByteCodeOp::DecrementRA64, r0[0]);
-                        if (typeArray->finalType->sizeOf)
-                            emitInstruction(context, ByteCodeOp::Add64byVB64, r0[1])->b.u64 = typeArray->finalType->sizeOf;
-                        emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
-
-                        freeRegisterRC(context, r0);
-                    }
-
-                    freeStructParametersRegisters(context);
-                }
-
-                return true;
-            }
-        }
-    }
-
     // No default init for structures, it has been done before
     if (typeInfo->kind == TypeInfoKind::Struct)
         return true;
+
+    if (typeInfo->isArrayOfStruct())
+    {
+        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto finalType = typeArray->finalType;
+        if ((finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+        {
+            if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+            {
+                if (typeArray->totalCount == 1)
+                {
+                    if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+                        emitStructInit(context, CastTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), UINT32_MAX, retVal);
+                    emitStructParameters(context, UINT32_MAX, retVal);
+                }
+                else
+                {
+                    // Need to loop on every element of the array in order to initialize them
+                    RegisterList r0;
+                    reserveRegisterRC(context, r0, 2);
+                    emitInstruction(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
+                    emitInstruction(context, ByteCodeOp::ClearRA, r0[1]);
+                    auto seekJump = context->bc->numInstructions;
+
+                    if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+                        emitStructInit(context, CastTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), r0[1], retVal);
+                    emitStructParameters(context, r0[1], retVal);
+
+                    emitInstruction(context, ByteCodeOp::DecrementRA64, r0[0]);
+                    if (finalType->sizeOf)
+                        emitInstruction(context, ByteCodeOp::Add64byVB64, r0[1])->b.u64 = finalType->sizeOf;
+                    emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
+
+                    freeRegisterRC(context, r0);
+                }
+
+                freeStructParametersRegisters(context);
+            }
+
+            return true;
+        }
+    }
 
     if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {

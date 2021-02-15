@@ -7,7 +7,7 @@ impl AA
 {
     func opDrop(self)
     {
-        @print("drop")
+        //@print("drop")
     }
 }
 
