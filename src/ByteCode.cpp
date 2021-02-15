@@ -6,6 +6,7 @@
 #include "ByteCodeStack.h"
 #include "ByteCodeRunContext.h"
 #include "Module.h"
+#include "TypeManager.h"
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op, __flags) #__op,
@@ -333,4 +334,34 @@ void ByteCode::markLabels()
             break;
         }
     }
+}
+
+bool ByteCode::isDoingNothing()
+{
+    if (callType()->returnType != g_TypeMgr.typeInfoVoid)
+        return false;
+
+    if (numInstructions == 2)
+    {
+        if (out[0].op == ByteCodeOp::Ret)
+            return true;
+    }
+
+    if (numInstructions == 3)
+    {
+        if (out[0].op == ByteCodeOp::GetFromStackParam64 && out[1].op == ByteCodeOp::Ret)
+            return true;
+    }
+
+    if (numInstructions == 4)
+    {
+        if (out[0].op == ByteCodeOp::DecSPBP &&
+            out[1].op == ByteCodeOp::IncSP &&
+            out[2].op == ByteCodeOp::Ret)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

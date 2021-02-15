@@ -7,45 +7,10 @@
 // Elimite all local calls to such functions
 void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
 {
-    if (context->bc->callType()->returnType == g_TypeMgr.typeInfoVoid)
+    if (context->bc->isDoingNothing() && !context->bc->isEmpty)
     {
-        if (context->bc->numInstructions == 2)
-        {
-            if (context->bc->out[0].op == ByteCodeOp::Ret)
-            {
-                if (!context->bc->isEmpty)
-                {
-                    context->bc->isEmpty          = true;
-                    context->passHasDoneSomething = true;
-                }
-            }
-        }
-
-        if (context->bc->numInstructions == 3)
-        {
-            if (context->bc->out[0].op == ByteCodeOp::GetFromStackParam64 && context->bc->out[1].op == ByteCodeOp::Ret)
-            {
-                if (!context->bc->isEmpty)
-                {
-                    context->bc->isEmpty          = true;
-                    context->passHasDoneSomething = true;
-                }
-            }
-        }
-
-        if (context->bc->numInstructions == 4)
-        {
-            if (context->bc->out[0].op == ByteCodeOp::DecSPBP &&
-                context->bc->out[1].op == ByteCodeOp::IncSP &&
-                context->bc->out[2].op == ByteCodeOp::Ret)
-            {
-                if (!context->bc->isEmpty)
-                {
-                    context->bc->isEmpty          = true;
-                    context->passHasDoneSomething = true;
-                }
-            }
-        }
+        context->bc->isEmpty          = true;
+        context->passHasDoneSomething = true;
     }
 
     // Eliminate local calls to empty functions

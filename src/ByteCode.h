@@ -50,6 +50,7 @@ struct ByteCode
     void enterByteCode(ByteCodeRunContext* context);
     void leaveByteCode(ByteCodeRunContext* context, bool popCallStack = true);
     void markLabels();
+    bool isDoingNothing();
 
     void              printInstruction(ByteCodeInstruction* ip);
     void              print();
