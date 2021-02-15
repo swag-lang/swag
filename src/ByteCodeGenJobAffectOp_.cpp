@@ -56,35 +56,35 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
     if (typeStruct->canRawCopy())
     {
         emitMemCpy(context, dstReg, srcReg, typeArray->sizeOf);
+        return true;
     }
-    else if (typeArray->totalCount == 1)
+
+    if (typeArray->totalCount == 1)
     {
         SWAG_CHECK(emitStructCopyMoveCall(context, dstReg, srcReg, typeStruct, from));
-    }
-    else
-    {
-        // Need to loop on every element of the array in order to initialize them
-        RegisterList r0 = reserveRegisterRC(context);
-
-        auto inst     = emitInstruction(context, ByteCodeOp::SetImmediate64, r0);
-        inst->b.u64   = typeArray->totalCount;
-        auto seekJump = context->bc->numInstructions;
-
-        SWAG_CHECK(emitStructCopyMoveCall(context, dstReg, srcReg, typeStruct, from));
-
-        inst        = emitInstruction(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
-        inst->b.u64 = typeStruct->sizeOf;
-        inst->flags |= BCI_IMM_B;
-        inst        = emitInstruction(context, ByteCodeOp::IncPointer64, srcReg, 0, srcReg);
-        inst->b.u64 = typeStruct->sizeOf;
-        inst->flags |= BCI_IMM_B;
-
-        emitInstruction(context, ByteCodeOp::DecrementRA64, r0);
-        emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
-
-        freeRegisterRC(context, r0);
+        return true;
     }
 
+    // Need to loop on every element of the array in order to initialize them
+    RegisterList r0 = reserveRegisterRC(context);
+
+    auto inst     = emitInstruction(context, ByteCodeOp::SetImmediate64, r0);
+    inst->b.u64   = typeArray->totalCount;
+    auto seekJump = context->bc->numInstructions;
+
+    SWAG_CHECK(emitStructCopyMoveCall(context, dstReg, srcReg, typeStruct, from));
+
+    inst        = emitInstruction(context, ByteCodeOp::IncPointer64, dstReg, 0, dstReg);
+    inst->b.u64 = typeStruct->sizeOf;
+    inst->flags |= BCI_IMM_B;
+    inst        = emitInstruction(context, ByteCodeOp::IncPointer64, srcReg, 0, srcReg);
+    inst->b.u64 = typeStruct->sizeOf;
+    inst->flags |= BCI_IMM_B;
+
+    emitInstruction(context, ByteCodeOp::DecrementRA64, r0);
+    emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
+
+    freeRegisterRC(context, r0);
     return true;
 }
 
