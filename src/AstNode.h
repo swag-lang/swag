@@ -454,7 +454,7 @@ struct AstFuncDecl : public AstNode
 
     DependentJobs          dependentJobs;
     Utf8                   fullnameForeign;
-    VectorNative<AstNode*> subFunctions;
+    VectorNative<AstNode*> subDecls;
 
     AstNode*       parameters;
     AstNode*       genericParameters;

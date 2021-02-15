@@ -571,13 +571,13 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         context->job->decreaseMethodCount(typeStruct);
     }
 
-    // If we have sub functions, then now we can solve them, except for a generic function.
-    // Because for a generic function, the sub functions will be cloned and solved after instanciation.
-    // Otherwise, we can have a race condition by solving a generic sub function and cloning it for instancation
+    // If we have sub declarations, then now we can solve them, except for a generic function.
+    // Because for a generic function, the sub declarations will be cloned and solved after instanciation.
+    // Otherwise, we can have a race condition by solving a generic sub declaration and cloning it for instancation
     // at the same time.
     if (!(funcNode->flags & AST_IS_GENERIC))
     {
-        for (auto f : funcNode->subFunctions)
+        for (auto f : funcNode->subDecls)
         {
             scoped_lock lk(f->mutex);
 
@@ -587,7 +587,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
 
             f->flags &= ~AST_NO_SEMANTIC;
 
-            // If AST_DONE_FILE_JOB_PASS is set, then the file job has already seen the sub function, ignored it
+            // If AST_DONE_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it
             // because of AST_NO_SEMANTIC, but the attribute context is ok. So we need to trigger the job by hand.
             // If AST_DONE_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
             // file job will trigger the resolve itself

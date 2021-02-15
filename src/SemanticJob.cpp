@@ -123,11 +123,14 @@ JobResult SemanticJob::execute()
                 switch (node->kind)
                 {
                 case AstNodeKind::FuncDecl:
+                case AstNodeKind::StructDecl:
+                case AstNodeKind::InterfaceDecl:
+                case AstNodeKind::TypeSet:
                 {
-                    // A sub function can be waiting for the owner function to be resolved.
-                    // We inform the parent function that we have seen the sub function, and that
+                    // A sub thing can be waiting for the owner function to be resolved.
+                    // We inform the parent function that we have seen the sub thing, and that
                     // the attributes context is now fine for it. That way, the parent function can
-                    // trigger the resolve of the sub function by just removing AST_NO_SEMANTIC or by hand.
+                    // trigger the resolve of the sub things by just removing AST_NO_SEMANTIC or by hand.
                     scoped_lock lk(node->mutex);
 
                     // Do NOT use canDoSem here, because we need to test the flag with the node locked, as it can be changed
@@ -155,9 +158,6 @@ JobResult SemanticJob::execute()
                 case AstNodeKind::ConstDecl:
                 case AstNodeKind::Alias:
                 case AstNodeKind::EnumDecl:
-                case AstNodeKind::StructDecl:
-                case AstNodeKind::InterfaceDecl:
-                case AstNodeKind::TypeSet:
                 case AstNodeKind::CompilerAssert:
                 case AstNodeKind::CompilerSemError:
                 case AstNodeKind::CompilerPrint:
@@ -214,10 +214,17 @@ JobResult SemanticJob::execute()
                     auto child = node->childs[i];
 
                     // If the child has the AST_NO_SEMANTIC flag, do not push it.
-                    // Special case for function in the root file, because we need to deal with AST_DONE_FILE_JOB_PASS
-                    if ((child->flags & AST_NO_SEMANTIC) &&
-                        (originalNode->kind != AstNodeKind::File || child->kind != AstNodeKind::FuncDecl))
-                        continue;
+                    // Special case for things in the root file, because we need to deal with AST_DONE_FILE_JOB_PASS
+                    if (child->flags & AST_NO_SEMANTIC)
+                    {
+                        if (originalNode->kind != AstNodeKind::File)
+                            continue;
+                        if (child->kind != AstNodeKind::FuncDecl &&
+                            child->kind != AstNodeKind::StructDecl &&
+                            child->kind != AstNodeKind::InterfaceDecl &&
+                            child->kind != AstNodeKind::TypeSet)
+                            continue;
+                    }
 
                     enterState(child);
                     nodes.push_back(child);

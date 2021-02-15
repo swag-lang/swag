@@ -424,6 +424,10 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     }
 
+    case TokenId::KwdEnum:
+        SWAG_CHECK(doEnum(parent, result));
+        break;
+
     case TokenId::KwdFunc:
     {
         SWAG_ASSERT(parent && parent->ownerFct);
@@ -432,7 +436,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         if (result)
             *result = subFunc;
         subFunc->flags |= AST_NO_SEMANTIC;
-        parent->ownerFct->subFunctions.push_back(subFunc);
+        parent->ownerFct->subDecls.push_back(subFunc);
 
         // Move to the root
         if (subFunc->parent->kind == AstNodeKind::AttrUse)
@@ -443,24 +447,23 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     }
 
-    case TokenId::KwdEnum:
-        SWAG_CHECK(doEnum(parent, result));
-        break;
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
     case TokenId::KwdTypeSet:
     case TokenId::KwdInterface:
     {
-        AstNode* subFunc;
-        SWAG_CHECK(doStruct(parent, &subFunc));
+        AstNode* subDecl;
+        SWAG_CHECK(doStruct(parent, &subDecl));
         if (result)
-            *result = subFunc;
+            *result = subDecl;
+        subDecl->flags |= AST_NO_SEMANTIC;
+        parent->ownerFct->subDecls.push_back(subDecl);
 
         // Move to the root
-        if (subFunc->parent->kind == AstNodeKind::AttrUse)
-            subFunc = subFunc->parent;
-        Ast::removeFromParent(subFunc);
-        Ast::addChildBack(sourceFile->astRoot, subFunc);
+        if (subDecl->parent->kind == AstNodeKind::AttrUse)
+            subDecl = subDecl->parent;
+        Ast::removeFromParent(subDecl);
+        Ast::addChildBack(sourceFile->astRoot, subDecl);
         break;
     }
 

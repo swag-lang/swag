@@ -670,7 +670,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
 
     // Lambda sub function will be resolved by the owner function
     SWAG_ASSERT(lambda->ownerFct);
-    lambda->ownerFct->subFunctions.push_back(lambda);
+    lambda->ownerFct->subDecls.push_back(lambda);
     lambda->flags |= AST_NO_SEMANTIC;
 
     // Retrieve the point of the function

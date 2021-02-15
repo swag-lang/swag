@@ -651,35 +651,55 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         newNode->content         = content->clone(cloneContext);
         bodyScope->owner         = newNode->content;
 
-        // We need to duplicate sub functions, and register the symbol in the new corresponding scope
-        for (auto f : subFunctions)
+        // We need to duplicate sub declarations, and register the symbol in the new corresponding scope
+        for (auto f : subDecls)
         {
             scoped_lock lk(f->mutex);
 
-            // A sub function node has the root of the file as parent, but has the correct scope. We need to find
+            // A sub declaration node has the root of the file as parent, but has the correct scope. We need to find
             // the duplicated parent node that corresponds to the original one, in order to get the corresponding new
-            // scope (if a sub function is declared inside an if statement scope for example, we need the duplicated
-            // sub function to be registered in the corresponding new scope).
+            // scope (if a sub declaration is declared inside an if statement scope for example, we need the duplicated
+            // sub declaration to be registered in the corresponding new scope).
             auto newScopeNode = findChildRefRec(f->ownerScope->owner, newNode);
             SWAG_ASSERT(newScopeNode);
             auto subFuncScope = newScopeNode->ownerScope;
 
             cloneContext.parentScope = subFuncScope;
             cloneContext.parent      = nullptr;
-            auto subFunc             = (AstFuncDecl*) f->clone(cloneContext);
+            auto subDecl             = f->clone(cloneContext);
 
-            subFunc->typeInfo = subFunc->typeInfo->clone();
-            subFunc->typeInfo->flags &= ~TYPEINFO_GENERIC;
-            subFunc->typeInfo->declNode = subFunc;
+            SymbolKind symKind = SymbolKind::Invalid;
+            switch (subDecl->kind)
+            {
+            case AstNodeKind::FuncDecl:
+                ((AstFuncDecl*) subDecl)->content->flags &= ~AST_NO_SEMANTIC;
+                symKind = SymbolKind::Function;
+                break;
+            case AstNodeKind::StructDecl:
+                symKind = SymbolKind::Struct;
+                break;
+            case AstNodeKind::InterfaceDecl:
+                symKind = SymbolKind::Interface;
+                break;
+            case AstNodeKind::TypeSet:
+                symKind = SymbolKind::TypeSet;
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
+            }
 
-            subFunc->doneFlags |= AST_DONE_FILE_JOB_PASS;
-            subFunc->content->flags &= ~AST_NO_SEMANTIC;
-            newNode->subFunctions.push_back(subFunc);
-            subFunc->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, subFunc, SymbolKind::Function);
-            subFunc->resolvedSymbolOverload = nullptr;
+            subDecl->typeInfo = subDecl->typeInfo->clone();
+            subDecl->typeInfo->flags &= ~TYPEINFO_GENERIC;
+            subDecl->typeInfo->declNode = subDecl;
+
+            subDecl->doneFlags |= AST_DONE_FILE_JOB_PASS;
+            newNode->subDecls.push_back(subDecl);
+            subDecl->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, subDecl, symKind);
+            subDecl->resolvedSymbolOverload = nullptr;
 
             // Do it last for avoid a race condition with the file job
-            Ast::addChildBack(sourceFile->astRoot, subFunc);
+            Ast::addChildBack(sourceFile->astRoot, subDecl);
         }
     }
     else
