@@ -667,29 +667,43 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
             cloneContext.parentScope = subFuncScope;
             cloneContext.parent      = nullptr;
             auto subDecl             = f->clone(cloneContext);
+            subDecl->typeInfo        = subDecl->typeInfo->clone();
 
             SymbolKind symKind = SymbolKind::Invalid;
             switch (subDecl->kind)
             {
             case AstNodeKind::FuncDecl:
-                ((AstFuncDecl*) subDecl)->content->flags &= ~AST_NO_SEMANTIC;
+            {
+                auto nodeFunc = CastAst<AstFuncDecl>(subDecl, AstNodeKind::FuncDecl);
+                nodeFunc->content->flags &= ~AST_NO_SEMANTIC;
                 symKind = SymbolKind::Function;
                 break;
+            }
             case AstNodeKind::StructDecl:
-                symKind = SymbolKind::Struct;
+            {
+                symKind           = SymbolKind::Struct;
+                auto nodeStruct   = CastAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
+                auto typeStruct   = CastTypeInfo<TypeInfoStruct>(subDecl->typeInfo, TypeInfoKind::Struct);
+                typeStruct->scope = nodeStruct->scope;
                 break;
+            }
+            case AstNodeKind::TypeSet:
+            {
+                symKind           = SymbolKind::TypeSet;
+                auto nodeStruct   = CastAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
+                auto typeStruct   = CastTypeInfo<TypeInfoStruct>(subDecl->typeInfo, TypeInfoKind::Struct);
+                typeStruct->scope = nodeStruct->scope;
+                break;
+            }
             case AstNodeKind::InterfaceDecl:
                 symKind = SymbolKind::Interface;
                 break;
-            case AstNodeKind::TypeSet:
-                symKind = SymbolKind::TypeSet;
-                break;
+
             default:
                 SWAG_ASSERT(false);
                 break;
             }
 
-            subDecl->typeInfo = subDecl->typeInfo->clone();
             subDecl->typeInfo->flags &= ~TYPEINFO_GENERIC;
             subDecl->typeInfo->declNode = subDecl;
 
