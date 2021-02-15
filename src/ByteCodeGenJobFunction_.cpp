@@ -115,34 +115,8 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
-
-                if (typeArray->totalCount == 1)
-                {
-                    SWAG_CHECK(emitStructCopyMoveCall(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, typeArrayStruct, returnExpression));
-                }
-                else
-                {
-                    // Need to loop on every element of the array in order to initialize them
-                    RegisterList r0 = reserveRegisterRC(context);
-
-                    emitInstruction(context, ByteCodeOp::SetImmediate64, r0)->b.u64 = typeArray->totalCount;
-
-                    auto seekJump = context->bc->numInstructions;
-                    SWAG_CHECK(emitStructCopyMoveCall(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, typeArrayStruct, returnExpression));
-
-                    auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->ownerInline->resultRegisterRC, 0, node->ownerInline->resultRegisterRC);
-                    inst->b.u64 = typeArrayStruct->sizeOf;
-                    inst->flags |= BCI_IMM_B;
-
-                    inst        = emitInstruction(context, ByteCodeOp::IncPointer64, returnExpression->resultRegisterRC, 0, returnExpression->resultRegisterRC);
-                    inst->b.u64 = typeArrayStruct->sizeOf;
-                    inst->flags |= BCI_IMM_B;
-
-                    emitInstruction(context, ByteCodeOp::DecrementRA64, r0);
-                    emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = seekJump - context->bc->numInstructions - 1;
-
-                    freeRegisterRC(context, r0);
-                }
+                SWAG_CHECK(emitCopyArrayOfStructs(context, typeArray, typeArrayStruct, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, returnExpression));
+                freeRegisterRC(context, returnExpression);
             }
             else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
             {
@@ -183,7 +157,6 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             {
                 // Force raw copy (no drop on the left, i.e. the argument to return the result) because it has not been initialized
                 returnExpression->flags |= AST_NO_LEFT_DROP;
-
                 RegisterList r1 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, r1);
                 SWAG_CHECK(emitCopyArrayOfStructs(context, typeArray, typeArrayStruct, r1, returnExpression->resultRegisterRC, returnExpression));
