@@ -76,9 +76,7 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, ByteCodeOptTreePa
         parseCxt.cb(context, parseCxt);
 
         if (parseCxt.mustStopAll)
-        {
             return;
-        }
         if (parseCxt.mustStopBlock)
         {
             parseCxt.mustStopBlock = false;
@@ -131,8 +129,6 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
 {
     if (ip->op == ByteCodeOp::Nop || (ip->flags & BCI_UNPURE))
         return;
-    //if (context->semContext && ip->op == ByteCodeOp::IncPointer64)
-    //    return;
     auto flags = g_ByteCodeOpFlags[(int) ip->op];
     if (flags & OPFLAG_UNPURE)
         return;
