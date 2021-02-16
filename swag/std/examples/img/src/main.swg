@@ -41,15 +41,15 @@ func loadImg()
 {
     data := imagePath("image2.bmp")
     bytes := catch file.readAllBytes(data)
-    //error.fatal()
+    error.fatal()
 
     var dec: image.bmp.Decoder
     img := catch dec.decode(bytes.toSlice())
-    //error.fatal()
+    error.fatal()
 
     glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, cast(s32) img.width, cast(s32) img.height, 0, GL_BGR, GL_UNSIGNED_BYTE, img.pixels)
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, cast(s32) img.width, cast(s32) img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.pixels)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 }

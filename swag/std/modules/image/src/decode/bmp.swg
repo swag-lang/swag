@@ -54,8 +54,6 @@ impl Decoder
 {
     public func decode(using self, buffer: const [..] u8)->Image
     {
-        var result: retval
-
         dataof := @dataof(buffer)
         countof := @countof(buffer)
         last := dataof + countof
@@ -77,6 +75,8 @@ impl Decoder
         size := :cast(const *u32) dataof
         if size == @sizeof(CoreHeader)
         {
+            if dataof + @sizeof(CoreHeader) > last
+                throw "invalid source buffer"
             ch := cast(const *CoreHeader) dataof
             dataof += @sizeof(Header)
             bh.biSize        = ch.bcSize
@@ -88,6 +88,8 @@ impl Decoder
         }
         else
         {
+            if dataof + @sizeof(Header) > last
+                throw "invalid source buffer"
             memory.copy(&bh, dataof, @sizeof(Header))
             dataof += @sizeof(Header)
         }
@@ -103,12 +105,13 @@ impl Decoder
         }
 
         // Create image
+        var result: retval
         switch bh.biBitCount
         {
         case 32:
-            result = create(bh.biWidth, bh.biHeight, PixelFormat.A8R8G8B8)
+            result = create(bh.biWidth, bh.biHeight, PixelFormat.R8G8B8A8)
         case 24:
-            result = create(bh.biWidth, bh.biHeight, PixelFormat.B8G8R8)
+            result = create(bh.biWidth, bh.biHeight, PixelFormat.R8G8B8)
         default:
             throw "unsupported bit count"
         }
@@ -124,34 +127,42 @@ impl Decoder
         switch bh.biBitCount
         {
         case 32:
+            if dataof + (bh.biWidth * bh.biHeight * 4) > last
+                throw "invalid source buffer"
+
             pdest := result.pixels
             loop bh.biWidth * bh.biHeight
             {
-                pdest[0] = dataof[0]
+                pdest[2] = dataof[0]
                 pdest[1] = dataof[1]
-                pdest[2] = dataof[2]
+                pdest[0] = dataof[2]
                 pdest[3] = autocast (255 - dataof[3])
                 pdest, dataof += 4
             }
 
         case 24:
+            pdest := result.pixels
+
             // Alignement problem ? There's a padding at the end of each
             // line of 1 to 3 bytes
             c := (bh.biWidth * 3) & 3
-            if c
+            if c c = 4 - c
+
+            if dataof + ((bh.biWidth + c) * bh.biHeight * 3) > last
+                throw "invalid source buffer"
+
+            // Encoded in B,G,R order, decode it in R,G,B order
+            loop bh.biHeight
             {
-                c = 4 - c
-                pdest := result.pixels
-                loop bh.biHeight
+                loop bh.biWidth
                 {
-                    memory.copy(pdest, dataof, cast(uint) bh.biWidth * 3)
-                    pdest, dataof += bh.biWidth * 3
-                    dataof += c
+                    pdest[2] = dataof[0]
+                    pdest[1] = dataof[1]
+                    pdest[0] = dataof[2]
+                    pdest, dataof += 3
                 }
-            }
-            else
-            {
-                memory.copy(result.pixels, dataof, cast(uint) bh.biSizeImage)
+
+                dataof += c
             }
         }
 

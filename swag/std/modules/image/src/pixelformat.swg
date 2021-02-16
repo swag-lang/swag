@@ -5,8 +5,7 @@ using swag
 enum PixelFormat
 {
     R8G8B8
-    A8R8G8B8
-    B8G8R8
+    R8G8B8A8
 }
 
 impl enum PixelFormat
@@ -19,8 +18,7 @@ impl enum PixelFormat
         switch self
         {
             case R8G8B8:    return 24
-            case B8G8R8:    return 24
-            case A8R8G8B8:  return 32
+            case R8G8B8A8:  return 32
         }
 
         return 0
