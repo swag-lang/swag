@@ -407,6 +407,19 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             return false;
         }
 
+        // Check that global attribute is authorized
+        if (node->isGlobal)
+        {
+            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
+            if (!(typeInfo->attributeUsage & AttributeUsage::File))
+            {
+                Diagnostic diag{identifier, format("attribute '%s' does not have the 'File' usage, and cannot be used with '#global'", resolvedName->name.c_str())};
+                Diagnostic note{resolved->node, resolved->node->token, format("this is the definition of '%s'", resolvedName->name.c_str()), DiagnosticLevel::Note};
+                context->report(diag, &note);
+                return false;
+            }
+        }
+
         // Register attribute itself
         OneAttribute oneAttribute;
         oneAttribute.name = resolvedName->getFullName();

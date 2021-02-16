@@ -14,6 +14,7 @@ enum AttributeUsage
     GlobalVariable = 0x00000008,
     Struct         = 0x00000010,
     Function       = 0x00000020,
+    File           = 0x00000040,
     All            = 0x0FFFFFFF,
     // Flags
     Multi = 0x80000000,

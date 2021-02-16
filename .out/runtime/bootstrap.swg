@@ -9,6 +9,7 @@ namespace swag
         GlobalVariable  = 0x00000008
         Struct          = 0x00000010
         Function        = 0x00000020
+        File            = 0x00000040
         All             = 0x0FFFFFFF
     }
 
@@ -23,7 +24,7 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr constexpr()
 
-    #[attributeUsage(AttributeUsage.Function|AttributeUsage.Struct)]
+    #[attributeUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.File)]
     attr printbc()
 
     #[attributeUsage(AttributeUsage.Function)]
@@ -90,7 +91,7 @@ namespace swag
     #[attributeUsage(AttributeUsage.All)]
     attr selectif(value: bool)
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[attributeUsage(AttributeUsage.Function|AttributeUsage.File)]
     attr optim(what: string, value: bool)
 
     #[attributeUsage(AttributeUsage.Function)]
