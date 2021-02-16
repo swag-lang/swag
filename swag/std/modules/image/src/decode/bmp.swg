@@ -114,13 +114,14 @@ impl Decoder
         if bfOffBits
             dataof = @dataof(buffer) + bfOffBits
 
+        if dataof + (bh.biWidth * bh.biHeight * (bh.biBitCount / 8)) > last
+            throw "invalid source buffer"
+
+        // Encoded in B,G,R order, decode it in R,G,B order
+        pdest := result.pixels
         switch bh.biBitCount
         {
         case 32:
-            if dataof + (bh.biWidth * bh.biHeight * 4) > last
-                throw "invalid source buffer"
-
-            pdest := result.pixels
             loop bh.biWidth * bh.biHeight
             {
                 pdest[2] = dataof[0]
@@ -131,29 +132,12 @@ impl Decoder
             }
 
         case 24:
-            pdest := result.pixels
-
-            // Alignement problem ? There's a padding at the end of each
-            // line of 1 to 3 bytes
-            c := (bh.biWidth * 3) & 3
-            c = 0
-            if c c = 4 - c
-
-            if dataof + ((bh.biWidth + c) * bh.biHeight * 3) > last
-                throw "invalid source buffer"
-
-            // Encoded in B,G,R order, decode it in R,G,B order
-            loop bh.biHeight
+            loop bh.biHeight * bh.biWidth
             {
-                loop bh.biWidth
-                {
-                    pdest[2] = dataof[0]
-                    pdest[1] = dataof[1]
-                    pdest[0] = dataof[2]
-                    pdest, dataof += 3
-                }
-
-                dataof += c
+                pdest[2] = dataof[0]
+                pdest[1] = dataof[1]
+                pdest[0] = dataof[2]
+                pdest, dataof += 3
             }
         }
 
