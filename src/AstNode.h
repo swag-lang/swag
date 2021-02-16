@@ -488,6 +488,7 @@ struct AstAttrUse : public AstNode
 
     AstNode*         content;
     SymbolAttributes attributes;
+    bool             isGlobal = false;
 };
 
 struct AstFuncCallParam : public AstNode

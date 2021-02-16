@@ -20,6 +20,7 @@
     { "include": "#intrinsics-literal" },
     { "include": "#compiler-function" },
     { "include": "#compiler-global" },
+    { "include": "#compiler-global1" },
     { "include": "#compiler-statement" },
     { "include": "#compiler" },
     { "include": "#compiler-invalid" },
@@ -157,6 +158,14 @@
               "name": "meta.preprocessor"
             }
           }
+        }
+      ]
+    },
+    "compiler-global1": {
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "(#)(global)"
         }
       ]
     },

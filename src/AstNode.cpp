@@ -758,6 +758,7 @@ AstNode* AstAttrUse::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstAttrUse>();
     newNode->copyFrom(context, this);
 
+    newNode->isGlobal   = isGlobal;
     newNode->attributes = attributes;
     newNode->content    = findChildRef(content, newNode);
     if (newNode->content)

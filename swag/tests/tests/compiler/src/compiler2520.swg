@@ -1,8 +1,10 @@
+#global #[swag.printbc]
+#global #[swag.safety("", false)]
+
 var t: [] struct {
     in:  const [..] char
 } = @[{[1'char,2,3,4]}]
 
-#[swag.printbc]
 #test
 {
     @assert(@countof(t[0].in) == 4)

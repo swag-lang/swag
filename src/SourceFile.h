@@ -9,6 +9,7 @@ struct AstNode;
 struct Diagnostic;
 struct Scope;
 struct Token;
+struct AstAttrUse;
 
 struct LoadRequest
 {
@@ -41,6 +42,7 @@ struct SourceFile : public File
     int            getLineOffset = 0;
     Module*        module        = nullptr;
     AstNode*       astRoot       = nullptr;
+    AstAttrUse*    astAttrUse    = nullptr;
     Utf8           externalContent;
     Utf8           scopeName;
     Utf8           forceNamespace;

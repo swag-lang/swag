@@ -143,14 +143,14 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes* result)
 {
     auto attrUse = forNode->ownerAttrUse;
-    if (!attrUse)
-        return true;
     SWAG_CHECK(collectAttributes(context, forNode, result, attrUse));
     return true;
 }
 
 bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, SymbolAttributes* result, AstAttrUse* attrUse)
 {
+    if (!attrUse)
+        attrUse = forNode->sourceFile->astAttrUse;
     if (!attrUse)
         return true;
 
@@ -344,7 +344,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 result->attributes.push_back(oneAttr);
         }
 
-        curAttr = curAttr->ownerAttrUse;
+        if (!curAttr->isGlobal && !curAttr->ownerAttrUse)
+            curAttr = forNode->sourceFile->astAttrUse;
+        else
+            curAttr = curAttr->ownerAttrUse;
     }
 
     return true;
@@ -379,14 +382,15 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 bool SemanticJob::resolveAttrUse(SemanticContext* context)
 {
     auto node = CastAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
-    SWAG_VERIFY(node->content, context->report({node, "invalid attribute usage"}));
+    SWAG_VERIFY(node->content || node->isGlobal, context->report({node, "invalid attribute usage"}));
 
     for (auto child : node->childs)
     {
         if (child == node->content)
             continue;
 
-        SWAG_CHECK(checkAttribute(context, child, node->content));
+        if (node->content)
+            SWAG_CHECK(checkAttribute(context, child, node->content));
 
         // Collect parameters
         auto identifierRef = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);

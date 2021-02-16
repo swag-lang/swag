@@ -528,6 +528,17 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
+    else if (token.text == "#[")
+    {
+        AstNode* resultNode;
+        SWAG_CHECK(doAttrUse(sourceFile->astRoot, &resultNode));
+        auto attrUse           = (AstAttrUse*) resultNode;
+        attrUse->isGlobal      = true;
+        attrUse->ownerAttrUse  = sourceFile->astAttrUse;
+        sourceFile->astAttrUse = attrUse;
+    }
+
+    /////////////////////////////////
     else
     {
         return sourceFile->report({sourceFile, token, format("'#global' invalid token '%s'", token.text.c_str())});
