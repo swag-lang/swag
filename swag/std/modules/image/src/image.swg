@@ -5,14 +5,14 @@ struct Image
 {
     allocator:      IAllocator
     pixels:         *u8
-    width, height:  s32
+    width, height:  u32
     pf:             PixelFormat = ?
     bpp:            u32
     size:           uint
 }
 
 // Creates a new image surface
-func create(width, height: s32, pf: PixelFormat)->Image
+func create(width, height: u32, pf: PixelFormat)->Image
 {
     debug.assert(width > 0 && height > 0, "invalid dimensions")
 
@@ -34,12 +34,6 @@ impl Image
         memory.free(pixels, size, allocator)
     }
 
-    #[inline]
-    private func checkValid(using self)
-    {
-        debug.assert(size != 0, "image is invalid")
-    }
-
     func opDrop(using self)
     {
         free()
@@ -48,7 +42,6 @@ impl Image
     // Release the content of the image
     func release(using self)
     {
-        checkValid()
         free()
         @init(self)
     }
@@ -56,7 +49,6 @@ impl Image
     // Clear the content of the image
     func clear(using self)
     {
-        checkValid()
-        @memset(pixels, 0, size)
+        memory.clear(pixels, size)
     }
 }
