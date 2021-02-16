@@ -1,3 +1,13 @@
+rename @assertmsg => @panic
+assume keyword (panic if error)
+pas de try/throw dans #run, #test, #main, #ast etc (faut un assume ou un catch)
+console.println
+throw format.toString fait quoi ?
+error.format pour faire un @seterr avec params ?
+logger les throw pour savoir qui déclenche les erreurs
+error en native, le code source est plus affiché ?
+
+
 ****************************************
 LANGUAGE
 ****************************************

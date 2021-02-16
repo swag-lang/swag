@@ -127,7 +127,7 @@ impl Decoder
                 pdest[2] = dataof[0]
                 pdest[1] = dataof[1]
                 pdest[0] = dataof[2]
-                pdest[3] = autocast (255 - dataof[3])
+                pdest[3] = cast(u8) (255 - dataof[3])
                 pdest, dataof += 4
             }
 
