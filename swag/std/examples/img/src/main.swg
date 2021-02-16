@@ -40,12 +40,9 @@ var textureID: GLuint
 func loadImg()
 {
     data := imagePath("image2.bmp")
-    bytes := catch file.readAllBytes(data)
-    error.fatal()
-
+    bytes := try file.readAllBytes(data)
     var dec: image.bmp.Decoder
-    img := catch dec.decode(bytes.toSlice())
-    error.fatal()
+    img := try dec.decode(bytes.toSlice())
 
     glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)
@@ -145,7 +142,9 @@ func messageLoop()
     hRC := wglCreateContext(hDC)
     wglMakeCurrent(hDC, hRC)
 
-    loadImg()
+    catch loadImg()
+    error.fatal()
+
     display()
     ShowWindow(hWnd, SW_SHOW)
     UpdateWindow(hWnd)

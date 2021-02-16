@@ -94,16 +94,6 @@ impl Decoder
             dataof += @sizeof(Header)
         }
 
-        // Check sizeImage to be sure its not greater than w*h
-        if bh.biSizeImage > bh.biHeight * bh.biWidth * (bh.biBitCount >> 3)
-            bh.biSizeImage = 0
-        if bh.biSizeImage == 0
-        {
-            bh.biSizeImage = bh.biWidth * bh.biBitCount
-            bh.biSizeImage = ((bh.biSizeImage + 31) & (~31)) / 8
-            bh.biSizeImage *= bh.biHeight
-        }
-
         // Create image
         var result: retval
         switch bh.biBitCount
@@ -146,6 +136,7 @@ impl Decoder
             // Alignement problem ? There's a padding at the end of each
             // line of 1 to 3 bytes
             c := (bh.biWidth * 3) & 3
+            c = 0
             if c c = 4 - c
 
             if dataof + ((bh.biWidth + c) * bh.biHeight * 3) > last
