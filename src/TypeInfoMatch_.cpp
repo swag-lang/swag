@@ -618,7 +618,14 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     int firstDefault = firstDefaultValueIdx == -1 ? (int) parameters.size() : firstDefaultValueIdx;
     if (context.cptResolved < firstDefault && parameters.size())
     {
-        if (parameters.back()->typeInfo->kind != TypeInfoKind::Variadic && parameters.back()->typeInfo->kind != TypeInfoKind::TypedVariadic)
+        auto back = parameters.back()->typeInfo;
+        if (back->kind != TypeInfoKind::Variadic && back->kind != TypeInfoKind::TypedVariadic)
+        {
+            context.result = MatchResult::NotEnoughParameters;
+            return;
+        }
+
+        if (parameters.size() > 1 && context.cptResolved < min(parameters.size() - 1, firstDefault))
         {
             context.result = MatchResult::NotEnoughParameters;
             return;
