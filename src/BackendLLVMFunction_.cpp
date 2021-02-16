@@ -454,6 +454,16 @@ void BackendLLVM::emitAssert(const BuildParameters& buildParameters, llvm::Alloc
     localCall(buildParameters, allocR, allocT, "__assert", {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
 }
 
+void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc, llvm::Function* func)
+{
+    llvm::AttrBuilder attr;
+
+    if (!moduleToGen->mustOptimizeBK(bc->node))
+        attr.addAttribute(llvm::Attribute::OptimizeNone);
+
+    func->addAttributes(llvm::AttributeList::FunctionIndex, attr);
+}
+
 bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
@@ -472,6 +482,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Function prototype
     llvm::FunctionType* funcType = createFunctionTypeInternal(buildParameters, typeFunc);
     llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->callName().c_str(), funcType).getCallee();
+    setFuncAttributes(buildParameters, moduleToGen, bc, func);
 
     // No pointer aliasing, on all pointers. Is this correct ??
     // Note that without the NoAlias flag, some optims will not trigger (like vectorisation)
