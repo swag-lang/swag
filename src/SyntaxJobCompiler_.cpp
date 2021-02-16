@@ -527,6 +527,12 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatSemiCol("after '#global testerror"));
     }
 
+    /////////////////////////////////
+    else
+    {
+        return sourceFile->report({sourceFile, token, format("'#global' invalid token '%s'", token.text.c_str())});
+    }
+
     return true;
 }
 
