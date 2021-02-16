@@ -1,5 +1,5 @@
-#global #[swag.printbc]
-#global #[swag.safety("", false)]
+//#global #[swag.printbc]
+//#global #[swag.safety("", false)]
 
 var t: [] struct {
     in:  const [..] char
