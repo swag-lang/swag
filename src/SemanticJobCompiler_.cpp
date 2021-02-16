@@ -343,6 +343,7 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
     for (auto it : block->symbols)
     {
         scoped_lock lk(it.second->mutex);
+        scoped_lock lk1(it.first->mutex);
         it.first->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE;
         it.first->semFlags |= AST_SEM_DISABLED;
         SymTable::disabledOverloadNoLock(it.second);

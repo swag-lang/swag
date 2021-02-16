@@ -61,12 +61,15 @@ struct ByteCodeOptimizer
     static uint32_t newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here);
     static void     genTree(ByteCodeOptContext* context, uint32_t nodeIdx);
     static void     genTree(ByteCodeOptContext* context);
+    static void     parseTree(ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt);
+    static void     parseTree(ByteCodeOptContext* context, uint32_t startNode, ByteCodeInstruction* startIp, uint32_t doneFlag, function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb);
 
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void optimizePassJumps(ByteCodeOptContext* context);
     static void optimizePassDeadCode(ByteCodeOptContext* context);
     static void optimizePassEmptyFct(ByteCodeOptContext* context);
     static void optimizePassDeadStore(ByteCodeOptContext* context);
+    static void optimizePassDeadStore2(ByteCodeOptContext* context);
     static void optimizePassImmediate(ByteCodeOptContext* context);
     static void optimizePassConst(ByteCodeOptContext* context);
     static void optimizePassDupCopyRBRA(ByteCodeOptContext* context);

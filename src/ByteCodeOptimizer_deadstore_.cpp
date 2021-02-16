@@ -137,3 +137,112 @@ void ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
         }
     }
 }
+
+void ByteCodeOptimizer::optimizePassDeadStore2(ByteCodeOptContext* context)
+{
+    parseTree(context, 0, context->tree[0].start, 0x00000001, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt) {
+        auto ip    = parseCxt.curIp;
+        auto flags = g_ByteCodeOpFlags[(int) ip->op];
+
+        uint32_t regA = UINT32_MAX;
+        if (flags & OPFLAG_WRITE_A && !(flags & (OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
+            regA = ip->a.u32;
+
+        if (regA == UINT32_MAX)
+            return;
+
+        bool hasRead  = false;
+        bool hasWrite = false;
+        parseTree(context, parseCxt.curNode, parseCxt.curIp, 0x00000002, [&](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt1) {
+            auto ip1 = parseCxt1.curIp;
+            if (ip1 == ip)
+                return;
+
+            auto flags1 = g_ByteCodeOpFlags[(int) ip1->op];
+            if ((flags1 & OPFLAG_READ_A) && !(ip1->flags & BCI_IMM_A))
+            {
+                if (ip1->a.u32 == regA)
+                {
+                    hasRead               = true;
+                    parseCxt1.mustStopAll = true;
+                    return;
+                }
+            }
+
+            if ((flags1 & OPFLAG_READ_B) && !(ip1->flags & BCI_IMM_B))
+            {
+                if (ip1->b.u32 == regA)
+                {
+                    hasRead               = true;
+                    parseCxt1.mustStopAll = true;
+                    return;
+                }
+            }
+
+            if ((flags1 & OPFLAG_READ_C) && !(ip1->flags & BCI_IMM_C))
+            {
+                if (ip1->c.u32 == regA)
+                {
+                    hasRead               = true;
+                    parseCxt1.mustStopAll = true;
+                    return;
+                }
+            }
+
+            if ((flags1 & OPFLAG_READ_D) && !(ip1->flags & BCI_IMM_D))
+            {
+                if (ip1->d.u32 == regA)
+                {
+                    hasRead               = true;
+                    parseCxt1.mustStopAll = true;
+                    return;
+                }
+            }
+
+            if (flags1 & OPFLAG_WRITE_A)
+            {
+                if (ip1->a.u32 == regA)
+                {
+                    hasWrite                = true;
+                    parseCxt1.mustStopBlock = true;
+                    return;
+                }
+            }
+
+            if (flags1 & OPFLAG_WRITE_B)
+            {
+                if (ip1->b.u32 == regA)
+                {
+                    hasWrite                = true;
+                    parseCxt1.mustStopBlock = true;
+                    return;
+                }
+            }
+
+            if (flags1 & OPFLAG_WRITE_C)
+            {
+                if (ip1->c.u32 == regA)
+                {
+                    hasWrite                = true;
+                    parseCxt1.mustStopBlock = true;
+                    return;
+                }
+            }
+
+            if (flags1 & OPFLAG_WRITE_D)
+            {
+                if (ip1->d.u32 == regA)
+                {
+                    hasWrite                = true;
+                    parseCxt1.mustStopBlock = true;
+                    return;
+                }
+            }
+        });
+
+        if (hasRead)
+            return;
+
+        setNop(context, ip);
+    });
+}

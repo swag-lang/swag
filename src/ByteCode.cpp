@@ -186,6 +186,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
 
     if (ip->flags & BCI_START_STMT)
         g_Log.print("STMT ");
+    if (ip->flags & BCI_UNPURE)
+        g_Log.print("UNPURE ");
 
     switch (ip->op)
     {

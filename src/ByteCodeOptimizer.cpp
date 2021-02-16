@@ -1,13 +1,7 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
 #include "ByteCodeOptimizer.h"
 #include "ByteCodeOptimizerJob.h"
-#include "ByteCode.h"
-#include "Diagnostic.h"
-#include "ByteCodeOp.h"
 #include "Module.h"
-#include "Stats.h"
-#include "Timer.h"
 #include "Profile.h"
 
 uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here)
@@ -21,7 +15,7 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
         return it->second;
     }
 
-    TreeNode newNode;
+    ByteCodeOptTreeNode newNode;
     newNode.start = ip;
     context->tree.push_back(newNode);
     uint32_t pos             = (uint32_t) context->tree.size() - 1;
@@ -31,29 +25,31 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
 
 void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
 {
-    TreeNode* node = &context->tree[nodeIdx];
-    node->end      = node->start;
+    ByteCodeOptTreeNode* node = &context->tree[nodeIdx];
+    node->end                 = node->start;
     while (node->end->op != ByteCodeOp::Ret && !isJump(node->end))
         node->end++;
     if (node->end->op == ByteCodeOp::Ret)
         return;
 
-    node->next1 = node->end + node->end->b.s32 + 1;
+    bool here = false;
+
+    ByteCodeInstruction* nextIp  = node->end + node->end->b.s32 + 1;
+    auto                 newNode = newTreeNode(context, nextIp, here);
+    if (!here)
+        genTree(context, newNode);
+    node        = &context->tree[nodeIdx];
+    node->next1 = newNode;
+
     if (node->end->op != ByteCodeOp::Jump)
-        node->next2 = node->end + 1;
-
-    bool here    = false;
-    auto newNode = newTreeNode(context, node->next1, here);
-    if (!here)
-        genTree(context, newNode);
-
-    node = &context->tree[nodeIdx];
-    if (!node->next2)
-        return;
-
-    newNode = newTreeNode(context, node->next2, here);
-    if (!here)
-        genTree(context, newNode);
+    {
+        nextIp  = node->end + 1;
+        newNode = newTreeNode(context, nextIp, here);
+        if (!here)
+            genTree(context, newNode);
+        node        = &context->tree[nodeIdx];
+        node->next2 = newNode;
+    }
 }
 
 void ByteCodeOptimizer::genTree(ByteCodeOptContext* context)
@@ -67,12 +63,76 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context)
     genTree(context, node);
 }
 
+void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt)
+{
+    ByteCodeOptTreeNode* node = &context->tree[parseCxt.curNode];
+
+    while (true)
+    {
+        // Back to first instruction
+        if ((node->flags & parseCxt.doneFlag) && parseCxt.curIp == parseCxt.startIp)
+            return;
+
+        parseCxt.cb(context, parseCxt);
+
+        if (parseCxt.mustStopAll)
+        {
+            return;
+        }
+        if (parseCxt.mustStopBlock)
+        {
+            parseCxt.mustStopBlock = false;
+            return;
+        }
+
+        if (parseCxt.curIp == node->end)
+            break;
+        parseCxt.curIp++;
+    }
+
+    if (node->next1 == UINT32_MAX)
+        return;
+    if (!(context->tree[node->next1].flags & parseCxt.doneFlag))
+    {
+        context->tree[node->next1].flags |= parseCxt.doneFlag;
+        parseCxt.curNode = node->next1;
+        parseCxt.curIp   = context->tree[node->next1].start;
+        parseTree(context, parseCxt);
+        if (parseCxt.mustStopAll)
+            return;
+    }
+
+    if (node->next2 == UINT32_MAX)
+        return;
+    if (!(context->tree[node->next2].flags & parseCxt.doneFlag))
+    {
+        context->tree[node->next2].flags |= parseCxt.doneFlag;
+        parseCxt.curNode = node->next2;
+        parseCxt.curIp   = context->tree[node->next2].start;
+        parseTree(context, parseCxt);
+    }
+}
+
+void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, uint32_t startNode, ByteCodeInstruction* startIp, uint32_t doneFlag, function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb)
+{
+    for (auto& n : context->tree)
+        n.flags &= ~doneFlag;
+
+    ByteCodeOptTreeParseContext parseCxt;
+    parseCxt.curNode  = startNode;
+    parseCxt.startIp  = startIp;
+    parseCxt.curIp    = startIp;
+    parseCxt.cb       = cb;
+    parseCxt.doneFlag = doneFlag;
+    parseTree(context, parseCxt);
+}
+
 void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (ip->op == ByteCodeOp::Nop)
+    if (ip->op == ByteCodeOp::Nop || (ip->flags & BCI_UNPURE))
         return;
-    if (context->semContext && ip->op == ByteCodeOp::IncPointer64)
-        return;
+    //if (context->semContext && ip->op == ByteCodeOp::IncPointer64)
+    //    return;
     auto flags = g_ByteCodeOpFlags[(int) ip->op];
     if (flags & OPFLAG_UNPURE)
         return;

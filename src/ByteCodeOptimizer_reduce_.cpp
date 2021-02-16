@@ -8,49 +8,6 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        // Clear and test
-        if (ip->op == ByteCodeOp::ClearMaskU32 && ip->b.u32 == 0xFF)
-        {
-            if (ip[1].op == ByteCodeOp::CompareOpNotEqual32 && ip->a.u32 == ip[1].a.u32)
-            {
-                setNop(context, ip);
-                ip[1].op = ByteCodeOp::CompareOpNotEqual8;
-            }
-            else if (ip[1].op == ByteCodeOp::CompareOpEqual32 && ip->a.u32 == ip[1].a.u32)
-            {
-                setNop(context, ip);
-                ip[1].op = ByteCodeOp::CompareOpEqual8;
-            }
-        }
-
-        if (ip->op == ByteCodeOp::ClearMaskU32 && ip->b.u32 == 0xFFFFF)
-        {
-            if (ip[1].op == ByteCodeOp::CompareOpNotEqual32 && ip->a.u32 == ip[1].a.u32)
-            {
-                setNop(context, ip);
-                ip[1].op = ByteCodeOp::CompareOpNotEqual16;
-            }
-            else if (ip[1].op == ByteCodeOp::CompareOpEqual64 && ip->a.u32 == ip[1].a.u32)
-            {
-                setNop(context, ip);
-                ip[1].op = ByteCodeOp::CompareOpEqual16;
-            }
-        }
-
-        if (ip->op == ByteCodeOp::ClearMaskU64 && ip->b.u32 == 0xFFFFFFFFF)
-        {
-            if (ip[1].op == ByteCodeOp::CompareOpNotEqual64 && ip->a.u32 == ip[1].a.u32)
-            {
-                setNop(context, ip);
-                ip[1].op = ByteCodeOp::CompareOpNotEqual32;
-            }
-            else if (ip[1].op == ByteCodeOp::CompareOpEqual64 && ip->a.u32 == ip[1].a.u32)
-            {
-                setNop(context, ip);
-                ip[1].op = ByteCodeOp::CompareOpEqual32;
-            }
-        }
-
         // Compare to 0
         if (ip->op == ByteCodeOp::CompareOpEqual8 && ip->b.u8 == 0 && ip->flags & BCI_IMM_B)
         {

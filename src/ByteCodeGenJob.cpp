@@ -108,9 +108,9 @@ void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, Regis
     {
         RegisterList r0;
         reserveLinearRegisterRC2(context, r0);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], resultRegisterRC[0]);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], resultRegisterRC[0])->flags |= BCI_UNPURE;
         if (!onlyOne)
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], resultRegisterRC[1]);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], resultRegisterRC[1])->flags |= BCI_UNPURE;
         freeRegisterRC(context, resultRegisterRC);
         resultRegisterRC = r0;
     }

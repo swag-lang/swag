@@ -7,12 +7,26 @@ struct ByteCodeInstruction;
 struct Module;
 struct Job;
 
-struct TreeNode
+struct ByteCodeOptTreeNode
 {
     ByteCodeInstruction* start = nullptr;
     ByteCodeInstruction* end   = nullptr;
-    ByteCodeInstruction* next1 = nullptr;
-    ByteCodeInstruction* next2 = nullptr;
+    uint32_t             next1 = UINT32_MAX;
+    uint32_t             next2 = UINT32_MAX;
+    uint32_t             flags = 0;
+};
+
+struct ByteCodeOptContext;
+struct ByteCodeOptTreeParseContext
+{
+    uint32_t             curNode;
+    ByteCodeInstruction* startIp       = nullptr;
+    ByteCodeInstruction* curIp         = nullptr;
+    bool                 mustStopAll   = false;
+    bool                 mustStopBlock = false;
+    uint32_t             doneFlag      = 0;
+
+    function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb;
 };
 
 struct ByteCodeOptContext
@@ -21,7 +35,7 @@ struct ByteCodeOptContext
     VectorNative<ByteCodeInstruction*> jumps;
     VectorNative<ByteCodeInstruction*> nops;
 
-    vector<TreeNode>                    tree;
+    vector<ByteCodeOptTreeNode>         tree;
     map<ByteCodeInstruction*, uint32_t> mapInstNode;
 
     VectorNative<ByteCodeInstruction*>                  vecInst;
