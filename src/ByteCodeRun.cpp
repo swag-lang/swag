@@ -1543,7 +1543,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].b = true;
         break;
     }
-    case ByteCodeOp::IntrinsicCompilerError:
+    case ByteCodeOp::IntrinsicErrorMsg:
     {
         Utf8 msg;
         msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);

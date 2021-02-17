@@ -2736,7 +2736,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             localCall(buildParameters, allocR, allocT, bcF->callName().c_str(), {ip->a.u32, ip->b.u32}, {});
             break;
         }
-        case ByteCodeOp::IntrinsicCompilerError:
+        case ByteCodeOp::IntrinsicErrorMsg:
         {
             auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
             localCall(buildParameters, allocR, allocT, bcF->callName().c_str(), {ip->a.u32, ip->b.u32, ip->c.u32}, {});

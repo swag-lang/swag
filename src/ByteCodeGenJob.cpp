@@ -297,7 +297,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     case ByteCodeOp::IntrinsicF32x2:
     case ByteCodeOp::IntrinsicF64x2:
     case ByteCodeOp::IntrinsicInterfaceOf:
-    case ByteCodeOp::IntrinsicCompilerError:
+    case ByteCodeOp::IntrinsicErrorMsg:
     case ByteCodeOp::IntrinsicPanic:
     case ByteCodeOp::IntrinsicAtomicAddS8:
     case ByteCodeOp::IntrinsicAtomicAddS16:
