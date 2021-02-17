@@ -33,13 +33,13 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
         }
     }
 
-    // Remove the MakeStackPointer
+    // Remove opDrop to the old variable that is no more affected.
+    // Make a nop, and detect all drops of that variable to remove them also.
+    // Not sure this will work in all situations
     if (hasDrop)
     {
-        // Method 1:
-        // Make a nop, and detect all drops of that variable to remove them also.
-        // Not sure this will work in all situations (see method2, which is safe)
-        auto ipe = ip + 1;
+        // We start before the function call, because we can have opDrop in try/catch blocks
+        auto ipe = ipOrg + 1;
         while (ipe->op != ByteCodeOp::End)
         {
             if (ipe[0].op == ByteCodeOp::MakeStackPointer && ipe[0].b.u32 == orgOffset)
@@ -60,43 +60,14 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
 
             ipe++;
         }
-
-        ByteCodeOptimizer::setNop(context, ip);
-
-        // Method 2:
-        // We replace it with a reinit of the variable, because of opDrop that can be called on it later.
-        /*
-        ip->op    = ByteCodeOp::SetZeroStackX;
-        ip->a.u32 = orgOffset;
-        switch (ip[1].op)
-        {
-        case ByteCodeOp::MemCpy8:
-            ip->b.u64 = 1;
-            break;
-        case ByteCodeOp::MemCpy16:
-            ip->b.u64 = 2;
-            break;
-        case ByteCodeOp::MemCpy32:
-            ip->b.u64 = 4;
-            break;
-        case ByteCodeOp::MemCpy64:
-            ip->b.u64 = 8;
-            break;
-        case ByteCodeOp::MemCpyX:
-            ip->b.u64 = ip[1].c.u32;
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }*/
     }
-    else
-    {
-        ByteCodeOptimizer::setNop(context, ip);
-    }
+
+    // Remove the MakeStackPointer
+    ByteCodeOptimizer::setNop(context, ip);
 
     // Remove the memcpy
     ByteCodeOptimizer::setNop(context, ip + 1);
+
     // We need to remove every instructions related to the post move
     ip += 2;
     while (ip->flags & BCI_POST_COPYMOVE)
