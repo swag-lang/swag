@@ -84,6 +84,11 @@ string normalizePath(const fs::path& path)
             str += '/';
             continue;
         }
+        else if (c <= '0x7F' && c > 32)
+        {
+            lastIsSlash = false;
+            str += (char) tolower((int) c);
+        }
         else
         {
             lastIsSlash = false;

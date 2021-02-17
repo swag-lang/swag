@@ -331,11 +331,26 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
             note->report();
     }
 
-    // Block execution in devmode, to be able to attach...
+    // Callstack
     SwagContext* context = (SwagContext*) Runtime::tlsGetValue(g_tlsContextId);
     if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
-    {
         g_byteCodeStack.log();
+
+    // Error stack trace
+    for (int i = context->traceIndex - 1; i >= 0; i--)
+    {
+        auto sourceFile = g_Workspace.findFile((const char*) context->trace[i]->fileName.buffer);
+        if (sourceFile)
+        {
+            SourceLocation startLoc;
+            startLoc.line   = context->trace[i]->lineStart;
+            startLoc.column = context->trace[i]->colStart;
+            SourceLocation endLoc;
+            endLoc.line   = context->trace[i]->lineEnd;
+            endLoc.column = context->trace[i]->colEnd;
+            Diagnostic diag1({sourceFile, startLoc, endLoc, "", DiagnosticLevel::TraceError});
+            diag1.report();
+        }
     }
 
     if (context && (context->flags & (uint64_t) ContextFlags::DevMode))

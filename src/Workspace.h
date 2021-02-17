@@ -4,6 +4,7 @@
 #include "Register.h"
 struct Module;
 struct Scope;
+struct SourceFile;
 enum class ModuleKind;
 
 #define SWAG_CACHE_FOLDER "swag_cache"
@@ -34,21 +35,22 @@ struct Workspace
     bool    build();
     Module* createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind);
 
-    void    addBootstrap();
-    void    addRuntime();
-    void    addRuntimeFile(const char* fileName);
-    void    setupPaths();
-    void    setupInternalTags();
-    void    setupUserTags();
-    void    setup();
-    void    computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind);
-    Module* getModuleByName(const Utf8& moduleName);
-    void    cleanFolderContent(const fs::path& path);
-    OneTag* hasTag(const Utf8& name);
-    void    setupCachePath();
-    Utf8    getTargetFolder();
-    Utf8    getPublicPath(Module* module, bool forWrite);
-    void    setupTarget();
+    void        addBootstrap();
+    void        addRuntime();
+    void        addRuntimeFile(const char* fileName);
+    void        setupPaths();
+    void        setupInternalTags();
+    void        setupUserTags();
+    void        setup();
+    void        computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind);
+    SourceFile* findFile(const char* fileName);
+    Module*     getModuleByName(const Utf8& moduleName);
+    void        cleanFolderContent(const fs::path& path);
+    OneTag*     hasTag(const Utf8& name);
+    void        setupCachePath();
+    Utf8        getTargetFolder();
+    Utf8        getPublicPath(Module* module, bool forWrite);
+    void        setupTarget();
 
     void cleanPublic(const fs::path& basePath);
     void cleanCommand();

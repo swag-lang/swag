@@ -1561,9 +1561,21 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
 
     case ByteCodeOp::InternalInitStackTrace:
+    {
+        auto cxt        = (SwagContext*) Runtime::tlsGetValue(g_tlsContextId);
+        cxt->traceIndex = 0;
         break;
+    }
     case ByteCodeOp::InternalStackTrace:
+    {
+        auto cxt = (SwagContext*) Runtime::tlsGetValue(g_tlsContextId);
+        if (cxt->traceIndex == MAX_TRACE)
+            break;
+        cxt->trace[cxt->traceIndex] = (SwagCompilerSourceLocation*) registersRC[ip->a.u32].pointer;
+        cxt->traceIndex++;
         break;
+    }
+
     case ByteCodeOp::InternalPanic:
     {
         if (context->sourceFile->numTestErrors)

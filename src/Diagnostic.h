@@ -11,6 +11,7 @@ enum DiagnosticLevel
     Message,
     Note,
     CallStack,
+    TraceError,
 };
 
 struct Diagnostic

@@ -56,6 +56,23 @@ void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& 
     moduleFolder = path.string();
 }
 
+SourceFile* Workspace::findFile(const char* fileName)
+{
+    SourceFile* sourceFile = nullptr;
+    for (auto m : mapModulesNames)
+    {
+        sourceFile = m.second->findFile(fileName);
+        if (sourceFile)
+            return sourceFile;
+    }
+
+    if (!sourceFile)
+        sourceFile = g_Workspace.bootstrapModule->findFile(fileName);
+    if (!sourceFile)
+        sourceFile = g_Workspace.runtimeModule->findFile(fileName);
+    return sourceFile;
+}
+
 Module* Workspace::getModuleByName(const Utf8& moduleName)
 {
     shared_lock lk(mutexModules);

@@ -38,6 +38,10 @@ void Diagnostic::report(bool verboseMode) const
         if (!verboseMode)
             g_Log.setColor(LogColor::DarkYellow);
         g_Log.print("callstack: ");
+    case DiagnosticLevel::TraceError:
+        if (!verboseMode)
+            g_Log.setColor(LogColor::DarkYellow);
+        g_Log.print("trace error: ");
         break;
     }
 
