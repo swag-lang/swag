@@ -287,7 +287,7 @@ func @panic(message: string, loc: swag.CompilerSourceLocation)
 
     str[len] = 0
 
-    __assertBox(cast(string) str, title)
+    __panicBox(cast(string) str, title)
 }
 
 ////////////////////////////////////////////////////////////

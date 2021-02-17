@@ -101,7 +101,7 @@ func __tlsSetValue(id: u64, value: *void)   => TlsSetValue(cast(u32) id, value)
 func __tlsGetValue(id: u64)->*void          => TlsGetValue(cast(u32) id)
 
 ////////////////////////////////////////////////////////////
-func __assertBox(msg, title: string)
+func __panicBox(msg, title: string)
 {
     result := MessageBoxA(null, @dataof(msg), @dataof(title), MB_ICONERROR | MB_CANCELTRYCONTINUE)
     switch result

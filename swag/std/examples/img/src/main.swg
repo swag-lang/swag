@@ -39,7 +39,7 @@ func display()
 var textureID: GLuint
 func loadImg()
 {
-    data := imagePath("image3.bmp")
+    data := imagePath("image2.bmp")
     bytes := try file.readAllBytes(data)
     var dec: image.bmp.Decoder
     img := try dec.decode(bytes.toSlice())
