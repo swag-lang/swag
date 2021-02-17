@@ -91,3 +91,11 @@ public func print(message: string, params: ...)
         WriteFile(g_stdOutputHandle, @dataof(message), len, null, null)
     }
 }
+
+// Write a line  to the console
+public func println(message: string, params: ...)
+{
+    print(message, params)
+    if @countof(message) && message[@countof(message) - 1] != "\n"'u8
+        print("\n", params)
+}

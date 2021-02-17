@@ -1,4 +1,3 @@
-console.println
 logger les throw pour savoir qui déclenche les erreurs
 
 
