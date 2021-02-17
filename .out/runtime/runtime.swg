@@ -278,8 +278,8 @@ func @panic(message: string, loc: swag.CompilerSourceLocation)
     const title = "Swag Panic !"
     const info =
     @"- Press Cancel to exit
-      - Press Retry to debug the application
-      - Press Continue to ignore the assert
+      - Press Retry to debug
+      - Press Continue to ignore
       "@
 
     @memcpy(&str[len], @dataof(info), @countof(info))
@@ -304,6 +304,6 @@ func __panic(file: const *u8, line: u32, col: u32, message: const *u8)
     loc.lineStart, loc.lineEnd = line
     loc.colStart, loc.colEnd = col
 
-    var msg: string = message ? cast(string) @mkslice(message, @cstrlen(message)) : "assertion failed"
+    var msg: string = message ? cast(string) @mkslice(message, @cstrlen(message)) : "panic"
     @panic(msg, loc)
 }
