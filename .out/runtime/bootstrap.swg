@@ -171,6 +171,7 @@ namespace swag
     }
 
     const MaxLenErrorMsg = 128
+    const MaxTrace = 32
     struct Context
     {
         // Must stay first, in that order, for backend generation
@@ -181,6 +182,8 @@ namespace swag
         tempAllocator:  TempAllocator
         errorMsg:       [MaxLenErrorMsg] u8
         errorMsgLen:    u32
+        traceIndex:     u32
+        trace:          [MaxTrace] CompilerSourceLocation
     }
 
     // #########################################################

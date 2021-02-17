@@ -60,14 +60,16 @@ struct SwagCompilerSourceLocation
 };
 
 static const auto MAX_LEN_ERROR_MSG = 128;
+static const auto MAX_TRACE         = 32;
 typedef struct SwagContext
 {
-    SwagInterface     allocator;
-    uint64_t          flags;
-    SwagTempAllocator tempAllocator;
-    uint8_t           errorMsg[MAX_LEN_ERROR_MSG];
-    uint32_t          errorMsgLen;
-    uint32_t          padding;
+    SwagInterface              allocator;
+    uint64_t                   flags;
+    SwagTempAllocator          tempAllocator;
+    uint8_t                    errorMsg[MAX_LEN_ERROR_MSG];
+    uint32_t                   errorMsgLen;
+    uint32_t                   traceIndex;
+    SwagCompilerSourceLocation trace[MAX_TRACE];
 } SwagContext;
 
 typedef void (*SwagBytecodeRun)(void*, ...);
