@@ -2146,7 +2146,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
             emitCall(pp, "@errormsg");
             break;
-        case ByteCodeOp::IntrinsicAssertMsg:
+        case ByteCodeOp::IntrinsicPanic:
             SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
@@ -2154,7 +2154,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
-            emitCall(pp, "@assertmsg");
+            emitCall(pp, "@panic");
             break;
         case ByteCodeOp::IntrinsicInterfaceOf:
             SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));

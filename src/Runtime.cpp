@@ -193,7 +193,7 @@ namespace Runtime
     }
 
     ////////////////////////////////////////////////////////////
-    void assertMsg(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location)
+    void panic(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location)
     {
         SwagContext* context      = (SwagContext*) tlsGetValue(g_tlsContextId);
         auto         contextFlags = context->flags;

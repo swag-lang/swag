@@ -230,7 +230,7 @@ func __geterr()->string
 }
 
 ////////////////////////////////////////////////////////////
-func @assertmsg(message: string, loc: swag.CompilerSourceLocation)
+func @panic(message: string, loc: swag.CompilerSourceLocation)
 {
     contextFlags := @getcontext().flags
 
@@ -305,5 +305,5 @@ func __assert(file: const *u8, line: u32, col: u32, message: const *u8)
     loc.colStart, loc.colEnd = col
 
     var msg: string = message ? cast(string) @mkslice(message, @cstrlen(message)) : "assertion failed"
-    @assertmsg(msg, loc)
+    @panic(msg, loc)
 }

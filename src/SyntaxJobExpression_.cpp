@@ -941,7 +941,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     {
     case TokenId::IntrinsicPrint:
     case TokenId::IntrinsicAssert:
-    case TokenId::IntrinsicAssertMsg:
+    case TokenId::IntrinsicPanic:
     case TokenId::IntrinsicCompilerError:
     case TokenId::IntrinsicFree:
     case TokenId::IntrinsicMemCpy:

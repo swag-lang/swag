@@ -8,7 +8,7 @@ func assert(expr: bool, message: string = null, loc = #callerlocation)
     {
         if !expr
         {
-            @assertmsg(message, loc)
+            @panic(message, loc)
         }
     }
 }

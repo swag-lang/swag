@@ -1551,12 +1551,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Runtime::error(msg.c_str(), msg.length(), location);
         break;
     }
-    case ByteCodeOp::IntrinsicAssertMsg:
+    case ByteCodeOp::IntrinsicPanic:
     {
         Utf8 msg;
         msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
         auto location = (ConcreteCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
-        Runtime::assertMsg(msg.c_str(), msg.length(), location);
+        Runtime::panic(msg.c_str(), msg.length(), location);
         break;
     }
     case ByteCodeOp::IntrinsicAssert:
@@ -1576,7 +1576,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             loc.fileName.count        = sourceFile->path.length();
             auto msg                  = (const char*) ip->d.pointer;
             auto lenMsg               = msg ? (uint32_t) strlen(msg) : 0;
-            Runtime::assertMsg(msg, lenMsg, &loc);
+            Runtime::panic(msg, lenMsg, &loc);
         }
         break;
     }
