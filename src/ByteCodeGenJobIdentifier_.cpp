@@ -157,6 +157,14 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     auto node = CastAst<AstTryCatch>(context->node, AstNodeKind::Throw);
     auto expr = node->childs.back();
 
+    if (!(node->flags & AST_DONE_CAST1))
+    {
+        SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->flags |= AST_DONE_CAST1;
+    }
+
     if (!(node->doneFlags & AST_DONE_TRY_1))
     {
         emitInstruction(context, ByteCodeOp::IntrinsicSetErr, expr->resultRegisterRC[0], expr->resultRegisterRC[1]);
@@ -207,7 +215,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 
     auto offset = computeSourceLocation(node);
 
-    auto r1 = reserveRegisterRC(context);
+    auto r1                                                                 = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r1)->b.u64 = offset;
     emitInstruction(context, ByteCodeOp::IntrinsicPanic, r0[0], r0[1], r1);
     freeRegisterRC(context, r0);
