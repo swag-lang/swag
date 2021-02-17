@@ -194,6 +194,30 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
+{
+    auto node = CastAst<AstTryCatch>(context->node, AstNodeKind::Assume);
+    node->resultRegisterRC = node->childs.front()->childs.back()->resultRegisterRC;
+
+    if (!(node->doneFlags & AST_DONE_TRY_1))
+    {
+        RegisterList r0;
+        reserveRegisterRC(context, r0, 2);
+        emitInstruction(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
+        node->seekInsideJump = context->bc->numInstructions;
+        emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
+        freeRegisterRC(context, r0);
+        node->doneFlags |= AST_DONE_TRY_1;
+    }
+
+    SWAG_CHECK(emitTryThrowExit(context));
+    if (context->result != ContextResult::Done)
+        return true;
+
+    context->bc->out[node->seekInsideJump].b.s32 = context->bc->numInstructions - node->seekInsideJump - 1;
+    return true;
+}
+
 bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
 {
     if (!context->node->isSameStackFrame(overload))

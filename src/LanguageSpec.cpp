@@ -92,6 +92,7 @@ void LanguageSpec::setup()
     keywords["label"]       = TokenId::KwdLabel;
     keywords["try"]         = TokenId::KwdTry;
     keywords["catch"]       = TokenId::KwdCatch;
+    keywords["assume"]      = TokenId::KwdAssume;
     keywords["throw"]       = TokenId::KwdThrow;
 
     keywords["uint"]     = TokenId::NativeType;

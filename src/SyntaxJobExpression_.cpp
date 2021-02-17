@@ -176,6 +176,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 
     case TokenId::KwdTry:
     case TokenId::KwdCatch:
+    case TokenId::KwdAssume:
         SWAG_CHECK(doTryCatch(parent, result));
         break;
 

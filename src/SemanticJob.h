@@ -258,6 +258,7 @@ struct SemanticJob : public Job
     static bool ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool resolveTry(SemanticContext* context);
+    static bool resolveAssume(SemanticContext* context);
     static bool resolveCatch(SemanticContext* context);
     static bool resolveThrow(SemanticContext* context);
     static bool CheckImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);

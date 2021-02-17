@@ -336,6 +336,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdTry:
     case TokenId::KwdCatch:
+    case TokenId::KwdAssume:
         SWAG_CHECK(doTryCatch(parent, result));
         break;
     case TokenId::KwdThrow:

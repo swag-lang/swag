@@ -170,6 +170,16 @@ bool SyntaxJob::doTryCatch(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(catchNode));
     }
+    else if (token.id == TokenId::KwdAssume)
+    {
+        auto assumeNode = Ast::newNode<AstTryCatch>(this, AstNodeKind::Assume, sourceFile, parent);
+        SWAG_VERIFY(assumeNode->ownerFct, error(assumeNode, "'assume' can only be used inside a function"));
+        assumeNode->semanticFct = SemanticJob::resolveAssume;
+        if (result)
+            *result = assumeNode;
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doIdentifierRef(assumeNode));
+    }
 
     return true;
 }

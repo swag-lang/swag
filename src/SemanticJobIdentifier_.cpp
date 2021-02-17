@@ -2836,6 +2836,22 @@ bool SemanticJob::resolveTry(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveAssume(SemanticContext* context)
+{
+    auto node = CastAst<AstTryCatch>(context->node, AstNodeKind::Try);
+    auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+    auto lastChild = identifierRef->childs.back();
+
+    SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({ node, format("'assume' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind)) }));
+
+    node->byteCodeFct = ByteCodeGenJob::emitAssume;
+    node->typeInfo = lastChild->typeInfo;
+    node->flags = identifierRef->flags;
+    node->inheritComputedValue(identifierRef);
+
+    return true;
+}
+
 bool SemanticJob::resolveCatch(SemanticContext* context)
 {
     auto node          = CastAst<AstTryCatch>(context->node, AstNodeKind::Catch);

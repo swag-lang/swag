@@ -361,7 +361,7 @@ void BackendX64::emitAssert(const BuildParameters& buildParameters, AstNode* nod
     else
         BackendX64Inst::emit_Clear64(pp, RAX);
     BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
-    emitCall(pp, "__assert");
+    emitCall(pp, "__panic");
 }
 
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)

@@ -451,7 +451,7 @@ void BackendLLVM::emitAssert(const BuildParameters& buildParameters, llvm::Alloc
     else
         r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
 
-    localCall(buildParameters, allocR, allocT, "__assert", {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
+    localCall(buildParameters, allocR, allocT, "__panic", {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
 }
 
 void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc, llvm::Function* func)

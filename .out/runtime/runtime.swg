@@ -297,7 +297,7 @@ func __compilerRunError(where: string)
 }
 
 ////////////////////////////////////////////////////////////
-func __assert(file: const *u8, line: u32, col: u32, message: const *u8)
+func __panic(file: const *u8, line: u32, col: u32, message: const *u8)
 {
     var loc: swag.CompilerSourceLocation
     loc.fileName = cast(string) @mkslice(file, @cstrlen(file))
