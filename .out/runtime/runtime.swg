@@ -297,7 +297,7 @@ func __compilerRunError(where: string)
 }
 
 ////////////////////////////////////////////////////////////
-func __initStackTrace(loc: swag.CompilerSourceLocation)
+func __initStackTrace()
 {
     cxt := @getcontext()
     cxt.traceIndex = 0
@@ -306,8 +306,10 @@ func __initStackTrace(loc: swag.CompilerSourceLocation)
 func __stackTrace(loc: swag.CompilerSourceLocation)
 {
     cxt := @getcontext()
+    if cxt.traceIndex >= swag.MaxTrace
+        return
     cxt.trace[cxt.traceIndex] = loc
-    cxt.traceIndex = (cxt.traceIndex + 1) % swag.MaxTrace
+    cxt.traceIndex = cxt.traceIndex + 1
 }
 
 ////////////////////////////////////////////////////////////

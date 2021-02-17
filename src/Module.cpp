@@ -184,7 +184,7 @@ SourceFile* Module::findFile(const Utf8& fileName)
 {
     for (auto p : files)
     {
-        if (p->path == fileName)
+        if (normalizePath(p->path) == normalizePath(fileName.c_str()))
             return p;
     }
 
