@@ -2858,9 +2858,11 @@ bool SemanticJob::resolveAssume(SemanticContext* context)
 
     SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({node, format("'assume' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
 
-    node->byteCodeFct = ByteCodeGenJob::emitAssume;
-    node->typeInfo    = lastChild->typeInfo;
-    node->flags       = identifierRef->flags;
+    node->allocateExtension();
+    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
+    node->byteCodeFct                  = ByteCodeGenJob::emitAssume;
+    node->typeInfo                     = lastChild->typeInfo;
+    node->flags                        = identifierRef->flags;
     node->inheritComputedValue(identifierRef);
 
     return true;
@@ -2874,9 +2876,11 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
 
     SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({node, format("'catch' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
 
-    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
-    node->typeInfo    = lastChild->typeInfo;
-    node->flags       = identifierRef->flags;
+    node->allocateExtension();
+    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
+    node->byteCodeFct                  = ByteCodeGenJob::emitPassThrough;
+    node->typeInfo                     = lastChild->typeInfo;
+    node->flags                        = identifierRef->flags;
     node->inheritComputedValue(identifierRef);
 
     return true;

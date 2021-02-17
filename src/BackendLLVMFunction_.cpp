@@ -2748,6 +2748,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::InternalInitStackTrace:
+        {
+            localCall(buildParameters, allocR, allocT, "__initStackTrace", { ip->a.u32 }, {});
+            break;
+        }
+        case ByteCodeOp::InternalStackTrace:
+        {
+            localCall(buildParameters, allocR, allocT, "__stackTrace", {ip->a.u32}, {});
+            break;
+        }
         case ByteCodeOp::InternalPanic:
         {
             emitInternalPanic(buildParameters, allocR, allocT, ip->node, (const char*) ip->d.pointer);

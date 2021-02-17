@@ -297,6 +297,22 @@ func __compilerRunError(where: string)
 }
 
 ////////////////////////////////////////////////////////////
+func __initStackTrace(loc: swag.CompilerSourceLocation)
+{
+    cxt := @getcontext()
+    cxt.traceIndex = 0
+}
+
+func __stackTrace(loc: swag.CompilerSourceLocation)
+{
+    var ptr: const *swag.CompilerSourceLocation = loc
+    @print(ptr.fileName)
+    @print(":")
+    @print(cast(s64) ptr.lineStart + 1)
+    @print("\n")
+}
+
+////////////////////////////////////////////////////////////
 func __panic(file: const *u8, line: u32, col: u32, message: const *u8)
 {
     var loc: swag.CompilerSourceLocation

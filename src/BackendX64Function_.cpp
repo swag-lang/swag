@@ -2072,6 +2072,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, "free");
             break;
 
+        case ByteCodeOp::InternalInitStackTrace:
+            emitCall(pp, "__initStackTrace");
+            break;
+        case ByteCodeOp::InternalStackTrace:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RSP);
+            emitCall(pp, "__stackTrace");
+            break;
         case ByteCodeOp::InternalPanic:
             emitInternalPanic(buildParameters, ip->node, (const char*) ip->d.pointer);
             break;

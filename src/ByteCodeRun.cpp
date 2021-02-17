@@ -1559,6 +1559,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Runtime::panic(msg.c_str(), msg.length(), location);
         break;
     }
+
+    case ByteCodeOp::InternalInitStackTrace:
+        break;
+    case ByteCodeOp::InternalStackTrace:
+        break;
     case ByteCodeOp::InternalPanic:
     {
         if (context->sourceFile->numTestErrors)
@@ -1580,6 +1585,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         }
         break;
     }
+
     case ByteCodeOp::IntrinsicAlloc:
     {
         registersRC[ip->a.u32].pointer = (uint8_t*) malloc(registersRC[ip->b.u32].u64);

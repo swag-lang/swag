@@ -24,9 +24,23 @@ bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
+{
+    emitInstruction(context, ByteCodeOp::InternalInitStackTrace);
+    return true;
+}
+
 bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstTryCatch>(context->node, AstNodeKind::Try, AstNodeKind::Throw);
+
+    // Trace current call
+    auto r0     = reserveRegisterRC(context);
+    auto offset = computeSourceLocation(node);
+
+    emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u64 = offset;
+    emitInstruction(context, ByteCodeOp::InternalStackTrace, r0);
+    freeRegisterRC(context, r0);
 
     // Leave the current scope
     SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
@@ -73,7 +87,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
                 }
                 else
                 {
-                    auto r0 = reserveRegisterRC(context);
+                    r0 = reserveRegisterRC(context);
                     emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
                     emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r0)->b.u64 = typeArr->sizeOf;
                     freeRegisterRC(context, r0);
@@ -108,7 +122,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
             }
             else
             {
-                auto r0 = reserveRegisterRC(context);
+                r0 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::ClearRA, r0);
                 emitInstruction(context, ByteCodeOp::CopyRCtoRR, r0);
                 freeRegisterRC(context, r0);
@@ -123,7 +137,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
             }
             else
             {
-                auto r0 = reserveRegisterRC(context);
+                r0 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::ClearRA, r0);
                 emitInstruction(context, ByteCodeOp::CopyRCtoRR2, r0, r0);
                 freeRegisterRC(context, r0);
@@ -214,8 +228,8 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
 
     auto offset = computeSourceLocation(node);
+    auto r1     = reserveRegisterRC(context);
 
-    auto r1                                                                 = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r1)->b.u64 = offset;
     emitInstruction(context, ByteCodeOp::IntrinsicPanic, r0[0], r0[1], r1);
     freeRegisterRC(context, r0);
