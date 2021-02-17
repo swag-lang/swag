@@ -232,7 +232,8 @@ func __geterr()->string
 ////////////////////////////////////////////////////////////
 func @panic(message: string, loc: swag.CompilerSourceLocation)
 {
-    contextFlags := @getcontext().flags
+    cxt := @getcontext()
+    contextFlags := cxt.flags
 
     // If we are running bytecode, then just let the runner deal with the assertion,
     // we will have more usefull information
@@ -247,6 +248,18 @@ func @panic(message: string, loc: swag.CompilerSourceLocation)
     {
         @errormsg(message, loc)
         return
+    }
+
+    // Stack trace if available
+    loop cxt.traceIndex
+    {
+        @print("trace: ");
+        @print(cxt.trace[@index].fileName)
+        @print(":");
+        @print(cast(s64) cxt.trace[@index].lineStart + 1);
+        @print(":");
+        @print(cast(s64) cxt.trace[@index].colStart + 1);
+        @print(":\n");
     }
 
     // Build message
@@ -291,12 +304,6 @@ func @panic(message: string, loc: swag.CompilerSourceLocation)
 }
 
 ////////////////////////////////////////////////////////////
-func __compilerRunError(where: string)
-{
-    @print(where)
-}
-
-////////////////////////////////////////////////////////////
 func __initStackTrace()
 {
     cxt := @getcontext()
@@ -310,6 +317,12 @@ func __stackTrace(loc: swag.CompilerSourceLocation)
         return
     cxt.trace[cxt.traceIndex] = loc
     cxt.traceIndex = cxt.traceIndex + 1
+}
+
+////////////////////////////////////////////////////////////
+func __compilerRunError(where: string)
+{
+    @print(where)
 }
 
 ////////////////////////////////////////////////////////////

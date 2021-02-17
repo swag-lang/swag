@@ -38,9 +38,13 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
     auto r0     = reserveRegisterRC(context);
     auto offset = computeSourceLocation(node);
 
-    emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u64 = offset;
-    emitInstruction(context, ByteCodeOp::InternalStackTrace, r0);
-    freeRegisterRC(context, r0);
+    if (!(node->doneFlags & AST_DONE_STACK_TRACE))
+    {
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u64 = offset;
+        emitInstruction(context, ByteCodeOp::InternalStackTrace, r0);
+        freeRegisterRC(context, r0);
+        node->doneFlags |= AST_DONE_STACK_TRACE;
+    }
 
     // Leave the current scope
     SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
