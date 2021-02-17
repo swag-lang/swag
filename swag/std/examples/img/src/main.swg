@@ -39,7 +39,7 @@ func display()
 var textureID: GLuint
 func loadImg()
 {
-    data := imagePath("image2.bmp")
+    data := imagePath("image3.bmp")
     bytes := try file.readAllBytes(data)
     var dec: image.bmp.Decoder
     img := try dec.decode(bytes.toSlice())
@@ -142,7 +142,7 @@ func messageLoop()
     hRC := wglCreateContext(hDC)
     wglMakeCurrent(hDC, hRC)
 
-    catch loadImg()
+    assume loadImg()
     error.fatal()
 
     display()

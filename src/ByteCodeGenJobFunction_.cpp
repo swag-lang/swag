@@ -844,15 +844,21 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         if ((funcNode->numTry || funcNode->numThrow) &&
             node->parent->parent->kind != AstNodeKind::Try &&
             node->parent->parent->kind != AstNodeKind::Catch &&
+            node->parent->parent->kind != AstNodeKind::Assume &&
             node->parent->parent->kind != AstNodeKind::Alias)
         {
             return context->report({node, node->token, format("uncatched error when calling function '%s'", node->token.text.c_str())});
         }
 
-        if ((!funcNode->numTry && !funcNode->numThrow) && node->parent->parent->kind == AstNodeKind::Try)
-            return context->report({node->parent->parent, format("'try' can only be used before a function call that can raise errors, and '%s' does not", funcNode->token.text.c_str())});
-        if ((!funcNode->numTry && !funcNode->numThrow) && node->parent->parent->kind == AstNodeKind::Catch)
-            return context->report({node->parent->parent, format("'catch' can only be used before a function call that can raise errors, and '%s' does not", funcNode->token.text.c_str())});
+        if (!funcNode->numTry && !funcNode->numThrow)
+        {
+            if (node->parent->parent->kind == AstNodeKind::Try ||
+                node->parent->parent->kind == AstNodeKind::Catch ||
+                node->parent->parent->kind == AstNodeKind::Assume)
+            {
+                return context->report({node->parent->parent, format("'%s' can only be used before a function call that can raise errors, and '%s' does not", node->parent->parent->token.text.c_str(), funcNode->token.text.c_str())});
+            }
+        }
     }
 
     int precallStack  = 0;

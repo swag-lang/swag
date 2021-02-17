@@ -275,7 +275,7 @@ func @panic(message: string, loc: swag.CompilerSourceLocation)
     len += 2
 
     // Message to the user
-    const title = "Swag Assertion Failed !"
+    const title = "Swag Panic !"
     const info =
     @"- Press Cancel to exit
       - Press Retry to debug the application
