@@ -5,7 +5,7 @@ struct JobContext;
 struct AstNode;
 struct ConcreteTypeInfo;
 struct SymbolAttributes;
-struct ConcreteSlice;
+struct SwagSlice;
 struct ConcreteTypeInfoParam;
 struct TypeInfoParam;
 struct ComputedValue;
@@ -27,7 +27,7 @@ struct TypeTable
     void* makeConcreteSlice(JobContext* context, uint32_t sizeOf, uint32_t offset, int64_t* result, uint32_t cflags, uint32_t& storageArray);
     bool  makeConcreteAny(JobContext* context, struct ConcreteAny* ptrAny, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags);
     bool  makeConcreteAttributes(JobContext* context, SymbolAttributes& attributes, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteRelativeSlice* result, uint32_t cflags);
-    bool  makeConcreteString(JobContext* context, ConcreteSlice* result, const Utf8& str, uint32_t offsetInBuffer, uint32_t cflags);
+    bool  makeConcreteString(JobContext* context, SwagSlice* result, const Utf8& str, uint32_t offsetInBuffer, uint32_t cflags);
     bool  makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, uint32_t cflags);
 
     bool makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storagetrue, uint32_t cflags);

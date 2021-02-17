@@ -52,7 +52,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
     errorMsg.clear();
 }
 
-void ByteCodeRunContext::error(const Utf8& msg, ConcreteCompilerSourceLocation* loc)
+void ByteCodeRunContext::error(const Utf8& msg, SwagCompilerSourceLocation* loc)
 {
     hasError = true;
     errorLoc = loc;

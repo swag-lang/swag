@@ -46,6 +46,19 @@ typedef struct SwagTempAllocator
     uint64_t maxUsed  = 0;
 } SwagTempAllocator;
 
+typedef struct SwagSlice
+{
+    void*    buffer = nullptr;
+    uint64_t count  = 0;
+} SwagSlice;
+
+struct SwagCompilerSourceLocation
+{
+    SwagSlice fileName;
+    uint32_t  lineStart, colStart;
+    uint32_t  lineEnd, colEnd;
+};
+
 static const auto MAX_LEN_ERROR_MSG = 128;
 typedef struct SwagContext
 {
@@ -56,12 +69,6 @@ typedef struct SwagContext
     uint32_t          errorMsgLen;
     uint32_t          padding;
 } SwagContext;
-
-typedef struct SwagSlice
-{
-    void*    addr  = nullptr;
-    uint64_t count = 0;
-} SwagSlice;
 
 typedef void (*SwagBytecodeRun)(void*, ...);
 typedef void (*SwagThreadRun)(void*);
@@ -193,12 +200,6 @@ enum class TypeInfoFlags : uint16_t
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-struct ConcreteSlice
-{
-    void*    buffer;
-    uint64_t count;
-};
-
 struct ConcreteRelativeSlice
 {
     int64_t  buffer;
@@ -207,11 +208,11 @@ struct ConcreteRelativeSlice
 
 struct ConcreteTypeInfo
 {
-    ConcreteSlice name;
-    ConcreteSlice flatName;
-    uint64_t      sizeOf;
-    TypeInfoKind  kind;
-    uint16_t      flags;
+    SwagSlice    name;
+    SwagSlice    flatName;
+    uint64_t     sizeOf;
+    TypeInfoKind kind;
+    uint16_t     flags;
 };
 
 struct ConcreteAny
@@ -228,13 +229,13 @@ struct ConcreteTypeInfoNative
 
 struct ConcreteAttributeParameter
 {
-    ConcreteSlice name;
-    ConcreteAny   value;
+    SwagSlice   name;
+    ConcreteAny value;
 };
 
 struct ConcreteAttribute
 {
-    ConcreteSlice         name;
+    SwagSlice             name;
     ConcreteRelativeSlice params;
 };
 
@@ -258,7 +259,7 @@ struct ConcreteTypeInfoAlias
 
 struct ConcreteTypeInfoParam
 {
-    ConcreteSlice         name;
+    SwagSlice             name;
     int64_t               pointedType;
     void*                 value;
     ConcreteRelativeSlice attributes;
@@ -349,17 +350,10 @@ enum class CompilerMsgKindMask : uint64_t
 
 struct ConcreteCompilerMessage
 {
-    ConcreteSlice     moduleName;
+    SwagSlice         moduleName;
     CompilerMsgKind   kind;
-    ConcreteSlice     name;
+    SwagSlice         name;
     ConcreteTypeInfo* type;
-};
-
-struct ConcreteCompilerSourceLocation
-{
-    ConcreteSlice fileName;
-    uint32_t      lineStart, colStart;
-    uint32_t      lineEnd, colEnd;
 };
 
 static const uint64_t SWAG_LAMBDA_BC_MARKER      = 0x8000000000000000;
@@ -375,8 +369,8 @@ namespace Runtime
     void     print(const void* message, uint32_t len);
     void     print(int64_t value);
     void     print(double value);
-    void     panic(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location);
-    void     error(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location);
+    void     panic(const void* message, uint32_t size, SwagCompilerSourceLocation* location);
+    void     error(const void* message, uint32_t size, SwagCompilerSourceLocation* location);
     uint64_t tlsAlloc();
     void     tlsSetValue(uint64_t id, void* value);
     void*    tlsGetValue(uint64_t id);

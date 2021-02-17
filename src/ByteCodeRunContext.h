@@ -10,7 +10,7 @@ struct ByteCodeRunContext;
 struct ConcatBucket;
 struct ByteCode;
 struct ByteCodeInstruction;
-struct ConcreteCompilerSourceLocation;
+struct SwagCompilerSourceLocation;
 struct JobContext;
 struct ConcreteCompilerMessage;
 
@@ -24,7 +24,7 @@ struct ByteCodeRunContext : public JobContext
 {
     ~ByteCodeRunContext();
     void setup(SourceFile* sf, AstNode* node);
-    void error(const Utf8& msg, ConcreteCompilerSourceLocation* loc = nullptr);
+    void error(const Utf8& msg, SwagCompilerSourceLocation* loc = nullptr);
     void addCallStack();
 
     template<typename T>
@@ -71,7 +71,7 @@ struct ByteCodeRunContext : public JobContext
     Utf8                            errorMsg;
     vector<VectorNative<Register>*> registersRC;
 
-    ConcreteCompilerSourceLocation* errorLoc      = nullptr;
+    SwagCompilerSourceLocation* errorLoc      = nullptr;
     JobContext*                     callerContext = nullptr;
 
     AstNode*             node         = nullptr;

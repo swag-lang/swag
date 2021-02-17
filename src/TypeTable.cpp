@@ -163,10 +163,10 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
     for (auto& one : attributes.attributes)
     {
         // Name of the attribute
-        auto ptrString = (ConcreteSlice*) ptrStorageAttributes;
+        auto ptrString = (SwagSlice*) ptrStorageAttributes;
         SWAG_CHECK(makeConcreteString(context, ptrString, one.name, curOffsetAttributes, cflags));
-        curOffsetAttributes += sizeof(ConcreteSlice);
-        ptrStorageAttributes += sizeof(ConcreteSlice);
+        curOffsetAttributes += sizeof(SwagSlice);
+        ptrStorageAttributes += sizeof(SwagSlice);
 
         // Slice to all parameters
         auto ptrParamsAttribute    = (ConcreteRelativeSlice*) ptrStorageAttributes;
@@ -184,10 +184,10 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
             for (auto& oneParam : one.parameters)
             {
                 // Name of the parameter
-                ptrString = (ConcreteSlice*) ptrStorageAllParams;
+                ptrString = (SwagSlice*) ptrStorageAllParams;
                 SWAG_CHECK(makeConcreteString(context, ptrString, oneParam.name, curOffsetParams, cflags));
-                curOffsetParams += sizeof(ConcreteSlice);
-                ptrStorageAllParams += sizeof(ConcreteSlice);
+                curOffsetParams += sizeof(SwagSlice);
+                ptrStorageAllParams += sizeof(SwagSlice);
 
                 // Value of the parameter
                 makeConcreteAny(context, (ConcreteAny*) ptrStorageAllParams, curOffsetParams, oneParam.value, oneParam.typeInfo, cflags);
@@ -198,14 +198,14 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, SymbolAttributes& at
         }
 
         // Next attribute (zap slice of all parameters)
-        curOffsetAttributes += sizeof(ConcreteSlice);
-        ptrStorageAttributes += sizeof(ConcreteSlice);
+        curOffsetAttributes += sizeof(SwagSlice);
+        ptrStorageAttributes += sizeof(SwagSlice);
     }
 
     return true;
 }
 
-bool TypeTable::makeConcreteString(JobContext* context, ConcreteSlice* result, const Utf8& str, uint32_t offsetInBuffer, uint32_t cflags)
+bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const Utf8& str, uint32_t offsetInBuffer, uint32_t cflags)
 {
     if (str.empty())
     {

@@ -166,7 +166,7 @@ namespace Runtime
     }
 
     ////////////////////////////////////////////////////////////
-    void error(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location)
+    void error(const void* message, uint32_t size, SwagCompilerSourceLocation* location)
     {
         SwagContext* context = (SwagContext*) tlsGetValue(g_tlsContextId);
         if (context->flags & (uint64_t) ContextFlags::ByteCode)
@@ -193,7 +193,7 @@ namespace Runtime
     }
 
     ////////////////////////////////////////////////////////////
-    void panic(const void* message, uint32_t size, ConcreteCompilerSourceLocation* location)
+    void panic(const void* message, uint32_t size, SwagCompilerSourceLocation* location)
     {
         SwagContext* context      = (SwagContext*) tlsGetValue(g_tlsContextId);
         auto         contextFlags = context->flags;

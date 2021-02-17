@@ -1547,7 +1547,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         Utf8 msg;
         msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
-        auto location = (ConcreteCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
+        auto location = (SwagCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
         Runtime::error(msg.c_str(), msg.length(), location);
         break;
     }
@@ -1555,7 +1555,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         Utf8 msg;
         msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
-        auto location = (ConcreteCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
+        auto location = (SwagCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
         Runtime::panic(msg.c_str(), msg.length(), location);
         break;
     }
@@ -1569,7 +1569,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             SourceLocation* location;
             ByteCode::getLocation(context->bc, ip, &sourceFile, &location, true);
 
-            ConcreteCompilerSourceLocation loc;
+            SwagCompilerSourceLocation loc;
             loc.lineStart = loc.lineEnd = location->line;
             loc.colStart = loc.colEnd = location->column;
             loc.fileName.buffer       = (void*) sourceFile->path.c_str();
@@ -2786,7 +2786,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     // This is called by assertion too, in certain conditions (if we do not want dialog boxes, when running tests for example)
     if (args->ExceptionRecord->ExceptionCode == 666)
     {
-        auto location = (ConcreteCompilerSourceLocation*) args->ExceptionRecord->ExceptionInformation[0];
+        auto location = (SwagCompilerSourceLocation*) args->ExceptionRecord->ExceptionInformation[0];
 
         Utf8 fileName;
         fileName.append((const char*) location->fileName.buffer, (uint32_t) location->fileName.count);

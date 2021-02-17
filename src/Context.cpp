@@ -223,12 +223,12 @@ void initDefaultContext()
     g_tlsContextId = OS::tlsAlloc();
     OS::tlsSetValue(g_tlsContextId, &g_defaultContext);
 
-    g_processInfos.arguments.addr  = g_CommandLine.userArgumentsSlice.first;
-    g_processInfos.arguments.count = (uint64_t) g_CommandLine.userArgumentsSlice.second;
-    g_processInfos.contextTlsId    = g_tlsContextId;
-    g_processInfos.defaultContext  = &g_defaultContext;
-    g_processInfos.byteCodeRun     = byteCodeRun;
-    g_processInfos.makeCallback    = makeCallback;
+    g_processInfos.arguments.buffer = g_CommandLine.userArgumentsSlice.first;
+    g_processInfos.arguments.count  = (uint64_t) g_CommandLine.userArgumentsSlice.second;
+    g_processInfos.contextTlsId     = g_tlsContextId;
+    g_processInfos.defaultContext   = &g_defaultContext;
+    g_processInfos.byteCodeRun      = byteCodeRun;
+    g_processInfos.makeCallback     = makeCallback;
 }
 
 uint64_t getDefaultContextFlags(Module* module)
