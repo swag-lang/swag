@@ -1,5 +1,3 @@
-assume keyword (panic if error)
-pas de try/throw dans #run, #test, #main, #ast etc (faut un assume ou un catch)
 console.println
 throw format.toString fait quoi ?
 error.format pour faire un @seterr avec params ?
