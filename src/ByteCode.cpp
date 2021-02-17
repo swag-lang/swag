@@ -191,7 +191,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
 
     switch (ip->op)
     {
-    case ByteCodeOp::IntrinsicAssert:
+    case ByteCodeOp::InternalPanic:
         if (ip->d.pointer)
             g_Log.print((const char*) ip->d.pointer);
         break;

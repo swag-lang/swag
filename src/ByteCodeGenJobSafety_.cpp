@@ -9,7 +9,7 @@
 void ByteCodeGenJob::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg)
 {
     emitInstruction(context, ByteCodeOp::JumpIfNotZero8, reg)->b.s32 = 1;
-    emitInstruction(context, ByteCodeOp::IntrinsicAssert)->d.pointer = (uint8_t*) msg;
+    emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) msg;
 }
 
 bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context, uint64_t whatOn, uint64_t whatOff)
@@ -34,7 +34,7 @@ void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, 
         emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r)->b.s32 = 1;
     else
         SWAG_ASSERT(false);
-    emitInstruction(context, ByteCodeOp::IntrinsicAssert)->d.pointer = (uint8_t*) message;
+    emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) message;
 }
 
 void ByteCodeGenJob::emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message, int sizeInBits)

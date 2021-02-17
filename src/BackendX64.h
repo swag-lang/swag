@@ -292,7 +292,7 @@ struct BackendX64 : public Backend
     bool     emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc);
     void     emitOverflowSigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node);
     void     emitOverflowUnsigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node);
-    void     emitAssert(const BuildParameters& buildParameters, AstNode* node, const char* msg);
+    void     emitInternalPanic(const BuildParameters& buildParameters, AstNode* node, const char* msg);
     bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
     CoffSymbol* getSymbol(X64PerThread& pp, const Utf8& name);

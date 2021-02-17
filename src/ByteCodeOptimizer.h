@@ -39,21 +39,21 @@ struct ByteCodeOptimizer
     {
         if (!isJump(inst))
             return false;
-        if (inst->op == ByteCodeOp::JumpIfNotZero8 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+        if (inst->op == ByteCodeOp::JumpIfNotZero8 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
             return false;
-        if (inst->op == ByteCodeOp::JumpIfNotZero16 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+        if (inst->op == ByteCodeOp::JumpIfNotZero16 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
             return false;
-        if (inst->op == ByteCodeOp::JumpIfNotZero32 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+        if (inst->op == ByteCodeOp::JumpIfNotZero32 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
             return false;
-        if (inst->op == ByteCodeOp::JumpIfNotZero64 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+        if (inst->op == ByteCodeOp::JumpIfNotZero64 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
             return false;
-        if (inst->op == ByteCodeOp::JumpIfZero8 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+        if (inst->op == ByteCodeOp::JumpIfZero8 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
             return false;
-        if (inst->op == ByteCodeOp::JumpIfZero16 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+        if (inst->op == ByteCodeOp::JumpIfZero16 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
             return false;
-        if (inst->op == ByteCodeOp::JumpIfZero32 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+        if (inst->op == ByteCodeOp::JumpIfZero32 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
             return false;
-        if (inst->op == ByteCodeOp::JumpIfZero64 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::IntrinsicAssert)
+        if (inst->op == ByteCodeOp::JumpIfZero64 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
             return false;
         return true;
     }

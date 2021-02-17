@@ -1559,7 +1559,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Runtime::panic(msg.c_str(), msg.length(), location);
         break;
     }
-    case ByteCodeOp::IntrinsicAssert:
+    case ByteCodeOp::InternalPanic:
     {
         if (context->sourceFile->numTestErrors)
             context->error(ip->d.pointer ? (const char*) ip->d.pointer : "assertion failed");

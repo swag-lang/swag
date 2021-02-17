@@ -22,7 +22,7 @@
         auto v2 = builder.CreateIsNull(v1);                                                                                         \
         builder.CreateCondBr(v2, blockOk, blockErr);                                                                                \
         builder.SetInsertPoint(blockErr);                                                                                           \
-        emitAssert(buildParameters, allocR, allocT, ip->node, "[safety] integer overflow");                                         \
+        emitInternalPanic(buildParameters, allocR, allocT, ip->node, "[safety] integer overflow");                                  \
         builder.CreateBr(blockOk);                                                                                                  \
         builder.SetInsertPoint(blockOk);                                                                                            \
         builder.CreateStore(v0, r1);                                                                                                \
@@ -46,7 +46,7 @@
         auto v2 = builder.CreateIsNull(v1);                                                                     \
         builder.CreateCondBr(v2, blockOk, blockErr);                                                            \
         builder.SetInsertPoint(blockErr);                                                                       \
-        emitAssert(buildParameters, allocR, allocT, ip->node, "[safety] integer overflow");                     \
+        emitInternalPanic(buildParameters, allocR, allocT, ip->node, "[safety] integer overflow");              \
         builder.CreateBr(blockOk);                                                                              \
         builder.SetInsertPoint(blockOk);                                                                        \
         builder.CreateStore(v0, __cast(r0));                                                                    \
@@ -425,7 +425,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     return true;
 }
 
-void BackendLLVM::emitAssert(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, AstNode* node, const char* message)
+void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, AstNode* node, const char* message)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -2749,9 +2749,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::IntrinsicAssert:
+        case ByteCodeOp::InternalPanic:
         {
-            emitAssert(buildParameters, allocR, allocT, ip->node, (const char*) ip->d.pointer);
+            emitInternalPanic(buildParameters, allocR, allocT, ip->node, (const char*) ip->d.pointer);
             break;
         }
 

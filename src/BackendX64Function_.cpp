@@ -328,7 +328,7 @@ void BackendX64::emitOverflowSigned(const BuildParameters& buildParameters, Conc
     concat.addU32(0);
     auto addr      = (uint32_t*) concat.getSeekPtr() - 1;
     auto prevCount = concat.totalCount();
-    emitAssert(buildParameters, node, "[safety] integer overflow");
+    emitInternalPanic(buildParameters, node, "[safety] integer overflow");
     *addr = concat.totalCount() - prevCount;
 }
 
@@ -340,11 +340,11 @@ void BackendX64::emitOverflowUnsigned(const BuildParameters& buildParameters, Co
     concat.addU32(0);
     auto addr      = (uint32_t*) concat.getSeekPtr() - 1;
     auto prevCount = concat.totalCount();
-    emitAssert(buildParameters, node, "[safety] integer overflow");
+    emitInternalPanic(buildParameters, node, "[safety] integer overflow");
     *addr = concat.totalCount() - prevCount;
 }
 
-void BackendX64::emitAssert(const BuildParameters& buildParameters, AstNode* node, const char* msg)
+void BackendX64::emitInternalPanic(const BuildParameters& buildParameters, AstNode* node, const char* msg)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -2072,8 +2072,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, "free");
             break;
 
-        case ByteCodeOp::IntrinsicAssert:
-            emitAssert(buildParameters, ip->node, (const char*) ip->d.pointer);
+        case ByteCodeOp::InternalPanic:
+            emitInternalPanic(buildParameters, ip->node, (const char*) ip->d.pointer);
             break;
 
         case ByteCodeOp::IntrinsicGetContext:
