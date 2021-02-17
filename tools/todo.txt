@@ -2,7 +2,6 @@ console.println
 throw format.toString fait quoi ?
 error.format pour faire un @seterr avec params ?
 logger les throw pour savoir qui déclenche les erreurs
-error en native, le code source est plus affiché ?
 
 
 ****************************************
