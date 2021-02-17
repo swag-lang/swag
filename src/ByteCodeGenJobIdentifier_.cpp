@@ -26,6 +26,7 @@ bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
 {
+    PushICFlags ic(context, BCI_TRYCATCH);
     emitInstruction(context, ByteCodeOp::InternalInitStackTrace);
     return true;
 }
@@ -172,6 +173,8 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
 {
+    PushICFlags ic(context, BCI_TRYCATCH);
+
     auto node = CastAst<AstTryCatch>(context->node, AstNodeKind::Throw);
     auto expr = node->childs.back();
 
@@ -198,6 +201,8 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 {
+    PushICFlags ic(context, BCI_TRYCATCH);
+
     auto node              = CastAst<AstTryCatch>(context->node, AstNodeKind::Try);
     node->resultRegisterRC = node->childs.front()->childs.back()->resultRegisterRC;
 
@@ -222,6 +227,8 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 {
+    PushICFlags ic(context, BCI_TRYCATCH);
+
     auto node              = CastAst<AstTryCatch>(context->node, AstNodeKind::Assume);
     node->resultRegisterRC = node->childs.front()->childs.back()->resultRegisterRC;
 

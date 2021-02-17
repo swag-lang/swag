@@ -127,6 +127,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     // Instruction
     if (ip->flags & BCI_SAFETY)
         g_Log.setColor(LogColor::DarkGreen);
+    else if (ip->flags & BCI_TRYCATCH)
+        g_Log.setColor(LogColor::DarkRed);
     else
         g_Log.setColor(LogColor::White);
     int len = (int) strlen(g_ByteCodeOpNames[(int) ip->op]);

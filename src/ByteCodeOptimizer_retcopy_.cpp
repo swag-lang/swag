@@ -142,6 +142,8 @@ void ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
                 ip++;
             if (ip->op == ByteCodeOp::PopRR)
                 ip++;
+            while (ip->flags & BCI_TRYCATCH)
+                ip++;
 
             // This will copy the result in the real variable
             if (ip->op == ByteCodeOp::MakeStackPointer && isMemCpy(ip + 1) && ip[1].b.u32 == ipOrg->a.u32)
@@ -173,6 +175,8 @@ void ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
             while (ip->op != ByteCodeOp::End && ip->node->ownerInline != ipOrg->node->ownerInline)
                 ip++;
             if (ip->op == ByteCodeOp::PopRR)
+                ip++;
+            while (ip->flags & BCI_TRYCATCH)
                 ip++;
 
             // This will copy the result in the real variable
@@ -210,6 +214,8 @@ void ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
             if (ip->op == ByteCodeOp::IncSPPostCall)
                 ip++;
             if (ip->op == ByteCodeOp::PopRR)
+                ip++;
+            while (ip->flags & BCI_TRYCATCH)
                 ip++;
 
             // This will copy the result in the real variable
