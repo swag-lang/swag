@@ -183,7 +183,7 @@ namespace swag
         errorMsg:       [MaxLenErrorMsg] u8
         errorMsgLen:    u32
         traceIndex:     u32
-        trace:          [MaxTrace] CompilerSourceLocation
+        trace:          [MaxTrace] const *CompilerSourceLocation
     }
 
     // #########################################################

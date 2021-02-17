@@ -305,11 +305,9 @@ func __initStackTrace(loc: swag.CompilerSourceLocation)
 
 func __stackTrace(loc: swag.CompilerSourceLocation)
 {
-    var ptr: const *swag.CompilerSourceLocation = loc
-    @print(ptr.fileName)
-    @print(":")
-    @print(cast(s64) ptr.lineStart + 1)
-    @print("\n")
+    cxt := @getcontext()
+    cxt.trace[cxt.traceIndex] = loc
+    cxt.traceIndex = (cxt.traceIndex + 1) % swag.MaxTrace
 }
 
 ////////////////////////////////////////////////////////////

@@ -37,10 +37,10 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_LEN_ERROR_MSG),
             llvm::Type::getInt32Ty(context),
             llvm::Type::getInt32Ty(context), // traceIndex
-            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_TRACE * sizeof(SwagCompilerSourceLocation)),
+            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_TRACE * sizeof(void*)),
         };
 
-        static_assert(sizeof(SwagContext) == 16 + 8 + (8 * 5) + MAX_LEN_ERROR_MSG + 4 + 4 + (MAX_TRACE * sizeof(SwagCompilerSourceLocation)));
+        static_assert(sizeof(SwagContext) == 16 + 8 + (8 * 5) + MAX_LEN_ERROR_MSG + 4 + 4 + (MAX_TRACE * sizeof(void*)));
         pp.contextTy = llvm::StructType::create(context, members, "swag_context_t");
         SWAG_ASSERT(pp.contextTy->isSized());
     }
