@@ -70,7 +70,6 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String
 }
 
 // Read a file, and store the result in an array of bytes
-#[swag.printbc]
 func readAllBytes(fullname: string)->Array'u8
 {
     var result: retval

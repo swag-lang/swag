@@ -30,15 +30,16 @@ static const uint32_t BCC_FLAG_NOSAFETY   = 0x00000002;
 
 struct ByteCodeGenContext : public JobContext
 {
+    VectorNative<AstNode*>        stackForceNode;
+    VectorNative<SourceLocation*> stackForceLocation;
     ByteCode*                     bc;
     ByteCodeGenJob*               job;
-    SourceLocation*               forceLocation = nullptr;
-    VectorNative<SourceLocation*> stackForceLocation;
-    AstNode*                      forceNode = nullptr;
-    VectorNative<AstNode*>        stackForceNode;
-    bool                          noLocation        = false;
-    uint32_t                      contextFlags      = 0;
-    uint16_t                      instructionsFlags = false;
+    SourceLocation*               forceLocation      = nullptr;
+    AstNode*                      forceNode          = nullptr;
+    bool                          noLocation         = false;
+    uint32_t                      contextFlags       = 0;
+    uint16_t                      instructionsFlags  = 0;
+    uint16_t                      instructionsFlags1 = 0;
 
     void setNoLocation()
     {

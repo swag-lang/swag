@@ -252,7 +252,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.b.u64                = r1;
     ins.c.u64                = r2;
     ins.d.u64                = r3;
-    ins.flags                = context->instructionsFlags;
+    ins.flags                = context->instructionsFlags | context->instructionsFlags1;
     ins.node                 = context->forceNode ? context->forceNode : node;
 
     if (context->noLocation)
