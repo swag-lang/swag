@@ -67,4 +67,9 @@ namespace OS
     extern int16_t atomicCmpXchg(int16_t* addr, int16_t compareTo, int16_t replaceWith);
     extern int32_t atomicCmpXchg(int32_t* addr, int32_t compareTo, int32_t replaceWith);
     extern int64_t atomicCmpXchg(int64_t* addr, int64_t compareTo, int64_t replaceWith);
+
+    uint64_t tlsAlloc();
+    void     tlsSetValue(uint64_t id, void* value);
+    void*    tlsGetValue(uint64_t id);
+
 } // namespace OS

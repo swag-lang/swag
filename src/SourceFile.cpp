@@ -329,7 +329,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     }
 
     // Callstack
-    SwagContext* context = (SwagContext*) Runtime::tlsGetValue(g_tlsContextId);
+    SwagContext* context = (SwagContext*) OS::tlsGetValue(g_tlsContextId);
     if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
         g_byteCodeStack.log();
 

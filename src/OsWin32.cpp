@@ -402,21 +402,6 @@ namespace OS
         return message;
     }
 
-    uint64_t tlsAlloc()
-    {
-        return TlsAlloc();
-    }
-
-    void tlsSetValue(uint64_t id, void* value)
-    {
-        TlsSetValue((uint32_t) id, value);
-    }
-
-    void* tlsGetValue(uint64_t id)
-    {
-        return TlsGetValue((uint32_t) id);
-    }
-
     void* loadLibrary(const char* name)
     {
         return (void*) LoadLibraryA(name);
@@ -583,6 +568,21 @@ namespace OS
     {
         DWORD threadId = ::GetThreadId(static_cast<HANDLE>(thread->native_handle()));
         setThreadName(threadId, threadName);
+    }
+
+    uint64_t tlsAlloc()
+    {
+        return TlsAlloc();
+    }
+
+    void tlsSetValue(uint64_t id, void* value)
+    {
+        TlsSetValue((uint32_t) id, value);
+    }
+
+    void* tlsGetValue(uint64_t id)
+    {
+        return TlsGetValue((uint32_t) id);
     }
 
     void errorBox(const char* title, const char* expr)

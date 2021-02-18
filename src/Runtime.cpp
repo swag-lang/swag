@@ -57,28 +57,4 @@ namespace Runtime
         return strcmp(ctype1->name.buffer, (uint32_t) ctype1->name.count, ctype2->name.buffer, (uint32_t) ctype2->name.count);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    uint64_t tlsAlloc()
-    {
-#ifdef _WIN32
-        return TlsAlloc();
-#endif
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    void tlsSetValue(uint64_t id, void* value)
-    {
-#ifdef _WIN32
-        TlsSetValue((uint32_t) id, value);
-#endif
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    void* tlsGetValue(uint64_t id)
-    {
-#ifdef _WIN32
-        return TlsGetValue((uint32_t) id);
-#endif
-    }
-
 } // namespace Runtime
