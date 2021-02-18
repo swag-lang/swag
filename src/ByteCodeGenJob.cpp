@@ -735,7 +735,7 @@ JobResult ByteCodeGenJob::execute()
     {
         unique_lock lk(sourceFile->module->mutexFile);
         SWAG_ASSERT(context.bc->typeInfoFunc);
-        sourceFile->module->mapRuntimeFcts[context.bc->callName()] = context.bc->typeInfoFunc;
+        sourceFile->module->mapRuntimeFcts[context.bc->callName()] = context.bc;
     }
 
     return JobResult::ReleaseJob;

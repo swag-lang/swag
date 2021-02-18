@@ -892,7 +892,17 @@ void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result
 
 TypeInfoFuncAttr* Module::getRuntimeTypeFct(const char* fctName)
 {
-    auto it = mapRuntimeFcts.find(fctName);
+    unique_lock lk(mutexFile);
+    auto        it = mapRuntimeFcts.find(fctName);
     SWAG_ASSERT(it != mapRuntimeFcts.end());
+    return it->second->typeInfoFunc;
+}
+
+ByteCode* Module::tryGetRuntimeFct(const char* fctName)
+{
+    unique_lock lk(mutexFile);
+    auto        it = mapRuntimeFcts.find(fctName);
+    if (it == mapRuntimeFcts.end())
+        return nullptr;
     return it->second;
 }

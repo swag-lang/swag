@@ -1,6 +1,3 @@
-logger les throw pour savoir qui déclenche les erreurs
-
-
 ****************************************
 LANGUAGE
 ****************************************
@@ -16,6 +13,8 @@ ca serait cool que les methods, en reflections, aient une value qui peut être ca
 ****************************************
 TODO
 ****************************************
+-------------------------------------
+try/catch & lambdas
 -------------------------------------
 char => rune ?
 -------------------------------------

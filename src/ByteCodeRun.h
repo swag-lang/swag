@@ -7,6 +7,7 @@ struct TypeInfo;
 struct AstFuncDecl;
 struct TypeInfoFuncAttr;
 struct JobContext;
+struct ByteCode;
 union Register;
 
 struct ByteCodeRun
@@ -25,5 +26,6 @@ struct ByteCodeRun
     bool executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     void executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeInstruction* ip);
 
+    void        localCall(ByteCodeRunContext* context, ByteCode* bc);
     static bool executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc);
 };

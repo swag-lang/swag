@@ -70,6 +70,8 @@ typedef struct SwagContext
     uint32_t                    errorMsgLen;
     uint32_t                    traceIndex;
     SwagCompilerSourceLocation* trace[MAX_TRACE];
+    SwagCompilerSourceLocation  exceptionLoc;
+    void*                       exceptionParams[3];
 } SwagContext;
 
 typedef void (*SwagBytecodeRun)(void*, ...);

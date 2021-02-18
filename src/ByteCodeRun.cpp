@@ -50,6 +50,21 @@
 #define IMMD_U32(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u32 : registersRC[ip->d.u32].u32)
 #define IMMD_U64(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u64 : registersRC[ip->d.u32].u64)
 
+void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc)
+{
+    context->bc->addCallStack(context);
+    context->push(context->bp);
+    context->push(context->bc);
+    context->push(context->ip);
+    context->bc = bc;
+    SWAG_ASSERT(context->bc);
+    SWAG_ASSERT(context->bc->out);
+    context->ip = context->bc->out;
+    SWAG_ASSERT(context->ip);
+    context->bp = context->sp;
+    context->bc->enterByteCode(context);
+}
+
 bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc)
 {
     switch (ip->op)
@@ -614,17 +629,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::LocalCall:
     {
-        context->bc->addCallStack(context);
-        context->push(context->bp);
-        context->push(context->bc);
-        context->push(context->ip);
-        context->bc = (ByteCode*) ip->a.pointer;
-        SWAG_ASSERT(context->bc);
-        SWAG_ASSERT(context->bc->out);
-        context->ip = context->bc->out;
-        SWAG_ASSERT(context->ip);
-        context->bp = context->sp;
-        context->bc->enterByteCode(context);
+        localCall(context, (ByteCode*) ip->a.pointer);
         break;
     }
 
@@ -1543,39 +1548,26 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].b = true;
         break;
     }
+
     case ByteCodeOp::IntrinsicErrorMsg:
     {
-        Utf8 msg;
-        msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
-        auto location = (SwagCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
-        Runtime::error(msg.c_str(), msg.length(), location);
+        auto bc = g_Workspace.runtimeModule->tryGetRuntimeFct("@errormsg");
+        if (bc)
+        {
+            context->push(registersRC[ip->c.u32].u64);
+            context->push(registersRC[ip->b.u32].u64);
+            context->push(registersRC[ip->a.u32].u64);
+            localCall(context, bc);
+        }
+        else
+        {
+            Utf8 msg;
+            msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
+            auto location = (SwagCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
+            Runtime::error(msg.c_str(), msg.length(), location);
+        }
         break;
     }
-    case ByteCodeOp::IntrinsicPanic:
-    {
-        Utf8 msg;
-        msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
-        auto location = (SwagCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
-        Runtime::panic(msg.c_str(), msg.length(), location);
-        break;
-    }
-
-    case ByteCodeOp::InternalInitStackTrace:
-    {
-        auto cxt        = (SwagContext*) Runtime::tlsGetValue(g_tlsContextId);
-        cxt->traceIndex = 0;
-        break;
-    }
-    case ByteCodeOp::InternalStackTrace:
-    {
-        auto cxt = (SwagContext*) Runtime::tlsGetValue(g_tlsContextId);
-        if (cxt->traceIndex == MAX_TRACE)
-            break;
-        cxt->trace[cxt->traceIndex] = (SwagCompilerSourceLocation*) registersRC[ip->a.u32].pointer;
-        cxt->traceIndex++;
-        break;
-    }
-
     case ByteCodeOp::InternalPanic:
     {
         if (context->sourceFile->numTestErrors)
@@ -1595,6 +1587,42 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             auto lenMsg               = msg ? (uint32_t) strlen(msg) : 0;
             Runtime::panic(msg, lenMsg, &loc);
         }
+        break;
+    }
+    case ByteCodeOp::IntrinsicPanic:
+    {
+        auto bc = g_Workspace.runtimeModule->tryGetRuntimeFct("@panic");
+        if (bc)
+        {
+            context->push(registersRC[ip->c.u32].u64);
+            context->push(registersRC[ip->b.u32].u64);
+            context->push(registersRC[ip->a.u32].u64);
+            localCall(context, bc);
+        }
+        else
+        {
+            Utf8 msg;
+            msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
+            auto location = (SwagCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
+            Runtime::panic(msg.c_str(), msg.length(), location);
+        }
+
+        break;
+    }
+
+    case ByteCodeOp::InternalInitStackTrace:
+    {
+        auto cxt        = (SwagContext*) Runtime::tlsGetValue(g_tlsContextId);
+        cxt->traceIndex = 0;
+        break;
+    }
+    case ByteCodeOp::InternalStackTrace:
+    {
+        auto cxt = (SwagContext*) Runtime::tlsGetValue(g_tlsContextId);
+        if (cxt->traceIndex == MAX_TRACE)
+            break;
+        cxt->trace[cxt->traceIndex] = (SwagCompilerSourceLocation*) registersRC[ip->a.u32].pointer;
+        cxt->traceIndex++;
         break;
     }
 
@@ -2801,10 +2829,11 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args, bool& tryContinue)
 {
     // Special exception raised by @error, to simply log an error message
-    // This is called by assertion too, in certain conditions (if we do not want dialog boxes, when running tests for example)
+    // This is called by panic too, in certain conditions (if we do not want dialog boxes, when running tests for example)
     if (args->ExceptionRecord->ExceptionCode == 666)
     {
         auto location = (SwagCompilerSourceLocation*) args->ExceptionRecord->ExceptionInformation[0];
+        SWAG_ASSERT(location);
 
         Utf8 fileName;
         fileName.append((const char*) location->fileName.buffer, (uint32_t) location->fileName.count);
@@ -2813,7 +2842,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         if (args->ExceptionRecord->ExceptionInformation[1] && args->ExceptionRecord->ExceptionInformation[2])
             userMsg.append((const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]);
         else
-            userMsg.append("assertion failed");
+            userMsg.append("panic");
 
         // Add current context
         bool inRunError = false;
@@ -2880,10 +2909,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
     // Hardware exception
     if (g_CommandLine.devMode)
-    {
-        runContext->bc->print();
         OS::errorBox("[Developer Mode]", "Exception raised !");
-    }
 
     auto       ip = runContext->ip - 1;
     Diagnostic diag{ip->node, ip->node->token, "exception during bytecode execution !"};

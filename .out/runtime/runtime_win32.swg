@@ -44,18 +44,17 @@ func @print(message: string)
 }
 
 ////////////////////////////////////////////////////////////
-private var g_exceptionLocation: swag.CompilerSourceLocation
-private var g_exceptionParams: [3] const *void
 func @errormsg(message: string, loc: swag.CompilerSourceLocation)
 {
-    contextFlags := @getcontext().flags
-    if(contextFlags & swag.ContextFlags.ByteCode)
+    cxt := @getcontext()
+    contextFlags := cxt.flags
+    if contextFlags & swag.ContextFlags.ByteCode
     {
-        g_exceptionLocation = loc
-        g_exceptionParams[0] = cast(const *void) &g_exceptionLocation
-        g_exceptionParams[1] = cast(const *void) @dataof(message)
-        g_exceptionParams[2] = cast(const *void) cast(uint) @countof(message)
-        RaiseException(666, 0, 3, &g_exceptionParams[0])
+        cxt.exceptionLoc = loc
+        cxt.exceptionParams[0] = cast(const *void) &cxt.exceptionLoc
+        cxt.exceptionParams[1] = cast(const *void) @dataof(message)
+        cxt.exceptionParams[2] = cast(const *void) cast(uint) @countof(message)
+        RaiseException(666, 0, 3, &cxt.exceptionParams[0])
         return
     }
 

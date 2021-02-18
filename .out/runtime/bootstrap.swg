@@ -179,11 +179,13 @@ namespace swag
         flags =         ContextFlags.None
 
         // Other fields, can be in any order
-        tempAllocator:  TempAllocator
-        errorMsg:       [MaxLenErrorMsg] u8
-        errorMsgLen:    u32
-        traceIndex:     u32
-        trace:          [MaxTrace] const *CompilerSourceLocation
+        tempAllocator:      TempAllocator
+        errorMsg:           [MaxLenErrorMsg] u8
+        errorMsgLen:        u32
+        traceIndex:         u32
+        trace:              [MaxTrace] const *CompilerSourceLocation
+        exceptionLoc:       CompilerSourceLocation
+        exceptionParams:    [3] const *void
     }
 
     // #########################################################

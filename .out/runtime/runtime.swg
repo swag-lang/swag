@@ -239,13 +239,12 @@ func @panic(message: string, loc: swag.CompilerSourceLocation)
 
     // If we are running bytecode, then just let the runner deal with the assertion,
     // we will have more usefull information
-    if(contextFlags & swag.ContextFlags.ByteCode)
+    if contextFlags & swag.ContextFlags.ByteCode
         return
 
     // During tests just raise an error without a dialog box
-    if(contextFlags & swag.ContextFlags.Test)
+    if contextFlags & swag.ContextFlags.Test
         return
-
 
     // Stack trace if available
     loop cxt.traceIndex
