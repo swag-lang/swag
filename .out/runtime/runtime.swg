@@ -35,7 +35,6 @@ func __itoa(result: *u8, value: s64)->*u8
     return retVal
 }
 
-////////////////////////////////////////////////////////////
 func __ftoa(result: *u8, value: f64)
 {
     ipart := cast(s64) value
@@ -72,23 +71,6 @@ func __ftoa(result: *u8, value: f64)
     __itoa(n, ipart)
 }
 
-////////////////////////////////////////////////////////////
-func @strcmp(str1: string, str2: string)->bool
-{
-    num1 := @countof(str1)
-    num2 := @countof(str2)
-    if num1 != num2
-        return false
-    if num1 == 0 && num2 == 0
-        return true
-    data1 := @dataof(str1)
-    data2 := @dataof(str2)
-    if data1 == null || data2 == null
-        return data1 == data2
-    return !@memcmp(data1, data2, num1)
-}
-
-////////////////////////////////////////////////////////////
 func __printS64(value: s64)
 {
     var buf: [100] u8
@@ -108,6 +90,22 @@ func __printF64(value: f64)
 func @print(value: s64) = __printS64(value)
 func @print(value: f64) = __printF64(value)
 func @print(message: string) = __printString(message)
+
+////////////////////////////////////////////////////////////
+func @strcmp(str1: string, str2: string)->bool
+{
+    num1 := @countof(str1)
+    num2 := @countof(str2)
+    if num1 != num2
+        return false
+    if num1 == 0 && num2 == 0
+        return true
+    data1 := @dataof(str1)
+    data2 := @dataof(str2)
+    if data1 == null || data2 == null
+        return data1 == data2
+    return !@memcmp(data1, data2, num1)
+}
 
 ////////////////////////////////////////////////////////////
 private func concreteAlias(type1: typeinfo)->typeinfo
