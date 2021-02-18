@@ -56,6 +56,7 @@ struct CommandLine
     string buildCfgOptimBC    = "default";
     string buildCfgOptimSpeed = "default";
     string buildCfgOptimSize  = "default";
+    string buildCfgStackTrace = "default";
 
     BackendArch   arch   = BackendArch::X86_64;
     BackendVendor vendor = BackendVendor::Pc;

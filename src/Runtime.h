@@ -116,6 +116,7 @@ struct BuildCfg
     static const auto SAFETY_MT    = ATTRIBUTE_SAFETY_MT_ON;
     static const auto SAFETY_AN    = ATTRIBUTE_SAFETY_AN_ON;
     uint64_t          safetyGuards = 0xFFFFFFFF'FFFFFFFF;
+    bool              stackTrace   = true;
 
     // Bytecode
     bool byteCodeOptimize = true;

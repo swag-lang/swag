@@ -49,6 +49,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeOptimize         = true;
         buildCfg.byteCodeInline           = true;
         buildCfg.safetyGuards             = 0xFFFFFFFF'FFFFFFFF;
+        buildCfg.stackTrace               = true;
         buildCfg.backendOptimizeSpeed     = false;
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
@@ -58,6 +59,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeOptimize         = true;
         buildCfg.byteCodeInline           = true;
         buildCfg.safetyGuards             = 0xFFFFFFFF'FFFFFFFF;
+        buildCfg.stackTrace               = true;
         buildCfg.backendOptimizeSpeed     = true;
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
@@ -67,6 +69,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeOptimize         = true;
         buildCfg.byteCodeInline           = true;
         buildCfg.safetyGuards             = 0;
+        buildCfg.stackTrace               = false;
         buildCfg.backendOptimizeSpeed     = true;
         buildCfg.backendOptimizeSize      = false;
         buildCfg.backendDebugInformations = true;
@@ -85,6 +88,8 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.backendOptimizeSize = g_CommandLine.buildCfgOptimSize == "true" ? true : false;
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? 0xFFFFFFFF'FFFFFFFF : 0;
+    if (g_CommandLine.buildCfgStackTrace != "default")
+        buildCfg.stackTrace = g_CommandLine.buildCfgStackTrace == "true" ? true : false;
 }
 
 bool Module::isValidName(const Utf8& name, Utf8& errorStr)

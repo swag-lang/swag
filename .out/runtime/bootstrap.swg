@@ -389,14 +389,15 @@ namespace swag
         moduleRevision: u32 = 0
         moduleBuildNum: u32 = 0
 
-        // Add guard code
+        // Debug
         const SafetyNP  = 0x0000100000000000
         const SafetyBC  = 0x0000200000000000
         const SafetyOF  = 0x0000400000000000
         const SafetyMT  = 0x0000800000000000
         const SafetyAN  = 0x0001000000000000
         const SafetyAll = 0x000FF00000000000
-        safetyGuards: u64 = SafetyAll
+        safetyGuards:   u64 = SafetyAll
+        stackTrace: bool = true
 
         // Bytecode
         byteCodeOptimize: bool  = true

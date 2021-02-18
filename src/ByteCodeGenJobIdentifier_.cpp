@@ -26,8 +26,12 @@ bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
 {
-    PushICFlags ic(context, BCI_TRYCATCH);
-    emitInstruction(context, ByteCodeOp::InternalInitStackTrace);
+    if (context->sourceFile->module->buildCfg.stackTrace)
+    {
+        PushICFlags ic(context, BCI_TRYCATCH);
+        emitInstruction(context, ByteCodeOp::InternalInitStackTrace);
+    }
+
     return true;
 }
 
@@ -36,14 +40,18 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
     auto node = CastAst<AstTryCatch>(context->node, AstNodeKind::Try, AstNodeKind::Throw);
 
     // Trace current call
-    auto r0     = reserveRegisterRC(context);
-    auto offset = computeSourceLocation(node);
-
     if (!(node->doneFlags & AST_DONE_STACK_TRACE))
     {
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u64 = offset;
-        emitInstruction(context, ByteCodeOp::InternalStackTrace, r0);
-        freeRegisterRC(context, r0);
+        if (context->sourceFile->module->buildCfg.stackTrace)
+        {
+            auto r0     = reserveRegisterRC(context);
+            auto offset = computeSourceLocation(node);
+
+            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u64 = offset;
+            emitInstruction(context, ByteCodeOp::InternalStackTrace, r0);
+            freeRegisterRC(context, r0);
+        }
+
         node->doneFlags |= AST_DONE_STACK_TRACE;
     }
 
@@ -96,7 +104,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
                 }
                 else
                 {
-                    r0 = reserveRegisterRC(context);
+                    auto r0 = reserveRegisterRC(context);
                     emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
                     emitInstruction(context, ByteCodeOp::SetZeroAtPointerX, r0)->b.u64 = typeArr->sizeOf;
                     freeRegisterRC(context, r0);
@@ -131,7 +139,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
             }
             else
             {
-                r0 = reserveRegisterRC(context);
+                auto r0 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::ClearRA, r0);
                 emitInstruction(context, ByteCodeOp::CopyRCtoRR, r0);
                 freeRegisterRC(context, r0);
@@ -146,7 +154,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
             }
             else
             {
-                r0 = reserveRegisterRC(context);
+                auto r0 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::ClearRA, r0);
                 emitInstruction(context, ByteCodeOp::CopyRCtoRR2, r0, r0);
                 freeRegisterRC(context, r0);
