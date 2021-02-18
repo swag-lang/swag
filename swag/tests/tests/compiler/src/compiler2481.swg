@@ -1,56 +1,70 @@
-/*using swag
+using swag
+
+var G = 0
+func panic(msg: string, loc: swag.CompilerSourceLocation)
+{
+    G += 1
+}
 
 #[safety("of", true)]
 //#[printbc, optim("bc", false)]
 #test
 {
     {
-        x := -1's8
-        #runerror x0 := cast(u8) x
-        #runerror x1 := cast(u16) x
-        #runerror x2 := cast(u32) x
-        #runerror x3 := cast(u64) x
+        cxt := @getcontext()
+        cxt.panic = &panic
+        defer cxt.panic = null
+
+        {
+            x := -1's8
+            x0 := cast(u8) x
+            x1 := cast(u16) x
+            x2 := cast(u32) x
+            x3 := cast(u64) x
+        }
+
+        {
+            x := -1's16
+            x0 := cast(u8) x
+            x1 := cast(u16) x
+            x2 := cast(u32) x
+            x3 := cast(u64) x
+        }
+
+        {
+            x := -1's32
+            x0 := cast(u8) x
+            x1 := cast(u16) x
+            x2 := cast(u32) x
+            x3 := cast(u64) x
+        }
+
+        {
+            x := -1's64
+            x0 := cast(u8) x
+            x1 := cast(u16) x
+            x2 := cast(u32) x
+            x3 := cast(u64) x
+        }
+
+        {
+            x := swag.MaxS16
+            x0 := cast(u8) x
+        }
+
+        {
+            x := swag.MaxS32
+            x0 := cast(u8) x
+            x1 := cast(u16) x
+        }
+
+        {
+            x := swag.MaxS64
+            x0 := cast(u8) x
+            x1 := cast(u16) x
+            x2 := cast(u32) x
+        }
     }
 
-    {
-        x := -1's16
-        #runerror x0 := cast(u8) x
-        #runerror x1 := cast(u16) x
-        #runerror x2 := cast(u32) x
-        #runerror x3 := cast(u64) x
-    }
-
-    {
-        x := -1's32
-        #runerror x0 := cast(u8) x
-        #runerror x1 := cast(u16) x
-        #runerror x2 := cast(u32) x
-        #runerror x3 := cast(u64) x
-    }
-
-    {
-        x := -1's64
-        #runerror x0 := cast(u8) x
-        #runerror x1 := cast(u16) x
-        #runerror x2 := cast(u32) x
-        #runerror x3 := cast(u64) x
-    }
-
-    {
-        x := swag.MaxS16
-        #runerror x0 := cast(u8) x
-    }
-
-    {
-        x := swag.MaxS32
-        #runerror x0 := cast(u8) x
-        #runerror x1 := cast(u16) x
-    }
-
-    {
-        x := swag.MaxS64
-        #runerror x0 := cast(u8) x
-        #runerror x1 := cast(u16) x
-        #runerror x2 := cast(u32) x
-    }
-}*/
+    @assert(G == 22)
+}

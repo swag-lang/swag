@@ -27,5 +27,6 @@ struct ByteCodeRun
     void executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeInstruction* ip);
 
     void        localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0);
+    void        callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg);
     static bool executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc);
 };

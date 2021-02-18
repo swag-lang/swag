@@ -1,7 +1,7 @@
 var G = 0
 func panic(msg: string, loc: swag.CompilerSourceLocation)
 {
-    G += 1;
+    G += 1
 }
 
 //#[swag.printbc]
