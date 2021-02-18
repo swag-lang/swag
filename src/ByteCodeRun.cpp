@@ -647,6 +647,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
         // A register needs to be initialized with the result register
         auto popR = context->returnRegOnRet.back();
+        context->returnRegOnRet.pop_back();
         if (popR != UINT32_MAX)
             context->registersRC[context->curRC]->buffer[popR].u64 = context->registersRR[0].u64;
 
@@ -1824,7 +1825,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicTypeCmp:
     {
-        registersRC[ip->d.u32].b = Runtime::compareType((void*) registersRC[ip->a.u32].pointer, (void*) registersRC[ip->b.u32].pointer, ip->c.u32);
+        auto bc = g_Workspace.runtimeModule->getRuntimeFct("@typecmp");
+        context->push<uint64_t>(ip->c.u32);
+        context->push(registersRC[ip->b.u32].pointer);
+        context->push(registersRC[ip->a.u32].pointer);
+        localCall(context, bc, 3, ip->d.u32);
         break;
     }
     case ByteCodeOp::CloneString:
