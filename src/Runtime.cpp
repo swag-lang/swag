@@ -7,7 +7,7 @@
 namespace Runtime
 {
     ////////////////////////////////////////////////////////////
-    bool strcmp(const void* str1, uint32_t num1, const void* str2, uint32_t num2)
+    static bool strcmp(const void* str1, uint32_t num1, const void* str2, uint32_t num2)
     {
         if (num1 != num2)
             return false;
@@ -16,7 +16,6 @@ namespace Runtime
         return !memcmp((void*) str1, (void*) str2, num1);
     }
 
-    ////////////////////////////////////////////////////////////
     static ConcreteTypeInfo* concreteAlias(ConcreteTypeInfo* type1)
     {
         if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) TypeInfoFlags::Strict))

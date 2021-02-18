@@ -50,7 +50,7 @@
 #define IMMD_U32(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u32 : registersRC[ip->d.u32].u32)
 #define IMMD_U64(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u64 : registersRC[ip->d.u32].u64)
 
-void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet)
+void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnReg)
 {
     context->bc->addCallStack(context);
     context->push(context->bp);
@@ -62,7 +62,7 @@ void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t 
     context->ip = context->bc->out;
     SWAG_ASSERT(context->ip);
     context->bp = context->sp;
-    context->bc->enterByteCode(context, popParamsOnRet);
+    context->bc->enterByteCode(context, popParamsOnRet, returnReg);
 }
 
 void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg)
@@ -640,9 +640,16 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (context->curRC == context->firstRC)
             return false;
 
+        // Need to pop some parameters, by increasing the stack pointer
         auto popP = context->popParamsOnRet.back();
         context->popParamsOnRet.pop_back();
         context->incSP(popP * sizeof(void*));
+
+        // A register needs to be initialized with the result register
+        auto popR = context->returnRegOnRet.back();
+        if (popR != UINT32_MAX)
+            context->registersRC[context->curRC]->buffer[popR].u64 = context->registersRR[0].u64;
+
         break;
     }
     case ByteCodeOp::LocalCall:
@@ -1807,7 +1814,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IntrinsicStrCmp:
     {
-        registersRC[ip->d.u32].b = Runtime::strcmp((void*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32, (void*) registersRC[ip->c.u32].pointer, registersRC[ip->d.u32].u32);
+        auto bc = g_Workspace.runtimeModule->getRuntimeFct("@strcmp");
+        context->push(registersRC[ip->d.u32].u64);
+        context->push(registersRC[ip->c.u32].pointer);
+        context->push(registersRC[ip->b.u32].u64);
+        context->push(registersRC[ip->a.u32].pointer);
+        localCall(context, bc, 4, ip->d.u32);
         break;
     }
     case ByteCodeOp::IntrinsicTypeCmp:
