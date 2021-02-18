@@ -70,9 +70,10 @@ struct ByteCodeRunContext : public JobContext
     VectorNative<void*>             ffiArgsValues;
     Utf8                            errorMsg;
     vector<VectorNative<Register>*> registersRC;
+    vector<uint32_t>                popParamsOnRet;
 
     SwagCompilerSourceLocation* errorLoc      = nullptr;
-    JobContext*                     callerContext = nullptr;
+    JobContext*                 callerContext = nullptr;
 
     AstNode*             node         = nullptr;
     uint8_t*             stack        = nullptr;

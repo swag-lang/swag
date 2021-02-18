@@ -49,7 +49,7 @@ struct ByteCodeInstruction
 struct ByteCode
 {
     void addCallStack(ByteCodeRunContext* context);
-    void enterByteCode(ByteCodeRunContext* context);
+    void enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0);
     void leaveByteCode(ByteCodeRunContext* context, bool popCallStack = true);
     void markLabels();
     bool isDoingNothing();

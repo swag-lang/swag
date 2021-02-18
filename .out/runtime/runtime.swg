@@ -211,7 +211,10 @@ func @seterr(value: string)
 {
     cxt := @getcontext()
     if value == null
+    {
         cxt.errorMsgLen = 0
+        cxt.traceIndex = 0
+    }
     else
     {
         len := @countof(value)

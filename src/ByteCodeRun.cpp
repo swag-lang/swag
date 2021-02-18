@@ -50,7 +50,7 @@
 #define IMMD_U32(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u32 : registersRC[ip->d.u32].u32)
 #define IMMD_U64(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u64 : registersRC[ip->d.u32].u64)
 
-void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc)
+void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet)
 {
     context->bc->addCallStack(context);
     context->push(context->bp);
@@ -62,7 +62,7 @@ void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc)
     context->ip = context->bc->out;
     SWAG_ASSERT(context->ip);
     context->bp = context->sp;
-    context->bc->enterByteCode(context);
+    context->bc->enterByteCode(context, popParamsOnRet);
 }
 
 bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc)
@@ -624,6 +624,10 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->bp = context->pop<uint8_t*>();
         if (context->curRC == context->firstRC)
             return false;
+
+        auto popP = context->popParamsOnRet.back();
+        context->popParamsOnRet.pop_back();
+        context->incSP(popP * sizeof(void*));
         break;
     }
     case ByteCodeOp::LocalCall:
@@ -1626,10 +1630,10 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicSetErr:
     {
-        auto cxt         = (SwagContext*) Runtime::tlsGetValue(g_tlsContextId);
-        auto ptr         = (void*) registersRC[ip->a.u32].pointer;
-        cxt->errorMsgLen = min(MAX_LEN_ERROR_MSG, registersRC[ip->b.u32].u32);
-        memcpy(cxt->errorMsg, ptr, cxt->errorMsgLen);
+        auto bc = g_Workspace.runtimeModule->getRuntimeFct("@seterr");
+        context->push(registersRC[ip->b.u32].u64);
+        context->push(registersRC[ip->a.u32].pointer);
+        localCall(context, bc, 2);
         break;
     }
     case ByteCodeOp::IntrinsicGetErr:
