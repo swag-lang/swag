@@ -1668,7 +1668,10 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::IntrinsicInterfaceOf:
     {
-        registersRC[ip->c.u32].pointer = (uint8_t*) Runtime::interfaceOf((void*) registersRC[ip->a.u32].pointer, (void*) registersRC[ip->b.u32].pointer);
+        auto bc = g_Workspace.runtimeModule->getRuntimeFct("@interfaceof");
+        context->push(registersRC[ip->b.u32].pointer);
+        context->push(registersRC[ip->a.u32].pointer);
+        localCall(context, bc, 2, ip->c.u32);
         break;
     }
 

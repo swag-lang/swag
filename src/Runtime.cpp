@@ -57,25 +57,6 @@ namespace Runtime
         return strcmp(ctype1->name.buffer, (uint32_t) ctype1->name.count, ctype2->name.buffer, (uint32_t) ctype2->name.count);
     }
 
-    ////////////////////////////////////////////////////////////
-    void* interfaceOf(const void* structType, const void* itfType)
-    {
-        auto ctype  = (ConcreteTypeInfoStruct*) structType;
-        auto itype  = (ConcreteTypeInfoStruct*) itfType;
-        auto buffer = (ConcreteTypeInfoParam*) RELATIVE_PTR(&ctype->interfaces.buffer);
-
-        for (uint32_t i = 0; i < ctype->interfaces.count; i++)
-        {
-            if (strcmp(buffer[i].name.buffer,
-                       (uint32_t) buffer[i].name.count,
-                       itype->base.name.buffer,
-                       (uint32_t) itype->base.name.count))
-                return buffer[i].value;
-        }
-
-        return nullptr;
-    }
-
     /////////////////////////////////////////////////////////////////////////////////////////////
     uint64_t tlsAlloc()
     {
@@ -98,13 +79,6 @@ namespace Runtime
 #ifdef _WIN32
         return TlsGetValue((uint32_t) id);
 #endif
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    void clearContextError()
-    {
-        auto cxt         = (SwagContext*) tlsGetValue(g_tlsContextId);
-        cxt->errorMsgLen = 0;
     }
 
 } // namespace Runtime

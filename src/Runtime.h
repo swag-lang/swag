@@ -373,11 +373,9 @@ namespace Runtime
     uint64_t tlsAlloc();
     void     tlsSetValue(uint64_t id, void* value);
     void*    tlsGetValue(uint64_t id);
-    void     clearContextError();
 
     const uint32_t COMPARE_STRICT   = 0x00000000;
     const uint32_t COMPARE_CAST_ANY = 0x00000001;
     bool           compareType(const void* type1, const void* type2, uint32_t flags);
-    void*          interfaceOf(const void* structType, const void* itfType);
 
 } // namespace Runtime
