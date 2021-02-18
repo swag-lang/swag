@@ -367,11 +367,8 @@ static const uint64_t SWAG_LAMBDA_FOREIGN_MARKER = 0x4000000000000000;
 static const uint64_t SWAG_LAMBDA_MARKER_MASK    = 0xC000000000000000;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-namespace Runtime
-{
-    const uint32_t COMPARE_STRICT   = 0x00000000;
-    const uint32_t COMPARE_CAST_ANY = 0x00000001;
-    bool           compareType(const void* type1, const void* type2, uint32_t flags);
 
-} // namespace Runtime
+const uint32_t SWAG_COMPARE_STRICT   = 0x00000000;
+const uint32_t SWAG_COMPARE_CAST_ANY = 0x00000001;

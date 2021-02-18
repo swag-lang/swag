@@ -318,7 +318,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
 
     RegisterList result = reserveRegisterRC(context);
     inst                = emitInstruction(context, ByteCodeOp::SetImmediate32, result);
-    inst->b.u32         = Runtime::COMPARE_CAST_ANY;
+    inst->b.u32         = SWAG_COMPARE_CAST_ANY;
     inst                = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], result, result);
     emitAssert(context, result, "[safety] invalid dynamic cast");
 

@@ -2937,3 +2937,28 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     return castError(context, toType, fromType, fromNode, castFlags);
 }
+
+static const ConcreteTypeInfo* concreteAlias(const ConcreteTypeInfo* type1)
+{
+    if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) TypeInfoFlags::Strict))
+        return type1;
+    auto typeAlias = (const ConcreteTypeInfoAlias*) type1;
+    return concreteAlias(RELATIVE_PTR(&typeAlias->rawType));
+}
+
+bool TypeManager::compareConcreteType(const ConcreteTypeInfo* type1, const ConcreteTypeInfo* type2)
+{
+    SWAG_ASSERT(type1 && type2);
+    if (type1 == type2)
+        return true;
+
+    type1 = concreteAlias(type1);
+    type2 = concreteAlias(type2);
+
+    if ((type1->kind != type2->kind) || (type1->sizeOf != type2->sizeOf) || (type1->flags != type2->flags))
+        return false;
+    if (type1->name.count != type2->name.count)
+        return false;
+
+    return !memcmp((void*) type1->name.buffer, (void*) type2->name.buffer, type1->name.count);
+}

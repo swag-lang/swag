@@ -310,7 +310,6 @@
     <ClCompile Include="../src/OsWin32.cpp" />
     <ClCompile Include="../src/OutputFile.cpp" />
     <ClCompile Include="../src/ProfileWin32.cpp" />
-    <ClCompile Include="../src/Runtime.cpp" />
     <ClCompile Include="../src/Scope.cpp" />
     <ClCompile Include="../src/SemanticJobAffectExpression_.cpp" />
     <ClCompile Include="../src/SemanticJobAttribute_.cpp" />

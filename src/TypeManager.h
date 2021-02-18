@@ -93,6 +93,7 @@ struct TypeManager
     static TypeInfo* makeConst(TypeInfo* typeInfo);
     static uint64_t  align(uint64_t value, uint32_t align);
     static uint32_t  alignOf(TypeInfo* typeInfo);
+    static bool      compareConcreteType(const ConcreteTypeInfo* type1, const ConcreteTypeInfo* type2);
 
     TypeInfoNative*    typeInfoUInt;
     TypeInfoNative*    typeInfoInt;
