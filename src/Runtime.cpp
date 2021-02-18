@@ -17,12 +17,6 @@ namespace Runtime
     }
 
     ////////////////////////////////////////////////////////////
-    float abs(float value)
-    {
-        return value < 0 ? -value : value;
-    }
-
-    ////////////////////////////////////////////////////////////
     static ConcreteTypeInfo* concreteAlias(ConcreteTypeInfo* type1)
     {
         if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) TypeInfoFlags::Strict))

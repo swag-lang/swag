@@ -371,7 +371,6 @@ static const uint64_t SWAG_LAMBDA_MARKER_MASK    = 0xC000000000000000;
 namespace Runtime
 {
     bool     strcmp(const void* str1, uint32_t num1, const void* str2, uint32_t num2);
-    float    abs(float value);
     uint64_t tlsAlloc();
     void     tlsSetValue(uint64_t id, void* value);
     void*    tlsGetValue(uint64_t id);
