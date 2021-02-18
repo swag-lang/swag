@@ -1,4 +1,4 @@
-using swag
+/*using swag
 
 #[safety("of", true)]
 //#[printbc]
@@ -29,4 +29,4 @@ using swag
         #runerror x2 := cast(s32) x
         #runerror x3 := cast(s64) x
     }
-}
+}*/

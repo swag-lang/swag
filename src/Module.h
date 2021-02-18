@@ -121,7 +121,7 @@ struct Module
     bool              executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext* callerContext);
     void              printUserMessage(const BuildParameters& bp);
     TypeInfoFuncAttr* getRuntimeTypeFct(const char* fctName);
-    ByteCode*         tryGetRuntimeFct(const char* fctName);
+    ByteCode*         getRuntimeFct(const char* fctName);
 
     DataSegment mutableSegment;
     DataSegment typeSegment;

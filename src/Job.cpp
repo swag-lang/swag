@@ -151,15 +151,10 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
     }
 }
 
-bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes, bool inRunError)
+bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
 {
     auto copyNotes = notes;
     setErrorContext(diag, copyNotes);
     SWAG_ASSERT(sourceFile);
-    return sourceFile->report(diag, copyNotes, inRunError);
-}
-
-bool JobContext::report(const Diagnostic& diag, bool inRunError)
-{
-    return report(diag, {}, inRunError);
+    return sourceFile->report(diag, copyNotes);
 }

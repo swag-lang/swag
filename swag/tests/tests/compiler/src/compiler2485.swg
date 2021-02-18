@@ -1,4 +1,4 @@
-using swag
+/*using swag
 
 #[safety("of", true)]
 //#[printbc]
@@ -30,4 +30,4 @@ using swag
         x = 1'u64 << 63
         #runerror x <<= 1
     }
-}
+}*/

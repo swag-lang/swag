@@ -1,4 +1,4 @@
-using swag
+/*using swag
 
 #[safety("of", true)]
 //#[printbc, optim("bc", false)]
@@ -39,4 +39,4 @@ using swag
         #runerror x1 := cast(s16) x
         #runerror x2 := cast(s32) x
     }
-}
+}*/

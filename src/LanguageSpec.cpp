@@ -9,7 +9,6 @@ void LanguageSpec::setup()
     keywords["#global"]         = TokenId::CompilerGlobal;
     keywords["#assert"]         = TokenId::CompilerAssert;
     keywords["#semerror"]       = TokenId::CompilerSemError;
-    keywords["#runerror"]       = TokenId::CompilerRunError;
     keywords["#print"]          = TokenId::CompilerPrint;
     keywords["#run"]            = TokenId::CompilerRun;
     keywords["#ast"]            = TokenId::CompilerAst;

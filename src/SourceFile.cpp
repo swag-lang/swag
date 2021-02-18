@@ -264,7 +264,7 @@ Utf8 SourceFile::getLine(long lineNo)
     return allLines[lineNo];
 }
 
-bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes, bool inRunError)
+bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
 {
     if (silent > 0 && !diag.exceptionError)
         return false;
@@ -293,19 +293,16 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         }
     }
 
-    if (inRunError)
-        numRunErrors--;
-
-    if ((!inSemError && !inRunError) || diag.exceptionError)
+    if (!inSemError || diag.exceptionError)
     {
         numErrors++;
         module->numErrors++;
     }
 
     // Do not raise an error if we are waiting for one, during tests
-    if ((numTestErrors || inRunError || inSemError) && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError && !isSemError)
+    if ((numTestErrors || inSemError) && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError && !isSemError)
     {
-        if (!inRunError && !inSemError)
+        if (!inSemError)
             numTestErrors--;
         if (g_CommandLine.verboseTestErrors)
         {

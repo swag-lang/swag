@@ -339,7 +339,6 @@ struct ByteCodeGenJob : public Job
     static void emitSetZeroAtPointer(ByteCodeGenContext* context, uint64_t sizeOf, uint32_t registerIndex);
     static void emitMemCpy(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint64_t sizeOf);
     static bool emitDefer(ByteCodeGenContext* context);
-    static bool emitCompilerRunErrorBefore(ByteCodeGenContext* context);
 
     static void emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg = nullptr);
     static bool mustEmitSafety(ByteCodeGenContext* context, uint64_t whatOn, uint64_t whatOff);

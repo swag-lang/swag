@@ -162,7 +162,6 @@ namespace OS
         // Wait until child process exits
         bool ok  = true;
         chBuf[0] = 0;
-        Utf8 lastRunError;
         while (1)
         {
             ::PeekNamedPipe(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr, nullptr);
@@ -190,50 +189,6 @@ namespace OS
 
                     const char* pz = nullptr;
 
-                    // Remember a #runerror directive
-                    pz = strstr(oneLine.c_str(), "#runerror:");
-                    if (pz)
-                    {
-                        // Something can have been printed before with a '@print' without an '\n', so just to not miss anything...
-                        if (pz != oneLine.c_str() && logAll)
-                        {
-                            g_Log.lock();
-                            g_Log.setColor(logColor);
-                            if (logPrefix)
-                                g_Log.print(logPrefix);
-                            auto tmpLine  = oneLine;
-                            tmpLine.count = (int) (pz - oneLine.c_str());
-                            g_Log.print(tmpLine + "\n");
-                            g_Log.setDefaultColor();
-                            g_Log.unlock();
-                            oneLine = pz;
-                        }
-
-                        if (g_CommandLine.verboseTestErrors)
-                        {
-                            g_Log.lock();
-                            g_Log.setColor(LogColor::DarkCyan);
-                            g_Log.print(oneLine + "\n");
-                            g_Log.setDefaultColor();
-                            g_Log.unlock();
-                        }
-
-                        if (!lastRunError.empty())
-                        {
-                            numErrors++;
-                            ok = false;
-                            g_Log.lock();
-                            g_Log.setColor(LogColor::Red);
-                            lastRunError += ": didn't catch an error\n";
-                            g_Log.print(lastRunError);
-                            g_Log.setDefaultColor();
-                            g_Log.unlock();
-                        }
-
-                        lastRunError = oneLine;
-                        continue;
-                    }
-
                     // Error
                     pz = strstr(oneLine.c_str(), "error:");
                     if (pz)
@@ -253,19 +208,7 @@ namespace OS
                             oneLine = pz;
                         }
 
-                        if (!lastRunError.empty())
-                        {
-                            lastRunError.clear();
-                            if (g_CommandLine.verboseTestErrors)
-                            {
-                                g_Log.lock();
-                                g_Log.setColor(LogColor::DarkCyan);
-                                g_Log.print(oneLine + "\n");
-                                g_Log.setDefaultColor();
-                                g_Log.unlock();
-                            }
-                        }
-                        else if (module)
+                        if (module)
                         {
                             ok = false;
 
@@ -372,16 +315,6 @@ namespace OS
         ::CloseHandle(pi.hThread);
 
         ::SetErrorMode(errmode);
-
-        // One remaining #runerror ?
-        if (!lastRunError.empty())
-        {
-            numErrors++;
-            ok = false;
-            g_Log.setColor(LogColor::Red);
-            lastRunError += ": didn't catch an error\n";
-            g_Log.print(lastRunError);
-        }
 
         return ok;
     }

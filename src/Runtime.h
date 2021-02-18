@@ -374,8 +374,6 @@ namespace Runtime
     void     print(const void* message, uint32_t len);
     void     print(int64_t value);
     void     print(double value);
-    void     panic(const void* message, uint32_t size, SwagCompilerSourceLocation* location);
-    void     error(const void* message, uint32_t size, SwagCompilerSourceLocation* location);
     uint64_t tlsAlloc();
     void     tlsSetValue(uint64_t id, void* value);
     void*    tlsGetValue(uint64_t id);

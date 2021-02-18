@@ -791,9 +791,3 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context)
     SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
     return true;
 }
-
-bool ByteCodeGenJob::emitCompilerRunErrorBefore(ByteCodeGenContext* context)
-{
-    emitInstruction(context, ByteCodeOp::CompilerRunError);
-    return true;
-}

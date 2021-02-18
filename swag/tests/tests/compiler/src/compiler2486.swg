@@ -1,4 +1,4 @@
-using swag
+/*using swag
 
 #[safety("of", true)]
 //#[printbc]
@@ -23,4 +23,4 @@ using swag
         var x: u64 = 4
         #runerror x >>= 4
     }
-}
+}*/

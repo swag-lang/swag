@@ -389,9 +389,6 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerSemError:
         SWAG_CHECK(doCompilerSemError(parent, result, true));
         break;
-    case TokenId::CompilerRunError:
-        SWAG_CHECK(doCompilerRunError(parent, result));
-        break;
     case TokenId::CompilerInline:
         SWAG_CHECK(doCompilerInline(parent, result));
         break;

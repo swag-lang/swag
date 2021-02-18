@@ -316,12 +316,6 @@ func __stackTrace(loc: swag.CompilerSourceLocation)
 }
 
 ////////////////////////////////////////////////////////////
-func __compilerRunError(where: string)
-{
-    @print(where)
-}
-
-////////////////////////////////////////////////////////////
 func __panic(file: const *u8, line: u32, col: u32, message: const *u8)
 {
     var loc: swag.CompilerSourceLocation

@@ -505,7 +505,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     switch (ip->op)
     {
     case ByteCodeOp::Nop:
-    case ByteCodeOp::CompilerRunError:
         break;
 
     case ByteCodeOp::IntrinsicS8x1:
@@ -1551,62 +1550,36 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IntrinsicErrorMsg:
     {
-        auto bc = g_Workspace.runtimeModule->tryGetRuntimeFct("@errormsg");
-        if (bc)
-        {
-            context->push(registersRC[ip->c.u32].u64);
-            context->push(registersRC[ip->b.u32].u64);
-            context->push(registersRC[ip->a.u32].u64);
-            localCall(context, bc);
-        }
-        else
-        {
-            Utf8 msg;
-            msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
-            auto location = (SwagCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
-            Runtime::error(msg.c_str(), msg.length(), location);
-        }
+        auto bc = g_Workspace.runtimeModule->getRuntimeFct("@errormsg");
+        context->push(registersRC[ip->c.u32].u64);
+        context->push(registersRC[ip->b.u32].u64);
+        context->push(registersRC[ip->a.u32].u64);
+        localCall(context, bc);
         break;
     }
     case ByteCodeOp::InternalPanic:
     {
-        if (context->sourceFile->numTestErrors)
-            context->error(ip->d.pointer ? (const char*) ip->d.pointer : "panic");
-        else
-        {
-            SourceFile*     sourceFile;
-            SourceLocation* location;
-            ByteCode::getLocation(context->bc, ip, &sourceFile, &location, true);
+        auto bc = g_Workspace.runtimeModule->getRuntimeFct("__panic");
 
-            SwagCompilerSourceLocation loc;
-            loc.lineStart = loc.lineEnd = location->line;
-            loc.colStart = loc.colEnd = location->column;
-            loc.fileName.buffer       = (void*) sourceFile->path.c_str();
-            loc.fileName.count        = sourceFile->path.length();
-            auto msg                  = (const char*) ip->d.pointer;
-            auto lenMsg               = msg ? (uint32_t) strlen(msg) : 0;
-            Runtime::panic(msg, lenMsg, &loc);
-        }
+        SourceFile*     sourceFile;
+        SourceLocation* location;
+        ByteCode::getLocation(context->bc, ip, &sourceFile, &location, true);
+
+        context->push(ip->d.pointer);
+        context->push<uint64_t>(location->column);
+        context->push<uint64_t>(location->line);
+        context->push(sourceFile->path.c_str());
+
+        localCall(context, bc);
         break;
     }
     case ByteCodeOp::IntrinsicPanic:
     {
-        auto bc = g_Workspace.runtimeModule->tryGetRuntimeFct("@panic");
-        if (bc)
-        {
-            context->push(registersRC[ip->c.u32].u64);
-            context->push(registersRC[ip->b.u32].u64);
-            context->push(registersRC[ip->a.u32].u64);
-            localCall(context, bc);
-        }
-        else
-        {
-            Utf8 msg;
-            msg.append((const char*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].u32);
-            auto location = (SwagCompilerSourceLocation*) registersRC[ip->c.u32].pointer;
-            Runtime::panic(msg.c_str(), msg.length(), location);
-        }
-
+        auto bc = g_Workspace.runtimeModule->getRuntimeFct("@panic");
+        context->push(registersRC[ip->c.u32].u64);
+        context->push(registersRC[ip->b.u32].u64);
+        context->push(registersRC[ip->a.u32].u64);
+        localCall(context, bc);
         break;
     }
 
@@ -2779,17 +2752,6 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
         {
             context->hasError = false;
 
-            // Are we in a #runerror
-            bool inRunError = false;
-            auto parent     = ip->node;
-            while (parent && parent->kind != AstNodeKind::CompilerRunError)
-                parent = parent->parent;
-            if (parent)
-            {
-                parent->doneFlags |= AST_DONE_RUN_ERROR;
-                inRunError = true;
-            }
-
             JobContext* errorContext = context->callerContext ? context->callerContext : context;
             if (context->errorLoc)
             {
@@ -2797,7 +2759,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 SourceLocation end   = {context->errorLoc->lineEnd, context->errorLoc->colEnd};
                 Diagnostic     diag{ip->node->sourceFile, start, end, context->errorMsg};
                 errorContext->sourceFile = ip->node->sourceFile;
-                errorContext->report(diag, inRunError);
+                errorContext->report(diag);
             }
             else
             {
@@ -2808,18 +2770,17 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 {
                     Diagnostic diag{sourceFile, *location, "error during bytecode execution, " + context->errorMsg};
                     errorContext->sourceFile = sourceFile;
-                    errorContext->report(diag, inRunError);
+                    errorContext->report(diag);
                 }
                 else
                 {
                     Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
                     errorContext->sourceFile = ip->node->sourceFile;
-                    errorContext->report(diag, inRunError);
+                    errorContext->report(diag);
                 }
             }
 
-            if (!inRunError)
-                return false;
+            return false;
         }
     }
 
@@ -2848,16 +2809,6 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         bool inRunError = false;
         if (runContext->ip && runContext->ip->node && runContext->ip->node->sourceFile)
         {
-            // Are we in a #runerror
-            auto parent = runContext->ip->node;
-            while (parent && parent->kind != AstNodeKind::CompilerRunError)
-                parent = parent->parent;
-            if (parent)
-            {
-                parent->doneFlags |= AST_DONE_RUN_ERROR;
-                inRunError = true;
-            }
-
             runContext->ip--; // ip is the next pointer instruction
             auto path1 = normalizePath(fs::path(runContext->ip->node->sourceFile->path.c_str()));
             auto path2 = normalizePath(fs::path(fileName.c_str()));
@@ -2901,7 +2852,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             sourceFile = g_byteCodeStack.steps[0].bc->sourceFile;
         else
             sourceFile = runContext->bc->sourceFile;
-        sourceFile->report(diag, notes, inRunError);
+        sourceFile->report(diag, notes);
 
         tryContinue = inRunError;
         return EXCEPTION_EXECUTE_HANDLER;

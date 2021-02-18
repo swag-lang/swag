@@ -406,10 +406,6 @@ namespace Ast
             CONCAT_FIXED_STR(concat, "#semerror ");
             SWAG_CHECK(output(context, concat, node->childs.front()));
             break;
-        case AstNodeKind::CompilerRunError:
-            CONCAT_FIXED_STR(concat, "#runerror ");
-            SWAG_CHECK(output(context, concat, node->childs.front()));
-            break;
 
         case AstNodeKind::CompilerAssert:
             CONCAT_FIXED_STR(concat, "#assert(");

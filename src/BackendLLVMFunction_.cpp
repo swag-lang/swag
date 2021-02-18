@@ -2713,16 +2713,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::CompilerRunError:
-        {
-            Utf8         msg = format("#runerror: %s:%d:%d\n", bc->sourceFile->path.c_str(), ip->location->line + 1, ip->location->column + 1);
-            llvm::Value* r1  = builder.CreateGlobalString(msg.c_str());
-            r1               = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32}));
-            auto r2          = builder.getInt64(msg.length());
-            localCall(buildParameters, allocR, allocT, "__compilerRunError", {UINT32_MAX, UINT32_MAX}, {r1, r2});
-            break;
-        }
-
         case ByteCodeOp::IntrinsicPrintS64:
         case ByteCodeOp::IntrinsicPrintF64:
         {

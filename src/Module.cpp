@@ -898,11 +898,10 @@ TypeInfoFuncAttr* Module::getRuntimeTypeFct(const char* fctName)
     return it->second->typeInfoFunc;
 }
 
-ByteCode* Module::tryGetRuntimeFct(const char* fctName)
+ByteCode* Module::getRuntimeFct(const char* fctName)
 {
     unique_lock lk(mutexFile);
     auto        it = mapRuntimeFcts.find(fctName);
-    if (it == mapRuntimeFcts.end())
-        return nullptr;
+    SWAG_ASSERT(it != mapRuntimeFcts.end());
     return it->second;
 }

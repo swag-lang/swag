@@ -322,28 +322,6 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerRunError(AstNode* parent, AstNode** result)
-{
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerRunError, sourceFile, parent);
-    if (result)
-        *result = node;
-    node->allocateExtension();
-    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitCompilerRunErrorBefore;
-    node->token                        = move(token);
-    SWAG_CHECK(eatToken());
-
-    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#runerror' is invalid outside a test module (in the './tests' folder of the workspace)"}));
-    SWAG_ASSERT(g_CommandLine.test);
-    SWAG_VERIFY(!currentCompilerIfBlock, sourceFile->report({sourceFile, token, "'#runerror' cannot be in a '#if' block"}));
-
-    SWAG_CHECK(doEmbeddedInstruction(node));
-
-    unique_lock lk(sourceFile->mutex);
-    sourceFile->allRunErrors.push_back(node);
-    sourceFile->numRunErrors++;
-    return true;
-}
-
 bool SyntaxJob::doCompilerSemError(AstNode* parent, AstNode** result, bool embedded)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSemError, sourceFile, parent);

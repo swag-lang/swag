@@ -1,4 +1,4 @@
-//#[swag.printbc]
+/*//#[swag.printbc]
 #[swag.safety("of", true)]
 #test
 {
@@ -19,4 +19,4 @@
         #runerror x1 := cast(u8) x
         #runerror x2 := cast(u16) x
     }
-}
+}*/

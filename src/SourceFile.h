@@ -25,7 +25,7 @@ struct SourceFile : public File
     uint32_t getCharExtended(char c, unsigned& offset);
     Utf8     getLine(long lineNo);
     bool     report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
-    bool     report(const Diagnostic& diag, const vector<const Diagnostic*>& notes, bool inRunError = false);
+    bool     report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
     void     load(LoadRequest* request);
 
     void cleanCache();
@@ -51,7 +51,6 @@ struct SourceFile : public File
     uint64_t    writeTime       = 0;
     int         numErrors       = 0;
     atomic<int> numTestErrors   = 0;
-    atomic<int> numRunErrors    = 0;
     atomic<int> numSemErrors    = 0;
     int         silent          = 0;
     uint32_t    indexInModule   = UINT32_MAX;
@@ -59,11 +58,10 @@ struct SourceFile : public File
     bool        isBootstrapFile = false;
     bool        isRuntimeFile   = false;
 
-    char*                  buffer       = nullptr;
-    Scope*                 scopePrivate = nullptr;
-    AstNode*               sourceNode   = nullptr;
-    Module*                imported     = nullptr;
-    VectorNative<AstNode*> allRunErrors;
+    char*    buffer       = nullptr;
+    Scope*   scopePrivate = nullptr;
+    AstNode* sourceNode   = nullptr;
+    Module*  imported     = nullptr;
 
     int          headerSize    = 0;
     long         fileSeek      = 0;
