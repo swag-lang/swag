@@ -40,6 +40,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_TRACE * sizeof(void*)),
             llvm::ArrayType::get(llvm::Type::getInt8Ty(context), sizeof(SwagCompilerSourceLocation)),
             llvm::ArrayType::get(llvm::Type::getInt8Ty(context), 3 * sizeof(void*)),
+            llvm::Type::getInt8PtrTy(context), // panic
         };
 
         pp.contextTy = llvm::StructType::create(context, members, "swag_context_t");

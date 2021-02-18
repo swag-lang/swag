@@ -186,6 +186,7 @@ namespace swag
         trace:              [MaxTrace] const *CompilerSourceLocation
         exceptionLoc:       CompilerSourceLocation
         exceptionParams:    [3] const *void
+        panic:              func(string, CompilerSourceLocation)
     }
 
     // #########################################################

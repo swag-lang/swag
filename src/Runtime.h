@@ -72,6 +72,7 @@ typedef struct SwagContext
     SwagCompilerSourceLocation* trace[MAX_TRACE];
     SwagCompilerSourceLocation  exceptionLoc;
     void*                       exceptionParams[3];
+    void*                       panic;
 } SwagContext;
 
 typedef void (*SwagBytecodeRun)(void*, ...);

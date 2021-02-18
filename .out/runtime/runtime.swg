@@ -236,6 +236,14 @@ func __geterr()->string
 func @panic(message: string, loc: swag.CompilerSourceLocation)
 {
     cxt := @getcontext()
+
+    // User function
+    if cxt.panic
+    {
+        cxt.panic(message, loc)
+        return
+    }
+
     contextFlags := cxt.flags
 
     @errormsg(message, loc)

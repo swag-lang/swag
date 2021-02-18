@@ -1558,7 +1558,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->push(registersRC[ip->c.u32].u64);
         context->push(registersRC[ip->b.u32].u64);
         context->push(registersRC[ip->a.u32].u64);
-        localCall(context, bc);
+        localCall(context, bc, 3);
         break;
     }
     case ByteCodeOp::InternalPanic:
@@ -1573,8 +1573,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->push<uint64_t>(location->column);
         context->push<uint64_t>(location->line);
         context->push(sourceFile->path.c_str());
-
-        localCall(context, bc);
+        localCall(context, bc, 4);
         break;
     }
     case ByteCodeOp::IntrinsicPanic:
@@ -1583,7 +1582,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->push(registersRC[ip->c.u32].u64);
         context->push(registersRC[ip->b.u32].u64);
         context->push(registersRC[ip->a.u32].u64);
-        localCall(context, bc);
+        localCall(context, bc, 3);
         break;
     }
 
