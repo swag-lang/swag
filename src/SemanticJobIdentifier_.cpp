@@ -2847,7 +2847,6 @@ bool SemanticJob::resolveThrow(SemanticContext* context)
     auto back      = node->childs.back();
     node->typeInfo = back->typeInfo;
 
-    SWAG_VERIFY(node->ownerInline || !(node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC), context->report({node, node->token, "'throw' cannot be used in a top level function"}));
     SWAG_VERIFY(!node->ownerFct->isSpecialFunctionName(), context->report({node, node->token, "'throw' cannot be used inside a struct special function"}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoString, node, back, CASTFLAG_AUTO_OPCAST));
     node->byteCodeFct = ByteCodeGenJob::emitThrow;

@@ -204,9 +204,25 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
         node->doneFlags |= AST_DONE_TRY_1;
     }
 
-    SWAG_CHECK(emitTryThrowExit(context));
-    if (context->result != ContextResult::Done)
-        return true;
+    // In a top level function, this should panic
+    if (!node->ownerInline && (node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC))
+    {
+        auto offset = computeSourceLocation(node);
+        auto r1     = reserveRegisterRC(context);
+
+        if (context->sourceFile->module->buildCfg.stackTrace)
+            emitInstruction(context, ByteCodeOp::InternalInitStackTrace);
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r1)->b.u64 = offset;
+        emitInstruction(context, ByteCodeOp::IntrinsicPanic, expr->resultRegisterRC[0], expr->resultRegisterRC[1], r1);
+        freeRegisterRC(context, expr->resultRegisterRC);
+        freeRegisterRC(context, r1);
+    }
+    else
+    {
+        SWAG_CHECK(emitTryThrowExit(context));
+        if (context->result != ContextResult::Done)
+            return true;
+    }
 
     return true;
 }
