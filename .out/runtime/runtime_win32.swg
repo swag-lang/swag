@@ -35,7 +35,7 @@ private
 }
 
 ////////////////////////////////////////////////////////////
-func @print(message: string)
+func __printString(message: string)
 {
     if !@dataof(message) || !@countof(message)
         return

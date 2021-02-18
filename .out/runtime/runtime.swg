@@ -89,22 +89,25 @@ func @strcmp(str1: string, str2: string)->bool
 }
 
 ////////////////////////////////////////////////////////////
-func @print(value: s64)
+func __printS64(value: s64)
 {
     var buf: [100] u8
     __itoa(&buf[0], value)
     str := cast(string) @mkslice(&buf[0], @cstrlen(&buf[0]))
-    @print(str)
+    __printString(str)
 }
 
-////////////////////////////////////////////////////////////
-func @print(value: f64)
+func __printF64(value: f64)
 {
     var buf: [100] u8
     __ftoa(&buf[0], value)
     str := cast(string) @mkslice(&buf[0], @cstrlen(&buf[0]))
-    @print(str)
+    __printString(str)
 }
+
+func @print(value: s64) = __printS64(value)
+func @print(value: f64) = __printF64(value)
+func @print(message: string) = __printString(message)
 
 ////////////////////////////////////////////////////////////
 private func concreteAlias(type1: typeinfo)->typeinfo
