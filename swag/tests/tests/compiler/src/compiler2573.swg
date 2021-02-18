@@ -1,3 +1,5 @@
+#global testerror
+
 func toto()
 {
     throw "titi"
@@ -11,5 +13,5 @@ func titi()
 
 #test
 {
-    assume titi()
+    try titi()
 }

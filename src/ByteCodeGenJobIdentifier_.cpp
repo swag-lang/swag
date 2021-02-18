@@ -241,7 +241,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 {
     PushICFlags ic(context, BCI_TRYCATCH);
 
-    auto node              = CastAst<AstTryCatch>(context->node, AstNodeKind::Assume);
+    auto node              = CastAst<AstTryCatch>(context->node, AstNodeKind::Try, AstNodeKind::Assume);
     node->resultRegisterRC = node->childs.front()->childs.back()->resultRegisterRC;
 
     RegisterList r0;
