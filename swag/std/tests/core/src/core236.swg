@@ -11,7 +11,7 @@ var G = 666
 //#[swag.printbc]
 #test
 {
-    /*var x: AA
+    var x: AA
     x.ptr = &G
 
     var arr: Array'AA
@@ -20,5 +20,5 @@ var G = 666
 
     arr.add(x)
     @assert(arr[0].ptr[0] == 666)
-    @assert(arr[1].ptr[0] == 666)*/
+    @assert(arr[1].ptr[0] == 666)
 }
