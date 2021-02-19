@@ -46,6 +46,11 @@ impl Array
         }
     }
 
+    func opCast(using self)->const [..] T
+    {
+        return @mkslice(buffer, count)
+    }
+
     func opSlice(using self, lower, upper: uint)->[..] T
     {
         debug.assert(lower <= upper && lower < count && upper < count)
