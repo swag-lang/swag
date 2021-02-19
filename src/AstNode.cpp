@@ -1160,6 +1160,17 @@ AstNode* AstDropCopyMove::clone(CloneContext& context)
     return newNode;
 }
 
+AstNode* AstReloc::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstReloc>();
+    newNode->copyFrom(context, this);
+
+    newNode->expression1 = findChildRef(expression1, newNode);
+    newNode->expression2 = findChildRef(expression2, newNode);
+    newNode->count       = findChildRef(count, newNode);
+    return newNode;
+}
+
 AstNode* AstReturn::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstReturn>();

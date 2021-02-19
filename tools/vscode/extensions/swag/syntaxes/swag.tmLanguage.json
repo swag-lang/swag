@@ -104,7 +104,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(init|drop|index|mkany|mkslice|mkstring|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|postcopy|postmove|spread|isconstexpr|err)\\b"
+          "match": "(@)\\b(init|drop|index|mkany|mkslice|mkstring|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|postcopy|postmove|reloc|spread|isconstexpr|err)\\b"
         }
       ]
     },

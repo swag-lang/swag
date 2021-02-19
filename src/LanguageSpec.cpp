@@ -118,6 +118,7 @@ void LanguageSpec::setup()
     keywords["@drop"]        = TokenId::IntrinsicDrop;
     keywords["@postmove"]    = TokenId::IntrinsicPostMove;
     keywords["@postcopy"]    = TokenId::IntrinsicPostCopy;
+    keywords["@reloc"]       = TokenId::IntrinsicReloc;
     keywords["@sizeof"]      = TokenId::IntrinsicSizeOf;
     keywords["@alignof"]     = TokenId::IntrinsicAlignOf;
     keywords["@offsetof"]    = TokenId::IntrinsicOffsetOf;

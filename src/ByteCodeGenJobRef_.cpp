@@ -798,6 +798,68 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
     return true;
 }
 
+bool ByteCodeGenJob::emitReloc(ByteCodeGenContext* context)
+{
+    auto node           = CastAst<AstReloc>(context->node, AstNodeKind::Reloc);
+    auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression1->typeInfo), TypeInfoKind::Pointer);
+
+    if (typeExpression->pointedType->kind != TypeInfoKind::Struct)
+    {
+        freeRegisterRC(context, node->expression1);
+        freeRegisterRC(context, node->expression2);
+        freeRegisterRC(context, node->count);
+        return true;
+    }
+
+    // Number of elements to deal with. If 0, then this is dynamic
+    uint64_t numToDo = 0;
+    if (!node->count)
+        numToDo = 1;
+    else if (node->count->flags & AST_VALUE_COMPUTED)
+        numToDo = node->count->computedValue.reg.u64;
+    else if (!(node->count->doneFlags & AST_DONE_CAST1))
+    {
+        SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->count->doneFlags |= AST_DONE_CAST1;
+    }
+
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
+    generateStruct_opReloc(context, typeStruct);
+    if (context->result == ContextResult::Pending)
+        return true;
+
+    if (typeStruct->opReloc)
+    {
+        auto startLoop = context->bc->numInstructions;
+        emitInstruction(context, ByteCodeOp::PushRAParam2, node->expression2->resultRegisterRC, node->expression1->resultRegisterRC);
+        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
+        inst->a.pointer = (uint8_t*) typeStruct->opReloc;
+        inst->b.pointer = (uint8_t*) typeStruct->opReloc->typeInfoFunc;
+        emitInstruction(context, ByteCodeOp::IncSPPostCall, 2 * 8);
+
+        if (numToDo != 1)
+        {
+            inst        = emitInstruction(context, ByteCodeOp::IncPointer64, node->expression1->resultRegisterRC, 0, node->expression1->resultRegisterRC);
+            inst->b.u64 = typeExpression->pointedType->sizeOf;
+            inst->flags |= BCI_IMM_B;
+            inst        = emitInstruction(context, ByteCodeOp::IncPointer64, node->expression2->resultRegisterRC, 0, node->expression2->resultRegisterRC);
+            inst->b.u64 = typeExpression->pointedType->sizeOf;
+            inst->flags |= BCI_IMM_B;
+
+            emitInstruction(context, ByteCodeOp::DecrementRA64, node->count->resultRegisterRC);
+            auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero64, node->count->resultRegisterRC);
+            instJump->b.s32 = startLoop - context->bc->numInstructions;
+        }
+    }
+
+    freeRegisterRC(context, node->expression1);
+    freeRegisterRC(context, node->expression2);
+    freeRegisterRC(context, node->count);
+    return true;
+}
+
 bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
 {
     auto node           = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);

@@ -147,6 +147,7 @@ enum class AstNodeKind : uint8_t
     Drop,
     PostCopy,
     PostMove,
+    Reloc,
     Try,
     Catch,
     Assume,
@@ -786,6 +787,15 @@ struct AstDropCopyMove : public AstNode
     AstNode* clone(CloneContext& context) override;
 
     AstNode* expression;
+    AstNode* count;
+};
+
+struct AstReloc : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+
+    AstNode* expression1;
+    AstNode* expression2;
     AstNode* count;
 };
 

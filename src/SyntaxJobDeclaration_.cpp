@@ -374,6 +374,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicPostMove:
         SWAG_CHECK(doDropCopyMove(parent, result));
         break;
+    case TokenId::IntrinsicReloc:
+        SWAG_CHECK(doReloc(parent, result));
+        break;
     case TokenId::KwdBreak:
         SWAG_CHECK(doBreak(parent, result));
         break;

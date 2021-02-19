@@ -336,6 +336,7 @@ struct SemanticJob : public Job
     static bool resolveNullConditionalOp(SemanticContext* context);
     static bool resolveInit(SemanticContext* context);
     static bool resolveDropCopyMove(SemanticContext* context);
+    static bool resolveReloc(SemanticContext* context);
     static bool resolveTupleUnpackBefore(SemanticContext* context);
 
     AstNode* backToSemError();

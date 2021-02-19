@@ -583,7 +583,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'%s' first parameter should be a pointer to a struct, but is '%s'", node->token.text.c_str(), expressionTypeInfo->name.c_str())}));
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'%s' first parameter should be a pointer, but is '%s'", node->token.text.c_str(), expressionTypeInfo->name.c_str())}));
 
     if (node->count)
     {
@@ -593,6 +593,29 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitDropCopyMove;
+    return true;
+}
+
+bool SemanticJob::resolveReloc(SemanticContext* context)
+{
+    auto node                = CastAst<AstReloc>(context->node, AstNodeKind::Reloc);
+    auto expression1TypeInfo = TypeManager::concreteType(node->expression1->typeInfo);
+    auto expression2TypeInfo = TypeManager::concreteType(node->expression2->typeInfo);
+
+    SWAG_VERIFY(expression1TypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression1, format("'%s' first parameter should be a pointer, but is '%s'", node->token.text.c_str(), expression1TypeInfo->name.c_str())}));
+    SWAG_VERIFY(expression2TypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression2, format("'%s' second parameter should be a pointer, but is '%s'", node->token.text.c_str(), expression2TypeInfo->name.c_str())}));
+    auto ptrType1 = CastTypeInfo<TypeInfoPointer>(expression1TypeInfo, TypeInfoKind::Pointer);
+    auto ptrType2 = CastTypeInfo<TypeInfoPointer>(expression2TypeInfo, TypeInfoKind::Pointer);
+    SWAG_VERIFY(ptrType1->pointedType == ptrType2->pointedType, context->report({node->expression2, format("'%s' second parameter should be a pointer to type '%s', but points to '%s'", node->token.text.c_str(), expression1TypeInfo->name.c_str(), expression2TypeInfo->name.c_str())}));
+
+    if (node->count)
+    {
+        auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
+        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'%s' count parameter should be an integer, but is '%s'", node->token.text.c_str(), countTypeInfo->name.c_str())}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_COERCE_FULL));
+    }
+
+    node->byteCodeFct = ByteCodeGenJob::emitReloc;
     return true;
 }
 

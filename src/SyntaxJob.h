@@ -168,6 +168,7 @@ struct SyntaxJob : public Job
     bool doLeftExpression(AstNode** result);
     bool doInit(AstNode* parent, AstNode** result = nullptr);
     bool doDropCopyMove(AstNode* parent, AstNode** result = nullptr);
+    bool doReloc(AstNode* parent, AstNode** result = nullptr);
 
     SyntaxContext       context;
     Tokenizer           tokenizer;
