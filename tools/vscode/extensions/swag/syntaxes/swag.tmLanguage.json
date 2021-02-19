@@ -213,7 +213,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "\\b(opSlice|opBinary|opUnary|opAssign|opIndexAssign|opIndexAffect|opCast|opCount|opData|opVisit|opInit|opEquals|opCmp|opPostCopy|opPostMove|opDrop|opCount|opAffect|opIndex|opIndexAssign)\\b"
+          "match": "\\b(opSlice|opBinary|opUnary|opAssign|opIndexAssign|opIndexAffect|opCast|opCount|opData|opVisit|opInit|opReloc|opEquals|opCmp|opPostCopy|opPostMove|opDrop|opCount|opAffect|opIndex|opIndexAssign)\\b"
         },
         {
           "name": "entity.name.function.intrinsic",

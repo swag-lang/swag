@@ -319,6 +319,7 @@ namespace swag
         using base: 	TypeInfo
         opInit:         func(*void)
         opDrop:         func(*void)
+        opReloc:        func(*void, *void)
         opPostCopy:     func(*void)
         opPostMove:     func(*void)
         generics:		const [..]~8 TypeInfoParam

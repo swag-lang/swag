@@ -22,24 +22,35 @@ bool TypeTableJob::computeStruct()
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasDrop;
 
     // Special functions lambda
+    concreteType->opInit = nullptr;
     if (realType->opInit)
     {
         concreteType->opInit = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opInit);
         segment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->callName(), DataSegment::RelocType::Local);
     }
 
+    concreteType->opDrop = nullptr;
     if (realType->opDrop)
     {
         concreteType->opDrop = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opDrop);
         segment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->callName(), DataSegment::RelocType::Local);
     }
 
+    concreteType->opReloc = nullptr;
+    if (realType->opReloc)
+    {
+        concreteType->opReloc = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opReloc);
+        segment->addInitPtrFunc(OFFSETOF(concreteType->opReloc), realType->opReloc->callName(), DataSegment::RelocType::Local);
+    }
+
+    concreteType->opPostCopy = nullptr;
     if (realType->opPostCopy)
     {
         concreteType->opPostCopy = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opPostCopy);
         segment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->callName(), DataSegment::RelocType::Local);
     }
 
+    concreteType->opPostMove = nullptr;
     if (realType->opPostMove)
     {
         concreteType->opPostMove = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opPostMove);
