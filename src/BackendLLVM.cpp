@@ -211,9 +211,9 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
 
         if (precompileIndex == 0)
         {
-            emitInitMutableSeg(buildParameters);
-            emitInitTypeSeg(buildParameters);
-            emitInitConstantSeg(buildParameters);
+            emitInitSeg(buildParameters, &module->mutableSegment, SegmentKind::Data);
+            emitInitSeg(buildParameters, &module->constantSegment, SegmentKind::Constant);
+            emitInitSeg(buildParameters, &module->typeSegment, SegmentKind::Type);
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
             emitMain(buildParameters);

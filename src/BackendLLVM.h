@@ -10,6 +10,7 @@ struct ByteCode;
 struct TypeInfo;
 struct ByteCodeInstruction;
 struct BackendLLVMDbg;
+enum class SegmentKind;
 
 struct LLVMPerThread
 {
@@ -134,9 +135,7 @@ struct BackendLLVM : public Backend
     bool generateObjFile(const BuildParameters& buildParameters);
 
     bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment);
-    bool emitInitMutableSeg(const BuildParameters& buildParameters);
-    bool emitInitTypeSeg(const BuildParameters& buildParameters);
-    bool emitInitConstantSeg(const BuildParameters& buildParameters);
+    bool emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me);
 
     bool emitGlobalInit(const BuildParameters& buildParameters);
     bool emitGlobalDrop(const BuildParameters& buildParameters);

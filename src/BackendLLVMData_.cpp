@@ -86,7 +86,7 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
     return true;
 }
 
-bool BackendLLVM::emitInitMutableSeg(const BuildParameters& buildParameters)
+bool BackendLLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
@@ -97,127 +97,62 @@ bool BackendLLVM::emitInitMutableSeg(const BuildParameters& buildParameters)
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, "initMutableSeg", modu);
+    auto                  fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
+    const char*           name    = nullptr;
+    llvm::GlobalVariable* gVar    = nullptr;
+    switch (me)
+    {
+    case SegmentKind::Data:
+        name = "initMutableSeg";
+        gVar = pp.mutableSeg;
+        break;
+    case SegmentKind::Constant:
+        name = "initConstantSeg";
+        gVar = pp.constantSeg;
+        break;
+    case SegmentKind::Type:
+        name = "initTypeSeg";
+        gVar = pp.typeSeg;
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+    llvm::Function* fct = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, name, modu);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
 
-    auto ms = pp.mutableSeg;
-    auto cs = pp.constantSeg;
-    auto ts = pp.typeSeg;
-    for (auto& k : module->mutableSegment.initPtr)
+    for (auto& k : dataSegment->initPtr)
     {
-        if (k.fromSegment == SegmentKind::Constant)
+        auto fromSegment = k.fromSegment;
+        if (fromSegment == SegmentKind::Me)
+            fromSegment = me;
+        if (fromSegment == SegmentKind::Constant)
         {
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ms), builder.getInt64(k.patchOffset));
+            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(gVar), builder.getInt64(k.patchOffset));
             dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
-            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.srcOffset));
+            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt64(k.srcOffset));
+            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
+            builder.CreateStore(src, dest);
+        }
+        else if (fromSegment == SegmentKind::Type)
+        {
+            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(gVar), builder.getInt64(k.patchOffset));
+            dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
+            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(pp.typeSeg), builder.getInt64(k.srcOffset));
             src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
             builder.CreateStore(src, dest);
         }
         else
         {
-            SWAG_ASSERT(k.fromSegment == SegmentKind::Type);
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ms), builder.getInt64(k.patchOffset));
-            dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
-            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.srcOffset));
-            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
-            builder.CreateStore(src, dest);
+            SWAG_ASSERT(false);
         }
     }
 
-    builder.CreateRetVoid();
-    return true;
-}
-
-bool BackendLLVM::emitInitTypeSeg(const BuildParameters& buildParameters)
-{
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
-    SWAG_ASSERT(precompileIndex == 0);
-
-    auto& pp      = *perThread[ct][precompileIndex];
-    auto& context = *pp.context;
-    auto& builder = *pp.builder;
-    auto& modu    = *pp.module;
-
-    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, "initTypeSeg", modu);
-
-    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
-    builder.SetInsertPoint(BB);
-
-    auto ts = pp.typeSeg;
-    auto cs = pp.constantSeg;
-    for (auto& k : module->typeSegment.initPtr)
+    for (auto& k : dataSegment->initFuncPtr)
     {
-        if (k.fromSegment == SegmentKind::Me)
-        {
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.patchOffset));
-            dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
-            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.srcOffset));
-            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
-            builder.CreateStore(src, dest);
-        }
-        else
-        {
-            SWAG_ASSERT(k.fromSegment == SegmentKind::Constant);
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.patchOffset));
-            dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
-            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.srcOffset));
-            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
-            builder.CreateStore(src, dest);
-        }
-    }
-
-    builder.CreateRetVoid();
-    return true;
-}
-
-bool BackendLLVM::emitInitConstantSeg(const BuildParameters& buildParameters)
-{
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
-    SWAG_ASSERT(precompileIndex == 0);
-
-    auto& pp      = *perThread[ct][precompileIndex];
-    auto& context = *pp.context;
-    auto& builder = *pp.builder;
-    auto& modu    = *pp.module;
-
-    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::InternalLinkage, "initConstantSeg", modu);
-
-    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
-    builder.SetInsertPoint(BB);
-
-    auto cs = pp.constantSeg;
-    auto ts = pp.typeSeg;
-    for (auto& k : module->constantSegment.initPtr)
-    {
-        if (k.fromSegment == SegmentKind::Me || k.fromSegment == SegmentKind::Constant)
-        {
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.patchOffset));
-            dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
-            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.srcOffset));
-            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
-            builder.CreateStore(src, dest);
-        }
-        else
-        {
-            SWAG_ASSERT(k.fromSegment == SegmentKind::Type);
-            auto dest = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.patchOffset));
-            dest      = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
-            auto src  = builder.CreateInBoundsGEP(TO_PTR_I8(ts), builder.getInt64(k.srcOffset));
-            src       = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, src, llvm::Type::getInt64Ty(context));
-            builder.CreateStore(src, dest);
-        }
-    }
-
-    for (auto& k : module->constantSegment.initFuncPtr)
-    {
-        auto dest      = builder.CreateInBoundsGEP(TO_PTR_I8(cs), builder.getInt64(k.first));
+        auto dest      = builder.CreateInBoundsGEP(TO_PTR_I8(gVar), builder.getInt64(k.first));
         dest           = builder.CreatePointerCast(dest, llvm::Type::getInt64PtrTy(context));
         auto relocType = k.second.second;
         auto F         = modu.getOrInsertFunction(k.second.first.c_str(), fctType);
