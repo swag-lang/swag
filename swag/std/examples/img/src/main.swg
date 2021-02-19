@@ -42,7 +42,7 @@ func loadImg()
     data := imagePath("image2.bmp")
     bytes := try file.readAllBytes(data)
     var dec: image.bmp.Decoder
-    img := try dec.decode(bytes.toSlice())
+    img := try dec.IDecoder.decode(bytes.toSlice())
 
     glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)

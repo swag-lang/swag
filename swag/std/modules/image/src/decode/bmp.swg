@@ -50,9 +50,9 @@ public struct Decoder
 {
 }
 
-impl Decoder
+public impl IDecoder for Decoder
 {
-    public func decode(using self, buffer: const [..] u8)->Image
+    func decode(using self, buffer: const [..] u8)->Image
     {
         dataof := @dataof(buffer)
         countof := @countof(buffer)
