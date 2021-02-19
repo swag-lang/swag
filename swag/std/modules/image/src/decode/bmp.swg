@@ -54,7 +54,7 @@ public impl IDecoder for Decoder
 {
     func canDecode(using self, fileName: string)->bool
     {
-        return path.getExtension(fileName) == ".bmp"
+        return path.getLowerCaseExtension(fileName) == ".bmp"
     }
 
     func decode(using self, buffer: const [..] u8)->Image

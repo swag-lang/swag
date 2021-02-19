@@ -522,9 +522,25 @@ impl String
     }
 
     // Returns a new String in lower case
+    func toUpper(str: string, set = CharacterSet.Latin1)->String
+    {
+        var result: retval = str
+        result.makeUpper(set)
+        return result
+    }
+
+    // Returns a new String in lower case
     func toLower(using self, set = CharacterSet.Latin1)->String
     {
         var result: retval = :self
+        result.makeLower(set)
+        return result
+    }
+
+    // Returns a new String in lower case
+    func toLower(str: string, set = CharacterSet.Latin1)->String
+    {
+        var result: retval = str
         result.makeLower(set)
         return result
     }

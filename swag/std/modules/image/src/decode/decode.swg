@@ -23,7 +23,7 @@ public func(T) addDecoder()
 {
     #assert reflection.hasInterface(@typeof(T), IDecoder)
 
-    var decoder: Decoder
+    var decoder: Decoder = ?
     decoder.type = @typeof(T)
     decoder.itf = @mkinterface(null, @typeof(T), IDecoder)
     g_Decoder.add(decoder)
@@ -32,8 +32,6 @@ public func(T) addDecoder()
 // Load an image from file
 public func load(fileName: string)->Image
 {
-    var result: retval
-
     // Find the decoder that can treat 'fileName'
     var found: *Decoder
     visit *decoder: g_Decoder
@@ -47,7 +45,17 @@ public func load(fileName: string)->Image
 
     if !found throw "unknown image format"
 
-    return result
+    // Read file content
+    bytes := try file.readAllBytes(fileName)
+
+    // Create a decoder instance
+    ptrDecoder := memory.alloc(found.type.sizeof)
+    defer memory.free(ptrDecoder, found.type.sizeof)
+    if found.type.opInit found.type.opInit(ptrDecoder)
+
+    // Decode
+    itf := @mkinterface(ptrDecoder, found.type, IDecoder)
+    return itf.decode(bytes.toSlice())
 }
 
 // Initialize predefined decoders

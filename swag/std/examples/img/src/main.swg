@@ -39,11 +39,8 @@ func display()
 var textureID: GLuint
 func loadImg()
 {
-    data := imagePath("image2.bmp")
-    img1 := try image.load(data)
-    bytes := try file.readAllBytes(data)
-    var dec: image.bmp.Decoder
-    img := try dec.IDecoder.decode(bytes.toSlice())
+    data := imagePath("image2.Bmp")
+    img := try image.load(data)
 
     glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)

@@ -129,6 +129,13 @@ func getExtension(fullname: string)->string
     return null
 }
 
+// Returns the file name extension, including the '.' character, in lower case
+// Returns null if no extension was found
+func getLowerCaseExtension(fullname: string)->String
+{
+    return String.toLower(getExtension(fullname))
+}
+
 // Returns true if the file name contains an extension
 #[constexpr]
 func hasExtension(fullname: string)->bool
