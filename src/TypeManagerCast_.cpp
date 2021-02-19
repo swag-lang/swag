@@ -74,6 +74,14 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
             auto symbol     = structNode->scope->symTable.find("opCast");
+
+            // Instantate opCast, in a generic struct, will be in the scope of the original struct, not the intantiated one
+            if (!symbol && typeStruct->fromGeneric)
+            {
+                structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
+                symbol     = structNode->scope->symTable.find("opCast");
+            }
+
             if (symbol)
             {
                 // Wait for all opCast to be solved
@@ -90,6 +98,8 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
                 for (auto over : symbol->overloads)
                 {
                     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+                    if (typeFunc->flags & TYPEINFO_GENERIC || typeFunc->returnType->flags & TYPEINFO_GENERIC)
+                        continue;
                     if (typeFunc->returnType->isSame(toType, 0))
                         toCast.push_back(over);
                 }
