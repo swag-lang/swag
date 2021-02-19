@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "ByteCode.h"
 
-bool BackendX64::buildRelocMutableSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable)
+bool BackendX64::buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable, SegmentKind me)
 {
     if (!dataSegment->buckets.size())
         return true;
@@ -21,85 +21,22 @@ bool BackendX64::buildRelocMutableSegment(const BuildParameters& buildParameters
     {
         uint32_t sym;
         SWAG_ASSERT(k.patchOffset <= dataSegment->totalCount - sizeof(void*));
-        if (k.fromSegment == SegmentKind::Constant)
-            sym = pp.symCSIndex;
-        else
+
+        auto fromSegment = k.fromSegment;
+        if (fromSegment == SegmentKind::Me)
+            fromSegment = me;
+        switch (fromSegment)
         {
-            SWAG_ASSERT(k.fromSegment == SegmentKind::Type);
-            sym = pp.symTSIndex;
-        }
-
-        *(uint64_t*) dataSegment->address(k.patchOffset) = k.srcOffset;
-
-        reloc.virtualAddress = k.patchOffset;
-        reloc.symbolIndex    = sym;
-        reloc.type           = IMAGE_REL_AMD64_ADDR64;
-        relocTable.table.push_back(reloc);
-    }
-
-    return true;
-}
-
-bool BackendX64::buildRelocTypeSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable)
-{
-    if (!dataSegment->buckets.size())
-        return true;
-    if (!dataSegment->totalCount)
-        return true;
-
-    int            ct              = buildParameters.compileType;
-    int            precompileIndex = buildParameters.precompileIndex;
-    auto&          pp              = *perThread[ct][precompileIndex];
-    CoffRelocation reloc;
-
-    SWAG_ASSERT(precompileIndex == 0);
-    for (auto& k : dataSegment->initPtr)
-    {
-        uint32_t sym;
-        SWAG_ASSERT(k.patchOffset <= dataSegment->totalCount - sizeof(void*));
-        if (k.fromSegment == SegmentKind::Me)
-            sym = pp.symTSIndex;
-        else
-        {
-            SWAG_ASSERT(k.fromSegment == SegmentKind::Constant);
+        case SegmentKind::Constant:
             sym = pp.symCSIndex;
-        }
-
-        *(uint64_t*) dataSegment->address(k.patchOffset) = k.srcOffset;
-
-        reloc.virtualAddress = k.patchOffset;
-        reloc.symbolIndex    = sym;
-        reloc.type           = IMAGE_REL_AMD64_ADDR64;
-        relocTable.table.push_back(reloc);
-    }
-
-    dataSegment->applyPatchPtr();
-    return true;
-}
-
-bool BackendX64::buildRelocConstantSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable)
-{
-    if (!dataSegment->buckets.size())
-        return true;
-    if (!dataSegment->totalCount)
-        return true;
-
-    int            ct              = buildParameters.compileType;
-    int            precompileIndex = buildParameters.precompileIndex;
-    auto&          pp              = *perThread[ct][precompileIndex];
-    CoffRelocation reloc;
-
-    SWAG_ASSERT(precompileIndex == 0);
-    for (auto& k : dataSegment->initPtr)
-    {
-        uint32_t sym;
-        SWAG_ASSERT(k.patchOffset <= dataSegment->totalCount - sizeof(void*));
-        if (k.fromSegment == SegmentKind::Me || k.fromSegment == SegmentKind::Constant)
-            sym = pp.symCSIndex;
-        else
-        {
-            SWAG_ASSERT(k.fromSegment == SegmentKind::Type);
+            break;
+        case SegmentKind::Type:
             sym = pp.symTSIndex;
+            break;
+        default:
+            SWAG_ASSERT(false);
+            sym = 0;
+            break;
         }
 
         *(uint64_t*) dataSegment->address(k.patchOffset) = k.srcOffset;

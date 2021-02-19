@@ -80,6 +80,28 @@ void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruc
     localCall(context, bc, 4);
 }
 
+void* ByteCodeRun::makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCode* bc)
+{
+    if (funcNode && funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+    {
+        auto funcPtr = ffiGetFuncAddress(context, funcNode);
+        if (!funcPtr)
+            return nullptr;
+
+        // If this assert, then Houston we have a problem. At one point in time, i was using the lower bit to determine if a lambda is bytecode or native.
+        // But thanks to clang, it seems that the function pointer could have it's lower bit set (optim level 1).
+        // So now its the highest bit.
+        SWAG_ASSERT(!isByteCodeLambda(funcPtr));
+
+        return doForeignLambda(funcPtr);
+    }
+    else
+    {
+        SWAG_ASSERT(bc);
+        return doByteCodeLambda(bc);
+    }
+}
+
 bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc)
 {
     switch (ip->op)
@@ -714,25 +736,8 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::MakeLambda:
     {
-        auto funcNode = (AstFuncDecl*) ip->b.pointer;
-        SWAG_ASSERT(funcNode);
-
-        if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
-        {
-            auto funcPtr = ffiGetFuncAddress(context, funcNode);
-            SWAG_ASSERT(funcPtr);
-
-            // If this assert, then Houston we have a problem. At one point in time, i was using the lower bit to determine if a lambda is bytecode or native.
-            // But thanks to clang, it seems that the function pointer could have it's lower bit set (optim level 1).
-            // So now its the highest bit.
-            SWAG_ASSERT(!isByteCodeLambda(funcPtr));
-
-            registersRC[ip->a.u32].pointer = (uint8_t*) doForeignLambda(funcPtr);
-        }
-        else
-        {
-            registersRC[ip->a.u32].pointer = (uint8_t*) doByteCodeLambda((void*) ip->c.pointer);
-        }
+        auto funcNode                  = (AstFuncDecl*) ip->b.pointer;
+        registersRC[ip->a.u32].pointer = (uint8_t*) makeLambda(context, funcNode, (ByteCode*) ip->c.pointer);
         break;
     }
     case ByteCodeOp::ForeignCall:

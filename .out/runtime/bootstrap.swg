@@ -317,6 +317,7 @@ namespace swag
     struct TypeInfoStruct
     {
         using base: 	TypeInfo
+        opInit:         func(*void)
         generics:		const [..]~8 TypeInfoParam
         fields:		    const [..]~8 TypeInfoParam
         methods:	    const [..]~8 TypeInfoParam

@@ -276,6 +276,7 @@ struct ConcreteTypeInfoParam
 struct ConcreteTypeInfoStruct
 {
     ConcreteTypeInfo      base;
+    void*                 opInit;
     ConcreteRelativeSlice generics;
     ConcreteRelativeSlice fields;
     ConcreteRelativeSlice methods;

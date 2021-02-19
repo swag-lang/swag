@@ -4,6 +4,7 @@
 #include "SourceFile.h"
 #include "TypeTableJob.h"
 #include "Generic.h"
+#include "ByteCode.h"
 
 thread_local Pool<TypeTableJob> g_Pool_typeTableJob;
 
@@ -19,6 +20,12 @@ bool TypeTableJob::computeStruct()
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostMove;
     if (realType->opDrop || realType->opUserDropFct)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasDrop;
+
+    if (realType->opInit)
+    {
+        concreteType->opInit = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opInit);
+        segment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->callName(), DataSegment::RelocType::Local);
+    }
 
     // First and main pass, by locking only the type segment
     {

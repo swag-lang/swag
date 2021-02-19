@@ -333,9 +333,10 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         // Specific functions in the main file
         if (precompileIndex == 0)
         {
-            buildRelocConstantSegment(buildParameters, &module->constantSegment, pp.relocTableCSSection);
-            buildRelocMutableSegment(buildParameters, &module->mutableSegment, pp.relocTableMSSection);
-            buildRelocTypeSegment(buildParameters, &module->typeSegment, pp.relocTableTSSection);
+            buildRelocSegment(buildParameters, &module->constantSegment, pp.relocTableCSSection, SegmentKind::Constant);
+            buildRelocSegment(buildParameters, &module->mutableSegment, pp.relocTableMSSection, SegmentKind::Data);
+            buildRelocSegment(buildParameters, &module->typeSegment, pp.relocTableTSSection, SegmentKind::Type);
+            module->typeSegment.applyPatchPtr();
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
             emitOS(buildParameters);

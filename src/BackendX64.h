@@ -328,9 +328,7 @@ struct BackendX64 : public Backend
 
     bool saveObjFile(const BuildParameters& buildParameters);
 
-    bool buildRelocConstantSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
-    bool buildRelocTypeSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
-    bool buildRelocMutableSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable);
+    bool buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable, SegmentKind me);
 
     bool emitGlobalInit(const BuildParameters& buildParameters);
     bool emitGlobalDrop(const BuildParameters& buildParameters);
