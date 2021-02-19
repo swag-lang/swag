@@ -2,7 +2,13 @@ using swag, core
 
 private
 {
-    var g_Decoder: Array'(const *TypeInfoStruct)
+    struct Decoder
+    {
+        type:   const *TypeInfoStruct
+        itf:    IDecoder
+    }
+
+    var g_Decoder: Array'Decoder
 }
 
 // Interface to decode a buffer
@@ -16,13 +22,31 @@ public interface IDecoder
 public func(T) addDecoder()
 {
     #assert reflection.hasInterface(@typeof(T), IDecoder)
-    g_Decoder.add(@typeof(T))
+
+    var decoder: Decoder
+    decoder.type = @typeof(T)
+    decoder.itf = @mkinterface(null, @typeof(T), IDecoder)
+    g_Decoder.add(decoder)
 }
 
 // Load an image from file
 public func load(fileName: string)->Image
 {
     var result: retval
+
+    // Find the decoder that can treat 'fileName'
+    var found: *Decoder
+    visit *decoder: g_Decoder
+    {
+        if decoder.itf.canDecode(fileName)
+        {
+            found = decoder
+            break
+        }
+    }
+
+    if !found throw "unknown image format"
+
     return result
 }
 
