@@ -1,18 +1,22 @@
-using core
+using swag, core
 
-private var g_Decoder: Array'typeinfo
+private
+{
+    var g_Decoder: Array'(const *TypeInfoStruct)
+}
 
 // Interface to decode a buffer
 public interface IDecoder
 {
-    decode: func(self, const [..] u8)->Image
+    canDecode:  func(self, string)->bool
+    decode:     func(self, const [..] u8)->Image
 }
 
-// Register an iamge decoder
-public func addDecoder(decoder: typeinfo)
+// Register an image decoder
+public func(T) addDecoder()
 {
-    debug.assert(reflection.hasInterface(decoder, IDecoder))
-    g_Decoder.add(decoder)
+    #assert reflection.hasInterface(@typeof(T), IDecoder)
+    g_Decoder.add(@typeof(T))
 }
 
 // Load an image from file
@@ -25,5 +29,5 @@ public func load(fileName: string)->Image
 // Initialize predefined decoders
 #init
 {
-    addDecoder(@typeof(bmp.Decoder))
+    addDecoder'(bmp.Decoder)()
 }

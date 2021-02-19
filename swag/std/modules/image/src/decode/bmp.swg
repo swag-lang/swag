@@ -52,6 +52,11 @@ public struct Decoder
 
 public impl IDecoder for Decoder
 {
+    func canDecode(using self, fileName: string)->bool
+    {
+        return path.getExtension(fileName) == ".bmp"
+    }
+
     func decode(using self, buffer: const [..] u8)->Image
     {
         dataof := @dataof(buffer)
