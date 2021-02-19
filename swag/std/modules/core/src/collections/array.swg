@@ -144,13 +144,9 @@ impl Array
             {
                 @postmove(newBuffer, count)
             }
-            #elif reflection.hasPostCopy(@typeof(T))
+            #else
             {
                 @postcopy(newBuffer, count)
-                @drop(buffer, count)
-            }
-            #elif reflection.hasDrop(@typeof(T))
-            {
                 @drop(buffer, count)
             }
         }
