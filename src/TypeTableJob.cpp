@@ -14,14 +14,16 @@ bool TypeTableJob::computeStruct()
     auto realType     = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
     auto segment      = typeTable->getSegmentStorage(module, cflags);
 
+    // Special functions lambda
     if (realType->opPostCopy || realType->opUserPostCopyFct)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostCopy;
     if (realType->opPostMove || realType->opUserPostMoveFct)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostMove;
     if (realType->opDrop || realType->opUserDropFct)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasDrop;
+    if (realType->opReloc)
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasReloc;
 
-    // Special functions lambda
     concreteType->opInit = nullptr;
     if (realType->opInit)
     {

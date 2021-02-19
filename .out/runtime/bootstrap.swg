@@ -253,10 +253,11 @@ namespace swag
         Integer     = 0x0002
         Float       = 0x0004
         Unsigned    = 0x0008
-        HasPostCopy = 0x0010
-        HasPostMove = 0x0020
-        HasDrop     = 0x0040
-        Strict      = 0x0080
+        HasReloc    = 0x0010
+        HasPostCopy = 0x0020
+        HasPostMove = 0x0040
+        HasDrop     = 0x0080
+        Strict      = 0x0100
     }
 
     struct TypeInfo
