@@ -14,6 +14,9 @@ ca serait cool que les methods, en reflections, aient une value qui peut être ca
 TODO
 ****************************************
 -------------------------------------
+relative pointers & dyn array par exemple. Merger opPostCopy/Move et opReloc pour éviter de devoir
+faire deux appels ?
+-------------------------------------
 try/catch & lambdas
 -------------------------------------
 char => rune ?

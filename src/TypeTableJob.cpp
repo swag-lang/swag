@@ -21,10 +21,29 @@ bool TypeTableJob::computeStruct()
     if (realType->opDrop || realType->opUserDropFct)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasDrop;
 
+    // Special functions lambda
     if (realType->opInit)
     {
         concreteType->opInit = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opInit);
         segment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->callName(), DataSegment::RelocType::Local);
+    }
+
+    if (realType->opDrop)
+    {
+        concreteType->opDrop = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opDrop);
+        segment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->callName(), DataSegment::RelocType::Local);
+    }
+
+    if (realType->opPostCopy)
+    {
+        concreteType->opPostCopy = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opPostCopy);
+        segment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->callName(), DataSegment::RelocType::Local);
+    }
+
+    if (realType->opPostMove)
+    {
+        concreteType->opPostMove = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opPostMove);
+        segment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->callName(), DataSegment::RelocType::Local);
     }
 
     // First and main pass, by locking only the type segment

@@ -8,9 +8,11 @@ struct AA
 {
     t := @typeof(AA)
 
-    ptr := cast(*AA) @alloc(t.sizeof)
-    t.opInit(ptr)
-    @assert(ptr.x == 666)
-    @assert(ptr.y == 666)
+    ptr := @alloc(t.sizeof)
     defer @free(ptr)
+
+    ptr1 := cast(*AA) ptr
+    t.opInit(ptr1)
+    @assert(ptr1.x == 666)
+    @assert(ptr1.y == 666)
 }

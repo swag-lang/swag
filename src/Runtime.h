@@ -277,6 +277,9 @@ struct ConcreteTypeInfoStruct
 {
     ConcreteTypeInfo      base;
     void*                 opInit;
+    void*                 opDrop;
+    void*                 opPostCopy;
+    void*                 opPostMove;
     ConcreteRelativeSlice generics;
     ConcreteRelativeSlice fields;
     ConcreteRelativeSlice methods;
