@@ -576,7 +576,7 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             bufferSwg.addIndent(indent);
             bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")]", module->name.c_str(), node->fullnameForeign.c_str());
             bufferSwg.addEol();
-            if (node->numTry || node->numThrow)
+            if (node->numTry || node->numThrow || (node->typeInfo->flags & TYPEINFO_RAISE_ERRORS))
             {
                 bufferSwg.addIndent(indent);
                 bufferSwg.addString("#[raiseerrors]");

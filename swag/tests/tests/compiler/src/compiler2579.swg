@@ -8,5 +8,5 @@ func toto()
     var x: func()
 
     x = &toto
-    try x()
+    x()
 }

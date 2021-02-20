@@ -839,25 +839,28 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // Error, check validity.
     // Do it very late, and not in semantic, because we need the function to be full solved (numTry or numThrow
     // can change because of #if inside functions)
+    bool raiseErrors = false;
     if (funcNode)
-    {
-        if ((funcNode->numTry || funcNode->numThrow) &&
-            node->parent->parent->kind != AstNodeKind::Try &&
-            node->parent->parent->kind != AstNodeKind::Catch &&
-            node->parent->parent->kind != AstNodeKind::Assume &&
-            node->parent->parent->kind != AstNodeKind::Alias)
-        {
-            return context->report({node, node->token, format("uncatched error when calling function '%s'", node->token.text.c_str())});
-        }
+        raiseErrors = funcNode->numTry || funcNode->numThrow;
+    if (typeInfoFunc->flags & TYPEINFO_RAISE_ERRORS)
+        raiseErrors = true;
 
-        if (!funcNode->numTry && !funcNode->numThrow)
+    if (raiseErrors &&
+        node->parent->parent->kind != AstNodeKind::Try &&
+        node->parent->parent->kind != AstNodeKind::Catch &&
+        node->parent->parent->kind != AstNodeKind::Assume &&
+        node->parent->parent->kind != AstNodeKind::Alias)
+    {
+        return context->report({node, node->token, format("uncatched error when calling function '%s'", node->token.text.c_str())});
+    }
+
+    if (!raiseErrors)
+    {
+        if (node->parent->parent->kind == AstNodeKind::Try ||
+            node->parent->parent->kind == AstNodeKind::Catch ||
+            node->parent->parent->kind == AstNodeKind::Assume)
         {
-            if (node->parent->parent->kind == AstNodeKind::Try ||
-                node->parent->parent->kind == AstNodeKind::Catch ||
-                node->parent->parent->kind == AstNodeKind::Assume)
-            {
-                return context->report({node->parent->parent, format("'%s' can only be used before a function call that can raise errors, and '%s' does not", node->parent->parent->token.text.c_str(), funcNode->token.text.c_str())});
-            }
+            return context->report({node->parent->parent, format("'%s' can only be used before a function call that can raise errors", node->parent->parent->token.text.c_str())});
         }
     }
 
@@ -1312,7 +1315,10 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     PushNode pn(context, funcNode->content);
 
     // Clear error when entering a #<function> or a function than can raise en error
-    if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) || funcNode->numTry || funcNode->numThrow)
+    if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) ||
+        funcNode->numTry ||
+        funcNode->numThrow ||
+        (funcNode->typeInfo->flags & TYPEINFO_RAISE_ERRORS))
     {
         RegisterList r0 = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::ClearRA, r0);
