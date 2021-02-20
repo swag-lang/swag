@@ -2827,7 +2827,8 @@ bool SemanticJob::resolveTry(SemanticContext* context)
     auto lastChild     = identifierRef->childs.back();
 
     SWAG_VERIFY(!node->ownerFct->isSpecialFunctionName(), context->report({node, node->token, "'try' cannot be used inside a struct special function"}));
-    SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({node, format("'try' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
+    if (lastChild->resolvedSymbolName->kind != SymbolKind::Function && lastChild->resolvedSymbolOverload->typeInfo->kind != TypeInfoKind::Lambda)
+        return context->report({node, format("'try' can only be used before a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))});
 
     // try in a top level function is equivalent to assume
     if (!node->ownerInline && (node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC))
@@ -2842,25 +2843,14 @@ bool SemanticJob::resolveTry(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveThrow(SemanticContext* context)
-{
-    auto node      = CastAst<AstTryCatch>(context->node, AstNodeKind::Throw);
-    auto back      = node->childs.back();
-    node->typeInfo = back->typeInfo;
-
-    SWAG_VERIFY(!node->ownerFct->isSpecialFunctionName(), context->report({node, node->token, "'throw' cannot be used inside a struct special function"}));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoString, node, back, CASTFLAG_AUTO_OPCAST));
-    node->byteCodeFct = ByteCodeGenJob::emitThrow;
-    return true;
-}
-
 bool SemanticJob::resolveAssume(SemanticContext* context)
 {
     auto node          = CastAst<AstTryCatch>(context->node, AstNodeKind::Assume);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
     auto lastChild     = identifierRef->childs.back();
 
-    SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({node, format("'assume' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
+    if (lastChild->resolvedSymbolName->kind != SymbolKind::Function && lastChild->resolvedSymbolOverload->typeInfo->kind != TypeInfoKind::Lambda)
+        return context->report({node, format("'assume' can only be used before a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))});
 
     node->allocateExtension();
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
@@ -2878,7 +2868,8 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
     auto lastChild     = identifierRef->childs.back();
 
-    SWAG_VERIFY(lastChild->resolvedSymbolName->kind == SymbolKind::Function, context->report({node, format("'catch' can only be used after a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))}));
+    if (lastChild->resolvedSymbolName->kind != SymbolKind::Function && lastChild->resolvedSymbolOverload->typeInfo->kind != TypeInfoKind::Lambda)
+        return context->report({node, format("'catch' can only be used before a function call, and '%s' is %s", lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))});
 
     node->allocateExtension();
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
@@ -2887,5 +2878,17 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
     node->flags                        = identifierRef->flags;
     node->inheritComputedValue(identifierRef);
 
+    return true;
+}
+
+bool SemanticJob::resolveThrow(SemanticContext* context)
+{
+    auto node      = CastAst<AstTryCatch>(context->node, AstNodeKind::Throw);
+    auto back      = node->childs.back();
+    node->typeInfo = back->typeInfo;
+
+    SWAG_VERIFY(!node->ownerFct->isSpecialFunctionName(), context->report({node, node->token, "'throw' cannot be used inside a struct special function"}));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoString, node, back, CASTFLAG_AUTO_OPCAST));
+    node->byteCodeFct = ByteCodeGenJob::emitThrow;
     return true;
 }
