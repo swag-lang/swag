@@ -486,6 +486,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
         }
+
+        if (token.id == TokenId::KwdThrow)
+        {
+            SWAG_CHECK(eatToken(TokenId::KwdThrow));
+            funcNode->typeInfo->flags |= TYPEINFO_CAN_THROW;
+        }
     }
     else if (typeFuncId == TokenId::CompilerAst)
     {

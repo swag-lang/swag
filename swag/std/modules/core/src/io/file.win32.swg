@@ -15,7 +15,7 @@ func exists(fullname: string)->bool
 }
 
 // Open a new file stream
-func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)->FileStream
+func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)->FileStream throw
 {
     var result: retval
 
@@ -68,7 +68,7 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
 }
 
 // Creates a new file stream for reading
-func openRead(fullname: string)->FileStream
+func openRead(fullname: string)->FileStream throw
 {
     return try open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
 }
@@ -96,7 +96,7 @@ func close(stream: *FileStream)
 }
 
 // Returns the given file stream length on disk
-func getSize(stream: FileStream)->u64
+func getSize(stream: FileStream)->u64 throw
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)
@@ -111,7 +111,7 @@ func getSize(stream: FileStream)->u64
 }
 
 // Returns the current seek position of the given file stream
-func getPosition(stream: FileStream)->u64
+func getPosition(stream: FileStream)->u64 throw
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)
@@ -126,7 +126,7 @@ func getPosition(stream: FileStream)->u64
 }
 
 // Set the current seek position of the given file stream
-func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64)
+func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64) throw
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canSeek)

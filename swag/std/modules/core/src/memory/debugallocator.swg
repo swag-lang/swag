@@ -44,7 +44,7 @@ private
 public impl DebugAllocator
 {
     // Create the allocator
-    func create(allocator: IAllocator = null)->DebugAllocator
+    func create(allocator: IAllocator = null)->DebugAllocator throw
     {
         var result: retval
         try result.init(allocator)
@@ -52,7 +52,7 @@ public impl DebugAllocator
     }
 
     // Initialize the allocator
-    func init(using self, allocator: IAllocator = null)
+    func init(using self, allocator: IAllocator = null) throw
     {
         self.allocator = #scopefct.allocator ?? @getcontext().allocator
         try mutex.init()

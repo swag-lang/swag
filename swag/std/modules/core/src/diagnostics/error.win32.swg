@@ -4,7 +4,7 @@
 using win32, swag
 
 // Fill the context error message
-protected func setErrorWin32(errorMessageID: u32)
+protected func setErrorWin32(errorMessageID: u32) throw
 {
     if errorMessageID == 0 return
 

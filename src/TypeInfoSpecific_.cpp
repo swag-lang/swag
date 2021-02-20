@@ -612,6 +612,9 @@ void TypeInfoFuncAttr::computeName()
     name += ")";
     if (returnType && !returnType->isNative(NativeTypeKind::Void))
         name += format("->%s", returnType->name.c_str());
+
+    if (flags & TYPEINFO_CAN_THROW)
+        name += " throw";
 }
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)

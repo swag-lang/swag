@@ -1,10 +1,10 @@
-func toto()
+func toto() throw
 {
     throw "toto"
 }
 
 //#[swag.printbc]
-func titi()->[2] s32
+func titi()->[2] s32 throw
 {
     try toto()
     return @[10, 20]

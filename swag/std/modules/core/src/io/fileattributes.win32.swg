@@ -45,7 +45,7 @@ impl enum FileAttributes
 }
 
 // Returns attributes associated to the given filename
-func getAttributes(fullname: string)->FileAttributes
+func getAttributes(fullname: string)->FileAttributes throw
 {
     winPath := path.toWin16(fullname)
     attributes := GetFileAttributesW(@dataof(winPath))

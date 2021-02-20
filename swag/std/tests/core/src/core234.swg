@@ -2,7 +2,7 @@
 using core
 
 //#[swag.printbc]
-func toto()
+func toto() throw
 {
     throw format.toString("toto%", 10)
 }

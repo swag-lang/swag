@@ -380,9 +380,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
 
-    if (funcNode->attributeFlags & ATTRIBUTE_RAISE_ERRORS)
-        typeInfo->flags |= TYPEINFO_RAISE_ERRORS;
-
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)

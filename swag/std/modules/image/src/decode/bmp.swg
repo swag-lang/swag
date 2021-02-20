@@ -57,7 +57,7 @@ public impl IDecoder for Decoder
         return path.getLowerCaseExtension(fileName) == ".bmp"
     }
 
-    func decode(using self, buffer: const [..] u8)->Image
+    func decode(using self, buffer: const [..] u8)->Image throw
     {
         dataof := @dataof(buffer)
         countof := @countof(buffer)

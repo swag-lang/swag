@@ -1,4 +1,4 @@
-func toto()->s64
+func toto()->s64 throw
 {
     throw "toto"
     return 555

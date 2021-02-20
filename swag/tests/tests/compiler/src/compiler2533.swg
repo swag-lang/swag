@@ -1,9 +1,9 @@
-func toto()
+func toto() throw
 {
     throw "toto"
 }
 
-func titi()->string
+func titi()->string throw
 {
     try toto()
     return "666"

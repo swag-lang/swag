@@ -22,7 +22,7 @@ impl ScratchAllocator
     }
 
     // Creates a new allocator
-    func create(blockSize: uint, allocator: IAllocator = null)->ScratchAllocator
+    func create(blockSize: uint, allocator: IAllocator = null)->ScratchAllocator throw
     {
         var result: retval
         try result.init(blockSize, allocator)
@@ -32,7 +32,7 @@ impl ScratchAllocator
     // First initialize allocator by allocating a block of memory with
     // the specified allocator.
     // If 'allocator' is null, the current context allocator will be used
-    func init(using self, blockSize: uint, allocator: IAllocator = null)
+    func init(using self, blockSize: uint, allocator: IAllocator = null) throw
     {
         // Mutex
         try mutex.init()

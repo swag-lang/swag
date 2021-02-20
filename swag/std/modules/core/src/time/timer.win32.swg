@@ -13,7 +13,7 @@ private func timerEntry(param: *void)
 impl Timer
 {
     // Creates a new timer
-    func create(elapsedTimeMs: u32, lambda: func(Timer), periodic = false)->Timer
+    func create(elapsedTimeMs: u32, lambda: func(Timer), periodic = false)->Timer throw
     {
         var result: retval
         try result.init(elapsedTimeMs, lambda, periodic)
@@ -21,7 +21,7 @@ impl Timer
     }
 
     // Initialize timer
-    func init(using self, elapsedTimeMs: u32, lambda: func(Timer), periodic = false)
+    func init(using self, elapsedTimeMs: u32, lambda: func(Timer), periodic = false) throw
     {
         debug.assert(handle == null)
         debug.assert(elapsedTimeMs > 0)

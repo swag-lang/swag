@@ -115,7 +115,7 @@ func getRootLength(fullname: string)->u32
 }
 
 // Transform 'fullname' to an absolute path
-func getAbsolute(fullname: string)->String
+func getAbsolute(fullname: string)->String throw
 {
     var result: retval
 

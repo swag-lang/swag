@@ -37,7 +37,7 @@ func display()
 }
 
 var textureID: GLuint
-func loadImg()
+func loadImg() throw
 {
     data := imagePath("image2.Bmp")
     img := try image.load(data)

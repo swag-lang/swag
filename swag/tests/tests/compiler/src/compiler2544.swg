@@ -6,7 +6,7 @@ struct AA
 }
 
 #[inline]
-func toto()->AA
+func toto()->AA throw
 {
     throw "coucou"
     return @{1, 2}

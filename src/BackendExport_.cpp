@@ -97,7 +97,7 @@ bool Backend::emitTypeTuple(TypeInfo* typeInfo, int indent)
     for (auto field : typeStruct->fields)
     {
         if (idx)
-            bufferSwg.addString(", ");
+            CONCAT_FIXED_STR(bufferSwg, ", ");
 
         if (field->declNode && field->declNode->kind == AstNodeKind::VarDecl)
         {
@@ -111,6 +111,7 @@ bool Backend::emitTypeTuple(TypeInfo* typeInfo, int indent)
                 bufferSwg.addString(field->namedParam);
                 bufferSwg.addString(":");
             }
+
             emitType(field->typeInfo, indent);
         }
 
@@ -126,16 +127,19 @@ void Backend::emitType(TypeInfo* typeInfo, int indent)
     if (typeInfo->kind == TypeInfoKind::Lambda)
     {
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
-        bufferSwg.addString("func(");
+        CONCAT_FIXED_STR(bufferSwg, "func(");
         for (auto p : typeFunc->parameters)
         {
             if (p != typeFunc->parameters[0])
-                bufferSwg.addString(", ");
+                CONCAT_FIXED_STR(bufferSwg, ", ");
             emitType(p->typeInfo, indent);
         }
 
-        bufferSwg.addString(")->");
+        CONCAT_FIXED_STR(bufferSwg, ")->");
         emitType(typeFunc->returnType, indent);
+
+        if (typeInfo->flags & TYPEINFO_CAN_THROW)
+            CONCAT_FIXED_STR(bufferSwg, " throw");
     }
     else
     {
@@ -157,9 +161,9 @@ void Backend::emitType(TypeInfo* typeInfo, int indent)
         if (typeInfo->flags & TYPEINFO_SELF)
         {
             if (typeInfo->flags & TYPEINFO_CONST)
-                bufferSwg.addString("const self");
+                CONCAT_FIXED_STR(bufferSwg, "const self");
             else
-                bufferSwg.addString("self");
+                CONCAT_FIXED_STR(bufferSwg, "self");
         }
         else
         {
@@ -254,6 +258,9 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstNode* node, As
         CONCAT_FIXED_STR(bufferSwg, "->");
         emitType(typeFunc->returnType, indent);
     }
+
+    if (typeFunc->flags & TYPEINFO_CAN_THROW)
+        CONCAT_FIXED_STR(bufferSwg, " throw");
 
     if (selectIf)
     {
@@ -576,13 +583,6 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             bufferSwg.addIndent(indent);
             bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")]", module->name.c_str(), node->fullnameForeign.c_str());
             bufferSwg.addEol();
-            if (node->numTry || node->numThrow || (node->typeInfo->flags & TYPEINFO_RAISE_ERRORS))
-            {
-                bufferSwg.addIndent(indent);
-                bufferSwg.addString("#[canthrow]");
-                bufferSwg.addEol();
-            }
-
             SWAG_CHECK(emitAttributes(typeFunc, indent));
             bufferSwg.addIndent(indent);
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node, indent));

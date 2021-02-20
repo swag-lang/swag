@@ -1,4 +1,4 @@
-func toto()
+func toto() throw
 {
     throw "toto"
 }
@@ -9,7 +9,7 @@ struct AA
 }
 
 //#[swag.printbc]
-func titi()->AA
+func titi()->AA throw
 {
     try toto()
     return @{10, 20}

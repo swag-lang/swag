@@ -1,9 +1,9 @@
-func toto()
+func toto() throw
 {
     throw "toto"
 }
 
-func titi()->s64
+func titi()->s64 throw
 {
     try toto()
     return 666

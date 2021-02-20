@@ -45,10 +45,6 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr test()
 
-    // Hardcoded also for variable
-    #[attributeUsage(AttributeUsage.Function)]
-    attr canthrow()
-
     // Hardcoded also for switch
     #[attributeUsage(AttributeUsage.Function)]
     attr complete()

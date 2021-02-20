@@ -38,7 +38,7 @@ enum FileShare
 }
 
 // Read a file, and store the result in an utf8 string
-func readAllText(fullname: string, encoding = TextEncoding.Utf8)->String
+func readAllText(fullname: string, encoding = TextEncoding.Utf8)->String throw
 {
     var result:     retval
     var textReader: TextReader
@@ -51,7 +51,7 @@ func readAllText(fullname: string, encoding = TextEncoding.Utf8)->String
 }
 
 // Read all the lines of a file
-func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String
+func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String throw
 {
     var result:     retval
     var textReader: TextReader
@@ -70,7 +70,7 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String
 }
 
 // Read a file, and store the result in an array of bytes
-func readAllBytes(fullname: string)->Array'u8
+func readAllBytes(fullname: string)->Array'u8 throw
 {
     var result: retval
 

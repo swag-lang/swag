@@ -7,7 +7,7 @@ using win32, strconv
 func exit(exitCode: u32) => ExitProcess(exitCode)
 
 // Starts a new process with arguments
-func start(info: StartInfo)->Process
+func start(info: StartInfo)->Process throw
 {
     debug.assert(info.fileName != null, "missing process filename")
 

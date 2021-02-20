@@ -1,7 +1,7 @@
 using swag
 
 #[inline]
-func toto()->s32
+func toto()->s32 throw
 {
     throw "coucou"
     return 10

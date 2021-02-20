@@ -95,7 +95,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
 }
 
 // Returns the current directory
-func getCurrent()->String
+func getCurrent()->String throw
 {
     var result: retval
     length := GetCurrentDirectoryW(0, null)
@@ -114,7 +114,7 @@ func getCurrent()->String
 }
 
 // Set the current directory
-func setCurrent(dirname: string)
+func setCurrent(dirname: string) throw
 {
     winPath := path.toWin16(dirname)
     if !SetCurrentDirectoryA(@dataof(winPath))

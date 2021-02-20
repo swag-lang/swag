@@ -703,6 +703,8 @@ struct AstTypeLambda : public AstNode
 
     AstNode* parameters;
     AstNode* returnType;
+
+    bool canThrow;
 };
 
 struct AstArrayPointerIndex : public AstNode

@@ -7,6 +7,5 @@ func toto()
 //#[swag.printbc]
 #test
 {
-    #[swag.canthrow]
-    var x: s32
+    var x: s32 throw
 }

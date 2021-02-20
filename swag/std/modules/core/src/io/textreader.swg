@@ -69,7 +69,7 @@ impl TextReader
 public impl TextReader
 {
     // Open the reader
-    func open(using self, fullname: string, encoding = TextEncoding.Utf8)
+    func open(using self, fullname: string, encoding = TextEncoding.Utf8) throw
     {
         debug.assert(!stream.isOpen())
 

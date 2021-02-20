@@ -257,6 +257,8 @@ struct SemanticJob : public Job
     static bool ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* identifierRef, SymbolName* symbol);
     static bool ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     static bool resolveIdentifierRef(SemanticContext* context);
+    static bool checkCanThrow(SemanticContext* context);
+    static bool checkCanCatch(SemanticContext* context);
     static bool resolveTry(SemanticContext* context);
     static bool resolveAssume(SemanticContext* context);
     static bool resolveCatch(SemanticContext* context);

@@ -52,7 +52,7 @@ static const uint64_t TYPEINFO_HAS_USING                    = 0x00000000'1000000
 static const uint64_t TYPEINFO_RELATIVE                     = 0x00000000'20000000;
 static const uint64_t TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS = 0x00000000'40000000;
 static const uint64_t TYPEINFO_STRUCT_NO_COPY               = 0x00000000'80000000;
-static const uint64_t TYPEINFO_RAISE_ERRORS                 = 0x00000001'00000000;
+static const uint64_t TYPEINFO_CAN_THROW                 = 0x00000001'00000000;
 
 static const uint32_t ISSAME_EXACT     = 0x00000001;
 static const uint32_t ISSAME_CAST      = 0x00000002;

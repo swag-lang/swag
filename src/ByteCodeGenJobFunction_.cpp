@@ -842,7 +842,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     bool raiseErrors = false;
     if (funcNode)
         raiseErrors = funcNode->numTry || funcNode->numThrow;
-    if (typeInfoFunc->flags & TYPEINFO_RAISE_ERRORS)
+    if (typeInfoFunc->flags & TYPEINFO_CAN_THROW)
         raiseErrors = true;
 
     if (raiseErrors &&
@@ -1321,7 +1321,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) ||
         funcNode->numTry ||
         funcNode->numThrow ||
-        (funcNode->typeInfo->flags & TYPEINFO_RAISE_ERRORS))
+        (funcNode->typeInfo->flags & TYPEINFO_CAN_THROW))
     {
         RegisterList r0 = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::ClearRA, r0);

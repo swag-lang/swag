@@ -57,7 +57,7 @@ func wait(threads: *Thread...)
 impl Thread
 {
     // Initialize a thread in pause state
-    func init(using self, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal)
+    func init(using self, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal) throw
     {
         debug.assert(!isValid(), "thread already created")
         debug.assert(lambda != null, "lambda parameter is null")
@@ -75,7 +75,7 @@ impl Thread
     }
 
     // Resume the given thread, if it was paused
-    func start(using self)
+    func start(using self) throw
     {
         debug.assert(isValid())
         if ResumeThread(handle) == bitcast(DWORD) -1

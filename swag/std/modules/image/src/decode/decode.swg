@@ -15,7 +15,7 @@ private
 public interface IDecoder
 {
     canDecode:  func(self, string)->bool
-    decode:     func(self, const [..] u8)->Image
+    decode:     func(self, const [..] u8)->Image throw
 }
 
 // Register an image decoder
@@ -31,7 +31,7 @@ public func(T) addDecoder()
 
 // Load an image from file
 //#[swag.printbc]
-public func load(fileName: string)->Image
+public func load(fileName: string)->Image throw
 {
     // Find the decoder that can treat 'fileName'
     var found: *Decoder
@@ -56,7 +56,7 @@ public func load(fileName: string)->Image
 
     // Decode
     itf := @mkinterface(ptrDecoder, found.type, IDecoder)
-    return itf.decode(bytes)
+    return try itf.decode(bytes)
 }
 
 // Initialize predefined decoders

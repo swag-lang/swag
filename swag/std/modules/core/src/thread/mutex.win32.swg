@@ -11,7 +11,7 @@ impl Mutex
     }
 
     // Creates a new mutex
-    func create()->Mutex
+    func create()->Mutex throw
     {
         var result: retval
         try result.init()
@@ -19,7 +19,7 @@ impl Mutex
     }
 
     // Initialize mutex
-    func init(using self)
+    func init(using self) throw
     {
         debug.assert(handle == null)
         handle = CreateMutexA(null, 0, null)

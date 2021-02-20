@@ -97,6 +97,12 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
         SWAG_CHECK(doTypeExpression(node, &node->returnType));
     }
 
+    if (token.id == TokenId::KwdThrow)
+    {
+        SWAG_CHECK(eatToken(TokenId::KwdThrow));
+        node->canThrow = true;
+    }
+
     return true;
 }
 

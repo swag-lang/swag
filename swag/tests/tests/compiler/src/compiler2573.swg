@@ -1,11 +1,11 @@
 #global testerror
 
-func toto()
+func toto() throw
 {
     throw "titi"
 }
 
-func titi()
+func titi() throw
 {
     catch toto()
     if @err throw "super titi"
