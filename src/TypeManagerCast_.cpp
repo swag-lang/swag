@@ -57,7 +57,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     return true;
 }
 
-bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     // Last minute change : opCast, with a structure
     auto structType = fromType;
@@ -70,56 +70,65 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     if (structType->kind == TypeInfoKind::Struct && (castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
-        if (typeStruct->declNode)
+        if (!typeStruct->declNode)
+            return false;
+
+        auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+        auto symbol     = structNode->scope->symTable.find("opCast");
+
+        // Instantiated opCast, in a generic struct, will be in the scope of the original struct, not the intantiated one
+        if (!symbol && typeStruct->fromGeneric)
         {
-            auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-            auto symbol     = structNode->scope->symTable.find("opCast");
-
-            // Instantate opCast, in a generic struct, will be in the scope of the original struct, not the intantiated one
-            if (!symbol && typeStruct->fromGeneric)
-            {
-                structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
-                symbol     = structNode->scope->symTable.find("opCast");
-            }
-
-            if (symbol)
-            {
-                // Wait for all opCast to be solved
-                unique_lock lk(symbol->mutex);
-                if (symbol->cptOverloads)
-                {
-                    SWAG_ASSERT(context && context->job);
-                    SWAG_ASSERT(context->result == ContextResult::Done);
-                    context->job->waitForSymbolNoLock(symbol);
-                    return true;
-                }
-
-                VectorNative<SymbolOverload*> toCast;
-                for (auto over : symbol->overloads)
-                {
-                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-                    if (typeFunc->flags & TYPEINFO_GENERIC || typeFunc->returnType->flags & TYPEINFO_GENERIC)
-                        continue;
-                    if (typeFunc->returnType->isSame(toType, 0))
-                        toCast.push_back(over);
-                }
-
-                if (toCast.size() == 1)
-                {
-                    if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-                    {
-                        fromNode->castedTypeInfo = fromType;
-                        fromNode->typeInfo       = toType;
-                        fromNode->allocateExtension();
-                        fromNode->extension->resolvedUserOpSymbolOverload = toCast[0];
-                        fromNode->flags |= AST_USER_CAST;
-                    }
-
-                    return true;
-                }
-            }
+            structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
+            symbol     = structNode->scope->symTable.find("opCast");
         }
+
+        if (!symbol)
+            return false;
+
+        // Wait for all opCast to be solved
+        unique_lock lk(symbol->mutex);
+        if (symbol->cptOverloads)
+        {
+            SWAG_ASSERT(context && context->job);
+            SWAG_ASSERT(context->result == ContextResult::Done);
+            context->job->waitForSymbolNoLock(symbol);
+            return true;
+        }
+
+        // Resolve opCast that match 
+        VectorNative<SymbolOverload*> toCast;
+        for (auto over : symbol->overloads)
+        {
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeFunc->flags & TYPEINFO_GENERIC || typeFunc->returnType->flags & TYPEINFO_GENERIC)
+                continue;
+            if (typeFunc->returnType->isSame(toType, 0))
+                toCast.push_back(over);
+        }
+
+        if (toCast.empty())
+            return false;
+
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfo       = toType;
+            fromNode->allocateExtension();
+            fromNode->extension->resolvedUserOpSymbolOverload = toCast[0];
+            fromNode->flags |= AST_USER_CAST;
+        }
+
+        return true;
     }
+
+    return false;
+}
+
+bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    if (tryOpCast(context, toType, fromType, fromNode, castFlags))
+        return true;
 
     if (!(castFlags & CASTFLAG_NO_ERROR))
     {
