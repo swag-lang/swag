@@ -103,7 +103,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
             auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc->flags & TYPEINFO_GENERIC || typeFunc->returnType->flags & TYPEINFO_GENERIC)
                 continue;
-            if (typeFunc->returnType->isSame(toType, 0))
+            if (typeFunc->returnType->isSame(toType, ISSAME_EXACT))
                 toCast.push_back(over);
         }
 
