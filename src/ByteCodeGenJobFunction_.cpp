@@ -851,7 +851,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         node->parent->parent->kind != AstNodeKind::Assume &&
         node->parent->parent->kind != AstNodeKind::Alias)
     {
-        return context->report({node, node->token, format("uncatched error when calling function '%s'", node->token.text.c_str())});
+        if (funcNode)
+            return context->report({node, node->token, format("uncatched error when calling function '%s'", node->token.text.c_str())});
+        else
+            return context->report({node, node->token, format("uncatched error when calling lambda '%s'", node->token.text.c_str())});
     }
 
     if (!raiseErrors)

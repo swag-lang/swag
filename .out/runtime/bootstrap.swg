@@ -45,6 +45,7 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr test()
 
+    // Hardcoded also for variable
     #[attributeUsage(AttributeUsage.Function)]
     attr raiseerrors()
 

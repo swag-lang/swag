@@ -1,5 +1,3 @@
-#global testerror
-
 func toto()
 {
 }
@@ -11,5 +9,5 @@ func toto()
     var x: func()
 
     x = &toto
-    x()
+    try x()
 }

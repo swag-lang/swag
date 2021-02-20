@@ -68,6 +68,8 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
         if (oneAttribute->token.text == "relative" && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::StructDecl))
             return true;
+        if (oneAttribute->token.text == "raiseerrors" && kind == AstNodeKind::VarDecl)
+            return true;
     }
 
     if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))

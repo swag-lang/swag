@@ -8,8 +8,5 @@ func toto()
 #test
 {
     #[swag.raiseerrors]
-    var x: func()
-
-    x = &toto
-    x()
+    var x: s32
 }
