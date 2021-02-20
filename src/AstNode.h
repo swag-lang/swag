@@ -468,8 +468,6 @@ struct AstFuncDecl : public AstNode
 
     uint32_t stackSize;
     int      exportForeignLine;
-    int      numThrow;
-    int      numTry;
 
     void computeFullNameForeign(bool forExport);
     Utf8 getNameForMessage();
@@ -853,8 +851,6 @@ struct AstCompilerIfBlock : public AstNode
     VectorNative<TypeInfoStruct*>             interfacesCount;
     VectorNative<pair<TypeInfoStruct*, int>>  methodsCount;
     int                                       numTestErrors;
-    int                                       numThrow;
-    int                                       numTry;
 };
 
 enum class CompilerAstKind

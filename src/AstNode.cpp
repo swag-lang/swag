@@ -625,8 +625,6 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->copyFrom(context, this, false);
     newNode->stackSize   = stackSize;
     newNode->methodParam = methodParam;
-    newNode->numThrow    = numThrow;
-    newNode->numTry      = numTry;
 
     auto cloneContext     = context;
     cloneContext.ownerFct = newNode;
@@ -1247,8 +1245,6 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
     if (newNode->ownerCompilerIfBlock)
         newNode->ownerCompilerIfBlock->blocks.push_back(newNode);
     newNode->numTestErrors = numTestErrors;
-    newNode->numThrow      = numThrow;
-    newNode->numTry        = numTry;
     return newNode;
 }
 

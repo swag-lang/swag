@@ -330,15 +330,6 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
     context->sourceFile->numTestErrors -= block->numTestErrors;
     context->sourceFile->module->numTestErrors -= block->numTestErrors;
 
-    // Error system
-    if (block->ownerFct)
-    {
-        block->ownerFct->numThrow -= block->numThrow;
-        block->ownerFct->numTry -= block->numTry;
-        SWAG_ASSERT(block->ownerFct->numThrow >= 0);
-        SWAG_ASSERT(block->ownerFct->numTry >= 0);
-    }
-
     // Unregister one overload
     for (auto it : block->symbols)
     {

@@ -837,14 +837,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         return true;
 
     // Error, check validity.
-    // Do it very late, and not in semantic, because we need the function to be full solved (numTry or numThrow
-    // can change because of #if inside functions)
-    bool raiseErrors = false;
-    if (funcNode)
-        raiseErrors = funcNode->numTry || funcNode->numThrow;
-    if (typeInfoFunc->flags & TYPEINFO_CAN_THROW)
-        raiseErrors = true;
-
+    bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
     if (raiseErrors &&
         node->parent->parent->kind != AstNodeKind::Try &&
         node->parent->parent->kind != AstNodeKind::Catch &&
@@ -1318,10 +1311,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     PushNode pn(context, funcNode->content);
 
     // Clear error when entering a #<function> or a function than can raise en error
-    if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) ||
-        funcNode->numTry ||
-        funcNode->numThrow ||
-        (funcNode->typeInfo->flags & TYPEINFO_CAN_THROW))
+    if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) || (funcNode->typeInfo->flags & TYPEINFO_CAN_THROW))
     {
         RegisterList r0 = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::ClearRA, r0);
