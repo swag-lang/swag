@@ -1,3 +1,5 @@
+#global testerror
+
 func toto() throw
 {
 }
@@ -5,8 +7,7 @@ func toto() throw
 //#[swag.printbc]
 #test
 {
-    var x: func() throw
-
+    var x: func()
     x = &toto
     try x()
 }

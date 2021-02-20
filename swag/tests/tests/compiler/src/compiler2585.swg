@@ -1,12 +1,13 @@
 func toto() throw
 {
+    throw "toto"
 }
 
 //#[swag.printbc]
 #test
 {
     var x: func() throw
-
     x = &toto
-    try x()
+    catch x()
+    @assert(@err == "toto")
 }

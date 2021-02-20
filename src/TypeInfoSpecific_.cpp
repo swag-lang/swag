@@ -632,6 +632,9 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
             return false;
     }
 
+    if ((flags & TYPEINFO_CAN_THROW) != (other->flags & TYPEINFO_CAN_THROW))
+        return false;
+
     if (isSameFlags & ISSAME_EXACT)
     {
         if (!returnType && other->returnType && !other->returnType->isNative(NativeTypeKind::Void))
