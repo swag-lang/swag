@@ -259,14 +259,14 @@ func @panic(message: string, loc: swag.CompilerSourceLocation)
         return
 
     // Stack trace if available
-    loop cxt.traceIndex
+    for i := cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1
     {
         @print("trace error: ");
-        @print(cxt.trace[@index].fileName)
+        @print(cxt.trace[i].fileName)
         @print(":");
-        @print(cast(s64) cxt.trace[@index].lineStart + 1);
+        @print(cast(s64) cxt.trace[i].lineStart + 1);
         @print(":");
-        @print(cast(s64) cxt.trace[@index].colStart + 1);
+        @print(cast(s64) cxt.trace[i].colStart + 1);
         @print(":\n");
     }
 
