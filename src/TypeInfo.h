@@ -20,38 +20,38 @@ struct AstFuncDecl;
 struct JobContext;
 struct SemanticContext;
 
-static const uint32_t TYPEINFO_SELF                         = 0x00000001;
-static const uint32_t TYPEINFO_UNTYPED_BINHEXA              = 0x00000002;
-static const uint32_t TYPEINFO_INTEGER                      = 0x00000004;
-static const uint32_t TYPEINFO_FLOAT                        = 0x00000008;
-static const uint32_t TYPEINFO_UNSIGNED                     = 0x00000010;
-static const uint32_t TYPEINFO_CONST                        = 0x00000020;
-static const uint32_t TYPEINFO_AUTO_NAME                    = 0x00000040;
-static const uint32_t TYPEINFO_VARIADIC                     = 0x00000080;
-static const uint32_t TYPEINFO_STRUCT_HAS_INIT_VALUES       = 0x00000100;
-static const uint32_t TYPEINFO_STRUCT_ALL_UNINITIALIZED     = 0x00000200;
-static const uint32_t TYPEINFO_STRUCT_NO_POST_COPY          = 0x00000400;
-static const uint32_t TYPEINFO_STRUCT_NO_POST_MOVE          = 0x00000800;
-static const uint32_t TYPEINFO_STRUCT_NO_DROP               = 0x00001000;
-static const uint32_t TYPEINFO_GENERIC                      = 0x00002000;
-static const uint32_t TYPEINFO_RETURN_BY_COPY               = 0x00004000;
-static const uint32_t TYPEINFO_UNTYPED_INTEGER              = 0x00008000;
-static const uint32_t TYPEINFO_UNTYPED_FLOAT                = 0x00010000;
-static const uint32_t TYPEINFO_DEFINED_VALUE                = 0x00020000;
-static const uint32_t TYPEINFO_AUTO_CAST                    = 0x00040000;
-static const uint32_t TYPEINFO_TYPED_VARIADIC               = 0x00080000;
-static const uint32_t TYPEINFO_STRUCT_TYPEINFO              = 0x00100000;
-static const uint32_t TYPEINFO_STRUCT_IS_TUPLE              = 0x00200000;
-static const uint32_t TYPEINFO_ENUM_FLAGS                   = 0x00400000;
-static const uint32_t TYPEINFO_SPREAD                       = 0x00800000;
-static const uint32_t TYPEINFO_UNDEFINED                    = 0x01000000;
-static const uint32_t TYPEINFO_ENUM_INDEX                   = 0x02000000;
-static const uint32_t TYPEINFO_STRICT                       = 0x04000000;
-static const uint32_t TYPEINFO_FAKE_ALIAS                   = 0x08000000;
-static const uint32_t TYPEINFO_HAS_USING                    = 0x10000000;
-static const uint32_t TYPEINFO_RELATIVE                     = 0x20000000;
-static const uint32_t TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS = 0x40000000;
-static const uint32_t TYPEINFO_STRUCT_NO_COPY               = 0x80000000;
+static const uint64_t TYPEINFO_SELF                         = 0x00000000'00000001;
+static const uint64_t TYPEINFO_UNTYPED_BINHEXA              = 0x00000000'00000002;
+static const uint64_t TYPEINFO_INTEGER                      = 0x00000000'00000004;
+static const uint64_t TYPEINFO_FLOAT                        = 0x00000000'00000008;
+static const uint64_t TYPEINFO_UNSIGNED                     = 0x00000000'00000010;
+static const uint64_t TYPEINFO_CONST                        = 0x00000000'00000020;
+static const uint64_t TYPEINFO_AUTO_NAME                    = 0x00000000'00000040;
+static const uint64_t TYPEINFO_VARIADIC                     = 0x00000000'00000080;
+static const uint64_t TYPEINFO_STRUCT_HAS_INIT_VALUES       = 0x00000000'00000100;
+static const uint64_t TYPEINFO_STRUCT_ALL_UNINITIALIZED     = 0x00000000'00000200;
+static const uint64_t TYPEINFO_STRUCT_NO_POST_COPY          = 0x00000000'00000400;
+static const uint64_t TYPEINFO_STRUCT_NO_POST_MOVE          = 0x00000000'00000800;
+static const uint64_t TYPEINFO_STRUCT_NO_DROP               = 0x00000000'00001000;
+static const uint64_t TYPEINFO_GENERIC                      = 0x00000000'00002000;
+static const uint64_t TYPEINFO_RETURN_BY_COPY               = 0x00000000'00004000;
+static const uint64_t TYPEINFO_UNTYPED_INTEGER              = 0x00000000'00008000;
+static const uint64_t TYPEINFO_UNTYPED_FLOAT                = 0x00000000'00010000;
+static const uint64_t TYPEINFO_DEFINED_VALUE                = 0x00000000'00020000;
+static const uint64_t TYPEINFO_AUTO_CAST                    = 0x00000000'00040000;
+static const uint64_t TYPEINFO_TYPED_VARIADIC               = 0x00000000'00080000;
+static const uint64_t TYPEINFO_STRUCT_TYPEINFO              = 0x00000000'00100000;
+static const uint64_t TYPEINFO_STRUCT_IS_TUPLE              = 0x00000000'00200000;
+static const uint64_t TYPEINFO_ENUM_FLAGS                   = 0x00000000'00400000;
+static const uint64_t TYPEINFO_SPREAD                       = 0x00000000'00800000;
+static const uint64_t TYPEINFO_UNDEFINED                    = 0x00000000'01000000;
+static const uint64_t TYPEINFO_ENUM_INDEX                   = 0x00000000'02000000;
+static const uint64_t TYPEINFO_STRICT                       = 0x00000000'04000000;
+static const uint64_t TYPEINFO_FAKE_ALIAS                   = 0x00000000'08000000;
+static const uint64_t TYPEINFO_HAS_USING                    = 0x00000000'10000000;
+static const uint64_t TYPEINFO_RELATIVE                     = 0x00000000'20000000;
+static const uint64_t TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS = 0x00000000'40000000;
+static const uint64_t TYPEINFO_STRUCT_NO_COPY               = 0x00000000'80000000;
 
 static const uint32_t ISSAME_EXACT     = 0x00000001;
 static const uint32_t ISSAME_CAST      = 0x00000002;
@@ -142,12 +142,13 @@ struct TypeInfo
     Utf8 scopedNameExport;
 
     AstNode* declNode = nullptr;
+    uint64_t flags    = 0;
+
+    uint32_t sizeOf = 0;
 
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
     NativeTypeKind nativeType = NativeTypeKind::Void;
     uint8_t        relative   = 0;
-    uint32_t       flags      = 0;
-    uint32_t       sizeOf     = 0;
 };
 
 struct TypeInfoNative : public TypeInfo
