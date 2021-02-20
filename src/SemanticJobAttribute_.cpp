@@ -68,7 +68,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
         if (oneAttribute->token.text == "relative" && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::StructDecl))
             return true;
-        if (oneAttribute->token.text == "raiseerrors" && kind == AstNodeKind::VarDecl)
+        if (oneAttribute->token.text == "canthrow" && kind == AstNodeKind::VarDecl)
             return true;
     }
 
@@ -240,7 +240,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_STRICT;
             else if (child->token.text == "callback")
                 flags |= ATTRIBUTE_CALLBACK;
-            else if (child->token.text == "raiseerrors")
+            else if (child->token.text == "canthrow")
                 flags |= ATTRIBUTE_RAISE_ERRORS;
             else if (child->token.text == "nocopy")
                 flags |= ATTRIBUTE_NO_COPY;

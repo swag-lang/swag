@@ -5,7 +5,7 @@ func toto()
 //#[swag.printbc]
 #test
 {
-    #[swag.raiseerrors]
+    #[swag.canthrow]
     var x: func()
 
     x = &toto

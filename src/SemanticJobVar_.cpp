@@ -573,10 +573,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // We should have a type here !
     SWAG_VERIFY(node->typeInfo, context->report({node, node->token, format("unable to deduce type of %s '%s'", AstNode::getKindName(node).c_str(), node->token.text.c_str())}));
 
-    // Check 'swag.raiseerrors' attribute
+    // Check 'swag.canthrow' attribute
     if (node->attributeFlags & ATTRIBUTE_RAISE_ERRORS)
     {
-        SWAG_VERIFY(node->typeInfo->kind == TypeInfoKind::Lambda, context->report({node, node->token, format("attribute 'swag.raiseerrors' cannot by applied to a variable of type '%s'", node->typeInfo->name.c_str())}));
+        SWAG_VERIFY(node->typeInfo->kind == TypeInfoKind::Lambda, context->report({node, node->token, format("attribute 'swag.canthrow' cannot by applied to a variable of type '%s'", node->typeInfo->name.c_str())}));
         node->typeInfo = node->typeInfo->clone();
         node->typeInfo->flags |= TYPEINFO_RAISE_ERRORS;
     }

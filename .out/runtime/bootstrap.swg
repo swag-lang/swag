@@ -47,7 +47,7 @@ namespace swag
 
     // Hardcoded also for variable
     #[attributeUsage(AttributeUsage.Function)]
-    attr raiseerrors()
+    attr canthrow()
 
     // Hardcoded also for switch
     #[attributeUsage(AttributeUsage.Function)]

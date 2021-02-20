@@ -579,7 +579,7 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             if (node->numTry || node->numThrow || (node->typeInfo->flags & TYPEINFO_RAISE_ERRORS))
             {
                 bufferSwg.addIndent(indent);
-                bufferSwg.addString("#[raiseerrors]");
+                bufferSwg.addString("#[canthrow]");
                 bufferSwg.addEol();
             }
 
