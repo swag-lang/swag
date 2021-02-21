@@ -32,22 +32,27 @@ public struct Decoder
 
 impl Decoder
 {
-    func uncompress(bpp: u8, dstBuffer: *u8, srcBuffer: const *u8, length: uint)
+    func uncompress(bpp: u8, dstBuffer: *u8, srcBuffer: const *u8, lastSrc: const *u8, length: uint) throw
     {
+        lastDest := dstBuffer + length
         dest := dstBuffer
-        buffer := srcBuffer
+        src := srcBuffer
         l := length
         bpp8 := bpp >> 3
 
+        invalid := false
         while l > 0
         {
-            num := :buffer
-            buffer += 1
+            if src >= lastSrc { invalid = true; break; }
+            num := :src
+            src += 1
             if num & 0x80
             {
                 num -= 127
-                val := :cast(const *u32) buffer
-                buffer += bpp8
+                val := :cast(const *u32) src
+                src += bpp8
+                if dest + bpp8 * num > lastDest { invalid = true; break; }
+
                 loop num
                 {
                     switch bpp
@@ -71,12 +76,17 @@ impl Decoder
             else
             {
                 val := cast(uint) (bpp8 * (num + 1))
-                memory.copy(dest, buffer, val)
+                if dest + val > lastDest { invalid = true; break; }
+                if src + val > lastSrc { invalid = true; break; }
+                memory.copy(dest, src, val)
                 l -= val
                 dest += val
-                buffer += val
+                src += val
             }
         }
+
+        if invalid
+            throw "invalid source buffer"
     }
 }
 
@@ -116,9 +126,9 @@ public impl IDecoder for Decoder
             if dataof + result.size > last throw "invalid source buffer"
             memory.copy(result.pixels, dataof, result.size)
         case TYPE_RLE_MAP, TYPE_RLE_RGB, TYPE_RLE_MONO:
-            uncompress(header.bpp, result.pixels, dataof, result.size)
+            try uncompress(header.bpp, result.pixels, dataof, last, result.size)
         default:
-            throw "unsupported tga type"
+            throw "unsupported type"
         }
 
         return result
