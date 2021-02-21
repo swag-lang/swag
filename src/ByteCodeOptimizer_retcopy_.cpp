@@ -6,16 +6,28 @@
 
 static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg, ByteCodeInstruction* ip)
 {
+    bool sameStackOffset = false;
+
+    SWAG_ASSERT(ipOrg->op == ByteCodeOp::MakeStackPointer);
+    auto orgOffset = ipOrg->b.u32;
+
     // If the second MakeStackPointer is the same as the first one (the parameter), then the
     // return copy is totally useless, se we must not simulate a drop, because there's in fact
     // only one variable, and not one variable copied to the other
     // This happens when inlining a function that returns a struct
-    bool sameStackOffset = ipOrg->b.u32 == ip->b.u32;
+    if (ip->op == ByteCodeOp::MakeStackPointer)
+    {
+        sameStackOffset = ipOrg->b.u32 == ip->b.u32;
 
-    // Change the original stack pointer offset to reference the variable instead of the temporary
-    // copy
-    auto orgOffset = ipOrg->b.u32;
-    ipOrg->b.u32   = ip->b.u32;
+        // Change the original stack pointer offset to reference the variable instead of the temporary
+        // copy
+        ipOrg->b.u32 = ip->b.u32;
+    }
+    else
+    {
+        SWAG_ASSERT(ip->op == ByteCodeOp::CopyRRtoRC);
+        ipOrg->op = ByteCodeOp::CopyRRtoRC;
+    }
 
     // Is there a corresponding drop in the scope ?
     bool hasDrop = false;
@@ -118,6 +130,8 @@ void ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
 
             // This will copy the result in the real variable
             if (ip->op == ByteCodeOp::MakeStackPointer && isMemCpy(ip + 1) && ip[1].b.u32 == ipOrg->a.u32)
+                optimRetCopy(context, ipOrg, ip);
+            else if (ip->op == ByteCodeOp::CopyRRtoRC && isMemCpy(ip + 1) && ip[1].b.u32 == ipOrg->a.u32 && ip[1].a.u32 == ip[0].a.u32)
                 optimRetCopy(context, ipOrg, ip);
             else
                 ip = ipOrg;

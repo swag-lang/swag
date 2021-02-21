@@ -17,3 +17,8 @@ public func flip(src: Image)->Image
 
     return result
 }
+
+public func flip(src: *Image)
+{
+
+}
