@@ -20,6 +20,7 @@ func create(width, height: u32, pf: PixelFormat)->Image
     var result: retval
     result.width = width
     result.height = height
+    result.pf = pf
     result.allocator = @getcontext().allocator
     result.bpp = pf.bpp()
     result.bpp8 = cast(u8) (result.bpp >> 3)
@@ -68,7 +69,6 @@ impl Image
     #[swag.inline]
     func getPixelAddress(using self, x, y: u32)->*u8
     {
-        //debug.assert(x < width && y < height)
         iy := height - y - 1
         return pixels + (x + (iy * width)) * bpp8
     }

@@ -42,12 +42,15 @@ var textureID: GLuint
 func loadImg() throw
 {
     data := imagePath("bmp_32.bmp")
-    img := try image.load(data)
-    loop img.width
+    img1 := try image.load(data)
+
+    loop img1.width
     {
-        ptr := img.getPixelAddress(cast(u32) @index, 0)
+        ptr := img1.getPixelAddress(cast(u32) @index, 0)
         :cast(*u32) ptr = 0xFFFF0000
     }
+
+    img := image.flip(img1)
 
     fmt := GL_BGR
     if img.bpp == 32 fmt = GL_BGRA
