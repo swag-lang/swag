@@ -30,6 +30,56 @@ public struct Decoder
 {
 }
 
+impl Decoder
+{
+    func uncompress(bpp: u8, dstBuffer: *u8, srcBuffer: const *u8, length: uint)
+    {
+        dest := dstBuffer
+        buffer := srcBuffer
+        l := length
+        bpp8 := bpp >> 3
+
+        while l > 0
+        {
+            num := :buffer
+            buffer += 1
+            if num & 0x80
+            {
+                num -= 127
+                val := :cast(const *u32) buffer
+                buffer += bpp8
+                loop num
+                {
+                    switch bpp
+                    {
+                    case 24:
+                        dest[2] = bitcast(u8) (val >>% 16)
+                        fallthrough
+                    case 16:
+                        dest[1] = bitcast(u8) (val >>% 8)
+                        fallthrough
+                    case 8:
+                        dest[0] = bitcast(u8) val
+                    default:
+                        :cast(*u32) dest = val
+                    }
+
+                    dest += bpp8
+                    l -= bpp8
+                }
+            }
+            else
+            {
+                val := cast(uint) (bpp8 * (num + 1))
+                memory.copy(dest, buffer, val)
+                l -= val
+                dest += val
+                buffer += val
+            }
+        }
+    }
+}
+
 public impl IDecoder for Decoder
 {
     func canDecode(using self, fileName: string)->bool
@@ -63,9 +113,12 @@ public impl IDecoder for Decoder
         switch (header.imageTypeCode)
         {
         case TYPE_MAP, TYPE_RGB, TYPE_MONO:
+            if dataof + result.size > last throw "invalid source buffer"
             memory.copy(result.pixels, dataof, result.size)
+        case TYPE_RLE_MAP, TYPE_RLE_RGB, TYPE_RLE_MONO:
+            uncompress(header.bpp, result.pixels, dataof, result.size)
         default:
-            throw "unsupported format"
+            throw "unsupported tga type"
         }
 
         return result
