@@ -39,6 +39,16 @@ impl Image
         free()
     }
 
+    func opPostCopy(using self)
+    {
+        if pixels
+        {
+            newPixels := memory.alloc(size, allocator)
+            memory.copy(newPixels, pixels, size)
+            pixels = newPixels
+        }
+    }
+
     // Release the content of the image
     func release(using self)
     {

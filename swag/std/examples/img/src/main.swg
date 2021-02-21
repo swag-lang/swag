@@ -39,9 +39,10 @@ func display()
 }
 
 var textureID: GLuint
+#[swag.printbc]
 func loadImg() throw
 {
-    data := imagePath("bmp_32.bmp")
+    data := imagePath("bmp_24.bmp")
     img := try image.load(data)
 
     fmt := GL_BGR
