@@ -1719,13 +1719,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU8:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt8Ty());
+            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt8Ty());
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS16:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(sadd_with_overflow, CreateSub, getInt16Ty());
+            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt16Ty());
             break;
         }
         case ByteCodeOp::AffectOpMinusEqU16:
@@ -2740,7 +2740,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::InternalInitStackTrace:
         {
-            localCall(buildParameters, allocR, allocT, "__initStackTrace", { ip->a.u32 }, {});
+            localCall(buildParameters, allocR, allocT, "__initStackTrace", {ip->a.u32}, {});
             break;
         }
         case ByteCodeOp::InternalStackTrace:
