@@ -112,9 +112,9 @@ public impl IDecoder for Decoder
         switch header.bpp
         {
         case 32:
-            result = create(cast(u32) header.width, cast(u32) header.height, PixelFormat.R8G8B8A8)
+            result = create(cast(u32) header.width, cast(u32) header.height, PixelFormat.BGRA8)
         case 24:
-            result = create(cast(u32) header.width, cast(u32) header.height, PixelFormat.R8G8B8)
+            result = create(cast(u32) header.width, cast(u32) header.height, PixelFormat.BGR8)
         default:
             throw "unsupported bit count"
         }

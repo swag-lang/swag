@@ -104,9 +104,9 @@ public impl IDecoder for Decoder
         switch bh.biBitCount
         {
         case 32:
-            result = create(bh.biWidth, bh.biHeight, PixelFormat.R8G8B8A8)
+            result = create(bh.biWidth, bh.biHeight, PixelFormat.BGRA8)
         case 24:
-            result = create(bh.biWidth, bh.biHeight, PixelFormat.R8G8B8)
+            result = create(bh.biWidth, bh.biHeight, PixelFormat.BGR8)
         default:
             throw "unsupported bit count"
         }
@@ -119,31 +119,14 @@ public impl IDecoder for Decoder
         if bfOffBits
             dataof = @dataof(buffer) + bfOffBits
 
-        if dataof + (bh.biWidth * bh.biHeight * (bh.biBitCount / 8)) > last
+        byteSize := cast(uint) (bh.biWidth * bh.biHeight * (bh.biBitCount / 8))
+        if dataof + byteSize > last
             throw "invalid source buffer"
 
-        // Encoded in B,G,R order, decode it in R,G,B order
-        pdest := result.pixels
         switch bh.biBitCount
         {
-        case 32:
-            loop bh.biWidth * bh.biHeight
-            {
-                pdest[2] = dataof[0]
-                pdest[1] = dataof[1]
-                pdest[0] = dataof[2]
-                pdest[3] = cast(u8) (255 - dataof[3])
-                pdest, dataof += 4
-            }
-
-        case 24:
-            loop bh.biHeight * bh.biWidth
-            {
-                pdest[2] = dataof[0]
-                pdest[1] = dataof[1]
-                pdest[0] = dataof[2]
-                pdest, dataof += 3
-            }
+        case 24, 32:
+            memory.copy(result.pixels, dataof, byteSize)
         }
 
         return result
