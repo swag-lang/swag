@@ -10,7 +10,9 @@ func dataPath()->String
 {
     dataPath := path.getDirectoryName(#location.fileName)
     dataPath = path.getDirectoryName(dataPath)
-    return path.combine(dataPath, "datas")
+    dataPath = path.getDirectoryName(dataPath)
+    dataPath = path.getDirectoryName(dataPath)
+    return path.combine(dataPath, "tests/image/datas")
 }
 
 func imagePath(name: string)->String
@@ -39,12 +41,15 @@ func display()
 var textureID: GLuint
 func loadImg() throw
 {
-    data := imagePath("image2.Bmp")
+    data := imagePath("tga_24.tga")
     img := try image.load(data)
+
+    fmt := GL_RGB
+    if img.bpp == 32 fmt = GL_RGBA
 
     glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, cast(s32) img.width, cast(s32) img.height, 0, GL_RGB, GL_UNSIGNED_BYTE, img.pixels)
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, cast(s32) img.width, cast(s32) img.height, 0, fmt, GL_UNSIGNED_BYTE, img.pixels)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 }
