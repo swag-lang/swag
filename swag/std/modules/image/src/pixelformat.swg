@@ -12,7 +12,7 @@ impl enum PixelFormat
 {
     // Returns the bpp (bits per pixel) of the given pixel format
     #[constexpr]
-    func bpp(self)->u32
+    func bpp(self)->u8
     {
         #[complete]
         switch self
