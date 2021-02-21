@@ -28,11 +28,11 @@ impl Image
         {
             loop y: height
             {
-                idx := height - cast(u32) y - 1
+                idx := height - y - 1
                 if idx <= y break
-                tmp := getPixel(cast(u32) x, cast(u32) y)
-                setPixel(cast(u32) x, cast(u32) y, getPixel(cast(u32) x, idx))
-                setPixel(cast(u32) x, idx, tmp)
+                tmp := getPixel(x, y)
+                setPixel(x, y, getPixel(x, idx))
+                setPixel(x, idx, tmp)
             }
         }
     }

@@ -516,7 +516,17 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     SWAG_VERIFY(ownerBreakable, context->report({node, node->token, "'@index' can only be used inside a breakable loop"}));
 
     ownerBreakable->breakableFlags |= BREAKABLE_NEED_INDEX;
-    node->typeInfo    = g_TypeMgr.typeInfoUInt;
+
+    // Take the type from the expression
+    if (ownerBreakable->kind == AstNodeKind::Loop)
+    {
+        auto loopNode  = CastAst<AstLoop>(ownerBreakable, AstNodeKind::Loop);
+        if(loopNode->expression->typeInfo->flags & TYPEINFO_INTEGER)
+            node->typeInfo = loopNode->expression->typeInfo;
+    }
+
+    if (!node->typeInfo)
+        node->typeInfo = g_TypeMgr.typeInfoUInt;
     node->byteCodeFct = ByteCodeGenJob::emitIndex;
     return true;
 }

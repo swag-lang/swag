@@ -3,7 +3,7 @@
 //#[swag.printbc]
 #test
 {
-	cpt := 0'uint
+	cpt := 0
 	loop i: 2
 	{
 		cpt += i

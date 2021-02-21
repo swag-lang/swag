@@ -63,6 +63,6 @@ var testDigit: []char = @[
 //#[swag.printbc]
 #test
 {
-    loop c: 256 @assert(latin1.isLetter(cast(u8) c) == unicode.isLetter(cast(char) c))
+    loop c: 256'u32 @assert(latin1.isLetter(cast(u8) c) == unicode.isLetter(cast(char) c))
     visit c: testDigit @assert(unicode.isDigit(c))
 }

@@ -6,13 +6,15 @@ LANGUAGE
 -------------------------------------
 attribute, erreur si le caller n'utilise pas la valeur de retour du called (attribute de fonction)
 -------------------------------------
-ca serait cool que les methods, en reflections, aient une value qui peut être castée en lambda, et donc appelées
+ca serait cool que les methods, en reflections, aient une value qui peut ï¿½tre castï¿½e en lambda, et donc appelï¿½es
 -------------------------------------
 
 
 ****************************************
 TODO
 ****************************************
+-------------------------------------
+#assert interdit dans sous bloc, pourquoi ?
 -------------------------------------
 char => rune ?
 -------------------------------------
@@ -21,7 +23,7 @@ slice/cstrings and foreign
 y'a forcement des merdes avec les typeinfo compiler dans leur propre segment
 (si on les compare avec un type non compiler, si on les met dans une var any...)
 -------------------------------------
-attributes flags qui sont à la fois on et off => error
+attributes flags qui sont ï¿½ la fois on et off => error
 -------------------------------------
 x := -128's8
 -------------------------------------
@@ -39,6 +41,6 @@ OPTIMS
 -------------------------------------
 BinOpModuloS32/div immediate mode
 -------------------------------------
-x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?
+x64: et si les premiers registres ï¿½taient des vrais registres x64 volatiles plutot que des accï¿½s indirects ï¿½ la mï¿½moire ?
 rc[0] = r12 etc...
 -------------------------------------

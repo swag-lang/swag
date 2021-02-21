@@ -21,8 +21,8 @@
 
     // You can name that index if you want
     {
-        cpt := 0'uint
-        cpt1 := 0'uint
+        cpt := 0
+        cpt1 := 0
 
         loop i: 5
         {
