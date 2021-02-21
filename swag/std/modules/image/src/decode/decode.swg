@@ -30,7 +30,6 @@ public func(T) addDecoder()
 }
 
 // Load an image from file
-//#[swag.printbc]
 public func load(fileName: string)->Image throw
 {
     // Find the decoder that can treat 'fileName'
@@ -50,9 +49,8 @@ public func load(fileName: string)->Image throw
     bytes := try file.readAllBytes(fileName)
 
     // Create a decoder instance
-    ptrDecoder := memory.alloc(found.type.sizeof)
-    defer memory.free(ptrDecoder, found.type.sizeof)
-    found.type.opInit(ptrDecoder)
+    ptrDecoder := memory.new(found.type, @getcontext().tempAllocator)
+    defer { if found.type.opDrop found.type.opDrop(ptrDecoder); }
 
     // Decode
     itf := @mkinterface(ptrDecoder, found.type, IDecoder)

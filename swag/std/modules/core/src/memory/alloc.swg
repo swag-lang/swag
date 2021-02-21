@@ -65,6 +65,21 @@ func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: 
 }
 
 // Allocate and initialize the given type
+func new(type: typeinfo, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
+{
+    userHint := hint ?? type.name
+    ptr := alloc(type.sizeof, allocator, alignement, userHint, loc)
+    if type.kind == swag.TypeInfoKind.Struct
+    {
+        typeStruct := cast(const *swag.TypeInfoStruct) type
+        typeStruct.opInit(ptr)
+    }
+    else
+        clear(ptr, type.sizeof)
+    return ptr
+}
+
+// Allocate and initialize the given type
 func(T) new(allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*T
 {
     userHint := hint ?? @typeof(T).name
