@@ -108,10 +108,12 @@ bool SemanticJob::resolveScopedStmtBefore(SemanticContext* context)
     node->allocateExtension();
 
     // Can already been set in some cases... So be sure to not overwrite it.
-    if (node->extension->byteCodeAfterFct != ByteCodeGenJob::emitIfAfterIf &&
-        node->extension->byteCodeAfterFct != ByteCodeGenJob::emitLeaveScope)
+    auto afterFct = node->extension->byteCodeAfterFct;
+    if (afterFct != ByteCodeGenJob::emitIfAfterIf &&
+        afterFct != ByteCodeGenJob::emitSwitchCaseAfterBlock &&
+        afterFct != ByteCodeGenJob::emitLeaveScope)
     {
-        SWAG_ASSERT(!node->extension->byteCodeAfterFct);
+        SWAG_ASSERT(!afterFct);
         node->extension->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
     }
 

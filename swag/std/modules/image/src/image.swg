@@ -74,7 +74,6 @@ impl Image
     }
 
     // Returns the pixel at the given x,y coordinate
-    //#[swag.inline]
     func getPixel(using self, x, y: u32)->u64
     {
         addr := getPixelAddress(x, y)
