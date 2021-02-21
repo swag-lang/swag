@@ -72,4 +72,38 @@ impl Image
         iy := height - y - 1
         return pixels + (x + (iy * width)) * bpp8
     }
+
+    // Returns the pixel at the given x,y coordinate
+    //#[swag.inline]
+    func getPixel(using self, x, y: u32)->u64
+    {
+        addr := getPixelAddress(x, y)
+        switch bpp
+        {
+        case 24:
+            return cast(u64) (addr[0] | addr[1] << 8 | addr[2] << 16)
+        case 32:
+            return cast(u64) (:cast(*u32) addr)
+        default:
+            debug.assert(false)
+        }
+        return 0
+    }
+
+    // Set the pixel at the given x,y coordinate
+    func setPixel(using self, x, y: u32, pixel: u64)
+    {
+        addr := getPixelAddress(x, y)
+        switch bpp
+        {
+        case 24:
+            addr[0] = bitcast(u8) pixel
+            addr[1] = bitcast(u8) (pixel >>% 8)
+            addr[2] = bitcast(u8) (pixel >>% 16)
+        case 32:
+            :cast(*u32) addr = cast(u32) pixel
+        default:
+            debug.assert(false)
+        }
+    }
 }
