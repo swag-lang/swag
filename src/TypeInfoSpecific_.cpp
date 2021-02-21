@@ -895,7 +895,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     // Do not compare names for tuples
     bool isTuple  = flags & TYPEINFO_STRUCT_IS_TUPLE;
-    bool sameName = structName == other->structName;
+    bool sameName = declNode->ownerScope == to->declNode->ownerScope && structName == other->structName;
     if (!isTuple && !sameName)
         return false;
 

@@ -9,7 +9,7 @@ using image
     }
 
     {
-        //data := imagePath("image2.tga")
-        //img := try image.load(data)
+        data := imagePath("image2.tga")
+        img := try image.load(data)
     }
 }
