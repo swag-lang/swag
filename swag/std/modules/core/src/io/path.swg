@@ -131,7 +131,7 @@ func getExtension(fullname: string)->string
 
 // Returns the file name extension, including the '.' character, in lower case
 // Returns null if no extension was found
-func getLowerCaseExtension(fullname: string)->String
+func getExtensionLowerCase(fullname: string)->String
 {
     return String.toLower(getExtension(fullname))
 }
