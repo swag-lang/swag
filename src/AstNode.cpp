@@ -927,7 +927,6 @@ AstNode* AstSwitch::clone(CloneContext& context)
     newNode->cloneChilds(cloneContext, this);
 
     newNode->expression = findChildRef(expression, newNode);
-    newNode->block      = findChildRef(block, newNode);
     for (auto expr : cases)
         newNode->cases.push_back((AstSwitchCase*) findChildRef(expr, newNode));
     return newNode;

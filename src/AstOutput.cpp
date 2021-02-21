@@ -811,6 +811,42 @@ namespace Ast
             break;
         }
 
+        case AstNodeKind::Switch:
+        {
+            auto nodeSwitch = CastAst<AstSwitch>(node, AstNodeKind::Switch);
+            CONCAT_FIXED_STR(concat, "switch ");
+            SWAG_CHECK(output(context, concat, nodeSwitch->expression));
+            concat.addEolIndent(context.indent);
+            concat.addChar('{');
+            concat.addEolIndent(context.indent);
+
+            for (auto c : nodeSwitch->cases)
+            {
+                if (c->expressions.empty())
+                    CONCAT_FIXED_STR(concat, "default");
+                else
+                {
+                    CONCAT_FIXED_STR(concat, "case ");
+                    bool first = true;
+                    for (auto e : c->expressions)
+                    {
+                        if (!first)
+                            CONCAT_FIXED_STR(concat, ", ");
+                        SWAG_CHECK(output(context, concat, e));
+                        first = false;
+                    }
+                }
+                concat.addChar(':');
+                concat.addEolIndent(context.indent);
+                SWAG_CHECK(output(context, concat, c->block));
+                concat.addEolIndent(context.indent);
+            }
+
+            concat.addChar('}');
+            concat.addEolIndent(context.indent);
+            break;
+        }
+
         case AstNodeKind::StatementNoScope:
         {
             for (auto child : node->childs)

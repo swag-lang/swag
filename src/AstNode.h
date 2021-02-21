@@ -636,7 +636,6 @@ struct AstSwitch : public AstBreakable
     VectorNative<AstSwitchCase*> cases;
 
     AstNode* expression;
-    AstNode* block;
 };
 
 struct AstSwitchCase : public AstNode
