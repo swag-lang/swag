@@ -971,7 +971,6 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     cloneContext.forceFlags |= identifier->flags & AST_RUN_BLOCK;
 
     auto newContent = funcDecl->content->clone(cloneContext);
-
     if (newContent->extension)
     {
         newContent->extension->byteCodeBeforeFct = nullptr;
@@ -980,6 +979,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     }
 
     newContent->flags &= ~AST_NO_SEMANTIC;
+
+    //funcDecl->cloneSubDecls(cloneContext, inlineNode->ownerFct);
 
     // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called
     // for something else, like a loop node for example (opCount). In that case, we let the specific node

@@ -370,6 +370,9 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     uint32_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST;
     if (justCheck)
         castFlags |= CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR;
+    if (job->cacheMatches.empty())
+        return true;
+
     auto oneMatch = job->cacheMatches[0];
     for (int i = 0; i < params.size(); i++)
     {

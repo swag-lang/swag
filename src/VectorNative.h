@@ -174,7 +174,8 @@ struct VectorNative
 
     T& operator[](int index)
     {
-        SWAG_ASSERT(buffer);
+        SWAG_ASSERT(buffer && count);
+        SWAG_ASSERT(index < count);
         return buffer[index];
     }
 

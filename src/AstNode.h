@@ -452,6 +452,7 @@ struct AstIdentifier : public AstNode
 struct AstFuncDecl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
+    void     cloneSubDecls(CloneContext& cloneContext, AstFuncDecl* refNode);
 
     DependentJobs          dependentJobs;
     Utf8                   fullnameForeign;
