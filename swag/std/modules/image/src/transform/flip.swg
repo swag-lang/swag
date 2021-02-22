@@ -6,7 +6,7 @@ impl Image
     public func flip(using self)
     {
         w := cast(uint) width * bpp8
-        tmpLine := memory.alloc(w, @getcontext().tempAllocator)
+        tmpLine := memory.tempAlloc(w)
 
         ptrDst := pixels + w * (height - 1)
         ptrSrc := pixels
