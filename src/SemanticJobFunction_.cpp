@@ -568,11 +568,20 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         context->job->decreaseMethodCount(typeStruct);
     }
 
+    resolveSubDecls(context, funcNode);
+    return true;
+}
+
+void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
+{
+    if (!funcNode)
+        return;
+
     // If we have sub declarations, then now we can solve them, except for a generic function.
     // Because for a generic function, the sub declarations will be cloned and solved after instanciation.
     // Otherwise, we can have a race condition by solving a generic sub declaration and cloning it for instancation
     // at the same time.
-    if (!(funcNode->flags & AST_IS_GENERIC))
+    if (!(funcNode->flags & AST_IS_GENERIC) && funcNode->content && !(funcNode->content->flags & AST_NO_SEMANTIC))
     {
         for (auto f : funcNode->subDecls)
         {
@@ -581,6 +590,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
             // Disabled by #if block
             if (f->semFlags & AST_SEM_DISABLED)
                 continue;
+            f->semFlags |= AST_SEM_DISABLED; // To avoid multiple resolutions
 
             f->flags &= ~AST_NO_SEMANTIC;
 
@@ -593,14 +603,12 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
                 auto job          = g_Pool_semanticJob.alloc();
                 job->sourceFile   = context->sourceFile;
                 job->module       = context->sourceFile->module;
-                job->dependentJob = context->job->dependentJob;
+                job->dependentJob = context->baseJob->dependentJob;
                 job->nodes.push_back(f);
                 g_ThreadMgr.addJob(job);
             }
         }
     }
-
-    return true;
 }
 
 bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
@@ -980,7 +988,9 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 
     newContent->flags &= ~AST_NO_SEMANTIC;
 
-    //funcDecl->cloneSubDecls(cloneContext, inlineNode->ownerFct);
+    // Sub declarations in the inline block, like sub functions
+    funcDecl->cloneSubDecls(cloneContext, funcDecl->content, inlineNode->ownerFct, newContent);
+    resolveSubDecls(context, inlineNode->ownerFct);
 
     // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called
     // for something else, like a loop node for example (opCount). In that case, we let the specific node

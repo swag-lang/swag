@@ -327,6 +327,8 @@ AstNode* AstNode::findChildRefRec(AstNode* ref, AstNode* fromChild)
 {
     if (!ref)
         return nullptr;
+    if (this == ref)
+        return fromChild;
     for (int i = 0; i < childs.size(); i++)
     {
         if (childs[i] == ref)
@@ -618,7 +620,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     fullnameForeign.count = (uint32_t)(pzd - fullnameForeign.buffer) - 1;
 }
 
-void AstFuncDecl::cloneSubDecls(CloneContext& cloneContext, AstFuncDecl* refNode)
+void AstFuncDecl::cloneSubDecls(CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
 {
     // We need to duplicate sub declarations, and register the symbol in the new corresponding scope
     for (auto f : subDecls)
@@ -629,7 +631,7 @@ void AstFuncDecl::cloneSubDecls(CloneContext& cloneContext, AstFuncDecl* refNode
         // the duplicated parent node that corresponds to the original one, in order to get the corresponding new
         // scope (if a sub declaration is declared inside an if statement scope for example, we need the duplicated
         // sub declaration to be registered in the corresponding new scope).
-        auto newScopeNode = findChildRefRec(f->ownerScope->owner, refNode);
+        auto newScopeNode = oldOwnerNode->findChildRefRec(f->ownerScope->owner, refNode);
         SWAG_ASSERT(newScopeNode);
         auto subFuncScope = newScopeNode->ownerScope;
 
@@ -677,7 +679,7 @@ void AstFuncDecl::cloneSubDecls(CloneContext& cloneContext, AstFuncDecl* refNode
         subDecl->typeInfo->declNode = subDecl;
 
         subDecl->doneFlags |= AST_DONE_FILE_JOB_PASS;
-        refNode->subDecls.push_back(subDecl);
+        newFctNode->subDecls.push_back(subDecl);
         subDecl->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, subDecl, symKind);
         subDecl->resolvedSymbolOverload = nullptr;
 
@@ -716,7 +718,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         cloneContext.parentScope = bodyScope;
         newNode->content         = content->clone(cloneContext);
         bodyScope->owner         = newNode->content;
-        cloneSubDecls(cloneContext, newNode);
+        cloneSubDecls(cloneContext, this, newNode, newNode);
     }
     else
     {

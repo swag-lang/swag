@@ -1,3 +1,5 @@
+#global testerror
+
 using swag
 
 var G = 0
@@ -11,7 +13,10 @@ func toto(stmt: code)
     }
 
     titi()
-    #mixin stmt
+    #macro
+    {
+        #mixin `stmt
+    }
 }
 
 //#[swag.printbc]

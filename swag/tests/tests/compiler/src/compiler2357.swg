@@ -15,7 +15,6 @@ mkVar("tata", 666)
 
 #test
 {
-
     @assert(titi == 555)
     @assert(tata == 666)
 }
