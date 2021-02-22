@@ -72,6 +72,8 @@ void Diagnostic::report(bool verboseMode) const
             g_Log.setColor(LogColor::DarkYellow);
         for (auto& r : remarks)
         {
+            if (r.empty())
+                continue;
             g_Log.print("remark: ");
             g_Log.print(r);
             g_Log.eol();

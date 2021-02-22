@@ -7,6 +7,7 @@
 #include "Generic.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "Diagnostic.h"
 
 void AstNode::swap2Childs()
 {
@@ -620,7 +621,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     fullnameForeign.count = (uint32_t)(pzd - fullnameForeign.buffer) - 1;
 }
 
-void AstFuncDecl::cloneSubDecls(CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
+bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
 {
     // We need to duplicate sub declarations, and register the symbol in the new corresponding scope
     for (auto f : subDecls)
@@ -680,12 +681,26 @@ void AstFuncDecl::cloneSubDecls(CloneContext& cloneContext, AstNode* oldOwnerNod
 
         subDecl->doneFlags |= AST_DONE_FILE_JOB_PASS;
         newFctNode->subDecls.push_back(subDecl);
+
+        // Be sure symbol is not already there. This can happen when using mixins
+        if (context)
+        {
+            auto sym = subFuncScope->symTable.find(subDecl->token.text);
+            if (sym)
+            {
+                Diagnostic diag{subDecl, subDecl->token, format("symbol '%s' already defined in parent scope", subDecl->token.text.c_str())};
+                return context->report(diag);
+            }
+        }
+
         subDecl->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, subDecl, symKind);
         subDecl->resolvedSymbolOverload = nullptr;
 
         // Do it last for avoid a race condition with the file job
         Ast::addChildBack(sourceFile->astRoot, subDecl);
     }
+
+    return true;
 }
 
 AstNode* AstFuncDecl::clone(CloneContext& context)
@@ -718,7 +733,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         cloneContext.parentScope = bodyScope;
         newNode->content         = content->clone(cloneContext);
         bodyScope->owner         = newNode->content;
-        cloneSubDecls(cloneContext, this, newNode, newNode);
+        cloneSubDecls(nullptr, cloneContext, this, newNode, newNode);
     }
     else
     {

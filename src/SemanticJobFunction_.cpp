@@ -989,8 +989,13 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     newContent->flags &= ~AST_NO_SEMANTIC;
 
     // Sub declarations in the inline block, like sub functions
-    funcDecl->cloneSubDecls(cloneContext, funcDecl->content, inlineNode->ownerFct, newContent);
-    resolveSubDecls(context, inlineNode->ownerFct);
+    if (!funcDecl->subDecls.empty())
+    {
+        context->expansionNode.push_back({identifier, JobContext::ExpansionType::Inline});
+        SWAG_CHECK(funcDecl->cloneSubDecls(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent));
+        context->expansionNode.pop_back();
+        resolveSubDecls(context, inlineNode->ownerFct);
+    }
 
     // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called
     // for something else, like a loop node for example (opCount). In that case, we let the specific node
