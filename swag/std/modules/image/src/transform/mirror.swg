@@ -14,13 +14,13 @@ impl Image
             {
                 #if N == 1
                     swap(ptrSrc, ptrDst)
-                #elif N == 2 || N == 3
+                #if N == 2 || N == 3
                     swap(cast(*u16) ptrSrc, cast(*u16) ptrDst)
-                #elif N == 3
+                #if N == 3
                     swap(&ptrSrc[2], &ptrDst[2])
-                #elif N == 4
+                #if N == 4
                     swap(cast(*u32) ptrSrc, cast(*u32) ptrDst)
-                #elif N == 8
+                #if N == 8
                     swap(cast(*u64) ptrSrc, cast(*u64) ptrDst)
 
                 ptrSrc, ptrDst += width * N
