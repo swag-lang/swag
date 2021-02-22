@@ -41,7 +41,7 @@ func display()
 var textureID: GLuint
 func loadImg() throw
 {
-    data := imagePath("bmp_24.bmp")
+    data := imagePath("bmp_32.bmp")
     img := try image.load(data)
     img.flip()
     img.mirror()

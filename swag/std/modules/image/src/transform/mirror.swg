@@ -2,42 +2,32 @@ using core
 
 impl Image
 {
-    func mirror24(using self)
+    func(N: u8) mirror(using self)
     {
         ptrRowSrc := pixels
-        ptrRowDst := pixels + (width - 1) * 3
-        loop x: width / 2
+        ptrRowDst := pixels + (width - 1) * N
+        loop width / 2
         {
             ptrSrc := ptrRowSrc
             ptrDst := ptrRowDst
-            loop y: height
+            loop height
             {
-                swap(cast(*u16) ptrSrc, cast(*u16) ptrDst)
-                swap(&ptrSrc[2], &ptrDst[2])
-                ptrSrc, ptrDst += width * 3
+                #if N == 1
+                    swap(ptrSrc, ptrDst)
+                #elif N == 2 || N == 3
+                    swap(cast(*u16) ptrSrc, cast(*u16) ptrDst)
+                #elif N == 3
+                    swap(&ptrSrc[2], &ptrDst[2])
+                #elif N == 4
+                    swap(cast(*u32) ptrSrc, cast(*u32) ptrDst)
+                #elif N == 8
+                    swap(cast(*u64) ptrSrc, cast(*u64) ptrDst)
+
+                ptrSrc, ptrDst += width * N
             }
 
-            ptrRowSrc += 3
-            ptrRowDst -= 3
-        }
-    }
-
-    func(T) mirror(using self)
-    {
-        ptrRowSrc := cast(*T) pixels
-        ptrRowDst := cast(*T) pixels + width - 1
-        loop x: width / 2
-        {
-            ptrSrc := ptrRowSrc
-            ptrDst := ptrRowDst
-            loop y: height
-            {
-                swap(ptrSrc, ptrDst)
-                ptrSrc, ptrDst += width
-            }
-
-            ptrRowSrc += 1
-            ptrRowDst -= 1
+            ptrRowSrc += N
+            ptrRowDst -= N
         }
     }
 
@@ -49,15 +39,15 @@ impl Image
         switch bpp
         {
         case 8:
-            mirror'u8()
+            mirror'1()
         case 16:
-            mirror'u16()
+            mirror'2()
         case 24:
-            mirror24()
+            mirror'3()
         case 32:
-            mirror'u32()
+            mirror'4()
         case 64:
-            mirror'u64()
+            mirror'8()
         default:
             debug.assert(false, "unsupported pixel format")
         }
