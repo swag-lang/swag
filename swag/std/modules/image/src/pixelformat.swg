@@ -23,4 +23,18 @@ impl enum PixelFormat
 
         return 0
     }
+
+    // Returns true if the given pixel format has an alpha channel
+    #[constexpr]
+    func hasAlpha(self)->bool
+    {
+        #[complete]
+        switch self
+        {
+            case BGR8:  return false
+            case BGRA8: return true
+        }
+
+        return false
+    }
 }
