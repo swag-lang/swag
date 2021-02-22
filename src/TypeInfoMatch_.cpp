@@ -75,10 +75,15 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
         if (!same)
         {
-            context.badSignatureInfos.badSignatureParameterIdx  = i;
-            context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
-            context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
-            SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+            // Keep the first error
+            if (context.result == MatchResult::Ok)
+            {
+                context.badSignatureInfos.badSignatureParameterIdx  = i;
+                context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
+                context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
+                SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+            }
+
             context.result = MatchResult::BadSignature;
         }
         else

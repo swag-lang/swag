@@ -1156,6 +1156,17 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         vector<const Diagnostic*> errs0, errs1;
         getDiagnosticForMatch(context, *overloads[0], errs0, errs1);
         SWAG_ASSERT(!errs0.empty());
+
+        // If we have an ufcs call, and the match does not come from its symtable, then that means that we have not found the
+        // symbol in the original struct also.
+        if (identifier && identifier->identifierRef->startScope && overloads[0]->overload->symbol->ownerTable != &identifier->identifierRef->startScope->symTable)
+        {
+            const_cast<Diagnostic*>(errs0[0])->codeComment = format("symbol '%s' was also not found in %s '%s'",
+                                                                    overloads[0]->overload->symbol->name.c_str(),
+                                                                    TypeInfo::getNakedKindName(identifier->identifierRef->typeInfo),
+                                                                    identifier->identifierRef->typeInfo->name.c_str());
+        }
+
         return context->report(*errs0[0], errs1);
     }
 
