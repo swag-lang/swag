@@ -1099,7 +1099,7 @@ void SemanticJob::symbolNotFoundRemarks(SemanticContext* context, VectorNative<O
         {
             if (s->symTable.find(node->token.text))
             {
-                diag->remarks.push_back(format("symbol '%s' exists in scope '%s'",
+                diag->remarks.push_back(format("symbol '%s' exists in interface scope '%s'",
                                                node->token.text.c_str(),
                                                s->getFullName().c_str()));
             }
