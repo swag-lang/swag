@@ -64,6 +64,23 @@ func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: 
     return req.address
 }
 
+// Allocate a given amount of bytes
+/*func tempAlloc(size: uint, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
+{
+    var req: AllocatorRequest
+    req.callerLoc   = loc
+    req.hint        = hint
+    req.mode        = AllocatorMode.Alloc
+    req.size        = size
+    req.alignement  = alignement
+
+    cxt := @getcontext()
+    talloc := &cxt.tempAllocator
+    talloc.alloc(&req)
+
+    return req.address
+}*/
+
 // Allocate and initialize the given type
 func new(type: typeinfo, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
 {

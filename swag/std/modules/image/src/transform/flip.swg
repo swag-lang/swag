@@ -3,37 +3,22 @@ using core
 impl Image
 {
     // Flip image vertically
-    public func getFlip(using self)->Image
+    public func flip(using self)
     {
-        var result: retval = create(width, height, pf)
-
         w := cast(uint) width * bpp8
-        ptrDst := result.pixels + w * (height - 1)
+        tmpLine := memory.alloc(w, @getcontext().tempAllocator)
+
+        ptrDst := pixels + w * (height - 1)
         ptrSrc := pixels
 
         loop h: height
         {
+            if ptrSrc == ptrDst break
+            memory.copy(tmpLine, ptrDst, w)
             memory.copy(ptrDst, ptrSrc, w)
+            memory.copy(ptrSrc, tmpLine, w)
             ptrSrc += w
             ptrDst -= w
-        }
-
-        return result
-    }
-
-    // Flip image vertically
-    public func flip(using self)
-    {
-        loop x: width
-        {
-            loop y: height
-            {
-                idx := height - y - 1
-                if idx <= y break
-                tmp := getPixel(x, y)
-                setPixel(x, y, getPixel(x, idx))
-                setPixel(x, idx, tmp)
-            }
         }
     }
 }
