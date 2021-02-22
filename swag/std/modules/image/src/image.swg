@@ -52,6 +52,24 @@ impl Image
         }
     }
 
+    #[swag.macro]
+    func(ptr: bool) opVisit(using self, stmt: code)
+    {
+        scan := pixels
+        loop width * height
+        {
+			#macro
+			{
+                @alias0 := `scan
+				@alias1 := @index
+				#[swag.noreturn]
+				#mixin `stmt
+			}
+
+            scan += bpp8
+        }
+    }
+
     // Release the content of the image
     func release(using self)
     {

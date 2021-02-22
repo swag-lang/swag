@@ -36,17 +36,17 @@ impl Image
     {
         if !pixels return
         debug.assert(width && height)
-        switch bpp
+        switch bpp8
         {
-        case 8:
+        case 1:
             mirror'1()
-        case 16:
+        case 2:
             mirror'2()
-        case 24:
+        case 3:
             mirror'3()
-        case 32:
+        case 4:
             mirror'4()
-        case 64:
+        case 8:
             mirror'8()
         default:
             debug.assert(false, "unsupported pixel format")
