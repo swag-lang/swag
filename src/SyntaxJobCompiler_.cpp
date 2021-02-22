@@ -147,20 +147,6 @@ bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::isValidScopeForCompilerRun(AstNode* node)
-{
-    if (!node->ownerScope->isGlobalOrImpl() && node->ownerScope->kind != ScopeKind::FunctionBody)
-    {
-        auto scope = node->ownerScope;
-        while (scope && (scope->kind == ScopeKind::EmptyStatement || scope->kind == ScopeKind::Inline || scope->kind == ScopeKind::Macro))
-            scope = scope->parentScope;
-        if (!scope->isGlobalOrImpl() && scope->kind != ScopeKind::FunctionBody)
-            return node->sourceFile->report({node, node->token, format("compile time '%s' cannot be used in a local scope", node->token.text.c_str())});
-    }
-
-    return true;
-}
-
 bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerAssert, sourceFile, parent);
@@ -171,7 +157,6 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerAssert;
     node->token                        = move(token);
-    SWAG_CHECK(isValidScopeForCompilerRun(node));
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(tokenizer.getToken(token));
@@ -295,7 +280,6 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerRun;
     node->token                        = move(token);
-    SWAG_CHECK(isValidScopeForCompilerRun(node));
     SWAG_CHECK(eatToken());
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
@@ -354,7 +338,6 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerPrint;
     node->token                        = move(token);
-    SWAG_CHECK(isValidScopeForCompilerRun(node));
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(doExpression(node));

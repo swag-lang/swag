@@ -14,8 +14,6 @@ ca serait cool que les methods, en reflections, aient une value qui peut �tre 
 TODO
 ****************************************
 -------------------------------------
-#assert interdit dans sous bloc, pourquoi ?
--------------------------------------
 char => rune ?
 -------------------------------------
 slice/cstrings and foreign

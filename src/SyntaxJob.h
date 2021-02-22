@@ -72,12 +72,10 @@ struct SyntaxJob : public Job
     bool doCompilerMacro(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerMixin(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerAssert(AstNode* parent, AstNode** result = nullptr);
-    bool doCompilerRunError(AstNode* parent, AstNode** result);
     bool doCompilerSemError(AstNode* parent, AstNode** result, bool embedded);
     bool doCompilerPrint(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind kind);
     bool doCompilerSelectIf(AstNode* parent, AstNode** result = nullptr);
-    bool isValidScopeForCompilerRun(AstNode* node);
     bool doCompilerRunTopLevel(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunEmbedded(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerGlobal(AstNode* parent, AstNode** result = nullptr);
