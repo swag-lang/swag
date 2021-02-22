@@ -1065,6 +1065,48 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     }
 }
 
+void SemanticJob::symbolNotFoundRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag)
+{
+    if (!node)
+        return;
+    if (node->kind != AstNodeKind::Identifier && node->kind != AstNodeKind::FuncCall)
+        return;
+
+    auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    if (!identifier->identifierRef->startScope)
+        return;
+
+    // If we have an ufcs call, and the match does not come from its symtable, then that means that we have not found the
+    // symbol in the original struct also.
+    int notFound = 0;
+    for (auto overload : overloads)
+    {
+        if (overload->overload->symbol->ownerTable != &identifier->identifierRef->startScope->symTable)
+            notFound++;
+    }
+
+    if (notFound && notFound == overloads.size())
+    {
+        diag->remarks.push_back(format("symbol '%s' was not found in %s '%s'",
+                                       node->token.text.c_str(),
+                                       TypeInfo::getNakedKindName(identifier->identifierRef->typeInfo),
+                                       identifier->identifierRef->typeInfo->name.c_str()));
+    }
+
+    for (auto s : identifier->identifierRef->startScope->childScopes)
+    {
+        if (s->kind == ScopeKind::Impl)
+        {
+            if (s->symTable.find(node->token.text))
+            {
+                diag->remarks.push_back(format("symbol '%s' exists in scope '%s'",
+                                               node->token.text.c_str(),
+                                               s->getFullName().c_str()));
+            }
+        }
+    }
+}
+
 bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node)
 {
     AstIdentifier* identifier        = nullptr;
@@ -1156,22 +1198,14 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         vector<const Diagnostic*> errs0, errs1;
         getDiagnosticForMatch(context, *overloads[0], errs0, errs1);
         SWAG_ASSERT(!errs0.empty());
-
-        // If we have an ufcs call, and the match does not come from its symtable, then that means that we have not found the
-        // symbol in the original struct also.
-        if (identifier && identifier->identifierRef->startScope && overloads[0]->overload->symbol->ownerTable != &identifier->identifierRef->startScope->symTable)
-        {
-            const_cast<Diagnostic*>(errs0[0])->remarks.push_back(format("symbol '%s' was also not found in %s '%s'",
-                                                                        overloads[0]->overload->symbol->name.c_str(),
-                                                                        TypeInfo::getNakedKindName(identifier->identifierRef->typeInfo),
-                                                                        identifier->identifierRef->typeInfo->name.c_str()));
-        }
-
+        symbolNotFoundRemarks(context, overloads, node, const_cast<Diagnostic*>(errs0[0]));
         return context->report(*errs0[0], errs1);
     }
 
     // Multiple overloads
-    Diagnostic                diag{node, node->token, format("none of the %d overloads could match", overloads.size())};
+    Diagnostic diag{node, node->token, format("none of the %d overloads could match", overloads.size())};
+    symbolNotFoundRemarks(context, overloads, node, &diag);
+
     vector<const Diagnostic*> notes;
     for (auto& one : overloads)
     {
@@ -1799,20 +1833,26 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
 
+            Diagnostic* diag = new Diagnostic{node, node->token, format("unknown identifier '%s'", node->token.text.c_str())};
             if (identifierRef->startScope)
             {
                 if (identifierRef->typeInfo && identifierRef->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-                    return context->report({node, node->token, format("identifier '%s' cannot be found in tuple", node->token.text.c_str())});
-                Utf8 displayName;
-                if (!(identifierRef->startScope->flags & SCOPE_PRIVATE))
-                    displayName = identifierRef->startScope->getFullName();
-                if (displayName.empty() && identifierRef->typeInfo)
-                    displayName = identifierRef->typeInfo->name;
-                if (!displayName.empty())
-                    return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
+                    diag = new Diagnostic{node, node->token, format("identifier '%s' cannot be found in tuple", node->token.text.c_str())};
+                else
+                {
+                    Utf8 displayName;
+                    if (!(identifierRef->startScope->flags & SCOPE_PRIVATE))
+                        displayName = identifierRef->startScope->getFullName();
+                    if (displayName.empty() && identifierRef->typeInfo)
+                        displayName = identifierRef->typeInfo->name;
+                    if (!displayName.empty())
+                        diag = new Diagnostic{node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
+                }
             }
 
-            return context->report({node, node->token, format("unknown identifier '%s'", node->token.text.c_str())});
+            VectorNative<OneTryMatch*> v;
+            symbolNotFoundRemarks(context, v, node, diag);
+            return context->report(*diag);
         }
 
         node->flags |= AST_FORCE_UFCS;
