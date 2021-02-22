@@ -148,7 +148,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
                 Diagnostic diag{fromNode, format("cannot cast implicitly from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str())};
-                diag.codeComment = format("'cast(%s)' can be used in that context", toType->name.c_str());
+                diag.remarks.push_back(format("'cast(%s)' can be used in that context", toType->name.c_str()));
                 context->report(diag);
                 done = true;
             }

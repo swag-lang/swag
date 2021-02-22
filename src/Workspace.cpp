@@ -515,13 +515,13 @@ void Workspace::checkPendingJobs()
         if (!toSolve && !node->token.text.empty())
         {
             Diagnostic diag{node, node->token, format("module '%s', cannot resolve %s '%s'", pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), name.c_str())};
-            diag.codeComment = id;
+            diag.remarks.push_back(id);
             sourceFile->report(diag);
         }
         else if (!toSolve)
         {
             Diagnostic diag{node, node->token, format("module '%s', cannot resolve %s", pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str())};
-            diag.codeComment = id;
+            diag.remarks.push_back(id);
             sourceFile->report(diag);
         }
 
@@ -547,7 +547,7 @@ void Workspace::checkPendingJobs()
             }
 
             Diagnostic diag{node, node->token, msg};
-            diag.codeComment = id;
+            diag.remarks.push_back(id);
 
             Diagnostic note{declNode, declNode->token, "this is the declaration", DiagnosticLevel::Note};
             sourceFile->report(diag, &note);

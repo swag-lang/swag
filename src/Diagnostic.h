@@ -109,7 +109,7 @@ struct Diagnostic
     SourceLocation  startLocation;
     SourceLocation  endLocation;
     Utf8            textMsg;
-    Utf8            codeComment;
+    vector<Utf8>    remarks;
     DiagnosticLevel errorLevel;
     bool            hasFile               = false;
     bool            hasLocation           = false;

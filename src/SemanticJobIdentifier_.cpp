@@ -979,7 +979,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                           bi.badSignatureRequestedType->name.c_str(),
                                           bi.badSignatureGivenType->name.c_str())};
         if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            diag->codeComment = format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str());
+            diag->remarks.push_back(format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str()));
         auto note = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
@@ -1011,7 +1011,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                          bi.badSignatureGivenType->name.c_str())};
         }
         if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            diag->codeComment = format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str());
+            diag->remarks.push_back(format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str()));
         Diagnostic* note;
         if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
             note = new Diagnostic{destFuncDecl->parameters->childs[bi.badSignatureParameterIdx], format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
@@ -1054,7 +1054,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                               bi.badSignatureRequestedType->name.c_str(),
                                               bi.badSignatureGivenType->name.c_str())};
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-                diag->codeComment = format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str());
+                diag->remarks.push_back(format("'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str()));
             auto note = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
             result0.push_back(diag);
             result1.push_back(note);
@@ -1161,10 +1161,10 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         // symbol in the original struct also.
         if (identifier && identifier->identifierRef->startScope && overloads[0]->overload->symbol->ownerTable != &identifier->identifierRef->startScope->symTable)
         {
-            const_cast<Diagnostic*>(errs0[0])->codeComment = format("symbol '%s' was also not found in %s '%s'",
-                                                                    overloads[0]->overload->symbol->name.c_str(),
-                                                                    TypeInfo::getNakedKindName(identifier->identifierRef->typeInfo),
-                                                                    identifier->identifierRef->typeInfo->name.c_str());
+            const_cast<Diagnostic*>(errs0[0])->remarks.push_back(format("symbol '%s' was also not found in %s '%s'",
+                                                                        overloads[0]->overload->symbol->name.c_str(),
+                                                                        TypeInfo::getNakedKindName(identifier->identifierRef->typeInfo),
+                                                                        identifier->identifierRef->typeInfo->name.c_str()));
         }
 
         return context->report(*errs0[0], errs1);
@@ -1460,7 +1460,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 width += format("%s = %s", og.first.c_str(), og.second->name.c_str());
             }
 
-            note->codeComment           = width;
+            note->remarks.push_back(width);
             note->showRange             = false;
             note->showMultipleCodeLines = false;
             notes.push_back(note);
@@ -1517,13 +1517,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
             if (overload->typeInfo->kind == TypeInfoKind::FuncAttr)
             {
-                auto typeFunc     = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
-                note->codeComment = Ast::computeGenericParametersReplacement(typeFunc->genericParameters);
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                note->remarks.push_back(Ast::computeGenericParametersReplacement(typeFunc->genericParameters));
             }
             else if (overload->typeInfo->kind == TypeInfoKind::Struct)
             {
-                auto typeStruct   = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
-                note->codeComment = Ast::computeGenericParametersReplacement(typeStruct->genericParameters);
+                auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
+                note->remarks.push_back(Ast::computeGenericParametersReplacement(typeStruct->genericParameters));
             }
 
             notes.push_back(note);

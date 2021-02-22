@@ -66,13 +66,16 @@ void Diagnostic::report(bool verboseMode) const
     g_Log.eol();
 
     // Code comment
-    if (!codeComment.empty())
+    if (!remarks.empty())
     {
         if (!verboseMode)
             g_Log.setColor(LogColor::DarkYellow);
-        g_Log.print("remark: ");
-        g_Log.print(codeComment);
-        g_Log.eol();
+        for (auto& r : remarks)
+        {
+            g_Log.print("remark: ");
+            g_Log.print(r);
+            g_Log.eol();
+        }
     }
 
     if (!verboseMode)
