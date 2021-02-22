@@ -2,12 +2,12 @@ using swag
 
 var G = 0
 
-#[inline]
+#[macro]
 func toto()
 {
     func titi()
     {
-        G = 1
+        G += 1
     }
 
     titi()
@@ -17,5 +17,6 @@ func toto()
 #test
 {
     toto()
-    @assert(G == 1)
+    toto()
+    @assert(G == 2)
 }
