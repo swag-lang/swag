@@ -5,6 +5,9 @@ impl Image
     // Flip image vertically
     public func flip(using self)
     {
+        if !pixels return
+        debug.assert(width && height)
+
         w := cast(uint) width * bpp8
         tmpLine := memory.tempAlloc(w)
 
