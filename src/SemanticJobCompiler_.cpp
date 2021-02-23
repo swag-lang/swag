@@ -217,7 +217,8 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
 
 bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
 {
-    auto node = context->node;
+    auto node      = context->node;
+    bool isAttrUse = node->kind == AstNodeKind::AttrUse;
 
     if (!(node->flags & AST_FROM_GENERIC))
     {
@@ -227,19 +228,24 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
             // Will be done during instantiation
             if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
             {
-                // Be sure we are inside a struct definition, and not in an impl block
-                auto parent = node->parent;
-                while (parent)
+                if (isAttrUse)
+                    node->flags |= AST_IS_GENERIC;
+                else
                 {
-                    if (parent->kind == AstNodeKind::StructDecl)
+                    // Be sure we are inside a struct definition, and not in an impl block
+                    auto parent = node->parent;
+                    while (parent)
                     {
-                        node->flags |= AST_IS_GENERIC;
-                        break;
-                    }
+                        if (parent->kind == AstNodeKind::StructDecl)
+                        {
+                            node->flags |= AST_IS_GENERIC;
+                            break;
+                        }
 
-                    if (parent->kind == AstNodeKind::Impl)
-                        break;
-                    parent = parent->parent;
+                        if (parent->kind == AstNodeKind::Impl)
+                            break;
+                        parent = parent->parent;
+                    }
                 }
             }
 
@@ -249,7 +255,7 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
         }
     }
 
-    if (node->flags & AST_IS_GENERIC)
+    if (!isAttrUse && (node->flags & AST_IS_GENERIC))
     {
         node->childs.back()->flags |= AST_NO_SEMANTIC;
         node->semFlags |= AST_SEM_ON_CLONE;

@@ -140,6 +140,8 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
     auto attrBlockNode = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
     if (result)
         *result = attrBlockNode;
+    attrBlockNode->allocateExtension();
+    attrBlockNode->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
 
     while (token.id == TokenId::SymAttrStart)
     {
@@ -160,6 +162,7 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
     }
 
+    SWAG_VERIFY(!attrBlockNode->childs.empty(), syntaxError(attrBlockNode, "empty attribute"));
     auto back = attrBlockNode->childs.back();
     back->allocateExtension();
     SWAG_ASSERT(!back->extension->semanticAfterFct);
