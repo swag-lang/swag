@@ -201,6 +201,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
             cloneContext.ownerInline            = node->ownerInline;
             cloneContext.replaceTokens          = node->replaceTokens;
             cloneContext.forceFlags             = AST_IN_MIXIN;
+            cloneContext.ownerFct               = node->ownerFct;
             auto cloneContent                   = typeCode->content->clone(cloneContext);
             cloneContent->flags &= ~AST_NO_SEMANTIC;
             node->typeInfo = cloneContent->typeInfo;
