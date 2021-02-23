@@ -70,8 +70,13 @@ impl Array
 
     func opIndexAffect(using self, index: uint, value: T)
     {
-        debug.assert(index < count, "index out of range")
-        buffer[index] = value
+        #if reflection.hasAttribute(@typeof(T), "swag.nocopy")
+            debug.assert(false, "forbidden copy")
+        #else
+        {
+            debug.assert(index < count, "index out of range")
+            buffer[index] = value
+        }
     }
 
     // Initializes an Array that contains values copied from the specified array
