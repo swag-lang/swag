@@ -1,4 +1,5 @@
-/*using swag
+#global testerror
+using swag
 
 var G = 0
 
@@ -25,4 +26,4 @@ func toto(cpt: s64, stmt: code)
     }
 
     @assert(G == 10)
-}*/
+}

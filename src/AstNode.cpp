@@ -174,6 +174,8 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
     if (overload->flags & OVERLOAD_COMPUTED_VALUE)
         return true;
     if (overload->flags & OVERLOAD_VAR_INLINE && !ownerInline)
+        return false;       
+    if (overload->flags & OVERLOAD_VAR_INLINE && ownerInline->ownerFct != ownerFct)
         return false;
     if (!(overload->flags & OVERLOAD_VAR_FUNC_PARAM) && !(overload->flags & OVERLOAD_VAR_LOCAL))
         return true;
