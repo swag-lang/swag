@@ -83,28 +83,39 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     if (!node->isSpecialFunctionName())
         return true;
 
-    auto& name   = node->token.text;
-    auto  parent = node->parent;
+    auto& name      = node->token.text;
+    bool  isOpVisit = name.find("opVisit") == 0;
+
+    auto parent = node->parent;
     while (parent && parent->kind != AstNodeKind::Impl)
         parent = parent->parent;
 
     auto parameters = node->parameters;
-    SWAG_VERIFY(parent, context->report({node, node->token, format("special function '%s' should be defined in a 'impl' scope", name.c_str())}));
-    auto implNode = CastAst<AstImpl>(parent, AstNodeKind::Impl);
 
-    // No need to raise an error, the semantic pass on the impl node will fail
-    auto typeStruct = implNode->identifier->typeInfo;
-    if (typeStruct->kind != TypeInfoKind::Struct)
-        return true;
+    // Special function outside an impl block. This is valid from some...
+    if (!parent)
+    {
+        if (!isOpVisit)
+            return context->report({node, node->token, format("special function '%s' should be defined in a 'impl' scope", name.c_str())});
+    }
 
-    // First parameter must be be struct
-    SWAG_VERIFY(node->parameters, context->report({node, node->token, format("missing parameters for special function '%s'", name.c_str())}));
-    auto firstType = node->parameters->childs.front()->typeInfo;
-    SWAG_VERIFY(firstType->kind == TypeInfoKind::Pointer, context->report({node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
-    auto firstTypePtr = CastTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
-    SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, ISSAME_CAST), context->report({node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+    TypeInfo* typeStruct = nullptr;
+    if (parent)
+    {
+        auto implNode = CastAst<AstImpl>(parent, AstNodeKind::Impl);
 
-    bool isOpVisit = name.find("opVisit") == 0;
+        // No need to raise an error, the semantic pass on the impl node will fail
+        typeStruct = implNode->identifier->typeInfo;
+        if (typeStruct->kind != TypeInfoKind::Struct)
+            return true;
+
+        // First parameter must be be struct
+        SWAG_VERIFY(node->parameters, context->report({node, node->token, format("missing parameters for special function '%s'", name.c_str())}));
+        auto firstType = node->parameters->childs.front()->typeInfo;
+        SWAG_VERIFY(firstType->kind == TypeInfoKind::Pointer, context->report({node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+        auto firstTypePtr = CastTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
+        SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, ISSAME_CAST), context->report({node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+    }
 
     // Generic operator must have one generic parameter of type string
     if (name == "opBinary" || name == "opUnary" || name == "opAssign" || name == "opIndexAssign")

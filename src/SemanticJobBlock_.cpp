@@ -351,12 +351,20 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Struct type : convert to a opVisit call
     auto     typeInfo      = node->expression->typeInfo;
     AstNode* newExpression = nullptr;
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->kind == TypeInfoKind::Struct || !node->extraNameToken.text.empty())
     {
         SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node, node->token, "cannot visit a tuple"}));
-        SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, internalError(context, "cannot resolve visit, expression is not an identifier"));
-        auto identifierRef     = Ast::clone(node->expression, node);
-        auto identifier        = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraNameToken.text.c_str()), (AstIdentifierRef*) identifierRef, identifierRef);
+        AstIdentifierRef* identifierRef = nullptr;
+        bool              cloneParam    = false;
+        if (node->expression->kind == AstNodeKind::IdentifierRef)
+            identifierRef = (AstIdentifierRef*) Ast::clone(node->expression, node);
+        else
+        {
+            cloneParam    = true;
+            identifierRef = Ast::newIdentifierRef(sourceFile, node);
+        }
+
+        auto identifier        = Ast::newIdentifier(sourceFile, format("opVisit%s", node->extraNameToken.text.c_str()), identifierRef, identifierRef);
         identifier->aliasNames = node->aliasNames;
         identifier->inheritTokenLocation(node->token);
 
@@ -372,6 +380,13 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
         newExpression              = identifierRef;
 
+        // Need to add parameter
+        if (cloneParam)
+        {
+            auto callParam = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
+            Ast::clone(node->expression, callParam);
+        }
+
         Ast::removeFromParent(node->block);
         Ast::addChildBack(node, node->block);
         node->expression->flags |= AST_NO_BYTECODE;
@@ -382,8 +397,6 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         job->nodes.push_back(node);
         return true;
     }
-
-    SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, format("'visit' extra name is only valid for a struct type, and type is '%s'", typeInfo->name.c_str())}));
 
     Utf8 alias0Name = node->aliasNames.empty() ? Utf8("@alias0") : node->aliasNames[0];
     Utf8 alias1Name = node->aliasNames.size() <= 1 ? Utf8("@alias1") : node->aliasNames[1];
@@ -520,8 +533,8 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     // Take the type from the expression
     if (ownerBreakable->kind == AstNodeKind::Loop)
     {
-        auto loopNode  = CastAst<AstLoop>(ownerBreakable, AstNodeKind::Loop);
-        if(loopNode->expression->typeInfo->flags & TYPEINFO_INTEGER)
+        auto loopNode = CastAst<AstLoop>(ownerBreakable, AstNodeKind::Loop);
+        if (loopNode->expression->typeInfo->flags & TYPEINFO_INTEGER)
             node->typeInfo = loopNode->expression->typeInfo;
     }
 

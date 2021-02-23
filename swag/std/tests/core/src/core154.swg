@@ -6,10 +6,8 @@ using core, utf8
 {
     res := "A假CD"
     cpt := 0'u32
-    res.visitChars()
+    visit(Chars) c, idx: res
     {
-        c   := @alias0
-        idx := @alias1
         switch(idx)
         {
             case 0:  @assert(c == "A"'char); cpt += 1

@@ -433,8 +433,9 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
 // @alias1 will contain the character index
 // @alias2 will contain the byte index of that character within the utf8 sequence
 #[swag.macro]
-func visitChars(buffer: const [..] u8, stmt: code)
+func(ptr: bool) opVisitChars(buffer: const [..] u8, stmt: code)
 {
+    #assert(!ptr, "visiting by pointer not allowed")
     count := @countof(buffer)
     if !count
         return
