@@ -23,6 +23,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
 
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
 
+        // CopyRBRA X, X
+        if (ip->op == ByteCodeOp::CopyRBtoRA && ip->a.u32 == ip->b.u32)
+            setNop(context, ip);
+
         // CopyRBRA X, Y followed by CopyRBRA Y, X
         if (ip->op == ByteCodeOp::CopyRBtoRA &&
             ip[1].op == ByteCodeOp::CopyRBtoRA &&

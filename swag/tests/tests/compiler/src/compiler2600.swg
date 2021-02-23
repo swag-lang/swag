@@ -1,4 +1,4 @@
-using swag
+/*using swag
 
 var G = 0
 
@@ -8,7 +8,7 @@ func toto(cpt: s64, stmt: code)
     #[printbc]
     func titi()
     {
-        //@print(cpt)
+        @print(cpt)
         #mixin stmt
     }
 
@@ -25,4 +25,4 @@ func toto(cpt: s64, stmt: code)
     }
 
     @assert(G == 10)
-}
+}*/
