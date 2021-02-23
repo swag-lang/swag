@@ -167,6 +167,7 @@ struct CloneContext
     AstNode*            parent                 = nullptr;
     Scope*              parentScope            = nullptr;
     Scope*              ownerStructScope       = nullptr;
+    Scope*              alternativeScope       = nullptr;
     AstNode*            ownerMainNode          = nullptr;
     AstCompilerIfBlock* ownerCompilerIfBlock   = nullptr;
     uint64_t            forceFlags             = 0;
@@ -452,7 +453,7 @@ struct AstIdentifier : public AstNode
 struct AstFuncDecl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
-    bool     cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode, Scope* alternativeScope = nullptr);
+    bool     cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
 
     DependentJobs          dependentJobs;
     Utf8                   fullnameForeign;

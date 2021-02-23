@@ -993,7 +993,12 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     {
         context->expansionNode.push_back({identifier, JobContext::ExpansionType::Inline});
         SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, funcDecl->token, format("cannot expand '%s' in global scope because it contains sub declarations, this is not (yet?) supported", identifier->token.text.c_str())}));
-        SWAG_CHECK(funcDecl->cloneSubDecls(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent, inlineNode->parametersScope));
+
+        // Authorize a sub function to access inline parameters, if possible
+        // This will work for compile time values, otherwise we will have an out of stack frame when generating the code
+        cloneContext.alternativeScope = inlineNode->parametersScope;
+
+        SWAG_CHECK(funcDecl->cloneSubDecls(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent));
         context->expansionNode.pop_back();
         resolveSubDecls(context, inlineNode->ownerFct);
     }

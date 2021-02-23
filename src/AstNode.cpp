@@ -174,7 +174,7 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
     if (overload->flags & OVERLOAD_COMPUTED_VALUE)
         return true;
     if (overload->flags & OVERLOAD_VAR_INLINE && !ownerInline)
-        return false;       
+        return false;
     if (overload->flags & OVERLOAD_VAR_INLINE && ownerInline->ownerFct != ownerFct)
         return false;
     if (!(overload->flags & OVERLOAD_VAR_FUNC_PARAM) && !(overload->flags & OVERLOAD_VAR_LOCAL))
@@ -631,7 +631,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     fullnameForeign.count = (uint32_t)(pzd - fullnameForeign.buffer) - 1;
 }
 
-bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode, Scope* alternativeScope)
+bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
 {
     // We need to duplicate sub declarations, and register the symbol in the new corresponding scope
     for (auto f : subDecls)
@@ -662,8 +662,8 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
             auto nodeFunc = CastAst<AstFuncDecl>(subDecl, AstNodeKind::FuncDecl);
             nodeFunc->content->flags &= ~AST_NO_SEMANTIC;
             nodeFunc->allocateExtension();
-            if (alternativeScope)
-                nodeFunc->extension->alternativeScopes.push_back(alternativeScope);
+            if (cloneContext.alternativeScope)
+                nodeFunc->extension->alternativeScopes.push_back(cloneContext.alternativeScope);
             symKind = SymbolKind::Function;
             break;
         }
