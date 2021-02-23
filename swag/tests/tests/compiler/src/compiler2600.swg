@@ -6,7 +6,7 @@ var G = 0
 #[macro]
 func toto(cpt: s64, stmt: code)
 {
-    #[printbc]
+    //#[printbc]
     func titi()
     {
         @print(cpt)
