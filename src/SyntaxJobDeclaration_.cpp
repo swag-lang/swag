@@ -280,7 +280,7 @@ bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftCurly)
         return doCurlyStatement(parent, result);
 
-    bool isGlobal = currentScope->isGlobal();
+    bool isGlobal = currentScope->isGlobalOrImpl();
     if (isGlobal)
     {
         auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
