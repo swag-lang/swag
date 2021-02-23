@@ -195,12 +195,20 @@ void AstNode::inheritLocationFromChilds()
         child->inheritLocationFromChilds();
 
     auto front = childs.front();
+    auto back  = childs.back();
+
+    // A type code will messe up line infos
+    if (back->typeInfo && back->typeInfo->kind == TypeInfoKind::Code)
+    {
+        if (childs.size() == 1)
+            return;
+        back = childs[(int) childs.size() - 1];
+    }
+
     if (token.startLocation.column == 0 && token.startLocation.line == 0)
         token.startLocation = front->token.startLocation;
     if (token.startLocation.line != front->token.endLocation.line || token.startLocation.column > front->token.endLocation.column)
         token.startLocation = front->token.startLocation;
-
-    auto back = childs.back();
     if (token.endLocation.line != back->token.endLocation.line || token.endLocation.column < back->token.endLocation.column)
         token.endLocation = back->token.endLocation;
 }
@@ -638,8 +646,11 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
 
         cloneContext.parentScope = subFuncScope;
         cloneContext.parent      = nullptr;
-        auto subDecl             = f->clone(cloneContext);
-        subDecl->typeInfo        = subDecl->typeInfo->clone();
+        if (f->parent->kind == AstNodeKind::AttrUse)
+            f = f->parent;
+        auto subF         = f->clone(cloneContext);
+        auto subDecl      = subF->kind == AstNodeKind::AttrUse ? ((AstAttrUse*) subF)->content : subF;
+        subDecl->typeInfo = subDecl->typeInfo->clone();
 
         SymbolKind symKind = SymbolKind::Invalid;
         switch (subDecl->kind)
@@ -700,7 +711,7 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
         subDecl->resolvedSymbolOverload = nullptr;
 
         // Do it last for avoid a race condition with the file job
-        Ast::addChildBack(sourceFile->astRoot, subDecl);
+        Ast::addChildBack(sourceFile->astRoot, subF);
     }
 
     return true;
