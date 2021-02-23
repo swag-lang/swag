@@ -84,9 +84,9 @@ static const uint32_t AST_DONE_FILE_JOB_PASS             = 0x00010000;
 static const uint32_t AST_DONE_ASSIGN_COMPUTED           = 0x00020000;
 static const uint32_t AST_DONE_LOAD                      = 0x00040000;
 //static const uint32_t AST_DONE_RUN_ERROR                 = 0x00080000;
-static const uint32_t AST_DONE_TRY_1                     = 0x00100000;
-static const uint32_t AST_DONE_TRY_2                     = 0x00200000;
-static const uint32_t AST_DONE_STACK_TRACE               = 0x00400000;
+static const uint32_t AST_DONE_TRY_1       = 0x00100000;
+static const uint32_t AST_DONE_TRY_2       = 0x00200000;
+static const uint32_t AST_DONE_STACK_TRACE = 0x00400000;
 
 static const uint32_t AST_SEM_FORCE_TAKE_ADDRESS    = 0x00000001;
 static const uint32_t AST_SEM_FORCE_NO_TAKE_ADDRESS = 0x00000002;
@@ -102,3 +102,4 @@ static const uint32_t AST_SEM_INVERSE_PARAMS        = 0x00000400;
 static const uint32_t AST_SEM_ON_CLONE              = 0x00000800;
 static const uint32_t AST_SEM_TYPE_IS_NULL          = 0x00001000;
 static const uint32_t AST_SEM_DISABLED              = 0x00002000;
+static const uint32_t AST_SEM_GENERIC_ATTRIBUTE     = 0x00004000;

@@ -229,7 +229,7 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
             if (node->ownerStructScope && node->ownerStructScope->owner->flags & AST_IS_GENERIC)
             {
                 if (isAttrUse)
-                    node->flags |= AST_IS_GENERIC;
+                    node->semFlags |= AST_SEM_GENERIC_ATTRIBUTE;
                 else
                 {
                     // Be sure we are inside a struct definition, and not in an impl block
