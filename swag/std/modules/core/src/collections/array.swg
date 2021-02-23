@@ -68,7 +68,6 @@ impl Array
         return buffer[index]
     }
 
-    //#if !reflection.hasAttribute(@typeof(T), "swag.nocopy")
     func opIndexAffect(using self, index: uint, value: T)
     {
         #if reflection.hasAttribute(@typeof(T), "swag.nocopy")
