@@ -1,15 +1,15 @@
 #import "core"
-using core
+using core, utf8
 
 //#[swag.printbc]
 #test
 {
     res := "A假CD"
     cpt := 0'u32
-    utf8.visitChars(res)
+    res.visitChars()
     {
         c   := @alias0
-        idx := @alias2
+        idx := @alias1
         switch(idx)
         {
             case 0:  @assert(c == "A"'char); cpt += 1
