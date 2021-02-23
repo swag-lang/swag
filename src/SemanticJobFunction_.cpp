@@ -992,6 +992,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     if (!funcDecl->subDecls.empty())
     {
         context->expansionNode.push_back({identifier, JobContext::ExpansionType::Inline});
+        SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, funcDecl->token, format("cannot expand '%s' in global scope because it contains sub declarations, this is not (yet?) supported", identifier->token.text.c_str())}));
         SWAG_CHECK(funcDecl->cloneSubDecls(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent, inlineNode->parametersScope));
         context->expansionNode.pop_back();
         resolveSubDecls(context, inlineNode->ownerFct);
