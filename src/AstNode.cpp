@@ -621,7 +621,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     fullnameForeign.count = (uint32_t)(pzd - fullnameForeign.buffer) - 1;
 }
 
-bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
+bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode, Scope* alternativeScope)
 {
     // We need to duplicate sub declarations, and register the symbol in the new corresponding scope
     for (auto f : subDecls)
@@ -648,6 +648,9 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
         {
             auto nodeFunc = CastAst<AstFuncDecl>(subDecl, AstNodeKind::FuncDecl);
             nodeFunc->content->flags &= ~AST_NO_SEMANTIC;
+            nodeFunc->allocateExtension();
+            if (alternativeScope)
+                nodeFunc->extension->alternativeScopes.push_back(alternativeScope);
             symKind = SymbolKind::Function;
             break;
         }
