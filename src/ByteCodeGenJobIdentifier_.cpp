@@ -205,7 +205,8 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     }
 
     // In a top level function, this should panic
-    if (!node->ownerInline && (node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC))
+    auto parentFct = (node->semFlags & AST_SEM_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
+    if (parentFct->flags & AST_SPECIAL_COMPILER_FUNC)
     {
         auto offset = computeSourceLocation(node);
         auto r1     = reserveRegisterRC(context);

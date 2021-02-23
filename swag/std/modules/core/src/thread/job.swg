@@ -41,7 +41,7 @@ public impl JobSystem
 
         visit *th: workers
         {
-            //try th.start()
+            try th.start()
         }
     }
 }

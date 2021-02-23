@@ -2873,8 +2873,18 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
 
 bool SemanticJob::checkCanThrow(SemanticContext* context)
 {
-    auto node      = context->node;
-    auto parentFct = node->ownerInline ? node->ownerInline->func : node->ownerFct;
+    auto node = context->node;
+
+    // For a try/throw inside an inline block, take the original function, except if it is flagged with 'swag.noreturn'
+    if (node->ownerInline)
+    {
+        if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NO_RETURN) && !(node->attributeFlags & ATTRIBUTE_NO_RETURN))
+        {
+            node->semFlags |= AST_SEM_EMBEDDED_RETURN;
+        }
+    }
+
+    auto parentFct = (node->semFlags & AST_SEM_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
         return context->report({node, node->token, format("'%s' cannot be used inside a struct special function", node->token.text.c_str())});
@@ -2907,7 +2917,8 @@ bool SemanticJob::resolveTry(SemanticContext* context)
     SWAG_CHECK(checkCanCatch(context));
 
     // try in a top level function is equivalent to assume
-    if (!node->ownerInline && (node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC))
+    auto parentFct = (node->semFlags & AST_SEM_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
+    if (parentFct->flags & AST_SPECIAL_COMPILER_FUNC)
         node->byteCodeFct = ByteCodeGenJob::emitAssume;
     else
     {
