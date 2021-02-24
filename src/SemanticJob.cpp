@@ -236,6 +236,15 @@ JobResult SemanticJob::execute()
         case AstNodeResolveState::ProcessingChilds:
             if (node->semanticFct)
             {
+                // Can have been changed after the state change
+                // Example: FuncDeclType can change the AST_NO_SEMANTIC flag of the function itself in case
+                // of swag.compileif
+                if (!canDoSem)
+                {
+                    nodes.pop_back();
+                    break;
+                }
+
                 if (!node->semanticFct(&context))
                 {
                     node = backToSemError();

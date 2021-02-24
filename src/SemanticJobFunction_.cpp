@@ -533,6 +533,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     if (funcNode->attributeFlags & ATTRIBUTE_COMPILEIF_OFF && !(funcNode->flags & AST_IS_GENERIC))
     {
         symbolFlags &= ~OVERLOAD_INCOMPLETE;
+        funcNode->flags |= AST_NO_SEMANTIC;
         funcNode->content->flags |= AST_NO_SEMANTIC;
         symbolFlags |= OVERLOAD_DISABLED_COMPILE_IF;
     }
