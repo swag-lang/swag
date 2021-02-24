@@ -321,11 +321,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     auto dependentVar = oneMatch.dependentVar;
     auto sourceFile   = context->sourceFile;
 
-    if (overload->flags & OVERLOAD_DISABLED_COMPILE_IF)
-    {
-        return context->report({identifier, identifier->token, format("identifier '%s' has been disabled by 'swag.compileif' and cannot be referenced", symbol->name.c_str())});
-    }
-
     // Test x.toto with x not a struct (like a native type for example), but toto is known, so
     // no error was raised before
     if (symbol &&
@@ -1180,6 +1175,19 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             overloads = n;
     }
 
+    // Take selectif if failed in priority
+    {
+        vector<OneTryMatch*> n;
+        for (auto oneMatch : overloads)
+        {
+            auto& one = *oneMatch;
+            if (one.symMatchContext.result == MatchResult::SelectIfFailed)
+                n.push_back(oneMatch);
+        }
+        if (!n.empty())
+            overloads = n;
+    }
+
     // Take bad signature in priority
     {
         vector<OneTryMatch*> n;
@@ -1438,7 +1446,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     if (context->result != ContextResult::Done)
         return true;
 
-    // All choices were removed
+    // All choices were removed because of #selectif
     if (!genericMatches.size() && genericMatchesSI.size() && matches.empty() && prevMatchesCount)
     {
         if (justCheck)
@@ -2232,19 +2240,6 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             }
 
             break;
-        }
-
-        // Priority to a symbol not disabled with compileif
-        if (over->flags & OVERLOAD_DISABLED_COMPILE_IF)
-        {
-            for (int j = 0; j < matches.size(); j++)
-            {
-                if (!(matches[j]->symbolOverload->flags & OVERLOAD_DISABLED_COMPILE_IF))
-                {
-                    matches[i]->remove = true;
-                    break;
-                }
-            }
         }
 
         // Priority to a non empty function
