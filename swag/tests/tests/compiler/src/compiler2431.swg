@@ -1,7 +1,7 @@
 //var G = 0
 
 func append(buf: *void, fmt: string, values: ...)
-    #selectif
+    #checkif
     {
         if !@isconstexpr(fmt) return true
 

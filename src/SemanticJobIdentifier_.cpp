@@ -891,9 +891,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::SelectIfFailed:
     {
         SWAG_ASSERT(destFuncDecl);
-        diag = new Diagnostic{node, format("cannot select function '%s' because '#selectif' has failed", destFuncDecl->token.text.c_str())};
+        diag = new Diagnostic{node, format("cannot select function '%s' because '%s' has failed", destFuncDecl->token.text.c_str(), destFuncDecl->selectIf->token.text.c_str())};
         result0.push_back(diag);
-        note = new Diagnostic{destFuncDecl->selectIf, destFuncDecl->selectIf->token, "this is the '#selectif'", DiagnosticLevel::Note};
+        note = new Diagnostic{destFuncDecl->selectIf, destFuncDecl->selectIf->token, format("this is the '%s'", destFuncDecl->selectIf->token.text.c_str()), DiagnosticLevel::Note};
         result1.push_back(note);
         return;
     }
@@ -2174,19 +2174,24 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
                 // Execute #selectif block
                 auto expr = funcDecl->selectIf->childs.back();
 
-                expr->flags &= ~AST_VALUE_COMPUTED;
-                context->selectIfParameters = matches[i]->oneOverload->callParameters;
-                context->expansionNode.push_back({context->selectIfParameters->parent, JobContext::ExpansionType::SelectIf});
+                if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
+                    expr->flags &= ~AST_VALUE_COMPUTED;
 
-                auto result = executeNode(context, expr, true);
+                if (!(expr->flags & AST_VALUE_COMPUTED))
+                {
+                    context->selectIfParameters = matches[i]->oneOverload->callParameters;
+                    context->expansionNode.push_back({context->selectIfParameters->parent, JobContext::ExpansionType::SelectIf});
 
-                context->selectIfParameters = nullptr;
-                context->expansionNode.pop_back();
+                    auto result = executeNode(context, expr, true);
 
-                if (!result)
-                    return false;
-                if (context->result != ContextResult::Done)
-                    return true;
+                    context->selectIfParameters = nullptr;
+                    context->expansionNode.pop_back();
+
+                    if (!result)
+                        return false;
+                    if (context->result != ContextResult::Done)
+                        return true;
+                }
 
                 // Result
                 if (!expr->computedValue.reg.b)

@@ -333,6 +333,7 @@ namespace Ast
         case AstNodeKind::CompilerRun:
         case AstNodeKind::CompilerAst:
         case AstNodeKind::CompilerSelectIf:
+        case AstNodeKind::CompilerCheckIf:
         {
             if (node->kind == AstNodeKind::CompilerRun)
                 CONCAT_FIXED_STR(concat, "#run ");
@@ -340,6 +341,8 @@ namespace Ast
                 CONCAT_FIXED_STR(concat, "#ast ");
             else if (node->kind == AstNodeKind::CompilerSelectIf)
                 CONCAT_FIXED_STR(concat, "#selectif ");
+            else if (node->kind == AstNodeKind::CompilerCheckIf)
+                CONCAT_FIXED_STR(concat, "#checkif ");
 
             auto front = node->childs.front();
             if (front->kind == AstNodeKind::FuncDecl)

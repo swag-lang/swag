@@ -13,6 +13,7 @@ void LanguageSpec::setup()
     keywords["#run"]            = TokenId::CompilerRun;
     keywords["#ast"]            = TokenId::CompilerAst;
     keywords["#selectif"]       = TokenId::CompilerSelectIf;
+    keywords["#checkif"]        = TokenId::CompilerCheckIf;
     keywords["#cfg"]            = TokenId::CompilerBuildCfg;
     keywords["#arch"]           = TokenId::CompilerArch;
     keywords["#os"]             = TokenId::CompilerOs;

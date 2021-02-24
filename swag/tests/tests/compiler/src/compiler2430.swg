@@ -1,5 +1,5 @@
 public func append2430(buf: *void, fmt: string, values: ...)
-    #selectif
+    #checkif
     {
         if !@isconstexpr(fmt) return true
         return true

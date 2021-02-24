@@ -1,7 +1,7 @@
 #global testerror
 
 func print(s: string, f: ...)
-    #selectif
+    #checkif
     {
         if @countof(f) != 3 @errormsg("invalid number of arguments", #location(f))
         return true

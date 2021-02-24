@@ -1,5 +1,5 @@
 func append(v: ...)
-    #selectif
+    #checkif
     {
         @assert(@countof(v) == 3)
         return true

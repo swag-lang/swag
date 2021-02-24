@@ -17,5 +17,6 @@ func toto() #selectif G == 1
 #test
 {
     toto()
+    toto()
     @assert(G1 == 1)
 }

@@ -329,6 +329,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         typeFuncId == TokenId::CompilerFuncCompiler ||
         typeFuncId == TokenId::CompilerAst ||
         typeFuncId == TokenId::CompilerSelectIf ||
+        typeFuncId == TokenId::CompilerCheckIf ||
         typeFuncId == TokenId::CompilerGeneratedRun ||
         typeFuncId == TokenId::CompilerRun)
         funcForCompiler = true;
@@ -386,6 +387,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         case TokenId::CompilerSelectIf:
             funcNode->token.text = "#selectif";
             funcNode->token.text = "__selectif" + to_string(id);
+            funcNode->flags |= AST_GENERATED;
+            funcNode->attributeFlags |= ATTRIBUTE_SELECTIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
+            break;
+        case TokenId::CompilerCheckIf:
+            funcNode->token.text = "#checkif";
+            funcNode->token.text = "__checkif" + to_string(id);
             funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_SELECTIF_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
@@ -501,7 +508,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         auto      typeExpression    = Ast::newTypeExpression(sourceFile, typeNode, this);
         typeExpression->literalType = g_TypeMgr.typeInfoString;
     }
-    else if (typeFuncId == TokenId::CompilerSelectIf)
+    else if (typeFuncId == TokenId::CompilerSelectIf || typeFuncId == TokenId::CompilerCheckIf)
     {
         typeNode->flags |= AST_FUNC_RETURN_DEFINED;
         Scoped    scoped(this, newScope);
@@ -513,7 +520,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     funcNode->typeInfo->computeName();
 
     // '#selectif' block
-    if (token.id == TokenId::CompilerSelectIf)
+    if (token.id == TokenId::CompilerSelectIf || token.id == TokenId::CompilerCheckIf)
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);

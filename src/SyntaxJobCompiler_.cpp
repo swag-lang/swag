@@ -185,6 +185,9 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerSelectIf, sourceFile, parent);
     if (result)
         *result = node;
+    auto tokenId = token.id;
+    if (tokenId == TokenId::CompilerCheckIf)
+        node->kind = AstNodeKind::CompilerCheckIf;
     node->allocateExtension();
     node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerSelectIfExpression;
@@ -196,7 +199,7 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftCurly)
     {
         AstNode* funcNode;
-        SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerSelectIf));
+        SWAG_CHECK(doFuncDecl(node, &funcNode, tokenId));
 
         ScopedFlags scoped(this, AST_NO_CALLSTACK);
         auto        idRef               = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);

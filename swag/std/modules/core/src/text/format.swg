@@ -36,7 +36,7 @@ func countPercent(fmt: string)->u32
 
 // Format a string and returns the result as a String
 func toString(fmt: string, values: ...)->String
-    #selectif
+    #checkif
     {
         if !@isconstexpr(fmt) return true
         checkFormat(#function, fmt, values)
@@ -51,7 +51,7 @@ func toString(fmt: string, values: ...)->String
 
 // Format a string and put the result in a ConcatBuffer
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
-    #selectif
+    #checkif
     {
         if !@isconstexpr(fmt) || !@isconstexpr(values) return true
         checkFormat(#function, fmt, values)

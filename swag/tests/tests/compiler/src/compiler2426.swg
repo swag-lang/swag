@@ -1,7 +1,7 @@
 var G = 0's64
 
 func print(f: string)
-    #selectif
+    #checkif
     {
         @assert(@isconstexpr(f))
         @assert(f == "tt()" || f == "tt1()")

@@ -1,5 +1,5 @@
 func print(f: f32)
-    #selectif
+    #checkif
     {
         @assert(@isconstexpr(f))
         return true
