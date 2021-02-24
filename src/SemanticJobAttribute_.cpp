@@ -311,14 +311,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 curAttr->attributes.getValue("swag.selectif", "value", attrValue);
                 flags |= attrValue.reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
             }
-            else if (child->token.text == "compileif")
-            {
-                ComputedValue attrValue;
-                curAttr->attributes.getValue("swag.compileif", "value", attrValue);
-                if (!attrValue.reg.b)
-                    flags |= ATTRIBUTE_COMPILEIF_OFF;
-                flags |= ATTRIBUTE_COMPILEIF;
-            }
             else if (child->token.text == "pack")
             {
                 ComputedValue attrValue;

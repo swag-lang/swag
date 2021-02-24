@@ -533,14 +533,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
 bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags)
 {
-    if (funcNode->attributeFlags & ATTRIBUTE_COMPILEIF_OFF && !(funcNode->flags & AST_IS_GENERIC))
-    {
-        symbolFlags &= ~OVERLOAD_INCOMPLETE;
-        funcNode->flags |= AST_NO_SEMANTIC;
-        funcNode->content->flags |= AST_NO_SEMANTIC;
-        symbolFlags |= OVERLOAD_DISABLED_COMPILE_IF;
-    }
-
     if (!(symbolFlags & OVERLOAD_INCOMPLETE))
         SWAG_CHECK(checkFuncPrototype(context, funcNode));
 

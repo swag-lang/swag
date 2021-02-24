@@ -393,12 +393,11 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     if (from->extension)
     {
         allocateExtension();
-        extension->semanticBeforeFct = from->extension->semanticBeforeFct;
-        extension->semanticAfterFct  = from->extension->semanticAfterFct;
-        extension->byteCodeBeforeFct = from->extension->byteCodeBeforeFct;
-        extension->byteCodeAfterFct  = from->extension->byteCodeAfterFct;
-        if (!context.dontCopyBc)
-            extension->bc = from->extension->bc;
+        extension->semanticBeforeFct            = from->extension->semanticBeforeFct;
+        extension->semanticAfterFct             = from->extension->semanticAfterFct;
+        extension->byteCodeBeforeFct            = from->extension->byteCodeBeforeFct;
+        extension->byteCodeAfterFct             = from->extension->byteCodeAfterFct;
+        extension->bc                           = from->extension->bc;
         extension->resolvedUserOpSymbolOverload = from->extension->resolvedUserOpSymbolOverload;
         extension->collectTypeInfo              = from->extension->collectTypeInfo;
     }
@@ -410,7 +409,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     concreteTypeInfoStorage = from->concreteTypeInfoStorage;
 
     attributeFlags = from->attributeFlags;
-    attributeFlags &= ~ATTRIBUTE_COMPILEIF_OFF;
 
     parent = context.parent;
     if (parent)
