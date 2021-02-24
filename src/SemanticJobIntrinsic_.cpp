@@ -418,6 +418,8 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     auto expr = node->childs.front();
 
     SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
+    SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, "cannot evaluate type in that context because it's generic"}));
+
     expr->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(makeIntrinsicTypeOf(context));
     return true;

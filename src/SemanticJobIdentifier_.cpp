@@ -1086,7 +1086,7 @@ void SemanticJob::symbolNotFoundRemarks(SemanticContext* context, VectorNative<O
     int notFound = 0;
     for (auto overload : overloads)
     {
-        if (overload->overload->symbol->ownerTable != &identifier->identifierRef->startScope->symTable)
+        if (overload->overload->symbol->ownerTable != &identifier->identifierRef->startScope->symTable && overload->ufcs)
             notFound++;
     }
 
@@ -1096,17 +1096,17 @@ void SemanticJob::symbolNotFoundRemarks(SemanticContext* context, VectorNative<O
                                        node->token.text.c_str(),
                                        TypeInfo::getNakedKindName(identifier->identifierRef->typeInfo),
                                        identifier->identifierRef->typeInfo->name.c_str()));
-    }
 
-    for (auto s : identifier->identifierRef->startScope->childScopes)
-    {
-        if (s->kind == ScopeKind::Impl)
+        for (auto s : identifier->identifierRef->startScope->childScopes)
         {
-            if (s->symTable.find(node->token.text))
+            if (s->kind == ScopeKind::Impl)
             {
-                diag->remarks.push_back(format("symbol '%s' exists in interface scope '%s'",
-                                               node->token.text.c_str(),
-                                               s->getFullName().c_str()));
+                if (s->symTable.find(node->token.text))
+                {
+                    diag->remarks.push_back(format("symbol '%s' exists in interface scope '%s'",
+                                                   node->token.text.c_str(),
+                                                   s->getFullName().c_str()));
+                }
             }
         }
     }

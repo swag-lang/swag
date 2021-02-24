@@ -13,7 +13,7 @@ impl AA
         return t == s32
     }
 
-    #[ife(titi(@typeof(T)))]
+    //#[ife(titi(@typeof(T)))]
     func toto()
     {
 

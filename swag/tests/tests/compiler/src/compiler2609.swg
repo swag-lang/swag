@@ -1,4 +1,4 @@
-/*#global testerror
+#global testerror
 
 struct(T) AA
 {
@@ -13,4 +13,4 @@ impl AA
 #test
 {
     var x: AA's32
-}*/
+}
