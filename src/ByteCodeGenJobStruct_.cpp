@@ -807,7 +807,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     if (mustCopy)
     {
         if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
-            return context->report({context->node, format("copy semantic is forbidden for type '%s'", typeInfo->name.c_str())});
+            return context->report({context->node, format("copy semantic is forbidden for type '%s' because of 'swag.nocopy' attribute", typeInfo->name.c_str())});
 
         PushICFlags sf(context, BCI_POST_COPYMOVE);
         if (typeInfoStruct->opPostCopy)
