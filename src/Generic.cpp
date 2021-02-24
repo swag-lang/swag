@@ -353,8 +353,22 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     if (!funcNode)
         return;
 
+    // This should have no impact on the function itself, but will have impact if some bytecode
+    // has been generated for an attribute parameter. That way, we are sure that the bytecode
+    // will be regenerated in the new intantiated context
+    cloneContext.removeFlags |= AST_VALUE_COMPUTED | AST_BYTECODE_GENERATED | AST_BYTECODE_RESOLVED | AST_R_VALUE;
+    cloneContext.dontCopyBc = true;
+
     // Clone original node
-    auto newFunc = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
+    auto         toDup   = funcNode->parent->kind == AstNodeKind::AttrUse ? funcNode->parent : funcNode;
+    auto         dupNode = toDup->clone(cloneContext);
+    AstFuncDecl* newFunc;
+    if (dupNode->kind == AstNodeKind::AttrUse)
+        newFunc = CastAst<AstFuncDecl>(((AstAttrUse*) dupNode)->content, AstNodeKind::FuncDecl);
+    else
+        newFunc = CastAst<AstFuncDecl>(dupNode, AstNodeKind::FuncDecl);
+
+    //auto newFunc = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
     if (newFunc->genericParameters)
     {
         newFunc->flags |= AST_IS_GENERIC;
@@ -366,7 +380,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
         newFunc->content->flags &= ~AST_NO_SEMANTIC;
     }
 
-    Ast::addChildBack(funcNode->parent, newFunc);
+    Ast::addChildBack(toDup->parent, dupNode);
     *specialFct = newFunc;
 
     // Generate and initialize a new type if the type is still generic
@@ -380,11 +394,13 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
         newFunc->typeInfo = newTypeFunc;
     }
 
-    // Replace generic types and values in the function generic parameters
+    // As we will reevaluate the corresponding attributes, we clear them
+    newTypeFunc->attributes.reset();
+
     newTypeFunc->forceComputeName();
 
     scoped_lock lk(newFunc->resolvedSymbolName->mutex);
-    auto        newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false);
+    auto        newJob = end(context, context->job, newFunc->resolvedSymbolName, dupNode, false);
     structJob->dependentJobs.add(newJob);
 }
 
@@ -492,17 +508,17 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         newTypeFunc->flags &= ~TYPEINFO_GENERIC;
         newTypeFunc->declNode     = newFunc;
         newTypeFunc->replaceTypes = cloneContext.replaceTypes;
-
-        // As we will reevaluate the corresponding attributes, we clear them
-        newTypeFunc->attributes.reset();
-
-        newFunc->typeInfo = newTypeFunc;
+        newFunc->typeInfo         = newTypeFunc;
         if (noReplaceTypes)
             newTypeFunc->flags |= TYPEINFO_UNDEFINED;
     }
 
     // Replace generic types and values in the function generic parameters
     SWAG_CHECK(updateGenericParameters(context, true, true, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
+
+    // As we will reevaluate the corresponding attributes, we clear them
+    newTypeFunc->attributes.reset();
+
     newTypeFunc->forceComputeName();
 
     auto job = end(context, context->job, match.symbolName, dupNode, true);

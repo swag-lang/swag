@@ -68,18 +68,15 @@ impl Array
         return buffer[index]
     }
 
+    #[swag.compileif(reflection.canCopy(@typeof(T)))]
     func opIndexAffect(using self, index: uint, value: T)
     {
-        #if reflection.hasAttribute(@typeof(T), "swag.nocopy")
-            debug.assert(false, "forbidden copy")
-        #else
-        {
-            debug.assert(index < count, "index out of range")
-            buffer[index] = value
-        }
+        debug.assert(index < count, "index out of range")
+        buffer[index] = value
     }
 
     // Initializes an Array that contains values copied from the specified array
+    #[swag.compileif(reflection.canCopy(@typeof(T)))]
     func opAffect(using self, arr: const [..] T)
     {
         clear()
