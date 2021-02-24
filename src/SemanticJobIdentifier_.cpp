@@ -2229,6 +2229,19 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             break;
         }
 
+        // Priority to a symbol not disabled with compileif
+        if (over->flags & OVERLOAD_DISABLED_COMPILE_IF)
+        {
+            for (int j = 0; j < matches.size(); j++)
+            {
+                if (!(matches[j]->symbolOverload->flags & OVERLOAD_DISABLED_COMPILE_IF))
+                {
+                    matches[i]->remove = true;
+                    break;
+                }
+            }
+        }
+
         // Priority to a non empty function
         if (over->node->flags & AST_EMPTY_FCT)
         {

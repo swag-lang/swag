@@ -317,6 +317,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 curAttr->attributes.getValue("swag.compileif", "value", attrValue);
                 if (!attrValue.reg.b)
                     flags |= ATTRIBUTE_COMPILEIF_OFF;
+                flags |= ATTRIBUTE_COMPILEIF;
             }
             else if (child->token.text == "pack")
             {
