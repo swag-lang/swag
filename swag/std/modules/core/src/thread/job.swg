@@ -1,11 +1,18 @@
 #global namespace thread
 using thread
 
+public struct Job
+{
+    data:   *void
+    lambda: func(*void, *void)
+}
+
 public struct JobSystem
 {
-    created:    bool
-    active:     bool
-    workers:    Array'Thread
+    created:        bool
+    workers:        Array'Thread
+    pendingJobs:    Array'Job
+    mutexJobs:      sync.Mutex
 }
 
 private func workerEntry(th: Thread)
@@ -24,6 +31,8 @@ public impl JobSystem
         debug.assert(!created)
         created = true
 
+        try mutexJobs.init()
+
         num := numCores ?? env.getProcessorCount()
         loop num
         {
@@ -31,13 +40,6 @@ public impl JobSystem
             try th.init(&workerEntry, self)
             g_JobSystem.workers.emplace(&th)
         }
-    }
-
-    // Run the job system
-    func run(using self) throw
-    {
-        debug.assert(!active)
-        active = true
 
         visit *th: workers
         {
