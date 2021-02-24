@@ -450,7 +450,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // This should have no impact on the function itself, but will have impact if some bytecode
     // has been generated for an attribute parameter. That way, we are sure that the bytecode
     // will be regenerated in the new intantiated context
-    cloneContext.removeFlags |= AST_VALUE_COMPUTED | AST_BYTECODE_GENERATED | AST_BYTECODE_RESOLVED;
+    cloneContext.removeFlags |= AST_VALUE_COMPUTED | AST_BYTECODE_GENERATED | AST_BYTECODE_RESOLVED | AST_R_VALUE;
     cloneContext.dontCopyBc = true;
 
     // Clone original node
