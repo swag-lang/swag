@@ -2529,10 +2529,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             (node->ownerMainNode->kind != AstNodeKind::Impl || (node->flags & AST_CAN_MATCH_INCOMPLETE)) &&
             node->ownerMainNode->token.text == symbol->name)
         {
-            SWAG_VERIFY(!node->callParameters, context->report({node->callParameters, "cannot auto reference a struct with parameters"}));
-            SWAG_VERIFY(!node->genericParameters, context->report({node->genericParameters, "cannot auto reference a struct with generic parameters"}));
             if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
             {
+                SWAG_VERIFY(!node->callParameters, context->report({node->callParameters, "cannot auto reference a struct with parameters"}));
+                SWAG_VERIFY(!node->genericParameters, context->report({node->genericParameters, "cannot auto reference a struct with generic parameters"}));
                 newToWait                    = false;
                 node->resolvedSymbolName     = symbol;
                 node->resolvedSymbolOverload = symbol->overloads[0];
