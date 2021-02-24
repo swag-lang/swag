@@ -287,6 +287,7 @@ struct SemanticJob : public Job
     static void setFuncDeclParamsIndex(AstFuncDecl* funcNode);
     static bool resolveFuncDeclType(SemanticContext* context);
     static bool registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags = 0);
+    static bool isMethod(AstFuncDecl* funcNode);
     static void resolveSubDecls(JobContext* context, AstFuncDecl* funcNode);
     static bool resolveFuncCallParams(SemanticContext* context);
     static bool resolveFuncCallParam(SemanticContext* context);

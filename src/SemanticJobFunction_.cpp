@@ -423,7 +423,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         if (funcNode->flags & AST_IS_GENERIC)
             typeInfo->flags |= TYPEINFO_GENERIC;
 
-        // Register parameters
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->parameters, false));
     }
@@ -530,6 +529,13 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
 bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags)
 {
+    if (funcNode->attributeFlags & ATTRIBUTE_COMPILEIF_OFF && !(funcNode->flags & AST_IS_GENERIC))
+    {
+        symbolFlags &= ~OVERLOAD_INCOMPLETE;
+        funcNode->content->flags |= AST_NO_SEMANTIC;
+        symbolFlags |= OVERLOAD_DISABLED_COMPILE_IF;
+    }
+
     if (!(symbolFlags & OVERLOAD_INCOMPLETE))
         SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
@@ -553,14 +559,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     }
 
     // Register method
-    if (!(symbolFlags & OVERLOAD_INCOMPLETE) &&
-        funcNode->ownerStructScope &&
-        funcNode->parent->kind != AstNodeKind::CompilerAst &&
-        funcNode->parent->kind != AstNodeKind::CompilerRun &&
-        funcNode->parent->kind != AstNodeKind::CompilerSelectIf &&
-        !(funcNode->flags & AST_FROM_GENERIC) &&
-        (funcNode->ownerScope->kind == ScopeKind::Struct) &&
-        (funcNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct))
+    if (!(symbolFlags & OVERLOAD_INCOMPLETE) && isMethod(funcNode))
     {
         SWAG_ASSERT(funcNode->methodParam);
         funcNode->methodParam->attributes = typeFunc->attributes;
@@ -570,6 +569,22 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
 
     resolveSubDecls(context, funcNode);
     return true;
+}
+
+bool SemanticJob::isMethod(AstFuncDecl* funcNode)
+{
+    if (funcNode->ownerStructScope &&
+        funcNode->parent->kind != AstNodeKind::CompilerAst &&
+        funcNode->parent->kind != AstNodeKind::CompilerRun &&
+        funcNode->parent->kind != AstNodeKind::CompilerSelectIf &&
+        !(funcNode->flags & AST_FROM_GENERIC) &&
+        (funcNode->ownerScope->kind == ScopeKind::Struct) &&
+        (funcNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)

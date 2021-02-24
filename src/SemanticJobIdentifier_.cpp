@@ -321,6 +321,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     auto dependentVar = oneMatch.dependentVar;
     auto sourceFile   = context->sourceFile;
 
+    if (overload->flags & OVERLOAD_DISABLED_COMPILE_IF)
+    {
+        return context->report({identifier, identifier->token, format("identifier '%s' has been disabled by 'swag.compileif' and cannot be referenced", symbol->name.c_str())});
+    }
+
     // Test x.toto with x not a struct (like a native type for example), but toto is known, so
     // no error was raised before
     if (symbol &&

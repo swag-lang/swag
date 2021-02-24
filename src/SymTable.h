@@ -18,22 +18,23 @@ struct JobContext;
 struct SymbolName;
 struct TypeInfoStruct;
 
-static const uint32_t OVERLOAD_BYTECODE_GENERATED = 0x00000001;
-static const uint32_t OVERLOAD_VAR_FUNC_PARAM     = 0x00000002;
-static const uint32_t OVERLOAD_VAR_GLOBAL         = 0x00000004;
-static const uint32_t OVERLOAD_VAR_LOCAL          = 0x00000008;
-static const uint32_t OVERLOAD_COMPUTED_VALUE     = 0x00000010;
-static const uint32_t OVERLOAD_CONST_ASSIGN       = 0x00000020;
-static const uint32_t OVERLOAD_VAR_STRUCT         = 0x00000040;
-static const uint32_t OVERLOAD_GENERIC            = 0x00000080;
-static const uint32_t OVERLOAD_INCOMPLETE         = 0x00000100;
-static const uint32_t OVERLOAD_VAR_INLINE         = 0x00000200;
-static const uint32_t OVERLOAD_PUBLIC             = 0x00000400;
-static const uint32_t OVERLOAD_VAR_BSS            = 0x00000800;
-static const uint32_t OVERLOAD_IMPL               = 0x00001000;
-static const uint32_t OVERLOAD_RETVAL             = 0x00002000;
-static const uint32_t OVERLOAD_EMITTED            = 0x00004000;
-static const uint32_t OVERLOAD_TUPLE_UNPACK       = 0x00008000;
+static const uint32_t OVERLOAD_BYTECODE_GENERATED  = 0x00000001;
+static const uint32_t OVERLOAD_VAR_FUNC_PARAM      = 0x00000002;
+static const uint32_t OVERLOAD_VAR_GLOBAL          = 0x00000004;
+static const uint32_t OVERLOAD_VAR_LOCAL           = 0x00000008;
+static const uint32_t OVERLOAD_COMPUTED_VALUE      = 0x00000010;
+static const uint32_t OVERLOAD_CONST_ASSIGN        = 0x00000020;
+static const uint32_t OVERLOAD_VAR_STRUCT          = 0x00000040;
+static const uint32_t OVERLOAD_GENERIC             = 0x00000080;
+static const uint32_t OVERLOAD_INCOMPLETE          = 0x00000100;
+static const uint32_t OVERLOAD_VAR_INLINE          = 0x00000200;
+static const uint32_t OVERLOAD_PUBLIC              = 0x00000400;
+static const uint32_t OVERLOAD_VAR_BSS             = 0x00000800;
+static const uint32_t OVERLOAD_IMPL                = 0x00001000;
+static const uint32_t OVERLOAD_RETVAL              = 0x00002000;
+static const uint32_t OVERLOAD_EMITTED             = 0x00004000;
+static const uint32_t OVERLOAD_TUPLE_UNPACK        = 0x00008000;
+static const uint32_t OVERLOAD_DISABLED_COMPILE_IF = 0x00010000;
 
 struct SymbolOverload
 {
@@ -130,7 +131,7 @@ struct SymTable
     void            addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset);
     void            addVarToDrop(StructToDrop& st);
     static void     decreaseOverloadNoLock(SymbolName* symbol);
-    static void     disabledOverloadNoLock(SymbolName* symbol);
+    static void     disabledIfBlockOverloadNoLock(SymbolName* symbol);
     bool            registerUsingAliasOverload(JobContext* context, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
 
     static const char* getArticleKindName(SymbolKind kind);

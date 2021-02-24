@@ -352,7 +352,7 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
         scoped_lock lk1(it.first->mutex);
         it.first->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE;
         it.first->semFlags |= AST_SEM_DISABLED;
-        SymTable::disabledOverloadNoLock(it.second);
+        SymTable::disabledIfBlockOverloadNoLock(it.second);
     }
 
     // Decrease interfaces count to resolve

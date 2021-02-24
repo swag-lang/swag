@@ -88,6 +88,9 @@ namespace swag
     #[attributeUsage(AttributeUsage.All)]
     attr selectif(value: bool)
 
+    #[attributeUsage(AttributeUsage.Function)]
+    attr compileif(value: bool)
+
     #[attributeUsage(AttributeUsage.Function|AttributeUsage.File)]
     attr optim(what: string, value: bool)
 

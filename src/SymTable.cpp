@@ -256,7 +256,7 @@ void SymTable::decreaseOverloadNoLock(SymbolName* symbol)
         symbol->dependentJobs.setRunning();
 }
 
-void SymTable::disabledOverloadNoLock(SymbolName* symbol)
+void SymTable::disabledIfBlockOverloadNoLock(SymbolName* symbol)
 {
     SWAG_ASSERT(symbol->cptIfBlock);
     symbol->cptIfBlock--;

@@ -240,94 +240,95 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_CALLBACK;
             else if (child->token.text == "nocopy")
                 flags |= ATTRIBUTE_NO_COPY;
-
-            // All attributes with parameters : do not evaluate in generic, as a parameter
-            // can be parametric
-            else if (!(curAttr->flags & AST_IS_GENERIC))
+            else if (child->token.text == "safety")
             {
-                if (child->token.text == "safety")
+                ComputedValue attrWhat;
+                vector<Utf8>  what;
+                curAttr->attributes.getValue("swag.safety", "what", attrWhat);
+                attrWhat.text.trim();
+                tokenize(attrWhat.text, '|', what);
+
+                ComputedValue attrValue;
+                curAttr->attributes.getValue("swag.safety", "value", attrValue);
+
+                if (attrWhat.text.empty())
                 {
-                    ComputedValue attrWhat;
-                    vector<Utf8>  what;
-                    curAttr->attributes.getValue("swag.safety", "what", attrWhat);
-                    attrWhat.text.trim();
-                    tokenize(attrWhat.text, '|', what);
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NP_ON : ATTRIBUTE_SAFETY_NP_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BC_ON : ATTRIBUTE_SAFETY_BC_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OF_ON : ATTRIBUTE_SAFETY_OF_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MT_ON : ATTRIBUTE_SAFETY_MT_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_AN_ON : ATTRIBUTE_SAFETY_AN_OFF;
+                }
 
-                    ComputedValue attrValue;
-                    curAttr->attributes.getValue("swag.safety", "value", attrValue);
-
-                    if (attrWhat.text.empty())
-                    {
+                for (auto& w : what)
+                {
+                    w.trim();
+                    if (w == "np")
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NP_ON : ATTRIBUTE_SAFETY_NP_OFF;
+                    else if (w == "bc")
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BC_ON : ATTRIBUTE_SAFETY_BC_OFF;
+                    else if (w == "of")
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OF_ON : ATTRIBUTE_SAFETY_OF_OFF;
+                    else if (w == "mt")
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MT_ON : ATTRIBUTE_SAFETY_MT_OFF;
+                    else if (w == "an")
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_AN_ON : ATTRIBUTE_SAFETY_AN_OFF;
-                    }
-
-                    for (auto& w : what)
-                    {
-                        w.trim();
-                        if (w == "np")
-                            flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_NP_ON : ATTRIBUTE_SAFETY_NP_OFF;
-                        else if (w == "bc")
-                            flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_BC_ON : ATTRIBUTE_SAFETY_BC_OFF;
-                        else if (w == "of")
-                            flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_OF_ON : ATTRIBUTE_SAFETY_OF_OFF;
-                        else if (w == "mt")
-                            flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_MT_ON : ATTRIBUTE_SAFETY_MT_OFF;
-                        else if (w == "an")
-                            flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_AN_ON : ATTRIBUTE_SAFETY_AN_OFF;
-                        else
-                            return context->report({child, format("'swag.safety' invalid value '%s'", w.c_str())});
-                    }
+                    else
+                        return context->report({child, format("'swag.safety' invalid value '%s'", w.c_str())});
                 }
-                else if (child->token.text == "optim")
+            }
+            else if (child->token.text == "optim")
+            {
+                ComputedValue attrWhat;
+                vector<Utf8>  what;
+                curAttr->attributes.getValue("swag.optim", "what", attrWhat);
+                attrWhat.text.trim();
+                tokenize(attrWhat.text, '|', what);
+
+                ComputedValue attrValue;
+                curAttr->attributes.getValue("swag.optim", "value", attrValue);
+
+                if (attrWhat.text.empty())
                 {
-                    ComputedValue attrWhat;
-                    vector<Utf8>  what;
-                    curAttr->attributes.getValue("swag.optim", "what", attrWhat);
-                    attrWhat.text.trim();
-                    tokenize(attrWhat.text, '|', what);
+                    flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BC_ON : ATTRIBUTE_OPTIM_BC_OFF;
+                    flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BK_ON : ATTRIBUTE_OPTIM_BK_OFF;
+                }
 
-                    ComputedValue attrValue;
-                    curAttr->attributes.getValue("swag.optim", "value", attrValue);
-
-                    if (attrWhat.text.empty())
-                    {
+                for (auto& w : what)
+                {
+                    w.trim();
+                    if (w == "bc")
                         flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BC_ON : ATTRIBUTE_OPTIM_BC_OFF;
+                    else if (w == "bk")
                         flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BK_ON : ATTRIBUTE_OPTIM_BK_OFF;
-                    }
-
-                    for (auto& w : what)
-                    {
-                        w.trim();
-                        if (w == "bc")
-                            flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BC_ON : ATTRIBUTE_OPTIM_BC_OFF;
-                        else if (w == "bk")
-                            flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BK_ON : ATTRIBUTE_OPTIM_BK_OFF;
-                        else
-                            return context->report({child, format("'swag.optim' invalid value '%s'", w.c_str())});
-                    }
+                    else
+                        return context->report({child, format("'swag.optim' invalid value '%s'", w.c_str())});
                 }
-                else if (child->token.text == "selectif")
-                {
-                    ComputedValue attrValue;
-                    curAttr->attributes.getValue("swag.selectif", "value", attrValue);
-                    flags |= attrValue.reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
-                }
-                else if (child->token.text == "pack")
-                {
-                    ComputedValue attrValue;
-                    curAttr->attributes.getValue("swag.pack", "value", attrValue);
-                    SWAG_VERIFY(!attrValue.reg.u8 || isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.pack' value must be 0 or a power of two ('%d' provided)", attrValue.reg.u8)}));
-                }
-                else if (child->token.text == "align")
-                {
-                    ComputedValue attrValue;
-                    curAttr->attributes.getValue("swag.align", "value", attrValue);
-                    SWAG_VERIFY(isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.align' value must be a power of two ('%d' provided)", attrValue.reg.u8)}));
-                }
+            }
+            else if (child->token.text == "selectif")
+            {
+                ComputedValue attrValue;
+                curAttr->attributes.getValue("swag.selectif", "value", attrValue);
+                flags |= attrValue.reg.b ? ATTRIBUTE_SELECTIF_ON : ATTRIBUTE_SELECTIF_OFF;
+            }
+            else if (child->token.text == "compileif")
+            {
+                ComputedValue attrValue;
+                curAttr->attributes.getValue("swag.compileif", "value", attrValue);
+                if (!attrValue.reg.b)
+                    flags |= ATTRIBUTE_COMPILEIF_OFF;
+            }
+            else if (child->token.text == "pack")
+            {
+                ComputedValue attrValue;
+                curAttr->attributes.getValue("swag.pack", "value", attrValue);
+                SWAG_VERIFY(!attrValue.reg.u8 || isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.pack' value must be 0 or a power of two ('%d' provided)", attrValue.reg.u8)}));
+            }
+            else if (child->token.text == "align")
+            {
+                ComputedValue attrValue;
+                curAttr->attributes.getValue("swag.align", "value", attrValue);
+                SWAG_VERIFY(isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.align' value must be a power of two ('%d' provided)", attrValue.reg.u8)}));
             }
 
             // Append attributes
