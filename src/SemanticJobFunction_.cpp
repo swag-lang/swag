@@ -489,7 +489,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             scoped_lock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
-            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_NO_COPY), context->report({funcNode, funcNode->token, format("struct '%s' has the 'swag.nocopy' attribute, so 'opPostCopy' is irrelevant", typeStruct->name.c_str())}));
+            SWAG_VERIFY(!(typeStruct->flags & TYPEINFO_STRUCT_NO_COPY), context->report({funcNode, funcNode->token, format("struct '%s' has the 'swag.nocopy' attribute, so 'opPostCopy' is irrelevant", typeStruct->name.c_str())}));
         }
         else if (funcNode->token.text == "opPostMove")
         {

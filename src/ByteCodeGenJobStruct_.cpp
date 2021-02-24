@@ -643,9 +643,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     scoped_lock lk(typeInfoStruct->mutex);
-    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_COPY)
-        return true;
-    if (typeInfoStruct->declNode->attributeFlags & ATTRIBUTE_NO_COPY)
+    if (typeInfoStruct->flags & (TYPEINFO_STRUCT_NO_POST_COPY | TYPEINFO_STRUCT_NO_COPY))
         return true;
     if (typeInfoStruct->opPostCopy)
         return true;
