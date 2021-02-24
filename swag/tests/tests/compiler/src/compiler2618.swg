@@ -9,8 +9,9 @@ struct(T) BB
 
 impl BB
 {
-    #[swag.compileif(@typeof(T) != AA)]
+    //#[swag.compileif(@typeof(T) != AA)]
     func opIndexAffect(using self, index: uint, value: T)
+        #selectif @typeof(T) != AA
     {
         var x: T
         x = value
@@ -20,4 +21,6 @@ impl BB
 #test
 {
     var x: BB'AA
+    /*var y: AA
+    x[0] = y*/
 }

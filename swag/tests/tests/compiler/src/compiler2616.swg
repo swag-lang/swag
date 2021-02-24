@@ -3,14 +3,12 @@
 const G = 1
 var G1 = 21
 
-#[swag.compileif(G == 0)]
-func toto()
+func toto() #selectif G == 0
 {
     G1 = 0
 }
 
-#[swag.compileif(G == 1)]
-func toto()
+func toto() #selectif G == 1
 {
     G1 = 1
 }

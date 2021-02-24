@@ -380,6 +380,9 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
         newFunc->content->flags &= ~AST_NO_SEMANTIC;
     }
 
+    if (newFunc->selectIf)
+        newFunc->content->flags |= AST_NO_SEMANTIC;
+
     Ast::addChildBack(toDup->parent, dupNode);
     *specialFct = newFunc;
 
