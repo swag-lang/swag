@@ -258,6 +258,7 @@ namespace swag
         HasPostMove = 0x0040
         HasDrop     = 0x0080
         Strict      = 0x0100
+        CanCopy     = 0x0200
     }
 
     struct TypeInfo

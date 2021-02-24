@@ -159,7 +159,7 @@ impl Array
             {
                 @postmove(newBuffer, count)
             }
-            #else
+            #elif reflection.canCopy(@typeof(T))
             {
                 @postcopy(newBuffer, count)
                 @drop(buffer, count)

@@ -40,6 +40,7 @@ using swag
     func hasReloc(type: typeinfo)->bool    => (type.flags & TypeInfoFlags.HasReloc) ? true : false
     func hasPostMove(type: typeinfo)->bool => (type.flags & TypeInfoFlags.HasPostMove) ? true : false
     func hasPostCopy(type: typeinfo)->bool => (type.flags & TypeInfoFlags.HasPostCopy) ? true : false
+    func canCopy(type: typeinfo)->bool     => (type.flags & TypeInfoFlags.CanCopy) ? true : false
 
     // Returns true if the interface 'itf' is implemented in the given structure type
     func hasInterface(type: typeinfo, itf: typeinfo)->bool

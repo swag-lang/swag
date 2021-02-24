@@ -585,6 +585,19 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
 
     SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'%s' first parameter should be a pointer, but is '%s'", node->token.text.c_str(), expressionTypeInfo->name.c_str())}));
 
+    // Be sure struct if not marked as nocopy
+    if (node->kind == AstNodeKind::PostCopy)
+    {
+        auto ptrType     = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
+        auto pointedType = TypeManager::concreteType(ptrType->pointedType);
+        if (pointedType->kind == TypeInfoKind::Struct &&
+            pointedType->declNode &&
+            pointedType->declNode->attributeFlags & ATTRIBUTE_NO_COPY)
+        {
+            return context->report({node->expression, format("cannot call '@postcopy' on type '%s' because it is marked with the 'swag.nocopy' attribute", pointedType->name.c_str())});
+        }
+    }
+
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
