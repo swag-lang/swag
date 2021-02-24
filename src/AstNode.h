@@ -173,6 +173,7 @@ struct CloneContext
     uint64_t            forceFlags             = 0;
     uint64_t            removeFlags            = 0;
     bool                rawClone               = false;
+    bool                dontCopyBc             = false;
 };
 
 struct AstNode

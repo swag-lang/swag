@@ -447,10 +447,22 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         }
     }
 
+    // This should have no impact on the function itself, but will have impact if some bytecode
+    // has been generated for an attribute parameter. That way, we are sure that the bytecode
+    // will be regenerated in the new intantiated context
+    cloneContext.removeFlags |= AST_VALUE_COMPUTED | AST_BYTECODE_GENERATED | AST_BYTECODE_RESOLVED;
+    cloneContext.dontCopyBc = true;
+
     // Clone original node
-    auto overload = match.symbolOverload;
-    auto funcNode = overload->node;
-    auto newFunc  = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
+    auto         overload = match.symbolOverload;
+    auto         funcNode = overload->node;
+    auto         toDup    = funcNode->parent->kind == AstNodeKind::AttrUse ? funcNode->parent : funcNode;
+    auto         dupNode  = toDup->clone(cloneContext);
+    AstFuncDecl* newFunc;
+    if (dupNode->kind == AstNodeKind::AttrUse)
+        newFunc = CastAst<AstFuncDecl>(((AstAttrUse*) dupNode)->content, AstNodeKind::FuncDecl);
+    else
+        newFunc = CastAst<AstFuncDecl>(dupNode, AstNodeKind::FuncDecl);
     newFunc->flags |= AST_FROM_GENERIC;
 
     // If this is for testing a #selectif match, we must not evaluate the function content until the
@@ -460,7 +472,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     else
         newFunc->content->flags &= ~AST_NO_SEMANTIC;
 
-    Ast::addChildBack(funcNode->parent, newFunc);
+    Ast::addChildBack(toDup->parent, dupNode);
 
     // If we are calling the function in a struct context (struct.func), then add the struct as
     // an alternative scope
@@ -480,7 +492,11 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         newTypeFunc->flags &= ~TYPEINFO_GENERIC;
         newTypeFunc->declNode     = newFunc;
         newTypeFunc->replaceTypes = cloneContext.replaceTypes;
-        newFunc->typeInfo         = newTypeFunc;
+
+        // As we will reevaluate the corresponding attributes, we clear them
+        newTypeFunc->attributes.reset();
+
+        newFunc->typeInfo = newTypeFunc;
         if (noReplaceTypes)
             newTypeFunc->flags |= TYPEINFO_UNDEFINED;
     }
@@ -489,7 +505,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     SWAG_CHECK(updateGenericParameters(context, true, true, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
     newTypeFunc->forceComputeName();
 
-    auto job = end(context, context->job, match.symbolName, newFunc, true);
+    auto job = end(context, context->job, match.symbolName, dupNode, true);
     context->job->jobsToAdd.push_back(job);
 
     return true;

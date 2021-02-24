@@ -386,6 +386,8 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
     {
         if (child == node->content)
             continue;
+        if (child->kind != AstNodeKind::IdentifierRef)
+            continue;
 
         if (node->content)
             SWAG_CHECK(checkAttribute(context, child, node->content));

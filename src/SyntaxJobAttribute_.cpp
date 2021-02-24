@@ -140,8 +140,6 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
     auto attrBlockNode = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
     if (result)
         *result = attrBlockNode;
-    attrBlockNode->allocateExtension();
-    attrBlockNode->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
 
     while (token.id == TokenId::SymAttrStart)
     {

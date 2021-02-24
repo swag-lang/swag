@@ -13,7 +13,7 @@ impl AA
         return t == s32
     }
 
-    #[ife(titi(@typeof(s32)))]
+    #[ife(titi(@typeof(T)))]
     func toto()
     {
 
@@ -23,4 +23,5 @@ impl AA
 #test
 {
     var x: AA's32
+    x.toto()
 }
