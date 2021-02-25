@@ -2535,6 +2535,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     node->resolvedSymbolName     = symbol;
                     node->resolvedSymbolOverload = symbol->overloads[0];
                     node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+
+                    // If this is a generic type, and it's from an instante, we must wait, because we will
+                    // have to instantiate that symbol too
+                    if (node->ownerStructScope && (node->ownerStructScope->owner->flags & AST_FROM_GENERIC) && (node->typeInfo->flags & TYPEINFO_GENERIC))
+                        newToWait = true;
+                    if (node->ownerFct && (node->ownerFct->flags & AST_FROM_GENERIC) && (node->typeInfo->flags & TYPEINFO_GENERIC))
+                        newToWait = true;
                 }
             }
         }
