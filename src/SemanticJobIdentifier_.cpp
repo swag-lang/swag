@@ -2525,18 +2525,17 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         // If a structure is referencing itself, we will match the incomplete symbol for now
         bool newToWait = true;
         if ((symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface || symbol->kind == SymbolKind::TypeSet) &&
-            node->ownerMainNode &&
-            (node->ownerMainNode->kind != AstNodeKind::Impl || (node->flags & AST_CAN_MATCH_INCOMPLETE)) &&
-            node->ownerMainNode->token.text == symbol->name)
+            node->ownerMainNode && (node->ownerMainNode->kind != AstNodeKind::Impl || (node->flags & AST_CAN_MATCH_INCOMPLETE)))
         {
             if (symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
             {
-                SWAG_VERIFY(!node->callParameters, context->report({node->callParameters, "cannot auto reference a struct with parameters"}));
-                SWAG_VERIFY(!node->genericParameters, context->report({node->genericParameters, "cannot auto reference a struct with generic parameters"}));
-                newToWait                    = false;
-                node->resolvedSymbolName     = symbol;
-                node->resolvedSymbolOverload = symbol->overloads[0];
-                node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+                if (!node->callParameters && !node->genericParameters)
+                {
+                    newToWait                    = false;
+                    node->resolvedSymbolName     = symbol;
+                    node->resolvedSymbolOverload = symbol->overloads[0];
+                    node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+                }
             }
         }
 

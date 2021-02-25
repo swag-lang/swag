@@ -1,4 +1,3 @@
-
 struct AA
 {
     xyz: *AA.BB

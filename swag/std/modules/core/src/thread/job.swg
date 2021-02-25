@@ -4,7 +4,7 @@ using thread
 public struct Job
 {
     data:   *void
-    lambda: func(*void, *void)
+    lambda: func(*JobSystem, *void)
 }
 
 public struct JobSystem

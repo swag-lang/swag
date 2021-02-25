@@ -14,7 +14,9 @@ bool TypeTableJob::computeStruct()
     auto realType     = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
     auto segment      = typeTable->getSegmentStorage(module, cflags);
 
-    // Special functions lambda
+    // Flags
+    if (realType->flags & TYPEINFO_STRUCT_NO_COPY)
+        concreteTypeInfoValue->flags &= ~(uint16_t) TypeInfoFlags::CanCopy;
     if (realType->opPostCopy || realType->opUserPostCopyFct)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostCopy;
     if (realType->opPostMove || realType->opUserPostMoveFct)
@@ -181,27 +183,22 @@ JobResult TypeTableJob::execute()
     context.node       = nodes.front();
     baseContext        = &context;
 
-    if (typeInfo->kind == TypeInfoKind::Struct ||
-        typeInfo->kind == TypeInfoKind::Interface ||
-        typeInfo->kind == TypeInfoKind::TypeSet)
-    {
-        // Need to wait for all interfaces & methods to be registered
-        auto realType = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
-        waitForAllStructInterfaces(realType);
-        if (baseContext->result == ContextResult::Pending)
-            return JobResult::KeepJobAlive;
-        waitForAllStructMethods(realType);
-        if (baseContext->result == ContextResult::Pending)
-            return JobResult::KeepJobAlive;
-        waitStructGenerated(realType);
-        if (baseContext->result == ContextResult::Pending)
-            return JobResult::KeepJobAlive;
-        computeStruct();
-    }
-    else
-    {
-        SWAG_ASSERT(false);
-    }
+    SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Interface || typeInfo->kind == TypeInfoKind::TypeSet);
+    auto realType = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
+
+    waitTypeCompleted(typeInfo);
+    if (baseContext->result == ContextResult::Pending)
+        return JobResult::KeepJobAlive;
+    waitForAllStructInterfaces(realType);
+    if (baseContext->result == ContextResult::Pending)
+        return JobResult::KeepJobAlive;
+    waitForAllStructMethods(realType);
+    if (baseContext->result == ContextResult::Pending)
+        return JobResult::KeepJobAlive;
+    waitStructGenerated(realType);
+    if (baseContext->result == ContextResult::Pending)
+        return JobResult::KeepJobAlive;
+    computeStruct();
 
     return JobResult::ReleaseJob;
 }

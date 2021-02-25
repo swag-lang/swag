@@ -125,10 +125,10 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         symbol = registerSymbolNameNoLock(context, node, kind, aliasName);
     else if (symbol->kind == SymbolKind::PlaceHolder && kind != SymbolKind::PlaceHolder)
         symbol->kind = kind;
-
     // Only add an inline parameter/retval once in a given scope
     else if ((flags & (OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)) && symbol->overloads.size())
     {
+        node->resolvedSymbolOverload = symbol->overloads[0];
         if (resultName)
             *resultName = symbol;
         return symbol->overloads[0];
@@ -137,68 +137,67 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
     if (resultName)
         *resultName = symbol;
 
+    unique_lock     lock(symbol->mutex);
+    SymbolOverload* result = nullptr;
+    if (flags & OVERLOAD_STORE_SYMBOLS)
+        node->resolvedSymbolName = symbol;
+
+    // Remove incomplete flag
+    if (symbol->kind == SymbolKind::Struct ||
+        symbol->kind == SymbolKind::Interface ||
+        symbol->kind == SymbolKind::TypeSet ||
+        symbol->kind == SymbolKind::Function)
     {
-        unique_lock lock(symbol->mutex);
-
-        SymbolOverload* result = nullptr;
-
-        // A structure is defined the first time as incomplete (so that it can reference itself)
-        if (symbol->kind == SymbolKind::Struct ||
-            symbol->kind == SymbolKind::Interface ||
-            symbol->kind == SymbolKind::TypeSet ||
-            symbol->kind == SymbolKind::Function)
+        for (auto resolved : symbol->overloads)
         {
-            for (auto resolved : symbol->overloads)
+            if (resolved->typeInfo == typeInfo && (resolved->flags & OVERLOAD_INCOMPLETE))
             {
-                if (resolved->typeInfo == typeInfo && (resolved->flags & OVERLOAD_INCOMPLETE))
-                {
-                    result = resolved;
-                    result->flags &= ~OVERLOAD_INCOMPLETE;
-                    break;
-                }
+                result = resolved;
+                result->flags &= ~OVERLOAD_INCOMPLETE;
+                break;
             }
         }
-
-        if (!result)
-        {
-            // No ghosting check for an inline parameter
-            if (!(flags & OVERLOAD_VAR_INLINE) && !(flags & OVERLOAD_RETVAL))
-            {
-                if (!checkHiddenSymbolNoLock(context, node, typeInfo, kind, symbol))
-                    return nullptr;
-            }
-
-            result = symbol->addOverloadNoLock(node, typeInfo, computedValue);
-            result->flags |= flags;
-
-            // Register for dropping in end of scope, if necessary
-            if (!(flags & OVERLOAD_VAR_FUNC_PARAM) && !(flags & OVERLOAD_TUPLE_UNPACK) && symbol->kind == SymbolKind::Variable)
-                addVarToDrop(result, result->typeInfo, storageOffset);
-        }
-
-        result->flags |= flags;
-        result->storageOffset = storageOffset;
-
-        // One less overload. When this reached zero, this means we know every types for the same symbol,
-        // and so we can wakeup all jobs waiting for that symbol to be solved
-        if (!(flags & OVERLOAD_INCOMPLETE))
-        {
-            decreaseOverloadNoLock(symbol);
-        }
-
-        if (symbol->overloads.size() == symbol->cptOverloadsInit)
-        {
-            // In case of an incomplete function, we can wakeup jobs too when every overloads have been covered,
-            // because an incomplete function doesn't yet know its return type, but we don't need it in order
-            // to make a match
-            if (symbol->kind == SymbolKind::Function)
-                symbol->dependentJobs.setRunning();
-            else if (symbol->kind == SymbolKind::Struct)
-                symbol->dependentJobs.setRunning();
-        }
-
-        return result;
     }
+
+    if (!result)
+    {
+        // No ghosting check for an inline parameter
+        if (!(flags & OVERLOAD_VAR_INLINE) && !(flags & OVERLOAD_RETVAL))
+        {
+            if (!checkHiddenSymbolNoLock(context, node, typeInfo, kind, symbol))
+                return nullptr;
+        }
+
+        result = symbol->addOverloadNoLock(node, typeInfo, computedValue);
+        result->flags |= flags;
+
+        // Register for dropping in end of scope, if necessary
+        if (!(flags & OVERLOAD_VAR_FUNC_PARAM) && !(flags & OVERLOAD_TUPLE_UNPACK) && symbol->kind == SymbolKind::Variable)
+            addVarToDrop(result, result->typeInfo, storageOffset);
+    }
+
+    result->flags |= flags;
+    result->storageOffset = storageOffset;
+    if (flags & OVERLOAD_STORE_SYMBOLS)
+        node->resolvedSymbolOverload = result;
+
+    // One less overload. When this reached zero, this means we know every types for the same symbol,
+    // and so we can wakeup all jobs waiting for that symbol to be solved
+    if (!(flags & OVERLOAD_INCOMPLETE))
+        decreaseOverloadNoLock(symbol);
+
+    if (symbol->overloads.size() == symbol->cptOverloadsInit)
+    {
+        // In case of an incomplete function, we can wakeup jobs too when every overloads have been covered,
+        // because an incomplete function doesn't yet know its return type, but we don't need it in order
+        // to make a match
+        if (symbol->kind == SymbolKind::Function)
+            symbol->dependentJobs.setRunning();
+        else if (symbol->kind == SymbolKind::Struct)
+            symbol->dependentJobs.setRunning();
+    }
+
+    return result;
 }
 
 void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32_t storageOffset)

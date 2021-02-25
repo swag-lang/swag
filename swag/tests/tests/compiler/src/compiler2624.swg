@@ -1,9 +1,9 @@
-/*struct AA
+struct AA
 {
-    lambda: func(*BB)
+    lambda: *BB
 }
 
 struct BB
 {
     x: AA
-}*/
+}

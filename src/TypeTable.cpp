@@ -384,8 +384,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Unsigned;
     if (typeInfo->flags & TYPEINFO_STRICT)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Strict;
-    if (!(typeInfo->flags & TYPEINFO_STRUCT_NO_COPY))
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::CanCopy;
+    // True by default, will be removed by struct if necessary
+    concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::CanCopy;
 
     // Register type and value
     // Do it now to break recursive references

@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "SemanticJob.h"
 #include "Ast.h"
+#include "TypeManager.h"
 
 void Job::addDependentJob(Job* job)
 {
@@ -81,6 +82,45 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
         structNode->dependentJobs.add(this);
         setPending(structNode->resolvedSymbolName, "AST_BYTECODE_GENERATED", structNode, nullptr);
     }
+}
+
+void Job::waitTypeCompleted(TypeInfo* typeInfo)
+{
+    if (!typeInfo)
+        return;
+    auto orgTypeInfo = typeInfo;
+    typeInfo         = TypeManager::concreteType(typeInfo);
+    if (typeInfo->kind == TypeInfoKind::Slice)
+        typeInfo = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice)->pointedType;
+    if (typeInfo->kind == TypeInfoKind::Array)
+        typeInfo = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array)->finalType;
+    typeInfo = TypeManager::concreteType(typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::TypeSet && typeInfo->kind != TypeInfoKind::Interface)
+        return;
+    if (!typeInfo->declNode)
+        return;
+
+    auto symbol   = typeInfo->declNode->resolvedSymbolName;
+    auto overload = typeInfo->declNode->resolvedSymbolOverload;
+    SWAG_ASSERT(symbol && overload);
+    scoped_lock lk(symbol->mutex);
+    if (overload->flags & OVERLOAD_INCOMPLETE)
+    {
+        SWAG_ASSERT(overload->symbol == symbol);
+        waitForSymbolNoLock(symbol);
+        return;
+    }
+
+    // Be sure type sizeof is correct, because it could have been created before the
+    // raw type has been completed because of //
+
+    orgTypeInfo = TypeManager::concreteType(orgTypeInfo);
+    if (orgTypeInfo->kind == TypeInfoKind::Array)
+        orgTypeInfo->sizeOf = ((TypeInfoArray*) orgTypeInfo)->finalType->sizeOf * ((TypeInfoArray*) orgTypeInfo)->totalCount;
+    if (orgTypeInfo->flags & TYPEINFO_FAKE_ALIAS)
+        orgTypeInfo->sizeOf = ((TypeInfoAlias*) orgTypeInfo)->rawType->sizeOf;
+    if (typeInfo->flags & TYPEINFO_FAKE_ALIAS)
+        typeInfo->sizeOf = ((TypeInfoAlias*) typeInfo)->rawType->sizeOf;
 }
 
 void Job::setPending(SymbolName* symbolToWait, const char* id, AstNode* node, TypeInfo* typeInfo)

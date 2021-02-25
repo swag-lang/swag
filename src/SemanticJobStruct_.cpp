@@ -90,6 +90,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     // Be sure interface has been fully solved
     {
         scoped_lock lk(node->identifier->mutex);
+        scoped_lock lk1(node->identifier->resolvedSymbolName->mutex);
         if (node->identifier->resolvedSymbolName->cptOverloads)
         {
             job->waitForSymbolNoLock(node->identifier->resolvedSymbolName);
@@ -444,7 +445,7 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
         break;
     }
 
-    SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, symbolKind, nullptr, symbolFlags | OVERLOAD_INCOMPLETE, nullptr, 0));
+    SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, symbolKind, nullptr, symbolFlags | OVERLOAD_INCOMPLETE | OVERLOAD_STORE_SYMBOLS, nullptr, 0));
     return true;
 }
 
@@ -519,6 +520,16 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     typeInfo->alignOf = 0;
     typeInfo->sizeOf  = 0;
+
+    // If one of my childs is incomplete, then we must wait
+    for (int i = 0; i < childs.size(); i++)
+    {
+        auto child = childs[i];
+        job->waitTypeCompleted(child->typeInfo);
+        if (context->result != ContextResult::Done)
+            return true;
+    }
+
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
