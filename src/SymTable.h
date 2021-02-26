@@ -106,7 +106,7 @@ struct SymTableHash
     uint32_t count;
 
     SymbolName* find(const Utf8& str, uint32_t crc = 0);
-    void        addElem(SymbolName* data);
+    void        addElem(SymbolName* data, uint32_t crc = 0);
     void        add(SymbolName* data);
 };
 

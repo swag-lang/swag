@@ -539,9 +539,10 @@ SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc)
     return nullptr;
 }
 
-void SymTableHash::addElem(SymbolName* data)
+void SymTableHash::addElem(SymbolName* data, uint32_t crc)
 {
-    uint32_t crc = data->name.hash();
+    if (!crc)
+        crc = data->name.hash();
 
     // Find a free slot
     uint32_t idx = crc % allocated;
@@ -577,7 +578,7 @@ void SymTableHash::add(SymbolName* data)
         auto oldBuffer    = buffer;
         auto oldCount     = count;
 
-        allocated *= 2;
+        allocated *= 3;
         buffer = (Entry*) g_Allocator.alloc(allocated * sizeof(Entry));
         memset(buffer, 0, allocated * sizeof(Entry));
 
@@ -587,7 +588,7 @@ void SymTableHash::add(SymbolName* data)
             if (oldBuffer[i].hash)
             {
                 oldCount--;
-                addElem(oldBuffer[i].symbolName);
+                addElem(oldBuffer[i].symbolName, oldBuffer[i].hash);
                 if (!oldCount)
                     break;
             }
