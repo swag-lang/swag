@@ -71,6 +71,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
         case SymbolKind::Interface:
         case SymbolKind::Alias:
         case SymbolKind::TypeAlias:
+        case SymbolKind::EnumValue:
             node->ownerCompilerIfBlock->addSymbol(node, symbol);
             break;
         }

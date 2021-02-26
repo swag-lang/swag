@@ -1,4 +1,4 @@
-#if true
+#if false
 {
     enum AA
     {
@@ -9,8 +9,8 @@
 {
     enum AA
     {
-        R = 2
+        T = 2
     }
 }
 
-#print AA.T
+#assert AA.T == 2
