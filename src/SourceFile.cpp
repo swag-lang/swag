@@ -300,9 +300,11 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     }
 
     // Do not raise an error if we are waiting for one, during tests
-    if ((numTestErrors || inSemError) && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError && !isSemError)
+    if ((numTestErrors || inSemError || multipleTestErrors) && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError && !isSemError)
     {
-        if (!inSemError)
+        if (multipleTestErrors)
+            numTestErrors = 0;
+        else if (!inSemError)
             numTestErrors--;
         if (g_CommandLine.verboseTestErrors)
         {

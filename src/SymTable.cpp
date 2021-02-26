@@ -255,12 +255,23 @@ void SymTable::decreaseOverloadNoLock(SymbolName* symbol)
         symbol->dependentJobs.setRunning();
 }
 
-void SymTable::disabledIfBlockOverloadNoLock(SymbolName* symbol)
+void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
 {
     SWAG_ASSERT(symbol->cptIfBlock);
     symbol->cptIfBlock--;
     symbol->cptOverloadsInit = min(symbol->cptIfBlock, symbol->cptOverloadsInit);
     symbol->cptOverloads     = min(symbol->cptOverloads, symbol->cptOverloadsInit);
+
+    // Unregister the node in the symbol
+    for (int i = 0; i < symbol->nodes.size(); i++)
+    {
+        if (symbol->nodes[i] == node)
+        {
+            symbol->nodes.erase_unordered(i);
+            break;
+        }
+    }
+
     if (symbol->cptOverloads == 0)
         symbol->dependentJobs.setRunning();
 }

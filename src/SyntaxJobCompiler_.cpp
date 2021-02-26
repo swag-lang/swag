@@ -468,7 +468,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (token.text == "testerror")
+    else if (token.text == "testerror" || token.text == "testerrors")
     {
         // Put the file in its own module, because of errors
         if (!moduleSpecified)
@@ -482,10 +482,15 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#global testerror' is invalid outside a test module (in the './tests' folder of the workspace)"}));
         SWAG_ASSERT(g_CommandLine.test);
 
-        sourceFile->numTestErrors++;
-        sourceFile->module->numTestErrors++;
-        if (currentCompilerIfBlock)
-            currentCompilerIfBlock->numTestErrors++;
+        if (token.text == "testerrors")
+            sourceFile->multipleTestErrors = true;
+        else
+        {
+            sourceFile->numTestErrors++;
+            sourceFile->module->numTestErrors++;
+            if (currentCompilerIfBlock)
+                currentCompilerIfBlock->numTestErrors++;
+        }
 
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatSemiCol("after '#global testerror"));

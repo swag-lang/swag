@@ -391,9 +391,29 @@ bool SemanticJob::preResolveGeneratedStruct(SemanticContext* context)
 bool SemanticJob::preResolveStructContent(SemanticContext* context)
 {
     auto node = (AstStruct*) context->node->parent;
-
     SWAG_ASSERT(node->kind == AstNodeKind::StructDecl || node->kind == AstNodeKind::InterfaceDecl || node->kind == AstNodeKind::TypeSet);
+
     auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+
+    // Be sure we have only one struct node
+    if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
+    {
+        Diagnostic  diag({node, node->token, "symbol already defined"});
+        Diagnostic* note = nullptr;
+        for (auto p : node->resolvedSymbolName->nodes)
+        {
+            if (p != node)
+            {
+                note = new Diagnostic{p, p->token, "this is the other definition", DiagnosticLevel::Note};
+                break;
+            }
+        }
+
+        return context->report(diag, note);
+    }
+
+    typeInfo->declNode = node;
+    node->scope->owner = node;
 
     // Add generic parameters
     uint32_t symbolFlags = 0;

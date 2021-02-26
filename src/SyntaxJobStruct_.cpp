@@ -215,64 +215,51 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
     Scope* newScope = nullptr;
     {
         scoped_lock lk(currentScope->symTable.mutex);
-        auto        symbol = currentScope->symTable.findNoLock(structNode->token.text);
-        if (!symbol)
+        auto        scopeKind = structType == SyntaxStructType::TypeSet ? ScopeKind::TypeSet : ScopeKind::Struct;
+        newScope              = Ast::newScope(structNode, structNode->token.text, scopeKind, currentScope, true);
+        if (newScope->kind != scopeKind)
         {
-            auto scopeKind = structType == SyntaxStructType::TypeSet ? ScopeKind::TypeSet : ScopeKind::Struct;
-            newScope       = Ast::newScope(structNode, structNode->token.text, scopeKind, currentScope, true);
-            if (newScope->kind != scopeKind)
-            {
-                auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
-                Diagnostic note{structNode, structNode->token, format("this is the declaration of '%s'", implNode->token.text.c_str()), DiagnosticLevel::Note};
-                return sourceFile->report(diag, &note);
-            }
+            auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
+            Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
+            Diagnostic note{structNode, structNode->token, format("this is the declaration of '%s'", implNode->token.text.c_str()), DiagnosticLevel::Note};
+            return sourceFile->report(diag, &note);
+        }
 
-            structNode->scope = newScope;
+        structNode->scope = newScope;
 
-            // If an 'impl' came first, then typeinfo has already been defined
-            scoped_lock     lk1(newScope->owner->mutex);
-            TypeInfoStruct* typeInfo = nullptr;
-            if (!newScope->owner->typeInfo)
-            {
-                typeInfo                  = allocType<TypeInfoStruct>();
-                newScope->owner->typeInfo = typeInfo;
-            }
-            else
-            {
-                typeInfo = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, newScope->owner->typeInfo->kind);
-            }
-
-            SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Struct);
-            structNode->typeInfo = newScope->owner->typeInfo;
-            typeInfo->declNode   = structNode;
-            newScope->owner      = structNode;
-            typeInfo->name       = structNode->token.text;
-            typeInfo->structName = structNode->token.text;
-            typeInfo->scope      = newScope;
-
-            SymbolKind symbolKind = SymbolKind::Struct;
-            switch (structType)
-            {
-            case SyntaxStructType::Interface:
-                symbolKind = SymbolKind::Interface;
-                break;
-            case SyntaxStructType::TypeSet:
-                symbolKind = SymbolKind::TypeSet;
-                break;
-            }
-
-            structNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(&context, structNode, symbolKind);
+        // If an 'impl' came first, then typeinfo has already been defined
+        scoped_lock     lk1(newScope->owner->mutex);
+        TypeInfoStruct* typeInfo = nullptr;
+        if (!newScope->owner->typeInfo)
+        {
+            typeInfo                  = allocType<TypeInfoStruct>();
+            newScope->owner->typeInfo = typeInfo;
         }
         else
         {
-            auto       firstOverload = &symbol->defaultOverload;
-            Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
-            Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
-            Utf8       note = "this is the other definition";
-            Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-            return sourceFile->report(diag, &diagNote);
+            typeInfo = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, newScope->owner->typeInfo->kind);
         }
+
+        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Struct);
+        structNode->typeInfo = newScope->owner->typeInfo;
+        typeInfo->declNode   = structNode;
+        newScope->owner      = structNode;
+        typeInfo->name       = structNode->token.text;
+        typeInfo->structName = structNode->token.text;
+        typeInfo->scope      = newScope;
+
+        SymbolKind symbolKind = SymbolKind::Struct;
+        switch (structType)
+        {
+        case SyntaxStructType::Interface:
+            symbolKind = SymbolKind::Interface;
+            break;
+        case SyntaxStructType::TypeSet:
+            symbolKind = SymbolKind::TypeSet;
+            break;
+        }
+
+        structNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(&context, structNode, symbolKind);
     }
 
     // Dispatch owners

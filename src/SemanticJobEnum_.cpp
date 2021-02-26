@@ -4,12 +4,35 @@
 #include "SymTable.h"
 #include "Scope.h"
 #include "Allocator.h"
+#include "Ast.h"
+#include "AstNode.h"
 #include "SourceFile.h"
 
 bool SemanticJob::resolveEnum(SemanticContext* context)
 {
-    auto node     = context->node;
+    auto node     = CastAst<AstEnum>(context->node, AstNodeKind::EnumDecl);
     auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+
+    // Be sure we have only one enum node
+    if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
+    {
+        Diagnostic  diag({node, node->token, "symbol already defined"});
+        Diagnostic* note = nullptr;
+        for (auto p : node->resolvedSymbolName->nodes)
+        {
+            if (p != node)
+            {
+                note = new Diagnostic{p, p->token, "this is the other definition", DiagnosticLevel::Note};
+                break;
+            }
+        }
+
+        return context->report(diag, note);
+    }
+
+    typeInfo->declNode = node;
+    node->scope->owner = node;
+
     SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, typeInfo, SymbolKind::Enum));
 
     // Check public

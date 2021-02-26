@@ -26,46 +26,33 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     Scope* newScope = nullptr;
     {
         scoped_lock lk(currentScope->symTable.mutex);
-        auto        symbol = currentScope->symTable.findNoLock(enumNode->token.text);
-        if (!symbol)
+        newScope = Ast::newScope(enumNode, enumNode->token.text, ScopeKind::Enum, currentScope, true);
+        if (newScope->kind != ScopeKind::Enum)
         {
-            newScope = Ast::newScope(enumNode, enumNode->token.text, ScopeKind::Enum, currentScope, true);
-            if (newScope->kind != ScopeKind::Enum)
-            {
-                auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
-                Diagnostic note{enumNode, enumNode->token, format("this is the declaration of '%s'", implNode->token.text.c_str()), DiagnosticLevel::Note};
-                return sourceFile->report(diag, &note);
-            }
-
-            enumNode->scope = newScope;
-
-            // If an 'impl' came first, then typeinfo has already been defined
-            scoped_lock   lk1(newScope->owner->mutex);
-            TypeInfoEnum* typeInfo = (TypeInfoEnum*) newScope->owner->typeInfo;
-            if (!typeInfo)
-            {
-                typeInfo                  = allocType<TypeInfoEnum>();
-                newScope->owner->typeInfo = typeInfo;
-            }
-
-            SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Enum);
-            typeInfo->declNode = enumNode;
-            typeInfo->name     = enumNode->token.text;
-            typeInfo->scope    = newScope;
-            enumNode->typeInfo = typeInfo;
-            typeInfo->computeName();
-            currentScope->symTable.registerSymbolNameNoLock(&context, enumNode, SymbolKind::Enum);
+            auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
+            Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
+            Diagnostic note{enumNode, enumNode->token, format("this is the declaration of '%s'", implNode->token.text.c_str()), DiagnosticLevel::Note};
+            return sourceFile->report(diag, &note);
         }
-        else
+
+        enumNode->scope = newScope;
+
+        // If an 'impl' came first, then typeinfo has already been defined
+        scoped_lock   lk1(newScope->owner->mutex);
+        TypeInfoEnum* typeInfo = (TypeInfoEnum*) newScope->owner->typeInfo;
+        if (!typeInfo)
         {
-            auto       firstOverload = &symbol->defaultOverload;
-            Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
-            Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
-            Utf8       note = "this is the other definition";
-            Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-            return sourceFile->report(diag, &diagNote);
+            typeInfo                  = allocType<TypeInfoEnum>();
+            newScope->owner->typeInfo = typeInfo;
         }
+
+        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Enum);
+        typeInfo->declNode = enumNode;
+        typeInfo->name     = enumNode->token.text;
+        typeInfo->scope    = newScope;
+        enumNode->typeInfo = typeInfo;
+        typeInfo->computeName();
+        enumNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(&context, enumNode, SymbolKind::Enum);
     }
 
     // Raw type
