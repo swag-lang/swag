@@ -747,10 +747,11 @@ void SemanticJob::propagateReturn(AstReturn* node)
     if (node->semFlags & AST_SEM_EMBEDDED_RETURN)
         stopFct = node->ownerInline->parent;
 
-    AstNode* scanNode       = node;
-    bool     passNextSwitch = false;
+    AstNode* scanNode = node;
     while (scanNode && scanNode != stopFct)
     {
+        if (scanNode->semFlags & AST_SEM_SCOPE_HAS_RETURN && !(scanNode->semFlags & AST_SEM_SCOPE_FORCE_HAS_RETURN))
+            break;
         scanNode->semFlags |= AST_SEM_SCOPE_HAS_RETURN;
         if (scanNode->parent && scanNode->parent->kind == AstNodeKind::If)
         {
@@ -764,13 +765,12 @@ void SemanticJob::propagateReturn(AstReturn* node)
         {
             auto sc = CastAst<AstSwitchCase>(scanNode, AstNodeKind::SwitchCase);
             if (sc->isDefault)
-                passNextSwitch = true;
+                sc->ownerSwitch->semFlags |= AST_SEM_SCOPE_FORCE_HAS_RETURN;
         }
         else if (scanNode->kind == AstNodeKind::Switch)
         {
-            if (!passNextSwitch)
+            if (!(scanNode->semFlags & AST_SEM_SCOPE_FORCE_HAS_RETURN))
                 break;
-            passNextSwitch = false;
         }
         else if (scanNode->kind == AstNodeKind::While ||
                  scanNode->kind == AstNodeKind::Loop ||
@@ -784,6 +784,8 @@ void SemanticJob::propagateReturn(AstReturn* node)
 
     while (scanNode && scanNode != stopFct)
     {
+        if (scanNode->semFlags & AST_SEM_FCT_HAS_RETURN)
+            break;
         scanNode->semFlags |= AST_SEM_FCT_HAS_RETURN;
         scanNode = scanNode->parent;
     }
