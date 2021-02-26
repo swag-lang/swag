@@ -246,13 +246,13 @@ void Workspace::setupUserTags()
                 tokens1[0].trim();
                 tokens1[1].trim();
                 auto it = g_LangSpec.nativeTypes.find(tokens1[1]);
-                if (it == g_LangSpec.nativeTypes.end())
+                if (!it)
                 {
                     g_Log.error(format("fatal error: cannot resolve type '%s' of command line tag '%s'", tokens1[1].c_str(), tokens1[0].c_str()));
                     exit(-1);
                 }
 
-                switch (it->second)
+                switch (*it)
                 {
                 case LiteralType::TT_F32:
                 case LiteralType::TT_F64:
@@ -279,7 +279,7 @@ void Workspace::setupUserTags()
                     exit(-1);
                 }
 
-                oneTag.type = TypeManager::literalTypeToType(it->second);
+                oneTag.type = TypeManager::literalTypeToType(*it);
                 tokens1[0].trim();
                 oneTag.name = tokens1[0];
                 tags.push_back(oneTag);

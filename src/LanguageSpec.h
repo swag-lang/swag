@@ -3,6 +3,7 @@
 #include "TypeInfo.h"
 #include "Tokenizer.h"
 #include "Utf8.h"
+#include "HashTable.h"
 struct TypeInfoNative;
 
 struct LanguageSpec
@@ -10,8 +11,8 @@ struct LanguageSpec
     void   setup();
     string tokenToName(TokenId id);
 
-    map<Utf8, TokenId>     keywords;
-    map<Utf8, LiteralType> nativeTypes;
+    HashTable<TokenId, 4096>    keywords;
+    HashTable<LiteralType, 256> nativeTypes;
 };
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')

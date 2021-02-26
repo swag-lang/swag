@@ -16,8 +16,8 @@ void Tokenizer::getIdentifier(Token& token, uint32_t c, unsigned offset)
     }
 
     auto it = g_LangSpec.keywords.find(token.text);
-    if (it != g_LangSpec.keywords.end())
-        token.id = it->second;
+    if (it)
+        token.id = *it;
     else
         token.id = TokenId::Identifier;
 
@@ -74,7 +74,11 @@ void Tokenizer::getIdentifier(Token& token, uint32_t c, unsigned offset)
 #endif
         return;
     case TokenId::NativeType:
-        token.literalType = g_LangSpec.nativeTypes[token.text];
+    {
+        auto result = g_LangSpec.nativeTypes.find(token.text);
+        SWAG_ASSERT(result);
+        token.literalType = *result;
         return;
+    }
     }
 }

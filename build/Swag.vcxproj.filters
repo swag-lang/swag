@@ -752,6 +752,9 @@
     <ClInclude Include="..\src\Math.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\HashTable.h">
+      <Filter>Lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

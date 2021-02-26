@@ -4,7 +4,7 @@
 #include "Runtime.h"
 #include "CommandLine.h"
 
-uint32_t Utf8::hash() const
+uint32_t Utf8::hash(const char* buffer, int count)
 {
     uint32_t hash = 0;
 
@@ -21,6 +21,11 @@ uint32_t Utf8::hash() const
     hash += (hash << 15);
 
     return hash;
+}
+
+uint32_t Utf8::hash() const
+{
+    return hash(buffer, count);
 }
 
 void Utf8::reserve(int newSize)
