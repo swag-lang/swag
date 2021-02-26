@@ -1023,7 +1023,6 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 
         SWAG_CHECK(funcDecl->cloneSubDecls(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent));
         context->expansionNode.pop_back();
-        resolveSubDecls(context, inlineNode->ownerFct);
     }
 
     // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called

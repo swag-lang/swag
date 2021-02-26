@@ -126,6 +126,10 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
         }
     }
 
+    // Sub declarations in an inline block have access to the 'parametersScope', so we must start resolving 
+    // them only when we have done filling the parameters
+    resolveSubDecls(context, node->ownerFct);
+
     return true;
 }
 
