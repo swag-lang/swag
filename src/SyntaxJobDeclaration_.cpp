@@ -99,7 +99,6 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         SWAG_VERIFY(token.text != sourceFile->module->name, error(token, format("a namespace cannot have the same name as the module ('%s')", token.text.c_str())));
 
         // Add/Get namespace
-        namespaceNode->inheritTokenName(token);
         {
             scoped_lock lk(currentScope->symTable.mutex);
             auto        symbol = currentScope->symTable.findNoLock(namespaceNode->token.text);
