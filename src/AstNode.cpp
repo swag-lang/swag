@@ -835,8 +835,8 @@ AstNode* AstIf::clone(CloneContext& context)
     newNode->copyFrom(context, this);
 
     newNode->boolExpression = findChildRef(boolExpression, newNode);
-    newNode->ifBlock        = findChildRef(ifBlock, newNode);
-    newNode->elseBlock      = findChildRef(elseBlock, newNode);
+    newNode->ifBlock        = (AstCompilerIfBlock*) findChildRef(ifBlock, newNode);
+    newNode->elseBlock      = (AstCompilerIfBlock*) findChildRef(elseBlock, newNode);
     return newNode;
 }
 

@@ -402,17 +402,24 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
         return true;
 
     node->boolExpression->flags |= AST_NO_BYTECODE;
-    AstNode* validatedNode = nullptr;
+    AstCompilerIfBlock* validatedNode = nullptr;
     if (node->boolExpression->computedValue.reg.b)
     {
         validatedNode = node->ifBlock;
         if (node->elseBlock)
-            disableCompilerIfBlock(context, (AstCompilerIfBlock*) node->elseBlock);
+            disableCompilerIfBlock(context, node->elseBlock);
     }
     else
     {
         validatedNode = node->elseBlock;
-        disableCompilerIfBlock(context, (AstCompilerIfBlock*) node->ifBlock);
+        disableCompilerIfBlock(context, node->ifBlock);
+    }
+
+    // We can know solve function sub declarations in that block
+    if (validatedNode)
+    {
+        for (auto n : validatedNode->subDecls)
+            launchResolveSubDecl(context, n);
     }
 
     return true;

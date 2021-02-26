@@ -15,12 +15,12 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
     SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, "missing 'if' boolean expression before '{'"));
 
     SWAG_CHECK(doExpression(node, &node->boolExpression));
-    SWAG_CHECK(doEmbeddedStatement(node, &node->ifBlock));
+    SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->ifBlock));
 
     if (token.id == TokenId::KwdElse)
     {
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doEmbeddedStatement(node, &node->elseBlock));
+        SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->elseBlock));
     }
 
     return true;

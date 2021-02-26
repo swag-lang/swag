@@ -526,9 +526,9 @@ struct AstIf : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* boolExpression;
-    AstNode* ifBlock;
-    AstNode* elseBlock;
+    AstNode*            boolExpression;
+    AstCompilerIfBlock* ifBlock;
+    AstCompilerIfBlock* elseBlock;
 
     int seekJumpExpression;
     int seekJumpAfterIf;
@@ -852,6 +852,7 @@ struct AstCompilerIfBlock : public AstNode
     VectorNative<pair<AstNode*, SymbolName*>> symbols;
     VectorNative<TypeInfoStruct*>             interfacesCount;
     VectorNative<pair<TypeInfoStruct*, int>>  methodsCount;
+    VectorNative<AstNode*>                    subDecls;
     int                                       numTestErrors;
 };
 

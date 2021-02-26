@@ -585,6 +585,24 @@ bool SemanticJob::isMethod(AstFuncDecl* funcNode)
     return false;
 }
 
+void SemanticJob::launchResolveSubDecl(JobContext* context, AstNode* node)
+{
+    // If AST_DONE_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it
+    // because of AST_NO_SEMANTIC, but the attribute context is ok. So we need to trigger the job by hand.
+    // If AST_DONE_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
+    // file job will trigger the resolve itself
+    node->flags &= ~AST_NO_SEMANTIC;
+    if (node->doneFlags & AST_DONE_FILE_JOB_PASS)
+    {
+        auto job          = g_Pool_semanticJob.alloc();
+        job->sourceFile   = context->sourceFile;
+        job->module       = context->sourceFile->module;
+        job->dependentJob = context->baseJob->dependentJob;
+        job->nodes.push_back(node);
+        g_ThreadMgr.addJob(job);
+    }
+}
+
 void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
 {
     if (!funcNode)
@@ -605,21 +623,10 @@ void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
                 continue;
             f->semFlags |= AST_SEM_DISABLED; // To avoid multiple resolutions
 
-            f->flags &= ~AST_NO_SEMANTIC;
-
-            // If AST_DONE_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it
-            // because of AST_NO_SEMANTIC, but the attribute context is ok. So we need to trigger the job by hand.
-            // If AST_DONE_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the
-            // file job will trigger the resolve itself
-            if (f->doneFlags & AST_DONE_FILE_JOB_PASS)
-            {
-                auto job          = g_Pool_semanticJob.alloc();
-                job->sourceFile   = context->sourceFile;
-                job->module       = context->sourceFile->module;
-                job->dependentJob = context->baseJob->dependentJob;
-                job->nodes.push_back(f);
-                g_ThreadMgr.addJob(job);
-            }
+            if (f->ownerCompilerIfBlock && f->ownerCompilerIfBlock->ownerFct == funcNode)
+                f->ownerCompilerIfBlock->subDecls.push_back(f);
+            else
+                launchResolveSubDecl(context, f);
         }
     }
 }
