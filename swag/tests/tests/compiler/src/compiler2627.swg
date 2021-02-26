@@ -3,6 +3,7 @@
     enum AA
     {
         T = 1
+        R = 2
     }
 }
 #else
@@ -14,3 +15,4 @@
 }
 
 #assert AA.T == 2
+#assert !#defined(AA.R)

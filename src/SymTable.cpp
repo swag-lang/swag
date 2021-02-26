@@ -62,19 +62,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
     if (node->ownerCompilerIfBlock)
     {
         symbol->cptIfBlock++;
-        switch (kind)
-        {
-        case SymbolKind::Function:
-        case SymbolKind::Struct:
-        case SymbolKind::Enum:
-        case SymbolKind::TypeSet:
-        case SymbolKind::Interface:
-        case SymbolKind::Alias:
-        case SymbolKind::TypeAlias:
-        case SymbolKind::EnumValue:
-            node->ownerCompilerIfBlock->addSymbol(node, symbol);
-            break;
-        }
+        node->ownerCompilerIfBlock->addSymbol(node, symbol);
     }
 
     if (!wasPlaceHolder)
