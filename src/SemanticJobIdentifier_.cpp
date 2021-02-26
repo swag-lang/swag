@@ -2582,7 +2582,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         // Can happen if a symbol is inside a disabled #if for example
         if (toSolveOverload.empty())
+        {
+            if (identifierRef->flags & AST_SILENT_CHECK)
+                return true;
             return context->report({node, node->token, format("cannot resolve identifier '%s'", node->token.text.c_str())});
+        }
 
         auto& listTryMatch = job->cacheListTryMatch;
         job->clearTryMatch();
