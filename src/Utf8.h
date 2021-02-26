@@ -33,6 +33,8 @@ struct Utf8
     void            append(const Utf8& txt);
     void            append(char c);
     void            append(uint32_t utf);
+    void            appendTmpChar(char c);
+    void            setTrailingZero();
     const char*     begin() const;
     const char*     end() const;
     operator const char*();

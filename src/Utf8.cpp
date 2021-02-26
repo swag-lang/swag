@@ -210,47 +210,6 @@ int Utf8::capacity() const
     return allocated;
 }
 
-void Utf8::append(const char* txt, int len)
-{
-    if (!len)
-        return;
-    SWAG_ASSERT(txt);
-    reserve(count + len + 1);
-    Memcpy(buffer + count, txt, len + 1);
-    count += len;
-    buffer[count] = 0;
-}
-
-void Utf8::append(const char* txt)
-{
-    if (!txt)
-        return;
-    int len = (int) strlen(txt);
-    if (!len)
-        return;
-    reserve(count + len + 1);
-    Memcpy(buffer + count, txt, len + 1);
-    count += len;
-}
-
-void Utf8::append(const Utf8& txt)
-{
-    int len = txt.count;
-    if (!len)
-        return;
-    reserve(count + len + 1);
-    Memcpy(buffer + count, txt.buffer, len + 1);
-    count += len;
-}
-
-void Utf8::append(char c)
-{
-    reserve(count + 2);
-    buffer[count]     = c;
-    buffer[count + 1] = 0;
-    count++;
-}
-
 const char* Utf8::begin() const
 {
     return buffer;
@@ -548,6 +507,59 @@ void Utf8::toUni16(VectorNative<uint16_t>& uni, int maxChars)
         pz = transformUtf8ToChar32(pz, c);
         uni.push_back((uint16_t) c);
     }
+}
+
+void Utf8::append(const char* txt, int len)
+{
+    if (!len)
+        return;
+    SWAG_ASSERT(txt);
+    reserve(count + len + 1);
+    Memcpy(buffer + count, txt, len + 1);
+    count += len;
+    buffer[count] = 0;
+}
+
+void Utf8::append(const char* txt)
+{
+    if (!txt)
+        return;
+    int len = (int) strlen(txt);
+    if (!len)
+        return;
+    reserve(count + len + 1);
+    Memcpy(buffer + count, txt, len + 1);
+    count += len;
+}
+
+void Utf8::append(const Utf8& txt)
+{
+    int len = txt.count;
+    if (!len)
+        return;
+    reserve(count + len + 1);
+    Memcpy(buffer + count, txt.buffer, len + 1);
+    count += len;
+}
+
+void Utf8::append(char c)
+{
+    reserve(count + 2);
+    buffer[count]     = c;
+    buffer[count + 1] = 0;
+    count++;
+}
+
+void Utf8::appendTmpChar(char c)
+{
+    if (count + 2 > allocated)
+        reserve(count + 2);
+    buffer[count++] = c;
+}
+
+void Utf8::setTrailingZero()
+{
+    buffer[count] = 0;
 }
 
 void Utf8::append(uint32_t utf)

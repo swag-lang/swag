@@ -10,10 +10,16 @@ void Tokenizer::getIdentifier(Token& token, uint32_t c, unsigned offset)
 {
     while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')
     {
-        token.text += c;
+        // Faster version for ascii. Will probably be inlined, and does not append a '0' for each character
+        if (c <= 0x7f)
+            token.text.appendTmpChar((char) c);
+        else
+            token.text += c;
         treatChar(c, offset);
         c = getCharNoSeek(offset);
     }
+
+    token.text.setTrailingZero();
 
     auto it = g_LangSpec.keywords.find(token.text);
     if (it)
