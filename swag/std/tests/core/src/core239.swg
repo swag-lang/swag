@@ -3,8 +3,9 @@ using core
 
 #test
 {
-    /*sys.pushAllocator()
+    var v: swag.SystemAllocator
+    system.pushAllocator(v)
     {
         try jobsystem.init(4)
-    }*/
+    }
 }

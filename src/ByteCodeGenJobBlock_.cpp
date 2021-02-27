@@ -144,10 +144,14 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
     for (auto r : node->returnList)
         context->bc->out[r->seekJump].b.s32 = context->bc->numInstructions - r->seekJump - 1;
 
-    // Release persistent list of registers
-    for (auto r : node->scope->registersToRelease)
-        freeRegisterRC(context, r);
-    node->scope->registersToRelease.clear();
+    // Release persistent list of registers (except if mixin, because in that
+    // case, the inline node does not own the scope)
+    if (!(node->attributeFlags & ATTRIBUTE_MIXIN))
+    {
+        for (auto r : node->scope->registersToRelease)
+            freeRegisterRC(context, r);
+        node->scope->registersToRelease.clear();
+    }
 
     // Be sure this is done only once
     node->flags |= AST_NO_BYTECODE;
