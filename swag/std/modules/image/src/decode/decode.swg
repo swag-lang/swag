@@ -43,7 +43,7 @@ public func load(fileName: string)->Image throw
         }
     }
 
-    if !found throw "unknown image format"
+    if !found throw "no matching image decoder"
 
     // Read file content
     bytes := try file.readAllBytes(fileName)

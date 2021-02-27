@@ -18,28 +18,34 @@ var g_freeJobs:             Array'(*Job)
 var g_mutexPendingJobs:     sync.Mutex
 var g_mutexFreeJobs:        sync.Mutex
 var g_eventPendingJobs:     sync.Event
+var g_eventDone:            sync.Event
 
 func workerEntry(th: Thread)
 {
     while true
     {
-        job := getJobToProcess()
-        if job
-        {
-            job.lambda(job.data)
-            job.isDone()
-            continue
-        }
-
+        while peekExecJob() {}
         g_eventPendingJobs.wait()
     }
 }
 
-func isDone(job: *Job)
+func peekExecJob()->bool
 {
+    job := getJobToExec()
+    if !job return false
+
+    // Execute job
+    job.lambda(job.data)
+
+    // Done ?
+    sync.scopedLock(g_mutexPendingJobs)
+    if g_pendingJobs.isEmpty()
+        g_eventDone.signal()
+
+    return true
 }
 
-func getJobToProcess()->*Job
+func getJobToExec()->*Job
 {
     sync.scopedLock(g_mutexPendingJobs)
     if g_pendingJobs.isEmpty()
@@ -57,6 +63,7 @@ public func init(numCores: u32 = 0) throw
     try g_mutexPendingJobs.init()
     try g_mutexFreeJobs.init()
     try g_eventPendingJobs.init()
+    try g_eventDone.init(true, true)
 
     g_workers.allocator = g_Allocator
     g_pendingJobs.allocator = g_Allocator
@@ -95,6 +102,7 @@ public func scheduleJob(job: JobHandle)
 {
     debug.assert(g_created, "jobsystem is not initialized")
     sync.scopedLock(g_mutexPendingJobs)
+    g_eventDone.reset()
     g_pendingJobs.add(job)
     g_eventPendingJobs.signal()
 }
@@ -102,4 +110,5 @@ public func scheduleJob(job: JobHandle)
 // Schedule for all jobs to be done
 public func wait()
 {
+    g_eventDone.wait()
 }

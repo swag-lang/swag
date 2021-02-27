@@ -19,10 +19,10 @@ impl Event
     }
 
     // Initialize event
-    func init(using self) throw
+    func init(using self, manual, initState = false) throw
     {
         debug.assert(handle == null)
-        handle = CreateEventA(null, FALSE, FALSE, null)
+        handle = CreateEventA(null, manual ? TRUE : FALSE, initState ? TRUE : FALSE, null)
         if !handle
             try error.setErrorWin32(GetLastError())
     }
@@ -40,6 +40,13 @@ impl Event
     {
         debug.assert(isValid())
         SetEvent(handle)
+    }
+
+    // Reset the event state
+    func reset(using self)
+    {
+        debug.assert(isValid())
+        ResetEvent(handle)
     }
 
     // Wait for the event to be signaled

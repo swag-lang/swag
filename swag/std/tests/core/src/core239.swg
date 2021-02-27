@@ -14,6 +14,6 @@ using core
         try jobsystem.init(4)
         job := jobsystem.createJob(&entry)
         jobsystem.scheduleJob(job)
-        thread.sleep(1000)
+        jobsystem.wait()
     }
 }
