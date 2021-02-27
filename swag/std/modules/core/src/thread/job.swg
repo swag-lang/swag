@@ -1,62 +1,67 @@
-#global namespace thread
-using thread
+#global namespace jobsystem
+using thread, swag
 
-public struct Job
+#[strict]
+public alias JobHandle = *void
+
+struct Job
 {
     data:   *void
-    lambda: func(*JobSystem, *void)
+    lambda: func(*void)
 }
 
-public struct JobSystem
+var g_Allocator:            IAllocator
+var g_created:              bool
+var g_workers:              Array'Thread
+var g_pendingJobs:          Array'(*Job)
+var g_freeJobs:             Array'(*Job)
+var g_mutexPendingJobs:     sync.Mutex
+var g_mutexFreeJobs:        sync.Mutex
+
+func workerEntry(th: Thread)
 {
-    created:            bool
-    workers:            Array'Thread
-    pendingJobs:        Array'(*Job)
-    freeJobs:           Array'(*Job)
-    mutexPendingJobs:   sync.Mutex
-    mutexFreeJobs:      sync.Mutex
 }
 
-private func workerEntry(th: Thread)
+// Setup the job system
+public func init(numCores: u32 = 0) throw
 {
-    js := cast(*JobSystem) th.userParam
-}
+    debug.assert(!g_created)
+    g_created = true
 
-public impl JobSystem
-{
-    // Get the job system global instance
-    func get() => &g_JobSystem
+    g_Allocator = @getcontext().allocator
+    try g_mutexPendingJobs.init()
+    try g_mutexFreeJobs.init()
 
-    // Setup the job system
-    func create(using self, numCores: u32 = 0) throw
+    // If numCores is 1, then jobsystem will by synchrone
+    num := numCores ?? env.getProcessorCount()
+    if num != 1
     {
-        debug.assert(!created)
-        created = true
-
-        try mutexPendingJobs.init()
-        try mutexFreeJobs.init()
-
-        num := numCores ?? env.getProcessorCount()
         loop num
         {
             var th: Thread
-            try th.init(&workerEntry, self)
-            g_JobSystem.workers.emplace(&th)
+            try th.init(&workerEntry)
+            g_workers.emplace(&th)
         }
 
-        visit *th: workers
+        visit *th: g_workers
         {
             try th.start()
         }
     }
-
-    func newJob(using self)->*Job
-    {
-        sync.scopedLock(mutexFreeJobs)
-        if freeJobs.isEmpty()
-            return memory.new'Job()
-        return freeJobs.popBack()
-    }
 }
 
-var g_JobSystem: JobSystem
+// Creates a new job, but does not run it
+public func createJob(lambda: func(*void), jobData: *void = null)->JobHandle
+{
+    debug.assert(g_created, "jobsystem is not initialized")
+    sync.scopedLock(g_mutexFreeJobs)
+
+    var result: *Job = ?
+    if g_freeJobs.isEmpty()
+        result = memory.new'Job(g_Allocator)
+    else
+        result = g_freeJobs.popBack()
+    result.data = jobData
+    result.lambda = lambda
+    return result
+}
