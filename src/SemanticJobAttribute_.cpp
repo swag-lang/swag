@@ -132,8 +132,9 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         }
         else
         {
+            auto       nakedName1 = AstNode::getKindName(checkNode);
             Diagnostic diag{oneAttribute, format("attribute '%s' cannot be applied to %s", oneAttribute->token.text.c_str(), nakedName.c_str())};
-            Diagnostic note1{checkNode, checkNode->token, format("this is the %s", nakedName.c_str()), DiagnosticLevel::Note};
+            Diagnostic note1{checkNode, checkNode->token, format("this is the %s", nakedName1.c_str()), DiagnosticLevel::Note};
             Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is attribute '%s'", oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note1, &note2);
         }

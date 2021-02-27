@@ -10,6 +10,7 @@ struct OneFunc
     name: string
 }
 
+#[compiler]
 var g: Array'OneFunc
 
 #compiler(CompilerMsgMask.SemanticFunc)

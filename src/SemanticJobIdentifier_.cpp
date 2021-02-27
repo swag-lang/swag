@@ -551,6 +551,15 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Variable:
     {
+        // Be sure usage is valid
+        auto ownerFct = identifier->ownerFct;
+        if (ownerFct)
+        {
+            auto fctAttributes = ownerFct->attributeFlags;
+            if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(ownerFct->flags & AST_RUN_BLOCK))
+                return context->report({identifier, identifier->token, format("cannot reference 'swag.compiler' variable '%s' from runtime function '%s'", overload->node->token.text.c_str(), ownerFct->token.text.c_str())});
+        }
+
         // Transform the variable to a constant node
         if (overload->flags & OVERLOAD_COMPUTED_VALUE)
         {
@@ -682,7 +691,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 auto fctAttributes = ownerFct->attributeFlags;
 
                 if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_RUN_BLOCK))
-                    return context->report({identifier, identifier->token, format("cannot reference 'swag.compiler' function '%s' from '%s'", overload->node->token.text.c_str(), ownerFct->token.text.c_str())});
+                    return context->report({identifier, identifier->token, format("cannot reference 'swag.compiler' function '%s' from runtime function '%s'", overload->node->token.text.c_str(), ownerFct->token.text.c_str())});
                 if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
                     return context->report({identifier, identifier->token, format("cannot reference 'swag.test' function '%s' from '%s'", overload->node->token.text.c_str(), ownerFct->token.text.c_str())});
             }

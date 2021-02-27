@@ -30,7 +30,7 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr haserror()
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[attributeUsage(AttributeUsage.Function|AttributeUsage.GlobalVariable)]
     attr compiler()
 
     #[attributeUsage(AttributeUsage.Function)]
