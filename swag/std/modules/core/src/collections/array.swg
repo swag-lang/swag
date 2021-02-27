@@ -217,6 +217,7 @@ impl Array
 
     // Add a copy of one element at the end of the array
     func add(using self, value: T)
+        //#selectif reflection.canCopy(@typeof(T))
     {
         grow(count + 1)
         buffer[count] = nodrop value

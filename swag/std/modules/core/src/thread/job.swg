@@ -9,10 +9,12 @@ public struct Job
 
 public struct JobSystem
 {
-    created:        bool
-    workers:        Array'Thread
-    pendingJobs:    Array'Job
-    mutexJobs:      sync.Mutex
+    created:            bool
+    workers:            Array'Thread
+    pendingJobs:        Array'(*Job)
+    freeJobs:           Array'(*Job)
+    mutexPendingJobs:   sync.Mutex
+    mutexFreeJobs:      sync.Mutex
 }
 
 private func workerEntry(th: Thread)
@@ -31,7 +33,8 @@ public impl JobSystem
         debug.assert(!created)
         created = true
 
-        try mutexJobs.init()
+        try mutexPendingJobs.init()
+        try mutexFreeJobs.init()
 
         num := numCores ?? env.getProcessorCount()
         loop num
@@ -45,6 +48,17 @@ public impl JobSystem
         {
             try th.start()
         }
+    }
+
+    func newJob(using self)->*Job
+    {
+        sync.scopedLock(mutexFreeJobs)
+        if freeJobs.isEmpty()
+        {
+
+        }
+
+        return null//freeJobs.popBack()
     }
 }
 

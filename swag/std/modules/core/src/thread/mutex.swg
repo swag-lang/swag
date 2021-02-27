@@ -2,6 +2,7 @@
 #global namespace sync
 alias MutexHandle = const *void
 
+#[swag.nocopy]
 struct Mutex
 {
     handle: MutexHandle
