@@ -17,9 +17,29 @@ var g_pendingJobs:          Array'(*Job)
 var g_freeJobs:             Array'(*Job)
 var g_mutexPendingJobs:     sync.Mutex
 var g_mutexFreeJobs:        sync.Mutex
+var g_eventPendingJobs:     sync.Event
 
 func workerEntry(th: Thread)
 {
+    while true
+    {
+        job := getJobToProcess()
+        if job
+        {
+            job.lambda(job.data)
+            continue
+        }
+
+        g_eventPendingJobs.wait()
+    }
+}
+
+func getJobToProcess()->*Job
+{
+    sync.scopedLock(g_mutexPendingJobs)
+    if g_pendingJobs.isEmpty()
+        return null
+    return g_pendingJobs.popBack()
 }
 
 // Setup the job system
@@ -31,22 +51,21 @@ public func init(numCores: u32 = 0) throw
     g_Allocator = @getcontext().allocator
     try g_mutexPendingJobs.init()
     try g_mutexFreeJobs.init()
+    try g_eventPendingJobs.init()
+
+    g_workers.allocator = g_Allocator
+    g_pendingJobs.allocator = g_Allocator
+    g_freeJobs.allocator = g_Allocator
 
     // If numCores is 1, then jobsystem will by synchrone
     num := numCores ?? env.getProcessorCount()
     if num != 1
     {
-        loop num
-        {
-            var th: Thread
-            try th.init(&workerEntry)
-            g_workers.emplace(&th)
-        }
-
+        g_workers.resize(cast(uint) num)
+        loop i: num
+            try g_workers[i].init(&workerEntry)
         visit *th: g_workers
-        {
             try th.start()
-        }
     }
 }
 
@@ -71,4 +90,5 @@ public func scheduleJob(job: JobHandle)
     debug.assert(g_created, "jobsystem is not initialized")
     sync.scopedLock(g_mutexPendingJobs)
     g_pendingJobs.add(job)
+    g_eventPendingJobs.signal()
 }

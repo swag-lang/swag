@@ -178,6 +178,7 @@ impl Array
     }
 
     // Ensure the Array is big enough to store at least 'newCount' elements
+    // Number of valid elements does not change
     func grow(using self, newCount : uint)
     {
         if newCount <= capacity
@@ -187,6 +188,7 @@ impl Array
     }
 
     // Reserve room for 'newCapacity' elements without changing the array count
+    // Number of valid elements does not change
     func reserve(using self, newCapacity: uint)
     {
         if !newCapacity
@@ -201,6 +203,24 @@ impl Array
             return
 
         realloc(newCapacity)
+    }
+
+    // Change the number of valid elements in the array
+    func resize(using self, newCount : uint)
+    {
+        if newCount == count
+            return
+        if newCount > count
+        {
+            grow(newCount)
+            @init(buffer + count, newCount - count)
+            count = newCount
+        }
+        else
+        {
+            @drop(buffer + newCount, count - newCount)
+            count = newCount
+        }
     }
 
     // Set the number of elements to 0
