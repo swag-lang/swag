@@ -140,6 +140,8 @@ impl HashTable
 
     // Add a new key value pair. If the key already exists, then the value will be replaced
     func add(using self, key: K, value: V)
+        #selectif reflection.canCopy(@typeof(K)) &&
+                  reflection.canCopy(@typeof(V))
     {
         grow()
 

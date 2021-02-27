@@ -54,10 +54,7 @@ public impl JobSystem
     {
         sync.scopedLock(mutexFreeJobs)
         if freeJobs.isEmpty()
-        {
-
-        }
-
+            return memory.new'Job()
         return null//freeJobs.popBack()
     }
 }
