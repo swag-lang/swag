@@ -217,7 +217,7 @@ impl Array
 
     // Add a copy of one element at the end of the array
     func add(using self, value: T)
-        //#selectif reflection.canCopy(@typeof(T))
+        #selectif reflection.canCopy(@typeof(T))
     {
         grow(count + 1)
         buffer[count] = nodrop value
@@ -227,6 +227,7 @@ impl Array
     // Add any value, as long as the type T accepts an opAffect of type G
     // or an implicit cast
     func(G) addAny(using self, value: G)
+        #selectif reflection.canCopy(@typeof(G))
     {
         #if @typeof(G) != @typeof(T)
         {
@@ -251,6 +252,7 @@ impl Array
     // the value is added at the end of the array.
     // Order is preserved.
     func insertAt(using self, index: uint, value: T)
+        #selectif reflection.canCopy(@typeof(T))
     {
         debug.assert(index <= count, "index out of range")
         if index == count
@@ -283,6 +285,7 @@ impl Array
 
     // Append a slice to the end of this instance
     func add(using self, values: const [..] T)
+        #selectif reflection.canCopy(@typeof(T))
     {
         // Do not add myself !
         debug.assert(@dataof(values) < buffer || @dataof(values) > buffer + capacity)

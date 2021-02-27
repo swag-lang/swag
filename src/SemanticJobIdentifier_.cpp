@@ -1469,11 +1469,37 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         if (justCheck)
             return true;
 
+        set<SymbolName*> symbols;
+        for (auto& g : genericMatchesSI)
+            symbols.insert(g->symbolName);
+        for (auto& g : symbols)
+            g->mutex.lock();
+
         for (auto& g : genericMatchesSI)
         {
-            SWAG_CHECK(Generic::instantiateFunction(context, g->genericParameters, *g, true));
+            // Be sure we don't have more overloads waiting to be solved
+            if (g->symbolName->cptOverloads)
+            {
+                job->waitForSymbolNoLock(g->symbolName);
+                break;
+            }
+
+            // Be sure number of overloads has not changed since then
+            if (g->matchNumOverloadsWhenChecked != g->symbolName->overloads.size())
+            {
+                context->result = ContextResult::NewChilds;
+                break;
+            }
         }
 
+        if (context->result == ContextResult::Done)
+        {
+            for (auto& g : genericMatchesSI)
+                SWAG_CHECK(Generic::instantiateFunction(context, g->genericParameters, *g, true));
+        }
+
+        for (auto& g : symbols)
+            g->mutex.unlock();
         return true;
     }
 
