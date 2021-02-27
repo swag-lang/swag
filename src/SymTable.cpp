@@ -531,9 +531,7 @@ SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc)
     {
         if (buffer[idx].hash == crc && buffer[idx].symbolName->name == str)
             return buffer[idx].symbolName;
-        idx = idx + 1;
-        if (idx == allocated)
-            idx = 0;
+        idx = (idx + 1) % allocated;
     }
 
     return nullptr;
@@ -548,9 +546,7 @@ void SymTableHash::addElem(SymbolName* data, uint32_t crc)
     uint32_t idx = crc % allocated;
     while (buffer[idx].hash)
     {
-        idx = idx + 1;
-        if (idx == allocated)
-            idx = 0;
+        idx = (idx + 1) % allocated;
     }
 
     buffer[idx].hash       = crc;

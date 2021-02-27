@@ -9,9 +9,18 @@ uint32_t Utf8::hash(const char* buffer, int count)
     uint32_t hash = 0;
 
     auto s = buffer;
-    for (int i = 0; i < count; i++)
+    while (count > 4)
     {
-        hash += *s;
+        hash += *(uint32_t*) s;
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
+        s += 4;
+        count -= 4;
+    }
+
+    while (count--)
+    {
+        hash += *s++;
         hash += (hash << 10);
         hash ^= (hash >> 6);
     }
