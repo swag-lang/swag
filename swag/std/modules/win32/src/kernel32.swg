@@ -342,6 +342,10 @@ struct PROCESS_INFORMATION
     func CreateMutexA(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCSTR)->HANDLE;
     func CreateMutexW(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCWSTR)->HANDLE;
     func ReleaseMutex(hMutex: HANDLE)->BOOL;
+    func CreateEventA(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCSTR)->HANDLE;
+    func CreateEventW(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCWSTR)->HANDLE;
+    func ResetEvent(hEvent: HANDLE)->BOOL;
+    func SetEvent(hEvent: HANDLE)->BOOL;
 
     func CreateWaitableTimerA(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCSTR)->HANDLE;
     func CreateWaitableTimerW(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCWSTR)->HANDLE;
