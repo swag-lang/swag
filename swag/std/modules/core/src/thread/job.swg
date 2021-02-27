@@ -27,11 +27,16 @@ func workerEntry(th: Thread)
         if job
         {
             job.lambda(job.data)
+            job.isDone()
             continue
         }
 
         g_eventPendingJobs.wait()
     }
+}
+
+func isDone(job: *Job)
+{
 }
 
 func getJobToProcess()->*Job
@@ -85,10 +90,16 @@ public func createJob(lambda: func(*void), jobData: *void = null)->JobHandle
     return result
 }
 
+// Schedule a job to execute
 public func scheduleJob(job: JobHandle)
 {
     debug.assert(g_created, "jobsystem is not initialized")
     sync.scopedLock(g_mutexPendingJobs)
     g_pendingJobs.add(job)
     g_eventPendingJobs.signal()
+}
+
+// Schedule for all jobs to be done
+public func wait()
+{
 }
