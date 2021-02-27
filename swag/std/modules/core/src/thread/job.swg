@@ -6,8 +6,8 @@ public alias JobHandle = *void
 
 struct Job
 {
-    data:   *void
     lambda: func(*void)
+    data:   *void
 }
 
 var g_Allocator:            IAllocator
@@ -61,7 +61,14 @@ public func createJob(lambda: func(*void), jobData: *void = null)->JobHandle
         result = memory.new'Job(g_Allocator)
     else
         result = g_freeJobs.popBack()
-    result.data = jobData
     result.lambda = lambda
+    result.data = jobData
     return result
+}
+
+public func scheduleJob(job: JobHandle)
+{
+    debug.assert(g_created, "jobsystem is not initialized")
+    sync.scopedLock(g_mutexPendingJobs)
+    g_pendingJobs.add(job)
 }
