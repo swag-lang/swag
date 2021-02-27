@@ -424,7 +424,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             typeInfo->kind == TypeInfoKind::Struct)
         {
             ByteCodeInstruction* inst;
-            if (resolved->flags & OVERLOAD_VAR_BSS)
+            if (resolved->flags & OVERLOAD_VAR_COMPILER)
+                inst = emitInstruction(context, ByteCodeOp::MakeCompilerSegPointer, node->resultRegisterRC);
+            else if (resolved->flags & OVERLOAD_VAR_BSS)
                 inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
             else
                 inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
@@ -435,7 +437,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if ((node->forceTakeAddress()) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             ByteCodeInstruction* inst;
-            if (resolved->flags & OVERLOAD_VAR_BSS)
+            if (resolved->flags & OVERLOAD_VAR_COMPILER)
+                inst = emitInstruction(context, ByteCodeOp::MakeCompilerSegPointer, node->resultRegisterRC);
+            else if (resolved->flags & OVERLOAD_VAR_BSS)
                 inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
             else
                 inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
@@ -447,7 +451,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
             ByteCodeInstruction* inst;
-            if (resolved->flags & OVERLOAD_VAR_BSS)
+            if (resolved->flags & OVERLOAD_VAR_COMPILER)
+                inst = emitInstruction(context, ByteCodeOp::GetFromCompilerSeg64, node->resultRegisterRC);
+            else if (resolved->flags & OVERLOAD_VAR_BSS)
                 inst = emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC);
             else
                 inst = emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC);
@@ -460,7 +466,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
             ByteCodeInstruction* inst;
-            if (resolved->flags & OVERLOAD_VAR_BSS)
+            if (resolved->flags & OVERLOAD_VAR_COMPILER)
+                inst = emitInstruction(context, ByteCodeOp::MakeCompilerSegPointer, node->resultRegisterRC);
+            else if (resolved->flags & OVERLOAD_VAR_BSS)
                 inst = emitInstruction(context, ByteCodeOp::MakeBssSegPointer, node->resultRegisterRC);
             else
                 inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
@@ -473,7 +481,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
-            if (resolved->flags & OVERLOAD_VAR_BSS)
+            if (resolved->flags & OVERLOAD_VAR_COMPILER)
+            {
+                emitInstruction(context, ByteCodeOp::GetFromCompilerSeg64, node->resultRegisterRC[0])->b.u64 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::GetFromCompilerSeg64, node->resultRegisterRC[1])->b.u64 = resolved->storageOffset + 8;
+            }
+            else if (resolved->flags & OVERLOAD_VAR_BSS)
             {
                 emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC[0])->b.u64 = resolved->storageOffset;
                 emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC[1])->b.u64 = resolved->storageOffset + 8;
@@ -492,7 +505,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             ByteCodeInstruction* inst;
             SWAG_ASSERT(typeInfo->sizeOf <= sizeof(uint64_t));
-            if (resolved->flags & OVERLOAD_VAR_BSS)
+            if (resolved->flags & OVERLOAD_VAR_COMPILER)
+                inst = emitInstruction(context, ByteCodeOp::GetFromCompilerSeg64, node->resultRegisterRC);
+            else if (resolved->flags & OVERLOAD_VAR_BSS)
                 inst = emitInstruction(context, ByteCodeOp::GetFromBssSeg64, node->resultRegisterRC);
             else
                 inst = emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC);

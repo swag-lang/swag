@@ -648,7 +648,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         node->flags |= AST_R_VALUE;
 
-        if (node->attributeFlags & AST_EXPLICITLY_NOT_INITIALIZED)
+        if (node->attributeFlags & ATTRIBUTE_COMPILER)
+        {
+            symbolFlags |= OVERLOAD_VAR_COMPILER;
+            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->compilerSegment));
+        }
+        else if (node->attributeFlags & AST_EXPLICITLY_NOT_INITIALIZED)
         {
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
         }
@@ -680,7 +685,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
         }
 
-        module->addGlobalVar(node, symbolFlags & OVERLOAD_VAR_BSS ? GlobalVarKind::Bss : GlobalVarKind::Mutable);
+        if (!(symbolFlags & OVERLOAD_VAR_COMPILER))
+            module->addGlobalVar(node, symbolFlags & OVERLOAD_VAR_BSS ? GlobalVarKind::Bss : GlobalVarKind::Mutable);
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {

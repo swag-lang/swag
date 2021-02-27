@@ -35,6 +35,7 @@ static const uint32_t OVERLOAD_RETVAL             = 0x00002000;
 static const uint32_t OVERLOAD_EMITTED            = 0x00004000;
 static const uint32_t OVERLOAD_TUPLE_UNPACK       = 0x00008000;
 static const uint32_t OVERLOAD_STORE_SYMBOLS      = 0x00010000;
+static const uint32_t OVERLOAD_VAR_COMPILER       = 0x00020000;
 
 struct SymbolOverload
 {
