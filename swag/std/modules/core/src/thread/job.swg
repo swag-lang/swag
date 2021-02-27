@@ -6,8 +6,9 @@ public alias JobHandle = *void
 
 struct Job
 {
-    lambda: func(*void)
-    data:   *void
+    lambda:         func(*void)
+    data:           *void
+    createFlags:    JobCreateFlags = ?
 }
 
 var g_Allocator:            IAllocator
@@ -37,7 +38,11 @@ func peekExecJob()->bool
     // Execute job
     job.lambda(job.data)
 
-    // Done ?
+    // We are done with that job
+    if job.createFlags & JobCreateFlags.AutoRelease
+        releaseJob(job)
+
+    // Done with all jobs ?
     sync.scopedLock(g_mutexPendingJobs)
     if g_pendingJobs.isEmpty()
         g_eventDone.signal()
@@ -51,6 +56,13 @@ func getJobToExec()->*Job
     if g_pendingJobs.isEmpty()
         return null
     return g_pendingJobs.popBack()
+}
+
+#[swag.enumflags]
+public enum JobCreateFlags : u32
+{
+    Zero        = 0x00000000
+    AutoRelease = 0x00000001
 }
 
 // Setup the job system
@@ -82,7 +94,7 @@ public func init(numCores: u32 = 0) throw
 }
 
 // Creates a new job, but does not run it
-public func createJob(lambda: func(*void), jobData: *void = null)->JobHandle
+public func createJob(lambda: func(*void), jobData: *void = null, flags = JobCreateFlags.Zero)->JobHandle
 {
     debug.assert(g_created, "jobsystem is not initialized")
     sync.scopedLock(g_mutexFreeJobs)
@@ -94,7 +106,16 @@ public func createJob(lambda: func(*void), jobData: *void = null)->JobHandle
         result = g_freeJobs.popBack()
     result.lambda = lambda
     result.data = jobData
+    result.createFlags = flags
     return result
+}
+
+// Release a job
+public func releaseJob(job: JobHandle)
+{
+    debug.assert(g_created, "jobsystem is not initialized")
+    sync.scopedLock(g_mutexFreeJobs)
+    g_freeJobs.add(job)
 }
 
 // Schedule a job to execute
@@ -107,8 +128,9 @@ public func scheduleJob(job: JobHandle)
     g_eventPendingJobs.signal()
 }
 
-// Schedule for all jobs to be done
-public func wait()
+// Wait for all jobs to be finished
+public func waitDone()
 {
+    while peekExecJob() {}
     g_eventDone.wait()
 }

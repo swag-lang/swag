@@ -1,11 +1,12 @@
 #import "core"
 using core
 
+var G = 0
 #test
 {
     func entry(data: *void)
     {
-        @print("entry\n")
+        G = 666
     }
 
     var v: swag.SystemAllocator
@@ -14,6 +15,7 @@ using core
         try jobsystem.init(4)
         job := jobsystem.createJob(&entry)
         jobsystem.scheduleJob(job)
-        jobsystem.wait()
+        jobsystem.waitDone()
+        @assert(G == 666)
     }
 }
