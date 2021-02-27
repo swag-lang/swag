@@ -126,9 +126,8 @@ struct Module
     DataSegment mutableSegment;
     DataSegment typeSegment;
     DataSegment constantSegment;
-    DataSegment constantSegmentCompiler;
     DataSegment bssSegment;
-    DataSegment tempSegment;
+    DataSegment compilerSegment;
 
     void setBuildPass(BuildPass buildP);
 

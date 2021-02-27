@@ -21,13 +21,12 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         return;
     setupDone = true;
 
-    constantSegmentCompiler.compilerOnly = true;
+    compilerSegment.compilerOnly = true;
     mutableSegment.setup("mutable segment", this);
-    typeSegment.setup("type segment", this);
     constantSegment.setup("constant segment", this);
-    constantSegmentCompiler.setup("compiler constant segment", this);
     bssSegment.setup("bss segment", this);
-    tempSegment.setup("temp segment", this);
+    typeSegment.setup("type segment", this);
+    compilerSegment.setup("compiler segment", this);
 
     name   = moduleName;
     nameUp = name;
@@ -229,7 +228,7 @@ void Module::allocateBackend()
 void Module::release()
 {
     constantSegment.release();
-    constantSegmentCompiler.release();
+    compilerSegment.release();
     mutableSegment.release();
     typeSegment.release();
     bssSegment.release();
@@ -408,7 +407,7 @@ bool Module::flushCompilerMessages(JobContext* context)
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, (TypeInfo*) msg.type, nullptr, &storageOffset, CONCRETE_SHOULD_WAIT | CONCRETE_FOR_COMPILER));
             if (context->result != ContextResult::Done)
                 return true;
-            msg.type = (ConcreteTypeInfo*) constantSegmentCompiler.address(storageOffset);
+            msg.type = (ConcreteTypeInfo*) compilerSegment.address(storageOffset);
         }
 
         sendCompilerMessage(&msg, context->baseJob);

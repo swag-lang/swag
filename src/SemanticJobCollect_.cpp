@@ -11,7 +11,7 @@ bool SemanticJob::reserveAndStoreToSegment(JobContext* context, uint32_t& storag
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
 
-    if (seg == &module->constantSegment || seg == &module->bssSegment || seg == &module->tempSegment)
+    if (seg == &module->constantSegment || seg == &module->bssSegment || seg == &module->compilerSegment)
         seg->mutex.lock();
 
     // Need to lock both data and constant segments, as both can be modified if 'seg' is a data
@@ -24,7 +24,7 @@ bool SemanticJob::reserveAndStoreToSegment(JobContext* context, uint32_t& storag
 
     auto result = reserveAndStoreToSegmentNoLock(context, storageOffset, seg, value, typeInfo, assignment);
 
-    if (seg == &module->constantSegment || seg == &module->bssSegment || seg == &module->tempSegment)
+    if (seg == &module->constantSegment || seg == &module->bssSegment || seg == &module->compilerSegment)
         seg->mutex.unlock();
     else
     {
@@ -299,10 +299,10 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
         {
             SWAG_ASSERT(node->assignment->computedValue.reg.offset != UINT32_MAX);
 
-            // Should be stored in the temp segment !
+            // Should be stored in the compiler segment !
             storageOffset = seg->reserve(typeInfo->sizeOf, SemanticJob::alignOf(node));
             auto addrDst  = seg->address(storageOffset);
-            auto addrSrc  = node->sourceFile->module->tempSegment.address(node->assignment->computedValue.reg.offset);
+            auto addrSrc  = node->sourceFile->module->compilerSegment.address(node->assignment->computedValue.reg.offset);
             memcpy(addrDst, addrSrc, typeInfo->sizeOf);
             return true;
         }

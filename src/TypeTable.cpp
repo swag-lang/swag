@@ -11,7 +11,7 @@
 DataSegment* TypeTable::getSegmentStorage(Module* module, uint32_t flags)
 {
     if (flags & CONCRETE_FOR_COMPILER)
-        return &module->constantSegmentCompiler;
+        return &module->compilerSegment;
     return &module->typeSegment;
 }
 
