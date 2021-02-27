@@ -133,7 +133,7 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
     auto& pp              = *perThread[ct][precompileIndex];
     auto& context         = *pp.context;
 
-    typeInfo  = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+    typeInfo  = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS | CONCRETE_FORCEALIAS);
     *llvmType = nullptr;
 
     if (typeInfo->kind == TypeInfoKind::Enum)
@@ -377,7 +377,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     if (typeFunc->numReturnRegisters() && !returnByCopy)
     {
         auto rr0        = allocRR;
-        auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM);
+        auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM | CONCRETE_FORCEALIAS);
 
         if (returnType->kind == TypeInfoKind::Slice ||
             returnType->kind == TypeInfoKind::Interface ||
