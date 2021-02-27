@@ -85,6 +85,55 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             }
         }
 
+        // Replace GetFromStack with SetImmediate
+        if (ip[0].op == ByteCodeOp::SetAtStackPointer8 &&
+            ip[1].op == ByteCodeOp::GetFromStack8 &&
+            ip[0].a.u32 == ip[1].b.u32 &&
+            ip[0].flags & BCI_IMM_B &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::SetImmediate32;
+            ip[1].b.u64 = ip[0].b.u8;
+            ip[1].flags |= BCI_IMM_B;
+            context->passHasDoneSomething = true;
+        }
+
+        if (ip[0].op == ByteCodeOp::SetAtStackPointer16 &&
+            ip[1].op == ByteCodeOp::GetFromStack16 &&
+            ip[0].a.u32 == ip[1].b.u32 &&
+            ip[0].flags & BCI_IMM_B &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::SetImmediate32;
+            ip[1].b.u64 = ip[0].b.u16;
+            ip[1].flags |= BCI_IMM_B;
+            context->passHasDoneSomething = true;
+        }
+
+        if (ip[0].op == ByteCodeOp::SetAtStackPointer32 &&
+            ip[1].op == ByteCodeOp::GetFromStack32 &&
+            ip[0].a.u32 == ip[1].b.u32 &&
+            ip[0].flags & BCI_IMM_B &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::SetImmediate32;
+            ip[1].b.u64 = ip[0].b.u32;
+            ip[1].flags |= BCI_IMM_B;
+            context->passHasDoneSomething = true;
+        }
+
+        if (ip[0].op == ByteCodeOp::SetAtStackPointer64 &&
+            ip[1].op == ByteCodeOp::GetFromStack64 &&
+            ip[0].a.u32 == ip[1].b.u32 &&
+            ip[0].flags & BCI_IMM_B &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::SetImmediate64;
+            ip[1].b.u64 = ip[0].b.u64;
+            ip[1].flags |= BCI_IMM_B;
+            context->passHasDoneSomething = true;
+        }
+
         // SetAtStackPointer x2
         if (ip[0].op == ByteCodeOp::SetAtStackPointer8 &&
             ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
