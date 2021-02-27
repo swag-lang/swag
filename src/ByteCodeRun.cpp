@@ -1005,7 +1005,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CopyRCtoRR:
     {
-        registersRR[0] = registersRC[ip->a.u32];
+        registersRR[0].u64 = IMMA_U64(ip);
         break;
     }
     case ByteCodeOp::CopyRCtoRR2:

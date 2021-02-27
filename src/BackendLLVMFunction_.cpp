@@ -3067,7 +3067,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CopyRCtoRR:
         {
-            auto r1 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+            auto r1 = MK_IMMA_64();
             builder.CreateStore(r1, func->getArg(0));
             break;
         }
