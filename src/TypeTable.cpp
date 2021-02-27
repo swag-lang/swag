@@ -6,7 +6,6 @@
 #include "TypeTableJob.h"
 #include "TypeManager.h"
 #include "Module.h"
-#include "ModuleBuildJob.h"
 
 DataSegment* TypeTable::getSegmentStorage(Module* module, uint32_t flags)
 {

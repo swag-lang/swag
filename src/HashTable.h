@@ -1,10 +1,4 @@
 #pragma once
-#include "DependentJobs.h"
-#include "Pool.h"
-#include "Register.h"
-#include "RegisterList.h"
-#include "SourceLocation.h"
-
 template<typename V, int N>
 struct HashTable
 {
@@ -33,9 +27,7 @@ struct HashTable
         {
             if (buffer[idx].hash == crc && buffer[idx].keyLen == key.count && !strncmp(buffer[idx].key, key.buffer, key.count))
                 return &buffer[idx].value;
-            idx = idx + 1;
-            if (idx == allocated)
-                idx = 0;
+            idx = (idx + 1) % allocated;
         }
 
         return nullptr;
@@ -50,9 +42,7 @@ struct HashTable
         uint32_t idx = crc % allocated;
         while (buffer[idx].hash)
         {
-            idx = idx + 1;
-            if (idx == allocated)
-                idx = 0;
+            idx = (idx + 1) % allocated;
         }
 
         firstLetter[key[0]] = true;
