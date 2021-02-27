@@ -13,8 +13,6 @@ ca serait cool que les methods, en reflections, aient une value qui peut �tre 
 ****************************************
 TODO
 ****************************************
------------------
-bug random 2599 unknown identifier stmt
 -------------------------------------
 global opVisit in namespace, comment on les reference sans faire un using ?
 -------------------------------------
@@ -42,6 +40,8 @@ cast interface vers struct (avec safety)
 ****************************************
 OPTIMS
 ****************************************
+-------------------------------------
+detecter les sorties de fonctions dupliquées et faire des jumps
 -------------------------------------
 BinOpModuloS32/div immediate mode
 -------------------------------------

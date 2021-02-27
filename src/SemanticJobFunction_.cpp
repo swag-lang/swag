@@ -736,7 +736,15 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     auto fct     = CastAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, node->token, "'retval' cannot be used in a function that returns nothing"}));
-    SWAG_VERIFY(typeFct->returnType->flags & TYPEINFO_RETURN_BY_COPY, context->report({node, node->token, "'retval' can only be used in a function that returns something by copy"}));
+
+    // If this is a simple return type, remove the retval stuff.
+    // Variable will behaves normally, in the stack
+    if (!(typeFct->returnType->flags & TYPEINFO_RETURN_BY_COPY))
+    {
+        auto typeExpr = CastAst<AstTypeExpression>(node, AstNodeKind::TypeExpression);
+        typeExpr->typeFlags &= ~TYPEFLAG_RETVAL;
+    }
+
     node->typeInfo = typeFct->returnType;
     return true;
 }
