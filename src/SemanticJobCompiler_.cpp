@@ -203,6 +203,8 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
             cloneContext.forceFlags             = AST_IN_MIXIN;
             cloneContext.ownerFct               = node->ownerFct;
             auto cloneContent                   = typeCode->content->clone(cloneContext);
+            cloneContent->allocateExtension();
+            cloneContent->extension->alternativeNode = typeCode->content->parent;
             cloneContent->flags &= ~AST_NO_SEMANTIC;
             node->typeInfo = cloneContent->typeInfo;
             context->job->nodes.push_back(cloneContent);

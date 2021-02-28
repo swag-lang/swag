@@ -2740,11 +2740,19 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
     {
         if (!(flags & COLLECT_BACKTICK))
         {
-            while (startNode->kind != AstNodeKind::Inline && startNode->kind != AstNodeKind::CompilerInline)
+            while (startNode->kind != AstNodeKind::Inline &&
+                   startNode->kind != AstNodeKind::CompilerInline &&
+                   startNode->kind != AstNodeKind::FuncDecl)
+            {
                 startNode = startNode->parent;
+            }
         }
 
         flags &= ~COLLECT_BACKTICK;
+
+        // Macro in a sub function, stop there
+        if (startNode->kind == AstNodeKind::FuncDecl)
+            return;
     }
 
     // If we are in an inline block, jump right to the function parent
@@ -2776,8 +2784,35 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
         }
     }
 
-    if (startNode && startNode->parent)
+    if (!startNode)
+        return;
+    // Mixin block, collect alternative scopes from the original source tree (with the user code, before
+    // making the inline)
+    if (startNode->extension && startNode->extension->alternativeNode)
+    {
+        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->extension->alternativeNode, flags);
+
+        // We authorize mixin code to access the parameters of the swag.mixin function, except if there's a #macro block
+        // in the way.
+        while (startNode->kind != AstNodeKind::Inline &&
+               startNode->kind != AstNodeKind::CompilerInline &&
+               startNode->kind != AstNodeKind::CompilerMacro &&
+               startNode->kind != AstNodeKind::FuncDecl)
+        {
+            startNode = startNode->parent;
+        }
+
+        if (startNode->kind == AstNodeKind::Inline)
+        {
+            auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
+            SWAG_ASSERT(inlineNode->parametersScope);
+            scopes.push_back(inlineNode->parametersScope);
+        }
+    }
+    else if (startNode->parent)
+    {
         collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->parent, flags);
+    }
 }
 
 bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)

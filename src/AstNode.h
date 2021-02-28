@@ -377,6 +377,7 @@ struct AstNode
         ByteCode*                      bc;
         SymbolOverload*                resolvedUserOpSymbolOverload;
         TypeInfo*                      collectTypeInfo;
+        AstNode*                       alternativeNode;
     };
 
     shared_mutex           mutex;

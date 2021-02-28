@@ -70,6 +70,29 @@ impl Image
         }
     }
 
+    #[swag.macro]
+    func(ptr: bool) opVisitPixels(using self, stmt: code)
+    {
+        func entry(pix: [..] u8, bpp8: u8)
+        {
+            scan := @dataof(pix)
+            loop pix
+            {
+                #macro
+                {
+                    @alias0 := `scan
+                    @alias1 := @index
+                    #[swag.noreturn]
+                    #mixin `stmt
+                }
+
+                scan += bpp8
+            }
+        }
+
+        entry(@mkslice(pixels, width * height * bpp8), bpp8)
+    }
+
     // Release the content of the image
     func release(using self)
     {
