@@ -71,16 +71,18 @@ impl Image
     }
 
     #[swag.macro]
-    func(ptr: bool) opVisitPixels(using self, stmt: code)
+    func visitPixels(using self, userData: *void, stmt: code)
     {
-        func entry(pix: [..] u8, bpp8: u8)
+        func entry(pix: [..] u8, bpp8: u8, userData: *void)
         {
             scan := @dataof(pix)
-            loop pix
+            countof := @countof(pix)
+            loop countof / bpp8
             {
                 #macro
                 {
-                    @alias0 := `scan
+                    pix := `scan
+                    data := `userData
                     @alias1 := @index
                     #[swag.noreturn]
                     #mixin `stmt
@@ -90,7 +92,7 @@ impl Image
             }
         }
 
-        entry(@mkslice(pixels, width * height * bpp8), bpp8)
+        entry(@mkslice(pixels, width * height * bpp8), bpp8, userData)
     }
 
     // Release the content of the image
