@@ -601,7 +601,10 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
         if (countNoEmpty > 1)
         {
             nameForeign += "@@";
-            nameForeign += typeFunc->name;
+            typeFunc->computeScopedName();
+            auto pz = strstr(typeFunc->scopedName.c_str(), "(");
+            SWAG_ASSERT(pz);
+            nameForeign += pz;
         }
     }
 

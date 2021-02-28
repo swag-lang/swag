@@ -20,6 +20,10 @@ struct AstFuncDecl;
 struct JobContext;
 struct SemanticContext;
 
+static const int COMPUTE_NAME_FLAT   = 0;
+static const int COMPUTE_NAME_EXPORT = 1;
+static const int COMPUTE_NAME_SCOPED = 2;
+
 static const uint64_t TYPEINFO_SELF                         = 0x00000000'00000001;
 static const uint64_t TYPEINFO_UNTYPED_BINHEXA              = 0x00000000'00000002;
 static const uint64_t TYPEINFO_INTEGER                      = 0x00000000'00000004;
@@ -131,6 +135,7 @@ struct TypeInfo
     virtual TypeInfo*  clone() = 0;
     virtual void       computeName();
     void               getScopedName(Utf8& name, bool forExport);
+    const Utf8&        computeName(int mode);
     virtual void       computeScopedName();
     virtual void       computeScopedNameExport();
     static const char* getArticleKindName(TypeInfo* typeInfo);
@@ -346,6 +351,9 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     bool      isSame(TypeInfo* from, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
+    void      computeName(Utf8& resName, int mode);
+    void      computeScopedName() override;
+    void      computeScopedNameExport() override;
     void      computeName() override;
     void      match(SymbolMatchContext& context);
     bool      isSame(TypeInfoFuncAttr* from, uint32_t isSameFlags);

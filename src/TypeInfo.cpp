@@ -31,19 +31,31 @@ void TypeInfo::getScopedName(Utf8& newName, bool forExport)
     }
 }
 
+const Utf8& TypeInfo::computeName(int mode)
+{
+    switch (mode)
+    {
+    case COMPUTE_NAME_FLAT:
+        computeName();
+        return name;
+    case COMPUTE_NAME_SCOPED:
+        computeScopedName();
+        return scopedName;
+    case COMPUTE_NAME_EXPORT:
+        computeScopedNameExport();
+        return scopedNameExport;
+    default:
+        SWAG_ASSERT(false);
+        return name;
+    }
+}
+
 void TypeInfo::computeScopedName()
 {
     scoped_lock lk(mutex);
     if (!scopedName.empty())
         return;
-
     getScopedName(scopedName, false);
-
-    // Function types are scoped with the name, because two functions of the exact same type
-    // (parameters and return value) should have a different concrete type info, because of attributes
-    if (declNode && declNode->kind == AstNodeKind::FuncDecl)
-        scopedName += declNode->token.text;
-
     scopedName += name;
 }
 
@@ -52,14 +64,7 @@ void TypeInfo::computeScopedNameExport()
     scoped_lock lk(mutex);
     if (!scopedNameExport.empty())
         return;
-
     getScopedName(scopedNameExport, true);
-
-    // Function types are scoped with the name, because two functions of the exact same type
-    // (parameters and return value) should have a different concrete type info, because of attributes
-    if (declNode && declNode->kind == AstNodeKind::FuncDecl)
-        scopedNameExport += declNode->token.text;
-
     scopedNameExport += name;
 }
 

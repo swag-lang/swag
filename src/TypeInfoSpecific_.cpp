@@ -572,61 +572,93 @@ TypeInfo* TypeInfoFuncAttr::clone()
     return newType;
 }
 
-void TypeInfoFuncAttr::computeName()
+void TypeInfoFuncAttr::computeName(Utf8& resName, int mode)
 {
-    unique_lock lk(mutex);
-    if (!name.empty())
-        return;
-
-    name.clear();
-
     // Generic parameters
     if (genericParameters.size())
     {
-        name += "'(";
+        resName += "'(";
         for (int i = 0; i < genericParameters.size(); i++)
         {
             if (i)
-                name += ", ";
+                resName += ", ";
 
             auto genParam = genericParameters[i];
             if (genParam->flags & TYPEINFO_DEFINED_VALUE)
             {
                 SWAG_ASSERT(genParam->typeInfo);
                 auto str = Ast::literalToString(genParam->typeInfo, genParam->value.text, genParam->value.reg);
-                name += str;
+                resName += str;
             }
             else if (genParam->typeInfo)
-            {
-                genParam->typeInfo->computeScopedName();
-                name += genParam->typeInfo->scopedName;
-            }
+                resName += genParam->typeInfo->computeName(mode);
             else
-            {
-                name += genParam->name;
-            }
+                resName += genParam->name;
         }
 
-        name += ")";
+        resName += ")";
     }
 
     // Parameters
-    name += "(";
+    resName += "(";
     for (int i = 0; i < parameters.size(); i++)
     {
         if (i)
-            name += ", ";
-        name += parameters[i]->typeInfo->name;
+            resName += ", ";
+        resName += parameters[i]->typeInfo->computeName(mode);
     }
 
-    name += ")";
+    resName += ")";
 
     // Return type
     if (returnType && !returnType->isNative(NativeTypeKind::Void))
-        name += format("->%s", returnType->name.c_str());
+    {
+        resName += "->";
+        resName += returnType->computeName(mode);
+    }
 
     if (flags & TYPEINFO_CAN_THROW)
-        name += " throw";
+        resName += " throw";
+}
+
+void TypeInfoFuncAttr::computeName()
+{
+    unique_lock lk(mutex);
+    if (!name.empty())
+        return;
+    computeName(name, COMPUTE_NAME_FLAT);
+}
+
+void TypeInfoFuncAttr::computeScopedName()
+{
+    unique_lock lk(mutex);
+    if (!scopedName.empty())
+        return;
+
+    getScopedName(scopedName, false);
+
+    // Function types are scoped with the name, because two functions of the exact same type
+    // (parameters and return value) should have a different concrete type info, because of attributes
+    if (declNode && declNode->kind == AstNodeKind::FuncDecl)
+        scopedName += declNode->token.text;
+
+    computeName(scopedName, COMPUTE_NAME_SCOPED);
+}
+
+void TypeInfoFuncAttr::computeScopedNameExport()
+{
+    unique_lock lk(mutex);
+    if (!scopedNameExport.empty())
+        return;
+
+    getScopedName(scopedNameExport, true);
+
+    // Function types are scoped with the name, because two functions of the exact same type
+    // (parameters and return value) should have a different concrete type info, because of attributes
+    if (declNode && declNode->kind == AstNodeKind::FuncDecl)
+        scopedNameExport += declNode->token.text;
+
+    computeName(scopedNameExport, COMPUTE_NAME_EXPORT);
 }
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
