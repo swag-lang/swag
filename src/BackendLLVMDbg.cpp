@@ -541,7 +541,7 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteC
     SourceFile*     sourceFile;
     SourceLocation* location;
     ByteCode::getLocation(bc, ip, &sourceFile, &location);
-    if (!location)
+    if (!location || ip->flags & BCI_SAFETY)
     {
         builder->SetCurrentDebugLocation(llvm::DebugLoc());
         return;

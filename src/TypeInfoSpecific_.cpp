@@ -579,6 +579,8 @@ void TypeInfoFuncAttr::computeName()
         return;
 
     name.clear();
+
+    // Generic parameters
     if (genericParameters.size())
     {
         name += "'(";
@@ -594,13 +596,21 @@ void TypeInfoFuncAttr::computeName()
                 auto str = Ast::literalToString(genParam->typeInfo, genParam->value.text, genParam->value.reg);
                 name += str;
             }
+            else if (genParam->typeInfo)
+            {
+                genParam->typeInfo->computeScopedName();
+                name += genParam->typeInfo->scopedName;
+            }
             else
-                name += genParam->typeInfo ? genParam->typeInfo->name : genParam->name;
+            {
+                name += genParam->name;
+            }
         }
 
         name += ")";
     }
 
+    // Parameters
     name += "(";
     for (int i = 0; i < parameters.size(); i++)
     {
@@ -610,6 +620,8 @@ void TypeInfoFuncAttr::computeName()
     }
 
     name += ")";
+
+    // Return type
     if (returnType && !returnType->isNative(NativeTypeKind::Void))
         name += format("->%s", returnType->name.c_str());
 
