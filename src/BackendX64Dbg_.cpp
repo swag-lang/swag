@@ -976,12 +976,6 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
         // Lines table
         /////////////////////////////////
-        if (f.node->token.text == "entry")
-        {
-            int a;
-            a = 0;
-        }
-
         for (int idxDbgFile = 0; idxDbgFile < f.dbgLines.size(); idxDbgFile++)
         {
             auto& itFile     = f.dbgLines[idxDbgFile];
