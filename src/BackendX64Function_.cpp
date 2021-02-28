@@ -135,7 +135,15 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     coffFct->wrapper = true;
 
     if (debug)
-        coffFct->dbgLines.push_back({(uint32_t) node->exportForeignLine, 0});
+    {
+        DbgLine dbgLine;
+        dbgLine.line       = node->exportForeignLine;
+        dbgLine.byteOffset = 0;
+        DbgLines dbgLines;
+        dbgLines.sourceFile = node->sourceFile;
+        dbgLines.dbgLines.push_back(dbgLine);
+        coffFct->dbgLines.push_back(dbgLines);
+    }
 
     VectorNative<TypeInfo*> pushRAParams;
 
@@ -2170,7 +2178,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // We need to add 8 again, because of the first 'push edi' at the start of the function
             // Se we add 16 in total to get the offset of the parameter in the stack
             BackendX64Inst::emit_Load64_Indirect(pp, 16 + sizeStack + regOffset(0), RAX, RDI);
-            if(ip->flags & BCI_IMM_A)
+            if (ip->flags & BCI_IMM_A)
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RCX);
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);

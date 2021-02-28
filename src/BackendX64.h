@@ -48,12 +48,6 @@ struct LabelToSolve
     uint8_t* patch;
 };
 
-struct DbgLine
-{
-    uint32_t line;
-    uint32_t byteOffset;
-};
-
 using DbgTypeIndex = uint32_t;
 struct DbgTypeRecordArgList
 {
@@ -131,10 +125,22 @@ struct DbgTypeRecord
     uint16_t               kind  = 0;
 };
 
+struct DbgLine
+{
+    uint32_t line;
+    uint32_t byteOffset;
+};
+
+struct DbgLines
+{
+    SourceFile*     sourceFile;
+    vector<DbgLine> dbgLines;
+};
+
 struct CoffFunction
 {
     VectorNative<uint16_t> unwind;
-    VectorNative<DbgLine>  dbgLines;
+    vector<DbgLines>       dbgLines;
     AstNode*               node         = nullptr;
     uint32_t               symbolIndex  = 0;
     uint32_t               startAddress = 0;
@@ -311,7 +317,7 @@ struct BackendX64 : public Backend
     void         dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val);
     void         dbgStartRecord(X64PerThread& pp, Concat& concat, uint16_t what);
     void         dbgEndRecord(X64PerThread& pp, Concat& concat, bool align = true);
-    void         dbgEmitSecRel(X64PerThread& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex);
+    void         dbgEmitSecRel(X64PerThread& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0);
     void         dbgEmitTruncatedString(Concat& concat, const Utf8& str);
     DbgTypeIndex dbgGetSimpleType(TypeInfo* typeInfo);
     DbgTypeIndex dbgGetOrCreatePointerToType(X64PerThread& pp, TypeInfo* typeInfo);

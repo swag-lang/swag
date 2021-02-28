@@ -73,7 +73,6 @@ impl Image
     #[swag.macro]
     func visitPixels(using self, userData: *void, stmt: code)
     {
-        #[swag.printbc]
         func entry(pix: [..] u8, bpp8: u8, userData: *void)
         {
             scan := @dataof(pix)
