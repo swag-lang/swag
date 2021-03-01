@@ -13,6 +13,7 @@ struct Job
 
 var g_Allocator:            IAllocator
 var g_created:              bool
+var g_numWorkers:           u32
 var g_workers:              Array'Thread
 var g_pendingJobs:          Array'(*Job)
 var g_freeJobs:             Array'(*Job)
@@ -65,6 +66,12 @@ public enum JobCreateFlags : u32
     AutoRelease = 0x00000001
 }
 
+// Returns true is the job system has been initialized
+public func isValid() => g_created
+
+// Returns number of threads in the job system
+public func getNumWorkers() => g_numWorkers
+
 // Setup the job system
 public func init(numCores: u32 = 0) throw
 {
@@ -82,11 +89,11 @@ public func init(numCores: u32 = 0) throw
     g_freeJobs.allocator = g_Allocator
 
     // If numCores is 1, then jobsystem will by synchrone
-    num := numCores ?? env.getProcessorCount()
-    if num != 1
+    g_numWorkers = numCores ?? env.getProcessorCount()
+    if g_numWorkers != 1
     {
-        g_workers.resize(cast(uint) num)
-        loop i: num
+        g_workers.resize(cast(uint) g_numWorkers)
+        loop i: g_numWorkers
             try g_workers[i].init(&workerEntry)
         visit *th: g_workers
             try th.start()

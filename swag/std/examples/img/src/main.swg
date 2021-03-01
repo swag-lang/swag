@@ -148,7 +148,8 @@ func messageLoop()
     hRC := wglCreateContext(hDC)
     wglMakeCurrent(hDC, hRC)
 
-    assume loadImg()
+    try jobsystem.init(5)
+    try loadImg()
 
     display()
     ShowWindow(hWnd, SW_SHOW)

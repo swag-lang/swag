@@ -73,10 +73,24 @@ impl Image
     #[swag.macro]
     func visitPixels(using self, userData: *void, stmt: code)
     {
+        struct OneJob
+        {
+            pix:        [..] u8
+            bpp8:       u8
+            userData:   *void
+        }
+
+        func jobEntry(data: *void)
+        {
+            oneJob := cast(*OneJob) data
+            entry(oneJob.pix, oneJob.bpp8, oneJob.userData)
+        }
+
         func entry(pix: [..] u8, bpp8: u8, userData: *void)
         {
             scan := @dataof(pix)
             countof := @countof(pix)
+
             loop countof / bpp8
             {
                 #macro
@@ -91,7 +105,40 @@ impl Image
             }
         }
 
-        entry(@mkslice(pixels, width * height * bpp8), bpp8, userData)
+        if !jobsystem.isValid()
+        {
+            entry(@mkslice(pixels, size), bpp8, userData)
+            return
+        }
+
+        numWorkers := jobsystem.getNumWorkers()
+        wh := width * height
+        splitSize := wh / numWorkers
+        lastSplitSize := splitSize + (wh - (splitSize * numWorkers))
+
+        var jobs: Array'OneJob
+        jobs.resize(cast(uint) numWorkers)
+
+        ptr := pixels
+        visit *j, idx: jobs
+        {
+            j.bpp8 = bpp8
+            j.userData = userData
+
+console.println("% % %", @index, idx, jobs.count - 1)
+            if idx == jobs.count - 1
+                j.pix = @mkslice(ptr, lastSplitSize * bpp8)
+            else
+            {
+                j.pix = @mkslice(ptr, splitSize * bpp8)
+                ptr += splitSize * bpp8
+            }
+
+            jobHandle := jobsystem.createJob(&jobEntry, j, jobsystem.JobCreateFlags.AutoRelease)
+            jobsystem.scheduleJob(jobHandle)
+        }
+
+        jobsystem.waitDone()
     }
 
     // Release the content of the image
