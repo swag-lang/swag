@@ -436,7 +436,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             for (int i = (int) dependentVar->childs.size() - 1; i >= 0; i--)
             {
                 auto child  = dependentVar->childs[i];
-                auto idNode = Ast::newIdentifier(sourceFile, child->token.text, idRef, nullptr);
+                auto idNode = Ast::newIdentifier(dependentVar->sourceFile, child->token.text, idRef, nullptr);
                 idNode->inheritTokenLocation(idRef->token);
                 Ast::addChildFront(idRef, idNode);
                 context->job->nodes.push_back(idNode);
@@ -446,7 +446,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
         else
         {
-            auto idNode = Ast::newIdentifier(sourceFile, dependentVar->token.text, idRef, nullptr);
+            auto idNode = Ast::newIdentifier(dependentVar->sourceFile, dependentVar->token.text, idRef, nullptr);
             idNode->inheritTokenLocation(identifier->token);
 
             // We need to insert at the right place, but the identifier 'childParentIdx' can be the wrong one
