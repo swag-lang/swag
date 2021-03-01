@@ -91,6 +91,8 @@ impl Image
             scan := @dataof(pix)
             countof := @countof(pix)
 
+            core.console.print("%\n", countof)
+
             loop countof / bpp8
             {
                 #macro
@@ -103,6 +105,8 @@ impl Image
 
                 scan += bpp8
             }
+
+            core.console.print("done\n")
         }
 
         if !jobsystem.isValid()
