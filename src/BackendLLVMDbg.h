@@ -40,6 +40,10 @@ struct BackendLLVMDbg
     llvm::DIFile*        exportFile  = nullptr;
     bool                 isOptimized = false;
 
+    SourceFile*               lastInlineSourceFile = nullptr;
+    llvm::DILexicalBlockFile* lastInlineBlock      = nullptr;
+    uint32_t                  lastDebugLine        = 0;
+
     unordered_map<string, llvm::DIFile*>              mapFiles;
     unordered_map<TypeInfo*, llvm::DIType*>           mapTypes;
     unordered_map<TypeInfo*, llvm::DIType*>           mapPtrTypes;

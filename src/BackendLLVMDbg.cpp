@@ -400,6 +400,8 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
 {
     auto& builder = *pp.builder;
     builder.SetCurrentDebugLocation(llvm::DebugLoc());
+    lastDebugLine        = 0;
+    lastInlineSourceFile = nullptr;
 
     AstFuncDecl*        decl;
     llvm::DISubprogram* SP = startFunction(bc, &decl);
@@ -541,15 +543,36 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteC
     SourceFile*     sourceFile;
     SourceLocation* location;
     ByteCode::getLocation(bc, ip, &sourceFile, &location);
-    if (!location || ip->flags & BCI_SAFETY)
+    if (!location)
     {
         builder->SetCurrentDebugLocation(llvm::DebugLoc());
         return;
     }
 
-    llvm::DIFile*  file  = getOrCreateFile(sourceFile);
+    llvm::DIFile*  file  = getOrCreateFile(bc->sourceFile);
     llvm::DIScope* scope = getOrCreateScope(file, ip->node->ownerScope);
-    builder->SetCurrentDebugLocation(debugLocGet(location->line + 1, 0, scope));
+
+    if (bc->sourceFile == sourceFile)
+    {
+        lastInlineSourceFile = nullptr;
+        if (lastDebugLine != location->line + 1)
+        {
+            lastDebugLine = location->line + 1;
+            builder->SetCurrentDebugLocation(debugLocGet(location->line + 1, 0, scope));
+        }
+    }
+    else
+    {
+        llvm::DIFile* orgFile = getOrCreateFile(sourceFile);
+        if (sourceFile != lastInlineSourceFile)
+            lastInlineBlock = dbgBuilder->createLexicalBlockFile(scope, orgFile);
+        else if (lastDebugLine == location->line + 1)
+            return;
+
+        lastInlineSourceFile = sourceFile;
+        lastDebugLine        = location->line + 1;
+        builder->SetCurrentDebugLocation(debugLocGet(location->line + 1, 0, lastInlineBlock));
+    }
 }
 
 llvm::DIScope* BackendLLVMDbg::getOrCreateScope(llvm::DIFile* file, Scope* scope)
