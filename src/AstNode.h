@@ -672,7 +672,7 @@ const uint16_t TYPEFLAG_ISREF   = 0x0001;
 const uint16_t TYPEFLAG_ISSLICE = 0x0002;
 const uint16_t TYPEFLAG_ISCONST = 0x0004;
 //const uint16_t TYPEFLAG_ISPTRCONST  = 0x0008;
-const uint16_t TYPEFLAG_ISTYPEOF    = 0x0010;
+//const uint16_t TYPEFLAG_ISTYPEOF    = 0x0010;
 const uint16_t TYPEFLAG_ISCODE      = 0x0020;
 const uint16_t TYPEFLAG_FORCECONST  = 0x0040;
 const uint16_t TYPEFLAG_ISSELF      = 0x0080;
@@ -735,7 +735,6 @@ struct AstIntrinsicProp : public AstNode
     AstNode* clone(CloneContext& context) override;
 
     bool typeOfAsType;
-    bool typeOfAsConst;
 };
 
 struct AstExpressionList : public AstNode

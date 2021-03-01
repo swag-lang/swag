@@ -287,18 +287,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     node->arrayDim = 0;
     node->ptrCount = 0;
 
-    // This is a @typeof
-    if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
-    {
-        AstNode* typeOfNode = nullptr;
-        SWAG_CHECK(doIdentifierRef(node, &typeOfNode));
-        node->typeFlags |= TYPEFLAG_ISTYPEOF;
-        auto typeNode           = CastAst<AstIntrinsicProp>(typeOfNode->childs.front(), AstNodeKind::IntrinsicProp);
-        typeNode->typeOfAsType  = true;
-        typeNode->typeOfAsConst = isConst;
-        return true;
-    }
-
     // Array
     if (token.id == TokenId::SymLeftSquare)
     {
@@ -378,6 +366,15 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         node->typeFlags |= TYPEFLAG_ISREF;
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_VERIFY(!node->ptrCount, syntaxError(token, "'&' is invalid for a pointer"));
+    }
+
+    // This is a @typeof
+    if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
+    {
+        SWAG_CHECK(doIdentifierRef(node, &node->identifier));
+        auto typeNode          = CastAst<AstIntrinsicProp>(node->identifier->childs.front(), AstNodeKind::IntrinsicProp);
+        typeNode->typeOfAsType = true;
+        return true;
     }
 
     if (token.id == TokenId::NativeType)

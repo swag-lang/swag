@@ -99,7 +99,9 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 
 void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* node)
 {
-    if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+    if (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY ||
+        node->typeInfo->kind == TypeInfoKind::Pointer ||
+        node->typeInfo->kind == TypeInfoKind::Slice)
     {
         if (node->typeFlags & TYPEFLAG_FORCECONST)
             node->typeFlags |= TYPEFLAG_ISCONST;
@@ -145,12 +147,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
     if ((typeNode->flags & AST_FROM_GENERIC) && typeNode->typeInfo && !typeNode->typeInfo->isNative(NativeTypeKind::Undefined))
     {
         forceConstType(context, typeNode);
-        return true;
-    }
-
-    if (typeNode->typeFlags & TYPEFLAG_ISTYPEOF)
-    {
-        typeNode->typeInfo = typeNode->childs.front()->typeInfo;
         return true;
     }
 

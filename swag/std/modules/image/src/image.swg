@@ -81,9 +81,8 @@ impl Image
             {
                 #macro
                 {
-                    pix := `scan
+                    pix  := `scan
                     data := `userData
-                    @alias1 := @index
                     #[swag.noreturn]
                     #mixin `stmt
                 }

@@ -52,11 +52,15 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
             auto typeExpression = CastAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
             if (typeExpression->identifier && typeExpression->identifier->kind == AstNodeKind::IdentifierRef)
             {
-                auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
-                if (identifier->callParameters)
+                auto back = typeExpression->identifier->childs.back();
+                if (back->kind == AstNodeKind::Identifier)
                 {
-                    typeExpression->flags &= ~AST_NO_BYTECODE_CHILDS;
-                    typeExpression->flags |= AST_HAS_STRUCT_PARAMETERS;
+                    auto identifier = CastAst<AstIdentifier>(back, AstNodeKind::Identifier);
+                    if (identifier->callParameters)
+                    {
+                        typeExpression->flags &= ~AST_NO_BYTECODE_CHILDS;
+                        typeExpression->flags |= AST_HAS_STRUCT_PARAMETERS;
+                    }
                 }
             }
         }

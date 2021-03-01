@@ -1063,8 +1063,7 @@ AstNode* AstIntrinsicProp::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstIntrinsicProp>();
     newNode->copyFrom(context, this);
 
-    newNode->typeOfAsType  = typeOfAsType;
-    newNode->typeOfAsConst = typeOfAsConst;
+    newNode->typeOfAsType = typeOfAsType;
     return newNode;
 }
 

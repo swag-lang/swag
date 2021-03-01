@@ -388,15 +388,7 @@ bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
     // A @typeof as a type in a declaration
     if (node->typeOfAsType)
     {
-        if (node->typeOfAsConst && !typeInfo->isConst())
-        {
-            node->typeInfo = typeInfo->clone();
-            node->typeInfo->setConst();
-        }
-        else
-        {
-            node->typeInfo = typeInfo;
-        }
+        node->typeInfo = typeInfo;
     }
 
     // A @typeof to get a typeinfo
