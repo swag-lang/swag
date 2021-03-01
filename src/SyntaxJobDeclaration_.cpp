@@ -6,6 +6,7 @@
 #include "SemanticJob.h"
 #include "Workspace.h"
 #include "Module.h"
+#include "ByteCodeGenJob.h"
 
 bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
@@ -219,6 +220,7 @@ bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeK
         newScope->owner = statement;
         statement->flags |= AST_NEED_SCOPE;
         statement->allocateExtension();
+        statement->byteCodeFct                  = ByteCodeGenJob::emitFakeLine;
         statement->extension->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
     }
 
