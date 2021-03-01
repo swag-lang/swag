@@ -15,8 +15,9 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->resolvedSymbolName     = childBack->resolvedSymbolName;
     node->resolvedSymbolOverload = childBack->resolvedSymbolOverload;
     node->typeInfo               = childBack->typeInfo;
-    node->token.text             = childBack->token.text;
-    node->byteCodeFct            = ByteCodeGenJob::emitIdentifierRef;
+    if (!(node->flags & AST_IS_NAMED))
+        node->token.text = childBack->token.text;
+    node->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
 
     // Flag inheritance
     node->flags |= AST_CONST_EXPR | AST_FROM_GENERIC_REPLACE;
