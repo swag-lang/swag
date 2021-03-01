@@ -115,6 +115,8 @@ impl Image
         wh := width * height
         splitSize := wh / numWorkers
         lastSplitSize := splitSize + (wh - (splitSize * numWorkers))
+        splitSize *= bpp8
+        lastSplitSize *= bpp8
 
         var jobs: Array'OneJob
         jobs.resize(cast(uint) numWorkers)
@@ -122,20 +124,16 @@ impl Image
         ptr := pixels
         visit *j, idx: jobs
         {
+            sizeSlice := idx == jobs.count - 1 ? lastSplitSize : splitSize
+
             j.bpp8 = bpp8
             j.userData = userData
-
-console.println("% % %", @index, idx, jobs.count - 1)
-            if idx == jobs.count - 1
-                j.pix = @mkslice(ptr, lastSplitSize * bpp8)
-            else
-            {
-                j.pix = @mkslice(ptr, splitSize * bpp8)
-                ptr += splitSize * bpp8
-            }
+            j.pix = @mkslice(ptr, sizeSlice)
 
             jobHandle := jobsystem.createJob(&jobEntry, j, jobsystem.JobCreateFlags.AutoRelease)
             jobsystem.scheduleJob(jobHandle)
+
+            ptr += sizeSlice
         }
 
         jobsystem.waitDone()
