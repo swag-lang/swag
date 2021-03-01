@@ -565,6 +565,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         switch (ip->op)
         {
+        case ByteCodeOp::FakeLine:
+        {
+            auto r0 = TO_PTR_I32(GEP_I32(allocT, 0));
+            builder.CreateStore(builder.getInt32(0), r0);
+            break;
+        }
+
         case ByteCodeOp::IntrinsicAtomicAddS8:
         {
             MK_BINOPEQ8_CAB();

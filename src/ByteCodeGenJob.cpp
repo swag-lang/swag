@@ -222,6 +222,15 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitFakeLine(ByteCodeGenContext* context)
+{
+    auto node              = context->node;
+    node->resultRegisterRC = node->childs.back()->resultRegisterRC;
+    if (context->sourceFile->module->buildCfg.byteCodeDebug)
+        emitInstruction(context, ByteCodeOp::FakeLine)->flags |= BCI_UNPURE;
+    return true;
+}
+
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3)
 {
     AstNode* node = context->node;

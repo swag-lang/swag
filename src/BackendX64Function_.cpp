@@ -484,6 +484,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         switch (ip->op)
         {
+        case ByteCodeOp::FakeLine:
+            concat.addU8(0x90); // nop
+            break;
+
         case ByteCodeOp::Add32byVB32:
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (ip->b.u32 <= 0x7F)
