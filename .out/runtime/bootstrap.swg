@@ -408,6 +408,7 @@ namespace swag
 
         // Bytecode
         byteCodeOptimize: bool  = true
+        byteCodeDebug: bool     = false
         byteCodeInline: bool    = true
 
         // Backend common

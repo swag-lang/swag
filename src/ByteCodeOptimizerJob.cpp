@@ -22,7 +22,7 @@ ByteCodeOptimizerJob::ByteCodeOptimizerJob()
     passes.push_back(ByteCodeOptimizer::optimizePassRetCopyInline);
     passes.push_back(ByteCodeOptimizer::optimizePassRetCopyGlobal);
     passes.push_back(ByteCodeOptimizer::optimizePassReduce);
-
+    passes.push_back(ByteCodeOptimizer::optimizePassReduce2);
     passes.push_back(ByteCodeOptimizer::optimizePassDeadStore2);
 }
 

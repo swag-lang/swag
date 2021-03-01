@@ -46,6 +46,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     if (g_CommandLine.buildCfg == "debug")
     {
         buildCfg.byteCodeOptimize         = true;
+        buildCfg.byteCodeDebug            = true;
         buildCfg.byteCodeInline           = true;
         buildCfg.safetyGuards             = 0xFFFFFFFF'FFFFFFFF;
         buildCfg.stackTrace               = true;
@@ -56,6 +57,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     else if (g_CommandLine.buildCfg == "fast-debug")
     {
         buildCfg.byteCodeOptimize         = true;
+        buildCfg.byteCodeDebug            = false;
         buildCfg.byteCodeInline           = true;
         buildCfg.safetyGuards             = 0xFFFFFFFF'FFFFFFFF;
         buildCfg.stackTrace               = true;
@@ -66,6 +68,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     else if (g_CommandLine.buildCfg == "release")
     {
         buildCfg.byteCodeOptimize         = true;
+        buildCfg.byteCodeDebug            = false;
         buildCfg.byteCodeInline           = true;
         buildCfg.safetyGuards             = 0;
         buildCfg.stackTrace               = false;
