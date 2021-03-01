@@ -254,7 +254,7 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
 
 bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* identifier)
 {
-    auto sourceFile = context->sourceFile;
+    auto sourceFile = identifier->sourceFile;
     auto callP      = identifier->callParameters;
     identifier->flags |= AST_R_VALUE | AST_GENERATED | AST_NO_BYTECODE;
 
