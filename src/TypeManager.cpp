@@ -263,6 +263,8 @@ void TypeManager::setup()
 
 TypeInfo* TypeManager::concreteReferenceType(TypeInfo* typeInfo, uint32_t flags)
 {
+    if (!typeInfo)
+        return nullptr;
     typeInfo = concreteReference(typeInfo);
     typeInfo = concreteType(typeInfo, flags);
     typeInfo = concreteReference(typeInfo);
@@ -271,6 +273,8 @@ TypeInfo* TypeManager::concreteReferenceType(TypeInfo* typeInfo, uint32_t flags)
 
 TypeInfo* TypeManager::concreteReference(TypeInfo* typeInfo)
 {
+    if (!typeInfo)
+        return nullptr;
     if (typeInfo->kind != TypeInfoKind::Reference)
         return typeInfo;
     return CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference)->pointedType;

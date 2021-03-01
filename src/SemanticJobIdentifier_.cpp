@@ -1885,15 +1885,21 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             Diagnostic* diag = new Diagnostic{node, node->token, format("unknown identifier '%s'", node->token.text.c_str())};
             if (identifierRef->startScope)
             {
-                if (identifierRef->typeInfo && identifierRef->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+                auto typeRef = TypeManager::concreteReferenceType(identifierRef->typeInfo);
+                if (typeRef && typeRef->kind == TypeInfoKind::Pointer)
+                    typeRef = CastTypeInfo<TypeInfoPointer>(typeRef, TypeInfoKind::Pointer)->pointedType;
+
+                if (typeRef && typeRef->flags & TYPEINFO_STRUCT_IS_TUPLE)
                     diag = new Diagnostic{node, node->token, format("identifier '%s' cannot be found in tuple", node->token.text.c_str())};
                 else
                 {
                     Utf8 displayName;
                     if (!(identifierRef->startScope->flags & SCOPE_PRIVATE))
                         displayName = identifierRef->startScope->getFullName();
-                    if (displayName.empty() && identifierRef->typeInfo)
-                        displayName = identifierRef->typeInfo->name;
+                    if (displayName.empty() && !identifierRef->startScope->name.empty())
+                        displayName = identifierRef->startScope->name;
+                    if (displayName.empty() && typeRef)
+                        displayName = typeRef->name;
                     if (!displayName.empty())
                         diag = new Diagnostic{node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
                 }
