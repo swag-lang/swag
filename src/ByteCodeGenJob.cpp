@@ -230,7 +230,7 @@ bool ByteCodeGenJob::emitDebugNop(ByteCodeGenContext* context)
     if (context->sourceFile->module->buildCfg.byteCodeDebug)
     {
         PushLocation lk(context, &node->token.endLocation);
-        emitInstruction(context, ByteCodeOp::DebugNop)->flags |= BCI_UNPURE;
+        emitInstruction(context, ByteCodeOp::DebugNop);
     }
 
     return true;

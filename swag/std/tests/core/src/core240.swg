@@ -1,14 +1,15 @@
-/*#import "core"
+#import "core"
 using core
 
-//#[swag.printbc]
 #test
 {
 	var x: Array's32
-    x.resize(10)
+    x.resize(2)
 
     visit *p, cpt: x
     {
-        console.print("% %\n", @index, cpt)
+        v := @index
+        str := format.toString("%", @index)
+        @assert(str == "0" || str == "1")
     }
-}*/
+}
