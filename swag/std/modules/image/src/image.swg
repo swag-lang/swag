@@ -105,7 +105,7 @@ impl Image
             }
         }
 
-        if !jobsystem.isValid()
+        if jobsystem.isSynchrone()
         {
             visitPixels(@mkslice(pixels, size), bpp8, userData)
             return

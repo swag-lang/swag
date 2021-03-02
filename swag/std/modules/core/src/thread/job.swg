@@ -52,37 +52,26 @@ func getJobToExec()->*Job
 }
 
 // Returns true is the job system has been initialized
-public func isValid() => g_created
+public func isSynchrone() => g_numWorkers == 0
 
 // Returns number of threads in the job system
 public func getNumWorkers() => g_numWorkers
 
-// Setup the job system
-public func init(numCores: u32 = 0) throw
+// Set the number of worker threads. Must be done once
+public func setNumWorkers(numWorkers: u32 = 0) throw
 {
-    debug.assert(!g_created)
-    g_created = true
-
-    try g_mutexPendingJobs.init()
-    try g_eventPendingJobs.init()
-    try g_eventDone.init(true, true)
-
-    // If numCores is 1, then jobsystem will by synchrone
-    g_numWorkers = numCores ?? env.getProcessorCount()
-    if g_numWorkers != 1
-    {
-        g_workers.resize(cast(uint) g_numWorkers)
-        loop i: g_numWorkers
-            try g_workers[i].init(&workerEntry)
-        visit *th: g_workers
-            try th.start()
-    }
+    debug.assert(g_numWorkers == 0)
+    g_numWorkers = numWorkers ?? env.getProcessorCount()
+    g_workers.resize(cast(uint) g_numWorkers)
+    loop i: g_numWorkers
+        try g_workers[i].init(&workerEntry)
+    visit *th: g_workers
+        try th.start()
 }
 
 // Schedule a job to execute
 public func scheduleJob(job: *Job)
 {
-    debug.assert(g_created, "jobsystem is not initialized")
     sync.scopedLock(g_mutexPendingJobs)
     g_totalJobs += 1
     g_eventDone.reset()
@@ -95,4 +84,11 @@ public func waitDone()
 {
     while peekExecJob() {}
     g_eventDone.wait()
+}
+
+#init
+{
+    try g_mutexPendingJobs.init()
+    try g_eventPendingJobs.init()
+    try g_eventDone.init(true, true)
 }
