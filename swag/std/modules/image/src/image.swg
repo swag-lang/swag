@@ -111,8 +111,7 @@ impl Image
             return
         }
 
-        //numWorkers := jobsystem.getNumWorkers()
-        numWorkers := 50'u32
+        numWorkers := jobsystem.getNumWorkers()
         wh := width * height
         splitSize := wh / numWorkers
         lastSplitSize := splitSize + (wh - (splitSize * numWorkers))
@@ -138,7 +137,6 @@ impl Image
         }
 
         visit *j: jobs jobsystem.waitJob(j)
-        jobsystem.waitDone()
     }
 
     // Release the content of the image

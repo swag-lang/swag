@@ -78,9 +78,9 @@ func getJobToExec()->*Job
 
 func removeJobNoLock(job: *Job)
 {
-    debug.assert(job.state & JobState.InPending == JobState.InPending)
     g_pendingJobs.removeAt(cast(uint) job.pendingIndex)
-    g_pendingJobs[job.pendingIndex].pendingIndex = job.pendingIndex
+    if g_pendingJobs.count
+        g_pendingJobs[job.pendingIndex].pendingIndex = job.pendingIndex
     job.pendingIndex = swag.MaxU32
     job.clearState(JobState.InPending)
 }
