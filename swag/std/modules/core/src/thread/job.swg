@@ -21,6 +21,7 @@ var g_mutexPendingJobs:     sync.Mutex
 var g_mutexFreeJobs:        sync.Mutex
 var g_eventPendingJobs:     sync.Event
 var g_eventDone:            sync.Event
+var g_totalJobs:            u32
 
 func workerEntry(th: Thread)
 {
@@ -45,7 +46,9 @@ func peekExecJob()->bool
 
     // Done with all jobs ?
     sync.scopedLock(g_mutexPendingJobs)
-    if g_pendingJobs.isEmpty()
+    debug.assert(g_totalJobs != 0)
+    g_totalJobs -= 1
+    if g_totalJobs == 0
         g_eventDone.signal()
 
     return true
@@ -130,6 +133,7 @@ public func scheduleJob(job: JobHandle)
 {
     debug.assert(g_created, "jobsystem is not initialized")
     sync.scopedLock(g_mutexPendingJobs)
+    g_totalJobs += 1
     g_eventDone.reset()
     g_pendingJobs.add(job)
     g_eventPendingJobs.signal()
