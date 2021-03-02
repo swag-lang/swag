@@ -117,7 +117,9 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
     }
     else
     {
+        attrUse->flags |= AST_GLOBAL_NODE;
         topStmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, attrUse);
+        topStmt->flags |= AST_GLOBAL_NODE;
         while (token.id != TokenId::EndOfFile)
             SWAG_CHECK(doTopLevelInstruction(topStmt));
     }

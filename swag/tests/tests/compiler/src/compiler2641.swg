@@ -1,5 +1,12 @@
-/*#global private
-using AA
+#global if true
+#global private
+#global namespace NP
+using BB, AA
+
+namespace BB
+{
+}
+
 namespace AA
 {
     func toto()
@@ -14,4 +21,6 @@ func titi()
     {
         toto()
     }
-}*/
+
+    tata()
+}

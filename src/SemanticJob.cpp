@@ -214,17 +214,9 @@ JobResult SemanticJob::execute()
                     auto child = node->childs[i];
 
                     // If the child has the AST_NO_SEMANTIC flag, do not push it.
-                    // Special case for things in the root file, because we need to deal with AST_DONE_FILE_JOB_PASS
-                    if (child->flags & AST_NO_SEMANTIC)
-                    {
-                        if (originalNode->kind != AstNodeKind::File)
-                            continue;
-                        if (child->kind != AstNodeKind::FuncDecl &&
-                            child->kind != AstNodeKind::StructDecl &&
-                            child->kind != AstNodeKind::InterfaceDecl &&
-                            child->kind != AstNodeKind::TypeSet)
-                            continue;
-                    }
+                    // Special case for sub declarations, because we need to deal with AST_DONE_FILE_JOB_PASS
+                    if ((child->flags & AST_NO_SEMANTIC) && !(child->flags & AST_SUB_DECL))
+                        continue;
 
                     enterState(child);
                     nodes.push_back(child);

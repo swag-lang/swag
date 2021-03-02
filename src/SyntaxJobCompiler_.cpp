@@ -401,6 +401,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         auto node = Ast::newNode<AstIf>(this, AstNodeKind::CompilerIf, sourceFile, parent);
         if (result)
             *result = node;
+        node->flags |= AST_GLOBAL_NODE;
 
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, "missing '#global if' expression"));
@@ -412,6 +413,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         node->ifBlock = block;
         if (node->ownerCompilerIfBlock)
             node->ownerCompilerIfBlock->blocks.push_back(block);
+        block->flags |= AST_GLOBAL_NODE;
 
         ScopedCompilerIfBlock scopedIf(this, block);
         SWAG_CHECK(eatSemiCol("after '#global if'"));
@@ -501,9 +503,10 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     {
         AstNode* resultNode;
         SWAG_CHECK(doAttrUse(sourceFile->astRoot, &resultNode));
-        auto attrUse           = (AstAttrUse*) resultNode;
-        attrUse->isGlobal      = true;
-        attrUse->ownerAttrUse  = sourceFile->astAttrUse;
+        auto attrUse          = (AstAttrUse*) resultNode;
+        attrUse->isGlobal     = true;
+        attrUse->ownerAttrUse = sourceFile->astAttrUse;
+        attrUse->flags |= AST_GLOBAL_NODE;
         sourceFile->astAttrUse = attrUse;
     }
 

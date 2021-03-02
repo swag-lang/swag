@@ -678,13 +678,11 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     bool acceptMissingType = inFunCall;
 
     AstNode* lambda = nullptr;
-    SWAG_CHECK(doLambdaFuncDecl(sourceFile->astRoot, &lambda, acceptMissingType));
+    SWAG_CHECK(doLambdaFuncDecl(currentFct, &lambda, acceptMissingType));
     lambda->flags |= AST_IS_LAMBDA_EXPRESSION;
 
     // Lambda sub function will be resolved by the owner function
-    SWAG_ASSERT(lambda->ownerFct);
-    lambda->ownerFct->subDecls.push_back(lambda);
-    lambda->flags |= AST_NO_SEMANTIC;
+    registerSubDecl(lambda);
 
     // Retrieve the point of the function
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::MakePointerLambda, sourceFile, parent);

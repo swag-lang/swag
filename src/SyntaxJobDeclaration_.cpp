@@ -80,6 +80,8 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         namespaceNode->semanticFct = SemanticJob::resolveNamespace;
         if (first && result)
             *result = namespaceNode;
+        if (forGlobal)
+            namespaceNode->flags |= AST_GLOBAL_NODE;
         first = false;
 
         switch (token.id)
@@ -293,17 +295,22 @@ bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
     return doEmbeddedInstruction(parent, result);
 }
 
-void SyntaxJob::registerSubDecl(AstNode* parent, AstNode* subDecl)
+void SyntaxJob::registerSubDecl(AstNode* subDecl)
 {
     subDecl->flags |= AST_NO_SEMANTIC;
-    parent->ownerFct->subDecls.push_back(subDecl);
+    subDecl->ownerFct->subDecls.push_back(subDecl);
+    subDecl->attributeFlags |= ATTRIBUTE_PRIVATE;
+    subDecl->flags |= AST_SUB_DECL;
 
     // Move to the root
     if (subDecl->parent->kind == AstNodeKind::AttrUse)
         subDecl = subDecl->parent;
     auto newParent = subDecl->parent;
     Ast::removeFromParent(subDecl);
-    newParent = sourceFile->astRoot;
+
+    while (newParent != sourceFile->astRoot && !(newParent->flags & AST_GLOBAL_NODE))
+        newParent = newParent->parent;
+
     Ast::addChildBack(newParent, subDecl);
 }
 
@@ -450,7 +457,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDecl(parent, &subFunc));
         if (result)
             *result = subFunc;
-        registerSubDecl(parent, subFunc);
+        registerSubDecl(subFunc);
         break;
     }
 
@@ -463,7 +470,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doStruct(parent, &subDecl));
         if (result)
             *result = subDecl;
-        registerSubDecl(parent, subDecl);
+        registerSubDecl(subDecl);
         break;
     }
 
