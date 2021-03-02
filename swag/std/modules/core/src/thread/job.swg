@@ -85,7 +85,7 @@ func removeJobNoLock(job: *Job)
     job.clearState(JobState.InPending)
 }
 
-func clearState(job: *Job, state: JobState) => atomic.xor(cast(*u32) &job.state, cast(u32) state)
+func clearState(job: *Job, state: JobState) => atomic.and(cast(*u32) &job.state, cast(u32) ~state)
 func setState(job: *Job, state: JobState)   => atomic.or(cast(*u32) &job.state, cast(u32) state)
 func testState(job: *Job, state: JobState)  => atomic.compareExchange(cast(*u32) &job.state, 0, 0) & cast(u32) state != 0
 

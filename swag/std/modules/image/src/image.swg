@@ -85,7 +85,6 @@ impl Image
         {
             oneJob := cast(*PixelJob) jobData
             visitPixels(oneJob.pix, oneJob.bpp8, oneJob.userData)
-            thread.sleep(100)
         }
 
         func visitPixels(pix: [..] u8, bpp8: u8, userData: *void)
