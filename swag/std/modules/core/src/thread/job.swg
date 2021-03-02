@@ -1,13 +1,24 @@
 #global namespace jobsystem
 using thread, swag
 
-public struct Job
+#[swag.enumflags]
+public enum JobState
 {
-    lambda: func(*void)
-    data:   *void
+    Zero        = 0x00000000
+    InPending   = 0x00000001
+    Done        = 0x00000002
 }
 
-var g_created:              bool
+public struct Job
+{
+    lambda:         func(*void)
+    data:           *void
+
+    // Internal state
+    state:          JobState = Zero
+    pendingIndex:   u32 = swag.MaxU32
+}
+
 var g_numWorkers:           u32
 var g_workers:              Array'Thread
 var g_pendingJobs:          Array'(*Job)
@@ -15,6 +26,13 @@ var g_mutexPendingJobs:     sync.Mutex
 var g_eventPendingJobs:     sync.Event
 var g_eventDone:            sync.Event
 var g_totalJobs:            u32
+
+#init
+{
+    try g_mutexPendingJobs.init()
+    try g_eventPendingJobs.init()
+    try g_eventDone.init(true, true)
+}
 
 func workerEntry(th: Thread)
 {
@@ -25,21 +43,25 @@ func workerEntry(th: Thread)
     }
 }
 
-func peekExecJob()->bool
+func runJob(job: *Job)
 {
-    job := getJobToExec()
-    if !job return false
-
     // Execute job
     job.lambda(job.data)
 
-    // Done with all jobs ?
+    // Done
     sync.scopedLock(g_mutexPendingJobs)
+    setState(job, JobState.Done)
     debug.assert(g_totalJobs != 0)
     g_totalJobs -= 1
     if g_totalJobs == 0
         g_eventDone.signal()
+}
 
+func peekExecJob()->bool
+{
+    job := getJobToExec()
+    if !job return false
+    runJob(job)
     return true
 }
 
@@ -48,8 +70,24 @@ func getJobToExec()->*Job
     sync.scopedLock(g_mutexPendingJobs)
     if g_pendingJobs.isEmpty()
         return null
-    return g_pendingJobs.popBack()
+    job := g_pendingJobs.popBack()
+    debug.assert(job.testState(JobState.InPending))
+    job.clearState(JobState.InPending)
+    return job
 }
+
+func removeJobNoLock(job: *Job)
+{
+    debug.assert(job.state & JobState.InPending == JobState.InPending)
+    g_pendingJobs.removeAt(cast(uint) job.pendingIndex)
+    g_pendingJobs[job.pendingIndex].pendingIndex = job.pendingIndex
+    job.pendingIndex = swag.MaxU32
+    job.clearState(JobState.InPending)
+}
+
+func clearState(job: *Job, state: JobState) => atomic.xor(cast(*u32) &job.state, cast(u32) state)
+func setState(job: *Job, state: JobState)   => atomic.or(cast(*u32) &job.state, cast(u32) state)
+func testState(job: *Job, state: JobState)  => atomic.compareExchange(cast(*u32) &job.state, 0, 0) & cast(u32) state != 0
 
 // Returns true is the job system has been initialized
 public func isSynchrone() => g_numWorkers == 0
@@ -73,22 +111,52 @@ public func setNumWorkers(numWorkers: u32 = 0) throw
 public func scheduleJob(job: *Job)
 {
     sync.scopedLock(g_mutexPendingJobs)
+    job.setState(JobState.InPending)
     g_totalJobs += 1
     g_eventDone.reset()
+    job.pendingIndex = cast(u32) g_pendingJobs.count
     g_pendingJobs.add(job)
     g_eventPendingJobs.signal()
 }
 
-// Wait for all jobs to be finished
+// Wait for all registered jobs to be finished
 public func waitDone()
 {
     while peekExecJob() {}
     g_eventDone.wait()
 }
 
-#init
+// Wait for a given job to be finished
+public func waitJob(job: *Job)
 {
-    try g_mutexPendingJobs.init()
-    try g_eventPendingJobs.init()
-    try g_eventDone.init(true, true)
+    // Fast exit, without lock
+    if job.testState(JobState.Done)
+        return
+
+    g_mutexPendingJobs.lock()
+
+    // Job already done
+    if job.testState(JobState.Done)
+    {
+        g_mutexPendingJobs.unlock()
+        return
+    }
+
+    // Job still in pending list, we can execute it right away
+    // and leave
+    if job.testState(JobState.InPending)
+    {
+        removeJobNoLock(job)
+        g_mutexPendingJobs.unlock()
+        runJob(job)
+        return
+    }
+
+    // Here, job is being processed by another thread, so we participate
+    // to job execution until flag is here
+    g_mutexPendingJobs.unlock()
+    while !job.testState(JobState.Done)
+    {
+        peekExecJob()
+    }
 }

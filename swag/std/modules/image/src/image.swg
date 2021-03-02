@@ -85,6 +85,7 @@ impl Image
         {
             oneJob := cast(*PixelJob) jobData
             visitPixels(oneJob.pix, oneJob.bpp8, oneJob.userData)
+            thread.sleep(100)
         }
 
         func visitPixels(pix: [..] u8, bpp8: u8, userData: *void)
@@ -111,7 +112,8 @@ impl Image
             return
         }
 
-        numWorkers := jobsystem.getNumWorkers()
+        //numWorkers := jobsystem.getNumWorkers()
+        numWorkers := 50'u32
         wh := width * height
         splitSize := wh / numWorkers
         lastSplitSize := splitSize + (wh - (splitSize * numWorkers))
@@ -131,12 +133,12 @@ impl Image
             j.bpp8 = bpp8
             j.userData = userData
             j.pix = @mkslice(ptr, sizeSlice)
+            ptr += sizeSlice
 
             jobsystem.scheduleJob(j)
-
-            ptr += sizeSlice
         }
 
+        visit *j: jobs jobsystem.waitJob(j)
         jobsystem.waitDone()
     }
 
