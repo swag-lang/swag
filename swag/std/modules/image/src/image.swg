@@ -90,9 +90,6 @@ impl Image
         {
             scan := @dataof(pix)
             countof := @countof(pix)
-
-            console.print("%\n", countof)
-
             loop countof / bpp8
             {
                 #macro
@@ -105,8 +102,6 @@ impl Image
 
                 scan += bpp8
             }
-
-            console.print("done\n")
         }
 
         if !jobsystem.isValid()
