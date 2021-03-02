@@ -415,7 +415,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     }
 
     // Need to generate bytecode, if not already done or running
-    if (!(node->flags & AST_BYTECODE_GENERATED))
+    if (!(node->semFlags & AST_SEM_BYTECODE_GENERATED))
     {
         if (flags & ASKBC_WAIT_DONE)
         {
@@ -467,7 +467,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     if (flags & ASKBC_WAIT_RESOLVED)
     {
         SWAG_ASSERT(job);
-        if (!(node->flags & AST_BYTECODE_RESOLVED))
+        if (!(node->semFlags & AST_SEM_BYTECODE_RESOLVED))
         {
             SWAG_ASSERT(node->extension && node->extension->byteCodeJob);
             node->extension->byteCodeJob->dependentJobs.add(job);
@@ -617,7 +617,7 @@ JobResult ByteCodeGenJob::execute()
         {
             unique_lock lk(originalNode->mutex);
             SWAG_ASSERT(originalNode->extension && originalNode->extension->byteCodeJob);
-            originalNode->flags |= AST_BYTECODE_GENERATED;
+            originalNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
             dependentJobs.setRunning();
         }
 
@@ -634,7 +634,7 @@ JobResult ByteCodeGenJob::execute()
         {
             auto        node = dependentNodesTmp.back();
             unique_lock lk(node->mutex);
-            if (node->flags & AST_BYTECODE_GENERATED)
+            if (node->semFlags & AST_SEM_BYTECODE_GENERATED)
             {
                 dependentNodesTmp.pop_back();
                 continue;
@@ -660,7 +660,7 @@ JobResult ByteCodeGenJob::execute()
             // If the node is already solved, remove it from the list
             {
                 unique_lock lk(node->mutex);
-                if (node->flags & AST_BYTECODE_RESOLVED)
+                if (node->semFlags & AST_SEM_BYTECODE_RESOLVED)
                     continue;
             }
 
@@ -713,7 +713,7 @@ JobResult ByteCodeGenJob::execute()
             auto node = dependentNodesTmp.back();
 
             unique_lock lk(node->mutex);
-            if (node->flags & AST_BYTECODE_RESOLVED)
+            if (node->semFlags & AST_SEM_BYTECODE_RESOLVED)
             {
                 dependentNodesTmp.pop_back();
                 continue;
@@ -728,7 +728,7 @@ JobResult ByteCodeGenJob::execute()
     // Inform dependencies that everything is done
     {
         unique_lock lk(originalNode->mutex);
-        originalNode->flags |= AST_BYTECODE_RESOLVED;
+        originalNode->semFlags |= AST_SEM_BYTECODE_RESOLVED;
         originalNode->extension->byteCodeJob = nullptr;
     }
 

@@ -299,8 +299,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     // Only one run at a time !
     g_ThreadMgr.participate(mutexExecuteNode, AFFINITY_EXECBC);
 
-    SWAG_ASSERT(node->flags & AST_BYTECODE_GENERATED);
-    SWAG_ASSERT(node->flags & AST_BYTECODE_RESOLVED);
+    SWAG_ASSERT(node->semFlags & AST_SEM_BYTECODE_GENERATED);
+    SWAG_ASSERT(node->semFlags & AST_SEM_BYTECODE_RESOLVED);
     SWAG_ASSERT(node->extension && node->extension->bc);
     SWAG_ASSERT(node->extension->bc->out);
 

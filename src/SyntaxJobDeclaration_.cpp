@@ -293,6 +293,20 @@ bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
     return doEmbeddedInstruction(parent, result);
 }
 
+void SyntaxJob::registerSubDecl(AstNode* parent, AstNode* subDecl)
+{
+    subDecl->flags |= AST_NO_SEMANTIC;
+    parent->ownerFct->subDecls.push_back(subDecl);
+
+    // Move to the root
+    if (subDecl->parent->kind == AstNodeKind::AttrUse)
+        subDecl = subDecl->parent;
+    auto newParent = subDecl->parent;
+    Ast::removeFromParent(subDecl);
+    newParent = sourceFile->astRoot;
+    Ast::addChildBack(newParent, subDecl);
+}
+
 bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
     switch (token.id)
@@ -432,20 +446,11 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
     case TokenId::KwdFunc:
     {
-        SWAG_ASSERT(parent && parent->ownerFct);
         AstNode* subFunc;
         SWAG_CHECK(doFuncDecl(parent, &subFunc));
         if (result)
             *result = subFunc;
-        subFunc->flags |= AST_NO_SEMANTIC;
-        parent->ownerFct->subDecls.push_back(subFunc);
-
-        // Move to the root
-        if (subFunc->parent->kind == AstNodeKind::AttrUse)
-            subFunc = subFunc->parent;
-        Ast::removeFromParent(subFunc);
-        Ast::addChildBack(sourceFile->astRoot, subFunc);
-
+        registerSubDecl(parent, subFunc);
         break;
     }
 
@@ -458,14 +463,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doStruct(parent, &subDecl));
         if (result)
             *result = subDecl;
-        subDecl->flags |= AST_NO_SEMANTIC;
-        parent->ownerFct->subDecls.push_back(subDecl);
-
-        // Move to the root
-        if (subDecl->parent->kind == AstNodeKind::AttrUse)
-            subDecl = subDecl->parent;
-        Ast::removeFromParent(subDecl);
-        Ast::addChildBack(sourceFile->astRoot, subDecl);
+        registerSubDecl(parent, subDecl);
         break;
     }
 

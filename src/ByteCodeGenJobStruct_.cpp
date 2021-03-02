@@ -771,7 +771,7 @@ bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)
 
     auto        structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     scoped_lock lk(structNode->mutex);
-    structNode->flags |= AST_BYTECODE_GENERATED;
+    structNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
     node->dependentJobs.setRunning();
     return true;
 }

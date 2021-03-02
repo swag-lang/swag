@@ -77,10 +77,10 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
 
     auto        structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     scoped_lock lk(structNode->mutex);
-    if (!(structNode->flags & AST_BYTECODE_GENERATED))
+    if (!(structNode->semFlags & AST_SEM_BYTECODE_GENERATED))
     {
         structNode->dependentJobs.add(this);
-        setPending(structNode->resolvedSymbolName, "AST_BYTECODE_GENERATED", structNode, nullptr);
+        setPending(structNode->resolvedSymbolName, "AST_SEM_BYTECODE_GENERATED", structNode, nullptr);
     }
 }
 
