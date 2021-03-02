@@ -81,13 +81,13 @@ impl Image
             userData:   *void
         }
 
-        func jobEntry(data: *void)
+        func jobEntry(jobData: *void)
         {
-            oneJob := cast(*PixelJob) data
-            entry(oneJob.pix, oneJob.bpp8, oneJob.userData)
+            oneJob := cast(*PixelJob) jobData
+            visitPixels(oneJob.pix, oneJob.bpp8, oneJob.userData)
         }
 
-        func entry(pix: [..] u8, bpp8: u8, userData: *void)
+        func visitPixels(pix: [..] u8, bpp8: u8, userData: *void)
         {
             scan := @dataof(pix)
             countof := @countof(pix)
@@ -107,7 +107,7 @@ impl Image
 
         if !jobsystem.isValid()
         {
-            entry(@mkslice(pixels, size), bpp8, userData)
+            visitPixels(@mkslice(pixels, size), bpp8, userData)
             return
         }
 
