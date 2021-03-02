@@ -91,7 +91,7 @@ impl Image
             scan := @dataof(pix)
             countof := @countof(pix)
 
-            core.console.print("%\n", countof)
+            console.print("%\n", countof)
 
             loop countof / bpp8
             {
@@ -106,7 +106,7 @@ impl Image
                 scan += bpp8
             }
 
-            core.console.print("done\n")
+            console.print("done\n")
         }
 
         if !jobsystem.isValid()

@@ -650,7 +650,7 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
         auto subFuncScope = newScopeNode->ownerScope;
 
         cloneContext.parentScope = subFuncScope;
-        cloneContext.parent      = nullptr;
+        cloneContext.parent      = nullptr; // Register in parent will be done at the end (race condition)
         if (f->parent->kind == AstNodeKind::AttrUse)
             f = f->parent;
         auto subF         = f->clone(cloneContext);
@@ -716,7 +716,7 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
         subDecl->resolvedSymbolOverload = nullptr;
 
         // Do it last for avoid a race condition with the file job
-        Ast::addChildBack(sourceFile->astRoot, subF);
+        Ast::addChildBack(f->parent, subF);
     }
 
     return true;
