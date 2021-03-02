@@ -222,7 +222,7 @@ bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeK
         newScope->owner = statement;
         statement->flags |= AST_NEED_SCOPE;
         statement->allocateExtension();
-        statement->byteCodeFct                  = ByteCodeGenJob::emitFakeLine;
+        statement->byteCodeFct                  = ByteCodeGenJob::emitDebugNop;
         statement->extension->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
     }
 

@@ -484,7 +484,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         switch (ip->op)
         {
-        case ByteCodeOp::FakeLine:
+        case ByteCodeOp::DebugNop:
             concat.addU8(0x90); // nop
             break;
 

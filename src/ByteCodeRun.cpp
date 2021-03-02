@@ -542,7 +542,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     switch (ip->op)
     {
     case ByteCodeOp::Nop:
-    case ByteCodeOp::FakeLine:
+    case ByteCodeOp::DebugNop:
         break;
 
     case ByteCodeOp::IntrinsicS8x1:

@@ -715,7 +715,7 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
         subDecl->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, subDecl, symKind);
         subDecl->resolvedSymbolOverload = nullptr;
 
-        // Do it last for avoid a race condition with the file job
+        // Do it last to avoid a race condition with the file job
         Ast::addChildBack(f->parent, subF);
     }
 

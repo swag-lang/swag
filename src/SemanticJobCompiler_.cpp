@@ -182,8 +182,8 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, format("expression should be of type 'code' ('%s' provided)", expr->typeInfo->name.c_str())}));
 
     node->allocateExtension();
-    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitFakeLine;
-    node->byteCodeFct                  = ByteCodeGenJob::emitFakeLine;
+    node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitDebugNop;
+    node->byteCodeFct                  = ByteCodeGenJob::emitDebugNop;
     expr->flags |= AST_NO_BYTECODE;
 
     auto identifier = CastAst<AstIdentifier>(node->ownerInline->parent, AstNodeKind::Identifier);

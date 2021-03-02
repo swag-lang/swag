@@ -222,7 +222,7 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitFakeLine(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitDebugNop(ByteCodeGenContext* context)
 {
     auto node = context->node;
     if (!node->childs.empty())
@@ -230,7 +230,7 @@ bool ByteCodeGenJob::emitFakeLine(ByteCodeGenContext* context)
     if (context->sourceFile->module->buildCfg.byteCodeDebug)
     {
         PushLocation lk(context, &node->token.endLocation);
-        emitInstruction(context, ByteCodeOp::FakeLine)->flags |= BCI_UNPURE;
+        emitInstruction(context, ByteCodeOp::DebugNop)->flags |= BCI_UNPURE;
     }
 
     return true;
