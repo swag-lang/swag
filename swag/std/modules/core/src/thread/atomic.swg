@@ -56,4 +56,13 @@
     func compareExchange(addr: *u16, compareTo, exchangeWith: u16)->u16 => @atomcmpxchg(addr, compareTo, exchangeWith)
     func compareExchange(addr: *u32, compareTo, exchangeWith: u32)->u32 => @atomcmpxchg(addr, compareTo, exchangeWith)
     func compareExchange(addr: *u64, compareTo, exchangeWith: u64)->u64 => @atomcmpxchg(addr, compareTo, exchangeWith)
+
+    func get(addr: *s8)->s8   => @atomcmpxchg(addr, 0, 0)
+    func get(addr: *s16)->s16 => @atomcmpxchg(addr, 0, 0)
+    func get(addr: *s32)->s32 => @atomcmpxchg(addr, 0, 0)
+    func get(addr: *s64)->s64 => @atomcmpxchg(addr, 0, 0)
+    func get(addr: *u8)->u8   => @atomcmpxchg(addr, 0, 0)
+    func get(addr: *u16)->u16 => @atomcmpxchg(addr, 0, 0)
+    func get(addr: *u32)->u32 => @atomcmpxchg(addr, 0, 0)
+    func get(addr: *u64)->u64 => @atomcmpxchg(addr, 0, 0)
 }

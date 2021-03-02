@@ -87,7 +87,7 @@ func removeJobNoLock(job: *Job)
 
 func clearState(job: *Job, state: JobState) => atomic.and(cast(*u32) &job.state, cast(u32) ~state)
 func setState(job: *Job, state: JobState)   => atomic.or(cast(*u32) &job.state, cast(u32) state)
-func testState(job: *Job, state: JobState)  => atomic.compareExchange(cast(*u32) &job.state, 0, 0) & cast(u32) state != 0
+func testState(job: *Job, state: JobState)  => atomic.get(cast(*u32) &job.state) & cast(u32) state != 0
 
 // Returns true is the job system has been initialized
 public func isSynchrone() => g_numWorkers == 0
@@ -153,7 +153,7 @@ public func waitJob(job: *Job)
     }
 
     // Here, job is being processed by another thread, so we participate
-    // to job execution until flag is here
+    // to job execution until done flag is set
     g_mutexPendingJobs.unlock()
     while !job.testState(JobState.Done)
     {
