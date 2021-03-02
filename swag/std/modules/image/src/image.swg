@@ -73,8 +73,9 @@ impl Image
     #[swag.macro]
     func visitPixels(using self, userData: *void, stmt: code)
     {
-        struct OneJob
+        struct PixelJob
         {
+            using base: jobsystem.Job
             pix:        [..] u8
             bpp8:       u8
             userData:   *void
@@ -82,7 +83,7 @@ impl Image
 
         func jobEntry(data: *void)
         {
-            oneJob := cast(*OneJob) data
+            oneJob := cast(*PixelJob) data
             entry(oneJob.pix, oneJob.bpp8, oneJob.userData)
         }
 
@@ -117,20 +118,21 @@ impl Image
         splitSize *= bpp8
         lastSplitSize *= bpp8
 
-        var jobs: Array'OneJob
+        var jobs: Array'PixelJob
         jobs.resize(cast(uint) numWorkers)
 
         ptr := pixels
-        visit *j, idx: jobs
+        visit *j: jobs
         {
-            sizeSlice := idx == jobs.count - 1 ? lastSplitSize : splitSize
+            sizeSlice := @index == jobs.count - 1 ? lastSplitSize : splitSize
 
+            j.base.lambda = &jobEntry
+            j.base.data = j
             j.bpp8 = bpp8
             j.userData = userData
             j.pix = @mkslice(ptr, sizeSlice)
 
-            jobHandle := jobsystem.createJob(&jobEntry, j, jobsystem.JobCreateFlags.AutoRelease)
-            jobsystem.scheduleJob(jobHandle)
+            jobsystem.scheduleJob(j)
 
             ptr += sizeSlice
         }

@@ -13,8 +13,9 @@ var G = 0
     system.pushAllocator(v)
     {
         try jobsystem.init(4)
-        job := jobsystem.createJob(&entry)
-        jobsystem.scheduleJob(job)
+        var job: jobsystem.Job
+        job.lambda = &entry
+        jobsystem.scheduleJob(&job)
         jobsystem.waitDone()
         @assert(G == 666)
     }
