@@ -12,7 +12,6 @@ var G = 0
     var v: swag.SystemAllocator
     system.pushAllocator(v)
     {
-        try jobsystem.setNumWorkers(4)
         var job: jobsystem.Job
         job.lambda = &entry
         jobsystem.scheduleJob(&job)

@@ -19,10 +19,10 @@ public struct Job
     pendingIndex:   u32 = swag.MaxU32
 }
 
-public struct SliceJob
+public struct(T) SliceJob
 {
     using base: Job
-    buffer:     [..] u8
+    buffer:     [..] T
     offset:     u32
     userData:   *void
 }
@@ -174,18 +174,18 @@ public func waitJob(job: *Job)
 // - 'buffer': address of the element of the slice to process
 // - 'data': 'userData' as passed to the macro
 #[swag.macro]
-public func parallelFor(slice: [..] u8, offset: u32, userData: *void, stmt: code)
+public func(T) parallelFor(slice: [..] T, offset: u32, userData: *void, stmt: code)
 {
     if(!@countof(slice)) return
     debug.assert(offset != 0)
 
     func jobEntry(jobData: *void)
     {
-        oneJob := cast(*SliceJob) jobData
+        oneJob := cast(*SliceJob'T) jobData
         visitSlice(oneJob.buffer, oneJob.offset, oneJob.userData)
     }
 
-    func visitSlice(buffer: [..] u8, offset: u32, userData: *void)
+    func visitSlice(buffer: [..] T, offset: u32, userData: *void)
     {
         scan := @dataof(buffer)
         countof := @countof(buffer)
@@ -219,7 +219,7 @@ public func parallelFor(slice: [..] u8, offset: u32, userData: *void, stmt: code
     lastSplitSize *= offset
 
     // Launch jobs
-    var jobs: Array'SliceJob
+    var jobs: Array'(SliceJob'T)
     jobs.resize(cast(uint) numWorkers)
 
     ptr := @dataof(slice)
