@@ -36,8 +36,10 @@ enum class SyntaxStructType
     Tuple
 };
 
-static const uint32_t IDENTIFIER_NO_PARAMS = 0x00000001;
-static const uint32_t IDENTIFIER_TYPE_DECL = 0x00000002;
+static const uint32_t IDENTIFIER_NO_FCT_PARAMS = 0x00000001;
+static const uint32_t IDENTIFIER_NO_GEN_PARAMS = 0x00000002;
+static const uint32_t IDENTIFIER_NO_PARAMS     = IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_GEN_PARAMS;
+static const uint32_t IDENTIFIER_TYPE_DECL     = 0x00000004;
 
 struct SyntaxContext : public JobContext
 {

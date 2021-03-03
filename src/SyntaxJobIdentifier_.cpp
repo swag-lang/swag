@@ -52,7 +52,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             identifier->token.text = parent->ownerStructScope->name;
     }
 
-    if (!(identifierFlags & IDENTIFIER_NO_PARAMS) && !tokenizer.lastTokenIsEOL)
+    if (!tokenizer.lastTokenIsEOL && !(identifierFlags & IDENTIFIER_NO_GEN_PARAMS))
     {
         // Generic arguments
         if (token.id == TokenId::SymQuote)
@@ -61,24 +61,24 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             SWAG_CHECK(doGenericFuncCallParameters(identifier, &identifier->genericParameters));
             identifier->genericParameters->flags |= AST_NO_BYTECODE;
         }
+    }
 
-        // Function call parameters
-        if (!tokenizer.lastTokenIsEOL)
+    // Function call parameters
+    if (!tokenizer.lastTokenIsEOL && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS))
+    {
+        if (token.id == TokenId::SymLeftParen)
         {
-            if (token.id == TokenId::SymLeftParen)
-            {
-                if (identifierFlags & IDENTIFIER_TYPE_DECL)
-                    return sourceFile->report({identifier, token, "a struct initialization must be done with '{}' and not parenthesis (this is reserved for function calls)"});
+            if (identifierFlags & IDENTIFIER_TYPE_DECL)
+                return sourceFile->report({identifier, token, "a struct initialization must be done with '{}' and not parenthesis (this is reserved for function calls)"});
 
-                SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-                SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
-            }
-            else if (!tokenizer.lastTokenIsBlank && token.id == TokenId::SymLeftCurly)
-            {
-                SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-                SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightCurly));
-                identifier->callParameters->flags |= AST_CALL_FOR_STRUCT;
-            }
+            SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+            SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
+        }
+        else if (!tokenizer.lastTokenIsBlank && token.id == TokenId::SymLeftCurly)
+        {
+            SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+            SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightCurly));
+            identifier->callParameters->flags |= AST_CALL_FOR_STRUCT;
         }
     }
 
