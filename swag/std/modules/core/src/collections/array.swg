@@ -118,8 +118,6 @@ impl Array
                 #else
                     var @alias0 = reflection.isStruct(T) ? cast(const &T) `scan[0] : `scan[0]
                 var @alias1 = @index
-
-                #[swag.noreturn]
                 #mixin `stmt
             }
         }

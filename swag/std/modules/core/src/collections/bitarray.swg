@@ -107,7 +107,6 @@ public impl BitArray
                 {
                     var @alias0 = cast(bool) (`buffer[`idx] & `shift)
                     var @alias1 = `countBits
-                    #[swag.noreturn]
                     #mixin `stmt { break = break up; continue = break down; }
                 }
 

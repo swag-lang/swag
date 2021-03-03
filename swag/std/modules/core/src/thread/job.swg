@@ -195,7 +195,6 @@ public func(T) parallelFor(slice: [..] T, offset: u32, userData: *void, stmt: co
             {
                 buffer := `scan
                 data := `userData
-                #[swag.noreturn]
                 #mixin `stmt
             }
 

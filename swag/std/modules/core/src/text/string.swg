@@ -177,8 +177,6 @@ impl String
                 #else
                     var @alias0 = :`scan
                 var @alias1 = @index
-
-                #[swag.noreturn]
                 #mixin `stmt
             }
         }
@@ -216,8 +214,6 @@ impl String
                     var @alias0 = `c
                 var @alias1 = `byteIdx
                 var @alias2 = `charIdx
-
-                #[swag.noreturn]
                 #mixin `stmt { break = break up; continue = break down; }
             }
 

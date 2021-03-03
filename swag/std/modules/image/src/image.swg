@@ -62,7 +62,6 @@ impl Image
 			{
                 @alias0 := `scan
 				@alias1 := @index
-				#[swag.noreturn]
 				#mixin `stmt
 			}
 

@@ -10,7 +10,6 @@ void SemanticJob::propagateAttributes(AstNode* child)
         return;
     child->attributeFlags |= child->parent->attributeFlags &
                              (ATTRIBUTE_SAFETY_MASK |
-                              ATTRIBUTE_NO_RETURN |
                               ATTRIBUTE_SELECTIF_OFF |
                               ATTRIBUTE_SELECTIF_ON);
 }
@@ -54,8 +53,6 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         if (oneAttribute->token.text == "attributeUsage" && kind == AstNodeKind::AttrDecl)
             return true;
         if (oneAttribute->token.text == "attributeMulti" && kind == AstNodeKind::AttrDecl)
-            return true;
-        if (oneAttribute->token.text == "noreturn" && kind == AstNodeKind::CompilerMixin)
             return true;
         if (oneAttribute->token.text == "global" && kind == AstNodeKind::VarDecl)
             if (!checkNode->ownerScope->isGlobalOrImpl())

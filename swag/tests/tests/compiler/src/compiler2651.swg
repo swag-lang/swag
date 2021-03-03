@@ -4,7 +4,6 @@ func res() => 666
 #[swag.macro]
 func toto(stmt: code)
 {
-    #[swag.noreturn]
     #mixin stmt
 }
 

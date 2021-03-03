@@ -3,7 +3,6 @@ func toto(stmt: code)
 {
     #macro
     {
-        #[swag.noreturn]
         #mixin `stmt
     }
 }

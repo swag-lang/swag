@@ -8,7 +8,6 @@ impl AA
     #[swag.macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        #[swag.noreturn]
         #mixin stmt
     }
 }

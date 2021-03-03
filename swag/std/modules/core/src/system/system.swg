@@ -11,7 +11,6 @@ func pushContext(cxt: swag.Context, stmt: code)
     @setcontext(cxt)
     #macro
     {
-        #[swag.noreturn]
         #mixin `stmt
     }
 }
@@ -29,7 +28,6 @@ func pushAllocator(allocator: swag.IAllocator, stmt: code)
 
     #macro
     {
-        #[swag.noreturn]
         #mixin `stmt
     }
 }

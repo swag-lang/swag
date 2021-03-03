@@ -454,7 +454,6 @@ func(ptr: bool) opVisitChars(buffer: const [..] u8, stmt: code)
             @alias0 := `c
             @alias1 := `charIdx
             @alias2 := `byteIdx
-            #[swag.noreturn]
             #mixin `stmt
         }
 
