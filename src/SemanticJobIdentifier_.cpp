@@ -2989,10 +2989,8 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
     // For a try/throw inside an inline block, take the original function, except if it is flagged with 'swag.noreturn'
     if (node->ownerInline)
     {
-        if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NO_RETURN) && !(node->attributeFlags & ATTRIBUTE_NO_RETURN))
-        {
+        if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_NO_RETURN) && !(node->flags & AST_IN_MIXIN))
             node->semFlags |= AST_SEM_EMBEDDED_RETURN;
-        }
     }
 
     auto parentFct = (node->semFlags & AST_SEM_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
