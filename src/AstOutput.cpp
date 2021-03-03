@@ -157,6 +157,84 @@ namespace Ast
 
         switch (node->kind)
         {
+        case AstNodeKind::FuncDeclType:
+            if (!node->childs.empty())
+            {
+                CONCAT_FIXED_STR(concat, "->");
+                SWAG_CHECK(output(context, concat, node->childs.front()));
+            }
+            break;
+
+        case AstNodeKind::FuncDeclParams:
+        {
+            concat.addChar('(');
+            bool first = true;
+            for (auto c : node->childs)
+            {
+                if (!first)
+                    CONCAT_FIXED_STR(concat, ", ");
+                first = false;
+                SWAG_CHECK(output(context, concat, c));
+            }
+            concat.addChar(')');
+            break;
+        }
+
+        case AstNodeKind::FuncDecl:
+        {
+            auto nodeFunc = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+            concat.addEolIndent(context.indent);
+            CONCAT_FIXED_STR(concat, "func ");
+            if (nodeFunc->genericParameters)
+                SWAG_CHECK(output(context, concat, nodeFunc->genericParameters));
+            concat.addString(nodeFunc->token.text);
+            SWAG_CHECK(output(context, concat, nodeFunc->parameters));
+            if (nodeFunc->returnType)
+                SWAG_CHECK(output(context, concat, nodeFunc->returnType));
+            concat.addEolIndent(context.indent);
+            SWAG_CHECK(output(context, concat, nodeFunc->content));
+            break;
+        }
+
+        case AstNodeKind::StructContent:
+            concat.addEolIndent(context.indent);
+            CONCAT_FIXED_STR(concat, "{ ");
+            concat.addEol();
+            for (auto c : node->childs)
+            {
+                concat.addIndent(context.indent + 1);
+                SWAG_CHECK(output(context, concat, c));
+                concat.addEol();
+            }
+
+            concat.addIndent(context.indent);
+            CONCAT_FIXED_STR(concat, "}");
+            concat.addEol();
+            break;
+
+        case AstNodeKind::StructDecl:
+        case AstNodeKind::InterfaceDecl:
+        case AstNodeKind::TypeSet:
+        {
+            auto nodeStruct = CastAst<AstStruct>(node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl, AstNodeKind::TypeSet);
+            switch (node->kind)
+            {
+            case AstNodeKind::StructDecl:
+                CONCAT_FIXED_STR(concat, "struct ");
+                break;
+            case AstNodeKind::InterfaceDecl:
+                CONCAT_FIXED_STR(concat, "interface ");
+                break;
+            case AstNodeKind::TypeSet:
+                CONCAT_FIXED_STR(concat, "typeset ");
+                break;
+            }
+            concat.addString(nodeStruct->token.text);
+            concat.addIndent(context.indent);
+            SWAG_CHECK(output(context, concat, nodeStruct->content));
+            break;
+        }
+
         case AstNodeKind::Defer:
             CONCAT_FIXED_STR(concat, "defer ");
             SWAG_CHECK(output(context, concat, node->childs.front()));
@@ -507,6 +585,9 @@ namespace Ast
             auto visitNode = CastAst<AstVisit>(node, AstNodeKind::Visit);
             CONCAT_FIXED_STR(concat, "visit ");
 
+            if (visitNode->wantPointer)
+                concat.addChar('*');
+
             bool first = true;
             for (auto& a : visitNode->aliasNames)
             {
@@ -628,12 +709,23 @@ namespace Ast
         }
 
         case AstNodeKind::VarDecl:
+        case AstNodeKind::FuncDeclParam:
         {
             AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
+            if (varDecl->flags & AST_DECL_USING)
+                CONCAT_FIXED_STR(concat, "using ");
 
             if (varDecl->type)
             {
-                CONCAT_FIXED_STR(concat, "var ");
+                if (node->kind != AstNodeKind::FuncDeclParam)
+                {
+                    if (!node->ownerMainNode ||
+                        (node->ownerMainNode->kind != AstNodeKind::StructDecl &&
+                         node->ownerMainNode->kind != AstNodeKind::InterfaceDecl &&
+                         node->ownerMainNode->kind != AstNodeKind::TypeSet))
+                        CONCAT_FIXED_STR(concat, "var ");
+                }
+
                 if (!varDecl->publicName.empty())
                     concat.addString(varDecl->publicName);
                 else

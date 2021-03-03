@@ -46,7 +46,7 @@ struct ScopePublicSet
 {
     set<AstNode*> publicFunc;
     set<AstNode*> publicAttr;
-    set<AstNode*> publicGenericFunc;
+    set<AstNode*> publicInlinedFunc;
     set<AstNode*> publicStruct;
     set<AstNode*> publicInterface;
     set<AstNode*> publicTypeSet;
@@ -66,7 +66,7 @@ struct Scope
     void               setHasExports();
     void               addPublicFunc(AstNode* node);
     void               addPublicAttribute(AstNode* node);
-    void               addPublicGenericFunc(AstNode* node);
+    void               addPublicInlinedFunc(AstNode* node);
     void               addPublicStruct(AstNode* node);
     void               addPublicInterface(AstNode* node);
     void               addPublicTypeSet(AstNode* node);

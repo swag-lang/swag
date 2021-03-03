@@ -161,11 +161,11 @@ void Scope::addPublicAttribute(AstNode* node)
     setHasExports();
 }
 
-void Scope::addPublicGenericFunc(AstNode* node)
+void Scope::addPublicInlinedFunc(AstNode* node)
 {
     unique_lock lk(mutex);
     allocPublicSet();
-    publicSet->publicGenericFunc.insert(node);
+    publicSet->publicInlinedFunc.insert(node);
     setHasExports();
 }
 

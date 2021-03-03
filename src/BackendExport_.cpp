@@ -332,25 +332,40 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
         emitType(typeFunc->returnType, indent);
     }
 
-    if (node->content->kind != AstNodeKind::Statement)
-    {
-        bufferSwg.addEolIndent(indent);
-        CONCAT_FIXED_STR(bufferSwg, "{");
-        indent++;
-    }
-
     bufferSwg.addEolIndent(indent);
-    outputContext.indent = indent;
-    SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->content));
+    CONCAT_FIXED_STR(bufferSwg, "{");
+    indent++;
+    bufferSwg.addEol();
 
     if (node->content->kind != AstNodeKind::Statement)
     {
-        bufferSwg.addEol();
-        indent--;
-        bufferSwg.addIndent(indent);
-        CONCAT_FIXED_STR(bufferSwg, "}");
+        bufferSwg.addIndent(outputContext.indent + 1);
+        SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->content));
         bufferSwg.addEol();
     }
+    else
+    {
+        outputContext.indent = indent;
+
+        for (auto c : node->subDecls)
+        {
+            bufferSwg.addIndent(outputContext.indent);
+            SWAG_CHECK(Ast::output(outputContext, bufferSwg, c));
+            bufferSwg.addEol();
+        }
+
+        for (auto c : node->content->childs)
+        {
+            bufferSwg.addIndent(outputContext.indent);
+            SWAG_CHECK(Ast::output(outputContext, bufferSwg, c));
+            bufferSwg.addEol();
+        }
+    }
+
+    indent--;
+    bufferSwg.addIndent(indent);
+    CONCAT_FIXED_STR(bufferSwg, "}");
+    bufferSwg.addEol();
 
     bufferSwg.addEol();
     return true;
@@ -562,9 +577,9 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
     }
 
     // Generic functions
-    if (!publicSet->publicGenericFunc.empty())
+    if (!publicSet->publicInlinedFunc.empty())
     {
-        for (auto func : publicSet->publicGenericFunc)
+        for (auto func : publicSet->publicInlinedFunc)
         {
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);

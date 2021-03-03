@@ -71,6 +71,12 @@ impl Image
     }
 
     #[swag.macro]
+    func visitPixels1(using self, userData: *void, stmt: code)
+    {
+        jobsystem.parallelFor(@mkslice(pixels, size), cast(u32) bpp8, userData, stmt)
+    }
+
+    #[swag.macro]
     func visitPixels(using self, userData: *void, stmt: code)
     {
         struct PixelJob

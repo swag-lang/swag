@@ -160,3 +160,72 @@ public func waitJob(job: *Job)
         peekExecJob()
     }
 }
+
+#[swag.macro]
+public func parallelFor(slice: [..] u8, offset: u32, userData: *void, stmt: code)
+{
+    struct ForJob
+    {
+        using base: jobsystem.Job
+        buffer:     [..] u8
+        offset:     u32
+        userData:   *void
+    }
+
+    func jobEntry(jobData: *void)
+    {
+        oneJob := cast(*ForJob) jobData
+        visitSlice(oneJob.buffer, oneJob.offset, oneJob.userData)
+    }
+
+    func visitSlice(buffer: [..] u8, offset: u32, userData: *void)
+    {
+        scan := @dataof(buffer)
+        countof := @countof(buffer)
+        loop countof / offset
+        {
+            #macro
+            {
+                buffer := `scan
+                data := `userData
+                #[swag.noreturn]
+                #mixin `stmt
+            }
+
+            scan += offset
+        }
+    }
+
+    if isSynchrone()
+    {
+        visitSlice(slice, offset, userData)
+        return
+    }
+
+    numWorkers := getNumWorkers()
+    wh := @countof(slice) / offset
+    splitSize := wh / numWorkers
+    lastSplitSize := splitSize + (wh - (splitSize * numWorkers))
+    splitSize *= offset
+    lastSplitSize *= offset
+
+    var jobs: Array'ForJob
+    jobs.resize(cast(uint) numWorkers)
+
+    ptr := @dataof(slice)
+    visit *j: jobs
+    {
+        sizeSlice := @index == jobs.count - 1 ? lastSplitSize : splitSize
+
+        j.base.lambda = &jobEntry
+        j.base.data = j
+        j.offset = offset
+        j.userData = userData
+        j.buffer = @mkslice(ptr, sizeSlice)
+        ptr += sizeSlice
+
+        jobsystem.scheduleJob(j)
+    }
+
+    visit *j: jobs jobsystem.waitJob(j)
+}
