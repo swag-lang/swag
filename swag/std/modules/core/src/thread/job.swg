@@ -177,7 +177,7 @@ public func waitJob(job: *Job)
 // - 'buffer': address of the element of the slice to process
 // - 'data': 'userData' as passed to the macro
 #[swag.macro]
-public func(T) parallelFor(slice: [..] T, offset: u32, userData: *void, stmt: code)
+public func(T) parallelVisit(slice: [..] T, offset: u32, userData: *void, stmt: code)
 {
     if(!@countof(slice)) return
     debug.assert(offset != 0)
