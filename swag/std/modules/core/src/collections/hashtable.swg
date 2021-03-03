@@ -55,7 +55,6 @@ impl HashTable
                     var @alias1 = reflection.isStruct(V) ? cast(const &V) `table[@index].value : `table[@index].value
                 }
 
-                #[swag.noreturn]
                 #mixin `stmt { break = break up; continue = break down; }
             }
 
