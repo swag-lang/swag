@@ -161,12 +161,16 @@ public func waitJob(job: *Job)
     }
 }
 
+// Operate on a slice in parallel chunks
+// Exposed variables:
+// - 'buffer': address of the element of the slice to process
+// - 'data': 'userData' as passed to the macro
 #[swag.macro]
 public func parallelFor(slice: [..] u8, offset: u32, userData: *void, stmt: code)
 {
     struct ForJob
     {
-        using base: jobsystem.Job
+        using base: Job
         buffer:     [..] u8
         offset:     u32
         userData:   *void
@@ -224,8 +228,8 @@ public func parallelFor(slice: [..] u8, offset: u32, userData: *void, stmt: code
         j.buffer = @mkslice(ptr, sizeSlice)
         ptr += sizeSlice
 
-        jobsystem.scheduleJob(j)
+        scheduleJob(j)
     }
 
-    visit *j: jobs jobsystem.waitJob(j)
+    visit *j: jobs waitJob(j)
 }

@@ -70,6 +70,10 @@ impl Image
         }
     }
 
+    // Macro to visit all pixels of the image in parallel chunks
+    // Exported variables:
+    // - 'buffer', address of the pixel
+    // - 'data', 'userData' as passed to the macro
     #[swag.macro]
     func visitPixels(using self, userData: *void, stmt: code)
     {
