@@ -176,6 +176,9 @@ public func waitJob(job: *Job)
 #[swag.macro]
 public func parallelFor(slice: [..] u8, offset: u32, userData: *void, stmt: code)
 {
+    if(!@countof(slice)) return
+    debug.assert(offset != 0)
+
     func jobEntry(jobData: *void)
     {
         oneJob := cast(*SliceJob) jobData
@@ -200,19 +203,22 @@ public func parallelFor(slice: [..] u8, offset: u32, userData: *void, stmt: code
         }
     }
 
-    if isSynchrone()
+    // Force synchrone execution if slice is too small
+    wh := @countof(slice) / offset
+    numWorkers := math.min(getNumWorkers(), cast(u32) wh)
+    if isSynchrone() || numWorkers <= 1
     {
         visitSlice(slice, offset, userData)
         return
     }
 
-    numWorkers := getNumWorkers()
-    wh := @countof(slice) / offset
+    // Compute size of each chunk (and size of the last one)
     splitSize := wh / numWorkers
     lastSplitSize := splitSize + (wh - (splitSize * numWorkers))
     splitSize *= offset
     lastSplitSize *= offset
 
+    // Launch jobs
     var jobs: Array'SliceJob
     jobs.resize(cast(uint) numWorkers)
 
@@ -231,5 +237,6 @@ public func parallelFor(slice: [..] u8, offset: u32, userData: *void, stmt: code
         scheduleJob(j)
     }
 
+    // Sync
     visit *j: jobs waitJob(j)
 }
