@@ -13,7 +13,7 @@
 
 bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Alias, sourceFile, parent);
+    auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::Alias, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveUsing;
     if (result)
         *result = node;
@@ -33,8 +33,8 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     // This is a type alias
     if (expr->kind == AstNodeKind::TypeExpression || expr->kind == AstNodeKind::TypeLambda)
     {
-        node->semanticFct = SemanticJob::resolveTypeAlias;
-        currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
+        node->semanticFct        = SemanticJob::resolveTypeAlias;
+        node->resolvedSymbolName = currentScope->symTable.registerSymbolName(&context, node, SymbolKind::TypeAlias);
     }
     else
     {

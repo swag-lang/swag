@@ -1352,3 +1352,12 @@ AstNode* AstTryCatch::clone(CloneContext& context)
     newNode->copyFrom(context, this);
     return newNode;
 }
+
+AstNode* AstAlias::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstAlias>();
+    newNode->copyFrom(context, this);
+    if (resolvedSymbolName)
+        newNode->resolvedSymbolName = newNode->ownerScope->symTable.registerSymbolName(nullptr, newNode, resolvedSymbolName->kind);
+    return newNode;
+}

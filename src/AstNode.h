@@ -885,3 +885,8 @@ struct AstTryCatch : public AstReturn
     RegisterList regInit;
     int          seekInsideJump;
 };
+
+struct AstAlias : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+};
