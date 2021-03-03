@@ -194,6 +194,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
         if (param->resolvedParameter->namedParam == expr->token.text)
         {
             auto typeCode = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
+            SWAG_ASSERT(typeCode->content);
 
             CloneContext cloneContext;
             cloneContext.parent                 = node;

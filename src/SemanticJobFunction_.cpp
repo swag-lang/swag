@@ -989,11 +989,20 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         for (const auto& alias : id->aliasNames)
             cloneContext.replaceNames[format("@alias%d", idx++)] = alias;
 
-        // Replace named aliases
         for (auto child : id->callParameters->childs)
         {
             auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-            if (param->resolvedParameter && param->resolvedParameter->typeInfo->kind == TypeInfoKind::NameAlias)
+            if (!param->resolvedParameter)
+                continue;
+
+            // Transmit code type
+            if (param->typeInfo->kind == TypeInfoKind::Code)
+            {
+                inlineNode->parametersScope->symTable.addSymbolTypeInfo(context, param, param->typeInfo, SymbolKind::Variable, nullptr, 0, nullptr, 0, &param->resolvedParameter->namedParam);
+            }
+
+            // Replace named aliases
+            if (param->resolvedParameter->typeInfo->kind == TypeInfoKind::NameAlias)
             {
                 SWAG_VERIFY(child->kind == AstNodeKind::FuncCallParam, context->report({child, "invalid name alias"}));
                 auto back = child->childs.back();

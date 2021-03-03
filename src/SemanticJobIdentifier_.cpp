@@ -574,6 +574,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         auto typeInfo = TypeManager::concreteType(identifier->typeInfo);
         SWAG_CHECK(setupIdentifierRef(context, identifier, typeInfo));
 
+        // If this is a 'code' variable, when passing code from one macro to another, then do not generate bytecode
+        // for it, as this is not really a variable
+        if (typeInfo->kind == TypeInfoKind::Code)
+            identifier->flags |= AST_NO_BYTECODE;
+
         // Lambda call
         if (typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
         {
