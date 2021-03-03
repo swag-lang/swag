@@ -27,6 +27,7 @@ public struct(T) SliceJob
     userData:   *void
 }
 
+var g_Allocator:            swag.IAllocator
 var g_numWorkers:           u32
 var g_workers:              Array'Thread
 var g_pendingJobs:          Array'(*Job)
@@ -34,13 +35,6 @@ var g_mutexPendingJobs:     sync.Mutex
 var g_eventPendingJobs:     sync.Event
 var g_eventDone:            sync.Event
 var g_totalJobs:            u32
-
-#init
-{
-    try g_mutexPendingJobs.init()
-    try g_eventPendingJobs.init()
-    try g_eventDone.init(true, true)
-}
 
 func workerEntry(th: Thread)
 {
@@ -107,6 +101,15 @@ public func getNumWorkers() => g_numWorkers
 public func setNumWorkers(numWorkers: u32 = 0) throw
 {
     debug.assert(g_numWorkers == 0)
+
+    g_Allocator = @getcontext().allocator
+    g_workers.allocator = g_Allocator
+    g_pendingJobs.allocator = g_Allocator
+
+    try g_mutexPendingJobs.init()
+    try g_eventPendingJobs.init()
+    try g_eventDone.init(true, true)
+
     g_numWorkers = numWorkers ?? env.getProcessorCount()
     g_workers.resize(cast(uint) g_numWorkers)
     loop i: g_numWorkers

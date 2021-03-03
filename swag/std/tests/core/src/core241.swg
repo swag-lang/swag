@@ -1,19 +1,16 @@
-/*#import "core"
+#import "core"
 using core
 
+//#[swag.printbc]
 #test
 {
 	var x: Array'u32
     x.resize(100)
 
-    var v: swag.SystemAllocator
-    system.pushAllocator(v)
+    jobsystem.parallelFor(x.toSlice(), 1, null)
     {
-        jobsystem.parallelFor(x.toSlice(), 1, null)
-        {
-            buffer[0] = 666
-        }
+        buffer[0] = 666
     }
 
     loop x @assert(x[@index] == 666)
-}*/
+}

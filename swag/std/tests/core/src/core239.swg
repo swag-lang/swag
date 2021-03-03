@@ -9,13 +9,9 @@ var G = 0
         G = 666
     }
 
-    var v: swag.SystemAllocator
-    system.pushAllocator(v)
-    {
-        var job: jobsystem.Job
-        job.lambda = &entry
-        jobsystem.scheduleJob(&job)
-        jobsystem.waitDone()
-        @assert(G == 666)
-    }
+    var job: jobsystem.Job
+    job.lambda = &entry
+    jobsystem.scheduleJob(&job)
+    jobsystem.waitDone()
+    @assert(G == 666)
 }
