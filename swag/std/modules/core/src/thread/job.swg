@@ -19,6 +19,14 @@ public struct Job
     pendingIndex:   u32 = swag.MaxU32
 }
 
+public struct SliceJob
+{
+    using base: Job
+    buffer:     [..] u8
+    offset:     u32
+    userData:   *void
+}
+
 var g_numWorkers:           u32
 var g_workers:              Array'Thread
 var g_pendingJobs:          Array'(*Job)
@@ -168,17 +176,9 @@ public func waitJob(job: *Job)
 #[swag.macro]
 public func parallelFor(slice: [..] u8, offset: u32, userData: *void, stmt: code)
 {
-    struct ForJob
-    {
-        using base: Job
-        buffer:     [..] u8
-        offset:     u32
-        userData:   *void
-    }
-
     func jobEntry(jobData: *void)
     {
-        oneJob := cast(*ForJob) jobData
+        oneJob := cast(*SliceJob) jobData
         visitSlice(oneJob.buffer, oneJob.offset, oneJob.userData)
     }
 
@@ -213,7 +213,7 @@ public func parallelFor(slice: [..] u8, offset: u32, userData: *void, stmt: code
     splitSize *= offset
     lastSplitSize *= offset
 
-    var jobs: Array'ForJob
+    var jobs: Array'SliceJob
     jobs.resize(cast(uint) numWorkers)
 
     ptr := @dataof(slice)

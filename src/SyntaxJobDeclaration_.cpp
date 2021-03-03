@@ -308,8 +308,13 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
     auto newParent = subDecl->parent;
     Ast::removeFromParent(subDecl);
 
-    while (newParent != sourceFile->astRoot && !(newParent->flags & AST_GLOBAL_NODE))
+    while (newParent != sourceFile->astRoot && !(newParent->flags & AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
         newParent = newParent->parent;
+
+    /*subDecl->allocateExtension();
+    subDecl->extension->alternativeScopes.push_back(newParent->ownerScope);
+    if (newParent->extension && !newParent->extension->alternativeScopes.empty())
+        subDecl->extension->alternativeScopes.append(newParent->extension->alternativeScopes);*/
 
     Ast::addChildBack(newParent, subDecl);
 }

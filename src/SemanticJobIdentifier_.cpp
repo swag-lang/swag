@@ -2798,6 +2798,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
 
     if (!startNode)
         return;
+
     // Mixin block, collect alternative scopes from the original source tree (with the user code, before
     // making the inline)
     if (startNode->extension && startNode->extension->alternativeNode)

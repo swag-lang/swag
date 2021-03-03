@@ -712,6 +712,14 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
             }
         }
 
+        // We need to add the parent scope of the inline function (the global one), in order for
+        // the inline content to be resolved in the same context as the original function
+        auto globalScope = f->ownerScope;
+        while (!globalScope->isGlobalOrImpl())
+            globalScope = globalScope->parentScope;
+        subDecl->allocateExtension();
+        subDecl->extension->alternativeScopes.push_back(globalScope);
+
         subDecl->resolvedSymbolName     = subFuncScope->symTable.registerSymbolName(nullptr, subDecl, symKind);
         subDecl->resolvedSymbolOverload = nullptr;
 
