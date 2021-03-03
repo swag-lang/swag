@@ -11,7 +11,7 @@ struct OneFunc
 }
 
 #[compiler]
-var g: Array'OneFunc
+private var g: Array'OneFunc
 
 #compiler(CompilerMsgMask.SemanticFunc)
 {

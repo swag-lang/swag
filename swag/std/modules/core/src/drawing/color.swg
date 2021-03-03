@@ -1,4 +1,5 @@
-using core, swag
+#global namespace drawing
+using swag
 
 public struct Color
 {

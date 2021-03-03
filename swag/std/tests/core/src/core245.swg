@@ -1,5 +1,5 @@
-#import "drawing"
-using drawing
+#import "core"
+using core.drawing
 
 //#[swag.printbc]
 #test
