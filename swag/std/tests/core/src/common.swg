@@ -6,7 +6,7 @@ var g_cxt: swag.Context
 
 #init
 {
-    try jobsystem.setNumWorkers(4)
+    try jobs.setNumWorkers(4)
 
     try g_dbg.init()
     g_cxt = :@getcontext()

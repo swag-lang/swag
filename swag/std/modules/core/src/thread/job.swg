@@ -1,4 +1,4 @@
-#global namespace jobsystem
+#global namespace jobs
 using thread, swag
 
 #[swag.enumflags]
@@ -221,13 +221,13 @@ public func(T) parallelFor(slice: [..] T, offset: u32, userData: *void, stmt: co
     lastSplitSize *= offset
 
     // Launch jobs
-    var jobs: Array'(SliceJob'T)
-    jobs.resize(cast(uint) numWorkers)
+    var sliceJobs: Array'(SliceJob'T)
+    sliceJobs.resize(cast(uint) numWorkers)
 
     ptr := @dataof(slice)
-    visit *j: jobs
+    visit *j: sliceJobs
     {
-        sizeSlice := @index == jobs.count - 1 ? lastSplitSize : splitSize
+        sizeSlice := @index == sliceJobs.count - 1 ? lastSplitSize : splitSize
 
         j.base.lambda = &jobEntry
         j.base.data = j
@@ -240,5 +240,5 @@ public func(T) parallelFor(slice: [..] T, offset: u32, userData: *void, stmt: co
     }
 
     // Sync
-    visit *j: jobs waitJob(j)
+    visit *j: sliceJobs waitJob(j)
 }

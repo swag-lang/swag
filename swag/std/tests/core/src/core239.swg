@@ -9,9 +9,9 @@ var G = 0
         G = 666
     }
 
-    var job: jobsystem.Job
+    var job: jobs.Job
     job.lambda = &entry
-    jobsystem.scheduleJob(&job)
-    jobsystem.waitDone()
+    jobs.scheduleJob(&job)
+    jobs.waitDone()
     @assert(G == 666)
 }
