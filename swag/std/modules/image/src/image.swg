@@ -71,78 +71,9 @@ impl Image
     }
 
     #[swag.macro]
-    func visitPixels1(using self, userData: *void, stmt: code)
-    {
-        jobsystem.parallelFor(@mkslice(pixels, size), cast(u32) bpp8, userData, stmt)
-    }
-
-    #[swag.macro]
     func visitPixels(using self, userData: *void, stmt: code)
     {
-        struct PixelJob
-        {
-            using base: jobsystem.Job
-            pix:        [..] u8
-            bpp8:       u8
-            userData:   *void
-        }
-
-        func jobEntry(jobData: *void)
-        {
-            oneJob := cast(*PixelJob) jobData
-            visitPixels(oneJob.pix, oneJob.bpp8, oneJob.userData)
-        }
-
-        func visitPixels(pix: [..] u8, bpp8: u8, userData: *void)
-        {
-            scan := @dataof(pix)
-            countof := @countof(pix)
-            loop countof / bpp8
-            {
-                #macro
-                {
-                    pix  := `scan
-                    data := `userData
-                    #[swag.noreturn]
-                    #mixin `stmt
-                }
-
-                scan += bpp8
-            }
-        }
-
-        if jobsystem.isSynchrone()
-        {
-            visitPixels(@mkslice(pixels, size), bpp8, userData)
-            return
-        }
-
-        numWorkers := jobsystem.getNumWorkers()
-        wh := width * height
-        splitSize := wh / numWorkers
-        lastSplitSize := splitSize + (wh - (splitSize * numWorkers))
-        splitSize *= bpp8
-        lastSplitSize *= bpp8
-
-        var jobs: Array'PixelJob
-        jobs.resize(cast(uint) numWorkers)
-
-        ptr := pixels
-        visit *j: jobs
-        {
-            sizeSlice := @index == jobs.count - 1 ? lastSplitSize : splitSize
-
-            j.base.lambda = &jobEntry
-            j.base.data = j
-            j.bpp8 = bpp8
-            j.userData = userData
-            j.pix = @mkslice(ptr, sizeSlice)
-            ptr += sizeSlice
-
-            jobsystem.scheduleJob(j)
-        }
-
-        visit *j: jobs jobsystem.waitJob(j)
+        jobsystem.parallelFor(@mkslice(pixels, size), cast(u32) bpp8, userData, stmt)
     }
 
     // Release the content of the image

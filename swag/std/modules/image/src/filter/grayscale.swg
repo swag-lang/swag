@@ -8,7 +8,7 @@ impl Image
         f := math.saturate(factor)
         if pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8
         {
-            visitPixels1(&f)
+            visitPixels(&f)
             {
                 pix := buffer
                 f := :cast(*f32) data
