@@ -122,9 +122,10 @@ struct BuildCfg
     bool              stackTrace   = true;
 
     // Bytecode
-    bool byteCodeOptimize = true;
-    bool byteCodeDebug    = true;
-    bool byteCodeInline   = true;
+    bool byteCodeOptimize    = true;
+    bool byteCodeDebug       = true;
+    bool byteCodeDebugInline = true;
+    bool byteCodeInline      = true;
 
     // Backend common
     bool backendDebugInformations = false;

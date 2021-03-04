@@ -404,17 +404,18 @@ namespace swag
         const SafetyAN  = 0x0001000000000000
         const SafetyAll = 0x000FF00000000000
         safetyGuards:   u64 = SafetyAll
-        stackTrace: bool = true
+        stackTrace = true
 
         // Bytecode
-        byteCodeOptimize: bool  = true
-        byteCodeDebug: bool     = false
-        byteCodeInline: bool    = true
+        byteCodeOptimize        = true
+        byteCodeDebug           = false
+        byteCodeDebugInline     = true
+        byteCodeInline          = true
 
         // Backend common
-        backendDebugInformations: bool  = false
-        backendOptimizeSpeed: bool      = false
-        backendOptimizeSize: bool       = false
+        backendDebugInformations  = false
+        backendOptimizeSpeed      = false
+        backendOptimizeSize       = false
 
         // Specific backend parameters
         backendLLVM:    BuildCfgBackendLLVM

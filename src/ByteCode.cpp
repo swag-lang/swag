@@ -34,14 +34,18 @@ void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** f
     if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl)
         return;
 
-    if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN) && ip->node->ownerInline->ownerFct == ip->node->ownerFct)
+    // When inside an inline block (and not a mixin), zap all inline chain to the caller
+    if (!bc->sourceFile || !bc->sourceFile->module->buildCfg.byteCodeDebugInline)
     {
-        auto n = ip->node;
-        while (n->ownerInline)
-            n = n->ownerInline;
-        *location = &n->token.startLocation;
-        *file     = n->sourceFile;
-        return;
+        if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN) && ip->node->ownerInline->ownerFct == ip->node->ownerFct)
+        {
+            auto n = ip->node;
+            while (n->ownerInline)
+                n = n->ownerInline;
+            *location = &n->token.startLocation;
+            *file     = n->sourceFile;
+            return;
+        }
     }
 
     *location = ip->location;
