@@ -35,6 +35,15 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             return;
         }
 
+        if (callParameter->semFlags & AST_SEM_AUTO_CODE_PARAM)
+        {
+            context.cptResolved                               = (int) context.parameters.size();
+            context.solvedParameters[context.cptResolved - 1] = parameters.back();
+            param->resolvedParameter                          = parameters.back();
+            param->index                                      = (int) parameters.size() - 1;
+            return;
+        }
+
         auto wantedParameter = isAfterVariadic ? parameters.back() : parameters[i];
         auto wantedTypeInfo  = wantedParameter->typeInfo;
 
@@ -350,6 +359,18 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
             continue;
 
         auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+
+        // If this is a code paramater added by the semantic, force to match the last parameter
+        // of the function
+        if (param->semFlags & AST_SEM_AUTO_CODE_PARAM)
+        {
+            context.cptResolved                               = (int) context.parameters.size();
+            context.solvedParameters[context.cptResolved - 1] = parameters.back();
+            param->resolvedParameter                          = parameters.back();
+            param->index                                      = (int) parameters.size() - 1;
+            break;
+        }
+
         if (param->namedParam.empty())
         {
             context.badSignatureInfos.badSignatureParameterIdx = i;

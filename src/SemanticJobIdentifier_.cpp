@@ -967,7 +967,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::NotEnoughGenericParameters:
     {
-        auto errNode = genericParameters ? genericParameters : node ? node : context->node;
+        auto errNode = genericParameters ? genericParameters : node ? node
+                                                                    : context->node;
         diag         = new Diagnostic{errNode, errNode->token, format("not enough generic parameters for %s", refNiceName.c_str())};
         note         = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
@@ -977,7 +978,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::TooManyGenericParameters:
     {
-        auto errNode = genericParameters ? genericParameters : node ? node : context->node;
+        auto errNode = genericParameters ? genericParameters : node ? node
+                                                                    : context->node;
         diag         = new Diagnostic{errNode, errNode->token, format("too many generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
         note         = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
@@ -2089,6 +2091,7 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
                         auto typeCode     = allocType<TypeInfoCode>();
                         typeCode->content = brother;
                         brother->flags |= AST_NO_SEMANTIC;
+                        fctCallParam->semFlags |= AST_SEM_AUTO_CODE_PARAM;
                         fctCallParam->typeInfo = typeCode;
                         codeNode->typeInfo     = typeCode;
                     }

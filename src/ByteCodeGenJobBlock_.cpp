@@ -90,6 +90,12 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     auto callParam = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
                     if (callParam->index == i)
                     {
+                        if (callParam->semFlags & AST_SEM_AUTO_CODE_PARAM)
+                        {
+                            covered = true;
+                            break;
+                        }
+
                         auto symbol = node->parametersScope->symTable.find(funcParam->token.text);
                         SWAG_ASSERT(symbol);
                         for (auto overload : symbol->overloads)
