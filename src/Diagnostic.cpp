@@ -93,7 +93,7 @@ void Diagnostic::report(bool verboseMode) const
 
         // Get all lines of code
         vector<Utf8> lines;
-        if (showMultipleCodeLines)
+        if (showMultipleCodeLines && errorLevel != DiagnosticLevel::CallStack && errorLevel != DiagnosticLevel::TraceError)
         {
             for (int i = -2; i <= 0; i++)
             {
@@ -134,7 +134,7 @@ void Diagnostic::report(bool verboseMode) const
         }
 
         // Show "^^^^^^^"
-        if (showRange && !lines.empty())
+        if (showRange && !lines.empty() && errorLevel != DiagnosticLevel::CallStack && errorLevel != DiagnosticLevel::TraceError)
         {
             for (int i = 0; i < 6; i++)
                 g_Log.print(" ");
@@ -177,8 +177,6 @@ void Diagnostic::report(bool verboseMode) const
                 g_Log.print("^");
             g_Log.eol();
         }
-
-        g_Log.eol();
     }
 
     g_Log.setDefaultColor();
