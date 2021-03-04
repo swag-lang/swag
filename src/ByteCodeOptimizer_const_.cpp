@@ -4,7 +4,7 @@
 #include "ByteCodeRun.h"
 #include "Log.h"
 
-#define OK() context->passHasDoneSomething = true;
+#define OK() context->passHasDoneSomething = true; ip->flags &= ~BCI_IMM_A;
 #define CMP3(__a, __b) __a < __b ? -1 : (__a > __b ? 1 : 0)
 
 #define BINOP_S32(__op)                     \

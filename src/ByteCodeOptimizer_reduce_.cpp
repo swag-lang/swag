@@ -8,6 +8,9 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        if (ip->op == ByteCodeOp::DebugNop && ip->location == ip[1].location)
+            setNop(context, ip);
+
         // Compare to 0
         if (ip->op == ByteCodeOp::CompareOpEqual8 && ip->b.u8 == 0 && ip->flags & BCI_IMM_B)
         {
@@ -94,6 +97,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         {
             ip[1].op    = ByteCodeOp::SetImmediate32;
             ip[1].b.u64 = ip[0].b.u8;
+            ip[1].flags &= ~BCI_IMM_A;
             ip[1].flags |= BCI_IMM_B;
             context->passHasDoneSomething = true;
         }
@@ -106,6 +110,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         {
             ip[1].op    = ByteCodeOp::SetImmediate32;
             ip[1].b.u64 = ip[0].b.u16;
+            ip[1].flags &= ~BCI_IMM_A;
             ip[1].flags |= BCI_IMM_B;
             context->passHasDoneSomething = true;
         }
@@ -118,6 +123,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         {
             ip[1].op    = ByteCodeOp::SetImmediate32;
             ip[1].b.u64 = ip[0].b.u32;
+            ip[1].flags &= ~BCI_IMM_A;
             ip[1].flags |= BCI_IMM_B;
             context->passHasDoneSomething = true;
         }
@@ -130,6 +136,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         {
             ip[1].op    = ByteCodeOp::SetImmediate64;
             ip[1].b.u64 = ip[0].b.u64;
+            ip[1].flags &= ~BCI_IMM_A;
             ip[1].flags |= BCI_IMM_B;
             context->passHasDoneSomething = true;
         }

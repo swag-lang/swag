@@ -66,6 +66,7 @@ struct ByteCodeOptimizer
 
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void optimizePassJumps(ByteCodeOptContext* context);
+    static void optimizePassLoop(ByteCodeOptContext* context);
     static void optimizePassDeadCode(ByteCodeOptContext* context);
     static void optimizePassEmptyFct(ByteCodeOptContext* context);
     static void optimizePassDeadStore(ByteCodeOptContext* context);

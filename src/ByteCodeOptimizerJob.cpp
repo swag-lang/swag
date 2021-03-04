@@ -24,6 +24,7 @@ ByteCodeOptimizerJob::ByteCodeOptimizerJob()
     passes.push_back(ByteCodeOptimizer::optimizePassReduce);
     passes.push_back(ByteCodeOptimizer::optimizePassReduce2);
     passes.push_back(ByteCodeOptimizer::optimizePassDeadStore2);
+    passes.push_back(ByteCodeOptimizer::optimizePassLoop);
 }
 
 bool ByteCodeOptimizerJob::optimize(bool isAsync)
