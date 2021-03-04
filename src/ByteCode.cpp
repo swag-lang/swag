@@ -387,5 +387,15 @@ bool ByteCode::isDoingNothing()
         }
     }
 
+    if (numInstructions == 4)
+    {
+        if (out[0].op == ByteCodeOp::ClearRA &&
+            out[1].op == ByteCodeOp::IntrinsicSetErr &&
+            out[2].op == ByteCodeOp::Ret)
+        {
+            return true;
+        }
+    }
+
     return false;
 }
