@@ -49,12 +49,6 @@ void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** f
     }
 
     *location = ip->location;
-
-    if (ip->flags & BCI_LOCATION_IS_BC)
-    {
-        if (ip->locationBC < bc->numInstructions)
-            *location = bc->out[ip->locationBC].location;
-    }
 }
 
 Utf8 ByteCode::callName()
