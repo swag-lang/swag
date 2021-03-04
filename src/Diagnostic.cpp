@@ -39,6 +39,11 @@ void Diagnostic::report(bool verboseMode) const
             g_Log.setColor(LogColor::DarkYellow);
         g_Log.print("callstack: ");
         break;
+    case DiagnosticLevel::CallStackInlined:
+        if (!verboseMode)
+            g_Log.setColor(LogColor::DarkYellow);
+        g_Log.print("inlined: ");
+        break;
     case DiagnosticLevel::TraceError:
         if (!verboseMode)
             g_Log.setColor(LogColor::DarkYellow);
@@ -93,7 +98,10 @@ void Diagnostic::report(bool verboseMode) const
 
         // Get all lines of code
         vector<Utf8> lines;
-        if (showMultipleCodeLines && errorLevel != DiagnosticLevel::CallStack && errorLevel != DiagnosticLevel::TraceError)
+        if (showMultipleCodeLines &&
+            errorLevel != DiagnosticLevel::CallStack &&
+            errorLevel != DiagnosticLevel::CallStackInlined &&
+            errorLevel != DiagnosticLevel::TraceError)
         {
             for (int i = -2; i <= 0; i++)
             {
@@ -134,7 +142,10 @@ void Diagnostic::report(bool verboseMode) const
         }
 
         // Show "^^^^^^^"
-        if (showRange && !lines.empty() && errorLevel != DiagnosticLevel::CallStack && errorLevel != DiagnosticLevel::TraceError)
+        if (showRange && !lines.empty() &&
+            errorLevel != DiagnosticLevel::CallStack &&
+            errorLevel != DiagnosticLevel::CallStackInlined &&
+            errorLevel != DiagnosticLevel::TraceError)
         {
             for (int i = 0; i < 6; i++)
                 g_Log.print(" ");
