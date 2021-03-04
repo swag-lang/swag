@@ -88,7 +88,7 @@ void ByteCode::addCallStack(ByteCodeRunContext* context)
 
     ByteCodeStackStep stackStep;
     stackStep.bc = context->bc;
-    stackStep.ip = context->ip;
+    stackStep.ip = context->ip - 1;
     g_byteCodeStack.push(stackStep);
 }
 

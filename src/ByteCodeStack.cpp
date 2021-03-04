@@ -32,6 +32,8 @@ void ByteCodeStack::log()
             diag.report();
         }
     }
+
+    g_byteCodeStack.clear();
 }
 
 void ByteCodeStack::reportError(const Utf8& msg)

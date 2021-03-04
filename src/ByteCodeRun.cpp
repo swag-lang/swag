@@ -2768,8 +2768,8 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         bool inRunError = false;
         if (runContext->ip && runContext->ip->node && runContext->ip->node->sourceFile)
         {
-            runContext->ip--; // ip is the next pointer instruction
-            auto path1 = normalizePath(fs::path(runContext->ip->node->sourceFile->path.c_str()));
+            auto ip    = runContext->ip - 1; // ip is the next pointer instruction
+            auto path1 = normalizePath(fs::path(ip->node->sourceFile->path.c_str()));
             auto path2 = normalizePath(fs::path(fileName.c_str()));
 
             SourceFile*     file;
