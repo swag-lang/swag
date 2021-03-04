@@ -16,14 +16,16 @@ void ByteCodeStack::log()
     {
         const auto& step = steps[i];
         auto        ip   = step.ip;
+        if (!ip->node)
+            continue;
 
         // Current ip
-        auto sourceFile = ip->node && ip->node->sourceFile ? ip->node->sourceFile : step.bc->sourceFile;
+        auto sourceFile = ip->node->sourceFile;
         auto location   = ip->location;
-        if (step.bc->node && step.bc->node->kind == AstNodeKind::FuncDecl)
+        auto fct        = ip->node->ownerInline && ip->node->ownerInline->ownerFct == ip->node->ownerFct ? ip->node->ownerInline->func : ip->node->ownerFct;
+        if (fct)
         {
-            auto       funcDecl = CastAst<AstFuncDecl>(step.bc->node, AstNodeKind::FuncDecl);
-            Diagnostic diag{sourceFile, *location, funcDecl->getNameForMessage().c_str(), DiagnosticLevel::CallStack};
+            Diagnostic diag{sourceFile, *location, fct->getNameForMessage().c_str(), DiagnosticLevel::CallStack};
             diag.report();
         }
         else
@@ -33,26 +35,27 @@ void ByteCodeStack::log()
         }
 
         // #mixin
-        if (ip->node && ip->node->flags & AST_IN_MIXIN)
+        if (ip->node->flags & AST_IN_MIXIN)
         {
             auto owner = ip->node->parent;
-            while (owner->kind != AstNodeKind::CompilerMixin)
+            while (owner && owner->kind != AstNodeKind::CompilerMixin)
                 owner = owner->parent;
-            auto       fct = owner->ownerInline && owner->ownerInline->ownerFct == ip->node->ownerFct ? owner->ownerInline->func : owner->ownerFct;
-            Diagnostic diag{owner->sourceFile, owner->token.startLocation, fct->getNameForMessage().c_str(), DiagnosticLevel::CallStackInlined};
-            diag.report();
+            if (owner)
+            {
+                fct = owner->ownerInline && owner->ownerInline->ownerFct == ip->node->ownerFct ? owner->ownerInline->func : owner->ownerFct;
+                Diagnostic diag{owner->sourceFile, owner->token.startLocation, fct->getNameForMessage().c_str(), DiagnosticLevel::CallStackInlined};
+                diag.report();
+            }
         }
 
         // Inline chain
-        if (ip->node)
+        auto parent = ip->node->ownerInline;
+        while (parent && parent->ownerFct == ip->node->ownerFct)
         {
-            auto parent = ip->node->ownerInline;
-            while (parent && parent->ownerFct == ip->node->ownerFct)
-            {
-                Diagnostic diag{parent->sourceFile, parent->token.startLocation, parent->ownerFct->getNameForMessage().c_str(), DiagnosticLevel::CallStackInlined};
-                diag.report();
-                parent = parent->ownerInline;
-            }
+            fct = parent->ownerInline && parent->ownerInline->ownerFct == ip->node->ownerFct ? parent->ownerInline->func : parent->ownerFct;
+            Diagnostic diag{parent->sourceFile, parent->token.startLocation, fct->getNameForMessage().c_str(), DiagnosticLevel::CallStackInlined};
+            diag.report();
+            parent = parent->ownerInline;
         }
     }
 

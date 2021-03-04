@@ -5,7 +5,7 @@ using core
 #test
 {
 	var x: Array'u32
-    x.resize(100)
+    x.resize(1)
 
     jobs.parallelVisit(x.toSlice(), 1, null)
     {
