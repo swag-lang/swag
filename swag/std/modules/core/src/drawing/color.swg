@@ -93,6 +93,48 @@ impl Color
         }
     }
 
+    // Set color with hue, saturation, lightness
+    func setHSL(using self, h, s, l: f32)
+    {
+        func hueToCol(m1, m2, hue: f32)->u8
+        {
+            h := hue
+            if h < 0 h += 1
+            if h > 1 h -= 1
+
+            var v: f32 = ?
+            if 6 * h < 1
+                v = m1 + (m2 - m1) * h * 6
+            else if 2 * h < 1
+                v = m2
+            else if 3 * h < 2
+                v = m1 + (m2 - m1) * ((2.0 / 3.0) - h) * 6
+            else
+                v = m1
+
+            return cast(u8) (v * 255)
+        }
+
+        _h := math.clamp(h, 0.0, 1.0)
+        _l := math.clamp(l, 0.0, 1.0)
+        _s := math.clamp(s, 0.0, 1.0)
+
+        if _s == 0
+        {
+            r = cast(u8) (255 * _l)
+            g = r
+            b = r
+        }
+        else
+        {
+            m2 := _l < 0.5 ? _l * (1 + _s) : (_l + _s) - (_l * _s)
+            m1 := 2 * _l - m2
+            r = hueToCol(m1, m2, _h + (1.0 / 3.0))
+            g = hueToCol(m1, m2, _h)
+            b = hueToCol(m1, m2, _h - (1.0 / 3.0))
+        }
+    }
+
     // Returns hue, saturation, lightness
     func getHSL(using self) -> {h: f32, s: f32, l: f32}
     {
