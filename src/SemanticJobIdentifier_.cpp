@@ -1635,6 +1635,11 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
     auto        genericParameters = firstMatch.genericParameters;
     unique_lock lk(symbol->mutex);
 
+    // If we are inside a generic function (not instantiated), then we are done, we
+    // cannot instantiate (can occure when evaluating function body of an incomplete short lammbda
+    if (node->ownerFct && node->ownerFct->flags & AST_IS_GENERIC)
+        return true;
+
     // Be sure we don't have more overloads waiting to be solved
     if (symbol->cptOverloads)
     {
