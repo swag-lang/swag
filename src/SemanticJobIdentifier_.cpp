@@ -1687,7 +1687,7 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
     return true;
 }
 
-bool SemanticJob::ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* identifierRef, SymbolName* symbol)
+bool SemanticJob::ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match)
 {
     auto node = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
     if (node->callParameters)
@@ -1699,10 +1699,15 @@ bool SemanticJob::ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* i
 
     auto rightAffect = node->identifierRef->parent->childs[1];
 
+    SWAG_ASSERT(match.symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr);
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(match.symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+    SWAG_ASSERT(typeFunc->parameters.size());
+
     auto fctCallParam = Ast::newNode<AstFuncCallParam>(nullptr, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
     if (!node->callParameters)
         node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
     node->callParameters->childs.push_back(fctCallParam);
+    fctCallParam->index    = (int) typeFunc->parameters.size() - 1;
     fctCallParam->parent   = node->callParameters;
     fctCallParam->typeInfo = rightAffect->typeInfo;
     SWAG_ASSERT(fctCallParam->typeInfo);
@@ -2711,7 +2716,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 identifierRef->previousResolvedNode   = match->dependentVar;
             }
 
-            SWAG_CHECK(ufcsSetLastParam(context, identifierRef, match->symbolOverload->symbol));
+            SWAG_CHECK(ufcsSetLastParam(context, identifierRef, *match));
             SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, *match));
         }
     }
