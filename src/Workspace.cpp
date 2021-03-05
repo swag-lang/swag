@@ -445,6 +445,77 @@ void Workspace::setupTarget()
     cachePath += "/";
 }
 
+void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
+{
+    vector<PendingJob> newPending;
+
+    // Filters
+    for (auto& it : pendingJobs)
+    {
+        if (it.id == "WAIT_SYMBOL")
+            newPending.push_back(it);
+    }
+
+    if (!newPending.empty())
+        pendingJobs = newPending;
+
+    // Raise errors
+    for (auto& it : pendingJobs)
+    {
+        auto  pendingJob = it.pendingJob;
+        auto  node       = it.node;
+        auto& id         = it.id;
+        auto  sourceFile = pendingJob->sourceFile;
+
+        if (node->kind == AstNodeKind::FuncDeclType)
+            node = node->parent;
+        Utf8 name = node->token.text;
+
+        // Job is not done, and we do not wait for a specific identifier
+        auto toSolve = pendingJob->waitingSymbolSolved;
+        if (!toSolve && !node->token.text.empty())
+        {
+            Diagnostic diag{node, node->token, format("module '%s', cannot resolve %s '%s'", pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), name.c_str())};
+            diag.remarks.push_back(id);
+            sourceFile->report(diag);
+            continue;
+        }
+
+        if (!toSolve)
+        {
+            Diagnostic diag{node, node->token, format("module '%s', cannot resolve %s", pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str())};
+            diag.remarks.push_back(id);
+            sourceFile->report(diag);
+            continue;
+        }
+
+        // We have an identifier
+        SWAG_ASSERT(!toSolve->nodes.empty());
+        auto declNode = toSolve->nodes.front();
+
+        Utf8 msg;
+        if (toSolve->kind == SymbolKind::PlaceHolder)
+            msg = format("placeholder identifier '%s' has not been solved", toSolve->name.c_str());
+        else
+            msg = format("identifier '%s' has not been solved (do you have a cycle ?)", toSolve->name.c_str());
+
+        // a := func(a) for example
+        if (toSolve->kind == SymbolKind::Variable &&
+            declNode->kind == AstNodeKind::VarDecl &&
+            declNode->sourceFile == node->sourceFile &&
+            declNode->token.startLocation.line == node->token.startLocation.line)
+        {
+            msg = format("variable '%s' is used before being declared", toSolve->name.c_str());
+        }
+
+        Diagnostic diag{node, node->token, msg};
+        diag.remarks.push_back(id);
+
+        Diagnostic note{declNode, declNode->token, "this is the declaration", DiagnosticLevel::Note};
+        sourceFile->report(diag, &note);
+    }
+}
+
 void Workspace::checkPendingJobs()
 {
     if (g_ThreadMgr.waitingJobs.empty())
@@ -453,6 +524,9 @@ void Workspace::checkPendingJobs()
     set<SymbolName*> doneSymbols;
     set<Utf8>        doneIds;
 
+    // Collect unsolved jobs
+    vector<PendingJob> pendingJobsWithSymbol;
+    vector<PendingJob> pendingJobs;
     for (auto pendingJob : g_ThreadMgr.waitingJobs)
     {
         auto sourceFile = pendingJob->sourceFile;
@@ -506,55 +580,20 @@ void Workspace::checkPendingJobs()
             doneIds.insert(doneId);
         }
 
-        if (node->kind == AstNodeKind::FuncDeclType)
-            node = node->parent;
-        Utf8 name = node->token.text;
-
-        // Job is not done, and we do not wait for a specific identifier
-        auto toSolve = pendingJob->waitingSymbolSolved;
-        if (!toSolve && !node->token.text.empty())
-        {
-            Diagnostic diag{node, node->token, format("module '%s', cannot resolve %s '%s'", pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), name.c_str())};
-            diag.remarks.push_back(id);
-            sourceFile->report(diag);
-        }
-        else if (!toSolve)
-        {
-            Diagnostic diag{node, node->token, format("module '%s', cannot resolve %s", pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str())};
-            diag.remarks.push_back(id);
-            sourceFile->report(diag);
-        }
-
-        // We have an identifier
+        PendingJob pj;
+        pj.pendingJob = pendingJob;
+        pj.node       = node;
+        pj.id         = id;
+        if (pendingJob->waitingSymbolSolved)
+            pendingJobsWithSymbol.push_back(pj);
         else
-        {
-            SWAG_ASSERT(!toSolve->nodes.empty());
-            auto declNode = toSolve->nodes.front();
-
-            Utf8 msg;
-            if (toSolve->kind == SymbolKind::PlaceHolder)
-                msg = format("placeholder identifier '%s' has not been solved", toSolve->name.c_str());
-            else
-                msg = format("identifier '%s' has not been solved (do you have a cycle ?)", toSolve->name.c_str());
-
-            // a := func(a) for example
-            if (toSolve->kind == SymbolKind::Variable &&
-                declNode->kind == AstNodeKind::VarDecl &&
-                declNode->sourceFile == node->sourceFile &&
-                declNode->token.startLocation.line == node->token.startLocation.line)
-            {
-                msg = format("variable '%s' is used before being declared", toSolve->name.c_str());
-            }
-
-            Diagnostic diag{node, node->token, msg};
-            diag.remarks.push_back(id);
-
-            Diagnostic note{declNode, declNode->token, "this is the declaration", DiagnosticLevel::Note};
-            sourceFile->report(diag, &note);
-        }
-
-        sourceFile->module->numErrors = 0;
+            pendingJobs.push_back(pj);
     }
+
+    if (!pendingJobsWithSymbol.empty())
+        errorPendingJobs(pendingJobsWithSymbol);
+    else
+        errorPendingJobs(pendingJobs);
 }
 
 bool Workspace::buildTarget()

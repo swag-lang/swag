@@ -5,6 +5,7 @@
 struct Module;
 struct Scope;
 struct SourceFile;
+struct AstNode;
 enum class ModuleKind;
 
 #define SWAG_CACHE_FOLDER "swag_cache"
@@ -28,8 +29,16 @@ struct OneTag
     ComputedValue value;
 };
 
+struct PendingJob
+{
+    Job*     pendingJob;
+    AstNode* node;
+    Utf8     id;
+};
+
 struct Workspace
 {
+    void    errorPendingJobs(vector<PendingJob>& pendingJobs);
     void    checkPendingJobs();
     bool    buildTarget();
     bool    build();
