@@ -366,6 +366,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
                 t->callParameters    = left->parent;
                 t->dependentVar      = nullptr;
                 t->cptOverloads      = (uint32_t) symbol->overloads.size();
+                t->cptOverloadsInit  = symbol->cptOverloadsInit;
                 listTryMatch.push_back(t);
             }
         }

@@ -32,6 +32,7 @@ struct OneOverload
 {
     SymbolOverload* overload;
     uint32_t        cptOverloads;
+    uint32_t        cptOverloadsInit;
 };
 
 struct OneTryMatch
@@ -42,6 +43,7 @@ struct OneTryMatch
     AstNode*           callParameters    = nullptr;
     AstNode*           genericParameters = nullptr;
     uint32_t           cptOverloads      = 0;
+    uint32_t           cptOverloadsInit  = 0;
     bool               ufcs              = false;
 
     void reset()
@@ -87,19 +89,20 @@ struct OneGenericMatch
     SymbolOverload* symbolOverload    = nullptr;
     AstNode*        genericParameters = nullptr;
 
-    uint32_t matchNumOverloadsWhenChecked = 0;
-    uint32_t flags                        = 0;
+    uint32_t numOverloadsWhenChecked     = 0;
+    uint32_t numOverloadsInitWhenChecked = 0;
+    uint32_t flags                       = 0;
 
     void reset()
     {
         genericParametersCallTypes.clear();
         genericParametersGenTypes.clear();
         genericReplaceTypes.clear();
-        symbolName                   = nullptr;
-        symbolOverload               = nullptr;
-        genericParameters            = nullptr;
-        matchNumOverloadsWhenChecked = 0;
-        flags                        = 0;
+        symbolName              = nullptr;
+        symbolOverload          = nullptr;
+        genericParameters       = nullptr;
+        numOverloadsWhenChecked = 0;
+        flags                   = 0;
     }
 };
 

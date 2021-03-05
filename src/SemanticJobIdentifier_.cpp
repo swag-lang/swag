@@ -1431,15 +1431,16 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         {
             if (overload->flags & OVERLOAD_GENERIC)
             {
-                auto* match                         = job->getOneGenericMatch();
-                match->flags                        = oneOverload.symMatchContext.flags;
-                match->symbolName                   = symbol;
-                match->symbolOverload               = overload;
-                match->genericParametersCallTypes   = move(oneOverload.symMatchContext.genericParametersCallTypes);
-                match->genericParametersGenTypes    = move(oneOverload.symMatchContext.genericParametersGenTypes);
-                match->genericReplaceTypes          = move(oneOverload.symMatchContext.genericReplaceTypes);
-                match->genericParameters            = genericParameters;
-                match->matchNumOverloadsWhenChecked = oneOverload.cptOverloads;
+                auto* match                        = job->getOneGenericMatch();
+                match->flags                       = oneOverload.symMatchContext.flags;
+                match->symbolName                  = symbol;
+                match->symbolOverload              = overload;
+                match->genericParametersCallTypes  = move(oneOverload.symMatchContext.genericParametersCallTypes);
+                match->genericParametersGenTypes   = move(oneOverload.symMatchContext.genericParametersGenTypes);
+                match->genericReplaceTypes         = move(oneOverload.symMatchContext.genericReplaceTypes);
+                match->genericParameters           = genericParameters;
+                match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
+                match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
                 if (overload->node->flags & AST_HAS_SELECT_IF)
                     genericMatchesSI.push_back(match);
                 else
@@ -1485,15 +1486,14 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
         for (auto& g : genericMatchesSI)
         {
-            // Be sure we don't have more overloads waiting to be solved
-            if (g->symbolName->cptOverloads)
+            // Be sure number of overloads has not changed since then
+            if (g->numOverloadsWhenChecked != g->symbolName->overloads.size())
             {
-                job->waitForSymbolNoLock(g->symbolName);
+                context->result = ContextResult::NewChilds;
                 break;
             }
 
-            // Be sure number of overloads has not changed since then
-            if (g->matchNumOverloadsWhenChecked != g->symbolName->overloads.size())
+            if (g->numOverloadsInitWhenChecked != g->symbolName->cptOverloadsInit)
             {
                 context->result = ContextResult::NewChilds;
                 break;
@@ -1640,16 +1640,14 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
     if (node->ownerFct && node->ownerFct->flags & AST_IS_GENERIC)
         return true;
 
-    // Be sure we don't have more overloads waiting to be solved
-    if (symbol->cptOverloads)
+    // Be sure number of overloads has not changed since then
+    if (firstMatch.numOverloadsWhenChecked != symbol->overloads.size())
     {
-        if (context->result == ContextResult::Done)
-            job->waitForSymbolNoLock(symbol);
+        context->result = ContextResult::NewChilds;
         return true;
     }
 
-    // Be sure number of overloads has not changed since then
-    if (firstMatch.matchNumOverloadsWhenChecked != symbol->overloads.size())
+    if (firstMatch.numOverloadsInitWhenChecked != symbol->cptOverloadsInit)
     {
         context->result = ContextResult::NewChilds;
         return true;
@@ -2634,8 +2632,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             for (auto over : symbol->overloads)
             {
                 OneOverload t;
-                t.overload     = over;
-                t.cptOverloads = (uint32_t) symbol->overloads.size();
+                t.overload         = over;
+                t.cptOverloads     = (uint32_t) symbol->overloads.size();
+                t.cptOverloadsInit = (uint32_t) symbol->cptOverloadsInit;
                 toSolveOverload.push_back(t);
             }
         }
@@ -2680,6 +2679,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             tryMatch->overload          = symbolOverload;
             tryMatch->ufcs              = ufcsFirstParam || ufcsLastParam;
             tryMatch->cptOverloads      = oneOver.cptOverloads;
+            tryMatch->cptOverloadsInit  = oneOver.cptOverloadsInit;
 
             SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, node, symbolOverload, ufcsFirstParam, ufcsLastParam));
             if (context->result == ContextResult::Pending)
