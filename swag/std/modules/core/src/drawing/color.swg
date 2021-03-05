@@ -94,13 +94,13 @@ impl Color
     }
 
     // Returns hue, saturation, lightness
-    func getHSL(using self)->{h: f32, s: f32, l: f32}
+    func getHSL(using self) -> {h: f32, s: f32, l: f32}
     {
         var result: retval = ?
 
         (rf, gf, bf) := toRgbf()
-        max := math.max(rf, math.max(gf, bf))
-        min := math.min(rf, math.min(gf, bf))
+        max := math.max(rf, gf, bf)
+        min := math.min(rf, gf, bf)
         result.l = (max + min) * 0.5
         delta := max - min
         if delta == 0
