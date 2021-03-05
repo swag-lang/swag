@@ -1,7 +1,8 @@
 #global namespace drawing
+#global public
 using swag
 
-public struct Color
+struct Color
 {
     #if BIG_ENDIAN
     {
@@ -17,7 +18,7 @@ public struct Color
     }
 }
 
-public impl Color
+impl Color
 {
     #[inline]
     {
@@ -70,8 +71,8 @@ public impl Color
             self.b = autocast (math.clamp(b, 0, 1) * 255)
         }
 
-        // Retreive all components as floating point values between 0 and 1.
-        func toFloat(self) -> {a: f32, r: f32, g: f32, b: f32}
+        // Retreive all components as floating point values between 0 and 1
+        func toArgbf(self) -> {a: f32, r: f32, g: f32, b: f32}
         {
             var result: retval = ?
             result.a = self.a / 255.0'f32
@@ -80,5 +81,56 @@ public impl Color
             result.b = self.b / 255.0'f32
             return result
         }
+
+        // Retreive all components as floating point values between 0 and 1
+        func toRgbf(self) -> {r: f32, g: f32, b: f32}
+        {
+            var result: retval = ?
+            result.r = self.r / 255.0'f32
+            result.g = self.g / 255.0'f32
+            result.b = self.b / 255.0'f32
+            return result
+        }
+    }
+
+    // Returns hue, saturation, lightness
+    func getHSL(using self)->{h: f32, s: f32, l: f32}
+    {
+        var result: retval = ?
+
+        (rf, gf, bf) := toRgbf()
+        max := math.max(rf, math.max(gf, bf))
+        min := math.min(rf, math.min(gf, bf))
+        result.l    = (max + min) * 0.5
+        delta := max - min
+        if delta == 0
+        {
+            result.s = 0
+            result.h = 0
+            return result
+        }
+
+        if result.l < 0.5
+            result.s = delta / (max + min)
+        else
+            result.s = delta / (2 - max - min)
+
+        delr := (((max - rf) / 6) + (delta * 0.5)) / delta
+        delg := (((max - gf) / 6) + (delta * 0.5)) / delta
+        delb := (((max - bf) / 6) + (delta * 0.5)) / delta
+
+        if rf == max
+            result.h = delb - delg
+        else if gf == max
+            result.h = (1.0 / 3.0) + delr - delb
+        else
+            result.h = (2.0 / 3.0) + delg - delr
+
+        if (result.h < 0)
+            result.h += 1
+        if (result.h > 1)
+            result.h -= 1
+
+        return result
     }
 }
