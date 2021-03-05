@@ -101,7 +101,7 @@ impl Color
         (rf, gf, bf) := toRgbf()
         max := math.max(rf, math.max(gf, bf))
         min := math.min(rf, math.min(gf, bf))
-        result.l    = (max + min) * 0.5
+        result.l = (max + min) * 0.5
         delta := max - min
         if delta == 0
         {
