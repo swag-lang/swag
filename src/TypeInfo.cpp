@@ -15,16 +15,13 @@ void TypeInfo::forceComputeName()
     computeName();
 }
 
-void TypeInfo::getScopedName(Utf8& newName, bool forExport)
+void TypeInfo::getScopedName(Utf8& newName)
 {
     if (declNode && declNode->ownerScope)
     {
         if (declNode->ownerScope->kind != ScopeKind::Function)
         {
-            /*if (forExport)
-                newName += declNode->ownerScope->getFullNameForeign();
-            else*/
-            newName += declNode->ownerScope->getFullNameType(declNode);
+            newName += declNode->ownerScope->getFullName();
             if (!newName.empty())
                 newName += ".";
         }
@@ -41,9 +38,6 @@ const Utf8& TypeInfo::computeName(int mode)
     case COMPUTE_NAME_SCOPED:
         computeScopedName();
         return scopedName;
-    case COMPUTE_NAME_EXPORT:
-        computeScopedNameExport();
-        return scopedNameExport;
     default:
         SWAG_ASSERT(false);
         return name;
@@ -55,17 +49,8 @@ void TypeInfo::computeScopedName()
     scoped_lock lk(mutex);
     if (!scopedName.empty())
         return;
-    getScopedName(scopedName, false);
+    getScopedName(scopedName);
     scopedName += name;
-}
-
-void TypeInfo::computeScopedNameExport()
-{
-    scoped_lock lk(mutex);
-    if (!scopedNameExport.empty())
-        return;
-    getScopedName(scopedNameExport, true);
-    scopedNameExport += name;
 }
 
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)

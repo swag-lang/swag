@@ -158,17 +158,6 @@ void TypeInfoReference::computeScopedName()
     scopedName += pointedType->scopedName;
 }
 
-void TypeInfoReference::computeScopedNameExport()
-{
-    unique_lock lk(mutex);
-    if (!scopedNameExport.empty())
-        return;
-
-    computePreName(scopedNameExport);
-    pointedType->computeScopedNameExport();
-    scopedNameExport += pointedType->scopedNameExport;
-}
-
 void TypeInfoReference::computeName()
 {
     unique_lock lk(mutex);
@@ -223,22 +212,6 @@ void TypeInfoPointer::computeScopedName()
         computePreName(scopedName);
         pointedType->computeScopedName();
         scopedName += pointedType->scopedName;
-    }
-}
-
-void TypeInfoPointer::computeScopedNameExport()
-{
-    unique_lock lk(mutex);
-    if (!scopedNameExport.empty())
-        return;
-
-    if (!pointedType) // "null"
-        scopedNameExport = name;
-    else
-    {
-        computePreName(scopedNameExport);
-        pointedType->computeScopedNameExport();
-        scopedNameExport += pointedType->scopedNameExport;
     }
 }
 
@@ -352,17 +325,6 @@ void TypeInfoArray::computeScopedName()
     computePreName(scopedName);
     pointedType->computeScopedName();
     scopedName += pointedType->scopedName;
-}
-
-void TypeInfoArray::computeScopedNameExport()
-{
-    unique_lock lk(mutex);
-    if (!scopedNameExport.empty())
-        return;
-
-    computePreName(scopedNameExport);
-    pointedType->computeScopedNameExport();
-    scopedNameExport += pointedType->scopedNameExport;
 }
 
 void TypeInfoArray::computeName()
@@ -635,7 +597,7 @@ void TypeInfoFuncAttr::computeScopedName()
     if (!scopedName.empty())
         return;
 
-    getScopedName(scopedName, false);
+    getScopedName(scopedName);
 
     // Function types are scoped with the name, because two functions of the exact same type
     // (parameters and return value) should have a different concrete type info, because of attributes
@@ -643,22 +605,6 @@ void TypeInfoFuncAttr::computeScopedName()
         scopedName += declNode->token.text;
 
     computeName(scopedName, COMPUTE_NAME_SCOPED);
-}
-
-void TypeInfoFuncAttr::computeScopedNameExport()
-{
-    unique_lock lk(mutex);
-    if (!scopedNameExport.empty())
-        return;
-
-    getScopedName(scopedNameExport, true);
-
-    // Function types are scoped with the name, because two functions of the exact same type
-    // (parameters and return value) should have a different concrete type info, because of attributes
-    if (declNode && declNode->kind == AstNodeKind::FuncDecl)
-        scopedNameExport += declNode->token.text;
-
-    computeName(scopedNameExport, COMPUTE_NAME_EXPORT);
 }
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
@@ -1017,7 +963,30 @@ void TypeInfoStruct::computeScopedName()
     if (!scopedName.empty())
         return;
 
-    getScopedName(scopedName, false);
+    // For a tuple, we use the tuple syntax
+    if (flags & TYPEINFO_STRUCT_IS_TUPLE)
+    {
+        scopedName += "{";
+        for (int i = 0; i < fields.size(); i++)
+        {
+            auto p = fields[i];
+            if (i)
+                scopedName += ", ";
+            p->typeInfo->computeScopedName();
+            if (!p->namedParam.empty() && !(p->flags & TYPEINFO_AUTO_NAME))
+            {
+                scopedName += p->namedParam;
+                scopedName += ": ";
+            }
+
+            scopedName += p->typeInfo->scopedName;
+        }
+
+        scopedName += "}";
+        return;
+    }
+
+    getScopedName(scopedName);
     scopedName += structName;
 
     if (!genericParameters.empty())
@@ -1042,67 +1011,6 @@ void TypeInfoStruct::computeScopedName()
         }
 
         scopedName += ")";
-    }
-}
-
-void TypeInfoStruct::computeScopedNameExport()
-{
-    unique_lock lk(mutex);
-    if (!scopedNameExport.empty())
-        return;
-
-    // Exporting a tuple. Need to use the tuple syntax
-    if (flags & TYPEINFO_STRUCT_IS_TUPLE)
-    {
-        scopedNameExport += "{";
-        for (int i = 0; i < fields.size(); i++)
-        {
-            auto p = fields[i];
-            if (i)
-                scopedNameExport += ", ";
-            p->typeInfo->computeScopedNameExport();
-            if (!p->namedParam.empty() && !(p->flags & TYPEINFO_AUTO_NAME))
-            {
-                scopedNameExport += p->namedParam;
-                scopedNameExport += ": ";
-            }
-
-            scopedNameExport += p->typeInfo->scopedNameExport;
-        }
-
-        scopedNameExport += "}";
-        return;
-    }
-
-    getScopedName(scopedNameExport, true);
-    scopedNameExport += structName;
-
-    if (!genericParameters.empty())
-    {
-        scopedNameExport += "'";
-        if (genericParameters.size() > 1)
-            scopedNameExport += "(";
-        for (int i = 0; i < genericParameters.size(); i++)
-        {
-            if (i)
-                scopedNameExport += ", ";
-
-            auto genParam = genericParameters[i];
-            if (genParam->flags & TYPEINFO_DEFINED_VALUE)
-            {
-                SWAG_ASSERT(genParam->typeInfo);
-                auto str = Ast::literalToString(genParam->typeInfo, genParam->value.text, genParam->value.reg);
-                scopedNameExport += str;
-            }
-            else
-            {
-                genParam->typeInfo->computeScopedNameExport();
-                scopedNameExport += genParam->typeInfo->scopedNameExport;
-            }
-        }
-
-        if (genericParameters.size() > 1)
-            scopedNameExport += ")";
     }
 }
 

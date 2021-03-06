@@ -223,14 +223,6 @@ Utf8 AstNode::computeScopedName()
     return fullName + "." + token.text.c_str();
 }
 
-Utf8 AstNode::computeScopedNameForeign()
-{
-    auto& fullName = ownerScope->getFullNameForeign();
-    if (fullName.empty())
-        return token.text;
-    return fullName + "." + token.text.c_str();
-}
-
 Utf8 AstNode::getArticleKindName(AstNode* node)
 {
     Utf8 result = getKindName(node);

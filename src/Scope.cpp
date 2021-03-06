@@ -66,13 +66,8 @@ const Utf8& Scope::getFullName()
     if (flags & SCOPE_PRIVATE)
         return name;
 
-    /*if (flags & SCOPE_IMPORTED)
-    {
-        auto np = CastAst<AstNameSpace>(owner, AstNodeKind::Namespace);
-        return np->importedModuleName;
-    }*/
-
     unique_lock lk(mutex);
+
     if (!fullname.empty())
         return fullname;
     if (parentScope)
@@ -80,52 +75,6 @@ const Utf8& Scope::getFullName()
     else
         fullname = name;
     return fullname;
-}
-
-const Utf8& Scope::getFullNameForeign()
-{
-    return getFullName();
-    /*if (flags & SCOPE_IMPORTED)
-    {
-        auto np = CastAst<AstNameSpace>(owner, AstNodeKind::Namespace);
-        return np->importedModuleName;
-    }
-
-    if (kind == ScopeKind::Module)
-        return owner->sourceFile->module->name;
-
-    unique_lock lk(mutex);
-    if (!fullnameForeign.empty())
-        return fullnameForeign;
-    if (parentScope)
-        makeFullName(fullnameForeign, parentScope->getFullNameForeign(), name);
-    else
-        fullnameForeign = name;
-
-    return fullnameForeign;*/
-}
-
-const Utf8& Scope::getFullNameType(AstNode* declNode)
-{
-    return getFullName();
-    /*if (flags & SCOPE_IMPORTED)
-    {
-        auto np = CastAst<AstNameSpace>(owner, AstNodeKind::Namespace);
-        return np->importedModuleName;
-    }
-
-    if (flags & SCOPE_PRIVATE)
-        return name;
-
-    unique_lock lk(mutex);
-    if (!fullnameType.empty())
-        return fullnameType;
-
-    if (parentScope)
-        makeFullName(fullnameType, parentScope->getFullNameType(declNode), name);
-    else
-        fullnameType = declNode->sourceFile->module->name;
-    return fullnameType;*/
 }
 
 void Scope::makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name)

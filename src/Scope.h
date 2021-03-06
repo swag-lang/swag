@@ -110,8 +110,6 @@ struct Scope
     SymTable                 symTable;
     Utf8                     name;
     Utf8                     fullname;
-    Utf8                     fullnameForeign;
-    Utf8                     fullnameType;
     VectorNative<Scope*>     childScopes;
     VectorNative<AstNode*>   deferredNodes;
     map<SourceFile*, Scope*> privateScopes;
