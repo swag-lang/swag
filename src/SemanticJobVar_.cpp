@@ -29,7 +29,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* assignment, AstStruct** result)
+bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* assignment, AstStruct** result)
 {
     auto       sourceFile = context->sourceFile;
     AstStruct* structNode = Ast::newStructDecl(sourceFile, nullptr);
@@ -67,46 +67,41 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
             paramNode->flags |= AST_AUTO_NAME;
         }
 
-        // Convert typeinfo to TypeExpression
-        switch (childType->kind)
-        {
-        case TypeInfoKind::Native:
-        {
-            typeExpression->token.id    = TokenId::NativeType;
-            typeExpression->literalType = childType;
-            break;
-        }
-        case TypeInfoKind::Pointer:
+        if (childType->kind == TypeInfoKind::Pointer)
         {
             auto typeInfoPointer        = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
             typeExpression->ptrCount    = 1;
             typeExpression->ptrFlags[0] = typeInfoPointer->isConst() ? AstTypeExpression::PTR_CONST : 0;
-            if (typeInfoPointer->pointedType->kind != TypeInfoKind::Native)
-                return internalError(context, format("convertAssignementToStruct, cannot convert type '%s'", typeInfoPointer->pointedType->name.c_str()).c_str(), assignment->childs[idx]);
-            typeExpression->token.id    = TokenId::NativeType;
-            typeExpression->literalType = typeInfoPointer->pointedType;
-            break;
+            childType                   = typeInfoPointer->pointedType;
         }
-        case TypeInfoKind::Enum:
+
+        // Convert typeinfo to TypeExpression
+        switch (childType->kind)
         {
-            typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
+        case TypeInfoKind::Native:
+            typeExpression->token.id    = TokenId::NativeType;
+            typeExpression->literalType = childType;
+            break;
+        case TypeInfoKind::Enum:
+            childType->computeScopedName();
+            typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->scopedName, typeExpression);
             paramNode->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
             break;
-        }
         case TypeInfoKind::Struct:
-        {
-            typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
+        case TypeInfoKind::TypeSet:
+        case TypeInfoKind::Interface:
+            childType->computeScopedName();
+            typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->scopedName, typeExpression);
             break;
-        }
         case TypeInfoKind::TypeListTuple:
         {
             AstStruct* inStructNode;
-            SWAG_CHECK(convertAssignementToStruct(context, assignment->childs[idx], &inStructNode));
+            SWAG_CHECK(convertLiteralTupleToStructDecl(context, assignment->childs[idx], &inStructNode));
             typeExpression->identifier = Ast::newIdentifierRef(sourceFile, inStructNode->token.text, typeExpression);
             break;
         }
         default:
-            return internalError(context, format("convertAssignementToStruct, cannot convert type '%s'", childType->name.c_str()).c_str(), assignment->childs[idx]);
+            return internalError(context, format("convertLiteralTupleToStructDecl, cannot convert type '%s'", childType->name.c_str()).c_str());
         }
     }
 
@@ -152,11 +147,11 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     return true;
 }
 
-bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* parent, AstNode* assignement, AstNode** result)
+bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* parent, AstNode* assignement, AstNode** result)
 {
     auto       sourceFile = context->sourceFile;
     AstStruct* structNode;
-    SWAG_CHECK(convertAssignementToStruct(context, assignement, &structNode));
+    SWAG_CHECK(convertLiteralTupleToStructDecl(context, assignement, &structNode));
 
     // Reference to that generated structure
     auto typeExpression = Ast::newTypeExpression(sourceFile, parent);
@@ -263,7 +258,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     // the assignement, then do the semmantic on that type
     if (!varDecl->type)
     {
-        SWAG_CHECK(convertAssignementToStruct(context, varDecl, assign, &varDecl->type));
+        SWAG_CHECK(convertLiteralTupleToStructDecl(context, varDecl, assign, &varDecl->type));
         varDecl->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
         context->result = ContextResult::Done;
         job->nodes.pop_back();

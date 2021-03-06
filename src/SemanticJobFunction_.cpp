@@ -835,7 +835,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             auto concreteReturn      = TypeManager::concreteType(typeInfoFunc->returnType);
             if (concreteReturn->kind == TypeInfoKind::TypeListTuple)
             {
-                SWAG_CHECK(convertAssignementToStruct(context, funcNode->content, node->childs.front(), &funcNode->returnType));
+                SWAG_CHECK(convertLiteralTupleToStructDecl(context, funcNode->content, node->childs.front(), &funcNode->returnType));
                 funcNode->returnType->flags |= AST_FORCE_FUNC_LATE_REGISTER;
                 Ast::setForceConstType(funcNode->returnType);
                 context->job->nodes.push_back(funcNode->returnType);

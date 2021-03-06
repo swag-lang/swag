@@ -178,8 +178,8 @@ struct SemanticJob : public Job
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);
     static bool checkUnreachableCode(SemanticContext* context);
     static bool waitForStructUserOps(SemanticContext* context, AstNode* node);
-    static bool convertAssignementToStruct(SemanticContext* context, AstNode* assignment, AstStruct** result);
-    static bool convertAssignementToStruct(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
+    static bool convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* assignment, AstStruct** result);
+    static bool convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
     static bool collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* seg);
     static void disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
 
