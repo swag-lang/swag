@@ -514,9 +514,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     auto job        = context->job;
 
-    if (node->token.text == "__fill_tuple_FillFormatPImage")
-        node = node;
-
     SWAG_ASSERT(typeInfo->declNode);
     SWAG_ASSERT(typeInfo->declNode == node);
 

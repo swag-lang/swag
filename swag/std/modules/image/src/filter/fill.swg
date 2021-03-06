@@ -15,7 +15,7 @@ impl Image
             f := @{fillFormat, self}
             visitPixels(&f)
             {
-                //params := :cast(*@typeof(f)) data
+                params := :cast(*@typeof(f)) data
             }
         }
         else
