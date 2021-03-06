@@ -594,22 +594,11 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     SWAG_CHECK(eatToken());
 
     // Specific dependency stuff
-    Token tokenNameSpace, tokenLocation, tokenVersion;
+    Token tokenLocation, tokenVersion;
     if (sourceFile->cfgFile)
     {
         while (true)
         {
-            if (token.text == "name")
-            {
-                SWAG_CHECK(eatToken());
-                SWAG_CHECK(eatToken(TokenId::SymEqual));
-                SWAG_VERIFY(tokenNameSpace.text.empty(), error(token, "'#import' namespace defined twice"));
-                SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid namespace name '%s'", token.text.c_str())));
-                tokenNameSpace = token;
-                SWAG_CHECK(eatToken());
-                continue;
-            }
-
             if (token.text == "location")
             {
                 SWAG_CHECK(eatToken());
@@ -637,7 +626,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     }
 
     SWAG_CHECK(eatSemiCol("after '#import' expression"));
-    SWAG_CHECK(sourceFile->module->addDependency(node, tokenNameSpace, tokenLocation, tokenVersion));
+    SWAG_CHECK(sourceFile->module->addDependency(node, tokenLocation, tokenVersion));
     return true;
 }
 

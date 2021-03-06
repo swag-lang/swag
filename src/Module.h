@@ -178,7 +178,7 @@ struct Module
     BuildCfg          localCfgDep;
 
     void     addForeignLib(const Utf8& text);
-    bool     addDependency(AstNode* importNode, const Token& tokenNamespace, const Token& tokenLocation, const Token& tokenVersion);
+    bool     addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
     void     setHasBeenBuilt(uint32_t buildResult);
     uint32_t getHasBeenBuilt();
     bool     isOnlyPublic();

@@ -540,22 +540,15 @@ void Module::addForeignLib(const Utf8& text)
     buildParameters.foreignLibs.insert(text);
 }
 
-bool Module::addDependency(AstNode* importNode, const Token& tokenNamespace, const Token& tokenLocation, const Token& tokenVersion)
+bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion)
 {
-    Utf8 nameSpaceName = tokenNamespace.text.empty() ? importNode->token.text : tokenNamespace.text;
+    Utf8& nameSpaceName = importNode->token.text;
 
     scoped_lock lk(mutexDependency);
     for (auto& dep : moduleDependencies)
     {
         if (dep->name == importNode->token.text)
         {
-            if (dep->forceNamespace != nameSpaceName)
-            {
-                Diagnostic diag{importNode, tokenNamespace, format("'#import' namespace already defined as '%s'", dep->forceNamespace.c_str())};
-                Diagnostic note{dep->node, "this is the previous definition", DiagnosticLevel::Note};
-                return importNode->sourceFile->report(diag, &note);
-            }
-
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
                 Diagnostic diag{importNode, tokenLocation, format("'#import' location already defined as '%s'", dep->location.c_str())};
