@@ -96,7 +96,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
             return true;
         }
 
-        // Resolve opCast that match 
+        // Resolve opCast that match
         VectorNative<SymbolOverload*> toCast;
         for (auto over : symbol->overloads)
         {

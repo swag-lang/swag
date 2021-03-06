@@ -414,7 +414,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
 bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Cast, sourceFile, parent);
+    auto node         = Ast::newNode<AstCast>(this, AstNodeKind::Cast, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveExplicitCast;
     if (result)
         *result = node;
@@ -430,7 +430,7 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doBitCast(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::BitCast, sourceFile, parent);
+    auto node         = Ast::newNode<AstCast>(this, AstNodeKind::BitCast, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveExplicitBitCast;
     if (result)
         *result = node;
@@ -446,7 +446,7 @@ bool SyntaxJob::doBitCast(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doAutoCast(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::AutoCast, sourceFile, parent);
+    auto node         = Ast::newNode<AstCast>(this, AstNodeKind::AutoCast, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveExplicitAutoCast;
     if (result)
         *result = node;

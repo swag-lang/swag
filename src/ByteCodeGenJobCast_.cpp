@@ -895,20 +895,29 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
 bool ByteCodeGenJob::emitExplicitCast(ByteCodeGenContext* context)
 {
-    AstNode* node         = context->node;
-    auto     typeInfo     = node->typeInfo;
-    auto     exprNode     = node->childs[1];
-    auto     fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
+    auto node         = CastAst<AstCast>(context->node, AstNodeKind::Cast);
+    auto typeInfo     = node->toCastTypeInfo;
+    auto exprNode     = node->childs[1];
+    auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
+
+    // First we cast with the user requested type. This is important to keep it, to
+    // properly deref an 'any' for example
     SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, true));
+
+    // Then we cast again if necessary to the requested final type that can have been
+    // changed (type promotion for example)
+    if (node->toCastTypeInfo != node->typeInfo && node->toCastTypeInfo != node->castedTypeInfo)
+        SWAG_CHECK(emitCast(context, node, node->typeInfo, node->toCastTypeInfo));
+
     return true;
 }
 
 bool ByteCodeGenJob::emitExplicitAutoCast(ByteCodeGenContext* context)
 {
-    AstNode* node         = context->node;
-    auto     typeInfo     = TypeManager::concreteType(node->typeInfo);
-    auto     exprNode     = node->childs[0];
-    auto     fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
+    auto node         = CastAst<AstCast>(context->node, AstNodeKind::AutoCast);
+    auto typeInfo     = TypeManager::concreteType(node->typeInfo);
+    auto exprNode     = node->childs[0];
+    auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
     SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));
     node->castedTypeInfo = typeInfo;
     return true;

@@ -499,7 +499,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 
 bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 {
-    auto node     = context->node;
+    auto node     = CastAst<AstCast>(context->node, AstNodeKind::Cast);
     auto typeNode = node->childs[0];
     auto exprNode = node->childs[1];
 
@@ -519,7 +519,8 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    node->typeInfo = typeNode->typeInfo;
+    node->typeInfo       = typeNode->typeInfo;
+    node->toCastTypeInfo = typeNode->typeInfo;
 
     node->byteCodeFct = ByteCodeGenJob::emitExplicitCast;
     node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE);
@@ -549,7 +550,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 
 bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
 {
-    auto node     = context->node;
+    auto node     = CastAst<AstCast>(context->node, AstNodeKind::BitCast);
     auto typeNode = node->childs[0];
     auto exprNode = node->childs[1];
 
@@ -580,7 +581,7 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
 
 bool SemanticJob::resolveExplicitAutoCast(SemanticContext* context)
 {
-    auto node      = context->node;
+    auto node      = CastAst<AstCast>(context->node, AstNodeKind::AutoCast);
     auto exprNode  = node->childs[0];
     auto cloneType = exprNode->typeInfo->clone();
     cloneType->flags |= TYPEINFO_AUTO_CAST;

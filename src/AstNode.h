@@ -887,3 +887,10 @@ struct AstAlias : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 };
+
+struct AstCast : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+
+    TypeInfo* toCastTypeInfo;
+};

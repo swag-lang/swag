@@ -1,3 +1,4 @@
+//#[swag.printbc, swag.optim("", false)]
 func variadic(x: ...)
 {
     //@print(cast(s64) cast(u8) x[0])

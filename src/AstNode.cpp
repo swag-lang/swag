@@ -1360,3 +1360,11 @@ AstNode* AstAlias::clone(CloneContext& context)
         newNode->resolvedSymbolName = newNode->ownerScope->symTable.registerSymbolName(nullptr, newNode, resolvedSymbolName->kind);
     return newNode;
 }
+
+AstNode* AstCast::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstCast>();
+    newNode->copyFrom(context, this);
+    newNode->toCastTypeInfo = toCastTypeInfo;
+    return newNode;
+}
