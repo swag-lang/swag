@@ -579,7 +579,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
 
     SWAG_ASSERT(ownerScope);
 
-    auto nameForeign = computeScopedNameForeign();
+    auto nameForeign = computeScopedName();
 
     // If the symbol has overloads, i.e. more than one definition, then we
     // append the type

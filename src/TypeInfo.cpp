@@ -21,10 +21,10 @@ void TypeInfo::getScopedName(Utf8& newName, bool forExport)
     {
         if (declNode->ownerScope->kind != ScopeKind::Function)
         {
-            if (forExport)
+            /*if (forExport)
                 newName += declNode->ownerScope->getFullNameForeign();
-            else
-                newName += declNode->ownerScope->getFullNameType(declNode);
+            else*/
+            newName += declNode->ownerScope->getFullNameType(declNode);
             if (!newName.empty())
                 newName += ".";
         }

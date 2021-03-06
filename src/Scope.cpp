@@ -63,6 +63,15 @@ const char* Scope::getArticleKindName(ScopeKind kind)
 
 const Utf8& Scope::getFullName()
 {
+    if (flags & SCOPE_PRIVATE)
+        return name;
+
+    /*if (flags & SCOPE_IMPORTED)
+    {
+        auto np = CastAst<AstNameSpace>(owner, AstNodeKind::Namespace);
+        return np->importedModuleName;
+    }*/
+
     unique_lock lk(mutex);
     if (!fullname.empty())
         return fullname;
@@ -75,8 +84,15 @@ const Utf8& Scope::getFullName()
 
 const Utf8& Scope::getFullNameForeign()
 {
-    if (flags & SCOPE_IMPORTED)
-        return fullnameForeign;
+    return getFullName();
+    /*if (flags & SCOPE_IMPORTED)
+    {
+        auto np = CastAst<AstNameSpace>(owner, AstNodeKind::Namespace);
+        return np->importedModuleName;
+    }
+
+    if (kind == ScopeKind::Module)
+        return owner->sourceFile->module->name;
 
     unique_lock lk(mutex);
     if (!fullnameForeign.empty())
@@ -86,12 +102,13 @@ const Utf8& Scope::getFullNameForeign()
     else
         fullnameForeign = name;
 
-    return fullnameForeign;
+    return fullnameForeign;*/
 }
 
 const Utf8& Scope::getFullNameType(AstNode* declNode)
 {
-    if (flags & SCOPE_IMPORTED)
+    return getFullName();
+    /*if (flags & SCOPE_IMPORTED)
     {
         auto np = CastAst<AstNameSpace>(owner, AstNodeKind::Namespace);
         return np->importedModuleName;
@@ -108,7 +125,7 @@ const Utf8& Scope::getFullNameType(AstNode* declNode)
         makeFullName(fullnameType, parentScope->getFullNameType(declNode), name);
     else
         fullnameType = declNode->sourceFile->module->name;
-    return fullnameType;
+    return fullnameType;*/
 }
 
 void Scope::makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name)
@@ -215,13 +232,6 @@ void Scope::addPublicNode(AstNode* node)
     allocPublicSet();
     publicSet->publicNodes.insert(node);
     setHasExports();
-}
-
-void Scope::addPublicNamespace(AstNode* node)
-{
-    unique_lock lk(mutex);
-    allocPublicSet();
-    publicSet->publicNamespace.insert(node);
 }
 
 bool Scope::isParentOf(Scope* child)

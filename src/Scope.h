@@ -40,7 +40,8 @@ struct AlternativeScope
 static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
 static const uint32_t SCOPE_PRIVATE          = 0x00000002;
 static const uint32_t SCOPE_ROOT_PRIVATE     = 0x00000004;
-static const uint32_t SCOPE_IMPORTED         = 0x00000008;
+static const uint32_t SCOPE_AUTO_GENERATED   = 0x00000008;
+static const uint32_t SCOPE_IMPORTED         = 0x00000010;
 
 struct ScopePublicSet
 {
@@ -53,7 +54,6 @@ struct ScopePublicSet
     set<AstNode*> publicEnum;
     set<AstNode*> publicConst;
     set<AstNode*> publicNodes;
-    set<AstNode*> publicNamespace;
 };
 
 struct Scope
@@ -73,7 +73,6 @@ struct Scope
     void               addPublicEnum(AstNode* node);
     void               addPublicConst(AstNode* node);
     void               addPublicNode(AstNode* node);
-    void               addPublicNamespace(AstNode* node);
     static void        makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
     const Utf8&        getFullName();
     const Utf8&        getFullNameForeign();
@@ -90,7 +89,7 @@ struct Scope
 
     bool isTopLevel()
     {
-        return kind == ScopeKind::Module || kind == ScopeKind::File || (kind == ScopeKind::Namespace && (flags & SCOPE_IMPORTED));
+        return kind == ScopeKind::Module || kind == ScopeKind::File || (kind == ScopeKind::Namespace && (flags & SCOPE_AUTO_GENERATED));
     }
 
     bool isGlobalOrImpl()

@@ -1,9 +1,9 @@
 #import "core"
 using core
-
+/*
 public namespace core
 {
-    impl String
+    impl core.String
     {
         func splitmmmmmm() -> Array'String
         {
@@ -11,4 +11,4 @@ public namespace core
             return result
         }
     }
-}
+}*/

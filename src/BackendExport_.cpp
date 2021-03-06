@@ -626,27 +626,37 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
     SWAG_ASSERT(moduleToGen);
     if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
         return true;
+    if (scope->flags & SCOPE_IMPORTED)
+        return true;
 
     outputContext.forExport = true;
 
     // Namespace
     if (scope->kind == ScopeKind::Namespace && !scope->name.empty())
     {
-        bufferSwg.addIndent(indent);
-        bufferSwg.addStringFormat("namespace %s", scope->name.c_str());
-        bufferSwg.addEol();
-        bufferSwg.addIndent(indent);
-        CONCAT_FIXED_STR(bufferSwg, "{");
-        bufferSwg.addEol();
+        if (!(scope->flags & SCOPE_AUTO_GENERATED))
+        {
+            bufferSwg.addIndent(indent);
+            bufferSwg.addStringFormat("namespace %s", scope->name.c_str());
+            bufferSwg.addEol();
+            bufferSwg.addIndent(indent);
+            CONCAT_FIXED_STR(bufferSwg, "{");
+            bufferSwg.addEol();
+            indent += 1;
+        }
 
-        SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent + 1));
+        SWAG_CHECK(emitPublicScopeContentSwg(moduleToGen, scope, indent));
         for (auto oneScope : scope->childScopes)
-            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent + 1));
+            SWAG_CHECK(emitPublicScopeSwg(moduleToGen, oneScope, indent));
 
-        bufferSwg.addIndent(indent);
-        CONCAT_FIXED_STR(bufferSwg, "}");
-        bufferSwg.addEol();
-        bufferSwg.addEol();
+        if (!(scope->flags & SCOPE_AUTO_GENERATED))
+        {
+            indent -= 1;
+            bufferSwg.addIndent(indent);
+            CONCAT_FIXED_STR(bufferSwg, "}");
+            bufferSwg.addEol();
+            bufferSwg.addEol();
+        }
     }
 
     // Impl

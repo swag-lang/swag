@@ -15,7 +15,7 @@ using swag
 {
     h := GetModuleHandleA(@dataof("tests_foreign"))
     @assert(h != null)
-    ptr := GetProcAddress(h, @dataof("tcf_manualcall"))
+    ptr := GetProcAddress(h, @dataof("tests_foreign.tcf_manualcall"))
     @assert(ptr != null)
 
     tcf_manualcall := @mkforeign(func(s64)->s64, ptr)

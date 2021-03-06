@@ -7,6 +7,7 @@
 #include "TypeTable.h"
 #include "DataSegment.h"
 #include "DependentJobs.h"
+#include "SymTable.h"
 
 struct Utf8;
 struct SourceFile;

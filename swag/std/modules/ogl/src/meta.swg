@@ -17,7 +17,7 @@ private var g: Array'OneFunc
 {
     itf := @compiler()
     msg := itf.getMessage()
-    if(!reflection.hasAttribute(msg.type, "extension")) return
+    if(!reflection.hasAttribute(msg.type, "ogl.extension")) return
     g.add(@{msg.type, msg.name})
 }
 

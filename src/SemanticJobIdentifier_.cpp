@@ -2300,6 +2300,18 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             break;
         }
 
+        if (over->symbol->kind == SymbolKind::Namespace)
+        {
+            for (int j = 0; j < matches.size(); j++)
+            {
+                if (matches[j]->symbolOverload->symbol->kind != SymbolKind::Namespace)
+                {
+                    matches[i]->remove = true;
+                    break;
+                }
+            }
+        }
+
         // Priority to a non empty function
         if (over->node->flags & AST_EMPTY_FCT)
         {

@@ -320,34 +320,42 @@ JobResult SyntaxJob::execute()
     // Creates a namespace if this is an imported file
     currentScope     = module->scopeRoot;
     auto parentScope = module->scopeRoot;
+
+    Utf8 npName = sourceFile->module->name;
     if (sourceFile->imported)
+        npName = sourceFile->forceNamespace;
+    if (!npName.empty())
     {
-        SWAG_ASSERT(!sourceFile->forceNamespace.empty());
-        auto namespaceNode                = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
-        namespaceNode->semanticFct        = SemanticJob::resolveNamespace;
-        namespaceNode->token.text         = sourceFile->forceNamespace;
-        namespaceNode->importedModuleName = sourceFile->imported->name;
+        //SWAG_ASSERT(!sourceFile->forceNamespace.empty());
+        auto namespaceNode         = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
+        namespaceNode->semanticFct = SemanticJob::resolveNamespace;
+        namespaceNode->token.text  = npName;
+        //namespaceNode->importedModuleName = sourceFile->imported->name;
 
         scoped_lock lk(parentScope->symTable.mutex);
-        auto        symbol = parentScope->symTable.findNoLock(sourceFile->forceNamespace);
+        auto        symbol = parentScope->symTable.findNoLock(npName);
         if (!symbol)
         {
             auto typeInfo  = allocType<TypeInfoNamespace>();
-            typeInfo->name = sourceFile->forceNamespace;
-            auto newScope  = Ast::newScope(namespaceNode, sourceFile->forceNamespace, ScopeKind::Namespace, parentScope);
-            newScope->flags |= SCOPE_IMPORTED;
+            typeInfo->name = npName;
+            auto newScope  = Ast::newScope(namespaceNode, npName, ScopeKind::Namespace, parentScope);
+            if (sourceFile->imported)
+                newScope->flags |= SCOPE_IMPORTED;
+            newScope->flags |= SCOPE_AUTO_GENERATED;
             typeInfo->scope         = newScope;
             namespaceNode->typeInfo = typeInfo;
             parentScope->symTable.addSymbolTypeInfoNoLock(&context, namespaceNode, typeInfo, SymbolKind::Namespace);
-            parentScope->addPublicNamespace(namespaceNode);
+            //parentScope->addPublicNamespace(namespaceNode);
             parentScope = newScope;
         }
         else
         {
             parentScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
-            parentScope->flags |= SCOPE_IMPORTED;
-            namespaceNode                     = CastAst<AstNameSpace>(parentScope->owner, AstNodeKind::Namespace);
-            namespaceNode->importedModuleName = sourceFile->imported->name;
+            if (sourceFile->imported)
+                parentScope->flags |= SCOPE_IMPORTED;
+            parentScope->flags |= SCOPE_AUTO_GENERATED;
+            //namespaceNode                     = CastAst<AstNameSpace>(parentScope->owner, AstNodeKind::Namespace);
+            //namespaceNode->importedModuleName = sourceFile->module->name;
         }
     }
 
@@ -356,7 +364,7 @@ JobResult SyntaxJob::execute()
     // no need to lock the module scope each time a file is encountered.
     sourceFile->computePrivateScopeName();
     sourceFile->scopePrivate              = Ast::newScope(sourceFile->astRoot, sourceFile->scopeName, ScopeKind::File, nullptr);
-    sourceFile->scopePrivate->parentScope = currentScope;
+    sourceFile->scopePrivate->parentScope = parentScope;
     sourceFile->scopePrivate->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
 
     // By default, everything is private if it comes from the test folder, or for the configuration file
