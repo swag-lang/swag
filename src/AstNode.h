@@ -873,8 +873,6 @@ struct AstCompilerSpecFunc : public AstNode
 struct AstNameSpace : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
-
-    Utf8 importedModuleName;
 };
 
 struct AstTryCatch : public AstReturn

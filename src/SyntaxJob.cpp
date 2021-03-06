@@ -317,7 +317,7 @@ JobResult SyntaxJob::execute()
     // Setup root ast for file
     sourceFile->astRoot = Ast::newNode<AstNode>(this, AstNodeKind::File, sourceFile, module->astRoot);
 
-    // Creates a namespace if this is an imported file
+    // Creates a top namespace with the module name
     currentScope     = module->scopeRoot;
     auto parentScope = module->scopeRoot;
 
@@ -326,11 +326,9 @@ JobResult SyntaxJob::execute()
         npName = sourceFile->forceNamespace;
     if (!npName.empty())
     {
-        //SWAG_ASSERT(!sourceFile->forceNamespace.empty());
         auto namespaceNode         = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
         namespaceNode->semanticFct = SemanticJob::resolveNamespace;
         namespaceNode->token.text  = npName;
-        //namespaceNode->importedModuleName = sourceFile->imported->name;
 
         scoped_lock lk(parentScope->symTable.mutex);
         auto        symbol = parentScope->symTable.findNoLock(npName);
@@ -345,7 +343,6 @@ JobResult SyntaxJob::execute()
             typeInfo->scope         = newScope;
             namespaceNode->typeInfo = typeInfo;
             parentScope->symTable.addSymbolTypeInfoNoLock(&context, namespaceNode, typeInfo, SymbolKind::Namespace);
-            //parentScope->addPublicNamespace(namespaceNode);
             parentScope = newScope;
         }
         else
@@ -354,8 +351,6 @@ JobResult SyntaxJob::execute()
             if (sourceFile->imported)
                 parentScope->flags |= SCOPE_IMPORTED;
             parentScope->flags |= SCOPE_AUTO_GENERATED;
-            //namespaceNode                     = CastAst<AstNameSpace>(parentScope->owner, AstNodeKind::Namespace);
-            //namespaceNode->importedModuleName = sourceFile->module->name;
         }
     }
 
