@@ -109,11 +109,8 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
     structNode->token.text = move(typeList->computeTupleName(context));
 
     // Add struct type and scope
-    Scope* rootScope;
-    if (sourceFile->module->kind == ModuleKind::Test)
-        rootScope = sourceFile->scopePrivate;
-    else
-        rootScope = sourceFile->module->scopeRoot;
+    structNode->inheritOwners(sourceFile->astRoot);
+    Scope*      rootScope = structNode->ownerScope;
     scoped_lock lk(rootScope->symTable.mutex);
     auto        symbol = rootScope->symTable.findNoLock(structNode->token.text);
     if (symbol)
@@ -131,16 +128,13 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
         typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
         structNode->typeInfo = typeInfo;
         structNode->scope    = newScope;
-        symbol               = rootScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Struct);
-
-        Ast::addChildBack(sourceFile->astRoot, structNode);
-        structNode->inheritOwners(sourceFile->astRoot);
-
         Ast::visit(structNode->content, [&](AstNode* n) {
             n->ownerStructScope = newScope;
             n->ownerScope       = newScope;
         });
 
+        rootScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Struct);
+        Ast::addChildBack(sourceFile->astRoot, structNode);
         SemanticJob::newJob(context->job->dependentJob, sourceFile, structNode, true);
     }
 

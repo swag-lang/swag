@@ -12,11 +12,11 @@ impl Image
     {
         if pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8
         {
-            /*f := @{fillFormat, self}
+            f := @{fillFormat, self}
             visitPixels(&f)
             {
-                f := :cast(*@typeof(f)) data
-            }*/
+                //params := :cast(*@typeof(f)) data
+            }
         }
         else
         {

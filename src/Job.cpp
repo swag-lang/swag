@@ -16,6 +16,8 @@ void Job::addDependentJob(Job* job)
 
 void Job::waitForSymbolNoLock(SymbolName* symbol)
 {
+    if (symbol->name == "__fill_tuple_FillFormatPImage")
+        symbol = symbol;
     setPending(symbol, "WAIT_SYMBOL", nullptr, nullptr);
     symbol->addDependentJobNoLock(this);
 }
