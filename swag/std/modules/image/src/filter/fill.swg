@@ -15,7 +15,7 @@ impl Image
             f := fillFormat
             visitPixels(&f)
             {
-                //f := :cast(*FillFormat) data
+                f := :cast(*FillFormat) data
             }
         }
         else

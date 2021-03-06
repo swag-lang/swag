@@ -1832,6 +1832,9 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
 
+    if (node->token.text == "ENUM")
+        node = node;
+
     // We make 2 tries at max : one try with the previous symbol scope (A.B), and one try with the collected scope
     // hierarchy. We need this because even if A.B does not resolve (B is not in A), B(A) can be a match because of UFCS
     for (int oneTry = 0; oneTry < 2; oneTry++)
@@ -2300,6 +2303,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             break;
         }
 
+        // Namespace versus non namespace
         if (over->symbol->kind == SymbolKind::Namespace)
         {
             for (int j = 0; j < matches.size(); j++)
@@ -2760,7 +2764,9 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
                 }
             }
 
-            scopesVars.append(startNode->extension->alternativeScopesVars);
+            // Can only take a using var if in the same function
+            if (startNode->ownerFct == context->node->ownerFct || startNode == context->node->ownerFct)
+                scopesVars.append(startNode->extension->alternativeScopesVars);
         }
     }
 
