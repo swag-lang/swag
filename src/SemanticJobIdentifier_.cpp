@@ -2748,8 +2748,8 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
 {
     if (startNode->extension && !startNode->extension->alternativeScopes.empty())
     {
-        auto  job  = context->job;
-        auto& here = job->scopesHere;
+        auto  job       = context->job;
+        auto& toProcess = job->scopesToProcess;
 
         {
             for (auto p : startNode->extension->alternativeScopes)
@@ -2757,7 +2757,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
                 if (!scopes.contains(p))
                 {
                     scopes.push_back(p);
-                    here.push_back(p);
+                    toProcess.push_back(p);
                 }
             }
 
@@ -2773,7 +2773,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
     {
         auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
         SWAG_ASSERT(inlineNode->parametersScope);
-        scopes.push_back(inlineNode->parametersScope);
+        scopes.insert(inlineNode->parametersScope);
     }
 
     if (startNode->kind == AstNodeKind::CompilerMacro)
@@ -2847,7 +2847,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
         {
             auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
             SWAG_ASSERT(inlineNode->parametersScope);
-            scopes.push_back(inlineNode->parametersScope);
+            scopes.insert(inlineNode->parametersScope);
         }
     }
     else if (startNode->parent)
@@ -2859,10 +2859,10 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
 bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
-    auto& here       = job->scopesHere;
+    auto& toProcess  = job->scopesToProcess;
     auto  sourceFile = context->sourceFile;
 
-    here.clear();
+    toProcess.clear();
     scopes.clear();
 
     // Get alternative scopes from the node hierarchy
@@ -2882,36 +2882,36 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
         }
 
         scopes.insert(startScope);
-        here.push_back(startScope);
+        toProcess.push_back(startScope);
     }
 
     // Add current file private scope
     scopes.insert(context->sourceFile->scopePrivate);
-    here.push_back(context->sourceFile->scopePrivate);
+    toProcess.push_back(context->sourceFile->scopePrivate);
 
     // Add bootstrap
     SWAG_ASSERT(g_Workspace.bootstrapModule);
     scopes.insert(g_Workspace.bootstrapModule->scopeRoot);
-    here.push_back(g_Workspace.bootstrapModule->scopeRoot);
+    toProcess.push_back(g_Workspace.bootstrapModule->scopeRoot);
 
     // Add runtime, except for the bootstrap
     if (!sourceFile->isBootstrapFile)
     {
         SWAG_ASSERT(g_Workspace.runtimeModule);
         scopes.insert(g_Workspace.runtimeModule->scopeRoot);
-        here.push_back(g_Workspace.runtimeModule->scopeRoot);
+        toProcess.push_back(g_Workspace.runtimeModule->scopeRoot);
     }
 
-    for (int i = 0; i < here.size(); i++)
+    for (int i = 0; i < toProcess.size(); i++)
     {
-        auto scope = here[i];
+        auto scope = toProcess[i];
 
         // Add private scope
         auto it = scope->privateScopes.find(context->sourceFile);
         if (it != scope->privateScopes.end())
         {
             scopes.insert(it->second);
-            here.push_back(it->second);
+            toProcess.push_back(it->second);
         }
 
         // For an inline scope, jump right to the function
@@ -2942,7 +2942,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
             if (!scopes.contains(scope->parentScope))
             {
                 scopes.push_back(scope->parentScope);
-                here.push_back(scope->parentScope);
+                toProcess.push_back(scope->parentScope);
             }
         }
     }

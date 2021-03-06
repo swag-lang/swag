@@ -407,7 +407,7 @@ struct SemanticJob : public Job
     VectorNative<SymbolName*>      cacheToAddSymbols;
     VectorNative<Scope*>           cacheScopeHierarchy;
     VectorNative<AlternativeScope> cacheScopeHierarchyVars;
-    VectorNative<Scope*>           scopesHere;
+    VectorNative<Scope*>           scopesToProcess;
     VectorNative<OneOverload>      cacheToSolveOverload;
     VectorNative<OneMatch*>        cacheMatches;
     VectorNative<OneMatch*>        cacheFreeMatches;
@@ -432,7 +432,7 @@ struct SemanticJob : public Job
         cacheScopeHierarchy.clear();
         cacheScopeHierarchyVars.clear();
         cacheToAddSymbols.clear();
-        scopesHere.clear();
+        scopesToProcess.clear();
         context.reset();
         clearTryMatch();
         clearMatch();
