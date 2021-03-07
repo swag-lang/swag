@@ -7,9 +7,7 @@ impl Image
         VerticalSaturation
     }
 
-    // Transform image to grayscale, with a given factor
-    //#[swag.printbc]
-    public func fill(using self, fillFormat: FillFormat)//, color0: Color)
+    public func fill(using self, fillFormat: FillFormat) throw//, color0: Color)
     {
         if pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8
         {
@@ -25,7 +23,7 @@ impl Image
         }
         else
         {
-            debug.assert(false, "unsupported pixel format")
+            throw "unsupported pixel format"
         }
     }
 }

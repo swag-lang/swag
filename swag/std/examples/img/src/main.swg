@@ -45,8 +45,8 @@ func loadImg() throw
     img := try image.load(data)
     img.flip()
     img.mirror()
-    img.grayScale(0.5)
-    img.fill(image.Image.FillFormat.VerticalSaturation)
+    assume img.grayScale(0.5)
+    assume img.fill(image.Image.FillFormat.VerticalSaturation)
 
     fmt := GL_BGR
     if img.bpp == 32 fmt = GL_BGRA

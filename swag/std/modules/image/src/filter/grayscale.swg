@@ -3,7 +3,7 @@ using core
 impl Image
 {
     // Transform image to grayscale, with a given factor
-    public func grayScale(using self, factor: f32 = 1)
+    public func grayScale(using self, factor: f32 = 1) throw
     {
         f := math.saturate(factor)
         if pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8
@@ -19,7 +19,7 @@ impl Image
         }
         else
         {
-            debug.assert(false, "unsupported pixel format")
+            throw "unsupported pixel format"
         }
     }
 }
