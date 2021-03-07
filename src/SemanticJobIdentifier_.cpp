@@ -350,7 +350,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         }
     }
 
-    // Deal with default values for structs
+    // Deal with default values for structs and uncomputed values
     // We need to add a temporary variable initialized with the default value, and reference
     // that temporary variable as a new function call parameter
     if (typeInfoFunc->parameters.size() && maxParams < typeInfoFunc->parameters.size())
@@ -367,7 +367,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 continue;
 
             auto typeParam = TypeManager::concreteReference(funcParam->typeInfo);
-            if (typeParam->kind != TypeInfoKind::Struct)
+            if (typeParam->kind != TypeInfoKind::Struct && (funcParam->assignment->flags & AST_VALUE_COMPUTED))
                 continue;
 
             bool covered = false;
@@ -389,6 +389,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 Ast::removeFromParent(varNode);
                 Ast::addChildFront(identifier, varNode);
 
+                if (funcParam->type)
+                    varNode->type = Ast::clone(funcParam->type, varNode);
                 varNode->assignment = Ast::clone(funcParam->assignment, varNode);
 
                 auto newParam   = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
