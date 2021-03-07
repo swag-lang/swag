@@ -59,7 +59,6 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
 
 bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    // Last minute change : opCast, with a structure
     auto structType = fromType;
     if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))
     {
@@ -127,6 +126,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
+    // Last minute change : convert 'fromType' (struct) to 'toType' with an opCast
     if (tryOpCast(context, toType, fromType, fromNode, castFlags))
         return true;
 
@@ -2641,7 +2641,7 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
     }
 }
 
-bool TypeManager::convertLiteralTupleToStruct(SemanticContext* context, TypeInfo* toType, AstNode* fromNode)
+bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toType, AstNode* fromNode)
 {
     auto sourceFile = context->sourceFile;
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
@@ -2760,7 +2760,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 
         if (convert)
         {
-            SWAG_CHECK(convertLiteralTupleToStruct(context, toType, fromNode));
+            SWAG_CHECK(convertLiteralTupleToStructVar(context, toType, fromNode));
             return true;
         }
     }

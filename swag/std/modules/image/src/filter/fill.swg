@@ -7,10 +7,11 @@ impl Image
         VerticalSaturation
     }
 
-    public func fill(using self, fillFormat: FillFormat) throw//, color0: Color)
+    public func fill(using self, fillFormat: FillFormat, color0: Color = Argb.White) throw
     {
         if pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8
         {
+            //hsl := color0.getHSL()
             f := @{fillFormat}
             visitPixels(&f)
             {

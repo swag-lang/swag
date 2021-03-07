@@ -106,6 +106,13 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
                     break;
                 }
             }
+            else if (nodeParam->assignment->kind == AstNodeKind::ExpressionList)
+            {
+                SWAG_VERIFY(nodeParam->assignment->flags & AST_CONST_EXPR, context->report({nodeParam->assignment, "cannot evaluate default value at compile time"}));
+                auto module = nodeParam->sourceFile->module;
+                SWAG_CHECK(collectAssignment(context, nodeParam->assignment->computedValue.reg.u32, nodeParam, &module->constantSegment));
+                nodeParam->assignment->flags |= AST_VALUE_COMPUTED;
+            }
             else
             {
                 SWAG_VERIFY(nodeParam->assignment->flags & AST_VALUE_COMPUTED, context->report({nodeParam->assignment, "cannot evaluate default value at compile time"}));
