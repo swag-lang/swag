@@ -186,39 +186,28 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     node->byteCodeFct                  = ByteCodeGenJob::emitDebugNop;
     expr->flags |= AST_NO_BYTECODE;
 
-    auto identifier = CastAst<AstIdentifier>(node->ownerInline->parent, AstNodeKind::Identifier);
-    for (auto child : identifier->callParameters->childs)
-    {
-        auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-        SWAG_ASSERT(param->resolvedParameter);
-        if (param->resolvedParameter->namedParam == expr->token.text)
-        {
-            auto typeCode = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
-            SWAG_ASSERT(typeCode->content);
+    auto typeCode = CastTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
+    SWAG_ASSERT(typeCode->content);
 
-            CloneContext cloneContext;
-            cloneContext.parent                 = node;
-            cloneContext.parentScope            = node->ownerScope;
-            cloneContext.ownerBreakable         = node->ownerBreakable;
-            cloneContext.replaceTokensBreakable = node->ownerBreakable;
-            cloneContext.ownerInline            = node->ownerInline;
-            cloneContext.replaceTokens          = node->replaceTokens;
-            cloneContext.forceFlags             = AST_IN_MIXIN;
-            cloneContext.ownerFct               = node->ownerFct;
-            auto cloneContent                   = typeCode->content->clone(cloneContext);
-            cloneContent->allocateExtension();
-            cloneContent->extension->alternativeNode = typeCode->content->parent;
-            cloneContent->extension->alternativeScopes.push_back(typeCode->content->parent->ownerScope);
-            cloneContent->flags &= ~AST_NO_SEMANTIC;
-            node->typeInfo = cloneContent->typeInfo;
-            context->job->nodes.push_back(cloneContent);
-            context->result = ContextResult::NewChilds;
+    CloneContext cloneContext;
+    cloneContext.parent                 = node;
+    cloneContext.parentScope            = node->ownerScope;
+    cloneContext.ownerBreakable         = node->ownerBreakable;
+    cloneContext.replaceTokensBreakable = node->ownerBreakable;
+    cloneContext.ownerInline            = node->ownerInline;
+    cloneContext.replaceTokens          = node->replaceTokens;
+    cloneContext.forceFlags             = AST_IN_MIXIN;
+    cloneContext.ownerFct               = node->ownerFct;
+    auto cloneContent                   = typeCode->content->clone(cloneContext);
+    cloneContent->allocateExtension();
+    cloneContent->extension->alternativeNode = typeCode->content->parent;
+    cloneContent->extension->alternativeScopes.push_back(typeCode->content->parent->ownerScope);
+    cloneContent->flags &= ~AST_NO_SEMANTIC;
+    node->typeInfo = cloneContent->typeInfo;
+    context->job->nodes.push_back(cloneContent);
+    context->result = ContextResult::NewChilds;
 
-            return true;
-        }
-    }
-
-    return context->report({expr, format("unknown user code identifier '%s' (did you forget a back tick ?)", expr->token.text.c_str())});
+    return true;
 }
 
 bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
