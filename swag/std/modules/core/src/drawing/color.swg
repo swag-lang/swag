@@ -46,20 +46,12 @@ impl Color
 
     // Set all components with floats in the range [0 1]
     #[inline]
-    func setArgb(self, a, r, g, b: f32)
+    func setArgbf(self, a, r, g, b: f32)
     {
         self.a = autocast (math.clamp(a, 0, 1) * 255)
         self.r = autocast (math.clamp(r, 0, 1) * 255)
         self.g = autocast (math.clamp(g, 0, 1) * 255)
         self.b = autocast (math.clamp(b, 0, 1) * 255)
-    }
-
-    #[inline]
-    func fromRgb(r, g, b: u8)->Color
-    {
-        var result: retval = ?
-        result.setRgb(r, g, b)
-        return result
     }
 
     // Just set r, g and b components.
@@ -76,7 +68,7 @@ impl Color
     // Set r,g,b with floats in the range [0 1]
     // Alpha will be opaque
     #[inline]
-    func setRgb(self, r, g, b: f32)
+    func setRgbf(self, r, g, b: f32)
     {
         self.a = 255
         self.r = autocast (math.clamp(r, 0, 1) * 255)
@@ -107,8 +99,48 @@ impl Color
         return result
     }
 
+    #[inline]
+    func fromRgb(r, g, b: u8)->Color
+    {
+        var result: retval = ?
+        result.setRgb(r, g, b)
+        return result
+    }
+
+    #[inline]
+    func fromRgbf(r, g, b: f32)->Color
+    {
+        var result: retval = ?
+        result.setRgbf(r, g, b)
+        return result
+    }
+
+    #[inline]
+    func fromArgb(a, r, g, b: u8)->Color
+    {
+        var result: retval = ?
+        result.setArgb(a, r, g, b)
+        return result
+    }
+
+    #[inline]
+    func fromArgbf(a, r, g, b: f32)->Color
+    {
+        var result: retval = ?
+        result.setArgbf(a, r, g, b)
+        return result
+    }
+
+    #[inline]
+    func fromHsl(h, s, l: f32)->Color
+    {
+        var result: retval = ?
+        result.setHsl(h, s, l)
+        return result
+    }
+
     // Set color with hue, saturation, lightness
-    func setHSL(using self, h, s, l: f32)
+    func setHsl(using self, h, s, l: f32)
     {
         func hueToCol(m1, m2, hue: f32)->u8
         {
@@ -150,7 +182,7 @@ impl Color
     }
 
     // Returns hue, saturation, lightness
-    func getHSL(using self) -> {h: f32, s: f32, l: f32}
+    func getHsl(using self) -> {h: f32, s: f32, l: f32}
     {
         var result: retval = ?
 

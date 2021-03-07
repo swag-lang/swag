@@ -4,7 +4,7 @@ using core.drawing
 #test
 {
 	var y: Color
-    y.setRgb(1.0, 1.0, 1.0)
+    y.setRgbf(1.0, 1.0, 1.0)
     @assert(cast(s64) y.a == 255)
     @assert(cast(s64) y.r == 255)
     @assert(cast(s64) y.g == 255)
