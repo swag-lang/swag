@@ -10,7 +10,7 @@ impl Image
         {
             visitPixels(&f)
             {
-                f := :cast(*f32) data
+                f := :cast(*f32) userData
                 ncol := cast(f32) ((((buffer[2] * 54) + (buffer[1] * 183) + (buffer[0] * 19)) >>% 8) & 0xFF)
                 buffer[0] = cast(u8) math.lerp(cast(f32) buffer[0], ncol, f)
                 buffer[1] = cast(u8) math.lerp(cast(f32) buffer[1], ncol, f)

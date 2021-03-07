@@ -71,12 +71,26 @@ impl Image
 
     // Macro to visit all pixels of the image in parallel chunks
     // Exported variables:
-    // - 'buffer', address of the pixel
-    // - 'data', 'userData' as passed to the macro
+    // - buffer: address of the pixel
+    // - userData
+    // - image: the processed image
+    // - x, y: the pixel coordinates
     #[swag.macro]
     func visitPixels(using self, userData: *void, stmt: code)
     {
-        jobs.parallelVisit(@mkslice(pixels, size), cast(u32) bpp8, userData, stmt)
+        p := @{userData, self}
+        jobs.parallelVisit(@mkslice(pixels, size), cast(u32) bpp8, &p)
+        {
+            p := cast(*@typeof(p)) data
+            userData := p.item0
+            image := p.item1
+
+            offset := (cast(uint) (buffer - image.pixels)) / image.bpp8
+            x := offset % image.width
+            y := offset / image.width
+
+            #mixin stmt
+        }
     }
 
     // Release the content of the image

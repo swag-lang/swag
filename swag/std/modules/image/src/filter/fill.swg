@@ -13,17 +13,11 @@ impl Image
     {
         if pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8
         {
-            f := @{fillFormat, self}
+            f := @{fillFormat}
             visitPixels(&f)
             {
-                params := :cast(*@typeof(f)) data
-                img := params.item1
-                offset := (cast(uint) (buffer - img.pixels)) / img.bpp8
-                x := offset % img.width
-                y := offset / img.width
-
-                factor := y / cast(f32) img.height
-
+                params := :cast(*@typeof(f)) userData
+                factor := y / cast(f32) image.height
                 buffer[0] = cast(u8) (factor * 255)
                 buffer[1] = buffer[0]
                 buffer[2] = buffer[0]
