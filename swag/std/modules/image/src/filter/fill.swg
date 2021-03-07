@@ -11,7 +11,7 @@ impl Image
     {
         if pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8
         {
-            //hsl := color0.getHSL()
+            hsl0 := color0.getHSL()
             f := @{fillFormat}
             visitPixels(&f)
             {
