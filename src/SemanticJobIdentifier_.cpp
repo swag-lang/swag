@@ -626,20 +626,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             identifier->byteCodeFct = ByteCodeGenJob::emitLambdaCall;
 
             // Need to make all types compatible, in case a cast is necessary
-            if (identifier->callParameters)
-            {
-                uint32_t castFlags = CASTFLAG_AUTO_OPCAST;
-                sortParameters(identifier->callParameters);
-                auto maxParams = identifier->callParameters->childs.size();
-                for (int i = 0; i < maxParams; i++)
-                {
-                    auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
-                    if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
-                        SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[i]->typeInfo, nullptr, nodeCall, castFlags));
-                    else if (oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
-                        SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters.back()->typeInfo, nullptr, nodeCall, castFlags));
-                }
-            }
+            SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
 
             // For a return by copy, need to reserve room on the stack for the return result
             auto returnType = TypeManager::concreteType(identifier->typeInfo);
