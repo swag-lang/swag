@@ -41,12 +41,14 @@ func display()
 var textureID: GLuint
 func loadImg() throw
 {
+    using image.Image
+
     data := imagePath("bmp_32.bmp")
     img := try image.load(data)
     img.flip()
     img.mirror()
     assume img.grayScale(0.5)
-    assume img.fill(image.Image.FillFormat.VerticalSaturation)
+    assume img.fill(FillFormat.VerticalSaturation, drawing.Color.fromRgb(255, 0, 0))
 
     fmt := GL_BGR
     if img.bpp == 32 fmt = GL_BGRA

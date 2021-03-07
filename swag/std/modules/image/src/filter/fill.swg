@@ -12,14 +12,18 @@ impl Image
         if pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8
         {
             hsl0 := color0.getHSL()
-            f := @{fillFormat}
+            f := @{fillFormat, hsl0}
             visitPixels(&f)
             {
                 params := :cast(*@typeof(f)) userData
                 factor := y / cast(f32) image.height
-                pix[0] = cast(u8) (factor * 255)
-                pix[1] = pix[0]
-                pix[2] = pix[0]
+
+                var col: Color = ?
+                col.setHSL(params.item1.h, params.item1.s, cast(f32) factor)
+
+                pix[0] = col.b
+                pix[1] = col.g
+                pix[2] = col.r
             }
         }
         else
