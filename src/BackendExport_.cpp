@@ -667,7 +667,7 @@ bool Backend::emitPublicScopeSwg(Module* moduleToGen, Scope* scope, int indent)
         {
             auto nodeImpl = CastAst<AstImpl>(scope->owner, AstNodeKind::Impl);
             auto symbol   = nodeImpl->identifier->resolvedSymbolOverload;
-            bufferSwg.addStringFormat("impl %s for %s", symbol->node->computeScopedName().c_str(), scope->parentScope->name.c_str());
+            bufferSwg.addStringFormat("impl %s for %s", symbol->node->getScopedName().c_str(), scope->parentScope->name.c_str());
             bufferSwg.addEol();
         }
         else if (scope->kind == ScopeKind::Enum)

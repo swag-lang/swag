@@ -355,7 +355,7 @@ struct AstNode
     virtual AstNode* clone(CloneContext& context);
     void             cloneChilds(CloneContext& context, AstNode* from);
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneHie = true);
-    Utf8             computeScopedName();
+    Utf8             getScopedName();
     bool             mustInline();
     void             setOwnerAttrUse(AstAttrUse* attrUse);
     void             allocateExtension();

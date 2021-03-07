@@ -215,7 +215,7 @@ void AstNode::inheritLocationFromChilds()
         token.endLocation = back->token.endLocation;
 }
 
-Utf8 AstNode::computeScopedName()
+Utf8 AstNode::getScopedName()
 {
     auto& fullName = ownerScope->getFullName();
     if (fullName.empty())
@@ -519,10 +519,10 @@ Utf8 AstFuncDecl::getNameForUserCompiler()
         while (fct && (fct->kind != AstNodeKind::FuncDecl || fct->attributeFlags & ATTRIBUTE_SHARP_FUNC))
             fct = fct->parent;
         if (fct)
-            return fct->computeScopedName();
+            return fct->getScopedName();
     }
 
-    return computeScopedName();
+    return getScopedName();
 }
 
 Utf8 AstFuncDecl::getNameForMessage()
@@ -571,7 +571,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
 
     SWAG_ASSERT(ownerScope);
 
-    auto nameForeign = computeScopedName();
+    auto nameForeign = getScopedName();
 
     // If the symbol has overloads, i.e. more than one definition, then we
     // append the type
