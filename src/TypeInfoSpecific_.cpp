@@ -960,11 +960,24 @@ Utf8 TypeInfoStruct::getDisplayName()
 void TypeInfoStruct::computeScopedName(uint32_t nameFlags)
 {
     unique_lock lk(mutex);
+
+    if ((flags & TYPEINFO_SPEC_SCOPED_NAME) && !(nameFlags & COMPUTE_NAME_EXPAND_TUPLE))
+    {
+        flags &= ~TYPEINFO_SPEC_SCOPED_NAME;
+        scopedName.clear();
+    }
+
+    if (!(flags & TYPEINFO_SPEC_SCOPED_NAME) && (nameFlags & COMPUTE_NAME_EXPAND_TUPLE))
+    {
+        flags |= TYPEINFO_SPEC_SCOPED_NAME;
+        scopedName.clear();
+    }
+
     if (!scopedName.empty())
         return;
 
     // For a tuple, we use the tuple syntax
-    if (flags & TYPEINFO_STRUCT_IS_TUPLE)
+    if ((nameFlags & COMPUTE_NAME_EXPAND_TUPLE) && (flags & TYPEINFO_STRUCT_IS_TUPLE))
     {
         scopedName += "{";
         for (int i = 0; i < fields.size(); i++)

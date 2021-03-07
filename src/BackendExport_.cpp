@@ -167,7 +167,7 @@ void Backend::emitType(TypeInfo* typeInfo, int indent)
         }
         else
         {
-            typeInfo->computeScopedName();
+            typeInfo->computeScopedName(COMPUTE_NAME_EXPAND_TUPLE);
             SWAG_ASSERT(!typeInfo->scopedName.empty());
             bufferSwg.addString(typeInfo->scopedName);
         }

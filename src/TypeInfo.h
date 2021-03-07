@@ -20,8 +20,9 @@ struct AstFuncDecl;
 struct JobContext;
 struct SemanticContext;
 
-static const int COMPUTE_NAME_FLAT   = 0x00000001;
-static const int COMPUTE_NAME_SCOPED = 0x00000002;
+static const int COMPUTE_NAME_FLAT         = 0x00000001;
+static const int COMPUTE_NAME_SCOPED       = 0x00000002;
+static const int COMPUTE_NAME_EXPAND_TUPLE = 0x00000004;
 
 static const uint64_t TYPEINFO_SELF                         = 0x00000000'00000001;
 static const uint64_t TYPEINFO_UNTYPED_BINHEXA              = 0x00000000'00000002;
@@ -56,6 +57,7 @@ static const uint64_t TYPEINFO_RELATIVE                     = 0x00000000'2000000
 static const uint64_t TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS = 0x00000000'40000000;
 static const uint64_t TYPEINFO_STRUCT_NO_COPY               = 0x00000000'80000000;
 static const uint64_t TYPEINFO_CAN_THROW                    = 0x00000001'00000000;
+static const uint64_t TYPEINFO_SPEC_SCOPED_NAME             = 0x00000002'00000000;
 
 static const uint32_t ISSAME_EXACT     = 0x00000001;
 static const uint32_t ISSAME_CAST      = 0x00000002;
