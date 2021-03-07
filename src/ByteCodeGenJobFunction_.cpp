@@ -710,7 +710,9 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
 
     SWAG_CHECK(emitIdentifier(context));
     node->additionalRegisterRC = node->resultRegisterRC;
-    auto allParams             = node->childs.empty() ? nullptr : node->childs.front();
+    auto allParams             = node->childs.empty() ? nullptr : node->childs.back();
+    SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
+
     SWAG_CHECK(emitCall(context, allParams, nullptr, (AstVarDecl*) overload->node, node->additionalRegisterRC, false));
     SWAG_ASSERT(context->result == ContextResult::Done);
     return true;
@@ -723,6 +725,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
     auto     funcNode = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
 
     auto allParams = node->childs.empty() ? nullptr : node->childs.back();
+    SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
     SWAG_CHECK(emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRC, false));
     return true;
 }
@@ -1333,8 +1336,8 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
     AstNode* node      = context->node;
     auto     overload  = node->resolvedSymbolOverload;
     auto     funcNode  = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-    auto     allParams = node->childs.empty() ? nullptr : node->childs.front();
-
+    auto     allParams = node->childs.empty() ? nullptr : node->childs.back();
+    SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
     emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRC, true);
     return true;
 }

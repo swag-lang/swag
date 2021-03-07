@@ -320,6 +320,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
     if (!identifier->callParameters)
         return true;
 
+    auto sourceFile = context->sourceFile;
     sortParameters(identifier->callParameters);
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
     auto maxParams    = identifier->callParameters->childs.size();
@@ -343,9 +344,63 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         // For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
         if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
         {
-            auto& typeTable    = context->sourceFile->module->typeTable;
+            auto& typeTable    = sourceFile->module->typeTable;
             auto  concreteType = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC);
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, concreteType, nullptr, &nodeCall->concreteTypeInfoStorage, CONCRETE_ZERO));
+        }
+    }
+
+    // Deal with default values for structs
+    // We need to add a temporary variable initialized with the default value, and reference
+    // that temporary variable as a new function call parameter
+    if (typeInfoFunc->parameters.size() && maxParams < typeInfoFunc->parameters.size())
+    {
+        auto funcDecl = CastAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl);
+        for (int i = 0; i < funcDecl->parameters->childs.size(); i++)
+        {
+            auto funcParam = CastAst<AstVarDecl>(funcDecl->parameters->childs[i], AstNodeKind::FuncDeclParam);
+            if (!funcParam->assignment)
+                continue;
+            if (funcParam->assignment->token.id == TokenId::CompilerCallerLocation)
+                continue;
+            if (funcParam->assignment->token.id == TokenId::CompilerCallerFunction)
+                continue;
+
+            auto typeParam = TypeManager::concreteReference(funcParam->typeInfo);
+            if (typeParam->kind != TypeInfoKind::Struct)
+                continue;
+
+            bool covered = false;
+            for (int j = 0; j < maxParams; j++)
+            {
+                auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
+                if (nodeCall->resolvedParameter->index == i)
+                {
+                    covered = true;
+                    break;
+                }
+            }
+
+            if (!covered)
+            {
+                auto varNode = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), identifier);
+
+                // Put child front, because emitCall wants the parameters to be the last
+                Ast::removeFromParent(varNode);
+                Ast::addChildFront(identifier, varNode);
+
+                varNode->assignment = Ast::clone(funcParam->assignment, varNode);
+
+                auto newParam   = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
+                newParam->index = i;
+                Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
+
+                // Add the 2 nodes to the semantic
+                context->job->nodes.pop_back();
+                context->job->nodes.push_back(newParam);
+                context->job->nodes.push_back(varNode);
+                context->result = ContextResult::NewChilds;
+            }
         }
     }
 

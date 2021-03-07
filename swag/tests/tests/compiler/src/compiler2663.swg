@@ -3,7 +3,7 @@ struct AA
     v: u32
 }
 
-func toto(x: AA = @{5})
+func toto(y: s32, x: AA = @{5})
 {
     @assert(x.v == 5)
 }
@@ -11,5 +11,5 @@ func toto(x: AA = @{5})
 //#[swag.printbc]
 #test
 {
-    toto()
+    toto(10)
 }
