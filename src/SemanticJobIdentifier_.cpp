@@ -315,6 +315,43 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     return true;
 }
 
+bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch)
+{
+    if (!identifier->callParameters)
+        return true;
+
+    sortParameters(identifier->callParameters);
+    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
+    auto maxParams    = identifier->callParameters->childs.size();
+    for (int i = 0; i < maxParams; i++)
+    {
+        auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+
+        // This is a lambda that was waiting for a match to have its types, and to continue solving its content
+        if (nodeCall->typeInfo->kind == TypeInfoKind::Lambda && (nodeCall->typeInfo->declNode->flags & AST_PENDING_LAMBDA_TYPING))
+            resolvePendingLambdaTyping(nodeCall, &oneMatch, i);
+
+        uint32_t castFlags = CASTFLAG_AUTO_OPCAST;
+        if (i == 0 && oneMatch.ufcs)
+            castFlags |= CASTFLAG_UFCS;
+
+        if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
+            SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[i]->typeInfo, nullptr, nodeCall, castFlags));
+        else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
+            SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters.back()->typeInfo, nullptr, nodeCall));
+
+        // For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
+        if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
+        {
+            auto& typeTable    = context->sourceFile->module->typeTable;
+            auto  concreteType = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC);
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, concreteType, nullptr, &nodeCall->concreteTypeInfoStorage, CONCRETE_ZERO));
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, OneMatch& oneMatch)
 {
     auto symbol       = oneMatch.symbolOverload->symbol;
@@ -655,37 +692,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Need to make all types compatible, in case a cast is necessary
         if (!identifier->ownerFct || !(identifier->ownerFct->flags & AST_IS_GENERIC))
         {
-            if (identifier->callParameters)
-            {
-                sortParameters(identifier->callParameters);
-                auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
-                auto maxParams    = identifier->callParameters->childs.size();
-                for (int i = 0; i < maxParams; i++)
-                {
-                    auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
-
-                    // This is a lambda that was waiting for a match to have its types, and to continue solving its content
-                    if (nodeCall->typeInfo->kind == TypeInfoKind::Lambda && (nodeCall->typeInfo->declNode->flags & AST_PENDING_LAMBDA_TYPING))
-                        resolvePendingLambdaTyping(nodeCall, &oneMatch, i);
-
-                    uint32_t castFlags = CASTFLAG_AUTO_OPCAST;
-                    if (i == 0 && oneMatch.ufcs)
-                        castFlags |= CASTFLAG_UFCS;
-
-                    if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
-                        SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[i]->typeInfo, nullptr, nodeCall, castFlags));
-                    else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
-                        SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters.back()->typeInfo, nullptr, nodeCall));
-
-                    // For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
-                    if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
-                    {
-                        auto& typeTable    = sourceFile->module->typeTable;
-                        auto  concreteType = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC);
-                        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, concreteType, nullptr, &nodeCall->concreteTypeInfoStorage, CONCRETE_ZERO));
-                    }
-                }
-            }
+            SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
         }
 
         // Be sure the call is valid
