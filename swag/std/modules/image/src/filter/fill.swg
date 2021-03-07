@@ -4,6 +4,7 @@ impl Image
 {
     public enum FillFormat
     {
+        SaturationHorizontal
         SaturationVertical
         HueSaturation
     }
@@ -18,6 +19,19 @@ impl Image
             using FillFormat
             switch(fillFormat)
             {
+            case SaturationHorizontal:
+                visitPixels(&f)
+                {
+                    params := :cast(*@typeof(f)) userData
+
+                    factor0 := x / cast(f32) image.width
+                    col := Color.fromHsl(params.col0.h, cast(f32) factor0, params.col0.l)
+
+                    pix[0] = col.b
+                    pix[1] = col.g
+                    pix[2] = col.r
+                }
+
             case SaturationVertical:
                 visitPixels(&f)
                 {

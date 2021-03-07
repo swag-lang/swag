@@ -99,6 +99,7 @@ impl Color
         return result
     }
 
+    // Create a new Color with specified values
     #[inline]
     func fromRgb(r, g, b: u8)->Color
     {
@@ -107,6 +108,7 @@ impl Color
         return result
     }
 
+    // Create a new Color with specified values
     #[inline]
     func fromRgbf(r, g, b: f32)->Color
     {
@@ -115,6 +117,7 @@ impl Color
         return result
     }
 
+    // Create a new Color with specified values
     #[inline]
     func fromArgb(a, r, g, b: u8)->Color
     {
@@ -123,6 +126,23 @@ impl Color
         return result
     }
 
+    // Create a new Color with specified values
+    #[inline]
+    func fromArgb(argb: Argb)->Color
+    {
+        var result: retval = argb
+        return result
+    }
+
+    // Create a new Color with specified values
+    #[inline]
+    func fromArgb(argb: u32)->Color
+    {
+        var result: retval = argb
+        return result
+    }
+
+    // Create a new Color with specified values
     #[inline]
     func fromArgbf(a, r, g, b: f32)->Color
     {
@@ -131,6 +151,7 @@ impl Color
         return result
     }
 
+    // Create a new Color with specified values
     #[inline]
     func fromHsl(h, s, l: f32)->Color
     {
@@ -139,7 +160,7 @@ impl Color
         return result
     }
 
-    // Set color with hue, saturation, lightness
+    // Initialize color with hue, saturation, lightness
     func setHsl(using self, h, s, l: f32)
     {
         func hueToCol(m1, m2, hue: f32)->u8
