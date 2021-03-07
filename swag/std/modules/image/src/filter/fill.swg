@@ -18,9 +18,9 @@ impl Image
             {
                 params := :cast(*@typeof(f)) userData
                 factor := y / cast(f32) image.height
-                buffer[0] = cast(u8) (factor * 255)
-                buffer[1] = buffer[0]
-                buffer[2] = buffer[0]
+                pix[0] = cast(u8) (factor * 255)
+                pix[1] = pix[0]
+                pix[2] = pix[0]
             }
         }
         else
