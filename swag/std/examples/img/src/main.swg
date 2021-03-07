@@ -2,7 +2,7 @@
 #import "core"
 #import "image"
 #import "ogl"
-using core, win32, ogl, gdi32
+using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
 
@@ -48,7 +48,7 @@ func loadImg() throw
     img.flip()
     img.mirror()
     assume img.grayScale(0.5)
-    assume img.fill(FillFormat.SaturationHorizontal, drawing.Color.fromArgb(drawing.Argb.Green))
+    assume img.fill(FillFormat.SaturationHorizontal, Color.fromArgb(Argb.Green))
 
     fmt := GL_BGR
     if img.bpp == 32 fmt = GL_BGRA
