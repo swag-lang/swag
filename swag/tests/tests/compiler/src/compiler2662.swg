@@ -1,23 +1,23 @@
 var G = 0
 
 #[swag.macro]
-func toto(stmt2: code)
+func toto(stmt: code)
 {
     func tata()
     {
-        #mixin stmt2
+        #mixin stmt
     }
 
     tata()
 }
 
 #[swag.macro]
-func titi(stmt1: code)
+func titi(stmt: code)
 {
     toto()
     {
         G += 1
-        #mixin stmt1
+        #mixin stmt
     }
 }
 
