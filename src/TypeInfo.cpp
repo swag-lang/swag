@@ -28,23 +28,25 @@ void TypeInfo::getScopedName(Utf8& newName)
     }
 }
 
-const Utf8& TypeInfo::computeName(int mode)
+const Utf8& TypeInfo::computeName(uint32_t nameFlags)
 {
-    switch (mode)
+    if (nameFlags & COMPUTE_NAME_FLAT)
     {
-    case COMPUTE_NAME_FLAT:
         computeName();
         return name;
-    case COMPUTE_NAME_SCOPED:
-        computeScopedName();
-        return scopedName;
-    default:
-        SWAG_ASSERT(false);
-        return name;
     }
+
+    if (nameFlags & COMPUTE_NAME_SCOPED)
+    {
+        computeScopedName(nameFlags);
+        return scopedName;
+    }
+
+    SWAG_ASSERT(false);
+    return name;
 }
 
-void TypeInfo::computeScopedName()
+void TypeInfo::computeScopedName(uint32_t nameFlags)
 {
     scoped_lock lk(mutex);
     if (!scopedName.empty())

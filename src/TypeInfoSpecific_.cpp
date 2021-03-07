@@ -147,14 +147,14 @@ void TypeInfoReference::computePreName(Utf8& preName)
     preName += "&";
 }
 
-void TypeInfoReference::computeScopedName()
+void TypeInfoReference::computeScopedName(uint32_t nameFlags)
 {
     unique_lock lk(mutex);
     if (!scopedName.empty())
         return;
 
     computePreName(scopedName);
-    pointedType->computeScopedName();
+    pointedType->computeScopedName(nameFlags);
     scopedName += pointedType->scopedName;
 }
 
@@ -199,7 +199,7 @@ void TypeInfoPointer::computePreName(Utf8& preName)
         preName += format("~%u ", relative);
 }
 
-void TypeInfoPointer::computeScopedName()
+void TypeInfoPointer::computeScopedName(uint32_t nameFlags)
 {
     unique_lock lk(mutex);
     if (!scopedName.empty())
@@ -210,7 +210,7 @@ void TypeInfoPointer::computeScopedName()
     else
     {
         computePreName(scopedName);
-        pointedType->computeScopedName();
+        pointedType->computeScopedName(nameFlags);
         scopedName += pointedType->scopedName;
     }
 }
@@ -316,14 +316,14 @@ void TypeInfoArray::computePreName(Utf8& preName)
     }
 }
 
-void TypeInfoArray::computeScopedName()
+void TypeInfoArray::computeScopedName(uint32_t nameFlags)
 {
     unique_lock lk(mutex);
     if (!scopedName.empty())
         return;
 
     computePreName(scopedName);
-    pointedType->computeScopedName();
+    pointedType->computeScopedName(nameFlags);
     scopedName += pointedType->scopedName;
 }
 
@@ -534,7 +534,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
     return newType;
 }
 
-void TypeInfoFuncAttr::computeName(Utf8& resName, int mode)
+void TypeInfoFuncAttr::computeName(Utf8& resName, uint32_t nameFlags)
 {
     // Generic parameters
     if (genericParameters.size())
@@ -553,7 +553,7 @@ void TypeInfoFuncAttr::computeName(Utf8& resName, int mode)
                 resName += str;
             }
             else if (genParam->typeInfo)
-                resName += genParam->typeInfo->computeName(mode);
+                resName += genParam->typeInfo->computeName(nameFlags);
             else
                 resName += genParam->name;
         }
@@ -567,7 +567,7 @@ void TypeInfoFuncAttr::computeName(Utf8& resName, int mode)
     {
         if (i)
             resName += ", ";
-        resName += parameters[i]->typeInfo->computeName(mode);
+        resName += parameters[i]->typeInfo->computeName(nameFlags);
     }
 
     resName += ")";
@@ -576,7 +576,7 @@ void TypeInfoFuncAttr::computeName(Utf8& resName, int mode)
     if (returnType && !returnType->isNative(NativeTypeKind::Void))
     {
         resName += "->";
-        resName += returnType->computeName(mode);
+        resName += returnType->computeName(nameFlags);
     }
 
     if (flags & TYPEINFO_CAN_THROW)
@@ -591,7 +591,7 @@ void TypeInfoFuncAttr::computeName()
     computeName(name, COMPUTE_NAME_FLAT);
 }
 
-void TypeInfoFuncAttr::computeScopedName()
+void TypeInfoFuncAttr::computeScopedName(uint32_t nameFlags)
 {
     unique_lock lk(mutex);
     if (!scopedName.empty())
@@ -957,7 +957,7 @@ Utf8 TypeInfoStruct::getDisplayName()
     return typeName;
 }
 
-void TypeInfoStruct::computeScopedName()
+void TypeInfoStruct::computeScopedName(uint32_t nameFlags)
 {
     unique_lock lk(mutex);
     if (!scopedName.empty())
@@ -972,7 +972,7 @@ void TypeInfoStruct::computeScopedName()
             auto p = fields[i];
             if (i)
                 scopedName += ", ";
-            p->typeInfo->computeScopedName();
+            p->typeInfo->computeScopedName(nameFlags);
             if (!p->namedParam.empty() && !(p->flags & TYPEINFO_AUTO_NAME))
             {
                 scopedName += p->namedParam;
@@ -1005,7 +1005,7 @@ void TypeInfoStruct::computeScopedName()
             }
             else
             {
-                genParam->typeInfo->computeScopedName();
+                genParam->typeInfo->computeScopedName(nameFlags);
                 scopedName += genParam->typeInfo->scopedName;
             }
         }
