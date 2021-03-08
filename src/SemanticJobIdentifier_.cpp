@@ -389,9 +389,14 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 Ast::removeFromParent(varNode);
                 Ast::addChildFront(identifier, varNode);
 
+                CloneContext cloneContext;
+                cloneContext.parent        = varNode;
+                cloneContext.forceLocation = &identifier->token;
+                cloneContext.parentScope   = identifier->ownerScope;
+
                 if (funcParam->type)
-                    varNode->type = Ast::clone(funcParam->type, varNode);
-                varNode->assignment = Ast::clone(funcParam->assignment, varNode);
+                    varNode->type = funcParam->type->clone(cloneContext);
+                varNode->assignment = funcParam->assignment->clone(cloneContext);
 
                 auto newParam   = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
                 newParam->index = i;

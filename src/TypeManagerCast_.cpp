@@ -2758,6 +2758,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
             }
         }
 
+        if (fromNode->parent->kind == AstNodeKind::FuncDeclParam)
+            convert = false;
+
         if (convert)
         {
             SWAG_CHECK(convertLiteralTupleToStructVar(context, toType, fromNode));

@@ -34,8 +34,8 @@ namespace Ast
 
         if (job)
         {
-            node->token.id            = job->token.id;
-            node->token.text          = job->token.text;
+            node->token.id   = job->token.id;
+            node->token.text = job->token.text;
 
             if (job->currentTokenLocation)
             {
@@ -45,7 +45,7 @@ namespace Ast
             else
             {
                 node->token.startLocation = job->token.startLocation;
-                node->token.endLocation = job->token.endLocation;
+                node->token.endLocation   = job->token.endLocation;
             }
 
             node->inheritOwnersAndFlags(job);

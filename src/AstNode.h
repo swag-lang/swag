@@ -171,6 +171,7 @@ struct CloneContext
     Scope*              alternativeScope       = nullptr;
     AstNode*            ownerMainNode          = nullptr;
     AstCompilerIfBlock* ownerCompilerIfBlock   = nullptr;
+    Token*              forceLocation          = nullptr;
     uint64_t            forceFlags             = 0;
     uint64_t            removeFlags            = 0;
     bool                rawClone               = false;

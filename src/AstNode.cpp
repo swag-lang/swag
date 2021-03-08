@@ -379,6 +379,11 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     resolvedSymbolOverload = from->resolvedSymbolOverload;
 
     token = from->token;
+    if (context.forceLocation)
+    {
+        token.startLocation = context.forceLocation->startLocation;
+        token.endLocation   = context.forceLocation->endLocation;
+    }
 
     semanticFct = from->semanticFct;
     byteCodeFct = from->byteCodeFct;
@@ -989,7 +994,7 @@ AstNode* AstSwitchCaseBlock::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstSwitchCaseBlock>();
 
-    auto cloneContext = context;
+    auto cloneContext        = context;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
     newNode->copyFrom(cloneContext, this);
 
