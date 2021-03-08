@@ -403,9 +403,14 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
 
                 // Add the 2 nodes to the semantic
-                context->job->nodes.pop_back();
                 context->job->nodes.push_back(newParam);
                 context->job->nodes.push_back(varNode);
+
+                // If call is inlined, then the identifier will be reevaluated, and the variable, which is a child,
+                // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
+                // it twice.
+                varNode->semFlags |= AST_SEM_ONCE;
+
                 context->result = ContextResult::NewChilds;
             }
         }

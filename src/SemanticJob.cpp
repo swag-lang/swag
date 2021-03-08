@@ -202,6 +202,8 @@ JobResult SemanticJob::execute()
                     auto child = node->childs[i];
                     if (child->flags & AST_NO_SEMANTIC)
                         continue;
+                    if ((child->semFlags & AST_SEM_ONCE) && child->semanticState != AstNodeResolveState::Enter)
+                        continue;
 
                     enterState(child);
                     nodes.push_back(child);
@@ -216,6 +218,8 @@ JobResult SemanticJob::execute()
                     // If the child has the AST_NO_SEMANTIC flag, do not push it.
                     // Special case for sub declarations, because we need to deal with AST_DONE_FILE_JOB_PASS
                     if ((child->flags & AST_NO_SEMANTIC) && !(child->flags & AST_SUB_DECL))
+                        continue;
+                    if ((child->semFlags & AST_SEM_ONCE) && child->semanticState != AstNodeResolveState::Enter)
                         continue;
 
                     enterState(child);
