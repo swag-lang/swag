@@ -340,7 +340,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     pmb.SLPVectorize       = !isDebug;
     pmb.LoopVectorize      = !isDebug;
     pmb.RerollLoops        = !isDebug;
-    //pmb.NewGVN             = !isDebug; // Dot not work, assert in llvm (08/march/2021)
+    //pmb.NewGVN             = !isDebug; // Does not work, assert in llvm (08/march/2021)
     pmb.MergeFunctions    = !isDebug;
     pmb.PrepareForLTO     = false;
     pmb.PrepareForThinLTO = false;
