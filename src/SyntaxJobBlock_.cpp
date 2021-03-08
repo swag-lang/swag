@@ -118,13 +118,9 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
 
             // Instructions
             ScopedBreakable scopedBreakable(this, switchNode);
-
             SWAG_CHECK(verifyError(previousToken, token.id != TokenId::KwdCase && token.id != TokenId::KwdDefault && token.id != TokenId::SymRightCurly, "'case' statement is empty"));
-
             while (token.id != TokenId::KwdCase && token.id != TokenId::KwdDefault && token.id != TokenId::SymRightCurly)
-            {
                 SWAG_CHECK(doEmbeddedInstruction(statement));
-            }
         }
     }
 

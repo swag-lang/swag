@@ -988,7 +988,10 @@ AstNode* AstSwitchCase::clone(CloneContext& context)
 AstNode* AstSwitchCaseBlock::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstSwitchCaseBlock>();
-    newNode->copyFrom(context, this);
+
+    auto cloneContext = context;
+    cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
+    newNode->copyFrom(cloneContext, this);
 
     newNode->ownerCase = CastAst<AstSwitchCase>(context.parent, AstNodeKind::SwitchCase);
     newNode->isDefault = isDefault;
