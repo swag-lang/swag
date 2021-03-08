@@ -83,6 +83,7 @@ bool Backend::emitAttributes(TypeInfo* typeInfo, int indent)
 
 bool Backend::emitTypeTuple(TypeInfo* typeInfo, int indent)
 {
+    typeInfo = TypeManager::concreteReference(typeInfo);
     SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 

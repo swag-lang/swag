@@ -730,8 +730,25 @@ namespace Ast
                     concat.addString(varDecl->publicName);
                 else
                     concat.addString(varDecl->token.text);
-                CONCAT_FIXED_STR(concat, ": ");
-                SWAG_CHECK(output(context, concat, varDecl->type));
+
+                if (!(varDecl->type->flags & AST_GENERATED))
+                {
+                    CONCAT_FIXED_STR(concat, ": ");
+                    SWAG_CHECK(output(context, concat, varDecl->type));
+                }
+                else
+                {
+                    CONCAT_FIXED_STR(concat, " = ");
+                    auto typeExpr = CastAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
+                    SWAG_ASSERT(!varDecl->assignment);
+                    SWAG_ASSERT(typeExpr->identifier);
+                    SWAG_ASSERT(varDecl->type->typeInfo && (varDecl->type->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE));
+                    auto id = CastAst<AstIdentifier>(typeExpr->identifier->childs.back(), AstNodeKind::Identifier);
+                    CONCAT_FIXED_STR(concat, "@{");
+                    SWAG_CHECK(output(context, concat, id->callParameters));
+                    CONCAT_FIXED_STR(concat, "}");
+                }
+
                 if (varDecl->assignment)
                 {
                     CONCAT_FIXED_STR(concat, " = ");
