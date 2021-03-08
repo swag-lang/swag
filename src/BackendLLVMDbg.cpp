@@ -579,6 +579,10 @@ llvm::DIScope* BackendLLVMDbg::getOrCreateScope(llvm::DIFile* file, Scope* scope
 {
     SWAG_ASSERT(scope);
 
+    // If this assert triggers, this will crash at one point in llvm. This should never
+    // happens, so check the corresponding instruction !
+    SWAG_ASSERT(scope->kind != ScopeKind::Function);
+
     llvm::DIScope*       parent = file;
     VectorNative<Scope*> toGen;
     auto                 scanScope = scope;
