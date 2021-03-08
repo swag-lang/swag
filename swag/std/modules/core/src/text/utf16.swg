@@ -110,7 +110,7 @@ func fromUnicode(dest: [..] u16, src: const [..] char)->uint
     return cast(uint) (dataof - @dataof(dest))
 }
 
-// Convert an utf8 buffer to an utf16 sequence
+// Convert a character array (32 bits unicode) to an utf16 sequence
 func fromUnicode(src: const [..] char)->Array'u16
 {
     var result: retval
