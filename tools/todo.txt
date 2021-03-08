@@ -41,9 +41,9 @@ cast interface vers struct (avec safety)
 OPTIMS
 ****************************************
 -------------------------------------
-local var, passage en register only 
+passer/retourner des structs par value si <= 64 bits
 -------------------------------------
-detecter les sorties de fonctions dupliquées et faire des jumps
+detecter les exit (ret) de fonctions dupliquées et faire des jumps
 -------------------------------------
 BinOpModuloS32/div immediate mode
 -------------------------------------

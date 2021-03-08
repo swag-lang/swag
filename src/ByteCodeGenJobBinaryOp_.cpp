@@ -550,34 +550,42 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
     SWAG_ASSERT(symbolOverload);
     auto funcDecl = CastAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
 
-    if (symbolOverload->node->attributeFlags & ATTRIBUTE_INLINE)
+    if (symbolOverload->node->mustInline())
     {
-        // Need to wait for function full semantic resolve
+        // Expand inline function. Do not expand an inline call inside a function marked as inline.
+        // The expansion will be done at the lowest level possible
+        // Remember: inline functions are also compiled as non inlined (mostly for compile time execution
+        // of calls), and we do not want the call to be inlined twice (one in the normal owner function, and one
+        // again after the owner function has been duplicated).
+        if (!node->ownerFct || !node->ownerFct->mustInline())
         {
-            scoped_lock lk(funcDecl->mutex);
-            if (!(funcDecl->semFlags & AST_SEM_FULL_RESOLVE))
+            // Need to wait for function full semantic resolve
             {
-                funcDecl->dependentJobs.add(context->job);
-                context->job->setPending(funcDecl->resolvedSymbolName, "EMIT_USER_OP", funcDecl, nullptr);
+                scoped_lock lk(funcDecl->mutex);
+                if (!(funcDecl->semFlags & AST_SEM_FULL_RESOLVE))
+                {
+                    funcDecl->dependentJobs.add(context->job);
+                    context->job->setPending(funcDecl->resolvedSymbolName, "EMIT_USER_OP", funcDecl, nullptr);
+                    return true;
+                }
+            }
+
+            if (!(node->doneFlags & AST_DONE_INLINED))
+            {
+                node->doneFlags |= AST_DONE_INLINED;
+                SWAG_CHECK(makeInline(context, funcDecl, node));
                 return true;
             }
-        }
 
-        if (!(node->doneFlags & AST_DONE_INLINED))
-        {
-            node->doneFlags |= AST_DONE_INLINED;
-            SWAG_CHECK(makeInline(context, funcDecl, node));
+            if (!(node->doneFlags & AST_DONE_RESOLVE_INLINED))
+            {
+                node->doneFlags |= AST_DONE_RESOLVE_INLINED;
+                context->job->nodes.push_back(node->childs.back());
+                context->result = ContextResult::NewChilds;
+            }
+
             return true;
         }
-
-        if (!(node->doneFlags & AST_DONE_RESOLVE_INLINED))
-        {
-            node->doneFlags |= AST_DONE_RESOLVE_INLINED;
-            context->job->nodes.push_back(node->childs.back());
-            context->result = ContextResult::NewChilds;
-        }
-
-        return true;
     }
 
     bool foreign = symbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN;
