@@ -400,6 +400,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
                 auto newParam   = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
                 newParam->index = i;
+                newParam->flags |= AST_GENERATED;
                 Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
 
                 // Add the 2 nodes to the semantic

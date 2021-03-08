@@ -1009,13 +1009,15 @@ namespace Ast
 
         case AstNodeKind::FuncCallParams:
         {
-            int idx = 0;
+            bool first = true;
             for (auto child : node->childs)
             {
-                if (idx)
+                if (child->flags & AST_GENERATED)
+                    continue;
+                if (!first)
                     CONCAT_FIXED_STR(concat, ", ");
+                first = false;
                 SWAG_CHECK(output(context, concat, child));
-                idx++;
             }
 
             break;
