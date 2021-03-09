@@ -145,7 +145,6 @@ JobResult ModuleBuildJob::execute()
         // If we do not need to compile, then exit, we're done with that module
         if (!module->backend->mustCompile && !g_CommandLine.test && (!g_CommandLine.run || !g_CommandLine.script))
         {
-            timerSemanticModule.start();
             pass = ModuleBuildPass::WaitForDependencies;
         }
         else
@@ -235,9 +234,12 @@ JobResult ModuleBuildJob::execute()
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbosePass)
         {
-            timerSemanticModule.stop();
-            if (!module->numTestErrors && module->buildPass == BuildPass::Full)
-                g_Log.verbosePass(LogPassType::PassEnd, "SemanticModule", module->name, timerSemanticModule.elapsed);
+            if (timerSemanticModule.started)
+            {
+                timerSemanticModule.stop();
+                if (!module->numTestErrors && module->buildPass == BuildPass::Full)
+                    g_Log.verbosePass(LogPassType::PassEnd, "SemanticModule", module->name, timerSemanticModule.elapsed);
+            }
         }
 
         pass = ModuleBuildPass::WaitForDependenciesEffective;
