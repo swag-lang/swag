@@ -39,7 +39,7 @@ struct ModuleBuildJob : public Job
     JobResult execute() override;
 
     ModuleBuildPass pass = ModuleBuildPass::Init;
-    Timer           timerSemanticCompiler;
+    Timer           timerSyntax;
     Timer           timerSemanticModule;
     Timer           timerRun;
     Timer           timerOutput;

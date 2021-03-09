@@ -129,7 +129,6 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::Syntax)
     {
         // Determine now if we need to recompile
-        module->allocateBackend();
         module->backend->setMustCompile();
 
         // If we do not need to compile, then exit, we're done with that module
@@ -140,6 +139,9 @@ JobResult ModuleBuildJob::execute()
         else
         {
             pass = ModuleBuildPass::Publish;
+
+            timerSyntax.start();
+            g_Log.verbosePass(LogPassType::PassBegin, "Syntax", module->name);
 
             for (auto file : module->files)
             {
@@ -159,6 +161,10 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Publish)
     {
+        timerSyntax.stop();
+        if (!module->numTestErrors && module->buildPass == BuildPass::Full)
+            g_Log.verbosePass(LogPassType::PassEnd, "Syntax", module->name, timerSyntax.elapsed);
+
         pass = ModuleBuildPass::IncludeSwg;
         if (g_CommandLine.output && !module->path.empty() && module->kind != ModuleKind::Test)
         {
@@ -194,12 +200,8 @@ JobResult ModuleBuildJob::execute()
 
         if (g_CommandLine.stats || g_CommandLine.verbosePass)
         {
-            timerSemanticCompiler.stop();
             if (!module->numTestErrors && module->buildPass == BuildPass::Full)
-            {
-                g_Log.verbosePass(LogPassType::PassEnd, "SemanticCompiler", module->name, timerSemanticCompiler.elapsed);
                 g_Log.verbosePass(LogPassType::PassBegin, "SemanticModule", module->name);
-            }
             timerSemanticModule.start();
         }
 
