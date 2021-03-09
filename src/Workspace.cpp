@@ -704,8 +704,8 @@ bool Workspace::buildTarget()
     // Ask for a syntax pass on all files of all modules
     //////////////////////////////////////////////////
 
-    g_Log.verbosePass(LogPassType::Title, "Syntax", "");
-    g_Log.verbosePass(LogPassType::PassBegin, "Syntax", "");
+    g_Log.verbosePass(LogPassType::Title, "Touch Module Files", "");
+    g_Log.verbosePass(LogPassType::PassBegin, "Touch", "");
 
     {
         auto enumJob = new EnumerateModuleJob;
@@ -713,7 +713,7 @@ bool Workspace::buildTarget()
         g_ThreadMgr.waitEndJobs();
     }
 
-    g_Log.verbosePass(LogPassType::PassEnd, "Syntax", "", g_Stats.syntaxTime.load());
+    g_Log.verbosePass(LogPassType::PassEnd, "Touch", "", g_Stats.syntaxTime.load());
 
     // Filter modules to build
     //////////////////////////////////////////////////
