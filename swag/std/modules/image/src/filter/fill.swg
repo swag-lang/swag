@@ -31,7 +31,7 @@ impl Image
                 pix[0] = col.b
                 pix[1] = col.g
                 pix[2] = col.r
-                pix[0] = 0
+                //pix[0] = 0
                 pix[1] = 0
                 pix[2] = 0
             }

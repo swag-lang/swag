@@ -1,7 +1,4 @@
 #global if #os == "windows"
-#import "core"
-#import "image"
-#import "ogl"
 using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC

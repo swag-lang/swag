@@ -1,8 +1,6 @@
 #global export
 #global foreignlib "opengl32"
 #global if #os == "windows"
-#import "win32"
-#import "gdi32"
 using win32
 
 alias HGLRC = const *void

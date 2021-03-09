@@ -1,6 +1,4 @@
 #global if #os == "windows"
-#import "core"
-#import "ogl"
 using core, win32, ogl, gdi32, time
 
 var hDC:            HDC

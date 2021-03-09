@@ -130,13 +130,13 @@ JobResult ModuleBuildJob::execute()
             }
         }
 
-        pass = ModuleBuildPass::IncludeSwg;
+        pass = ModuleBuildPass::Syntax;
     }
 
     // We add all public files that corresponds
     // to each module we want to import
     //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::IncludeSwg)
+    if (pass == ModuleBuildPass::Syntax)
     {
         // Determine now if we need to recompile
         module->allocateBackend();
@@ -149,18 +149,38 @@ JobResult ModuleBuildJob::execute()
         }
         else
         {
-            for (auto& dep : module->moduleDependencies)
+            pass = ModuleBuildPass::IncludeSwg;
+
+            for (auto file : module->files)
             {
-                if (!loadDependency(dep))
-                    return JobResult::ReleaseJob;
+                auto job          = g_Pool_syntaxJob.alloc();
+                job->sourceFile   = file;
+                job->module       = module;
+                job->dependentJob = this;
+                jobsToAdd.push_back(job);
             }
 
-            // Sync with all jobs
             if (!jobsToAdd.empty())
                 return JobResult::KeepJobAlive;
-
-            pass = ModuleBuildPass::SemanticModule;
         }
+    }
+
+    // We add all public files that corresponds
+    // to each module we want to import
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::IncludeSwg)
+    {
+        for (auto& dep : module->moduleDependencies)
+        {
+            if (!loadDependency(dep))
+                return JobResult::ReleaseJob;
+        }
+
+        // Sync with all jobs
+        if (!jobsToAdd.empty())
+            return JobResult::KeepJobAlive;
+
+        pass = ModuleBuildPass::SemanticModule;
     }
 
     //////////////////////////////////////////////////

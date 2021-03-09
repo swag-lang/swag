@@ -9,6 +9,7 @@ enum class ModuleBuildPass
 {
     Init,
     Dependencies,
+    Syntax,
     IncludeSwg,
     AfterSemantic,
     WaitForDependencies,

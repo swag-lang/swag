@@ -1,5 +1,3 @@
-#import "core"
-
 #if #hastag("std.mthx.f64")
     public alias Float = f64
 #else

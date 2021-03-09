@@ -25,12 +25,7 @@ void EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>&
     if (g_CommandLine.numCores == 1)
         allFiles.push_back(file);
     else
-    {
         theModule->addFile(file);
-        auto job        = g_Pool_syntaxJob.alloc();
-        job->sourceFile = file;
-        g_ThreadMgr.addJob(job);
-    }
 }
 
 void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module* theModule)
@@ -78,12 +73,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     {
         sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b) { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
         for (auto file : allFiles)
-        {
             theModule->addFile(file);
-            auto job        = g_Pool_syntaxJob.alloc();
-            job->sourceFile = file;
-            g_ThreadMgr.addJob(job);
-        }
     }
 }
 

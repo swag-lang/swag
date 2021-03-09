@@ -36,7 +36,6 @@ https://youtu.be/e8lYLYlrGLg
 Last Updated: 24/06/2017
 */
 #global if #os == "windows"
-#import "core"
 using win32, core.keyboard
 
 var nScreenWidth  = 120'u32

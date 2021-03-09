@@ -1,4 +1,3 @@
-#import "core"
 using core, utf8
 
 var lines:      Array'String
