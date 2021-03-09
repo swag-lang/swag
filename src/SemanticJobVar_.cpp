@@ -34,12 +34,35 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     auto sourceFile = context->sourceFile;
     auto orgType    = childType;
 
-    /*if (childType->kind == TypeInfoKind::Lambda)
+    // Tuple item is a lambda
+    if (childType->kind == TypeInfoKind::Lambda)
     {
-        auto typeLambda         = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
-        typeLambda->semanticFct = SemanticJob::resolveTypeLambda;
-        return typeLambda;
-    }*/
+        auto typeLambda             = CastTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::Lambda);
+        auto typeExprLambda         = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
+        typeExprLambda->semanticFct = SemanticJob::resolveTypeLambda;
+        if (childType->flags & TYPEINFO_CAN_THROW)
+            typeExprLambda->canThrow = true;
+
+        // Parameters
+        auto params                = Ast::newNode<AstNode>(nullptr, AstNodeKind::FuncDeclParams, sourceFile, typeExprLambda);
+        typeExprLambda->parameters = params;
+        for (auto p : typeLambda->parameters)
+        {
+            auto typeParam = convertTypeToTypeExpression(context, params, assignment, p->typeInfo);
+            if (!typeParam)
+                return nullptr;
+        }
+
+        // Return type
+        if (typeLambda->returnType && !typeLambda->returnType->isNative(NativeTypeKind::Void))
+        {
+            typeExprLambda->returnType = convertTypeToTypeExpression(context, typeExprLambda, assignment, typeLambda->returnType);
+            if (!typeExprLambda->returnType)
+                return nullptr;
+        }
+
+        return typeExprLambda;
+    }
 
     auto typeExpression = Ast::newTypeExpression(sourceFile, parent);
     typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
@@ -101,7 +124,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
         break;
     }
     default:
-        context->report({assignment, format("tuple initialization with type '%s' is not supported", orgType->name.c_str()).c_str()});
+        context->report({assignment, format("type to tuple conversion is not supported for type '%s'", orgType->name.c_str()).c_str()});
         return nullptr;
     }
 
