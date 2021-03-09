@@ -66,6 +66,15 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
 
     auto typeExpression = Ast::newTypeExpression(sourceFile, parent);
     typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
+    if (childType->isConst())
+        typeExpression->typeFlags |= TYPEFLAG_ISCONST;
+
+    if (childType->kind == TypeInfoKind::Slice)
+    {
+        auto typeInfoSlice = CastTypeInfo<TypeInfoSlice>(childType, TypeInfoKind::Slice);
+        typeExpression->typeFlags |= TYPEFLAG_ISSLICE;
+        childType = typeInfoSlice->pointedType;
+    }
 
     if (childType->kind == TypeInfoKind::Pointer)
     {
@@ -124,7 +133,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
         break;
     }
     default:
-        context->report({assignment, format("type to tuple conversion is not supported for type '%s'", orgType->name.c_str()).c_str()});
+        context->report({assignment, format("type to tuple conversion is not (yet?) supported for type '%s'", orgType->name.c_str()).c_str()});
         return nullptr;
     }
 
