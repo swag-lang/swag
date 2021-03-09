@@ -261,6 +261,19 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 ptrPointer->forceComputeName();
             }
 
+            if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_REF)
+            {
+                auto ptrRef          = allocType<TypeInfoReference>();
+                ptrRef->pointedType  = ptrPointer1->pointedType;
+                ptrRef->originalType = nullptr;
+                SWAG_VERIFY(typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST, context->report({typeNode, "a reference must be declared as 'const'"}));
+                ptrRef->flags |= TYPEINFO_CONST;
+                ptrRef->flags |= (firstType->flags & TYPEINFO_GENERIC);
+                ptrRef->computeName();
+                ptrPointer1->pointedType = ptrRef;
+                ptrPointer1->forceComputeName();
+            }
+
             ptrPointer = ptrPointer1;
             if (i == 0)
                 typeNode->typeInfo = ptrPointer;

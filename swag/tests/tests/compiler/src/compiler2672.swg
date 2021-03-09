@@ -5,17 +5,12 @@ struct AA
     z: f64 = 3
 }
 
-//#[swag.printbc]
-func toto(x: AA)
-{
-    v := @{x}
-    @assert(v.item0.x == 1)
-    @assert(v.item0.y == 2)
-    @assert(v.item0.z == 3)
-}
-
 #test
 {
-    var v: AA
-    toto(v)
+    var v: *const&AA
+
+    /*var v: AA
+    var v1: const&AA = v
+    v2 := &v1
+    vv := @{v1, v2}*/
 }

@@ -85,9 +85,6 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
         // Convert typeinfo to TypeExpression
         switch (childType->kind)
         {
-        case TypeInfoKind::Reference:
-            break;
-
         case TypeInfoKind::Native:
             typeExpression->token.id    = TokenId::NativeType;
             typeExpression->literalType = childType;
@@ -111,7 +108,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
             break;
         }
         default:
-            return context->report({paramNode, format("dynamic tuple initialization with type '%s' is not supported", typeParam->typeInfo->name.c_str()).c_str()});
+            return context->report({context->node->childs[idx], format("dynamic tuple initialization with type '%s' is not supported", typeParam->typeInfo->name.c_str()).c_str()});
         }
     }
 

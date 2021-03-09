@@ -352,7 +352,15 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (token.id == TokenId::KwdConst)
             {
                 SWAG_CHECK(tokenizer.getToken(token));
-                SWAG_VERIFY(token.id == TokenId::SymAsterisk, syntaxError(token, "missing pointer declaration '*' after 'const'"));
+                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, syntaxError(token, "missing pointer '*' or reference '&' marker after 'const'"));
+
+                // Pointer to a const reference
+                if (token.id == TokenId::SymAmpersand)
+                {
+                    SWAG_CHECK(tokenizer.getToken(token));
+                    node->ptrFlags[node->ptrCount] |= AstTypeExpression::PTR_REF | AstTypeExpression::PTR_CONST;
+                }
+
                 isPtrConst = true;
             }
 

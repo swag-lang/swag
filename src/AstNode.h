@@ -689,6 +689,7 @@ struct AstTypeExpression : public AstNode
     uint16_t             typeFlags;
     static const int     MAX_PTR_COUNT = 4;
     static const uint8_t PTR_CONST     = 0x01;
+    static const uint8_t PTR_REF       = 0x02;
     uint8_t              ptrFlags[MAX_PTR_COUNT];
     uint8_t              ptrRel[MAX_PTR_COUNT];
     AstNode*             ptrRelIds[MAX_PTR_COUNT];
