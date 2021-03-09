@@ -29,6 +29,8 @@ struct Stats
     atomic<uint64_t> genOutputTimePass  = 0;
     atomic<uint64_t> genOutputTimeJob   = 0;
     atomic<uint64_t> optimBCTime        = 0;
+    atomic<uint64_t> bootstrapTime      = 0;
+    atomic<uint64_t> runtimeTime        = 0;
 
     atomic<size_t> allocatorMemory = 0;
     atomic<size_t> wastedMemory    = 0;

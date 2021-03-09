@@ -101,6 +101,25 @@ void Log::verbosePass(LogPassType type, const Utf8& passName, const Utf8& module
 
     switch (type)
     {
+    case LogPassType::Title:
+    {
+        g_Log.eol();
+        g_Log.print("== ");
+        g_Log.print(passName.c_str());
+        g_Log.print(" ");
+        int len = passName.length();
+        while (len < 58)
+        {
+            g_Log.print("=");
+            len++;
+        }
+        g_Log.eol();
+        g_Log.eol();
+        setDefaultColor();
+        unlock();
+        return;
+    }
+
     case LogPassType::PassBegin:
         g_Log.print("## ");
         break;

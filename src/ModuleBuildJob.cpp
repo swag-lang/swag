@@ -172,7 +172,7 @@ JobResult ModuleBuildJob::execute()
         if (g_CommandLine.stats || g_CommandLine.verbosePass)
         {
             timerSemanticCompiler.stop();
-            if (g_CommandLine.verbosePass && !module->numTestErrors && module->buildPass == BuildPass::Full)
+            if (!module->numTestErrors && module->buildPass == BuildPass::Full)
             {
                 g_Log.verbosePass(LogPassType::PassEnd, "SemanticCompiler", module->name, timerSemanticCompiler.elapsed);
                 g_Log.verbosePass(LogPassType::PassBegin, "SemanticModule", module->name);
@@ -236,7 +236,7 @@ JobResult ModuleBuildJob::execute()
         if (g_CommandLine.stats || g_CommandLine.verbosePass)
         {
             timerSemanticModule.stop();
-            if (g_CommandLine.verbosePass && !module->numTestErrors && module->buildPass == BuildPass::Full)
+            if (!module->numTestErrors && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::PassEnd, "SemanticModule", module->name, timerSemanticModule.elapsed);
         }
 
@@ -259,7 +259,7 @@ JobResult ModuleBuildJob::execute()
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbosePass)
         {
-            if (g_CommandLine.verbosePass && !module->numTestErrors && module->buildPass == BuildPass::Full)
+            if (!module->numTestErrors && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::PassBegin, "OptimizeBc", module->name);
             timerOptimizeBc.start();
         }
@@ -278,7 +278,7 @@ JobResult ModuleBuildJob::execute()
         if (g_CommandLine.stats || g_CommandLine.verbosePass)
         {
             timerOptimizeBc.stop();
-            if (g_CommandLine.verbosePass && !module->numTestErrors && module->buildPass == BuildPass::Full)
+            if (!module->numTestErrors && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::PassEnd, "OptimizeBc", module->name, timerOptimizeBc.elapsed);
         }
 
@@ -316,7 +316,7 @@ JobResult ModuleBuildJob::execute()
         callInitDrop |= g_CommandLine.test && g_CommandLine.runByteCodeTests;
         if (callInitDrop)
         {
-            if (g_CommandLine.verbosePass && !module->numTestErrors && module->buildPass == BuildPass::Full)
+            if (!module->numTestErrors && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #init)", module->name.c_str(), module->byteCodeInitFunc.size()));
 
             for (auto func : module->byteCodeInitFunc)
@@ -333,7 +333,7 @@ JobResult ModuleBuildJob::execute()
         // #run functions are always executed
         if (!module->byteCodeRunFunc.empty())
         {
-            if (g_CommandLine.verbosePass && !module->numTestErrors && module->buildPass == BuildPass::Full)
+            if (!module->numTestErrors && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #run)", module->name.c_str(), module->byteCodeRunFunc.size()));
 
             // A #run pass cannot modify a bss variable
@@ -358,7 +358,7 @@ JobResult ModuleBuildJob::execute()
         {
             if (!module->byteCodeTestFunc.empty())
             {
-                if (g_CommandLine.verbosePass && !module->numTestErrors && module->buildPass == BuildPass::Full)
+                if (!module->numTestErrors && module->buildPass == BuildPass::Full)
                     g_Log.verbosePass(LogPassType::Info, "Test", format("%s (%d #test)", module->name.c_str(), module->byteCodeTestFunc.size()));
 
                 // Modified global variables during test will be restored after
@@ -397,7 +397,7 @@ JobResult ModuleBuildJob::execute()
         // #drop functions
         if (callInitDrop)
         {
-            if (g_CommandLine.verbosePass && !module->numTestErrors && module->buildPass == BuildPass::Full)
+            if (!module->numTestErrors && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::Info, "Exec", format("%s (%d #drop)", module->name.c_str(), module->byteCodeDropFunc.size()));
 
             for (auto func : module->byteCodeDropFunc)
@@ -439,7 +439,7 @@ JobResult ModuleBuildJob::execute()
         if (g_CommandLine.stats || g_CommandLine.verbosePass)
         {
             timerRun.stop();
-            if (g_CommandLine.verbosePass && !module->numTestErrors && module->buildPass == BuildPass::Full)
+            if (!module->numTestErrors && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::PassBegin, "Output", module->name);
             timerOutput.start();
         }
@@ -486,7 +486,7 @@ JobResult ModuleBuildJob::execute()
         if (g_CommandLine.stats || g_CommandLine.verbosePass)
         {
             timerOutput.stop();
-            if (g_CommandLine.verbosePass && !module->numTestErrors && module->buildPass == BuildPass::Full)
+            if (!module->numTestErrors && module->buildPass == BuildPass::Full)
                 g_Log.verbosePass(LogPassType::PassEnd, "Output", module->name, timerOutput.elapsed);
         }
 

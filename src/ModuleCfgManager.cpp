@@ -316,7 +316,8 @@ bool ModuleCfgManager::execute()
     Timer timer(&g_Stats.cfgTime);
     timer.start();
 
-    g_Log.verbosePass(LogPassType::PassBegin, "Config Manager", "");
+    g_Log.verbosePass(LogPassType::Title, "ConfigManager", "");
+    g_Log.verbosePass(LogPassType::PassBegin, "ConfigManager", "");
 
     // Enumerate existing configuration files, and do syntax/semantic for all of them
     enumerateCfgFiles(g_Workspace.dependenciesPath);
@@ -463,7 +464,7 @@ bool ModuleCfgManager::execute()
     }
 
     timer.stop();
-    g_Log.verbosePass(LogPassType::PassEnd, "Config Manager", "", g_Stats.cfgTime.load());
+    g_Log.verbosePass(LogPassType::PassEnd, "ConfigManager", "", g_Stats.cfgTime.load());
 
     return ok;
 }

@@ -601,6 +601,10 @@ bool Workspace::buildTarget()
     // Bootstrap module semantic pass
     //////////////////////////////////////////////////
     {
+        Timer timer(&g_Stats.bootstrapTime);
+        timer.start();
+        g_Log.verbosePass(LogPassType::PassBegin, "Bootstrap", "");
+
         for (auto f : bootstrapModule->files)
         {
             auto job        = g_Pool_syntaxJob.alloc();
@@ -634,11 +638,18 @@ bool Workspace::buildTarget()
             g_Log.error("some errors have been found in compiler bootstrap !!! exiting...");
             return false;
         }
+
+        timer.stop();
+        g_Log.verbosePass(LogPassType::PassEnd, "Bootstrap", "", g_Stats.bootstrapTime);
     }
 
     // Runtime module semantic pass
     //////////////////////////////////////////////////
     {
+        Timer timer(&g_Stats.runtimeTime);
+        timer.start();
+        g_Log.verbosePass(LogPassType::PassBegin, "Runtime", "");
+
         for (auto f : runtimeModule->files)
         {
             auto job        = g_Pool_syntaxJob.alloc();
@@ -676,6 +687,9 @@ bool Workspace::buildTarget()
             g_Log.error("some errors have been found in compiler runtime !!! exiting...");
             return false;
         }
+
+        timer.stop();
+        g_Log.verbosePass(LogPassType::PassEnd, "Runtime", "", g_Stats.runtimeTime);
     }
 
     // Config pass (compute/fetch dependencies...
@@ -690,6 +704,7 @@ bool Workspace::buildTarget()
     // Ask for a syntax pass on all files of all modules
     //////////////////////////////////////////////////
 
+    g_Log.verbosePass(LogPassType::Title, "Syntax", "");
     g_Log.verbosePass(LogPassType::PassBegin, "Syntax", "");
 
     {
@@ -734,6 +749,8 @@ bool Workspace::buildTarget()
             }
         }
     }
+
+    g_Log.verbosePass(LogPassType::Title, "Build", "");
 
     // Build modules
     //////////////////////////////////////////////////

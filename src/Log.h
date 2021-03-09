@@ -28,6 +28,7 @@ enum class LogPassType
     PassBegin,
     PassEnd,
     Info,
+    Title,
 };
 
 static const int CENTER_COLUMN = 24;
