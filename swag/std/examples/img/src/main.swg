@@ -49,7 +49,7 @@ func loadImg() throw
     t.start()
 
     assume img.grayScale(0.5)
-    assume img.fill(FillFormat.SaturationHorizontal, Color.fromArgb(Argb.Green))
+    assume img.fillHsl(FillHslFormat.LightnessVertical, Color.fromArgb(Argb.Green))
 
     t.stop()
     console.println("time: %ms", t.elapsedMilliseconds())
