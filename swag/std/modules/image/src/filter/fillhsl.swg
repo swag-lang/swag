@@ -15,7 +15,7 @@ impl Image
         SaturationLightness
     }
 
-    public func fillHsl(using self, fillFormat: FillHslType , color: Color = Argb.White) throw
+    public func fillHsl(using self, fillType: FillHslType , color: Color = Argb.White) throw
     {
         if pf != PixelFormat.BGR8 && pf != PixelFormat.BGRA8
             throw "unsupported pixel format"
@@ -24,7 +24,7 @@ impl Image
         f := @{col: hsl}
 
         using FillHslType
-        switch(fillFormat)
+        switch(fillType)
         {
         case SaturationHorizontal:
             visitPixels(&f)
