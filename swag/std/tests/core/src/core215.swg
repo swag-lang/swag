@@ -1,5 +1,5 @@
 #global testerror
-#import "core"
+
 using core
 
 #test

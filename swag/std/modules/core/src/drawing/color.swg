@@ -208,8 +208,8 @@ impl Color
         var result: retval = ?
 
         (rf, gf, bf) := toRgbf()
-        max := math.max(rf, gf, bf)
-        min := math.min(rf, gf, bf)
+        max := math.max(math.max(rf, gf), bf)
+        min := math.min(math.max(rf, gf), bf)
         result.l = (max + min) * 0.5
         delta := max - min
         if delta == 0

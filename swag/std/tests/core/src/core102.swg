@@ -1,4 +1,4 @@
-#import "core"
+
 using core
 
 func cc(sl: const [..] u8, val: s32)

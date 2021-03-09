@@ -584,6 +584,7 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
+    SWAG_VERIFY(sourceFile->generated || sourceFile->module->kind == ModuleKind::Config, sourceFile->report({sourceFile, token, "'#import' can only be used in the module configuration file"}));
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#import' can only be declared at the top level scope"}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerImport, sourceFile, parent);

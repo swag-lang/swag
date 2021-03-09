@@ -1,4 +1,4 @@
-﻿#import "core"
+﻿
 using core
 
 var G = 0's64

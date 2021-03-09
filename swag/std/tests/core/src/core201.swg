@@ -1,4 +1,4 @@
-﻿#import "core"
+﻿
 using core.utf8
 
 struct Utf8Map

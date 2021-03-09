@@ -1,4 +1,4 @@
-﻿#import "core"
+﻿
 using core
 
 var th1, th2: thread.Thread

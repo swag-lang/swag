@@ -1,4 +1,3 @@
-#import "tests_foreign"
 using tests_foreign
 
 #test

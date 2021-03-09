@@ -1,6 +1,6 @@
 #global testerror
 
-#import "core"
+
 using core
 
 #[swag.nocopy]

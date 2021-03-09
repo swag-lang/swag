@@ -1,4 +1,4 @@
-﻿#import "core"
+﻿
 using core
 
 func entry(th: thread.Thread)

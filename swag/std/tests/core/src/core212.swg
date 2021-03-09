@@ -1,5 +1,5 @@
 #global if #os == "windows"
-#import "core"
+
 using win32, core
 
 #[swag.callback]

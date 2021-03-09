@@ -1,5 +1,3 @@
-#import "zlib"
-
 #test
 {
     const SRC = "this is something to compress this is something to compress"

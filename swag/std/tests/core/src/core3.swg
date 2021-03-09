@@ -1,4 +1,3 @@
-#import "core"
 using core.random
 
 //#[swag.printbc]

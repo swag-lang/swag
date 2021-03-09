@@ -1,4 +1,4 @@
-#import "core"
+
 using core, swag, strconv
 
 #[attributeUsage(AttributeUsage.Function)]

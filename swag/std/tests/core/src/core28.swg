@@ -1,4 +1,4 @@
-#import "core"
+
 
 #[swag.macro]
 func Visit(str: const [..] u8, user: code)

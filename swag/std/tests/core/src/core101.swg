@@ -1,6 +1,6 @@
 //
 //#global testerror
-//#import "core"
+//
 
 //#[swag.printbc]
 #test

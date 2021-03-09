@@ -1,5 +1,3 @@
-#import "core"
-#import "mthx"
 using mthx, core.math
 
 //#[swag.printbc]

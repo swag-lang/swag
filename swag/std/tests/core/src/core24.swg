@@ -1,4 +1,4 @@
-#import "core"
+
 using core
 
 #assert latin1.isUpper(cast(u8) "A"'char)

@@ -1,6 +1,6 @@
 ﻿#global if core.ASSERT
 #global testerror
-#import "core"
+
 
 using core.sync
 

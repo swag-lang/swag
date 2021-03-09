@@ -1,4 +1,4 @@
-﻿#import "core"
+﻿
 using core.thread
 alias createThread = thread.Thread.init
 

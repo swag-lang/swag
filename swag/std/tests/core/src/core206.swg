@@ -1,4 +1,4 @@
-﻿#import "core"
+﻿
 using core.hash
 
 struct ValidTest

@@ -1,4 +1,4 @@
-#import "core"
+
 using core
 
 struct(T = random.Mwc) Random

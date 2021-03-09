@@ -1,5 +1,4 @@
-﻿#import "core"
-using core.file
+﻿using core.file
 
 //#[swag.printbc]
 #test
@@ -14,8 +13,8 @@ using core.file
 
         res := reader.readToEnd()
         @assert(res.length > 10)
-        @assert(res[0] == "#"'u8)
-        @assert(res[1] == "i"'u8)
+        @assert(res[0] == "u"'u8)
+        @assert(res[1] == "s"'u8)
     }
 
     {
@@ -24,7 +23,7 @@ using core.file
         defer reader.close()
 
         res := reader.readLine()
-        @assert(res == @"#import "core""@)
+        @assert(res == @"using core.file"@)
 
         while !res.isNull()
         {

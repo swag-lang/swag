@@ -1,4 +1,4 @@
-#import "core"
+
 using core.time
 
 var G = 0

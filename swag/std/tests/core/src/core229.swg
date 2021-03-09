@@ -1,4 +1,4 @@
-﻿#import "core"
+﻿
 using core.utf16
 
 var t: [] struct {

@@ -87,26 +87,16 @@ JobResult ModuleBuildJob::execute()
         if (module->kind == ModuleKind::Config)
             pass = ModuleBuildPass::SemanticModule;
         else
-            pass = ModuleBuildPass::Publish;
-    }
-
-    //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::Publish)
-    {
-        pass = ModuleBuildPass::Dependencies;
-        if (g_CommandLine.output && !module->path.empty() && module->kind != ModuleKind::Test)
-        {
-            publishFilesToPublic();
-            publishFilesToTarget();
-            if (!jobsToAdd.empty())
-                return JobResult::KeepJobAlive;
-        }
+            pass = ModuleBuildPass::Dependencies;
     }
 
     // Wait for dependencies to be build
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Dependencies)
     {
+        module->allocateBackend();
+        module->backend->setupExportFile();
+
         for (auto& dep : module->moduleDependencies)
         {
             auto depModule = g_Workspace.getModuleByName(dep->name);
@@ -149,7 +139,7 @@ JobResult ModuleBuildJob::execute()
         }
         else
         {
-            pass = ModuleBuildPass::IncludeSwg;
+            pass = ModuleBuildPass::Publish;
 
             for (auto file : module->files)
             {
@@ -160,6 +150,20 @@ JobResult ModuleBuildJob::execute()
                 jobsToAdd.push_back(job);
             }
 
+            if (!jobsToAdd.empty())
+                return JobResult::KeepJobAlive;
+        }
+    }
+
+    // Publish exported files
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::Publish)
+    {
+        pass = ModuleBuildPass::IncludeSwg;
+        if (g_CommandLine.output && !module->path.empty() && module->kind != ModuleKind::Test)
+        {
+            publishFilesToPublic();
+            publishFilesToTarget();
             if (!jobsToAdd.empty())
                 return JobResult::KeepJobAlive;
         }
@@ -568,8 +572,6 @@ void ModuleBuildJob::publishFilesToPublic()
 
     OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
         // Keep the generated file untouched !
-        module->allocateBackend();
-        module->backend->setupExportFile();
         if (module->backend->bufferSwg.name == filename)
             return;
 

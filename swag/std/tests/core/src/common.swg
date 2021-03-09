@@ -1,4 +1,3 @@
-#import "core"
 using core, memory
 
 var g_dbg: DebugAllocator

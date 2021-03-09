@@ -1,4 +1,4 @@
-#import "core"
+
 using core, core.format
 
 #test

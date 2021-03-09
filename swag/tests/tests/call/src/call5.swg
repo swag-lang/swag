@@ -1,4 +1,3 @@
-#import "tests_foreign"
 using tests_foreign
 
 func thisFunc1(v, w, x, y, z: s64)
