@@ -90,8 +90,8 @@ impl Image
                 pix := `buffer
 
                 index := (cast(uint) (pix - image.pixels)) / image.bpp8
-                x := index % image.width
-                y := index / image.width
+                x := cast(u32) index % image.width
+                y := cast(u32) index / image.width
 
                 #mixin `stmt
             }

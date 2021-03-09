@@ -2,7 +2,7 @@ using core, drawing
 
 impl Image
 {
-    public enum FillHslFormat
+    public enum FillHslType
     {
         SaturationHorizontal
         SaturationVertical
@@ -15,7 +15,7 @@ impl Image
         SaturationLightness
     }
 
-    public func fillHsl(using self, fillFormat: FillHslFormat, color: Color = Argb.White) throw
+    public func fillHsl(using self, fillFormat: FillHslType , color: Color = Argb.White) throw
     {
         if pf != PixelFormat.BGR8 && pf != PixelFormat.BGRA8
             throw "unsupported pixel format"
@@ -23,7 +23,7 @@ impl Image
         hsl := color.getHsl()
         f := @{col: hsl}
 
-        using FillHslFormat
+        using FillHslType
         switch(fillFormat)
         {
         case SaturationHorizontal:
@@ -31,7 +31,7 @@ impl Image
             {
                 params := :cast(*@typeof(f)) userData
                 factor0 := x / cast(f32) image.width
-                col := Color.fromHsl(params.col.h, cast(f32) factor0, params.col.l)
+                col := Color.fromHsl(params.col.h, factor0, params.col.l)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
 
@@ -40,7 +40,7 @@ impl Image
             {
                 params := :cast(*@typeof(f)) userData
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(params.col.h, cast(f32) factor1, params.col.l)
+                col := Color.fromHsl(params.col.h, factor1, params.col.l)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
 
@@ -49,7 +49,7 @@ impl Image
             {
                 params := :cast(*@typeof(f)) userData
                 factor0 := x / cast(f32) image.width
-                col := Color.fromHsl(cast(f32) factor0, params.col.s, 0.5)
+                col := Color.fromHsl(factor0, params.col.s, 0.5)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
 
@@ -58,7 +58,7 @@ impl Image
             {
                 params := :cast(*@typeof(f)) userData
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(cast(f32) factor1, params.col.s, 0.5)
+                col := Color.fromHsl(factor1, params.col.s, 0.5)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
 
@@ -67,7 +67,7 @@ impl Image
             {
                 params := :cast(*@typeof(f)) userData
                 factor0 := x / cast(f32) image.width
-                col := Color.fromHsl(params.col.h, params.col.s, cast(f32) factor0)
+                col := Color.fromHsl(params.col.h, params.col.s, factor0)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
 
@@ -76,7 +76,7 @@ impl Image
             {
                 params := :cast(*@typeof(f)) userData
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(params.col.h, params.col.s, cast(f32) factor1)
+                col := Color.fromHsl(params.col.h, params.col.s, factor1)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
 
@@ -86,7 +86,7 @@ impl Image
                 params := :cast(*@typeof(f)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(cast(f32) factor0, cast(f32) factor1, 0.5)
+                col := Color.fromHsl(factor0, factor1, 0.5)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
 
@@ -96,7 +96,7 @@ impl Image
                 params := :cast(*@typeof(f)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(cast(f32) factor0, params.col.s, cast(f32) factor1)
+                col := Color.fromHsl(factor0, params.col.s, factor1)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
 
@@ -106,7 +106,7 @@ impl Image
                 params := :cast(*@typeof(f)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(params.col.h, cast(f32) factor0, cast(f32) factor1)
+                col := Color.fromHsl(params.col.h, factor0, factor1)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
         }
