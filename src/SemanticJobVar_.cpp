@@ -73,9 +73,18 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
             typeExpression->ptrCount    = 1;
             typeExpression->ptrFlags[0] = typeInfoPointer->isConst() ? AstTypeExpression::PTR_CONST : 0;
             childType                   = typeInfoPointer->pointedType;
+
+            while (childType->kind == TypeInfoKind::Pointer)
+            {
+                typeInfoPointer                                    = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
+                typeExpression->ptrFlags[typeExpression->ptrCount] = typeInfoPointer->isConst() ? AstTypeExpression::PTR_CONST : 0;
+                typeExpression->ptrCount++;
+                childType = typeInfoPointer->pointedType;
+            }
+
             if (childType->kind == TypeInfoKind::Reference)
             {
-                typeExpression->ptrFlags[0] |= AstTypeExpression::PTR_REF | AstTypeExpression::PTR_CONST;
+                typeExpression->ptrFlags[typeExpression->ptrCount - 1] |= AstTypeExpression::PTR_REF | AstTypeExpression::PTR_CONST;
                 auto typeInfoRef = CastTypeInfo<TypeInfoReference>(childType, TypeInfoKind::Reference);
                 childType        = typeInfoRef->pointedType;
             }
