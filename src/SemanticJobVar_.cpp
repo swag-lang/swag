@@ -74,10 +74,20 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
             typeExpression->ptrFlags[0] = typeInfoPointer->isConst() ? AstTypeExpression::PTR_CONST : 0;
             childType                   = typeInfoPointer->pointedType;
         }
+        else if (childType->kind == TypeInfoKind::Reference)
+        {
+            auto typeInfoRef = CastTypeInfo<TypeInfoReference>(childType, TypeInfoKind::Reference);
+            typeExpression->typeFlags |= TYPEFLAG_ISCONST | TYPEFLAG_ISREF;
+            childType = typeInfoRef->pointedType;
+            paramNode->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
+        }
 
         // Convert typeinfo to TypeExpression
         switch (childType->kind)
         {
+        case TypeInfoKind::Reference:
+            break;
+
         case TypeInfoKind::Native:
             typeExpression->token.id    = TokenId::NativeType;
             typeExpression->literalType = childType;
@@ -101,7 +111,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
             break;
         }
         default:
-            return internalError(context, format("convertLiteralTupleToStructDecl, cannot convert type '%s'", childType->name.c_str()).c_str());
+            return context->report({paramNode, format("dynamic tuple initialization with type '%s' is not supported", typeParam->typeInfo->name.c_str()).c_str()});
         }
     }
 
@@ -378,8 +388,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             return context->report({node, "a constant must be initialized"});
         if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
             return context->report({node, "a non mutable variable must be initialized"});
+
         if (node->type && node->type->typeInfo->kind == TypeInfoKind::Reference && node->kind != AstNodeKind::FuncDeclParam)
-            return context->report({node, "a reference must be initialized"});
+        {
+            if (!node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+                return context->report({node, "a reference must be initialized"});
+        }
     }
 
     bool genericType = !node->type && !node->assignment;
