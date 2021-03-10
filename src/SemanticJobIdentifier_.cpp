@@ -1521,6 +1521,16 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         }
     }
 
+    // Normally we don't evaluate a function body if the function is generic.
+    // Exception is for a short lambda, when we need to evaluate the content of the lambda in order to find the return type.
+    // In that case, if we can match a generic and non generic overload, we force to match with the generic, otherwise
+    // we can have an ambiguous resolution.
+    // The short lambda will be resolved later with the correct types (if instantiated).
+    if (node && node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC) && genericMatches.size() && matches.size())
+    {
+        matches.clear();
+    }
+
     auto prevMatchesCount = matches.size();
     SWAG_CHECK(filterMatches(context, matches));
     if (context->result != ContextResult::Done)
