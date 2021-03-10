@@ -84,8 +84,8 @@ bool Backend::emitTypeTuple(TypeInfo* typeInfo, int indent)
     typeInfo = TypeManager::concreteReference(typeInfo);
     SWAG_ASSERT(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE);
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-
-    if (typeStruct->declNode->flags & AST_ANONYMOUS_STRUCT)
+    auto nodeStruct = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+    if (nodeStruct->structFlags & STRUCTFLAG_ANONYMOUS)
     {
         SWAG_CHECK(emitPublicStructSwg(typeStruct, (AstStruct*) typeStruct->declNode, indent));
         return true;
@@ -403,7 +403,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
 {
     SWAG_CHECK(emitAttributes(typeStruct, indent));
 
-    if (!(node->flags & AST_ANONYMOUS_STRUCT))
+    if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
         bufferSwg.addIndent(indent);
 
     if (node->kind == AstNodeKind::InterfaceDecl)
@@ -414,7 +414,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     {
         SWAG_ASSERT(node->kind == AstNodeKind::StructDecl)
         auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
-        if (structNode->isUnion)
+        if (structNode->structFlags & STRUCTFLAG_UNION)
             CONCAT_FIXED_STR(bufferSwg, "union");
         else
             CONCAT_FIXED_STR(bufferSwg, "struct");
@@ -423,7 +423,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     if (node->genericParameters)
         SWAG_CHECK(emitGenericParameters(node->genericParameters, indent));
 
-    if (!(node->flags & AST_ANONYMOUS_STRUCT))
+    if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
     {
         CONCAT_FIXED_STR(bufferSwg, " ");
         bufferSwg.addString(node->token.text.c_str());
@@ -469,7 +469,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     bufferSwg.addIndent(indent);
     CONCAT_FIXED_STR(bufferSwg, "}");
 
-    if (!(node->flags & AST_ANONYMOUS_STRUCT))
+    if (!(node->structFlags & STRUCTFLAG_ANONYMOUS))
         bufferSwg.addEol();
     bufferSwg.addEol();
 

@@ -107,9 +107,9 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     structNode->extension->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
 
     if (anonymousStruct)
-        structNode->flags |= AST_ANONYMOUS_STRUCT;
+        structNode->structFlags |= STRUCTFLAG_ANONYMOUS;
     if (anonymousUnion)
-        structNode->isUnion = true;
+        structNode->structFlags |= STRUCTFLAG_UNION;
 
     auto contentNode    = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
     structNode->content = contentNode;

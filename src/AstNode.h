@@ -668,16 +668,14 @@ struct AstSwitchCaseBlock : public AstNode
     bool isDefault;
 };
 
-const uint16_t TYPEFLAG_ISREF   = 0x0001;
-const uint16_t TYPEFLAG_ISSLICE = 0x0002;
-const uint16_t TYPEFLAG_ISCONST = 0x0004;
-//const uint16_t TYPEFLAG_ISPTRCONST  = 0x0008;
-//const uint16_t TYPEFLAG_ISTYPEOF    = 0x0010;
-const uint16_t TYPEFLAG_ISCODE      = 0x0020;
-const uint16_t TYPEFLAG_FORCECONST  = 0x0040;
-const uint16_t TYPEFLAG_ISSELF      = 0x0080;
-const uint16_t TYPEFLAG_RETVAL      = 0x0100;
-const uint16_t TYPEFLAG_ISNAMEALIAS = 0x0200;
+const uint16_t TYPEFLAG_ISREF       = 0x0001;
+const uint16_t TYPEFLAG_ISSLICE     = 0x0002;
+const uint16_t TYPEFLAG_ISCONST     = 0x0004;
+const uint16_t TYPEFLAG_ISCODE      = 0x0008;
+const uint16_t TYPEFLAG_FORCECONST  = 0x0010;
+const uint16_t TYPEFLAG_ISSELF      = 0x0020;
+const uint16_t TYPEFLAG_RETVAL      = 0x0040;
+const uint16_t TYPEFLAG_ISNAMEALIAS = 0x0080;
 
 struct AstTypeExpression : public AstNode
 {
@@ -745,6 +743,9 @@ struct AstExpressionList : public AstNode
     bool forTuple;
 };
 
+const uint32_t STRUCTFLAG_UNION     = 0x00000001;
+const uint32_t STRUCTFLAG_ANONYMOUS = 0x00000002;
+
 struct AstStruct : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
@@ -758,7 +759,7 @@ struct AstStruct : public AstNode
     AstNode* originalParent;
 
     uint32_t packing = sizeof(uint64_t);
-    bool     isUnion;
+    uint32_t structFlags;
 };
 
 struct AstEnum : public AstNode

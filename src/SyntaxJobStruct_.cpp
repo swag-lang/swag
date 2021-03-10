@@ -174,7 +174,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     }
     else if (token.id == TokenId::KwdUnion)
     {
-        structNode->isUnion = true;
+        structNode->structFlags |= STRUCTFLAG_UNION;
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
