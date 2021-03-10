@@ -4,12 +4,9 @@ impl Image
 {
     public enum FillHslType
     {
-        SaturationHorizontal
-        SaturationVertical
-        HueHorizontal
-        HueVertical
-        LightnessHorizontal
-        LightnessVertical
+        Saturation
+        Hue
+        Lightness
         HueSaturation
         HueLightness
         SaturationLightness
@@ -26,58 +23,49 @@ impl Image
         using FillHslType
         switch(fillType)
         {
-        case SaturationHorizontal:
-            visitPixels(&f)
+        case Hue:
+            pix := pixels
+            loop x: width
             {
-                params := :cast(*@typeof(f)) userData
-                factor0 := x / cast(f32) image.width
-                col := Color.fromHsl(params.col.h, factor0, params.col.l)
+                factor0 := x / cast(f32) width
+                col := Color.fromHsl(factor0, hsl.s, 0.5)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+                pix += bpp8
             }
 
-        case SaturationVertical:
-            visitPixels(&f)
+            visitPixels(stride: width)
             {
-                params := :cast(*@typeof(f)) userData
-                factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(params.col.h, factor1, params.col.l)
-                pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+                @memcpy(pix, image.pixels, cast(uint) image.width * image.bpp8)
             }
 
-        case HueHorizontal:
-            visitPixels(&f)
+        case Saturation:
+            pix := pixels
+            loop x: width
             {
-                params := :cast(*@typeof(f)) userData
-                factor0 := x / cast(f32) image.width
-                col := Color.fromHsl(factor0, params.col.s, 0.5)
+                factor0 := x / cast(f32) width
+                col := Color.fromHsl(hsl.h, factor0, 0.5)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+                pix += bpp8
             }
 
-        case HueVertical:
-            visitPixels(&f)
+            visitPixels(stride: width)
             {
-                params := :cast(*@typeof(f)) userData
-                factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(factor1, params.col.s, 0.5)
-                pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+                @memcpy(pix, image.pixels, cast(uint) image.width * image.bpp8)
             }
 
-        case LightnessHorizontal:
-            visitPixels(&f)
+        case Lightness:
+            pix := pixels
+            loop x: width
             {
-                params := :cast(*@typeof(f)) userData
-                factor0 := x / cast(f32) image.width
-                col := Color.fromHsl(params.col.h, params.col.s, factor0)
+                factor0 := x / cast(f32) width
+                col := Color.fromHsl(hsl.h, hsl.s, factor0)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+                pix += bpp8
             }
 
-        case LightnessVertical:
-            visitPixels(&f)
+            visitPixels(stride: width)
             {
-                params := :cast(*@typeof(f)) userData
-                factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(params.col.h, params.col.s, factor1)
-                pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
+                @memcpy(pix, image.pixels, cast(uint) image.width * image.bpp8)
             }
 
         case HueSaturation:

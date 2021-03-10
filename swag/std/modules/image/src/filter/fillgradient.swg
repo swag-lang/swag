@@ -4,7 +4,7 @@ impl Image
 {
     public enum FillGradientType
     {
-        Horizontal
+        Color2
     }
 
     public func fillGradient(using self, fillType: FillGradientType, color0, color1: Color) throw
@@ -15,8 +15,7 @@ impl Image
         using FillGradientType
         switch(fillType)
         {
-        case Horizontal:
-            // Lerp only for the first line
+        case Color2:
             pix := pixels
             loop x: width
             {
@@ -28,8 +27,7 @@ impl Image
                 pix += bpp8
             }
 
-            // Then copy that first line to the rest of the image
-            visitPixels(null, width)
+            visitPixels(stride: width)
             {
                 @memcpy(pix, image.pixels, cast(uint) image.width * image.bpp8)
             }
