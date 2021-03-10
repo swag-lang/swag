@@ -296,10 +296,9 @@ bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
 
 void SyntaxJob::registerSubDecl(AstNode* subDecl)
 {
-    subDecl->flags |= AST_NO_SEMANTIC;
     subDecl->ownerFct->subDecls.push_back(subDecl);
     subDecl->attributeFlags |= ATTRIBUTE_PRIVATE;
-    subDecl->flags |= AST_SUB_DECL;
+    subDecl->flags |= AST_NO_SEMANTIC | AST_SUB_DECL;
 
     // Move to the root
     if (subDecl->parent->kind == AstNodeKind::AttrUse)
@@ -309,11 +308,6 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
 
     while (newParent != sourceFile->astRoot && !(newParent->flags & AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
         newParent = newParent->parent;
-
-    /*subDecl->allocateExtension();
-    subDecl->extension->alternativeScopes.push_back(newParent->ownerScope);
-    if (newParent->extension && !newParent->extension->alternativeScopes.empty())
-        subDecl->extension->alternativeScopes.append(newParent->extension->alternativeScopes);*/
 
     Ast::addChildBack(newParent, subDecl);
 }
