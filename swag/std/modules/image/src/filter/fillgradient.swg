@@ -12,8 +12,6 @@ impl Image
         if pf != PixelFormat.BGR8 && pf != PixelFormat.BGRA8
             throw "unsupported pixel format"
 
-        console.print("% %", color0.r, color1.r)
-
         f := @{col0: color0, col1: color1}
 
         using FillGradientType
