@@ -1,4 +1,4 @@
-/*struct A
+struct A
 {
     x: s32
 }
@@ -12,13 +12,12 @@ impl A
     }
 }
 
-func toto(x, y: A = A.from(10))
+func toto(x: A = A.from(10))
 {
     @assert(x.x == 10)
-    @assert(y.x == 10)
 }
 
 #test
 {
     toto()
-}*/
+}

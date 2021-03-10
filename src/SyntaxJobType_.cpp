@@ -109,7 +109,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
     if (anonymousStruct)
         structNode->flags |= AST_ANONYMOUS_STRUCT;
     if (anonymousUnion)
-        structNode->flags |= AST_UNION;
+        structNode->isUnion = true;
 
     auto contentNode    = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
     structNode->content = contentNode;

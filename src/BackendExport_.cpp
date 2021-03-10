@@ -413,7 +413,8 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     else
     {
         SWAG_ASSERT(node->kind == AstNodeKind::StructDecl)
-        if (node->flags & AST_UNION)
+        auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+        if (structNode->isUnion)
             CONCAT_FIXED_STR(bufferSwg, "union");
         else
             CONCAT_FIXED_STR(bufferSwg, "struct");

@@ -520,7 +520,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     // Structure packing
     SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
     ComputedValue value;
-    if (node->flags & AST_UNION)
+    if (node->isUnion)
         node->packing = 0;
     else if (typeInfo->attributes.getValue("swag.pack", "value", value))
         node->packing = value.reg.u8;

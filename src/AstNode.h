@@ -758,6 +758,7 @@ struct AstStruct : public AstNode
     AstNode* originalParent;
 
     uint32_t packing = sizeof(uint64_t);
+    bool     isUnion;
 };
 
 struct AstEnum : public AstNode

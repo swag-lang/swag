@@ -112,7 +112,8 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result, TokenId 
 
 bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
 {
-    auto paramNode = Ast::newVarDecl(sourceFile, "", parent, this, AstNodeKind::FuncDeclParam);
+    ScopedFlags sc(this, AST_NO_INLINE);
+    auto        paramNode = Ast::newVarDecl(sourceFile, "", parent, this, AstNodeKind::FuncDeclParam);
 
     // Using variable
     if (token.id == TokenId::KwdUsing)
@@ -269,7 +270,8 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
 
 bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 {
-    auto allParams = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
+    ScopedFlags sc(this, AST_NO_INLINE);
+    auto        allParams = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
     if (result)
         *result = allParams;
 

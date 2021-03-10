@@ -783,7 +783,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         auto returnType = TypeManager::concreteType(identifier->typeInfo);
-        if (overload->node->mustInline())
+        if (overload->node->mustInline() && !(identifier->flags & AST_NO_INLINE))
         {
             // Expand inline function. Do not expand an inline call inside a function marked as inline.
             // The expansion will be done at the lowest level possible
