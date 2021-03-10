@@ -3,10 +3,9 @@ using core
 impl Image
 {
     // Transform image to grayscale, with a given factor
-    public func grayScale(using self, factor: f32 = 1) throw
+    public func grayScale(using self, factor: f32 = 1)
     {
-        if pf != PixelFormat.BGR8 && pf != PixelFormat.BGRA8
-            throw "unsupported pixel format"
+        debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
 
         f := math.saturate(factor)
         visitPixels(&f)

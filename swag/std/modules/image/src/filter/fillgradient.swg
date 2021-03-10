@@ -7,10 +7,9 @@ impl Image
         Color2
     }
 
-    public func fillGradient(using self, fillType: FillGradientType, color0, color1: Color) throw
+    public func fillGradient(using self, fillType: FillGradientType, color0, color1: Color)
     {
-        if pf != PixelFormat.BGR8 && pf != PixelFormat.BGRA8
-            throw "unsupported pixel format"
+        debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
 
         using FillGradientType
         switch fillType

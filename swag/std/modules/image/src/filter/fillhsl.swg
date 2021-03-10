@@ -12,11 +12,9 @@ impl Image
         SaturationLightness
     }
 
-    public func fillHsl(using self, fillType: FillHslType , color: Color = Argb.White) throw
+    public func fillHsl(using self, fillType: FillHslType , color: Color = Argb.White)
     {
-        if pf != PixelFormat.BGR8 && pf != PixelFormat.BGRA8
-            throw "unsupported pixel format"
-
+        debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
         hsl := color.getHsl()
 
         using FillHslType
