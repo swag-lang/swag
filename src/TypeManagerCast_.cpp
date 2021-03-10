@@ -115,7 +115,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
             fromNode->typeInfo       = toType;
             fromNode->allocateExtension();
             fromNode->extension->resolvedUserOpSymbolOverload = toCast[0];
-            fromNode->flags |= AST_USER_CAST;
+            fromNode->semFlags |= AST_SEM_USER_CAST;
         }
 
         return true;

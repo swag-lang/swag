@@ -707,7 +707,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     fromTypeInfo = TypeManager::concreteReferenceType(fromTypeInfo, CONCRETE_FUNC);
 
     // opCast
-    if (exprNode->flags & AST_USER_CAST)
+    if (exprNode->semFlags & AST_SEM_USER_CAST)
     {
         SWAG_ASSERT(exprNode->extension && exprNode->extension->resolvedUserOpSymbolOverload);
         if (isExplicit)
