@@ -5,14 +5,10 @@
 #include "Module.h"
 #include "TypeManager.h"
 
-void TypeInfo::computeName()
-{
-}
-
 void TypeInfo::forceComputeName()
 {
     name.clear();
-    computeName();
+    computeWhateverName(COMPUTE_NAME);
 }
 
 void TypeInfo::getScopedName(Utf8& newName)
@@ -28,23 +24,25 @@ void TypeInfo::getScopedName(Utf8& newName)
     }
 }
 
-const Utf8& TypeInfo::computeName(uint32_t nameFlags)
+const Utf8& TypeInfo::computeWhateverName(uint32_t nameType)
 {
-    if (nameFlags == COMPUTE_NAME)
+    scoped_lock lk(mutex);
+
+    switch (nameType)
     {
-        computeName();
+    case COMPUTE_NAME:
+        if (name.empty())
+            computeWhateverName(name, nameType);
         return name;
-    }
 
-    if (nameFlags == COMPUTE_SCOPED_NAME)
-    {
-        computeScopedName();
+    case COMPUTE_SCOPED_NAME:
+        if (scopedName.empty())
+            computeWhateverName(scopedName, nameType);
         return scopedName;
-    }
 
-    if (nameFlags == COMPUTE_SCOPED_NAME_EXPORT)
-    {
-        computeScopedNameExport();
+    case COMPUTE_SCOPED_NAME_EXPORT:
+        if (scopedNameExport.empty())
+            computeWhateverName(scopedNameExport, nameType);
         return scopedNameExport;
     }
 
@@ -52,22 +50,23 @@ const Utf8& TypeInfo::computeName(uint32_t nameFlags)
     return name;
 }
 
-void TypeInfo::computeScopedName()
+void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameFlags)
 {
-    scoped_lock lk(mutex);
-    if (!scopedName.empty())
+    if (!resName.empty())
         return;
-    getScopedName(scopedName);
-    scopedName += name;
-}
 
-void TypeInfo::computeScopedNameExport()
-{
-    scoped_lock lk(mutex);
-    if (!scopedNameExport.empty())
-        return;
-    getScopedName(scopedNameExport);
-    scopedNameExport += name;
+    switch (nameFlags)
+    {
+    case COMPUTE_NAME:
+        resName = name;
+        break;
+
+    case COMPUTE_SCOPED_NAME:
+    case COMPUTE_SCOPED_NAME_EXPORT:
+        getScopedName(resName);
+        resName += name;
+        break;
+    }
 }
 
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)

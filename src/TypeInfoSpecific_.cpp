@@ -147,37 +147,10 @@ void TypeInfoReference::computePreName(Utf8& preName)
     preName += "&";
 }
 
-void TypeInfoReference::computeScopedName()
+void TypeInfoReference::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    unique_lock lk(mutex);
-    if (!scopedName.empty())
-        return;
-
-    computePreName(scopedName);
-    pointedType->computeScopedName();
-    scopedName += pointedType->scopedName;
-}
-
-void TypeInfoReference::computeScopedNameExport()
-{
-    unique_lock lk(mutex);
-    if (!scopedNameExport.empty())
-        return;
-
-    computePreName(scopedNameExport);
-    pointedType->computeScopedNameExport();
-    scopedNameExport += pointedType->scopedNameExport;
-}
-
-void TypeInfoReference::computeName()
-{
-    unique_lock lk(mutex);
-    if (!name.empty())
-        return;
-
-    computePreName(name);
-    pointedType->computeName();
-    name += pointedType->name;
+    computePreName(resName);
+    resName += pointedType->computeWhateverName(nameType);
 }
 
 bool TypeInfoReference::isSame(TypeInfo* to, uint32_t isSameFlags)
@@ -210,47 +183,12 @@ void TypeInfoPointer::computePreName(Utf8& preName)
         preName += format("~%u ", relative);
 }
 
-void TypeInfoPointer::computeScopedName()
+void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    unique_lock lk(mutex);
-    if (!scopedName.empty())
-        return;
-
+    computePreName(resName);
     if (!pointedType) // "null"
-        scopedName = name;
-    else
-    {
-        computePreName(scopedName);
-        pointedType->computeScopedName();
-        scopedName += pointedType->scopedName;
-    }
-}
-
-void TypeInfoPointer::computeScopedNameExport()
-{
-    unique_lock lk(mutex);
-    if (!scopedNameExport.empty())
         return;
-
-    if (!pointedType) // "null"
-        scopedNameExport = name;
-    else
-    {
-        computePreName(scopedNameExport);
-        pointedType->computeScopedNameExport();
-        scopedNameExport += pointedType->scopedNameExport;
-    }
-}
-
-void TypeInfoPointer::computeName()
-{
-    unique_lock lk(mutex);
-    if (!name.empty())
-        return;
-
-    computePreName(name);
-    pointedType->computeName();
-    name += pointedType->name;
+    resName += pointedType->computeWhateverName(nameType);
 }
 
 bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
@@ -343,37 +281,10 @@ void TypeInfoArray::computePreName(Utf8& preName)
     }
 }
 
-void TypeInfoArray::computeScopedName()
+void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    unique_lock lk(mutex);
-    if (!scopedName.empty())
-        return;
-
-    computePreName(scopedName);
-    pointedType->computeScopedName();
-    scopedName += pointedType->scopedName;
-}
-
-void TypeInfoArray::computeScopedNameExport()
-{
-    unique_lock lk(mutex);
-    if (!scopedNameExport.empty())
-        return;
-
-    computePreName(scopedNameExport);
-    pointedType->computeScopedNameExport();
-    scopedNameExport += pointedType->scopedNameExport;
-}
-
-void TypeInfoArray::computeName()
-{
-    unique_lock lk(mutex);
-    if (!name.empty())
-        return;
-
-    computePreName(name);
-    pointedType->computeName();
-    name += pointedType->name;
+    computePreName(resName);
+    resName += pointedType->computeWhateverName(nameType);
 }
 
 void TypeInfoSlice::computePreName(Utf8& preName)
@@ -387,15 +298,10 @@ void TypeInfoSlice::computePreName(Utf8& preName)
     preName += " ";
 }
 
-void TypeInfoSlice::computeName()
+void TypeInfoSlice::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    unique_lock lk(mutex);
-    if (!name.empty())
-        return;
-
-    computePreName(name);
-    pointedType->computeName();
-    name += pointedType->name;
+    computePreName(resName);
+    resName += pointedType->computeWhateverName(nameType);
 }
 
 TypeInfo* TypeInfoSlice::clone()
@@ -499,19 +405,11 @@ TypeInfo* TypeInfoVariadic::clone()
     return newType;
 }
 
-void TypeInfoVariadic::computeName()
+void TypeInfoVariadic::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    unique_lock lk(mutex);
-    if (!name.empty())
-        return;
-
     if (rawType)
-    {
-        rawType->computeName();
-        name += rawType->name;
-    }
-
-    name += "...";
+        resName += rawType->computeWhateverName(nameType);
+    resName += "...";
 }
 
 bool TypeInfoVariadic::isSame(TypeInfo* to, uint32_t isSameFlags)
@@ -572,8 +470,18 @@ TypeInfo* TypeInfoFuncAttr::clone()
     return newType;
 }
 
-void TypeInfoFuncAttr::computeName(Utf8& resName, uint32_t nameFlags)
+void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
+    if (nameType != COMPUTE_NAME)
+    {
+        getScopedName(resName);
+
+        // Function types are scoped with the name, because two functions of the exact same type
+        // (parameters and return value) should have a different concrete type info, because of attributes
+        if (declNode && declNode->kind == AstNodeKind::FuncDecl)
+            resName += declNode->token.text;
+    }
+
     // Generic parameters
     if (genericParameters.size())
     {
@@ -591,7 +499,7 @@ void TypeInfoFuncAttr::computeName(Utf8& resName, uint32_t nameFlags)
                 resName += str;
             }
             else if (genParam->typeInfo)
-                resName += genParam->typeInfo->computeName(nameFlags);
+                resName += genParam->typeInfo->computeWhateverName(nameType);
             else
                 resName += genParam->name;
         }
@@ -605,7 +513,7 @@ void TypeInfoFuncAttr::computeName(Utf8& resName, uint32_t nameFlags)
     {
         if (i)
             resName += ", ";
-        resName += parameters[i]->typeInfo->computeName(nameFlags);
+        resName += parameters[i]->typeInfo->computeWhateverName(nameType);
     }
 
     resName += ")";
@@ -614,7 +522,7 @@ void TypeInfoFuncAttr::computeName(Utf8& resName, uint32_t nameFlags)
     if (returnType && !returnType->isNative(NativeTypeKind::Void))
     {
         resName += "->";
-        resName += returnType->computeName(nameFlags);
+        resName += returnType->computeWhateverName(nameType);
     }
     else
     {
@@ -623,46 +531,6 @@ void TypeInfoFuncAttr::computeName(Utf8& resName, uint32_t nameFlags)
 
     if (flags & TYPEINFO_CAN_THROW)
         resName += " throw";
-}
-
-void TypeInfoFuncAttr::computeName()
-{
-    unique_lock lk(mutex);
-    if (!name.empty())
-        return;
-    computeName(name, COMPUTE_NAME);
-}
-
-void TypeInfoFuncAttr::computeScopedName()
-{
-    unique_lock lk(mutex);
-    if (!scopedName.empty())
-        return;
-
-    getScopedName(scopedName);
-
-    // Function types are scoped with the name, because two functions of the exact same type
-    // (parameters and return value) should have a different concrete type info, because of attributes
-    if (declNode && declNode->kind == AstNodeKind::FuncDecl)
-        scopedName += declNode->token.text;
-
-    computeName(scopedName, COMPUTE_SCOPED_NAME);
-}
-
-void TypeInfoFuncAttr::computeScopedNameExport()
-{
-    unique_lock lk(mutex);
-    if (!scopedNameExport.empty())
-        return;
-
-    getScopedName(scopedNameExport);
-
-    // Function types are scoped with the name, because two functions of the exact same type
-    // (parameters and return value) should have a different concrete type info, because of attributes
-    if (declNode && declNode->kind == AstNodeKind::FuncDecl)
-        scopedNameExport += declNode->token.text;
-
-    computeName(scopedNameExport, COMPUTE_SCOPED_NAME_EXPORT);
 }
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
@@ -1015,10 +883,10 @@ Utf8 TypeInfoStruct::getDisplayName()
     return typeName;
 }
 
-void TypeInfoStruct::computeName(Utf8& resName, uint32_t nameFlags)
+void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     // For a tuple, we use the tuple syntax
-    if ((nameFlags & COMPUTE_SCOPED_NAME_EXPORT) && (flags & TYPEINFO_STRUCT_IS_TUPLE))
+    if ((nameType == COMPUTE_SCOPED_NAME_EXPORT) && (flags & TYPEINFO_STRUCT_IS_TUPLE))
     {
         resName += "{";
         for (int i = 0; i < fields.size(); i++)
@@ -1032,14 +900,15 @@ void TypeInfoStruct::computeName(Utf8& resName, uint32_t nameFlags)
                 resName += ": ";
             }
 
-            resName += p->typeInfo->computeName(nameFlags);
+            resName += p->typeInfo->computeWhateverName(nameType);
         }
 
         resName += "}";
         return;
     }
 
-    getScopedName(resName);
+    if (nameType != COMPUTE_NAME)
+        getScopedName(resName);
     resName += structName;
 
     if (!genericParameters.empty())
@@ -1058,55 +927,10 @@ void TypeInfoStruct::computeName(Utf8& resName, uint32_t nameFlags)
             }
             else
             {
-                resName += genParam->typeInfo->computeName(nameFlags);
+                resName += genParam->typeInfo->computeWhateverName(nameType);
             }
         }
 
         resName += ")";
-    }
-}
-
-void TypeInfoStruct::computeScopedName()
-{
-    unique_lock lk(mutex);
-    if (!scopedName.empty())
-        return;
-    computeName(scopedName, COMPUTE_SCOPED_NAME);
-}
-
-void TypeInfoStruct::computeScopedNameExport()
-{
-    unique_lock lk(mutex);
-    if (!scopedNameExport.empty())
-        return;
-    computeName(scopedNameExport, COMPUTE_SCOPED_NAME_EXPORT);
-}
-
-void TypeInfoStruct::computeName()
-{
-    unique_lock lk(mutex);
-    if (!name.empty())
-        return;
-
-    name = structName;
-    if (genericParameters.size() > 0)
-    {
-        name += "'(";
-        for (int i = 0; i < genericParameters.size(); i++)
-        {
-            if (i)
-                name += ", ";
-            auto genParam = genericParameters[i];
-            if (genParam->flags & TYPEINFO_DEFINED_VALUE)
-            {
-                SWAG_ASSERT(genParam->typeInfo);
-                auto str = Ast::literalToString(genParam->typeInfo, genParam->value.text, genParam->value.reg);
-                name += str;
-            }
-            else
-                name += genParam->typeInfo ? genParam->typeInfo->name : genParam->name;
-        }
-
-        name += ")";
     }
 }
