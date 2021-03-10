@@ -48,8 +48,8 @@ func loadImg() throw
     var t: time.Stopwatch
     t.start()
 
-    assume img.grayScale(0.5)
-    assume img.fillHsl(FillHslType.LightnessVertical, Color.fromArgb(Argb.Green))
+    //assume img.grayScale(0.5)
+    //assume img.fillHsl(FillHslType.LightnessVertical, Color.fromArgb(Argb.Green))
     assume img.fillGradient(FillGradientType.Horizontal, Color.fromArgb(Argb.Green), Color.fromArgb(Argb.Red))
 
     t.stop()

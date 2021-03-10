@@ -77,7 +77,7 @@ impl Image
     // - index: the pixel index
     // - x, y: the pixel coordinates
     #[swag.macro]
-    func visitPixels(using self, userData: *void, stmt: code)
+    func visitPixels(using self, userData: *void = null, stmt: code)
     {
         p := @{self, userData}
         jobs.parallelVisit(@mkslice(pixels, size), cast(u32) bpp8, &p)
