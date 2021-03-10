@@ -21,12 +21,13 @@ func cstr(x: string)->CStr
     return tmp
 }
 
-//#[swag.printbc, swag.nooptim]
+#[swag.optim("bc", true)]
 func toto()
 {
     v := cstr("toto")
 }
 
+#[swag.optim("bc", true)]
 #test
 {
     toto()

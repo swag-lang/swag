@@ -27,6 +27,7 @@ impl Image
                 pix[0] = cast(u8) math.lerp(cast(f32) params.col0.b, cast(f32) params.col1.b, factor0)
                 pix[1] = cast(u8) math.lerp(cast(f32) params.col0.g, cast(f32) params.col1.g, factor0)
                 pix[2] = cast(u8) math.lerp(cast(f32) params.col0.r, cast(f32) params.col1.r, factor0)
+                // PIXEL FORMAT !
                 pix[3] = cast(u8) math.lerp(cast(f32) params.col0.a, cast(f32) params.col1.a, factor0)
             }
         }
