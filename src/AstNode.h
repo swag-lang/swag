@@ -427,9 +427,11 @@ struct AstVarDecl : public AstNode
 
     SymbolAttributes attributes;
     Utf8             publicName;
-    AstNode*         type;
-    AstNode*         assignment;
-    bool             constAssign;
+
+    AstNode* type;
+    AstNode* assignment;
+
+    bool constAssign;
 };
 
 struct AstIdentifierRef : public AstNode
@@ -456,6 +458,9 @@ struct AstFuncDecl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
     bool     cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
+    void     computeFullNameForeign(bool forExport);
+    Utf8     getNameForMessage();
+    Utf8     getNameForUserCompiler();
 
     DependentJobs          dependentJobs;
     Utf8                   fullnameForeign;
@@ -472,10 +477,6 @@ struct AstFuncDecl : public AstNode
 
     uint32_t stackSize;
     int      exportForeignLine;
-
-    void computeFullNameForeign(bool forExport);
-    Utf8 getNameForMessage();
-    Utf8 getNameForUserCompiler();
 };
 
 struct AstAttrDecl : public AstNode
