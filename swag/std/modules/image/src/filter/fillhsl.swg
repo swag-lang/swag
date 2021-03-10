@@ -18,7 +18,6 @@ impl Image
             throw "unsupported pixel format"
 
         hsl := color.getHsl()
-        f := @{col: hsl}
 
         using FillHslType
         switch(fillType)
@@ -28,7 +27,7 @@ impl Image
             loop x: width
             {
                 factor0 := x / cast(f32) width
-                col := Color.fromHsl(factor0, hsl.s, 0.5)
+                col := Color.fromHsl(factor0, hsl.s, hsl.l)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
                 pix += bpp8
             }
@@ -43,7 +42,7 @@ impl Image
             loop x: width
             {
                 factor0 := x / cast(f32) width
-                col := Color.fromHsl(hsl.h, factor0, 0.5)
+                col := Color.fromHsl(hsl.h, factor0, hsl.l)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
                 pix += bpp8
             }
@@ -69,16 +68,18 @@ impl Image
             }
 
         case HueSaturation:
+            f := @{col: hsl}
             visitPixels(&f)
             {
                 params := :cast(*@typeof(f)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(factor0, factor1, 0.5)
+                col := Color.fromHsl(factor0, factor1, params.col.l)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
 
         case HueLightness:
+            f := @{col: hsl}
             visitPixels(&f)
             {
                 params := :cast(*@typeof(f)) userData
@@ -89,6 +90,7 @@ impl Image
             }
 
         case SaturationLightness:
+            f := @{col: hsl}
             visitPixels(&f)
             {
                 params := :cast(*@typeof(f)) userData
