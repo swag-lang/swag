@@ -20,7 +20,7 @@ impl Image
         hsl := color.getHsl()
 
         using FillHslType
-        switch(fillType)
+        switch fillType
         {
         case Hue:
             pix := pixels

@@ -13,7 +13,7 @@ impl Image
             throw "unsupported pixel format"
 
         using FillGradientType
-        switch(fillType)
+        switch fillType
         {
         case Color2:
             pix := pixels
