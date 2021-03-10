@@ -50,6 +50,9 @@ func loadImg() throw
 
     assume img.grayScale(0.5)
     assume img.fillHsl(FillHslType.LightnessVertical, Color.fromArgb(Argb.Green))
+    x1 := Color.fromArgb(Argb.Green)
+    x2 := Color.fromArgb(Argb.Red)
+    assume img.fillGradient(FillGradientType.Horizontal, x1, x2)
 
     t.stop()
     console.println("time: %ms", t.elapsedMilliseconds())

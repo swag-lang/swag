@@ -28,11 +28,11 @@ impl Color
     }
 
     #[inline]
-    func opEquals(self, argb: u32) =>       self.argb == argb
-    #[inline]
-    func opEquals(self, argb: Argb) =>      self.argb == cast(u32) argb
-    #[inline]
-    func opEquals(self, other: Self) =>     self.argb == other.argb
+    {
+    func opEquals(self, argb: u32)   => self.argb == argb
+    func opEquals(self, argb: Argb)  => self.argb == cast(u32) argb
+    func opEquals(self, other: Self) => self.argb == other.argb
+    }
 
     // Set all components
     #[inline]
@@ -240,6 +240,28 @@ impl Color
         if (result.h > 1)
             result.h -= 1
 
+        return result
+    }
+
+    // Blend two colors, keeping the alpha channel of 'col0' untouched
+    func blendKeepAlpha(col0, col1: Color, factor: f32)->Color
+    {
+        var result: retval = ?
+        result.a = col0.a
+        result.r = cast(u8) math.lerp(cast(f32) col0.r, cast(f32) col1.r, factor)
+        result.g = cast(u8) math.lerp(cast(f32) col0.g, cast(f32) col1.g, factor)
+        result.b = cast(u8) math.lerp(cast(f32) col0.b, cast(f32) col1.b, factor)
+        return result
+    }
+
+    // Blend two colors
+    func blend(col0, col1: Color, factor: f32)->Color
+    {
+        var result: retval = ?
+        result.a = cast(u8) math.lerp(cast(f32) col0.a, cast(f32) col1.a, factor)
+        result.r = cast(u8) math.lerp(cast(f32) col0.r, cast(f32) col1.r, factor)
+        result.g = cast(u8) math.lerp(cast(f32) col0.g, cast(f32) col1.g, factor)
+        result.b = cast(u8) math.lerp(cast(f32) col0.b, cast(f32) col1.b, factor)
         return result
     }
 }
