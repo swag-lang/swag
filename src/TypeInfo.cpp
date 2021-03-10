@@ -30,29 +30,44 @@ void TypeInfo::getScopedName(Utf8& newName)
 
 const Utf8& TypeInfo::computeName(uint32_t nameFlags)
 {
-    if (nameFlags & COMPUTE_NAME_FLAT)
+    if (nameFlags == COMPUTE_NAME)
     {
         computeName();
         return name;
     }
 
-    if (nameFlags & COMPUTE_NAME_SCOPED)
+    if (nameFlags == COMPUTE_SCOPED_NAME)
     {
-        computeScopedName(nameFlags);
+        computeScopedName();
         return scopedName;
+    }
+
+    if (nameFlags == COMPUTE_SCOPED_NAME_EXPORT)
+    {
+        computeScopedNameExport();
+        return scopedNameExport;
     }
 
     SWAG_ASSERT(false);
     return name;
 }
 
-void TypeInfo::computeScopedName(uint32_t nameFlags)
+void TypeInfo::computeScopedName()
 {
     scoped_lock lk(mutex);
     if (!scopedName.empty())
         return;
     getScopedName(scopedName);
     scopedName += name;
+}
+
+void TypeInfo::computeScopedNameExport()
+{
+    scoped_lock lk(mutex);
+    if (!scopedNameExport.empty())
+        return;
+    getScopedName(scopedNameExport);
+    scopedNameExport += name;
 }
 
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
