@@ -1,11 +1,6 @@
 #include "pch.h"
 #include "TypeManager.h"
-#include "Allocator.h"
-#include "SourceFile.h"
-#include "AstNode.h"
 #include "Ast.h"
-#include "Module.h"
-#include "Generic.h"
 #include "SemanticJob.h"
 
 TypeInfo* TypeInfoNative::clone()

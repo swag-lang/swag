@@ -1,11 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Scope.h"
 #include "ByteCodeGenJob.h"
-#include "TypeInfo.h"
-#include "Allocator.h"
 #include "Generic.h"
-#include "SourceFile.h"
 #include "Module.h"
 #include "Diagnostic.h"
 

@@ -1,15 +1,8 @@
 #include "pch.h"
-#include "Global.h"
-#include "SourceFile.h"
 #include "Ast.h"
 #include "SemanticJob.h"
-#include "Scope.h"
-#include "SymTable.h"
 #include "Scoped.h"
-#include "Diagnostic.h"
 #include "TypeManager.h"
-#include "Module.h"
-#include "LanguageSpec.h"
 
 bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 {

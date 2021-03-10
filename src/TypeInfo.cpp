@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "TypeInfo.h"
 #include "AstNode.h"
-#include "Scope.h"
-#include "Module.h"
 #include "TypeManager.h"
 
 void TypeInfo::forceComputeName()

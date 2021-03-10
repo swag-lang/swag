@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "SourceFile.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
-#include "SymTable.h"
 #include "Module.h"
 #include "TypeManager.h"
-#include "Workspace.h"
 
 bool SemanticJob::boundCheck(SemanticContext* context, AstNode* arrayAccess, uint64_t maxCount)
 {

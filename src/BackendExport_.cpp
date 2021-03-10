@@ -2,13 +2,11 @@
 #include "Backend.h"
 #include "Workspace.h"
 #include "Version.h"
-#include "Ast.h"
 #include "TypeManager.h"
 #include "Os.h"
 #include "Module.h"
 #include "Profile.h"
 #include "ModuleSaveExportJob.h"
-#include "Attribute.h"
 
 bool Backend::emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent)
 {

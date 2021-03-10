@@ -2,17 +2,9 @@
 #include "BackendLLVM.h"
 #include "BackendLLVMDbg.h"
 #include "ByteCode.h"
-#include "SourceFile.h"
-#include "Ast.h"
-#include "TypeInfo.h"
 #include "Module.h"
-#include "BackendLLVM.h"
-#include "SymTable.h"
-#include "BuildParameters.h"
 #include "Version.h"
 #include "TypeManager.h"
-#include "CommandLine.h"
-#include "BackendLLVM.h"
 #include "Workspace.h"
 
 static llvm::DILocation* debugLocGet(unsigned Line, unsigned Col, const llvm::MDNode* Scope, const llvm::MDNode* InlinedAt = nullptr, bool ImplicitCode = false)
