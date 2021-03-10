@@ -27,7 +27,7 @@ impl Image
             loop x: width
             {
                 factor0 := x / cast(f32) width
-                col := Color.fromHsl(factor0, hsl.s, hsl.l)
+                col := Color.fromHsl(factor0, hsl.s, 0.5)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
                 pix += bpp8
             }
@@ -42,7 +42,7 @@ impl Image
             loop x: width
             {
                 factor0 := x / cast(f32) width
-                col := Color.fromHsl(hsl.h, factor0, hsl.l)
+                col := Color.fromHsl(hsl.h, factor0, 0.5)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
                 pix += bpp8
             }
@@ -68,35 +68,32 @@ impl Image
             }
 
         case HueSaturation:
-            f := @{col: hsl}
-            visitPixels(&f)
+            visitPixels(&hsl)
             {
-                params := :cast(*@typeof(f)) userData
+                params := :cast(*@typeof(hsl)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(factor0, factor1, params.col.l)
+                col := Color.fromHsl(factor0, factor1, 0.5)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
 
         case HueLightness:
-            f := @{col: hsl}
-            visitPixels(&f)
+            visitPixels(&hsl)
             {
-                params := :cast(*@typeof(f)) userData
+                params := :cast(*@typeof(hsl)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(factor0, params.col.s, factor1)
+                col := Color.fromHsl(factor0, params.s, factor1)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
 
         case SaturationLightness:
-            f := @{col: hsl}
-            visitPixels(&f)
+            visitPixels(&hsl)
             {
-                params := :cast(*@typeof(f)) userData
+                params := :cast(*@typeof(hsl)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(params.col.h, factor0, factor1)
+                col := Color.fromHsl(params.h, factor0, factor1)
                 pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
             }
         }
