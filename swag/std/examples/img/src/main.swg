@@ -51,6 +51,10 @@ func loadImg() throw
     img.grayScale(0.5)
     img.fillHsl(FillHslType.HueSaturation, Color.fromArgb(Argb.Green))
     img.fillGradient2(Color.fromArgb(Argb.Green), Color.fromArgb(Argb.Red))
+    img.fillGradient4(Color.fromArgb(Argb.Green),
+                      Color.fromArgb(Argb.Red),
+                      Color.fromArgb(Argb.Blue),
+                      Color.fromArgb(Argb.Yellow))
 
     t.stop()
     console.println("time: %ms", t.elapsedMilliseconds())
