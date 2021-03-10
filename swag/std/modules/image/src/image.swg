@@ -77,10 +77,10 @@ impl Image
     // - index: the pixel index
     // - x, y: the pixel coordinates
     #[swag.macro]
-    func visitPixels(using self, userData: *void = null, stmt: code)
+    func visitPixels(using self, userData: *void = null, stride: u32 = 1, stmt: code)
     {
         p := @{self, userData}
-        jobs.parallelVisit(@mkslice(pixels, size), cast(u32) bpp8, &p)
+        jobs.parallelVisit(@mkslice(pixels, size), cast(u32) bpp8 * stride, &p)
         {
             p := cast(*@typeof(p)) data
             #macro

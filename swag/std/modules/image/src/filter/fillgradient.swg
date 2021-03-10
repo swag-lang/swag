@@ -29,25 +29,9 @@ impl Image
             }
 
             // Then copy that first line to the rest of the image
-            if pf == PixelFormat.BGRA8
+            visitPixels(null, width)
             {
-                visitPixels()
-                {
-                    x8 := x * image.bpp8
-                    pixSrc := cast(*u32) (image.pixels + x8)
-                    pixDst := cast(*u32) pix
-                    :pixDst = :pixSrc
-                }
-            }
-            else
-            {
-                visitPixels()
-                {
-                    x8 := x * image.bpp8
-                    pix[0] = image.pixels[x8]
-                    pix[1] = image.pixels[x8 + 1]
-                    pix[2] = image.pixels[x8 + 2]
-                }
+                @memcpy(pix, image.pixels, cast(uint) image.width * image.bpp8)
             }
         }
     }
