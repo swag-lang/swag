@@ -38,7 +38,7 @@ func display()
 var textureID: GLuint
 func loadImg() throw
 {
-    using image.Image
+    using image.Image, Color, Argb
 
     data := imagePath("bmp_32.bmp")
     img := try image.load(data)
@@ -49,12 +49,9 @@ func loadImg() throw
     t.start()
 
     img.grayScale(0.5)
-    img.fillHsl(FillHslType.HueSaturation, Color.fromArgb(Argb.Green))
-    img.fillGradient2(Color.fromArgb(Argb.Green), Color.fromArgb(Argb.Red))
-    img.fillGradient4(Color.fromArgb(Argb.Green),
-                      Color.fromArgb(Argb.Red),
-                      Color.fromArgb(Argb.Blue),
-                      Color.fromArgb(Argb.Yellow))
+    img.fillHsl(FillHslType.HueSaturation, fromArgb(Green))
+    img.fillGradient2(fromArgb(Green), fromArgb(Red))
+    img.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))
 
     t.stop()
     console.println("time: %ms", t.elapsedMilliseconds())
