@@ -445,6 +445,51 @@ bool TypeInfoGeneric::isSame(TypeInfo* to, uint32_t isSameFlags)
     return true;
 }
 
+TypeInfo* TypeInfoEnum::clone()
+{
+    auto newType        = allocType<TypeInfoEnum>();
+    newType->scope      = scope;
+    newType->rawType    = rawType;
+    newType->attributes = attributes;
+
+    for (int i = 0; i < values.size(); i++)
+    {
+        auto param = static_cast<TypeInfoParam*>(values[i]);
+        param      = static_cast<TypeInfoParam*>(param->clone());
+        newType->values.push_back(param);
+    }
+
+    newType->copyFrom(this);
+    return newType;
+}
+
+bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+    auto other = static_cast<TypeInfoEnum*>(to);
+    if (!rawType->isSame(other->rawType, isSameFlags))
+        return false;
+    if (values.size() != other->values.size())
+        return false;
+
+    if (!(isSameFlags & ISSAME_CAST))
+    {
+        int childSize = (int) values.size();
+        if (childSize != other->values.size())
+            return false;
+        for (int i = 0; i < childSize; i++)
+        {
+            if (!values[i]->isSame(other->values[i], isSameFlags))
+                return false;
+        }
+    }
+
+    return true;
+}
+
 TypeInfo* TypeInfoFuncAttr::clone()
 {
     auto newType                  = allocType<TypeInfoFuncAttr>();
@@ -470,6 +515,33 @@ TypeInfo* TypeInfoFuncAttr::clone()
     return newType;
 }
 
+static void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericParameters, Utf8& resName, uint32_t nameType)
+{
+    if (genericParameters.empty())
+        return;
+
+    resName += "'(";
+    for (int i = 0; i < genericParameters.size(); i++)
+    {
+        if (i)
+            resName += ", ";
+
+        auto genParam = genericParameters[i];
+        if (genParam->flags & TYPEINFO_DEFINED_VALUE)
+        {
+            SWAG_ASSERT(genParam->typeInfo);
+            auto str = Ast::literalToString(genParam->typeInfo, genParam->value.text, genParam->value.reg);
+            resName += str;
+        }
+        else if (genParam->typeInfo)
+            resName += genParam->typeInfo->computeWhateverName(nameType);
+        else
+            resName += genParam->name;
+    }
+
+    resName += ")";
+}
+
 void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     if (nameType != COMPUTE_NAME)
@@ -479,30 +551,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
         resName += declNode->token.text;
     }
 
-    // Generic parameters
-    if (genericParameters.size())
-    {
-        resName += "'(";
-        for (int i = 0; i < genericParameters.size(); i++)
-        {
-            if (i)
-                resName += ", ";
-
-            auto genParam = genericParameters[i];
-            if (genParam->flags & TYPEINFO_DEFINED_VALUE)
-            {
-                SWAG_ASSERT(genParam->typeInfo);
-                auto str = Ast::literalToString(genParam->typeInfo, genParam->value.text, genParam->value.reg);
-                resName += str;
-            }
-            else if (genParam->typeInfo)
-                resName += genParam->typeInfo->computeWhateverName(nameType);
-            else
-                resName += genParam->name;
-        }
-
-        resName += ")";
-    }
+    computeNameGenericParameters(genericParameters, resName, nameType);
 
     // Parameters
     resName += "(";
@@ -666,51 +715,6 @@ TypeInfo* TypeInfoFuncAttr::registerIdxToType(int argIdx)
     if (argNo >= parameters.size())
         return nullptr;
     return TypeManager::concreteReferenceType(parameters[argNo]->typeInfo);
-}
-
-TypeInfo* TypeInfoEnum::clone()
-{
-    auto newType        = allocType<TypeInfoEnum>();
-    newType->scope      = scope;
-    newType->rawType    = rawType;
-    newType->attributes = attributes;
-
-    for (int i = 0; i < values.size(); i++)
-    {
-        auto param = static_cast<TypeInfoParam*>(values[i]);
-        param      = static_cast<TypeInfoParam*>(param->clone());
-        newType->values.push_back(param);
-    }
-
-    newType->copyFrom(this);
-    return newType;
-}
-
-bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t isSameFlags)
-{
-    if (this == to)
-        return true;
-    if (!TypeInfo::isSame(to, isSameFlags))
-        return false;
-    auto other = static_cast<TypeInfoEnum*>(to);
-    if (!rawType->isSame(other->rawType, isSameFlags))
-        return false;
-    if (values.size() != other->values.size())
-        return false;
-
-    if (!(isSameFlags & ISSAME_CAST))
-    {
-        int childSize = (int) values.size();
-        if (childSize != other->values.size())
-            return false;
-        for (int i = 0; i < childSize; i++)
-        {
-            if (!values[i]->isSame(other->values[i], isSameFlags))
-                return false;
-        }
-    }
-
-    return true;
 }
 
 TypeInfo* TypeInfoStruct::clone()
@@ -882,7 +886,7 @@ Utf8 TypeInfoStruct::getDisplayName()
 
 void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    // For a tuple, we use the tuple syntax
+    // For a tuple, we use the tuple syntax when this is an export
     if ((nameType == COMPUTE_SCOPED_NAME_EXPORT) && (flags & TYPEINFO_STRUCT_IS_TUPLE))
     {
         resName += "{";
@@ -908,26 +912,5 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
         getScopedName(resName);
     resName += structName;
 
-    if (!genericParameters.empty())
-    {
-        resName += "'(";
-        for (int i = 0; i < genericParameters.size(); i++)
-        {
-            if (i)
-                resName += ", ";
-
-            auto genParam = genericParameters[i];
-            if (genParam->flags & TYPEINFO_DEFINED_VALUE)
-            {
-                auto str = Ast::literalToString(genParam->typeInfo, genParam->value.text, genParam->value.reg);
-                resName += str;
-            }
-            else
-            {
-                resName += genParam->typeInfo->computeWhateverName(nameType);
-            }
-        }
-
-        resName += ")";
-    }
+    computeNameGenericParameters(genericParameters, resName, nameType);
 }
