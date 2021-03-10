@@ -139,17 +139,11 @@ TypeInfo* TypeInfoReference::clone()
     return newType;
 }
 
-void TypeInfoReference::computePreName(Utf8& preName)
-{
-    preName.clear();
-    if (flags & TYPEINFO_CONST)
-        preName = "const ";
-    preName += "&";
-}
-
 void TypeInfoReference::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    computePreName(resName);
+    if (flags & TYPEINFO_CONST)
+        resName += "const ";
+    resName += "&";
     resName += pointedType->computeWhateverName(nameType);
 }
 
@@ -173,21 +167,17 @@ TypeInfo* TypeInfoPointer::clone()
     return newType;
 }
 
-void TypeInfoPointer::computePreName(Utf8& preName)
-{
-    preName.clear();
-    if (flags & TYPEINFO_CONST)
-        preName = "const ";
-    preName += "*";
-    if (relative)
-        preName += format("~%u ", relative);
-}
-
 void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    computePreName(resName);
+    if (flags & TYPEINFO_CONST)
+        resName += "const ";
+    resName += "*";
+    if (relative)
+        resName += format("~%u ", relative);
+
     if (!pointedType) // "null"
         return;
+
     resName += pointedType->computeWhateverName(nameType);
 }
 
@@ -256,51 +246,41 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
     return true;
 }
 
-void TypeInfoArray::computePreName(Utf8& preName)
+void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    preName.clear();
     if (flags & TYPEINFO_CONST)
-        preName = "const ";
+        resName += "const ";
 
     if (count == UINT32_MAX)
     {
-        preName += "[] ";
+        resName += "[] ";
     }
     else
     {
-        preName += format("[%d", count);
+        resName += format("[%d", count);
         auto pType = pointedType;
         while (pType->kind == TypeInfoKind::Array)
         {
             auto subType = CastTypeInfo<TypeInfoArray>(pType, TypeInfoKind::Array);
-            preName += format(",%d", subType->count);
+            resName += format(",%d", subType->count);
             pType = subType->pointedType;
         }
 
-        preName += "] ";
+        resName += "] ";
     }
-}
 
-void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
-{
-    computePreName(resName);
     resName += pointedType->computeWhateverName(nameType);
-}
-
-void TypeInfoSlice::computePreName(Utf8& preName)
-{
-    preName.clear();
-    if (flags & TYPEINFO_CONST)
-        preName = "const ";
-    preName += "[..]";
-    if (relative)
-        preName += format("~%u", relative);
-    preName += " ";
 }
 
 void TypeInfoSlice::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    computePreName(resName);
+    if (flags & TYPEINFO_CONST)
+        resName += "const ";
+    resName += "[..]";
+    if (relative)
+        resName += format("~%u", relative);
+    resName += " ";
+
     resName += pointedType->computeWhateverName(nameType);
 }
 

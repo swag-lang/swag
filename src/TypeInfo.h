@@ -382,7 +382,6 @@ struct TypeInfoPointer : public TypeInfo
         kind = TypeInfoKind::Pointer;
     }
 
-    void      computePreName(Utf8& preName);
     void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
@@ -398,7 +397,6 @@ struct TypeInfoReference : public TypeInfo
         sizeOf = sizeof(void*);
     }
 
-    void      computePreName(Utf8& preName);
     void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
@@ -420,7 +418,6 @@ struct TypeInfoArray : public TypeInfo
         return 1;
     }
 
-    void      computePreName(Utf8& preName);
     void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
@@ -441,7 +438,6 @@ struct TypeInfoSlice : public TypeInfo
     }
 
     void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
-    void      computePreName(Utf8& preName);
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
