@@ -475,11 +475,8 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
     if (nameType != COMPUTE_NAME)
     {
         getScopedName(resName);
-
-        // Function types are scoped with the name, because two functions of the exact same type
-        // (parameters and return value) should have a different concrete type info, because of attributes
-        if (declNode && declNode->kind == AstNodeKind::FuncDecl)
-            resName += declNode->token.text;
+        SWAG_ASSERT(declNode);
+        resName += declNode->token.text;
     }
 
     // Generic parameters
