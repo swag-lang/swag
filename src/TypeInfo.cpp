@@ -13,14 +13,11 @@ void TypeInfo::forceComputeName()
 
 void TypeInfo::getScopedName(Utf8& newName)
 {
-    if (declNode && declNode->ownerScope)
+    if (declNode && declNode->ownerScope && declNode->ownerScope->kind != ScopeKind::Function)
     {
-        if (declNode->ownerScope->kind != ScopeKind::Function)
-        {
-            newName += declNode->ownerScope->getFullName();
-            if (!newName.empty())
-                newName += ".";
-        }
+        newName += declNode->ownerScope->getFullName();
+        if (!newName.empty())
+            newName += ".";
     }
 }
 
@@ -52,9 +49,6 @@ const Utf8& TypeInfo::computeWhateverName(uint32_t nameType)
 
 void TypeInfo::computeWhateverName(Utf8& resName, uint32_t nameFlags)
 {
-    if (!resName.empty())
-        return;
-
     switch (nameFlags)
     {
     case COMPUTE_NAME:
