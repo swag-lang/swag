@@ -20,7 +20,7 @@ impl Image
 
         visitPixels(stride: width)
         {
-            @memcpy(pix, image.pixels, cast(uint) image.width * image.bpp8)
+            memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
         }
     }
 
