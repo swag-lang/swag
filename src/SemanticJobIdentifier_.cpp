@@ -2362,7 +2362,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
                     // To avoid a race condition with the job that is currently dealing with the funcDecl,
                     // we will reevaluate it with a semanticAfterFct trick
                     funcDecl->content->allocateExtension();
-                    SWAG_ASSERT(!funcDecl->content->extension->semanticAfterFct);
+                    SWAG_ASSERT(!funcDecl->content->extension->semanticAfterFct || funcDecl->content->extension->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI);
                     funcDecl->content->extension->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
 
                     g_ThreadMgr.addJob(job);
