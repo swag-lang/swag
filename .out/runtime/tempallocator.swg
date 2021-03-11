@@ -33,7 +33,7 @@ impl IAllocator for TempAllocator
     {
         switch request.mode
         {
-        case AllocatorMode.Free:
+        case Free:
             ptr := block + used - request.size
             if ptr == request.address
             {
@@ -42,14 +42,14 @@ impl IAllocator for TempAllocator
             }
             break
 
-        case AllocatorMode.FreeAll:
+        case FreeAll:
             freeAll();
 
-        case AllocatorMode.Alloc:
+        case Alloc:
             request.address = null
             fallthrough
 
-        case AllocatorMode.Realloc:
+        case Realloc:
 
             // First block allocation
             if !block

@@ -110,7 +110,7 @@ public impl IAllocator for DebugAllocator
 
         switch request.mode
         {
-        case AllocatorMode.Free:
+        case Free:
             if !request.address return
             assertIsAllocated(request.address)
 
@@ -145,17 +145,17 @@ public impl IAllocator for DebugAllocator
             copyReq.size = ptrHeader.allocSize
             allocator.alloc(&copyReq)
 
-        case AllocatorMode.FreeAll:
+        case FreeAll:
             allocator.alloc(request)
             first = null
             count = 0
             size = 0
 
-        case AllocatorMode.Realloc:
+        case Realloc:
             assertIsAllocated(request.address)
             fallthrough
 
-        case AllocatorMode.Alloc:
+        case Alloc:
             // In case of a reallocation, get the previous allocated user size
             // This will be used to fill with garbage the difference
             copyReq := :request

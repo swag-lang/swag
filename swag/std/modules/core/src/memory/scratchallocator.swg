@@ -85,17 +85,17 @@ impl IAllocator for ScratchAllocator
 
         switch request.mode
         {
-        case AllocatorMode.Free:
+        case Free:
             break
 
-        case AllocatorMode.FreeAll:
+        case FreeAll:
             freeAll();
 
-        case AllocatorMode.Alloc:
+        case Alloc:
             request.address = null
             fallthrough
 
-        case AllocatorMode.Realloc:
+        case Realloc:
             oldAddress := request.address
 
             usedAlign := memory.align(used, request.alignement)

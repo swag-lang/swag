@@ -15,17 +15,17 @@ impl IAllocator for SystemAllocator
         // So this involves extra space !
         switch request.mode
         {
-            case AllocatorMode.Free:
+            case Free:
                 if !request.address break
                 ptr := cast(**void) request.address
                 @free(ptr[bitcast(uint) -1'int])
                 request.address = null
 
-            case AllocatorMode.Alloc:
+            case Alloc:
                 request.address = null
                 fallthrough
 
-            case AllocatorMode.Realloc:
+            case Realloc:
                 size := request.size
                 size += @sizeof(*void)
                 alignement := request.alignement ?? @sizeof(*void)
