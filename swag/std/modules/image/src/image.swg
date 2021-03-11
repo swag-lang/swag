@@ -141,4 +141,23 @@ impl Image
     {
         memory.clear(pixels, size)
     }
+
+    // Copy one pixel, depending on bpp
+    #[swag.inline]
+    func(BPP: u8) pixelCopy(pixDst, pixSrc: *u8)
+    {
+        #if BPP == 24
+        {
+            :cast(*u16) pixDst = :cast(*u16) pixSrc
+            pixDst[2] = pixSrc[2]
+        }
+        #elif BPP == 32
+        {
+            :cast(*u32) pixDst = :cast(*u32) pixSrc
+        }
+        #else
+        {
+            #assert "invalid pixelCopy BPP"
+        }
+    }
 }

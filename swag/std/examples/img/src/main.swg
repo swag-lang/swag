@@ -65,10 +65,10 @@ func loadImg() throw
     switch effectIdx
     {
     case 0: break
-    case 1: myImage.resize(128, 128)
+    case 4: myImage.resize(128, 128)
     case 2: myImage.resize(1024, 1024)
     case 3: myImage.flip()
-    case 4: myImage.mirror()
+    case 1: myImage.mirror()
     case 5: myImage.grayScale(0.5)
     case 6: myImage.grayScale()
     case 7: myImage.fillHsl(FillHslType.HueSaturation, fromArgb(Green))

@@ -210,7 +210,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     }
 
     // An inline function will not have bytecode, so need to register public by hand now
-    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && (node->attributeFlags & ATTRIBUTE_INLINE))
+    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && (node->attributeFlags & ATTRIBUTE_INLINE) && !(node->flags & AST_FROM_GENERIC))
         node->ownerScope->addPublicInlinedFunc(node);
 
     node->byteCodeFct   = ByteCodeGenJob::emitLocalFuncDecl;
