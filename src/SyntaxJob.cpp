@@ -195,7 +195,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     uint32_t previousLogLine = 0;
 
     // Log the generated code in 'generated.swg'
-    if (logGenerated && !fromNode->sourceFile->numTestErrors)
+    if (logGenerated && !fromNode->sourceFile->numTestErrors && g_CommandLine.output)
     {
         auto modl       = fromNode->sourceFile->module;
         Utf8 publicPath = g_Workspace.getPublicPath(modl, true);
