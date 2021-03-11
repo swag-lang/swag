@@ -35,8 +35,8 @@ impl Image
             params := cast(*@typeof(f)) userData
             factor0 := x / cast(f32) image.width
             factor1 := y / cast(f32) image.height
-            colH1 := Color.blend(params.item0, params.item1, factor0)
-            colH0 := Color.blend(params.item2, params.item3, factor0)
+            colH1 := Color.blend(params.color0, params.color1, factor0)
+            colH0 := Color.blend(params.color2, params.color3, factor0)
             col := Color.blend(colH0, colH1, factor1)
             pix[0] = col.b; pix[1] = col.g; pix[2] = col.r
         }

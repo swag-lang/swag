@@ -19,8 +19,8 @@ impl Image
             visitPixels(&f)
             {
                 params := cast(*@typeof(f)) userData
-                fx := cast(u32) (x * params.item0)
-                fy := cast(u32) (y * params.item1)
+                fx := cast(u32) (x * params.xscale)
+                fy := cast(u32) (y * params.yscale)
                 pixSrc := image.workingBuffer + (fx * image.bpp8) + (fy * image.wbWidth * image.bpp8)
                 copyPixel'BPP(pix, pixSrc)
             }

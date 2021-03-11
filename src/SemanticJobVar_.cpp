@@ -158,10 +158,13 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
     {
         auto typeParam = typeList->subTypes[idx];
         auto childType = typeParam->typeInfo;
+        auto subAffect = assignment->childs[idx];
 
         bool autoName = false;
         if (!typeParam->namedParam.empty())
             varName = typeParam->namedParam;
+        else if (subAffect->kind == AstNodeKind::IdentifierRef && subAffect->childs.back()->kind == AstNodeKind::Identifier)
+            varName = subAffect->childs.back()->token.text;
         else
         {
             autoName = true;
@@ -175,7 +178,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
             paramNode->flags |= AST_AUTO_NAME;
         }
 
-        paramNode->type = convertTypeToTypeExpression(context, paramNode, assignment->childs[idx], childType);
+        paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType);
         if (!paramNode->type)
             return false;
     }
