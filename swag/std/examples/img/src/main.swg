@@ -2,6 +2,7 @@
 using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
+var imageIdx: u32
 var effectIdx: u32
 
 func dataPath()->String
@@ -41,7 +42,15 @@ func loadImg() throw
 {
     using image.Image, Color, Argb
 
-    data := imagePath("bmp_24.bmp")
+    imgName := "bmp_24.bmp"
+    switch imageIdx
+    {
+    case 0: break
+    case 1: imgName = "bmp_32.bmp"
+    default: imageIdx = 0
+    }
+
+    data := imagePath(imgName)
     img := try image.load(data)
 
     var t: time.Stopwatch
@@ -53,15 +62,16 @@ func loadImg() throw
     case 1: img.flip()
     case 2: img.mirror()
     case 3: img.grayScale(0.5)
-    case 4: img.fillHsl(FillHslType.HueSaturation, fromArgb(Green))
-    case 5: img.fillGradient2(fromArgb(Green), fromArgb(Red))
-    case 6: img.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))
-    case 7: img.fill(fromArgb(Cyan))
+    case 4: img.grayScale()
+    case 5: img.fillHsl(FillHslType.HueSaturation, fromArgb(Green))
+    case 6: img.fillGradient2(fromArgb(Green), fromArgb(Red))
+    case 7: img.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))
+    case 8: img.fill(fromArgb(Cyan))
     default: effectIdx = 0
     }
 
     t.stop()
-    console.println("time: %ms", t.elapsedMilliseconds())
+    console.println("img: % time: %ms", imgName, t.elapsedMilliseconds())
 
     fmt := GL_BGR
     if img.bpp == 32 fmt = GL_BGRA
@@ -155,7 +165,12 @@ func messageLoop()
         }
 
         keyb.update()
-        if(keyb.isKeyJustPressed(keyboard.Key.Space))
+        if(keyb.isKeyJustPressed(keyboard.Key.F1))
+        {
+            imageIdx += 1
+            assume loadImg()
+        }
+        if(keyb.isKeyJustPressed(keyboard.Key.F2))
         {
             effectIdx += 1
             assume loadImg()
