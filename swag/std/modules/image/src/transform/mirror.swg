@@ -18,6 +18,7 @@ impl Image
                 :cast(*u16) pixDst = :cast(*u16) pix
                 pixDst[2] = pix[2]
             }
+
         case 32:
             visitPixels()
             {
@@ -25,6 +26,9 @@ impl Image
                 pixDst += y * (image.width * image.bpp8)
                 :cast(*u32) pixDst = :cast(*u32) pix
             }
+
+        default:
+            debug.assert(false)
         }
 
         applyWorkingBuffer()

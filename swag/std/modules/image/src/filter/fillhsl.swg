@@ -18,6 +18,7 @@ impl Image
         hsl := color.getHsl()
 
         using FillHslType
+        #[swag.complete]
         switch fillType
         {
         case Hue:

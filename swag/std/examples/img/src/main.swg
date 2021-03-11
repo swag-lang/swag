@@ -4,6 +4,9 @@ using core, win32, ogl, gdi32, drawing
 var hDC: HDC
 var imageIdx: u32
 var effectIdx: u32
+var myImage: image.Image
+const W = 1024
+const H = 1024
 
 func dataPath()->String
 {
@@ -21,16 +24,19 @@ func imagePath(name: string)->String
 
 func display()
 {
-    glClearColor(0, 1, 0, 0)
+    glClearColor(0, 0, 0, 0)
     glClear(GL_COLOR_BUFFER_BIT)
     glEnable(GL_TEXTURE_2D)
 
     glBindTexture(GL_TEXTURE_2D, textureID)
     glBegin(GL_QUADS)
+
+    w := 2 * myImage.width / cast(f32) W
+    h := 2 * myImage.height / cast(f32) H
     glTexCoord2f(0.0, 0.0); glVertex2f(-1.0, -1.0);  // Bottom Left Of The Texture and Quad
-    glTexCoord2f(1.0, 0.0); glVertex2f( 1.0, -1.0);  // Bottom Right Of The Texture and Quad
-    glTexCoord2f(1.0, 1.0); glVertex2f( 1.0,  1.0);  // Top Right Of The Texture and Quad
-    glTexCoord2f(0.0, 1.0); glVertex2f(-1.0,  1.0);  // Top Left Of The Texture and Quad
+    glTexCoord2f(1.0, 0.0); glVertex2f(-1.0 + w, -1.0);  // Bottom Right Of The Texture and Quad
+    glTexCoord2f(1.0, 1.0); glVertex2f(-1.0 + w, -1.0 + h);  // Top Right Of The Texture and Quad
+    glTexCoord2f(0.0, 1.0); glVertex2f(-1.0, -1.0 + h);  // Top Left Of The Texture and Quad
     glEnd()
 
     glFlush()
@@ -51,7 +57,7 @@ func loadImg() throw
     }
 
     data := imagePath(imgName)
-    img := try image.load(data)
+    myImage = try image.load(data)
 
     var t: time.Stopwatch
     t.start()
@@ -59,27 +65,29 @@ func loadImg() throw
     switch effectIdx
     {
     case 0: break
-    case 1: img.flip()
-    case 2: img.mirror()
-    case 3: img.grayScale(0.5)
-    case 4: img.grayScale()
-    case 5: img.fillHsl(FillHslType.HueSaturation, fromArgb(Green))
-    case 6: img.fillGradient2(fromArgb(Green), fromArgb(Red))
-    case 7: img.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))
-    case 8: img.fill(fromArgb(Cyan))
+    case 1: myImage.resize(128, 128)
+    case 2: myImage.resize(1024, 1024)
+    case 3: myImage.flip()
+    case 4: myImage.mirror()
+    case 5: myImage.grayScale(0.5)
+    case 6: myImage.grayScale()
+    case 7: myImage.fillHsl(FillHslType.HueSaturation, fromArgb(Green))
+    case 8: myImage.fillGradient2(fromArgb(Green), fromArgb(Red))
+    case 9: myImage.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))
+    case 10: myImage.fill(fromArgb(Cyan))
     default: effectIdx = 0
     }
 
     t.stop()
     elapsed := t.elapsedMilliseconds()
-    console.println("img: % (% x % %) time: %ms", imgName, img.width, img.height, img.pf, elapsed)
+    console.println("img: % (% x % %) time: %ms", imgName, myImage.width, myImage.height, myImage.pf, elapsed)
 
     fmt := GL_BGR
-    if img.bpp == 32 fmt = GL_BGRA
+    if myImage.bpp == 32 fmt = GL_BGRA
 
     glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, cast(s32) img.width, cast(s32) img.height, 0, fmt, GL_UNSIGNED_BYTE, img.pixels)
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, cast(s32) myImage.width, cast(s32) myImage.height, 0, fmt, GL_UNSIGNED_BYTE, myImage.pixels)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 }
@@ -124,8 +132,8 @@ func createWindow()->HWND
         WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
         100,
         100,
-        1024,
-        1024,
+        W,
+        H,
         null,
         null,
         wc.hInstance,
