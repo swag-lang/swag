@@ -2,6 +2,7 @@
 using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
+var effectIdx: u32
 
 func dataPath()->String
 {
@@ -46,13 +47,17 @@ func loadImg() throw
     var t: time.Stopwatch
     t.start()
 
-    img.flip()
-    img.mirror()
-    img.grayScale(0.5)
-    img.fillHsl(FillHslType.HueSaturation, fromArgb(Green))
-    img.fillGradient2(fromArgb(Green), fromArgb(Red))
-    img.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))
-    img.fill(fromArgb(Cyan))
+    switch(effectIdx)
+    {
+    case 0: break;
+    case 1: img.flip()
+    case 2: img.mirror()
+    case 3: img.grayScale(0.5)
+    case 4: img.fillHsl(FillHslType.HueSaturation, fromArgb(Green))
+    case 5: img.fillGradient2(fromArgb(Green), fromArgb(Red))
+    case 6: img.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))
+    case 7: img.fill(fromArgb(Cyan))
+    }
 
     t.stop()
     console.println("time: %ms", t.elapsedMilliseconds())
@@ -135,7 +140,9 @@ func createWindow()->HWND
 
 func messageLoop()
 {
-    var msg: MSG
+    var msg:  MSG
+    var keyb: keyboard.Keyboard
+
     while true
     {
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
@@ -144,6 +151,13 @@ func messageLoop()
                 return
             TranslateMessage(&msg)
             DispatchMessageA(&msg)
+        }
+
+        keyb.update()
+        if(keyb.isKeyJustPressed(keyboard.Key.Space))
+        {
+            effectIdx += 1
+            assume loadImg()
         }
 
         display()
