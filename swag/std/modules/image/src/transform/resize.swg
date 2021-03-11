@@ -7,7 +7,7 @@ impl Image
         Raw
     }
 
-    func resizeRaw(using self)
+    private func resizeRaw(using self)
     {
         xscale := wbWidth / cast(f32) width
         yscale := wbHeight / cast(f32) height
@@ -46,7 +46,7 @@ impl Image
         #[swag.complete]
         switch method
         {
-        case ResizeMethod.Raw: resizeRaw()
+        case Raw: resizeRaw()
         }
     }
 }

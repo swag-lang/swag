@@ -196,6 +196,25 @@ bool SemanticJob::resolveFor(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
+{
+    auto node       = context->node;
+    auto switchNode = CastAst<AstSwitch>(node->parent, AstNodeKind::Switch);
+
+    // For a switch on an enum, force a 'using' for each case
+    if (node->typeInfo->kind == TypeInfoKind::Enum)
+    {
+        auto typeEnum = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+        for (auto switchCase : switchNode->cases)
+        {
+            switchCase->allocateExtension();
+            switchCase->extension->alternativeScopes.push_back(typeEnum->scope);
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveSwitch(SemanticContext* context)
 {
     auto node = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);

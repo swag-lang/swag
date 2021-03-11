@@ -327,6 +327,7 @@ struct SemanticJob : public Job
     static bool resolveInlineAfter(SemanticContext* context);
     static bool resolveForBefore(SemanticContext* context);
     static bool resolveFor(SemanticContext* context);
+    static bool resolveSwitchAfterExpr(SemanticContext* context);
     static bool resolveSwitch(SemanticContext* context);
     static bool resolveCase(SemanticContext* context);
     static bool resolveLoop(SemanticContext* context);

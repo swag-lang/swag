@@ -17,7 +17,6 @@ impl Image
         debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
         hsl := color.getHsl()
 
-        using FillHslType
         #[swag.complete]
         switch fillType
         {

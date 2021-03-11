@@ -55,7 +55,12 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
     // switch can have no expression
     SWAG_CHECK(tokenizer.getToken(token));
     if (token.id != TokenId::SymLeftCurly)
+    {
         SWAG_CHECK(doExpression(switchNode, &switchNode->expression));
+        switchNode->expression->allocateExtension();
+        switchNode->expression->extension->semanticAfterFct = SemanticJob::resolveSwitchAfterExpr;
+    }
+
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     AstSwitchCase*      defaultCase      = nullptr;
