@@ -5,6 +5,7 @@ struct Image
 {
     allocator:      IAllocator
     pixels:         *u8
+    workingBuffer:  *u8
     width, height:  u32
     pf:             PixelFormat = ?
     size:           uint
@@ -35,6 +36,7 @@ impl Image
     private func free(using self)
     {
         memory.free(pixels, size, allocator)
+        memory.free(workingBuffer, size, allocator)
     }
 
     func opDrop(using self)
@@ -67,6 +69,28 @@ impl Image
 
             scan += bpp8
         }
+    }
+
+    // Allocate a buffer for computing
+    func allocWorkingBuffer(using self)
+    {
+        if workingBuffer return
+        debug.assert(size != 0)
+        workingBuffer = memory.alloc(size, allocator)
+    }
+
+    // Free the working buffer if allocated
+    func freeWorkingBuffer(using self)
+    {
+        memory.free(workingBuffer, size)
+        workingBuffer = null
+    }
+
+    // Replace the pixel buffer with the working buffer
+    func applyWorkingBuffer(using self)
+    {
+        debug.assert(workingBuffer != null)
+        swap(&pixels, &workingBuffer)
     }
 
     // Macro to visit all pixels of the image in parallel chunks

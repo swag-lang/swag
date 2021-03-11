@@ -5,23 +5,15 @@ impl Image
     // Flip image vertically
     public func flip(using self)
     {
-        if !pixels return
-        debug.assert(width && height)
+        debug.assert(pixels != null)
 
-        w := cast(uint) width * bpp8
-        tmpLine := memory.tempAlloc(w)
-
-        ptrDst := pixels + w * (height - 1)
-        ptrSrc := pixels
-
-        loop h: height
+        allocWorkingBuffer()
+        visitPixels(stride: width)
         {
-            if ptrSrc == ptrDst break
-            memory.copy(tmpLine, ptrDst, w)
-            memory.copy(ptrDst, ptrSrc, w)
-            memory.copy(ptrSrc, tmpLine, w)
-            ptrSrc += w
-            ptrDst -= w
+            w8 := image.width * image.bpp8
+            memory.copy(image.workingBuffer + (image.height - y) * w8, pix, cast(uint) w8)
         }
+
+        applyWorkingBuffer()
     }
 }
