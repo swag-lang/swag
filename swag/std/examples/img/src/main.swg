@@ -40,19 +40,18 @@ func loadImg() throw
 {
     using image.Image, Color, Argb
 
-    data := imagePath("bmp_32.bmp")
+    data := imagePath("bmp_24.bmp")
     img := try image.load(data)
 
     var t: time.Stopwatch
     t.start()
 
-    //img.flip()
+    img.flip()
     img.mirror()
-
-/*    img.grayScale(0.5)
+    img.grayScale(0.5)
     img.fillHsl(FillHslType.HueSaturation, fromArgb(Green))
     img.fillGradient2(fromArgb(Green), fromArgb(Red))
-    img.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))*/
+    img.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))
 
     t.stop()
     console.println("time: %ms", t.elapsedMilliseconds())

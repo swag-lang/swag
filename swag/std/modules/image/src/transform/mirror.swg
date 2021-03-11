@@ -2,54 +2,31 @@ using core
 
 impl Image
 {
-    func(N: u8) mirror(using self)
-    {
-        ptrRowSrc := pixels
-        ptrRowDst := pixels + (width - 1) * N
-        loop width / 2
-        {
-            ptrSrc := ptrRowSrc
-            ptrDst := ptrRowDst
-            loop height
-            {
-                #if N == 1
-                    swap(ptrSrc, ptrDst)
-                #if N == 2 || N == 3
-                    swap(cast(*u16) ptrSrc, cast(*u16) ptrDst)
-                #if N == 3
-                    swap(ptrSrc + 2, ptrDst + 2)
-                #if N == 4
-                    swap(cast(*u32) ptrSrc, cast(*u32) ptrDst)
-                #if N == 8
-                    swap(cast(*u64) ptrSrc, cast(*u64) ptrDst)
-
-                ptrSrc, ptrDst += width * N
-            }
-
-            ptrRowSrc += N
-            ptrRowDst -= N
-        }
-    }
-
     // Flip image horizontally
     public func mirror(using self)
     {
-        if !pixels return
-        debug.assert(width && height)
-        switch bpp8
+        debug.assert(pixels != null)
+
+        allocWorkingBuffer()
+        switch bpp
         {
-        case 1:
-            mirror'1()
-        case 2:
-            mirror'2()
-        case 3:
-            mirror'3()
-        case 4:
-            mirror'4()
-        case 8:
-            mirror'8()
-        default:
-            debug.assert(false, "unsupported pixel format")
+        case 24:
+            visitPixels()
+            {
+                pixDst := image.workingBuffer + (image.width - x - 1) * image.bpp8
+                pixDst += y * (image.width * image.bpp8)
+                :cast(*u16) pixDst = :cast(*u16) pix
+                pixDst[2] = pix[2]
+            }
+        case 32:
+            visitPixels()
+            {
+                pixDst := image.workingBuffer + (image.width - x - 1) * image.bpp8
+                pixDst += y * (image.width * image.bpp8)
+                :cast(*u32) pixDst = :cast(*u32) pix
+            }
         }
+
+        applyWorkingBuffer()
     }
 }
