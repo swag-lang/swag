@@ -7,13 +7,10 @@ impl Image
         Raw
     }
 
-    func resizeRaw(using self, newWidth, newHeight: u32)
+    func resizeRaw(using self)
     {
-        allocWorkingBuffer(newWidth, newHeight, bpp8)
-        applyWorkingBuffer()
-
-        xscale := wbWidth / cast(f32) newWidth
-        yscale := wbHeight / cast(f32) newHeight
+        xscale := wbWidth / cast(f32) width
+        yscale := wbHeight / cast(f32) height
         f := @{xscale, yscale}
 
         #[swag.mixin]
@@ -43,10 +40,13 @@ impl Image
         debug.assert(newWidth > 0 && newHeight > 0)
         if newWidth == width && newHeight == height return
 
+        allocWorkingBuffer(newWidth, newHeight, bpp8)
+        applyWorkingBuffer()
+
         #[swag.complete]
         switch method
         {
-        case ResizeMethod.Raw: resizeRaw(newWidth, newHeight)
+        case ResizeMethod.Raw: resizeRaw()
         }
     }
 }
