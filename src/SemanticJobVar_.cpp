@@ -164,7 +164,10 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
         if (!typeParam->namedParam.empty())
             varName = typeParam->namedParam;
         else if (subAffect->kind == AstNodeKind::IdentifierRef && subAffect->childs.back()->kind == AstNodeKind::Identifier)
+        {
             varName = subAffect->childs.back()->token.text;
+            typeParam->namedParam = varName;
+        }
         else
         {
             autoName = true;

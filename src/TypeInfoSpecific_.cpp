@@ -306,13 +306,8 @@ Utf8 TypeInfoList::computeTupleName(JobContext* context)
     {
         auto typeParam = subTypes[idx];
         auto childType = typeParam->typeInfo;
-
         if (!typeParam->namedParam.empty())
-        {
             structName += typeParam->namedParam;
-            structName += "_";
-        }
-
         structName += childType->name;
     }
 

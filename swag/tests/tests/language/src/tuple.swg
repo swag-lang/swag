@@ -86,4 +86,16 @@
         @assert(result.x == 1.0)
         @assert(result.y == true)
     }
+
+    // When creating a tuple literal with variables, the tuple
+    // fields will take the name of the variables
+    {
+        x := 555
+        y := 666
+        t := @{x, y}
+        @assert(t.x == 555)
+        @assert(t.item0 == t.x)
+        @assert(t.y == 666)
+        @assert(t.item1 == t.y)
+    }
 }
