@@ -47,9 +47,9 @@ func loadImg() throw
     var t: time.Stopwatch
     t.start()
 
-    switch(effectIdx)
+    switch effectIdx
     {
-    case 0: break;
+    case 0: break
     case 1: img.flip()
     case 2: img.mirror()
     case 3: img.grayScale(0.5)
@@ -57,6 +57,7 @@ func loadImg() throw
     case 5: img.fillGradient2(fromArgb(Green), fromArgb(Red))
     case 6: img.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))
     case 7: img.fill(fromArgb(Cyan))
+    default: effectIdx = 0
     }
 
     t.stop()
