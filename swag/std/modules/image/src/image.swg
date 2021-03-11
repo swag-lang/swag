@@ -144,7 +144,7 @@ impl Image
 
     // Copy one pixel, depending on bpp
     #[swag.inline]
-    func(BPP: u8) pixelCopy(pixDst, pixSrc: *u8)
+    func(BPP: u8) copyPixel(pixDst, pixSrc: *u8)
     {
         #if BPP == 24
         {

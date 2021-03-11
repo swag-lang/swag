@@ -14,7 +14,7 @@ impl Image
             {
                 pixDst := image.workingBuffer + (image.width - x - 1) * image.bpp8
                 pixDst += y * (image.width * image.bpp8)
-                pixelCopy'BPP(pixDst, pix)
+                copyPixel'BPP(pixDst, pix)
             }
         }
 

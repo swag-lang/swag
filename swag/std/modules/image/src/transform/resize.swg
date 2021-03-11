@@ -22,31 +22,25 @@ impl Image
         size = newWidth * newHeight * bpp8
 
         f := @{xscale, yscale, srcWidth}
+
+        #[swag.mixin]
+        func(BPP: u8) doIt()
+        {
+            visitPixels(&f)
+            {
+                params := cast(*@typeof(f)) userData
+                fx := cast(u32) (x * params.item0)
+                fy := cast(u32) (y * params.item1)
+                pixSrc := image.workingBuffer + (fx * image.bpp8) + (fy * params.item2 * image.bpp8)
+                copyPixel'BPP(pix, pixSrc)
+            }
+        }
+
         switch bpp
         {
-        case 24:
-            visitPixels(&f)
-            {
-                params := cast(*@typeof(f)) userData
-                fx := cast(u32) (x * params.item0)
-                fy := cast(u32) (y * params.item1)
-                pixSrc := image.workingBuffer + (fx * image.bpp8) + (fy * params.item2 * image.bpp8)
-                :cast(*u16) pix = :cast(*u16) pixSrc
-                pix[2] = pixSrc[2]
-            }
-
-        case 32:
-            visitPixels(&f)
-            {
-                params := cast(*@typeof(f)) userData
-                fx := cast(u32) (x * params.item0)
-                fy := cast(u32) (y * params.item1)
-                pixSrc := image.workingBuffer + (fx * image.bpp8) + (fy * params.item2 * image.bpp8)
-                :cast(*u32) pix = :cast(*u32) pixSrc
-            }
-
-        default:
-            debug.assert(false)
+        case 24: doIt'24()
+        case 32: doIt'32()
+        default: debug.assert(false)
         }
     }
 
