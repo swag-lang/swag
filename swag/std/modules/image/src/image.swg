@@ -6,12 +6,13 @@ struct Image
     allocator:          IAllocator
     pixels:             *u8
     workingBuffer:      *u8
-    workingBufferSize:  uint
-    width, height:      u32
-    pf:                 PixelFormat = ?
     size:               uint
+    width, height:      u32
+    wbWidth, wbHeight:  u32
+    pf:                 PixelFormat = ?
     bpp:                u8  // Bits per pixel
     bpp8:               u8  // Bytes per pixel
+    wbBpp8:             u8
 }
 
 // Creates a new image surface
@@ -72,23 +73,37 @@ impl Image
         }
     }
 
-    // Allocate a computing buffer
-    func allocWorkingBuffer(using self, bufSize: uint = 0)
+    // Allocate a computing buffer with current image size
+    func allocWorkingBuffer(using self)
     {
-        s := bufSize ?? size
-        if workingBuffer && workingBufferSize == s return
+        if workingBuffer && wbWidth == width && wbHeight == height && wbBpp8 == bpp8
+            return
 
-        debug.assert(s != 0)
-        workingBuffer = memory.alloc(s, allocator)
-        workingBufferSize = s
+        freeWorkingBuffer()
+        workingBuffer = memory.alloc(size, allocator)
+        wbWidth = width
+        wbHeight = height
+        wbBpp8 = bpp8
+    }
+
+    // Allocate a computing buffer with new sizes
+    func allocWorkingBuffer(using self, newWidth, newHeight: u32, newBpp8: u8)
+    {
+        if workingBuffer && newWidth == wbWidth && newHeight == wbHeight && newBpp8 == wbBpp8
+            return
+
+        freeWorkingBuffer()
+        wbWidth = newWidth
+        wbHeight = newHeight
+        wbBpp8 = newBpp8
+        workingBuffer = memory.alloc(cast(uint) wbWidth * wbHeight * wbBpp8, allocator)
     }
 
     // Free the working buffer if allocated
     func freeWorkingBuffer(using self)
     {
-        memory.free(workingBuffer, size)
+        memory.free(workingBuffer, cast(uint) wbWidth * wbHeight * wbBpp8)
         workingBuffer = null
-        workingBufferSize = 0
     }
 
     // Replace the pixel buffer with the working buffer
@@ -96,6 +111,10 @@ impl Image
     {
         debug.assert(workingBuffer != null)
         swap(&pixels, &workingBuffer)
+        swap(&wbWidth, &width)
+        swap(&wbHeight, &height)
+        swap(&wbBpp8, &bpp8)
+        size = width * height * bpp8
     }
 
     // Macro to visit all pixels of the image in parallel chunks

@@ -9,21 +9,12 @@ impl Image
 
     func resizeRaw(using self, newWidth, newHeight: u32)
     {
-        newSize := cast(uint) newWidth * newHeight * bpp8
-        allocWorkingBuffer(newSize)
-
-        // Current image is now the working buffer, and the working
-        // buffer is the image to resize
-        srcWidth := width
-        srcHeight := height
+        allocWorkingBuffer(newWidth, newHeight, bpp8)
         applyWorkingBuffer()
-        width = newWidth
-        height = newHeight
-        size = newSize
 
-        xscale := srcWidth / cast(f32) newWidth
-        yscale := srcHeight / cast(f32) newHeight
-        f := @{xscale, yscale, srcWidth}
+        xscale := wbWidth / cast(f32) newWidth
+        yscale := wbHeight / cast(f32) newHeight
+        f := @{xscale, yscale}
 
         #[swag.mixin]
         func(BPP: u8) doIt()
@@ -33,7 +24,7 @@ impl Image
                 params := cast(*@typeof(f)) userData
                 fx := cast(u32) (x * params.item0)
                 fy := cast(u32) (y * params.item1)
-                pixSrc := image.workingBuffer + (fx * image.bpp8) + (fy * params.item2 * image.bpp8)
+                pixSrc := image.workingBuffer + (fx * image.bpp8) + (fy * image.wbWidth * image.bpp8)
                 copyPixel'BPP(pix, pixSrc)
             }
         }

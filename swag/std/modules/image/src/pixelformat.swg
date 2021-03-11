@@ -2,7 +2,7 @@
 using swag
 
 // Desribe the layout format of one image pixel
-enum PixelFormat
+enum PixelFormat: u8
 {
     BGR8
     BGRA8
