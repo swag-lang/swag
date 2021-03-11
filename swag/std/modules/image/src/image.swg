@@ -3,14 +3,15 @@ using swag, core
 
 struct Image
 {
-    allocator:      IAllocator
-    pixels:         *u8
-    workingBuffer:  *u8
-    width, height:  u32
-    pf:             PixelFormat = ?
-    size:           uint
-    bpp:            u8  // Bits per pixel
-    bpp8:           u8  // Bytes per pixel
+    allocator:          IAllocator
+    pixels:             *u8
+    workingBuffer:      *u8
+    workingBufferSize:  uint
+    width, height:      u32
+    pf:                 PixelFormat = ?
+    size:               uint
+    bpp:                u8  // Bits per pixel
+    bpp8:               u8  // Bytes per pixel
 }
 
 // Creates a new image surface
@@ -71,12 +72,15 @@ impl Image
         }
     }
 
-    // Allocate a buffer for computing
-    func allocWorkingBuffer(using self)
+    // Allocate a computing buffer
+    func allocWorkingBuffer(using self, bufSize: uint = 0)
     {
-        if workingBuffer return
-        debug.assert(size != 0)
-        workingBuffer = memory.alloc(size, allocator)
+        s := bufSize ?? size
+        if workingBuffer && workingBufferSize == s return
+
+        debug.assert(s != 0)
+        workingBuffer = memory.alloc(s, allocator)
+        workingBufferSize = s
     }
 
     // Free the working buffer if allocated
@@ -84,6 +88,7 @@ impl Image
     {
         memory.free(workingBuffer, size)
         workingBuffer = null
+        workingBufferSize = 0
     }
 
     // Replace the pixel buffer with the working buffer
@@ -103,6 +108,8 @@ impl Image
     #[swag.macro]
     func visitPixels(using self, userData: *void = null, stride: u32 = 1, stmt: code)
     {
+        debug.assert(stride > 0)
+
         p := @{self, userData}
         jobs.parallelVisit(@mkslice(pixels, size), cast(u32) bpp8 * stride, &p)
         {
