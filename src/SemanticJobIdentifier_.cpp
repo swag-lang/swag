@@ -119,7 +119,8 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     case TypeInfoKind::Interface:
     {
-        auto typeStruct           = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
+        SWAG_ASSERT(typeStruct->itable->scope);
         identifierRef->startScope = typeStruct->itable->scope;
         node->typeInfo            = typeInfo;
         break;
@@ -2341,19 +2342,29 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
                     matches[i]->oneOverload->symMatchContext.result = MatchResult::SelectIfFailed;
                     continue;
                 }
-                else if (funcDecl->content && funcDecl->content->flags & AST_NO_SEMANTIC)
+
+                if (funcDecl->content && funcDecl->content->flags & AST_NO_SEMANTIC)
                 {
                     scoped_lock lk(funcDecl->mutex);
                     funcDecl->content->flags &= ~AST_NO_SEMANTIC;
 
-                    // Need to restart semantic on instantiated function, because the #selectif has passed
-                    auto job                = g_Pool_semanticJob.alloc();
-                    job->sourceFile         = context->sourceFile;
-                    job->module             = context->sourceFile->module;
-                    job->dependentJob       = context->job->dependentJob;
-                    funcDecl->semanticState = AstNodeResolveState::ProcessingChilds;
-                    job->nodes.push_back(funcDecl);
+                    // Need to restart semantic on instantiated function and on its content,
+                    // because the #selectif has passed
+                    // It's safe to create a job with the content as it has been fully evaluated.
+                    // It's NOT safe for the function itself as the job that deals with it can be
+                    // still running
+                    auto job          = g_Pool_semanticJob.alloc();
+                    job->sourceFile   = context->sourceFile;
+                    job->module       = context->sourceFile->module;
+                    job->dependentJob = context->job->dependentJob;
                     job->nodes.push_back(funcDecl->content);
+
+                    // To avoid a race condition with the job that is currently dealing with the funcDecl,
+                    // we will reevaluate it with a semanticAfterFct trick
+                    funcDecl->content->allocateExtension();
+                    SWAG_ASSERT(!funcDecl->content->extension->semanticAfterFct);
+                    funcDecl->content->extension->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
+
                     g_ThreadMgr.addJob(job);
                 }
             }

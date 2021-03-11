@@ -287,6 +287,7 @@ struct SemanticJob : public Job
     static bool resolveEnumValue(SemanticContext* context);
     static bool resolveFuncDeclParams(SemanticContext* context);
     static bool resolveAfterFuncDecl(SemanticContext* context);
+    static bool resolveFuncDeclAfterSI(SemanticContext* context);
     static bool resolveFuncDecl(SemanticContext* context);
     static bool setFullResolve(SemanticContext* context, AstFuncDecl* funcNode);
     static void setFuncDeclParamsIndex(AstFuncDecl* funcNode);

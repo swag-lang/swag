@@ -168,6 +168,16 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveFuncDeclAfterSI(SemanticContext* context)
+{
+    auto node = CastAst<AstFuncDecl>(context->node->parent, AstNodeKind::FuncDecl);
+    SWAG_ASSERT(node->content == context->node);
+    context->node = node;
+    resolveFuncDecl(context);
+    context->node = node->content;
+    return true;
+}
+
 bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
