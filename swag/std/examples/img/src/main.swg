@@ -53,6 +53,10 @@ func loadImg() throw
     {
     case 0: break
     case 1: imgName = "bmp_32.bmp"
+    case 2: imgName = "tga_24.tga"
+    case 3: imgName = "tga_32.tga"
+    case 4: imgName = "tga_rle24.tga"
+    case 5: imgName = "tga_rle32.tga"
     default: imageIdx = 0
     }
 
@@ -67,17 +71,17 @@ func loadImg() throw
 
     switch effectIdx
     {
-    case 0: myImage.halfSize()
-    case 1: myImage.resize(myImage.width / 2, myImage.height / 2)
-    case 2: myImage.resize(1024, 1024)
-    case 3: myImage.flip()
-    case 4: myImage.mirror()
-    case 5: myImage.grayScale(0.5)
-    case 6: myImage.grayScale()
-    case 7: myImage.fillHsl(FillHslType.HueSaturation, fromArgb(Green))
-    case 8: myImage.fillGradient2(fromArgb(Green), fromArgb(Red))
-    case 9: myImage.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))
-    case 10: myImage.fill(fromArgb(Cyan))
+    case 1:  myImage.halfSize()
+    case 2:  myImage.resize(1024, 1024)
+    case 3:  myImage.resize(myImage.width / 2, myImage.height / 2)
+    case 4:  myImage.flip()
+    case 5:  myImage.mirror()
+    case 6:  myImage.grayScale(0.5)
+    case 7:  myImage.grayScale()
+    case 8:  myImage.fillHsl(FillHslType.HueSaturation, fromArgb(Green))
+    case 9:  myImage.fillGradient2(fromArgb(Green), fromArgb(Red))
+    case 10: myImage.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))
+    case 11: myImage.fill(fromArgb(Cyan))
     default: effectIdx = 0
     }
 
