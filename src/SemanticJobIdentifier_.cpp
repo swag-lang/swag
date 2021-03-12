@@ -1869,7 +1869,12 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
 
     SWAG_CHECK(checkIsConcrete(context, identifierRef->previousResolvedNode));
 
+    // Insert variable in first position. Need to update child
+    // rank of all brothers.
+    for (auto c : node->callParameters->childs)
+        c->childParentIdx++;
     node->callParameters->childs.push_front(fctCallParam);
+
     fctCallParam->parent   = node->callParameters;
     fctCallParam->typeInfo = identifierRef->previousResolvedNode->typeInfo;
     fctCallParam->token    = identifierRef->previousResolvedNode->token;

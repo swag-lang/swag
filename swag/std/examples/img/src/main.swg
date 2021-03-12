@@ -46,7 +46,7 @@ func display()
 var textureID: GLuint
 func loadImg() throw
 {
-    using image.Image, Color, Argb
+    using image.Image, Color
 
     imgName := "bmp_24.bmp"
     switch imageIdx
@@ -78,10 +78,10 @@ func loadImg() throw
     case 5:  myImage.mirror()
     case 6:  myImage.grayScale(0.5)
     case 7:  myImage.grayScale()
-    case 8:  myImage.fillHsl(FillHslType.HueSaturation, fromArgb(Green))
-    case 9:  myImage.fillGradient2(fromArgb(Green), fromArgb(Red))
-    case 10: myImage.fillGradient4(fromArgb(Green), fromArgb(Red), fromArgb(Blue), fromArgb(Yellow))
-    case 11: myImage.fill(fromArgb(Cyan))
+    case 8:  myImage.fillHsl(FillHslType.HueSaturation, Argb.Green)
+    case 9:  myImage.fillGradient2(Argb.Green, Argb.Red)
+    case 10: myImage.fillGradient4(Argb.Green, Argb.Red, Argb.Blue, Argb.Yellow)
+    case 11: myImage.fill(Argb.Cyan)
     default: effectIdx = 0
     }
 
