@@ -378,6 +378,7 @@ struct AstNode
         SymbolOverload*                resolvedUserOpSymbolOverload;
         TypeInfo*                      collectTypeInfo;
         AstNode*                       alternativeNode;
+        AstNode*                       exportNode;
     };
 
     shared_mutex           mutex;

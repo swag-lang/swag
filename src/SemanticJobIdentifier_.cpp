@@ -351,6 +351,62 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         }
     }
 
+    // Deal with opAffect automatic conversion
+    for (int i = 0; i < maxParams; i++)
+    {
+        auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+        if (nodeCall->extension && nodeCall->extension->resolvedUserOpSymbolOverload)
+        {
+            auto overload = nodeCall->extension->resolvedUserOpSymbolOverload;
+            if (overload->symbol->name == "opAffect")
+            {
+                nodeCall->extension->resolvedUserOpSymbolOverload = nullptr;
+                nodeCall->castedTypeInfo                          = nullptr;
+
+                auto varNode = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), identifier);
+
+                // Put child front, because emitCall wants the parameters to be the last
+                Ast::removeFromParent(varNode);
+                Ast::addChildFront(identifier, varNode);
+
+                CloneContext cloneContext;
+                cloneContext.parent        = varNode;
+                cloneContext.forceLocation = &identifier->token;
+                cloneContext.parentScope   = identifier->ownerScope;
+
+                auto typeExpr = Ast::newTypeExpression(sourceFile, varNode);
+                nodeCall->typeInfo->computeScopedName();
+                typeExpr->identifier = Ast::newIdentifierRef(sourceFile, nodeCall->typeInfo->scopedName, typeExpr);
+                varNode->type        = typeExpr;
+
+                auto assign         = nodeCall->childs.front();
+                varNode->assignment = assign->clone(cloneContext);
+
+                Ast::removeFromParent(nodeCall);
+                i--;
+
+                auto newParam   = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
+                newParam->index = i;
+                Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
+
+                // We want to export the original parameter, not the temporary variable reference
+                newParam->allocateExtension();
+                newParam->extension->exportNode = nodeCall;
+
+                // Add the 2 nodes to the semantic
+                context->job->nodes.push_back(newParam);
+                context->job->nodes.push_back(varNode);
+
+                // If call is inlined, then the identifier will be reevaluated, so the new variable, which is a child of
+                // that identifier, will be reevaluated too (so twice because of the push above).
+                // So we set a special flag to not reevaluate it twice.
+                varNode->semFlags |= AST_SEM_ONCE;
+
+                context->result = ContextResult::NewChilds;
+            }
+        }
+    }
+
     // Deal with default values for structs and uncomputed values
     // We need to add a temporary variable initialized with the default value, and reference
     // that temporary variable as a new function call parameter
@@ -408,7 +464,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 context->job->nodes.push_back(newParam);
                 context->job->nodes.push_back(varNode);
 
-                // If call is inlined, then the identifier will be reevaluated, and the variable, which is a child,
+                // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
                 // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
                 // it twice.
                 varNode->semFlags |= AST_SEM_ONCE;

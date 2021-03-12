@@ -149,6 +149,8 @@ namespace Ast
     {
         if (!node)
             return true;
+        if (node->extension && node->extension->exportNode)
+            node = node->extension->exportNode;
         if (node->flags & AST_GENERATED)
             return true;
 

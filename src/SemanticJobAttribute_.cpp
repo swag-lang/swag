@@ -224,6 +224,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_MIXIN;
             else if (child->token.text == "complete")
                 flags |= ATTRIBUTE_COMPLETE;
+            else if (child->token.text == "implicit")
+                flags |= ATTRIBUTE_IMPLICIT;
             else if (child->token.text == "property")
                 flags |= ATTRIBUTE_PROPERTY;
             else if (child->token.text == "nobss")

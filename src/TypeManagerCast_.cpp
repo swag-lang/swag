@@ -57,6 +57,74 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     return true;
 }
 
+bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    auto structType = toType;
+    if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))
+    {
+        auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
+        structType   = typePtr->pointedType;
+    }
+
+    if (structType->kind == TypeInfoKind::Struct && (castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
+        if (!typeStruct->declNode)
+            return false;
+
+        auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
+        auto symbol     = structNode->scope->symTable.find("opAffect");
+
+        // Instantiated opAffect, in a generic struct, will be in the scope of the original struct, not the intantiated one
+        if (!symbol && typeStruct->fromGeneric)
+        {
+            structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
+            symbol     = structNode->scope->symTable.find("opAffect");
+        }
+
+        if (!symbol)
+            return false;
+
+        // Wait for all opAffect to be solved
+        unique_lock lk(symbol->mutex);
+        if (symbol->cptOverloads)
+        {
+            SWAG_ASSERT(context && context->job);
+            SWAG_ASSERT(context->result == ContextResult::Done);
+            context->job->waitForSymbolNoLock(symbol);
+            return true;
+        }
+
+        // Resolve opAffect that match
+        VectorNative<SymbolOverload*> toAffect;
+        for (auto over : symbol->overloads)
+        {
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeFunc->flags & TYPEINFO_GENERIC)
+                continue;
+            if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT))
+                continue;
+            if (typeFunc->parameters.size() > 1 && typeFunc->parameters[1]->typeInfo->isSame(fromType, ISSAME_EXACT))
+                toAffect.push_back(over);
+        }
+
+        if (toAffect.empty())
+            return false;
+
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfo       = toType;
+            fromNode->allocateExtension();
+            fromNode->extension->resolvedUserOpSymbolOverload = toAffect[0];
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
 bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     auto structType = fromType;
@@ -128,6 +196,8 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 {
     // Last minute change : convert 'fromType' (struct) to 'toType' with an opCast
     if (tryOpCast(context, toType, fromType, fromNode, castFlags))
+        return true;
+    if (tryOpAffect(context, toType, fromType, fromNode, castFlags))
         return true;
 
     if (!(castFlags & CASTFLAG_NO_ERROR))
