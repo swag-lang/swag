@@ -7,7 +7,7 @@ impl Image
         Raw
     }
 
-    private func resizeRaw(using self, dstImage: *Image)
+    private func doResizeRaw(using self, dstImage: *Image)
     {
         xscale := width / cast(f32) dstImage.width
         yscale := height / cast(f32) dstImage.height
@@ -34,12 +34,12 @@ impl Image
         }
     }
 
-    private func resizeTo(using self, dstImage: *Image, newWidth, newHeight: u32, method: ResizeMethod)
+    private func doResize(using self, dstImage: *Image, method: ResizeMethod)
     {
         #[swag.complete]
         switch method
         {
-        case Raw: resizeRaw(dstImage)
+        case Raw: doResizeRaw(dstImage)
         }
     }
 
@@ -47,10 +47,27 @@ impl Image
     public func resize(using self, newWidth, newHeight: u32, method = ResizeMethod.Raw)
     {
         debug.assert(newWidth > 0 && newHeight > 0)
+
         if newWidth == width && newHeight == height return
 
         allocWorkingBuffer(newWidth, newHeight, pf)
-        resizeTo(workingBuffer, newWidth, newHeight, method)
+        doResize(workingBuffer, method)
         applyWorkingBuffer()
+    }
+
+    // Resize image
+    public func toResize(using self, newWidth, newHeight: u32, method = ResizeMethod.Raw)->Image
+    {
+        debug.assert(newWidth > 0 && newHeight > 0)
+
+        if newWidth == width && newHeight == height
+        {
+            var result: retval = :self
+            return result
+        }
+
+        var result: retval = create(newWidth, newHeight, pf)
+        doResize(&result, method)
+        return result
     }
 }

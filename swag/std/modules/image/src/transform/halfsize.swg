@@ -2,7 +2,7 @@ using core
 
 impl Image
 {
-    private func halfSizeTo(using self, dstImage: *Image)
+    private func doHalfSize(using self, dstImage: *Image)
     {
         f := self
         dstImage.visitPixels(f)
@@ -24,8 +24,19 @@ impl Image
     public func halfSize(using self)
     {
         debug.assert(width > 1 && height > 1)
+
         allocWorkingBuffer(width / 2, height / 2, pf)
-        halfSizeTo(workingBuffer)
+        doHalfSize(workingBuffer)
         applyWorkingBuffer()
+    }
+
+    // Divide image size by 2
+    public func toHalfSize(using self)->Image
+    {
+        debug.assert(width > 1 && height > 1)
+
+        var result: retval = create(width / 2, height / 2, pf)
+        doHalfSize(&result)
+        return result
     }
 }

@@ -2,7 +2,7 @@ using core
 
 impl Image
 {
-    private func flipTo(using self, dstImage: *Image)
+    private func doFlip(using self, dstImage: *Image)
     {
         f := dstImage
         visitPixels(f, stride: width)
@@ -18,16 +18,16 @@ impl Image
     {
         debug.assert(pixels != null)
         allocWorkingBuffer()
-        flipTo(workingBuffer)
+        doFlip(workingBuffer)
         applyWorkingBuffer()
     }
 
     // Flip image vertically
-    public func getFlip(using self)->Image
+    public func toFlip(using self)->Image
     {
         debug.assert(pixels != null)
         var result: retval = create(width, height, pf)
-        //flipTo(&result)
+        doFlip(&result)
         return result
     }
 }

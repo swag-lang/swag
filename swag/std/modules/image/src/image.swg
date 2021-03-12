@@ -46,6 +46,7 @@ impl Image
 
     func opPostCopy(using self)
     {
+        workingBuffer = null
         if pixels
         {
             newPixels := memory.alloc(size, allocator)

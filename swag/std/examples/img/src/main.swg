@@ -62,8 +62,8 @@ func loadImg() throw
     var t: time.Stopwatch
     t.start()
 
-    nn := myImage.getFlip()
-    //myImage = nn
+    nn := myImage.toResize(myImage.width, myImage.height)
+    myImage = nn
 
     switch effectIdx
     {
