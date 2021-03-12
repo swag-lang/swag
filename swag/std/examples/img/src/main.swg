@@ -62,7 +62,6 @@ func loadImg() throw
     var t: time.Stopwatch
     t.start()
 
-effectIdx = 0
     switch effectIdx
     {
     case 0: myImage.halfSize()
