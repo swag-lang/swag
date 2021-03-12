@@ -58,6 +58,9 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr foreign(module: string, function: string = "");
 
+    #[attributeUsage(AttributeUsage.Function)]
+    attr callback()
+
     // Hardcoded for type alias
     attr strict()
 
@@ -90,9 +93,6 @@ namespace swag
 
     #[attributeUsage(AttributeUsage.Function|AttributeUsage.File)]
     attr optim(what: string, value: bool)
-
-    #[attributeUsage(AttributeUsage.Function)]
-    attr callback()
 
     // #########################################################
     // Constants

@@ -393,6 +393,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChilds);
     SWAG_CHECK(collectAttributes(context, funcNode, &typeInfo->attributes));
 
+    // Check attributes
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
 
