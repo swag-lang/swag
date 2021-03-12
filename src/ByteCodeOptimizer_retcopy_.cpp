@@ -75,7 +75,8 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
     }
 
     // Remove the MakeStackPointer
-    ByteCodeOptimizer::setNop(context, ip);
+    // NO ! The register can be necessary for some code after, especially if this is a CopyRRtoRC
+    //ByteCodeOptimizer::setNop(context, ip);
 
     // Remove the memcpy
     ByteCodeOptimizer::setNop(context, ip + 1);

@@ -27,7 +27,7 @@ impl Image
     {
         debug.assert(pixels != null)
         var result: retval = create(width, height, pf)
-        flipTo(&result)
+        //flipTo(&result)
         return result
     }
 }

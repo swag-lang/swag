@@ -62,7 +62,7 @@ func loadImg() throw
     var t: time.Stopwatch
     t.start()
 
-    //nn := myImage.getFlip()
+    nn := myImage.getFlip()
     //myImage = nn
 
     switch effectIdx
