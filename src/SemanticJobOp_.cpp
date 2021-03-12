@@ -227,6 +227,8 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         return context->report({node, node->token, format("function '%s' does not match a special function/operator overload", name.c_str())});
     }
 
+    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PROPERTY), context->report({node, node->token, format("special function '%s' cannot have the 'swag.property' attribute", name.c_str())}));
+
     return true;
 }
 
