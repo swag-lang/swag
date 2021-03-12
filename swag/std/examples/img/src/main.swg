@@ -64,8 +64,8 @@ func loadImg() throw
 
     switch effectIdx
     {
-    case 0: break
-    case 1: myImage.resize(128, 128)
+    case 0: myImage.halfSize()
+    case 1: myImage.resize(myImage.width / 2, myImage.height / 2)
     case 2: myImage.resize(1024, 1024)
     case 3: myImage.flip()
     case 4: myImage.mirror()
@@ -87,6 +87,7 @@ func loadImg() throw
 
     glGenTextures(1, &textureID)
     glBindTexture(GL_TEXTURE_2D, textureID)
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, cast(s32) myImage.width, cast(s32) myImage.height, 0, fmt, GL_UNSIGNED_BYTE, myImage.pixels)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
@@ -197,7 +198,7 @@ func messageLoop()
     hRC := wglCreateContext(hDC)
     wglMakeCurrent(hDC, hRC)
 
-    try jobs.setNumWorkers(8)
+    //try jobs.setNumWorkers(8)
     try loadImg()
 
     display()

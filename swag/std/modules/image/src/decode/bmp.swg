@@ -119,13 +119,35 @@ public impl IDecoder for Decoder
         if bfOffBits
             dataof = @dataof(buffer) + bfOffBits
 
-        byteSize := cast(uint) (bh.biWidth * bh.biHeight * (bh.biBitCount / 8))
+        bc8 := bh.biBitCount / 8
+        byteSize := cast(uint) (bh.biWidth * bh.biHeight * bc8)
         if dataof + byteSize > last
             throw "invalid source buffer"
 
         switch bh.biBitCount
         {
-        case 24, 32:
+        case 24:
+            // Must be aligned to 4 bytes
+            c := (bh.biWidth * 3) & 3
+            if c
+            {
+                c = 4 - c
+                dst := result.pixels
+                src := dataof
+                dstW := cast(uint) result.width * result.bpp8
+                loop result.height
+                {
+                    memory.copy(dst, src, dstW)
+                    dst += dstW
+                    src += dstW + c
+                }
+            }
+            else
+            {
+                memory.copy(result.pixels, dataof, byteSize)
+            }
+
+        case 32:
             memory.copy(result.pixels, dataof, byteSize)
         }
 
