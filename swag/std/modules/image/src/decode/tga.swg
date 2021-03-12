@@ -111,10 +111,10 @@ public impl IDecoder for Decoder
         var result: retval
         switch header.bpp
         {
-        case 32:
-            result = create(cast(u32) header.width, cast(u32) header.height, PixelFormat.BGRA8)
         case 24:
             result = create(cast(u32) header.width, cast(u32) header.height, PixelFormat.BGR8)
+        case 32:
+            result = create(cast(u32) header.width, cast(u32) header.height, PixelFormat.BGRA8)
         default:
             throw "unsupported bit count"
         }
