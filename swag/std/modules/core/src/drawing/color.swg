@@ -203,13 +203,13 @@ impl Color
     }
 
     // Returns hue, saturation, lightness
-    func getHsl(using self) -> {h: f32, s: f32, l: f32}
+    func toHsl(using self) -> {h: f32, s: f32, l: f32}
     {
         var result: retval = ?
 
         (rf, gf, bf) := toRgbf()
-        max := math.max(math.max(rf, gf), bf)
-        min := math.min(math.max(rf, gf), bf)
+        max := math.max(rf, gf, bf)
+        min := math.min(rf, gf, bf)
         result.l = (max + min) * 0.5
         delta := max - min
         if delta == 0
@@ -244,7 +244,7 @@ impl Color
     }
 
     // Blend two colors, keeping the alpha channel of 'col0' untouched
-    func blendKeepAlpha(col0, col1: Color, factor: f32)->Color
+    func getBlendKeepAlpha(col0, col1: Color, factor: f32)->Color
     {
         var result: retval = ?
         result.a = col0.a
@@ -255,7 +255,7 @@ impl Color
     }
 
     // Blend two colors
-    func blend(col0, col1: Color, factor: f32)->Color
+    func getBlend(col0, col1: Color, factor: f32)->Color
     {
         var result: retval = ?
         result.a = cast(u8) math.lerp(cast(f32) col0.a, cast(f32) col1.a, factor)

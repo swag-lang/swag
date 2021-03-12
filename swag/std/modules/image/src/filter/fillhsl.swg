@@ -15,7 +15,7 @@ impl Image
     public func fillHsl(using self, fillType: FillHslType , color: Color = Argb.White)
     {
         debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
-        hsl := color.getHsl()
+        hsl := color.toHsl()
 
         #[swag.complete]
         switch fillType
