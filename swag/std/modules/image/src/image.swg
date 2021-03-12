@@ -5,14 +5,12 @@ struct Image
 {
     allocator:          IAllocator
     pixels:             *u8
-    workingBuffer:      *u8
+    workingBuffer:      *Image
     size:               uint
     width, height:      u32
-    wbWidth, wbHeight:  u32
     pf:                 PixelFormat = ?
     bpp:                u8  // Bits per pixel
     bpp8:               u8  // Bytes per pixel
-    wbBpp8:             u8
 }
 
 // Creates a new image surface
@@ -38,7 +36,7 @@ impl Image
     private func free(using self)
     {
         memory.free(pixels, size, allocator)
-        memory.free(workingBuffer, size, allocator)
+        memory.delete'Image(workingBuffer, allocator)
     }
 
     func opDrop(using self)
@@ -76,33 +74,27 @@ impl Image
     // Allocate a computing buffer with current image size
     func allocWorkingBuffer(using self)
     {
-        if workingBuffer && wbWidth == width && wbHeight == height && wbBpp8 == bpp8
-            return
-
-        freeWorkingBuffer()
-        workingBuffer = memory.alloc(size, allocator)
-        wbWidth = width
-        wbHeight = height
-        wbBpp8 = bpp8
+        allocWorkingBuffer(width, height, pf)
     }
 
     // Allocate a computing buffer with new sizes
-    func allocWorkingBuffer(using self, newWidth, newHeight: u32, newBpp8: u8)
+    func allocWorkingBuffer(using self, newWidth, newHeight: u32, newPf: PixelFormat)
     {
-        if workingBuffer && newWidth == wbWidth && newHeight == wbHeight && newBpp8 == wbBpp8
+        if  workingBuffer &&
+            newWidth == workingBuffer.width &&
+            newHeight == workingBuffer.height &&
+            newPf == workingBuffer.pf
             return
 
         freeWorkingBuffer()
-        wbWidth = newWidth
-        wbHeight = newHeight
-        wbBpp8 = newBpp8
-        workingBuffer = memory.alloc(cast(uint) wbWidth * wbHeight * wbBpp8, allocator)
+        workingBuffer = memory.new'Image(allocator)
+        :workingBuffer = image.create(newWidth, newHeight, newPf)
     }
 
     // Free the working buffer if allocated
     func freeWorkingBuffer(using self)
     {
-        memory.free(workingBuffer, cast(uint) wbWidth * wbHeight * wbBpp8)
+        memory.delete'Image(workingBuffer, allocator)
         workingBuffer = null
     }
 
@@ -110,11 +102,11 @@ impl Image
     func applyWorkingBuffer(using self)
     {
         debug.assert(workingBuffer != null)
-        swap(&pixels, &workingBuffer)
-        swap(&wbWidth, &width)
-        swap(&wbHeight, &height)
-        swap(&wbBpp8, &bpp8)
-        size = width * height * bpp8
+        swap(&pixels, &workingBuffer.pixels)
+        swap(&width, &workingBuffer.width)
+        swap(&height, &workingBuffer.height)
+        swap(&bpp8, &workingBuffer.bpp8)
+        swap(&size, &workingBuffer.size)
     }
 
     // Macro to visit all pixels of the image in parallel chunks

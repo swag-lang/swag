@@ -135,11 +135,12 @@ public impl IDecoder for Decoder
                 dst := result.pixels
                 src := dataof
                 dstW := cast(uint) result.width * result.bpp8
+                srcW := dstW + c
                 loop result.height
                 {
                     memory.copy(dst, src, dstW)
                     dst += dstW
-                    src += dstW + c
+                    src += srcW
                 }
             }
             else

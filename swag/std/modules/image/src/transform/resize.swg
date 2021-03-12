@@ -7,11 +7,11 @@ impl Image
         Raw
     }
 
-    private func resizeRaw(using self)
+    private func resizeRaw(using self, srcImage: *Image)
     {
-        xscale := wbWidth / cast(f32) width
-        yscale := wbHeight / cast(f32) height
-        f := @{xscale, yscale}
+        xscale := srcImage.width / cast(f32) width
+        yscale := srcImage.height / cast(f32) height
+        f := @{xscale, yscale, srcImage}
 
         #[swag.mixin]
         func(BPP: u8) doIt()
@@ -21,7 +21,7 @@ impl Image
                 params := cast(*@typeof(f)) userData
                 fx := cast(u32) (x * params.xscale)
                 fy := cast(u32) (y * params.yscale)
-                pixSrc := image.workingBuffer + (fx * image.bpp8) + (fy * image.wbWidth * image.bpp8)
+                pixSrc := params.srcImage.pixels + (fx * image.bpp8) + (fy * params.srcImage.width * image.bpp8)
                 copyPixel'BPP(pix, pixSrc)
             }
         }
@@ -40,13 +40,14 @@ impl Image
         debug.assert(newWidth > 0 && newHeight > 0)
         if newWidth == width && newHeight == height return
 
-        allocWorkingBuffer(newWidth, newHeight, bpp8)
-        applyWorkingBuffer()
+        allocWorkingBuffer(newWidth, newHeight, pf)
 
         #[swag.complete]
         switch method
         {
-        case Raw: resizeRaw()
+        case Raw: workingBuffer.resizeRaw(self)
         }
+
+        applyWorkingBuffer()
     }
 }
