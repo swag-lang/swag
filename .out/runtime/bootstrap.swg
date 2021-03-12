@@ -52,6 +52,12 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr property()
 
+    #[attributeUsage(AttributeUsage.Function)]
+    attr noreturn()
+
+    #[attributeUsage(AttributeUsage.Function)]
+    attr foreign(module: string, function: string = "");
+
     // Hardcoded for type alias
     attr strict()
 
@@ -60,12 +66,6 @@ namespace swag
 
     // Hardcoded for struct and variables
     attr align(value: u8)
-
-    #[attributeUsage(AttributeUsage.Function)]
-    attr noreturn()
-
-    #[attributeUsage(AttributeUsage.Function)]
-    attr foreign(module: string, function: string = "");
 
     #[attributeUsage(AttributeUsage.Struct)]
     attr pack(value: u8)
