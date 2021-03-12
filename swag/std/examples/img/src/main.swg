@@ -62,6 +62,9 @@ func loadImg() throw
     var t: time.Stopwatch
     t.start()
 
+    //nn := myImage.getFlip()
+    //myImage = nn
+
     switch effectIdx
     {
     case 0: myImage.halfSize()
