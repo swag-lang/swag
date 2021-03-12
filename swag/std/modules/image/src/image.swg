@@ -94,17 +94,18 @@ impl Image
     // Free the working buffer if allocated
     func freeWorkingBuffer(using self)
     {
-        memory.delete'Image(workingBuffer, allocator)
+        memory.delete(workingBuffer, allocator)
         workingBuffer = null
     }
 
-    // Replace the pixel buffer with the working buffer
+    // Replace the current image content with the working buffer
     func applyWorkingBuffer(using self)
     {
         debug.assert(workingBuffer != null)
         swap(&pixels, &workingBuffer.pixels)
         swap(&width, &workingBuffer.width)
         swap(&height, &workingBuffer.height)
+        swap(&bpp, &workingBuffer.bpp)
         swap(&bpp8, &workingBuffer.bpp8)
         swap(&size, &workingBuffer.size)
     }

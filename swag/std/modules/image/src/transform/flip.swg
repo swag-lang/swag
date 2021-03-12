@@ -2,11 +2,8 @@ using core
 
 impl Image
 {
-    // Flip image vertically
-    public func flipTo(using self, dstImage: *Image)
+    private func flipTo(using self, dstImage: *Image)
     {
-        debug.assert(pixels != null)
-
         f := dstImage
         visitPixels(f, stride: width)
         {

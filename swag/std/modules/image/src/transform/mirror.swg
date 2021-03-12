@@ -2,9 +2,8 @@ using core
 
 impl Image
 {
-    public func mirrorTo(using self, dstImage: *Image)
+    private func mirrorTo(using self, dstImage: *Image)
     {
-        debug.assert(pixels != null)
         f := dstImage
 
         #[swag.mixin]
@@ -27,6 +26,7 @@ impl Image
         }
     }
 
+    // Flip image horizontally
     public func mirror(using self)
     {
         debug.assert(pixels != null)

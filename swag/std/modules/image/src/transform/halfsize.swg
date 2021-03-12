@@ -2,11 +2,8 @@ using core
 
 impl Image
 {
-    // Resize image
-    public func halfSizeTo(using self, dstImage: *Image)
+    private func halfSizeTo(using self, dstImage: *Image)
     {
-        debug.assert(width > 1 && height > 1)
-
         f := self
         dstImage.visitPixels(f)
         {
@@ -23,6 +20,7 @@ impl Image
         }
     }
 
+    // Divide image size by 2
     public func halfSize(using self)
     {
         debug.assert(width > 1 && height > 1)

@@ -34,10 +34,8 @@ impl Image
         }
     }
 
-    public func resizeTo(using self, dstImage: *Image, newWidth, newHeight: u32, method = ResizeMethod.Raw)
+    private func resizeTo(using self, dstImage: *Image, newWidth, newHeight: u32, method: ResizeMethod)
     {
-        debug.assert(newWidth > 0 && newHeight > 0)
-
         #[swag.complete]
         switch method
         {
@@ -45,6 +43,7 @@ impl Image
         }
     }
 
+    // Resize image
     public func resize(using self, newWidth, newHeight: u32, method = ResizeMethod.Raw)
     {
         debug.assert(newWidth > 0 && newHeight > 0)
