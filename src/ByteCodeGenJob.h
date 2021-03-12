@@ -82,24 +82,6 @@ struct ByteCodeGenContext : public JobContext
     }
 };
 
-struct PushNoLocation
-{
-    PushNoLocation(ByteCodeGenContext* bc)
-    {
-        savedBc        = bc;
-        saveNl         = bc->noLocation;
-        bc->noLocation = true;
-    }
-
-    ~PushNoLocation()
-    {
-        savedBc->noLocation = saveNl;
-    }
-
-    ByteCodeGenContext* savedBc;
-    bool                saveNl;
-};
-
 struct PushLocation
 {
     PushLocation(ByteCodeGenContext* bc, SourceLocation* loc)
