@@ -396,6 +396,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
 
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == "opAffect", context->report({funcNode, funcNode->token, format("function '%s' cannot have the 'swag.complete' attribute, this is reserved for 'opAffect'", funcNode->token.text.c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == "opAffect", context->report({funcNode, funcNode->token, format("function '%s' cannot have the 'swag.implicit' attribute, this is reserved for 'opAffect'", funcNode->token.text.c_str())}));
+
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
