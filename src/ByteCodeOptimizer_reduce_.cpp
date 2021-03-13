@@ -11,6 +11,58 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::DebugNop && ip->location == ip[1].location)
             setNop(context, ip);
 
+        // Reduce SetZeroStack
+        if (ip->op == ByteCodeOp::SetZeroStack8 &&
+            ip[1].op == ByteCodeOp::SetZeroStack8 &&
+            ip->a.u32 + sizeof(uint8_t) == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip->op = ByteCodeOp::SetZeroStack16;
+            setNop(context, ip + 1);
+        }
+
+        if (ip->op == ByteCodeOp::SetZeroStack16 &&
+            ip[1].op == ByteCodeOp::SetZeroStack16 &&
+            ip->a.u32 + sizeof(uint16_t) == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip->op = ByteCodeOp::SetZeroStack32;
+            setNop(context, ip + 1);
+        }
+
+        if (ip->op == ByteCodeOp::SetZeroStack32 &&
+            ip[1].op == ByteCodeOp::SetZeroStack32 &&
+            ip->a.u32 + sizeof(uint32_t) == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip->op = ByteCodeOp::SetZeroStack64;
+            setNop(context, ip + 1);
+        }
+
+        if (ip->op == ByteCodeOp::SetZeroStack64 &&
+            ip[1].op == ByteCodeOp::SetZeroStack64 &&
+            ip->a.u32 + sizeof(uint64_t) == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip->op    = ByteCodeOp::SetZeroStackX;
+            ip->b.u32 = 2 * sizeof(uint64_t);
+            setNop(context, ip + 1);
+        }
+
+        if (ip->op == ByteCodeOp::SetZeroStackX &&
+            ip[1].op == ByteCodeOp::SetZeroStackX &&
+            ip->a.u32 + ip->b.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip->b.u32 += ip[1].b.u32;
+            setNop(context, ip + 1);
+        }
+
         // Compare to 0
         if (ip->op == ByteCodeOp::CompareOpEqual8 && ip->b.u8 == 0 && ip->flags & BCI_IMM_B)
         {
@@ -346,8 +398,8 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
     }
 }
 
-// Reduce some instructions, but with can change debug lines, so do not do
-// it if buildCfg.byteCodeDebug is true
+// Reduce instructions that can change debug lines, so do not do it 
+// if buildCfg.byteCodeDebug is true
 void ByteCodeOptimizer::optimizePassReduce2(ByteCodeOptContext* context)
 {
     if (context->bc->sourceFile->module->buildCfg.byteCodeDebug)
