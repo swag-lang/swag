@@ -195,8 +195,13 @@ func vertScale(imgDst, imgSrc: *Image, rmode: Image.ResizeMethod)
     sh := cast(int) imgSrc.height
     dh := cast(int) imgDst.height
     contrib := calcContributions(dh, sh, cast(f64) dh / sh, rmode)
-    loop i: imgDst.width
-        scaleCol(imgDst, imgSrc, cast(int) i, contrib)
+
+    f := @{imgDst, imgSrc, contrib: &contrib}
+    jobs.parallelFor(imgDst.width, &f)
+    {
+        params := cast(*@typeof(f)) data
+        scaleCol(params.imgDst, params.imgSrc, cast(int) index, :params.contrib)
+    }
 }
 
 func horizScale(imgDst, imgSrc: *Image, rmode: Image.ResizeMethod)
@@ -204,8 +209,13 @@ func horizScale(imgDst, imgSrc: *Image, rmode: Image.ResizeMethod)
     sw := cast(int) imgSrc.width
     dw := cast(int) imgDst.width
     contrib := calcContributions(dw, sw, cast(f64) dw / sw, rmode)
-    loop i: imgDst.height
-        scaleRow(imgDst, imgSrc, cast(int) i, contrib)
+
+    f := @{imgDst, imgSrc, contrib: &contrib}
+    jobs.parallelFor(imgDst.height, &f)
+    {
+        params := cast(*@typeof(f)) data
+        scaleRow(params.imgDst, params.imgSrc, cast(int) index, :params.contrib)
+    }
 }
 
 impl Image

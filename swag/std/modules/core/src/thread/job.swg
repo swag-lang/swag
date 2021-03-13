@@ -30,8 +30,8 @@ public struct(T) SliceJob
 public struct ForJob
 {
     using base: Job
-    indexStart: u32
-    indexEnd:   u32
+    startIndex: u32
+    endIndex:   u32
     userData:   *void
 }
 
@@ -298,7 +298,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
     var sliceJobs: Array'ForJob
     sliceJobs.resize(cast(uint) numWorkers)
 
-    startIndex := 0
+    startIndex := 0'u32
     visit *j: sliceJobs
     {
         sizeSlice := @index == sliceJobs.count - 1 ? lastSplitSize : splitSize
