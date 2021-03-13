@@ -231,8 +231,8 @@ void TypeManager::setup()
     promoteMatrix[(int) NativeTypeKind::Int][(int) NativeTypeKind::S32]  = typeInfoInt;
     promoteMatrix[(int) NativeTypeKind::Int][(int) NativeTypeKind::S64]  = typeInfoInt;
     promoteMatrix[(int) NativeTypeKind::Int][(int) NativeTypeKind::Int]  = typeInfoInt;
-    promoteMatrix[(int) NativeTypeKind::Int][(int) NativeTypeKind::F32]  = typeInfoInt;
-    promoteMatrix[(int) NativeTypeKind::Int][(int) NativeTypeKind::F64]  = typeInfoInt;
+    promoteMatrix[(int) NativeTypeKind::Int][(int) NativeTypeKind::F32]  = typeInfoF64;
+    promoteMatrix[(int) NativeTypeKind::Int][(int) NativeTypeKind::F64]  = typeInfoF64;
 
     promoteMatrix[(int) NativeTypeKind::F32][(int) NativeTypeKind::U8]   = typeInfoF32;
     promoteMatrix[(int) NativeTypeKind::F32][(int) NativeTypeKind::U16]  = typeInfoF32;
