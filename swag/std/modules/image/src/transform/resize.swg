@@ -165,6 +165,7 @@ private
         return res
     }
 
+    #[swag.safety("", false)]
     func scaleRow(imgDst, imgSrc: *Image, row: int, contrib: LineContrib)
     {
         bpp8   := imgDst.bpp8
@@ -174,19 +175,22 @@ private
         #[swag.mixin]
         func(BPP: u8) doIt()
         {
+            crow0 := contrib.row.buffer
             loop x: imgDst.width
             {
-                left  := contrib.row[x].left
-                right := contrib.row[x].right
+                crow  := crow0 + x
+                left  := crow.left
+                right := crow.right
 
                 var da, dr, dg, db: f64
-                pw := contrib.row[x].weights.buffer
+                pw := crow.weights.buffer
                 for i := left; i <= right; { i += 1; pw += 1; }
                 {
+                    f := :pw
                     ptr := srcRow + i * bpp8
-                    db += :pw * ptr[0];
-                    dg += :pw * ptr[1];
-                    dr += :pw * ptr[2];
+                    db += f * ptr[0];
+                    dg += f * ptr[1];
+                    dr += f * ptr[2];
                     #if BPP == 32 da += :pw * ptr[3];
                 }
 
@@ -206,7 +210,7 @@ private
         }
     }
 
-    #[swag.printbc, swag.safety("", false)]
+    #[swag.safety("", false)]
     func scaleCol(imgDst, imgSrc: *Image, col: int, contrib: LineContrib)
     {
         bpp8   := imgDst.bpp8
@@ -218,19 +222,22 @@ private
         #[swag.mixin]
         func(BPP: u8) doIt()
         {
+            crow0 := contrib.row.buffer
             loop y: imgDst.height
             {
-                left  := contrib.row[y].left
-                right := contrib.row[y].right
+                crow  := crow0 + y
+                left  := crow.left
+                right := crow.right
 
                 var da, dr, dg, db: f64
-                pw := contrib.row[y].weights.buffer
+                pw := crow.weights.buffer
                 for i := left; i <= right; { i += 1; pw += 1; }
                 {
+                    f := :pw
                     ptr := srcCol + i * w8Src
-                    db += :pw * ptr[0]
-                    dg += :pw * ptr[1]
-                    dr += :pw * ptr[2]
+                    db += f * ptr[0]
+                    dg += f * ptr[1]
+                    dr += f * ptr[2]
                     #if BPP == 32 da += :pw * ptr[3]
                 }
 
