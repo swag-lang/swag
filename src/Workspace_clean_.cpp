@@ -7,21 +7,24 @@ void Workspace::cleanFolderContent(const fs::path& path)
     if (g_CommandLine.cleanLog)
         return;
 
-    OS::visitFiles(path.string().c_str(), [&](const char* cFileName) {
+    OS::visitFilesFolders(path.string().c_str(), [&](uint64_t, const char* cFileName, bool) {
         auto folder = path.string() + "/";
         folder += cFileName;
-        try
+
+        std::error_code err;
+        if (fs::remove_all(folder, err) == -1)
         {
-            fs::remove_all(folder);
-        }
-        catch (...)
-        {
-            g_Log.error(format("fatal error: cannot delete file '%s'", folder.c_str()));
+            g_Log.error(format("fatal error: cannot delete file '%s' (%s)", folder.c_str(), OS::getLastErrorAsString().c_str()));
             exit(-1);
         }
     });
 
-    fs::remove_all(path);
+    std::error_code err;
+    if (fs::remove_all(path, err) == -1)
+    {
+        g_Log.error(format("fatal error: cannot delete folder '%s' (%s)", path.string().c_str(), OS::getLastErrorAsString().c_str()));
+        exit(-1);
+    }
 }
 
 void Workspace::cleanPublic(const fs::path& basePath)
