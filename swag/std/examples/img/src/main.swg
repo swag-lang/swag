@@ -66,10 +66,8 @@ func loadImg() throw
     var t: time.Stopwatch
     t.start()
 
-    nn := myImage.toResize(myImage.width, myImage.height)
-    myImage = nn
-
-    switch effectIdx
+    myImage.resize(1024, 1024, Image.ResizeMethod.Bilinear)
+    /*switch effectIdx
     {
     case 1:  myImage.halfSize()
     case 2:  myImage.resize(1024, 1024)
@@ -83,7 +81,7 @@ func loadImg() throw
     case 10: myImage.fillGradient4(Argb.Green, Argb.Red, Argb.Blue, Argb.Yellow)
     case 11: myImage.fill(Argb.Cyan)
     default: effectIdx = 0
-    }
+    }*/
 
     t.stop()
     elapsed := t.elapsedMilliseconds()

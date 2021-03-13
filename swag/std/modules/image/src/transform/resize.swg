@@ -117,10 +117,7 @@ func calcContributions(lineSize, srcSize: int, _scale: f64, rmode: Image.ResizeM
         {
             for src := left; src <= right; src += 1
             {
-                ptr := res.row.buffer + u
-                //w := ptr.weights.buffer + (src - left)
-                //:w /= totalWeight
-                ptr.weights[src - left] /= totalWeight
+                res.row[u].weights[src - left] /= totalWeight
             }
         }
 
@@ -131,12 +128,101 @@ func calcContributions(lineSize, srcSize: int, _scale: f64, rmode: Image.ResizeM
     return res
 }
 
+func scaleRow(imgDst, imgSrc: *Image, row: int, contrib: LineContrib)
+{
+    bpp8   := imgDst.bpp8
+    dstRow := imgDst.pixels + row * bpp8 * imgDst.width
+    srcRow := imgSrc.pixels + row * bpp8 * imgSrc.width
+
+    loop x: imgDst.width
+    {
+        left  := contrib.row[x].left
+        right := contrib.row[x].right
+
+        var da, dr, dg, db: f64
+        pw := contrib.row[x].weights.buffer
+        for i := left; i <= right; { i += 1; pw += 1; }
+        {
+            ptr := srcRow + i * bpp8
+            db += :pw * ptr[0];
+            dg += :pw * ptr[1];
+            dr += :pw * ptr[2];
+            da += :pw * ptr[3];
+        }
+
+        dstRow[0] = cast(u8) db
+        dstRow[1] = cast(u8) dg
+        dstRow[2] = cast(u8) dr
+        dstRow[3] = cast(u8) da
+        dstRow += bpp8
+        srcRow += bpp8
+    }
+}
+
+func scaleCol(imgDst, imgSrc: *Image, col: int, contrib: LineContrib)
+{
+    bpp8   := imgDst.bpp8
+    dstCol := imgDst.pixels + col * bpp8
+    srcCol := imgSrc.pixels + col * bpp8
+    w8Dst  := imgDst.width * bpp8
+    w8Src  := imgSrc.width * bpp8
+
+    loop y: imgDst.height
+    {
+        left  := contrib.row[y].left
+        right := contrib.row[y].right
+
+        var da, dr, dg, db: f64
+        pw := contrib.row[y].weights.buffer
+        for i := left; i <= right; { i += 1; pw += 1; }
+        {
+            ptr := srcCol + i * w8Src
+            db += :pw * ptr[0]
+            dg += :pw * ptr[1]
+            dr += :pw * ptr[2]
+            da += :pw * ptr[3]
+        }
+
+        dstCol[0] = cast(u8) db
+        dstCol[1] = cast(u8) dg
+        dstCol[2] = cast(u8) dr
+        dstCol[3] = cast(u8) da
+        dstCol += w8Dst
+        srcCol += w8Src
+    }
+}
+
+func vertScale(imgDst, imgSrc: *Image, rmode: Image.ResizeMethod)
+{
+    sh := cast(int) imgSrc.height
+    dh := cast(int) imgDst.height
+    contrib := calcContributions(dh, sh, cast(f64) dh / sh, rmode)
+    loop i: imgDst.width
+        scaleCol(imgDst, imgSrc, cast(int) i, contrib)
+}
+
+func horizScale(imgDst, imgSrc: *Image, rmode: Image.ResizeMethod)
+{
+    sw := cast(int) imgSrc.width
+    dw := cast(int) imgDst.width
+    contrib := calcContributions(dw, sw, cast(f64) dw / sw, rmode)
+    loop i: imgDst.height
+        scaleRow(imgDst, imgSrc, cast(int) i, contrib)
+}
+
 impl Image
 {
     public enum ResizeMethod
     {
         Raw
         Bilinear
+    }
+
+    private func doResizeSlow(using self, dstImage: *Image, method: ResizeMethod)
+    {
+        tmp := image.create(dstImage.width, height, pf)
+        horizScale(&tmp, self, method)
+        vertScale(dstImage, &tmp, method)
     }
 
     private func doResizeRaw(using self, dstImage: *Image)
@@ -170,7 +256,8 @@ impl Image
     {
         switch method
         {
-        case Raw: doResizeRaw(dstImage)
+        case Raw:   doResizeRaw(dstImage)
+        default:    doResizeSlow(dstImage, method)
         }
     }
 

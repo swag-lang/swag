@@ -249,6 +249,35 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     return newJob;
 }
 
+void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch& match)
+{
+    for (auto it : match.genericReplaceTypes)
+    {
+        auto typeInfo = it.second;
+        auto declNode = typeInfo->declNode;
+        if (!declNode)
+            continue;
+        if (!declNode->resolvedSymbolOverload)
+            continue;
+        if (declNode->resolvedSymbolOverload->symbol == match.symbolName)
+            continue;
+        if (typeInfo->kind == TypeInfoKind::Struct)
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+            if (typeStruct->fromGeneric)
+                continue;
+        }
+
+        scoped_lock lk(declNode->resolvedSymbolOverload->symbol->mutex);
+        if (declNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
+        {
+            printf("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx %s\n", typeInfo->name.c_str());
+            context->job->waitForSymbolNoLock(declNode->resolvedSymbolOverload->symbol);
+            return;
+        }
+    }
+}
+
 bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     auto node = context->node;

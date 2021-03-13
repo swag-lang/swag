@@ -12,6 +12,7 @@ struct Generic
     static Job*      end(SemanticContext* context, Job* dependentJob, SymbolName* symbol, AstNode* newNode, bool waitSymbol);
     static TypeInfo* doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeInfo* typeInfo);
 
+    static void waitForGenericParameters(SemanticContext* context, OneGenericMatch& match);
     static void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** funcNode);
     static bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match);
     static bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool selectIf = false);

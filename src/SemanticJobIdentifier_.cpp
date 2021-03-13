@@ -1615,18 +1615,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
         for (auto& g : genericMatchesSI)
         {
-            // Be sure number of overloads has not changed since then
-            if (g->numOverloadsWhenChecked != g->symbolName->overloads.size())
-            {
-                context->result = ContextResult::NewChilds;
+            checkCaninstantiateGenericSymbol(context, *g);
+            if (context->result != ContextResult::Done)
                 break;
-            }
-
-            if (g->numOverloadsInitWhenChecked != g->symbolName->cptOverloadsInit)
-            {
-                context->result = ContextResult::NewChilds;
-                break;
-            }
         }
 
         if (context->result == ContextResult::Done)
@@ -1755,6 +1746,29 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     return true;
 }
 
+void SemanticJob::checkCaninstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch)
+{
+    auto symbol = firstMatch.symbolName;
+
+    // Be sure number of overloads has not changed since then
+    if (firstMatch.numOverloadsWhenChecked != symbol->overloads.size())
+    {
+        context->result = ContextResult::NewChilds;
+        return;
+    }
+
+    if (firstMatch.numOverloadsInitWhenChecked != symbol->cptOverloadsInit)
+    {
+        context->result = ContextResult::NewChilds;
+        return;
+    }
+
+    // Cannot instantiate if the type is incomplete
+    Generic::waitForGenericParameters(context, firstMatch);
+    if (context->result != ContextResult::Done)
+        return;
+}
+
 bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct)
 {
     auto        job               = context->job;
@@ -1769,18 +1783,9 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
     if (node->ownerFct && node->ownerFct->flags & AST_IS_GENERIC)
         return true;
 
-    // Be sure number of overloads has not changed since then
-    if (firstMatch.numOverloadsWhenChecked != symbol->overloads.size())
-    {
-        context->result = ContextResult::NewChilds;
+    checkCaninstantiateGenericSymbol(context, firstMatch);
+    if (context->result != ContextResult::Done)
         return true;
-    }
-
-    if (firstMatch.numOverloadsInitWhenChecked != symbol->cptOverloadsInit)
-    {
-        context->result = ContextResult::NewChilds;
-        return true;
-    }
 
     if (forStruct)
     {
