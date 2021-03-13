@@ -1,15 +1,15 @@
 using core
 
-impl Image
+public impl Image
 {
-    public enum ResizeMethod
+    enum ResizeMethod
     {
         Raw
         Bilinear
     }
 
     // Resize image
-    public func resize(using self, newWidth, newHeight: u32, method = ResizeMethod.Raw)
+    func resize(using self, newWidth, newHeight: u32, method = ResizeMethod.Raw)
     {
         debug.assert(newWidth > 0 && newHeight > 0)
         if newWidth == width && newHeight == height return
@@ -19,7 +19,7 @@ impl Image
     }
 
     // Resize image
-    public func toResize(using self, newWidth, newHeight: u32, method = ResizeMethod.Raw)->Image
+    func toResize(using self, newWidth, newHeight: u32, method = ResizeMethod.Raw)->Image
     {
         debug.assert(newWidth > 0 && newHeight > 0)
 
@@ -35,7 +35,7 @@ impl Image
     }
 }
 
-//private
+private
 {
     struct Contribution
     {

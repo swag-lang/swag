@@ -114,15 +114,13 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
         typeExpression->literalType = childType;
         break;
     case TypeInfoKind::Enum:
-        childType->computeScopedName();
-        typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->scopedName, typeExpression);
+        typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
         parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
         break;
     case TypeInfoKind::Struct:
     case TypeInfoKind::TypeSet:
     case TypeInfoKind::Interface:
-        childType->computeScopedName();
-        typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->scopedName, typeExpression);
+        typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
         break;
     case TypeInfoKind::TypeListTuple:
     {
@@ -149,7 +147,8 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
     auto contentNode = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
     contentNode->allocateExtension();
     contentNode->extension->semanticBeforeFct = SemanticJob::preResolveStructContent;
-    structNode->content                       = contentNode;
+    contentNode->extension->alternativeScopes.push_back(assignment->ownerScope);
+    structNode->content = contentNode;
 
     auto typeList = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);
     Utf8 varName;
@@ -165,7 +164,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
             varName = typeParam->namedParam;
         else if (subAffect->kind == AstNodeKind::IdentifierRef && subAffect->childs.back()->kind == AstNodeKind::Identifier)
         {
-            varName = subAffect->childs.back()->token.text;
+            varName               = subAffect->childs.back()->token.text;
             typeParam->namedParam = varName;
         }
         else
