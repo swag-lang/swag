@@ -277,7 +277,7 @@ impl Image
         }
     }
 
-    func doResizeSlow(srcImage, dstImage: *Image, method: Image.ResizeMethod)
+    func doResizeFilter(srcImage, dstImage: *Image, method: Image.ResizeMethod)
     {
         tmp := image.create(dstImage.width, srcImage.height, srcImage.pf)
         horizScale(&tmp, srcImage, method)
@@ -316,7 +316,7 @@ impl Image
         switch method
         {
         case Raw:   doResizeRaw(srcImage, dstImage)
-        default:    doResizeSlow(srcImage, dstImage, method)
+        default:    doResizeFilter(srcImage, dstImage, method)
         }
     }
 }
