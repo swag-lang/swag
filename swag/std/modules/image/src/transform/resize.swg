@@ -69,7 +69,7 @@ func calcContributions(lineSize, srcSize: int, _scale: f64, rmode: Image.ResizeM
 
     loop u: lineSize
     {
-        center := cast(f64) u / scale
+        center := u / scale
 
         left  := math.max(cast(int) math.floor(center - width), 0)
         right := math.min(cast(int) math.ceil(center + width), srcSize - 1)
@@ -88,7 +88,7 @@ func calcContributions(lineSize, srcSize: int, _scale: f64, rmode: Image.ResizeM
         totalWeight  := 0'f64
         for src := left; src <= right; src += 1
         {
-            resf := getFilter(scale * (cast(f64) src - center), rmode)
+            resf := getFilter(scale * (src - center), rmode)
             if (resf > 0)
                 resf *= scale
             else
@@ -103,11 +103,8 @@ func calcContributions(lineSize, srcSize: int, _scale: f64, rmode: Image.ResizeM
                 }
 
                 // We are on the right side, trim right
-                else
-                {
-                    right = src - 1
-                    break
-                }
+                right = src - 1
+                break
             }
 
             nonZeroFound = true
