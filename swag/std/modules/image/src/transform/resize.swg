@@ -152,10 +152,8 @@ private
             // Normalize weight of neighboring points
             if totalWeight != 0
             {
-                for src := left; src <= right; src += 1
-                {
-                    res.row[u].weights[src - left] /= totalWeight
-                }
+                loop src: (right - left) + 1
+                    res.row[u].weights[src] /= totalWeight
             }
 
             res.row[u].left  = left
@@ -166,7 +164,7 @@ private
     }
 
     #[swag.safety("", false)]
-    func scaleRow(imgDst, imgSrc: *Image, row: int, contrib: LineContrib)
+    func scaleRow(imgDst, imgSrc: *Image, row: int, contrib: *LineContrib)
     {
         bpp8   := imgDst.bpp8
         dstRow := imgDst.pixels + row * bpp8 * imgDst.width
@@ -213,7 +211,7 @@ private
     }
 
     #[swag.safety("", false)]
-    func scaleCol(imgDst, imgSrc: *Image, col: int, contrib: LineContrib)
+    func scaleCol(imgDst, imgSrc: *Image, col: int, contrib: *LineContrib)
     {
         bpp8   := imgDst.bpp8
         dstCol := imgDst.pixels + col * bpp8
@@ -271,7 +269,7 @@ private
         jobs.parallelFor(imgDst.width, &f)
         {
             params := cast(*@typeof(f)) data
-            scaleCol(params.imgDst, params.imgSrc, cast(int) index, :params.contrib)
+            scaleCol(params.imgDst, params.imgSrc, cast(int) index, params.contrib)
         }
     }
 
@@ -285,7 +283,7 @@ private
         jobs.parallelFor(imgDst.height, &f)
         {
             params := cast(*@typeof(f)) data
-            scaleRow(params.imgDst, params.imgSrc, cast(int) index, :params.contrib)
+            scaleRow(params.imgDst, params.imgSrc, cast(int) index, params.contrib)
         }
     }
 

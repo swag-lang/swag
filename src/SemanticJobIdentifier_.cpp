@@ -2191,8 +2191,14 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
     {
         if (identifierRef->startScope)
         {
-            if (identifierRef->typeInfo && identifierRef->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-                return context->report({node, node->token, format("field name '%s' cannot be found in tuple", node->token.text.c_str())});
+            auto typeRef = TypeManager::concreteReference(identifierRef->typeInfo);
+            if (typeRef)
+            {
+                if (typeRef->kind == TypeInfoKind::Pointer)
+                    typeRef = ((TypeInfoPointer*) typeRef)->pointedType;
+                if (typeRef->flags & TYPEINFO_STRUCT_IS_TUPLE)
+                    return context->report({node, node->token, format("field name '%s' cannot be found in tuple", node->token.text.c_str())});
+            }
 
             auto displayName = identifierRef->startScope->getFullName();
             if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
