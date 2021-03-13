@@ -46,20 +46,20 @@ func getFilter(resf: f64, rmode: Image.ResizeMethod)->f64
     return 0
 }
 
-func calcContributions(lineSize, srcSize: int, _scale: f64, rmode: Image.ResizeMethod)->LineContrib
+func calcContributions(lineSize, srcSize: int, scale: f64, rmode: Image.ResizeMethod)->LineContrib
 {
     filterWidth := getFilterWidth(rmode)
 
-    var scale, width: f64 = ?
-    if _scale < 1.0
+    var cscale, width: f64 = ?
+    if scale < 1.0
     {
-        width = filterWidth / _scale
-        scale = _scale
+        width = filterWidth / scale
+        cscale = scale
     }
     else
     {
         width = filterWidth
-        scale = 1.0
+        cscale = 1.0
     }
 
     windowSize := 2 * (cast(int) math.ceil(width) + 1)
@@ -88,9 +88,9 @@ func calcContributions(lineSize, srcSize: int, _scale: f64, rmode: Image.ResizeM
         totalWeight  := 0'f64
         for src := left; src <= right; src += 1
         {
-            resf := getFilter(scale * (src - center), rmode)
+            resf := getFilter(cscale * (src - center), rmode)
             if (resf > 0)
-                resf *= scale
+                resf *= cscale
             else
             {
                 resf = 0
@@ -155,7 +155,6 @@ func scaleRow(imgDst, imgSrc: *Image, row: int, contrib: LineContrib)
         dstRow[2] = cast(u8) dr
         dstRow[3] = cast(u8) da
         dstRow += bpp8
-        srcRow += bpp8
     }
 }
 
@@ -188,7 +187,6 @@ func scaleCol(imgDst, imgSrc: *Image, col: int, contrib: LineContrib)
         dstCol[2] = cast(u8) dr
         dstCol[3] = cast(u8) da
         dstCol += w8Dst
-        srcCol += w8Src
     }
 }
 

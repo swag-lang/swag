@@ -48,11 +48,11 @@ func loadImg() throw
 {
     using image.Image, Color
 
-    imgName := "bmp_24.bmp"
+    imgName := "bmp_32.bmp"
     switch imageIdx
     {
     case 0: break
-    case 1: imgName = "bmp_32.bmp"
+    case 1: imgName = "bmp_24.bmp"
     case 2: imgName = "tga_24.tga"
     case 3: imgName = "tga_32.tga"
     case 4: imgName = "tga_rle24.tga"
