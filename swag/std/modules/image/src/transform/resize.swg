@@ -183,15 +183,15 @@ private
                 right := crow.right
 
                 var da, dr, dg, db: f64
-                pw := crow.weights.buffer
-                for i := left; i <= right; { i += 1; pw += 1; }
+                pw  := crow.weights.buffer
+                ptr := srcRow + left * bpp8
+                for i := left; i <= right; { i += 1; pw += 1; ptr += bpp8; }
                 {
                     f := :pw
-                    ptr := srcRow + i * bpp8
-                    db += f * ptr[0];
-                    dg += f * ptr[1];
-                    dr += f * ptr[2];
-                    #if BPP == 32 da += :pw * ptr[3];
+                    db += f * ptr[0]
+                    dg += f * ptr[1]
+                    dr += f * ptr[2]
+                    #if BPP == 32 da += f * ptr[3]
                 }
 
                 dstRow[0] = cast(u8) db
@@ -230,15 +230,15 @@ private
                 right := crow.right
 
                 var da, dr, dg, db: f64
-                pw := crow.weights.buffer
-                for i := left; i <= right; { i += 1; pw += 1; }
+                pw  := crow.weights.buffer
+                ptr := srcCol + left * w8Src
+                for i := left; i <= right; { i += 1; pw += 1; ptr += w8Src; }
                 {
                     f := :pw
-                    ptr := srcCol + i * w8Src
                     db += f * ptr[0]
                     dg += f * ptr[1]
                     dr += f * ptr[2]
-                    #if BPP == 32 da += :pw * ptr[3]
+                    #if BPP == 32 da += f * ptr[3]
                 }
 
                 dstCol[0] = cast(u8) db
