@@ -75,6 +75,12 @@ impl Array
         buffer[index] = value
     }
 
+    func(op: string) opIndexAssign(using self, index: uint, value: T)
+    {
+        debug.assert(index < count, "index out of range")
+        #ast "buffer[index] " ~op~ " value"
+    }
+
     // Initializes an Array that contains values copied from the specified array
     func opAffect(using self, arr: const [..] T)
         #selectif reflection.canCopy(@typeof(T))

@@ -118,8 +118,9 @@ func calcContributions(lineSize, srcSize: int, _scale: f64, rmode: Image.ResizeM
             for src := left; src <= right; src += 1
             {
                 ptr := res.row.buffer + u
-                w := ptr.weights.buffer + (src - left)
-                :w /= totalWeight
+                //w := ptr.weights.buffer + (src - left)
+                //:w /= totalWeight
+                ptr.weights[src - left] /= totalWeight
             }
         }
 

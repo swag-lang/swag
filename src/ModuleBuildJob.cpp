@@ -39,13 +39,18 @@ bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
     if (fs::exists(publicPath))
     {
         OS::visitFiles(publicPath.c_str(), [&](const char* filename) {
-            auto file  = g_Allocator.alloc<SourceFile>();
-            file->name = filename;
-            file->path = publicPath + "/";
-            file->path += filename;
-            file->imported       = depModule;
-            file->forceNamespace = dep->forceNamespace;
-            files.push_back(file);
+            auto pz = strrchr(filename, '.');
+            if (pz && !_strcmpi(pz, ".swg"))
+            {
+                auto file  = g_Allocator.alloc<SourceFile>();
+                file->name = filename;
+                file->path = publicPath + "/";
+                file->path += filename;
+                file->path           = normalizePath(file->path);
+                file->imported       = depModule;
+                file->forceNamespace = dep->forceNamespace;
+                files.push_back(file);
+            }
         });
     }
 
