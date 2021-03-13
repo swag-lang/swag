@@ -27,6 +27,14 @@ public struct(T) SliceJob
     userData:   *void
 }
 
+public struct ForJob
+{
+    using base: Job
+    indexStart: u32
+    indexEnd:   u32
+    userData:   *void
+}
+
 var g_Allocator:            swag.IAllocator
 var g_numWorkers:           u32
 var g_workers:              Array'Thread
@@ -174,8 +182,8 @@ public func waitJob(job: *Job)
 
 // Operate on a slice in parallel chunks
 // Exposed variables:
-// - 'buffer': address of the element of the slice to process
-// - 'data': 'userData' as passed to the macro
+// - buffer: address of the element of the slice to process
+// - data:   userData as passed to the macro
 #[swag.macro]
 public func(T) parallelVisit(slice: [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
 {
@@ -235,6 +243,72 @@ public func(T) parallelVisit(slice: [..] T, offset: u32 = 1, userData: *void = n
         j.userData = userData
         j.buffer = @mkslice(ptr, sizeSlice)
         ptr += sizeSlice
+
+        scheduleJob(j)
+    }
+
+    // Sync
+    visit *j: sliceJobs waitJob(j)
+}
+
+// Do a for loop in parallel chunks
+// Exposed variables:
+// - index: current loop index
+// - data:  userData as passed to the macro
+#[swag.macro]
+public func parallelFor(count: u32, userData: *void = null, stmt: code)
+{
+    if(!count) return
+
+    func jobEntry(jobData: *void)
+    {
+        oneJob := cast(*ForJob) jobData
+        visitFor(oneJob.startIndex, oneJob.endIndex, oneJob.userData)
+    }
+
+    func visitFor(startIndex, endIndex: u32, userData: *void)
+    {
+        curIndex := startIndex
+        loop (endIndex - startIndex) + 1
+        {
+            #macro
+            {
+                index := `curIndex
+                data := `userData
+                #mixin `stmt
+            }
+
+            curIndex += 1
+        }
+    }
+
+    // Force synchrone execution if slice is too small
+    numWorkers := math.min(getNumWorkers(), count)
+    if isSynchrone() || numWorkers <= 1
+    {
+        visitFor(0, count - 1, userData)
+        return
+    }
+
+    // Compute size of each chunk (and size of the last one)
+    splitSize := count / numWorkers
+    lastSplitSize := splitSize + (count - (splitSize * numWorkers))
+
+    // Launch jobs
+    var sliceJobs: Array'ForJob
+    sliceJobs.resize(cast(uint) numWorkers)
+
+    startIndex := 0
+    visit *j: sliceJobs
+    {
+        sizeSlice := @index == sliceJobs.count - 1 ? lastSplitSize : splitSize
+
+        j.base.lambda = &jobEntry
+        j.base.data = j
+        j.startIndex = startIndex
+        j.endIndex = startIndex + sizeSlice - 1
+        j.userData = userData
+        startIndex += sizeSlice
 
         scheduleJob(j)
     }
