@@ -3,7 +3,7 @@ using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
 var imageIdx: u32
-var effectIdx: u32
+var effectIdx: u32 = 12
 var myImage: image.Image
 const W = 1024
 const H = 1024
@@ -66,8 +66,7 @@ func loadImg() throw
     var t: time.Stopwatch
     t.start()
 
-    myImage.resize(1024, 1024, Image.ResizeMethod.Bilinear)
-    /*switch effectIdx
+    switch effectIdx
     {
     case 1:  myImage.halfSize()
     case 2:  myImage.resize(1024, 1024)
@@ -80,8 +79,15 @@ func loadImg() throw
     case 9:  myImage.fillGradient2(Argb.Green, Argb.Red)
     case 10: myImage.fillGradient4(Argb.Green, Argb.Red, Argb.Blue, Argb.Yellow)
     case 11: myImage.fill(Argb.Cyan)
+    case 12: myImage.resize(1024, 1024, Image.ResizeMethod.Bilinear)
+    case 13: myImage.resize(1024, 1024, Image.ResizeMethod.Bicubic)
+    case 14: myImage.resize(1024, 1024, Image.ResizeMethod.Gaussian)
+    case 15: myImage.resize(1024, 1024, Image.ResizeMethod.Hermite)
+    case 16: myImage.resize(1024, 1024, Image.ResizeMethod.Hamming)
+    case 17: myImage.resize(1024, 1024, Image.ResizeMethod.Catrom)
+    case 18: myImage.resize(1024, 1024, Image.ResizeMethod.Quadratic)
     default: effectIdx = 0
-    }*/
+    }
 
     t.stop()
     elapsed := t.elapsedMilliseconds()
@@ -203,7 +209,7 @@ func messageLoop()
     hRC := wglCreateContext(hDC)
     wglMakeCurrent(hDC, hRC)
 
-    //try jobs.setNumWorkers(8)
+    try jobs.setNumWorkers(8)
     try loadImg()
 
     display()

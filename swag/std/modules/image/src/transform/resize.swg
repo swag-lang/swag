@@ -6,6 +6,12 @@ public impl Image
     {
         Raw
         Bilinear
+        Bicubic
+        Gaussian
+        Quadratic
+        Hermite
+        Hamming
+        Catrom
     }
 
     // Resize image
@@ -65,7 +71,13 @@ private
     {
         switch rmode
         {
-        case Bilinear: return 1
+        case Bilinear:  return 1
+        case Hermite:   return 1
+        case Hamming:   return 1
+        case Quadratic: return 1.5
+        case Bicubic:   return 2
+        case Catrom:    return 2
+        case Gaussian:  return 3
         }
 
         return 0
@@ -78,6 +90,39 @@ private
         case Bilinear:
             res := math.abs(resf)
             return res < 1 ? 1 - res : 0
+        case Bicubic:
+            if resf < -2.0 return 0
+            if resf < -1.0 return ((2.0 + resf) * (2.0 + resf) * (2.0 + resf) / 6.0)
+            if resf < 0.0  return ((4.0 + resf * resf * (-6.0 - 3.0 * resf)) / 6.0)
+            if resf < 1.0  return ((4.0 + resf * resf * (-6.0 + 3.0 * resf)) / 6.0)
+            if resf < 2.0  return ((2.0 - resf) * (2.0 - resf) * (2.0 - resf) / 6.0)
+            return 0
+        case Gaussian:
+            if math.abs(resf) > 3.0 return 0
+            return math.exp(-resf * resf * 0.5) / 0.79788456080287
+        case Hermite:
+            if resf < -1.0 return 0
+            if resf < 0.0  return (-2.0 * resf - 3.0) * resf * resf + 1.0
+            if resf < 1.0  return (2.0 * resf - 3.0) * resf * resf + 1.0
+            return 0
+        case Hamming:
+            if resf < -1.0 return 0.0
+            if resf < 0.0  return 0.92 * (-2.0 * resf - 3.0) * resf * resf + 1.0
+            if resf < 1.0  return 0.92 * (2.0 * resf - 3.0) * resf * resf + 1.0
+            return 0
+        case Catrom:
+            if resf < -2.0 return 0
+            if resf < -1.0 return (0.5 * (4.0 + resf * (8.0 + resf * (5.0 + resf))))
+            if resf < 0.0  return (0.5 * (2.0 + resf * resf * (-5.0 - 3.0 * resf)))
+            if resf < 1.0  return (0.5 * (2.0 + resf * resf * (-5.0 + 3.0 * resf)))
+            if resf < 2.0  return (0.5 * (4.0 + resf * (-8.0 + resf * (5.0 - resf))))
+            return 0
+        case Quadratic:
+            if resf < -1.5 return 0.0
+            if resf < -0.5 return (0.5 * (resf + 1.5) * (resf + 1.5))
+            if resf < 0.5  return (0.75 - resf * resf)
+            if resf < 1.5  return (0.5 * (resf - 1.5) * (resf - 1.5))
+            return 0
         }
 
         return 0

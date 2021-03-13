@@ -8,6 +8,9 @@ attribute, erreur si le caller n'utilise pas la valeur de retour du called (attr
 -------------------------------------
 ca serait cool que les methods, en reflections, aient une value qui peut etre castee en lambda, et donc appel�es
 -------------------------------------
+char => rune ?
+-------------------------------------
+
 
 
 ****************************************
@@ -17,8 +20,6 @@ TODO
 global opVisit in namespace, comment on les reference sans faire un using ?
 -------------------------------------
 macro & alias comme visit ? macro i, x: funcmacro() ?
--------------------------------------
-char => rune ?
 -------------------------------------
 slice/cstrings and foreign
 -------------------------------------
@@ -38,16 +39,19 @@ cast interface vers struct (avec safety)
 -------------------------------------
 
 
+
 ****************************************
 OPTIMS
 ****************************************
 -------------------------------------
+setzerostackx, atpointerx, eviter memset en x64 si possible (rep stos)
+-------------------------------------
 passer/retourner des structs par value si <= 64 bits
 -------------------------------------
-detecter les exit (ret) de fonctions dupliquées et faire des jumps
+detecter les exit (ret) de fonctions dupliquées et faire des jumps (reduction code size)
 -------------------------------------
 BinOpModuloS32/div immediate mode
 -------------------------------------
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?
-rc[0] = r12 etc...
+rc[0] = r12 etc... chiant
 -------------------------------------
