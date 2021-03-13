@@ -12,9 +12,7 @@ impl Image
     public func resize(using self, newWidth, newHeight: u32, method = ResizeMethod.Raw)
     {
         debug.assert(newWidth > 0 && newHeight > 0)
-
         if newWidth == width && newHeight == height return
-
         allocWorkingBuffer(newWidth, newHeight, pf)
         doResize(self, workingBuffer, method)
         applyWorkingBuffer()
@@ -173,27 +171,38 @@ impl Image
         dstRow := imgDst.pixels + row * bpp8 * imgDst.width
         srcRow := imgSrc.pixels + row * bpp8 * imgSrc.width
 
-        loop x: imgDst.width
+        #[swag.mixin]
+        func(BPP: u8) doIt()
         {
-            left  := contrib.row[x].left
-            right := contrib.row[x].right
-
-            var da, dr, dg, db: f64
-            pw := contrib.row[x].weights.buffer
-            for i := left; i <= right; { i += 1; pw += 1; }
+            loop x: imgDst.width
             {
-                ptr := srcRow + i * bpp8
-                db += :pw * ptr[0];
-                dg += :pw * ptr[1];
-                dr += :pw * ptr[2];
-                da += :pw * ptr[3];
-            }
+                left  := contrib.row[x].left
+                right := contrib.row[x].right
 
-            dstRow[0] = cast(u8) db
-            dstRow[1] = cast(u8) dg
-            dstRow[2] = cast(u8) dr
-            dstRow[3] = cast(u8) da
-            dstRow += bpp8
+                var da, dr, dg, db: f64
+                pw := contrib.row[x].weights.buffer
+                for i := left; i <= right; { i += 1; pw += 1; }
+                {
+                    ptr := srcRow + i * bpp8
+                    db += :pw * ptr[0];
+                    dg += :pw * ptr[1];
+                    dr += :pw * ptr[2];
+                    #if BPP == 32 da += :pw * ptr[3];
+                }
+
+                dstRow[0] = cast(u8) db
+                dstRow[1] = cast(u8) dg
+                dstRow[2] = cast(u8) dr
+                #if BPP == 32 dstRow[3] = cast(u8) da
+                dstRow += bpp8
+            }
+        }
+
+        switch imgSrc.bpp
+        {
+        case 24: doIt'24()
+        case 32: doIt'32()
+        default: debug.assert(false)
         }
     }
 
@@ -205,27 +214,38 @@ impl Image
         w8Dst  := imgDst.width * bpp8
         w8Src  := imgSrc.width * bpp8
 
-        loop y: imgDst.height
+        #[swag.mixin]
+        func(BPP: u8) doIt()
         {
-            left  := contrib.row[y].left
-            right := contrib.row[y].right
-
-            var da, dr, dg, db: f64
-            pw := contrib.row[y].weights.buffer
-            for i := left; i <= right; { i += 1; pw += 1; }
+            loop y: imgDst.height
             {
-                ptr := srcCol + i * w8Src
-                db += :pw * ptr[0]
-                dg += :pw * ptr[1]
-                dr += :pw * ptr[2]
-                da += :pw * ptr[3]
-            }
+                left  := contrib.row[y].left
+                right := contrib.row[y].right
 
-            dstCol[0] = cast(u8) db
-            dstCol[1] = cast(u8) dg
-            dstCol[2] = cast(u8) dr
-            dstCol[3] = cast(u8) da
-            dstCol += w8Dst
+                var da, dr, dg, db: f64
+                pw := contrib.row[y].weights.buffer
+                for i := left; i <= right; { i += 1; pw += 1; }
+                {
+                    ptr := srcCol + i * w8Src
+                    db += :pw * ptr[0]
+                    dg += :pw * ptr[1]
+                    dr += :pw * ptr[2]
+                    #if BPP == 32 da += :pw * ptr[3]
+                }
+
+                dstCol[0] = cast(u8) db
+                dstCol[1] = cast(u8) dg
+                dstCol[2] = cast(u8) dr
+                #if BPP == 32 dstCol[3] = cast(u8) da
+                dstCol += w8Dst
+            }
+        }
+
+        switch imgSrc.bpp
+        {
+        case 24: doIt'24()
+        case 32: doIt'32()
+        default: debug.assert(false)
         }
     }
 
