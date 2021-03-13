@@ -271,7 +271,6 @@ void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch
         scoped_lock lk(declNode->resolvedSymbolOverload->symbol->mutex);
         if (declNode->resolvedSymbolOverload->flags & OVERLOAD_INCOMPLETE)
         {
-            printf("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx %s\n", typeInfo->name.c_str());
             context->job->waitForSymbolNoLock(declNode->resolvedSymbolOverload->symbol);
             return;
         }

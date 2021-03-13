@@ -1818,7 +1818,7 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     // Automatic cast has been done
     if (castFlags & CASTFLAG_COERCE)
     {
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK) && !(fromNode->flags & AST_VALUE_COMPUTED))
         {
             fromNode->typeInfo = toType;
             if (!fromNode->castedTypeInfo)
