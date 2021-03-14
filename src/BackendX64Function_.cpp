@@ -521,8 +521,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::ClearRA:
-            BackendX64Inst::emit_Clear64(pp, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->a.u32), 0, RDI);
             break;
 
         case ByteCodeOp::CopyRBtoRA:
