@@ -267,7 +267,7 @@
         if (ip->b.u64 <= 0x7F)                                                \
             pp.concat.addU8(0x83);                                            \
         else                                                                  \
-            pp.concat.addU8(0x80);                                            \
+            pp.concat.addU8(0x81);                                            \
         pp.concat.addU8((uint8_t) __op);                                      \
         if (ip->b.u64 <= 0x7F)                                                \
             pp.concat.addU8(ip->b.u8);                                        \

@@ -1224,31 +1224,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_BINOPEQ32_CAB(X64Op::ADD);
             emitOverflowUnsigned(buildParameters, concat, ip->node);
             break;
-            break;
         case ByteCodeOp::AffectOpPlusEqS64:
+            MK_BINOPEQ64_CAB(X64Op::ADD);
+            emitOverflowSigned(buildParameters, concat, ip->node);
+            break;
         case ByteCodeOp::AffectOpPlusEqU64:
-            if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
-            {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-                pp.concat.addU8(0x48);
-                if (ip->b.u64 <= 0x7F)
-                    pp.concat.addU8((uint8_t) X64Op::ADD | 0x82);
-                else
-                    pp.concat.addU8((uint8_t) X64Op::ADD | 0x80);
-                BackendX64Inst::emit_ModRM(pp, 0, 0, RCX);
-                if (ip->b.u64 <= 0x7F)
-                    pp.concat.addU8(ip->b.u8);
-                else
-                    pp.concat.addU32(ip->b.u32);
-            }
-            else
-            {
-                MK_BINOPEQ64_CAB(X64Op::ADD);
-            }
-            if (ip->op == ByteCodeOp::AffectOpPlusEqS64)
-                emitOverflowSigned(buildParameters, concat, ip->node);
-            else
-                emitOverflowUnsigned(buildParameters, concat, ip->node);
+            MK_BINOPEQ64_CAB(X64Op::ADD);
+            emitOverflowUnsigned(buildParameters, concat, ip->node);
             break;
         case ByteCodeOp::AffectOpPlusEqF32:
             MK_BINOPEQF32_CAB(X64Op::FADD);
