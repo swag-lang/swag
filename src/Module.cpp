@@ -360,7 +360,21 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, JobContext
         }
         else
         {
-            node->computedValue.reg = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]];
+            switch (node->typeInfo->sizeOf)
+            {
+            case 1:
+                node->computedValue.reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u8;
+                break;
+            case 2:
+                node->computedValue.reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u16;
+                break;
+            case 4:
+                node->computedValue.reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u32;
+                break;
+            default:
+                node->computedValue.reg.u64 = runContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u64;
+                break;
+            }
         }
 
         node->setFlagsValueIsComputed();

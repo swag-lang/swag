@@ -940,7 +940,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::SetImmediate32:
     {
-        registersRC[ip->a.u32].u32 = ip->b.u32;
+        registersRC[ip->a.u32].u64 = ip->b.u32;
         break;
     }
     case ByteCodeOp::SetImmediate64:

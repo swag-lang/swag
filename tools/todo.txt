@@ -1,4 +1,3 @@
-bug random 2238
 x64 passe reduction instructions
 llvm/x64 compatibilité
 
