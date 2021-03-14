@@ -262,7 +262,7 @@
 #define MK_BINOPEQ64_CAB(__op)                                                \
     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
     MK_IMMB_64(RAX);                                                          \
-    BackendX64Inst::emit_Op64_Indirect(pp, 0, RAX, RCX, __op);
+    BackendX64Inst::emit_Op64_IndirectDst(pp, 0, RAX, RCX, __op);
 
 #define MK_BINOPEQF32_CAB(__op)                                               \
     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
@@ -292,4 +292,4 @@
 #define MK_BINOPEQ64_LOCK_CAB(__op)                                           \
     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
     MK_IMMB_64(RAX);                                                          \
-    BackendX64Inst::emit_Op64_Indirect(pp, 0, RAX, RCX, __op, true);
+    BackendX64Inst::emit_Op64_IndirectDst(pp, 0, RAX, RCX, __op, true);
