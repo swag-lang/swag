@@ -1939,15 +1939,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IncPointer64:
             if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RAX);
             else
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             if (ip->a.u32 == ip->c.u32)
-                BackendX64Inst::emit_Op64_IndirectDst(pp, regOffset(ip->a.u32), RCX, RDI, X64Op::ADD);
+                BackendX64Inst::emit_Op64_IndirectDst(pp, regOffset(ip->a.u32), RAX, RDI, X64Op::ADD);
             else
             {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-                BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::ADD);
+                BackendX64Inst::emit_Op64_IndirectSrc(pp, regOffset(ip->a.u32), RAX, RDI, X64Op::ADD);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             }
             break;
