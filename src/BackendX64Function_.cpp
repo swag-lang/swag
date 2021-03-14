@@ -1717,11 +1717,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::ClearMaskU32:
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
-            BackendX64Inst::emit_Op32(pp, RCX, RAX, X64Op::AND);
+            if (ip->b.u32 == 0xFF)
+            {
+                concat.addString2("\x0F\xB6"); // movzx
+                BackendX64Inst::emit_ModRM(pp, regOffset(ip->a.u32), RAX, RDI);
+            }
+            else if (ip->b.u32 == 0xFFFF)
+            {
+                concat.addString2("\x0F\xB7"); // movzx
+                BackendX64Inst::emit_ModRM(pp, regOffset(ip->a.u32), RAX, RDI);
+            }
+            else
+            {
+                SWAG_ASSERT(false);
+            }
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
+
         case ByteCodeOp::ClearMaskU64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
