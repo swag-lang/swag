@@ -954,6 +954,15 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 {
     CloneContext cloneContext;
 
+    // Be sure this is not recursive
+    auto ownerInline = identifier->ownerInline;
+    while (ownerInline)
+    {
+        if (ownerInline->func == funcDecl)
+            return context->report({identifier, format("cannot expand '%s' because this is recursive", identifier->token.text.c_str())});
+        ownerInline = ownerInline->ownerInline;
+    }
+
     // The content will be inline in its separated syntax block
     auto inlineNode            = Ast::newInline(identifier->sourceFile, identifier);
     inlineNode->attributeFlags = funcDecl->attributeFlags;
