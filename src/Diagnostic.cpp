@@ -169,12 +169,11 @@ void Diagnostic::report(bool verboseMode) const
                 // Special case for a range == 1. If this is a word, than take the whole word
                 if (range == 1)
                 {
-                    int  decal   = startIndex + startLocation.column;
+                    int  decal   = startLocation.column;
                     bool isCWord = isalpha(backLine[decal]) || backLine[decal] == '_';
                     if (isCWord)
                     {
-                        range = 0;
-                        while (isalnum(backLine[decal]) || backLine[decal] == '_')
+                        while (isalnum(backLine[decal + 1]) || backLine[decal + 1] == '_')
                         {
                             decal += 1;
                             range += 1;
