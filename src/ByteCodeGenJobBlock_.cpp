@@ -223,14 +223,30 @@ bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
 {
-    auto loopNode = static_cast<AstBreakable*>(context->node);
+    auto node = static_cast<AstBreakable*>(context->node);
 
     // Resolve ByteCodeOp::JumpIfFalse expression
-    auto instruction   = context->bc->out + loopNode->seekJumpExpression;
-    auto diff          = loopNode->seekJumpAfterBlock - loopNode->seekJumpExpression;
+    auto instruction   = context->bc->out + node->seekJumpExpression;
+    auto diff          = node->seekJumpAfterBlock - node->seekJumpExpression;
     instruction->b.s32 = diff - 1;
 
-    freeRegisterRC(context, loopNode);
+    if (!node->hasSpecialFuncCall())
+    {
+        switch (node->kind)
+        {
+        case AstNodeKind::Loop:
+            freeRegisterRC(context, ((AstLoop*) node)->expression);
+            break;
+        case AstNodeKind::While:
+            freeRegisterRC(context, ((AstWhile*) node)->boolExpression);
+            break;
+        case AstNodeKind::For:
+            freeRegisterRC(context, ((AstFor*) node)->boolExpression);
+            break;
+        }
+    }
+
+    freeRegisterRC(context, node);
     return true;
 }
 
