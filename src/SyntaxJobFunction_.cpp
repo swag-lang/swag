@@ -677,11 +677,14 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
 {
     // We accept missing types only if lambda is in a function call, because this is the only way
     // we will be able to deduce the type
-    bool acceptMissingType = inFunCall;
+    bool     acceptMissingType = inFunCall;
+    AstNode* lambda            = nullptr;
 
-    AstNode* lambda = nullptr;
-    SWAG_CHECK(doLambdaFuncDecl(currentFct, &lambda, acceptMissingType));
-    lambda->flags |= AST_IS_LAMBDA_EXPRESSION;
+    {
+        ScopedBreakable sb(this, nullptr);
+        SWAG_CHECK(doLambdaFuncDecl(currentFct, &lambda, acceptMissingType));
+        lambda->flags |= AST_IS_LAMBDA_EXPRESSION;
+    }
 
     // Lambda sub function will be resolved by the owner function
     registerSubDecl(lambda);
