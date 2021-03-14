@@ -170,7 +170,7 @@ void Diagnostic::report(bool verboseMode) const
                 if (range == 1)
                 {
                     int  decal   = startLocation.column;
-                    bool isCWord = isalpha(backLine[decal]) || backLine[decal] == '_';
+                    bool isCWord = isalpha(backLine[decal]) || backLine[decal] == '_' || backLine[decal] == '#' || backLine[decal] == '@';
                     if (isCWord)
                     {
                         while (isalnum(backLine[decal + 1]) || backLine[decal + 1] == '_')
