@@ -6,7 +6,6 @@ struct SourceFile;
 enum DiagnosticLevel
 {
     Error,
-    Warning,
     Verbose,
     Message,
     Note,

@@ -24,11 +24,6 @@ void Diagnostic::report(bool verboseMode) const
             g_Log.setColor(LogColor::Red);
         g_Log.print("error: ");
         break;
-    case DiagnosticLevel::Warning:
-        if (!verboseMode)
-            g_Log.setColor(LogColor::Magenta);
-        g_Log.print("warning: ");
-        break;
     case DiagnosticLevel::Note:
         if (!verboseMode)
             g_Log.setColor(LogColor::White);
@@ -174,9 +169,6 @@ void Diagnostic::report(bool verboseMode) const
                 {
                 case DiagnosticLevel::Error:
                     g_Log.setColor(LogColor::Red);
-                    break;
-                case DiagnosticLevel::Warning:
-                    g_Log.setColor(LogColor::Magenta);
                     break;
                 case DiagnosticLevel::Note:
                     g_Log.setColor(LogColor::Blue);

@@ -1,5 +1,3 @@
-x64 passe reduction instructions
-
 ****************************************
 LANGUAGE
 ****************************************
@@ -18,6 +16,8 @@ char => rune ?
 ****************************************
 TODO
 ****************************************
+-------------------------------------
+error mode, affiché en couleur plutot que ^^^^^^
 -------------------------------------
 llvm/x64 compatibilité
 si llvm appel une lambda local x64 ou l'inverse, abi non compatible => marche si on passe la lambda en #[swag.callback]
@@ -49,6 +49,8 @@ cast interface vers struct (avec safety)
 ****************************************
 OPTIMS
 ****************************************
+-------------------------------------
+x64 passe reduction instructions
 -------------------------------------
 passer/retourner des structs par value si <= 64 bits
 -------------------------------------
