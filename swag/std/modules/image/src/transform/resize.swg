@@ -308,9 +308,6 @@ private
 
     func scaleCol(imgDst, imgSrc: *Image, rmode: Image.ResizeMethod)
     {
-        var t: time.Stopwatch
-        t.start()
-
         sh := cast(int) imgSrc.height
         dh := cast(int) imgDst.height
         contrib := calcContributions(dh, sh, cast(f64) dh / sh, rmode)
@@ -321,17 +318,10 @@ private
             params := cast(*@typeof(f)) data
             scaleCol(params.imgDst, params.imgSrc, cast(int) index, params.contrib)
         }
-
-        t.stop()
-        elapsed := t.elapsedMilliseconds()
-        console.println("scaleCol: %ms", elapsed)
     }
 
     func scaleRow(imgDst, imgSrc: *Image, rmode: Image.ResizeMethod)
     {
-        var t: time.Stopwatch
-        t.start()
-
         sw := cast(int) imgSrc.width
         dw := cast(int) imgDst.width
         contrib := calcContributions(dw, sw, cast(f64) dw / sw, rmode)
@@ -342,10 +332,6 @@ private
             params := cast(*@typeof(f)) data
             scaleRow(params.imgDst, params.imgSrc, cast(int) index, params.contrib)
         }
-
-        t.stop()
-        elapsed := t.elapsedMilliseconds()
-        console.println("scaleRow: %ms", elapsed)
     }
 
     func doResizeFilter(srcImage, dstImage: *Image, method: Image.ResizeMethod)
