@@ -1919,11 +1919,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             break;
         case ByteCodeOp::SetAtStackPointer64:
-            if (ip->flags & BCI_IMM_B)
+            if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
+                BackendX64Inst::emit_Store64_Immediate(pp, offsetStack + ip->a.u32, ip->b.u64, RDI);
+            else if (ip->flags & BCI_IMM_B)
+            {
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RAX);
+                BackendX64Inst::emit_Store64_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
+            }
             else
+            {
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
+                BackendX64Inst::emit_Store64_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
+            }
             break;
 
         case ByteCodeOp::SetAtStackPointer8x2:
