@@ -335,6 +335,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, "array dimension cannot be evaluated at compile time"}));
                 SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->report({child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
                 SWAG_CHECK(checkSizeOverflow(context, "array", child->computedValue.reg.u32 * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
+                SWAG_VERIFY(!child->isConstant0(), context->report({child, "array dimension is 0"}));
 
                 auto ptrArray   = allocType<TypeInfoArray>();
                 ptrArray->count = (uint32_t) child->computedValue.reg.u32;
