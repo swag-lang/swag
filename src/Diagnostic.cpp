@@ -166,6 +166,22 @@ void Diagnostic::report(bool verboseMode) const
                     range = (int) backLine.length() - startLocation.column;
                 range = max(1, range);
 
+                // Special case for a range == 1. If this is a word, than take the whole word
+                if (range == 1)
+                {
+                    int  decal   = startIndex + startLocation.column;
+                    bool isCWord = isalpha(backLine[decal]) || backLine[decal] == '_';
+                    if (isCWord)
+                    {
+                        range = 0;
+                        while (isalnum(backLine[decal]) || backLine[decal] == '_')
+                        {
+                            decal += 1;
+                            range += 1;
+                        }
+                    }
+                }
+
                 // Display line with error in color
                 if (lastLine == 0)
                 {
