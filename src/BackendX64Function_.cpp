@@ -1848,28 +1848,27 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::SetAtPointer8:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u8, RCX);
+                BackendX64Inst::emit_Store8_Immediate(pp, 0, ip->b.u8, RAX);
             else
+            {
                 BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            BackendX64Inst::emit_Store8_Indirect(pp, 0, RCX, RAX);
+                BackendX64Inst::emit_Store8_Indirect(pp, 0, RCX, RAX);
+            }
             break;
         case ByteCodeOp::SetAtPointer16:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u16, RCX);
+                BackendX64Inst::emit_Store16_Immediate(pp, 0, ip->b.u16, RAX);
             else
+            {
                 BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            BackendX64Inst::emit_Store16_Indirect(pp, 0, RCX, RAX);
+                BackendX64Inst::emit_Store16_Indirect(pp, 0, RCX, RAX);
+            }
             break;
         case ByteCodeOp::SetAtPointer32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
+            if (ip->flags & BCI_IMM_B)
                 BackendX64Inst::emit_Store32_Immediate(pp, 0, ip->b.u32, RAX);
-            else if (ip->flags & BCI_IMM_B)
-            {
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RCX);
-                BackendX64Inst::emit_Store32_Indirect(pp, 0, RCX, RAX);
-            }
             else
             {
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
