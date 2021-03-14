@@ -1704,14 +1704,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             break;
         case ByteCodeOp::GetFromStack32:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
             BackendX64Inst::emit_Clear64(pp, RCX);
-            BackendX64Inst::emit_Load32_Indirect(pp, 0, RCX, RAX);
+            BackendX64Inst::emit_Load32_Indirect(pp, offsetStack + ip->b.u32, RCX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             break;
         case ByteCodeOp::GetFromStack64:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
+            BackendX64Inst::emit_Load64_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::GetFromStack64x2:

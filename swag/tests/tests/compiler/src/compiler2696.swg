@@ -1,5 +1,10 @@
-/*#[swag.inline]
+#[swag.inline]
 func(T) toto() #selectif true
+{
+}
+
+#[swag.inline]
+func(T) toto() #selectif false
 {
 }
 
@@ -7,4 +12,4 @@ func(T) toto() #selectif true
 #test
 {
     toto's32()
-}*/
+}

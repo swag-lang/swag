@@ -256,6 +256,7 @@ private
     }
 
     #[swag.safety("", false)]
+    //#[swag.printbc]
     func scaleCol(imgDst, imgSrc: *Image, col: int, contrib: *LineContrib)
     {
         bpp8   := imgDst.bpp8

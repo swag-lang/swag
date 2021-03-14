@@ -170,11 +170,21 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
 
 bool SemanticJob::resolveFuncDeclAfterSI(SemanticContext* context)
 {
-    auto node = CastAst<AstFuncDecl>(context->node->parent, AstNodeKind::FuncDecl);
-    SWAG_ASSERT(node->content == context->node);
-    context->node = node;
+    auto saveNode = context->node;
+    if (context->node->parent->kind == AstNodeKind::Inline)
+    {
+        auto node     = CastAst<AstInline>(context->node->parent, AstNodeKind::Inline);
+        context->node = node->func;
+    }
+    else
+    {
+        auto node = CastAst<AstFuncDecl>(context->node->parent, AstNodeKind::FuncDecl);
+        SWAG_ASSERT(node->content == context->node);
+        context->node = node;
+    }
+
     resolveFuncDecl(context);
-    context->node = node->content;
+    context->node = saveNode;
     return true;
 }
 

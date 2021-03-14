@@ -1,3 +1,10 @@
+bug random 2238
+#mixin recursif
+#inline/macro/mixin recursif
+x64 passe reduction instructions
+llvm/x64 compatibilité
+
+
 ****************************************
 LANGUAGE
 ****************************************
