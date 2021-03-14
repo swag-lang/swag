@@ -111,8 +111,7 @@ void Diagnostic::report(bool verboseMode) const
         }
 
         // Remove blanks on the left, but keep indentation
-        auto     startIndex = 0;
-        uint32_t minBlanks  = UINT32_MAX;
+        uint32_t minBlanks = UINT32_MAX;
         for (int i = 0; i < lines.size(); i++)
         {
             auto        line = lines[i];
@@ -121,12 +120,7 @@ void Diagnostic::report(bool verboseMode) const
             {
                 uint32_t countBlanks = 0;
                 while (isblank(*pz++))
-                {
                     countBlanks++;
-                    if (i == lines.size() - 1)
-                        startIndex++;
-                }
-
                 minBlanks = min(minBlanks, countBlanks);
             }
         }
@@ -141,12 +135,12 @@ void Diagnostic::report(bool verboseMode) const
         // Print all lines
         for (int i = 0; i < lines.size(); i++)
         {
-            if (codeColor && i == lines.size() - 1)
-                break;
             const char* pz = lines[i].c_str();
             if (*pz && *pz != '\n' && *pz != '\r')
             {
                 g_Log.print("   >  ");
+                if (codeColor && i == lines.size() - 1)
+                    break;
                 g_Log.print(lines[i].c_str() + minBlanks);
                 g_Log.eol();
             }
@@ -160,18 +154,8 @@ void Diagnostic::report(bool verboseMode) const
                 if (!codeColor && lastLine == 0)
                     continue;
 
-                for (int i = 0; i < 6; i++)
-                    g_Log.print(" ");
-
-                auto backLine = lines.back();
-                for (uint32_t i = minBlanks; i < startLocation.column; i++)
-                {
-                    if (backLine[i] == '\t')
-                        g_Log.print("\t");
-                    else
-                        g_Log.print(" ");
-                    startIndex++;
-                }
+                auto startIndex = minBlanks;
+                auto backLine   = lines.back();
 
                 int range = 1;
                 if (!hasRangeLocation)
@@ -182,31 +166,39 @@ void Diagnostic::report(bool verboseMode) const
                     range = (int) backLine.length() - startLocation.column;
                 range = max(1, range);
 
-                if (codeColor && lastLine == 1)
-                {
-                    Utf8 beforeError;
-                    while (startIndex < (int) startLocation.column)
-                        beforeError += backLine[startIndex++];
-                    g_Log.print(beforeError);
-                }
-
                 // Display line with error in color
-                if (codeColor && lastLine == 0)
+                if (lastLine == 0)
                 {
                     Utf8 errorMsg;
+                    while (startIndex < (int) startLocation.column)
+                        errorMsg += backLine[startIndex++];
+                    g_Log.print(errorMsg);
+                    errorMsg.clear();
+
+                    g_Log.setColor(LogColor::Gray);
                     for (int i = 0; i < range; i++)
                         errorMsg += backLine[startIndex++];
-                    g_Log.setColor(LogColor::Gray);
                     g_Log.print(errorMsg);
+
                     g_Log.setColor(LogColor::Cyan);
                     g_Log.print(backLine.c_str() + startIndex);
                     g_Log.eol();
-                    continue;
                 }
 
                 // Display markers
-                if (lastLine == 1)
+                else
                 {
+                    for (int i = 0; i < 6; i++)
+                        g_Log.print(" ");
+
+                    for (uint32_t i = minBlanks; i < startLocation.column; i++)
+                    {
+                        if (backLine[i] == '\t')
+                            g_Log.print("\t");
+                        else
+                            g_Log.print(" ");
+                    }
+
                     if (!verboseMode)
                     {
                         switch (errorLevel)
