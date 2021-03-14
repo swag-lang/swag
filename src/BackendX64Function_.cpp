@@ -1792,20 +1792,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::SetZeroStack8:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
-            BackendX64Inst::emit_Store8_Immediate(pp, 0, 0, RAX);
+            BackendX64Inst::emit_Store8_Immediate(pp, offsetStack + ip->a.u32, 0, RDI);
             break;
         case ByteCodeOp::SetZeroStack16:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
-            BackendX64Inst::emit_Store16_Immediate(pp, 0, 0, RAX);
+            BackendX64Inst::emit_Store16_Immediate(pp, offsetStack + ip->a.u32, 0, RDI);
             break;
         case ByteCodeOp::SetZeroStack32:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
-            BackendX64Inst::emit_Store32_Immediate(pp, 0, 0, RAX);
+            BackendX64Inst::emit_Store32_Immediate(pp, offsetStack + ip->a.u32, 0, RDI);
             break;
         case ByteCodeOp::SetZeroStack64:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
-            BackendX64Inst::emit_Store64_Immediate(pp, 0, 0, RAX);
+            BackendX64Inst::emit_Store64_Immediate(pp, offsetStack + ip->a.u32, 0, RDI);
             break;
         case ByteCodeOp::SetZeroStackX:
         {
