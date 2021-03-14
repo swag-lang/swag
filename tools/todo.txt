@@ -17,8 +17,6 @@ char => rune ?
 TODO
 ****************************************
 -------------------------------------
-error mode, affiché en couleur plutot que ^^^^^^
--------------------------------------
 llvm/x64 compatibilité
 si llvm appel une lambda local x64 ou l'inverse, abi non compatible => marche si on passe la lambda en #[swag.callback]
 que faire ?
