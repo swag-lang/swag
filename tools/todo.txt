@@ -50,8 +50,6 @@ cast interface vers struct (avec safety)
 OPTIMS
 ****************************************
 -------------------------------------
-setzerostackx, atpointerx, eviter memset en x64 si possible (rep stos)
--------------------------------------
 passer/retourner des structs par value si <= 64 bits
 -------------------------------------
 detecter les exit (ret) de fonctions dupliquées et faire des jumps (reduction code size)
