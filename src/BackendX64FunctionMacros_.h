@@ -246,12 +246,21 @@
 
 #define MK_BINOPEQ8_CAB(__op)                                                 \
     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
-    MK_IMMB_8(RAX);                                                           \
-    BackendX64Inst::emit_Op8_Indirect(pp, 0, RAX, RCX, __op);
+    if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7F)                           \
+    {                                                                         \
+        pp.concat.addU8(0x80);                                                \
+        pp.concat.addU8((uint8_t) __op);                                      \
+        pp.concat.addU8(ip->b.u8);                                            \
+    }                                                                         \
+    else                                                                      \
+    {                                                                         \
+        MK_IMMB_8(RAX);                                                       \
+        BackendX64Inst::emit_Op8_Indirect(pp, 0, RAX, RCX, __op);             \
+    }
 
 #define MK_BINOPEQ16_CAB(__op)                                                \
     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
-    if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)                     \
+    if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFF)                         \
     {                                                                         \
         pp.concat.addU8(0x66);                                                \
         if (ip->b.u64 <= 0x7F)                                                \
