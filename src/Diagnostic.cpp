@@ -111,74 +111,120 @@ void Diagnostic::report(bool verboseMode) const
         }
 
         // Remove blanks on the left, but keep indentation
-        uint32_t minBlanks = UINT32_MAX;
-        for (auto& line : lines)
+        auto     startIndex = 0;
+        uint32_t minBlanks  = UINT32_MAX;
+        for (int i = 0; i < lines.size(); i++)
         {
-            const char* pz = line.c_str();
+            auto        line = lines[i];
+            const char* pz   = line.c_str();
             if (*pz && *pz != '\n' && *pz != '\r')
             {
                 uint32_t countBlanks = 0;
                 while (isblank(*pz++))
+                {
                     countBlanks++;
+                    if (i == lines.size() - 1)
+                        startIndex++;
+                }
+
                 minBlanks = min(minBlanks, countBlanks);
             }
         }
 
+        bool reportRange = showRange &&
+                           !lines.empty() &&
+                           errorLevel != DiagnosticLevel::CallStack &&
+                           errorLevel != DiagnosticLevel::CallStackInlined &&
+                           errorLevel != DiagnosticLevel::TraceError;
+        auto codeColor = !verboseMode && reportRange && errorLevel == DiagnosticLevel::Error;
+
         // Print all lines
-        for (auto& line : lines)
+        for (int i = 0; i < lines.size(); i++)
         {
-            const char* pz = line.c_str();
+            if (codeColor && i == lines.size() - 1)
+                break;
+            const char* pz = lines[i].c_str();
             if (*pz && *pz != '\n' && *pz != '\r')
             {
                 g_Log.print("   >  ");
-                g_Log.print(line.c_str() + minBlanks);
+                g_Log.print(lines[i].c_str() + minBlanks);
                 g_Log.eol();
             }
         }
 
         // Show "^^^^^^^"
-        if (showRange && !lines.empty() &&
-            errorLevel != DiagnosticLevel::CallStack &&
-            errorLevel != DiagnosticLevel::CallStackInlined &&
-            errorLevel != DiagnosticLevel::TraceError)
+        if (reportRange)
         {
-            for (int i = 0; i < 6; i++)
-                g_Log.print(" ");
-
-            auto backLine = lines.back();
-            for (uint32_t i = minBlanks; i < startLocation.column; i++)
+            for (int lastLine = 0; lastLine < 2; lastLine++)
             {
-                if (backLine[i] == '\t')
-                    g_Log.print("\t");
-                else
+                if (!codeColor && lastLine == 0)
+                    continue;
+
+                for (int i = 0; i < 6; i++)
                     g_Log.print(" ");
-            }
 
-            int range = 1;
-            if (!hasRangeLocation)
-                range = 1;
-            else if (location1.line == location0.line)
-                range = endLocation.column - startLocation.column;
-            else
-                range = (int) lines.back().length() - startLocation.column;
-            range = max(1, range);
-
-            if (!verboseMode)
-            {
-                switch (errorLevel)
+                auto backLine = lines.back();
+                for (uint32_t i = minBlanks; i < startLocation.column; i++)
                 {
-                case DiagnosticLevel::Error:
-                    g_Log.setColor(LogColor::Red);
-                    break;
-                case DiagnosticLevel::Note:
-                    g_Log.setColor(LogColor::Blue);
-                    break;
+                    if (backLine[i] == '\t')
+                        g_Log.print("\t");
+                    else
+                        g_Log.print(" ");
+                    startIndex++;
+                }
+
+                int range = 1;
+                if (!hasRangeLocation)
+                    range = 1;
+                else if (location1.line == location0.line)
+                    range = endLocation.column - startLocation.column;
+                else
+                    range = (int) backLine.length() - startLocation.column;
+                range = max(1, range);
+
+                if (codeColor && lastLine == 1)
+                {
+                    Utf8 beforeError;
+                    while (startIndex < (int) startLocation.column)
+                        beforeError += backLine[startIndex++];
+                    g_Log.print(beforeError);
+                }
+
+                // Display line with error in color
+                if (codeColor && lastLine == 0)
+                {
+                    Utf8 errorMsg;
+                    for (int i = 0; i < range; i++)
+                        errorMsg += backLine[startIndex++];
+                    g_Log.setColor(LogColor::Gray);
+                    g_Log.print(errorMsg);
+                    g_Log.setColor(LogColor::Cyan);
+                    g_Log.print(backLine.c_str() + startIndex);
+                    g_Log.eol();
+                    continue;
+                }
+
+                // Display markers
+                if (lastLine == 1)
+                {
+                    if (!verboseMode)
+                    {
+                        switch (errorLevel)
+                        {
+                        case DiagnosticLevel::Error:
+                            g_Log.setColor(LogColor::Red);
+                            break;
+                        case DiagnosticLevel::Note:
+                            g_Log.setColor(LogColor::Blue);
+                            break;
+                        }
+                    }
+
+                    for (int i = 0; i < range; i++)
+                        g_Log.print("^");
+                    g_Log.eol();
                 }
             }
-
-            for (int i = 0; i < range; i++)
-                g_Log.print("^");
-            g_Log.eol();
         }
     }
 
