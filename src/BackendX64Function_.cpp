@@ -1692,32 +1692,27 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::GetFromStack8:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
-            BackendX64Inst::emit_Clear64(pp, RCX);
-            BackendX64Inst::emit_Load8_Indirect(pp, 0, RCX, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Clear64(pp, RAX);
+            BackendX64Inst::emit_Load8_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::GetFromStack16:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
-            BackendX64Inst::emit_Clear64(pp, RCX);
-            BackendX64Inst::emit_Load16_Indirect(pp, 0, RCX, RAX);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Clear64(pp, RAX);
+            BackendX64Inst::emit_Load16_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::GetFromStack32:
-            BackendX64Inst::emit_Clear64(pp, RCX);
-            BackendX64Inst::emit_Load32_Indirect(pp, offsetStack + ip->b.u32, RCX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load32_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::GetFromStack64:
             BackendX64Inst::emit_Load64_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::GetFromStack64x2:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
+            BackendX64Inst::emit_Load64_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetStack + ip->d.u32, RAX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
+            BackendX64Inst::emit_Load64_Indirect(pp, offsetStack + ip->d.u32, RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
 
