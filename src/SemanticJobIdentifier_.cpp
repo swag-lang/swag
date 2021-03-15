@@ -457,6 +457,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 if (funcParam->type)
                     varNode->type = funcParam->type->clone(cloneContext);
                 varNode->assignment = funcParam->assignment->clone(cloneContext);
+                varNode->assignment->inheritOwners(identifier);
 
                 auto newParam   = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
                 newParam->index = i;

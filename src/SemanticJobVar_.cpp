@@ -143,6 +143,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
     auto       sourceFile = context->sourceFile;
     AstStruct* structNode = Ast::newStructDecl(sourceFile, nullptr);
     *result               = structNode;
+    structNode->flags |= AST_GENERATED;
 
     auto contentNode = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
     contentNode->allocateExtension();

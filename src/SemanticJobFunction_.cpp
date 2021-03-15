@@ -15,6 +15,37 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
     bool defaultValueDone = false;
     int  index            = 0;
 
+    // If we have a tuple as a default parameter, without a user defined type, then we need to convert it to a tuple struct
+    // and wait for the type to be solved.
+    for (auto param : parameters->childs)
+    {
+        auto nodeParam = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
+        if (!nodeParam->assignment)
+            continue;
+        if (nodeParam->assignment->kind != AstNodeKind::ExpressionList)
+            continue;
+
+        auto nodeExpr = CastAst<AstExpressionList>(nodeParam->assignment, AstNodeKind::ExpressionList);
+        if (!nodeExpr->forTuple)
+            continue;
+
+        if (!nodeParam->type)
+        {
+            SWAG_ASSERT(nodeParam->typeInfo->kind == TypeInfoKind::TypeListTuple);
+            SWAG_CHECK(convertLiteralTupleToStructDecl(context, nodeParam, nodeParam->assignment, &nodeParam->type));
+            context->result = ContextResult::NewChilds;
+            context->job->nodes.push_back(nodeParam->type);
+            return true;
+        }
+        else
+        {
+            // Now that the type has been solved, change it.
+            nodeParam->typeInfo = nodeParam->type->typeInfo;
+            SWAG_ASSERT(nodeParam->resolvedSymbolOverload);
+            nodeParam->resolvedSymbolOverload->typeInfo = nodeParam->typeInfo;
+        }
+    }
+
     if (forGenerics)
     {
         typeInfo->genericParameters.clear();
@@ -105,13 +136,6 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
                     context->report({nodeParam->assignment, format("compiler instruction '%s' is invalid as a default parameter value", nodeParam->assignment->token.text.c_str())});
                     break;
                 }
-            }
-            else if (nodeParam->assignment->kind == AstNodeKind::ExpressionList)
-            {
-                SWAG_VERIFY(nodeParam->assignment->flags & AST_CONST_EXPR, context->report({nodeParam->assignment, "cannot evaluate default value at compile time"}));
-                auto module = nodeParam->sourceFile->module;
-                SWAG_CHECK(collectAssignment(context, nodeParam->assignment->computedValue.reg.u32, nodeParam, &module->constantSegment));
-                nodeParam->assignment->flags |= AST_VALUE_COMPUTED;
             }
         }
         else if (nodeParam->typeInfo->kind != TypeInfoKind::Code)
@@ -455,7 +479,11 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             typeInfo->flags |= TYPEINFO_GENERIC;
 
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
+        if (context->result != ContextResult::Done)
+            return true;
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->parameters, false));
+        if (context->result != ContextResult::Done)
+            return true;
     }
 
     // If a lambda function will wait for a match, then no need to deduce the return type

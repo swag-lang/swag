@@ -288,7 +288,7 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(JobContext* context, uint32_t b
 bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* seg)
 {
     auto value    = node->assignment ? &node->assignment->computedValue : &node->computedValue;
-    auto typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto typeInfo = TypeManager::concreteReferenceType(node->typeInfo);
     if (typeInfo->sizeOf == 0)
         return true;
 
