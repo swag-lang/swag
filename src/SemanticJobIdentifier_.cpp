@@ -424,7 +424,10 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 continue;
 
             auto typeParam = TypeManager::concreteReference(funcParam->typeInfo);
-            if (typeParam->kind != TypeInfoKind::Struct && (funcParam->assignment->flags & AST_VALUE_COMPUTED))
+            if (typeParam->kind != TypeInfoKind::Struct &&
+                typeParam->kind != TypeInfoKind::TypeListTuple &&
+                typeParam->kind != TypeInfoKind::TypeListArray &&
+                (funcParam->assignment->flags & AST_VALUE_COMPUTED))
                 continue;
 
             bool covered = false;

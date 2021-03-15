@@ -371,7 +371,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = node->resolvedSymbolOverload->storageOffset;
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = typeArray->count;
     }
-    else if (typeInfo->kind == TypeInfoKind::Struct)
+    else if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
     {
         auto     inst          = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0]);
         uint32_t storageOffset = UINT32_MAX;
