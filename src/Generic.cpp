@@ -274,6 +274,8 @@ void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch
             context->job->waitForSymbolNoLock(declNode->resolvedSymbolOverload->symbol);
             return;
         }
+
+        SWAG_ASSERT(typeInfo->sizeOf > 0);
     }
 }
 
