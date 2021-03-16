@@ -250,9 +250,6 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(JobContext* context, uint32_t b
 {
     for (auto child : node->childs)
     {
-        if (child->flags & AST_GENERATED)
-            continue;
-
         auto typeInfo = child->typeInfo;
 
         // Special type when collecting (like an array collected to a slice)
