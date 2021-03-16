@@ -240,6 +240,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
     SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, "invalid switch type 'any', you need to cast to a concrete type"}));
 
+    SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, "switch body is empty"}));
+
     // Collect constant expressions, to avoid double definitions
     set<uint64_t> val64;
     set<Utf8>     valText;
