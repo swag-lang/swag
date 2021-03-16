@@ -366,9 +366,13 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         reserveLinearRegisterRC2(context, regList);
-        SWAG_ASSERT(node->resolvedSymbolOverload);
-        SWAG_ASSERT(node->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = node->resolvedSymbolOverload->storageOffset;
+        uint32_t storageOffset = UINT32_MAX;
+        // Compile time evaluation of a function returning a struct stores the offset in computed value.
+        if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
+            storageOffset = node->resolvedSymbolOverload->storageOffset;
+        else
+            storageOffset = node->computedValue.reg.u32;
+        emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0])->b.u64 = storageOffset;
         emitInstruction(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64         = typeArray->count;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::TypeListTuple || typeInfo->kind == TypeInfoKind::TypeListArray)
@@ -376,7 +380,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         auto     inst          = emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, regList[0]);
         uint32_t storageOffset = UINT32_MAX;
         // In case of compiler structures (like CompilerSourceLocation), there's no symbol. The storage
-        // offset is stored in the computed value
+        // offset is stored in the computed value. Same for compile time evaluation of a function returning a struct.
         if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             storageOffset = node->resolvedSymbolOverload->storageOffset;
         else
