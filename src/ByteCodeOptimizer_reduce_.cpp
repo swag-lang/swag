@@ -11,6 +11,58 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::DebugNop && ip->location == ip[1].location)
             setNop(context, ip);
 
+        // Copy a constant value (from segment) to the stack
+        if (ip->op == ByteCodeOp::MakeConstantSegPointer &&
+            ip[1].op == ByteCodeOp::MakeStackPointer &&
+            isMemCpy(ip + 2) &&
+            ip->a.u32 == ip[2].b.u32 &&
+            ip[1].a.u32 == ip[2].a.u32)
+        {
+            switch (ip[2].op)
+            {
+            case ByteCodeOp::MemCpy8:
+            {
+                auto ptr    = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
+                ip[1].op    = ByteCodeOp::SetAtStackPointer8;
+                ip[1].a.u64 = ip[1].b.u64;
+                ip[1].b.u64 = *(uint8_t*) ptr;
+                ip[1].flags |= BCI_IMM_B;
+                setNop(context, ip + 2);
+                break;
+            }
+            case ByteCodeOp::MemCpy16:
+            {
+                auto ptr    = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
+                ip[1].op    = ByteCodeOp::SetAtStackPointer16;
+                ip[1].a.u64 = ip[1].b.u64;
+                ip[1].b.u64 = *(uint16_t*) ptr;
+                ip[1].flags |= BCI_IMM_B;
+                setNop(context, ip + 2);
+                break;
+            }
+            case ByteCodeOp::MemCpy32:
+            {
+                auto ptr    = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
+                ip[1].op    = ByteCodeOp::SetAtStackPointer32;
+                ip[1].a.u64 = ip[1].b.u64;
+                ip[1].b.u64 = *(uint32_t*) ptr;
+                ip[1].flags |= BCI_IMM_B;
+                setNop(context, ip + 2);
+                break;
+            }
+            case ByteCodeOp::MemCpy64:
+            {
+                auto ptr    = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
+                ip[1].op    = ByteCodeOp::SetAtStackPointer64;
+                ip[1].a.u64 = ip[1].b.u64;
+                ip[1].b.u64 = *(uint64_t*) ptr;
+                ip[1].flags |= BCI_IMM_B;
+                setNop(context, ip + 2);
+                break;
+            }
+            }
+        }
+
         // Reduce SetZeroStack
         if (ip->op == ByteCodeOp::SetZeroStack8 &&
             ip[1].op == ByteCodeOp::SetZeroStack8 &&
@@ -398,7 +450,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
     }
 }
 
-// Reduce instructions that can change debug lines, so do not do it 
+// Reduce instructions that can change debug lines, so do not do it
 // if buildCfg.byteCodeDebug is true
 void ByteCodeOptimizer::optimizePassReduce2(ByteCodeOptContext* context)
 {
