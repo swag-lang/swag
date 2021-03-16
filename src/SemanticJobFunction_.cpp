@@ -31,17 +31,17 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
 
         if (!nodeParam->type)
         {
+            nodeParam->semFlags |= AST_SEM_TUPLE_CONVERT;
             SWAG_ASSERT(nodeParam->typeInfo->kind == TypeInfoKind::TypeListTuple);
             SWAG_CHECK(convertLiteralTupleToStructDecl(context, nodeParam, nodeParam->assignment, &nodeParam->type));
             context->result = ContextResult::NewChilds;
             context->job->nodes.push_back(nodeParam->type);
             return true;
         }
-        else
+        else if (nodeParam->semFlags & AST_SEM_TUPLE_CONVERT)
         {
-            // Now that the type has been solved, change it.
-            nodeParam->typeInfo = nodeParam->type->typeInfo;
             SWAG_ASSERT(nodeParam->resolvedSymbolOverload);
+            nodeParam->typeInfo                         = nodeParam->type->typeInfo;
             nodeParam->resolvedSymbolOverload->typeInfo = nodeParam->typeInfo;
         }
     }

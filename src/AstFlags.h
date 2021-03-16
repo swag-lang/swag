@@ -107,3 +107,4 @@ static const uint32_t AST_SEM_BYTECODE_RESOLVED      = 0x00010000;
 static const uint32_t AST_SEM_AUTO_CODE_PARAM        = 0x00020000;
 static const uint32_t AST_SEM_ONCE                   = 0x00040000;
 static const uint32_t AST_SEM_USER_CAST              = 0x00080000;
+static const uint32_t AST_SEM_TUPLE_CONVERT          = 0x00100000;

@@ -21,6 +21,22 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     auto varDecl   = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
 
     auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
+    if (typeVar->kind == TypeInfoKind::TypeListTuple && !varDecl->type)
+    {
+        varDecl->semFlags |= AST_SEM_TUPLE_CONVERT;
+        SWAG_CHECK(convertLiteralTupleToStructDecl(context, varDecl, varDecl->assignment, &varDecl->type));
+        context->result = ContextResult::NewChilds;
+        context->job->nodes.push_back(varDecl->type);
+        return true;
+    }
+    else if (varDecl->semFlags & AST_SEM_TUPLE_CONVERT)
+    {
+        SWAG_ASSERT(varDecl->resolvedSymbolOverload);
+        varDecl->typeInfo                         = varDecl->type->typeInfo;
+        varDecl->resolvedSymbolOverload->typeInfo = varDecl->type->typeInfo;
+        typeVar                                   = varDecl->typeInfo;
+    }
+
     SWAG_VERIFY(typeVar->kind == TypeInfoKind::Struct, context->report({varDecl, varDecl->token, format("cannot unpack type '%s' which is not a struct", typeVar->name.c_str())}));
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
     auto numUnpack  = scopeNode->childs.size() - 1;
