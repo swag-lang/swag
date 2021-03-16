@@ -707,23 +707,34 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         if (isExplicit)
         {
             SWAG_CHECK(emitUserOp(context, nullptr, exprNode));
+            if (context->result != ContextResult::Done)
+                return true;
         }
         else
         {
-            if (!job->allParamsTmp)
-                job->allParamsTmp = Ast::newFuncCallParams(exprNode->sourceFile, nullptr);
-            job->allParamsTmp->childs.clear();
-            job->allParamsTmp->childs.push_back(exprNode);
-            exprNode->typeInfo = exprNode->castedTypeInfo;
-            job->allParamsTmp->allocateExtension();
-            job->allParamsTmp->extension->resolvedUserOpSymbolOverload = exprNode->extension->resolvedUserOpSymbolOverload;
-            job->allParamsTmp->inheritOwners(exprNode);
+            if (!(exprNode->doneFlags & AST_DONE_FLAT_PARAMS))
+            {
+                exprNode->doneFlags |= AST_DONE_FLAT_PARAMS;
+                if (!job->allParamsTmp)
+                    job->allParamsTmp = Ast::newFuncCallParams(exprNode->sourceFile, nullptr);
+                job->allParamsTmp->childs.clear();
+                job->allParamsTmp->childs.push_back(exprNode);
+                exprNode->typeInfo = exprNode->castedTypeInfo;
+                job->allParamsTmp->allocateExtension();
+                job->allParamsTmp->extension->resolvedUserOpSymbolOverload = exprNode->extension->resolvedUserOpSymbolOverload;
+                job->allParamsTmp->inheritOwners(exprNode);
+            }
+
             SWAG_CHECK(emitUserOp(context, nullptr, job->allParamsTmp));
+            if (context->result != ContextResult::Done)
+                return true;
+
+            // If it has been inlined, then the inline block contains the register we need
+            auto back = job->allParamsTmp->childs.back();
+            if (back->kind == AstNodeKind::Inline)
+                exprNode->resultRegisterRC = back->resultRegisterRC;
         }
 
-        if (context->result != ContextResult::Done)
-            return true;
-        
         if (context->node->resultRegisterRC.size())
             exprNode->resultRegisterRC = context->node->resultRegisterRC;
         else

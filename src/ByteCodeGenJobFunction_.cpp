@@ -67,13 +67,13 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         if (!(returnExpression->doneFlags & AST_DONE_CAST1))
         {
             SWAG_CHECK(emitCast(context, returnExpression, TypeManager::concreteType(returnExpression->typeInfo), returnExpression->castedTypeInfo));
-            if (context->result == ContextResult::Pending)
+            if (context->result != ContextResult::Done)
                 return true;
             returnExpression->doneFlags |= AST_DONE_CAST1;
         }
 
         context->job->waitStructGenerated(exprType);
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
 
         //
