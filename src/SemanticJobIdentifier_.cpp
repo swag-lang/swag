@@ -427,6 +427,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             if (typeParam->kind != TypeInfoKind::Struct &&
                 typeParam->kind != TypeInfoKind::TypeListTuple &&
                 typeParam->kind != TypeInfoKind::TypeListArray &&
+                !typeParam->isNative(NativeTypeKind::Any) &&
                 (funcParam->assignment->flags & AST_VALUE_COMPUTED))
                 continue;
 
