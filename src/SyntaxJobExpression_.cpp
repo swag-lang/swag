@@ -1291,13 +1291,19 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 
             ScopedLocation lk(this, &token);
 
+            auto savedtoken = token;
+            SWAG_CHECK(tokenizer.getToken(token));
+
+            AstNode* assignment;
+            SWAG_CHECK(doExpression(nullptr, &assignment));
+
             // Generate an expression of the form "var __tmp_0 = assignment"
-            auto        savedtoken = token;
             auto        tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
             AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
             varNode->flags |= AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
-            SWAG_CHECK(tokenizer.getToken(token));
-            SWAG_CHECK(doExpression(varNode, &varNode->assignment));
+            Ast::addChildBack(varNode, assignment);
+            assignment->inheritOwners(varNode);
+            varNode->assignment = assignment;
             varNode->assignment->flags |= AST_NO_LEFT_DROP;
 
             varNode->token.startLocation = leftNode->childs.front()->token.startLocation;
