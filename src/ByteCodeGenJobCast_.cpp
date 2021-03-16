@@ -717,6 +717,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             exprNode->typeInfo = exprNode->castedTypeInfo;
             job->allParamsTmp->allocateExtension();
             job->allParamsTmp->extension->resolvedUserOpSymbolOverload = exprNode->extension->resolvedUserOpSymbolOverload;
+            job->allParamsTmp->inheritOwners(exprNode);
             SWAG_CHECK(emitUserOp(context, nullptr, job->allParamsTmp));
         }
 
