@@ -377,7 +377,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         uint32_t storageOffset = UINT32_MAX;
         // In case of compiler structures (like CompilerSourceLocation), there's no symbol. The storage
         // offset is stored in the computed value
-        if (node->resolvedSymbolOverload)
+        if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             storageOffset = node->resolvedSymbolOverload->storageOffset;
         else
             storageOffset = node->computedValue.reg.u32;
