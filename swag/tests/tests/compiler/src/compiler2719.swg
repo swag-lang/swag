@@ -1,3 +1,4 @@
+//#[swag.printbc]
 #test
 {
     var a, b: s32

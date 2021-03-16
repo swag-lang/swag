@@ -198,6 +198,11 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
         }
 
         paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType);
+
+        // This can avoid some initialization before assignment, because everything will be covered
+        // as this is a tuple
+        paramNode->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
+
         if (!paramNode->type)
             return false;
     }
