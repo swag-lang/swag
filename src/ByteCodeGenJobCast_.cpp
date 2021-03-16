@@ -723,7 +723,12 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
         if (context->result != ContextResult::Done)
             return true;
-        exprNode->resultRegisterRC = context->node->resultRegisterRC;
+        
+        if (context->node->resultRegisterRC.size())
+            exprNode->resultRegisterRC = context->node->resultRegisterRC;
+        else
+            context->node->resultRegisterRC = exprNode->resultRegisterRC;
+
         return true;
     }
 
@@ -898,11 +903,17 @@ bool ByteCodeGenJob::emitExplicitCast(ByteCodeGenContext* context)
     // First we cast with the user requested type. This is important to keep it, to
     // properly deref an 'any' for example
     SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, true));
+    if (context->result != ContextResult::Done)
+        return true;
 
     // Then we cast again if necessary to the requested final type that can have been
     // changed (type promotion for example)
     if (node->toCastTypeInfo != node->typeInfo && node->toCastTypeInfo != node->castedTypeInfo)
+    {
         SWAG_CHECK(emitCast(context, node, node->typeInfo, node->toCastTypeInfo));
+        if (context->result != ContextResult::Done)
+            return true;
+    }
 
     return true;
 }
