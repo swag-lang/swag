@@ -1302,6 +1302,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             // dealing with a tuple...
             if (assignment->kind == AstNodeKind::ExpressionList)
             {
+                SWAG_VERIFY(leftNode->childs.size() == assignment->childs.size(), error(assignment, format("unpacking '%d' variable(s), but the tuple on the right contains '%d' element(s)", leftNode->childs.size(), assignment->childs.size())));
                 while (!leftNode->childs.empty())
                 {
                     auto child             = leftNode->childs.front();
