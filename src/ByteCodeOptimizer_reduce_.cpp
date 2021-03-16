@@ -459,6 +459,46 @@ void ByteCodeOptimizer::optimizePassReduce2(ByteCodeOptContext* context)
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        // Reduce SetAtStackPointer
+        if (ip->op == ByteCodeOp::SetAtStackPointer8 &&
+            ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
+            ip->a.u32 + sizeof(uint8_t) == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B))
+        {
+            ip->op = ByteCodeOp::SetAtStackPointer16;
+            ip->b.u16 |= ip[1].b.u8 << 8;
+            setNop(context, ip + 1);
+        }
+
+        if (ip->op == ByteCodeOp::SetAtStackPointer16 &&
+            ip[1].op == ByteCodeOp::SetAtStackPointer16 &&
+            ip->a.u32 + sizeof(uint16_t) == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B))
+        {
+            ip->op = ByteCodeOp::SetAtStackPointer32;
+            ip->b.u32 |= ip[1].b.u16 << 16;
+            setNop(context, ip + 1);
+        }
+
+        if (ip->op == ByteCodeOp::SetAtStackPointer32 &&
+            ip[1].op == ByteCodeOp::SetAtStackPointer32 &&
+            ip->a.u32 + sizeof(uint32_t) == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B))
+        {
+            ip->op = ByteCodeOp::SetAtStackPointer64;
+            ip->b.u64 |= (uint64_t) ip[1].b.u32 << 32;
+            setNop(context, ip + 1);
+        }
+
         // SetAtStackPointer x2
         if (ip[0].op == ByteCodeOp::SetAtStackPointer8 &&
             ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
