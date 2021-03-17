@@ -113,16 +113,16 @@ int main(int argc, const char* argv[])
     }
     else if (command == "list")
     {
-        g_CommandLine.listDep   = true;
-        g_CommandLine.updateDep = true;
-        g_CommandLine.fetchDep  = false;
+        g_CommandLine.listDepCmd = true;
+        g_CommandLine.computeDep = true;
+        g_CommandLine.fetchDep   = false;
         g_Workspace.build();
     }
     else if (command == "get")
     {
-        g_CommandLine.getDep    = true;
-        g_CommandLine.updateDep = true;
-        g_CommandLine.fetchDep  = true;
+        g_CommandLine.getDepCmd  = true;
+        g_CommandLine.computeDep = true;
+        g_CommandLine.fetchDep   = true;
         g_Workspace.build();
     }
     else if (command == "watch")

@@ -278,7 +278,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         case CompareVersionResult::VERSION_GREATER:
         case CompareVersionResult::REVISION_GREATER:
         case CompareVersionResult::BUILDNUM_GREATER:
-            if (cfgModule->wasAddedDep || g_CommandLine.updateDep)
+            if (cfgModule->wasAddedDep || g_CommandLine.computeDep)
             {
                 cfgModule->mustFetchDep = true;
                 pendingCfgModules.insert(cfgModule);
@@ -287,10 +287,10 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
             break;
 
         // If the dependency does not specify something, that means that we don't know if we are up to date.
-        // In that case, if g_CommandLine.updateDep is true, we will have to fetch dependency configuration file
+        // In that case, if g_CommandLine.computeDep is true, we will have to fetch dependency configuration file
         // to compare the local version with the remote one.
         case CompareVersionResult::EQUAL:
-            if (g_CommandLine.updateDep)
+            if (g_CommandLine.computeDep)
             {
                 if (dep->verNum == UINT32_MAX || dep->revNum == UINT32_MAX || dep->buildNum == UINT32_MAX)
                 {
@@ -321,7 +321,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         case CompareVersionResult::REVISION_GREATER:
         case CompareVersionResult::BUILDNUM_GREATER:
             cfgModule->fetchDep = dep;
-            if (cfgModule->wasAddedDep || g_CommandLine.updateDep)
+            if (cfgModule->wasAddedDep || g_CommandLine.computeDep)
             {
                 cfgModule->mustFetchDep = true;
                 pendingCfgModules.insert(cfgModule);
@@ -329,7 +329,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
             break;
 
         case CompareVersionResult::EQUAL:
-            if (g_CommandLine.updateDep)
+            if (g_CommandLine.computeDep)
             {
                 if (dep->verNum == UINT32_MAX || dep->revNum == UINT32_MAX || dep->buildNum == UINT32_MAX)
                 {
@@ -376,7 +376,7 @@ bool ModuleCfgManager::execute()
     enumerateCfgFiles(g_Workspace.dependenciesPath);
     enumerateCfgFiles(g_Workspace.modulesPath);
     enumerateCfgFiles(g_Workspace.examplesPath);
-    if (g_CommandLine.test || g_CommandLine.listDep || g_CommandLine.fetchDep)
+    if (g_CommandLine.test || g_CommandLine.listDepCmd || g_CommandLine.fetchDep)
         enumerateCfgFiles(g_Workspace.testsPath);
     g_ThreadMgr.waitEndJobs();
     g_Workspace.checkPendingJobs();
@@ -475,7 +475,7 @@ bool ModuleCfgManager::execute()
     }
 
     // List all dependencies
-    if (ok && g_CommandLine.listDep)
+    if (ok && g_CommandLine.listDepCmd)
     {
         for (auto m : allModules)
         {

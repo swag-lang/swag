@@ -698,7 +698,7 @@ bool Workspace::buildTarget()
     SWAG_CHECK(g_ModuleCfgMgr.execute());
 
     // Exit now (do not really build) in case of "get", "list" commands
-    if (g_CommandLine.listDep || g_CommandLine.getDep)
+    if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
         return true;
 
     // Ask for a syntax pass on all files of all modules
@@ -828,7 +828,7 @@ bool Workspace::build()
         if (g_CommandLine.verbosePath)
             g_Log.verbose(format("workspace path is '%s'", workspacePath.string().c_str()));
 
-        if (g_CommandLine.listDep || g_CommandLine.getDep)
+        if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
             g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
         else
             g_Log.messageHeaderCentered("Workspace", format("%s [%s]", workspacePath.filename().string().c_str(), g_Workspace.getTargetFolder().c_str()));
