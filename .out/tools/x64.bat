@@ -1,2 +1,3 @@
-swag test -w:../tests --backend:x64 --cfg:fast-debug --rebuild %1 %2 %3 %4
-swag test -w:../std   --backend:x64 --cfg:fast-debug --rebuild %1 %2 %3 %4
+swag test -w:../tests --cfg:fast-debug --backend:x64 --rebuild %1 %2 %3 %4
+swag test -w:../std   --cfg:fast-debug --backend:x64 --rebuild %1 %2 %3 %4
+swag test -w:../howto --cfg:fast-debug --backend:x64 --rebuild %1 %2 %3 %4
