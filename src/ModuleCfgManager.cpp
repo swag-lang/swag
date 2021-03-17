@@ -288,7 +288,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
 
         // If the dependency does not specify something, that means that we don't know if we are up to date.
         // In that case, if g_CommandLine.computeDep is true, we will have to fetch dependency configuration file
-        // to compare the local version with the remote one.
+        // to get the one that corresponds to the dependency (UINT32_MAX means 'latest')
         case CompareVersionResult::EQUAL:
             if (g_CommandLine.computeDep)
             {
@@ -329,14 +329,6 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
             break;
 
         case CompareVersionResult::EQUAL:
-            if (g_CommandLine.computeDep)
-            {
-                if (dep->verNum == UINT32_MAX || dep->revNum == UINT32_MAX || dep->buildNum == UINT32_MAX)
-                {
-                    cfgModule->fetchDep = dep;
-                    pendingCfgModules.insert(cfgModule);
-                }
-            }
             break;
         }
     }
