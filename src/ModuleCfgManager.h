@@ -22,6 +22,8 @@ struct ModuleCfgManager
     void                 newCfgFile(vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName);
     void                 enumerateCfgFiles(const fs::path& path);
     bool                 fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName);
+    bool                 fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName);
+    bool                 fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName);
     bool                 fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName);
     bool                 resolveModuleDependency(Module* srcModule, ModuleDependency* dep);
     CompareVersionResult compareVersions(uint32_t depVer, uint32_t depRev, uint32_t devBuildNum, uint32_t modVer, uint32_t modRev, uint32_t modBuildNum);

@@ -601,6 +601,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
     dep->forceNamespace   = nameSpaceName;
     dep->location         = tokenLocation.text;
     dep->version          = tokenVersion.text.empty() ? "?.?.?" : tokenVersion.text;
+    dep->tokenLocation    = tokenLocation;
+    dep->tokenVersion     = tokenVersion;
     moduleDependencies.push_front(dep);
 
     // Check version

@@ -8,6 +8,7 @@
 #include "DataSegment.h"
 #include "DependentJobs.h"
 #include "SymTable.h"
+#include "Tokenizer.h"
 
 struct Utf8;
 struct SourceFile;
@@ -22,7 +23,6 @@ struct Backend;
 struct BuildCfg;
 struct SourceLocation;
 struct AstFuncDecl;
-struct Token;
 struct Module;
 
 enum class GlobalVarKind
@@ -34,15 +34,19 @@ enum class GlobalVarKind
 
 enum class DependencyFetchKind
 {
-    FileSystem,
+    Swag,
+    Disk,
     Invalid,
 };
 
 struct ModuleDependency
 {
+    Token               tokenLocation;
+    Token               tokenVersion;
     Utf8                name;
     Utf8                forceNamespace;
     Utf8                location;
+    Utf8                locationParam;
     Utf8                resolvedLocation;
     Utf8                version;
     int                 verNum, revNum, buildNum;

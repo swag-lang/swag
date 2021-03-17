@@ -29,7 +29,8 @@ void DataSegment::initFrom(DataSegment* other)
         memcpy(buckets[0].buffer, other->buckets[0].buffer, other->totalCount);
     }
 
-    SWAG_ASSERT(initPtr.count == 0);
+    initPtr.clear();
+    initFuncPtr.clear();
     for (auto& it : other->initPtr)
         addInitPtr(it.patchOffset, it.srcOffset, it.fromSegment);
     for (auto& it : other->initFuncPtr)
