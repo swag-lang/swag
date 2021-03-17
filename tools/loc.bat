@@ -1,1 +1,0 @@
-cloc --no3 ../src --exclude-dir=ffi --by-file
