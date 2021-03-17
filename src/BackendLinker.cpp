@@ -182,7 +182,7 @@ namespace BackendLinker
         uint32_t numErrors  = 0;
         auto     cmdLine    = "\"" + linkerPath + "/lld-link.exe" + "\" " + linkArgumentsFlat;
 
-        if (g_CommandLine.verbose && g_CommandLine.verboseLink)
+        if (g_CommandLine.verboseLink)
             g_Log.verbose(cmdLine);
 
         auto result = OS::doProcess(module, cmdLine, linkerPath, verbose, numErrors, LogColor::DarkCyan, "CL ");
@@ -190,15 +190,19 @@ namespace BackendLinker
         if (!result && g_CommandLine.devMode)
             OS::errorBox("[Developer Mode]", "Error raised !");
 
-        g_Workspace.numErrors += numErrors;
-        module->numErrors += numErrors;
+        if (!result)
+        {
+            g_Workspace.numErrors += numErrors;
+            module->numErrors += numErrors;
+        }
+
         return result;
     }
 
     bool link(const BuildParameters& buildParameters, Module* module, vector<string>& objectFiles)
     {
         // It's not possible to launch lld linker in parallel (sight), because it's not thread safe.
-        // So to avoid waiting for a link to be finished before launching another one, 
+        // So to avoid waiting for a link to be finished before launching another one,
         // if a current static link is running, then we launch a process 'lld-link.exe' to avoid the wait.
         // It's worth paying the price of launching a process instead of blocking.
         static mutex oo;
