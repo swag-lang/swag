@@ -845,6 +845,22 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         auto returnType = TypeManager::concreteType(identifier->typeInfo);
+
+        // Check return value
+        if (!returnType->isNative(NativeTypeKind::Void) && !(overload->node->attributeFlags & ATTRIBUTE_OPT_RETURN))
+        {
+            if (identifier->identifierRef->parent->kind == AstNodeKind::Statement ||
+                identifier->identifierRef->parent->kind == AstNodeKind::StatementNoScope)
+            {
+                if (identifier->childParentIdx == identifier->identifierRef->childs.size() - 1)
+                {
+                    Diagnostic diag(identifier, identifier->token, format("unused return value of function '%s'", overload->node->token.text.c_str()));
+                    Diagnostic note(overload->node, overload->node->token, "this is the definition", DiagnosticLevel::Note);
+                    return context->report(diag, &note);
+                }
+            }
+        }
+
         if (overload->node->mustInline() && !(identifier->flags & AST_NO_INLINE))
         {
             // Expand inline function. Do not expand an inline call inside a function marked as inline.

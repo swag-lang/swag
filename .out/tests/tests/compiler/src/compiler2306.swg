@@ -13,5 +13,5 @@ func arithmeticMean(x: string, numbers: string...)->string
 //#[swag.printbc]
 #test
 {
-	arithmeticMean("666", "10", "20")
+	r := arithmeticMean("666", "10", "20")
 }

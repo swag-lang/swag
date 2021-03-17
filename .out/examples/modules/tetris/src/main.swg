@@ -256,7 +256,7 @@ func main()
 		if !vLines.isEmpty()
 		{
 			// Display Frame (cheekily to draw lines)
-			WriteConsoleOutputCharacterA(hConsole, screen, nScreenWidth * nScreenHeight, 0, &dwBytesWritten);
+			wlen := WriteConsoleOutputCharacterA(hConsole, screen, nScreenWidth * nScreenHeight, 0, &dwBytesWritten);
 			thread.sleep(400)
 
 			visit v: vLines

@@ -16,7 +16,7 @@ func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     wc.lpfnWndProc = autocast @mkcallback(&winProc)
     wc.hInstance = GetModuleHandleA(null)
     wc.lpszClassName = @dataof("CLASS_NAME")
-    RegisterClassA(wc)
+    hw := RegisterClassA(wc)
 
     hwnd := CreateWindowExA(
         0,
@@ -37,8 +37,8 @@ func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     while GetMessageA(&msg, null, 0, 0) != 0
     {
         if msg.message == WM_QUIT break
-        TranslateMessage(&msg)
-        DispatchMessageA(&msg)
+        tm := TranslateMessage(&msg)
+        dm := DispatchMessageA(&msg)
         break
     }
 }

@@ -46,13 +46,13 @@ impl Mutex
     func lock(using self)
     {
         debug.assert(isValid())
-        WaitForSingleObject(handle, INFINITE)
+        hw := WaitForSingleObject(handle, INFINITE)
     }
 
     // Unlock mutex
     func unlock(using self)
     {
         debug.assert(isValid())
-        ReleaseMutex(handle)
+        hw := ReleaseMutex(handle)
     }
 }

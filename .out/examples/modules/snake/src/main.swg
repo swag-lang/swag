@@ -152,7 +152,7 @@ func main()
         screen[nFoodY * nScreenWidth + nFoodX] = "%"'u8
 
 		// Display Frame
-        WriteConsoleOutputCharacterA(hConsole, screen, nScreenWidth * nScreenHeight, 0, &dwBytesWritten);
+        wlen := WriteConsoleOutputCharacterA(hConsole, screen, nScreenWidth * nScreenHeight, 0, &dwBytesWritten);
     }
 
     CloseHandle(hConsole)

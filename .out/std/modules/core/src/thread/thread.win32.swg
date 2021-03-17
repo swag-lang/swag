@@ -12,7 +12,7 @@ func sleep(ms: u32)
 // Sleep the current thread for a given amount of milliseconds
 func yield()
 {
-    SwitchToThread()
+    hw := SwitchToThread()
 }
 
 #[swag.callback]
@@ -42,7 +42,7 @@ func wait(threads: *Thread...)
             handles[i] = threads[i].handle
         }
 
-        WaitForMultipleObjects(toTreat, &handles[0], TRUE, INFINITE)
+        hw := WaitForMultipleObjects(toTreat, &handles[0], TRUE, INFINITE)
         total -= toTreat
     }
 
@@ -71,7 +71,7 @@ impl Thread
         userLambda = lambda
         handle = h
         self.userParam = #scopefct.userParam
-        setPriority(#scopefct.priority)
+        try setPriority(#scopefct.priority)
     }
 
     // Resume the given thread, if it was paused
@@ -83,7 +83,7 @@ impl Thread
     }
 
     // Set the thread priority
-    func setPriority(using self, priority: ThreadPriority)
+    func setPriority(using self, priority: ThreadPriority) throw
     {
         debug.assert(isValid())
 
@@ -92,16 +92,19 @@ impl Thread
             return
         self.priority = newPrio
 
-        using ThreadPriority
+        wprio := 0
         #[swag.complete]
         switch newPrio
         {
-            case Lowest:        SetThreadPriority(handle, THREAD_PRIORITY_LOWEST)
-            case BelowNormal:   SetThreadPriority(handle, THREAD_PRIORITY_BELOW_NORMAL)
-            case Normal:        SetThreadPriority(handle, THREAD_PRIORITY_NORMAL)
-            case AboveNormal:   SetThreadPriority(handle, THREAD_PRIORITY_ABOVE_NORMAL)
-            case Highest:       SetThreadPriority(handle, THREAD_PRIORITY_HIGHEST)
+            case Lowest:        wprio = THREAD_PRIORITY_LOWEST
+            case BelowNormal:   wprio = THREAD_PRIORITY_BELOW_NORMAL
+            case Normal:        wprio = THREAD_PRIORITY_NORMAL
+            case AboveNormal:   wprio = THREAD_PRIORITY_ABOVE_NORMAL
+            case Highest:       wprio = THREAD_PRIORITY_HIGHEST
         }
+
+        if !SetThreadPriority(handle, THREAD_PRIORITY_LOWEST)
+            try error.setErrorWin32(GetLastError())
     }
 
     // Wait for the given thread to be done, and close it
@@ -109,7 +112,7 @@ impl Thread
     func wait(using self)
     {
         debug.assert(isValid())
-        WaitForSingleObject(handle, INFINITE)
+        hw := WaitForSingleObject(handle, INFINITE)
         CloseHandle(handle)
         handle = null
     }

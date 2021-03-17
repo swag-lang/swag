@@ -20,5 +20,5 @@ func toto()->AA
 }
 #test
 {
-    toto()
+    ew := toto()
 }

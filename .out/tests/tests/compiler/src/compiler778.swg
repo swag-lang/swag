@@ -27,7 +27,7 @@
     {
         //using Windows
         h := Windows.GetStdHandle(Windows.STD_INPUT_HANDLE)
-        Windows.SetConsoleTextAttribute(h, Windows.FOREGROUND_BLUE);
-        Windows.WriteFile(h, @dataof("toto"), 4, null, null);
+        r := Windows.SetConsoleTextAttribute(h, Windows.FOREGROUND_BLUE);
+        r1 := Windows.WriteFile(h, @dataof("toto"), 4, null, null);
     }
 }

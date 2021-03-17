@@ -14,5 +14,5 @@ func(T) norm(vec: T) -> @typeof(T.R)
 #test
 {
     var pt: Point2
-    norm'Point2(pt)
+    r := norm'Point2(pt)
 }

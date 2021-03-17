@@ -17,5 +17,5 @@ using swag
     id := 0'u32
     h := CreateThread(null, 0, @mkcallback(&tcf_entry), cast(*void) &paramBC[0], 0, &id)
     const INFINITE = 0xFFFFFFFF
-    WaitForSingleObject(h, INFINITE);
+    ew := WaitForSingleObject(h, INFINITE);
 }

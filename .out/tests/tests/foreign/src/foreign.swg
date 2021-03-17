@@ -317,7 +317,7 @@ public func tcf_createThread(lambda: func(*void), userParam: uint)
     id := 0'u32
     h := CreateThread(null, 0, @mkcallback(lambda), cast(*void) &paramBC[0], 0, &id)
     const INFINITE = 0xFFFFFFFF
-    WaitForSingleObject(h, INFINITE);
+    ew := WaitForSingleObject(h, INFINITE)
 }
 
 public func tcf_callret(fct: func()->s64)->s64

@@ -27,7 +27,7 @@ impl AA
 
 #test
 {
-    AA.titi()
+    ew := AA.titi()
 }
 
 /*#[swag.macro]

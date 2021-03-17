@@ -7,6 +7,6 @@ func toto(x: s32)->s32
 //#[swag.printbc]
 #test
 {
-    toto(1)
-    toto(1)
+    r := toto(1)
+    r = toto(1)
 }

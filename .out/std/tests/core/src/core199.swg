@@ -9,7 +9,7 @@ using core.memory, swag
 
     system.pushAllocator(cast(IAllocator) mem)
     {
-        memory.alloc(100)
+        ptr := memory.alloc(100)
     }
 
     @assert(mem.used == 100)

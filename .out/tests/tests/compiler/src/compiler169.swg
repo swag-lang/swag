@@ -9,7 +9,7 @@ func main() -> s32
 	return 666;
 }
 
-#run 
+#run
 {
-	main();
+	r := main();
 }

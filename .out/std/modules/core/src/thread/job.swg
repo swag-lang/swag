@@ -95,8 +95,8 @@ func removeJobNoLock(job: *Job)
     job.clearState(JobState.InPending)
 }
 
-func clearState(job: *Job, state: JobState) => atomic.and(cast(*u32) &job.state, cast(u32) ~state)
-func setState(job: *Job, state: JobState)   => atomic.or(cast(*u32) &job.state, cast(u32) state)
+func clearState(job: *Job, state: JobState) = atomic.and(cast(*u32) &job.state, cast(u32) ~state)
+func setState(job: *Job, state: JobState)   = atomic.or(cast(*u32) &job.state, cast(u32) state)
 func testState(job: *Job, state: JobState)  => atomic.get(cast(*u32) &job.state) & cast(u32) state != 0
 
 // Returns true is the job system has been initialized
@@ -176,7 +176,7 @@ public func waitJob(job: *Job)
     g_mutexPendingJobs.unlock()
     while !job.testState(JobState.Done)
     {
-        peekExecJob()
+        r := peekExecJob()
     }
 }
 

@@ -1,7 +1,7 @@
 #global public
 #global namespace atomic
 
-#[swag.inline]
+#[swag.inline, swag.optreturn]
 {
     func add(addr: *s8,  value: s8)->s8   => @atomadd(addr, value)
     func add(addr: *s16, value: s16)->s16 => @atomadd(addr, value)

@@ -19,11 +19,11 @@ func getInfo(fullname: string)->FileInfo throw
     result.size = attrDatas.nFileSizeLow + (cast(u64) attrDatas.nFileSizeHigh << 32)
 
     var fileTime: SYSTEMTIME
-    FileTimeToSystemTime(&attrDatas.ftCreationTime, &fileTime)
+    hw1 := FileTimeToSystemTime(&attrDatas.ftCreationTime, &fileTime)
     result.creationTime.setSYSTEMTIME(fileTime)
-    FileTimeToSystemTime(&attrDatas.ftLastAccessTime, &fileTime)
+    hw2 := FileTimeToSystemTime(&attrDatas.ftLastAccessTime, &fileTime)
     result.lastAccessTime.setSYSTEMTIME(fileTime)
-    FileTimeToSystemTime(&attrDatas.ftLastWriteTime, &fileTime)
+    hw3 := FileTimeToSystemTime(&attrDatas.ftLastWriteTime, &fileTime)
     result.lastWriteTime.setSYSTEMTIME(fileTime)
 
     return result

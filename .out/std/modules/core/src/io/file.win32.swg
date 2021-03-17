@@ -81,7 +81,7 @@ func read(stream: FileStream, buffer: *void, length: uint)->uint
 
     var dwRead: DWORD = 0
     debug.assert(length <= swag.MaxU32)
-    ReadFile(stream.handle, buffer, cast(u32) length, &dwRead, null)
+    rlen := ReadFile(stream.handle, buffer, cast(u32) length, &dwRead, null)
     return cast(uint) dwRead
 }
 

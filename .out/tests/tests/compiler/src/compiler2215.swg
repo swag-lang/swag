@@ -19,7 +19,7 @@ impl A
 #test
 {
     var st: A
-    st.toto(66)
+    ew := st.toto(66)
 
     {
         xxx := 0

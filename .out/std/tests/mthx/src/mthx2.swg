@@ -4,6 +4,6 @@ using mthx
 #test
 {
 	var pt: Vector2{1, 1}
-	pt.length()
-	pt.dot(Vector2.One)
+	l := pt.length()
+	d := pt.dot(Vector2.One)
 }

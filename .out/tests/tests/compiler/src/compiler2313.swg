@@ -9,5 +9,5 @@ func toto32(s: string, x: s32...)->s32
 
 #test
 {
-    toto32(s: "titi", x: @spread(@[1, 2, 4]))
+    r := toto32(s: "titi", x: @spread(@[1, 2, 4]))
 }

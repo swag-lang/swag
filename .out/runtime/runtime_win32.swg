@@ -40,7 +40,7 @@ func __printString(message: string)
     if !@dataof(message) || !@countof(message)
         return
     len := cast(u32) @countof(message)
-    WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), @dataof(message), len, null, null);
+    wlen := WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), @dataof(message), len, null, null);
 }
 
 ////////////////////////////////////////////////////////////

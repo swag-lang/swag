@@ -19,7 +19,7 @@ func display()
     glVertex2i(1, -1);
     glEnd();
     glFlush()
-    SwapBuffers(hDC)
+    hw := SwapBuffers(hDC)
 }
 
 #[swag.callback]
@@ -30,13 +30,13 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     case WM_PAINT:
         display()
         var ps: PAINTSTRUCT
-        BeginPaint(hWnd, &ps)
-        EndPaint(hWnd, &ps)
+        hw1 := BeginPaint(hWnd, &ps)
+        hw2 := EndPaint(hWnd, &ps)
         return 0
 
     case WM_SIZE:
 	    glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
-	    PostMessageA(hWnd, WM_PAINT, 0, 0)
+	    hw := PostMessageA(hWnd, WM_PAINT, 0, 0)
 	    return 0
 
     case WM_DESTROY:
@@ -53,7 +53,7 @@ func createWindow()->HWND
     wc.lpfnWndProc   = autocast @mkcallback(&winProc)
     wc.hInstance     = GetModuleHandleA(null)
     wc.lpszClassName = @dataof("CLASS_NAME")
-    RegisterClassA(wc)
+    hw := RegisterClassA(wc)
 
     hWnd := CreateWindowExA(
         0,
@@ -82,9 +82,9 @@ func createWindow()->HWND
     @assert(pf != 0)
     res := SetPixelFormat(hDC, pf, &pfd)
     @assert(res != FALSE)
-    DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
+    hw2 := DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
 
-    ReleaseDC(hDC, hWnd)
+    hw3 := ReleaseDC(hDC, hWnd)
     return hWnd
 }
 
@@ -101,8 +101,8 @@ func messageLoop()
         {
             if msg.message == WM_QUIT
                 return
-            TranslateMessage(&msg)
-            DispatchMessageA(&msg)
+            tm := TranslateMessage(&msg)
+            dm := DispatchMessageA(&msg)
         }
         frame.unpause()
 
@@ -116,16 +116,16 @@ func messageLoop()
 
     hDC = GetDC(hWnd)
     hRC := wglCreateContext(hDC)
-    wglMakeCurrent(hDC, hRC)
+    hw1 := wglMakeCurrent(hDC, hRC)
 
     display()
-    ShowWindow(hWnd, SW_SHOW)
-    UpdateWindow(hWnd)
+    hw2 := ShowWindow(hWnd, SW_SHOW)
+    hw3 := UpdateWindow(hWnd)
 
     messageLoop()
 
-    wglMakeCurrent(null, null)
-    wglDeleteContext(hRC)
-    ReleaseDC(hWnd, hDC)
-    DestroyWindow(hWnd)
+    hw4 := wglMakeCurrent(null, null)
+    hw5 := wglDeleteContext(hRC)
+    hw6 := ReleaseDC(hWnd, hDC)
+    hw7 := DestroyWindow(hWnd)
 }

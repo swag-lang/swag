@@ -31,7 +31,7 @@ impl GamePad
 
         connected = true
         previousState = currentState
-        currentState.update(padIndex)
+        hw := currentState.update(padIndex)
     }
 
     // Reset the previous and current state

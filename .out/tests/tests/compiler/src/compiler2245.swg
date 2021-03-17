@@ -26,7 +26,7 @@ func create(lambda: func(*void), userParam: uint)
 
     id := 0'u32
     h := CreateThread(null, 0, @mkcallback(lambda), cast(*void) &paramBC[0], 0, &id)
-    WaitForSingleObject(h, INFINITE);
+    ew := WaitForSingleObject(h, INFINITE);
 }
 
 #test

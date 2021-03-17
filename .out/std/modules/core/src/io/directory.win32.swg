@@ -73,11 +73,11 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
                     fi.fullname = path.combine(toScan, filename.toString())
 
                     fi.size = findfile.nFileSizeLow + (cast(u64) findfile.nFileSizeHigh << 32)
-                    FileTimeToSystemTime(&findfile.ftCreationTime, &fileTime)
+                    hw1 := FileTimeToSystemTime(&findfile.ftCreationTime, &fileTime)
                     fi.creationTime.setSYSTEMTIME(fileTime)
-                    FileTimeToSystemTime(&findfile.ftLastAccessTime, &fileTime)
+                    hw2 := FileTimeToSystemTime(&findfile.ftLastAccessTime, &fileTime)
                     fi.lastAccessTime.setSYSTEMTIME(fileTime)
-                    FileTimeToSystemTime(&findfile.ftLastWriteTime, &fileTime)
+                    hw3 := FileTimeToSystemTime(&findfile.ftLastWriteTime, &fileTime)
                     fi.lastWriteTime.setSYSTEMTIME(fileTime)
 
                     result.emplace(&fi)
@@ -88,7 +88,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
                 break
         }
 
-        FindClose(h)
+        hw := FindClose(h)
     }
 
     return result
