@@ -17,6 +17,9 @@ char => rune ?
 TODO
 ****************************************
 -------------------------------------
+did you mean message : ex in switch
+break outerloop // expected-error {{cannot find label 'outerloop' in scope; did you mean 'outerLoop'?}} {{9-18=outerLoop}}
+-------------------------------------
 llvm/x64 compatibilité
 si llvm appel une lambda local x64 ou l'inverse, abi non compatible => marche si on passe la lambda en #[swag.callback]
 que faire ?
