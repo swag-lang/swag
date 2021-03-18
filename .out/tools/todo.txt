@@ -17,15 +17,12 @@ char => rune ?
 TODO
 ****************************************
 -------------------------------------
-defer is error
+defer if error
 -------------------------------------
-@print("error:")
--------------------------------------
-cxt.errorMsgLen + 2 * @sizeof(u32)  CAST COERCE
--------------------------------------
-did you mean message : ex in switch
+did you mean message : ex in swift
 break outerloop // expected-error {{cannot find label 'outerloop' in scope; did you mean 'outerLoop'?}} {{9-18=outerLoop}}
 -------------------------------------
+BIG BIG BIG BIG BIG CHIANT CHIANT CHIANT CHIANT CHIANT
 llvm/x64 compatibilité
 si llvm appel une lambda local x64 ou l'inverse, abi non compatible => marche si on passe la lambda en #[swag.callback]
 que faire ?
