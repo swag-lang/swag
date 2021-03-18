@@ -8,7 +8,8 @@ func exists(fullname: string)->bool
 {
     if fullname == null return false
     winPath := path.toWin16(fullname)
-    attributes := GetFileAttributesW(@dataof(winPath))
+    attributes := catch GetFileAttributesW(@dataof(winPath))
+    if @err return false
     if attributes == 0xFFFFFFFF return false
     if attributes & FILE_ATTRIBUTE_DIRECTORY return false
     return true

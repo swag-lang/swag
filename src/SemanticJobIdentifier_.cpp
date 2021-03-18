@@ -3251,11 +3251,7 @@ bool SemanticJob::resolveTry(SemanticContext* context)
     if (parentFct->flags & AST_SPECIAL_COMPILER_FUNC)
         node->byteCodeFct = ByteCodeGenJob::emitAssume;
     else
-    {
         node->byteCodeFct = ByteCodeGenJob::emitTry;
-        if (!(node->ownerFct->typeInfo->flags & TYPEINFO_CAN_THROW))
-            return context->report({node, format("'%s' can only be used inside a function marked with 'throw'", node->token.text.c_str())});
-    }
 
     node->typeInfo = lastChild->typeInfo;
     node->flags    = identifierRef->flags;

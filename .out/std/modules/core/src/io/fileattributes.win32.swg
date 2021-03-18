@@ -48,8 +48,6 @@ impl enum FileAttributes
 func getAttributes(fullname: string)->FileAttributes throw
 {
     winPath := path.toWin16(fullname)
-    attributes := GetFileAttributesW(@dataof(winPath))
-    if attributes == INVALID_FILE_ATTRIBUTES
-        try win32.setError(GetLastError())
+    attributes := try GetFileAttributesW(@dataof(winPath))
     return FileAttributes.fromDWORD(attributes)
 }

@@ -354,8 +354,6 @@ struct PROCESS_INFORMATION
     func CreateTimerQueueTimer(phNewTimer: *HANDLE, timerQueue: HANDLE, callback: const *void, parameter: *void, dueTime: DWORD, period: DWORD, flags: ULONG)->BOOL;
     func DeleteTimerQueueTimer(timerQueue: HANDLE, timer: HANDLE, completionEvent: HANDLE)->BOOL;
 
-    func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
-    func GetFileAttributesW(lpFileName: LPCWSTR)->DWORD;
     func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;
     func GetFileAttributesExW(lpFileName: LPCWSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;
     func ReadFile(hFile: HANDLE, lpBuffer: LPVOID, nNumberOfBytesToRead: DWORD, lpNumberOfBytesRead: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
@@ -376,6 +374,8 @@ namespace priv
 {
     #[swag.foreign("kernel32")]
     {
+        func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
+        func GetFileAttributesW(lpFileName: LPCWSTR)->DWORD;
         func CreateFileA(lpFileName: LPCSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE;
         func CreateFileW(lpFileName: LPCWSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE;
         func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
@@ -389,17 +389,35 @@ namespace priv
 
 #[swag.inline]
 {
+    func GetFileAttributesA(lpFileName: LPCSTR)->DWORD throw
+    {
+        attributes := priv.GetFileAttributesA(lpFileName)
+        if attributes == INVALID_FILE_ATTRIBUTES
+            try setError(GetLastError())
+        return attributes
+    }
+
+    func GetFileAttributesW(lpFileName: LPCWSTR)->DWORD throw
+    {
+        attributes := priv.GetFileAttributesW(lpFileName)
+        if attributes == INVALID_FILE_ATTRIBUTES
+            try setError(GetLastError())
+        return attributes
+    }
+
     func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD throw
     {
         length := priv.GetCurrentDirectoryA(nBufferLength, lpBuffer)
-        if !length try setError(GetLastError())
+        if !length
+            try setError(GetLastError())
         return length
     }
 
     func GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPCWSTR)->DWORD throw
     {
         length := priv.GetCurrentDirectoryW(nBufferLength, lpBuffer)
-        if !length try setError(GetLastError())
+        if !length
+            try setError(GetLastError())
         return length
     }
 
