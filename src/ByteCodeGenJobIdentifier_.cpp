@@ -49,11 +49,12 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
     // Leave the current scope
     // As this will reevaluate some childs, we need to force the BCI_TRYCATCH flags until we are done
     // and come back here
-    context->instructionsFlags1 |= BCI_TRYCATCH;
-    SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
-    if (context->result != ContextResult::Done)
-        return true;
-    context->instructionsFlags1 = 0;
+    {
+        PushICFlags cif(context, BCI_TRYCATCH);
+        SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+        if (context->result != ContextResult::Done)
+            return true;
+    }
 
     // Restore the error context, and keep error trace of current call
     if (!(node->doneFlags & AST_DONE_STACK_TRACE1))

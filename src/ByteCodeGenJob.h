@@ -34,12 +34,11 @@ struct ByteCodeGenContext : public JobContext
     VectorNative<SourceLocation*> stackForceLocation;
     ByteCode*                     bc;
     ByteCodeGenJob*               job;
-    SourceLocation*               forceLocation      = nullptr;
-    AstNode*                      forceNode          = nullptr;
-    bool                          noLocation         = false;
-    uint32_t                      contextFlags       = 0;
-    uint16_t                      instructionsFlags  = 0;
-    uint16_t                      instructionsFlags1 = 0;
+    SourceLocation*               forceLocation     = nullptr;
+    AstNode*                      forceNode         = nullptr;
+    bool                          noLocation        = false;
+    uint32_t                      contextFlags      = 0;
+    uint16_t                      instructionsFlags = 0;
 
     void setNoLocation()
     {
