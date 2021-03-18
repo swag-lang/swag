@@ -22,9 +22,7 @@ impl Event
     func init(using self, manual, initState = false) throw
     {
         debug.assert(handle == null)
-        handle = CreateEventA(null, manual ? TRUE : FALSE, initState ? TRUE : FALSE, null)
-        if !handle
-            try win32.setError(GetLastError())
+        handle = try CreateEventA(null, manual ? TRUE : FALSE, initState ? TRUE : FALSE, null)
     }
 
     // Destroy an existing event
