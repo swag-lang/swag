@@ -30,9 +30,7 @@ func start(info: StartInfo)->Process throw
     str := builder.moveToString()
 
     // Launch
-    if !CreateProcessA(null, @dataof(str), null, null, FALSE, 0, null, null, &si, &pi)
-        try win32.setError(GetLastError())
-
+    try CreateProcessA(null, @dataof(str), null, null, FALSE, 0, null, null, &si, &pi)
     result.handle = pi.hProcess
     return result
 }

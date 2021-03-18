@@ -306,8 +306,6 @@ struct PROCESS_INFORMATION
     func OutputDebugStringW(lpOutputString: LPCWSTR);
     func DebugActiveProcess(procId: DWORD);
 
-    func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
-    func CreateProcessW(lpApplicationName: LPCWSTR, lpCommandLine: LPCWSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCWSTR, lpStartupInfo: *STARTUPINFOW, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
     func GetProcAddress(hModule: HMODULE, lpProcName: LPCSTR)->const *void;
     func GetCurrentProcessId()->DWORD;
     func GetModuleHandleA(lpModuleName: LPCSTR)->HMODULE;
@@ -370,18 +368,22 @@ namespace priv
 {
     #[swag.foreign("kernel32")]
     {
+        func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
+        func CreateProcessW(lpApplicationName: LPCWSTR, lpCommandLine: LPCWSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCWSTR, lpStartupInfo: *STARTUPINFOW, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
+
         func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
         func GetFileAttributesW(lpFileName: LPCWSTR)->DWORD;
         func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;
         func GetFileAttributesExW(lpFileName: LPCWSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;
         func CreateFileA(lpFileName: LPCSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE;
         func CreateFileW(lpFileName: LPCWSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE;
+        func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
+        func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
+
         func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
         func GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPCWSTR)->DWORD;
         func SetCurrentDirectoryA(lpPathName: LPCSTR)->BOOL;
         func SetCurrentDirectoryW(lpPathName: LPCWSTR)->BOOL;
-        func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
-        func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
         func GetFullPathNameA(lpFileName: LPCSTR, nBufferLength: DWORD, lpBuffer: LPSTR, lpFilePart: *LPSTR)->DWORD;
         func GetFullPathNameW(lpFileName: LPCTSTR, nBufferLength: DWORD, lpBuffer: LPWSTR, lpFilePart: *LPWSTR)->DWORD;
     }
@@ -389,6 +391,18 @@ namespace priv
 
 #[swag.inline]
 {
+    func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION) throw
+    {
+        if !priv.CreateProcessA(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation)
+            try setError(GetLastError())
+    }
+
+    func CreateProcessW(lpApplicationName: LPCWSTR, lpCommandLine: LPCWSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCWSTR, lpStartupInfo: *STARTUPINFOW, lpProcessInformation: *PROCESS_INFORMATION) throw
+    {
+        if !priv.CreateProcessW(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation)
+            try setError(GetLastError())
+    }
+
     func GetFileAttributesA(lpFileName: LPCSTR)->DWORD throw
     {
         attributes := priv.GetFileAttributesA(lpFileName)
