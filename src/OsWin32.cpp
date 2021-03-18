@@ -217,32 +217,49 @@ namespace OS
                             tokenize(oneLine, ':', tokens);
                             for (auto& t : tokens)
                                 t.trim();
-                            auto fileName = tokens[1] + ":";
-                            fileName += tokens[2];
-                            auto sourceFile = module->findFile(fileName);
-                            if (!sourceFile)
-                                sourceFile = g_Workspace.bootstrapModule->findFile(fileName);
-                            if (!sourceFile)
-                                sourceFile = g_Workspace.runtimeModule->findFile(fileName);
-                            if (sourceFile && tokens.size() == 6) // error: drive letter: path: line: column: message
+                            if (tokens.size() <= 2)
                             {
-                                SourceLocation startLoc;
-                                startLoc.line         = atoi(tokens[tokens.size() - 3]) - 1;
-                                startLoc.column       = atoi(tokens[tokens.size() - 2]) - 1;
-                                SourceLocation endLoc = startLoc;
-                                auto           msg    = tokens.back();
-                                msg                   = "error during native execution, " + msg;
-                                Diagnostic diag({sourceFile, startLoc, endLoc, msg});
-                                sourceFile->report(diag);
+                                // User message error: just log as a normal message
+                                if (logAll)
+                                {
+                                    g_Log.lock();
+                                    g_Log.setColor(logColor);
+                                    if (logPrefix)
+                                        g_Log.print(logPrefix);
+                                    g_Log.print(oneLine + "\n");
+                                    g_Log.setDefaultColor();
+                                    g_Log.unlock();
+                                }
                             }
                             else
                             {
-                                numErrors++;
-                                g_Log.lock();
-                                g_Log.setColor(LogColor::Red);
-                                g_Log.print(oneLine + "\n");
-                                g_Log.setDefaultColor();
-                                g_Log.unlock();
+                                auto fileName = tokens[1] + ":";
+                                fileName += tokens[2];
+                                auto sourceFile = module->findFile(fileName);
+                                if (!sourceFile)
+                                    sourceFile = g_Workspace.bootstrapModule->findFile(fileName);
+                                if (!sourceFile)
+                                    sourceFile = g_Workspace.runtimeModule->findFile(fileName);
+                                if (sourceFile && tokens.size() == 6) // error: drive letter: path: line: column: message
+                                {
+                                    SourceLocation startLoc;
+                                    startLoc.line         = atoi(tokens[tokens.size() - 3]) - 1;
+                                    startLoc.column       = atoi(tokens[tokens.size() - 2]) - 1;
+                                    SourceLocation endLoc = startLoc;
+                                    auto           msg    = tokens.back();
+                                    msg                   = "error during native execution, " + msg;
+                                    Diagnostic diag({sourceFile, startLoc, endLoc, msg});
+                                    sourceFile->report(diag);
+                                }
+                                else
+                                {
+                                    numErrors++;
+                                    g_Log.lock();
+                                    g_Log.setColor(LogColor::Red);
+                                    g_Log.print(oneLine + "\n");
+                                    g_Log.setDefaultColor();
+                                    g_Log.unlock();
+                                }
                             }
                         }
                         else
