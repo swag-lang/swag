@@ -8,7 +8,16 @@
 
 bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
+    auto node       = CastAst<AstInline>(context->node, AstNodeKind::Inline);
+    auto returnType = node->func->returnType->typeInfo;
+
+    // Missing try/catch...
+    auto parent = node->parent;
+    if (parent->kind == AstNodeKind::Identifier && parent->parent)
+        parent = parent->parent;
+    if (parent->kind == AstNodeKind::IdentifierRef && parent->parent)
+        parent = parent->parent;
+    SWAG_CHECK(checkCatchError(context, node, node->func, parent, node->func->typeInfo));
 
     // Reserve registers for return value
     reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());
@@ -17,7 +26,6 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     // If the inline returns a copy, then initialize the register with the address of the temporary
     // variable on the stack, so that the inline block can copy it's result to it. Of course, this is
     // not the top for speed, but anyway there's room for improvement for inline in all cases.
-    auto returnType = node->func->returnType->typeInfo;
     if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);

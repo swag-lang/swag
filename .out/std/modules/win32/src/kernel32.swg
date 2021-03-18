@@ -373,9 +373,27 @@ struct PROCESS_INFORMATION
     func FindNextFileW(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAW)->BOOL;
     func FindClose(hFindFile: HANDLE)->BOOL;
     func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
+    //func GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPCWSTR)->DWORD;
     func SetCurrentDirectoryA(lpPathName: LPCSTR)->BOOL;
-    func GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPCWSTR)->DWORD;
     func SetCurrentDirectoryW(lpPathName: LPCWSTR)->BOOL;
     func GetFullPathNameA(lpFileName: LPCSTR, nBufferLength: DWORD, lpBuffer: LPSTR, lpFilePart: *LPSTR)->DWORD;
     func GetFullPathNameW(lpFileName: LPCTSTR, nBufferLength: DWORD, lpBuffer: LPWSTR, lpFilePart: *LPWSTR)->DWORD;
+}
+
+namespace priv
+{
+    #[swag.foreign("kernel32")]
+    {
+        func GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPCWSTR)->DWORD;
+    }
+}
+
+#[swag.inline]
+{
+    func GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPCWSTR)->DWORD throw
+    {
+        length := priv.GetCurrentDirectoryW(nBufferLength, lpBuffer)
+        if !length try setError(GetLastError())
+        return length
+    }
 }

@@ -819,6 +819,31 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
     accParams.clear();
 }
 
+bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc)
+{
+    bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
+    if (raiseErrors &&
+        parent->kind != AstNodeKind::Try &&
+        parent->kind != AstNodeKind::Catch &&
+        parent->kind != AstNodeKind::Assume &&
+        parent->kind != AstNodeKind::Alias)
+    {
+        return context->report({callNode, callNode->token, format("uncatched error when calling '%s'", funcNode->token.text.c_str())});
+    }
+
+    if (!raiseErrors)
+    {
+        if (parent->kind == AstNodeKind::Try ||
+            parent->kind == AstNodeKind::Catch ||
+            parent->kind == AstNodeKind::Assume)
+        {
+            return context->report({parent, format("'%s' can only be used before a call that can raise errors", parent->token.text.c_str())});
+        }
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool freeRegistersParams)
 {
     AstNode*          node         = context->node;
@@ -839,28 +864,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         return true;
 
     // Error, check validity.
-    bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
-    if (raiseErrors &&
-        node->parent->parent->kind != AstNodeKind::Try &&
-        node->parent->parent->kind != AstNodeKind::Catch &&
-        node->parent->parent->kind != AstNodeKind::Assume &&
-        node->parent->parent->kind != AstNodeKind::Alias)
-    {
-        if (funcNode)
-            return context->report({node, node->token, format("uncatched error when calling function '%s'", node->token.text.c_str())});
-        else
-            return context->report({node, node->token, format("uncatched error when calling lambda '%s'", node->token.text.c_str())});
-    }
-
-    if (!raiseErrors)
-    {
-        if (node->parent->parent->kind == AstNodeKind::Try ||
-            node->parent->parent->kind == AstNodeKind::Catch ||
-            node->parent->parent->kind == AstNodeKind::Assume)
-        {
-            return context->report({node->parent->parent, format("'%s' can only be used before a function call that can raise errors", node->parent->parent->token.text.c_str())});
-        }
-    }
+    SWAG_CHECK(checkCatchError(context, node, node, node->parent->parent, typeInfoFunc));
 
     int precallStack  = 0;
     int numCallParams = allParams ? (int) allParams->childs.size() : 0;
