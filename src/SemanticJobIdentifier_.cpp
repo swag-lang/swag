@@ -855,10 +855,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 if (identifier->childParentIdx == identifier->identifierRef->childs.size() - 1)
                 {
                     Diagnostic diag(identifier, identifier->token, format("unused return value of function '%s'", overload->node->token.text.c_str()));
-                    Diagnostic note(overload->node, overload->node->token, "this is the definition", DiagnosticLevel::Note);
+                    Diagnostic note(overload->node, overload->node->token, "this is the function", DiagnosticLevel::Note);
                     return context->report(diag, &note);
                 }
             }
+        }
+        else if (returnType->isNative(NativeTypeKind::Void) && (identifier->flags & AST_DISCARD))
+        {
+            Diagnostic diag(identifier, identifier->token, "cannot discard a function call that returns nothing");
+            Diagnostic note(overload->node, overload->node->token, "this is the function", DiagnosticLevel::Note);
+            return context->report(diag, &note);
         }
 
         if (overload->node->mustInline() && !(identifier->flags & AST_NO_INLINE))

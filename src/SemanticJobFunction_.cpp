@@ -463,6 +463,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // The function wants to return something, but has the 'swag.noreturn' attribute
     if (!typeNode->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
         return context->report({typeNode, "function cannot have a return type because it is flagged with the 'swag.noreturn' attribute"});
+    if (typeNode->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_AUTO_DISCARD)
+        return context->report({funcNode, funcNode->token, "function cannot have the 'swag.autodiscard' attribute because it returns nothing"});
 
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
