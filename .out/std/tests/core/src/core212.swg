@@ -16,7 +16,7 @@ func winProc(hwnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     wc.lpfnWndProc = autocast @mkcallback(&winProc)
     wc.hInstance = GetModuleHandleA(null)
     wc.lpszClassName = @dataof("CLASS_NAME")
-    hw := RegisterClassA(wc)
+    discard RegisterClassA(wc)
 
     hwnd := CreateWindowExA(
         0,

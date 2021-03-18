@@ -88,7 +88,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
                 break
         }
 
-        hw := FindClose(h)
+        discard FindClose(h)
     }
 
     return result

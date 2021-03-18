@@ -35,7 +35,7 @@ impl Timer
     func release(using self)
     {
         if !handle return
-        hw := DeleteTimerQueueTimer(null, handle, null)
+        discard DeleteTimerQueueTimer(null, handle, null)
         handle = null
     }
 }

@@ -176,7 +176,7 @@ public func waitJob(job: *Job)
     g_mutexPendingJobs.unlock()
     while !job.testState(JobState.Done)
     {
-        r := peekExecJob()
+        discard peekExecJob()
     }
 }
 

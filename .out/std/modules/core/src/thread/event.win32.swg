@@ -39,20 +39,20 @@ impl Event
     func signal(using self)
     {
         debug.assert(isValid())
-        hw := SetEvent(handle)
+        discard SetEvent(handle)
     }
 
     // Reset the event state
     func reset(using self)
     {
         debug.assert(isValid())
-        hw := ResetEvent(handle)
+        discard ResetEvent(handle)
     }
 
     // Wait for the event to be signaled
     func wait(using self)
     {
         debug.assert(isValid())
-        hw := WaitForSingleObject(handle, INFINITE)
+        discard WaitForSingleObject(handle, INFINITE)
     }
 }
