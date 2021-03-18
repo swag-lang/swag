@@ -246,6 +246,14 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         }
 
         // Useless pop/push
+        if (ip[0].op == ByteCodeOp::InternalPushErr &&
+            ip[1].op == ByteCodeOp::InternalPopErr)
+        {
+            setNop(context, ip);
+            setNop(context, ip + 1);
+        }
+
+        // Useless pop/push
         if (ip[0].op == ByteCodeOp::PopRR &&
             ip[1].op == ByteCodeOp::PushRR)
         {

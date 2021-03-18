@@ -424,20 +424,20 @@ namespace priv
     }
 
     #[autodiscard]
-    func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD //throw
+    func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD throw
     {
         res := priv.WaitForSingleObject(hHandle, dwMilliseconds)
-        //if res == WAIT_FAILED
-        //   try setError(GetLastError())
+        if res == WAIT_FAILED
+            try setError(GetLastError())
         return res
     }
 
     #[autodiscard]
-    func WaitForMultipleObjects(nCount: DWORD, lpHandles: const *HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD //throw
+    func WaitForMultipleObjects(nCount: DWORD, lpHandles: const *HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD throw
     {
         res := priv.WaitForMultipleObjects(nCount, lpHandles, bWaitAll, dwMilliseconds)
-        //if res == WAIT_FAILED
-        //    try setError(GetLastError())
+        if res == WAIT_FAILED
+            try setError(GetLastError())
         return res
     }
 

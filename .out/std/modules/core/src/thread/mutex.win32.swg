@@ -37,7 +37,7 @@ impl Mutex
     func tryLock(using self)->bool
     {
         debug.assert(isValid())
-        res := WaitForSingleObject(handle, 0)
+        res := assume WaitForSingleObject(handle, 0)
         return res == WAIT_TIMEOUT
     }
 
@@ -45,7 +45,7 @@ impl Mutex
     func lock(using self)
     {
         debug.assert(isValid())
-        WaitForSingleObject(handle, INFINITE)
+        assume WaitForSingleObject(handle, INFINITE)
     }
 
     // Unlock mutex

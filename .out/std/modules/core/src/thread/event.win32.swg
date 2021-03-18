@@ -51,6 +51,6 @@ impl Event
     func wait(using self)
     {
         debug.assert(isValid())
-        WaitForSingleObject(handle, INFINITE)
+        assume WaitForSingleObject(handle, INFINITE)
     }
 }

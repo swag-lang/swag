@@ -42,7 +42,7 @@ func wait(threads: *Thread...)
             handles[i] = threads[i].handle
         }
 
-        WaitForMultipleObjects(toTreat, &handles[0], TRUE, INFINITE)
+        assume WaitForMultipleObjects(toTreat, &handles[0], TRUE, INFINITE)
         total -= toTreat
     }
 
@@ -107,7 +107,7 @@ impl Thread
     func wait(using self)
     {
         debug.assert(isValid())
-        WaitForSingleObject(handle, INFINITE)
+        assume WaitForSingleObject(handle, INFINITE)
         CloseHandle(handle)
         handle = null
     }
@@ -116,7 +116,7 @@ impl Thread
     func isDone(using self)->bool
     {
         debug.assert(isValid())
-        res := WaitForSingleObject(handle, 0)
+        res := assume WaitForSingleObject(handle, 0)
         return res != WAIT_TIMEOUT
     }
 }
