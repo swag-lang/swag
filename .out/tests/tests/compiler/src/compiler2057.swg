@@ -1,4 +1,4 @@
-#[swag.optreturn]
+#[swag.autodiscard]
 func itoa(result: *u8, value: s64)->*u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"

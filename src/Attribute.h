@@ -40,7 +40,7 @@ static const uint64_t ATTRIBUTE_SHARP_FUNC          = 0x0000000400000000;
 static const uint64_t ATTRIBUTE_SAFETY_OFF_OPERATOR = 0x0000000800000000;
 static const uint64_t ATTRIBUTE_NO_COPY             = 0x0000001000000000;
 static const uint64_t ATTRIBUTE_IMPLICIT            = 0x0000002000000000;
-static const uint64_t ATTRIBUTE_OPT_RETURN          = 0x0000004000000000;
+static const uint64_t ATTRIBUTE_AUTO_DISCARD          = 0x0000004000000000;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
