@@ -328,12 +328,9 @@ struct PROCESS_INFORMATION
 
     func Sleep(dwMilliseconds: DWORD);
     func SleepEx(dwMilliseconds: DWORD, bAltertable: BOOL);
-    func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: const *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE;
-    func SetThreadPriority(hThread: HANDLE, nPriority: s32)->BOOL;
     func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD;
     func WaitForMultipleObjects(nCount: DWORD, lpHandles: const *HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD;
     func ExitProcess(uExitCode: UINT);
-    func ResumeThread(hThread: HANDLE)->DWORD;
     func SwitchToThread()->BOOL;
     func GetCurrentThreadId()->DWORD;
     func GetCurrentThread()->HANDLE;
@@ -363,6 +360,10 @@ namespace priv
 {
     #[swag.foreign("kernel32")]
     {
+        func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: const *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE;
+        func ResumeThread(hThread: HANDLE)->DWORD;
+        func SetThreadPriority(hThread: HANDLE, nPriority: s32)->BOOL;
+
         func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
         func CreateProcessW(lpApplicationName: LPCWSTR, lpCommandLine: LPCWSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCWSTR, lpStartupInfo: *STARTUPINFOW, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
         func CreateEventA(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCSTR)->HANDLE;
@@ -391,6 +392,29 @@ namespace priv
 
 #[swag.inline]
 {
+    func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: const *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE throw
+    {
+        h := priv.CreateThread(lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
+        if h == null
+            try win32.setError(GetLastError())
+        return h
+    }
+
+    #[swag.autodiscard]
+    func ResumeThread(hThread: HANDLE)->DWORD throw
+    {
+        res := priv.ResumeThread(hThread)
+        if res == bitcast(DWORD) -1
+            try setError(GetLastError())
+        return res
+    }
+
+    func SetThreadPriority(hThread: HANDLE, nPriority: s32) throw
+    {
+        if !priv.SetThreadPriority(hThread, nPriority)
+            try setError(GetLastError())
+    }
+
     func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION) throw
     {
         if !priv.CreateProcessA(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation)

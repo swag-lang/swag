@@ -64,12 +64,9 @@ impl Thread
 
         context = :@getcontext()
 
-        h := CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
-        if h == null
-            try win32.setError(GetLastError())
-
+        handle = try CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
         userLambda = lambda
-        handle = h
+
         self.userParam = #scopefct.userParam
         try setPriority(#scopefct.priority)
     }
@@ -78,8 +75,7 @@ impl Thread
     func start(using self) throw
     {
         debug.assert(isValid())
-        if ResumeThread(handle) == bitcast(DWORD) -1
-            try win32.setError(GetLastError())
+        try ResumeThread(handle)
     }
 
     // Set the thread priority
@@ -103,8 +99,7 @@ impl Thread
             case Highest:       wprio = THREAD_PRIORITY_HIGHEST
         }
 
-        if !SetThreadPriority(handle, THREAD_PRIORITY_LOWEST)
-            try win32.setError(GetLastError())
+        try SetThreadPriority(handle, THREAD_PRIORITY_LOWEST)
     }
 
     // Wait for the given thread to be done, and close it
