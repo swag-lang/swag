@@ -115,6 +115,5 @@ func getCurrent()->String throw
 func setCurrent(dirname: string) throw
 {
     winPath := path.toWin16(dirname)
-    if !SetCurrentDirectoryA(@dataof(winPath))
-        try win32.setError(GetLastError())
+    try SetCurrentDirectoryW(@dataof(winPath))
 }
