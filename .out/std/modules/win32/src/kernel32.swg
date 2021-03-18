@@ -1,5 +1,6 @@
 #global export
 #global foreignlib "kernel32"
+using swag
 
 alias HANDLE = 			const *void
 alias HLOCAL = 			HANDLE
@@ -115,7 +116,10 @@ const LANG_ENGLISH      = 0x09
 const SUBLANG_DEFAULT   = 0x01
 func MAKELANGID(p, s: WORD) => (s << 10) | p
 
-const WAIT_TIMEOUT = 258
+const WAIT_OBJECT_0     = 0x00000000
+const WAIT_ABANDONED    = 0x00000080
+const WAIT_TIMEOUT      = 0x00000102
+const WAIT_FAILED       = 0xFFFFFFFF
 
 const THREAD_PRIORITY_LOWEST        = -2
 const THREAD_PRIORITY_BELOW_NORMAL  = -1
@@ -296,7 +300,12 @@ struct PROCESS_INFORMATION
     dwThreadId:     DWORD
 }
 
-#[swag.foreign("kernel32")]
+#[foreign("kernel32"), autodiscard]
+{
+    func SwitchToThread()->BOOL;
+}
+
+#[foreign("kernel32")]
 {
     func GetLastError()->DWORD;
     func FormatMessageA(dwFlags : DWORD, lpSource : LPCVOID, dwMessageId : DWORD, dwLanguageId : DWORD, lpBuffer: LPCSTR, nSize: DWORD, Arguments: *va_list)->DWORD;
@@ -328,10 +337,7 @@ struct PROCESS_INFORMATION
 
     func Sleep(dwMilliseconds: DWORD);
     func SleepEx(dwMilliseconds: DWORD, bAltertable: BOOL);
-    func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD;
-    func WaitForMultipleObjects(nCount: DWORD, lpHandles: const *HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD;
     func ExitProcess(uExitCode: UINT);
-    func SwitchToThread()->BOOL;
     func GetCurrentThreadId()->DWORD;
     func GetCurrentThread()->HANDLE;
     func ReleaseMutex(hMutex: HANDLE)->BOOL;
@@ -358,11 +364,13 @@ struct PROCESS_INFORMATION
 
 namespace priv
 {
-    #[swag.foreign("kernel32")]
+    #[foreign("kernel32")]
     {
         func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: const *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE;
         func ResumeThread(hThread: HANDLE)->DWORD;
         func SetThreadPriority(hThread: HANDLE, nPriority: s32)->BOOL;
+        func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD;
+        func WaitForMultipleObjects(nCount: DWORD, lpHandles: const *HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD;
 
         func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
         func CreateProcessW(lpApplicationName: LPCWSTR, lpCommandLine: LPCWSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCWSTR, lpStartupInfo: *STARTUPINFOW, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
@@ -390,7 +398,7 @@ namespace priv
     }
 }
 
-#[swag.inline]
+#[inline]
 {
     func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: const *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE throw
     {
@@ -400,7 +408,7 @@ namespace priv
         return h
     }
 
-    #[swag.autodiscard]
+    #[autodiscard]
     func ResumeThread(hThread: HANDLE)->DWORD throw
     {
         res := priv.ResumeThread(hThread)
@@ -413,6 +421,24 @@ namespace priv
     {
         if !priv.SetThreadPriority(hThread, nPriority)
             try setError(GetLastError())
+    }
+
+    #[autodiscard]
+    func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD //throw
+    {
+        res := priv.WaitForSingleObject(hHandle, dwMilliseconds)
+        //if res == WAIT_FAILED
+        //   try setError(GetLastError())
+        return res
+    }
+
+    #[autodiscard]
+    func WaitForMultipleObjects(nCount: DWORD, lpHandles: const *HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD //throw
+    {
+        res := priv.WaitForMultipleObjects(nCount, lpHandles, bWaitAll, dwMilliseconds)
+        //if res == WAIT_FAILED
+        //    try setError(GetLastError())
+        return res
     }
 
     func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION) throw
@@ -537,7 +563,7 @@ namespace priv
         return h
     }
 
-    #[swag.autodiscard]
+    #[autodiscard]
     func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD throw
     {
         low := priv.SetFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod)
@@ -554,7 +580,7 @@ namespace priv
         return low
     }
 
-    #[swag.autodiscard]
+    #[autodiscard]
     func GetFullPathNameA(lpFileName: LPCSTR, nBufferLength: DWORD, lpBuffer: LPSTR, lpFilePart: *LPSTR)->DWORD throw
     {
         res := priv.GetFullPathNameA(lpFileName, nBufferLength, lpBuffer, lpFilePart)
@@ -563,7 +589,7 @@ namespace priv
         return res
     }
 
-    #[swag.autodiscard]
+    #[autodiscard]
     func GetFullPathNameW(lpFileName: LPCTSTR, nBufferLength: DWORD, lpBuffer: LPWSTR, lpFilePart: *LPWSTR)->DWORD throw
     {
         res := priv.GetFullPathNameW(lpFileName, nBufferLength, lpBuffer, lpFilePart)

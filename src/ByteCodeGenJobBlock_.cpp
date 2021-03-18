@@ -19,6 +19,15 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         parent = parent->parent;
     SWAG_CHECK(checkCatchError(context, node, node->func, parent, node->func->typeInfo));
 
+    // Clear current error
+    if (node->func->typeInfo->flags & TYPEINFO_CAN_THROW)
+    {
+        RegisterList r0 = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::ClearRA, r0);
+        emitInstruction(context, ByteCodeOp::IntrinsicSetErr, r0, r0);
+        freeRegisterRC(context, r0);
+    }
+
     // Reserve registers for return value
     reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());
     node->parent->resultRegisterRC = node->resultRegisterRC;

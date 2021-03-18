@@ -12,7 +12,7 @@ func sleep(ms: u32)
 // Sleep the current thread for a given amount of milliseconds
 func yield()
 {
-    discard SwitchToThread()
+    SwitchToThread()
 }
 
 #[swag.callback]
@@ -42,7 +42,7 @@ func wait(threads: *Thread...)
             handles[i] = threads[i].handle
         }
 
-        discard WaitForMultipleObjects(toTreat, &handles[0], TRUE, INFINITE)
+        WaitForMultipleObjects(toTreat, &handles[0], TRUE, INFINITE)
         total -= toTreat
     }
 
@@ -107,7 +107,7 @@ impl Thread
     func wait(using self)
     {
         debug.assert(isValid())
-        discard WaitForSingleObject(handle, INFINITE)
+        WaitForSingleObject(handle, INFINITE)
         CloseHandle(handle)
         handle = null
     }
@@ -116,6 +116,7 @@ impl Thread
     func isDone(using self)->bool
     {
         debug.assert(isValid())
-        return WaitForSingleObject(handle, 0) != WAIT_TIMEOUT
+        res := WaitForSingleObject(handle, 0)
+        return res != WAIT_TIMEOUT
     }
 }
