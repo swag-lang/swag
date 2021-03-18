@@ -124,17 +124,13 @@ func getAbsolute(fullname: string)->String throw
     tmpArr.reserve(100)
 
     winPath := path.toWin16(fullname)
-    res := cast(uint) GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
-    if res == 0
-        try win32.setError(GetLastError())
+    res := cast(uint) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
 
     // No enough room in destination, give it another try
     if(res >= 100)
     {
         tmpArr.reserve(res + 1)
-        res = cast(uint) GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
-        if res == 0
-            try win32.setError(GetLastError())
+        res = cast(uint) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
     }
 
     tmpArr.count = res

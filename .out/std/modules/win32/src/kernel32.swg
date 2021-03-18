@@ -364,8 +364,6 @@ struct PROCESS_INFORMATION
     func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL;
     func FindNextFileW(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAW)->BOOL;
     func FindClose(hFindFile: HANDLE)->BOOL;
-    func GetFullPathNameA(lpFileName: LPCSTR, nBufferLength: DWORD, lpBuffer: LPSTR, lpFilePart: *LPSTR)->DWORD;
-    func GetFullPathNameW(lpFileName: LPCTSTR, nBufferLength: DWORD, lpBuffer: LPWSTR, lpFilePart: *LPWSTR)->DWORD;
 }
 
 namespace priv
@@ -384,6 +382,8 @@ namespace priv
         func SetCurrentDirectoryW(lpPathName: LPCWSTR)->BOOL;
         func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
         func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
+        func GetFullPathNameA(lpFileName: LPCSTR, nBufferLength: DWORD, lpBuffer: LPSTR, lpFilePart: *LPSTR)->DWORD;
+        func GetFullPathNameW(lpFileName: LPCTSTR, nBufferLength: DWORD, lpBuffer: LPWSTR, lpFilePart: *LPWSTR)->DWORD;
     }
 }
 
@@ -476,5 +476,23 @@ namespace priv
         if low == INVALID_FILE_SIZE
             try setError(GetLastError())
         return low
+    }
+
+    #[swag.autodiscard]
+    func GetFullPathNameA(lpFileName: LPCSTR, nBufferLength: DWORD, lpBuffer: LPSTR, lpFilePart: *LPSTR)->DWORD throw
+    {
+        res := priv.GetFullPathNameA(lpFileName, nBufferLength, lpBuffer, lpFilePart)
+        if !res
+            try setError(GetLastError())
+        return res
+    }
+
+    #[swag.autodiscard]
+    func GetFullPathNameW(lpFileName: LPCTSTR, nBufferLength: DWORD, lpBuffer: LPWSTR, lpFilePart: *LPWSTR)->DWORD throw
+    {
+        res := priv.GetFullPathNameW(lpFileName, nBufferLength, lpBuffer, lpFilePart)
+        if !res
+            try setError(GetLastError())
+        return res
     }
 }
