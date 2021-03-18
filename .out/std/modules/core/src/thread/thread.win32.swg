@@ -66,7 +66,7 @@ impl Thread
 
         h := CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
         if h == null
-            try error.setErrorWin32(GetLastError())
+            try win32.setError(GetLastError())
 
         userLambda = lambda
         handle = h
@@ -79,7 +79,7 @@ impl Thread
     {
         debug.assert(isValid())
         if ResumeThread(handle) == bitcast(DWORD) -1
-            try error.setErrorWin32(GetLastError())
+            try win32.setError(GetLastError())
     }
 
     // Set the thread priority
@@ -104,7 +104,7 @@ impl Thread
         }
 
         if !SetThreadPriority(handle, THREAD_PRIORITY_LOWEST)
-            try error.setErrorWin32(GetLastError())
+            try win32.setError(GetLastError())
     }
 
     // Wait for the given thread to be done, and close it

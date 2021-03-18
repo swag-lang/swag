@@ -58,7 +58,7 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     winPath := path.toWin16(fullname)
     hFile := CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
     if hFile == INVALID_HANDLE_VALUE
-        try error.setErrorWin32(GetLastError())
+        try win32.setError(GetLastError())
 
     result.name    = fullname
     result.handle  = cast(FileHandle) hFile
@@ -105,7 +105,7 @@ func getSize(stream: FileStream)->u64 throw
     high  := 0'u32
     low   := GetFileSize(hFile, &high)
     if low == INVALID_FILE_SIZE
-        try error.setErrorWin32(GetLastError())
+        try win32.setError(GetLastError())
 
     return low + (cast(u64) high << 32)
 }
@@ -120,7 +120,7 @@ func getPosition(stream: FileStream)->u64 throw
     high  := 0
     low   := SetFilePointer(hFile, 0, &high, FILE_CURRENT)
     if low == INVALID_SET_FILE_POINTER
-        try error.setErrorWin32(GetLastError())
+        try win32.setError(GetLastError())
 
     return low + (cast(u64) high << 32)
 }
@@ -146,5 +146,5 @@ func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64) throw
 
     success := SetFilePointer(hFile, low, &high, seekMode)
     if success == INVALID_SET_FILE_POINTER
-        try error.setErrorWin32(GetLastError())
+        try win32.setError(GetLastError())
 }

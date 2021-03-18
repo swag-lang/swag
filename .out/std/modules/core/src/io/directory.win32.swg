@@ -100,7 +100,7 @@ func getCurrent()->String throw
     var result: retval
     length := GetCurrentDirectoryW(0, null)
     if !length
-        try error.setErrorWin32(GetLastError())
+        try win32.setError(GetLastError())
 
     var arr16: Array'u16
     arr16.allocator = @getcontext().tempAllocator
@@ -118,5 +118,5 @@ func setCurrent(dirname: string) throw
 {
     winPath := path.toWin16(dirname)
     if !SetCurrentDirectoryA(@dataof(winPath))
-        try error.setErrorWin32(GetLastError())
+        try win32.setError(GetLastError())
 }

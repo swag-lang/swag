@@ -24,7 +24,7 @@ impl Event
         debug.assert(handle == null)
         handle = CreateEventA(null, manual ? TRUE : FALSE, initState ? TRUE : FALSE, null)
         if !handle
-            try error.setErrorWin32(GetLastError())
+            try win32.setError(GetLastError())
     }
 
     // Destroy an existing event
