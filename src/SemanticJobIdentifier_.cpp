@@ -849,8 +849,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Check return value
         if (!returnType->isNative(NativeTypeKind::Void) && !(overload->node->attributeFlags & ATTRIBUTE_AUTO_DISCARD) && !(identifier->flags & AST_DISCARD))
         {
-            if (identifier->identifierRef->parent->kind == AstNodeKind::Statement ||
-                identifier->identifierRef->parent->kind == AstNodeKind::StatementNoScope)
+            auto checkParent = identifier->identifierRef->parent;
+            if (checkParent->kind == AstNodeKind::Try || checkParent->kind == AstNodeKind::Catch || checkParent->kind == AstNodeKind::Assume)
+                checkParent = checkParent->parent;
+            if (checkParent->kind == AstNodeKind::Statement ||
+                checkParent->kind == AstNodeKind::StatementNoScope)
             {
                 if (identifier->childParentIdx == identifier->identifierRef->childs.size() - 1)
                 {
