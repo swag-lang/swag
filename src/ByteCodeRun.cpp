@@ -1636,6 +1636,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         OS::tlsSetValue(g_tlsContextId, (void*) registersRC[ip->a.u32].pointer);
         break;
     }
+
     case ByteCodeOp::IntrinsicSetErr:
     {
         auto bc = g_Workspace.runtimeModule->getRuntimeFct("@seterr");
@@ -1654,12 +1655,25 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         }
         else
         {
-            registersRC[ip->a.u32].pointer = cxt->errorMsg;
+            registersRC[ip->a.u32].pointer = cxt->errorMsg + cxt->errorMsgStart;
             registersRC[ip->b.u32].u64     = cxt->errorMsgLen;
         }
 
         break;
     }
+    case ByteCodeOp::PushErr:
+    {
+        auto bc = g_Workspace.runtimeModule->getRuntimeFct("__pusherr");
+        localCall(context, bc, 0);
+        break;
+    }
+    case ByteCodeOp::PopErr:
+    {
+        auto bc = g_Workspace.runtimeModule->getRuntimeFct("__poperr");
+        localCall(context, bc, 0);
+        break;
+    }
+
     case ByteCodeOp::IntrinsicPrintF64:
     {
         auto bc = g_Workspace.runtimeModule->getRuntimeFct("__printF64");

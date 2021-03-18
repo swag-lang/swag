@@ -215,14 +215,13 @@ func @seterr(value: string)
     if value == null
     {
         cxt.errorMsgLen = 0
-        cxt.traceIndex = 0
     }
     else
     {
         len := @countof(value)
         if len > swag.MaxLenErrorMsg
             len = swag.MaxLenErrorMsg
-        @memcpy(&cxt.errorMsg[0], @dataof(value), len)
+        @memcpy(&cxt.errorMsg[cxt.errorMsgStart], @dataof(value), len)
         cxt.errorMsgLen = cast(u32) len
     }
 }
@@ -231,8 +230,50 @@ func __geterr()->string
 {
     cxt := @getcontext()
     if cxt.errorMsgLen == 0 return null
-    return @mkstring(&cxt.errorMsg[0], cxt.errorMsgLen)
+    return @mkstring(&cxt.errorMsg[cxt.errorMsgStart], cxt.errorMsgLen)
 }
+
+// Store the current error length after the string, and set
+// the new cxt.errorMsgStart after that
+func __pusherr()
+{
+    cxt := @getcontext()
+    @assert(cxt.errorMsgLen != 0)
+    ptr := cast(*u32) (&cxt.errorMsg[cxt.errorMsgStart] + cxt.errorMsgLen)
+    ptr[0] = cxt.errorMsgLen
+    ptr[1] = cxt.traceIndex
+    cxt.errorMsgStart += cxt.errorMsgLen + 8
+    cxt.errorMsgLen = 0
+}
+
+// Get the previous error length from the buffer (the u32 just before
+// cxt.errorMsgStart), and restore the previous error length and start
+func __poperr()
+{
+    cxt := @getcontext()
+    @assert(cxt.errorMsgStart > 8)
+    ptr := cast(*u32) (&cxt.errorMsg[cxt.errorMsgStart] - 8)
+    cxt.errorMsgLen = ptr[0]
+    cxt.traceIndex = ptr[1]
+    cxt.errorMsgStart -= (cxt.errorMsgLen + 8)
+}
+
+////////////////////////////////////////////////////////////
+func __initStackTrace()
+{
+    cxt := @getcontext()
+    cxt.traceIndex = 0
+}
+
+func __stackTrace(loc: swag.CompilerSourceLocation)
+{
+    cxt := @getcontext()
+    if cxt.traceIndex >= swag.MaxTrace
+        return
+    cxt.trace[cxt.traceIndex] = loc
+    cxt.traceIndex = cxt.traceIndex + 1
+}
+
 
 ////////////////////////////////////////////////////////////
 func @panic(message: string, loc: swag.CompilerSourceLocation)
@@ -310,22 +351,6 @@ func @panic(message: string, loc: swag.CompilerSourceLocation)
     str[len] = 0
 
     __panicBox(cast(string) str, title)
-}
-
-////////////////////////////////////////////////////////////
-func __initStackTrace()
-{
-    cxt := @getcontext()
-    cxt.traceIndex = 0
-}
-
-func __stackTrace(loc: swag.CompilerSourceLocation)
-{
-    cxt := @getcontext()
-    if cxt.traceIndex >= swag.MaxTrace
-        return
-    cxt.trace[cxt.traceIndex] = loc
-    cxt.traceIndex = cxt.traceIndex + 1
 }
 
 ////////////////////////////////////////////////////////////

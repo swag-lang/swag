@@ -3038,6 +3038,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
+        case ByteCodeOp::PushErr:
+            emitCall(pp, "__pusherr");
+            break;
+        case ByteCodeOp::PopErr:
+            emitCall(pp, "__poperr");
+            break;
+
         default:
             ok = false;
             moduleToGen->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));

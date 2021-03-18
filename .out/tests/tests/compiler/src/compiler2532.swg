@@ -1,8 +1,10 @@
+//#[swag.printbc]
 func toto() throw
 {
     throw "toto"
 }
 
+//#[swag.printbc]
 func titi()->s64 throw
 {
     try toto()

@@ -39,19 +39,10 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstTryCatch>(context->node, AstNodeKind::Try, AstNodeKind::Throw);
 
-    // Trace current call
+    // Push current error context in case the leave scope triggers some errors too
     if (!(node->doneFlags & AST_DONE_STACK_TRACE))
     {
-        if (context->sourceFile->module->buildCfg.stackTrace)
-        {
-            auto r0     = reserveRegisterRC(context);
-            auto offset = computeSourceLocation(node);
-
-            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u64 = offset;
-            emitInstruction(context, ByteCodeOp::InternalStackTrace, r0);
-            freeRegisterRC(context, r0);
-        }
-
+        emitInstruction(context, ByteCodeOp::PushErr);
         node->doneFlags |= AST_DONE_STACK_TRACE;
     }
 
@@ -63,6 +54,24 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
     if (context->result != ContextResult::Done)
         return true;
     context->instructionsFlags1 = 0;
+
+    // Restore the error context, and keep error trace of current call
+    if (!(node->doneFlags & AST_DONE_STACK_TRACE1))
+    {
+        emitInstruction(context, ByteCodeOp::PopErr);
+
+        if (context->sourceFile->module->buildCfg.stackTrace)
+        {
+            auto r0     = reserveRegisterRC(context);
+            auto offset = computeSourceLocation(node);
+
+            emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u64 = offset;
+            emitInstruction(context, ByteCodeOp::InternalStackTrace, r0);
+            freeRegisterRC(context, r0);
+        }
+
+        node->doneFlags |= AST_DONE_STACK_TRACE1;
+    }
 
     TypeInfo* returnType = nullptr;
     if (node->ownerInline)
