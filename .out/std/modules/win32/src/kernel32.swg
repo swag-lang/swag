@@ -361,8 +361,6 @@ struct PROCESS_INFORMATION
     func ReadFile(hFile: HANDLE, lpBuffer: LPVOID, nNumberOfBytesToRead: DWORD, lpNumberOfBytesRead: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
     func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
     func CloseHandle(handle: HANDLE);
-    func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
-    func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
     func FileTimeToLocalFileTime(lpFileTime: const *FILETIME, lpLocalFileTime: *FILETIME)->BOOL;
     func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME)->BOOL;
     func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE;
@@ -384,6 +382,8 @@ namespace priv
         func GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPCWSTR)->DWORD;
         func SetCurrentDirectoryA(lpPathName: LPCSTR)->BOOL;
         func SetCurrentDirectoryW(lpPathName: LPCWSTR)->BOOL;
+        func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
+        func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
     }
 }
 
@@ -429,5 +429,22 @@ namespace priv
         if h == INVALID_HANDLE_VALUE
             try setError(GetLastError())
         return h
+    }
+
+    #[swag.autodiscard]
+    func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD throw
+    {
+        low := priv.SetFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod)
+        if low == INVALID_SET_FILE_POINTER
+            try setError(GetLastError())
+        return low
+    }
+
+    func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD throw
+    {
+        low := priv.GetFileSize(hFile, lpFileSizeHigh)
+        if low == INVALID_FILE_SIZE
+            try setError(GetLastError())
+        return low
     }
 }

@@ -101,10 +101,7 @@ func getSize(stream: FileStream)->u64 throw
 
     hFile := cast(HANDLE) stream.handle
     high  := 0'u32
-    low   := GetFileSize(hFile, &high)
-    if low == INVALID_FILE_SIZE
-        try win32.setError(GetLastError())
-
+    low   := try GetFileSize(hFile, &high)
     return low + (cast(u64) high << 32)
 }
 
@@ -116,10 +113,7 @@ func getPosition(stream: FileStream)->u64 throw
 
     hFile := cast(HANDLE) stream.handle
     high  := 0
-    low   := SetFilePointer(hFile, 0, &high, FILE_CURRENT)
-    if low == INVALID_SET_FILE_POINTER
-        try win32.setError(GetLastError())
-
+    low   := try SetFilePointer(hFile, 0, &high, FILE_CURRENT)
     return low + (cast(u64) high << 32)
 }
 
@@ -142,7 +136,5 @@ func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64) throw
         case End:        seekMode = FILE_END
     }
 
-    success := SetFilePointer(hFile, low, &high, seekMode)
-    if success == INVALID_SET_FILE_POINTER
-        try win32.setError(GetLastError())
+    try SetFilePointer(hFile, low, &high, seekMode)
 }
