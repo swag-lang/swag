@@ -27,8 +27,7 @@ impl Timer
         debug.assert(elapsedTimeMs > 0)
         debug.assert(lambda != null)
         userLambda = lambda
-        if !CreateTimerQueueTimer(&handle, null, @mkcallback(&timerEntry), self, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
-            try win32.setError(GetLastError())
+        try CreateTimerQueueTimer(&handle, null, @mkcallback(&timerEntry), self, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
     }
 
     // Release the timer
