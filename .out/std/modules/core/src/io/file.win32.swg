@@ -56,9 +56,7 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
         wShare |= FILE_SHARE_DELETE
 
     winPath := path.toWin16(fullname)
-    hFile := CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
-    if hFile == INVALID_HANDLE_VALUE
-        try win32.setError(GetLastError())
+    hFile := try CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
 
     result.name    = fullname
     result.handle  = cast(FileHandle) hFile
