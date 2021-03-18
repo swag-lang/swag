@@ -337,8 +337,6 @@ struct PROCESS_INFORMATION
     func SwitchToThread()->BOOL;
     func GetCurrentThreadId()->DWORD;
     func GetCurrentThread()->HANDLE;
-    func CreateMutexA(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCSTR)->HANDLE;
-    func CreateMutexW(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCWSTR)->HANDLE;
     func ReleaseMutex(hMutex: HANDLE)->BOOL;
     func CreateEventA(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCSTR)->HANDLE;
     func CreateEventW(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCWSTR)->HANDLE;
@@ -372,6 +370,8 @@ namespace priv
         func CreateProcessW(lpApplicationName: LPCWSTR, lpCommandLine: LPCWSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCWSTR, lpStartupInfo: *STARTUPINFOW, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
         func CreateEventA(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCSTR)->HANDLE;
         func CreateEventW(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCWSTR)->HANDLE;
+        func CreateMutexA(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCSTR)->HANDLE;
+        func CreateMutexW(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCWSTR)->HANDLE;
 
         func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
         func GetFileAttributesW(lpFileName: LPCWSTR)->DWORD;
@@ -416,6 +416,22 @@ namespace priv
     func CreateEventW(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCWSTR)->HANDLE throw
     {
         h := priv.CreateEventW(lpEventAttributes, bManualReset, bInitialState, lpName)
+        if !h
+            try setError(GetLastError())
+        return h
+    }
+
+    func CreateMutexA(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCSTR)->HANDLE throw
+    {
+        h := priv.CreateMutexA(lpMutexAttributes, bInitialOwner, lpName)
+        if !h
+            try setError(GetLastError())
+        return h
+    }
+
+    func CreateMutexW(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCWSTR)->HANDLE throw
+    {
+        h := priv.CreateMutexW(lpMutexAttributes, bInitialOwner, lpName)
         if !h
             try setError(GetLastError())
         return h

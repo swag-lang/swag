@@ -22,9 +22,7 @@ impl Mutex
     func init(using self) throw
     {
         debug.assert(handle == null)
-        handle = CreateMutexA(null, 0, null)
-        if !handle
-            try win32.setError(GetLastError())
+        handle = try CreateMutexA(null, 0, null)
     }
 
     // Destroy an existing mutex
