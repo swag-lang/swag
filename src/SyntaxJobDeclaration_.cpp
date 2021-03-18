@@ -359,6 +359,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdAssume:
         SWAG_CHECK(doTryCatch(parent, result));
         break;
+    case TokenId::KwdDiscard:
+        SWAG_CHECK(doDiscard(parent, result));
+        break;
     case TokenId::KwdThrow:
         SWAG_CHECK(doThrow(parent, result));
         break;

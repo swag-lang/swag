@@ -144,6 +144,28 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
     return true;
 }
 
+bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
+{
+    SWAG_CHECK(eatToken());
+    ScopedFlags sf(this, AST_DISCARD);
+
+    switch (token.id)
+    {
+    case TokenId::Identifier:
+        SWAG_CHECK(doIdentifierRef(parent));
+        break;
+    case TokenId::KwdTry:
+    case TokenId::KwdCatch:
+    case TokenId::KwdAssume:
+        SWAG_CHECK(doTryCatch(parent, result));
+        break;
+    default:
+        return syntaxError(token, format("invalid token '%s' after 'discard'", token.text.c_str()));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doTryCatch(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::KwdTry)

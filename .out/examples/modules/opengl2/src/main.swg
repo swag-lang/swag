@@ -43,7 +43,7 @@ func display()
     glDisableVertexAttribArray(0)
 
     glFlush()
-    r := SwapBuffers(hDC)
+    discard SwapBuffers(hDC)
 }
 
 #[swag.callback]
@@ -54,13 +54,13 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     case WM_PAINT:
         display()
         var ps: PAINTSTRUCT
-        hw1 := BeginPaint(hWnd, &ps)
-        hw2 := EndPaint(hWnd, &ps)
+        discard BeginPaint(hWnd, &ps)
+        discard EndPaint(hWnd, &ps)
         return 0
 
     case WM_SIZE:
 	    glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
-	    hw := PostMessageA(hWnd, WM_PAINT, 0, 0)
+	    discard PostMessageA(hWnd, WM_PAINT, 0, 0)
 	    return 0
 
     case WM_DESTROY:
@@ -77,7 +77,7 @@ func createWindow()->HWND
     wc.lpfnWndProc   = autocast @mkcallback(&winProc)
     wc.hInstance     = GetModuleHandleA(null)
     wc.lpszClassName = @dataof("CLASS_NAME")
-    hw1 := RegisterClassA(wc)
+    discard RegisterClassA(wc)
 
     hWnd := CreateWindowExA(
         0,
@@ -106,9 +106,9 @@ func createWindow()->HWND
     @assert(pf != 0)
     res := SetPixelFormat(hDC, pf, &pfd)
     @assert(res != FALSE)
-    hw2 := DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
+    discard DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
 
-    hw := ReleaseDC(hDC, hWnd)
+    discard ReleaseDC(hDC, hWnd)
     return hWnd
 }
 
@@ -121,8 +121,8 @@ func messageLoop()
         {
             if msg.message == WM_QUIT
                 return
-            tm := TranslateMessage(&msg)
-            dm := DispatchMessageA(&msg)
+            discard TranslateMessage(&msg)
+            discard DispatchMessageA(&msg)
         }
 
         display()
@@ -173,7 +173,7 @@ func createShader()
 
     hDC = GetDC(hWnd)
     hRC := wglCreateContext(hDC)
-    r := wglMakeCurrent(hDC, hRC)
+    discard wglMakeCurrent(hDC, hRC)
     glInitExtensions()
 
     glGenBuffers(1, &vertexbuffer)
@@ -182,13 +182,13 @@ func createShader()
     createShader()
 
     display()
-    hw1 := ShowWindow(hWnd, SW_SHOW)
-    hw2 := UpdateWindow(hWnd)
+    discard ShowWindow(hWnd, SW_SHOW)
+    discard UpdateWindow(hWnd)
 
     messageLoop()
 
-    hw3 := wglMakeCurrent(null, null)
-    hw4 := wglDeleteContext(hRC)
-    hw5 := ReleaseDC(hWnd, hDC)
-    hw6 := DestroyWindow(hWnd)
+    discard wglMakeCurrent(null, null)
+    discard wglDeleteContext(hRC)
+    discard ReleaseDC(hWnd, hDC)
+    discard DestroyWindow(hWnd)
 }

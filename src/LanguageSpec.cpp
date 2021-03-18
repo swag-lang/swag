@@ -94,6 +94,7 @@ void LanguageSpec::setup()
     keywords.add("catch", TokenId::KwdCatch);
     keywords.add("assume", TokenId::KwdAssume);
     keywords.add("throw", TokenId::KwdThrow);
+    keywords.add("discard", TokenId::KwdDiscard);
 
     keywords.add("uint", TokenId::NativeType);
     keywords.add("int", TokenId::NativeType);

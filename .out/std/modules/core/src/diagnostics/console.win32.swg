@@ -39,7 +39,7 @@ var g_stdOutputCurAttr: u16
     g_stdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
 
     var csbi: CONSOLE_SCREEN_BUFFER_INFO
-    hw := GetConsoleScreenBufferInfo(g_stdOutputHandle, &csbi)
+    discard GetConsoleScreenBufferInfo(g_stdOutputHandle, &csbi)
     g_stdOutputInitAttr = csbi.wAttributes
     g_stdOutputCurAttr = g_stdOutputInitAttr
 }
@@ -55,7 +55,7 @@ public func setTextColor(color: Color)
     attributes := g_colorToWin[color]
     g_stdOutputCurAttr &= BACKGROUND_MASK
     g_stdOutputCurAttr |= attributes
-    hw := SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
+    discard SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 }
 
 // Set the console background color
@@ -64,13 +64,13 @@ public func setBackColor(color: Color)
     attributes := cast(u16) (g_colorToWin[color] << 4)
     g_stdOutputCurAttr &= FOREGROUND_MASK
     g_stdOutputCurAttr |= attributes
-    hw := SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
+    discard SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 }
 
 // Restore the console colors to their default values
 public func resetColor()
 {
-    hw := SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
+    discard SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
 }
 
 // Write a message to the console
@@ -83,12 +83,12 @@ public func print(message: string, params: ...)
     {
         str := format.toString(message, params)
         len := cast(u32) @countof(str)
-        hw := WriteFile(g_stdOutputHandle, @dataof(str), len, null, null)
+        discard WriteFile(g_stdOutputHandle, @dataof(str), len, null, null)
     }
     else
     {
         len := cast(u32) @countof(message)
-        hw := WriteFile(g_stdOutputHandle, @dataof(message), len, null, null)
+        discard WriteFile(g_stdOutputHandle, @dataof(message), len, null, null)
     }
 }
 

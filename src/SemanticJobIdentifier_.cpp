@@ -847,7 +847,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         auto returnType = TypeManager::concreteType(identifier->typeInfo);
 
         // Check return value
-        if (!returnType->isNative(NativeTypeKind::Void) && !(overload->node->attributeFlags & ATTRIBUTE_OPT_RETURN))
+        if (!returnType->isNative(NativeTypeKind::Void) && !(overload->node->attributeFlags & ATTRIBUTE_OPT_RETURN) && !(identifier->flags & AST_DISCARD))
         {
             if (identifier->identifierRef->parent->kind == AstNodeKind::Statement ||
                 identifier->identifierRef->parent->kind == AstNodeKind::StatementNoScope)
