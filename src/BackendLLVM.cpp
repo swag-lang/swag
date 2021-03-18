@@ -27,20 +27,21 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     // swag_context_t
     {
         llvm::Type* members[] = {
-            pp.interfaceTy,
-            llvm::Type::getInt64Ty(context),   // Flags
-            llvm::Type::getInt8PtrTy(context), // TempAllocator block
-            llvm::Type::getInt64Ty(context),   // TempAllocator capacity
-            llvm::Type::getInt64Ty(context),   // TempAllocator used
-            llvm::Type::getInt64Ty(context),   // TempAllocator lastUsed
-            llvm::Type::getInt64Ty(context),   // TempAllocator maxUsed
-            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_LEN_ERROR_MSG),
-            llvm::Type::getInt32Ty(context),
-            llvm::Type::getInt32Ty(context), // traceIndex
-            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_TRACE * sizeof(void*)),
-            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), sizeof(SwagCompilerSourceLocation)),
-            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), 3 * sizeof(void*)),
-            llvm::Type::getInt8PtrTy(context), // panic
+            pp.interfaceTy,                                                                           // allocator
+            llvm::Type::getInt64Ty(context),                                                          // flags
+            llvm::Type::getInt8PtrTy(context),                                                        // TempAllocator block
+            llvm::Type::getInt64Ty(context),                                                          // TempAllocator capacity
+            llvm::Type::getInt64Ty(context),                                                          // TempAllocator used
+            llvm::Type::getInt64Ty(context),                                                          // TempAllocator lastUsed
+            llvm::Type::getInt64Ty(context),                                                          // TempAllocator maxUsed
+            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_LEN_ERROR_MSG),                  // errorMsg
+            llvm::Type::getInt32Ty(context),                                                          // errorMsgStart
+            llvm::Type::getInt32Ty(context),                                                          // errorMsgLen
+            llvm::Type::getInt32Ty(context),                                                          // traceIndex
+            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), MAX_TRACE * sizeof(void*)),          // trace
+            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), sizeof(SwagCompilerSourceLocation)), // exceptionLoc
+            llvm::ArrayType::get(llvm::Type::getInt8Ty(context), 3 * sizeof(void*)),                  // exceptionParams
+            llvm::Type::getInt8PtrTy(context),                                                        // panic
         };
 
         pp.contextTy = llvm::StructType::create(context, members, "swag_context_t");

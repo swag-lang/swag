@@ -2789,12 +2789,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             localCall(buildParameters, allocR, allocT, "@seterr", {ip->a.u32, ip->b.u32}, {});
             break;
         }
-        case ByteCodeOp::PushErr:
+        case ByteCodeOp::InternalPushErr:
         {
             localCall(buildParameters, allocR, allocT, "__pusherr", {}, {});
             break;
         }
-        case ByteCodeOp::PopErr:
+        case ByteCodeOp::InternalPopErr:
         {
             localCall(buildParameters, allocR, allocT, "__poperr", {}, {});
             break;

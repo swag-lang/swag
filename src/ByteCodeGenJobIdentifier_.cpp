@@ -42,7 +42,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
     // Push current error context in case the leave scope triggers some errors too
     if (!(node->doneFlags & AST_DONE_STACK_TRACE))
     {
-        emitInstruction(context, ByteCodeOp::PushErr);
+        emitInstruction(context, ByteCodeOp::InternalPushErr);
         node->doneFlags |= AST_DONE_STACK_TRACE;
     }
 
@@ -58,7 +58,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
     // Restore the error context, and keep error trace of current call
     if (!(node->doneFlags & AST_DONE_STACK_TRACE1))
     {
-        emitInstruction(context, ByteCodeOp::PopErr);
+        emitInstruction(context, ByteCodeOp::InternalPopErr);
 
         if (context->sourceFile->module->buildCfg.stackTrace)
         {

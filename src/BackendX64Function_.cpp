@@ -3038,10 +3038,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
-        case ByteCodeOp::PushErr:
+        case ByteCodeOp::InternalPushErr:
             emitCall(pp, "__pusherr");
             break;
-        case ByteCodeOp::PopErr:
+        case ByteCodeOp::InternalPopErr:
             emitCall(pp, "__poperr");
             break;
 

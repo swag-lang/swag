@@ -1661,13 +1661,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
         break;
     }
-    case ByteCodeOp::PushErr:
+    case ByteCodeOp::InternalPushErr:
     {
         auto bc = g_Workspace.runtimeModule->getRuntimeFct("__pusherr");
         localCall(context, bc, 0);
         break;
     }
-    case ByteCodeOp::PopErr:
+    case ByteCodeOp::InternalPopErr:
     {
         auto bc = g_Workspace.runtimeModule->getRuntimeFct("__poperr");
         localCall(context, bc, 0);
