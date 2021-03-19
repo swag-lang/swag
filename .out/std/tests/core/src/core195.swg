@@ -5,7 +5,7 @@ using core.memory
 {
     //#assert reflection.hasDrop(std.file.FileInfo)
 
-    dbg := catch DebugAllocator.create()
+    dbg := DebugAllocator.create()
     defer dbg.release()
 
     ptr := alloc(16, dbg)

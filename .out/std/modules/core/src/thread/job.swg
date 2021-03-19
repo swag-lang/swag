@@ -114,9 +114,9 @@ public func setNumWorkers(numWorkers: u32 = 0) throw
     g_workers.allocator = g_Allocator
     g_pendingJobs.allocator = g_Allocator
 
-    try g_mutexPendingJobs.init()
-    try g_eventPendingJobs.init()
-    try g_eventDone.init(true, true)
+    g_mutexPendingJobs.init()
+    g_eventPendingJobs.init()
+    g_eventDone.init(true, true)
 
     g_numWorkers = numWorkers ?? env.getProcessorCount()
     g_workers.resize(cast(uint) g_numWorkers)

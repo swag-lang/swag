@@ -11,18 +11,18 @@ impl Mutex
     }
 
     // Creates a new mutex
-    func create()->Mutex throw
+    func create()->Mutex
     {
         var result: retval
-        try result.init()
+        result.init()
         return result
     }
 
     // Initialize mutex
-    func init(using self) throw
+    func init(using self)
     {
         debug.assert(handle == null)
-        handle = try CreateMutexA(null, 0, null)
+        handle = assume CreateMutexA(null, 0, null)
     }
 
     // Destroy an existing mutex

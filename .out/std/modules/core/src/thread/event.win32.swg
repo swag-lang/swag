@@ -11,18 +11,18 @@ impl Event
     }
 
     // Creates a new event
-    func create()->Event throw
+    func create()->Event
     {
         var result: retval
-        try result.init()
+        result.init()
         return result
     }
 
     // Initialize event
-    func init(using self, manual, initState = false) throw
+    func init(using self, manual, initState = false)
     {
         debug.assert(handle == null)
-        handle = try CreateEventA(null, manual ? TRUE : FALSE, initState ? TRUE : FALSE, null)
+        handle = assume CreateEventA(null, manual ? TRUE : FALSE, initState ? TRUE : FALSE, null)
     }
 
     // Destroy an existing event

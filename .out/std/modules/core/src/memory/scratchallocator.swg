@@ -22,20 +22,20 @@ impl ScratchAllocator
     }
 
     // Creates a new allocator
-    func create(blockSize: uint, allocator: IAllocator = null)->ScratchAllocator throw
+    func create(blockSize: uint, allocator: IAllocator = null)->ScratchAllocator
     {
         var result: retval
-        try result.init(blockSize, allocator)
+        result.init(blockSize, allocator)
         return result
     }
 
     // First initialize allocator by allocating a block of memory with
     // the specified allocator.
     // If 'allocator' is null, the current context allocator will be used
-    func init(using self, blockSize: uint, allocator: IAllocator = null) throw
+    func init(using self, blockSize: uint, allocator: IAllocator = null)
     {
         // Mutex
-        try mutex.init()
+        mutex.init()
 
         // Allocate the big block to store all allocations
         fallback = allocator ?? @getcontext().allocator
