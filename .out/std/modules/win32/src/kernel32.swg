@@ -348,7 +348,6 @@ struct PROCESS_INFORMATION
     func CreateWaitableTimerW(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCWSTR)->HANDLE;
     func CancelWaitableTimer(hTimer: HANDLE)->BOOL;
     func SetWaitableTimer(hTimer: HANDLE, lpDueTime: const *LARGE_INTEGER, lPeriod: LONG, pfnCompletionRoutine: *void, lpArgToCompletionRoutine: LPVOID, fResume: BOOL)->BOOL;
-    func DeleteTimerQueueTimer(timerQueue: HANDLE, timer: HANDLE, completionEvent: HANDLE)->BOOL;
 
     func ReadFile(hFile: HANDLE, lpBuffer: LPVOID, nNumberOfBytesToRead: DWORD, lpNumberOfBytesRead: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
     func CloseHandle(handle: HANDLE);
@@ -380,6 +379,7 @@ namespace win32priv
         func CreateMutexA(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCSTR)->HANDLE;
         func CreateMutexW(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCWSTR)->HANDLE;
         func CreateTimerQueueTimer(phNewTimer: *HANDLE, timerQueue: HANDLE, callback: const *void, parameter: *void, dueTime: DWORD, period: DWORD, flags: ULONG)->BOOL;
+        func DeleteTimerQueueTimer(timerQueue: HANDLE, timer: HANDLE, completionEvent: HANDLE)->BOOL;
 
         func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
         func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
@@ -504,6 +504,15 @@ namespace win32priv
     {
         if !win32priv.CreateTimerQueueTimer(phNewTimer, timerQueue, callback, parameter, dueTime, period, flags)
             try setError(GetLastError())
+    }
+
+    func DeleteTimerQueueTimer(timerQueue: HANDLE, timer: HANDLE, completionEvent: HANDLE)
+    {
+        while true
+        {
+            res := win32priv.DeleteTimerQueueTimer(timerQueue, timer, completionEvent)
+            if res || GetLastError() == ERROR_IO_PENDING return
+        }
     }
 
     #[autodiscard]

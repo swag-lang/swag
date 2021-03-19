@@ -111,6 +111,7 @@ bool SemanticJob::resolveScopedStmtBefore(SemanticContext* context)
     auto afterFct = node->extension->byteCodeAfterFct;
     if (afterFct != ByteCodeGenJob::emitIfAfterIf &&
         afterFct != ByteCodeGenJob::emitSwitchCaseAfterBlock &&
+        afterFct != ByteCodeGenJob::emitLoopAfterBlock &&
         afterFct != ByteCodeGenJob::emitLeaveScope)
     {
         SWAG_ASSERT(!afterFct);
