@@ -356,15 +356,17 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doDefer(parent, result));
         break;
     case TokenId::KwdTry:
-    case TokenId::KwdCatch:
     case TokenId::KwdAssume:
-        SWAG_CHECK(doTryCatchAssmue(parent, result));
+        SWAG_CHECK(doTryAssume(parent, result));
         break;
-    case TokenId::KwdDiscard:
-        SWAG_CHECK(doDiscard(parent, result));
+    case TokenId::KwdCatch:
+        SWAG_CHECK(doCatch(parent, result));
         break;
     case TokenId::KwdThrow:
         SWAG_CHECK(doThrow(parent, result));
+        break;
+    case TokenId::KwdDiscard:
+        SWAG_CHECK(doDiscard(parent, result));
         break;
     case TokenId::SymBackTick:
     case TokenId::CompilerScopeFct:

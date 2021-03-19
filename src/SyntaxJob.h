@@ -14,6 +14,7 @@ struct Utf8;
 struct AstFuncDecl;
 struct AstStruct;
 struct AstCompilerIfBlock;
+struct AstTryCatch;
 struct SyntaxJob;
 struct AstAttrUse;
 struct AstInline;
@@ -104,7 +105,8 @@ struct SyntaxJob : public Job
     bool doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint32_t identifierFlags = 0);
     bool doDiscard(AstNode* parent, AstNode** result = nullptr);
-    bool doTryCatchAssmue(AstNode* parent, AstNode** result = nullptr);
+    bool doTryAssume(AstNode* parent, AstNode** result = nullptr);
+    bool doCatch(AstNode* parent, AstNode** result = nullptr);
     bool doThrow(AstNode* parent, AstNode** result = nullptr);
     bool doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool forGlobal);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
@@ -181,6 +183,7 @@ struct SyntaxJob : public Job
     Scope*              currentStructScope     = nullptr;
     Scope*              currentSelfStructScope = nullptr;
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
+    AstTryCatch*        currentTryAssume       = nullptr;
     Token*              currentTokenLocation   = nullptr;
     AstNode*            currentMainNode        = nullptr;
     AstInline*          currentInline          = nullptr;
@@ -201,6 +204,7 @@ struct SyntaxJob : public Job
         currentCompilerIfBlock = nullptr;
         currentMainNode        = nullptr;
         currentInline          = nullptr;
+        currentTryAssume       = nullptr;
         currentTokenLocation   = nullptr;
         currentFlags           = 0;
         moduleSpecified        = false;

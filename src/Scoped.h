@@ -4,6 +4,7 @@
 struct SyntaxJob;
 struct AstFuncDecl;
 struct AstCompilerIfBlock;
+struct AstTryCatch;
 
 struct Scoped
 {
@@ -39,6 +40,24 @@ struct ScopedBreakable
 
     SyntaxJob*    savedJob;
     AstBreakable* savedNode;
+};
+
+struct ScopedTryAssume
+{
+    ScopedTryAssume(SyntaxJob* job, AstTryCatch* newNode)
+    {
+        savedJob              = job;
+        savedNode             = job->currentTryAssume;
+        job->currentTryAssume = newNode;
+    }
+
+    ~ScopedTryAssume()
+    {
+        savedJob->currentTryAssume = savedNode;
+    }
+
+    SyntaxJob*   savedJob;
+    AstTryCatch* savedNode;
 };
 
 struct ScopedFct

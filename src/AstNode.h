@@ -298,6 +298,7 @@ struct AstNode
         ownerBreakable       = job->currentBreakable;
         ownerCompilerIfBlock = job->currentCompilerIfBlock;
         ownerInline          = job->currentInline;
+        ownerTryAssume       = job->currentTryAssume;
         flags |= job->currentFlags;
     }
 
@@ -392,6 +393,7 @@ struct AstNode
     AstAttrUse*         ownerAttrUse;
     AstInline*          ownerInline;
     AstFuncDecl*        ownerFct;
+    AstTryCatch*        ownerTryAssume;
     Scope*              ownerStructScope;
     AstNode*            ownerMainNode;
     AstCompilerIfBlock* ownerCompilerIfBlock;
