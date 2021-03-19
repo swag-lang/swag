@@ -85,8 +85,8 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
                 }
             }
 
-            if !FindNextFileW(h, &findfile)
-                break
+            next := catch FindNextFileW(h, &findfile)
+            if !next break
         }
 
         assume FindClose(h)
