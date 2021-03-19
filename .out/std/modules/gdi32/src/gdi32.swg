@@ -61,24 +61,47 @@ const PFD_STEREO_DONTCARE         = 0x80000000
 
 #[foreign("gdi32")]
 {
-    func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32;
-    func SetPixelFormat(hdc: HDC, format: s32, ppfd: const *PIXELFORMATDESCRIPTOR)->BOOL;
-    func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: *PIXELFORMATDESCRIPTOR)->s32;
 }
 
 namespace gdi32priv
 {
     #[foreign("gdi32")]
     {
+        func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32;
+        func SetPixelFormat(hdc: HDC, format: s32, ppfd: const *PIXELFORMATDESCRIPTOR)->BOOL;
         func SwapBuffers(arg1: HDC)->BOOL;
+        func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: *PIXELFORMATDESCRIPTOR)->s32;
     }
 }
 
 #[inline]
 {
+    func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32 throw
+    {
+        res := gdi32priv.ChoosePixelFormat(hdc, ppfd)
+        if !res
+            try setError(GetLastError())
+        return res
+    }
+
+    func SetPixelFormat(hdc: HDC, format: s32, ppfd: const *PIXELFORMATDESCRIPTOR) throw
+    {
+        if !gdi32priv.SetPixelFormat(hdc, format, ppfd)
+            try setError(GetLastError())
+    }
+
     func SwapBuffers(arg1: HDC) throw
     {
         if !gdi32priv.SwapBuffers(arg1)
             try setError(GetLastError())
+    }
+
+    #[autodiscard]
+    func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: *PIXELFORMATDESCRIPTOR)->s32 throw
+    {
+        res := gdi32priv.DescribePixelFormat(hdc, iPixelFormat, nBytes, ppfd)
+        if !res
+            try setError(GetLastError())
+        return res
     }
 }

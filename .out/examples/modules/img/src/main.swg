@@ -161,11 +161,9 @@ func createWindow()->HWND
     pfd.iPixelType   = PFD_TYPE_RGBA
     pfd.cColorBits   = 32
 
-    pf := ChoosePixelFormat(hDC, &pfd)
-    @assert(pf != 0)
-    res := SetPixelFormat(hDC, pf, &pfd)
-    @assert(res != FALSE)
-    discard DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
+    pf := assume ChoosePixelFormat(hDC, &pfd)
+    assume SetPixelFormat(hDC, pf, &pfd)
+    assume DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
 
     ReleaseDC(hDC, hWnd)
     return hWnd
