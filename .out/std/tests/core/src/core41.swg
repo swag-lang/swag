@@ -5,5 +5,5 @@ using core.gamepad
 {
     var k: GamePad
 	while false
-		r := k.setVibration(0.5, 0.5)
+		assume k.setVibration(0.5, 0.5)
 }

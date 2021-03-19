@@ -31,22 +31,33 @@ func isConnected(padIndex: u32)->bool
 }
 
 // Set the left and right vibration of the given 'padIndex'
-func setVibration(padIndex: u32, left, right: f32)->bool
+func setVibration(padIndex: u32, left, right: f32) throw
 {
     var vibration: XINPUT_VIBRATION = ?
     vibration.wLeftMotorSpeed = cast(WORD) (0xFFFF * math.saturate(left))
     vibration.wRightMotorSpeed = cast(WORD) (0xFFFF * math.saturate(right))
-    return XInputSetState(padIndex, &vibration) == ERROR_SUCCESS
+    res := XInputSetState(padIndex, &vibration)
+    switch res
+    {
+    case ERROR_SUCCESS:                 return
+    case ERROR_DEVICE_NOT_CONNECTED:    throw Error.DeviceNotConnected
+    default:                            try win32.setError(res)
+    }
 }
 
 impl State
 {
     // Compute the current state of the given pad index
-    func update(using self, padIndex: u32)->bool
+    func update(using self, padIndex: u32) throw
     {
         var state: XINPUT_STATE = ?
-        if XInputGetState(padIndex, &state) != ERROR_SUCCESS
-            return false
+        res := XInputGetState(padIndex, &state)
+        switch res
+        {
+        case ERROR_SUCCESS:                 break
+        case ERROR_DEVICE_NOT_CONNECTED:    throw Error.DeviceNotConnected
+        default:                            try win32.setError(res)
+        }
 
         // Button pressed state
         loop i: 16
@@ -82,6 +93,5 @@ impl State
 
         pressed[LeftTrigger] = position[LeftTrigger].y > getToler(self, LeftTrigger)
         pressed[RightTrigger] = position[RightTrigger].y > getToler(self, RightTrigger)
-        return true
     }
 }

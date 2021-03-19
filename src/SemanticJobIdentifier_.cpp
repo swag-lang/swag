@@ -3303,7 +3303,7 @@ bool SemanticJob::resolveThrow(SemanticContext* context)
     node->typeInfo = back->typeInfo;
 
     SWAG_CHECK(checkCanThrow(context));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoString, node, back, CASTFLAG_AUTO_OPCAST));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoString, node, back, CASTFLAG_AUTO_OPCAST | CASTFLAG_CONCRETE_ENUM));
     node->byteCodeFct = ByteCodeGenJob::emitThrow;
     return true;
 }

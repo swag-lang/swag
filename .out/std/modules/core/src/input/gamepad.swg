@@ -2,6 +2,11 @@
 #global namespace gamepad
 using math
 
+enum Error: string
+{
+    DeviceNotConnected = "not connected"
+}
+
 // Represents a gamepad
 struct GamePad
 {
@@ -18,20 +23,20 @@ struct GamePad
 impl GamePad
 {
     // Update the GamePad current state
-    func update(using self)
+    func update(using self) throw
     {
         newConnected := isConnected(padIndex)
         if !newConnected
         {
-            if connected
-                clear(self)
+            if connected clear(self)
             connected = false
-            return;
         }
-
-        connected = true
-        previousState = currentState
-        discard currentState.update(padIndex)
+        else
+        {
+            connected = true
+            previousState = currentState
+            try currentState.update(padIndex)
+        }
     }
 
     // Reset the previous and current state
@@ -72,8 +77,8 @@ impl GamePad
     }
 
     // Set the vibration motor speeds
-    func setVibration(using self, left, right: f32)->bool
+    func setVibration(using self, left, right: f32) throw
     {
-        return setVibration(padIndex, left, right)
+        try setVibration(padIndex, left, right)
     }
 }
