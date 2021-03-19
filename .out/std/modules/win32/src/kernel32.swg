@@ -37,6 +37,8 @@ alias va_list =         *u8
 const STD_INPUT_HANDLE 	= bitcast(DWORD) -10
 const STD_OUTPUT_HANDLE = bitcast(DWORD) -11
 
+const ERROR_IO_PENDING  = 997
+
 const ERROR_SUCCESS = 0
 const FALSE = 0
 const TRUE  = 1
@@ -320,8 +322,6 @@ struct PROCESS_INFORMATION
     func GetModuleHandleA(lpModuleName: LPCSTR)->HMODULE;
     func GetModuleHandleW(lpModuleName: LPCWSTR)->HMODULE;
     func GetStdHandle(nStdHandle: DWORD)->HANDLE;
-    func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->BOOL;
-    func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
     func CreateConsoleScreenBuffer(dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: const *SECURITY_ATTRIBUTES, dwFlags: DWORD, lpScreenBufferData: LPVOID)->HANDLE;
     func SetConsoleActiveScreenBuffer(hConsoleOutput: HANDLE);
     func WriteConsoleOutputCharacterA(hConsoleOutput: HANDLE, lpCharacter: LPCSTR, nLength: DWORD, dwWriteCoord: DWORD, lpNumberOfCharsWritten: LPDWORD)->BOOL;
@@ -351,7 +351,6 @@ struct PROCESS_INFORMATION
     func DeleteTimerQueueTimer(timerQueue: HANDLE, timer: HANDLE, completionEvent: HANDLE)->BOOL;
 
     func ReadFile(hFile: HANDLE, lpBuffer: LPVOID, nNumberOfBytesToRead: DWORD, lpNumberOfBytesRead: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
-    func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
     func CloseHandle(handle: HANDLE);
     func FileTimeToLocalFileTime(lpFileTime: const *FILETIME, lpLocalFileTime: *FILETIME)->BOOL;
     func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME)->BOOL;
@@ -366,6 +365,9 @@ namespace win32priv
 {
     #[foreign("kernel32")]
     {
+        func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
+        func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->BOOL;
+
         func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: const *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE;
         func ResumeThread(hThread: HANDLE)->DWORD;
         func SetThreadPriority(hThread: HANDLE, nPriority: s32)->BOOL;
@@ -380,6 +382,7 @@ namespace win32priv
         func CreateMutexW(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCWSTR)->HANDLE;
         func CreateTimerQueueTimer(phNewTimer: *HANDLE, timerQueue: HANDLE, callback: const *void, parameter: *void, dueTime: DWORD, period: DWORD, flags: ULONG)->BOOL;
 
+        func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
         func GetFileAttributesA(lpFileName: LPCSTR)->DWORD;
         func GetFileAttributesW(lpFileName: LPCWSTR)->DWORD;
         func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID)->BOOL;
@@ -400,6 +403,18 @@ namespace win32priv
 
 #[inline]
 {
+    func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD) throw
+    {
+        if !win32priv.SetConsoleTextAttribute(hConsoleOutput, wAttributes)
+            try setError(GetLastError())
+    }
+
+    func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO) throw
+    {
+        if !win32priv.GetConsoleScreenBufferInfo(hConsoleOutput, lpConsoleScreenBufferInfo)
+            try setError(GetLastError())
+    }
+
     func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: const *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE throw
     {
         h := win32priv.CreateThread(lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
@@ -489,6 +504,15 @@ namespace win32priv
     {
         if !win32priv.CreateTimerQueueTimer(phNewTimer, timerQueue, callback, parameter, dueTime, period, flags)
             try setError(GetLastError())
+    }
+
+    #[autodiscard]
+    func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL throw
+    {
+        res := win32priv.WriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped)
+        if !res && GetLastError() != ERROR_IO_PENDING
+            try setError(GetLastError())
+        return res
     }
 
     func GetFileAttributesA(lpFileName: LPCSTR)->DWORD throw

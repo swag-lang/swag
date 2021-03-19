@@ -39,38 +39,38 @@ var g_stdOutputCurAttr: u16
     g_stdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
 
     var csbi: CONSOLE_SCREEN_BUFFER_INFO
-    discard GetConsoleScreenBufferInfo(g_stdOutputHandle, &csbi)
+    catch GetConsoleScreenBufferInfo(g_stdOutputHandle, &csbi)
     g_stdOutputInitAttr = csbi.wAttributes
     g_stdOutputCurAttr = g_stdOutputInitAttr
 }
 
 #drop
 {
-    resetColor()
+    catch resetColor()
 }
 
 // Set the console foreground color
-public func setTextColor(color: Color)
+public func setTextColor(color: Color) throw
 {
     attributes := g_colorToWin[color]
     g_stdOutputCurAttr &= BACKGROUND_MASK
     g_stdOutputCurAttr |= attributes
-    discard SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
+    try SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 }
 
 // Set the console background color
-public func setBackColor(color: Color)
+public func setBackColor(color: Color) throw
 {
     attributes := cast(u16) (g_colorToWin[color] << 4)
     g_stdOutputCurAttr &= FOREGROUND_MASK
     g_stdOutputCurAttr |= attributes
-    discard SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
+    try SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 }
 
 // Restore the console colors to their default values
-public func resetColor()
+public func resetColor() throw
 {
-    discard SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
+    try SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
 }
 
 // Write a message to the console
@@ -83,12 +83,12 @@ public func print(message: string, params: ...)
     {
         str := format.toString(message, params)
         len := cast(u32) @countof(str)
-        discard WriteFile(g_stdOutputHandle, @dataof(str), len, null, null)
+        catch WriteFile(g_stdOutputHandle, @dataof(str), len, null, null)
     }
     else
     {
         len := cast(u32) @countof(message)
-        discard WriteFile(g_stdOutputHandle, @dataof(message), len, null, null)
+        catch WriteFile(g_stdOutputHandle, @dataof(message), len, null, null)
     }
 }
 
