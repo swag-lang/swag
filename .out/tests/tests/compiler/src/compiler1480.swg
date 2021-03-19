@@ -6,7 +6,7 @@
     //@print(cast(s64) @countof(arr))
 
     cpt := 0
-    cpt1 := 0'uint
+    cpt1 := 0
     visit xxx, yyy: arr
     {
         cpt += cast(s32) xxx

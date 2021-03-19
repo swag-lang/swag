@@ -9,7 +9,7 @@ impl Array
 	func validateCount(self)
 	{
         //@print(@typeof(T).name)
-	    size := @sizeof(T)
+	    size := cast(uint) @sizeof(T)
         G += size
     }
 
@@ -17,7 +17,7 @@ impl Array
 	{
         //@print(@typeof(T).name)
         size := @sizeof(T)
-        G += size
+        G += cast(uint) size
 		validateCount(self)
 	}
 }
