@@ -11,7 +11,7 @@ using core.gamepad
     //while true
     while false
     {
-        k.update()
+        assume k.update()
         if k.isButtonJustPressed(Button.LeftTrigger)
             @print("down\n")
     }

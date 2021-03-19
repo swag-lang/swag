@@ -166,6 +166,7 @@ struct CloneContext
     AstBreakable*       replaceTokensBreakable = nullptr;
     AstBreakable*       ownerBreakable         = nullptr;
     AstFuncDecl*        ownerFct               = nullptr;
+    AstTryCatchAssume*  ownerTryCatchAssume    = nullptr;
     AstNode*            parent                 = nullptr;
     Scope*              parentScope            = nullptr;
     Scope*              ownerStructScope       = nullptr;
@@ -298,7 +299,7 @@ struct AstNode
         ownerBreakable       = job->currentBreakable;
         ownerCompilerIfBlock = job->currentCompilerIfBlock;
         ownerInline          = job->currentInline;
-        ownerTryAssume       = job->currentTryAssume;
+        ownerTryCatchAssume  = job->currentTryCatchAssume;
         flags |= job->currentFlags;
     }
 
@@ -393,7 +394,7 @@ struct AstNode
     AstAttrUse*         ownerAttrUse;
     AstInline*          ownerInline;
     AstFuncDecl*        ownerFct;
-    AstTryCatch*        ownerTryAssume;
+    AstTryCatchAssume*  ownerTryCatchAssume;
     Scope*              ownerStructScope;
     AstNode*            ownerMainNode;
     AstCompilerIfBlock* ownerCompilerIfBlock;
@@ -884,7 +885,7 @@ struct AstNameSpace : public AstNode
     AstNode* clone(CloneContext& context) override;
 };
 
-struct AstTryCatch : public AstReturn
+struct AstTryCatchAssume : public AstReturn
 {
     AstNode* clone(CloneContext& context) override;
 

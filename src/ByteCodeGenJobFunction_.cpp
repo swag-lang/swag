@@ -812,14 +812,8 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
 bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc)
 {
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
-    if (raiseErrors &&
-        parent->kind != AstNodeKind::Try &&
-        parent->kind != AstNodeKind::Catch &&
-        parent->kind != AstNodeKind::Assume &&
-        parent->kind != AstNodeKind::Alias)
-    {
+    if (raiseErrors && !callNode->ownerTryCatchAssume)
         return context->report({callNode, callNode->token, format("uncatched error when calling '%s'", funcNode->token.text.c_str())});
-    }
 
     if (!raiseErrors)
     {

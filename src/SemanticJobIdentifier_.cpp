@@ -3227,7 +3227,7 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
 
 bool SemanticJob::checkCanCatch(SemanticContext* context)
 {
-    auto node          = CastAst<AstTryCatch>(context->node, AstNodeKind::Try, AstNodeKind::Catch, AstNodeKind::Assume);
+    auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Catch, AstNodeKind::Assume);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
     auto lastChild     = identifierRef->childs.back();
 
@@ -3239,7 +3239,7 @@ bool SemanticJob::checkCanCatch(SemanticContext* context)
 
 bool SemanticJob::resolveTry(SemanticContext* context)
 {
-    auto node          = CastAst<AstTryCatch>(context->node, AstNodeKind::Try);
+    auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
     auto lastChild     = identifierRef->childs.back();
 
@@ -3262,7 +3262,7 @@ bool SemanticJob::resolveTry(SemanticContext* context)
 
 bool SemanticJob::resolveAssume(SemanticContext* context)
 {
-    auto node          = CastAst<AstTryCatch>(context->node, AstNodeKind::Assume);
+    auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Assume);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
     auto lastChild     = identifierRef->childs.back();
 
@@ -3280,7 +3280,7 @@ bool SemanticJob::resolveAssume(SemanticContext* context)
 
 bool SemanticJob::resolveCatch(SemanticContext* context)
 {
-    auto node          = CastAst<AstTryCatch>(context->node, AstNodeKind::Catch);
+    auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Catch);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
     auto lastChild     = identifierRef->childs.back();
 
@@ -3298,7 +3298,7 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
 
 bool SemanticJob::resolveThrow(SemanticContext* context)
 {
-    auto node      = CastAst<AstTryCatch>(context->node, AstNodeKind::Throw);
+    auto node      = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
     auto back      = node->childs.back();
     node->typeInfo = back->typeInfo;
 

@@ -173,12 +173,12 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result)
     AstNode* node = nullptr;
     if (token.id == TokenId::KwdTry)
     {
-        node              = Ast::newNode<AstTryCatch>(this, AstNodeKind::Try, sourceFile, parent);
+        node              = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveTry;
     }
     else if (token.id == TokenId::KwdAssume)
     {
-        node              = Ast::newNode<AstTryCatch>(this, AstNodeKind::Assume, sourceFile, parent);
+        node              = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Assume, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveAssume;
     }
 
@@ -187,6 +187,7 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result)
     SWAG_VERIFY(node->ownerFct, error(node, format("'%s' can only be used inside a function", node->token.text.c_str())));
     SWAG_CHECK(eatToken());
 
+    ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
     SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format("invalid 'try' inside '%s' expression", node->token.text.c_str())));
     SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format("invalid 'catch' inside '%s' expression", node->token.text.c_str())));
     SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format("invalid 'assume' inside '%s' expression", node->token.text.c_str())));
@@ -198,13 +199,14 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCatch(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstTryCatch>(this, AstNodeKind::Catch, sourceFile, parent);
+    auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Catch, sourceFile, parent);
     SWAG_VERIFY(node->ownerFct, error(node, "'catch' can only be used inside a function"));
     node->semanticFct = SemanticJob::resolveCatch;
     if (result)
         *result = node;
     SWAG_CHECK(eatToken());
 
+    ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
     SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format("invalid 'try' inside '%s' expression", node->token.text.c_str())));
     SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format("invalid 'catch' inside '%s' expression", node->token.text.c_str())));
     SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format("invalid 'assume' inside '%s' expression", node->token.text.c_str())));
@@ -216,7 +218,7 @@ bool SyntaxJob::doCatch(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doThrow(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstTryCatch>(this, AstNodeKind::Throw, sourceFile, parent);
+    auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Throw, sourceFile, parent);
     SWAG_VERIFY(node->ownerFct, error(node, "'throw' can only be used inside a function"));
     node->semanticFct = SemanticJob::resolveThrow;
     if (result)

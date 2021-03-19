@@ -14,7 +14,7 @@ struct Utf8;
 struct AstFuncDecl;
 struct AstStruct;
 struct AstCompilerIfBlock;
-struct AstTryCatch;
+struct AstTryCatchAssume;
 struct SyntaxJob;
 struct AstAttrUse;
 struct AstInline;
@@ -183,7 +183,7 @@ struct SyntaxJob : public Job
     Scope*              currentStructScope     = nullptr;
     Scope*              currentSelfStructScope = nullptr;
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
-    AstTryCatch*        currentTryAssume       = nullptr;
+    AstTryCatchAssume*        currentTryCatchAssume       = nullptr;
     Token*              currentTokenLocation   = nullptr;
     AstNode*            currentMainNode        = nullptr;
     AstInline*          currentInline          = nullptr;
@@ -204,7 +204,7 @@ struct SyntaxJob : public Job
         currentCompilerIfBlock = nullptr;
         currentMainNode        = nullptr;
         currentInline          = nullptr;
-        currentTryAssume       = nullptr;
+        currentTryCatchAssume       = nullptr;
         currentTokenLocation   = nullptr;
         currentFlags           = 0;
         moduleSpecified        = false;

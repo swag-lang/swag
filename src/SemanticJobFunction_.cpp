@@ -994,10 +994,11 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     }
 
     // The content will be inline in its separated syntax block
-    auto inlineNode            = Ast::newInline(identifier->sourceFile, identifier);
-    inlineNode->attributeFlags = funcDecl->attributeFlags;
-    inlineNode->func           = funcDecl;
-    inlineNode->scope          = identifier->ownerScope;
+    auto inlineNode                 = Ast::newInline(identifier->sourceFile, identifier);
+    inlineNode->attributeFlags      = funcDecl->attributeFlags;
+    inlineNode->func                = funcDecl;
+    inlineNode->scope               = identifier->ownerScope;
+    inlineNode->ownerTryCatchAssume = identifier->ownerTryCatchAssume;
     inlineNode->allocateExtension();
 
     if (funcDecl->extension)

@@ -359,6 +359,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     ownerInline          = context.ownerInline ? context.ownerInline : from->ownerInline;
     ownerFct             = context.ownerFct ? context.ownerFct : from->ownerFct;
     ownerCompilerIfBlock = context.ownerCompilerIfBlock ? context.ownerCompilerIfBlock : from->ownerCompilerIfBlock;
+    ownerTryCatchAssume  = context.ownerTryCatchAssume ? context.ownerTryCatchAssume : from->ownerTryCatchAssume;
 
     // Replace a type by another one during generic instantiation
     typeInfo = Generic::doTypeSubstitution(context.replaceTypes, from->typeInfo);
@@ -1351,10 +1352,15 @@ AstNode* AstNameSpace::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstTryCatch::clone(CloneContext& context)
+AstNode* AstTryCatchAssume::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstTryCatch>();
-    newNode->copyFrom(context, this);
+    auto newNode = Ast::newNode<AstTryCatchAssume>();
+    newNode->copyFrom(context, this, false);
+
+    auto cloneContext                = context;
+    cloneContext.ownerTryCatchAssume = newNode;
+    newNode->cloneChilds(cloneContext, this);
+
     return newNode;
 }
 

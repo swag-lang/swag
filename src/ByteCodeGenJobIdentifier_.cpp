@@ -37,7 +37,7 @@ bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstTryCatch>(context->node, AstNodeKind::Try, AstNodeKind::Throw);
+    auto node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Throw);
 
     // Push current error context in case the leave scope triggers some errors too
     if (!(node->doneFlags & AST_DONE_STACK_TRACE))
@@ -197,7 +197,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
 {
     PushICFlags ic(context, BCI_TRYCATCH);
 
-    auto node = CastAst<AstTryCatch>(context->node, AstNodeKind::Throw);
+    auto node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
     auto expr = node->childs.back();
 
     if (!(node->flags & AST_DONE_CAST1))
@@ -242,7 +242,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 {
     PushICFlags ic(context, BCI_TRYCATCH);
 
-    auto node              = CastAst<AstTryCatch>(context->node, AstNodeKind::Try);
+    auto node              = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try);
     node->resultRegisterRC = node->childs.front()->childs.back()->resultRegisterRC;
 
     if (!(node->doneFlags & AST_DONE_TRY_1))
@@ -268,7 +268,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 {
     PushICFlags ic(context, BCI_TRYCATCH);
 
-    auto node              = CastAst<AstTryCatch>(context->node, AstNodeKind::Try, AstNodeKind::Assume);
+    auto node              = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Assume);
     node->resultRegisterRC = node->childs.front()->childs.back()->resultRegisterRC;
 
     RegisterList r0;
