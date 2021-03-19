@@ -220,5 +220,4 @@ func messageLoop()
     try wglMakeCurrent(null, null)
     try wglDeleteContext(hRC)
     ReleaseDC(hWnd, hDC)
-    try DestroyWindow(hWnd)
 }
