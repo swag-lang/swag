@@ -262,6 +262,20 @@ struct WNDCLASSA
     lpszClassName:    LPCSTR
 }
 
+struct WNDCLASSW
+{
+    style:            UINT
+    lpfnWndProc:      const *void
+    cbClsExtra:       s32
+    cbWndExtra:       s32
+    hInstance:        HINSTANCE
+    hIcon:            HICON
+    hCursor:          HCURSOR
+    hbrBackground:    HBRUSH
+    lpszMenuName:     LPCWSTR
+    lpszClassName:    LPCWSTR
+}
+
 const WS_OVERLAPPED       = 0x00000000
 const WS_POPUP            = 0x80000000
 const WS_CHILD            = 0x40000000
@@ -382,7 +396,6 @@ struct PAINTSTRUCT
     func MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: u32)->s32;
     func MessageBoxW(hWnd: HWND, lpText: LPCWSTR, lpCaption: LPCWSTR, uType: u32)->s32;
 
-    func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM;
     func CreateWindowExA(dwExStyle: DWORD, lpClassName: LPCSTR, lpWindowName: LPCSTR, dwStyle: DWORD, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID)->HWND;
     func DefWindowProcA(hwnd: HWND, uMsg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
     func DefWindowProcW(hwnd: HWND, uMsg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
@@ -413,6 +426,9 @@ namespace user32priv
 {
     #[foreign("user32")]
     {
+        func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM;
+        func RegisterClassW(lpWndClass: const *WNDCLASSW)->ATOM;
+
         func UpdateWindow(hWnd: HWND)->BOOL;
         func DestroyWindow(hWnd: HWND)->BOOL;
     }
@@ -420,6 +436,24 @@ namespace user32priv
 
 #[inline]
 {
+    #[autodiscard]
+    func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM throw
+    {
+        res := user32priv.RegisterClassA(lpWndClass)
+        if !res
+            try setError(GetLastError())
+        return res
+    }
+
+    #[autodiscard]
+    func RegisterClassW(lpWndClass: const *WNDCLASSW)->ATOM throw
+    {
+        res := user32priv.RegisterClassW(lpWndClass)
+        if !res
+            try setError(GetLastError())
+        return res
+    }
+
     func UpdateWindow(hWnd: HWND) throw
     {
         if !user32priv.UpdateWindow(hWnd)

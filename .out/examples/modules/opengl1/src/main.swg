@@ -53,7 +53,7 @@ func createWindow()->HWND
     wc.lpfnWndProc   = autocast @mkcallback(&winProc)
     wc.hInstance     = GetModuleHandleA(null)
     wc.lpszClassName = @dataof("CLASS_NAME")
-    discard RegisterClassA(wc)
+    assume RegisterClassA(wc)
 
     hWnd := CreateWindowExA(
         0,
