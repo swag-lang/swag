@@ -1,5 +1,6 @@
 #global export
 #global foreignlib "user32"
+using swag
 
 alias HWND = 		const *void
 alias HMENU = 		const *void
@@ -371,7 +372,7 @@ struct PAINTSTRUCT
     rgbReserved:    [32] BYTE
 }
 
-#[swag.foreign("user32")]
+#[foreign("user32")]
 {
     func GetAsyncKeyState(vKey: s32)->SHORT;
     func GetKeyboardState(lpKeystate: *u8)->BOOL;
@@ -386,8 +387,6 @@ struct PAINTSTRUCT
     func DestroyWindow(hWnd: HWND)->BOOL;
     func DefWindowProcA(hwnd: HWND, uMsg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
     func DefWindowProcW(hwnd: HWND, uMsg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
-    func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
-    func UpdateWindow(hWnd: HWND)->BOOL;
     func GetMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL;
     func GetMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL;
     func PeekMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL;
@@ -399,7 +398,30 @@ struct PAINTSTRUCT
     func PostMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->BOOL;
 
     func GetDC(hWnd: HWND)->HDC;
-    func ReleaseDC(hWnd: HWND, hDC: HDC)->s32;
+}
+
+#[foreign("user32"), autodiscard]
+{
+    func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
+
     func BeginPaint(hWnd: HWND, lpPaint: *PAINTSTRUCT)->HDC;
     func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL;
+    func ReleaseDC(hWnd: HWND, hDC: HDC)->s32;
+}
+
+namespace user32priv
+{
+    #[foreign("user32")]
+    {
+        func UpdateWindow(hWnd: HWND)->BOOL;
+    }
+}
+
+#[inline]
+{
+    func UpdateWindow(hWnd: HWND) throw
+    {
+        if !user32priv.UpdateWindow(hWnd)
+            try setError(GetLastError())
+    }
 }

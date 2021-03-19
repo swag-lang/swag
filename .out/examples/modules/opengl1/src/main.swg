@@ -30,8 +30,8 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     case WM_PAINT:
         display()
         var ps: PAINTSTRUCT
-        discard BeginPaint(hWnd, &ps)
-        discard EndPaint(hWnd, &ps)
+        BeginPaint(hWnd, &ps)
+        EndPaint(hWnd, &ps)
         return 0
 
     case WM_SIZE:
@@ -84,7 +84,7 @@ func createWindow()->HWND
     @assert(res != FALSE)
     discard DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
 
-    discard ReleaseDC(hDC, hWnd)
+    ReleaseDC(hDC, hWnd)
     return hWnd
 }
 
@@ -116,16 +116,16 @@ func messageLoop()
 
     hDC = GetDC(hWnd)
     hRC := wglCreateContext(hDC)
-    discard wglMakeCurrent(hDC, hRC)
+    assume wglMakeCurrent(hDC, hRC)
 
     display()
-    discard ShowWindow(hWnd, SW_SHOW)
-    discard UpdateWindow(hWnd)
+    ShowWindow(hWnd, SW_SHOW)
+    assume UpdateWindow(hWnd)
 
     messageLoop()
 
-    discard wglMakeCurrent(null, null)
+    assume wglMakeCurrent(null, null)
     discard wglDeleteContext(hRC)
-    discard ReleaseDC(hWnd, hDC)
+    ReleaseDC(hWnd, hDC)
     discard DestroyWindow(hWnd)
 }
