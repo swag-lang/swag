@@ -353,7 +353,6 @@ struct PROCESS_INFORMATION
     func ReadFile(hFile: HANDLE, lpBuffer: LPVOID, nNumberOfBytesToRead: DWORD, lpNumberOfBytesRead: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
     func CloseHandle(handle: HANDLE);
     func FileTimeToLocalFileTime(lpFileTime: const *FILETIME, lpLocalFileTime: *FILETIME)->BOOL;
-    func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME)->BOOL;
     func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE;
     func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: *WIN32_FIND_DATAW)->HANDLE;
     func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL;
@@ -391,6 +390,7 @@ namespace win32priv
         func CreateFileW(lpFileName: LPCWSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE;
         func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
         func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
+        func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME)->BOOL;
 
         func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
         func GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPCWSTR)->DWORD;
@@ -513,6 +513,12 @@ namespace win32priv
         if !res && GetLastError() != ERROR_IO_PENDING
             try setError(GetLastError())
         return res
+    }
+
+    func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME) throw
+    {
+        if !win32priv.FileTimeToSystemTime(lpFileTime, lpSystemTime)
+            try setError(GetLastError())
     }
 
     func GetFileAttributesA(lpFileName: LPCSTR)->DWORD throw
