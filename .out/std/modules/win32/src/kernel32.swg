@@ -37,6 +37,7 @@ alias va_list =         *u8
 const STD_INPUT_HANDLE 	= bitcast(DWORD) -10
 const STD_OUTPUT_HANDLE = bitcast(DWORD) -11
 
+const ERROR_FILE_NOT_FOUND  = 2
 const ERROR_NO_MORE_FILES   = 18
 const ERROR_IO_PENDING      = 997
 
@@ -353,8 +354,6 @@ struct PROCESS_INFORMATION
     func ReadFile(hFile: HANDLE, lpBuffer: LPVOID, nNumberOfBytesToRead: DWORD, lpNumberOfBytesRead: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
     func CloseHandle(handle: HANDLE);
     func FileTimeToLocalFileTime(lpFileTime: const *FILETIME, lpLocalFileTime: *FILETIME)->BOOL;
-    func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE;
-    func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: *WIN32_FIND_DATAW)->HANDLE;
 }
 
 namespace win32priv
@@ -389,6 +388,8 @@ namespace win32priv
         func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
         func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
         func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME)->BOOL;
+        func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE;
+        func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: *WIN32_FIND_DATAW)->HANDLE;
         func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL;
         func FindNextFileW(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAW)->BOOL;
         func FindClose(hFindFile: HANDLE)->BOOL;
@@ -601,6 +602,22 @@ namespace win32priv
         if h == INVALID_HANDLE_VALUE
             try setError(GetLastError())
         return h
+    }
+
+    func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE throw
+    {
+        res := win32priv.FindFirstFileA(lpFileName, lpFindFileData)
+        if res == INVALID_HANDLE_VALUE && GetLastError() != ERROR_FILE_NOT_FOUND
+            try setError(GetLastError())
+        return res
+    }
+
+    func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: *WIN32_FIND_DATAW)->HANDLE throw
+    {
+        res := win32priv.FindFirstFileW(lpFileName, lpFindFileData)
+        if res == INVALID_HANDLE_VALUE && GetLastError() != ERROR_FILE_NOT_FOUND
+            try setError(GetLastError())
+        return res
     }
 
     func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL throw

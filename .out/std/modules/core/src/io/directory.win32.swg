@@ -16,7 +16,7 @@ func exists(dirname: string)->bool
 }
 
 // Enumerate a directory
-func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileInfo)
+func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileInfo) throw
 {
     using file
 
@@ -38,7 +38,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
         searchPath := path.combine(toScan.toString(), options.matchPattern)
 
         winPath := path.toWin16(searchPath)
-        h := FindFirstFileW(@dataof(winPath), &findfile);
+        h := try FindFirstFileW(@dataof(winPath), &findfile)
         if h == INVALID_HANDLE_VALUE
             continue
 

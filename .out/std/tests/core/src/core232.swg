@@ -10,7 +10,7 @@ using core, directory
     loc := #location.fileName
     pth := path.getDirectoryName(loc)
 
-    res := enumerate(pth, options)
+    res := assume enumerate(pth, options)
     count := 0
     visit p: res
     {
