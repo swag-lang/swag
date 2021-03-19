@@ -164,19 +164,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     node->doneFlags |= AST_DONE_EMIT_DEFERRED;
 
     // Leave all scopes
-    Scope* topScope = nullptr;
-    if (node->ownerInline && (node->semFlags & AST_SEM_EMBEDDED_RETURN))
-        topScope = node->ownerInline->scope;
-    else
-        topScope = funcNode->scope;
-
-    Scope::collectScopeFromToExcluded(node->ownerScope, topScope->parentScope, context->job->collectScopes);
-    for (auto scope : context->job->collectScopes)
-    {
-        SWAG_CHECK(emitLeaveScope(context, scope, &node->forceNoDrop));
-        if (context->result != ContextResult::Done)
-            return true;
-    }
+    SWAG_CHECK(emitLeaveScopeReturn(context, &node->forceNoDrop, false));
+    if (context->result != ContextResult::Done)
+        return true;
 
     // A return inside an inline function is just a jump to the end of the block
     if (node->ownerInline && (node->semFlags & AST_SEM_EMBEDDED_RETURN))

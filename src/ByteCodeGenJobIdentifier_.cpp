@@ -51,7 +51,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
     // and come back here
     {
         PushICFlags cif(context, BCI_TRYCATCH);
-        SWAG_CHECK(emitLeaveScope(context, node->ownerScope, nullptr, true));
+        SWAG_CHECK(emitLeaveScopeReturn(context, nullptr, true));
         if (context->result != ContextResult::Done)
             return true;
     }

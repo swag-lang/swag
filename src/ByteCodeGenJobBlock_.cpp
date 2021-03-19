@@ -804,6 +804,29 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
     return true;
 }
 
+bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative<SymbolOverload*>* forceNoDrop, bool errDefer)
+{
+    auto node     = context->node;
+    auto funcNode = node->ownerFct;
+
+    // Leave all scopes
+    Scope* topScope = nullptr;
+    if (node->ownerInline && (node->semFlags & AST_SEM_EMBEDDED_RETURN))
+        topScope = node->ownerInline->scope;
+    else
+        topScope = funcNode->scope;
+
+    Scope::collectScopeFromToExcluded(node->ownerScope, topScope->parentScope, context->job->collectScopes);
+    for (auto scope : context->job->collectScopes)
+    {
+        SWAG_CHECK(emitLeaveScope(context, scope, forceNoDrop, errDefer));
+        if (context->result != ContextResult::Done)
+            return true;
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop, bool errDefer)
 {
     PushLocation pl(context, &context->node->token.endLocation);
