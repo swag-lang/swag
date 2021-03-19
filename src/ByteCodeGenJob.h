@@ -307,8 +307,8 @@ struct ByteCodeGenJob : public Job
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr, bool freeRegisterParams = true);
     static bool emitLeaveScope(ByteCodeGenContext* context);
     static bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop = nullptr);
-    static bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope);
-    static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop = nullptr);
+    static bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope, bool errDefer);
+    static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop = nullptr, bool errDefer = false);
     static bool emitConditionalOpAfterExpr(ByteCodeGenContext* context);
     static bool emitConditionalOpAfterIfTrue(ByteCodeGenContext* context);
     static bool emitConditionalOp(ByteCodeGenContext* context);

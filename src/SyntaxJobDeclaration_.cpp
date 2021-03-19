@@ -352,6 +352,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doVarDecl(parent, result));
         break;
     case TokenId::KwdDefer:
+    case TokenId::KwdErrDefer:
         SWAG_CHECK(doDefer(parent, result));
         break;
     case TokenId::KwdTry:

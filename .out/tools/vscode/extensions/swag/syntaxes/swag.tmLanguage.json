@@ -80,7 +80,7 @@
       "patterns": [
         {
           "name": "keyword.control",
-          "match": "\\b(if|else|for|while|switch|defer|loop|visit|break|fallthrough|return|case|continue|default|label)\\b"
+          "match": "\\b(if|else|for|while|switch|defer|errdefer|loop|visit|break|fallthrough|return|case|continue|default|label)\\b"
         }
       ]
     },

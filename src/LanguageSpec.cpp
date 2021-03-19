@@ -88,6 +88,7 @@ void LanguageSpec::setup()
     keywords.add("default", TokenId::KwdDefault);
     keywords.add("for", TokenId::KwdFor);
     keywords.add("defer", TokenId::KwdDefer);
+    keywords.add("errdefer", TokenId::KwdErrDefer);
     keywords.add("code", TokenId::KwdCode);
     keywords.add("label", TokenId::KwdLabel);
     keywords.add("try", TokenId::KwdTry);

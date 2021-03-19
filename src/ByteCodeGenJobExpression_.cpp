@@ -429,9 +429,6 @@ bool ByteCodeGenJob::emitDefer(ByteCodeGenContext* context)
 {
     auto node = context->node;
     SWAG_ASSERT(node->childs.size() == 1);
-
-    auto expr = node->childs.front();
-    node->ownerScope->deferredNodes.push_back(expr);
-
+    node->ownerScope->deferredNodes.push_back(node);
     return true;
 }

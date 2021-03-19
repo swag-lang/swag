@@ -869,7 +869,8 @@ void SyntaxJob::forceTakeAddress(AstNode* node)
 
 bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::Defer, sourceFile, parent);
+    auto nodeKind = token.id == TokenId::KwdDefer ? AstNodeKind::Defer : AstNodeKind::ErrDefer;
+    auto node     = Ast::newNode<AstNode>(this, nodeKind, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticFct = SemanticJob::resolveDefer;

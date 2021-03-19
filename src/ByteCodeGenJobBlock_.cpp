@@ -776,7 +776,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
     return true;
 }
 
-bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* scope)
+bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* scope, bool errDefer)
 {
     if (!scope)
         return true;
@@ -788,7 +788,13 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
         auto job        = context->job;
         for (int i = 0; i < numDeferred; i++)
         {
-            auto child           = scope->deferredNodes[i];
+            auto node = scope->deferredNodes[i];
+
+            // ErrDefer node are emitted only in 'errDefer' mode
+            if (!errDefer && node->kind == AstNodeKind::ErrDefer)
+                continue;
+
+            auto child           = node->childs.front();
             child->bytecodeState = AstNodeResolveState::Enter;
             child->flags &= ~AST_NO_BYTECODE;
             job->nodes.push_back(child);
@@ -798,14 +804,14 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
     return true;
 }
 
-bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop)
+bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop, bool errDefer)
 {
     PushLocation pl(context, &context->node->token.endLocation);
 
     // Emit all 'defer' statements
     if (scope->doneDefer.find(context->node) == scope->doneDefer.end())
     {
-        SWAG_CHECK(emitDeferredStatements(context, scope));
+        SWAG_CHECK(emitDeferredStatements(context, scope, errDefer));
         SWAG_ASSERT(context->result != ContextResult::Pending);
         scope->doneDefer.insert(context->node);
         if (context->result == ContextResult::NewChilds)

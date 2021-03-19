@@ -144,6 +144,7 @@ enum class AstNodeKind : uint8_t
     ConditionalExpression,
     NullConditionalExpression,
     Defer,
+    ErrDefer,
     Init,
     Drop,
     PostCopy,

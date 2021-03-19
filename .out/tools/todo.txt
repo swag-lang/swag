@@ -17,8 +17,6 @@ char => rune ?
 TODO
 ****************************************
 -------------------------------------
-defer if error
--------------------------------------
 did you mean message : ex in swift
 break outerloop // expected-error {{cannot find label 'outerloop' in scope; did you mean 'outerLoop'?}} {{9-18=outerLoop}}
 -------------------------------------
