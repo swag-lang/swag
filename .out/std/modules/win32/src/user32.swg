@@ -384,16 +384,12 @@ struct PAINTSTRUCT
 
     func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM;
     func CreateWindowExA(dwExStyle: DWORD, lpClassName: LPCSTR, lpWindowName: LPCSTR, dwStyle: DWORD, X: s32, Y: s32, nWidth: s32, nHeight: s32, hWndParent: HWND, hMenu: HMENU, hInstance: HINSTANCE, lpParam: LPVOID)->HWND;
-    func DestroyWindow(hWnd: HWND)->BOOL;
     func DefWindowProcA(hwnd: HWND, uMsg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
     func DefWindowProcW(hwnd: HWND, uMsg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
     func GetMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL;
     func GetMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT)->BOOL;
     func PeekMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL;
     func PeekMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL;
-    func TranslateMessage(lpMsg: const *MSG)->BOOL;
-    func DispatchMessageA(lpMsg: const *MSG)->LRESULT;
-    func DispatchMessageW(lpMsg: const *MSG)->LRESULT;
     func PostQuitMessage(nExitCode: s32);
     func PostMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->BOOL;
 
@@ -407,6 +403,10 @@ struct PAINTSTRUCT
     func BeginPaint(hWnd: HWND, lpPaint: *PAINTSTRUCT)->HDC;
     func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL;
     func ReleaseDC(hWnd: HWND, hDC: HDC)->s32;
+
+    func TranslateMessage(lpMsg: const *MSG)->BOOL;
+    func DispatchMessageA(lpMsg: const *MSG)->LRESULT;
+    func DispatchMessageW(lpMsg: const *MSG)->LRESULT;
 }
 
 namespace user32priv
@@ -414,6 +414,7 @@ namespace user32priv
     #[foreign("user32")]
     {
         func UpdateWindow(hWnd: HWND)->BOOL;
+        func DestroyWindow(hWnd: HWND)->BOOL;
     }
 }
 
@@ -422,6 +423,12 @@ namespace user32priv
     func UpdateWindow(hWnd: HWND) throw
     {
         if !user32priv.UpdateWindow(hWnd)
+            try setError(GetLastError())
+    }
+
+    func DestroyWindow(hWnd: HWND) throw
+    {
+        if !user32priv.DestroyWindow(hWnd)
             try setError(GetLastError())
     }
 }

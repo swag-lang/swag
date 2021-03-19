@@ -121,8 +121,8 @@ func messageLoop()
         {
             if msg.message == WM_QUIT
                 return
-            discard TranslateMessage(&msg)
-            discard DispatchMessageA(&msg)
+            TranslateMessage(&msg)
+            DispatchMessageA(&msg)
         }
 
         display()
@@ -190,5 +190,5 @@ func createShader()
     try wglMakeCurrent(null, null)
     try wglDeleteContext(hRC)
     ReleaseDC(hWnd, hDC)
-    discard DestroyWindow(hWnd)
+    try DestroyWindow(hWnd)
 }
