@@ -362,7 +362,7 @@ struct PROCESS_INFORMATION
     func FindClose(hFindFile: HANDLE)->BOOL;
 }
 
-namespace priv
+namespace win32priv
 {
     #[foreign("kernel32")]
     {
@@ -402,7 +402,7 @@ namespace priv
 {
     func CreateThread(lpThreadAttributes: *SECURITY_ATTRIBUTES, dwStackSize: SIZE_T, lpStartAddress: const *void, lpParameter: *void, dwCreationFlags: DWORD, lpThreadId : *DWORD)->HANDLE throw
     {
-        h := priv.CreateThread(lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
+        h := win32priv.CreateThread(lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId)
         if h == null
             try win32.setError(GetLastError())
         return h
@@ -411,7 +411,7 @@ namespace priv
     #[autodiscard]
     func ResumeThread(hThread: HANDLE)->DWORD throw
     {
-        res := priv.ResumeThread(hThread)
+        res := win32priv.ResumeThread(hThread)
         if res == bitcast(DWORD) -1
             try setError(GetLastError())
         return res
@@ -419,14 +419,14 @@ namespace priv
 
     func SetThreadPriority(hThread: HANDLE, nPriority: s32) throw
     {
-        if !priv.SetThreadPriority(hThread, nPriority)
+        if !win32priv.SetThreadPriority(hThread, nPriority)
             try setError(GetLastError())
     }
 
     #[autodiscard]
     func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD throw
     {
-        res := priv.WaitForSingleObject(hHandle, dwMilliseconds)
+        res := win32priv.WaitForSingleObject(hHandle, dwMilliseconds)
         if res == WAIT_FAILED
             try setError(GetLastError())
         return res
@@ -435,7 +435,7 @@ namespace priv
     #[autodiscard]
     func WaitForMultipleObjects(nCount: DWORD, lpHandles: const *HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD throw
     {
-        res := priv.WaitForMultipleObjects(nCount, lpHandles, bWaitAll, dwMilliseconds)
+        res := win32priv.WaitForMultipleObjects(nCount, lpHandles, bWaitAll, dwMilliseconds)
         if res == WAIT_FAILED
             try setError(GetLastError())
         return res
@@ -443,19 +443,19 @@ namespace priv
 
     func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION) throw
     {
-        if !priv.CreateProcessA(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation)
+        if !win32priv.CreateProcessA(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation)
             try setError(GetLastError())
     }
 
     func CreateProcessW(lpApplicationName: LPCWSTR, lpCommandLine: LPCWSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCWSTR, lpStartupInfo: *STARTUPINFOW, lpProcessInformation: *PROCESS_INFORMATION) throw
     {
-        if !priv.CreateProcessW(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation)
+        if !win32priv.CreateProcessW(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation)
             try setError(GetLastError())
     }
 
     func CreateEventA(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCSTR)->HANDLE throw
     {
-        h := priv.CreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName)
+        h := win32priv.CreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName)
         if !h
             try setError(GetLastError())
         return h
@@ -463,7 +463,7 @@ namespace priv
 
     func CreateEventW(lpEventAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, bInitialState: BOOL, lpName: LPCWSTR)->HANDLE throw
     {
-        h := priv.CreateEventW(lpEventAttributes, bManualReset, bInitialState, lpName)
+        h := win32priv.CreateEventW(lpEventAttributes, bManualReset, bInitialState, lpName)
         if !h
             try setError(GetLastError())
         return h
@@ -471,7 +471,7 @@ namespace priv
 
     func CreateMutexA(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCSTR)->HANDLE throw
     {
-        h := priv.CreateMutexA(lpMutexAttributes, bInitialOwner, lpName)
+        h := win32priv.CreateMutexA(lpMutexAttributes, bInitialOwner, lpName)
         if !h
             try setError(GetLastError())
         return h
@@ -479,7 +479,7 @@ namespace priv
 
     func CreateMutexW(lpMutexAttributes: *SECURITY_ATTRIBUTES, bInitialOwner: BOOL, lpName: LPCWSTR)->HANDLE throw
     {
-        h := priv.CreateMutexW(lpMutexAttributes, bInitialOwner, lpName)
+        h := win32priv.CreateMutexW(lpMutexAttributes, bInitialOwner, lpName)
         if !h
             try setError(GetLastError())
         return h
@@ -487,13 +487,13 @@ namespace priv
 
     func CreateTimerQueueTimer(phNewTimer: *HANDLE, timerQueue: HANDLE, callback: const *void, parameter: *void, dueTime: DWORD, period: DWORD, flags: ULONG) throw
     {
-        if !priv.CreateTimerQueueTimer(phNewTimer, timerQueue, callback, parameter, dueTime, period, flags)
+        if !win32priv.CreateTimerQueueTimer(phNewTimer, timerQueue, callback, parameter, dueTime, period, flags)
             try setError(GetLastError())
     }
 
     func GetFileAttributesA(lpFileName: LPCSTR)->DWORD throw
     {
-        attributes := priv.GetFileAttributesA(lpFileName)
+        attributes := win32priv.GetFileAttributesA(lpFileName)
         if attributes == INVALID_FILE_ATTRIBUTES
             try setError(GetLastError())
         return attributes
@@ -501,7 +501,7 @@ namespace priv
 
     func GetFileAttributesW(lpFileName: LPCWSTR)->DWORD throw
     {
-        attributes := priv.GetFileAttributesW(lpFileName)
+        attributes := win32priv.GetFileAttributesW(lpFileName)
         if attributes == INVALID_FILE_ATTRIBUTES
             try setError(GetLastError())
         return attributes
@@ -509,19 +509,19 @@ namespace priv
 
     func GetFileAttributesExA(lpFileName: LPCSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID) throw
     {
-        if !priv.GetFileAttributesExA(lpFileName, fInfoLevelId, lpFileInformation)
+        if !win32priv.GetFileAttributesExA(lpFileName, fInfoLevelId, lpFileInformation)
             try setError(GetLastError())
     }
 
     func GetFileAttributesExW(lpFileName: LPCWSTR, fInfoLevelId: GET_FILEEX_INFO_LEVELS, lpFileInformation: LPVOID) throw
     {
-        if !priv.GetFileAttributesExW(lpFileName, fInfoLevelId, lpFileInformation)
+        if !win32priv.GetFileAttributesExW(lpFileName, fInfoLevelId, lpFileInformation)
             try setError(GetLastError())
     }
 
     func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD throw
     {
-        length := priv.GetCurrentDirectoryA(nBufferLength, lpBuffer)
+        length := win32priv.GetCurrentDirectoryA(nBufferLength, lpBuffer)
         if !length
             try setError(GetLastError())
         return length
@@ -529,7 +529,7 @@ namespace priv
 
     func GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPCWSTR)->DWORD throw
     {
-        length := priv.GetCurrentDirectoryW(nBufferLength, lpBuffer)
+        length := win32priv.GetCurrentDirectoryW(nBufferLength, lpBuffer)
         if !length
             try setError(GetLastError())
         return length
@@ -537,19 +537,19 @@ namespace priv
 
     func SetCurrentDirectoryA(lpPathName: LPCSTR) throw
     {
-        if !priv.SetCurrentDirectoryA(lpPathName)
+        if !win32priv.SetCurrentDirectoryA(lpPathName)
             try setError(GetLastError())
     }
 
     func SetCurrentDirectoryW(lpPathName: LPCWSTR) throw
     {
-        if !priv.SetCurrentDirectoryW(lpPathName)
+        if !win32priv.SetCurrentDirectoryW(lpPathName)
             try setError(GetLastError())
     }
 
     func CreateFileA(lpFileName: LPCSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE throw
     {
-        h := priv.CreateFileA(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile)
+        h := win32priv.CreateFileA(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile)
         if h == INVALID_HANDLE_VALUE
             try setError(GetLastError())
         return h
@@ -557,7 +557,7 @@ namespace priv
 
     func CreateFileW(lpFileName: LPCWSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE throw
     {
-        h := priv.CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile)
+        h := win32priv.CreateFileW(lpFileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile)
         if h == INVALID_HANDLE_VALUE
             try setError(GetLastError())
         return h
@@ -566,7 +566,7 @@ namespace priv
     #[autodiscard]
     func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD throw
     {
-        low := priv.SetFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod)
+        low := win32priv.SetFilePointer(hFile, lDistanceToMove, lpDistanceToMoveHigh, dwMoveMethod)
         if low == INVALID_SET_FILE_POINTER
             try setError(GetLastError())
         return low
@@ -574,7 +574,7 @@ namespace priv
 
     func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD throw
     {
-        low := priv.GetFileSize(hFile, lpFileSizeHigh)
+        low := win32priv.GetFileSize(hFile, lpFileSizeHigh)
         if low == INVALID_FILE_SIZE
             try setError(GetLastError())
         return low
@@ -583,7 +583,7 @@ namespace priv
     #[autodiscard]
     func GetFullPathNameA(lpFileName: LPCSTR, nBufferLength: DWORD, lpBuffer: LPSTR, lpFilePart: *LPSTR)->DWORD throw
     {
-        res := priv.GetFullPathNameA(lpFileName, nBufferLength, lpBuffer, lpFilePart)
+        res := win32priv.GetFullPathNameA(lpFileName, nBufferLength, lpBuffer, lpFilePart)
         if !res
             try setError(GetLastError())
         return res
@@ -592,7 +592,7 @@ namespace priv
     #[autodiscard]
     func GetFullPathNameW(lpFileName: LPCTSTR, nBufferLength: DWORD, lpBuffer: LPWSTR, lpFilePart: *LPWSTR)->DWORD throw
     {
-        res := priv.GetFullPathNameW(lpFileName, nBufferLength, lpBuffer, lpFilePart)
+        res := win32priv.GetFullPathNameW(lpFileName, nBufferLength, lpBuffer, lpFilePart)
         if !res
             try setError(GetLastError())
         return res

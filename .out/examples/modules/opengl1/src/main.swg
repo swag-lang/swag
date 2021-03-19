@@ -19,7 +19,7 @@ func display()
     glVertex2i(1, -1);
     glEnd();
     glFlush()
-    discard SwapBuffers(hDC)
+    assume SwapBuffers(hDC)
 }
 
 #[swag.callback]

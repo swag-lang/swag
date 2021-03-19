@@ -41,7 +41,7 @@ func display()
     glEnd()
 
     glFlush()
-    discard SwapBuffers(hDC)
+    assume SwapBuffers(hDC)
 }
 
 var textureID: GLuint

@@ -1,7 +1,7 @@
 #global export
 #global foreignlib "gdi32"
 #global if #os == "windows"
-using win32
+using swag, win32
 
 struct PIXELFORMATDESCRIPTOR
 {
@@ -59,10 +59,26 @@ const PFD_DEPTH_DONTCARE          = 0x20000000
 const PFD_DOUBLEBUFFER_DONTCARE   = 0x40000000
 const PFD_STEREO_DONTCARE         = 0x80000000
 
-#[swag.foreign("gdi32")]
+#[foreign("gdi32")]
 {
     func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32;
     func SetPixelFormat(hdc: HDC, format: s32, ppfd: const *PIXELFORMATDESCRIPTOR)->BOOL;
     func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: *PIXELFORMATDESCRIPTOR)->s32;
-    func SwapBuffers(arg1: HDC)->BOOL;
+}
+
+namespace gdi32priv
+{
+    #[foreign("gdi32")]
+    {
+        func SwapBuffers(arg1: HDC)->BOOL;
+    }
+}
+
+#[inline]
+{
+    func SwapBuffers(arg1: HDC) throw
+    {
+        if !gdi32priv.SwapBuffers(arg1)
+            try setError(GetLastError())
+    }
 }

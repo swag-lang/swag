@@ -43,7 +43,7 @@ func display()
     glDisableVertexAttribArray(0)
 
     glFlush()
-    discard SwapBuffers(hDC)
+    assume SwapBuffers(hDC)
 }
 
 #[swag.callback]
