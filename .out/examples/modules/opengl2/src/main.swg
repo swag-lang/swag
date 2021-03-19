@@ -172,8 +172,8 @@ func createShader()
     hWnd := createWindow()
 
     hDC = GetDC(hWnd)
-    hRC := wglCreateContext(hDC)
-    assume wglMakeCurrent(hDC, hRC)
+    hRC := try wglCreateContext(hDC)
+    try wglMakeCurrent(hDC, hRC)
     glInitExtensions()
 
     glGenBuffers(1, &vertexbuffer)
@@ -183,12 +183,12 @@ func createShader()
 
     display()
     ShowWindow(hWnd, SW_SHOW)
-    assume UpdateWindow(hWnd)
+    try UpdateWindow(hWnd)
 
     messageLoop()
 
-    assume wglMakeCurrent(null, null)
-    discard wglDeleteContext(hRC)
+    try wglMakeCurrent(null, null)
+    try wglDeleteContext(hRC)
     ReleaseDC(hWnd, hDC)
     discard DestroyWindow(hWnd)
 }
