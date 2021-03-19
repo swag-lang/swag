@@ -60,7 +60,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 
     case WM_SIZE:
 	    glViewport(0, 0, LOWORD(lParam), HIWORD(lParam))
-	    discard PostMessageA(hWnd, WM_PAINT, 0, 0)
+	    assume PostMessageA(hWnd, WM_PAINT, 0, 0)
 	    return 0
 
     case WM_DESTROY:

@@ -404,7 +404,6 @@ struct PAINTSTRUCT
     func PeekMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL;
     func PeekMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL;
     func PostQuitMessage(nExitCode: s32);
-    func PostMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->BOOL;
 
     func GetDC(hWnd: HWND)->HDC;
 }
@@ -431,11 +430,25 @@ namespace user32priv
 
         func UpdateWindow(hWnd: HWND)->BOOL;
         func DestroyWindow(hWnd: HWND)->BOOL;
+        func PostMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->BOOL;
+        func PostMessageW(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->BOOL;
     }
 }
 
 #[inline]
 {
+    func PostMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM) throw
+    {
+        if !user32priv.PostMessageA(hWnd, msg, wParam, lParam)
+            try setError(GetLastError())
+    }
+
+    func PostMessageW(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM) throw
+    {
+        if !user32priv.PostMessageW(hWnd, msg, wParam, lParam)
+            try setError(GetLastError())
+    }
+
     #[autodiscard]
     func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM throw
     {
