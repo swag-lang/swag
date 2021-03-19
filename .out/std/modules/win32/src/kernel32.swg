@@ -356,7 +356,6 @@ struct PROCESS_INFORMATION
     func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: *WIN32_FIND_DATAW)->HANDLE;
     func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL;
     func FindNextFileW(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAW)->BOOL;
-    func FindClose(hFindFile: HANDLE)->BOOL;
 }
 
 namespace win32priv
@@ -391,6 +390,7 @@ namespace win32priv
         func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
         func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
         func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME)->BOOL;
+        func FindClose(hFindFile: HANDLE)->BOOL;
 
         func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
         func GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPCWSTR)->DWORD;
@@ -600,6 +600,12 @@ namespace win32priv
         if h == INVALID_HANDLE_VALUE
             try setError(GetLastError())
         return h
+    }
+
+    func FindClose(hFindFile: HANDLE) throw
+    {
+        if !win32priv.FindClose(hFindFile)
+            try setError(GetLastError())
     }
 
     #[autodiscard]
