@@ -52,6 +52,6 @@ impl Mutex
     func unlock(using self)
     {
         debug.assert(isValid())
-        discard ReleaseMutex(handle)
+        assume ReleaseMutex(handle)
     }
 }

@@ -342,9 +342,6 @@ struct PROCESS_INFORMATION
     func ExitProcess(uExitCode: UINT);
     func GetCurrentThreadId()->DWORD;
     func GetCurrentThread()->HANDLE;
-    func ReleaseMutex(hMutex: HANDLE)->BOOL;
-    func ResetEvent(hEvent: HANDLE)->BOOL;
-    func SetEvent(hEvent: HANDLE)->BOOL;
 
     func CreateWaitableTimerA(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCSTR)->HANDLE;
     func CreateWaitableTimerW(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCWSTR)->HANDLE;
@@ -368,6 +365,9 @@ namespace win32priv
         func SetThreadPriority(hThread: HANDLE, nPriority: s32)->BOOL;
         func WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD)->DWORD;
         func WaitForMultipleObjects(nCount: DWORD, lpHandles: const *HANDLE, bWaitAll: BOOL, dwMilliseconds: DWORD)->DWORD;
+        func ReleaseMutex(hMutex: HANDLE)->BOOL;
+        func ResetEvent(hEvent: HANDLE)->BOOL;
+        func SetEvent(hEvent: HANDLE)->BOOL;
 
         func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
         func CreateProcessW(lpApplicationName: LPCWSTR, lpCommandLine: LPCWSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCWSTR, lpStartupInfo: *STARTUPINFOW, lpProcessInformation: *PROCESS_INFORMATION)->BOOL;
@@ -456,6 +456,24 @@ namespace win32priv
         if res == WAIT_FAILED
             try setError(GetLastError())
         return res
+    }
+
+    func ReleaseMutex(hMutex: HANDLE) throw
+    {
+        if !win32priv.ReleaseMutex(hMutex)
+            try setError(GetLastError())
+    }
+
+    func ResetEvent(hEvent: HANDLE) throw
+    {
+        if !win32priv.ResetEvent(hEvent)
+            try setError(GetLastError())
+    }
+
+    func SetEvent(hEvent: HANDLE) throw
+    {
+        if !win32priv.SetEvent(hEvent)
+            try setError(GetLastError())
     }
 
     func CreateProcessA(lpApplicationName: LPCSTR, lpCommandLine: LPCSTR, lpProcessAttributes: *SECURITY_ATTRIBUTES, lpThreadAttributes: *SECURITY_ATTRIBUTES, bInheritHandles: BOOL, dwCreationFlags: DWORD, lpEnvironment: LPVOID, lpCurrentDirectory: LPCSTR, lpStartupInfo: *STARTUPINFOA, lpProcessInformation: *PROCESS_INFORMATION) throw

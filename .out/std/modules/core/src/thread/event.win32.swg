@@ -37,14 +37,14 @@ impl Event
     func signal(using self)
     {
         debug.assert(isValid())
-        discard SetEvent(handle)
+        assume SetEvent(handle)
     }
 
     // Reset the event state
     func reset(using self)
     {
         debug.assert(isValid())
-        discard ResetEvent(handle)
+        assume ResetEvent(handle)
     }
 
     // Wait for the event to be signaled
