@@ -213,16 +213,19 @@ func @seterr(value: string)
 {
     cxt := @getcontext()
     if value == null
-    {
         cxt.errorMsgLen = 0
-    }
     else
     {
         len := @countof(value)
-        if len > swag.MaxLenErrorMsg
-            len = swag.MaxLenErrorMsg
-        @memcpy(&cxt.errorMsg[cxt.errorMsgStart], @dataof(value), len)
-        cxt.errorMsgLen = cast(u32) len
+        if len == 0
+            cxt.errorMsgLen = 0
+        else
+        {
+            if len > swag.MaxLenErrorMsg - cxt.errorMsgStart len = cast(uint) (swag.MaxLenErrorMsg - cxt.errorMsgStart)
+            @assert(len > 0)
+            @memcpy(&cxt.errorMsg[cxt.errorMsgStart], @dataof(value), len)
+            cxt.errorMsgLen = cast(u32) len
+        }
     }
 }
 
@@ -239,6 +242,7 @@ func __pusherr()
 {
     cxt := @getcontext()
     @assert(cxt.errorMsgLen != 0)
+    @assert(swag.MaxLenErrorMsg - cxt.errorMsgStart >= 8)
     ptr := cast(*u32) (&cxt.errorMsg[cxt.errorMsgStart] + cxt.errorMsgLen)
     ptr[0] = cxt.errorMsgLen
     ptr[1] = cxt.traceIndex
