@@ -35,43 +35,46 @@ bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNode)
 {
-    auto node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Throw);
+    auto node = CastAst<AstTryCatchAssume>(fromNode, AstNodeKind::Try, AstNodeKind::Throw);
 
     // Push current error context in case the leave scope triggers some errors too
-    if (!(node->doneFlags & AST_DONE_STACK_TRACE))
+    if (!(context->node->doneFlags & AST_DONE_STACK_TRACE))
     {
         emitInstruction(context, ByteCodeOp::InternalPushErr);
-        node->doneFlags |= AST_DONE_STACK_TRACE;
+        context->node->doneFlags |= AST_DONE_STACK_TRACE;
+        context->tryCatchScope++;
     }
 
     // Leave the current scope
     // As this will reevaluate some childs, we need to force the BCI_TRYCATCH flags until we are done
     // and come back here
     {
-        PushICFlags cif(context, BCI_TRYCATCH);
         SWAG_CHECK(emitLeaveScopeReturn(context, nullptr, true));
         if (context->result != ContextResult::Done)
             return true;
     }
 
+    SWAG_ASSERT(context->tryCatchScope);
+    context->tryCatchScope--;
+
     // Restore the error context, and keep error trace of current call
-    if (!(node->doneFlags & AST_DONE_STACK_TRACE1))
+    if (!(context->node->doneFlags & AST_DONE_STACK_TRACE1))
     {
         emitInstruction(context, ByteCodeOp::InternalPopErr);
 
         if (context->sourceFile->module->buildCfg.stackTrace)
         {
             auto r0     = reserveRegisterRC(context);
-            auto offset = computeSourceLocation(node);
+            auto offset = computeSourceLocation(context->node);
 
             emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r0)->b.u64 = offset;
             emitInstruction(context, ByteCodeOp::InternalStackTrace, r0);
             freeRegisterRC(context, r0);
         }
 
-        node->doneFlags |= AST_DONE_STACK_TRACE1;
+        context->node->doneFlags |= AST_DONE_STACK_TRACE1;
     }
 
     TypeInfo* returnType = nullptr;
@@ -230,7 +233,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     }
     else
     {
-        SWAG_CHECK(emitTryThrowExit(context));
+        SWAG_CHECK(emitTryThrowExit(context, context->node));
         if (context->result != ContextResult::Done)
             return true;
     }
@@ -242,25 +245,36 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 {
     PushICFlags ic(context, BCI_TRYCATCH);
 
-    auto node              = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try);
-    node->resultRegisterRC = node->childs.front()->childs.back()->resultRegisterRC;
+    // try in a top level function is equivalent to assume
+    auto node = context->node;
 
+    AstFuncDecl* parentFct = nullptr;
+    if (node->ownerInline && ((node->semFlags & AST_SEM_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
+        parentFct = node->ownerInline->func;
+    else
+        parentFct = node->ownerFct;
+    if (parentFct->flags & AST_SPECIAL_COMPILER_FUNC)
+        return emitAssume(context);
+
+    auto tryNode = CastAst<AstTryCatchAssume>(node->ownerTryCatchAssume, AstNodeKind::Try);
     if (!(node->doneFlags & AST_DONE_TRY_1))
     {
         RegisterList r0;
         reserveRegisterRC(context, r0, 2);
         emitInstruction(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
-        node->seekInsideJump = context->bc->numInstructions;
+        tryNode->seekInsideJump = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
         freeRegisterRC(context, r0);
         node->doneFlags |= AST_DONE_TRY_1;
     }
 
-    SWAG_CHECK(emitTryThrowExit(context));
+    SWAG_CHECK(emitTryThrowExit(context, tryNode));
     if (context->result != ContextResult::Done)
         return true;
 
-    context->bc->out[node->seekInsideJump].b.s32 = context->bc->numInstructions - node->seekInsideJump - 1;
+    //tryNode->resultRegisterRC = tryNode->childs.front()->childs.back()->resultRegisterRC;
+
+    context->bc->out[tryNode->seekInsideJump].b.s32 = context->bc->numInstructions - tryNode->seekInsideJump - 1;
     return true;
 }
 
@@ -268,16 +282,15 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 {
     PushICFlags ic(context, BCI_TRYCATCH);
 
-    auto node              = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Assume);
-    node->resultRegisterRC = node->childs.front()->childs.back()->resultRegisterRC;
+    auto assumeNode = CastAst<AstTryCatchAssume>(context->node->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
 
     RegisterList r0;
     reserveRegisterRC(context, r0, 2);
     emitInstruction(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
-    node->seekInsideJump = context->bc->numInstructions;
+    assumeNode->seekInsideJump = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
 
-    auto offset = computeSourceLocation(node);
+    auto offset = computeSourceLocation(assumeNode);
     auto r1     = reserveRegisterRC(context);
 
     emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r1)->b.u64 = offset;
@@ -285,7 +298,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
     freeRegisterRC(context, r0);
     freeRegisterRC(context, r1);
 
-    context->bc->out[node->seekInsideJump].b.s32 = context->bc->numInstructions - node->seekInsideJump - 1;
+    context->bc->out[assumeNode->seekInsideJump].b.s32 = context->bc->numInstructions - assumeNode->seekInsideJump - 1;
     return true;
 }
 

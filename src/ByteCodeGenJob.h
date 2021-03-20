@@ -39,6 +39,7 @@ struct ByteCodeGenContext : public JobContext
     bool                          noLocation        = false;
     uint32_t                      contextFlags      = 0;
     uint16_t                      instructionsFlags = 0;
+    uint32_t                      tryCatchScope     = 0;
 
     void setNoLocation()
     {
@@ -204,7 +205,7 @@ struct ByteCodeGenJob : public Job
     static bool emitTry(ByteCodeGenContext* context);
     static bool emitAssume(ByteCodeGenContext* context);
     static bool emitInitStackTrace(ByteCodeGenContext* context);
-    static bool emitTryThrowExit(ByteCodeGenContext* context);
+    static bool emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNode);
     static bool emitThrow(ByteCodeGenContext* context);
     static bool sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload);
     static bool emitIdentifier(ByteCodeGenContext* context);

@@ -188,12 +188,22 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
-    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format("invalid 'try' inside '%s' expression", node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format("invalid 'catch' inside '%s' expression", node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format("invalid 'assume' inside '%s' expression", node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format("invalid 'throw' inside '%s' expression", node->token.text.c_str())));
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format("'%s' must be immediatly followed by an identifier", node->token.text.c_str())));
-    SWAG_CHECK(doIdentifierRef(node));
+
+    if (token.id == TokenId::SymLeftCurly)
+    {
+        SWAG_CHECK(doCurlyStatement(node));
+        node->semanticFct = nullptr;
+    }
+    else
+    {
+        SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format("invalid 'try' inside '%s' expression", node->token.text.c_str())));
+        SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format("invalid 'catch' inside '%s' expression", node->token.text.c_str())));
+        SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format("invalid 'assume' inside '%s' expression", node->token.text.c_str())));
+        SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format("invalid 'throw' inside '%s' expression", node->token.text.c_str())));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format("'%s' must be immediatly followed by an identifier", node->token.text.c_str())));
+        SWAG_CHECK(doIdentifierRef(node));
+    }
+
     return true;
 }
 

@@ -177,7 +177,7 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
     }
 
     // Be sure this is done only once
-    node->flags |= AST_NO_BYTECODE;
+    node->flags |= AST_NO_BYTECODE_CHILDS;
 
     return true;
 }
@@ -811,7 +811,7 @@ bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNat
 
     // Leave all scopes
     Scope* topScope = nullptr;
-    if (node->ownerInline && (node->semFlags & AST_SEM_EMBEDDED_RETURN))
+    if (node->ownerInline && ((node->semFlags & AST_SEM_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
         topScope = node->ownerInline->scope;
     else
         topScope = funcNode->scope;

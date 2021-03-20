@@ -10,19 +10,21 @@ func titi() throw
 #[swag.inline]
 func tata() throw
 {
-    defer G += 1
+    defer G += 2
     try titi()
 }
 
 #[swag.inline]
 func toto() throw
 {
-    defer G += 1
+    defer G += 4
     try tata()
 }
 
+//#[swag.printbc]
 #test
 {
     catch toto()
-    @assert(G == 3)
+    //@print(cast(s64) G)
+    @assert(G == 7)
 }

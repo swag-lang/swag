@@ -1007,6 +1007,29 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         inlineNode->extension->alternativeScopesVars = funcDecl->extension->alternativeScopesVars;
     }
 
+    // Try/Assume
+    if (inlineNode->ownerTryCatchAssume && (inlineNode->func->typeInfo->flags & TYPEINFO_CAN_THROW))
+    {
+        switch (inlineNode->ownerTryCatchAssume->kind)
+        {
+        case AstNodeKind::Try:
+            inlineNode->extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
+            break;
+        case AstNodeKind::Assume:
+            inlineNode->extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
+            break;
+        }
+
+        // Reset emit from the modifier if it exists, as the inline block will deal with that
+        if (identifier->extension)
+        {
+            if (identifier->extension->byteCodeAfterFct == ByteCodeGenJob::emitTry)
+                identifier->extension->byteCodeAfterFct = nullptr;
+            if (identifier->extension->byteCodeAfterFct == ByteCodeGenJob::emitAssume)
+                identifier->extension->byteCodeAfterFct = nullptr;
+        }
+    }
+
     // We need to add the parent scope of the inline function (the global one), in order for
     // the inline content to be resolved in the same context as the original function
     auto globalScope = funcDecl->ownerScope;

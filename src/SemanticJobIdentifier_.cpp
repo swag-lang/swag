@@ -925,6 +925,21 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         else
             identifier->byteCodeFct = ByteCodeGenJob::emitCall;
 
+        // Try/Assume
+        if (identifier->ownerTryCatchAssume && (identifier->typeInfo->flags & TYPEINFO_CAN_THROW))
+        {
+            identifier->allocateExtension();
+            switch (identifier->ownerTryCatchAssume->kind)
+            {
+            case AstNodeKind::Try:
+                identifier->extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
+                break;
+            case AstNodeKind::Assume:
+                identifier->extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
+                break;
+            }
+        }
+
         // Setup parent if necessary
         if (returnType->kind == TypeInfoKind::Struct)
         {
@@ -3246,16 +3261,10 @@ bool SemanticJob::resolveTry(SemanticContext* context)
     SWAG_CHECK(checkCanThrow(context));
     SWAG_CHECK(checkCanCatch(context));
 
-    // try in a top level function is equivalent to assume
-    auto parentFct = (node->semFlags & AST_SEM_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
-    if (parentFct->flags & AST_SPECIAL_COMPILER_FUNC)
-        node->byteCodeFct = ByteCodeGenJob::emitAssume;
-    else
-        node->byteCodeFct = ByteCodeGenJob::emitTry;
-
     node->typeInfo = lastChild->typeInfo;
     node->flags    = identifierRef->flags;
     node->inheritComputedValue(identifierRef);
+    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
 
     return true;
 }
@@ -3270,10 +3279,10 @@ bool SemanticJob::resolveAssume(SemanticContext* context)
 
     node->allocateExtension();
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;
-    node->byteCodeFct                  = ByteCodeGenJob::emitAssume;
     node->typeInfo                     = lastChild->typeInfo;
     node->flags                        = identifierRef->flags;
     node->inheritComputedValue(identifierRef);
+    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
 
     return true;
 }

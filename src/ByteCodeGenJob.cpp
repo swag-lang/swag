@@ -267,7 +267,9 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.c.u64                = r2;
     ins.d.u64                = r3;
     ins.flags                = context->instructionsFlags;
-    ins.node                 = context->forceNode ? context->forceNode : node;
+    if (context->tryCatchScope)
+        ins.flags |= BCI_TRYCATCH;
+    ins.node = context->forceNode ? context->forceNode : node;
 
     if (context->noLocation)
         ins.location = nullptr;
