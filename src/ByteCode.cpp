@@ -123,7 +123,10 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     int                   i     = (int) (ip - out);
 
     // Instruction rank
-    g_Log.setColor(LogColor::Cyan);
+    if (ip->node && ip->node->ownerInline)
+        g_Log.setColor(LogColor::DarkCyan);
+    else
+        g_Log.setColor(LogColor::Cyan);
     wprintf(bcNum, i);
 
     // Instruction
