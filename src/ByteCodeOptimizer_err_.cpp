@@ -34,11 +34,16 @@ void ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
                         ipEnd = ipScan;
                 }
 
-                if (ipScan[0].op == ByteCodeOp::IntrinsicSetErr ||
+                if (ipScan[0].op == ByteCodeOp::End ||
+                    ipScan[0].op == ByteCodeOp::IntrinsicSetErr ||
                     ipScan[0].op == ByteCodeOp::LambdaCall ||
                     ipScan[0].op == ByteCodeOp::LocalCall ||
                     ipScan[0].op == ByteCodeOp::ForeignCall)
+                {
                     hasSetErr = true;
+                    break;
+                }
+
                 ipScan++;
             }
 

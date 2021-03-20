@@ -967,6 +967,17 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
         SWAG_CHECK(doLeftExpressionVar(result));
         return true;
 
+    case TokenId::KwdTry:
+    case TokenId::KwdAssume:
+        SWAG_CHECK(doTryAssume(nullptr, result));
+        return true;
+    case TokenId::KwdThrow:
+        SWAG_CHECK(doThrow(nullptr, result));
+        return true;
+    case TokenId::KwdCatch:
+        SWAG_CHECK(doCatch(nullptr, result));
+        return true;
+
     case TokenId::SymColon:
         SWAG_CHECK(doDeRef(nullptr, result));
         return true;
