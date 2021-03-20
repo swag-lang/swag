@@ -16,6 +16,17 @@ void ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
             setNop(context, ip + 1);
         }
 
+        // GetErr/Jump on another GetErr/Jump, make a shortcut
+        if (ip[0].op == ByteCodeOp::IntrinsicGetErr && ip[1].op == ByteCodeOp::JumpIfZero64)
+        {
+            auto ipNext = &ip[1] + ip[1].b.s32 + 1;
+            if (ipNext[0].op == ByteCodeOp::IntrinsicGetErr && ipNext[1].op == ByteCodeOp::JumpIfZero64)
+            {
+                ip[1].b.s32 += ipNext[1].b.s32 + 2;
+                context->passHasDoneSomething = true;
+            }
+        }
+
         // If there's not SetErr between push and pop, then remove them
         if (ip[0].op == ByteCodeOp::InternalPushErr)
         {
