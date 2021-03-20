@@ -45,7 +45,7 @@ func display()
 }
 
 var textureID: GLuint
-func loadImg() throw
+func loadImg()
 {
     using image.Image, Color
 
@@ -62,7 +62,7 @@ func loadImg() throw
     }
 
     data := imagePath(imgName)
-    myImage = try image.load(data)
+    myImage = assume image.load(data)
 
     var t: time.Stopwatch
     t.start()
@@ -191,12 +191,12 @@ func messageLoop()
         if(keyb.isKeyJustPressed(keyboard.Key.F1))
         {
             imageIdx += 1
-            assume loadImg()
+            loadImg()
         }
         if(keyb.isKeyJustPressed(keyboard.Key.F2))
         {
             effectIdx += 1
-            assume loadImg()
+            loadImg()
         }
 
         display()
