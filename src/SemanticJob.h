@@ -265,6 +265,7 @@ struct SemanticJob : public Job
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool checkCanThrow(SemanticContext* context);
     static bool checkCanCatch(SemanticContext* context);
+    static bool resolveTryBlock(SemanticContext* context);
     static bool resolveTry(SemanticContext* context);
     static bool resolveAssume(SemanticContext* context);
     static bool resolveCatch(SemanticContext* context);

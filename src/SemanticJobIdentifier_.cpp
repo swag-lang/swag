@@ -3235,7 +3235,7 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
         return context->report({node, node->token, format("'%s' cannot be used inside a struct special function", node->token.text.c_str())});
 
     if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !(parentFct->flags & AST_SPECIAL_COMPILER_FUNC))
-        return context->report({node, format("'%s' can only be used inside a function marked with 'throw', and '%s' is not", node->token.text.c_str(), parentFct->token.text.c_str())});
+        return context->report({node, node->token, format("'%s' can only be used inside a function marked with 'throw', and '%s' is not", node->token.text.c_str(), parentFct->token.text.c_str())});
 
     return true;
 }
@@ -3249,6 +3249,12 @@ bool SemanticJob::checkCanCatch(SemanticContext* context)
     if (lastChild->resolvedSymbolName->kind != SymbolKind::Function && lastChild->resolvedSymbolOverload->typeInfo->kind != TypeInfoKind::Lambda)
         return context->report({node, format("'%s' can only be used before a function call, and '%s' is %s", node->token.text.c_str(), lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))});
 
+    return true;
+}
+
+bool SemanticJob::resolveTryBlock(SemanticContext* context)
+{
+    SWAG_CHECK(checkCanThrow(context));
     return true;
 }
 

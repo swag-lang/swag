@@ -4,8 +4,6 @@ LANGUAGE
 -------------------------------------
 #premain ?
 -------------------------------------
-attribute, erreur si le caller n'utilise pas la valeur de retour du called (attribute de fonction)
--------------------------------------
 ca serait cool que les methods, en reflections, aient une value qui peut etre castee en lambda, et donc appel�es
 -------------------------------------
 char => rune ?

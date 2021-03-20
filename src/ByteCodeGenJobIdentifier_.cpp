@@ -272,8 +272,6 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    //tryNode->resultRegisterRC = tryNode->childs.front()->childs.back()->resultRegisterRC;
-
     context->bc->out[tryNode->seekInsideJump].b.s32 = context->bc->numInstructions - tryNode->seekInsideJump - 1;
     return true;
 }

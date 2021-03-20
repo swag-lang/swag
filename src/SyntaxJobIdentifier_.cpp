@@ -192,7 +192,10 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftCurly)
     {
         SWAG_CHECK(doCurlyStatement(node));
-        node->semanticFct = nullptr;
+        if (node->semanticFct == SemanticJob::resolveTry)
+            node->semanticFct = SemanticJob::resolveTryBlock;
+        else
+            node->semanticFct = nullptr;
     }
     else
     {
