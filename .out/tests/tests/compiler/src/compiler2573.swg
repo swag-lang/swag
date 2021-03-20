@@ -1,4 +1,4 @@
-#global testerror
+//#global testerror
 
 func toto() throw
 {
@@ -13,5 +13,6 @@ func titi() throw
 
 #test
 {
-    try titi()
+    catch titi()
+    @assert(@err != null)
 }

@@ -22,10 +22,38 @@ struct AstIdentifier;
 struct AstFuncDecl;
 struct DataSegmentLocation;
 struct DataSegment;
+struct SymbolName;
 
 struct SemanticContext : public JobContext
 {
-    SemanticJob* job = nullptr;
+    SemanticJob*     job = nullptr;
+    set<SymbolName*> currentLockedSymbol;
+};
+
+struct LockSymbolOncePerContext
+{
+    LockSymbolOncePerContext(SemanticContext* context, SymbolName* sym)
+    {
+        if (context->currentLockedSymbol.find(sym) != context->currentLockedSymbol.end())
+            return;
+        savedContext = context;
+        savedSymbol  = sym;
+        context->currentLockedSymbol.insert(sym);
+        sym->mutex.lock();
+    }
+
+    ~LockSymbolOncePerContext()
+    {
+        if (!savedContext)
+            return;
+        savedSymbol->mutex.unlock();
+        auto it = savedContext->currentLockedSymbol.find(savedSymbol);
+        SWAG_ASSERT(it != savedContext->currentLockedSymbol.end());
+        savedContext->currentLockedSymbol.erase(it);
+    }
+
+    SemanticContext* savedContext = nullptr;
+    SymbolName*      savedSymbol  = nullptr;
 };
 
 struct OneOverload

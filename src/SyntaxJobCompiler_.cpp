@@ -477,8 +477,10 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         {
             moduleSpecified = true;
             auto newModule  = g_Workspace.createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
-            sourceFile->module->removeFile(sourceFile);
+            auto oldModule  = sourceFile->module;
+            oldModule->removeFile(sourceFile);
             newModule->addFile(sourceFile);
+            oldModule->addErrorModule(newModule);
         }
 
         SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#global testerror' is invalid outside a test module (in the './tests' folder of the workspace)"}));

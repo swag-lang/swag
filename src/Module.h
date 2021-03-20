@@ -92,6 +92,7 @@ struct Module
     bool        mustGenerateTestExe();
     bool        canGenerateLegit();
     SourceFile* findFile(const Utf8& fileName);
+    void        addErrorModule(Module* module);
 
     string                    path;
     Utf8                      name;
@@ -103,6 +104,7 @@ struct Module
     shared_mutex              mutexFile;
     shared_mutex              mutexCompilerPass;
     VectorNative<SourceFile*> files;
+    VectorNative<Module*>     errorModules;
     set<SourceFile*>          exportSourceFiles;
     set<SourceFile*>          importedSourceFiles;
     map<Utf8, ByteCode*>      mapRuntimeFcts;

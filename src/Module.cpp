@@ -271,6 +271,12 @@ void Module::addFileNoLock(SourceFile* file)
         importedSourceFiles.insert(file);
 }
 
+void Module::addErrorModule(Module* module)
+{
+    scoped_lock lk(mutexFile);
+    errorModules.push_back(module);
+}
+
 void Module::addFile(SourceFile* file)
 {
     scoped_lock lk(mutexFile);

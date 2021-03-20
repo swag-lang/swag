@@ -1,6 +1,7 @@
 #global testerror
 
 //#[swag.printbc]
+#[swag.safety("", true)]
 #test
 {
     x := -1's8

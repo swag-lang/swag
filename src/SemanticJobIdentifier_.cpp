@@ -1437,13 +1437,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
     for (auto oneMatch : overloads)
     {
-        auto&       oneOverload       = *oneMatch;
-        auto        genericParameters = oneOverload.genericParameters;
-        auto        callParameters    = oneOverload.callParameters;
-        auto        dependentVar      = oneOverload.dependentVar;
-        auto        overload          = oneOverload.overload;
-        auto        symbol            = overload->symbol;
-        scoped_lock lock(symbol->mutex);
+        auto&          oneOverload       = *oneMatch;
+        auto           genericParameters = oneOverload.genericParameters;
+        auto           callParameters    = oneOverload.callParameters;
+        auto           dependentVar      = oneOverload.dependentVar;
+        auto           overload          = oneOverload.overload;
+        auto           symbol            = overload->symbol;
+        LockSymbolOncePerContext ls(context, symbol);
 
         if (oneOverload.symMatchContext.parameters.empty() && oneOverload.symMatchContext.genericParameters.empty())
         {

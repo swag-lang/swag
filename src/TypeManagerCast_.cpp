@@ -86,7 +86,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
             return false;
 
         // Wait for all opAffect to be solved
-        unique_lock lk(symbol->mutex);
+        LockSymbolOncePerContext lk(context, symbol);
         if (symbol->cptOverloads)
         {
             SWAG_ASSERT(context && context->job);
@@ -154,7 +154,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
             return false;
 
         // Wait for all opCast to be solved
-        unique_lock lk(symbol->mutex);
+        LockSymbolOncePerContext lk(context, symbol);
         if (symbol->cptOverloads)
         {
             SWAG_ASSERT(context && context->job);

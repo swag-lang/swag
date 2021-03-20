@@ -12,6 +12,7 @@
 #include "ByteCodeOptimizer.h"
 #include "Context.h"
 #include "ModuleManager.h"
+#include "ThreadManager.h"
 
 thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
@@ -166,6 +167,17 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Publish)
     {
+        // Need to run all error modules
+        // Each file with a #global testerror on top is now in a dedicated module, so we need to
+        // run them in case the error has not been triggered during the syntax pass
+        for (auto errorMd : module->errorModules)
+        {
+            auto job    = g_Pool_moduleBuildJob.alloc();
+            job->module = errorMd;
+            job->pass   = ModuleBuildPass::IncludeSwg;
+            g_ThreadMgr.addJob(job);
+        }
+
         timerSyntax.stop();
         if (!module->numTestErrors && module->buildPass == BuildPass::Full)
             g_Log.verbosePass(LogPassType::PassEnd, "Syntax", module->name, timerSyntax.elapsed);
