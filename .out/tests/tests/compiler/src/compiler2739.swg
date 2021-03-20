@@ -8,7 +8,7 @@ func toto() throw
     }
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     catch toto()

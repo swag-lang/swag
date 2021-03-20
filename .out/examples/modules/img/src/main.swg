@@ -161,9 +161,12 @@ func createWindow()->HWND
     pfd.iPixelType   = PFD_TYPE_RGBA
     pfd.cColorBits   = 32
 
-    pf := assume ChoosePixelFormat(hDC, &pfd)
-    assume SetPixelFormat(hDC, pf, &pfd)
-    assume DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
+    assume
+    {
+        pf := ChoosePixelFormat(hDC, &pfd)
+        SetPixelFormat(hDC, pf, &pfd)
+        DescribePixelFormat(hDC, pf, cast(UINT) @sizeof(PIXELFORMATDESCRIPTOR), &pfd)
+    }
 
     ReleaseDC(hDC, hWnd)
     return hWnd
@@ -200,24 +203,28 @@ func messageLoop()
     }
 }
 
+//#[swag.printbc]
 #main
 {
-    hWnd := createWindow()
+    try
+    {
+        hWnd := createWindow()
 
-    hDC = GetDC(hWnd)
-    hRC := try wglCreateContext(hDC)
-    try wglMakeCurrent(hDC, hRC)
+        hDC = GetDC(hWnd)
+        hRC := wglCreateContext(hDC)
+        wglMakeCurrent(hDC, hRC)
 
-    try jobs.setNumWorkers()
-    try loadImg()
+        jobs.setNumWorkers()
+        loadImg()
 
-    display()
-    ShowWindow(hWnd, SW_SHOW)
-    try UpdateWindow(hWnd)
+        display()
+        ShowWindow(hWnd, SW_SHOW)
+        UpdateWindow(hWnd)
 
-    messageLoop()
+        messageLoop()
 
-    try wglMakeCurrent(null, null)
-    try wglDeleteContext(hRC)
-    ReleaseDC(hWnd, hDC)
+        wglMakeCurrent(null, null)
+        wglDeleteContext(hRC)
+        ReleaseDC(hWnd, hDC)
+    }
 }
