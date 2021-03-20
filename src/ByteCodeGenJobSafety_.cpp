@@ -9,7 +9,7 @@
 void ByteCodeGenJob::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg)
 {
     emitInstruction(context, ByteCodeOp::JumpIfNotZero8, reg)->b.s32 = 1;
-    emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) msg;
+    emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer   = (uint8_t*) msg;
 }
 
 bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context, uint64_t whatOn, uint64_t whatOff)
@@ -626,7 +626,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
             emitInstruction(context, ByteCodeOp::CastS8S32, r1);
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU32, r1, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.u64 = INT8_MAX;
+            inst->b.u64 = UINT8_MAX;
             emitAssert(context, re, msg);
             break;
         }
@@ -637,7 +637,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
             emitInstruction(context, ByteCodeOp::CastS16S32, r1);
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU32, r1, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.u64 = INT8_MAX;
+            inst->b.u64 = UINT8_MAX;
             emitAssert(context, re, msg);
             break;
         }
@@ -646,7 +646,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.u64 = INT8_MAX;
+            inst->b.u64 = UINT8_MAX;
             emitAssert(context, re, msg);
             break;
         }
@@ -656,7 +656,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.u64 = INT8_MAX;
+            inst->b.u64 = UINT8_MAX;
             emitAssert(context, re, msg);
             break;
         }
@@ -705,7 +705,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
             emitInstruction(context, ByteCodeOp::CastS8S32, r1);
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU32, r1, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.u64 = INT16_MAX;
+            inst->b.u64 = UINT16_MAX;
             emitAssert(context, re, msg);
             break;
         }
@@ -716,7 +716,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
             emitInstruction(context, ByteCodeOp::CastS16S32, r1);
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU32, r1, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.u64 = INT16_MAX;
+            inst->b.u64 = UINT16_MAX;
             emitAssert(context, re, msg);
             break;
         }
@@ -725,7 +725,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU32, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.u64 = INT16_MAX;
+            inst->b.u64 = UINT16_MAX;
             emitAssert(context, re, msg);
             break;
         }
@@ -735,7 +735,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.u64 = INT16_MAX;
+            inst->b.u64 = UINT16_MAX;
             emitAssert(context, re, msg);
             break;
         }
@@ -804,7 +804,7 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
         {
             auto inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, exprNode->resultRegisterRC, 0, re);
             inst->flags |= BCI_IMM_B;
-            inst->b.u64 = INT32_MAX;
+            inst->b.u64 = UINT32_MAX;
             emitAssert(context, re, msg);
             break;
         }
