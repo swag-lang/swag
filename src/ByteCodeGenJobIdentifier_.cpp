@@ -290,7 +290,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
     assumeNode->seekInsideJump = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
 
-    auto offset = computeSourceLocation(assumeNode);
+    auto offset = computeSourceLocation(context->node);
     auto r1     = reserveRegisterRC(context);
 
     emitInstruction(context, ByteCodeOp::MakeConstantSegPointer, r1)->b.u64 = offset;
