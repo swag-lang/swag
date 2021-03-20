@@ -16,7 +16,13 @@ void ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
             setNop(context, ip + 1);
         }
 
-        if (ip[0].op == ByteCodeOp::IntrinsicGetErr && ip[1].op == ByteCodeOp::JumpIfZero64 && ip[1].b.s32 == 0)
+        // GetErr/Jump just after
+        if (ip[0].op == ByteCodeOp::IntrinsicGetErr &&
+            ip[1].op == ByteCodeOp::JumpIfZero64 &&
+            ip[1].a.u32 == ip[0].b.u32 &&
+            ip[0].flags & BCI_TRYCATCH &&
+            ip[1].flags & BCI_TRYCATCH &&
+            ip[1].b.s32 == 0)
         {
             setNop(context, ip);
             setNop(context, ip + 1);
