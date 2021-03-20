@@ -25,16 +25,7 @@ void ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
         {
             ADD_TODO(ip + ip->b.s32 + 1);
         }
-        else if (ip->op == ByteCodeOp::JumpIfTrue ||
-                 ip->op == ByteCodeOp::JumpIfFalse ||
-                 ip->op == ByteCodeOp::JumpIfZero8 ||
-                 ip->op == ByteCodeOp::JumpIfZero16 ||
-                 ip->op == ByteCodeOp::JumpIfZero32 ||
-                 ip->op == ByteCodeOp::JumpIfZero64 ||
-                 ip->op == ByteCodeOp::JumpIfNotZero8 ||
-                 ip->op == ByteCodeOp::JumpIfNotZero16 ||
-                 ip->op == ByteCodeOp::JumpIfNotZero32 ||
-                 ip->op == ByteCodeOp::JumpIfNotZero64)
+        else if (isJump(ip))
         {
             ADD_TODO(ip + ip->b.s32 + 1);
             ADD_TODO(ip + 1);

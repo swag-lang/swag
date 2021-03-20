@@ -173,9 +173,9 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             ip->a.u32 == ip[1].a.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            auto tmp = *ip;
-            *ip = ip[1];
-            ip[1] = tmp;
+            auto tmp                      = *ip;
+            *ip                           = ip[1];
+            ip[1]                         = tmp;
             context->passHasDoneSomething = true;
             ip->b.s32 += 1;
             ip->op = ByteCodeOp::JumpIfZero8;
@@ -186,9 +186,9 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             ip->a.u32 == ip[1].a.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            auto tmp = *ip;
-            *ip = ip[1];
-            ip[1] = tmp;
+            auto tmp                      = *ip;
+            *ip                           = ip[1];
+            ip[1]                         = tmp;
             context->passHasDoneSomething = true;
             ip->b.s32 += 1;
             ip->op = ByteCodeOp::JumpIfZero16;
@@ -199,9 +199,9 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             ip->a.u32 == ip[1].a.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            auto tmp = *ip;
-            *ip = ip[1];
-            ip[1] = tmp;
+            auto tmp                      = *ip;
+            *ip                           = ip[1];
+            ip[1]                         = tmp;
             context->passHasDoneSomething = true;
             ip->b.s32 += 1;
             ip->op = ByteCodeOp::JumpIfZero32;
