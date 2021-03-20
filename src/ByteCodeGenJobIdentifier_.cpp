@@ -278,6 +278,9 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 {
+    if (!context->sourceFile->module->buildCfg.byteCodeEmitAssume)
+        return true;
+
     PushICFlags ic(context, BCI_TRYCATCH);
 
     auto assumeNode = CastAst<AstTryCatchAssume>(context->node->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);

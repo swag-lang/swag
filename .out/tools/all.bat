@@ -1,4 +1,4 @@
-call clean
+call clean --silent:true
 call x64.bat --cfg-optim-bc:false
 call x64.bat --cfg-inline-bc:false
 call x64.bat --cfg-safety:false

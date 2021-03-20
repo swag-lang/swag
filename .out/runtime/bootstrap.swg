@@ -414,6 +414,7 @@ namespace swag
         byteCodeOptimize        = true
         byteCodeDebug           = false
         byteCodeDebugInline     = true
+        byteCodeEmitAssume      = true
         byteCodeInline          = true
 
         // Backend common
