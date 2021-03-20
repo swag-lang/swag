@@ -203,7 +203,7 @@ func messageLoop()
     }
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #main
 {
     try

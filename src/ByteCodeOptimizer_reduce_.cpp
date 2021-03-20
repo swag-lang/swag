@@ -11,6 +11,111 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::DebugNop && ip->location == ip[1].location)
             setNop(context, ip);
 
+        // Byte swapping, the cast could be removed in another pass
+        if (ip->op == ByteCodeOp::CastInvBool8 &&
+            ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            auto tmp                      = *ip;
+            *ip                           = ip[1];
+            ip[1]                         = tmp;
+            context->passHasDoneSomething = true;
+            ip->b.s32 += 1;
+            ip->op = ByteCodeOp::JumpIfNotZero8;
+        }
+
+        if (ip->op == ByteCodeOp::CastInvBool16 &&
+            ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            auto tmp                      = *ip;
+            *ip                           = ip[1];
+            ip[1]                         = tmp;
+            context->passHasDoneSomething = true;
+            ip->b.s32 += 1;
+            ip->op = ByteCodeOp::JumpIfNotZero16;
+        }
+
+        if (ip->op == ByteCodeOp::CastInvBool32 &&
+            ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            auto tmp                      = *ip;
+            *ip                           = ip[1];
+            ip[1]                         = tmp;
+            context->passHasDoneSomething = true;
+            ip->b.s32 += 1;
+            ip->op = ByteCodeOp::JumpIfNotZero32;
+        }
+
+        if (ip->op == ByteCodeOp::CastInvBool64 &&
+            ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            auto tmp                      = *ip;
+            *ip                           = ip[1];
+            ip[1]                         = tmp;
+            context->passHasDoneSomething = true;
+            ip->b.s32 += 1;
+            ip->op = ByteCodeOp::JumpIfNotZero64;
+        }
+
+        if (ip->op == ByteCodeOp::CastInvBool8 &&
+            ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            auto tmp = *ip;
+            *ip = ip[1];
+            ip[1] = tmp;
+            context->passHasDoneSomething = true;
+            ip->b.s32 += 1;
+            ip->op = ByteCodeOp::JumpIfZero8;
+        }
+
+        if (ip->op == ByteCodeOp::CastInvBool16 &&
+            ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            auto tmp = *ip;
+            *ip = ip[1];
+            ip[1] = tmp;
+            context->passHasDoneSomething = true;
+            ip->b.s32 += 1;
+            ip->op = ByteCodeOp::JumpIfZero16;
+        }
+
+        if (ip->op == ByteCodeOp::CastInvBool32 &&
+            ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            auto tmp                      = *ip;
+            *ip                           = ip[1];
+            ip[1]                         = tmp;
+            context->passHasDoneSomething = true;
+            ip->b.s32 += 1;
+            ip->op = ByteCodeOp::JumpIfZero32;
+        }
+
+        /*if (ip->op == ByteCodeOp::CastInvBool64 &&
+            ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            auto tmp = *ip;
+            *ip = ip[1];
+            ip[1] = tmp;
+            context->passHasDoneSomething = true;
+            ip->b.s32 += 1;
+            ip->op = ByteCodeOp::JumpIfZero64;
+        }*/
+
         // Copy a constant value (from segment) to the stack
         if (ip->op == ByteCodeOp::MakeConstantSegPointer &&
             ip[1].op == ByteCodeOp::MakeStackPointer &&
@@ -399,7 +504,6 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             // Testing if a stack pointer is not null is irrelevant. This can happen often because of
             // safety checks, when dereferencing a struct on the stack
             if ((ip[0].op == ByteCodeOp::MakeStackPointer ||
-                 ip[0].op == ByteCodeOp::GetFromStackParam64 ||
                  ip[0].op == ByteCodeOp::CopyRRtoRC) &&
                 ip[0].a.u32 == ip[1].a.u32)
             {
