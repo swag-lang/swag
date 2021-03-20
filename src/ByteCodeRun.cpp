@@ -2760,7 +2760,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
     return true;
 }
 
-static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args, bool& tryContinue)
+static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
 {
     // Special exception raised by @error, to simply log an error message
     // This is called by panic too, in certain conditions (if we do not want dialog boxes, when running tests for example)
@@ -2779,7 +2779,6 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             userMsg.append("panic");
 
         // Add current context
-        bool inRunError = false;
         if (runContext->ip && runContext->ip->node && runContext->ip->node->sourceFile)
         {
             auto ip    = runContext->ip - 1; // ip is the next pointer instruction
@@ -2827,7 +2826,6 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             sourceFile = runContext->bc->sourceFile;
         sourceFile->report(diag, notes);
 
-        tryContinue = inRunError;
         return EXCEPTION_EXECUTE_HANDLER;
     }
 
@@ -2850,7 +2848,6 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
 
     do
     {
-        tryContinue = false;
         __try
         {
             runContext->bc->running = true;
@@ -2859,12 +2856,9 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
             if (!res)
                 return false;
         }
-        __except (exceptionHandler(runContext, GetExceptionInformation(), tryContinue))
+        __except (exceptionHandler(runContext, GetExceptionInformation()))
         {
-            if (tryContinue)
-                runContext->ip++;
-            else
-                return false;
+            return false;
         }
     } while (tryContinue);
 
