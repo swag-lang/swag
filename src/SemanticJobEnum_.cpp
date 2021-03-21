@@ -86,6 +86,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
             return context->report({typeNode->childs[0], format("invalid type '%s' for enum index (should be integer)", rawTypeInfo->name.c_str())});
     }
 
+    rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
     if (rawTypeInfo->kind == TypeInfoKind::Generic)
         return true;
     if (rawTypeInfo->kind == TypeInfoKind::Native && rawTypeInfo->nativeType != NativeTypeKind::Any)
@@ -106,7 +107,8 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
     auto assignNode = valNode->childs.empty() ? nullptr : valNode->childs[0];
 
-    auto rawType = CastTypeInfo<TypeInfoNative>(typeEnum->rawType, TypeInfoKind::Native);
+    auto rawTypeInfo = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
+    auto rawType     = CastTypeInfo<TypeInfoNative>(rawTypeInfo, TypeInfoKind::Native);
     if (assignNode)
     {
         SWAG_VERIFY(assignNode->flags & AST_VALUE_COMPUTED, context->report({valNode, valNode->token, "expression cannot be evaluated at compile time"}));
