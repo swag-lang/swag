@@ -15,7 +15,7 @@ public impl Image
     }
 
     // Resize image
-    func resize(using self, newWidth, newHeight: u32, method = ResizeMethod.Raw)
+    func resize(using self, newWidth, newHeight: s32, method = ResizeMethod.Raw)
     {
         debug.assert(newWidth > 0 && newHeight > 0)
         if newWidth == width && newHeight == height return
@@ -25,7 +25,7 @@ public impl Image
     }
 
     // Resize image
-    func toResize(using self, newWidth, newHeight: u32, method = ResizeMethod.Raw)->Image
+    func toResize(using self, newWidth, newHeight: s32, method = ResizeMethod.Raw)->Image
     {
         debug.assert(newWidth > 0 && newHeight > 0)
 
@@ -287,14 +287,14 @@ private
                     dr += f * ptr[2]
                     #if BPP == 32 da += f * ptr[3]
                     pw += 1
-                    ptr += w8Src
+                    ptr += cast(uint) w8Src
                 }
 
                 dstCol[0] = cast(u8) db
                 dstCol[1] = cast(u8) dg
                 dstCol[2] = cast(u8) dr
                 #if BPP == 32 dstCol[3] = cast(u8) da
-                dstCol += w8Dst
+                dstCol += cast(uint) w8Dst
             }
         }
 
@@ -313,7 +313,7 @@ private
         contrib := calcContributions(dh, sh, cast(f64) dh / sh, rmode)
 
         f := @{imgDst, imgSrc, contrib: &contrib}
-        jobs.parallelFor(imgDst.width, &f)
+        jobs.parallelFor(cast(u32) imgDst.width, &f)
         {
             params := cast(*@typeof(f)) data
             scaleCol(params.imgDst, params.imgSrc, cast(int) index, params.contrib)
@@ -327,7 +327,7 @@ private
         contrib := calcContributions(dw, sw, cast(f64) dw / sw, rmode)
 
         f := @{imgDst, imgSrc, contrib: &contrib}
-        jobs.parallelFor(imgDst.height, &f)
+        jobs.parallelFor(cast(u32) imgDst.height, &f)
         {
             params := cast(*@typeof(f)) data
             scaleRow(params.imgDst, params.imgSrc, cast(int) index, params.contrib)

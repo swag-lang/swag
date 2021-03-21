@@ -3,7 +3,7 @@ using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
 var imageIdx: u32
-var effectIdx: u32 = 18
+var effectIdx: u32 = 19
 var myImage: image.Image
 const W = 1024
 const H = 1024
@@ -87,7 +87,7 @@ func loadImg()
     case 16: myImage.resize(1024, 1024, Image.ResizeMethod.Hamming)
     case 17: myImage.resize(1024, 1024, Image.ResizeMethod.Catrom)
     case 18: myImage.resize(1024, 1024, Image.ResizeMethod.Quadratic)
-    case 19: loop 10 myImage.applyKernel(Image.Kernel.GaussianBlur3x3A)
+    case 19: myImage.applyKernel(Image.Kernel.EdgeDetect3x3A)
     default: effectIdx = 0
     }
 
@@ -215,7 +215,7 @@ func messageLoop()
         hRC := wglCreateContext(hDC)
         wglMakeCurrent(hDC, hRC)
 
-        jobs.setNumWorkers()
+        //jobs.setNumWorkers()
         loadImg()
 
         display()

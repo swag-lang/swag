@@ -7,14 +7,15 @@ struct Image
     pixels:             *u8
     workingBuffer:      *Image
     size:               uint
-    width, height:      u32
+    width, height:      s32
+    width8:             s32
     pf:                 PixelFormat = ?
     bpp:                u8  // Bits per pixel
     bpp8:               u8  // Bytes per pixel
 }
 
 // Creates a new image surface
-func create(width, height: u32, pf: PixelFormat)->Image
+func create(width, height: s32, pf: PixelFormat)->Image
 {
     debug.assert(width > 0 && height > 0, "invalid dimensions")
 
@@ -25,6 +26,7 @@ func create(width, height: u32, pf: PixelFormat)->Image
     result.allocator = @getcontext().allocator
     result.bpp = pf.bpp()
     result.bpp8 = cast(u8) (result.bpp >> 3)
+    result.width8 = width * result.bpp8
     result.size = cast(uint) (width * height * result.bpp8)
     result.pixels = memory.alloc(result.size, result.allocator)
     return result
@@ -79,7 +81,7 @@ impl Image
     }
 
     // Allocate a computing buffer with new sizes
-    func allocWorkingBuffer(using self, newWidth, newHeight: u32, newPf: PixelFormat)
+    func allocWorkingBuffer(using self, newWidth, newHeight: s32, newPf: PixelFormat)
     {
         if  workingBuffer &&
             newWidth == workingBuffer.width &&
@@ -109,6 +111,7 @@ impl Image
         swap(&bpp, &workingBuffer.bpp)
         swap(&bpp8, &workingBuffer.bpp8)
         swap(&size, &workingBuffer.size)
+        swap(&width8, &workingBuffer.width8)
     }
 
     // Macro to visit all pixels of the image in parallel chunks
@@ -119,7 +122,7 @@ impl Image
     // - index: the pixel index
     // - x, y: the pixel coordinates
     #[swag.macro]
-    func visitPixels(using self, userData: *void = null, stride: u32 = 1, stmt: code)
+    func visitPixels(using self, userData: *void = null, stride: s32 = 1, stmt: code)
     {
         debug.assert(stride > 0)
 
@@ -129,13 +132,13 @@ impl Image
             p := cast(*@typeof(p)) data
             #macro
             {
-                image := `p.item0
-                userData := `p.item1
+                image := `p.self
+                userData := `p.userData
                 pix := `buffer
 
                 index := (cast(uint) (pix - image.pixels)) / image.bpp8
-                x := cast(u32) index % image.width
-                y := cast(u32) index / image.width
+                x := cast(s32) index % image.width
+                y := cast(s32) index / image.width
 
                 #mixin `stmt
             }

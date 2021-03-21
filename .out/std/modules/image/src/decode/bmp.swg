@@ -14,8 +14,8 @@ const FILL_BI_BITFIELDS    = 3
 struct Header
 {
     biSize:             u32
-    biWidth:            u32
-    biHeight:           u32
+    biWidth:            s32
+    biHeight:           s32
     biPlanes:           u16
     biBitCount:         u16
     biCompression:      u32
@@ -85,8 +85,8 @@ public impl IDecoder for Decoder
             ch := cast(const *CoreHeader) dataof
             dataof += @sizeof(Header)
             bh.biSize        = ch.bcSize
-            bh.biWidth       = cast(u32) ch.bcWidth
-            bh.biHeight      = cast(u32) ch.bcHeight
+            bh.biWidth       = cast(s32) ch.bcWidth
+            bh.biHeight      = cast(s32) ch.bcHeight
             bh.biPlanes      = ch.bcPlanes
             bh.biBitCount    = ch.bcBitCount
             bh.biCompression = FILL_BI_RGB
