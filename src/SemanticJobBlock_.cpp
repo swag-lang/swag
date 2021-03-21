@@ -238,8 +238,9 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     node->typeInfo = node->expression->typeInfo;
 
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
-    SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, "invalid switch type 'any', you need to cast to a concrete type"}));
 
+    // Verify type is vlaid
+    SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, "invalid switch type 'any', you need to cast to a concrete type"}));
     switch (typeSwitch->kind)
     {
     case TypeInfoKind::Slice:
