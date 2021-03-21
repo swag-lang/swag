@@ -4,7 +4,7 @@ impl Image
 {
     public enum Kernel: const [..] s32
     {
-        GaussianBlur1 = @[1, 8, 0, 1, 0, 1, 4, 1, 0, 1, 0]
+        GaussianBlur3x3A = @[1, 8, 0, 1, 0, 1, 4, 1, 0, 1, 0]
     }
 
     // Transform image to grayscale, with a given factor
