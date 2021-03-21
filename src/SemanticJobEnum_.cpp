@@ -86,7 +86,12 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
             return context->report({typeNode->childs[0], format("invalid type '%s' for enum index (should be integer)", rawTypeInfo->name.c_str())});
     }
 
-    return true;
+    if (rawTypeInfo->kind == TypeInfoKind::Generic)
+        return true;
+    if (rawTypeInfo->kind == TypeInfoKind::Native && rawTypeInfo->nativeType != NativeTypeKind::Any)
+        return true;
+
+    return context->report({typeNode->childs[0], format("invalid type '%s' for enum", rawTypeInfo->name.c_str())});
 }
 
 bool SemanticJob::resolveEnumValue(SemanticContext* context)
