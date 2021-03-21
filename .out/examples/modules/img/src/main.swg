@@ -87,7 +87,7 @@ func loadImg()
     case 16: myImage.resize(1024, 1024, Image.ResizeMethod.Hamming)
     case 17: myImage.resize(1024, 1024, Image.ResizeMethod.Catrom)
     case 18: myImage.resize(1024, 1024, Image.ResizeMethod.Quadratic)
-    case 19: loop 10 myImage.applyKernel(Image.KernelGaussianBlur1)
+    case 19: loop 10 myImage.applyKernel(Image.Kernel.GaussianBlur1)
     default: effectIdx = 0
     }
 

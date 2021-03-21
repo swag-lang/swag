@@ -377,18 +377,25 @@ bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node, int inden
     CONCAT_FIXED_STR(bufferSwg, "enum ");
     bufferSwg.addString(node->token.text.c_str());
     CONCAT_FIXED_STR(bufferSwg, " : ");
-    bufferSwg.addString(typeEnum->rawType->name);
+    emitType(typeEnum->rawType, indent);
 
     bufferSwg.addEolIndent(indent);
     CONCAT_FIXED_STR(bufferSwg, "{");
     bufferSwg.addEol();
 
-    for (auto p : typeEnum->values)
+    for (auto c : node->childs)
     {
+        if (c->kind != AstNodeKind::EnumValue)
+            continue;
         bufferSwg.addIndent(indent + 1);
-        bufferSwg.addString(p->namedParam);
-        CONCAT_FIXED_STR(bufferSwg, " = ");
-        SWAG_CHECK(Ast::outputLiteral(outputContext, bufferSwg, node, typeEnum->rawType, p->value.text, p->value.reg));
+
+        bufferSwg.addString(c->token.text);
+        if (!c->childs.empty())
+        {
+            CONCAT_FIXED_STR(bufferSwg, " = ");
+            SWAG_CHECK(Ast::output(outputContext, bufferSwg, c->childs.front()));
+        }
+
         bufferSwg.addEol();
     }
 
