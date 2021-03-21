@@ -88,17 +88,26 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     }
 
     rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
-    if (rawTypeInfo->kind == TypeInfoKind::Generic)
+    switch (rawTypeInfo->kind)
+    {
+    case TypeInfoKind::Generic:
         return true;
-    if (rawTypeInfo->kind == TypeInfoKind::Array)
+    case TypeInfoKind::Array:
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
         SWAG_VERIFY(typeArray->count != UINT32_MAX, context->report({typeNode, format("dimension of enum array type '%s' must be specified", rawTypeInfo->name.c_str())}));
         SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format("enum array type '%s' must be const", rawTypeInfo->name.c_str())}));
         return true;
     }
-    if (rawTypeInfo->kind == TypeInfoKind::Native && rawTypeInfo->nativeType != NativeTypeKind::Any)
+    case TypeInfoKind::Slice:
+        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format("enum slice type '%s' must be const", rawTypeInfo->name.c_str())}));
         return true;
+
+    case TypeInfoKind::Native:
+        if (rawTypeInfo->nativeType != NativeTypeKind::Any)
+            return true;
+        break;
+    }
 
     return context->report({typeNode, format("invalid enum type '%s'", rawTypeInfo->name.c_str())});
 }
@@ -119,19 +128,29 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
     if (assignNode)
     {
-        // Collect slice literal
         if (rawTypeInfo->kind == TypeInfoKind::Array)
         {
             SWAG_ASSERT(!(assignNode->flags & AST_VALUE_COMPUTED));
-            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({valNode, valNode->token, "expression cannot be evaluated at compile time"}));
+            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, "expression cannot be evaluated at compile time"}));
             auto module = context->sourceFile->module;
             SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
         }
+        else if (rawTypeInfo->kind == TypeInfoKind::Slice)
+        {
+            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, "expression cannot be evaluated at compile time"}));
+            auto module = context->sourceFile->module;
+            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
+            assignNode->setFlagsValueIsComputed();
+            SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
+            auto typeList                     = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
+            assignNode->computedValue.reg.u32 = (uint32_t) typeList->subTypes.size();
+            enumNode->computedValue           = assignNode->computedValue;
+        }
         else
         {
-            SWAG_VERIFY(assignNode->flags & AST_VALUE_COMPUTED, context->report({valNode, valNode->token, "expression cannot be evaluated at compile time"}));
+            SWAG_VERIFY(assignNode->flags & AST_VALUE_COMPUTED, context->report({assignNode, "expression cannot be evaluated at compile time"}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
             enumNode->computedValue = assignNode->computedValue;
         }
