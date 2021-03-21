@@ -92,8 +92,9 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         return true;
     if (rawTypeInfo->kind == TypeInfoKind::Array)
     {
-        if (!rawTypeInfo->isConst())
-            return context->report({typeNode, format("enum array type '%s' should be const", rawTypeInfo->name.c_str())});
+        auto typeArray = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
+        SWAG_VERIFY(typeArray->count != UINT32_MAX, context->report({typeNode, format("dimension of enum array type '%s' must be specified", rawTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format("enum array type '%s' must be const", rawTypeInfo->name.c_str())}));
         return true;
     }
     if (rawTypeInfo->kind == TypeInfoKind::Native && rawTypeInfo->nativeType != NativeTypeKind::Any)
