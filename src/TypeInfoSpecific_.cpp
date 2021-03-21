@@ -264,7 +264,7 @@ void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
         resName += "] ";
     }
 
-    resName += pointedType->computeWhateverName(nameType);
+    resName += finalType->computeWhateverName(nameType);
 }
 
 void TypeInfoSlice::computeWhateverName(Utf8& resName, uint32_t nameType)

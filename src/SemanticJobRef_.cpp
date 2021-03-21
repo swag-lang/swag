@@ -407,16 +407,37 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
 
         // Try to dereference as a constant if we can
-        if (arrayNode->typeInfo->kind != TypeInfoKind::Array && (arrayNode->access->flags & AST_VALUE_COMPUTED))
+        if (arrayNode->typeInfo->kind != TypeInfoKind::Array && arrayNode->access->flags & AST_VALUE_COMPUTED)
         {
+            bool     isConstAccess = true;
+            uint64_t offsetAccess  = arrayNode->access->computedValue.reg.u64 * typePtr->finalType->sizeOf;
             SWAG_CHECK(boundCheck(context, arrayNode->access, typePtr->count));
-            if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
+
+            // Deal with array of array
+            auto subArray = arrayNode;
+            while (isConstAccess && subArray->array->kind == AstNodeKind::ArrayPointerIndex)
             {
-                SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
-                auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->storageOffset);
-                ptr += arrayNode->access->computedValue.reg.u64 * typePtr->finalType->sizeOf;
-                if (derefConstantValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
-                    arrayNode->setFlagsValueIsComputed();
+                subArray      = CastAst<AstArrayPointerIndex>(subArray->array, AstNodeKind::ArrayPointerIndex);
+                isConstAccess = isConstAccess && (subArray->access->flags & AST_VALUE_COMPUTED);
+                if (isConstAccess)
+                {
+                    auto subTypePtr = CastTypeInfo<TypeInfoArray>(subArray->array->typeInfo, TypeInfoKind::Array);
+                    SWAG_CHECK(boundCheck(context, subArray->access, subTypePtr->count));
+                    offsetAccess += subArray->access->computedValue.reg.u64 * typePtr->count * typePtr->finalType->sizeOf;
+                    typePtr = subTypePtr;
+                }
+            }
+
+            if (isConstAccess)
+            {
+                if (subArray->array->resolvedSymbolOverload && (subArray->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
+                {
+                    SWAG_ASSERT(subArray->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
+                    auto ptr = context->sourceFile->module->constantSegment.address(subArray->array->resolvedSymbolOverload->storageOffset);
+                    ptr += offsetAccess;
+                    if (derefConstantValue(context, arrayNode, typePtr->finalType->kind, typePtr->finalType->nativeType, ptr))
+                        arrayNode->setFlagsValueIsComputed();
+                }
             }
         }
 
