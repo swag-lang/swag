@@ -18,17 +18,21 @@ impl Image
         {
             params := cast(*@typeof(f)) userData
             kernelSize := params.kernel[0] / 2
-            w8 := image.width * image.bpp8
+            b8 := image.bpp8
+            w8 := image.width8
+            w  := image.width
+            h  := image.height
             ks := @dataof(params.kernel) + 2
+            px := image.pixels
 
             var bs, gs, rs: s32
             for dy := -kernelSize; dy <= kernelSize; dy += 1
             {
-                ny := math.clamp(y + dy, 0, image.height - 1)
+                ny := math.clamp(y + dy, 0, h - 1)
                 for dx := -kernelSize; dx <= kernelSize; dx += 1
                 {
-                    nx := math.clamp(x + dx, 0, image.width - 1)
-                    ptr := image.pixels + (nx * image.bpp8) + (ny * w8)
+                    nx := math.clamp(x + dx, 0, w - 1)
+                    ptr := px + (nx * b8) + (ny * w8)
                     ks0 := :ks
                     bs += cast(s32) ptr[0] * ks0
                     gs += cast(s32) ptr[1] * ks0
@@ -40,7 +44,7 @@ impl Image
             ksum := params.kernel[1]
             if ksum > 0 bs, gs, rs /= ksum
 
-            dpix := params.dstImage.pixels + (x * image.bpp8) + (y * w8)
+            dpix := params.dstImage.pixels + (x * b8) + (y * w8)
             dpix[0] = cast(u8) math.clamp(bs, 0, 255)
             dpix[1] = cast(u8) math.clamp(gs, 0, 255)
             dpix[2] = cast(u8) math.clamp(rs, 0, 255)
