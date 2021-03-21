@@ -423,7 +423,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                 {
                     auto subTypePtr = CastTypeInfo<TypeInfoArray>(subArray->array->typeInfo, TypeInfoKind::Array);
                     SWAG_CHECK(boundCheck(context, subArray->access, subTypePtr->count));
-                    offsetAccess += subArray->access->computedValue.reg.u64 * typePtr->count * typePtr->finalType->sizeOf;
+                    offsetAccess += subArray->access->computedValue.reg.u64 * subTypePtr->pointedType->sizeOf;
                     typePtr = subTypePtr;
                 }
             }
