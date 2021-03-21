@@ -20,7 +20,7 @@ JobResult FetchModuleJobFileSystem::execute()
     OS::visitFilesRec(dep->resolvedLocation, [&](const char* fileName) {
         auto n = normalizePath(fileName + dep->resolvedLocation.length());
 
-        // Do not copy public folder
+        // Do not collect public folder
         if (strstr(n.c_str(), SWAG_PUBLIC_FOLDER) == n.c_str() + 1)
             return;
 
@@ -34,6 +34,11 @@ JobResult FetchModuleJobFileSystem::execute()
     vector<string> dstFiles;
     OS::visitFilesRec(destPath.c_str(), [&](const char* fileName) {
         auto n = normalizePath(fileName + destPath.length());
+
+        // Do not collect public folder
+        if (strstr(n.c_str(), SWAG_PUBLIC_FOLDER) == n.c_str() + 1)
+            return;
+
         dstFiles.push_back(n);
     });
 
@@ -43,6 +48,8 @@ JobResult FetchModuleJobFileSystem::execute()
         if (srcFiles.find(f) == srcFiles.end())
         {
             auto n = destPath + f;
+            printf("removing %s\n", n.c_str());
+
             if (!fs::remove(n))
             {
                 module->error(format("cannot delete file '%s': %s", n.c_str(), OS::getLastErrorAsString().c_str()));
