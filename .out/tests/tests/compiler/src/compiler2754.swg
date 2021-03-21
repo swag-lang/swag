@@ -6,27 +6,27 @@
 #[swag.safety("", true)]
 #test
 {
-    x := swag.MaxF32
-    y := cast(s32) x
+    x := 255'f32
+    y := cast(s8) x
 }
 
 #[swag.safety("", true)]
 #test
 {
-    x := -swag.MaxF32
-    y := cast(s32) x
+    x := -255'f32
+    y := cast(s8) x
 }
 
 #[swag.safety("", true)]
 #test
 {
-    x := swag.MaxF64
-    y := cast(s32) x
+    x := 255'f64
+    y := cast(s8) x
 }
 
 #[swag.safety("", true)]
 #test
 {
-    x := -swag.MaxF64
-    y := cast(s32) x
+    x := -255'f64
+    y := cast(s8) x
 }

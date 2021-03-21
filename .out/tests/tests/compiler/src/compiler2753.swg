@@ -7,26 +7,26 @@
 #test
 {
     x := swag.MaxF32
-    y := cast(s32) x
+    y := cast(s16) x
 }
 
 #[swag.safety("", true)]
 #test
 {
     x := -swag.MaxF32
-    y := cast(s32) x
+    y := cast(s16) x
 }
 
 #[swag.safety("", true)]
 #test
 {
     x := swag.MaxF64
-    y := cast(s32) x
+    y := cast(s16) x
 }
 
 #[swag.safety("", true)]
 #test
 {
     x := -swag.MaxF64
-    y := cast(s32) x
+    y := cast(s16) x
 }
