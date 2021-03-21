@@ -66,5 +66,5 @@ func panic(msg: string, loc: swag.CompilerSourceLocation)
         }
     }
 
-    @assert(G == 22)
+    @assert(G == 27)
 }
