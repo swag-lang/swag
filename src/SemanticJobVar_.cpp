@@ -624,9 +624,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->typeInfo = node->type->typeInfo;
     }
 
-    // Slices can't be constant. Use array
-    SWAG_VERIFY(!isCompilerConstant || node->typeInfo->kind != TypeInfoKind::Slice, context->report({node, "cannot declare a constant of type slice; declare an array instead"}));
-
     if (node->type)
         node->inheritOrFlag(node->type, AST_IS_GENERIC);
     if (node->flags & AST_IS_GENERIC)
@@ -730,6 +727,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     storageOffset = node->computedValue.reg.offset;
                 else
                     SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));
+            }
+            else if (typeInfo->kind == TypeInfoKind::Slice)
+            {
+                SWAG_ASSERT(!(node->flags & AST_VALUE_COMPUTED));
+                SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &node->assignment->computedValue, node->assignment->typeInfo, node->assignment));
+                auto typeList                           = CastTypeInfo<TypeInfoList>(node->assignment->typeInfo, TypeInfoKind::TypeListArray);
+                node->assignment->computedValue.reg.u32 = (uint32_t) typeList->subTypes.size();
+                node->assignment->setFlagsValueIsComputed();
             }
 
             node->inheritComputedValue(node->assignment);
