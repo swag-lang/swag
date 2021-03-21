@@ -147,4 +147,28 @@
         @assert(value & MyFlags.B == MyFlags.B)
         @assert(value & MyFlags.C == MyFlags.C)
     }
+
+    // You can have an enum of static arrays
+    {
+        enum Value: const [2] s32
+        {
+            A = @[1, 2]
+            B = @[10, 20]
+        }
+    }
+
+    // You can have an enum of slices
+    {
+        enum Value: const [..] s32
+        {
+            A = @[1, 2]
+            B = @[10, 20, 30, 40]
+        }
+
+        #assert @countof(Value.A) == 2
+        #assert @countof(Value.B) == 4
+        x := Value.A
+        @assert(x[0] == 1)
+        @assert(x[1] == 2)
+    }
 }
