@@ -35,9 +35,9 @@ impl Image
             bs /= params.kernel[1]
             gs /= params.kernel[1]
             rs /= params.kernel[1]
-            pix[0] = bitcast(u8) math.clamp(bs, 0, 255)
-            pix[1] = bitcast(u8) math.clamp(gs, 0, 255)
-            pix[2] = bitcast(u8) math.clamp(rs, 0, 255)
+            pix[0] = cast(u8) math.clamp(bs, 0, 255)
+            pix[1] = cast(u8) math.clamp(gs, 0, 255)
+            pix[2] = cast(u8) math.clamp(rs, 0, 255)
         }
     }
 }

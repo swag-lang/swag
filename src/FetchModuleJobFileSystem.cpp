@@ -48,8 +48,6 @@ JobResult FetchModuleJobFileSystem::execute()
         if (srcFiles.find(f) == srcFiles.end())
         {
             auto n = destPath + f;
-            printf("removing %s\n", n.c_str());
-
             if (!fs::remove(n))
             {
                 module->error(format("cannot delete file '%s': %s", n.c_str(), OS::getLastErrorAsString().c_str()));
