@@ -90,10 +90,10 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
     if (rawTypeInfo->kind == TypeInfoKind::Generic)
         return true;
-    if (rawTypeInfo->kind == TypeInfoKind::Slice)
+    if (rawTypeInfo->kind == TypeInfoKind::Array)
     {
         if (!rawTypeInfo->isConst())
-            return context->report({typeNode, format("enum slice type '%s' should be const", rawTypeInfo->name.c_str())});
+            return context->report({typeNode, format("enum array type '%s' should be const", rawTypeInfo->name.c_str())});
         return true;
     }
     if (rawTypeInfo->kind == TypeInfoKind::Native && rawTypeInfo->nativeType != NativeTypeKind::Any)
@@ -119,16 +119,14 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     if (assignNode)
     {
         // Collect slice literal
-        if (rawTypeInfo->kind == TypeInfoKind::Slice && !(assignNode->flags & AST_VALUE_COMPUTED))
+        if (rawTypeInfo->kind == TypeInfoKind::Array)
         {
+            SWAG_ASSERT(!(assignNode->flags & AST_VALUE_COMPUTED));
             SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({valNode, valNode->token, "expression cannot be evaluated at compile time"}));
             auto module = context->sourceFile->module;
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, rawTypeInfo, assignNode));
+            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
-            auto typeList                     = CastTypeInfo<TypeInfoList>(assignNode->typeInfo, TypeInfoKind::TypeListArray);
-            assignNode->computedValue.reg.u32 = (uint32_t) typeList->subTypes.size();
-            enumNode->computedValue           = assignNode->computedValue;
         }
         else
         {
