@@ -429,6 +429,21 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         auto typePtr        = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
+
+        // Try to dereference as a constant if we can
+        if (arrayNode->access->flags & AST_VALUE_COMPUTED)
+        {
+            if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
+            {
+                SWAG_CHECK(boundCheck(context, arrayNode->access, arrayNode->array->computedValue.reg.u32));
+                SWAG_ASSERT(arrayNode->array->resolvedSymbolOverload->storageOffset != UINT32_MAX);
+                auto ptr = context->sourceFile->module->constantSegment.address(arrayNode->array->resolvedSymbolOverload->storageOffset);
+                ptr += arrayNode->access->computedValue.reg.u64 * typePtr->pointedType->sizeOf;
+                if (derefConstantValue(context, arrayNode, typePtr->pointedType->kind, typePtr->pointedType->nativeType, ptr))
+                    arrayNode->setFlagsValueIsComputed();
+            }
+        }
+
         break;
     }
 
