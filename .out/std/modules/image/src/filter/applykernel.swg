@@ -22,8 +22,8 @@ impl Image
             w8 := image.width8
             w  := image.width
             h  := image.height
-            ks := @dataof(params.kernel) + 2
             px := image.pixels
+            ks := @dataof(params.kernel) + 2
 
             var bs, gs, rs: s32
             for dy := -kernelSize; dy <= kernelSize; dy += 1
