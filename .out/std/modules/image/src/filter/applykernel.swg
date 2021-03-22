@@ -9,6 +9,7 @@ impl Image
     }
 
     // Transform image to grayscale, with a given factor
+    //#[swag.printbc]
     public func doKernel(using self, dstImage: *Image, kernel: const [..] s32)
     {
         debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
@@ -24,6 +25,8 @@ impl Image
             h  := image.height
             px := image.pixels
             ks := @dataof(params.kernel) + 2
+            if w >= 0
+                w = w
 
             var bs, gs, rs: s32
 
