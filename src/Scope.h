@@ -127,6 +127,8 @@ struct Scope
     uint32_t  indexInParent  = UINT32_MAX;
     uint32_t  flags          = 0;
     uint32_t  startStackSize = 0;
+    uint32_t  backendStart   = 0;
+    uint32_t  backendEnd     = 0;
 
     Scope* getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate);
     void   addChildNoLock(Scope* child);

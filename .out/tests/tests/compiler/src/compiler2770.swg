@@ -8,11 +8,17 @@ func toto(stmt: code)
     }
 }
 
+#[swag.printbc]
 #test
 {
-    toto()
     {
         x := 1
-        @print(@typeof(x).name)
+        @print("toto")
+    }
+
+    {
+        y := true
+        x := "true"
+        @print("toto")
     }
 }

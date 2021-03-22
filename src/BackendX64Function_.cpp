@@ -394,8 +394,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     bc->markLabels();
 
     // Symbol
-    auto symbolFuncIndex = getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto coffFct         = registerFunction(pp, bc->node, symbolFuncIndex);
+    auto symbolFuncIndex  = getOrAddSymbol(pp, bc->callName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto coffFct          = registerFunction(pp, bc->node, symbolFuncIndex);
+    coffFct->startAddress = startAddress;
     if (debug)
         dbgSetLocation(coffFct, bc, nullptr, 0);
 
@@ -467,8 +468,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         if (ip->flags & BCI_JUMP_DEST)
             getOrCreateLabel(pp, i);
-
-        //concat.addU8(0x90); // NOP TO REMOVE
 
         switch (ip->op)
         {

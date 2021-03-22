@@ -18,11 +18,13 @@ const uint32_t SUBSECTION_STRING_TABLE  = 0xF3;
 const uint32_t SUBSECTION_FILE_CHECKSUM = 0xF4;
 
 const uint16_t S_FRAMEPROC                 = 0x1012;
+const uint16_t S_BLOCK32                   = 0x1103;
 const uint16_t S_COMPILE3                  = 0x113c;
 const uint16_t S_LPROC32_ID                = 0x1146;
 const uint16_t S_GPROC32_ID                = 0x1147;
 const uint16_t S_PROC_ID_END               = 0x114F;
 const uint16_t S_LOCAL                     = 0x113E;
+const uint16_t S_DEFRANGE                  = 0x113F;
 const uint16_t S_DEFRANGE_REGISTER         = 0x1141;
 const uint16_t S_DEFRANGE_FRAMEPOINTER_REL = 0x1142;
 const uint16_t S_DEFRANGE_REGISTER_REL     = 0x1145;
@@ -147,6 +149,12 @@ void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeIns
     ByteCode::getLocation(bc, ip, &sourceFile, &location);
     if (!location)
         return;
+
+    // Update begin of start scope
+    auto scope = ip->node->ownerScope;
+    if (scope->backendStart == 0)
+        scope->backendStart = byteOffset;
+    scope->backendEnd = byteOffset;
 
     SWAG_ASSERT(!coffFct->dbgLines.empty());
     if (coffFct->dbgLines.back().sourceFile != sourceFile)
@@ -919,7 +927,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     //////////
                     dbgStartRecord(pp, concat, S_LOCAL);
                     concat.addU32(typeIdx); // Type
-                    concat.addU16(0);       // Flags (do not set IsParameter, because we do not want a dereference)
+                    concat.addU16(0);       // CV_LVARFLAGS (do not set IsParameter, because we do not want a dereference)
                     dbgEmitTruncatedString(concat, child->token.text);
                     dbgEndRecord(pp, concat);
 
@@ -938,8 +946,9 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
             // Local variables
             /////////////////////////////////
-            for (auto localVar : f.node->extension->bc->localVars)
+            for (int i = 0; i < (int) f.node->extension->bc->localVars.size(); i++)
             {
+                auto            localVar = f.node->extension->bc->localVars[i];
                 SymbolOverload* overload = localVar->resolvedSymbolOverload;
                 auto            typeInfo = overload->typeInfo;
 
@@ -949,20 +958,22 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     concat.addU32(dbgGetOrCreatePointerPointerToType(pp, typeInfo)); // Type
                 else
                     concat.addU32(dbgGetOrCreateType(pp, typeInfo)); // Type
-                concat.addU16(0);                                    // Flags
+                concat.addU16(0);                                    // CV_LVARFLAGS
                 dbgEmitTruncatedString(concat, localVar->token.text);
                 dbgEndRecord(pp, concat);
 
                 //////////
                 dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
-                concat.addU16(R_RDI); // Register
-                concat.addU16(0);     // Flags
-                if (overload->flags & OVERLOAD_RETVAL)
+                concat.addU16(R_RDI);                  // Register
+                concat.addU16(0);                      // Flags
+                if (overload->flags & OVERLOAD_RETVAL) // Offset to register
                     concat.addU32(f.offsetRetVal);
                 else
                     concat.addU32(overload->storageOffset + f.offsetStack);
-                dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
-                concat.addU16((uint16_t)(f.endAddress - f.startAddress)); // Range
+
+                dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
+                auto endOffset = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;
+                concat.addU16((uint16_t)(endOffset - localVar->ownerScope->backendStart)); // Range
                 dbgEndRecord(pp, concat);
             }
 
