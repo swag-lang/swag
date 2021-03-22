@@ -480,6 +480,19 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             setNop(context, ip + 1);
         }
 
+        // Duplicated safety
+        if (ip[0].op == ByteCodeOp::JumpIfNotZero64 &&
+            ip[1].op == ByteCodeOp::InternalPanic &&
+            ip[2].op == ByteCodeOp::JumpIfNotZero64 &&
+            ip[3].op == ByteCodeOp::InternalPanic &&
+            ip[0].a.u32 == ip[2].a.u32 &&
+            ip[0].b.s32 == 1 &&
+            ip[2].b.s32 == 1)
+        {
+            setNop(context, ip);
+            setNop(context, ip + 1);
+        }
+
         // MakeStackPointer followed by SetAtPointer, replace with SetAtStackPointer, but
         // leave the MakeStackPointer which will be removed later (?) if no more used
         if (ip[0].op == ByteCodeOp::MakeStackPointer &&
