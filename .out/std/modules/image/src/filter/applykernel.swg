@@ -25,8 +25,6 @@ impl Image
             h  := image.height
             px := image.pixels
             ks := @dataof(params.kernel) + 2
-            if w >= 0
-                w = w
 
             var bs, gs, rs: s32
 
