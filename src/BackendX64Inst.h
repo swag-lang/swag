@@ -538,6 +538,12 @@ namespace BackendX64Inst
         emit_ModRM(pp, offsetStack, reg & 0b111, memReg & 0b111);
     }
 
+    inline void emit_Cmp64_IndirectDst(X64PerThread& pp, uint32_t offsetStack, uint32_t value)
+    {
+        pp.concat.addU8(0x48);
+        emit_Cmp32_IndirectDst(pp, offsetStack, value);
+    }
+
     inline void emit_CmpF32_Indirect(X64PerThread& pp, uint32_t offsetStack, uint8_t reg, uint8_t memReg)
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);

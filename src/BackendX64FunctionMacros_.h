@@ -78,28 +78,32 @@
         BackendX64Inst::__op(pp, RAX, RCX);                                           \
     }
 
-#define MK_BINOP64_CAB(__opInd, __op)                                                 \
-    if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                                       \
-    {                                                                                 \
-        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);     \
-        BackendX64Inst::__opInd(pp, regOffset(ip->b.u32), RAX, RDI);                  \
-    }                                                                                 \
-    else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))                     \
-    {                                                                                 \
-        BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);                    \
-        BackendX64Inst::__opInd(pp, regOffset(ip->b.u32), RAX, RDI);                  \
-    }                                                                                 \
-    else                                                                              \
-    {                                                                                 \
-        if (ip->flags & BCI_IMM_A)                                                    \
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);                \
-        else                                                                          \
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI); \
-        if (ip->flags & BCI_IMM_B)                                                    \
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);                \
-        else                                                                          \
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI); \
-        BackendX64Inst::__op(pp, RAX, RCX);                                           \
+#define MK_BINOP64_CAB(__opIndDst, __opInd, __op)                                            \
+    if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                                              \
+    {                                                                                        \
+        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);            \
+        BackendX64Inst::__opInd(pp, regOffset(ip->b.u32), RAX, RDI);                         \
+    }                                                                                        \
+    else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))                            \
+    {                                                                                        \
+        BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);                           \
+        BackendX64Inst::__opInd(pp, regOffset(ip->b.u32), RAX, RDI);                         \
+    }                                                                                        \
+    else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF) \
+    {                                                                                        \
+        BackendX64Inst::__opIndDst(pp, regOffset(ip->a.u32), ip->b.u32);                     \
+    }                                                                                        \
+    else                                                                                     \
+    {                                                                                        \
+        if (ip->flags & BCI_IMM_A)                                                           \
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);                       \
+        else                                                                                 \
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);        \
+        if (ip->flags & BCI_IMM_B)                                                           \
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);                       \
+        else                                                                                 \
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);        \
+        BackendX64Inst::__op(pp, RAX, RCX);                                                  \
     }
 
 #define MK_BINOPF32_CAB(__opInd, __op)                                                  \
