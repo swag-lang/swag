@@ -1,24 +1,42 @@
-#[swag.macro]
-func toto(stmt: code)
+#[swag.inline]
+func toto()
 {
-    x := true
-    #macro
-    {
-        #mixin `stmt
-    }
+    x := "true"
+    @print("toto")
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
+    zz := 666
+
+    toto()
+
     {
-        x := 1
+        z := "ZZZZ"
         @print("toto")
     }
 
+    /*@print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+    @print("toto")
+
     {
-        y := true
-        x := "true"
-        @print("toto")
-    }
+        x := 1
+        x = 10
+        {
+            z := 2
+            z = 20
+            {
+                a := "toto"
+                a = "titi"
+            }
+        }
+    }*/
 }

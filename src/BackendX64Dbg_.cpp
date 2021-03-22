@@ -17,6 +17,7 @@ const uint32_t SUBSECTION_LINES         = 0xF2;
 const uint32_t SUBSECTION_STRING_TABLE  = 0xF3;
 const uint32_t SUBSECTION_FILE_CHECKSUM = 0xF4;
 
+const uint16_t S_END                       = 0x0006;
 const uint16_t S_FRAMEPROC                 = 0x1012;
 const uint16_t S_BLOCK32                   = 0x1103;
 const uint16_t S_COMPILE3                  = 0x113c;
@@ -152,9 +153,15 @@ void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeIns
 
     // Update begin of start scope
     auto scope = ip->node->ownerScope;
-    if (scope->backendStart == 0)
-        scope->backendStart = byteOffset;
-    scope->backendEnd = byteOffset;
+    while (true)
+    {
+        if (scope->backendStart == 0)
+            scope->backendStart = byteOffset;
+        scope->backendEnd = byteOffset;
+        if (scope->kind == ScopeKind::Function)
+            break;
+        scope = scope->parentScope;
+    }
 
     SWAG_ASSERT(!coffFct->dbgLines.empty());
     if (coffFct->dbgLines.back().sourceFile != sourceFile)
@@ -944,38 +951,10 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                 }
             }
 
-            // Local variables
+            // Lexical blocks
             /////////////////////////////////
-            for (int i = 0; i < (int) f.node->extension->bc->localVars.size(); i++)
-            {
-                auto            localVar = f.node->extension->bc->localVars[i];
-                SymbolOverload* overload = localVar->resolvedSymbolOverload;
-                auto            typeInfo = overload->typeInfo;
-
-                //////////
-                dbgStartRecord(pp, concat, S_LOCAL);
-                if (overload->flags & OVERLOAD_RETVAL)
-                    concat.addU32(dbgGetOrCreatePointerPointerToType(pp, typeInfo)); // Type
-                else
-                    concat.addU32(dbgGetOrCreateType(pp, typeInfo)); // Type
-                concat.addU16(0);                                    // CV_LVARFLAGS
-                dbgEmitTruncatedString(concat, localVar->token.text);
-                dbgEndRecord(pp, concat);
-
-                //////////
-                dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
-                concat.addU16(R_RDI);                  // Register
-                concat.addU16(0);                      // Flags
-                if (overload->flags & OVERLOAD_RETVAL) // Offset to register
-                    concat.addU32(f.offsetRetVal);
-                else
-                    concat.addU32(overload->storageOffset + f.offsetStack);
-
-                dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
-                auto endOffset = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;
-                concat.addU16((uint16_t)(endOffset - localVar->ownerScope->backendStart)); // Range
-                dbgEndRecord(pp, concat);
-            }
+            auto funcDecl = CastAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
+            dbgEmitScope(pp, concat, f, funcDecl->scope);
 
             // End
             /////////////////////////////////
@@ -1070,6 +1049,75 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
     concat.addU32(stringTable.length());
     concat.addString(stringTable);
 
+    return true;
+}
+
+bool BackendX64::dbgEmitScope(X64PerThread& pp, Concat& concat, CoffFunction& f, Scope* scope)
+{
+    // Header
+    /////////////////////////////////
+    dbgStartRecord(pp, concat, S_BLOCK32);
+    concat.addU32(0); // Parent = 0;
+    concat.addU32(0); // End = 0;
+    auto endOffset = scope->backendEnd == 0 ? f.endAddress : scope->backendEnd;
+    concat.addU32(endOffset - scope->backendStart); // CodeSize = 0;
+    dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, scope->backendStart);
+    dbgEmitTruncatedString(concat, "");
+    dbgEndRecord(pp, concat);
+
+    // Local variables
+    /////////////////////////////////
+    for (int i = 0; i < (int) f.node->extension->bc->localVars.size(); i++)
+    {
+        auto localVar = f.node->extension->bc->localVars[i];
+        if (localVar->ownerScope != scope)
+            continue;
+
+        SymbolOverload* overload = localVar->resolvedSymbolOverload;
+        auto            typeInfo = overload->typeInfo;
+
+        //////////
+        dbgStartRecord(pp, concat, S_LOCAL);
+        if (overload->flags & OVERLOAD_RETVAL)
+            concat.addU32(dbgGetOrCreatePointerPointerToType(pp, typeInfo)); // Type
+        else
+            concat.addU32(dbgGetOrCreateType(pp, typeInfo)); // Type
+        concat.addU16(0);                                    // CV_LVARFLAGS
+        dbgEmitTruncatedString(concat, localVar->token.text);
+        dbgEndRecord(pp, concat);
+
+        //////////
+        dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
+        concat.addU16(R_RDI);                  // Register
+        concat.addU16(0);                      // Flags
+        if (overload->flags & OVERLOAD_RETVAL) // Offset to register
+            concat.addU32(f.offsetRetVal);
+        else
+            concat.addU32(overload->storageOffset + f.offsetStack);
+
+        dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
+        auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;
+        concat.addU16((uint16_t)(endOffsetVar - localVar->ownerScope->backendStart)); // Range
+        dbgEndRecord(pp, concat);
+    }
+
+    // Sub scopes
+    // Must be sorted, from first to last. We use the byte index of the first instruction in the block
+    /////////////////////////////////
+    if (scope->childScopes.size() > 1)
+    {
+        sort(scope->childScopes.begin(), scope->childScopes.end(), [](Scope* n1, Scope* n2) {
+            return n1->backendStart < n2->backendStart;
+        });
+    }
+
+    for (auto c : scope->childScopes)
+        dbgEmitScope(pp, concat, f, c);
+
+    // End
+    /////////////////////////////////
+    dbgStartRecord(pp, concat, S_END);
+    dbgEndRecord(pp, concat);
     return true;
 }
 

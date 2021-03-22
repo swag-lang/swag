@@ -329,6 +329,7 @@ struct BackendX64 : public Backend
     void         dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
     bool         dbgEmitDataDebugT(const BuildParameters& buildParameters);
     bool         dbgEmitFctDebugS(const BuildParameters& buildParameters);
+    bool         dbgEmitScope(X64PerThread& pp, Concat& concat, CoffFunction& f, Scope* scope);
     bool         emitDebug(const BuildParameters& buildParameters);
     void         emitByteCodeLambdaParams(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
 

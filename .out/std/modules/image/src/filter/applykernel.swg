@@ -32,11 +32,11 @@ impl Image
                 for dx := -kernelSize; dx <= kernelSize; dx += 1
                 {
                     nx := math.clamp(x + dx, 0, w - 1)
-                    ptr := px + (nx * b8) + (ny * w8)
+                    p := px + (nx * b8) + (ny * w8)
                     ks0 := :ks
-                    bs += cast(s32) ptr[0] * ks0
-                    gs += cast(s32) ptr[1] * ks0
-                    rs += cast(s32) ptr[2] * ks0
+                    bs += cast(s32) p[0] * ks0
+                    gs += cast(s32) p[1] * ks0
+                    rs += cast(s32) p[2] * ks0
                     ks += 1
                 }
             }
