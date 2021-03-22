@@ -1578,27 +1578,27 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::JumpIfTrue:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test8(pp, RAX, RAX);
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfFalse:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test8(pp, RAX, RAX);
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfNotZero8:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test8(pp, RAX, RAX);
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfNotZero16:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test16(pp, RAX, RAX);
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfNotZero32:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test32(pp, RAX, RAX);
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
             break;
@@ -1608,17 +1608,17 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfZero8:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test8(pp, RAX, RAX);
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfZero16:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test16(pp, RAX, RAX);
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JZ, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfZero32:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test32(pp, RAX, RAX);
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JZ, i, ip->b.s32);
             break;
