@@ -2,7 +2,7 @@
 func toto()
 {
     x := "true"
-    @print("toto")
+    //@print("toto")
 }
 
 //#[swag.printbc]
@@ -14,7 +14,7 @@ func toto()
 
     {
         z := "ZZZZ"
-        @print("toto")
+        //@print("toto")
     }
 
     /*@print("toto")

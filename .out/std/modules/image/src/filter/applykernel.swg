@@ -5,7 +5,7 @@ impl Image
     public enum Kernel: const [..] s32
     {
         GaussianBlur3x3A = @[3, 8, 0, 1, 0, 1, 4, 1, 0, 1, 0]
-        EdgeDetect3x3A   = @[3, 0, 1, 2, 1, 0, 0, 0, -1, -2, -1]
+        EdgeDetect3x3A   = @[3, 1, 1, 2, 1, 0, 0, 0, -1, -2, -1]
     }
 
     // Transform image to grayscale, with a given factor
@@ -26,23 +26,50 @@ impl Image
             ks := @dataof(params.kernel) + 2
 
             var bs, gs, rs: s32
-            for dy := -kernelSize; dy <= kernelSize; dy += 1
+
+            // Fast case when we are not around borders
+            if x >= kernelSize && x <= w - kernelSize - 1 && y >= kernelSize && y <= h - kernelSize - 1
             {
-                ny := math.clamp(y + dy, 0, h - 1)
-                for dx := -kernelSize; dx <= kernelSize; dx += 1
+                p := px + ((x - kernelSize) * b8) + ((y - kernelSize) * w8)
+                kfull := (kernelSize * 2) + 1
+                koff := cast(uint) (w8 - (kfull * b8))
+                loop kfull
                 {
-                    nx := math.clamp(x + dx, 0, w - 1)
-                    p := px + (nx * b8) + (ny * w8)
-                    ks0 := :ks
-                    bs += cast(s32) p[0] * ks0
-                    gs += cast(s32) p[1] * ks0
-                    rs += cast(s32) p[2] * ks0
-                    ks += 1
+                    loop kfull
+                    {
+                        ks0 := :ks
+                        bs += cast(s32) p[0] * ks0
+                        gs += cast(s32) p[1] * ks0
+                        rs += cast(s32) p[2] * ks0
+                        ks += 1
+                        p += b8
+                    }
+
+                    p += koff // Go to next line
+                }
+            }
+
+            // Slowest case, near the borders
+            else
+            {
+                for dy := -kernelSize; dy <= kernelSize; dy += 1
+                {
+                    ny := math.clamp(y + dy, 0, h - 1)
+                    for dx := -kernelSize; dx <= kernelSize; dx += 1
+                    {
+                        nx := math.clamp(x + dx, 0, w - 1)
+                        p := px + (nx * b8) + (ny * w8)
+                        ks0 := :ks
+                        bs += cast(s32) p[0] * ks0
+                        gs += cast(s32) p[1] * ks0
+                        rs += cast(s32) p[2] * ks0
+                        ks += 1
+                    }
                 }
             }
 
             ksum := params.kernel[1]
-            if ksum > 0 bs, gs, rs /= ksum
+            if ksum > 1 bs, gs, rs /= ksum
 
             dpix := params.dstImage.pixels + (x * b8) + (y * w8)
             dpix[0] = cast(u8) math.clamp(bs, 0, 255)
