@@ -3,7 +3,7 @@ using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
 var imageIdx: u32
-var effectIdx: u32 = 19
+var effectIdx: u32 = 14
 var myImage: image.Image
 const W = 1024
 const H = 1024
@@ -93,7 +93,7 @@ func loadImg()
 
     t.stop()
     elapsed := t.elapsedMilliseconds()
-    console.println("img: % (% x % %) time: %ms", imgName, myImage.width, myImage.height, myImage.pf, elapsed)
+    console.println("%: img: % (% x % %) time: %ms", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, elapsed)
 
     fmt := GL_BGR
     if myImage.bpp == 32 fmt = GL_BGRA
