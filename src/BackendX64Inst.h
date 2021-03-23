@@ -110,7 +110,7 @@ namespace BackendX64Inst
 
     inline void emit_LoadU8U32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
-        SWAG_ASSERT(reg < R8&& memReg < R8);
+        SWAG_ASSERT(reg < R8 && memReg < R8);
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0xB6);
         emit_ModRM(pp, stackOffset, reg, memReg);
@@ -845,6 +845,14 @@ namespace BackendX64Inst
         // movzx
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0xB6);
+        pp.concat.addU8(modRM(REGREG, reg, reg));
+    }
+
+    inline void emit_UnsignedExtend_16_To_32(X64PerThread& pp, uint8_t reg)
+    {
+        // movzx
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0xB7);
         pp.concat.addU8(modRM(REGREG, reg, reg));
     }
 

@@ -634,6 +634,16 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->b.f64 = (double) ip->b.u8;
                 OK();
                 break;
+            case ByteCodeOp::CastU16F64:
+                ip->op    = ByteCodeOp::SetImmediate64;
+                ip->b.f64 = (double) ip->b.u16;
+                OK();
+                break;
+            case ByteCodeOp::CastU32F64:
+                ip->op    = ByteCodeOp::SetImmediate64;
+                ip->b.f64 = (double) ip->b.u32;
+                OK();
+                break;
             case ByteCodeOp::CastU64F64:
                 ip->op    = ByteCodeOp::SetImmediate64;
                 ip->b.f64 = (float) ip->b.u64;

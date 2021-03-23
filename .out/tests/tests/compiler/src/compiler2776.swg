@@ -1,8 +1,22 @@
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     {
         x := 1'u8
+        @assert(cast(f64) x == 1)
+        x += 1
+        @assert(cast(f64) x == 2)
+    }
+
+    {
+        x := 1'u16
+        @assert(cast(f64) x == 1)
+        x += 1
+        @assert(cast(f64) x == 2)
+    }
+
+    {
+        x := 1'u32
         @assert(cast(f64) x == 1)
         x += 1
         @assert(cast(f64) x == 2)

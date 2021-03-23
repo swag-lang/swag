@@ -2329,6 +2329,16 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].f64 = (double) registersRC[ip->a.u32].u8;
         break;
     }
+    case ByteCodeOp::CastU16F64:
+    {
+        registersRC[ip->a.u32].f64 = (double) registersRC[ip->a.u32].u16;
+        break;
+    }
+    case ByteCodeOp::CastU32F64:
+    {
+        registersRC[ip->a.u32].f64 = (double) registersRC[ip->a.u32].u32;
+        break;
+    }
     case ByteCodeOp::CastU64F64:
     {
         registersRC[ip->a.u32].f64 = (double) registersRC[ip->a.u32].u64;

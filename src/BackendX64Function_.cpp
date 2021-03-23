@@ -654,6 +654,17 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
             BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
+        case ByteCodeOp::CastU16F64:
+            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_UnsignedExtend_16_To_32(pp, RAX);
+            concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
+            BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+            break;
+        case ByteCodeOp::CastU32F64:
+            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
+            BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+            break;
         case ByteCodeOp::CastU64F64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             concat.addString5("\xf2\x48\x0f\x2a\xc0"); // cvtsi2ss xmm0, rax
