@@ -2844,6 +2844,46 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         }
+
+        case ByteCodeOp::IntrinsicS32x2:
+        {
+            MK_IMMB_32(RAX);
+            MK_IMMC_32(RCX);
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicMin:
+                BackendX64Inst::emit_Cmp32(pp, RCX, RAX);
+                concat.addString3("\x0F\x4C\xC1"); // cmovl eax, ecx
+                break;
+            case TokenId::IntrinsicMax:
+                BackendX64Inst::emit_Cmp32(pp, RAX, RCX);
+                concat.addString3("\x0F\x4C\xC1"); // cmovl eax, ecx
+                break;
+            }
+
+            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        }
+        case ByteCodeOp::IntrinsicU32x2:
+        {
+            MK_IMMB_32(RAX);
+            MK_IMMC_32(RCX);
+            switch ((TokenId)ip->d.u32)
+            {
+            case TokenId::IntrinsicMin:
+                BackendX64Inst::emit_Cmp32(pp, RCX, RAX);
+                concat.addString3("\x0F\x42\xC1"); // cmovb eax, ecx
+                break;
+            case TokenId::IntrinsicMax:
+                BackendX64Inst::emit_Cmp32(pp, RAX, RCX);
+                concat.addString3("\x0F\x42\xC1"); // cmovb eax, ecx
+                break;
+            }
+
+            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        }
+
         case ByteCodeOp::IntrinsicF32x2:
         {
             MK_IMMB_F32(XMM0);
