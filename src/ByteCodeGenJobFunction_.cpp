@@ -607,9 +607,10 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->parent->resultRegisterRC        = node->resultRegisterRC;
         auto child0                           = callParams->childs[0];
         auto child1                           = callParams->childs[1];
-        SWAG_ASSERT(child0->typeInfo->kind == TypeInfoKind::Native);
+        auto typeInfo                         = TypeManager::concreteReferenceType(child0->typeInfo);
+        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         ByteCodeOp op = ByteCodeOp::End;
-        switch (child0->typeInfo->nativeType)
+        switch (typeInfo->nativeType)
         {
         case NativeTypeKind::F32:
             op = ByteCodeOp::IntrinsicF32x2;
@@ -635,9 +636,10 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->parent->resultRegisterRC        = node->resultRegisterRC;
         auto child0                           = callParams->childs[0];
         auto child1                           = callParams->childs[1];
-        SWAG_ASSERT(child0->typeInfo->kind == TypeInfoKind::Native);
+        auto typeInfo                         = TypeManager::concreteReferenceType(child0->typeInfo);
+        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         ByteCodeOp op = ByteCodeOp::End;
-        switch (child0->typeInfo->nativeType)
+        switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
             op = ByteCodeOp::IntrinsicS8x2;
@@ -705,11 +707,11 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->resultRegisterRC                = reserveRegisterRC(context);
         node->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC        = node->resultRegisterRC;
-
-        auto child = callParams->childs[0];
-        SWAG_ASSERT(child->typeInfo->kind == TypeInfoKind::Native);
+        auto child                            = callParams->childs[0];
+        auto typeInfo                         = TypeManager::concreteReferenceType(child->typeInfo);
+        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         ByteCodeOp op = ByteCodeOp::End;
-        switch (child->typeInfo->nativeType)
+        switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
             op = ByteCodeOp::IntrinsicS8x1;

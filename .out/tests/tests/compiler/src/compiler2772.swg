@@ -31,10 +31,10 @@ func(T) toto()
     toto'int()
     toto'uint()
 
-    /*{
+    {
         x := 456
         @assert(@min(@max(x, 0), 255) == 255)
-    }*/
+    }
 
     /*
     toto'f32()
