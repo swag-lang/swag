@@ -539,9 +539,7 @@ bool ByteCodeGenJob::emitCastToNativeF64(ByteCodeGenContext* context, AstNode* e
     {
     case NativeTypeKind::U8:
     case NativeTypeKind::Bool:
-        emitInstruction(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC)->b.u64 = 0x000000FF;
-        emitInstruction(context, ByteCodeOp::CastU32F32, exprNode->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::CastF32F64, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastU8F64, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::U16:
         emitInstruction(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC)->b.u64 = 0x0000FFFF;

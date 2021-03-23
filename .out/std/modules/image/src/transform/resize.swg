@@ -208,6 +208,7 @@ private
         return res
     }
 
+    //#[swag.printbc]
     #[swag.safety("", false)]
     func scaleRow(imgDst, imgSrc: *Image, row: int, contrib: *LineContrib)
     {

@@ -2291,12 +2291,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::CastS32F32:
     {
-        registersRC[ip->a.u32].f32 = static_cast<float>(registersRC[ip->a.u32].s32);
+        registersRC[ip->a.u32].f32 = (float) registersRC[ip->a.u32].s32;
         break;
     }
     case ByteCodeOp::CastU32F32:
     {
-        registersRC[ip->a.u32].f32 = static_cast<float>(registersRC[ip->a.u32].u32);
+        registersRC[ip->a.u32].f32 = (float) registersRC[ip->a.u32].u32;
         break;
     }
     case ByteCodeOp::CastS16S32:
@@ -2311,12 +2311,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CastS64F32:
     {
-        registersRC[ip->a.u32].f32 = static_cast<float>(registersRC[ip->a.u32].s64);
+        registersRC[ip->a.u32].f32 = (float) registersRC[ip->a.u32].s64;
         break;
     }
     case ByteCodeOp::CastF64F32:
     {
-        registersRC[ip->a.u32].f32 = static_cast<float>(registersRC[ip->a.u32].f64);
+        registersRC[ip->a.u32].f32 = (float) registersRC[ip->a.u32].f64;
         break;
     }
     case ByteCodeOp::CastF32F64:
@@ -2324,19 +2324,24 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].f64 = registersRC[ip->a.u32].f32;
         break;
     }
+    case ByteCodeOp::CastU8F64:
+    {
+        registersRC[ip->a.u32].f64 = (double) registersRC[ip->a.u32].u8;
+        break;
+    }
     case ByteCodeOp::CastU64F64:
     {
-        registersRC[ip->a.u32].f64 = static_cast<double>(registersRC[ip->a.u32].u64);
+        registersRC[ip->a.u32].f64 = (double) registersRC[ip->a.u32].u64;
         break;
     }
     case ByteCodeOp::CastS64F64:
     {
-        registersRC[ip->a.u32].f64 = static_cast<double>(registersRC[ip->a.u32].s64);
+        registersRC[ip->a.u32].f64 = (double) registersRC[ip->a.u32].s64;
         break;
     }
     case ByteCodeOp::CastF32S32:
     {
-        registersRC[ip->a.u32].s32 = static_cast<int32_t>(registersRC[ip->a.u32].f32);
+        registersRC[ip->a.u32].s32 = (int32_t) registersRC[ip->a.u32].f32;
         break;
     }
     case ByteCodeOp::CastS8S16:
@@ -2361,7 +2366,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CastF64S64:
     {
-        registersRC[ip->a.u32].s64 = static_cast<int64_t>(registersRC[ip->a.u32].f64);
+        registersRC[ip->a.u32].s64 = (int64_t) registersRC[ip->a.u32].f64;
         break;
     }
 
