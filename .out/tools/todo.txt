@@ -47,8 +47,6 @@ cast interface vers struct (avec safety)
 OPTIMS
 ****************************************
 -------------------------------------
-#assert AA.A[1, 1] == 2
--------------------------------------
 x64 passe reduction instructions
 -------------------------------------
 passer/retourner des structs par value si <= 64 bits
