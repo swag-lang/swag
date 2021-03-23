@@ -307,6 +307,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             if (isnan(ra.f32))
                 return context->report({ip->node, ip->node->token, format("'@power' on invalid values '%.3f' and '%.3f'", rb.f32, rc.f32)});
             break;
+        case TokenId::IntrinsicMin:
+            ra.f32 = min(rb.f32, rc.f32);
+            break;
+        case TokenId::IntrinsicMax:
+            ra.f32 = max(rb.f32, rc.f32);
+            break;
         default:
             SWAG_ASSERT(false);
             break;
@@ -322,6 +328,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.f64 = pow(rb.f64, rc.f64);
             if (isnan(ra.f64))
                 return context->report({ip->node, ip->node->token, format("'@power' on invalid values '%.3f' and '%.3f'", rb.f64, rc.f64)});
+            break;
+        case TokenId::IntrinsicMin:
+            ra.f64 = min(rb.f64, rc.f64);
+            break;
+        case TokenId::IntrinsicMax:
+            ra.f64 = max(rb.f64, rc.f64);
             break;
         default:
             SWAG_ASSERT(false);

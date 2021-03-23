@@ -618,6 +618,11 @@ func @cstrlen(value: const *u8)->uint;
     func @max(value1, value2: u32)->u32;
     func @max(value1, value2: u64)->u64;
 
+    func @min(value1, value2: f32)->f32;
+    func @min(value1, value2: f64)->f64;
+    func @max(value1, value2: f32)->f32;
+    func @max(value1, value2: f64)->f64;
+
     func @exp(value: f32)->f32;
     func @exp(value: f64)->f64;
     func @exp2(value: f32)->f32;

@@ -4,6 +4,8 @@ func(T) toto()
     y := cast(T) 1
     @assert(@min(x, y) == 1)
     @assert(@max(x, y) == 2)
+    @assert(@min(y, x) == 1)
+    @assert(@max(y, x) == 2)
 }
 
 #test
@@ -18,4 +20,6 @@ func(T) toto()
     toto'u32()
     toto'u64()
     toto'uint()
+    toto'f32()
+    toto'f64()
 }
