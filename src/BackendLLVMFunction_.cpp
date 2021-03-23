@@ -3025,19 +3025,43 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-        case ByteCodeOp::CastS64F64:
-        {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
-            r0      = TO_PTR_F64(r0);
-            builder.CreateStore(v0, r0);
-            break;
-        }
         case ByteCodeOp::CastU32F32:
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(r0), builder.getFloatTy());
             r0      = TO_PTR_F32(r0);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CastS8F64:
+        {
+            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
+            r0      = TO_PTR_F64(r0);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CastS16F64:
+        {
+            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
+            r0      = TO_PTR_F64(r0);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CastS32F64:
+        {
+            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
+            r0      = TO_PTR_F64(r0);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::CastS64F64:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(r0), builder.getDoubleTy());
+            r0      = TO_PTR_F64(r0);
             builder.CreateStore(v0, r0);
             break;
         }
