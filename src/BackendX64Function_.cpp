@@ -3008,6 +3008,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicPow:
                 emitCall(pp, "powf");
                 break;
+            case TokenId::IntrinsicMin:
+                concat.addString4("\xF3\x0F\x5D\xC1"); // minss xmm0, xmm1
+                break;
+            case TokenId::IntrinsicMax:
+                concat.addString4("\xF3\x0F\x5F\xC1"); // maxss xmm0, xmm1
+                break;
             }
             BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
@@ -3020,6 +3026,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             {
             case TokenId::IntrinsicPow:
                 emitCall(pp, "pow");
+                break;
+            case TokenId::IntrinsicMin:
+                concat.addString4("\xF2\x0F\x5D\xC1"); // minss xmm0, xmm1
+                break;
+            case TokenId::IntrinsicMax:
+                concat.addString4("\xF2\x0F\x5F\xC1"); // maxss xmm0, xmm1
                 break;
             }
             BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
