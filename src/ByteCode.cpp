@@ -251,9 +251,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     case ByteCodeOp::IntrinsicS64x1:
     case ByteCodeOp::IntrinsicF32x1:
     case ByteCodeOp::IntrinsicF64x1:
-        g_Log.print(g_TokenNames[ip->d.u32]);
-        break;
-
+    case ByteCodeOp::IntrinsicS8x2:
     case ByteCodeOp::IntrinsicF32x2:
     case ByteCodeOp::IntrinsicF64x2:
         g_Log.print(g_TokenNames[ip->d.u32]);

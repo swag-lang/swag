@@ -162,6 +162,23 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         break;
     }
 
+    case ByteCodeOp::IntrinsicS8x2:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicMin:
+            ra.s8 = (int8_t) min(rb.s8, rc.s8);
+            break;
+        case TokenId::IntrinsicMax:
+            ra.s8 = (int8_t) max(rb.s8, rc.s8);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
     case ByteCodeOp::IntrinsicF32x2:
     {
         switch ((TokenId) ip->d.u32)
@@ -557,6 +574,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::IntrinsicS8x2:
     case ByteCodeOp::IntrinsicF32x2:
     case ByteCodeOp::IntrinsicF64x2:
     {

@@ -3543,6 +3543,22 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::IntrinsicS8x2:
+        {
+            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = MK_IMMB_8();
+            auto r2 = MK_IMMC_8();
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicMin:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {builder.getInt8Ty(), builder.getInt8Ty()}, {r1, r2}), r0);
+                break;
+            case TokenId::IntrinsicMax:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {builder.getInt8Ty(), builder.getInt8Ty()}, {r1, r2}), r0);
+                break;
+            }
+            break;
+        }
         case ByteCodeOp::IntrinsicF32x2:
         {
             auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));

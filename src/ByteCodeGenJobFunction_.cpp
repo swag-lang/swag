@@ -627,6 +627,31 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         break;
     }
 
+    case TokenId::IntrinsicMin:
+    case TokenId::IntrinsicMax:
+    {
+        node->resultRegisterRC                = reserveRegisterRC(context);
+        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC        = node->resultRegisterRC;
+        auto child0                           = callParams->childs[0];
+        auto child1                           = callParams->childs[1];
+        SWAG_ASSERT(child0->typeInfo->kind == TypeInfoKind::Native);
+        ByteCodeOp op = ByteCodeOp::End;
+        switch (child0->typeInfo->nativeType)
+        {
+        case NativeTypeKind::S8:
+            op = ByteCodeOp::IntrinsicS8x2;
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+
+        auto inst   = emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
+        inst->d.u32 = (uint32_t) node->token.id;
+        break;
+    }
+
     case TokenId::IntrinsicSqrt:
     case TokenId::IntrinsicSin:
     case TokenId::IntrinsicCos:

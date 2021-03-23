@@ -413,6 +413,16 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
         {
             switch (ip->op)
             {
+            case ByteCodeOp::IntrinsicS8x2:
+            {
+                Register result;
+                context->hasError = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip, result, ip->b, ip->c);
+                ip->b.u32 = result.u32;
+                ip->op = ByteCodeOp::SetImmediate32;
+                OK();
+                break;
+            }
+
             case ByteCodeOp::IntrinsicF32x2:
             {
                 Register result;

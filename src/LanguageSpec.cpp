@@ -186,6 +186,8 @@ void LanguageSpec::setup()
     keywords.add("@exp", TokenId::IntrinsicExp);
     keywords.add("@exp2", TokenId::IntrinsicExp2);
     keywords.add("@pow", TokenId::IntrinsicPow);
+    keywords.add("@min", TokenId::IntrinsicMin);
+    keywords.add("@max", TokenId::IntrinsicMax);
 
     nativeTypes.add("uint", LiteralType::TT_UINT);
     nativeTypes.add("int", LiteralType::TT_INT);
