@@ -649,7 +649,21 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicS32x2;
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
             op = ByteCodeOp::IntrinsicS64x2;
+            break;
+        case NativeTypeKind::U8:
+            op = ByteCodeOp::IntrinsicU8x2;
+            break;
+        case NativeTypeKind::U16:
+            op = ByteCodeOp::IntrinsicU16x2;
+            break;
+        case NativeTypeKind::U32:
+            op = ByteCodeOp::IntrinsicU32x2;
+            break;
+        case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
+            op = ByteCodeOp::IntrinsicU64x2;
             break;
         default:
             SWAG_ASSERT(false);

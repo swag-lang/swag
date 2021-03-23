@@ -418,6 +418,10 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicS8x2:
             case ByteCodeOp::IntrinsicS16x2:
             case ByteCodeOp::IntrinsicS32x2:
+            case ByteCodeOp::IntrinsicU8x2:
+            case ByteCodeOp::IntrinsicU16x2:
+            case ByteCodeOp::IntrinsicU32x2:
+
             case ByteCodeOp::IntrinsicF32x2:
             {
                 Register result;
@@ -429,6 +433,7 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             }
 
             case ByteCodeOp::IntrinsicS64x2:
+            case ByteCodeOp::IntrinsicU64x2:
             case ByteCodeOp::IntrinsicF64x2:
             {
                 Register result;

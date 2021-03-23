@@ -3608,6 +3608,71 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::IntrinsicU8x2:
+        {
+            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = MK_IMMB_8();
+            auto r2 = MK_IMMC_8();
+            switch ((TokenId)ip->d.u32)
+            {
+            case TokenId::IntrinsicMin:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, { builder.getInt8Ty(), builder.getInt8Ty() }, { r1, r2 }), r0);
+                break;
+            case TokenId::IntrinsicMax:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, { builder.getInt8Ty(), builder.getInt8Ty() }, { r1, r2 }), r0);
+                break;
+            }
+            break;
+        }
+        case ByteCodeOp::IntrinsicU16x2:
+        {
+            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->a.u32));
+            auto r1 = MK_IMMB_16();
+            auto r2 = MK_IMMC_16();
+            switch ((TokenId)ip->d.u32)
+            {
+            case TokenId::IntrinsicMin:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, { builder.getInt16Ty(), builder.getInt16Ty() }, { r1, r2 }), r0);
+                break;
+            case TokenId::IntrinsicMax:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, { builder.getInt16Ty(), builder.getInt16Ty() }, { r1, r2 }), r0);
+                break;
+            }
+            break;
+        }
+        case ByteCodeOp::IntrinsicU32x2:
+        {
+            auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
+            auto r1 = MK_IMMB_32();
+            auto r2 = MK_IMMC_32();
+            switch ((TokenId)ip->d.u32)
+            {
+            case TokenId::IntrinsicMin:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, { builder.getInt32Ty(), builder.getInt32Ty() }, { r1, r2 }), r0);
+                break;
+            case TokenId::IntrinsicMax:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, { builder.getInt32Ty(), builder.getInt32Ty() }, { r1, r2 }), r0);
+                break;
+            }
+            break;
+        }
+        case ByteCodeOp::IntrinsicU64x2:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = MK_IMMB_64();
+            auto r2 = MK_IMMC_64();
+            switch ((TokenId)ip->d.u32)
+            {
+            case TokenId::IntrinsicMin:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, { builder.getInt64Ty(), builder.getInt64Ty() }, { r1, r2 }), r0);
+                break;
+            case TokenId::IntrinsicMax:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, { builder.getInt64Ty(), builder.getInt64Ty() }, { r1, r2 }), r0);
+                break;
+            }
+            break;
+        }
+
         case ByteCodeOp::IntrinsicF32x2:
         {
             auto r0 = TO_PTR_F32(GEP_I32(allocR, ip->a.u32));

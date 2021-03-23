@@ -230,6 +230,74 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         break;
     }
 
+    case ByteCodeOp::IntrinsicU8x2:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicMin:
+            ra.u8 = min(rb.u8, rc.u8);
+            break;
+        case TokenId::IntrinsicMax:
+            ra.u8 = max(rb.u8, rc.u8);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicU16x2:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicMin:
+            ra.u16 = min(rb.u16, rc.u16);
+            break;
+        case TokenId::IntrinsicMax:
+            ra.u16 = max(rb.u16, rc.u16);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicU32x2:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicMin:
+            ra.u32 = min(rb.u32, rc.u32);
+            break;
+        case TokenId::IntrinsicMax:
+            ra.u32 = max(rb.u32, rc.u32);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicU64x2:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicMin:
+            ra.u64 = min(rb.u64, rc.u64);
+            break;
+        case TokenId::IntrinsicMax:
+            ra.u64 = max(rb.u64, rc.u64);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
     case ByteCodeOp::IntrinsicF32x2:
     {
         switch ((TokenId) ip->d.u32)
@@ -629,6 +697,10 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicS16x2:
     case ByteCodeOp::IntrinsicS32x2:
     case ByteCodeOp::IntrinsicS64x2:
+    case ByteCodeOp::IntrinsicU8x2:
+    case ByteCodeOp::IntrinsicU16x2:
+    case ByteCodeOp::IntrinsicU32x2:
+    case ByteCodeOp::IntrinsicU64x2:
     case ByteCodeOp::IntrinsicF32x2:
     case ByteCodeOp::IntrinsicF64x2:
     {
