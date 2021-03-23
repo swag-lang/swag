@@ -337,25 +337,49 @@
         BackendX64Inst::emit_Op32_Indirect(pp, 0, RAX, RCX, __op);            \
     }
 
-#define MK_BINOPEQ64_CAB(__op)                                                \
-    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
-    if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)                     \
-    {                                                                         \
-        pp.concat.addU8(0x48);                                                \
-        if (ip->b.u64 <= 0x7F)                                                \
-            pp.concat.addU8(0x83);                                            \
-        else                                                                  \
-            pp.concat.addU8(0x81);                                            \
-        pp.concat.addU8((uint8_t) __op);                                      \
-        if (ip->b.u64 <= 0x7F)                                                \
-            pp.concat.addU8(ip->b.u8);                                        \
-        else                                                                  \
-            pp.concat.addU32(ip->b.u32);                                      \
-    }                                                                         \
-    else                                                                      \
-    {                                                                         \
-        MK_IMMB_64(RAX);                                                      \
-        BackendX64Inst::emit_Op64_IndirectDst(pp, 0, RAX, RCX, __op);         \
+#define MK_BINOPEQ64_CAB(__op)                                                                  \
+    if (ip->flags & BCI_STACKPTR_A)                                                             \
+    {                                                                                           \
+        if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)                                   \
+        {                                                                                       \
+            pp.concat.addU8(0x48);                                                              \
+            if (ip->b.u64 <= 0x7F)                                                              \
+                pp.concat.addU8(0x83);                                                          \
+            else                                                                                \
+                pp.concat.addU8(0x81);                                                          \
+            BackendX64Inst::emit_ModRM(pp, offsetStack + ip->a.u32, RAX, RDI, (uint8_t) __op);  \
+            if (ip->b.u64 <= 0x7F)                                                              \
+                pp.concat.addU8(ip->b.u8);                                                      \
+            else                                                                                \
+                pp.concat.addU32(ip->b.u32);                                                    \
+        }                                                                                       \
+        else                                                                                    \
+        {                                                                                       \
+            MK_IMMB_64(RAX);                                                                    \
+            BackendX64Inst::emit_Op64_IndirectDst(pp, offsetStack + ip->a.u32, RAX, RDI, __op); \
+        }                                                                                       \
+    }                                                                                           \
+    else                                                                                        \
+    {                                                                                           \
+        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);               \
+        if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)                                   \
+        {                                                                                       \
+            pp.concat.addU8(0x48);                                                              \
+            if (ip->b.u64 <= 0x7F)                                                              \
+                pp.concat.addU8(0x83);                                                          \
+            else                                                                                \
+                pp.concat.addU8(0x81);                                                          \
+            pp.concat.addU8((uint8_t) __op);                                                    \
+            if (ip->b.u64 <= 0x7F)                                                              \
+                pp.concat.addU8(ip->b.u8);                                                      \
+            else                                                                                \
+                pp.concat.addU32(ip->b.u32);                                                    \
+        }                                                                                       \
+        else                                                                                    \
+        {                                                                                       \
+            MK_IMMB_64(RAX);                                                                    \
+            BackendX64Inst::emit_Op64_IndirectDst(pp, 0, RAX, RCX, __op);                       \
+        }                                                                                       \
     }
 
 #define MK_BINOPEQF32_CAB(__op)                                               \

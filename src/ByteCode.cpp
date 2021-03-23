@@ -195,6 +195,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
         g_Log.print("STMT ");
     if (ip->flags & BCI_UNPURE)
         g_Log.print("UNPURE ");
+    if (ip->flags & BCI_STACKPTR_A)
+        g_Log.print("STKA ");
 
     switch (ip->op)
     {

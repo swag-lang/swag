@@ -13,9 +13,9 @@ struct TypeInfoFuncAttr;
 struct ByteCodeRunContext;
 struct ByteCode;
 
-static const uint16_t BCI_JUMP_DEST = 0x0001;
-static const uint16_t BCI_DEBUG     = 0x0002;
-//static const uint16_t BCI_LOCATION_IS_BC = 0x0004;
+static const uint16_t BCI_JUMP_DEST     = 0x0001;
+static const uint16_t BCI_DEBUG         = 0x0002;
+static const uint16_t BCI_STACKPTR_A    = 0x0004;
 static const uint16_t BCI_SAFETY        = 0x0008;
 static const uint16_t BCI_IMM_A         = 0x0010;
 static const uint16_t BCI_IMM_B         = 0x0020;

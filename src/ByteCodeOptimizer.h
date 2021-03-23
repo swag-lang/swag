@@ -64,12 +64,16 @@ struct ByteCodeOptimizer
     static void     parseTree(ByteCodeOptContext* context, uint32_t startNode, ByteCodeInstruction* startIp, uint32_t doneFlag, function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb);
 
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
+    static void setJumps(ByteCodeOptContext* context);
+    static void removeNops(ByteCodeOptContext* context);
+    static void optimizePassDupCopy(ByteCodeOptContext* context, ByteCodeOp op);
+
     static void optimizePassJumps(ByteCodeOptContext* context);
     static void optimizePassLoop(ByteCodeOptContext* context);
     static void optimizePassDeadCode(ByteCodeOptContext* context);
     static void optimizePassEmptyFct(ByteCodeOptContext* context);
     static void optimizePassDeadStore(ByteCodeOptContext* context);
-    static void optimizePassDeadStore2(ByteCodeOptContext* context);
+    static void optimizePassDeadStoreTree(ByteCodeOptContext* context);
     static void optimizePassImmediate(ByteCodeOptContext* context);
     static void optimizePassConst(ByteCodeOptContext* context);
     static void optimizePassDupCopyRBRA(ByteCodeOptContext* context);
@@ -80,11 +84,7 @@ struct ByteCodeOptimizer
     static void optimizePassReduce(ByteCodeOptContext* context);
     static void optimizePassReduce2(ByteCodeOptContext* context);
     static void optimizePassErr(ByteCodeOptContext* context);
-
-    static void optimizePassDupCopy(ByteCodeOptContext* context, ByteCodeOp op);
-
-    static void setJumps(ByteCodeOptContext* context);
-    static void removeNops(ByteCodeOptContext* context);
+    static void optimizePassOpStack(ByteCodeOptContext* context);
 
     static bool optimize(Job* job, Module* module, bool& done);
 };

@@ -64,9 +64,17 @@
     auto         r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0)); \
     llvm::Value* r2 = MK_IMMB_32();
 
-#define MK_BINOPEQ64_CAB()                                    \
-    auto         r0 = GEP_I32(allocR, ip->a.u32);             \
-    auto         r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0)); \
+#define MK_BINOPEQ64_CAB()                                \
+    llvm::Value* r1;                                      \
+    if (ip->flags & BCI_STACKPTR_A)                       \
+    {                                                     \
+        r1 = TO_PTR_I64(GEP_I32(allocStack, ip->a.u32));  \
+    }                                                     \
+    else                                                  \
+    {                                                     \
+        auto r0 = GEP_I32(allocR, ip->a.u32);             \
+        r1      = builder.CreateLoad(TO_PTR_PTR_I64(r0)); \
+    }                                                     \
     llvm::Value* r2 = MK_IMMB_64();
 
 #define MK_BINOPEQF32_CAB()                                   \

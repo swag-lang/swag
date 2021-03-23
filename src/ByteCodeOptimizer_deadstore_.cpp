@@ -138,7 +138,7 @@ void ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
     }
 }
 
-void ByteCodeOptimizer::optimizePassDeadStore2(ByteCodeOptContext* context)
+void ByteCodeOptimizer::optimizePassDeadStoreTree(ByteCodeOptContext* context)
 {
     parseTree(context, 0, context->tree[0].start, 0x00000001, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt) {
         auto ip    = parseCxt.curIp;
