@@ -9,7 +9,7 @@ func(T) toto()
     @assert(@max(y, x) == 2)
     @assert(@min(x, cast(T) 1) == 1)
 
-    #if @typeof(T) == s16 || @typeof(T) == s32 || @typeof(T) == s64
+    #if @typeof(T) == s8 || @typeof(T) == s16 || @typeof(T) == s32 || @typeof(T) == s64
     {
         @assert(@min(x, cast(T) -1) == -1)
         @assert(@max(cast(T) -2, cast(T) -1) == -1)
@@ -20,6 +20,8 @@ func(T) toto()
 
 #test
 {
+    toto's8()
+    toto'u8()
     toto's16()
     toto'u16()
     toto's32()
@@ -29,8 +31,12 @@ func(T) toto()
     toto'int()
     toto'uint()
 
-    /*toto's8()
-    toto'u8()
+    /*{
+        x := 456
+        @assert(@min(@max(x, 0), 255) == 255)
+    }*/
+
+    /*
     toto'f32()
     toto'f64()*/
 }

@@ -51,6 +51,7 @@ namespace BackendX64Inst
     {
         DISP8  = 0b01,
         DISP32 = 0b10,
+        REGREG = 0b11,
     };
 
     inline uint8_t modRM(uint8_t mod, uint8_t r, uint8_t m)
@@ -96,6 +97,22 @@ namespace BackendX64Inst
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);
         pp.concat.addU8(0x8A);
+        emit_ModRM(pp, stackOffset, reg, memReg);
+    }
+
+    inline void emit_LoadS8S32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0xBE);
+        emit_ModRM(pp, stackOffset, reg, memReg);
+    }
+
+    inline void emit_LoadU8U32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8&& memReg < R8);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0xB6);
         emit_ModRM(pp, stackOffset, reg, memReg);
     }
 
@@ -802,9 +819,35 @@ namespace BackendX64Inst
     inline void emit_SignedExtend_AL_To_RAX(X64PerThread& pp) { pp.concat.addString4("\x48\x0F\xBE\xC0"); } // movsx rax, al
     inline void emit_SignedExtend_AX_To_EAX(X64PerThread& pp) { pp.concat.addU8(0x98); } // cwde
     inline void emit_SignedExtend_AX_To_RAX(X64PerThread& pp) { pp.concat.addString4("\x48\x0F\xBF\xC0"); } // movsx rax, ax
-    inline void emit_SignedExtend_BX_To_EBX(X64PerThread& pp) { pp.concat.addString3("\x0f\xbf\xdb"); } // movsx ebx, bx
     inline void emit_SignedExtend_EAX_To_RAX(X64PerThread& pp) { pp.concat.addString2("\x48\x98"); } // cdqe
+    inline void emit_SignedExtend_BX_To_EBX(X64PerThread& pp) { pp.concat.addString3("\x0f\xbf\xdb"); } // movsx ebx, bx
+    inline void emit_SignedExtend_CL_To_ECX(X64PerThread& pp) { pp.concat.addString3("\x0f\xbe\xC9"); } // movsx ecx, cl
     inline void emit_SignedExtend_ECX_To_RCX(X64PerThread& pp) { pp.concat.addString3("\x48\x63\xC9"); } // movsx rcx, ecx
+
+    inline void emit_SignedExtend_8_To_32(X64PerThread& pp, uint8_t reg)
+    {
+        switch (reg)
+        {
+        case RAX:
+            emit_SignedExtend_AL_To_EAX(pp);
+            break;
+        case RCX:
+            emit_SignedExtend_CL_To_ECX(pp);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
+
+    inline void emit_UnsignedExtend_8_To_32(X64PerThread& pp, uint8_t reg)
+    {
+        // movzx
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0xB6);
+        pp.concat.addU8(modRM(REGREG, reg, reg));
+    }
+
     // clang-format on
 
     /////////////////////////////////////////////////////////////////////

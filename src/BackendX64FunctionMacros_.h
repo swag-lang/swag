@@ -174,6 +174,21 @@
     else                                                            \
         BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), __reg, RDI);
 
+#define MK_IMMB_S8_TO_S32(__reg)                                    \
+    if (ip->flags & BCI_IMM_B)                                      \
+    {                                                               \
+        BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u8, __reg); \
+        BackendX64Inst::emit_SignedExtend_8_To_32(pp, __reg);       \
+    }                                                               \
+    else                                                            \
+        BackendX64Inst::emit_LoadS8S32_Indirect(pp, regOffset(ip->b.u32), __reg, RDI);
+
+#define MK_IMMB_U8_TO_U32(__reg)                                    \
+    if (ip->flags & BCI_IMM_B)                                      \
+        BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u8, __reg); \
+    else                                                            \
+        BackendX64Inst::emit_LoadU8U32_Indirect(pp, regOffset(ip->b.u32), __reg, RDI);
+
 #define MK_IMMB_16(__reg)                                            \
     if (ip->flags & BCI_IMM_B)                                       \
         BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u16, __reg); \
@@ -215,6 +230,21 @@
         BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u8, __reg); \
     else                                                            \
         BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->c.u32), __reg, RDI);
+
+#define MK_IMMC_S8_TO_S32(__reg)                                    \
+    if (ip->flags & BCI_IMM_C)                                      \
+    {                                                               \
+        BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u8, __reg); \
+        BackendX64Inst::emit_SignedExtend_8_To_32(pp, __reg);       \
+    }                                                               \
+    else                                                            \
+        BackendX64Inst::emit_LoadS8S32_Indirect(pp, regOffset(ip->c.u32), __reg, RDI);
+
+#define MK_IMMC_U8_TO_U32(__reg)                                    \
+    if (ip->flags & BCI_IMM_C)                                      \
+        BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u8, __reg); \
+    else                                                            \
+        BackendX64Inst::emit_LoadU8U32_Indirect(pp, regOffset(ip->c.u32), __reg, RDI);
 
 #define MK_IMMC_16(__reg)                                            \
     if (ip->flags & BCI_IMM_C)                                       \
