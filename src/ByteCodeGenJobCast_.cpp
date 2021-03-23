@@ -486,12 +486,10 @@ bool ByteCodeGenJob::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* e
     {
     case NativeTypeKind::U8:
     case NativeTypeKind::Bool:
-        emitInstruction(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC)->b.u64 = 0x000000FF;
-        emitInstruction(context, ByteCodeOp::CastU32F32, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastU8F32, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC)->b.u64 = 0x0000FFFF;
-        emitInstruction(context, ByteCodeOp::CastU32F32, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastU16F32, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::Char:
     case NativeTypeKind::U32:
@@ -499,15 +497,13 @@ bool ByteCodeGenJob::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* e
         break;
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
-        emitInstruction(context, ByteCodeOp::CastU32F32, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastU64F32, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::S8:
-        emitInstruction(context, ByteCodeOp::CastS8S32, exprNode->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::CastS32F32, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastS8F32, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::S16:
-        emitInstruction(context, ByteCodeOp::CastS16S32, exprNode->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::CastS32F32, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastS16F32, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::S32:
         emitInstruction(context, ByteCodeOp::CastS32F32, exprNode->resultRegisterRC);

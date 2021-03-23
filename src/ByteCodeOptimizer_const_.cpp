@@ -609,6 +609,16 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->b.s64 = ip->b.s32;
                 OK();
                 break;
+            case ByteCodeOp::CastS8F32:
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.f32 = (float) ip->b.s8;
+                OK();
+                break;
+            case ByteCodeOp::CastS16F32:
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.f32 = (float) ip->b.s16;
+                OK();
+                break;
             case ByteCodeOp::CastS32F32:
                 ip->op    = ByteCodeOp::SetImmediate32;
                 ip->b.f32 = (float) ip->b.s32;
@@ -619,9 +629,24 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 ip->b.f32 = (float) ip->b.s64;
                 OK();
                 break;
+            case ByteCodeOp::CastU8F32:
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.f32 = (float) ip->b.u8;
+                OK();
+                break;
+            case ByteCodeOp::CastU16F32:
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.f32 = (float) ip->b.u16;
+                OK();
+                break;
             case ByteCodeOp::CastU32F32:
-                ip->op = ByteCodeOp::SetImmediate32;
-                ip->b.f32 = (float)ip->b.u32;
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.f32 = (float) ip->b.u32;
+                OK();
+                break;
+            case ByteCodeOp::CastU64F32:
+                ip->op    = ByteCodeOp::SetImmediate32;
+                ip->b.f32 = (float) ip->b.u64;
                 OK();
                 break;
             case ByteCodeOp::CastS8F64:
