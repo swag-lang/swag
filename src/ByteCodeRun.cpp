@@ -167,10 +167,61 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicMin:
-            ra.s8 = (int8_t) min(rb.s8, rc.s8);
+            ra.s8 = min(rb.s8, rc.s8);
             break;
         case TokenId::IntrinsicMax:
-            ra.s8 = (int8_t) max(rb.s8, rc.s8);
+            ra.s8 = max(rb.s8, rc.s8);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicS16x2:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicMin:
+            ra.s16 = min(rb.s16, rc.s16);
+            break;
+        case TokenId::IntrinsicMax:
+            ra.s16 = max(rb.s16, rc.s16);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicS32x2:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicMin:
+            ra.s32 = min(rb.s32, rc.s32);
+            break;
+        case TokenId::IntrinsicMax:
+            ra.s32 = max(rb.s32, rc.s32);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicS64x2:
+    {
+        switch ((TokenId) ip->d.u32)
+        {
+        case TokenId::IntrinsicMin:
+            ra.s64 = min(rb.s64, rc.s64);
+            break;
+        case TokenId::IntrinsicMax:
+            ra.s64 = max(rb.s64, rc.s64);
             break;
         default:
             SWAG_ASSERT(false);
@@ -575,6 +626,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
 
     case ByteCodeOp::IntrinsicS8x2:
+    case ByteCodeOp::IntrinsicS16x2:
+    case ByteCodeOp::IntrinsicS32x2:
+    case ByteCodeOp::IntrinsicS64x2:
     case ByteCodeOp::IntrinsicF32x2:
     case ByteCodeOp::IntrinsicF64x2:
     {

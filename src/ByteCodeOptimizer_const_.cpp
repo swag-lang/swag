@@ -4,7 +4,9 @@
 #include "ByteCodeRun.h"
 #include "Log.h"
 
-#define OK() context->passHasDoneSomething = true; ip->flags &= ~BCI_IMM_A;
+#define OK()                              \
+    context->passHasDoneSomething = true; \
+    ip->flags &= ~BCI_IMM_A;
 #define CMP3(__a, __b) __a < __b ? -1 : (__a > __b ? 1 : 0)
 
 #define BINOP_S32(__op)                     \
@@ -414,15 +416,8 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             switch (ip->op)
             {
             case ByteCodeOp::IntrinsicS8x2:
-            {
-                Register result;
-                context->hasError = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip, result, ip->b, ip->c);
-                ip->b.u32 = result.u32;
-                ip->op = ByteCodeOp::SetImmediate32;
-                OK();
-                break;
-            }
-
+            case ByteCodeOp::IntrinsicS16x2:
+            case ByteCodeOp::IntrinsicS32x2:
             case ByteCodeOp::IntrinsicF32x2:
             {
                 Register result;
@@ -433,6 +428,7 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
             }
 
+            case ByteCodeOp::IntrinsicS64x2:
             case ByteCodeOp::IntrinsicF64x2:
             {
                 Register result;

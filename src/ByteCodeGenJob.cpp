@@ -311,6 +311,9 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
         break;
 
     case ByteCodeOp::IntrinsicS8x2:
+    case ByteCodeOp::IntrinsicS16x2:
+    case ByteCodeOp::IntrinsicS32x2:
+    case ByteCodeOp::IntrinsicS64x2:
     case ByteCodeOp::IntrinsicF32x2:
     case ByteCodeOp::IntrinsicF64x2:
     case ByteCodeOp::IntrinsicInterfaceOf:

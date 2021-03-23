@@ -252,6 +252,9 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     case ByteCodeOp::IntrinsicF32x1:
     case ByteCodeOp::IntrinsicF64x1:
     case ByteCodeOp::IntrinsicS8x2:
+    case ByteCodeOp::IntrinsicS16x2:
+    case ByteCodeOp::IntrinsicS32x2:
+    case ByteCodeOp::IntrinsicS64x2:
     case ByteCodeOp::IntrinsicF32x2:
     case ByteCodeOp::IntrinsicF64x2:
         g_Log.print(g_TokenNames[ip->d.u32]);

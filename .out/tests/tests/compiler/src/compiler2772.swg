@@ -1,9 +1,15 @@
-#test
+func(T) toto()
 {
-    x := 2's8
-    y := 1's8
+    x := cast(T) 2
+    y := cast(T) 1
     @assert(@min(x, y) == 1)
     @assert(@max(x, y) == 2)
-    @assert(@min(-1's8, 10's8) == -1)
-    @assert(@max(-1's8, 10's8) == 10)
+}
+
+#test
+{
+    toto's8()
+    toto's16()
+    toto's32()
+    toto's64()
 }
