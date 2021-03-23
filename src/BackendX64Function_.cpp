@@ -2864,11 +2864,31 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         }
+        case ByteCodeOp::IntrinsicS64x2:
+        {
+            MK_IMMB_64(RAX);
+            MK_IMMC_64(RCX);
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicMin:
+                BackendX64Inst::emit_Cmp64(pp, RCX, RAX);
+                concat.addString4("\x48\x0F\x4C\xC1"); // cmovl rax, rcx
+                break;
+            case TokenId::IntrinsicMax:
+                BackendX64Inst::emit_Cmp64(pp, RAX, RCX);
+                concat.addString4("\x48\x0F\x4C\xC1"); // cmovl rax, rcx
+                break;
+            }
+
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        }
+
         case ByteCodeOp::IntrinsicU32x2:
         {
             MK_IMMB_32(RAX);
             MK_IMMC_32(RCX);
-            switch ((TokenId)ip->d.u32)
+            switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
                 BackendX64Inst::emit_Cmp32(pp, RCX, RAX);
@@ -2881,6 +2901,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
 
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        }
+        case ByteCodeOp::IntrinsicU64x2:
+        {
+            MK_IMMB_64(RAX);
+            MK_IMMC_64(RCX);
+            switch ((TokenId) ip->d.u32)
+            {
+            case TokenId::IntrinsicMin:
+                BackendX64Inst::emit_Cmp64(pp, RCX, RAX);
+                concat.addString4("\x48\x0F\x42\xC1"); // cmovb rax, rcx
+                break;
+            case TokenId::IntrinsicMax:
+                BackendX64Inst::emit_Cmp64(pp, RAX, RCX);
+                concat.addString4("\x48\x0F\x42\xC1"); // cmovb rax, rcx
+                break;
+            }
+
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         }
 
