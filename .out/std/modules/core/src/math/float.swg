@@ -45,6 +45,11 @@ alias ConstF64 = Const'f64
 
 #[swag.constexpr, swag.inline]
 {
+    func min(x, y: f32) => @min(x, y)
+    func min(x, y: f64) => @min(x, y)
+    func max(x, y: f32) => @max(x, y)
+    func max(x, y: f64) => @max(x, y)
+
     func sqrt(x: f32) => @sqrt(x)
     func sqrt(x: f64) => @sqrt(x)
 
