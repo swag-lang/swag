@@ -331,40 +331,49 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, i
         emitType(typeFunc->returnType, indent);
     }
 
-    bufferSwg.addEolIndent(indent);
-    CONCAT_FIXED_STR(bufferSwg, "{");
-    indent++;
-    bufferSwg.addEol();
-
-    if (node->content->kind != AstNodeKind::Statement)
+    if ((node->flags & AST_SHORT_LAMBDA) && !(node->returnType->flags & AST_FUNC_RETURN_DEFINED))
     {
-        bufferSwg.addIndent(outputContext.indent + 1);
-        SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->content));
-        bufferSwg.addEol();
+        CONCAT_FIXED_STR(bufferSwg, " => ");
+        SWAG_ASSERT(node->content->kind == AstNodeKind::Return);
+        SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->content->childs.front()));
     }
     else
     {
-        outputContext.indent = indent;
+        bufferSwg.addEolIndent(indent);
+        CONCAT_FIXED_STR(bufferSwg, "{");
+        indent++;
+        bufferSwg.addEol();
 
-        for (auto c : node->subDecls)
+        if (node->content->kind != AstNodeKind::Statement)
         {
-            bufferSwg.addIndent(outputContext.indent);
-            SWAG_CHECK(Ast::output(outputContext, bufferSwg, c));
+            bufferSwg.addIndent(outputContext.indent + 1);
+            SWAG_CHECK(Ast::output(outputContext, bufferSwg, node->content));
             bufferSwg.addEol();
         }
-
-        for (auto c : node->content->childs)
+        else
         {
-            bufferSwg.addIndent(outputContext.indent);
-            SWAG_CHECK(Ast::output(outputContext, bufferSwg, c));
-            bufferSwg.addEol();
+            outputContext.indent = indent;
+
+            for (auto c : node->subDecls)
+            {
+                bufferSwg.addIndent(outputContext.indent);
+                SWAG_CHECK(Ast::output(outputContext, bufferSwg, c));
+                bufferSwg.addEol();
+            }
+
+            for (auto c : node->content->childs)
+            {
+                bufferSwg.addIndent(outputContext.indent);
+                SWAG_CHECK(Ast::output(outputContext, bufferSwg, c));
+                bufferSwg.addEol();
+            }
         }
+
+        indent--;
+        bufferSwg.addIndent(indent);
+        CONCAT_FIXED_STR(bufferSwg, "}");
+        bufferSwg.addEol();
     }
-
-    indent--;
-    bufferSwg.addIndent(indent);
-    CONCAT_FIXED_STR(bufferSwg, "}");
-    bufferSwg.addEol();
 
     bufferSwg.addEol();
     return true;
