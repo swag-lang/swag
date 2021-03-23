@@ -2,15 +2,15 @@ using core
 
 impl Image
 {
+    // Kernel format is : kernelSize, kernelNormalizeValue, kernelValues...
     public enum Kernel: const [..] s32
     {
         GaussianBlur3x3A = @[3, 8, 0, 1, 0, 1, 4, 1, 0, 1, 0]
         EdgeDetect3x3A   = @[3, 1, 1, 2, 1, 0, 0, 0, -1, -2, -1]
     }
 
-    // Transform image to grayscale, with a given factor
     //#[swag.printbc]
-    public func doKernel(using self, dstImage: *Image, kernel: const [..] s32)
+    private func doKernel(using self, dstImage: *Image, kernel: const [..] s32)
     {
         debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
 
@@ -79,11 +79,21 @@ impl Image
         }
     }
 
+    // Apply a kernel to the image
     public func applyKernel(using self, kernel: const [..] s32)
     {
         debug.assert(pixels != null)
         allocWorkingBuffer()
         doKernel(workingBuffer, kernel)
         applyWorkingBuffer()
+    }
+
+    // Apply a kernel to the image
+    public func toApplyKernel(using self, kernel: const [..] s32)->Image
+    {
+        debug.assert(pixels != null)
+        var result: retval = create(width, height, pf)
+        doKernel(&result, kernel)
+        return result
     }
 }
