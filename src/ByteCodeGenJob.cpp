@@ -705,6 +705,7 @@ JobResult ByteCodeGenJob::execute()
     {
         if (context.bc->maxReservedRegisterRC != context.bc->availableRegistersRC.size())
         {
+            //sortRegistersRC(&context);
             //context.bc->print();
         }
     }
