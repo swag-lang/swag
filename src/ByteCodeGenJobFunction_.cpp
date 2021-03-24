@@ -130,6 +130,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, r0);
                 SWAG_CHECK(emitCopyStruct(context, r0, returnExpression->resultRegisterRC, exprType, returnExpression));
                 freeRegisterRC(context, r0);
+                freeRegisterRC(context, returnExpression->resultRegisterRC);
             }
             else if (returnType->kind == TypeInfoKind::Array)
             {
@@ -139,6 +140,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, r1);
                 SWAG_CHECK(emitCopyArray(context, returnType, r1, returnExpression->resultRegisterRC, returnExpression));
                 freeRegisterRC(context, r1);
+                freeRegisterRC(context, returnExpression->resultRegisterRC);
             }
             else if (returnType->isNative(NativeTypeKind::String))
             {
