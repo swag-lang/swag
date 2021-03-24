@@ -82,7 +82,8 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         if ((node->doneFlags & AST_DONE_RETVAL) ||
             (backExpression->resolvedSymbolOverload && backExpression->resolvedSymbolOverload->flags & OVERLOAD_RETVAL))
         {
-            // Do nothing if returning retval
+            auto child = node->childs.front();
+            freeRegisterRC(context, child->resultRegisterRC);
         }
 
         //
