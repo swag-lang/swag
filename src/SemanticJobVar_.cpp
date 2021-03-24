@@ -511,6 +511,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 SWAG_CHECK(evaluateConstExpression(context, node->assignment));
                 if (context->result == ContextResult::Pending)
                     return true;
+                if (symbolFlags & OVERLOAD_VAR_GLOBAL)
+                    node->assignment->flags |= AST_NO_BYTECODE;
             }
 
             node->doneFlags |= AST_DONE_ASSIGN_COMPUTED;
