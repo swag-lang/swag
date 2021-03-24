@@ -773,6 +773,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         return internalError(context, "emitIntrinsic, unknown intrinsic");
     }
 
+    if (node->flags & AST_DISCARD)
+        freeRegisterRC(context, node->resultRegisterRC);
+
     return true;
 }
 
