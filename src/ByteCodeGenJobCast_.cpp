@@ -20,6 +20,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     if ((fromTypeInfo->flags & TYPEINFO_RETURN_BY_COPY) || (exprNode->flags & AST_VALUE_IS_TYPEINFO))
     {
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC[0]);
+        exprNode->ownerScope->registersToReleaseTmp.push_back(exprNode->resultRegisterRC[0]);
     }
     else if (exprNode->resultRegisterRC.size() == 2)
     {
