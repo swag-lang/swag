@@ -96,6 +96,12 @@ JobResult SemanticJob::execute()
                    originalNode->kind == AstNodeKind::StatementNoScope ||
                    originalNode->kind == AstNodeKind::AttrUse ||
                    originalNode->kind == AstNodeKind::CompilerIf;
+
+        if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->ownerFct)
+        {
+            originalNode->attributeFlags |= originalNode->ownerFct->attributeFlags & ATTRIBUTE_PRINT_BC;
+            originalNode->attributeFlags |= originalNode->ownerFct->attributeFlags & ATTRIBUTE_SAFETY_MASK;
+        }
     }
 
     baseContext        = &context;

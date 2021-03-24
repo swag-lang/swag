@@ -379,7 +379,6 @@
     <ClCompile Include="../src/Workspace.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_err_.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_loop_.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_opstack_.cpp" />
     <ClCompile Include="..\src\ModuleCfgManager.cpp" />
     <ClCompile Include="..\src\FetchModuleJobFileSystem.cpp" />
     <ClCompile Include="..\src\Workspace_clean_.cpp" />

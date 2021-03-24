@@ -14,8 +14,6 @@
 #include "SemanticJob.h"
 #include "Math.h"
 
-#define PTRA(ip) ((ip->flags & BCI_STACKPTR_A) ? (int8_t*) (context->bp + ip->a.u32) : (int8_t*) registersRC[ip->a.u32].pointer)
-
 #define IMMA_B(ip) ((ip->flags & BCI_IMM_A) ? ip->a.b : registersRC[ip->a.u32].b)
 #define IMMB_B(ip) ((ip->flags & BCI_IMM_B) ? ip->b.b : registersRC[ip->b.u32].b)
 
@@ -2468,10 +2466,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::AffectOpPlusEqS64:
     {
-        auto ptrA = (int64_t*) PTRA(ip);
-        if (addOverflow(ip->node, *ptrA, IMMB_S64(ip)))
+        if (addOverflow(ip->node, *(int64_t*) registersRC[ip->a.u32].pointer, IMMB_S64(ip)))
             callInternalPanic(context, ip, "[safety] integer overflow");
-        *ptrA += IMMB_S64(ip);
+        *(int64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqU64:

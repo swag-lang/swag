@@ -25,7 +25,6 @@ ByteCodeOptimizerJob::ByteCodeOptimizerJob()
     passes.push_back(ByteCodeOptimizer::optimizePassReduce);
     passes.push_back(ByteCodeOptimizer::optimizePassDeadStoreTree);
     passes.push_back(ByteCodeOptimizer::optimizePassLoop);
-    passes.push_back(ByteCodeOptimizer::optimizePassOpStack);
 
     passes.push_back(ByteCodeOptimizer::optimizePassReduce2);
 }

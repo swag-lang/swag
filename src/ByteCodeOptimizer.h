@@ -84,7 +84,6 @@ struct ByteCodeOptimizer
     static void optimizePassReduce(ByteCodeOptContext* context);
     static void optimizePassReduce2(ByteCodeOptContext* context);
     static void optimizePassErr(ByteCodeOptContext* context);
-    static void optimizePassOpStack(ByteCodeOptContext* context);
 
     static bool optimize(Job* job, Module* module, bool& done);
 };

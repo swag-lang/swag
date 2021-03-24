@@ -9,7 +9,7 @@ impl Image
         EdgeDetect3x3A   = @[3, 1, 1, 2, 1, 0, 0, 0, -1, -2, -1]
     }
 
-    //#[swag.printbc]
+    #[swag.safety("", false)]
     private func doKernel(using self, dstImage: *Image, kernel: const [..] s32)
     {
         debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
