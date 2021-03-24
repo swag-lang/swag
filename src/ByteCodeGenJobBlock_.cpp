@@ -252,13 +252,8 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
         switch (node->kind)
         {
         case AstNodeKind::Loop:
-        {
-            auto loopNode = CastAst<AstLoop>(node, AstNodeKind::Loop);
-            freeRegisterRC(context, loopNode->expression);
-            if (loopNode->needIndex())
-                freeRegisterRC(context, loopNode->registerIndex);
+            freeRegisterRC(context, ((AstLoop*) node)->expression);
             break;
-        }
         case AstNodeKind::While:
             freeRegisterRC(context, ((AstWhile*) node)->boolExpression);
             break;
@@ -269,6 +264,9 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
     }
 
     freeRegisterRC(context, node);
+    if (node->needIndex())
+        freeRegisterRC(context, node->registerIndex);
+
     return true;
 }
 

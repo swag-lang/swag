@@ -230,6 +230,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     }
     else
     {
+        freeRegisterRC(context, expr->resultRegisterRC);
         SWAG_CHECK(emitTryThrowExit(context, context->node));
         if (context->result != ContextResult::Done)
             return true;
