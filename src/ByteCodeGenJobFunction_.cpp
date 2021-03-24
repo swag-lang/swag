@@ -1206,6 +1206,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         emitInstruction(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);
         numPushParams += 2;
         maxCallParams += 2;
+        freeRegisterRC(context, lastParam);
     }
 
     // Pass a variadic parameter to another function
@@ -1215,6 +1216,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         emitInstruction(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);
         numPushParams += 2;
         maxCallParams += 2;
+        freeRegisterRC(context, lastParam);
     }
 
     // If last parameter is a spread, then no need to deal with variadic slice : already done
@@ -1223,6 +1225,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         emitInstruction(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRC[1], lastParam->resultRegisterRC[0]);
         maxCallParams += 2;
         precallStack += 2 * sizeof(Register);
+        freeRegisterRC(context, lastParam);
     }
 
     // Variadic parameter is on top of stack
