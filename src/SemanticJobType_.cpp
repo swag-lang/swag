@@ -140,6 +140,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
             SWAG_CHECK(evaluateConstExpression(context, child));
             if (context->result == ContextResult::Pending)
                 return true;
+            child->flags |= AST_NO_BYTECODE;
         }
     }
 
