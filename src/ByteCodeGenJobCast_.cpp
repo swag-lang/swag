@@ -20,22 +20,21 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     if ((fromTypeInfo->flags & TYPEINFO_RETURN_BY_COPY) || (exprNode->flags & AST_VALUE_IS_TYPEINFO))
     {
         emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], exprNode->resultRegisterRC[0]);
-        exprNode->ownerScope->registersToReleaseTmp.push_back(exprNode->resultRegisterRC[0]);
     }
     else if (exprNode->resultRegisterRC.size() == 2)
     {
         // Be sure registers are contiguous, as we address the first of them
         SWAG_ASSERT(exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
         emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, r0[0], exprNode->resultRegisterRC[0], exprNode->resultRegisterRC[1]);
-        exprNode->ownerScope->registersToReleaseTmp.push_back(exprNode->resultRegisterRC[0]);
-        exprNode->ownerScope->registersToReleaseTmp.push_back(exprNode->resultRegisterRC[1]);
     }
     else
     {
         SWAG_ASSERT(exprNode->resultRegisterRC.size() == 1);
         emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, r0[0], exprNode->resultRegisterRC[0]);
-        exprNode->ownerScope->registersToReleaseTmp.push_back(exprNode->resultRegisterRC[0]);
     }
+
+    for (int r = 0; r < exprNode->resultRegisterRC.size(); r++)
+        exprNode->ownerScope->registersToReleaseTmp.push_back(exprNode->resultRegisterRC[r]);
 
     // This is the type part.
     // Get concrete typeinfo from constant segment
