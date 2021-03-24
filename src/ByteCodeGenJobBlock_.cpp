@@ -855,10 +855,8 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, V
 
     // Free some registers
     for (auto r : scope->registersToReleaseTmp)
-    {
         freeRegisterRC(context, r);
-        scope->registersToReleaseTmp.clear();
-    }
+    scope->registersToReleaseTmp.clear();
 
     return true;
 }
