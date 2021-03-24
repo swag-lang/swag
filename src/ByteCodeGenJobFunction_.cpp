@@ -785,6 +785,7 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
 
     SWAG_CHECK(emitCall(context, allParams, nullptr, (AstVarDecl*) overload->node, node->additionalRegisterRC, false));
     SWAG_ASSERT(context->result == ContextResult::Done);
+    freeRegisterRC(context, node->additionalRegisterRC);
     return true;
 }
 
@@ -1305,6 +1306,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 SWAG_ASSERT(numRegs == 2);
                 emitInstruction(context, ByteCodeOp::CopyRTtoRC2, node->resultRegisterRC[0], node->resultRegisterRC[1]);
             }
+
+            if (node->flags & AST_DISCARD)
+                freeRegisterRC(context, node->resultRegisterRC);
         }
     }
 
