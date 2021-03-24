@@ -452,6 +452,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SWAG_CHECK(Ast::output(outputContext, concat, node->expression));
     concat.addU8(0);
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
+    node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
     int id = g_Global.uniqueID.fetch_add(1);
 

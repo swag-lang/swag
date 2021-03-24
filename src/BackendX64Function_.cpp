@@ -2453,7 +2453,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 // We need to flatten all variadic registers, in order, in the stack, and emit the address of that array
                 // We compute the number of variadic registers by removing registers of normal parameters (ip->b.u32)
                 int      idxParam          = (int) pushRAParams.size() - (ip->b.u32 / sizeof(Register)) - 1;
-                uint32_t variadicStackSize = idxParam * sizeof(Register);
+                uint32_t variadicStackSize = (idxParam + 1) * sizeof(Register);
                 MK_ALIGN16(variadicStackSize);
                 uint32_t offset = sizeParamsStack - variadicStackSize;
                 while (idxParam >= 0)
