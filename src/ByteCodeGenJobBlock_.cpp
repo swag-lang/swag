@@ -89,7 +89,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                         overload->registers         = callParam->resultRegisterRC;
                         overload->registers.canFree = false;
                         for (int r = 0; r < overload->registers.size(); r++)
-                            node->scope->registersToRelease.push_back(overload->registers[r]);
+                            node->scope->registersToReleaseInlineVar.push_back(overload->registers[r]);
                         break;
                     }
                 }
@@ -122,7 +122,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                                 overload->registers         = callParam->resultRegisterRC;
                                 overload->registers.canFree = false;
                                 for (int r = 0; r < overload->registers.size(); r++)
-                                    node->scope->registersToRelease.push_back(overload->registers[r]);
+                                    node->scope->registersToReleaseInlineVar.push_back(overload->registers[r]);
                                 covered = true;
                                 break;
                             }
@@ -147,7 +147,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                             SWAG_CHECK(emitDefaultParamValue(context, defaultParam, overload->registers));
                             overload->registers.canFree = false;
                             for (int r = 0; r < overload->registers.size(); r++)
-                                node->scope->registersToRelease.push_back(overload->registers[r]);
+                                node->scope->registersToReleaseInlineVar.push_back(overload->registers[r]);
                             break;
                         }
                     }
@@ -171,9 +171,9 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
     // case, the inline node does not own the scope)
     if (!(node->attributeFlags & ATTRIBUTE_MIXIN))
     {
-        for (auto r : node->scope->registersToRelease)
+        for (auto r : node->scope->registersToReleaseInlineVar)
             freeRegisterRC(context, r);
-        node->scope->registersToRelease.clear();
+        node->scope->registersToReleaseInlineVar.clear();
     }
 
     // Be sure this is done only once
@@ -851,6 +851,13 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, V
         if (context->result == ContextResult::Pending)
             return true;
         scope->doneDrop.insert(context->node);
+    }
+
+    // Free some registers
+    for (auto r : scope->registersToReleaseTmp)
+    {
+        freeRegisterRC(context, r);
+        scope->registersToReleaseTmp.clear();
     }
 
     return true;

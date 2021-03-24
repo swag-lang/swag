@@ -113,7 +113,8 @@ struct Scope
     VectorNative<Scope*>     childScopes;
     VectorNative<AstNode*>   deferredNodes;
     map<SourceFile*, Scope*> privateScopes;
-    VectorNative<uint32_t>   registersToRelease;
+    VectorNative<uint32_t>   registersToReleaseInlineVar;
+    VectorNative<uint32_t>   registersToReleaseTmp;
     DependentJobs            dependentJobs;
     shared_mutex             mutex;
     set<AstNode*>            doneDefer;

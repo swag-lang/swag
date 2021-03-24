@@ -26,18 +26,20 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
         // Be sure registers are contiguous, as we address the first of them
         SWAG_ASSERT(exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
         emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, r0[0], exprNode->resultRegisterRC[0], exprNode->resultRegisterRC[1]);
+        exprNode->ownerScope->registersToReleaseTmp.push_back(exprNode->resultRegisterRC[0]);
+        exprNode->ownerScope->registersToReleaseTmp.push_back(exprNode->resultRegisterRC[1]);
     }
     else
     {
         SWAG_ASSERT(exprNode->resultRegisterRC.size() == 1);
         emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, r0[0], exprNode->resultRegisterRC[0]);
+        exprNode->ownerScope->registersToReleaseTmp.push_back(exprNode->resultRegisterRC[0]);
     }
 
     // This is the type part.
     // Get concrete typeinfo from constant segment
     emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0[1])->b.u64 = exprNode->concreteTypeInfoStorage;
 
-    exprNode->additionalRegisterRC  = exprNode->resultRegisterRC;
     exprNode->resultRegisterRC      = r0;
     context->node->resultRegisterRC = r0;
     return true;
