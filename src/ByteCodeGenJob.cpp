@@ -701,5 +701,13 @@ JobResult ByteCodeGenJob::execute()
         sourceFile->module->mapRuntimeFcts[context.bc->callName()] = context.bc;
     }
 
+    if (context.bc)
+    {
+        if (context.bc->maxReservedRegisterRC != context.bc->availableRegistersRC.size())
+        {
+            //context.bc->print();
+        }
+    }
+
     return JobResult::ReleaseJob;
 }

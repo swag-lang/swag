@@ -145,6 +145,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
                     emitInstruction(context, ByteCodeOp::CloneString, child->resultRegisterRC[0], child->resultRegisterRC[1]);
                 emitInstruction(context, ByteCodeOp::CopyRCtoRR2, child->resultRegisterRC[0], child->resultRegisterRC[1]);
+                freeRegisterRC(context, child->resultRegisterRC);
             }
             else
             {
@@ -157,6 +158,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     emitInstruction(context, ByteCodeOp::CopyRCtoRR, child->resultRegisterRC[0]);
                 else if (numRetReg == 2)
                     emitInstruction(context, ByteCodeOp::CopyRCtoRR2, child->resultRegisterRC[0], child->resultRegisterRC[1]);
+                freeRegisterRC(context, child->resultRegisterRC);
             }
         }
     }

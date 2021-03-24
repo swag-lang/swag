@@ -259,6 +259,7 @@ bool ByteCodeGenJob::emitUnwrapRelativePointer(ByteCodeGenContext* context, uint
     emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = 1;
     emitInstruction(context, ByteCodeOp::ClearRA, rr);
     emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
+    freeRegisterRC(context, r0);
     return true;
 }
 
