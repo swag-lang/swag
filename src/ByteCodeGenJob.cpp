@@ -19,41 +19,6 @@ bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg,
     return false;
 }
 
-uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
-{
-    // From the normal cache
-    if (!context->bc->availableRegistersRC.empty())
-    {
-        auto result = context->bc->availableRegistersRC.back();
-        context->bc->availableRegistersRC.pop_back();
-        if (result < MAX_CACHE_FREE_REG)
-        {
-            SWAG_ASSERT(context->bc->regIsFree[result] != UINT32_MAX);
-            context->bc->regIsFree[result] = UINT32_MAX;
-        }
-        return result;
-    }
-
-    // From the linear cache
-    if (!context->bc->availableRegistersRC2.empty())
-    {
-        auto r0 = context->bc->availableRegistersRC2.back();
-        context->bc->availableRegistersRC2.pop_back();
-        auto r1 = context->bc->availableRegistersRC2.back();
-        context->bc->availableRegistersRC2.pop_back();
-        if (r1 < MAX_CACHE_FREE_REG)
-        {
-            SWAG_ASSERT(context->bc->regIsFree[r1] == UINT32_MAX);
-            context->bc->regIsFree[r1] = (uint32_t) context->bc->availableRegistersRC.size();
-        }
-        context->bc->availableRegistersRC.push_back(r1);
-
-        return r0;
-    }
-
-    return context->bc->maxReservedRegisterRC++;
-}
-
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
     rc.clear();
@@ -68,22 +33,59 @@ void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList
     }
 }
 
+void ByteCodeGenJob::sortRegistersRC(ByteCodeGenContext* context)
+{
+    if (!context->bc->dirtyRegistersRC)
+        return;
+    context->bc->dirtyRegistersRC = false;
+    if (context->bc->availableRegistersRC.size() <= 1)
+        return;
+    sort(context->bc->availableRegistersRC.begin(), context->bc->availableRegistersRC.end(), [](uint32_t a, uint32_t b) { return a > b; });
+}
+
+void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
+{
+    if (g_CommandLine.devMode)
+    {
+        for (auto r : context->bc->availableRegistersRC)
+            SWAG_ASSERT(r != rc);
+    }
+
+    context->bc->availableRegistersRC.push_back(rc);
+    context->bc->dirtyRegistersRC = true;
+}
+
+uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
+{
+    if (!context->bc->availableRegistersRC.empty())
+    {
+        sortRegistersRC(context);
+        auto result = context->bc->availableRegistersRC.back();
+        context->bc->availableRegistersRC.pop_back();
+        return result;
+    }
+
+    return context->bc->maxReservedRegisterRC++;
+}
+
 void ByteCodeGenJob::reserveLinearRegisterRC2(ByteCodeGenContext* context, RegisterList& rc)
 {
     freeRegisterRC(context, rc);
 
-    // From linear cache
-    if (!context->bc->availableRegistersRC2.empty())
+    auto size = context->bc->availableRegistersRC.size();
+    if (size > 1)
     {
-        auto r0 = context->bc->availableRegistersRC2.back();
-        rc += r0;
-        SWAG_ASSERT(r0 < context->bc->maxReservedRegisterRC);
-        context->bc->availableRegistersRC2.pop_back();
-        auto r1 = context->bc->availableRegistersRC2.back();
-        rc += r1;
-        SWAG_ASSERT(r1 < context->bc->maxReservedRegisterRC);
-        context->bc->availableRegistersRC2.pop_back();
-        return;
+        sortRegistersRC(context);
+        for (int i = 0; i < size - 1; i++)
+        {
+            if (context->bc->availableRegistersRC[i] == context->bc->availableRegistersRC[i + 1] + 1)
+            {
+                rc += context->bc->availableRegistersRC[i + 1];
+                rc += context->bc->availableRegistersRC[i];
+                context->bc->availableRegistersRC.erase(i, 2);
+                return;
+            }
+        }
     }
 
     rc += context->bc->maxReservedRegisterRC++;
@@ -122,7 +124,6 @@ void ByteCodeGenJob::truncRegisterRC(ByteCodeGenContext* context, RegisterList& 
         return;
 
     RegisterList rs;
-
     for (int i = 0; i < count; i++)
         rs += rc[i];
 
@@ -140,71 +141,9 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& r
 {
     if (!rc.canFree)
         return;
-
-    // Cache for linear
-    if (rc.size() == 2 && rc[0] == rc[1] - 1)
-    {
-        SWAG_ASSERT(rc[1] < context->bc->maxReservedRegisterRC);
-        context->bc->availableRegistersRC2.push_back(rc[1]);
-        context->bc->availableRegistersRC2.push_back(rc[0]);
-        rc.clear();
-        return;
-    }
-
-    auto n = rc.size();
-    for (int i = n - 1; i >= 0; i--)
+    for (int i = 0; i < rc.size(); i++)
         freeRegisterRC(context, rc[i]);
-
     rc.clear();
-}
-
-void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
-{
-    if (rc < MAX_CACHE_FREE_REG)
-        SWAG_ASSERT(context->bc->regIsFree[rc] == UINT32_MAX);
-    if (g_CommandLine.devMode)
-    {
-        for (auto r : context->bc->availableRegistersRC)
-            SWAG_ASSERT(r != rc);
-    }
-
-    // In linear cache ?
-    if (rc < MAX_CACHE_FREE_REG)
-    {
-        if (rc && context->bc->regIsFree[rc - 1] != UINT32_MAX)
-        {
-            uint32_t fi = context->bc->regIsFree[rc - 1];
-            uint32_t bi = context->bc->availableRegistersRC.back();
-            if (bi < MAX_CACHE_FREE_REG)
-                context->bc->regIsFree[bi] = fi;
-            context->bc->regIsFree[rc - 1]        = UINT32_MAX;
-            context->bc->availableRegistersRC[fi] = bi;
-            context->bc->availableRegistersRC.pop_back();
-
-            context->bc->availableRegistersRC2.push_back(rc);
-            context->bc->availableRegistersRC2.push_back(rc - 1);
-            return;
-        }
-
-        if (rc < MAX_CACHE_FREE_REG - 1 && context->bc->regIsFree[rc + 1] != UINT32_MAX)
-        {
-            uint32_t fi = context->bc->regIsFree[rc + 1];
-            uint32_t bi = context->bc->availableRegistersRC.back();
-            if (bi < MAX_CACHE_FREE_REG)
-                context->bc->regIsFree[bi] = fi;
-            context->bc->regIsFree[rc + 1]        = UINT32_MAX;
-            context->bc->availableRegistersRC[fi] = bi;
-            context->bc->availableRegistersRC.pop_back();
-
-            context->bc->availableRegistersRC2.push_back(rc + 1);
-            context->bc->availableRegistersRC2.push_back(rc);
-            return;
-        }
-
-        context->bc->regIsFree[rc] = (uint32_t) context->bc->availableRegistersRC.size();
-    }
-
-    context->bc->availableRegistersRC.push_back(rc);
 }
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)

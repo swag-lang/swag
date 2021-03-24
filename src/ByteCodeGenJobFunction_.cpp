@@ -266,6 +266,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child0            = callParams->childs.front();
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicAlloc, node->resultRegisterRC, child0->resultRegisterRC);
+        freeRegisterRC(context, child0);
         break;
     }
     case TokenId::IntrinsicFree:
@@ -281,6 +282,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child1            = callParams->childs.back();
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicRealloc, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
         break;
     }
     case TokenId::IntrinsicMemCpy:
@@ -387,6 +390,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         emitInstruction(context, ByteCodeOp::IntrinsicSetContext, childDest->resultRegisterRC);
         freeRegisterRC(context, childDest);
+        break;
     }
     case TokenId::IntrinsicArguments:
     {
@@ -439,6 +443,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         default:
             return internalError(context, "emitIntrinsic, @atomadd invalid type");
         }
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
         break;
     }
     case TokenId::IntrinsicAtomicAnd:
@@ -470,6 +476,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         default:
             return internalError(context, "emitIntrinsic, @atomand invalid type");
         }
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
         break;
     }
     case TokenId::IntrinsicAtomicOr:
@@ -501,6 +509,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         default:
             return internalError(context, "emitIntrinsic, @atomor invalid type");
         }
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
         break;
     }
     case TokenId::IntrinsicAtomicXor:
@@ -532,6 +542,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         default:
             return internalError(context, "emitIntrinsic, @atomxor invalid type");
         }
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
         break;
     }
 
@@ -564,6 +576,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         default:
             return internalError(context, "emitIntrinsic, @atomxor invalid type");
         }
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
         break;
     }
 
@@ -597,6 +611,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         default:
             return internalError(context, "emitIntrinsic, @atomcmpxchg invalid type");
         }
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
+        freeRegisterRC(context, child2);
         break;
     }
 
@@ -625,6 +642,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
         inst->d.u32 = (uint32_t) node->token.id;
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
         break;
     }
 
@@ -680,6 +699,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
         inst->d.u32 = (uint32_t) node->token.id;
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
         break;
     }
 
@@ -739,6 +760,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
         inst->d.u32 = (uint32_t) node->token.id;
+        freeRegisterRC(context, child);
         break;
     }
 

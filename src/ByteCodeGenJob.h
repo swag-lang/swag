@@ -363,6 +363,7 @@ struct ByteCodeGenJob : public Job
     static void     freeRegisterRC(ByteCodeGenContext* context, uint32_t rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, AstNode* node);
     static void     truncRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int count);
+    static void     sortRegistersRC(ByteCodeGenContext* context);
 
     ByteCodeGenContext     context;
     VectorNative<AstNode*> collectChilds;

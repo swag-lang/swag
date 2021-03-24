@@ -13,8 +13,8 @@ struct TypeInfoFuncAttr;
 struct ByteCodeRunContext;
 struct ByteCode;
 
-static const uint16_t BCI_JUMP_DEST     = 0x0001;
-static const uint16_t BCI_DEBUG         = 0x0002;
+static const uint16_t BCI_JUMP_DEST = 0x0001;
+static const uint16_t BCI_DEBUG     = 0x0002;
 //static const uint16_t BCI_STACKPTR_A    = 0x0004;
 static const uint16_t BCI_SAFETY        = 0x0008;
 static const uint16_t BCI_IMM_A         = 0x0010;
@@ -39,7 +39,6 @@ struct ByteCodeInstruction
     uint16_t        flags;
 };
 
-#define MAX_CACHE_FREE_REG 8
 struct ByteCode
 {
     void addCallStack(ByteCodeRunContext* context);
@@ -57,8 +56,7 @@ struct ByteCode
     static const int ALIGN_RIGHT_OPCODE = 25;
 
     VectorNative<uint32_t>            availableRegistersRC;
-    VectorNative<uint32_t>            availableRegistersRC2;
-    uint32_t                          regIsFree[MAX_CACHE_FREE_REG] = {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX};
+    bool                              dirtyRegistersRC = false;
     VectorNative<pair<void*, size_t>> autoFree;
 
     Utf8                   name;

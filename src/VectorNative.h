@@ -179,11 +179,11 @@ struct VectorNative
         return buffer[index];
     }
 
-    void erase(int index)
+    void erase(int index, int num = 1)
     {
-        if (index != count - 1)
-            memmove(buffer + index, buffer + index + 1, (count - index - 1) * sizeof(T));
-        count--;
+        if (index != count - num)
+            memmove(buffer + index, buffer + index + num, (count - index - num) * sizeof(T));
+        count -= num;
     }
 
     void erase_unordered(int index)
