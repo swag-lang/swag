@@ -642,7 +642,11 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
 
     freeRegisterRC(context, node->expression);
     freeRegisterRC(context, node->count);
-    freeRegisterRC(context, node->parameters);
+    if (node->parameters)
+    {
+        for (auto c : node->parameters->childs)
+            freeRegisterRC(context, c);
+    }
     return true;
 }
 
