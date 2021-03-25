@@ -634,4 +634,12 @@ func @cstrlen(value: const *u8)->uint;
     func @bitcountnz(value: u16)->u16;
     func @bitcountnz(value: u32)->u32;
     func @bitcountnz(value: u64)->u64;
+    func @bitcounttz(value: u8)->u8;
+    func @bitcounttz(value: u16)->u16;
+    func @bitcounttz(value: u32)->u32;
+    func @bitcounttz(value: u64)->u64;
+    func @bitcountlz(value: u8)->u8;
+    func @bitcountlz(value: u16)->u16;
+    func @bitcountlz(value: u32)->u32;
+    func @bitcountlz(value: u64)->u64;
 }

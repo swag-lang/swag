@@ -652,6 +652,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
 
     case TokenId::IntrinsicBitCountNz:
+    case TokenId::IntrinsicBitCountTz:
+    case TokenId::IntrinsicBitCountLz:
     {
         node->resultRegisterRC                = reserveRegisterRC(context);
         node->identifierRef->resultRegisterRC = node->resultRegisterRC;
@@ -675,7 +677,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicS64x1;
             break;
         default:
-            return internalError(context, "emitIntrinsic, IntrinsicBitCountNz invalid type");
+            return internalError(context, "emitIntrinsic, IntrinsicBitCount invalid type");
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);

@@ -3597,6 +3597,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicBitCountNz:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {builder.getInt8Ty()}, {r1}), r0);
                 break;
+            case TokenId::IntrinsicBitCountTz:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {builder.getInt8Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                break;
+            case TokenId::IntrinsicBitCountLz:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {builder.getInt8Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                break;
             default:
                 ok = false;
                 moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
@@ -3615,6 +3621,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicBitCountNz:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {builder.getInt16Ty()}, {r1}), r0);
+                break;
+            case TokenId::IntrinsicBitCountTz:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {builder.getInt16Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                break;
+            case TokenId::IntrinsicBitCountLz:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {builder.getInt16Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             default:
                 ok = false;
@@ -3635,6 +3647,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicBitCountNz:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {builder.getInt32Ty()}, {r1}), r0);
                 break;
+            case TokenId::IntrinsicBitCountTz:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {builder.getInt16Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                break;
+            case TokenId::IntrinsicBitCountLz:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {builder.getInt16Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                break;
             default:
                 ok = false;
                 moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
@@ -3653,6 +3671,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicBitCountNz:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {builder.getInt64Ty()}, {r1}), r0);
+                break;
+            case TokenId::IntrinsicBitCountTz:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {builder.getInt64Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                break;
+            case TokenId::IntrinsicBitCountLz:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {builder.getInt64Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             default:
                 ok = false;

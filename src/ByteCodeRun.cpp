@@ -114,7 +114,13 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.s8 = (int8_t) abs(rb.s8);
             break;
         case TokenId::IntrinsicBitCountNz:
-            ra.u8 = OS::popcnt8(rb.u8);
+            ra.u8 = OS::bitcountnz(rb.u8);
+            break;
+        case TokenId::IntrinsicBitCountTz:
+            ra.u8 = OS::bitcounttz(rb.u8);
+            break;
+        case TokenId::IntrinsicBitCountLz:
+            ra.u8 = OS::bitcountlz(rb.u8);
             break;
         default:
             SWAG_ASSERT(false);
@@ -131,7 +137,13 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.s16 = (int16_t) abs(rb.s16);
             break;
         case TokenId::IntrinsicBitCountNz:
-            ra.u16 = OS::popcnt16(rb.u16);
+            ra.u16 = OS::bitcountnz(rb.u16);
+            break;
+        case TokenId::IntrinsicBitCountTz:
+            ra.u16 = OS::bitcounttz(rb.u16);
+            break;
+        case TokenId::IntrinsicBitCountLz:
+            ra.u16 = OS::bitcountlz(rb.u16);
             break;
         default:
             SWAG_ASSERT(false);
@@ -148,7 +160,13 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.s32 = abs(rb.s32);
             break;
         case TokenId::IntrinsicBitCountNz:
-            ra.u32 = OS::popcnt32(rb.u32);
+            ra.u32 = OS::bitcountnz(rb.u32);
+            break;
+        case TokenId::IntrinsicBitCountTz:
+            ra.u32 = OS::bitcounttz(rb.u32);
+            break;
+        case TokenId::IntrinsicBitCountLz:
+            ra.u32 = OS::bitcountlz(rb.u32);
             break;
         default:
             SWAG_ASSERT(false);
@@ -165,7 +183,13 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             ra.s64 = abs(rb.s64);
             break;
         case TokenId::IntrinsicBitCountNz:
-            ra.u64 = OS::popcnt64(rb.u64);
+            ra.u64 = OS::bitcountnz(rb.u64);
+            break;
+        case TokenId::IntrinsicBitCountTz:
+            ra.u64 = OS::bitcounttz(rb.u64);
+            break;
+        case TokenId::IntrinsicBitCountLz:
+            ra.u64 = OS::bitcountlz(rb.u64);
             break;
         default:
             SWAG_ASSERT(false);

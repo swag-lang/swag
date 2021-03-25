@@ -948,24 +948,96 @@ namespace OS
         return p1[len] - p2[len];
     }
 
-    uint8_t popcnt8(uint8_t value)
+    uint8_t bitcountnz(uint8_t value)
     {
         return (uint8_t) __popcnt16(value);
     }
 
-    uint16_t popcnt16(uint16_t value)
+    uint16_t bitcountnz(uint16_t value)
     {
         return __popcnt16(value);
     }
 
-    uint32_t popcnt32(uint32_t value)
+    uint32_t bitcountnz(uint32_t value)
     {
         return __popcnt(value);
     }
 
-    uint64_t popcnt64(uint64_t value)
+    uint64_t bitcountnz(uint64_t value)
     {
         return __popcnt64(value);
+    }
+
+    uint8_t bitcounttz(uint8_t value)
+    {
+        unsigned long index;
+        auto          res = _BitScanForward(&index, value);
+        if (!res)
+            return 8;
+        return (uint8_t) index;
+    }
+
+    uint16_t bitcounttz(uint16_t value)
+    {
+        unsigned long index;
+        auto          res = _BitScanForward(&index, value);
+        if (!res)
+            return 16;
+        return (uint16_t) index;
+    }
+
+    uint32_t bitcounttz(uint32_t value)
+    {
+        unsigned long index;
+        auto          res = _BitScanForward(&index, value);
+        if (!res)
+            return 32;
+        return (uint32_t) index;
+    }
+
+    uint64_t bitcounttz(uint64_t value)
+    {
+        unsigned long index;
+        auto          res = _BitScanForward64(&index, value);
+        if (!res)
+            return 64;
+        return (uint64_t) index;
+    }
+
+    uint8_t bitcountlz(uint8_t value)
+    {
+        unsigned long index;
+        auto          res = _BitScanReverse(&index, value);
+        if (!res)
+            return 8;
+        return (uint8_t)(8 - index - 1);
+    }
+
+    uint16_t bitcountlz(uint16_t value)
+    {
+        unsigned long index;
+        auto          res = _BitScanReverse(&index, value);
+        if (!res)
+            return 16;
+        return (uint8_t)(16 - index - 1);
+    }
+
+    uint32_t bitcountlz(uint32_t value)
+    {
+        unsigned long index;
+        auto          res = _BitScanReverse(&index, value);
+        if (!res)
+            return 32;
+        return (uint8_t)(32 - index - 1);
+    }
+
+    uint64_t bitcountlz(uint64_t value)
+    {
+        unsigned long index;
+        auto          res = _BitScanReverse64(&index, value);
+        if (!res)
+            return 64;
+        return (uint8_t)(64 - index - 1);
     }
 
 }; // namespace OS
