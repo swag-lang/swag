@@ -132,6 +132,7 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
         emitInstruction(context, ByteCodeOp::CastBool64, exprNode->resultRegisterRC);
         break;
     case NativeTypeKind::String:
+        truncRegisterRC(context, exprNode->resultRegisterRC, 1);
         emitInstruction(context, ByteCodeOp::CastBool64, exprNode->resultRegisterRC);
         return true;
     default:

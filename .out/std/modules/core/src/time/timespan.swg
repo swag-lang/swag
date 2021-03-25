@@ -17,8 +17,8 @@ impl TimeSpan
     // Returns the current date and time
     func now()->TimeSpan
     {
-        var result: retval
-        return result.from(DateTime.now())
+        var result: retval = from(DateTime.now())
+        return result
     }
 
     // Initialize the TimeSpan with the current date and time
