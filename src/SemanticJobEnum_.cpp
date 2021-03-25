@@ -14,6 +14,9 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     auto node     = CastAst<AstEnum>(context->node, AstNodeKind::EnumDecl);
     auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
 
+    // An enum can be in a function, so do not generate bytecode for it !
+    node->flags |= AST_NO_BYTECODE;
+
     // Be sure we have only one enum node
     if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
     {
