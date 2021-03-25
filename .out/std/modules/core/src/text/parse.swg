@@ -9,7 +9,7 @@ func parseU64(str: const [..] u8) -> {value: u64, eat: u32}
     var result: retval
 
     countof := @countof(str)
-    if !countof result
+    if !countof return result
 
     buffer := @dataof(str)
     cpt := 0'u32
@@ -34,7 +34,7 @@ func parseX64(str: const [..] u8) -> {value: u64, eat: u32}
     var result: retval
 
     countof := @countof(str)
-    if !countof result
+    if !countof return result
 
     buffer := @dataof(str)
     cpt := 0'u32
@@ -65,7 +65,7 @@ func parseB64(str: const [..] u8) -> {value: u64, eat: u32}
     var result: retval
 
     countof := @countof(str)
-    if !countof result
+    if !countof return result
 
     buffer := @dataof(str)
     cpt := 0'u32
@@ -90,7 +90,7 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32}
     var result: retval
 
     countof := @countof(str)
-    if !countof result
+    if !countof return result
 
     buffer := @dataof(str)
     value := 0's64
@@ -136,7 +136,7 @@ func parseF64(str: const [..] u8) -> {value: f64, eat: u32}
     var result: retval
 
     countof := @countof(str)
-    if !countof result
+    if !countof return result
 
     buffer := @dataof(str)
     value := 0'f64
