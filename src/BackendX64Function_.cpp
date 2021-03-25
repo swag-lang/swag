@@ -728,11 +728,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpShiftLeftU32:
             if (ip->flags & BCI_IMM_A)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u32, RAX);
+                BackendX64Inst::emit_Load32_Immediate(pp, ip->a.u32, RAX);
             else
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u8, RCX);
+                BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8, RCX);
             else
                 BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xd3\xe0"); // shl eax, cl
@@ -744,7 +744,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u8, RCX);
+                BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8, RCX);
             else
                 BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x48\xd3\xe0"); // shl rax, cl
@@ -753,11 +753,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpShiftRightU32:
             if (ip->flags & BCI_IMM_A)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u32, RAX);
+                BackendX64Inst::emit_Load32_Immediate(pp, ip->a.u32, RAX);
             else
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u8, RCX);
+                BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8, RCX);
             else
                 BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xd3\xe8"); // shr eax, cl
@@ -769,7 +769,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u8, RCX);
+                BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8, RCX);
             else
                 BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x48\xd3\xe8"); // shr rax, cl
