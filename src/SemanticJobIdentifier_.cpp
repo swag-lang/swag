@@ -102,11 +102,8 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         auto subType     = TypeManager::concreteReferenceType(typePointer->pointedType);
-        if (subType->kind == TypeInfoKind::Struct)
+        if (subType->kind == TypeInfoKind::Struct || subType->kind == TypeInfoKind::Interface || subType->kind == TypeInfoKind::TypeSet)
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
-        else if (subType->kind == TypeInfoKind::Interface)
-            identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->itable->scope;
-
         node->typeInfo = typeInfo;
         break;
     }
@@ -118,14 +115,6 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         break;
 
     case TypeInfoKind::Interface:
-    {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
-        SWAG_ASSERT(typeStruct->itable->scope);
-        identifierRef->startScope = typeStruct->itable->scope;
-        node->typeInfo            = typeInfo;
-        break;
-    }
-
     case TypeInfoKind::Struct:
     case TypeInfoKind::TypeSet:
         identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind)->scope;
@@ -1975,7 +1964,9 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
         {
             auto copyChild = Ast::cloneRaw(child, idRef);
 
-            if (!identifierRef->startScope)
+            // We want to generate bytecode for the expression on the left only if the lambda is dereferenced from a struct/itf
+            // Otherwise the left expression is only used for scoping
+            if (!identifierRef->startScope || identifierRef->startScope != match.symbolOverload->node->ownerStructScope)
                 child->flags |= AST_NO_BYTECODE;
 
             if (child == identifierRef->previousResolvedNode)
