@@ -274,7 +274,7 @@ namespace BackendX64Inst
             return;
         }
 
-        pp.concat.addU8(0xB0 | ((reg & 0b1000) >> 3));
+        pp.concat.addU8(0xB0 | reg);
         pp.concat.addU8(val);
     }
 
@@ -287,7 +287,7 @@ namespace BackendX64Inst
         }
 
         pp.concat.addU8(0x66);
-        pp.concat.addU8(0xB8 | ((reg & 0b1000) >> 3));
+        pp.concat.addU8(0xB8 | reg);
         pp.concat.addU16(val);
     }
 
@@ -299,7 +299,7 @@ namespace BackendX64Inst
             return;
         }
 
-        pp.concat.addU8(0xB8 | ((reg & 0b1000) >> 3));
+        pp.concat.addU8(0xB8 | reg);
         pp.concat.addU32(val);
     }
 

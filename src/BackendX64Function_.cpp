@@ -2870,8 +2870,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicBitCountTz:
                 BackendX64Inst::emit_UnsignedExtend_8_To_32(pp, RAX);
                 concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
-                concat.addString2("\x75\x02");     // jnz + 2
-                BackendX64Inst::emit_Load8_Immediate(pp, 8, RAX);
+                BackendX64Inst::emit_Load32_Immediate(pp, 8, RCX);
+                concat.addString3("\x0F\x44\xC1"); // cmove eax, ecx
                 break;
             default:
                 ok = false;
@@ -2900,8 +2900,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicBitCountTz:
                 BackendX64Inst::emit_UnsignedExtend_16_To_32(pp, RAX);
                 concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
-                concat.addString2("\x75\x04");     // jnz + 4
-                BackendX64Inst::emit_Load16_Immediate(pp, 16, RAX);
+                BackendX64Inst::emit_Load32_Immediate(pp, 16, RCX);
+                concat.addString3("\x0F\x44\xC1"); // cmove eax, ecx
                 break;
             default:
                 ok = false;
@@ -2928,8 +2928,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             case TokenId::IntrinsicBitCountTz:
                 concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
-                concat.addString2("\x75\x05");     // jnz + 5
-                BackendX64Inst::emit_Load32_Immediate(pp, 32, RAX);
+                BackendX64Inst::emit_Load32_Immediate(pp, 32, RCX);
+                concat.addString3("\x0F\x44\xC1"); // cmove eax, ecx
                 break;
             default:
                 ok = false;
@@ -2955,9 +2955,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString5("\xF3\x48\x0F\xB8\xC0"); // popcnt rax, rax
                 break;
             case TokenId::IntrinsicBitCountTz:
-                concat.addString4("\x48\x0F\xBC\xC0");              // bsf rax, rax
-                concat.addString2("\x75\x05");                      // jnz + 5
-                BackendX64Inst::emit_Load32_Immediate(pp, 64, RAX); // no need for 64 bits here
+                concat.addString4("\x48\x0F\xBC\xC0"); // bsf rax, rax
+                BackendX64Inst::emit_Load32_Immediate(pp, 64, RCX);
+                concat.addString4("\x48\x0F\x44\xC1"); // cmove rax, rcx
                 break;
             default:
                 ok = false;
