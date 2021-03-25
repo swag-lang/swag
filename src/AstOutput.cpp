@@ -36,7 +36,13 @@ namespace Ast
                 if (j)
                     CONCAT_FIXED_STR(concat, ", ");
 
-                concat.addString(one.name);
+                // No need to write "swag.", less to write, less to read, as export files have
+                // a 'using swag' on top.
+                if (!strncmp(one.name.c_str(), "swag.", 5))
+                    concat.addString(one.name.c_str() + 5);
+                else
+                    concat.addString(one.name);
+
                 if (!one.parameters.empty())
                 {
                     concat.addChar('(');
