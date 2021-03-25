@@ -156,8 +156,12 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
 
 bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
 {
-    auto node              = context->node;
-    node->resultRegisterRC = node->childs.back()->resultRegisterRC;
+    auto node  = context->node;
+    auto child = node->childs.back();
+    if (node->flags & AST_DISCARD)
+        freeRegisterRC(context, child);
+    else
+        node->resultRegisterRC = child->resultRegisterRC;
     return true;
 }
 
