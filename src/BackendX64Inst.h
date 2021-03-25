@@ -924,14 +924,14 @@ namespace BackendX64Inst
         {
             if (ip->flags & BCI_IMM_A)
             {
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u32, RAX);
+                BackendX64Inst::emit_Load32_Immediate(pp, ip->a.u32, RAX);
                 BackendX64Inst::emit_CopyF32(pp, RAX, XMM0);
             }
             else
                 BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             if (ip->flags & BCI_IMM_B)
             {
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RAX);
+                BackendX64Inst::emit_Load32_Immediate(pp, ip->b.u32, RAX);
                 BackendX64Inst::emit_CopyF32(pp, RAX, XMM1);
             }
             else
@@ -1012,11 +1012,11 @@ namespace BackendX64Inst
         else
         {
             if (ip->flags & BCI_IMM_A)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u32, RCX);
+                BackendX64Inst::emit_Load32_Immediate(pp, ip->a.u32, RCX);
             else
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             if (ip->flags & BCI_IMM_B)
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u32, RAX);
+                BackendX64Inst::emit_Load32_Immediate(pp, ip->b.u32, RAX);
             else
                 BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             if (op == X64Op::MUL)
