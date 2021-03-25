@@ -72,4 +72,9 @@ namespace OS
     void     tlsSetValue(uint64_t id, void* value);
     void*    tlsGetValue(uint64_t id);
 
+    uint8_t  popcnt8(uint8_t value);
+    uint16_t popcnt16(uint16_t value);
+    uint32_t popcnt32(uint32_t value);
+    uint64_t popcnt64(uint64_t value);
+
 } // namespace OS

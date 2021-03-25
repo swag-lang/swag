@@ -113,6 +113,9 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicAbs:
             ra.s8 = (int8_t) abs(rb.s8);
             break;
+        case TokenId::IntrinsicBitCountNz:
+            ra.u8 = OS::popcnt8(rb.u8);
+            break;
         default:
             SWAG_ASSERT(false);
             break;
@@ -126,6 +129,9 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicAbs:
             ra.s16 = (int16_t) abs(rb.s16);
+            break;
+        case TokenId::IntrinsicBitCountNz:
+            ra.u16 = OS::popcnt16(rb.u16);
             break;
         default:
             SWAG_ASSERT(false);
@@ -141,6 +147,9 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicAbs:
             ra.s32 = abs(rb.s32);
             break;
+        case TokenId::IntrinsicBitCountNz:
+            ra.u32 = OS::popcnt32(rb.u32);
+            break;
         default:
             SWAG_ASSERT(false);
             break;
@@ -154,6 +163,9 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicAbs:
             ra.s64 = abs(rb.s64);
+            break;
+        case TokenId::IntrinsicBitCountNz:
+            ra.u64 = OS::popcnt64(rb.u64);
             break;
         default:
             SWAG_ASSERT(false);

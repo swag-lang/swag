@@ -2863,6 +2863,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString2("\x30\xC8");     // xor al, cl
                 concat.addString2("\x28\xC8");     // sub al, cl
                 break;
+            case TokenId::IntrinsicBitCountNz:
+                BackendX64Inst::emit_UnsignedExtend_8_To_32(pp, RAX);
+                concat.addString4("\xF3\x0F\xB8\xC0"); // popcnt eax, eax
+                break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
+                break;
             }
 
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -2878,6 +2886,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\x66\xC1\xF9\x0F"); // sar cx, 15
                 concat.addString3("\x66\x31\xC8");     // xor ax, cx
                 concat.addString3("\x66\x29\xC8");     // sub ax, cx
+                break;
+            case TokenId::IntrinsicBitCountNz:
+                BackendX64Inst::emit_UnsignedExtend_16_To_32(pp, RAX);
+                concat.addString4("\xF3\x0F\xB8\xC0"); // popcnt eax, eax
+                break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
                 break;
             }
 
@@ -2895,6 +2911,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString2("\x31\xC8");     // xor eax, ecx
                 concat.addString2("\x29\xC8");     // sub eax, ecx
                 break;
+            case TokenId::IntrinsicBitCountNz:
+                concat.addString4("\xF3\x0F\xB8\xC0"); // popcnt eax, eax
+                break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
+                break;
             }
 
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -2910,6 +2933,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\x48\xC1\xF9\x3F"); // sar rcx, 63
                 concat.addString3("\x48\x31\xC8");     // xor rax, rcx
                 concat.addString3("\x48\x29\xC8");     // sub rax, rcx
+                break;
+            case TokenId::IntrinsicBitCountNz:
+                concat.addString5("\xF3\x48\x0F\xB8\xC0"); // popcnt rax, rax
+                break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
                 break;
             }
 
@@ -2931,6 +2961,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_Cmp32(pp, RAX, RCX);
                 concat.addString3("\x0F\x4C\xC1"); // cmovl eax, ecx
                 break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
+                break;
             }
 
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -2949,6 +2983,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicMax:
                 BackendX64Inst::emit_Cmp16(pp, RAX, RCX);
                 concat.addString4("\x66\x0F\x4C\xC1"); // cmovl ax, cx
+                break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
                 break;
             }
 
@@ -2969,6 +3007,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_Cmp32(pp, RAX, RCX);
                 concat.addString3("\x0F\x4C\xC1"); // cmovl eax, ecx
                 break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
+                break;
             }
 
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -2987,6 +3029,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicMax:
                 BackendX64Inst::emit_Cmp64(pp, RAX, RCX);
                 concat.addString4("\x48\x0F\x4C\xC1"); // cmovl rax, rcx
+                break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
                 break;
             }
 
@@ -3008,6 +3054,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_Cmp32(pp, RAX, RCX);
                 concat.addString3("\x0F\x42\xC1"); // cmovb eax, ecx
                 break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
+                break;
             }
 
             BackendX64Inst::emit_Store8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -3026,6 +3076,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicMax:
                 BackendX64Inst::emit_Cmp16(pp, RAX, RCX);
                 concat.addString4("\x66\x0F\x42\xC1"); // cmovb ax, cx
+                break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
                 break;
             }
 
@@ -3046,6 +3100,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_Cmp32(pp, RAX, RCX);
                 concat.addString3("\x0F\x42\xC1"); // cmovb eax, ecx
                 break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
+                break;
             }
 
             BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -3064,6 +3122,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicMax:
                 BackendX64Inst::emit_Cmp64(pp, RAX, RCX);
                 concat.addString4("\x48\x0F\x42\xC1"); // cmovb rax, rcx
+                break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
                 break;
             }
 
@@ -3086,6 +3148,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicMax:
                 concat.addString4("\xF3\x0F\x5F\xC1"); // maxss xmm0, xmm1
                 break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
+                break;
             }
             BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
@@ -3104,6 +3170,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             case TokenId::IntrinsicMax:
                 concat.addString4("\xF2\x0F\x5F\xC1"); // maxss xmm0, xmm1
+                break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
                 break;
             }
             BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
@@ -3177,6 +3247,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicExp2:
                 emitCall(pp, "exp2f");
                 break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
+                break;
             }
 
             BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
@@ -3249,6 +3323,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             case TokenId::IntrinsicExp2:
                 emitCall(pp, "exp2");
+                break;
+            default:
+                ok = false;
+                moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
                 break;
             }
 

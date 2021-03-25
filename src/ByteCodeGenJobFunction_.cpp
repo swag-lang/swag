@@ -446,7 +446,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAddS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
-            return internalError(context, "emitIntrinsic, @atomadd invalid type");
+            return internalError(context, "emitIntrinsic, IntrinsicAtomicAdd invalid type");
         }
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -479,7 +479,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicAndS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
-            return internalError(context, "emitIntrinsic, @atomand invalid type");
+            return internalError(context, "emitIntrinsic, IntrinsicAtomicAnd invalid type");
         }
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -512,7 +512,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicOrS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
-            return internalError(context, "emitIntrinsic, @atomor invalid type");
+            return internalError(context, "emitIntrinsic, IntrinsicAtomicOr invalid type");
         }
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -545,7 +545,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicXorS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
-            return internalError(context, "emitIntrinsic, @atomxor invalid type");
+            return internalError(context, "emitIntrinsic, IntrinsicAtomicXor invalid type");
         }
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -579,7 +579,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
-            return internalError(context, "emitIntrinsic, @atomxor invalid type");
+            return internalError(context, "emitIntrinsic, IntrinsicAtomicXchg invalid type");
         }
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -614,7 +614,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicAtomicCmpXchgS64, child0->resultRegisterRC, child1->resultRegisterRC, child2->resultRegisterRC, node->resultRegisterRC);
             break;
         default:
-            return internalError(context, "emitIntrinsic, @atomcmpxchg invalid type");
+            return internalError(context, "emitIntrinsic, IntrinsicAtomicCmpXchg invalid type");
         }
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
@@ -641,14 +641,46 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicF64x2;
             break;
         default:
-            SWAG_ASSERT(false);
-            break;
+            return internalError(context, "emitIntrinsic, IntrinsicPow invalid type");
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
         inst->d.u32 = (uint32_t) node->token.id;
         freeRegisterRC(context, child0);
         freeRegisterRC(context, child1);
+        break;
+    }
+
+    case TokenId::IntrinsicBitCountNz:
+    {
+        node->resultRegisterRC                = reserveRegisterRC(context);
+        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC        = node->resultRegisterRC;
+        auto child                            = callParams->childs[0];
+        auto typeInfo                         = TypeManager::concreteReferenceType(child->typeInfo);
+        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+        ByteCodeOp op = ByteCodeOp::End;
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::U8:
+            op = ByteCodeOp::IntrinsicS8x1;
+            break;
+        case NativeTypeKind::U16:
+            op = ByteCodeOp::IntrinsicS16x1;
+            break;
+        case NativeTypeKind::U32:
+            op = ByteCodeOp::IntrinsicS32x1;
+            break;
+        case NativeTypeKind::U64:
+            op = ByteCodeOp::IntrinsicS64x1;
+            break;
+        default:
+            return internalError(context, "emitIntrinsic, IntrinsicBitCountNz invalid type");
+        }
+
+        auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
+        inst->d.u32 = (uint32_t) node->token.id;
+        freeRegisterRC(context, child);
         break;
     }
 
@@ -698,8 +730,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicF64x2;
             break;
         default:
-            SWAG_ASSERT(false);
-            break;
+            return internalError(context, "emitIntrinsic, IntrinsicMin/Max invalid type");
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
@@ -759,8 +790,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             op = ByteCodeOp::IntrinsicF64x1;
             break;
         default:
-            SWAG_ASSERT(false);
-            break;
+            return internalError(context, "emitIntrinsic, math intrinsic invalid type");
         }
 
         auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);

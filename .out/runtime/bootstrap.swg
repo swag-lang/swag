@@ -493,6 +493,7 @@ func @memmove(dst: *void, src: const *void, size: uint);
 func @memcmp(dst, src: const *void, size: uint)->s32;
 func @cstrlen(value: const *u8)->uint;
 
+// Atomic operations
 #[swag.autodiscard]
 {
     func @atomadd(addr: *s8, value: s8)->s8;
@@ -593,12 +594,19 @@ func @cstrlen(value: const *u8)->uint;
     func @round(value: f32)->f32;
     func @round(value: f64)->f64;
 
-    func @abs(value: f32)->f32;
-    func @abs(value: f64)->f64;
     func @abs(value: s8)->s8;
     func @abs(value: s16)->s16;
     func @abs(value: s32)->s32;
     func @abs(value: s64)->s64;
+    func @abs(value: f32)->f32;
+    func @abs(value: f64)->f64;
+
+    func @exp(value: f32)->f32;
+    func @exp(value: f64)->f64;
+    func @exp2(value: f32)->f32;
+    func @exp2(value: f64)->f64;
+    func @pow(value1, value2: f32)->f32;
+    func @pow(value1, value2: f64)->f64;
 
     func @min(value1, value2: s8)->s8;
     func @min(value1, value2: s16)->s16;
@@ -608,6 +616,8 @@ func @cstrlen(value: const *u8)->uint;
     func @min(value1, value2: u16)->u16;
     func @min(value1, value2: u32)->u32;
     func @min(value1, value2: u64)->u64;
+    func @min(value1, value2: f32)->f32;
+    func @min(value1, value2: f64)->f64;
 
     func @max(value1, value2: s8)->s8;
     func @max(value1, value2: s16)->s16;
@@ -617,16 +627,11 @@ func @cstrlen(value: const *u8)->uint;
     func @max(value1, value2: u16)->u16;
     func @max(value1, value2: u32)->u32;
     func @max(value1, value2: u64)->u64;
-
-    func @min(value1, value2: f32)->f32;
-    func @min(value1, value2: f64)->f64;
     func @max(value1, value2: f32)->f32;
     func @max(value1, value2: f64)->f64;
 
-    func @exp(value: f32)->f32;
-    func @exp(value: f64)->f64;
-    func @exp2(value: f32)->f32;
-    func @exp2(value: f64)->f64;
-    func @pow(value1, value2: f32)->f32;
-    func @pow(value1, value2: f64)->f64;
+    func @bitcountnz(value: u8)->u8;
+    func @bitcountnz(value: u16)->u16;
+    func @bitcountnz(value: u32)->u32;
+    func @bitcountnz(value: u64)->u64;
 }

@@ -188,6 +188,7 @@ void LanguageSpec::setup()
     keywords.add("@pow", TokenId::IntrinsicPow);
     keywords.add("@min", TokenId::IntrinsicMin);
     keywords.add("@max", TokenId::IntrinsicMax);
+    keywords.add("@bitcountnz", TokenId::IntrinsicBitCountNz);
 
     nativeTypes.add("uint", LiteralType::TT_UINT);
     nativeTypes.add("int", LiteralType::TT_INT);

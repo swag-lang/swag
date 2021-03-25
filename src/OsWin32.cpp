@@ -948,6 +948,26 @@ namespace OS
         return p1[len] - p2[len];
     }
 
+    uint8_t popcnt8(uint8_t value)
+    {
+        return (uint8_t) __popcnt16(value);
+    }
+
+    uint16_t popcnt16(uint16_t value)
+    {
+        return __popcnt16(value);
+    }
+
+    uint32_t popcnt32(uint32_t value)
+    {
+        return __popcnt(value);
+    }
+
+    uint64_t popcnt64(uint64_t value)
+    {
+        return __popcnt64(value);
+    }
+
 }; // namespace OS
 
 #endif
