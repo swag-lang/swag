@@ -5,8 +5,10 @@ func(T) test1()
     var x: T = 0b11110000
     x >>= 1
     @assert(@bitcounttz(x) == 3)
+    x >>%= 10
+    @assert(@bitcounttz(x) == @sizeof(T) * 8)
 }
-
+/*
 func(T) test2()
 {
     const Total = @sizeof(T) * 8
@@ -16,7 +18,7 @@ func(T) test2()
     x >>= 1
     x <<= 1
     @assert(@bitcountlz(x) == Total - 8)
-}
+}*/
 
 #test
 {
@@ -25,8 +27,8 @@ func(T) test2()
     test1'u32()
     test1'u64()
 
-    test2'u8()
+    /*test2'u8()
     test2'u16()
     test2'u32()
-    test2'u64()
+    test2'u64()*/
 }

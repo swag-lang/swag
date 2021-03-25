@@ -2867,6 +2867,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_UnsignedExtend_8_To_32(pp, RAX);
                 concat.addString4("\xF3\x0F\xB8\xC0"); // popcnt eax, eax
                 break;
+            case TokenId::IntrinsicBitCountTz:
+                BackendX64Inst::emit_UnsignedExtend_8_To_32(pp, RAX);
+                concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
+                concat.addString2("\x75\x02");     // jnz + 2
+                BackendX64Inst::emit_Load8_Immediate(pp, 8, RAX);
+                break;
             default:
                 ok = false;
                 moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
@@ -2891,6 +2897,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_UnsignedExtend_16_To_32(pp, RAX);
                 concat.addString4("\xF3\x0F\xB8\xC0"); // popcnt eax, eax
                 break;
+            case TokenId::IntrinsicBitCountTz:
+                BackendX64Inst::emit_UnsignedExtend_16_To_32(pp, RAX);
+                concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
+                concat.addString2("\x75\x04");     // jnz + 4
+                BackendX64Inst::emit_Load16_Immediate(pp, 16, RAX);
+                break;
             default:
                 ok = false;
                 moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
@@ -2914,6 +2926,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             case TokenId::IntrinsicBitCountNz:
                 concat.addString4("\xF3\x0F\xB8\xC0"); // popcnt eax, eax
                 break;
+            case TokenId::IntrinsicBitCountTz:
+                concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
+                concat.addString2("\x75\x05");     // jnz + 5
+                BackendX64Inst::emit_Load32_Immediate(pp, 32, RAX);
+                break;
             default:
                 ok = false;
                 moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
@@ -2936,6 +2953,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             case TokenId::IntrinsicBitCountNz:
                 concat.addString5("\xF3\x48\x0F\xB8\xC0"); // popcnt rax, rax
+                break;
+            case TokenId::IntrinsicBitCountTz:
+                concat.addString4("\x48\x0F\xBC\xC0");              // bsf rax, rax
+                concat.addString2("\x75\x05");                      // jnz + 5
+                BackendX64Inst::emit_Load32_Immediate(pp, 64, RAX); // no need for 64 bits here
                 break;
             default:
                 ok = false;
