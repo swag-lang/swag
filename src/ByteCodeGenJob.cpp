@@ -701,7 +701,7 @@ JobResult ByteCodeGenJob::execute()
         sourceFile->module->mapRuntimeFcts[context.bc->callName()] = context.bc;
     }
 
-    if (context.bc && context.bc->node && context.bc->node->kind == AstNodeKind::FuncDecl)
+    if (context.bc && context.bc->node && context.bc->node->kind == AstNodeKind::FuncDecl && !context.bc->node->sourceFile->numTestErrors)
     {
         if (context.bc->maxReservedRegisterRC != context.bc->availableRegistersRC.size())
         {

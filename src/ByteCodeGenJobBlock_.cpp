@@ -88,8 +88,9 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     {
                         overload->registers         = callParam->resultRegisterRC;
                         overload->registers.canFree = false;
+                        node->allocateExtension();
                         for (int r = 0; r < overload->registers.size(); r++)
-                            node->scope->registersToReleaseInlineVar.push_back(overload->registers[r]);
+                            node->extension->registersToRelease.push_back(overload->registers[r]);
                         break;
                     }
                 }
@@ -121,8 +122,9 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                             {
                                 overload->registers         = callParam->resultRegisterRC;
                                 overload->registers.canFree = false;
+                                node->allocateExtension();
                                 for (int r = 0; r < overload->registers.size(); r++)
-                                    node->scope->registersToReleaseInlineVar.push_back(overload->registers[r]);
+                                    node->extension->registersToRelease.push_back(overload->registers[r]);
                                 covered = true;
                                 break;
                             }
@@ -146,8 +148,9 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                         {
                             SWAG_CHECK(emitDefaultParamValue(context, defaultParam, overload->registers));
                             overload->registers.canFree = false;
+                            node->allocateExtension();
                             for (int r = 0; r < overload->registers.size(); r++)
-                                node->scope->registersToReleaseInlineVar.push_back(overload->registers[r]);
+                                node->extension->registersToRelease.push_back(overload->registers[r]);
                             break;
                         }
                     }
@@ -169,16 +172,26 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
 
     // Release persistent list of registers (except if mixin, because in that
     // case, the inline node does not own the scope)
-    if (!(node->attributeFlags & ATTRIBUTE_MIXIN))
+    if (node->extension && !node->extension->registersToRelease.empty())
     {
-        for (auto r : node->scope->registersToReleaseInlineVar)
-            freeRegisterRC(context, r);
-        node->scope->registersToReleaseInlineVar.clear();
+        if (!(node->attributeFlags & ATTRIBUTE_MIXIN))
+        {
+            for (auto r : node->extension->registersToRelease)
+                freeRegisterRC(context, r);
+        }
+        else
+        {
+            // Transfert registers to release to the parent scope owner
+            node->ownerScope->owner->allocateExtension();
+            for (auto r : node->extension->registersToRelease)
+                node->ownerScope->owner->extension->registersToRelease.push_back(r);
+        }
+
+        node->extension->registersToRelease.clear();
     }
 
     // Be sure this is done only once
     node->flags |= AST_NO_BYTECODE_CHILDS;
-
     return true;
 }
 
@@ -854,9 +867,12 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, V
     }
 
     // Free some registers
-    for (auto r : scope->registersToReleaseTmp)
-        freeRegisterRC(context, r);
-    scope->registersToReleaseTmp.clear();
+    if (context->node->extension)
+    {
+        for (auto r : context->node->extension->registersToRelease)
+            freeRegisterRC(context, r);
+        context->node->extension->registersToRelease.clear();
+    }
 
     return true;
 }

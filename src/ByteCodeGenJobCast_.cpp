@@ -33,8 +33,9 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
         emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, r0[0], exprNode->resultRegisterRC[0]);
     }
 
+    exprNode->ownerScope->owner->allocateExtension();
     for (int r = 0; r < exprNode->resultRegisterRC.size(); r++)
-        exprNode->ownerScope->registersToReleaseTmp.push_back(exprNode->resultRegisterRC[r]);
+        exprNode->ownerScope->owner->extension->registersToRelease.push_back(exprNode->resultRegisterRC[r]);
 
     // This is the type part.
     // Get concrete typeinfo from constant segment

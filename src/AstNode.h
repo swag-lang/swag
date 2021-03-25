@@ -372,6 +372,7 @@ struct AstNode
     {
         VectorNative<Scope*>           alternativeScopes;
         VectorNative<AlternativeScope> alternativeScopesVars;
+        VectorNative<uint32_t>         registersToRelease;
         SemanticFct                    semanticBeforeFct;
         SemanticFct                    semanticAfterFct;
         ByteCodeNotifyFct              byteCodeBeforeFct;
