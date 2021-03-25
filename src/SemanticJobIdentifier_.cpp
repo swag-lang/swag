@@ -482,6 +482,22 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
     return true;
 }
 
+static bool isStatementIdentifier(AstIdentifier* identifier)
+{
+    auto checkParent = identifier->identifierRef->parent;
+    if (checkParent->kind == AstNodeKind::Try || checkParent->kind == AstNodeKind::Catch || checkParent->kind == AstNodeKind::Assume)
+        checkParent = checkParent->parent;
+    if (checkParent->kind == AstNodeKind::Statement || checkParent->kind == AstNodeKind::StatementNoScope)
+    {
+        if (identifier->childParentIdx == identifier->identifierRef->childs.size() - 1)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, OneMatch& oneMatch)
 {
     auto symbol       = oneMatch.symbolOverload->symbol;
@@ -768,6 +784,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
             }
         }
+        else
+        {
+            if (isStatementIdentifier(identifier))
+            {
+                return context->report({identifier, format("unused variable '%s'", identifier->token.text.c_str())});
+            }
+        }
 
         break;
     }
@@ -849,24 +872,17 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Check return value
         if (!returnType->isNative(NativeTypeKind::Void))
         {
-            auto checkParent = identifier->identifierRef->parent;
-            if (checkParent->kind == AstNodeKind::Try || checkParent->kind == AstNodeKind::Catch || checkParent->kind == AstNodeKind::Assume)
-                checkParent = checkParent->parent;
-            if (checkParent->kind == AstNodeKind::Statement ||
-                checkParent->kind == AstNodeKind::StatementNoScope)
+            if (isStatementIdentifier(identifier))
             {
-                if (identifier->childParentIdx == identifier->identifierRef->childs.size() - 1)
+                if (!(overload->node->attributeFlags & ATTRIBUTE_AUTO_DISCARD) && !(identifier->flags & AST_DISCARD))
                 {
-                    if (!(overload->node->attributeFlags & ATTRIBUTE_AUTO_DISCARD) && !(identifier->flags & AST_DISCARD))
-                    {
-                        Diagnostic diag(identifier, identifier->token, format("unused return value of function '%s'", overload->node->token.text.c_str()));
-                        Diagnostic note(overload->node, overload->node->token, "this is the function", DiagnosticLevel::Note);
-                        return context->report(diag, &note);
-                    }
-                    else
-                    {
-                        identifier->flags |= AST_DISCARD;
-                    }
+                    Diagnostic diag(identifier, identifier->token, format("unused return value of function '%s'", overload->node->token.text.c_str()));
+                    Diagnostic note(overload->node, overload->node->token, "this is the function", DiagnosticLevel::Note);
+                    return context->report(diag, &note);
+                }
+                else
+                {
+                    identifier->flags |= AST_DISCARD;
                 }
             }
         }
