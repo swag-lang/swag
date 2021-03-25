@@ -1,4 +1,4 @@
-/*struct AA
+struct AA
 {
 
 }
@@ -15,4 +15,4 @@ func toto(x: AA)
     x := &toto
     var tt: AA
     tt.x()
-}*/
+}

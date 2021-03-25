@@ -17,6 +17,9 @@ bool CommandLine::check()
         return false;
     }
 
+    if (devMode)
+        warningsAsErrors = true;
+
     // Force verbose
     if (verboseCmdLine || verbosePath || verboseLink || verboseTestErrors || verbosePass || verboseConcreteTypes)
         verbose = true;

@@ -24,9 +24,10 @@ struct CommandLine
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
 
-    bool devMode   = false;
-    bool randomize = false;
-    int  randSeed  = 0;
+    bool warningsAsErrors = false;
+    bool devMode          = false;
+    bool randomize        = false;
+    int  randSeed         = 0;
 
     // User arguments
     string                     userArguments;

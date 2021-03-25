@@ -693,8 +693,8 @@ bool Module::error(const Utf8& msg)
 {
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
-    g_Log.print(format("module %s: ", name.c_str()));
     g_Log.print("error: ");
+    g_Log.print(format("module %s: ", name.c_str()));
     g_Log.print(msg);
     g_Log.eol();
     g_Log.setDefaultColor();
@@ -709,8 +709,8 @@ bool Module::internalError(const Utf8& msg)
 {
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
-    g_Log.print(format("module %s: ", name.c_str()));
-    g_Log.print("internal error: ");
+    g_Log.print("error: ");
+    g_Log.print(format("module %s: [compiler internal] ", name.c_str()));
     g_Log.print(msg);
     g_Log.eol();
     g_Log.setDefaultColor();
@@ -723,7 +723,7 @@ bool Module::internalError(const Utf8& msg)
 
 bool Module::internalError(AstNode* node, Token& token, const Utf8& msg)
 {
-    Utf8 msg1 = "internal error: ";
+    Utf8 msg1 = "[compiler internal] ";
     msg1 += msg;
     return node->sourceFile->report({node, node->token, msg1});
 }

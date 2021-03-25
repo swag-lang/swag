@@ -271,8 +271,10 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
 
     scoped_lock lock(g_Log.mutexAccess);
 
-    if (diag.exceptionError)
-        module->criticalErrors++;
+    // Warning to error option ?
+    auto errorLevel = diag.errorLevel;
+    if (g_CommandLine.warningsAsErrors)
+        errorLevel = DiagnosticLevel::Error;
 
     // Are we in the #semerror block.
     // If so, we do not count the error, as we want to continue
@@ -293,36 +295,43 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         }
     }
 
-    if (!inSemError || diag.exceptionError)
+    if (diag.exceptionError)
     {
-        numErrors++;
-        module->numErrors++;
+        errorLevel = DiagnosticLevel::Error;
+        inSemError = false;
+        module->criticalErrors++;
     }
 
-    // Do not raise an error if we are waiting for one, during tests
-    if ((numTestErrors || inSemError || multipleTestErrors) && diag.errorLevel == DiagnosticLevel::Error && !diag.exceptionError && !isSemError)
+    if (errorLevel == DiagnosticLevel::Error)
     {
-        if (multipleTestErrors)
-            numTestErrors = 0;
-        else if (!inSemError)
-            numTestErrors--;
-        if (g_CommandLine.verboseTestErrors)
+        if (!inSemError)
         {
-            diag.report(true);
-            if (g_CommandLine.errorNoteOut)
-            {
-                for (auto note : notes)
-                    note->report(true);
-            }
+            numErrors++;
+            module->numErrors++;
         }
 
-        return false;
+        // Do not raise an error if we are waiting for one, during tests
+        if ((numTestErrors || inSemError || multipleTestErrors) && !diag.exceptionError && !isSemError)
+        {
+            if (multipleTestErrors)
+                numTestErrors = 0;
+            else if (!inSemError)
+                numTestErrors--;
+            if (g_CommandLine.verboseTestErrors)
+            {
+                diag.report(true);
+                if (g_CommandLine.errorNoteOut)
+                {
+                    for (auto note : notes)
+                        note->report(true);
+                }
+            }
+
+            return false;
+        }
     }
 
-    // Raise error
-    g_Workspace.numErrors++;
-
-    // Print error
+    // Print error/warning
     diag.report();
     if (g_CommandLine.errorNoteOut)
     {
@@ -330,32 +339,38 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
             note->report();
     }
 
-    // Callstack
-    SwagContext* context = (SwagContext*) OS::tlsGetValue(g_tlsContextId);
-    if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
-        g_byteCodeStack.log();
-
-    // Error stack trace
-    for (int i = context->traceIndex - 1; i >= 0; i--)
+    if (errorLevel == DiagnosticLevel::Error)
     {
-        auto sourceFile = g_Workspace.findFile((const char*) context->trace[i]->fileName.buffer);
-        if (sourceFile)
+        // Raise error
+        g_Workspace.numErrors++;
+
+        // Callstack
+        SwagContext* context = (SwagContext*) OS::tlsGetValue(g_tlsContextId);
+        if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
+            g_byteCodeStack.log();
+
+        // Error stack trace
+        for (int i = context->traceIndex - 1; i >= 0; i--)
         {
-            SourceLocation startLoc;
-            startLoc.line   = context->trace[i]->lineStart;
-            startLoc.column = context->trace[i]->colStart;
-            SourceLocation endLoc;
-            endLoc.line   = context->trace[i]->lineEnd;
-            endLoc.column = context->trace[i]->colEnd;
-            Diagnostic diag1({sourceFile, startLoc, endLoc, "", DiagnosticLevel::TraceError});
-            diag1.report();
+            auto sourceFile = g_Workspace.findFile((const char*) context->trace[i]->fileName.buffer);
+            if (sourceFile)
+            {
+                SourceLocation startLoc;
+                startLoc.line   = context->trace[i]->lineStart;
+                startLoc.column = context->trace[i]->colStart;
+                SourceLocation endLoc;
+                endLoc.line   = context->trace[i]->lineEnd;
+                endLoc.column = context->trace[i]->colEnd;
+                Diagnostic diag1({sourceFile, startLoc, endLoc, "", DiagnosticLevel::TraceError});
+                diag1.report();
+            }
         }
-    }
 
-    if (context && (context->flags & (uint64_t) ContextFlags::DevMode))
-    {
-        OS::errorBox("[Developer Mode]", "Error raised !");
-        return false;
+        if (context && (context->flags & (uint64_t) ContextFlags::DevMode))
+        {
+            OS::errorBox("[Developer Mode]", "Error raised !");
+            return false;
+        }
     }
 
     return false;

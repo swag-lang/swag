@@ -24,6 +24,20 @@ void Diagnostic::report(bool verboseMode) const
             g_Log.setColor(LogColor::Red);
         g_Log.print("error: ");
         break;
+    case DiagnosticLevel::Warning:
+        if (g_CommandLine.warningsAsErrors)
+        {
+            if (!verboseMode)
+                g_Log.setColor(LogColor::Red);
+            g_Log.print("error: (from warning): ");
+        }
+        else
+        {
+            if (!verboseMode)
+                g_Log.setColor(LogColor::Magenta);
+            g_Log.print("warning: ");
+        }
+        break;
     case DiagnosticLevel::Note:
         if (!verboseMode)
             g_Log.setColor(LogColor::White);
