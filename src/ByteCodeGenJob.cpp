@@ -705,14 +705,12 @@ JobResult ByteCodeGenJob::execute()
         sourceFile->module->mapRuntimeFcts[context.bc->callName()] = context.bc;
     }
 
+    // Be sure that every used registers have been released
     if (context.bc && context.bc->node && context.bc->node->kind == AstNodeKind::FuncDecl && !context.bc->node->sourceFile->numTestErrors)
     {
         if (context.bc->maxReservedRegisterRC != context.bc->availableRegistersRC.size())
         {
-#ifdef _DEBUG
-            sortRegistersRC(&context);
-            context.bc->print();
-#endif
+            internalError(&context, format("function '%s' does not release all its registers", context.bc->node->token.text.c_str()), context.bc->node);
         }
     }
 

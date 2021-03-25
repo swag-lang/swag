@@ -1974,6 +1974,10 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
         for (auto child : identifierRef->childs)
         {
             auto copyChild = Ast::cloneRaw(child, idRef);
+
+            if (!identifierRef->startScope)
+                child->flags |= AST_NO_BYTECODE;
+
             if (child == identifierRef->previousResolvedNode)
             {
                 copyChild->flags |= AST_TO_UFCS;
