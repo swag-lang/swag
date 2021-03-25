@@ -1945,7 +1945,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     fctCallParam->inheritTokenLocation(node->token);
     fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
     fctCallParam->inheritOwners(node->callParameters);
-    fctCallParam->flags |= AST_TO_UFCS;
+    fctCallParam->flags |= AST_TO_UFCS | AST_GENERATED;
 
     SWAG_ASSERT(match.solvedParameters.size() > 0);
     SWAG_ASSERT(match.solvedParameters[0]->index == 0);
