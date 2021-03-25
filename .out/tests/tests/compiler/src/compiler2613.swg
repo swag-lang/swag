@@ -14,5 +14,5 @@ impl AA
 #test
 {
     var x: AA's32
-    x.toto()
+    AA's32.toto()
 }

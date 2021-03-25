@@ -518,6 +518,20 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         return context->report({parent->previousResolvedNode, format("identifier '%s' cannot be dereferenced like a struct (type is '%s')", parent->previousResolvedNode->token.text.c_str(), parent->previousResolvedNode->typeInfo->name.c_str())});
     }
 
+    // If a variable on the left has only been used for scoping, and not evaluated as an ufcs source, then this is an
+    // an error too, cause it's too strange.
+    // x.toto() with toto taking no argument for example, but toto is 'in' x scope.
+    if (symbol &&
+        symbol->kind == SymbolKind::Function &&
+        parent->startScope &&
+        parent->previousResolvedNode &&
+        parent->previousResolvedNode->resolvedSymbolName &&
+        parent->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable &&
+        !(parent->previousResolvedNode->flags & AST_FROM_UFCS))
+    {
+        return context->report({parent->previousResolvedNode, format("variable '%s' has only been used to find function '%s'; use scope '%s' instead", parent->previousResolvedNode->token.text.c_str(), symbol->name.c_str(), parent->startScope->name.c_str())});
+    }
+
     // Direct reference to a constexpr typeinfo
     if (parent->previousResolvedNode &&
         (parent->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO) &&

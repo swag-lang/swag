@@ -30,5 +30,5 @@ impl BB
 {
     var v: BB'AA
     var v1: AA
-    v.toto(v1)
+    BB.toto(v1)
 }
