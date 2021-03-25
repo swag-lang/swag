@@ -319,6 +319,12 @@ namespace BackendX64Inst
             return;
         }
 
+        if (val <= 0x7FFFFFFF && reg < R8)
+        {
+            emit_Load32_Immediate(pp, (uint32_t) val, reg);
+            return;
+        }
+
         pp.concat.addU8(0x48 | ((reg & 0b1000) >> 3));
         if (val <= 0x7FFFFFFF)
         {

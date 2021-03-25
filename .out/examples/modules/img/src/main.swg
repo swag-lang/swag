@@ -3,7 +3,7 @@ using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
 var imageIdx: u32
-var effectIdx: u32 = 19
+var effectIdx: u32 = 14
 var myImage: image.Image
 const W = 1024
 const H = 1024
