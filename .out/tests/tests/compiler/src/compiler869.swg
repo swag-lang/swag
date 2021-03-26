@@ -9,7 +9,7 @@ var G: s32 = 0
 
 	func myFunc(val: s32, x: func(s32)->s32)
 	{
-		x(val);
+		discard x(val);
 	}
 
 	myFunc(10, @(x: s32)->s32 { G = x; });
