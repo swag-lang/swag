@@ -88,6 +88,11 @@ func loadImg()
     case 17: myImage.resize(1024, 1024, Image.ResizeMethod.Catrom)
     case 18: myImage.resize(1024, 1024, Image.ResizeMethod.Quadratic)
     case 19: myImage.applyKernel(Image.Kernel.EdgeDetect3x3A)
+    case 20: myImage.applyKernel(Image.Kernel.EdgeDetect3x3B)
+    case 21: myImage.applyKernel(Image.Kernel.EdgeDetect3x3C)
+    case 22: myImage.applyKernel(Image.Kernel.EdgeDetect3x3D)
+    case 23: myImage.applyKernel(Image.Kernel.EdgeDetect3x3E)
+    case 24: myImage.applyKernel(Image.Kernel.EdgeDetect3x3F)
     default: effectIdx = 0
     }
 
@@ -215,7 +220,7 @@ func messageLoop()
         hRC := wglCreateContext(hDC)
         wglMakeCurrent(hDC, hRC)
 
-        //jobs.setNumWorkers()
+        jobs.setNumWorkers()
         loadImg()
 
         display()

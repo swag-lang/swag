@@ -5,11 +5,35 @@ impl Image
     // Kernel format is : kernelSize, kernelNormalizeValue, kernelValues...
     public enum Kernel: const [..] s32
     {
-        GaussianBlur3x3A = @[3, 8, 0, 1, 0, 1, 4, 1, 0, 1, 0]
-        EdgeDetect3x3A   = @[3, 1, 1, 2, 1, 0, 0, 0, -1, -2, -1]
+        GaussianBlur3x3A     = @[3, 8,    0, 1, 0, 1, 4, 1, 0, 1, 0]
+        GaussianBlur3x3B     = @[3, 20,   1, 2, 1, 2, 8, 2, 1, 2, 1]
+        GaussianBlur5x5A     = @[5, 159,  2, 4, 5, 4, 2, 4, 9, 12, 9, 4, 5, 12, 15, 12, 5, 4, 9, 12, 9, 4, 2, 4, 5, 4, 2]
+        BoxBlur3x3A          = @[3, 9,    1, 1, 1, 1, 1, 1, 1, 1, 1]
+        BoxBlur5x5A          = @[5, 25,   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        Sharpen3x3A          = @[3, 8,   -1, -1, -1, -1, 16, -1, -1, -1, -1]
+        Sharpen3x3B          = @[3, 1,    0, -1, 0, -1, 5, -1, 0, -1, 0]
+        Soften3x3A           = @[3, 20,   0, 1, 0, 1, 16, 1, 0, 1, 0]
+
+        EmbossLeft3x3A       = @[3, 0,   -1, -1, 0, -1, 3, 0, 0, 0, 0]
+        EmbossLeft3x3B       = @[3, 0,   -2, -2, 0, -2, 6, 0, 0, 0, 0]
+        EmbossLeft3x3C       = @[3, 0,   -4, -4, 0, -4, 12, 0, 0, 0, 0]
+        EmbossRight3x3A      = @[3, 0,   0, 0, 0, 0, -3, 1, 0, 1, 1]
+        EmbossRight3x3B      = @[3, 0,   0, 0, 0, 0, -6, 2, 0, 2, 2]
+        EmbossRight3x3C      = @[3, 0,   0, 0, 0, 0, -12, 4, 0, 4, 4]
+
+        EdgeDetect3x3A       = @[3, 0,   -1, -1, -1, -1, 8, -1, -1, -1, -1]
+        EdgeDetect3x3B       = @[3, 0,   -5, 0, 0, 0, 0, 0, 0, 0, 5]
+        EdgeDetect3x3C       = @[3, 0,   -1, -1, -1, 0, 0, 0, 1, 1, 1]
+        EdgeDetect3x3D       = @[3, 0,   -1, -1, -1, 2, 2, 2, -1, -1, -1]
+        EdgeDetect3x3E       = @[3, 0,   -5, -5, -5, -5, 40, -5, -5, -5, -5]
+        EdgeDetect3x3F       = @[3, 0,   0, 1, 0, 1, -4, 1, 0, 1, 0]
+
+        SobelHorizontal3x3A  = @[3, 0,    1, 2, 1, 0, 0, 0, -1, -2, -1]
+        SobelVertical3x3A    = @[3, 0,    1, 0, -1, 2, 0, -2, 1, 0, -1]
+        PrevitHorizontal3x3A = @[3, 0,    1, 1, 1, 0, 0, 0, -1, -1, -1]
+        PrevitVertical3x3A   = @[3, 0,    1, 0, -1, 1, 0, -1, 1, 0, -1]
     }
 
-    //#[swag.printbc]
     #[swag.safety("", false)]
     private func doKernel(using self, dstImage: *Image, kernel: const [..] s32)
     {
