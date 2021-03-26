@@ -3,18 +3,21 @@ using core
 impl Image
 {
     // Transform image to grayscale, with a given factor
-    public func lightness(using self, factor: f32 = 1)
+    public func lightness(using self, factor: f32 = 0.5)
     {
         debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
 
-        f := @{math.saturate(factor)}
+        level := cast(s32) (math.saturate(factor) * 255)
+        var convArr: [256] u8 = ?
+        loop i: 256 convArr[i] = cast(u8) math.clamp(i + level, 0, 255)
+
+        f := @{&convArr[0]}
         visitPixels(&f)
         {
             f := :cast(*@typeof(f)) userData
-            /*ncol := cast(f32) ((((pix[2] * 54) + (pix[1] * 183) + (pix[0] * 19)) >>% 8) & 0xFF)
-            pix[0] = cast(u8) math.lerp(cast(f32) pix[0], ncol, f)
-            pix[1] = cast(u8) math.lerp(cast(f32) pix[1], ncol, f)
-            pix[2] = cast(u8) math.lerp(cast(f32) pix[2], ncol, f)*/
+            pix[0] = f.item0[pix[0]]
+            pix[1] = f.item0[pix[1]]
+            pix[2] = f.item0[pix[2]]
         }
     }
 }

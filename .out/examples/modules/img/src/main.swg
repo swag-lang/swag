@@ -3,7 +3,7 @@ using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
 var imageIdx: u32
-var effectIdx: u32 = 19
+var effectIdx: u32 = 25
 var myImage: image.Image
 const W = 1024
 const H = 1024
@@ -93,6 +93,9 @@ func loadImg()
     case 22: myImage.applyKernel(Image.Kernel.EdgeDetect3x3D)
     case 23: myImage.applyKernel(Image.Kernel.EdgeDetect3x3E)
     case 24: myImage.applyKernel(Image.Kernel.EdgeDetect3x3F)
+    case 25: myImage.lightness(0.1)
+    case 26: myImage.lightness(0.2)
+    case 27: myImage.lightness(0.4)
     default: effectIdx = 0
     }
 
