@@ -2,14 +2,14 @@ using core
 
 impl Image
 {
-    // Change the lightness. 'factor' is [-1, 1]
-    public func lightness(using self, factor: f32 = 0.5)
+    // Change the contrast. 'factor' is [-1, 1]
+    public func contrast(using self, factor: f32 = 0.5)
     {
         debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
 
-        level := cast(s32) (math.clamp(factor, -1, 1) * 255)
+        level := math.clamp(factor, -1, 1) + 1.0
         var convArr: [256] u8 = ?
-        loop i: 256 convArr[i] = cast(u8) math.clamp(i + level, 0, 255)
+        loop i: 256 convArr[i] = cast(u8) math.clamp(((i - 128) * level) + 128, 0, 255)
 
         f := &convArr[0]
         visitPixels(f)

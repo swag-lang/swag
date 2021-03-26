@@ -95,7 +95,10 @@ func loadImg()
     case 24: myImage.applyKernel(Image.Kernel.EdgeDetect3x3F)
     case 25: myImage.lightness(0.1)
     case 26: myImage.lightness(0.2)
-    case 27: myImage.lightness(0.4)
+    case 27: myImage.lightness(-0.4)
+    case 28: myImage.contrast(0.1)
+    case 29: myImage.contrast(0.2)
+    case 30: myImage.contrast(-0.4)
     default: effectIdx = 0
     }
 
