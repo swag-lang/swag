@@ -3,7 +3,7 @@ using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
 var imageIdx: u32
-var effectIdx: u32 = 25
+var effectIdx: u32 = 31
 var myImage: image.Image
 const W = 1024
 const H = 1024
@@ -99,6 +99,7 @@ func loadImg()
     case 28: myImage.contrast(0.1)
     case 29: myImage.contrast(0.2)
     case 30: myImage.contrast(-0.4)
+    case 31: myImage.invert()
     default: effectIdx = 0
     }
 
