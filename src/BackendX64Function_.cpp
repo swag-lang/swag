@@ -2902,20 +2902,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             case TokenId::IntrinsicBitCountNz:
                 BackendX64Inst::emit_UnsignedExtend_16_To_32(pp, RAX);
-                concat.addString4("\xF3\x0F\xB8\xC0"); // popcnt eax, eax
+                concat.addString5("\x66\xF3\x0F\xB8\xC0"); // popcnt ax, ax
                 break;
             case TokenId::IntrinsicBitCountTz:
-                BackendX64Inst::emit_UnsignedExtend_16_To_32(pp, RAX);
-                concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
-                BackendX64Inst::emit_Load32_Immediate(pp, 16, RCX);
-                concat.addString3("\x0F\x44\xC1"); // cmove eax, ecx
+                concat.addString4("\x66\x0F\xBC\xC0"); // bsf ax, ax
+                BackendX64Inst::emit_Load16_Immediate(pp, 16, RCX);
+                concat.addString4("\x66\x0F\x44\xC1"); // cmove ax, cx
                 break;
             case TokenId::IntrinsicBitCountLz:
-                BackendX64Inst::emit_UnsignedExtend_16_To_32(pp, RAX);
-                concat.addString3("\x0F\xBD\xC0"); // bsr eax, eax
-                BackendX64Inst::emit_Load32_Immediate(pp, 31, RCX);
-                concat.addString3("\x0F\x44\xC1"); // cmove eax, ecx
-                concat.addString3("\x83\xF0\x0F"); // xor eax, 15
+                concat.addString4("\x66\x0F\xBD\xC0"); // bsr ax, ax
+                BackendX64Inst::emit_Load16_Immediate(pp, 31, RCX);
+                concat.addString4("\x66\x0F\x44\xC1"); // cmove ax, cx
+                concat.addString4("\x66\x83\xF0\x0F"); // xor ax, 15
                 break;
             default:
                 ok = false;
