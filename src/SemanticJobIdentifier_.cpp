@@ -768,6 +768,32 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Lambda call
         if (typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
         {
+            auto typeInfoRet = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda)->returnType;
+
+            // Check return value
+            if (!typeInfoRet->isNative(NativeTypeKind::Void))
+            {
+                if (isStatementIdentifier(identifier))
+                {
+                    if (!(overload->node->attributeFlags & ATTRIBUTE_AUTO_DISCARD) && !(identifier->flags & AST_DISCARD))
+                    {
+                        Diagnostic diag(identifier, identifier->token, format("unused return value of lambda '%s'", overload->node->token.text.c_str()));
+                        Diagnostic note(overload->node, overload->node->token, "this is the variable declaration", DiagnosticLevel::Note);
+                        return context->report(diag, &note);
+                    }
+                    else
+                    {
+                        identifier->flags |= AST_DISCARD;
+                    }
+                }
+            }
+            else if (typeInfoRet->isNative(NativeTypeKind::Void) && (identifier->flags & AST_DISCARD))
+            {
+                Diagnostic diag(identifier, identifier->token, "cannot discard a function call that returns nothing");
+                Diagnostic note(overload->node, overload->node->token, "this is the variable declaration", DiagnosticLevel::Note);
+                return context->report(diag, &note);
+            }
+
             // From now this is considered as a function, not a lambda
             auto funcType           = typeInfo->clone();
             funcType->kind          = TypeInfoKind::FuncAttr;
