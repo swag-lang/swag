@@ -334,9 +334,11 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     AstNode* genericParameters = nullptr;
     AstNode  parameters;
     AstNode  literal;
+    parameters.flags      = 0;
     parameters.sourceFile = left->sourceFile;
     parameters.inheritTokenLocation(left->token);
     parameters.inheritOwners(left);
+    literal.flags      = 0;
     literal.sourceFile = left->sourceFile;
     literal.inheritTokenLocation(left->token);
     literal.inheritOwners(left);
@@ -346,6 +348,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         literal.kind               = AstNodeKind::Literal;
         literal.computedValue.text = opConst ? opConst : "";
         literal.typeInfo           = opType ? opType : g_TypeMgr.typeInfoString;
+        literal.flags |= AST_VALUE_COMPUTED;
         symMatchContext.genericParameters.push_back(&literal);
         parameters.kind   = AstNodeKind::FuncDeclGenericParams;
         genericParameters = &parameters;

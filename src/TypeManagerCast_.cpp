@@ -444,9 +444,6 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
     {
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::U32:
-            return true;
-
         case NativeTypeKind::String:
             if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
@@ -1870,7 +1867,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 auto oldType = childJ->typeInfo;
                 if (toTypeStruct->fields[j]->typeInfo->isRelative() || childJ->typeInfo->isRelative())
                     return context->report({child, format("relative types are not supported in expression lists")});
-                SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeStruct->fields[j]->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeStruct->fields[j]->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_COERCE_SAMESIGN));
                 if (childJ->typeInfo != oldType)
                     hasChanged = true;
 
@@ -1910,7 +1907,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
         if (convertTo->isRelative() || fromTypeList->subTypes[i]->typeInfo->isRelative())
             return context->report({child, format("relative types are not supported in expression lists")});
-        SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_COERCE_SAMESIGN));
         if (child)
         {
             newSizeof += child->typeInfo->sizeOf;

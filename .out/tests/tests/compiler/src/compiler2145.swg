@@ -1,4 +1,3 @@
-
 #global testerror
 
 struct(T) P
