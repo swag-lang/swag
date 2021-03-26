@@ -145,6 +145,9 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicBitCountLz:
             ra.u16 = OS::bitcountlz(rb.u16);
             break;
+        case TokenId::IntrinsicByteSwap:
+            ra.u16 = OS::byteswap(rb.u16);
+            break;
         default:
             SWAG_ASSERT(false);
             break;
@@ -168,6 +171,9 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicBitCountLz:
             ra.u32 = OS::bitcountlz(rb.u32);
             break;
+        case TokenId::IntrinsicByteSwap:
+            ra.u32 = OS::byteswap(rb.u32);
+            break;
         default:
             SWAG_ASSERT(false);
             break;
@@ -190,6 +196,9 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             break;
         case TokenId::IntrinsicBitCountLz:
             ra.u64 = OS::bitcountlz(rb.u64);
+            break;
+        case TokenId::IntrinsicByteSwap:
+            ra.u64 = OS::byteswap(rb.u64);
             break;
         default:
             SWAG_ASSERT(false);

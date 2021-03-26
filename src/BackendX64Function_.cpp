@@ -2915,6 +2915,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\x66\x0F\x44\xC1"); // cmove ax, cx
                 concat.addString4("\x66\x83\xF0\x0F"); // xor ax, 15
                 break;
+            case TokenId::IntrinsicByteSwap:
+                concat.addString4("\x66\xC1\xC0\x08"); // rol ax, 8
+                break;
             default:
                 ok = false;
                 moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
@@ -2949,6 +2952,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString3("\x0F\x44\xC1"); // cmove eax, ecx
                 concat.addString3("\x83\xF0\x1F"); // xor eax, 31
                 break;
+            case TokenId::IntrinsicByteSwap:
+                concat.addString2("\x0F\xC8"); // bswap eax
+                break;
             default:
                 ok = false;
                 moduleToGen->internalError(format("unknown intrinsic '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
@@ -2982,6 +2988,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_Load64_Immediate(pp, 127, RCX);
                 concat.addString4("\x48\x0F\x44\xC1"); // cmove rax, rcx
                 concat.addString4("\x48\x83\xF0\x3F"); // xor rax, 63
+                break;
+            case TokenId::IntrinsicByteSwap:
+                concat.addString3("\x48\x0F\xC8"); // bswap rax
                 break;
             default:
                 ok = false;

@@ -191,6 +191,7 @@ void LanguageSpec::setup()
     keywords.add("@bitcountnz", TokenId::IntrinsicBitCountNz);
     keywords.add("@bitcounttz", TokenId::IntrinsicBitCountTz);
     keywords.add("@bitcountlz", TokenId::IntrinsicBitCountLz);
+    keywords.add("@byteswap", TokenId::IntrinsicByteSwap);
 
     nativeTypes.add("uint", LiteralType::TT_UINT);
     nativeTypes.add("int", LiteralType::TT_INT);

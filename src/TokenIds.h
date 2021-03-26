@@ -238,6 +238,7 @@ DEFINE_TOKEN_ID(IntrinsicMax)
 DEFINE_TOKEN_ID(IntrinsicBitCountNz)
 DEFINE_TOKEN_ID(IntrinsicBitCountTz)
 DEFINE_TOKEN_ID(IntrinsicBitCountLz)
+DEFINE_TOKEN_ID(IntrinsicByteSwap)
 
 DEFINE_TOKEN_ID(Identifier)
 DEFINE_TOKEN_ID(LiteralNumber)

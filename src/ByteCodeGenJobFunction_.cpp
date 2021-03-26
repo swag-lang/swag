@@ -686,6 +686,36 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         break;
     }
 
+    case TokenId::IntrinsicByteSwap:
+    {
+        node->resultRegisterRC                = reserveRegisterRC(context);
+        node->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC        = node->resultRegisterRC;
+        auto child                            = callParams->childs[0];
+        auto typeInfo                         = TypeManager::concreteReferenceType(child->typeInfo);
+        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+        ByteCodeOp op = ByteCodeOp::End;
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::U16:
+            op = ByteCodeOp::IntrinsicS16x1;
+            break;
+        case NativeTypeKind::U32:
+            op = ByteCodeOp::IntrinsicS32x1;
+            break;
+        case NativeTypeKind::U64:
+            op = ByteCodeOp::IntrinsicS64x1;
+            break;
+        default:
+            return internalError(context, "emitIntrinsic, IntrinsicByteSwap invalid type");
+        }
+
+        auto inst   = emitInstruction(context, op, node->resultRegisterRC, child->resultRegisterRC);
+        inst->d.u32 = (uint32_t) node->token.id;
+        freeRegisterRC(context, child);
+        break;
+    }
+
     case TokenId::IntrinsicMin:
     case TokenId::IntrinsicMax:
     {

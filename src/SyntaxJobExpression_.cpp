@@ -258,6 +258,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicBitCountNz:
     case TokenId::IntrinsicBitCountTz:
     case TokenId::IntrinsicBitCountLz:
+    case TokenId::IntrinsicByteSwap:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 

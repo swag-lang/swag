@@ -85,4 +85,8 @@ namespace OS
     uint32_t bitcountlz(uint32_t value);
     uint64_t bitcountlz(uint64_t value);
 
+    uint16_t byteswap(uint16_t value);
+    uint32_t byteswap(uint32_t value);
+    uint64_t byteswap(uint64_t value);
+
 } // namespace OS
