@@ -7,9 +7,10 @@ namespace swag
         EnumValue       = 0x00000002
         StructVariable  = 0x00000004
         GlobalVariable  = 0x00000008
-        Struct          = 0x00000010
-        Function        = 0x00000020
-        File            = 0x00000040
+        Variable        = 0x00000010
+        Struct          = 0x00000020
+        Function        = 0x00000040
+        File            = 0x00000080
         All             = 0x0FFFFFFF
     }
 
@@ -61,7 +62,7 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function)]
     attr callback()
 
-    #[attributeUsage(AttributeUsage.Function)]
+    #[attributeUsage(AttributeUsage.Function|AttributeUsage.Variable)]
     attr autodiscard()
 
     // Hardcoded for type alias

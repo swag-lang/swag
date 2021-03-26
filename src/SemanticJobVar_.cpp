@@ -453,7 +453,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->constAssign)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
 
-    // Check public
+    auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_ALIAS) : nullptr;
+
+    // Check attributes
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
         if (!node->ownerMainNode || (node->ownerMainNode->kind != AstNodeKind::StructDecl &&
@@ -470,7 +472,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_ALIAS) : nullptr;
+    if (node->attributeFlags & ATTRIBUTE_AUTO_DISCARD && concreteNodeType->kind != TypeInfoKind::Lambda)
+        return context->report({node, format("attribute 'swag.autodiscard' can only be used on a lambda variable (provided type is '%s')", concreteNodeType->name.c_str())});
 
     // Check for missing initialization
     // This is ok to not have an initialization for structs, as they are initialized by default

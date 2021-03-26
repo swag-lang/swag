@@ -79,6 +79,9 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if ((typeInfo->attributeUsage & AttributeUsage::EnumValue) && (kind == AstNodeKind::EnumValue))
         return true;
 
+    if ((typeInfo->attributeUsage & AttributeUsage::Variable) && (kind == AstNodeKind::VarDecl))
+        return true;
+
     if ((typeInfo->attributeUsage & AttributeUsage::StructVariable) && (kind == AstNodeKind::VarDecl))
         if (checkNode->ownerMainNode && checkNode->ownerMainNode->kind == AstNodeKind::StructDecl)
             return true;
