@@ -85,14 +85,24 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     if (childType->isConst())
         typeExpression->typeFlags |= TYPEFLAG_ISCONST;
 
-    if (childType->kind == TypeInfoKind::Slice)
+    switch (childType->kind)
+    {
+    case TypeInfoKind::FuncAttr:
+    {
+        auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::FuncAttr);
+        childType         = typeInfoFunc->returnType;
+        break;
+    }
+
+    case TypeInfoKind::Slice:
     {
         auto typeInfoSlice = CastTypeInfo<TypeInfoSlice>(childType, TypeInfoKind::Slice);
         typeExpression->typeFlags |= TYPEFLAG_ISSLICE;
         childType = typeInfoSlice->pointedType;
+        break;
     }
 
-    if (childType->kind == TypeInfoKind::Pointer)
+    case TypeInfoKind::Pointer:
     {
         auto typeInfoPointer        = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
         typeExpression->ptrCount    = 1;
@@ -113,13 +123,17 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
             auto typeInfoRef = CastTypeInfo<TypeInfoReference>(childType, TypeInfoKind::Reference);
             childType        = typeInfoRef->pointedType;
         }
+        break;
     }
-    else if (childType->kind == TypeInfoKind::Reference)
+
+    case TypeInfoKind::Reference:
     {
         auto typeInfoRef = CastTypeInfo<TypeInfoReference>(childType, TypeInfoKind::Reference);
         typeExpression->typeFlags |= TYPEFLAG_ISCONST | TYPEFLAG_ISREF;
         childType = typeInfoRef->pointedType;
         parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
+        break;
+    }
     }
 
     // Convert typeinfo to TypeExpression
