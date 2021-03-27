@@ -31,17 +31,10 @@ func titi()
     a += 1
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     var x: AA = ?
     y := BB.A
-    @dbgbreak()
-
-    @print("aaa\n")
-    titi()
-    @print("bbb\n")
-    titi()
-    @print("ccc\n")
     titi()
 }

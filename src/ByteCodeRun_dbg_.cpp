@@ -38,6 +38,34 @@ static void printContext(ByteCodeRunContext* context)
     g_Log.lock();
 }
 
+static void printFullRegister(Register& regP)
+{
+    // clang-format off
+    g_Log.printColor("s8 ", LogColor::Cyan); g_Log.printColor(format("%lld ", regP.s8));
+    g_Log.printColor("s16 ", LogColor::Cyan); g_Log.printColor(format("%lld ", regP.s16));
+    g_Log.printColor("s32 ", LogColor::Cyan); g_Log.printColor(format("%lld ", regP.s32));
+    g_Log.printColor("s64 ", LogColor::Cyan); g_Log.printColor(format("%lld ", regP.s64));
+    g_Log.eol();
+
+    g_Log.printColor("u8 ", LogColor::Cyan); g_Log.printColor(format("%llu ", regP.u8));
+    g_Log.printColor("u16 ", LogColor::Cyan); g_Log.printColor(format("%llu ", regP.u16));
+    g_Log.printColor("u32 ", LogColor::Cyan); g_Log.printColor(format("%llu ", regP.u32));
+    g_Log.printColor("u64 ", LogColor::Cyan); g_Log.printColor(format("%llu ", regP.u64));
+    g_Log.eol();
+
+    g_Log.printColor("x8 ", LogColor::Cyan); g_Log.printColor(format("%02llx ", regP.u8));
+    g_Log.printColor("x16 ", LogColor::Cyan); g_Log.printColor(format("%04llx ", regP.u16));
+    g_Log.printColor("x32 ", LogColor::Cyan); g_Log.printColor(format("%08llx ", regP.u32));
+    g_Log.printColor("x64 ", LogColor::Cyan); g_Log.printColor(format("%016llx ", regP.u64));
+    g_Log.eol();
+    
+    g_Log.printColor("f32 ", LogColor::Cyan); g_Log.printColor(format("%lf", regP.f32));
+    g_Log.eol();
+    g_Log.printColor("f64 ", LogColor::Cyan); g_Log.printColor(format("%lf", regP.f64));
+    g_Log.eol();
+    // clang-format on
+}
+
 static void printInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     context->bc->printSourceCode(ip);
@@ -206,12 +234,7 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
                 else
                 {
                     auto& regP = context->registersRC[context->curRC]->buffer[regN];
-                    g_Log.print(format("s8  [%lld] s16 [%lld] s32 [%lld] s64 [%lld]\n", regP.s8, regP.s16, regP.s32, regP.s64));
-                    g_Log.print(format("u8  [%llu] u16 [%llu] u32 [%llu] u64 [%llu]\n", regP.u8, regP.u16, regP.u32, regP.u64));
-                    g_Log.print(format("x8  [%02llx] x16 [%04llx] x32 [08%llx] x64 [%016llx]\n", regP.u8, regP.u16, regP.u32, regP.u64));
-                    g_Log.print(format("f32 [%lf]\n", regP.f32));
-                    g_Log.print(format("f64 [%lf]\n", regP.f64));
-                    g_Log.print(format("ptr [%llx]\n", regP.pointer));
+                    printFullRegister(regP);
                 }
 
                 continue;

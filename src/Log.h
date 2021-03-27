@@ -61,6 +61,12 @@ struct Log
         cout << message;
     }
 
+    void printColor(const char* message, LogColor color = LogColor::Gray)
+    {
+        setColor(color);
+        cout << message;
+    }
+
     void print(const wchar_t* message)
     {
         cout << message;
