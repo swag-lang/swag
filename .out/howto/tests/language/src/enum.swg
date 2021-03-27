@@ -27,6 +27,14 @@
         }
     }
 
+    // @kindof will return the underlying type of the enum
+    {
+        enum RGB: u32 { R; G; B; }
+        @assert(@typeof(RGB) == RGB)
+        @assert(@kindof(RGB) != RGB)
+        @assert(@kindof(RGB) == u32)
+    }
+
     // Each value, if not specified, starts with 0 and increase at each new value
     {
         enum Value: s64
@@ -155,6 +163,11 @@
             A = @[1, 2]
             B = @[10, 20]
         }
+
+        #assert Value.A[0] == 1
+        #assert Value.A[1] == 2
+        #assert Value.B[0] == 10
+        #assert Value.B[1] == 20
     }
 
     // You can have an enum of const slices
@@ -172,11 +185,35 @@
         @assert(x[1] == 2)
     }
 
-    // @kindof will return the underlying type of the enum
+    // A variable of type enum must be initialized, except if ? is used
     {
-        enum RGB: u32 { R; G; B; }
-        @assert(@typeof(RGB) == RGB)
-        @assert(@kindof(RGB) != RGB)
-        @assert(@kindof(RGB) == u32)
+        enum Values { A; B; }
+        var x: Values = ?
+        var y: Values = Values.A
+    }
+
+    // The type of the enum is not necessary on the assignement expression
+    {
+        enum Values { A; B; }
+        var x: Values = Values.A
+        var y: Values = A
+        @assert(x == y)
+    }
+
+    // The enum type is not necessary in a case expression of a switch block
+    {
+        enum Values { A; B; }
+        x := Values.A
+        switch x
+        {
+        case A: break
+        case B: break
+        }
+
+        switch x
+        {
+        case Values.A: break
+        case Values.B: break
+        }
     }
 }
