@@ -95,6 +95,7 @@ struct ByteCodeRunContext : public JobContext
     {
         None,
         NextLine,
+        NextLineStepOut,
         FinishedFunction,
     };
 

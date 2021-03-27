@@ -57,8 +57,7 @@ static void printInstruction(ByteCodeRunContext* context, ByteCodeInstruction* i
 
 void ByteCodeRun::debugger(ByteCodeRunContext* context)
 {
-    auto ip     = context->ip;
-    auto prevIp = context->debugLastIp;
+    auto ip = context->ip;
 
     g_Log.lock();
 
@@ -69,7 +68,6 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
         g_Log.print("#############################################\n");
         g_Log.print("entering bytecode debugger, type '?' for help\n");
         g_Log.print("#############################################\n");
-        g_Log.eol();
         context->debugEntry            = false;
         context->debugStepMode         = ByteCodeRunContext::DebugStepMode::None;
         context->debugStepLastLocation = nullptr;
@@ -81,6 +79,7 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
     switch (context->debugStepMode)
     {
     case ByteCodeRunContext::DebugStepMode::NextLine:
+    {
         SourceFile*     file;
         SourceLocation* location;
         ByteCode::getLocation(context->bc, ip, &file, &location);
@@ -88,21 +87,38 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
             zapCurrentIp = true;
         else
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-        break;
+    }
+    break;
+    case ByteCodeRunContext::DebugStepMode::NextLineStepOut:
+    {
+        SourceFile*     file;
+        SourceLocation* location;
+        ByteCode::getLocation(context->bc, ip, &file, &location);
+        if (!location || (context->debugStepLastFile == file && context->debugStepLastLocation && context->debugStepLastLocation->line == location->line))
+            zapCurrentIp = true;
+        else if (context->curRC > context->debugStepRC)
+            zapCurrentIp = true;
+        else
+            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+    }
+    break;
     case ByteCodeRunContext::DebugStepMode::FinishedFunction:
+    {
         if (context->curRC > context->debugStepRC)
             zapCurrentIp = true;
         else
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
         if (context->curRC == 0 && context->debugStepRC == -1 && ip->op == ByteCodeOp::Ret)
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-        break;
+    }
+    break;
     }
 
     if (!zapCurrentIp)
     {
         // Print output registers of previous instruction
-        /*if (prevIp)
+        /*auto prevIp = context->debugLastIp;
+        if (prevIp)
         {
             auto flags = g_ByteCodeOpFlags[(int) prevIp->op];
             if (flags & OPFLAG_WRITE_A && !(prevIp->flags & BCI_IMM_A))
@@ -135,16 +151,17 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
             if (cmd == "?")
             {
                 g_Log.setColor(LogColor::Gray);
-                g_Log.print("n or <return>      runs the current instruction\n");
+                g_Log.print("<return>           runs the current instruction\n");
                 g_Log.print("s                  runs to the next line\n");
-                g_Log.print("c                  runs until another debug break is reached\n");
+                g_Log.print("n                  like s, but does not step into functions\n");
+                g_Log.print("c                  runs until a debug break is reached\n");
                 g_Log.print("f                  runs until the current function is done\n");
                 g_Log.print("ins                print the current instruction\n");
-                g_Log.print("context            print contextual informations\n");
-                g_Log.print("rall               print all registers\n");
+                g_Log.print("cxt, context       print contextual informations\n");
+                g_Log.print("r                  print all registers\n");
                 g_Log.print("r<num>             print register <num>\n");
-                g_Log.print("stack              print callstack\n");
-                g_Log.print("printbc            print current function bytecode\n");
+                g_Log.print("stk, stack         print callstack\n");
+                g_Log.print("bc, printbc        print current function bytecode\n");
                 g_Log.print("?                  print this list of commands\n");
                 g_Log.print("quit               quit the compiler\n");
                 continue;
@@ -164,14 +181,14 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print context
-            if (cmd == "context")
+            if (cmd == "cxt" || cmd == "context")
             {
                 printContext(context);
                 continue;
             }
 
             // Print all registers
-            if (cmd == "rall")
+            if (cmd == "r")
             {
                 g_Log.setColor(LogColor::White);
                 for (int i = 0; i < context->registersRC[context->curRC]->size(); i++)
@@ -201,14 +218,14 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Stack
-            if (cmd == "stack")
+            if (cmd == "stk" || cmd == "stack")
             {
                 g_byteCodeStack.log();
                 continue;
             }
 
             // Bytecode dump
-            if (cmd == "printbc")
+            if (cmd == "bc" || cmd == "printbc")
             {
                 g_Log.unlock();
                 context->bc->print();
@@ -217,7 +234,7 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Next instruction
-            if (cmd.empty() || cmd == "n")
+            if (cmd.empty())
                 break;
 
             // Step to next line
@@ -225,6 +242,15 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 context->debugStepMode = ByteCodeRunContext::DebugStepMode::NextLine;
                 ByteCode::getLocation(context->bc, ip, &context->debugStepLastFile, &context->debugStepLastLocation);
+                break;
+            }
+
+            // Step to next line, step out
+            if (cmd == "n")
+            {
+                context->debugStepMode = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
+                ByteCode::getLocation(context->bc, ip, &context->debugStepLastFile, &context->debugStepLastLocation);
+                context->debugStepRC = context->curRC;
                 break;
             }
 
