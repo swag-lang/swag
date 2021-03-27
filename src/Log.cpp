@@ -42,7 +42,7 @@ void Log::messageHeaderCentered(const Utf8& header, const Utf8& message, LogColo
     unlock();
 }
 
-void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor)
+void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot)
 {
     if (g_CommandLine.silent)
         return;
@@ -54,7 +54,7 @@ void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor hea
     auto size = header.length();
     while (size < CENTER_COLUMN)
     {
-        print(".");
+        print(dot);
         size++;
     }
 

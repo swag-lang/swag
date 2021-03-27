@@ -12,8 +12,6 @@ func toto(x: AA)
 //#[swag.printbc]
 #test
 {
-    @dbgbreak()
-
     x := &toto
     var tt: AA
     tt.x()
