@@ -36,6 +36,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("te", "--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter, nullptr, nullptr);
 
     addArg("bu li ge", "--devmode", nullptr, CommandLineType::Bool, &cmdLine->devMode, nullptr, "swag compiler developer mode, add some assertions");
+    addArg("bu", "--debug", nullptr, CommandLineType::Bool, &cmdLine->byteCodeDebug, nullptr, "bytecode debug mode");
     addArg("bu", "--randomize", nullptr, CommandLineType::Bool, &cmdLine->randomize, nullptr, "swag compiler developer mode, randomize behavior");
     addArg("bu", "--seed", nullptr, CommandLineType::Int, &cmdLine->randSeed, nullptr, "swag compiler developer mode, set seed for randomize behavior");
 

@@ -73,8 +73,9 @@ struct ByteCodeRunContext : public JobContext
     vector<uint32_t>                popParamsOnRet;
     vector<uint32_t>                returnRegOnRet;
 
-    SwagCompilerSourceLocation* errorLoc      = nullptr;
-    JobContext*                 callerContext = nullptr;
+    SwagCompilerSourceLocation* errorLoc       = nullptr;
+    JobContext*                 callerContext  = nullptr;
+    bool                        exceptionError = false;
 
     AstNode*             node         = nullptr;
     uint8_t*             stack        = nullptr;

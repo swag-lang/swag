@@ -20,11 +20,11 @@ static void printContext(ByteCodeRunContext* context)
     g_Log.unlock();
     g_Log.messageHeaderDot("bytecode name", context->bc->name, LogColor::Gray, LogColor::Gray, " ");
     if (context->bc->sourceFile && context->bc->node)
-        g_Log.messageHeaderDot("bytecode location", format("%s:%u:%u", context->bc->sourceFile->path.c_str(), context->bc->node->token.startLocation.line, context->bc->node->token.startLocation.column), LogColor::Gray, LogColor::Gray, " ");
+        g_Log.messageHeaderDot("bytecode location", format("%s:%u:%u", context->bc->sourceFile->path.c_str(), context->bc->node->token.startLocation.line + 1, context->bc->node->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
     else if (context->bc->sourceFile)
         g_Log.messageHeaderDot("bytecode source file", context->bc->sourceFile->path, LogColor::Gray, LogColor::Gray, " ");
     if (context->ip->node && context->ip->node->sourceFile)
-        g_Log.messageHeaderDot("instruction location", format("%s:%u:%u", context->ip->node->sourceFile->path.c_str(), context->ip->node->token.startLocation.line, context->ip->node->token.startLocation.column), LogColor::Gray, LogColor::Gray, " ");
+        g_Log.messageHeaderDot("instruction location", format("%s:%u:%u", context->ip->node->sourceFile->path.c_str(), context->ip->node->token.startLocation.line + 1, context->ip->node->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
     g_Log.lock();
 }
 
@@ -55,6 +55,7 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
     if (context->debugEntry)
     {
         g_Log.setColor(LogColor::Gray);
+        g_Log.eol();
         g_Log.print("##########################\n");
         g_Log.print("entering bytecode debugger\n");
         g_Log.print("##########################\n");
@@ -125,7 +126,7 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print current instruction
-            if (cmd == "context")
+            if (cmd == "ins")
             {
                 printInstruction(context, context->ip);
                 continue;

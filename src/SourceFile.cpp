@@ -333,11 +333,6 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
 
     // Print error/warning
     diag.report();
-    if (g_CommandLine.errorNoteOut)
-    {
-        for (auto note : notes)
-            note->report();
-    }
 
     if (errorLevel == DiagnosticLevel::Error)
     {
@@ -366,6 +361,18 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
             }
         }
 
+        g_Log.eol();
+    }
+
+    if (g_CommandLine.errorNoteOut)
+    {
+        for (auto note : notes)
+            note->report();
+    }
+
+    if (errorLevel == DiagnosticLevel::Error)
+    {
+        SwagContext* context = (SwagContext*) OS::tlsGetValue(g_tlsContextId);
         if (context && (context->flags & (uint64_t) ContextFlags::DevMode))
         {
             OS::errorBox("[Developer Mode]", "Error raised !");

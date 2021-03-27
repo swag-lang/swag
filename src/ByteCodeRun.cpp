@@ -2953,7 +2953,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     case ByteCodeOp::IntrinsicDbgBreak:
         context->debugEntry = !context->debugOn;
-        context->debugOn      = true;
+        context->debugOn    = true;
         break;
 
     default:
@@ -3028,6 +3028,8 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     // This is called by panic too, in certain conditions (if we do not want dialog boxes, when running tests for example)
     if (args->ExceptionRecord->ExceptionCode == 666)
     {
+        runContext->exceptionError = false;
+
         auto location = (SwagCompilerSourceLocation*) args->ExceptionRecord->ExceptionInformation[0];
         SWAG_ASSERT(location);
 
@@ -3096,33 +3098,39 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         OS::errorBox("[Developer Mode]", "Exception raised !");
 
     auto       ip = runContext->ip - 1;
-    Diagnostic diag{ip->node, ip->node->token, "exception during bytecode execution !"};
-    diag.exceptionError = true;
+    Diagnostic diag{ip->node, ip->node->token, "exception during compile time execution !"};
+    Diagnostic note1{"this is probably a bug in the compile time part of your program", DiagnosticLevel::Note};
+    Diagnostic note2{"you can run swag with --debug to attach the bytecode debugger when the error occurs", DiagnosticLevel::Note};
+    diag.exceptionError        = true;
+    runContext->exceptionError = true;
     runContext->bc->addCallStack(runContext);
-    runContext->bc->sourceFile->report(diag);
+    runContext->bc->sourceFile->report(diag, &note1, &note2);
     return g_CommandLine.devMode ? EXCEPTION_CONTINUE_EXECUTION : EXCEPTION_EXECUTE_HANDLER;
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* runContext)
 {
-    auto module      = runContext->sourceFile->module;
-    bool tryContinue = false;
+    auto module = runContext->sourceFile->module;
 
-    do
+    while (true)
     {
         __try
         {
             runContext->bc->running = true;
             auto res                = module->runner.runLoop(runContext);
             runContext->bc->running = false;
-            if (!res)
-                return false;
+            return res;
         }
         __except (exceptionHandler(runContext, GetExceptionInformation()))
         {
-            return false;
+            if (!runContext->exceptionError || !g_CommandLine.byteCodeDebug)
+                return false;
+
+            runContext->ip--;
+            runContext->debugOn    = true;
+            runContext->debugEntry = true;
         }
-    } while (tryContinue);
+    }
 
     return true;
 }

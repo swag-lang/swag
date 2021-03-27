@@ -47,7 +47,7 @@ struct ByteCode
     void markLabels();
     bool isDoingNothing();
 
-    void              printLocation(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile* lastFile = nullptr);
+    void              printLocation(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
     void              printInstruction(ByteCodeInstruction* ip);
     void              print();
     Utf8              callName();

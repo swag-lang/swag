@@ -117,7 +117,7 @@ void ByteCode::leaveByteCode(ByteCodeRunContext* context, bool popCallStack)
     context->curRC--;
 }
 
-void ByteCode::printLocation(ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile* lastFile)
+void ByteCode::printLocation(ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile)
 {
     if (ip->op == ByteCodeOp::End)
         return;
@@ -136,12 +136,13 @@ void ByteCode::printLocation(ByteCodeInstruction* ip, uint32_t* lastLine, Source
         return;
     }
 
-    if (!lastLine || location->line != *lastLine || file != lastFile)
+    if (!lastLine || !lastFile || location->line != *lastLine || file != *lastFile)
     {
         if (lastLine)
             *lastLine = location->line;
-        lastFile = file;
-        auto s   = file->getLine(location->line);
+        if (lastFile)
+            *lastFile = file;
+        auto s = file->getLine(location->line);
         s.trim();
         g_Log.setColor(LogColor::DarkYellow);
         for (int idx = 0; idx < 9; idx++)
@@ -152,7 +153,7 @@ void ByteCode::printLocation(ByteCodeInstruction* ip, uint32_t* lastLine, Source
             g_Log.print(s);
         g_Log.print(" ");
         g_Log.setColor(LogColor::Gray);
-        g_Log.print(format("[%s:%d]", file->name.c_str(), location->line));
+        g_Log.print(format("[%s:%d]", file->name.c_str(), location->line + 1));
         g_Log.print("\n");
     }
 }
@@ -340,7 +341,7 @@ void ByteCode::print()
     auto        ip       = out;
     for (int i = 0; i < (int) numInstructions; i++)
     {
-        printLocation(ip, &lastLine, lastFile);
+        printLocation(ip, &lastLine, &lastFile);
         printInstruction(ip++);
     }
 
