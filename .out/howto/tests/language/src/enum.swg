@@ -157,7 +157,7 @@
         }
     }
 
-    // You can have an enum of slices
+    // You can have an enum of const slices
     {
         enum Value: const [..] s32
         {
@@ -170,5 +170,13 @@
         x := Value.A
         @assert(x[0] == 1)
         @assert(x[1] == 2)
+    }
+
+    // @kindof will return the underlying type of the enum
+    {
+        enum RGB: u32 { R; G; B; }
+        @assert(@typeof(RGB) == RGB)
+        @assert(@kindof(RGB) != RGB)
+        @assert(@kindof(RGB) == u32)
     }
 }

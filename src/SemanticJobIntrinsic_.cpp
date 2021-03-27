@@ -375,6 +375,18 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
         return true;
     }
 
+    // For an enum, this is the raw type
+    if (expr->typeInfo->kind == TypeInfoKind::Enum)
+    {
+        auto typeEnum = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
+        SWAG_CHECK(resolveTypeAsExpression(context, expr, typeEnum->rawType, &node->typeInfo));
+        if (context->result != ContextResult::Done)
+            return true;
+        node->inheritComputedValue(expr);
+        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
+        return true;
+    }
+
     SWAG_CHECK(resolveIntrinsicTypeOf(context));
     return true;
 }
