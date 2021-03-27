@@ -22,6 +22,7 @@ private var g: Array'OneFunc
 
 #compiler(CompilerMsgMask.PassAfterSemantic)
 {
+    @dbgbreak()
     var builderVars: StringBuilder
     var builderInit: StringBuilder
 

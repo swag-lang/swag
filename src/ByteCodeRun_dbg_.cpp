@@ -17,20 +17,30 @@ static void printRegister(ByteCodeRunContext* context, uint32_t curRC, uint32_t 
 
 static void printContext(ByteCodeRunContext* context)
 {
+    auto ipNode = context->ip->node;
+
     g_Log.unlock();
     g_Log.messageHeaderDot("bytecode name", context->bc->name, LogColor::Gray, LogColor::Gray, " ");
     if (context->bc->sourceFile && context->bc->node)
         g_Log.messageHeaderDot("bytecode location", format("%s:%u:%u", context->bc->sourceFile->path.c_str(), context->bc->node->token.startLocation.line + 1, context->bc->node->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
     else if (context->bc->sourceFile)
         g_Log.messageHeaderDot("bytecode source file", context->bc->sourceFile->path, LogColor::Gray, LogColor::Gray, " ");
-    if (context->ip->node && context->ip->node->sourceFile)
-        g_Log.messageHeaderDot("instruction location", format("%s:%u:%u", context->ip->node->sourceFile->path.c_str(), context->ip->node->token.startLocation.line + 1, context->ip->node->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
+
+    if (ipNode && ipNode->sourceFile)
+        g_Log.messageHeaderDot("instruction location", format("%s:%u:%u", ipNode->sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, context->ip->node->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
+
+    if (ipNode && ipNode->ownerFct)
+    {
+        ipNode->ownerFct->typeInfo->computeScopedName();
+        g_Log.messageHeaderDot("function", ipNode->ownerFct->typeInfo->scopedName, LogColor::Gray, LogColor::Gray, " ");
+    }
+
     g_Log.lock();
 }
 
 static void printInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    context->bc->printLocation(ip);
+    context->bc->printSourceCode(ip);
     context->bc->printInstruction(ip);
 
     // Print input registers of next instruction
@@ -95,6 +105,7 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
                 printRegister(context, context->debugPrevCurRC, prevIp->d.u32, false);
         }
 
+        g_Log.eol();
         printInstruction(context, ip);
 
         while (true)
