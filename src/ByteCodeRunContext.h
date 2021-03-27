@@ -92,6 +92,7 @@ struct ByteCodeRunContext : public JobContext
 
     uint32_t             debugPrevCurRC = 0;
     ByteCodeInstruction* debugPrevIp    = nullptr;
+    bool                 debugEntry     = false;
     bool                 debugOn        = false;
 
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;

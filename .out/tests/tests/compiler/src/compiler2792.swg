@@ -1,7 +1,5 @@
 #test
 {
-    @dbgbreak()
-
     {
         @assert(@byteswap(0xFF00'u16) == 0x00FF)
         var x: u16 = 0xFF00
