@@ -58,7 +58,7 @@ static void printInstruction(ByteCodeRunContext* context, ByteCodeInstruction* i
 void ByteCodeRun::debugger(ByteCodeRunContext* context)
 {
     auto ip     = context->ip;
-    auto prevIp = context->debugPrevIp;
+    auto prevIp = context->debugLastIp;
 
     g_Log.lock();
 
@@ -70,23 +70,33 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
         g_Log.print("entering bytecode debugger, type '?' for help\n");
         g_Log.print("#############################################\n");
         g_Log.eol();
-        context->debugEntry        = false;
-        context->debugReachNL      = false;
-        context->debugLastLocation = nullptr;
-        context->debugLastFile     = nullptr;
+        context->debugEntry            = false;
+        context->debugStepMode         = ByteCodeRunContext::DebugStepMode::None;
+        context->debugStepLastLocation = nullptr;
+        context->debugStepLastFile     = nullptr;
     }
 
     // Step to the next line
     bool zapCurrentIp = false;
-    if (context->debugReachNL)
+    switch (context->debugStepMode)
     {
+    case ByteCodeRunContext::DebugStepMode::NextLine:
         SourceFile*     file;
         SourceLocation* location;
         ByteCode::getLocation(context->bc, ip, &file, &location);
-        if (!location || (context->debugLastFile == file && context->debugLastLocation && context->debugLastLocation->line == location->line))
+        if (!location || (context->debugStepLastFile == file && context->debugStepLastLocation && context->debugStepLastLocation->line == location->line))
             zapCurrentIp = true;
         else
-            context->debugReachNL = false;
+            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+        break;
+    case ByteCodeRunContext::DebugStepMode::FinishedFunction:
+        if (context->curRC > context->debugStepRC)
+            zapCurrentIp = true;
+        else
+            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+        if (context->curRC == 0 && context->debugStepRC == -1 && ip->op == ByteCodeOp::Ret)
+            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+        break;
     }
 
     if (!zapCurrentIp)
@@ -96,13 +106,13 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
         {
             auto flags = g_ByteCodeOpFlags[(int) prevIp->op];
             if (flags & OPFLAG_WRITE_A && !(prevIp->flags & BCI_IMM_A))
-                printRegister(context, context->debugPrevCurRC, prevIp->a.u32, false);
+                printRegister(context, context->debugLastCurRC, prevIp->a.u32, false);
             if (flags & OPFLAG_WRITE_B && !(prevIp->flags & BCI_IMM_B))
-                printRegister(context, context->debugPrevCurRC, prevIp->b.u32, false);
+                printRegister(context, context->debugLastCurRC, prevIp->b.u32, false);
             if (flags & OPFLAG_WRITE_C && !(prevIp->flags & BCI_IMM_C))
-                printRegister(context, context->debugPrevCurRC, prevIp->c.u32, false);
+                printRegister(context, context->debugLastCurRC, prevIp->c.u32, false);
             if (flags & OPFLAG_WRITE_D && !(prevIp->flags & BCI_IMM_D))
-                printRegister(context, context->debugPrevCurRC, prevIp->d.u32, false);
+                printRegister(context, context->debugLastCurRC, prevIp->d.u32, false);
         }
 
         g_Log.eol();
@@ -125,15 +135,16 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
             if (cmd == "?")
             {
                 g_Log.setColor(LogColor::Gray);
-                g_Log.print("n or <return>      step the current instruction\n");
-                g_Log.print("s                  step to the next line\n");
-                g_Log.print("c                  step until another debug break is reached\n");
+                g_Log.print("n or <return>      runs the current instruction\n");
+                g_Log.print("s                  runs to the next line\n");
+                g_Log.print("c                  runs until another debug break is reached\n");
+                g_Log.print("f                  runs until the current function is done\n");
                 g_Log.print("ins                print the current instruction\n");
                 g_Log.print("context            print contextual informations\n");
                 g_Log.print("rall               print all registers\n");
                 g_Log.print("r<num>             print register <num>\n");
-                g_Log.print("stack              print bytecode callstack\n");
-                g_Log.print("printbc            print current bytecode\n");
+                g_Log.print("stack              print callstack\n");
+                g_Log.print("printbc            print current function bytecode\n");
                 g_Log.print("?                  print this list of commands\n");
                 g_Log.print("quit               quit the compiler\n");
                 continue;
@@ -209,11 +220,19 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
             if (cmd.empty() || cmd == "n")
                 break;
 
-            // Step
+            // Step to next line
             if (cmd == "s")
             {
-                context->debugReachNL = true;
-                ByteCode::getLocation(context->bc, ip, &context->debugLastFile, &context->debugLastLocation);
+                context->debugStepMode = ByteCodeRunContext::DebugStepMode::NextLine;
+                ByteCode::getLocation(context->bc, ip, &context->debugStepLastFile, &context->debugStepLastLocation);
+                break;
+            }
+
+            // Exit current function
+            if (cmd == "f")
+            {
+                context->debugStepMode = ByteCodeRunContext::DebugStepMode::FinishedFunction;
+                context->debugStepRC   = context->curRC - 1;
                 break;
             }
 
@@ -232,6 +251,6 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
     g_Log.setDefaultColor();
     g_Log.unlock();
 
-    context->debugPrevCurRC = context->curRC;
-    context->debugPrevIp    = ip;
+    context->debugLastCurRC = context->curRC;
+    context->debugLastIp    = ip;
 }

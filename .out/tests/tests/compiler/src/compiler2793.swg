@@ -1,6 +1,16 @@
-/*#[swag.printbc]
+func titi()
+{
+    @print("titi\n")
+}
+
+func toto()
+{
+    @print("toto\n")
+    titi()
+}
+
 #test
 {
-    var ptr: *u8 = autocast cast(uint) 1
-    :ptr = 1
-}*/
+    @dbgbreak()
+    toto()
+}

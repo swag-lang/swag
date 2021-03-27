@@ -91,13 +91,21 @@ struct ByteCodeRunContext : public JobContext
     int32_t  firstRC   = -1;
     bool     hasError  = false;
 
-    uint32_t             debugPrevCurRC    = 0;
-    ByteCodeInstruction* debugPrevIp       = nullptr;
-    bool                 debugEntry        = false;
-    bool                 debugOn           = false;
-    bool                 debugReachNL      = false;
-    SourceFile*          debugLastFile     = nullptr;
-    SourceLocation*      debugLastLocation = nullptr;
+    enum class DebugStepMode
+    {
+        None,
+        NextLine,
+        FinishedFunction,
+    };
+
+    uint32_t             debugLastCurRC        = 0;
+    ByteCodeInstruction* debugLastIp           = nullptr;
+    bool                 debugEntry            = false;
+    bool                 debugOn               = false;
+    int32_t              debugStepRC           = 0;
+    DebugStepMode        debugStepMode         = DebugStepMode::None;
+    SourceFile*          debugStepLastFile     = nullptr;
+    SourceLocation*      debugStepLastLocation = nullptr;
 
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
     Job*                           currentCompilerJob     = nullptr;
