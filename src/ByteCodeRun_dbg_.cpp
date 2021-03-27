@@ -70,17 +70,6 @@ static void printInstruction(ByteCodeRunContext* context, ByteCodeInstruction* i
 {
     context->bc->printSourceCode(ip);
     context->bc->printInstruction(ip);
-
-    // Print input registers of next instruction
-    /*auto flags = g_ByteCodeOpFlags[(int) ip->op];
-    if (flags & OPFLAG_READ_A && !(ip->flags & BCI_IMM_A))
-        printRegister(context, context->curRC, ip->a.u32, true);
-    if (flags & OPFLAG_READ_B && !(ip->flags & BCI_IMM_B))
-        printRegister(context, context->curRC, ip->b.u32, true);
-    if (flags & OPFLAG_READ_C && !(ip->flags & BCI_IMM_C))
-        printRegister(context, context->curRC, ip->c.u32, true);
-    if (flags & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D))
-        printRegister(context, context->curRC, ip->d.u32, true);*/
 }
 
 void ByteCodeRun::debugger(ByteCodeRunContext* context)
@@ -144,21 +133,6 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
 
     if (!zapCurrentIp)
     {
-        // Print output registers of previous instruction
-        /*auto prevIp = context->debugLastIp;
-        if (prevIp)
-        {
-            auto flags = g_ByteCodeOpFlags[(int) prevIp->op];
-            if (flags & OPFLAG_WRITE_A && !(prevIp->flags & BCI_IMM_A))
-                printRegister(context, context->debugLastCurRC, prevIp->a.u32, false);
-            if (flags & OPFLAG_WRITE_B && !(prevIp->flags & BCI_IMM_B))
-                printRegister(context, context->debugLastCurRC, prevIp->b.u32, false);
-            if (flags & OPFLAG_WRITE_C && !(prevIp->flags & BCI_IMM_C))
-                printRegister(context, context->debugLastCurRC, prevIp->c.u32, false);
-            if (flags & OPFLAG_WRITE_D && !(prevIp->flags & BCI_IMM_D))
-                printRegister(context, context->debugLastCurRC, prevIp->d.u32, false);
-        }*/
-
         g_Log.eol();
         printInstruction(context, ip);
 
