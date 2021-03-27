@@ -313,7 +313,7 @@ void ByteCode::print()
 {
     g_Log.lock();
 
-    g_Log.setColor(LogColor::Magenta);
+    g_Log.setColor(LogColor::DarkMagenta);
     g_Log.print(sourceFile->path);
     g_Log.print(", ");
     if (node)

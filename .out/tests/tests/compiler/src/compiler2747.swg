@@ -20,6 +20,7 @@
 #[swag.safety("", true)]
 #test
 {
+    @dbgbreak()
     x := 512'f64
     y := cast(u8) x
 }

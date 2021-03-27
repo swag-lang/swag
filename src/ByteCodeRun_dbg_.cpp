@@ -56,9 +56,10 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
     {
         g_Log.setColor(LogColor::Gray);
         g_Log.eol();
-        g_Log.print("##########################\n");
-        g_Log.print("entering bytecode debugger\n");
-        g_Log.print("##########################\n");
+        g_Log.print("#############################################\n");
+        g_Log.print("entering bytecode debugger, type '?' for help\n");
+        g_Log.print("#############################################\n");
+        g_Log.eol();
         context->debugEntry        = false;
         context->debugReachNL      = false;
         context->debugLastLocation = nullptr;
@@ -113,16 +114,24 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
             if (cmd == "?")
             {
                 g_Log.setColor(LogColor::Gray);
-                g_Log.print("n or <return>      step current instruction\n");
+                g_Log.print("n or <return>      step the current instruction\n");
                 g_Log.print("s                  step to the next line\n");
-                g_Log.print("c                  step until another @dbgbreak is reached\n");
+                g_Log.print("c                  step until another debug break is reached\n");
                 g_Log.print("ins                print the current instruction\n");
                 g_Log.print("context            print contextual informations\n");
                 g_Log.print("rall               print all registers\n");
                 g_Log.print("r<num>             print register <num>\n");
                 g_Log.print("stack              print bytecode callstack\n");
                 g_Log.print("printbc            print current bytecode\n");
+                g_Log.print("?                  print this list of commands\n");
+                g_Log.print("quit               quit the compiler\n");
                 continue;
+            }
+
+            // Print current instruction
+            if (cmd == "quit")
+            {
+                exit(0);
             }
 
             // Print current instruction
