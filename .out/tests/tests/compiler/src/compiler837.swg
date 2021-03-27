@@ -1,7 +1,5 @@
-
-
 //#[swag.printbc]
-#global testerror
+#global testwarning
 #test
 {
 	loop(10)

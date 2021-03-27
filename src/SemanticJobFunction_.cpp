@@ -774,7 +774,7 @@ bool SemanticJob::checkUnreachableCode(SemanticContext* context)
         }
 
         auto idx = Ast::findChildIndex(node->parent, node);
-        return context->report({node->parent->childs[idx + 1], "unreachable code"});
+        return context->report({node->parent->childs[idx + 1], "unreachable code", DiagnosticLevel::Warning});
     }
 
     return true;
