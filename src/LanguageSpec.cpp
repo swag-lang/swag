@@ -141,6 +141,7 @@ void LanguageSpec::setup()
     keywords.add("@seterr", TokenId::IntrinsicSetErr);
     keywords.add("@print", TokenId::IntrinsicPrint);
     keywords.add("@assert", TokenId::IntrinsicAssert);
+    keywords.add("@dbgbreak", TokenId::IntrinsicDbgBreak);
     keywords.add("@panic", TokenId::IntrinsicPanic);
     keywords.add("@errormsg", TokenId::IntrinsicErrorMsg);
     keywords.add("@alloc", TokenId::IntrinsicAlloc);

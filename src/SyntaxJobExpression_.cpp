@@ -950,6 +950,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     {
     case TokenId::IntrinsicPrint:
     case TokenId::IntrinsicAssert:
+    case TokenId::IntrinsicDbgBreak:
     case TokenId::IntrinsicPanic:
     case TokenId::IntrinsicErrorMsg:
     case TokenId::IntrinsicFree:

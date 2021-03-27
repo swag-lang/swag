@@ -117,6 +117,46 @@ void ByteCode::leaveByteCode(ByteCodeRunContext* context, bool popCallStack)
     context->curRC--;
 }
 
+void ByteCode::printLocation(ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile* lastFile)
+{
+    if (ip->op == ByteCodeOp::End)
+        return;
+
+    // Print source code
+    SourceFile*     file;
+    SourceLocation* location;
+    ByteCode::getLocation(this, ip, &file, &location);
+
+    if (!location)
+    {
+        g_Log.setColor(LogColor::DarkYellow);
+        for (int idx = 0; idx < 9; idx++)
+            g_Log.print(" ");
+        g_Log.print("??????????\n");
+        return;
+    }
+
+    if (!lastLine || location->line != *lastLine || file != lastFile)
+    {
+        if (lastLine)
+            *lastLine = location->line;
+        lastFile = file;
+        auto s   = file->getLine(location->line);
+        s.trim();
+        g_Log.setColor(LogColor::DarkYellow);
+        for (int idx = 0; idx < 9; idx++)
+            g_Log.print(" ");
+        if (s.empty())
+            g_Log.print("<blank>");
+        else
+            g_Log.print(s);
+        g_Log.print(" ");
+        g_Log.setColor(LogColor::Gray);
+        g_Log.print(format("[%s:%d]", file->name.c_str(), location->line));
+        g_Log.print("\n");
+    }
+}
+
 void ByteCode::printInstruction(ByteCodeInstruction* ip)
 {
     static const wchar_t* bcNum = L"%08d ";
@@ -300,40 +340,7 @@ void ByteCode::print()
     auto        ip       = out;
     for (int i = 0; i < (int) numInstructions; i++)
     {
-        // Print source code
-        SourceFile*     file;
-        SourceLocation* location;
-        ByteCode::getLocation(this, ip, &file, &location);
-
-        if (ip->op != ByteCodeOp::End)
-        {
-            if (!location)
-            {
-                g_Log.setColor(LogColor::DarkYellow);
-                for (int idx = 0; idx < 9; idx++)
-                    g_Log.print(" ");
-                g_Log.print("??????????\n");
-            }
-            else if (location->line != lastLine || file != lastFile)
-            {
-                lastLine = location->line;
-                lastFile = file;
-                auto s   = file->getLine(lastLine);
-                s.trim();
-                g_Log.setColor(LogColor::DarkYellow);
-                for (int idx = 0; idx < 9; idx++)
-                    g_Log.print(" ");
-                if (s.empty())
-                    g_Log.print("<blank>");
-                else
-                    g_Log.print(s);
-                g_Log.print(" ");
-                g_Log.setColor(LogColor::Gray);
-                g_Log.print(format("[file: %s, line: %d]", file->name.c_str(), lastLine));
-                g_Log.print("\n");
-            }
-        }
-
+        printLocation(ip, &lastLine, lastFile);
         printInstruction(ip++);
     }
 

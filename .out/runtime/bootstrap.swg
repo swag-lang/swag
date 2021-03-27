@@ -480,6 +480,7 @@ namespace swag
 //
 
 func @assert(value: bool);
+func @dbgbreak();
 func @getcontext()->*swag.Context;
 func @setcontext(context: const *swag.Context);
 func @isbytecode()->bool;

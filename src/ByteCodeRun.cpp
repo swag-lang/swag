@@ -2955,6 +2955,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
         registersRC[ip->d.u32].s64 = OS::atomicCmpXchg((int64_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s64, registersRC[ip->c.u32].s64);
         break;
+    case ByteCodeOp::IntrinsicDbgBreak:
+        context->debugOn = true;
+        break;
 
     default:
         if (ip->op < ByteCodeOp::End)
@@ -2965,10 +2968,102 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     return true;
 }
 
+void ByteCodeRun::printRegister(ByteCodeRunContext* context, uint32_t curRC, uint32_t reg, bool read)
+{
+    auto registersRC = context->registersRC[curRC]->buffer;
+    Utf8 str;
+    str += read ? format("(%u)", reg) : format("[%u]", reg);
+    str += format(" = %016llx %lf %f\n", registersRC[reg].u64, registersRC[reg].f64, registersRC[reg].f32);
+    g_Log.setColor(LogColor::Gray);
+    g_Log.print(str);
+}
+
+void ByteCodeRun::debugger(ByteCodeRunContext* context)
+{
+    auto ip     = context->ip;
+    auto prevIp = context->debugPrevIp;
+
+    g_Log.lock();
+
+    // Print output registers of previous instruction
+    if (prevIp)
+    {
+        auto flags = g_ByteCodeOpFlags[(int) prevIp->op];
+        if (flags & OPFLAG_WRITE_A && !(prevIp->flags & BCI_IMM_A))
+            printRegister(context, context->debugPrevCurRC, prevIp->a.u32, false);
+        if (flags & OPFLAG_WRITE_B && !(prevIp->flags & BCI_IMM_B))
+            printRegister(context, context->debugPrevCurRC, prevIp->b.u32, false);
+        if (flags & OPFLAG_WRITE_C && !(prevIp->flags & BCI_IMM_C))
+            printRegister(context, context->debugPrevCurRC, prevIp->c.u32, false);
+        if (flags & OPFLAG_WRITE_D && !(prevIp->flags & BCI_IMM_D))
+            printRegister(context, context->debugPrevCurRC, prevIp->d.u32, false);
+    }
+
+    context->bc->printLocation(ip);
+    context->bc->printInstruction(ip);
+
+    // Print input registers of next instruction
+    auto flags = g_ByteCodeOpFlags[(int) ip->op];
+    if (flags & OPFLAG_READ_A && !(ip->flags & BCI_IMM_A))
+        printRegister(context, context->curRC, ip->a.u32, true);
+    if (flags & OPFLAG_READ_B && !(ip->flags & BCI_IMM_B))
+        printRegister(context, context->curRC, ip->b.u32, true);
+    if (flags & OPFLAG_READ_C && !(ip->flags & BCI_IMM_C))
+        printRegister(context, context->curRC, ip->c.u32, true);
+    if (flags & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D))
+        printRegister(context, context->curRC, ip->d.u32, true);
+
+    while (true)
+    {
+        g_Log.setColor(LogColor::Cyan);
+        g_Log.print("> ");
+
+        // Get command from user
+        char az[1024];
+        fgets(az, 1024, stdin);
+        Utf8 cmd = az;
+        if (cmd.length() > 0 && cmd.back() == '\n')
+            cmd.count--;
+        cmd.trim();
+
+        // Help
+        if (cmd == "?")
+        {
+            g_Log.setColor(LogColor::White);
+            g_Log.print("debugger list of commands:\n");
+            g_Log.print("'n' or <return>: execute instruction\n");
+            g_Log.print("'c'            : continue execution until another @dbgbreak is reached\n");
+            continue;
+        }
+
+        // Next instruction
+        if (cmd.empty() || cmd == "n")
+            break;
+
+        // Debug off
+        if (cmd == "c")
+        {
+            context->debugOn = false;
+            break;
+        }
+    }
+
+    g_Log.setDefaultColor();
+    g_Log.unlock();
+
+    context->debugPrevCurRC = context->curRC;
+    context->debugPrevIp    = ip;
+}
+
 bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 {
     while (context->ip)
     {
+        if (context->debugOn)
+        {
+            debugger(context);
+        }
+
         // Get instruction
         auto ip = context->ip++;
         SWAG_ASSERT(ip->op <= ByteCodeOp::End);

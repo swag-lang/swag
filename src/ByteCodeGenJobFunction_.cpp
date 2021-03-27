@@ -266,6 +266,11 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0);
         break;
     }
+    case TokenId::IntrinsicDbgBreak:
+    {
+        emitInstruction(context, ByteCodeOp::IntrinsicDbgBreak);
+        break;
+    }
     case TokenId::IntrinsicAlloc:
     {
         auto child0            = callParams->childs.front();
