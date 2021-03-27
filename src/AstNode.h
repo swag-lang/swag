@@ -775,6 +775,12 @@ struct AstEnum : public AstNode
     Scope*   scope;
 };
 
+struct AstEnumValue : public AstNode
+{
+    AstNode*         clone(CloneContext& context) override;
+    SymbolAttributes attributes;
+};
+
 struct AstImpl : public AstNode
 {
     AstNode* clone(CloneContext& context) override;

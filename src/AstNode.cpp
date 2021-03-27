@@ -1183,6 +1183,14 @@ AstNode* AstEnum::clone(CloneContext& context)
     return newNode;
 }
 
+AstNode* AstEnumValue::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstEnumValue>();
+    newNode->copyFrom(context, this);
+    newNode->attributes = attributes;
+    return newNode;
+}
+
 AstNode* AstInit::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstInit>();

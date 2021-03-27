@@ -128,7 +128,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
 bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
-    auto enumValue = Ast::newNode<AstNode>(this, AstNodeKind::EnumValue, sourceFile, parent);
+    auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
     if (result)
         *result = enumValue;
     enumValue->inheritTokenName(token);

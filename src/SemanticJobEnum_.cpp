@@ -117,7 +117,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
 
 bool SemanticJob::resolveEnumValue(SemanticContext* context)
 {
-    auto valNode  = context->node;
+    auto valNode  = CastAst<AstEnumValue>(context->node, AstNodeKind::EnumValue);
     auto enumNode = valNode->ownerMainNode;
     SWAG_ASSERT(enumNode && enumNode->kind == AstNodeKind::EnumDecl);
 
@@ -288,6 +288,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     typeParam->index      = (uint32_t) typeEnum->values.size();
     typeParam->declNode   = valNode;
     SWAG_CHECK(collectAttributes(context, valNode, &typeParam->attributes));
+    valNode->attributes = typeParam->attributes;
     typeEnum->values.push_back(typeParam);
 
     return true;

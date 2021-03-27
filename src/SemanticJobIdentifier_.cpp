@@ -499,8 +499,38 @@ void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
     {
     case AstNodeKind::FuncDecl:
     {
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        typeFunc->attributes.getValue("swag.deprecated", "msg", v);
+        auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+        typeInfo->attributes.getValue("swag.deprecated", "msg", v);
+        break;
+    }
+    case AstNodeKind::EnumDecl:
+    {
+        auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+        typeInfo->attributes.getValue("swag.deprecated", "msg", v);
+        break;
+    }
+    case AstNodeKind::StructDecl:
+    {
+        auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        typeInfo->attributes.getValue("swag.deprecated", "msg", v);
+        break;
+    }
+    case AstNodeKind::InterfaceDecl:
+    {
+        auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
+        typeInfo->attributes.getValue("swag.deprecated", "msg", v);
+        break;
+    }
+    case AstNodeKind::TypeSet:
+    {
+        auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::TypeSet);
+        typeInfo->attributes.getValue("swag.deprecated", "msg", v);
+        break;
+    }
+    case AstNodeKind::EnumValue:
+    {
+        auto enumVal = CastAst<AstEnumValue>(node, AstNodeKind::EnumValue);
+        enumVal->attributes.getValue("swag.deprecated", "msg", v);
         break;
     }
     }
@@ -709,6 +739,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
     }
 
+    checkDeprecated(context, identifier);
+
     switch (symbolKind)
     {
     case SymbolKind::GenericType:
@@ -857,8 +889,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
-        checkDeprecated(context, identifier);
-
         // Be sure it's () and not {}
         if (identifier->callParameters && (identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
             return context->report({identifier->callParameters, identifier->callParameters->token, format("function '%s' must be called with '()' and not curlies (this is reserved for struct initialization)", identifier->token.text.c_str())});
