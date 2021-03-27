@@ -1,4 +1,4 @@
-func titi()
+/*func titi()
 {
     @print("titi\n")
 }
@@ -13,4 +13,4 @@ func toto()
 {
     @dbgbreak()
     toto()
-}
+}*/
