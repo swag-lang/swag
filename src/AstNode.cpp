@@ -1289,7 +1289,8 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
 
     if (newNode->ownerCompilerIfBlock)
         newNode->ownerCompilerIfBlock->blocks.push_back(newNode);
-    newNode->numTestErrors = numTestErrors;
+    newNode->numTestErrors   = numTestErrors;
+    newNode->numTestWarnings = numTestWarnings;
     return newNode;
 }
 

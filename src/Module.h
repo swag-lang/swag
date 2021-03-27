@@ -100,6 +100,7 @@ struct Module
     Utf8                      nameUp;
     ModuleKind                kind;
     atomic<int>               numErrors      = 0;
+    atomic<int>               numWarnings    = 0;
     atomic<int>               criticalErrors = 0;
     shared_mutex              mutexFile;
     shared_mutex              mutexCompilerPass;
@@ -174,6 +175,7 @@ struct Module
     ByteCode*   byteCodeMainFunc = nullptr;
     AstNode*    mainIsDefined    = nullptr;
     atomic<int> numTestErrors    = 0;
+    atomic<int> numTestWarnings  = 0;
     bool        setupDone        = false;
     bool        dependenciesDone = false;
 

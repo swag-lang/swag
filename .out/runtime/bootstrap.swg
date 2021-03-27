@@ -65,6 +65,7 @@ namespace swag
     #[attributeUsage(AttributeUsage.Function|AttributeUsage.Variable)]
     attr autodiscard()
 
+    #[attributeUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.Enum|AttributeUsage.EnumValue)]
     attr deprecated(msg: string = null)
 
     // Hardcoded for type alias

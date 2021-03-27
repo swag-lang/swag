@@ -3075,7 +3075,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             if (runContext->callerContext->expansionNode.size())
             {
                 auto firstSrcFile = runContext->callerContext->expansionNode[0].first->sourceFile;
-                if (firstSrcFile->numTestErrors)
+                if (firstSrcFile->numTestErrors || firstSrcFile->numTestWarnings)
                 {
                     firstSrcFile->report(diag, notes);
                     return EXCEPTION_EXECUTE_HANDLER;

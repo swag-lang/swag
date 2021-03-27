@@ -1,7 +1,11 @@
+#global testwarning
+
 #[swag.deprecated("you should use this instead")]
 func titi()
 {
-    @print("titi\n")
+    a := 0
+    a += 1
+    a += 1
 }
 
 #test

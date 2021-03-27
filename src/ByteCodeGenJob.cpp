@@ -706,7 +706,10 @@ JobResult ByteCodeGenJob::execute()
     }
 
     // Be sure that every used registers have been released
-    if (context.bc && context.bc->node && context.bc->node->kind == AstNodeKind::FuncDecl && !context.bc->node->sourceFile->numTestErrors)
+    if (context.bc &&
+        context.bc->node &&
+        context.bc->node->kind == AstNodeKind::FuncDecl &&
+        !context.bc->node->sourceFile->numTestErrors)
     {
         if (context.bc->maxReservedRegisterRC != context.bc->availableRegistersRC.size())
         {

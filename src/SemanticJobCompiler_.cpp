@@ -339,6 +339,8 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
     // Revert test errors in case #global testerror is inside a disabled #if branch
     context->sourceFile->numTestErrors -= block->numTestErrors;
     context->sourceFile->module->numTestErrors -= block->numTestErrors;
+    context->sourceFile->numTestWarnings -= block->numTestWarnings;
+    context->sourceFile->module->numTestWarnings -= block->numTestWarnings;
 
     // Unregister one overload
     for (auto it : block->symbols)

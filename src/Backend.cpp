@@ -57,6 +57,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         return true;
     if (module->numTestErrors)
         return false;
+    if (module->numTestWarnings)
+        return false;
     if (module->buildPass < BuildPass::Backend)
         return false;
 

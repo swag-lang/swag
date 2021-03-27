@@ -331,6 +331,35 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         }
     }
 
+    if (errorLevel == DiagnosticLevel::Warning)
+    {
+        if (!inSemError)
+        {
+            numWarnings++;
+            module->numWarnings++;
+        }
+
+        // Do not raise a warning if we are waiting for one, during tests
+        if (numTestWarnings || multipleTestWarnings)
+        {
+            if (multipleTestWarnings)
+                numTestWarnings = 0;
+            else if (!inSemError)
+                numTestWarnings--;
+            if (g_CommandLine.verboseTestErrors)
+            {
+                diag.report(true);
+                if (g_CommandLine.errorNoteOut)
+                {
+                    for (auto note : notes)
+                        note->report(true);
+                }
+            }
+
+            return false;
+        }
+    }
+
     // Print error/warning
     diag.report();
 

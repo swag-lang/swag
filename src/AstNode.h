@@ -864,6 +864,7 @@ struct AstCompilerIfBlock : public AstNode
     VectorNative<pair<TypeInfoStruct*, int>>  methodsCount;
     VectorNative<AstNode*>                    subDecls;
     int                                       numTestErrors;
+    int                                       numTestWarnings;
 };
 
 enum class CompilerAstKind

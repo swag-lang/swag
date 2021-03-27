@@ -48,16 +48,19 @@ struct SourceFile : public File
     Utf8           forceNamespace;
     bool           isExternal = false;
 
-    uint64_t    writeTime          = 0;
-    int         numErrors          = 0;
-    atomic<int> numTestErrors      = 0;
-    atomic<int> numSemErrors       = 0;
-    bool        multipleTestErrors = false;
-    int         silent             = 0;
-    uint32_t    indexInModule      = UINT32_MAX;
-    BuildPass   buildPass          = BuildPass::Full;
-    bool        isBootstrapFile    = false;
-    bool        isRuntimeFile      = false;
+    uint64_t    writeTime            = 0;
+    int         numErrors            = 0;
+    int         numWarnings          = 0;
+    atomic<int> numTestErrors        = 0;
+    atomic<int> numTestWarnings      = 0;
+    atomic<int> numSemErrors         = 0;
+    bool        multipleTestErrors   = false;
+    bool        multipleTestWarnings = false;
+    int         silent               = 0;
+    uint32_t    indexInModule        = UINT32_MAX;
+    BuildPass   buildPass            = BuildPass::Full;
+    bool        isBootstrapFile      = false;
+    bool        isRuntimeFile        = false;
 
     char*    buffer       = nullptr;
     Scope*   scopePrivate = nullptr;

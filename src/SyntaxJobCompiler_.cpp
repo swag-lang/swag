@@ -501,6 +501,37 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
+    else if (token.text == "testwarning" || token.text == "testwarnings")
+    {
+        // Put the file in its own module, because of errors
+        if (!moduleSpecified)
+        {
+            moduleSpecified = true;
+            auto newModule  = g_Workspace.createOrUseModule(sourceFile->name, sourceFile->module->path, sourceFile->module->kind);
+            auto oldModule  = sourceFile->module;
+            oldModule->removeFile(sourceFile);
+            newModule->addFile(sourceFile);
+            oldModule->addErrorModule(newModule);
+        }
+
+        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#global testwarning' is invalid outside a test module (in the './tests' folder of the workspace)"}));
+        SWAG_ASSERT(g_CommandLine.test);
+
+        if (token.text == "testwarnings")
+            sourceFile->multipleTestWarnings = true;
+        else
+        {
+            sourceFile->numTestWarnings++;
+            sourceFile->module->numTestWarnings++;
+            if (currentCompilerIfBlock)
+                currentCompilerIfBlock->numTestWarnings++;
+        }
+
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatSemiCol("after '#global testwarning"));
+    }
+
+    /////////////////////////////////
     else if (token.text == "#[")
     {
         AstNode* resultNode;
