@@ -237,6 +237,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_NO_RETURN;
             else if (child->token.text == "autodiscard")
                 flags |= ATTRIBUTE_AUTO_DISCARD;
+            else if (child->token.text == "deprecated")
+                flags |= ATTRIBUTE_DEPRECATED;
             else if (child->token.text == "global")
                 flags |= ATTRIBUTE_GLOBAL;
             else if (child->token.text == "strict")

@@ -487,6 +487,37 @@ static bool isStatementIdentifier(AstIdentifier* identifier)
     return false;
 }
 
+void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
+{
+    auto node = identifier->resolvedSymbolOverload->node;
+    if (!(node->attributeFlags & ATTRIBUTE_DEPRECATED))
+        return;
+    auto symbol = identifier->resolvedSymbolOverload->symbol;
+
+    ComputedValue v;
+    switch (node->kind)
+    {
+    case AstNodeKind::FuncDecl:
+    {
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+        typeFunc->attributes.getValue("swag.deprecated", "msg", v);
+        break;
+    }
+    }
+
+    Diagnostic diag({identifier, format("%s '%s' is deprecated", SymTable::getNakedKindName(symbol->kind), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning});
+    Diagnostic note1({node, node->token, "this is the deprecated definition", DiagnosticLevel::Note});
+    if (v.text.empty())
+    {
+        context->report(diag, &note1);
+    }
+    else
+    {
+        Diagnostic note2({v.text, DiagnosticLevel::Note});
+        context->report(diag, &note1, &note2);
+    }
+}
+
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, OneMatch& oneMatch)
 {
     auto symbol       = oneMatch.symbolOverload->symbol;
@@ -826,6 +857,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
+        checkDeprecated(context, identifier);
+
         // Be sure it's () and not {}
         if (identifier->callParameters && (identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
             return context->report({identifier->callParameters, identifier->callParameters->token, format("function '%s' must be called with '()' and not curlies (this is reserved for struct initialization)", identifier->token.text.c_str())});

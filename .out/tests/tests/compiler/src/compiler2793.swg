@@ -1,16 +1,10 @@
-/*func titi()
+#[swag.deprecated("you should use this instead")]
+func titi()
 {
     @print("titi\n")
 }
 
-func toto()
-{
-    @print("toto\n")
-    titi()
-}
-
 #test
 {
-    @dbgbreak()
-    toto()
-}*/
+    titi()
+}

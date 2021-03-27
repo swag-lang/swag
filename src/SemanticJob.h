@@ -177,6 +177,7 @@ struct SemanticJob : public Job
     static void     sortParameters(AstNode* allParams);
     static void     dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier);
     static bool     createTmpVarStruct(SemanticContext* context, AstIdentifier* identifier);
+    static void     checkDeprecated(SemanticContext* context, AstNode* identifier);
     static bool     setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
     static bool     setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, OneMatch& oneMatch);
     static void     resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i);
