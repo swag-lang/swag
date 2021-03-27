@@ -39,9 +39,8 @@
         @assert(array[3] == "4")
     }
 
-    // For a function, '@typeof' is the function scoped type, so it cannot be compared
-    // with a flat type
-    // But '@kindof' returns the flat type.
+    // for a function, '@typeof' is the function scoped type, so it cannot be compared
+    // with a flat type, but '@kindof' returns the flat type.
     {
         func foo()->s32 => 666
         @assert(@typeof(foo) != func()->s32)
