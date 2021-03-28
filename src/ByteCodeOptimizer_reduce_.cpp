@@ -732,7 +732,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         }
 
         // GetFromStack8/16/32 clear the other bits by convention, so no need to
-        // have a ClearMaskU64 after
+        // have a ClearMask after
         if (ip[0].op == ByteCodeOp::GetFromStack8 &&
             ip[1].op == ByteCodeOp::ClearMaskU64 &&
             ip[0].a.u32 == ip[1].a.u32)
@@ -843,7 +843,10 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         }
 
         // Remove operators which do nothing
-        if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C) && ip->a.u32 == ip->c.u32)
+        if ((ip->flags & BCI_IMM_B) &&
+            !(ip->flags & BCI_IMM_A) &&
+            !(ip->flags & BCI_IMM_C) &&
+            ip->a.u32 == ip->c.u32)
         {
             switch (ip->op)
             {
