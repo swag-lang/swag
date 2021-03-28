@@ -4,12 +4,42 @@ impl Image
 {
     private func doChangePf(using self, dstImage: *Image)
     {
+        using PixelFormat
+
         f := dstImage
-        visitPixels(f)
+
+        #[swag.complete]
+        switch dstImage.pf
         {
-            dstImage := cast(*Image) userData
-            dstPix = dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+        case BGR8:
+            if pf == BGRA8
+            {
+                visitPixels(f)
+                {
+                    dstImage := cast(*Image) userData
+                    pixDst := dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+                    :cast(*u16) pixDst = :cast(*u16) pix
+                    pixDst[2] = pix[2]
+                }
+                return
+            }
+
+        case BGRA8:
+            if pf == BGR8
+            {
+                visitPixels(f)
+                {
+                    dstImage := cast(*Image) userData
+                    pixDst := dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+                    :cast(*u16) pixDst = :cast(*u16) pix
+                    pixDst[2] = pix[2]
+                    pixDst[3] = 255
+                }
+                return
+            }
         }
+
+        debug.assert(false)
     }
 
     // Change image pixel format
