@@ -2693,6 +2693,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             blockIsClosed = true;
             break;
         }
+        case ByteCodeOp::JumpIfNotEqual32:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_32();
+            auto r1         = MK_IMMC_32();
+            auto b0         = builder.CreateICmpNE(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
 
         case ByteCodeOp::Ret:
         {
