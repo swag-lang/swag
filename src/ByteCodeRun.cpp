@@ -1033,11 +1033,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->incSP(ip->a.u32);
         break;
     }
-    case ByteCodeOp::DecSP:
-    {
-        context->decSP(ip->a.u32);
-        break;
-    }
     case ByteCodeOp::DecSPBP:
     {
         context->decSP(ip->a.u32);
