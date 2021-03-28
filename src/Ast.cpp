@@ -291,7 +291,6 @@ namespace Ast
     {
         auto node         = Ast::newNode<AstNode>(syntaxJob, AstNodeKind::AffectOp, sourceFile, parent, 2);
         node->semanticFct = SemanticJob::resolveAffect;
-        node->flags |= AST_REVERSE_SEMANTIC;
 
         switch (node->token.id)
         {

@@ -1,4 +1,4 @@
-struct A
+/*struct A
 {
     x, w: s64
 }
@@ -19,4 +19,4 @@ impl A
     pt.w = 10
     pt.right(10)
     @assert(pt.x == 10)
-}
+}*/

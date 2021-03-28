@@ -1,4 +1,4 @@
-
+/*
 #global testerror
 
 struct A
@@ -20,4 +20,4 @@ impl A
     pt.x = 1
     pt.w = 10
     //A.right(pt) = 10
-}
+}*/

@@ -229,8 +229,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 flags |= ATTRIBUTE_COMPLETE;
             else if (child->token.text == "implicit")
                 flags |= ATTRIBUTE_IMPLICIT;
-            else if (child->token.text == "property")
-                flags |= ATTRIBUTE_PROPERTY;
             else if (child->token.text == "nobss")
                 flags |= ATTRIBUTE_NO_BSS;
             else if (child->token.text == "noreturn")

@@ -31,7 +31,7 @@ impl Image
         rmode := mode
         if pf == .BGR8
         {
-            rmode &= ~ChannelMode.Alpha
+            rmode &= ~.Alpha
             if rmode == 0 || value == .Alpha return
         }
 

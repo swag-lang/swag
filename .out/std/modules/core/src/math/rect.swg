@@ -20,7 +20,7 @@ impl Rect
         return x == other.x && y == other.y && width == other.width && height == other.height
     }
 
-    #[swag.property, swag.inline]
+    #[swag.inline]
     {
         // right coordinate (x + width)
         func right(using self)->f32
@@ -29,7 +29,7 @@ impl Rect
         }
 
         // right coordinate (x + width)
-        func right(using self, value: f32)
+        func setRight(using self, value: f32)
         {
             width = value - x
         }
@@ -41,7 +41,7 @@ impl Rect
         }
 
         // bottom coordinate (y + height)
-        func bottom(using self, value: f32)
+        func setBottom(using self, value: f32)
         {
             height = value - y
         }
@@ -153,7 +153,7 @@ impl Rect
     // Determines if the specfied rectangle is contained within the rectangular region
     func contains(using self, rect: Rect)->bool
     {
-        return (rect.x >= x && rect.right <= right) && (rect.y >= y && rect.bottom <= bottom)
+        return (rect.x >= x && rect.right() <= right()) && (rect.y >= y && rect.bottom() <= bottom())
     }
 
     // Intersect this rectangle with another one
@@ -178,7 +178,7 @@ impl Rect
     // Determines if this rectangle intersets with 'rect'
     func intersectWith(using self, rect: Rect)->bool
     {
-        return (rect.x < right) && (x < rect.right) && (rect.y < bottom) && (y < rect.bottom)
+        return (rect.x < right()) && (x < rect.right()) && (rect.y < bottom()) && (y < rect.bottom())
     }
 
     // Creates a rectangle that represents the union
@@ -191,9 +191,9 @@ impl Rect
     func getUnion(a, b: Rect)->Rect
     {
         x1 := min(a.x, b.x)
-        x2 := max(a.right, b.right)
+        x2 := max(a.right(), b.right())
         y1 := min(a.y, b.y)
-        y2 := max(a.bottom, b.bottom)
+        y2 := max(a.bottom(), b.bottom())
         return Rect{x1, y1, x2 - x1, y2 - y1}
     }
 }

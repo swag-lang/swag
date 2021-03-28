@@ -1,4 +1,4 @@
-#global testerror
+/*#global testerror
 
 struct AA
 {
@@ -16,4 +16,4 @@ impl AA
 
 func toto()
 {
-}
+}*/

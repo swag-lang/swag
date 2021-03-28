@@ -1,4 +1,4 @@
-struct A
+/*struct A
 {
     x: s64 = 100
 }
@@ -18,4 +18,4 @@ impl A
     var pt: A
     pt.right = 100
     @assert(pt.x == 100)
-}
+}*/

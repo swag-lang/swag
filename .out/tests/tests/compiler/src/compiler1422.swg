@@ -1,4 +1,4 @@
-struct A
+/*struct A
 {
     x, w: s64
 }
@@ -6,11 +6,11 @@ struct A
 impl A
 {
     #[swag.property]
-    func right(using self)->s64 
+    func right(using self)->s64
     {
         return x + w
     }
-    
+
     #[swag.property]
     func right(using self, t: s64)
     {
@@ -28,4 +28,4 @@ impl A
     pt.right = 10
     @assert(pt.right == 10)
     @assert(pt.w == 9)
-}
+}*/

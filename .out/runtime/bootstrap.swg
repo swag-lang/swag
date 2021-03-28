@@ -51,9 +51,6 @@ namespace swag
     attr complete()
 
     #[attributeUsage(AttributeUsage.Function)]
-    attr property()
-
-    #[attributeUsage(AttributeUsage.Function)]
     attr noreturn()
 
     #[attributeUsage(AttributeUsage.Function)]
