@@ -100,6 +100,7 @@ func loadImg()
     case 29: myImage.contrast(0.2)
     case 30: myImage.contrast(-0.4)
     case 31: myImage.invert()
+    case 32: myImage.crop(229, 105, 206, 166)
     default: effectIdx = 0
     }
 

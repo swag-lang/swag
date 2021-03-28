@@ -17,9 +17,6 @@ TODO
 -------------------------------------
 generic & type literla (4'T, T non reconnu)
 -------------------------------------
-normaliser accès rapide enum value (.VAL ?) 
-pour le moment, y'a que case et var decl, et c specifique
--------------------------------------
 did you mean message : ex in swift
 break outerloop // expected-error {{cannot find label 'outerloop' in scope; did you mean 'outerLoop'?}} {{9-18=outerLoop}}
 -------------------------------------
