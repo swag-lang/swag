@@ -186,6 +186,16 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::CompilerScopeFct:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
+    case TokenId::SymDot:
+    {
+        SWAG_CHECK(eatToken());
+        AstNode* idref;
+        SWAG_CHECK(doIdentifierRef(parent, &idref));
+        if (result)
+            *result = idref;
+        ((AstIdentifierRef*) idref)->autoScope = true;
+        break;
+    }
 
     case TokenId::IntrinsicIndex:
         SWAG_CHECK(doIndex(parent, result));

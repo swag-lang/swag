@@ -5,7 +5,7 @@ impl Image
     // Change the lightness. 'factor' is [-1, 1]
     public func lightness(using self, factor: f32 = 0.5)
     {
-        debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
+        debug.assert(pf == .BGR8 || pf == .BGRA8)
 
         level := cast(s32) (math.clamp(factor, -1, 1) * 255)
         var convArr: [256] u8 = ?

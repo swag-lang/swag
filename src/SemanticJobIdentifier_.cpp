@@ -2144,6 +2144,32 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             startScope = node->ownerScope;
             SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags));
 
+            // Auto scoping depending on the context
+            // We scan the parent hierarchy for an already defined type that can be used for scoping
+            if (identifierRef->autoScope)
+            {
+                bool done   = false;
+                auto parent = identifierRef->parent;
+                while (parent && parent->kind != AstNodeKind::Statement && !done)
+                {
+                    for (auto c : parent->childs)
+                    {
+                        if (c->typeInfo)
+                        {
+                            switch (c->typeInfo->kind)
+                            {
+                            case TypeInfoKind::Enum:
+                                scopeHierarchy.push_back(((TypeInfoEnum*) c->typeInfo)->scope);
+                                done = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    parent = parent->parent;
+                }
+            }
+
             // Be sure this is the last try
             oneTry++;
         }

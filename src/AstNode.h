@@ -447,6 +447,7 @@ struct AstIdentifierRef : public AstNode
 
     Scope*   startScope;
     AstNode* previousResolvedNode;
+    bool     autoScope;
 };
 
 struct AstIdentifier : public AstNode

@@ -461,6 +461,7 @@ AstNode* AstIdentifierRef::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstIdentifierRef>();
     newNode->copyFrom(context, this);
+    newNode->autoScope = autoScope;
     return newNode;
 }
 

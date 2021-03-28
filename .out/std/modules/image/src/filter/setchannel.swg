@@ -25,14 +25,14 @@ impl Image
     // Change specified color channels
     public func setChannel(using self, mode: ChannelMode, value: ChannelValueMode, color: u8 = 0)
     {
-        debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
+        debug.assert(pf == .BGR8 || pf == .BGRA8)
 
         // Remove alpha change if it does not exists
         rmode := mode
-        if pf == PixelFormat.BGR8
+        if pf == .BGR8
         {
             rmode &= ~ChannelMode.Alpha
-            if rmode == 0 || value == ChannelValueMode.Alpha return
+            if rmode == 0 || value == .Alpha return
         }
 
         f := @{rmode, value, color}
@@ -52,10 +52,10 @@ impl Image
             case Alpha:     color = pix[3]
             }
 
-            if mode & ChannelMode.Blue  pix[0] = color
-            if mode & ChannelMode.Green pix[1] = color
-            if mode & ChannelMode.Red   pix[2] = color
-            if mode & ChannelMode.Alpha pix[3] = color
+            if mode & .Blue  pix[0] = color
+            if mode & .Green pix[1] = color
+            if mode & .Red   pix[2] = color
+            if mode & .Alpha pix[3] = color
         }
     }
 }

@@ -5,7 +5,7 @@ impl Image
     // Invert colors
     public func invert(using self)
     {
-        debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
+        debug.assert(pf == .BGR8 || pf == .BGRA8)
 
         var convArr: [256] u8 = ?
         loop i: 256 convArr[i] = cast(u8) (255 - i)

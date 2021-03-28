@@ -5,7 +5,7 @@ impl Image
     // Transform image to grayscale, with a given factor
     public func grayScale(using self, factor: f32 = 1)
     {
-        debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
+        debug.assert(pf == .BGR8 || pf == .BGRA8)
 
         f := math.saturate(factor)
         visitPixels(&f)

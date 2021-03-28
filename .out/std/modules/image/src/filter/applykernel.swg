@@ -37,7 +37,7 @@ impl Image
     #[swag.safety("", false)]
     private func doKernel(using self, dstImage: *Image, kernel: const [..] s32)
     {
-        debug.assert(pf == PixelFormat.BGR8 || pf == PixelFormat.BGRA8)
+        debug.assert(pf == .BGR8 || pf == .BGRA8)
 
         f := @{kernel, dstImage}
         visitPixels(&f)
