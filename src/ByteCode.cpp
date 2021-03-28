@@ -178,7 +178,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     while (len++ < ALIGN_RIGHT_OPCODE)
         g_Log.print(" ");
     g_Log.print(g_ByteCodeOpNames[(int) ip->op]);
-    g_Log.print(" ");
+    g_Log.print("   ");
 
     // Parameters
     g_Log.setColor(LogColor::Gray);
