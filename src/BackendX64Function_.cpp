@@ -1702,29 +1702,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JUMP, i, ip->b.s32);
             break;
         case ByteCodeOp::JumpIfNotEqual32:
-            if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))
-            {
-                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-                BackendX64Inst::emit_Cmp32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-            }
-            else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_C))
-            {
-                BackendX64Inst::emit_Cmp32_IndirectDst(pp, regOffset(ip->a.u32), ip->c.u32);
-            }
-            else
-            {
-                if (ip->flags & BCI_IMM_A)
-                    BackendX64Inst::emit_Load32_Immediate(pp, ip->a.u32, RAX);
-                else
-                    BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-                if (ip->flags & BCI_IMM_C)
-                    BackendX64Inst::emit_Load32_Immediate(pp, ip->c.u32, RCX);
-                else
-                    BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);
-                BackendX64Inst::emit_Cmp32(pp, RAX, RCX);
-            }
-
-            BackendX64Inst::emit_Jump(pp, BackendX64Inst::JNZ, i, ip->b.s32);
+            MK_JMPCMP_32(BackendX64Inst::JNZ);
             break;
 
         case ByteCodeOp::IncrementRA32:

@@ -225,19 +225,19 @@
     else                                                           \
         BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->b.u32), __reg, RDI);
 
-#define MK_IMMC_8(__reg)                                            \
-    if (ip->flags & BCI_IMM_C)                                      \
+#define MK_IMMC_8(__reg)                                           \
+    if (ip->flags & BCI_IMM_C)                                     \
         BackendX64Inst::emit_Load8_Immediate(pp, ip->c.u8, __reg); \
-    else                                                            \
+    else                                                           \
         BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->c.u32), __reg, RDI);
 
-#define MK_IMMC_S8_TO_S32(__reg)                                    \
-    if (ip->flags & BCI_IMM_C)                                      \
-    {                                                               \
+#define MK_IMMC_S8_TO_S32(__reg)                                   \
+    if (ip->flags & BCI_IMM_C)                                     \
+    {                                                              \
         BackendX64Inst::emit_Load8_Immediate(pp, ip->c.u8, __reg); \
-        BackendX64Inst::emit_SignedExtend_8_To_32(pp, __reg);       \
-    }                                                               \
-    else                                                            \
+        BackendX64Inst::emit_SignedExtend_8_To_32(pp, __reg);      \
+    }                                                              \
+    else                                                           \
         BackendX64Inst::emit_LoadS8S32_Indirect(pp, regOffset(ip->c.u32), __reg, RDI);
 
 #define MK_IMMC_U8_TO_U32(__reg)                                    \
@@ -389,3 +389,27 @@
     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); \
     MK_IMMB_64(RAX);                                                          \
     BackendX64Inst::emit_Op64_IndirectDst(pp, 0, RAX, RCX, __op, true);
+
+#define MK_JMPCMP_32(__op)                                                            \
+    if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))                         \
+    {                                                                                 \
+        BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);     \
+        BackendX64Inst::emit_Cmp32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);      \
+    }                                                                                 \
+    else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_C))                     \
+    {                                                                                 \
+        BackendX64Inst::emit_Cmp32_IndirectDst(pp, regOffset(ip->a.u32), ip->c.u32);  \
+    }                                                                                 \
+    else                                                                              \
+    {                                                                                 \
+        if (ip->flags & BCI_IMM_A)                                                    \
+            BackendX64Inst::emit_Load32_Immediate(pp, ip->a.u32, RAX);                \
+        else                                                                          \
+            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI); \
+        if (ip->flags & BCI_IMM_C)                                                    \
+            BackendX64Inst::emit_Load32_Immediate(pp, ip->c.u32, RCX);                \
+        else                                                                          \
+            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->c.u32), RCX, RDI); \
+        BackendX64Inst::emit_Cmp32(pp, RAX, RCX);                                     \
+    }                                                                                 \
+    BackendX64Inst::emit_Jump(pp, __op, i, ip->b.s32);

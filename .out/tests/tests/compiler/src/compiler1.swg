@@ -2,7 +2,7 @@
 		/* */
 	*/
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     j := 0
