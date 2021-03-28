@@ -1975,44 +1975,6 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
     return true;
 }
 
-bool SemanticJob::ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match)
-{
-    auto node = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-    if (node->callParameters)
-        return true;
-    if (node->identifierRef->parent->kind != AstNodeKind::AffectOp)
-        return true;
-    if (node->identifierRef->parent->token.id != TokenId::SymEqual)
-        return true;
-
-    auto rightAffect = node->identifierRef->parent->childs[1];
-
-    SWAG_ASSERT(match.symbolOverload->typeInfo->kind == TypeInfoKind::FuncAttr);
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(match.symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
-    SWAG_ASSERT(typeFunc->parameters.size());
-
-    auto fctCallParam = Ast::newNode<AstFuncCallParam>(nullptr, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
-    if (!node->callParameters)
-        node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
-    node->callParameters->childs.push_back(fctCallParam);
-    fctCallParam->index    = (int) typeFunc->parameters.size() - 1;
-    fctCallParam->parent   = node->callParameters;
-    fctCallParam->typeInfo = rightAffect->typeInfo;
-    SWAG_ASSERT(fctCallParam->typeInfo);
-    fctCallParam->token       = rightAffect->token;
-    fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
-    fctCallParam->inheritComputedValue(rightAffect);
-    fctCallParam->inheritOwners(node->callParameters);
-    Ast::removeFromParent(rightAffect);
-    Ast::addChildBack(fctCallParam, rightAffect);
-
-    node->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
-    node->identifierRef->parent->byteCodeFct = &ByteCodeGenJob::emitPassThrough;
-    node->identifierRef->parent->semanticFct = nullptr;
-
-    return true;
-}
-
 bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match)
 {
     auto symbol       = match.symbolOverload->symbol;
@@ -2307,7 +2269,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     return true;
 }
 
-bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam, AstNode** ufcsLastParam)
+bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam)
 {
     auto symbol = overload->symbol;
 
@@ -2351,26 +2313,13 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                     }
                 }
 
-                // If we do not have parenthesis (call parameters), then this must be a function marked with 'swag.property'
-                if (!node->callParameters)
-                {
-                    SWAG_VERIFY(symbol->kind == SymbolKind::Function, context->report({node, "missing function call parameters"}));
-                    SWAG_VERIFY(symbol->overloads.size() <= 2, context->report({node, "too many overloads for a property (only one set and one get should exist)"}));
-                    SWAG_VERIFY(symbol->overloads.front()->node->attributeFlags & ATTRIBUTE_PROPERTY, context->report({node, format("missing function call parameters because symbol '%s' is not marked as 'swag.property'", symbol->name.c_str())}));
-
-                    // Affectation of a property is in fact a function call, with the last parameter being the right sight of the affectation
-                    if (node->identifierRef->parent->kind == AstNodeKind::AffectOp &&
-                        node->identifierRef->parent->token.id == TokenId::SymEqual)
-                    {
-                        *ufcsLastParam = node->identifierRef->parent->childs[1];
-                    }
-                }
+                SWAG_VERIFY(node->callParameters, context->report({node, "missing function call parameters"}));
             }
         }
     }
 
     // We want to force the ufcs
-    if (!*ufcsFirstParam && !*ufcsLastParam && (node->flags & AST_FORCE_UFCS))
+    if (!*ufcsFirstParam && (node->flags & AST_FORCE_UFCS))
     {
         if (identifierRef->startScope)
         {
@@ -2442,7 +2391,7 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
     return true;
 }
 
-bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam, AstNode* ufcsLastParam)
+bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam)
 {
     auto symbol         = overload->symbol;
     auto symbolKind     = symbol->kind;
@@ -2451,7 +2400,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
     if (ufcsFirstParam)
         symMatchContext.parameters.push_back(ufcsFirstParam);
 
-    if (callParameters || ufcsFirstParam || ufcsLastParam)
+    if (callParameters || ufcsFirstParam)
     {
         if (symbolKind != SymbolKind::Attribute &&
             symbolKind != SymbolKind::Function &&
@@ -2502,9 +2451,6 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             }
         }
     }
-
-    if (ufcsLastParam)
-        symMatchContext.parameters.push_back(ufcsLastParam);
 
     return true;
 }
@@ -3022,8 +2968,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
             // Get the ufcs first parameter, and last parameter, if we can
             AstNode* ufcsFirstParam = nullptr;
-            AstNode* ufcsLastParam  = nullptr;
-            SWAG_CHECK(getUfcs(context, identifierRef, node, symbolOverload, &ufcsFirstParam, &ufcsLastParam));
+            SWAG_CHECK(getUfcs(context, identifierRef, node, symbolOverload, &ufcsFirstParam));
 
             // If the last parameter of a function is of type code, and the call last parameter is not,
             // then we take the next statement, after the function, and put it as the last parameter
@@ -3036,16 +2981,16 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             tryMatch->callParameters    = node->callParameters;
             tryMatch->dependentVar      = dependentVar;
             tryMatch->overload          = symbolOverload;
-            tryMatch->ufcs              = ufcsFirstParam || ufcsLastParam;
+            tryMatch->ufcs              = ufcsFirstParam;
             tryMatch->cptOverloads      = oneOver.cptOverloads;
             tryMatch->cptOverloadsInit  = oneOver.cptOverloadsInit;
 
-            SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, node, symbolOverload, ufcsFirstParam, ufcsLastParam));
+            SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, node, symbolOverload, ufcsFirstParam));
             if (context->result == ContextResult::Pending)
                 return true;
             SWAG_CHECK(fillMatchContextGenericParameters(context, symMatchContext, node, symbolOverload));
 
-            if ((node->forceTakeAddress()) && !ufcsLastParam)
+            if (node->forceTakeAddress())
                 symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
             listTryMatch.push_back(tryMatch);
@@ -3080,7 +3025,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 identifierRef->previousResolvedNode   = match->dependentVar;
             }
 
-            SWAG_CHECK(ufcsSetLastParam(context, identifierRef, *match));
             SWAG_CHECK(ufcsSetFirstParam(context, identifierRef, *match));
         }
     }

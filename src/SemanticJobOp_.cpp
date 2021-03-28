@@ -8,36 +8,7 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
 {
     if (node->flags & AST_GENERATED)
         return true;
-    SWAG_CHECK(checkFuncPrototypeProperty(context, node));
     SWAG_CHECK(checkFuncPrototypeOp(context, node));
-    return true;
-}
-
-bool SemanticJob::checkFuncPrototypeProperty(SemanticContext* context, AstFuncDecl* node)
-{
-    if (!(node->attributeFlags & ATTRIBUTE_PROPERTY))
-        return true;
-
-    const auto& name       = node->token.text;
-    auto        parameters = node->parameters;
-    auto        numParams  = parameters ? parameters->childs.size() : 0;
-    auto        returnType = node->returnType ? node->returnType->typeInfo : nullptr;
-
-    SWAG_VERIFY(numParams, context->report({node, node->token, format("not enough parameters for property function '%s'", name.c_str())}));
-    SWAG_VERIFY(numParams <= 2, context->report({parameters, format("too many parameters for property function '%s'", name.c_str())}));
-
-    // Get
-    if (numParams == 1)
-    {
-        SWAG_VERIFY(returnType && !returnType->isNative(NativeTypeKind::Void), context->report({node, node->token, format("get property '%s' must have a return type", name.c_str())}));
-    }
-
-    // Set
-    if (numParams == 2)
-    {
-        SWAG_VERIFY(!returnType || returnType->isNative(NativeTypeKind::Void), context->report({node->returnType, format("set property '%s' cannot have a return type", name.c_str())}));
-    }
-
     return true;
 }
 
@@ -226,8 +197,6 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     {
         return context->report({node, node->token, format("function '%s' does not match a special function/operator overload", name.c_str())});
     }
-
-    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PROPERTY), context->report({node, node->token, format("special function '%s' cannot have the 'swag.property' attribute", name.c_str())}));
 
     return true;
 }

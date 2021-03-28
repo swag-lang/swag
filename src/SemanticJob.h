@@ -200,7 +200,6 @@ struct SemanticJob : public Job
     static bool     checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncDecl* node, TypeInfo* wanted);
     static bool     checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t index, TypeInfo* wanted);
     static bool     checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node);
-    static bool     checkFuncPrototypeProperty(SemanticContext* context, AstFuncDecl* node);
     static bool     checkIsConcrete(SemanticContext* context, AstNode* node);
     static bool     checkIsConcreteOrType(SemanticContext* context, AstNode* node);
     static bool     evaluateConstExpression(SemanticContext* context, AstNode* node);
@@ -284,13 +283,12 @@ struct SemanticJob : public Job
     static bool resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
     static bool getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result);
-    static bool getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam, AstNode** ufcsLastParam);
+    static bool getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam);
     static bool appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload);
-    static bool fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam, AstNode* ufcsLastParam);
+    static bool fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam);
     static bool fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload);
     static bool resolveIdentifier(SemanticContext* context);
     static bool findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
-    static bool ufcsSetLastParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     static bool ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool checkCanThrow(SemanticContext* context);
