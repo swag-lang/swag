@@ -9,7 +9,7 @@ func toto() => 555
 {
     a := 1
     a += 2
-    if(a == 0)
+    if(a != 0)
     {
         @print("a")
     }
