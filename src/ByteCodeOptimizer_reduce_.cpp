@@ -607,6 +607,18 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             context->passHasDoneSomething = true;
         }
 
+        if (ip->op == ByteCodeOp::CompareOpEqual64 &&
+            ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::JumpIfNotEqual64;
+            ip[1].a.u32 = ip->a.u32;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            context->passHasDoneSomething = true;
+        }
+
         // Replace GetFromStack with SetImmediate
         if (ip[0].op == ByteCodeOp::SetAtStackPointer8 &&
             ip[1].op == ByteCodeOp::GetFromStack8 &&

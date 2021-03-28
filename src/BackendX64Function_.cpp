@@ -1704,6 +1704,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::JumpIfNotEqual32:
             MK_JMPCMP_32(BackendX64Inst::JNZ);
             break;
+        case ByteCodeOp::JumpIfNotEqual64:
+            MK_JMPCMP_64(BackendX64Inst::JNZ);
+            break;
 
         case ByteCodeOp::IncrementRA32:
             BackendX64Inst::emit_Inc32_Indirect(pp, regOffset(ip->a.u32), RDI);

@@ -413,3 +413,27 @@
         BackendX64Inst::emit_Cmp32(pp, RAX, RCX);                                     \
     }                                                                                 \
     BackendX64Inst::emit_Jump(pp, __op, i, ip->b.s32);
+
+#define MK_JMPCMP_64(__op)                                                                   \
+    if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))                                \
+    {                                                                                        \
+        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);            \
+        BackendX64Inst::emit_Cmp64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);             \
+    }                                                                                        \
+    else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_C) && ip->c.u64 <= 0x7fffffff) \
+    {                                                                                        \
+        BackendX64Inst::emit_Cmp64_IndirectDst(pp, regOffset(ip->a.u32), ip->c.u32);         \
+    }                                                                                        \
+    else                                                                                     \
+    {                                                                                        \
+        if (ip->flags & BCI_IMM_A)                                                           \
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);                       \
+        else                                                                                 \
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);        \
+        if (ip->flags & BCI_IMM_C)                                                           \
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u64, RCX);                       \
+        else                                                                                 \
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);        \
+        BackendX64Inst::emit_Cmp64(pp, RAX, RCX);                                            \
+    }                                                                                        \
+    BackendX64Inst::emit_Jump(pp, __op, i, ip->b.s32);
