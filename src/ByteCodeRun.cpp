@@ -1341,12 +1341,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::SetZeroAtPointer64:
     {
-        auto ptr         = registersRC[ip->a.u32].pointer;
-        *(uint64_t*) ptr = 0;
-        break;
-    }
-    case ByteCodeOp::SetZeroAtPointer64OffVB32:
-    {
         auto ptr                       = registersRC[ip->a.u32].pointer;
         *(uint64_t*) (ptr + ip->b.u32) = 0;
         break;
