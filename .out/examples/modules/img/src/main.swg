@@ -3,7 +3,7 @@ using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
 var imageIdx: u32
-var effectIdx: u32 = 35
+var effectIdx: u32 = 19
 var myImage: image.Image
 const W = 1024
 const H = 1024
@@ -45,7 +45,6 @@ func display()
 }
 
 var textureID: GLuint
-#[swag.printbc]
 func loadImg()
 {
     using image.Image, Color
@@ -234,7 +233,7 @@ func messageLoop()
         hRC := wglCreateContext(hDC)
         wglMakeCurrent(hDC, hRC)
 
-        jobs.setNumWorkers()
+        //jobs.setNumWorkers()
         loadImg()
 
         display()

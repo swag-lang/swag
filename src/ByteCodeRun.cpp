@@ -844,6 +844,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             context->ip += ip->b.s32;
         break;
     }
+    case ByteCodeOp::JumpIfNotEqual32:
+    {
+        if (IMMA_U32(ip) != IMMC_U32(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
     case ByteCodeOp::Jump:
     {
         context->ip += ip->b.s32;
