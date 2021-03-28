@@ -8,8 +8,8 @@
 
 void ByteCodeGenJob::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg)
 {
-    emitInstruction(context, ByteCodeOp::JumpIfNotZero8, reg)->b.s32 = 1;
-    emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer   = (uint8_t*) msg;
+    emitInstruction(context, ByteCodeOp::JumpIfTrue, reg)->b.s32   = 1;
+    emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) msg;
 }
 
 bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context, uint64_t whatOn, uint64_t whatOff)
