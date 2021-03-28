@@ -144,11 +144,17 @@ void ByteCodeOptimizer::optimizePassDeadStoreTree(ByteCodeOptContext* context)
         auto ip    = parseCxt.curIp;
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
 
-        uint32_t regA = UINT32_MAX;
+        uint32_t regScan = UINT32_MAX;
         if (flags & OPFLAG_WRITE_A && !(flags & (OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
-            regA = ip->a.u32;
+            regScan = ip->a.u32;
+        if (flags & OPFLAG_WRITE_B && !(flags & (OPFLAG_WRITE_A | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
+            regScan = ip->b.u32;
+        if (flags & OPFLAG_WRITE_C && !(flags & (OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_D)))
+            regScan = ip->c.u32;
+        if (flags & OPFLAG_WRITE_D && !(flags & (OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C)))
+            regScan = ip->d.u32;
 
-        if (regA == UINT32_MAX)
+        if (regScan == UINT32_MAX)
             return;
 
         bool hasRead  = false;
@@ -161,7 +167,7 @@ void ByteCodeOptimizer::optimizePassDeadStoreTree(ByteCodeOptContext* context)
             auto flags1 = g_ByteCodeOpFlags[(int) ip1->op];
             if ((flags1 & OPFLAG_READ_A) && !(ip1->flags & BCI_IMM_A))
             {
-                if (ip1->a.u32 == regA)
+                if (ip1->a.u32 == regScan)
                 {
                     hasRead               = true;
                     parseCxt1.mustStopAll = true;
@@ -171,7 +177,7 @@ void ByteCodeOptimizer::optimizePassDeadStoreTree(ByteCodeOptContext* context)
 
             if ((flags1 & OPFLAG_READ_B) && !(ip1->flags & BCI_IMM_B))
             {
-                if (ip1->b.u32 == regA)
+                if (ip1->b.u32 == regScan)
                 {
                     hasRead               = true;
                     parseCxt1.mustStopAll = true;
@@ -181,7 +187,7 @@ void ByteCodeOptimizer::optimizePassDeadStoreTree(ByteCodeOptContext* context)
 
             if ((flags1 & OPFLAG_READ_C) && !(ip1->flags & BCI_IMM_C))
             {
-                if (ip1->c.u32 == regA)
+                if (ip1->c.u32 == regScan)
                 {
                     hasRead               = true;
                     parseCxt1.mustStopAll = true;
@@ -191,7 +197,7 @@ void ByteCodeOptimizer::optimizePassDeadStoreTree(ByteCodeOptContext* context)
 
             if ((flags1 & OPFLAG_READ_D) && !(ip1->flags & BCI_IMM_D))
             {
-                if (ip1->d.u32 == regA)
+                if (ip1->d.u32 == regScan)
                 {
                     hasRead               = true;
                     parseCxt1.mustStopAll = true;
@@ -201,7 +207,7 @@ void ByteCodeOptimizer::optimizePassDeadStoreTree(ByteCodeOptContext* context)
 
             if (flags1 & OPFLAG_WRITE_A)
             {
-                if (ip1->a.u32 == regA)
+                if (ip1->a.u32 == regScan)
                 {
                     hasWrite                = true;
                     parseCxt1.mustStopBlock = true;
@@ -211,7 +217,7 @@ void ByteCodeOptimizer::optimizePassDeadStoreTree(ByteCodeOptContext* context)
 
             if (flags1 & OPFLAG_WRITE_B)
             {
-                if (ip1->b.u32 == regA)
+                if (ip1->b.u32 == regScan)
                 {
                     hasWrite                = true;
                     parseCxt1.mustStopBlock = true;
@@ -221,7 +227,7 @@ void ByteCodeOptimizer::optimizePassDeadStoreTree(ByteCodeOptContext* context)
 
             if (flags1 & OPFLAG_WRITE_C)
             {
-                if (ip1->c.u32 == regA)
+                if (ip1->c.u32 == regScan)
                 {
                     hasWrite                = true;
                     parseCxt1.mustStopBlock = true;
@@ -231,7 +237,7 @@ void ByteCodeOptimizer::optimizePassDeadStoreTree(ByteCodeOptContext* context)
 
             if (flags1 & OPFLAG_WRITE_D)
             {
-                if (ip1->d.u32 == regA)
+                if (ip1->d.u32 == regScan)
                 {
                     hasWrite                = true;
                     parseCxt1.mustStopBlock = true;
