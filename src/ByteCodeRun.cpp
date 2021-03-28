@@ -38,6 +38,8 @@
 #define IMMB_U32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u32 : registersRC[ip->b.u32].u32)
 #define IMMB_U64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u64 : registersRC[ip->b.u32].u64)
 
+#define IMMC_U8(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u8 : registersRC[ip->c.u32].u8)
+#define IMMC_U16(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u16 : registersRC[ip->c.u32].u16)
 #define IMMC_U32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32)
 #define IMMC_U64(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u64 : registersRC[ip->c.u32].u64)
 
@@ -841,6 +843,18 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::JumpIfTrue:
     {
         if (registersRC[ip->a.u32].b)
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfNotEqual8:
+    {
+        if (IMMA_U8(ip) != IMMC_U8(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfNotEqual16:
+    {
+        if (IMMA_U16(ip) != IMMC_U16(ip))
             context->ip += ip->b.s32;
         break;
     }

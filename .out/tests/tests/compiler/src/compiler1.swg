@@ -2,13 +2,11 @@
 		/* */
 	*/
 
+func toto() => true
 //#[swag.printbc]
 #test
 {
-    j := 0
-    j += 1
-    if j == 1
-    {
+    j := toto()
+    if j == true
         @print("a")
-    }
 }

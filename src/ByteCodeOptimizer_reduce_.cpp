@@ -595,6 +595,30 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         }
 
         // Mix compare and jump
+        if (ip->op == ByteCodeOp::CompareOpEqual8 &&
+            ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::JumpIfNotEqual8;
+            ip[1].a.u32 = ip->a.u32;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            context->passHasDoneSomething = true;
+        }
+
+        if (ip->op == ByteCodeOp::CompareOpEqual16 &&
+            ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::JumpIfNotEqual16;
+            ip[1].a.u32 = ip->a.u32;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            context->passHasDoneSomething = true;
+        }
+
         if (ip->op == ByteCodeOp::CompareOpEqual32 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip[1].a.u32 == ip->c.u32 &&

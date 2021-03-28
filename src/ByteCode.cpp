@@ -246,6 +246,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     case ByteCodeOp::JumpIfNotZero64:
     case ByteCodeOp::JumpIfFalse:
     case ByteCodeOp::JumpIfTrue:
+    case ByteCodeOp::JumpIfNotEqual8:
+    case ByteCodeOp::JumpIfNotEqual16:
     case ByteCodeOp::JumpIfNotEqual32:
     case ByteCodeOp::JumpIfNotEqual64:
         g_Log.setColor(LogColor::Cyan);
@@ -361,6 +363,8 @@ void ByteCode::markLabels()
         case ByteCodeOp::JumpIfZero16:
         case ByteCodeOp::JumpIfZero32:
         case ByteCodeOp::JumpIfZero64:
+        case ByteCodeOp::JumpIfNotEqual8:
+        case ByteCodeOp::JumpIfNotEqual16:
         case ByteCodeOp::JumpIfNotEqual32:
         case ByteCodeOp::JumpIfNotEqual64:
             ip[ip->b.s32 + 1].flags |= BCI_JUMP_DEST;

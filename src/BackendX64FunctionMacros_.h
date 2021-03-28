@@ -390,6 +390,54 @@
     MK_IMMB_64(RAX);                                                          \
     BackendX64Inst::emit_Op64_IndirectDst(pp, 0, RAX, RCX, __op, true);
 
+#define MK_JMPCMP_8(__op)                                                            \
+    if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))                        \
+    {                                                                                \
+        BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);     \
+        BackendX64Inst::emit_Cmp8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);      \
+    }                                                                                \
+    else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_C))                    \
+    {                                                                                \
+        BackendX64Inst::emit_Cmp8_IndirectDst(pp, regOffset(ip->a.u32), ip->c.u8);   \
+    }                                                                                \
+    else                                                                             \
+    {                                                                                \
+        if (ip->flags & BCI_IMM_A)                                                   \
+            BackendX64Inst::emit_Load8_Immediate(pp, ip->a.u8, RAX);                 \
+        else                                                                         \
+            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI); \
+        if (ip->flags & BCI_IMM_C)                                                   \
+            BackendX64Inst::emit_Load8_Immediate(pp, ip->c.u8, RCX);                 \
+        else                                                                         \
+            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->c.u32), RCX, RDI); \
+        BackendX64Inst::emit_Cmp8(pp, RAX, RCX);                                     \
+    }                                                                                \
+    BackendX64Inst::emit_Jump(pp, __op, i, ip->b.s32);
+
+#define MK_JMPCMP_16(__op)                                                            \
+    if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))                         \
+    {                                                                                 \
+        BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);     \
+        BackendX64Inst::emit_Cmp16_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);      \
+    }                                                                                 \
+    else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_C))                     \
+    {                                                                                 \
+        BackendX64Inst::emit_Cmp16_IndirectDst(pp, regOffset(ip->a.u32), ip->c.u16);  \
+    }                                                                                 \
+    else                                                                              \
+    {                                                                                 \
+        if (ip->flags & BCI_IMM_A)                                                    \
+            BackendX64Inst::emit_Load16_Immediate(pp, ip->a.u16, RAX);                \
+        else                                                                          \
+            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI); \
+        if (ip->flags & BCI_IMM_C)                                                    \
+            BackendX64Inst::emit_Load16_Immediate(pp, ip->c.u16, RCX);                \
+        else                                                                          \
+            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->c.u32), RCX, RDI); \
+        BackendX64Inst::emit_Cmp16(pp, RAX, RCX);                                     \
+    }                                                                                 \
+    BackendX64Inst::emit_Jump(pp, __op, i, ip->b.s32);
+
 #define MK_JMPCMP_32(__op)                                                            \
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))                         \
     {                                                                                 \
