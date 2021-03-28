@@ -45,6 +45,7 @@ func display()
 }
 
 var textureID: GLuint
+#[swag.printbc]
 func loadImg()
 {
     using image.Image, Color

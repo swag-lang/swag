@@ -128,13 +128,7 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
     ByteCode::getLocation(this, ip, &file, &location);
 
     if (!location)
-    {
-        g_Log.setColor(LogColor::Gray);
-        g_Log.print(format("%s:%d: ", file->name.c_str(), location->line + 1));
-        g_Log.setColor(LogColor::DarkYellow);
-        g_Log.print("??????????\n");
         return;
-    }
 
     if (!lastLine || !lastFile || location->line != *lastLine || file != *lastFile)
     {
