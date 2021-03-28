@@ -390,10 +390,9 @@ bool ByteCode::isDoingNothing()
             return true;
     }
 
-    if (numInstructions == 4)
+    if (numInstructions == 3)
     {
         if (out[0].op == ByteCodeOp::DecSPBP &&
-            out[1].op == ByteCodeOp::IncSP &&
             out[2].op == ByteCodeOp::Ret)
         {
             return true;

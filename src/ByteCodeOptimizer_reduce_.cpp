@@ -471,13 +471,10 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         }
 
         // Useless multi return
-        if (ip[0].op == ByteCodeOp::IncSP &&
-            ip[1].op == ByteCodeOp::Ret &&
-            ip[2].op == ByteCodeOp::IncSP &&
-            ip[3].op == ByteCodeOp::Ret)
+        if (ip[0].op == ByteCodeOp::Ret &&
+            ip[1].op == ByteCodeOp::Ret)
         {
             setNop(context, ip);
-            setNop(context, ip + 1);
         }
 
         // Duplicated safety
@@ -785,17 +782,6 @@ void ByteCodeOptimizer::optimizePassReduce2(ByteCodeOptContext* context)
             ip[0].op    = ByteCodeOp::GetFromStack64x2;
             ip[0].c.u64 = ip[1].a.u64;
             ip[0].d.u64 = ip[1].b.u64;
-            setNop(context, ip + 1);
-        }
-
-        // Useless multi return
-        if (ip[0].op == ByteCodeOp::IncSP &&
-            ip[1].op == ByteCodeOp::Ret &&
-            ip[2].op == ByteCodeOp::IncSP &&
-            ip[3].op == ByteCodeOp::Ret &&
-            !(ip[2].flags & BCI_START_STMT))
-        {
-            setNop(context, ip);
             setNop(context, ip + 1);
         }
     }

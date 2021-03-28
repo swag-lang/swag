@@ -851,6 +851,8 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::Ret:
     {
+        if (ip->a.u32)
+            context->incSP(ip->a.u32);
         if (context->sp == context->stack + context->stackSize)
             return false;
         context->bc->leaveByteCode(context);
@@ -1026,7 +1028,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->push(registersRC[ip->d.u32].u64);
         break;
 
-    case ByteCodeOp::IncSP:
     case ByteCodeOp::IncSPPostCall:
     {
         context->incSP(ip->a.u32);

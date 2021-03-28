@@ -185,9 +185,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
     }
     else
     {
-        if (node->ownerFct->stackSize)
-            emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->ownerFct->stackSize;
-        emitInstruction(context, ByteCodeOp::Ret);
+        emitInstruction(context, ByteCodeOp::Ret)->a.u32 = node->ownerFct->stackSize;
     }
 
     return true;

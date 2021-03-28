@@ -26,10 +26,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    if (funcDecl->stackSize)
-        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcDecl->stackSize;
-    emitInstruction(context, ByteCodeOp::Ret);
-
+    emitInstruction(context, ByteCodeOp::Ret)->a.u32 = funcDecl->stackSize;
     return true;
 }
 
@@ -182,9 +179,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     }
     else
     {
-        if (funcNode->stackSize)
-            emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcNode->stackSize;
-        emitInstruction(context, ByteCodeOp::Ret);
+        emitInstruction(context, ByteCodeOp::Ret)->a.u32 = funcNode->stackSize;
     }
 
     return true;
