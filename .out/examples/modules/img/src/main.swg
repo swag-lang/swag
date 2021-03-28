@@ -101,6 +101,8 @@ func loadImg()
     case 30: myImage.contrast(-0.4)
     case 31: myImage.invert()
     case 32: myImage.crop(229, 105, 206, 166)
+    case 33: myImage.setPixelFormat(PixelFormat.BGR8)
+    case 34: myImage.setPixelFormat(PixelFormat.BGRA8)
     default: effectIdx = 0
     }
 
