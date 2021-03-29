@@ -295,9 +295,9 @@ BYTECODE_OP(CompareOpGreaterEqF64, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_
 BYTECODE_OP(ClearMaskU32, OPFLAG_READ_A | OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ &= _rbx32_")
 BYTECODE_OP(ClearMaskU64, OPFLAG_READ_A | OPFLAG_WRITE_A | OPFLAG_READ_VAL64_B, "_ra_ &= _rbx64_")
 
-BYTECODE_OP(SetZeroAtPointer8, OPFLAG_READ_A, "[_ra_] = 0")
-BYTECODE_OP(SetZeroAtPointer16, OPFLAG_READ_A, "[_ra_] = 0")
-BYTECODE_OP(SetZeroAtPointer32, OPFLAG_READ_A, "[_ra_] = 0")
+BYTECODE_OP(SetZeroAtPointer8, OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "[_ra_ + _rbu32_] = 0")
+BYTECODE_OP(SetZeroAtPointer16, OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "[_ra_ + _rbu32_] = 0")
+BYTECODE_OP(SetZeroAtPointer32, OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "[_ra_ + _rbu32_] = 0")
 BYTECODE_OP(SetZeroAtPointer64, OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "[_ra_ + _rbu32_] = 0")
 BYTECODE_OP(SetZeroAtPointerX, OPFLAG_READ_A | OPFLAG_READ_VAL64_B, "clear(_ra_, _rbu64_)")
 BYTECODE_OP(SetZeroAtPointerXRB, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_VAL64_C, "clear(_ra_, _rb_ * _rcu64_)")

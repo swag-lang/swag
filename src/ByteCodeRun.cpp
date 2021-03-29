@@ -1347,20 +1347,20 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::SetZeroAtPointer8:
     {
-        auto ptr        = registersRC[ip->a.u32].pointer;
-        *(uint8_t*) ptr = 0;
+        auto ptr                      = registersRC[ip->a.u32].pointer;
+        *(uint8_t*) (ptr + ip->b.u32) = 0;
         break;
     }
     case ByteCodeOp::SetZeroAtPointer16:
     {
-        auto ptr         = registersRC[ip->a.u32].pointer;
-        *(uint16_t*) ptr = 0;
+        auto ptr                       = registersRC[ip->a.u32].pointer;
+        *(uint16_t*) (ptr + ip->b.u32) = 0;
         break;
     }
     case ByteCodeOp::SetZeroAtPointer32:
     {
-        auto ptr         = registersRC[ip->a.u32].pointer;
-        *(uint32_t*) ptr = 0;
+        auto ptr                       = registersRC[ip->a.u32].pointer;
+        *(uint32_t*) (ptr + ip->b.u32) = 0;
         break;
     }
     case ByteCodeOp::SetZeroAtPointer64:

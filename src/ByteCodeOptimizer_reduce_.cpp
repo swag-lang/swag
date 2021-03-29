@@ -1018,7 +1018,10 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         }
 
         if (ip[0].op == ByteCodeOp::IncPointer64 &&
-            ip[1].op == ByteCodeOp::SetZeroAtPointer64 &&
+            (ip[1].op == ByteCodeOp::SetZeroAtPointer8 ||
+             ip[1].op == ByteCodeOp::SetZeroAtPointer16 ||
+             ip[1].op == ByteCodeOp::SetZeroAtPointer32 ||
+             ip[1].op == ByteCodeOp::SetZeroAtPointer64) &&
             ip[0].flags & BCI_IMM_B &&
             ip[0].a.u32 == ip[0].c.u32 &&
             ip[0].a.u32 == ip[1].a.u32)

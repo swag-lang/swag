@@ -1851,15 +1851,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::SetZeroAtPointer8:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Store8_Immediate(pp, 0, 0, RAX);
+            BackendX64Inst::emit_Store8_Immediate(pp, ip->b.u32, 0, RAX);
             break;
         case ByteCodeOp::SetZeroAtPointer16:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Store16_Immediate(pp, 0, 0, RAX);
+            BackendX64Inst::emit_Store16_Immediate(pp, ip->b.u32, 0, RAX);
             break;
         case ByteCodeOp::SetZeroAtPointer32:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Store32_Immediate(pp, 0, 0, RAX);
+            BackendX64Inst::emit_Store32_Immediate(pp, ip->b.u32, 0, RAX);
             break;
         case ByteCodeOp::SetZeroAtPointer64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
