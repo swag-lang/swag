@@ -324,10 +324,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 emitInstruction(&cxt, ByteCodeOp::MakeConstantSegPointer, 1)->b.u64 = offset;
                 emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64         = varDecl->assignment->computedValue.text.length();
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
-                auto inst   = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
-                inst->b.u64 = 8;
-                inst->flags |= BCI_IMM_B;
-                emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2);
+                emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2)->c.u32 = 8;
             }
             else if (typeVar->kind == TypeInfoKind::Native)
             {
