@@ -1116,15 +1116,29 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
     }
 }
 
-// Reduce instructions that can change debug lines, so do not do it
-// if buildCfg.byteCodeDebug is true
 void ByteCodeOptimizer::optimizePassReduce2(ByteCodeOptContext* context)
 {
-    if (context->bc->sourceFile->module->buildCfg.byteCodeDebug)
-        return;
-
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        // Do not optimize if, by removing the next instruction, we miss a debug line
+        // So we test that the next instruction (that can be removed) and the instruction after
+        // have the same line. That way, even if we remove ip + 1, we keed the debug line.
+        if (context->bc->sourceFile->module->buildCfg.byteCodeDebug)
+        {
+            if (ip->op == ByteCodeOp::Ret || ip->op == ByteCodeOp::Nop)
+                continue;
+            SourceFile*     file0;
+            SourceFile*     file1;
+            SourceLocation* loc0;
+            SourceLocation* loc1;
+            context->bc->getLocation(context->bc, ip + 1, &file0, &loc0);
+            context->bc->getLocation(context->bc, ip + 2, &file1, &loc1);
+            if (!loc0 || !loc1)
+                continue;
+            if (file0 != file1 || loc0->line != loc1->line)
+                continue;
+        }
+
         // Reduce SetAtStackPointer
         if (ip->op == ByteCodeOp::SetAtStackPointer8 &&
             ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
@@ -1168,6 +1182,7 @@ void ByteCodeOptimizer::optimizePassReduce2(ByteCodeOptContext* context)
         // SetAtStackPointer x2
         if (ip[0].op == ByteCodeOp::SetAtStackPointer8 &&
             ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
+            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[0].op    = ByteCodeOp::SetAtStackPointer8x2;
@@ -1180,6 +1195,7 @@ void ByteCodeOptimizer::optimizePassReduce2(ByteCodeOptContext* context)
 
         if (ip[0].op == ByteCodeOp::SetAtStackPointer16 &&
             ip[1].op == ByteCodeOp::SetAtStackPointer16 &&
+            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[0].op    = ByteCodeOp::SetAtStackPointer16x2;
@@ -1192,6 +1208,7 @@ void ByteCodeOptimizer::optimizePassReduce2(ByteCodeOptContext* context)
 
         if (ip[0].op == ByteCodeOp::SetAtStackPointer32 &&
             ip[1].op == ByteCodeOp::SetAtStackPointer32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[0].op    = ByteCodeOp::SetAtStackPointer32x2;
@@ -1204,6 +1221,7 @@ void ByteCodeOptimizer::optimizePassReduce2(ByteCodeOptContext* context)
 
         if (ip[0].op == ByteCodeOp::SetAtStackPointer64 &&
             ip[1].op == ByteCodeOp::SetAtStackPointer64 &&
+            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[0].op    = ByteCodeOp::SetAtStackPointer64x2;
@@ -1217,33 +1235,40 @@ void ByteCodeOptimizer::optimizePassReduce2(ByteCodeOptContext* context)
         // Set/Get from stack
         if (ip[0].op == ByteCodeOp::SetAtStackPointer8 &&
             ip[1].op == ByteCodeOp::GetFromStack8 &&
+            !(ip->flags & BCI_IMM_B) &&
             ip->b.u32 == ip[1].a.u32 &&
             ip->a.u32 == ip[1].b.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            setNop(context, ip + 1);
+            ip[1].op    = ByteCodeOp::ClearMaskU64;
+            ip[1].b.u64 = 0xFF;
         }
 
         if (ip[0].op == ByteCodeOp::SetAtStackPointer16 &&
             ip[1].op == ByteCodeOp::GetFromStack16 &&
+            !(ip->flags & BCI_IMM_B) &&
             ip->b.u32 == ip[1].a.u32 &&
             ip->a.u32 == ip[1].b.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            setNop(context, ip + 1);
+            ip[1].op    = ByteCodeOp::ClearMaskU64;
+            ip[1].b.u64 = 0xFFFF;
         }
 
         if (ip[0].op == ByteCodeOp::SetAtStackPointer32 &&
             ip[1].op == ByteCodeOp::GetFromStack32 &&
+            !(ip->flags & BCI_IMM_B) &&
             ip->b.u32 == ip[1].a.u32 &&
             ip->a.u32 == ip[1].b.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            setNop(context, ip + 1);
+            ip[1].op    = ByteCodeOp::ClearMaskU64;
+            ip[1].b.u64 = 0xFFFFFFFF;
         }
 
         if (ip[0].op == ByteCodeOp::SetAtStackPointer64 &&
             ip[1].op == ByteCodeOp::GetFromStack64 &&
+            !(ip->flags & BCI_IMM_B) &&
             ip->b.u32 == ip[1].a.u32 &&
             ip->a.u32 == ip[1].b.u32 &&
             !(ip[1].flags & BCI_START_STMT))
