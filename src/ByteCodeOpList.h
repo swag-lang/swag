@@ -171,10 +171,10 @@ BYTECODE_OP(GetFromStackParam64, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B | OPFLAG_R
 BYTECODE_OP(MakeStackPointer, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = stack + _rbu32_")
 BYTECODE_OP(MakeStackPointerParam, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL32_C, "_ra_ = param + _rcu32_")
 
-BYTECODE_OP(SetZeroStack8, OPFLAG_READ_VAL32_A, "[stack + _rau32] = 0")
-BYTECODE_OP(SetZeroStack16, OPFLAG_READ_VAL32_A, "[stack + _rau32] = 0")
-BYTECODE_OP(SetZeroStack32, OPFLAG_READ_VAL32_A, "[stack + _rau32] = 0")
-BYTECODE_OP(SetZeroStack64, OPFLAG_READ_VAL32_A, "[stack + _rau32] = 0")
+BYTECODE_OP(SetZeroStack8, OPFLAG_READ_VAL32_A, "stack[_rau32_] = 0")
+BYTECODE_OP(SetZeroStack16, OPFLAG_READ_VAL32_A, "stack[_rau32_] = 0")
+BYTECODE_OP(SetZeroStack32, OPFLAG_READ_VAL32_A, "stack[_rau32_] = 0")
+BYTECODE_OP(SetZeroStack64, OPFLAG_READ_VAL32_A, "stack[_rau32_] = 0")
 BYTECODE_OP(SetZeroStackX, OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL32_B, "clear(stack + _rau32_, _rbu32_)")
 
 BYTECODE_OP(GetFromCompilerSeg64, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B | OPFLAG_WRITE_VAL64_D | OPFLAG_READ_VAL64_D, "_ra_ = .cdata[_rbu32_]")
