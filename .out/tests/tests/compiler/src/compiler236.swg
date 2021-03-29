@@ -2,9 +2,10 @@
 ;
 using swag;
 
-//#[printbc]
+#[printbc]
 func main ()
 {
+    //@dbgbreak()
 	var a = 0b10101010;
 	a >>= 1;
 	@assert(a == 0b1010101);

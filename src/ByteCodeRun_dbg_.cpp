@@ -69,7 +69,7 @@ static void printFullRegister(Register& regP)
 static void printInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     context->bc->printSourceCode(ip);
-    context->bc->printInstruction(ip);
+    context->bc->printInstruction(ip, context->registersRC[context->curRC]->buffer);
 }
 
 void ByteCodeRun::debugger(ByteCodeRunContext* context)

@@ -749,10 +749,6 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             }
 
             default:
-                /*g_Log.lock();
-                printf("%s\n", context->bc->callName().c_str());
-                context->bc->printInstruction(ip);
-                g_Log.unlock();*/
                 break;
             }
         }

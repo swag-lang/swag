@@ -149,7 +149,7 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
     }
 }
 
-void ByteCode::printInstruction(ByteCodeInstruction* ip)
+void ByteCode::printInstruction(ByteCodeInstruction* ip, Register* rc)
 {
     static const wchar_t* bcNum = L"%08d ";
     int                   i     = (int) (ip - out);
@@ -160,6 +160,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     else
         g_Log.setColor(LogColor::Cyan);
     wprintf(bcNum, i);
+
+    g_Log.setCountLength(true);
 
     // Instruction
     if (ip->flags & BCI_SAFETY)
@@ -213,20 +215,19 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     else if (opFlags & OPFLAG_READ_VAL64_D || (ip->flags & BCI_IMM_D))
         g_Log.print(format("D {0x%llx} ", ip->d.u64));
 
-    g_Log.setColor(LogColor::DarkMagenta);
-    if (ip->flags & BCI_IMM_A)
-        g_Log.print("IMMA ");
-    if (ip->flags & BCI_IMM_B)
-        g_Log.print("IMMB ");
-    if (ip->flags & BCI_IMM_C)
-        g_Log.print("IMMC ");
-    if (ip->flags & BCI_IMM_D)
-        g_Log.print("IMMD ");
+    while (g_Log.length < 60)
+        g_Log.print(" ");
 
-    if (ip->flags & BCI_START_STMT)
-        g_Log.print("STMT ");
-    if (ip->flags & BCI_UNPURE)
-        g_Log.print("UNPURE ");
+    g_Log.setColor(LogColor::Gray);
+    g_Log.print(ip->flags & BCI_IMM_A ? "A" : ".");
+    g_Log.print(ip->flags & BCI_IMM_B ? "B" : ".");
+    g_Log.print(ip->flags & BCI_IMM_C ? "C" : ".");
+    g_Log.print(ip->flags & BCI_IMM_D ? "D" : ".");
+    g_Log.print(ip->flags & BCI_START_STMT ? "S" : ".");
+    g_Log.print(ip->flags & BCI_UNPURE ? "U" : ".");
+
+    while (g_Log.length < 70)
+        g_Log.print(" ");
 
     switch (ip->op)
     {
@@ -254,7 +255,6 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     case ByteCodeOp::JumpIfEqual16:
     case ByteCodeOp::JumpIfEqual32:
     case ByteCodeOp::JumpIfEqual64:
-        g_Log.setColor(LogColor::Cyan);
         wprintf(bcNum, ip->b.s32 + i + 1);
         break;
 
@@ -305,6 +305,22 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
         break;
     }
 
+    if (rc)
+    {
+        if (opFlags & OPFLAG_READ_A && !(ip->flags & BCI_IMM_A))
+        {
+            if (ip->node && ip->node->typeInfo)
+            {
+                if (ip->node->typeInfo->isNative(NativeTypeKind::S32))
+                    g_Log.print(format("r%u = %d", ip->a.u32, rc[ip->a.u32].s32));
+
+                if (ip->node->typeInfo->isNative(NativeTypeKind::U32))
+                    g_Log.print(format("r%u = %u", ip->a.u32, rc[ip->a.u32].u32));
+            }
+        }
+    }
+
+    g_Log.setCountLength(false);
     g_Log.eol();
 }
 

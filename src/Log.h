@@ -58,6 +58,8 @@ struct Log
 
     void print(const char* message)
     {
+        if (countLength)
+            length += strlen(message);
         cout << message;
     }
 
@@ -74,6 +76,8 @@ struct Log
 
     void print(const Utf8& message)
     {
+        if (countLength)
+            length += message.length();
         cout << message.c_str();
     }
 
@@ -82,7 +86,15 @@ struct Log
         cout << '\n';
     }
 
-    mutex mutexAccess;
+    void setCountLength(bool b)
+    {
+        countLength = b;
+        length      = 0;
+    }
+
+    mutex  mutexAccess;
+    bool   countLength = false;
+    size_t length      = 0;
 };
 
 extern Log g_Log;
