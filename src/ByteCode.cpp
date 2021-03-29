@@ -149,7 +149,7 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
     }
 }
 
-void ByteCode::printInstruction(ByteCodeInstruction* ip, Register* rc)
+void ByteCode::printInstruction(ByteCodeInstruction* ip)
 {
     static const wchar_t* bcNum = L"%08d ";
     int                   i     = (int) (ip - out);
@@ -303,21 +303,6 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, Register* rc)
     case ByteCodeOp::IntrinsicF64x2:
         g_Log.print(g_TokenNames[ip->d.u32]);
         break;
-    }
-
-    if (rc)
-    {
-        if (opFlags & OPFLAG_READ_A && !(ip->flags & BCI_IMM_A))
-        {
-            if (ip->node && ip->node->typeInfo)
-            {
-                if (ip->node->typeInfo->isNative(NativeTypeKind::S32))
-                    g_Log.print(format("r%u = %d", ip->a.u32, rc[ip->a.u32].s32));
-
-                if (ip->node->typeInfo->isNative(NativeTypeKind::U32))
-                    g_Log.print(format("r%u = %u", ip->a.u32, rc[ip->a.u32].u32));
-            }
-        }
     }
 
     g_Log.setCountLength(false);

@@ -2,7 +2,7 @@
 ;
 using swag;
 
-#[printbc]
+//#[printbc]
 func main ()
 {
     //@dbgbreak()
