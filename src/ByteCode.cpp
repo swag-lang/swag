@@ -190,7 +190,6 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rbf64_", format("%lf", ip->b.f64));
         str.replace("_rbx32_", format("0x%x", ip->b.u32));
         str.replace("_rbx64_", format("0x%x", ip->b.u64));
-
     }
 
     if (ip->flags & BCI_IMM_C || flags & OPFLAG_READ_VAL32_C || flags & OPFLAG_READ_VAL64_C)
@@ -289,6 +288,7 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rdf64_", rd);
     }
 
+    str.trim();
     g_Log.print(str);
 }
 
@@ -374,8 +374,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     printPrettyInstruction(ip);
 
     g_Log.setColor(LogColor::Gray);
-    while (g_Log.length < 90)
-        g_Log.print(" ");
+    g_Log.print(" ");
     switch (ip->op)
     {
     case ByteCodeOp::InternalPanic:
