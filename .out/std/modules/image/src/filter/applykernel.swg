@@ -35,6 +35,7 @@ impl Image
     }
 
     #[swag.safety("", false)]
+    //#[swag.printbc]
     private func doKernel(using self, dstImage: *Image, kernel: const [..] s32)
     {
         debug.assert(pf == .BGR8 || pf == .BGRA8)

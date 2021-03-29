@@ -1028,9 +1028,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::DeRefPointer:
     {
-        auto ptr                       = registersRC[ip->a.u32].pointer;
+        auto ptr                       = registersRC[ip->b.u32].pointer;
         ptr                            = *(uint8_t**) (ptr + ip->c.u32);
-        registersRC[ip->b.u32].pointer = ptr;
+        registersRC[ip->a.u32].pointer = ptr;
         break;
     }
     case ByteCodeOp::DeRefStringSlice:
