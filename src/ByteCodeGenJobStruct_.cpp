@@ -218,7 +218,11 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
     emitInstruction(&cxt, ByteCodeOp::End);
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-        cxt.bc->print();
+    {
+        unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+    }
+
     return true;
 }
 
@@ -267,7 +271,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         emitInstruction(&cxt, ByteCodeOp::Ret);
         emitInstruction(&cxt, ByteCodeOp::End);
         if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-            cxt.bc->print();
+        {
+            unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+            cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+        }
         return true;
     }
 
@@ -279,7 +286,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         emitInstruction(&cxt, ByteCodeOp::Ret);
         emitInstruction(&cxt, ByteCodeOp::End);
         if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-            cxt.bc->print();
+        {
+            unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+            cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+        }
         return true;
     }
 
@@ -415,7 +425,11 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     emitInstruction(&cxt, ByteCodeOp::End);
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-        cxt.bc->print();
+    {
+        unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+    }
+
     return true;
 }
 
@@ -514,7 +528,10 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     emitInstruction(&cxt, ByteCodeOp::End);
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-        cxt.bc->print();
+    {
+        unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+    }
 
     // Revert back function because it's empty
     if (!canEmitOpCallUser(&cxt, nullptr, cxt.bc))
@@ -623,7 +640,10 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     emitInstruction(&cxt, ByteCodeOp::End);
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-        cxt.bc->print();
+    {
+        unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+    }
 
     // Revert back function because it's empty
     if (!canEmitOpCallUser(&cxt, nullptr, cxt.bc))
@@ -731,7 +751,10 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     emitInstruction(&cxt, ByteCodeOp::End);
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-        cxt.bc->print();
+    {
+        unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+    }
 
     // Revert back function because it's empty
     if (!canEmitOpCallUser(&cxt, nullptr, cxt.bc))

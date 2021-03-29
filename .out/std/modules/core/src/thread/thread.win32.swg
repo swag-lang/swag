@@ -28,7 +28,6 @@ private func threadEntry(param: *void)
 }
 
 // Wait multiple threads
-//#[swag.printbc]
 func wait(threads: *Thread...)
 {
     var handles: [MAXIMUM_WAIT_OBJECTS] HANDLE

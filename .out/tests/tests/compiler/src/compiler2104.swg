@@ -1,7 +1,9 @@
+#[swag.printbc]
 struct AA
 {
     x, y: f64
 
+    #[swag.printbc]
     struct BB
     {
         x, y: string = "true"
