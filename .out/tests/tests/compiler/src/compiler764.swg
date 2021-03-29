@@ -6,7 +6,6 @@ struct Point
 	y: s32
 }
 
-//#[swag.printbc]
 #test
 {
 	cpt := Point{}

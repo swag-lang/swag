@@ -1128,6 +1128,43 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             }
         }
 
+        // MakeStackPointr followed by deref is equivalent to GetFromStack
+        if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::DeRef8 &&
+            ip[0].a.u32 == ip[1].b.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::GetFromStack8;
+            ip[1].b.u32 = ip[0].b.u32;
+        }
+
+        if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::DeRef16 &&
+            ip[0].a.u32 == ip[1].b.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::GetFromStack16;
+            ip[1].b.u32 = ip[0].b.u32;
+        }
+
+        if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::DeRef32 &&
+            ip[0].a.u32 == ip[1].b.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::GetFromStack32;
+            ip[1].b.u32 = ip[0].b.u32;
+        }
+
+        if (ip[0].op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::DeRef64 &&
+            ip[0].a.u32 == ip[1].b.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::GetFromStack64;
+            ip[1].b.u32 = ip[0].b.u32;
+        }
+
         // MakeStackPointer Reg, ImmB
         // IncPointer64     Reg, Reg, ImmB
         // We can change the offset of the MakeStackPointer and remove the IncPointer
