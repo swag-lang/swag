@@ -123,19 +123,19 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
     {
         if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
-            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
         else if (node->flags & AST_TO_UFCS) // Get the structure pointer
-            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         return true;
     }
 
     if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
     {
-        emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
-            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
         else if (node->flags & AST_TO_UFCS) // Get the structure pointer
-            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         return true;
     }
 
@@ -147,7 +147,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
             auto r0 = reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->resultRegisterRC[0]);
             SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC[0], typeInfo->relative));
-            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC[1], r0)->c.u32 = 8;
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[1], r0)->c.u32 = 8;
             freeRegisterRC(context, r0);
         }
         else
@@ -170,7 +170,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     if (typeInfo->kind == TypeInfoKind::FuncAttr)
     {
         truncRegisterRC(context, node->resultRegisterRC, 1);
-        emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         return true;
     }
 
@@ -180,7 +180,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         if (typeInfo->flags & TYPEINFO_RELATIVE)
             SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC, typeInfo->relative));
         else
-            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         return true;
     }
 

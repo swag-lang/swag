@@ -1023,11 +1023,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::DeRef64:
     {
-        registersRC[ip->a.u32].u64 = *(uint64_t*) registersRC[ip->b.u32].pointer;
-        break;
-    }
-    case ByteCodeOp::DeRefPointer:
-    {
         registersRC[ip->a.u32].u64 = *(uint64_t*) (registersRC[ip->b.u32].pointer + ip->c.u32);
         break;
     }

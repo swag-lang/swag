@@ -781,7 +781,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
         // The field is a pointer : need to dereference it
         if (exprNode->semFlags & AST_SEM_DEREF_USING)
-            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
 
         return true;
     }

@@ -386,9 +386,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u64 = resolved->storageOffset;
             inst->c.u64 = resolved->storageIndex;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = 8;
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = 8;
             else // Get the structure pointer
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
@@ -466,7 +466,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u64     = resolved->storageOffset;
             inst->c.pointer = (uint8_t*) resolved;
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
@@ -479,9 +479,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst = emitInstruction(context, ByteCodeOp::GetFromMutableSeg64, node->resultRegisterRC);
             inst->b.u64 = resolved->storageOffset;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
             else if (node->flags & AST_TO_UFCS) // Get the struct pointer
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
@@ -494,9 +494,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst = emitInstruction(context, ByteCodeOp::MakeMutableSegPointer, node->resultRegisterRC);
             inst->b.u64 = resolved->storageOffset;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
             else if (node->flags & AST_TO_UFCS) // Get the struct pointer
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->numRegisters() == 2)
         {
@@ -568,23 +568,23 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u64 = resolved->storageOffset;
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
             emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC)->b.u64 = resolved->storageOffset;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
             else if (node->flags & AST_TO_UFCS) // Get the structure pointer
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
         {
             emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->storageOffset;
             if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
             else if (node->flags & AST_TO_UFCS) // Get the structure pointer
-                emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->kind == TypeInfoKind::Pointer && typeInfo->flags & TYPEINFO_RELATIVE)
         {
@@ -651,7 +651,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (!(node->forceTakeAddress()))
             emitStructDeRef(context);
         else if (node->parent->flags & AST_ARRAY_POINTER_REF)
-            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC              = node->resultRegisterRC;

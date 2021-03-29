@@ -840,14 +840,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::DeRef64:
         {
-            auto r0 = GEP_I32(allocR, ip->b.u32);
-            auto r1 = TO_PTR_I64(builder.CreateLoad(TO_PTR_PTR_I8(r0)));
-            auto r2 = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
-            builder.CreateStore(builder.CreateLoad(r1), r2);
-            break;
-        }
-        case ByteCodeOp::DeRefPointer:
-        {
             auto r0   = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
             auto ptr  = builder.CreateLoad(r0);
             auto ptr8 = GEP_I32(ptr, ip->c.u32);

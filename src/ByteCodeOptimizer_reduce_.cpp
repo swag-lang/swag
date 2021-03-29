@@ -1162,7 +1162,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[1].op    = ByteCodeOp::GetFromStack64;
-            ip[1].b.u32 = ip[0].b.u32;
+            ip[1].b.u32 = ip[0].b.u32 + ip[1].c.u32;
         }
 
         // MakeStackPointer Reg, ImmB

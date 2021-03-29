@@ -132,7 +132,7 @@ bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
         auto inst   = emitInstruction(context, ByteCodeOp::DecPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
         inst->b.u64 = sizeof(void*);
         inst->flags |= BCI_IMM_B;
-        emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         return true;
     }
 
