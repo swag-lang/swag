@@ -949,9 +949,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetZeroAtPointer64:
         {
-            auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RB32);
-            builder.CreateStore(pp.cst0_i64, v0);
+            builder.CreateStore(pp.cst0_i64, TO_PTR_I64(v0));
             break;
         }
         case ByteCodeOp::SetZeroAtPointerX:

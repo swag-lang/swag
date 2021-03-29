@@ -221,15 +221,20 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         }
 
         // Emit one affectation per child
-        auto oneOffset = typeList->subTypes.front()->typeInfo->sizeOf;
+        auto         oneOffset   = typeList->subTypes.front()->typeInfo->sizeOf;
+        auto         totalOffset = 0;
+        RegisterList r0;
+        reserveRegisterRC(context, r0, 1);
         for (auto child : job->collectChilds)
         {
             child->flags |= AST_NO_LEFT_DROP;
-            emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC, child->typeInfo, child);
+            emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, totalOffset, r0)->flags |= BCI_IMM_B;
+            emitAffectEqual(context, r0, child->resultRegisterRC, child->typeInfo, child);
             SWAG_ASSERT(context->result == ContextResult::Done);
-            emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, oneOffset, node->resultRegisterRC)->flags |= BCI_IMM_B;
             freeRegisterRC(context, child);
+            totalOffset += oneOffset;
         }
+        freeRegisterRC(context, r0);
 
         // Reference to the stack, and store the number of element in a register
         emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u64 = listNode->computedValue.reg.offset;

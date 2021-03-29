@@ -979,17 +979,51 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             context->passHasDoneSomething = true;
         }
 
-        // GetFromStack8/16/32 clear the other bits by convention, so no need to
-        // have a ClearMask after
-        /*if (ip[0].op == ByteCodeOp::IncPointer64 &&
+        // IncPointer with src != dst, followed by one SetAtPointer
+        // No need to to a nop, the optimizer will remove instruction if unused
+        // (safer that the version below)
+        if (ip[0].op == ByteCodeOp::IncPointer64 &&
+            (ip[1].op == ByteCodeOp::SetAtPointer8 ||
+             ip[1].op == ByteCodeOp::SetAtPointer16 ||
+             ip[1].op == ByteCodeOp::SetAtPointer32 ||
+             ip[1].op == ByteCodeOp::SetAtPointer64) &&
+            ip[0].flags & BCI_IMM_B &&
+            ip[0].a.u32 != ip[0].c.u32 &&
+            ip[0].c.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].a.u32 = ip[0].a.u32;
+            ip[1].c.u32 += ip[0].b.u32;
+        }
+
+        // IncPointer followed by one or two SetAtPointer
+        // Is this safe ?
+        if (ip[0].op == ByteCodeOp::IncPointer64 &&
             ip[1].op == ByteCodeOp::SetAtPointer64 &&
+            ip[0].flags & BCI_IMM_B &&
+            ip[0].a.u32 == ip[0].c.u32 &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].c.u32 += ip[0].b.u32;
+            if (ip[2].op == ByteCodeOp::SetAtPointer64 &&
+                ip[0].a.u32 == ip[2].a.u32)
+            {
+                SWAG_ASSERT(!(ip[2].flags & BCI_START_STMT));
+                ip[2].c.u32 += ip[0].b.u32;
+            }
+            setNop(context, ip);
+        }
+
+        if (ip[0].op == ByteCodeOp::IncPointer64 &&
+            ip[1].op == ByteCodeOp::SetZeroAtPointer64 &&
             ip[0].flags & BCI_IMM_B &&
             ip[0].a.u32 == ip[0].c.u32 &&
             ip[0].a.u32 == ip[1].a.u32)
         {
-            ip[1].c.u32 = ip[0].b.u32;
+            ip[1].b.u32 += ip[0].b.u32;
             setNop(context, ip);
-        }*/
+        }
 
         // GetFromStack8/16/32 clear the other bits by convention, so no need to
         // have a ClearMask after
