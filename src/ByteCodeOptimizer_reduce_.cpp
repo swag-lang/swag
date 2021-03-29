@@ -598,11 +598,14 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::CompareOpEqual8 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            ip->b.u32 != ip->c.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[1].op    = ByteCodeOp::JumpIfNotEqual8;
-            ip[1].a.u32 = ip->a.u32;
+            ip[1].a.u64 = ip->a.u64;
             ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
             ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
             context->passHasDoneSomething = true;
         }
@@ -610,11 +613,14 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::CompareOpEqual16 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            ip->b.u32 != ip->c.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[1].op    = ByteCodeOp::JumpIfNotEqual16;
-            ip[1].a.u32 = ip->a.u32;
+            ip[1].a.u64 = ip->a.u64;
             ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
             ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
             context->passHasDoneSomething = true;
         }
@@ -622,11 +628,14 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::CompareOpEqual32 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            ip->b.u32 != ip->c.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[1].op    = ByteCodeOp::JumpIfNotEqual32;
-            ip[1].a.u32 = ip->a.u32;
+            ip[1].a.u64 = ip->a.u64;
             ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
             ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
             context->passHasDoneSomething = true;
         }
@@ -634,11 +643,75 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::CompareOpEqual64 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            ip->b.u32 != ip->c.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[1].op    = ByteCodeOp::JumpIfNotEqual64;
-            ip[1].a.u32 = ip->a.u32;
+            ip[1].a.u64 = ip->a.u64;
             ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            context->passHasDoneSomething = true;
+        }
+
+        // Mix compare and jump
+        if (ip->op == ByteCodeOp::CompareOpEqual8 &&
+            ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            ip->b.u32 != ip->c.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::JumpIfEqual8;
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            context->passHasDoneSomething = true;
+        }
+
+        if (ip->op == ByteCodeOp::CompareOpEqual16 &&
+            ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            ip->b.u32 != ip->c.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::JumpIfEqual16;
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            context->passHasDoneSomething = true;
+        }
+
+        if (ip->op == ByteCodeOp::CompareOpEqual32 &&
+            ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            ip->b.u32 != ip->c.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::JumpIfEqual32;
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            context->passHasDoneSomething = true;
+        }
+
+        if (ip->op == ByteCodeOp::CompareOpEqual64 &&
+            ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            ip->b.u32 != ip->c.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].op    = ByteCodeOp::JumpIfEqual64;
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
             ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
             context->passHasDoneSomething = true;
         }

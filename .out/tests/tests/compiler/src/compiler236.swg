@@ -12,7 +12,7 @@ func main ()
 	@assert(a == 0b101010100);
 }
 
-#run 
+#run
 {
 	main()
 }

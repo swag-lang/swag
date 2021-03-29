@@ -35,7 +35,11 @@ struct ByteCodeOptimizer
                inst->op == ByteCodeOp::JumpIfNotEqual8 ||
                inst->op == ByteCodeOp::JumpIfNotEqual16 ||
                inst->op == ByteCodeOp::JumpIfNotEqual32 ||
-               inst->op == ByteCodeOp::JumpIfNotEqual64;
+               inst->op == ByteCodeOp::JumpIfNotEqual64 ||
+               inst->op == ByteCodeOp::JumpIfEqual8 ||
+               inst->op == ByteCodeOp::JumpIfEqual16 ||
+               inst->op == ByteCodeOp::JumpIfEqual32 ||
+               inst->op == ByteCodeOp::JumpIfEqual64;
     }
 
     inline static bool isJumpBlock(ByteCodeInstruction* inst)

@@ -238,6 +238,10 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     case ByteCodeOp::JumpIfNotEqual16:
     case ByteCodeOp::JumpIfNotEqual32:
     case ByteCodeOp::JumpIfNotEqual64:
+    case ByteCodeOp::JumpIfEqual8:
+    case ByteCodeOp::JumpIfEqual16:
+    case ByteCodeOp::JumpIfEqual32:
+    case ByteCodeOp::JumpIfEqual64:
         bc->numJumps++;
         break;
 
