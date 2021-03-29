@@ -288,6 +288,28 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rdf64_", rd);
     }
 
+    switch (ip->op)
+    {
+    case ByteCodeOp::IntrinsicS8x1:
+    case ByteCodeOp::IntrinsicS16x1:
+    case ByteCodeOp::IntrinsicS32x1:
+    case ByteCodeOp::IntrinsicS64x1:
+    case ByteCodeOp::IntrinsicF32x1:
+    case ByteCodeOp::IntrinsicF64x1:
+    case ByteCodeOp::IntrinsicS8x2:
+    case ByteCodeOp::IntrinsicS16x2:
+    case ByteCodeOp::IntrinsicS32x2:
+    case ByteCodeOp::IntrinsicS64x2:
+    case ByteCodeOp::IntrinsicU8x2:
+    case ByteCodeOp::IntrinsicU16x2:
+    case ByteCodeOp::IntrinsicU32x2:
+    case ByteCodeOp::IntrinsicU64x2:
+    case ByteCodeOp::IntrinsicF32x2:
+    case ByteCodeOp::IntrinsicF64x2:
+        str.replace("_w0_", g_TokenNames[ip->d.u32]);
+        break;
+    }
+
     str.trim();
     g_Log.print(str);
 }
@@ -430,25 +452,6 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
             g_Log.print(bc->node->typeInfo->name);
         break;
     }
-
-    case ByteCodeOp::IntrinsicS8x1:
-    case ByteCodeOp::IntrinsicS16x1:
-    case ByteCodeOp::IntrinsicS32x1:
-    case ByteCodeOp::IntrinsicS64x1:
-    case ByteCodeOp::IntrinsicF32x1:
-    case ByteCodeOp::IntrinsicF64x1:
-    case ByteCodeOp::IntrinsicS8x2:
-    case ByteCodeOp::IntrinsicS16x2:
-    case ByteCodeOp::IntrinsicS32x2:
-    case ByteCodeOp::IntrinsicS64x2:
-    case ByteCodeOp::IntrinsicU8x2:
-    case ByteCodeOp::IntrinsicU16x2:
-    case ByteCodeOp::IntrinsicU32x2:
-    case ByteCodeOp::IntrinsicU64x2:
-    case ByteCodeOp::IntrinsicF32x2:
-    case ByteCodeOp::IntrinsicF64x2:
-        g_Log.print(g_TokenNames[ip->d.u32]);
-        break;
     }
 
     g_Log.setCountLength(false);
