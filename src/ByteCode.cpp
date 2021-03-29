@@ -9,20 +9,26 @@
 #include "TypeManager.h"
 
 #undef BYTECODE_OP
-#define BYTECODE_OP(__op, __flags) #__op,
+#define BYTECODE_OP(__op, __flags, __dis) #__op,
 const char* g_ByteCodeOpNames[] = {
 #include "ByteCodeOpList.h"
 };
 
 #undef BYTECODE_OP
-#define BYTECODE_OP(__op, __flags) (int) strlen(#__op),
+#define BYTECODE_OP(__op, __flags, __dis) (int) strlen(#__op),
 int g_ByteCodeOpNamesLen[] = {
 #include "ByteCodeOpList.h"
 };
 
 #undef BYTECODE_OP
-#define BYTECODE_OP(__op, __flags) __flags,
+#define BYTECODE_OP(__op, __flags, __dis) __flags,
 uint32_t g_ByteCodeOpFlags[] = {
+#include "ByteCodeOpList.h"
+};
+
+#undef BYTECODE_OP
+#define BYTECODE_OP(__op, __flags, __dis) __dis,
+const char* g_ByteCodeOpDisplay[] = {
 #include "ByteCodeOpList.h"
 };
 
@@ -140,13 +146,150 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
             *lastFile = file;
         auto s = file->getLine(location->line);
         s.trim();
-        g_Log.setColor(LogColor::DarkYellow);
+        g_Log.setColor(LogColor::Yellow);
         if (s.empty())
             g_Log.print("<blank>");
         else
             g_Log.print(s);
         g_Log.print("\n");
     }
+}
+
+void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
+{
+    Utf8 str   = g_ByteCodeOpDisplay[(int) ip->op];
+    auto flags = g_ByteCodeOpFlags[(int) ip->op];
+
+    if (ip->flags & BCI_IMM_A || flags & OPFLAG_READ_VAL32_A || flags & OPFLAG_READ_VAL64_A)
+    {
+        str.replace("_rau8_", format("%u", ip->a.u8));
+        str.replace("_rau16_", format("%u", ip->a.u16));
+        str.replace("_rau32_", format("%u", ip->a.u32));
+        str.replace("_rau64_", format("%llu", ip->a.u64));
+        str.replace("_ras8_", format("%d", ip->a.s8));
+        str.replace("_ras16_", format("%d", ip->a.s16));
+        str.replace("_ras32_", format("%d", ip->a.s32));
+        str.replace("_ras64_", format("%lld", ip->a.s64));
+        str.replace("_raf32_", format("%f", ip->a.f32));
+        str.replace("_raf64_", format("%lf", ip->a.f64));
+        str.replace("_rax32_", format("0x%x", ip->a.u32));
+        str.replace("_rax64_", format("0x%x", ip->a.u64));
+    }
+
+    if (ip->flags & BCI_IMM_B || flags & OPFLAG_READ_VAL32_B || flags & OPFLAG_READ_VAL64_B)
+    {
+        str.replace("_rbu8_", format("%u", ip->b.u8));
+        str.replace("_rbu16_", format("%u", ip->b.u16));
+        str.replace("_rbu32_", format("%u", ip->b.u32));
+        str.replace("_rbu64_", format("%llu", ip->b.u64));
+        str.replace("_rbs8_", format("%d", ip->b.s8));
+        str.replace("_rbs16_", format("%d", ip->b.s16));
+        str.replace("_rbs32_", format("%d", ip->b.s32));
+        str.replace("_rbs64_", format("%lld", ip->b.s64));
+        str.replace("_rbf32_", format("%f", ip->b.f32));
+        str.replace("_rbf64_", format("%lf", ip->b.f64));
+        str.replace("_rbx32_", format("0x%x", ip->b.u32));
+        str.replace("_rbx64_", format("0x%x", ip->b.u64));
+
+    }
+
+    if (ip->flags & BCI_IMM_C || flags & OPFLAG_READ_VAL32_C || flags & OPFLAG_READ_VAL64_C)
+    {
+        str.replace("_rcu8_", format("%u", ip->c.u8));
+        str.replace("_rcu16_", format("%u", ip->c.u16));
+        str.replace("_rcu32_", format("%u", ip->c.u32));
+        str.replace("_rcu64_", format("%llu", ip->c.u32));
+        str.replace("_rcs8_", format("%d", ip->c.s8));
+        str.replace("_rcs16_", format("%d", ip->c.s16));
+        str.replace("_rcs32_", format("%d", ip->c.s32));
+        str.replace("_rcs64_", format("%lld", ip->c.s64));
+        str.replace("_rcf32_", format("%f", ip->c.f32));
+        str.replace("_rcf64_", format("%lf", ip->c.f64));
+        str.replace("_rcx32_", format("0x%x", ip->c.u32));
+        str.replace("_rcx64_", format("0x%x", ip->c.u64));
+    }
+
+    if (ip->flags & BCI_IMM_D || flags & OPFLAG_READ_VAL32_D || flags & OPFLAG_READ_VAL64_D)
+    {
+        str.replace("_rdu8_", format("%u", ip->d.u8));
+        str.replace("_rdu16_", format("%u", ip->d.u16));
+        str.replace("_rdu32_", format("%u", ip->d.u32));
+        str.replace("_rdu64_", format("%llu", ip->d.u32));
+        str.replace("_rds8_", format("%d", ip->d.s8));
+        str.replace("_rds16_", format("%d", ip->d.s16));
+        str.replace("_rds32_", format("%d", ip->d.s32));
+        str.replace("_rds64_", format("%lld", ip->d.s64));
+        str.replace("_rdf32_", format("%f", ip->d.f32));
+        str.replace("_rdf64_", format("%lf", ip->d.f64));
+        str.replace("_rdx32_", format("0x%x", ip->d.u32));
+        str.replace("_rdx64_", format("0x%x", ip->d.u64));
+    }
+
+    if (flags & (OPFLAG_READ_A | OPFLAG_WRITE_A))
+    {
+        auto ra = format("r%u", ip->a.u32);
+        str.replace("_ra_", ra);
+        str.replace("_rau8_", ra);
+        str.replace("_rau16_", ra);
+        str.replace("_rau32_", ra);
+        str.replace("_rau64_", ra);
+        str.replace("_ras8_", ra);
+        str.replace("_ras16_", ra);
+        str.replace("_ras32_", ra);
+        str.replace("_ras64_", ra);
+        str.replace("_raf32_", ra);
+        str.replace("_raf64_", ra);
+    }
+
+    if (flags & (OPFLAG_READ_B | OPFLAG_WRITE_B))
+    {
+        auto rb = format("r%u", ip->b.u32);
+        str.replace("_rb_", rb);
+        str.replace("_rbu8_", rb);
+        str.replace("_rbu16_", rb);
+        str.replace("_rbu32_", rb);
+        str.replace("_rbu64_", rb);
+        str.replace("_rbs8_", rb);
+        str.replace("_rbs16_", rb);
+        str.replace("_rbs32_", rb);
+        str.replace("_rbs64_", rb);
+        str.replace("_rbf32_", rb);
+        str.replace("_rbf64_", rb);
+    }
+
+    if (flags & (OPFLAG_READ_C | OPFLAG_WRITE_C))
+    {
+        auto rc = format("r%u", ip->c.u32);
+        str.replace("_rc_", rc);
+        str.replace("_rcu8_", rc);
+        str.replace("_rcu16_", rc);
+        str.replace("_rcu32_", rc);
+        str.replace("_rcu64_", rc);
+        str.replace("_rcs8_", rc);
+        str.replace("_rcs16_", rc);
+        str.replace("_rcs32_", rc);
+        str.replace("_rcs64_", rc);
+        str.replace("_rcf32_", rc);
+        str.replace("_rcf64_", rc);
+    }
+
+    if (flags & (OPFLAG_READ_D | OPFLAG_WRITE_D))
+    {
+        auto rd = format("r%u", ip->d.u32);
+        str.replace("_rd_", rd);
+        str.replace("_rdu8_", rd);
+        str.replace("_rdu16_", rd);
+        str.replace("_rdu32_", rd);
+        str.replace("_rdu64_", rd);
+        str.replace("_rds8_", rd);
+        str.replace("_rds16_", rd);
+        str.replace("_rds32_", rd);
+        str.replace("_rds64_", rd);
+        str.replace("_rdf32_", rd);
+        str.replace("_rdf64_", rd);
+    }
+
+    g_Log.print(str);
 }
 
 void ByteCode::printInstruction(ByteCodeInstruction* ip)
@@ -217,7 +360,6 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
 
     while (g_Log.length < 60)
         g_Log.print(" ");
-
     g_Log.setColor(LogColor::Gray);
     g_Log.print(ip->flags & BCI_IMM_A ? "A" : ".");
     g_Log.print(ip->flags & BCI_IMM_B ? "B" : ".");
@@ -226,9 +368,14 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     g_Log.print(ip->flags & BCI_START_STMT ? "S" : ".");
     g_Log.print(ip->flags & BCI_UNPURE ? "U" : ".");
 
-    while (g_Log.length < 70)
+    g_Log.setColor(LogColor::White);
+    while (g_Log.length < 69)
         g_Log.print(" ");
+    printPrettyInstruction(ip);
 
+    g_Log.setColor(LogColor::Gray);
+    while (g_Log.length < 90)
+        g_Log.print(" ");
     switch (ip->op)
     {
     case ByteCodeOp::InternalPanic:
@@ -313,7 +460,7 @@ void ByteCode::print()
 {
     g_Log.lock();
 
-    g_Log.setColor(LogColor::DarkMagenta);
+    g_Log.setColor(LogColor::Magenta);
     g_Log.print(sourceFile->path);
     g_Log.print(", ");
     if (node)

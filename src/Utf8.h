@@ -37,16 +37,18 @@ struct Utf8
     void            setTrailingZero();
     const char*     begin() const;
     const char*     end() const;
-    operator const char*();
-    char back() const;
-    void makeUpper();
-    void replaceAll(char src, char dst);
-    void trimLeft();
-    void trimRight();
-    void trim();
-    void resize(int newSize);
-    void pop_back();
-    int  find(const char* str) const;
+                    operator const char*();
+    char            back() const;
+    void            makeUpper();
+    void            replaceAll(char src, char dst);
+    void            trimLeft();
+    void            trimRight();
+    void            trim();
+    void            resize(int newSize);
+    void            pop_back();
+    int             find(const char* str, int startpos = 0) const;
+    void            remove(int index, int len);
+    void            insert(int index, const char* str);
 
     void        operator=(const char* txt);
     friend bool operator<(const Utf8& txt1, const Utf8& txt2);
@@ -68,4 +70,5 @@ struct Utf8
     void               toUni32(VectorNative<uint32_t>& uni, int maxChars = -1);
     static const char* transformUtf8ToChar32(const char* pz, uint32_t& c);
     bool               toChar32(uint32_t& ch);
+    void               replace(const char* src, const char* dst);
 };

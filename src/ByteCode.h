@@ -48,6 +48,7 @@ struct ByteCode
     bool isDoingNothing();
 
     void              printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
+    void              printPrettyInstruction(ByteCodeInstruction* ip);
     void              printInstruction(ByteCodeInstruction* ip);
     void              print();
     Utf8              callName();

@@ -1,6 +1,5 @@
 using swag;
 
-//#[printbc]
 func main ()
 {
 	var a = 10;

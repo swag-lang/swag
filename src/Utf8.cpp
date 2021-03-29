@@ -410,11 +410,11 @@ void Utf8::pop_back()
     buffer[count] = 0;
 }
 
-int Utf8::find(const char* str) const
+int Utf8::find(const char* str, int startpos) const
 {
     if (!count)
         return -1;
-    auto pz = strstr(buffer, str);
+    auto pz = strstr(buffer + startpos, str);
     if (!pz)
         return -1;
     return (int) (pz - buffer);
@@ -608,4 +608,48 @@ void Utf8::append(uint32_t utf)
     }
 
     buffer[count] = 0;
+}
+
+void Utf8::remove(int index, int len)
+{
+    SWAG_ASSERT(index + len <= count);
+    memmove(buffer + index, buffer + index + len, count - index);
+    count -= len;
+    buffer[count] = 0;
+}
+
+void Utf8::insert(int index, const char* str)
+{
+    if (index >= count)
+    {
+        append(str);
+        return;
+    }
+
+    int len = (int) strlen(str);
+    reserve(count + len + 1);
+    memmove(buffer + index + len, buffer + index, count - index);
+    memcpy(buffer + index, str, len);
+    count += len;
+    buffer[count] = 0;
+}
+
+void Utf8::replace(const char* src, const char* dst)
+{
+    int pos;
+    int len, lenins;
+
+    len    = (int) strlen(src);
+    lenins = (int) strlen(dst);
+    pos    = 0;
+    do
+    {
+        pos = find(src, pos);
+        if (pos != -1)
+        {
+            remove(pos, len);
+            insert(pos, dst);
+            pos += lenins;
+        }
+    } while (pos != -1);
 }

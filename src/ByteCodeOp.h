@@ -33,7 +33,7 @@ static const uint32_t OPFLAG_UNPURE        = 0x01000000;
 
 enum class ByteCodeOp : uint16_t
 {
-#define BYTECODE_OP(__op, __flags) __op,
+#define BYTECODE_OP(__op, __flags, __dis) __op,
 #include "ByteCodeOpList.h"
 };
 
