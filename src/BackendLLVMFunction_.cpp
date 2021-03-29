@@ -1262,7 +1262,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtPointer8:
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            r0      = builder.CreateLoad(r0);
+            r0      = TO_PTR_I8(builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RC32));
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt8(ip->b.u8);
@@ -1274,7 +1274,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetAtPointer16:
         {
             auto r0 = TO_PTR_PTR_I16(GEP_I32(allocR, ip->a.u32));
-            r0      = builder.CreateLoad(r0);
+            r0      = TO_PTR_I16(builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RC32));
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt16(ip->b.u16);
@@ -1285,8 +1285,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetAtPointer32:
         {
-            auto r0 = TO_PTR_PTR_I32(GEP_I32(allocR, ip->a.u32));
-            r0      = builder.CreateLoad(r0);
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            r0      = TO_PTR_I32(builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RC32));
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt32(ip->b.u32);
@@ -1297,8 +1297,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetAtPointer64:
         {
-            auto r0 = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
-            r0      = builder.CreateLoad(r0);
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            r0      = TO_PTR_I64(builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RC32));
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)
                 r1 = builder.getInt64(ip->b.u64);
@@ -3732,10 +3732,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {builder.getInt32Ty()}, {r1}), r0);
                 break;
             case TokenId::IntrinsicBitCountTz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {builder.getInt16Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {builder.getInt32Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicBitCountLz:
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {builder.getInt16Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {builder.getInt32Ty(), builder.getInt1Ty()}, {r1, pp.cst0_i1}), r0);
                 break;
             case TokenId::IntrinsicByteSwap:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {builder.getInt32Ty()}, {r1}), r0);
