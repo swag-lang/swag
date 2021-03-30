@@ -608,8 +608,7 @@ struct AstFor : public AstBreakable
     AstNode* postExpression;
     AstNode* block;
 
-    int seekJumpToBlock;
-    int seekJumpBeforePost;
+    int seekJumpToExpression;
 };
 
 struct AstLoop : public AstBreakable

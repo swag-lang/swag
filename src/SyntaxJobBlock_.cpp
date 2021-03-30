@@ -174,6 +174,11 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
     else
         SWAG_CHECK(doEmbeddedInstruction(node, &node->postExpression));
 
+    // For optim purposes in the bytecode generation, we must generate postExpression first,
+    // then the bool expression. So here we put the bool expression after the post one.
+    Ast::removeFromParent(node->boolExpression);
+    Ast::addChildBack(node, node->boolExpression);
+
     SWAG_CHECK(doEmbeddedStatement(node, &node->block));
 
     return true;

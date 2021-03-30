@@ -415,15 +415,11 @@ bool ByteCodeGenJob::emitForBeforeExpr(ByteCodeGenContext* context)
     auto node    = context->node;
     auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
 
-    // To store the 'index' of the loop
-    if (forNode->needIndex())
-    {
-        forNode->registerIndex = reserveRegisterRC(context);
-        auto inst              = emitInstruction(context, ByteCodeOp::SetImmediate64, forNode->registerIndex);
-        inst->b.s64            = -1;
-    }
+    // Set the jump to the start of the expression
+    auto inst   = context->bc->out + forNode->seekJumpToExpression;
+    auto diff   = context->bc->numInstructions - forNode->seekJumpToExpression - 1;
+    inst->b.s32 = diff;
 
-    forNode->seekJumpBeforeExpression = context->bc->numInstructions;
     return true;
 }
 
@@ -435,35 +431,32 @@ bool ByteCodeGenJob::emitForAfterExpr(ByteCodeGenContext* context)
     forNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
 
-    // Increment the index
-    if (forNode->needIndex())
-    {
-        emitInstruction(context, ByteCodeOp::IncrementRA64, forNode->registerIndex);
-    }
-
-    // Jump to the block
-    forNode->seekJumpToBlock = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::Jump);
-
-    // This is the start of the post statement
-    forNode->seekJumpBeforePost     = context->bc->numInstructions;
-    forNode->seekJumpBeforeContinue = forNode->seekJumpBeforePost;
     return true;
 }
 
-bool ByteCodeGenJob::emitForAfterPost(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitForBeforePost(ByteCodeGenContext* context)
 {
     auto node    = context->node;
     auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
 
-    // Jump to the test expression
-    auto inst   = emitInstruction(context, ByteCodeOp::Jump);
-    inst->b.s32 = forNode->seekJumpBeforeExpression - context->bc->numInstructions;
+    // To store the 'index' of the loop
+    if (forNode->needIndex())
+    {
+        forNode->registerIndex = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::ClearRA, forNode->registerIndex);
+    }
 
-    // And set the jump to the start of the block
-    inst        = context->bc->out + forNode->seekJumpToBlock;
-    auto diff   = context->bc->numInstructions - forNode->seekJumpToBlock - 1;
-    inst->b.s32 = diff;
+    // Jump to the test expression
+    forNode->seekJumpToExpression = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::Jump);
+
+    // This is the start of the post statement
+    forNode->seekJumpBeforeExpression = context->bc->numInstructions;
+    forNode->seekJumpBeforeContinue   = forNode->seekJumpBeforeExpression;
+
+    // Increment the index
+    if (forNode->needIndex())
+        emitInstruction(context, ByteCodeOp::IncrementRA64, forNode->registerIndex);
 
     return true;
 }

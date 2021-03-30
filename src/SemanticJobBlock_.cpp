@@ -190,7 +190,7 @@ bool SemanticJob::resolveFor(SemanticContext* context)
     node->boolExpression->extension->byteCodeBeforeFct = ByteCodeGenJob::emitForBeforeExpr;
     node->boolExpression->extension->byteCodeAfterFct  = ByteCodeGenJob::emitForAfterExpr;
     node->postExpression->allocateExtension();
-    node->postExpression->extension->byteCodeAfterFct = ByteCodeGenJob::emitForAfterPost;
+    node->postExpression->extension->byteCodeBeforeFct = ByteCodeGenJob::emitForBeforePost;
     node->block->allocateExtension();
     node->block->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
     return true;
