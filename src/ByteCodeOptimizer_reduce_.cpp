@@ -14,7 +14,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         auto opFlags = g_ByteCodeOpFlags[(int) ip->op];
 
         // Byte swapping, the cast could be removed in another pass
-        if (ip->op == ByteCodeOp::CastInvBool8 &&
+        /*if (ip->op == ByteCodeOp::CastInvBool8 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip->a.u32 == ip[1].a.u32 &&
             !(ip[1].flags & BCI_START_STMT))
@@ -103,7 +103,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             context->passHasDoneSomething = true;
             ip->b.s32 += 1;
             ip->op = ByteCodeOp::JumpIfZero32;
-        }
+        }*/
 
         /*if (ip->op == ByteCodeOp::CastInvBool64 &&
             ip[1].op == ByteCodeOp::JumpIfTrue &&
@@ -118,7 +118,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             ip->op = ByteCodeOp::JumpIfZero64;
         }*/
 
-        if (ip->op == ByteCodeOp::CastBool8 &&
+        /*if (ip->op == ByteCodeOp::CastBool8 &&
             ip[1].op == ByteCodeOp::JumpIfTrue &&
             ip->a.u32 == ip[1].a.u32 &&
             !(ip[1].flags & BCI_START_STMT))
@@ -155,7 +155,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             context->passHasDoneSomething = true;
             ip->b.s32 += 1;
             ip->op = ByteCodeOp::JumpIfNotZero32;
-        }
+        }*/
 
         /*if (ip->op == ByteCodeOp::CastBool64 &&
             ip[1].op == ByteCodeOp::JumpIfTrue &&
@@ -170,7 +170,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             ip->op = ByteCodeOp::JumpIfNotZero64;
         }*/
 
-        if (ip->op == ByteCodeOp::CastBool8 &&
+        /*if (ip->op == ByteCodeOp::CastBool8 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip->a.u32 == ip[1].a.u32 &&
             !(ip[1].flags & BCI_START_STMT))
@@ -207,7 +207,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             context->passHasDoneSomething = true;
             ip->b.s32 += 1;
             ip->op = ByteCodeOp::JumpIfZero32;
-        }
+        }*/
 
         /*if (ip->op == ByteCodeOp::CastBool64 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&

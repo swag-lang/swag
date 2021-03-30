@@ -99,48 +99,52 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
+    auto r0 = reserveRegisterRC(context);
+
     if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Lambda)
     {
-        emitInstruction(context, ByteCodeOp::CastBool64, exprNode->resultRegisterRC);
-        return true;
+        emitInstruction(context, ByteCodeOp::CastBool64, r0, exprNode->resultRegisterRC);
     }
-
-    if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
-
-    switch (typeInfo->nativeType)
+    else
     {
-    case NativeTypeKind::Bool:
-        break;
-    case NativeTypeKind::U8:
-    case NativeTypeKind::S8:
-        emitInstruction(context, ByteCodeOp::CastBool8, exprNode->resultRegisterRC);
-        break;
-    case NativeTypeKind::U16:
-    case NativeTypeKind::S16:
-        emitInstruction(context, ByteCodeOp::CastBool16, exprNode->resultRegisterRC);
-        break;
-    case NativeTypeKind::Char:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::S32:
-        emitInstruction(context, ByteCodeOp::CastBool32, exprNode->resultRegisterRC);
-        break;
-    case NativeTypeKind::S64:
-    case NativeTypeKind::U64:
-    case NativeTypeKind::Int:
-    case NativeTypeKind::UInt:
-        emitInstruction(context, ByteCodeOp::CastBool64, exprNode->resultRegisterRC);
-        break;
-    case NativeTypeKind::String:
-        truncRegisterRC(context, exprNode->resultRegisterRC, 1);
-        emitInstruction(context, ByteCodeOp::CastBool64, exprNode->resultRegisterRC);
-        return true;
-    default:
-        context->node = exprNode;
-        internalError(context, "emitCastToNativeBool, invalid source type");
-        break;
+        if (typeInfo->kind != TypeInfoKind::Native)
+            return internalError(context, "emitCast, expression type not native", exprNode);
+
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::Bool:
+            break;
+        case NativeTypeKind::U8:
+        case NativeTypeKind::S8:
+            emitInstruction(context, ByteCodeOp::CastBool8, r0, exprNode->resultRegisterRC);
+            break;
+        case NativeTypeKind::U16:
+        case NativeTypeKind::S16:
+            emitInstruction(context, ByteCodeOp::CastBool16, r0, exprNode->resultRegisterRC);
+            break;
+        case NativeTypeKind::Char:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::S32:
+            emitInstruction(context, ByteCodeOp::CastBool32, r0, exprNode->resultRegisterRC);
+            break;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::Int:
+        case NativeTypeKind::UInt:
+            emitInstruction(context, ByteCodeOp::CastBool64, r0, exprNode->resultRegisterRC);
+            break;
+        case NativeTypeKind::String:
+            emitInstruction(context, ByteCodeOp::CastBool64, r0, exprNode->resultRegisterRC);
+            break;
+        default:
+            context->node = exprNode;
+            internalError(context, "emitCastToNativeBool, invalid source type");
+            break;
+        }
     }
 
+    freeRegisterRC(context, exprNode->resultRegisterRC);
+    exprNode->resultRegisterRC = r0;
     return true;
 }
 

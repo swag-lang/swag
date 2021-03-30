@@ -2323,22 +2323,22 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::CastBool8:
     {
-        registersRC[ip->a.u32].b = registersRC[ip->a.u32].u8 ? true : false;
+        registersRC[ip->a.u32].b = registersRC[ip->b.u32].u8 ? true : false;
         break;
     }
     case ByteCodeOp::CastBool16:
     {
-        registersRC[ip->a.u32].b = registersRC[ip->a.u32].u16 ? true : false;
+        registersRC[ip->a.u32].b = registersRC[ip->b.u32].u16 ? true : false;
         break;
     }
     case ByteCodeOp::CastBool32:
     {
-        registersRC[ip->a.u32].b = registersRC[ip->a.u32].u32 ? true : false;
+        registersRC[ip->a.u32].b = registersRC[ip->b.u32].u32 ? true : false;
         break;
     }
     case ByteCodeOp::CastBool64:
     {
-        registersRC[ip->a.u32].b = registersRC[ip->a.u32].u64 ? true : false;
+        registersRC[ip->a.u32].b = registersRC[ip->b.u32].u64 ? true : false;
         break;
     }
 

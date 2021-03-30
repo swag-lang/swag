@@ -2977,7 +2977,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CastBool8:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I8(r0)));
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I8(r1)));
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
@@ -2985,7 +2986,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CastBool16:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I16(r0)));
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I16(r1)));
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
@@ -2993,7 +2995,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CastBool32:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I32(r0)));
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I32(r1)));
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
@@ -3001,7 +3004,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CastBool64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I64(r0)));
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v0 = builder.CreateIsNotNull(builder.CreateLoad(TO_PTR_I64(r1)));
             v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
             builder.CreateStore(v0, TO_PTR_I8(r0));
             break;
