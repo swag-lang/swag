@@ -12,6 +12,22 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             setNop(context, ip);
 
         auto opFlags = g_ByteCodeOpFlags[(int) ip->op];
+
+        // IncPointer immb followed by DeRefStringSlice, set constant to deref
+        if (ip->op == ByteCodeOp::IncPointer64 &&
+            ip[1].op == ByteCodeOp::DeRefStringSlice &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip->b.s64 >= 0) &&          // constraint on offset in x64 DeRefStringSlice
+            (ip->b.s64 <= 0x7FFFFFFF) && // constraint on offset in x64 DeRefStringSlice
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip->a.u32 == ip->c.u32 &&
+            ip->c.u32 == ip[1].a.u32)
+        {
+            ip[1].c.s64 += ip->b.s64;
+            setNop(context, ip);
+        }
+
+        // Cast bool followed by a jump. Change the jump
         if (ip->op == ByteCodeOp::CastBool8 &&
             ip[1].op == ByteCodeOp::JumpIfTrue &&
             ip->a.u32 == ip[1].a.u32 &&

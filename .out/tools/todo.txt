@@ -49,9 +49,9 @@ cast interface vers struct (avec safety)
 OPTIMS
 ****************************************
 -------------------------------------
-virer MemCpy ?
+callstack bc => native => bc/crash nulle
 -------------------------------------
-while true genere du code !
+virer MemCpy ?
 -------------------------------------
 x64 passe reduction instructions
 -------------------------------------

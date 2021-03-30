@@ -855,8 +855,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r0   = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             auto r1   = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
             auto ptr  = builder.CreateLoad(r0);
-            auto ptr8 = builder.CreateInBoundsGEP(ptr, builder.getInt32(8));
-            auto v0   = builder.CreateLoad(TO_PTR_PTR_I8(ptr));
+            auto ptr0 = builder.CreateInBoundsGEP(ptr, builder.getInt32(ip->c.u32 + 0));
+            auto ptr8 = builder.CreateInBoundsGEP(ptr, builder.getInt32(ip->c.u32 + 8));
+            auto v0   = builder.CreateLoad(TO_PTR_PTR_I8(ptr0));
             auto v8   = builder.CreateLoad(TO_PTR_PTR_I8(ptr8));
             builder.CreateStore(v8, r1);
             builder.CreateStore(v0, r0);

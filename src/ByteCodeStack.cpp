@@ -58,8 +58,6 @@ void ByteCodeStack::log()
             parent = parent->ownerInline;
         }
     }
-
-    g_byteCodeStack.clear();
 }
 
 void ByteCodeStack::reportError(const Utf8& msg)
