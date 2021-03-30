@@ -118,109 +118,102 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             ip->op = ByteCodeOp::JumpIfZero64;
         }*/
 
-        /*if (ip->op == ByteCodeOp::CastBool8 &&
+        if (ip->op == ByteCodeOp::CastBool8 &&
             ip[1].op == ByteCodeOp::JumpIfTrue &&
             ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            auto tmp                      = *ip;
-            *ip                           = ip[1];
-            ip[1]                         = tmp;
+            ip[1].a.u32                   = ip->b.u32;
+            ip[1].op                      = ByteCodeOp::JumpIfNotZero8;
             context->passHasDoneSomething = true;
-            ip->b.s32 += 1;
-            ip->op = ByteCodeOp::JumpIfNotZero8;
         }
 
         if (ip->op == ByteCodeOp::CastBool16 &&
             ip[1].op == ByteCodeOp::JumpIfTrue &&
             ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            auto tmp                      = *ip;
-            *ip                           = ip[1];
-            ip[1]                         = tmp;
+            ip[1].a.u32                   = ip->b.u32;
+            ip[1].op                      = ByteCodeOp::JumpIfNotZero16;
             context->passHasDoneSomething = true;
-            ip->b.s32 += 1;
-            ip->op = ByteCodeOp::JumpIfNotZero16;
         }
 
         if (ip->op == ByteCodeOp::CastBool32 &&
             ip[1].op == ByteCodeOp::JumpIfTrue &&
             ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            auto tmp                      = *ip;
-            *ip                           = ip[1];
-            ip[1]                         = tmp;
+            ip[1].a.u32                   = ip->b.u32;
+            ip[1].op                      = ByteCodeOp::JumpIfNotZero32;
             context->passHasDoneSomething = true;
-            ip->b.s32 += 1;
-            ip->op = ByteCodeOp::JumpIfNotZero32;
-        }*/
+        }
 
-        /*if (ip->op == ByteCodeOp::CastBool64 &&
+        if (ip->op == ByteCodeOp::CastBool64 &&
             ip[1].op == ByteCodeOp::JumpIfTrue &&
             ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            auto tmp                      = *ip;
-            *ip                           = ip[1];
-            ip[1]                         = tmp;
+            ip[1].a.u32                   = ip->b.u32;
+            ip[1].op                      = ByteCodeOp::JumpIfNotZero64;
             context->passHasDoneSomething = true;
-            ip->b.s32 += 1;
-            ip->op = ByteCodeOp::JumpIfNotZero64;
-        }*/
+        }
 
-        /*if (ip->op == ByteCodeOp::CastBool8 &&
+        //
+        if (ip->op == ByteCodeOp::CastBool8 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            auto tmp                      = *ip;
-            *ip                           = ip[1];
-            ip[1]                         = tmp;
+            ip[1].a.u32                   = ip->b.u32;
+            ip[1].op                      = ByteCodeOp::JumpIfZero8;
             context->passHasDoneSomething = true;
-            ip->b.s32 += 1;
-            ip->op = ByteCodeOp::JumpIfZero8;
         }
 
         if (ip->op == ByteCodeOp::CastBool16 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            auto tmp                      = *ip;
-            *ip                           = ip[1];
-            ip[1]                         = tmp;
+            ip[1].a.u32                   = ip->b.u32;
+            ip[1].op                      = ByteCodeOp::JumpIfZero16;
             context->passHasDoneSomething = true;
-            ip->b.s32 += 1;
-            ip->op = ByteCodeOp::JumpIfZero16;
         }
 
         if (ip->op == ByteCodeOp::CastBool32 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            auto tmp                      = *ip;
-            *ip                           = ip[1];
-            ip[1]                         = tmp;
+            ip[1].a.u32                   = ip->b.u32;
+            ip[1].op                      = ByteCodeOp::JumpIfZero32;
             context->passHasDoneSomething = true;
-            ip->b.s32 += 1;
-            ip->op = ByteCodeOp::JumpIfZero32;
-        }*/
+        }
 
-        /*if (ip->op == ByteCodeOp::CastBool64 &&
+        if (ip->op == ByteCodeOp::CastBool64 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
             ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            auto tmp                      = *ip;
-            *ip                           = ip[1];
-            ip[1]                         = tmp;
+            ip[1].a.u32                   = ip->b.u32;
+            ip[1].op                      = ByteCodeOp::JumpIfZero64;
             context->passHasDoneSomething = true;
-            ip->b.s32 += 1;
-            ip->op = ByteCodeOp::JumpIfZero64;
-        }*/
+        }
 
         // Copy a constant value (from segment) to the stack
         if (ip->op == ByteCodeOp::MakeConstantSegPointer &&
