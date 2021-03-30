@@ -11,6 +11,8 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::DebugNop && ip->location == ip[1].location)
             setNop(context, ip);
 
+        auto opFlags = g_ByteCodeOpFlags[(int) ip->op];
+
         // Byte swapping, the cast could be removed in another pass
         if (ip->op == ByteCodeOp::CastInvBool8 &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
@@ -1212,6 +1214,23 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             ip[1].b.u32 = ip[0].a.u32;
             ip[1].c.s64 += ip[0].b.s64;
             setNop(context, ip);
+        }
+
+        // A = something followed by B = A
+        // make B = something, this gives the opportunity to remove one of them
+        if (ip[1].op == ByteCodeOp::CopyRBtoRA &&
+            (opFlags & OPFLAG_WRITE_A) &&
+            !(opFlags & OPFLAG_READ_A) &&
+            (!(opFlags & OPFLAG_READ_B) || ip->flags & BCI_IMM_B || ip->b.u32 != ip->a.u32) &&
+            (!(opFlags & OPFLAG_READ_C) || ip->flags & BCI_IMM_C || ip->c.u32 != ip->a.u32) &&
+            (!(opFlags & OPFLAG_READ_D) || ip->flags & BCI_IMM_D || ip->d.u32 != ip->a.u32) &&
+            ip->a.u32 == ip[1].b.u32 &&
+            !(ip[0].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            auto s      = ip[1].a.u32;
+            ip[1]       = ip[0];
+            ip[1].a.u32 = s;
         }
 
         // MakeStackPointer Reg, ImmB
