@@ -60,58 +60,65 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
 
         // If we use a register that comes from a CopyRBRA, then use the initial
         // register instead (that way, the Copy can become deadstore and removed later)
-        if ((flags & OPFLAG_READ_A) && !(ip->flags & BCI_IMM_A) && !(flags & OPFLAG_WRITE_A))
+        // *NOT* for PushRAParam, because the register numbers are important in case of variadic parameters.
+        if (ip->op != ByteCodeOp::PushRAParam &&
+            ip->op != ByteCodeOp::PushRAParam2 &&
+            ip->op != ByteCodeOp::PushRAParam3 &&
+            ip->op != ByteCodeOp::PushRAParam4)
         {
-            auto it = mapCopyRA.find(ip->a.u32);
-            if (it != mapCopyRA.end())
+            if ((flags & OPFLAG_READ_A) && !(ip->flags & BCI_IMM_A) && !(flags & OPFLAG_WRITE_A))
             {
-                auto it1 = mapCopyRB.find(it->second->b.u32);
-                if (it1 != mapCopyRB.end() && it->second == it1->second)
+                auto it = mapCopyRA.find(ip->a.u32);
+                if (it != mapCopyRA.end())
                 {
-                    ip->a.u32                     = it->second->b.u32;
-                    context->passHasDoneSomething = true;
+                    auto it1 = mapCopyRB.find(it->second->b.u32);
+                    if (it1 != mapCopyRB.end() && it->second == it1->second)
+                    {
+                        ip->a.u32                     = it->second->b.u32;
+                        context->passHasDoneSomething = true;
+                    }
                 }
             }
-        }
 
-        if ((flags & OPFLAG_READ_B) && !(ip->flags & BCI_IMM_B) && !(flags & OPFLAG_WRITE_B))
-        {
-            auto it = mapCopyRA.find(ip->b.u32);
-            if (it != mapCopyRA.end())
+            if ((flags & OPFLAG_READ_B) && !(ip->flags & BCI_IMM_B) && !(flags & OPFLAG_WRITE_B))
             {
-                auto it1 = mapCopyRB.find(it->second->b.u32);
-                if (it1 != mapCopyRB.end() && it->second == it1->second)
+                auto it = mapCopyRA.find(ip->b.u32);
+                if (it != mapCopyRA.end())
                 {
-                    ip->b.u32                     = it->second->b.u32;
-                    context->passHasDoneSomething = true;
+                    auto it1 = mapCopyRB.find(it->second->b.u32);
+                    if (it1 != mapCopyRB.end() && it->second == it1->second)
+                    {
+                        ip->b.u32                     = it->second->b.u32;
+                        context->passHasDoneSomething = true;
+                    }
                 }
             }
-        }
 
-        if ((flags & OPFLAG_READ_C) && !(ip->flags & BCI_IMM_C) && !(flags & OPFLAG_WRITE_C))
-        {
-            auto it = mapCopyRA.find(ip->c.u32);
-            if (it != mapCopyRA.end())
+            if ((flags & OPFLAG_READ_C) && !(ip->flags & BCI_IMM_C) && !(flags & OPFLAG_WRITE_C))
             {
-                auto it1 = mapCopyRB.find(it->second->b.u32);
-                if (it1 != mapCopyRB.end() && it->second == it1->second)
+                auto it = mapCopyRA.find(ip->c.u32);
+                if (it != mapCopyRA.end())
                 {
-                    ip->c.u32                     = it->second->b.u32;
-                    context->passHasDoneSomething = true;
+                    auto it1 = mapCopyRB.find(it->second->b.u32);
+                    if (it1 != mapCopyRB.end() && it->second == it1->second)
+                    {
+                        ip->c.u32                     = it->second->b.u32;
+                        context->passHasDoneSomething = true;
+                    }
                 }
             }
-        }
 
-        if ((flags & OPFLAG_READ_D) && !(ip->flags & BCI_IMM_D) && !(flags & OPFLAG_WRITE_D))
-        {
-            auto it = mapCopyRA.find(ip->d.u32);
-            if (it != mapCopyRA.end())
+            if ((flags & OPFLAG_READ_D) && !(ip->flags & BCI_IMM_D) && !(flags & OPFLAG_WRITE_D))
             {
-                auto it1 = mapCopyRB.find(it->second->b.u32);
-                if (it1 != mapCopyRB.end() && it->second == it1->second)
+                auto it = mapCopyRA.find(ip->d.u32);
+                if (it != mapCopyRA.end())
                 {
-                    ip->d.u32                     = it->second->b.u32;
-                    context->passHasDoneSomething = true;
+                    auto it1 = mapCopyRB.find(it->second->b.u32);
+                    if (it1 != mapCopyRB.end() && it->second == it1->second)
+                    {
+                        ip->d.u32                     = it->second->b.u32;
+                        context->passHasDoneSomething = true;
+                    }
                 }
             }
         }

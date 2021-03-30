@@ -2265,7 +2265,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::NegBool:
     {
-        registersRC[ip->a.u32].b ^= 1;
+        registersRC[ip->a.u32].b = registersRC[ip->b.u32].b ^ 1;
         break;
     }
     case ByteCodeOp::NegS32:

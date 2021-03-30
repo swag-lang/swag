@@ -132,6 +132,7 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
     auto flags = g_ByteCodeOpFlags[(int) ip->op];
     if (flags & OPFLAG_UNPURE)
         return;
+
     SWAG_ASSERT(ip->op != ByteCodeOp::End);
     context->passHasDoneSomething = true;
     ip->op                        = ByteCodeOp::Nop;

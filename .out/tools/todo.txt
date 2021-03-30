@@ -49,6 +49,10 @@ cast interface vers struct (avec safety)
 OPTIMS
 ****************************************
 -------------------------------------
+virer MemCpy ?
+-------------------------------------
+while true genere du code !
+-------------------------------------
 x64 passe reduction instructions
 -------------------------------------
 passer/retourner des structs par value si <= 64 bits

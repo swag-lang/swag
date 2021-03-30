@@ -129,9 +129,11 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
             }
             else
             {
-                emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1[1]);
-                emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r0[0], r0[1], r1[0], r2);
-                emitInstruction(context, ByteCodeOp::NegBool, r2);
+                auto rt = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::CopyRBtoRA, rt, r1[1]);
+                emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r0[0], r0[1], r1[0], rt);
+                emitInstruction(context, ByteCodeOp::NegBool, r2, rt);
+                freeRegisterRC(context, rt);
             }
             return true;
         default:
@@ -146,11 +148,13 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
         if (leftTypeInfo->isPointerToTypeInfo() || rightTypeInfo->isPointerToTypeInfo())
         {
             auto rflags = reserveRegisterRC(context);
+            auto rt     = reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::SetImmediate32, rflags);
             inst->b.u64 = SWAG_COMPARE_STRICT;
-            inst        = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, r2);
+            inst        = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, rt);
+            emitInstruction(context, ByteCodeOp::NegBool, r2, rt);
             freeRegisterRC(context, rflags);
-            emitInstruction(context, ByteCodeOp::NegBool, r2);
+            freeRegisterRC(context, rt);
         }
 
         // Simple pointer compare
@@ -470,8 +474,13 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
                 break;
             case TokenId::SymExclamEqual:
-                emitInstruction(context, ByteCodeOp::NegBool, r2);
+            {
+                auto rt = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::NegBool, rt, r2);
+                freeRegisterRC(context, r2);
+                node->resultRegisterRC = rt;
                 break;
+            }
             }
         }
         else
@@ -491,8 +500,13 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::GreaterEqZeroToTrue, r2);
                 break;
             case TokenId::SymExclamEqual:
-                emitInstruction(context, ByteCodeOp::NegBool, r2);
+            {
+                auto rt = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::NegBool, rt, r2);
+                freeRegisterRC(context, r2);
+                node->resultRegisterRC = rt;
                 break;
+            }
             }
         }
     }

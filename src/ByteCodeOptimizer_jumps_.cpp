@@ -51,7 +51,10 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::JumpIfFalse)
         {
             destIp = ip + ip->b.s32 + 1;
-            if (destIp->op == ByteCodeOp::JumpIfFalse && destIp->a.u32 == ip->a.u32)
+            if (destIp->op == ByteCodeOp::JumpIfFalse &&
+                destIp->a.u32 == ip->a.u32 &&
+                !(ip->flags & BCI_IMM_A) &&
+                !(destIp->flags & BCI_IMM_A))
             {
                 ip->b.s32 += destIp->b.s32 + 1;
                 context->passHasDoneSomething = true;
@@ -62,7 +65,10 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::JumpIfTrue)
         {
             destIp = ip + ip->b.s32 + 1;
-            if (destIp->op == ByteCodeOp::JumpIfFalse && destIp->a.u32 == ip->a.u32)
+            if (destIp->op == ByteCodeOp::JumpIfFalse &&
+                destIp->a.u32 == ip->a.u32 &&
+                !(ip->flags & BCI_IMM_A) &&
+                !(destIp->flags & BCI_IMM_A))
             {
                 ip->b.s32 += 1;
                 destIp[1].flags |= BCI_START_STMT;
@@ -74,7 +80,10 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::JumpIfFalse)
         {
             destIp = ip + ip->b.s32 + 1;
-            if (destIp->op == ByteCodeOp::JumpIfTrue && destIp->a.u32 == ip->a.u32)
+            if (destIp->op == ByteCodeOp::JumpIfTrue &&
+                destIp->a.u32 == ip->a.u32 &&
+                !(ip->flags & BCI_IMM_A) &&
+                !(destIp->flags & BCI_IMM_A))
             {
                 ip->b.s32 += 1;
                 destIp[1].flags |= BCI_START_STMT;
@@ -86,7 +95,10 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::JumpIfTrue)
         {
             destIp = ip + ip->b.s32 + 1;
-            if (destIp->op == ByteCodeOp::JumpIfTrue && destIp->a.u32 == ip->a.u32)
+            if (destIp->op == ByteCodeOp::JumpIfTrue &&
+                destIp->a.u32 == ip->a.u32 &&
+                !(ip->flags & BCI_IMM_A) &&
+                !(destIp->flags & BCI_IMM_A))
             {
                 ip->b.s32 += destIp->b.s32 + 1;
                 context->passHasDoneSomething = true;

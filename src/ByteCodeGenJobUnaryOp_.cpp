@@ -91,8 +91,13 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
     switch (node->token.id)
     {
     case TokenId::SymExclam:
-        emitInstruction(context, ByteCodeOp::NegBool, r0);
+    {
+        auto rt = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::NegBool, rt, node->resultRegisterRC);
+        freeRegisterRC(context, node->resultRegisterRC);
+        node->resultRegisterRC = rt;
         return true;
+    }
     case TokenId::SymMinus:
         SWAG_CHECK(emitUnaryOpMinus(context, r0));
         return true;

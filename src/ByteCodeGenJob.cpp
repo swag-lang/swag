@@ -719,10 +719,10 @@ JobResult ByteCodeGenJob::execute()
         context.bc->node->kind == AstNodeKind::FuncDecl &&
         !context.bc->node->sourceFile->numTestErrors)
     {
-        if (context.bc->maxReservedRegisterRC != context.bc->availableRegistersRC.size())
-        {
+        if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())
             context.sourceFile->report({context.bc->node, context.bc->node->token, format("[compiler internal] function '%s' does not release all registers; this is fine, but should be reported !", context.bc->node->token.text.c_str()), DiagnosticLevel::Warning});
-        }
+        else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
+            context.sourceFile->report({context.bc->node, context.bc->node->token, format("[compiler internal] function '%s' does release too many registers; this is fine, but should be reported !", context.bc->node->token.text.c_str()), DiagnosticLevel::Warning});
     }
 
     return JobResult::ReleaseJob;

@@ -2896,7 +2896,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::NegBool:
         {
             auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto v0 = builder.CreateXor(builder.CreateLoad(r0), pp.cst1_i8);
+            auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
+            auto v0 = builder.CreateXor(builder.CreateLoad(r1), pp.cst1_i8);
             builder.CreateStore(v0, r0);
             break;
         }
