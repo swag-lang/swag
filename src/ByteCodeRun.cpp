@@ -1008,22 +1008,22 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::DeRef8:
     {
-        registersRC[ip->a.u32].u64 = *(uint8_t*) registersRC[ip->b.u32].pointer;
+        registersRC[ip->a.u32].u64 = *(uint8_t*) (registersRC[ip->b.u32].pointer + ip->c.s64);
         break;
     }
     case ByteCodeOp::DeRef16:
     {
-        registersRC[ip->a.u32].u64 = *(uint16_t*) registersRC[ip->b.u32].pointer;
+        registersRC[ip->a.u32].u64 = *(uint16_t*) (registersRC[ip->b.u32].pointer + ip->c.s64);
         break;
     }
     case ByteCodeOp::DeRef32:
     {
-        registersRC[ip->a.u32].u64 = *(uint32_t*) registersRC[ip->b.u32].pointer;
+        registersRC[ip->a.u32].u64 = *(uint32_t*) (registersRC[ip->b.u32].pointer + ip->c.s64);
         break;
     }
     case ByteCodeOp::DeRef64:
     {
-        registersRC[ip->a.u32].u64 = *(uint64_t*) (registersRC[ip->b.u32].pointer + ip->c.u32);
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (registersRC[ip->b.u32].pointer + ip->c.s64);
         break;
     }
     case ByteCodeOp::DeRefStringSlice:

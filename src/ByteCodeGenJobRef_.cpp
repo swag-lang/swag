@@ -147,7 +147,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
             auto r0 = reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->resultRegisterRC[0]);
             SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC[0], typeInfo->relative));
-            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[1], r0)->c.u32 = 8;
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[1], r0)->c.u64 = 8;
             freeRegisterRC(context, r0);
         }
         else

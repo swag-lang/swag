@@ -1135,7 +1135,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[1].op    = ByteCodeOp::GetFromStack8;
-            ip[1].b.u32 = ip[0].b.u32;
+            ip[1].b.u32 = ip[0].b.u32 + ip[1].c.u32;
         }
 
         if (ip[0].op == ByteCodeOp::MakeStackPointer &&
@@ -1144,7 +1144,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[1].op    = ByteCodeOp::GetFromStack16;
-            ip[1].b.u32 = ip[0].b.u32;
+            ip[1].b.u32 = ip[0].b.u32 + ip[1].c.u32;
         }
 
         if (ip[0].op == ByteCodeOp::MakeStackPointer &&
@@ -1153,7 +1153,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             !(ip[1].flags & BCI_START_STMT))
         {
             ip[1].op    = ByteCodeOp::GetFromStack32;
-            ip[1].b.u32 = ip[0].b.u32;
+            ip[1].b.u32 = ip[0].b.u32 + ip[1].c.u32;
         }
 
         if (ip[0].op == ByteCodeOp::MakeStackPointer &&
@@ -1163,6 +1163,55 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         {
             ip[1].op    = ByteCodeOp::GetFromStack64;
             ip[1].b.u32 = ip[0].b.u32 + ip[1].c.u32;
+        }
+
+        // Make DeRef with an offset
+        if (ip[0].op == ByteCodeOp::IncPointer64 &&
+            ip[1].op == ByteCodeOp::DeRef8 &&
+            (ip[0].flags & BCI_IMM_B) &&
+            ip[0].c.u32 == ip[1].b.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].b.u32 = ip[0].a.u32;
+            ip[1].c.s64 += ip[0].b.s64;
+            setNop(context, ip);
+        }
+
+        if (ip[0].op == ByteCodeOp::IncPointer64 &&
+            ip[1].op == ByteCodeOp::DeRef16 &&
+            (ip[0].flags & BCI_IMM_B) &&
+            ip[0].c.u32 == ip[1].b.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].b.u32 = ip[0].a.u32;
+            ip[1].c.s64 += ip[0].b.s64;
+            setNop(context, ip);
+        }
+
+        if (ip[0].op == ByteCodeOp::IncPointer64 &&
+            ip[1].op == ByteCodeOp::DeRef32 &&
+            (ip[0].flags & BCI_IMM_B) &&
+            ip[0].c.u32 == ip[1].b.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].b.u32 = ip[0].a.u32;
+            ip[1].c.s64 += ip[0].b.s64;
+            setNop(context, ip);
+        }
+
+        if (ip[0].op == ByteCodeOp::IncPointer64 &&
+            ip[1].op == ByteCodeOp::DeRef64 &&
+            (ip[0].flags & BCI_IMM_B) &&
+            ip[0].c.u32 == ip[1].b.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].b.u32 = ip[0].a.u32;
+            ip[1].c.s64 += ip[0].b.s64;
+            setNop(context, ip);
         }
 
         // MakeStackPointer Reg, ImmB
