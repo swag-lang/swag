@@ -319,14 +319,14 @@ BYTECODE_OP(SetAtStackPointer64x2, OPFLAG_READ_VAL32_A | OPFLAG_READ_B | OPFLAG_
 BYTECODE_OP(IncPointer64, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C | OPFLAG_IMM_B, "_rc_ = _ra_ + _rbs64_")
 BYTECODE_OP(DecPointer64, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C | OPFLAG_IMM_B, "_rc_ = _ra_ - _rbs64_")
 
-BYTECODE_OP(CastBool8, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = _ra_ ? true : false")
-BYTECODE_OP(CastBool16, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = _ra_ ? true : false")
-BYTECODE_OP(CastBool32, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = _ra_ ? true : false")
-BYTECODE_OP(CastBool64, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = _ra_ ? true : false")
-BYTECODE_OP(CastInvBool8, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = _ra_ ? false : true")
-BYTECODE_OP(CastInvBool16, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = _ra_ ? false : true")
-BYTECODE_OP(CastInvBool32, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = _ra_ ? false : true")
-BYTECODE_OP(CastInvBool64, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = _ra_ ? false : true")
+BYTECODE_OP(CastBool8, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = cast(bool) _ra_")
+BYTECODE_OP(CastBool16, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = cast(bool) _ra_")
+BYTECODE_OP(CastBool32, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = cast(bool) _ra_")
+BYTECODE_OP(CastBool64, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = cast(bool) _ra_")
+BYTECODE_OP(CastInvBool8, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = !cast(bool) _ra_")
+BYTECODE_OP(CastInvBool16, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = !cast(bool) _ra_")
+BYTECODE_OP(CastInvBool32, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = !cast(bool) _ra_")
+BYTECODE_OP(CastInvBool64, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = !cast(bool) _ra_")
 
 BYTECODE_OP(CastS8S16, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = cast(s16) _ra_")
 
