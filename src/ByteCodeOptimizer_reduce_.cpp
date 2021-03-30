@@ -1273,6 +1273,32 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
                 break;
             }
         }
+
+        if ((ip->flags & BCI_IMM_B) &&
+            !(ip->flags & BCI_IMM_A) &&
+            !(ip->flags & BCI_IMM_C))
+        {
+            switch (ip->op)
+            {
+            case ByteCodeOp::BinOpMulU32:
+            case ByteCodeOp::BinOpMulU64:
+            case ByteCodeOp::BinOpMulS32:
+            case ByteCodeOp::BinOpMulS64:
+                if (ip->b.u32 == 1)
+                {
+                    if (ip->a.u32 != ip->c.u32)
+                    {
+                        ip->op    = ByteCodeOp::CopyRBtoRA;
+                        auto s    = ip->a.u32;
+                        ip->a.u32 = ip->c.u32;
+                        ip->b.u32 = s;
+                        ip->flags &= ~BCI_IMM_B;
+                        context->passHasDoneSomething = true;
+                    }
+                }
+                break;
+            }
+        }
     }
 }
 
