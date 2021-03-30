@@ -1318,31 +1318,6 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
                 break;
             }
         }
-    }
-}
-
-void ByteCodeOptimizer::optimizePassReduce2(ByteCodeOptContext* context)
-{
-    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
-    {
-        // Do not optimize if, by removing the next instruction, we miss a debug line
-        // So we test that the next instruction (that can be removed) and the instruction after
-        // have the same line. That way, even if we remove ip + 1, we keed the debug line.
-        if (context->bc->sourceFile->module->buildCfg.byteCodeDebug)
-        {
-            if (ip->op == ByteCodeOp::Ret || ip->op == ByteCodeOp::Nop)
-                continue;
-            SourceFile*     file0;
-            SourceFile*     file1;
-            SourceLocation* loc0;
-            SourceLocation* loc1;
-            context->bc->getLocation(context->bc, ip + 1, &file0, &loc0);
-            context->bc->getLocation(context->bc, ip + 2, &file1, &loc1);
-            if (!loc0 || !loc1)
-                continue;
-            if (file0 != file1 || loc0->line != loc1->line)
-                continue;
-        }
 
         // Reduce SetAtStackPointer
         if (ip->op == ByteCodeOp::SetAtStackPointer8 &&

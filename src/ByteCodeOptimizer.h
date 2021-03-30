@@ -89,7 +89,6 @@ struct ByteCodeOptimizer
     static void optimizePassRetCopyGlobal(ByteCodeOptContext* context);
     static void optimizePassRetCopyInline(ByteCodeOptContext* context);
     static void optimizePassReduce(ByteCodeOptContext* context);
-    static void optimizePassReduce2(ByteCodeOptContext* context);
     static void optimizePassErr(ByteCodeOptContext* context);
 
     static bool optimize(Job* job, Module* module, bool& done);

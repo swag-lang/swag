@@ -125,7 +125,6 @@ struct BuildCfg
 
     // Bytecode
     bool byteCodeOptimize    = true;
-    bool byteCodeDebug       = true;
     bool byteCodeDebugInline = true;
     bool byteCodeEmitAssume  = true;
     bool byteCodeInline      = true;

@@ -170,7 +170,7 @@ bool ByteCodeGenJob::emitDebugNop(ByteCodeGenContext* context)
     auto node = context->node;
     if (!node->childs.empty())
         node->resultRegisterRC = node->childs.back()->resultRegisterRC;
-    if (context->sourceFile->module->buildCfg.byteCodeDebug)
+    if (!context->sourceFile->module->buildCfg.byteCodeOptimize)
     {
         PushLocation lk(context, &node->token.endLocation);
         emitInstruction(context, ByteCodeOp::DebugNop);

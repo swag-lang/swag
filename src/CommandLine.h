@@ -51,7 +51,7 @@ struct CommandLine
     bool errorNoteOut          = true;
 
     // Output
-    string buildCfg           = "debug";
+    string buildCfg           = "fast-debug";
     string buildCfgDebug      = "default";
     string buildCfgSafety     = "default";
     string buildCfgInlineBC   = "default";
