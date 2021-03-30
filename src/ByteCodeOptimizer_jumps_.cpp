@@ -58,6 +58,30 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
         }
 
+        // Jump if true to a jump if false with the same register
+        if (ip->op == ByteCodeOp::JumpIfTrue)
+        {
+            destIp = ip + ip->b.s32 + 1;
+            if (destIp->op == ByteCodeOp::JumpIfFalse && destIp->a.u32 == ip->a.u32)
+            {
+                ip->b.s32 += 1;
+                destIp[1].flags |= BCI_START_STMT;
+                context->passHasDoneSomething = true;
+            }
+        }
+
+        // Jump if false to a jump if true with the same register
+        if (ip->op == ByteCodeOp::JumpIfFalse)
+        {
+            destIp = ip + ip->b.s32 + 1;
+            if (destIp->op == ByteCodeOp::JumpIfTrue && destIp->a.u32 == ip->a.u32)
+            {
+                ip->b.s32 += 1;
+                destIp[1].flags |= BCI_START_STMT;
+                context->passHasDoneSomething = true;
+            }
+        }
+
         // Jump if true to a jump if true with the same register
         if (ip->op == ByteCodeOp::JumpIfTrue)
         {
@@ -93,14 +117,20 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         // 1: (jump) to whatever
         // 2: ...
         // Then we switch to (jump if true) whatever, and eliminate the unconditional jump
-        if (ip->op == ByteCodeOp::JumpIfFalse && ip->b.s32 == 1 && ip[1].op == ByteCodeOp::Jump)
+        if (ip->op == ByteCodeOp::JumpIfFalse &&
+            ip->b.s32 == 1 &&
+            ip[1].op == ByteCodeOp::Jump &&
+            !(ip[1].flags & BCI_START_STMT))
         {
             ip->op    = ByteCodeOp::JumpIfTrue;
             ip->b.s32 = ip[1].b.s32 + 1;
             setNop(context, ip + 1);
         }
 
-        if (ip->op == ByteCodeOp::JumpIfTrue && ip->b.s32 == 1 && ip[1].op == ByteCodeOp::Jump)
+        if (ip->op == ByteCodeOp::JumpIfTrue &&
+            ip->b.s32 == 1 &&
+            ip[1].op == ByteCodeOp::Jump &&
+            !(ip[1].flags & BCI_START_STMT))
         {
             ip->op    = ByteCodeOp::JumpIfFalse;
             ip->b.s32 = ip[1].b.s32 + 1;
