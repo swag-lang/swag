@@ -377,7 +377,12 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
-    emitInstruction(context, ByteCodeOp::BinOpBitmaskAndS32, r0, r1, r2);
+
+    // Because of the shortcuts, there's no need to actually do a || here, as we are sure that the
+    // expression on the left is true
+    // Se we just need to propagate the result
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1);
+
     auto inst   = &context->bc->out[node->seekJumpExpression];
     inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;
     return true;
@@ -407,7 +412,12 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitLogicalOr(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
-    emitInstruction(context, ByteCodeOp::BinOpBitmaskOrS32, r0, r1, r2);
+
+    // Because of the shortcuts, there's no need to actually do a && here, as we are sure that the
+    // expression on the left is true
+    // Se we just need to propagate the result
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1);
+
     auto inst   = &context->bc->out[node->seekJumpExpression];
     inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;
     return true;
