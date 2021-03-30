@@ -558,27 +558,6 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
 
-            case ByteCodeOp::CastInvBool8:
-                ip->op  = ByteCodeOp::SetImmediate32;
-                ip->b.b = ip->b.u8 ? false : true;
-                OK();
-                break;
-            case ByteCodeOp::CastInvBool16:
-                ip->op  = ByteCodeOp::SetImmediate32;
-                ip->b.b = ip->b.u16 ? false : true;
-                OK();
-                break;
-            case ByteCodeOp::CastInvBool32:
-                ip->op  = ByteCodeOp::SetImmediate32;
-                ip->b.b = ip->b.u32 ? false : true;
-                OK();
-                break;
-            case ByteCodeOp::CastInvBool64:
-                ip->op  = ByteCodeOp::SetImmediate32;
-                ip->b.b = ip->b.u64 ? false : true;
-                OK();
-                break;
-
             case ByteCodeOp::CastS8S16:
                 ip->op    = ByteCodeOp::SetImmediate32;
                 ip->b.s16 = ip->b.s8;

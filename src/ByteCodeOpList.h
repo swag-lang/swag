@@ -323,10 +323,6 @@ BYTECODE_OP(CastBool8, OPFLAG_WRITE_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ = ca
 BYTECODE_OP(CastBool16, OPFLAG_WRITE_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ = cast(bool) _rb_")
 BYTECODE_OP(CastBool32, OPFLAG_WRITE_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ = cast(bool) _rb_")
 BYTECODE_OP(CastBool64, OPFLAG_WRITE_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ = cast(bool) _rb_")
-BYTECODE_OP(CastInvBool8, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = !cast(bool) _ra_")
-BYTECODE_OP(CastInvBool16, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = !cast(bool) _ra_")
-BYTECODE_OP(CastInvBool32, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = !cast(bool) _ra_")
-BYTECODE_OP(CastInvBool64, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = !cast(bool) _ra_")
 
 BYTECODE_OP(CastS8S16, OPFLAG_READ_A | OPFLAG_WRITE_A, "_ra_ = cast(s16) _ra_")
 

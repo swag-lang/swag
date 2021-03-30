@@ -3011,39 +3011,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::CastInvBool8:
-        {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateIsNull(builder.CreateLoad(TO_PTR_I8(r0)));
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
-            break;
-        }
-        case ByteCodeOp::CastInvBool16:
-        {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateIsNull(builder.CreateLoad(TO_PTR_I16(r0)));
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
-            break;
-        }
-        case ByteCodeOp::CastInvBool32:
-        {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateIsNull(builder.CreateLoad(TO_PTR_I32(r0)));
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
-            break;
-        }
-        case ByteCodeOp::CastInvBool64:
-        {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateIsNull(builder.CreateLoad(TO_PTR_I64(r0)));
-            v0      = builder.CreateIntCast(v0, builder.getInt8Ty(), false);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
-            break;
-        }
-
         case ByteCodeOp::CastS8S16:
         {
             auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->a.u32));
