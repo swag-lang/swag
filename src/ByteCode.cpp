@@ -173,7 +173,7 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_raf32_", format("%f", ip->a.f32));
         str.replace("_raf64_", format("%lf", ip->a.f64));
         str.replace("_rax32_", format("0x%x", ip->a.u32));
-        str.replace("_rax64_", format("0x%x", ip->a.u64));
+        str.replace("_rax64_", format("0x%llx", ip->a.u64));
     }
 
     if (ip->flags & BCI_IMM_B || flags & OPFLAG_READ_VAL32_B || flags & OPFLAG_READ_VAL64_B)
@@ -189,7 +189,7 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rbf32_", format("%f", ip->b.f32));
         str.replace("_rbf64_", format("%lf", ip->b.f64));
         str.replace("_rbx32_", format("0x%x", ip->b.u32));
-        str.replace("_rbx64_", format("0x%x", ip->b.u64));
+        str.replace("_rbx64_", format("0x%llx", ip->b.u64));
     }
 
     if (ip->flags & BCI_IMM_C || flags & OPFLAG_READ_VAL32_C || flags & OPFLAG_READ_VAL64_C)
@@ -205,7 +205,7 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rcf32_", format("%f", ip->c.f32));
         str.replace("_rcf64_", format("%lf", ip->c.f64));
         str.replace("_rcx32_", format("0x%x", ip->c.u32));
-        str.replace("_rcx64_", format("0x%x", ip->c.u64));
+        str.replace("_rcx64_", format("0x%llx", ip->c.u64));
     }
 
     if (ip->flags & BCI_IMM_D || flags & OPFLAG_READ_VAL32_D || flags & OPFLAG_READ_VAL64_D)
@@ -221,7 +221,7 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
         str.replace("_rdf32_", format("%f", ip->d.f32));
         str.replace("_rdf64_", format("%lf", ip->d.f64));
         str.replace("_rdx32_", format("0x%x", ip->d.u32));
-        str.replace("_rdx64_", format("0x%x", ip->d.u64));
+        str.replace("_rdx64_", format("0x%llx", ip->d.u64));
     }
 
     if (flags & (OPFLAG_READ_A | OPFLAG_WRITE_A))
@@ -430,8 +430,8 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     {
         auto funcNode = (AstFuncDecl*) ip->b.pointer;
         SWAG_ASSERT(funcNode);
-        g_Log.print(funcNode->sourceFile->path);
-        g_Log.print(" ");
+        g_Log.print(funcNode->sourceFile->name);
+        g_Log.print("/");
         g_Log.print(funcNode->token.text);
         break;
     }
