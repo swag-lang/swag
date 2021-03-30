@@ -81,7 +81,6 @@ struct ByteCodeOptimizer
     static void optimizePassDeadCode(ByteCodeOptContext* context);
     static void optimizePassEmptyFct(ByteCodeOptContext* context);
     static void optimizePassDeadStore(ByteCodeOptContext* context);
-    static void optimizePassDeadStoreTree(ByteCodeOptContext* context);
     static void optimizePassImmediate(ByteCodeOptContext* context);
     static void optimizePassConst(ByteCodeOptContext* context);
     static void optimizePassDupCopyRBRA(ByteCodeOptContext* context);

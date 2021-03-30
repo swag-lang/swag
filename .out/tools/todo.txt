@@ -49,8 +49,6 @@ cast interface vers struct (avec safety)
 OPTIMS
 ****************************************
 -------------------------------------
-ByteCodeOp::DecPointer64 versus ByteCodeOp::IncPointer64
--------------------------------------
 x64 passe reduction instructions
 -------------------------------------
 passer/retourner des structs par value si <= 64 bits
