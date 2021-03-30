@@ -1107,6 +1107,25 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             setNop(context, ip + 1);
         }
 
+        // NegBool followed by bool jump
+        if (ip[0].op == ByteCodeOp::NegBool &&
+            ip[1].op == ByteCodeOp::JumpIfFalse &&
+            !(ip[1].flags & BCI_JUMP_DEST) &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            ip[1].op = ByteCodeOp::JumpIfTrue;
+            setNop(context, ip);
+        }
+
+        if (ip[0].op == ByteCodeOp::NegBool &&
+            ip[1].op == ByteCodeOp::JumpIfTrue &&
+            !(ip[1].flags & BCI_JUMP_DEST) &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            ip[1].op = ByteCodeOp::JumpIfFalse;
+            setNop(context, ip);
+        }
+
         if (ip[1].op == ByteCodeOp::JumpIfNotZero64 && !(ip[1].flags & BCI_IMM_A))
         {
             // Testing if a stack pointer is not null is irrelevant. This can happen often because of
