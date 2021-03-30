@@ -992,7 +992,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::ForeignCall:
     {
+        context->bc->addCallStack(context);
         ffiCall(context, ip);
+        g_byteCodeStack.pop();
         break;
     }
 
@@ -3054,20 +3056,8 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         else
             userMsg.append("panic");
 
-        // Add current context
-        if (runContext->ip && runContext->ip->node && runContext->ip->node->sourceFile)
-        {
-            auto ip    = runContext->ip - 1; // ip is the next pointer instruction
-            auto path1 = normalizePath(fs::path(ip->node->sourceFile->path.c_str()));
-            auto path2 = normalizePath(fs::path(fileName.c_str()));
-
-            SourceFile*     file;
-            SourceLocation* iplocation;
-            ByteCode::getLocation(runContext->bc, runContext->ip, &file, &iplocation, true);
-
-            if (path1 != path2 || iplocation->line != location->lineStart)
-                runContext->bc->addCallStack(runContext);
-        }
+        // Set the actual context, for log
+        g_byteCodeStack.currentContext = runContext;
 
         SourceFile     dummyFile;
         SourceLocation sourceLocation;
@@ -3101,6 +3091,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         else
             sourceFile = runContext->bc->sourceFile;
         sourceFile->report(diag, notes);
+        g_byteCodeStack.currentContext = nullptr;
 
         return EXCEPTION_EXECUTE_HANDLER;
     }
@@ -3115,8 +3106,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     Diagnostic note2{"you can run swag with --debug to attach the bytecode debugger when the error occurs", DiagnosticLevel::Note};
     diag.exceptionError        = true;
     runContext->exceptionError = true;
-    runContext->bc->addCallStack(runContext);
+    g_byteCodeStack.currentContext = runContext;
     runContext->bc->sourceFile->report(diag, &note1, &note2);
+    g_byteCodeStack.currentContext = nullptr;
     return g_CommandLine.devMode ? EXCEPTION_CONTINUE_EXECUTION : EXCEPTION_EXECUTE_HANDLER;
 }
 
@@ -3136,7 +3128,10 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
         __except (exceptionHandler(runContext, GetExceptionInformation()))
         {
             if (!runContext->exceptionError || !g_CommandLine.byteCodeDebug)
+            {
+                g_byteCodeStack.clear();
                 return false;
+            }
 
             runContext->ip--;
             runContext->debugOn    = true;

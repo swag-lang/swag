@@ -3,6 +3,7 @@
 #include "ByteCode.h"
 #include "Module.h"
 #include "Backend.h"
+#include "ByteCodeStack.h"
 
 uint64_t                        g_tlsContextId   = 0;
 SwagContext                     g_defaultContext = {0};
@@ -101,14 +102,18 @@ static void byteCodeRun(void* byteCodePtr, ...)
 {
     va_list valist;
     va_start(valist, byteCodePtr);
+    g_byteCodeStack.push({nullptr, nullptr});
     byteCodeRun(false, byteCodePtr, valist);
+    g_byteCodeStack.pop();
 }
 
 static void byteCodeRunCB(void* byteCodePtr, ...)
 {
     va_list valist;
     va_start(valist, byteCodePtr);
+    g_byteCodeStack.push({nullptr, nullptr});
     byteCodeRun(true, byteCodePtr, valist);
+    g_byteCodeStack.pop();
 }
 
 // Callback stuff. This is tricky !

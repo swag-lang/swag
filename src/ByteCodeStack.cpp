@@ -2,6 +2,7 @@
 #include "ByteCodeStack.h"
 #include "ByteCode.h"
 #include "Diagnostic.h"
+#include "ByteCodeRunContext.h"
 #include "Ast.h"
 
 thread_local ByteCodeStack g_byteCodeStack;
@@ -12,10 +13,32 @@ void ByteCodeStack::log()
         return;
 
     int maxSteps = min((int) steps.size() - 1, 20);
-    for (int i = maxSteps; i >= 0; i--)
+    for (int i = maxSteps + 1; i >= 0; i--)
     {
-        const auto& step = steps[i];
-        auto        ip   = step.ip;
+        ByteCodeInstruction* ip;
+        ByteCode*            bc;
+        if (i == maxSteps + 1)
+        {
+            if (!currentContext)
+                continue;
+            bc = currentContext->bc;
+            ip = currentContext->ip - 1;
+            if (bc == steps[maxSteps].bc && ip == steps[maxSteps].ip)
+                continue;
+        }
+        else
+        {
+            bc = steps[i].bc;
+            ip = steps[i].ip;
+        }
+
+        if (!ip)
+        {
+            Diagnostic diag{"<foreign code>", DiagnosticLevel::CallStack};
+            diag.report();
+            continue;
+        }
+
         if (!ip->node)
             continue;
 
@@ -30,7 +53,7 @@ void ByteCodeStack::log()
         }
         else
         {
-            Diagnostic diag{sourceFile, *location, step.bc->name, DiagnosticLevel::CallStack};
+            Diagnostic diag{sourceFile, *location, bc->name, DiagnosticLevel::CallStack};
             diag.report();
         }
 

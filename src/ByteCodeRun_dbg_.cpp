@@ -77,6 +77,7 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
     auto ip = context->ip;
 
     g_Log.lock();
+    g_byteCodeStack.currentContext = context;
 
     if (context->debugEntry)
     {
@@ -172,6 +173,7 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Print current instruction
             if (cmd == "quit")
             {
+                g_Log.unlock();
                 exit(0);
             }
 
