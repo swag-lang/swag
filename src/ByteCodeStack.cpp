@@ -23,13 +23,21 @@ void ByteCodeStack::log()
                 continue;
             bc = currentContext->bc;
             ip = currentContext->ip;
-            if (bc == steps[maxSteps].bc && ip == steps[maxSteps].ip)
-                continue;
         }
         else
         {
             bc = steps[i].bc;
             ip = steps[i].ip;
+
+            // Remove that step if it's the same as the current context
+            if (i == maxSteps)
+            {
+                if (currentContext && bc == currentContext->bc && ip == currentContext->ip)
+                {
+                    steps.pop_back();
+                    continue;
+                }
+            }
         }
 
         if (!ip)

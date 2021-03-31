@@ -95,10 +95,12 @@ static void computeCxt(ByteCodeRunContext* context)
     context->debugCxtBc = context->bc;
     context->debugCxtIp = context->ip;
     context->debugCxtRc = context->curRC;
-    if (context->debugStackContext == 0)
+    if (context->debugStackContext == 0 || g_byteCodeStack.steps.empty())
         return;
 
-    auto ns = context->debugStackContext - 1;
+    context->debugCxtRc--;
+    context->debugStackContext = min(context->debugStackContext, (uint32_t) g_byteCodeStack.steps.size());
+    auto ns                    = context->debugStackContext - 1;
     for (int i = (int) g_byteCodeStack.steps.size() - 1; i >= 0; i--)
     {
         auto& step = g_byteCodeStack.steps[i];
