@@ -72,7 +72,7 @@ static void printInstruction(ByteCodeRunContext* context, ByteCodeInstruction* i
     context->bc->printInstruction(ip);
 }
 
-void ByteCodeRun::debugger(ByteCodeRunContext* context)
+bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 {
     auto ip = context->ip;
 
@@ -174,7 +174,7 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
             if (cmd == "quit")
             {
                 g_Log.unlock();
-                exit(0);
+                return false;
             }
 
             // Print current instruction
@@ -278,4 +278,5 @@ void ByteCodeRun::debugger(ByteCodeRunContext* context)
 
     context->debugLastCurRC = context->curRC;
     context->debugLastIp    = ip;
+    return true;
 }

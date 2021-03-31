@@ -22,7 +22,7 @@ void ByteCodeStack::log()
             if (!currentContext)
                 continue;
             bc = currentContext->bc;
-            ip = currentContext->ip - 1;
+            ip = currentContext->ip;
             if (bc == steps[maxSteps].bc && ip == steps[maxSteps].ip)
                 continue;
         }

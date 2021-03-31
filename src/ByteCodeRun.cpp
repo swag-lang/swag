@@ -2984,8 +2984,8 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
     while (context->ip)
     {
         // Debug
-        if (context->debugOn)
-            debugger(context);
+        if (context->debugOn && !debugger(context))
+            exit(0);
 
         // Get instruction
         auto ip = context->ip++;
@@ -3042,7 +3042,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     // This is called by panic too, in certain conditions (if we do not want dialog boxes, when running tests for example)
     if (args->ExceptionRecord->ExceptionCode == 666)
     {
-        runContext->exceptionError = false;
+        runContext->canCatchError = false;
 
         auto location = (SwagCompilerSourceLocation*) args->ExceptionRecord->ExceptionInformation[0];
         SWAG_ASSERT(location);
@@ -3055,9 +3055,6 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             userMsg.append((const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]);
         else
             userMsg.append("panic");
-
-        // Set the actual context, for log
-        g_byteCodeStack.currentContext = runContext;
 
         SourceFile     dummyFile;
         SourceLocation sourceLocation;
@@ -3079,7 +3076,11 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
                 auto firstSrcFile = runContext->callerContext->expansionNode[0].first->sourceFile;
                 if (firstSrcFile->numTestErrors || firstSrcFile->numTestWarnings)
                 {
+                    runContext->ip--;
+                    g_byteCodeStack.currentContext = runContext;
                     firstSrcFile->report(diag, notes);
+                    g_byteCodeStack.currentContext = nullptr;
+                    runContext->ip++;
                     return EXCEPTION_EXECUTE_HANDLER;
                 }
             }
@@ -3090,9 +3091,12 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             sourceFile = g_byteCodeStack.steps[0].bc->sourceFile;
         else
             sourceFile = runContext->bc->sourceFile;
+
+        runContext->ip--;
+        g_byteCodeStack.currentContext = runContext;
         sourceFile->report(diag, notes);
         g_byteCodeStack.currentContext = nullptr;
-
+        runContext->ip++;
         return EXCEPTION_EXECUTE_HANDLER;
     }
 
@@ -3100,15 +3104,16 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     if (g_CommandLine.devMode)
         OS::errorBox("[Developer Mode]", "Exception raised !");
 
-    auto       ip = runContext->ip - 1;
+    runContext->ip--;
+    auto       ip = runContext->ip;
     Diagnostic diag{ip->node, ip->node->token, "exception during compile time execution !"};
     Diagnostic note1{"this is probably a bug in the compile time part of your program", DiagnosticLevel::Note};
-    Diagnostic note2{"you can run swag with --debug to attach the bytecode debugger when the error occurs", DiagnosticLevel::Note};
-    diag.exceptionError        = true;
-    runContext->exceptionError = true;
+    Diagnostic note2{"you can run swag with --dbgcatch to attach the bytecode debugger when the error occurs", DiagnosticLevel::Note};
+    diag.exceptionError            = true;
     g_byteCodeStack.currentContext = runContext;
     runContext->bc->sourceFile->report(diag, &note1, &note2);
     g_byteCodeStack.currentContext = nullptr;
+    runContext->ip++;
     return g_CommandLine.devMode ? EXCEPTION_CONTINUE_EXECUTION : EXCEPTION_EXECUTE_HANDLER;
 }
 
@@ -3127,15 +3132,16 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
         }
         __except (exceptionHandler(runContext, GetExceptionInformation()))
         {
-            if (!runContext->exceptionError || !g_CommandLine.byteCodeDebug)
+            if (g_CommandLine.dbgCatch && runContext->canCatchError)
             {
-                g_byteCodeStack.clear();
-                return false;
+                runContext->ip--;
+                runContext->debugOn    = true;
+                runContext->debugEntry = true;
+                continue;
             }
 
-            runContext->ip--;
-            runContext->debugOn    = true;
-            runContext->debugEntry = true;
+            g_byteCodeStack.clear();
+            return false;
         }
     }
 

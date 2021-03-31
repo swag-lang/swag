@@ -1,4 +1,4 @@
-#global testerror
+//#global testerror
 
 //#[swag.printbc]
 #test

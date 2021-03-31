@@ -26,7 +26,7 @@ struct CommandLine
 
     bool warningsAsErrors = false;
     bool devMode          = false;
-    bool byteCodeDebug    = false;
+    bool dbgCatch    = false;
     bool randomize        = false;
     int  randSeed         = 0;
 
