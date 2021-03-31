@@ -260,7 +260,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             if (right->computedValue.reg.u32 >= left->typeInfo->sizeOf * 8)
             {
-                return context->report({right, format("[safety] '%s' right shift operand >= %u", node->token.text.c_str(), left->typeInfo->sizeOf * 8)});
+                if (tokenId == TokenId::SymLowerLowerEqual || tokenId == TokenId::SymLowerLowerPercentEqual)
+                    return context->report({right, format("[safety] '<<' shift operand is greater than '%u'", (left->typeInfo->sizeOf * 8) - 1)});
+                else
+                    return context->report({right, format("[safety] '>>' shift operand is greater than '%u'", (left->typeInfo->sizeOf * 8) - 1)});
             }
         }
 

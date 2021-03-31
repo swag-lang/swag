@@ -1711,49 +1711,49 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqS8:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt8Ty(), "[safety] (s8) '-=' integer overflow");
+            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt8Ty(), "[safety] (s8) '-' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMinusEqU8:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt8Ty(), "[safety] (u8) '-=' integer overflow");
+            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt8Ty(), "[safety] (u8) '-' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS16:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt16Ty(), "[safety] (s16) '-=' integer overflow");
+            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt16Ty(), "[safety] (s16) '-' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMinusEqU16:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt16Ty(), "[safety] (u16) '-=' integer overflow");
+            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt16Ty(), "[safety] (u16) '-' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS32:
         {
             MK_BINOPEQ32_CAB();
-            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt32Ty(), "[safety] (s32) '-=' integer overflow");
+            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt32Ty(), "[safety] (s32) '-' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMinusEqU32:
         {
             MK_BINOPEQ32_CAB();
-            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt32Ty(), "[safety] (u32) '-=' integer overflow");
+            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt32Ty(), "[safety] (u32) '-' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS64:
         {
             MK_BINOPEQ64_CAB();
-            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt64Ty(), "[safety] (s64) '-=' integer overflow");
+            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt64Ty(), "[safety] (s64) '-' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMinusEqU64:
         {
             MK_BINOPEQ64_CAB();
-            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt64Ty(), "[safety] (u64) '-=' integer overflow");
+            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt64Ty(), "[safety] (u64) '-' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMinusEqF32:
@@ -1774,49 +1774,49 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqS8:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, getInt8Ty(), "[safety] (s8) '+=' integer overflow");
+            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, getInt8Ty(), "[safety] (s8) '+' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpPlusEqU8:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt8Ty(), "[safety] (u8) '+=' integer overflow");
+            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt8Ty(), "[safety] (u8) '+' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS16:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, getInt16Ty(), "[safety] (s16) '+=' integer overflow");
+            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, getInt16Ty(), "[safety] (s16) '+' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpPlusEqU16:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt16Ty(), "[safety] (u16) '+=' integer overflow");
+            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt16Ty(), "[safety] (u16) '+' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS32:
         {
             MK_BINOPEQ32_CAB();
-            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, getInt32Ty(), "[safety] (s32) '+=' integer overflow");
+            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, getInt32Ty(), "[safety] (s32) '+' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpPlusEqU32:
         {
             MK_BINOPEQ32_CAB();
-            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt32Ty(), "[safety] (u32) '+=' integer overflow");
+            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt32Ty(), "[safety] (u32) '+' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS64:
         {
             MK_BINOPEQ64_CAB();
-            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, getInt64Ty(), "[safety] (s64) '+=' integer overflow");
+            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, getInt64Ty(), "[safety] (s64) '+' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpPlusEqU64:
         {
             MK_BINOPEQ64_CAB();
-            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt64Ty(), "[safety] (u64) '+=' integer overflow");
+            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt64Ty(), "[safety] (u64) '+' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpPlusEqF32:
@@ -1837,49 +1837,49 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqS8:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt8Ty(), "[safety] (s8) '*=' integer overflow");
+            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt8Ty(), "[safety] (s8) '*' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMulEqU8:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, getInt8Ty(), "[safety] (u8) '*=' integer overflow");
+            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, getInt8Ty(), "[safety] (u8) '*' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMulEqS16:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt16Ty(), "[safety] (s16) '*=' integer overflow");
+            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt16Ty(), "[safety] (s16) '*' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMulEqU16:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, getInt16Ty(), "[safety] (u16) '*=' integer overflow");
+            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, getInt16Ty(), "[safety] (u16) '*' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMulEqS32:
         {
             MK_BINOPEQ32_CAB();
-            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt32Ty(), "[safety] (s32) '*=' integer overflow");
+            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt32Ty(), "[safety] (s32) '*' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMulEqU32:
         {
             MK_BINOPEQ32_CAB();
-            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, getInt32Ty(), "[safety] (u32) '*=' integer overflow");
+            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, getInt32Ty(), "[safety] (u32) '*' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMulEqS64:
         {
             MK_BINOPEQ64_CAB();
-            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt64Ty(), "[safety] (s64) '*=' integer overflow");
+            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt64Ty(), "[safety] (s64) '*' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMulEqU64:
         {
             MK_BINOPEQ64_CAB();
-            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, getInt64Ty(), "[safety] (u64) '*=' integer overflow");
+            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, getInt64Ty(), "[safety] (u64) '*' integer overflow");
             break;
         }
         case ByteCodeOp::AffectOpMulEqF32:
