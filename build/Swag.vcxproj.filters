@@ -2,16 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="../src/JobThread.cpp">
-      <Filter>Threading</Filter>
+      <Filter>Main\Threading</Filter>
     </ClCompile>
     <ClCompile Include="../src/ThreadManager.cpp">
-      <Filter>Threading</Filter>
+      <Filter>Main\Threading</Filter>
     </ClCompile>
     <ClCompile Include="../src/DependentJobs.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="../src/Job.cpp">
-      <Filter>Threading</Filter>
+      <Filter>Main\Threading</Filter>
     </ClCompile>
     <ClCompile Include="../src/Swag.cpp">
       <Filter>Main</Filter>
@@ -297,10 +297,10 @@
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendSetupWin32.cpp">
-      <Filter>Win32</Filter>
+      <Filter>Main\Win32</Filter>
     </ClCompile>
     <ClCompile Include="../src/OsWin32.cpp">
-      <Filter>Win32</Filter>
+      <Filter>Main\Win32</Filter>
     </ClCompile>
     <ClCompile Include="../src/ModuleRunJob.cpp">
       <Filter>Backend</Filter>
@@ -309,43 +309,43 @@
       <Filter>ByteCode</Filter>
     </ClCompile>
     <ClCompile Include="../src/ffi/closures.c">
-      <Filter>FFI</Filter>
+      <Filter>ByteCode\FFI</Filter>
     </ClCompile>
     <ClCompile Include="../src/ffi/ffi.c">
-      <Filter>FFI</Filter>
+      <Filter>ByteCode\FFI</Filter>
     </ClCompile>
     <ClCompile Include="../src/ffi/ffi64.c">
-      <Filter>FFI</Filter>
+      <Filter>ByteCode\FFI</Filter>
     </ClCompile>
     <ClCompile Include="../src/ffi/prep_cif.c">
-      <Filter>FFI</Filter>
+      <Filter>ByteCode\FFI</Filter>
     </ClCompile>
     <ClCompile Include="../src/ffi/types.c">
-      <Filter>FFI</Filter>
+      <Filter>ByteCode\FFI</Filter>
     </ClCompile>
     <ClCompile Include="../src/CompilerItf.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeInfo.cpp">
-      <Filter>Type</Filter>
+      <Filter>Semantic\Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeInfoMatch_.cpp">
-      <Filter>Type</Filter>
+      <Filter>Semantic\Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeInfoSpecific_.cpp">
-      <Filter>Type</Filter>
+      <Filter>Semantic\Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeManager.cpp">
-      <Filter>Type</Filter>
+      <Filter>Semantic\Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeManagerCast_.cpp">
-      <Filter>Type</Filter>
+      <Filter>Semantic\Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeTable.cpp">
-      <Filter>Type</Filter>
+      <Filter>Semantic\Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeTableJob.cpp">
-      <Filter>Type</Filter>
+      <Filter>Semantic\Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendX64.cpp">
       <Filter>Backend\X64</Filter>
@@ -372,7 +372,7 @@
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="../src/ProfileWin32.cpp">
-      <Filter>Win32</Filter>
+      <Filter>Main\Win32</Filter>
     </ClCompile>
     <ClCompile Include="../src/SemanticJobIntrinsic_.cpp">
       <Filter>Semantic</Filter>
@@ -441,10 +441,10 @@
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ModuleCfgManager.cpp">
-      <Filter>CfgManager</Filter>
+      <Filter>Main\CfgManager</Filter>
     </ClCompile>
     <ClCompile Include="..\src\FetchModuleJobFileSystem.cpp">
-      <Filter>CfgManager</Filter>
+      <Filter>Main\CfgManager</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Workspace_clean_.cpp">
       <Filter>Main</Filter>
@@ -467,10 +467,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
-      <Filter>Threading</Filter>
+      <Filter>Main\Threading</Filter>
     </ClInclude>
     <ClInclude Include="../src/ThreadManager.h">
-      <Filter>Threading</Filter>
+      <Filter>Main\Threading</Filter>
     </ClInclude>
     <ClInclude Include="../src/Global.h">
       <Filter>Main</Filter>
@@ -494,7 +494,7 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/Job.h">
-      <Filter>Threading</Filter>
+      <Filter>Main\Threading</Filter>
     </ClInclude>
     <ClInclude Include="../src/Diagnostic.h">
       <Filter>Main</Filter>
@@ -645,40 +645,40 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="../src/ComWin32.hpp">
-      <Filter>Win32</Filter>
+      <Filter>Main\Win32</Filter>
     </ClInclude>
     <ClInclude Include="../src/Timer.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/ffi/ffi.h">
-      <Filter>FFI</Filter>
+      <Filter>ByteCode\FFI</Filter>
     </ClInclude>
     <ClInclude Include="../src/ffi/ffi_common.h">
-      <Filter>FFI</Filter>
+      <Filter>ByteCode\FFI</Filter>
     </ClInclude>
     <ClInclude Include="../src/ffi/fficonfig.h">
-      <Filter>FFI</Filter>
+      <Filter>ByteCode\FFI</Filter>
     </ClInclude>
     <ClInclude Include="../src/ffi/ffitarget.h">
-      <Filter>FFI</Filter>
+      <Filter>ByteCode\FFI</Filter>
     </ClInclude>
     <ClInclude Include="../src/CompilerItf.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/TypeTableJob.h">
-      <Filter>Type</Filter>
+      <Filter>Semantic\Type</Filter>
     </ClInclude>
     <ClInclude Include="../src/TypeInfo.h">
-      <Filter>Type</Filter>
+      <Filter>Semantic\Type</Filter>
     </ClInclude>
     <ClInclude Include="../src/TypeManager.h">
-      <Filter>Type</Filter>
+      <Filter>Semantic\Type</Filter>
     </ClInclude>
     <ClInclude Include="../src/TypeTable.h">
-      <Filter>Type</Filter>
+      <Filter>Semantic\Type</Filter>
     </ClInclude>
     <ClInclude Include="../src/SpinLock.h">
-      <Filter>Threading</Filter>
+      <Filter>Main\Threading</Filter>
     </ClInclude>
     <ClInclude Include="../src/BackendX64.h">
       <Filter>Backend\X64</Filter>
@@ -699,7 +699,7 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="../src/ProfileWin32.h">
-      <Filter>Win32</Filter>
+      <Filter>Main\Win32</Filter>
     </ClInclude>
     <ClInclude Include="../src/Profile.h">
       <Filter>Main</Filter>
@@ -753,10 +753,10 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ModuleCfgManager.h">
-      <Filter>CfgManager</Filter>
+      <Filter>Main\CfgManager</Filter>
     </ClInclude>
     <ClInclude Include="..\src\FetchModuleJobFileSystem.h">
-      <Filter>CfgManager</Filter>
+      <Filter>Main\CfgManager</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Math.h">
       <Filter>Main</Filter>
@@ -766,14 +766,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Threading">
-      <UniqueIdentifier>{e8e10c82-0958-4dec-b1a7-7925f336a87c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Main">
       <UniqueIdentifier>{ec1ce4ee-f636-49c8-b14c-ba31cc1e1e91}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FFI">
-      <UniqueIdentifier>{4e25712b-01db-43ce-b213-34d28464abfd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Lexer">
       <UniqueIdentifier>{2ec0b045-bdd6-4a7a-a120-2c91b7025073}</UniqueIdentifier>
@@ -784,20 +778,11 @@
     <Filter Include="Backend">
       <UniqueIdentifier>{7fe556f7-f7f6-4fd4-b6f3-8b9e91dc51de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32">
-      <UniqueIdentifier>{31fa90c8-f664-40b5-8bc5-d3606d6e2ffa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Backend\LLVM">
       <UniqueIdentifier>{c60a90b2-c79e-4690-938f-f6f4ab31461c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Type">
-      <UniqueIdentifier>{5d3754c6-5cd6-4c17-beb5-5141ff0d58e8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Backend\X64">
       <UniqueIdentifier>{8a2a36d9-44c6-423d-8d02-ff5e04508f18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CfgManager">
-      <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
     </Filter>
     <Filter Include="ByteCode">
       <UniqueIdentifier>{5facb5bb-a2a0-45dd-aa6c-20852346b20a}</UniqueIdentifier>
@@ -805,10 +790,25 @@
     <Filter Include="ByteCode\Optimize">
       <UniqueIdentifier>{78754e10-947b-4b7b-bdfa-8eb19470f27d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Semantic\Type">
+      <UniqueIdentifier>{5d3754c6-5cd6-4c17-beb5-5141ff0d58e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Win32">
+      <UniqueIdentifier>{31fa90c8-f664-40b5-8bc5-d3606d6e2ffa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Threading">
+      <UniqueIdentifier>{e8e10c82-0958-4dec-b1a7-7925f336a87c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\CfgManager">
+      <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ByteCode\FFI">
+      <UniqueIdentifier>{4e25712b-01db-43ce-b213-34d28464abfd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="../src/ffi/win64.S">
-      <Filter>FFI</Filter>
+      <Filter>ByteCode\FFI</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
