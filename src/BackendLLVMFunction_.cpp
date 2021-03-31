@@ -2048,74 +2048,58 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::AffectOpShiftLeftEqU8:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0));
-            auto r2 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateShl(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ8_CAB();
+            auto v0 = builder.CreateShl(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpShiftLeftEqU16:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I16(r0));
-            auto r2 = TO_PTR_I16(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateShl(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ16_CAB();
+            auto v0 = builder.CreateShl(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpShiftLeftEqU32:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateShl(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ32_CAB();
+            auto v0 = builder.CreateShl(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpShiftLeftEqU64:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0));
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateShl(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ64_CAB();
+            auto v0 = builder.CreateShl(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
 
         case ByteCodeOp::AffectOpShiftRightEqU8:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0));
-            auto r2 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ8_CAB();
+            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpShiftRightEqU16:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I16(r0));
-            auto r2 = TO_PTR_I16(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ16_CAB();
+            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpShiftRightEqU32:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0));
-            auto r2 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
-            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ32_CAB();
+            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
         case ByteCodeOp::AffectOpShiftRightEqU64:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0));
-            auto r2 = GEP_I32(allocR, ip->b.u32);
-            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), builder.CreateLoad(r2));
+            MK_BINOPEQ64_CAB();
+            auto v0 = builder.CreateLShr(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
