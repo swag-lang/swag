@@ -38,7 +38,8 @@ struct ModuleBuildJob : public Job
     void      publishFilesToPublic();
     JobResult execute() override;
 
-    ModuleBuildPass pass = ModuleBuildPass::Init;
+    ModuleBuildPass pass      = ModuleBuildPass::Init;
+    bool            fromError = false;
     Timer           timerSyntax;
     Timer           timerSemanticModule;
     Timer           timerRun;

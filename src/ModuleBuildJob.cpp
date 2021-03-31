@@ -90,7 +90,9 @@ JobResult ModuleBuildJob::execute()
             module->buildParameters.foreignLibs.insert(rtMod->buildParameters.foreignLibs.begin(), rtMod->buildParameters.foreignLibs.end());
         }
 
-        if (module->kind == ModuleKind::Config)
+        if (fromError)
+            pass = ModuleBuildPass::IncludeSwg;
+        else if (module->kind == ModuleKind::Config)
             pass = ModuleBuildPass::SemanticModule;
         else
             pass = ModuleBuildPass::Dependencies;
@@ -172,9 +174,9 @@ JobResult ModuleBuildJob::execute()
         // run them in case the error has not been triggered during the syntax pass
         for (auto errorMd : module->errorModules)
         {
-            auto job    = g_Pool_moduleBuildJob.alloc();
-            job->module = errorMd;
-            job->pass   = ModuleBuildPass::IncludeSwg;
+            auto job       = g_Pool_moduleBuildJob.alloc();
+            job->module    = errorMd;
+            job->fromError = true;
             g_ThreadMgr.addJob(job);
         }
 
