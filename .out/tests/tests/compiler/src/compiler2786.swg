@@ -6,7 +6,7 @@ func(T) test1()
     x >>= 1
     @assert(@bitcounttz(x) == 3)
     x >>%= 1
-    x >>= 10
+    x >>%= 7
     @assert(@bitcounttz(x) == @sizeof(T) * 8)
 }
 

@@ -245,8 +245,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, left, right, CASTFLAG_COERCE_SAMESIGN));
+        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String ||
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
@@ -254,6 +254,16 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             return notAllowed(context, node, leftTypeInfo);
         }
+
+        // Shift operand too big
+        if (right->flags & AST_VALUE_COMPUTED)
+        {
+            if (right->computedValue.reg.u32 >= left->typeInfo->sizeOf * 8)
+            {
+                return context->report({right, format("[safety] '%s' right shift operand >= %u", node->token.text.c_str(), left->typeInfo->sizeOf * 8)});
+            }
+        }
+
         break;
 
     case TokenId::SymAmpersandEqual:
