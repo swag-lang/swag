@@ -12,7 +12,8 @@ void ByteCodeStack::log()
     if (steps.empty())
         return;
 
-    int maxSteps = min((int) steps.size() - 1, 20);
+    auto stackLevel = 0;
+    int  maxSteps   = min((int) steps.size() - 1, 20);
     for (int i = maxSteps + 1; i >= 0; i--)
     {
         ByteCodeInstruction* ip;
@@ -38,11 +39,14 @@ void ByteCodeStack::log()
                     continue;
                 }
             }
+
+            stackLevel++;
         }
 
         if (!ip)
         {
             Diagnostic diag{"<foreign code>", DiagnosticLevel::CallStack};
+            diag.stackLevel = stackLevel;
             diag.report();
             continue;
         }
@@ -57,11 +61,13 @@ void ByteCodeStack::log()
         if (fct)
         {
             Diagnostic diag{sourceFile, *location, fct->getNameForMessage().c_str(), DiagnosticLevel::CallStack};
+            diag.stackLevel = stackLevel;
             diag.report();
         }
         else
         {
             Diagnostic diag{sourceFile, *location, bc->name, DiagnosticLevel::CallStack};
+            diag.stackLevel = stackLevel;
             diag.report();
         }
 

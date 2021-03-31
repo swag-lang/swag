@@ -46,7 +46,7 @@ void Diagnostic::report(bool verboseMode) const
     case DiagnosticLevel::CallStack:
         if (!verboseMode)
             g_Log.setColor(LogColor::DarkYellow);
-        g_Log.print("callstack: ");
+        g_Log.print(format("callstack:%03u: ", stackLevel));
         break;
     case DiagnosticLevel::CallStackInlined:
         if (!verboseMode)

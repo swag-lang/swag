@@ -138,8 +138,6 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
 
     if (!lastLine || !lastFile || location->line != *lastLine || file != *lastFile)
     {
-        g_Log.setColor(LogColor::Gray);
-        g_Log.print(format("%s:%d: ", file->name.c_str(), location->line + 1));
         if (lastLine)
             *lastLine = location->line;
         if (lastFile)
@@ -147,10 +145,15 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
         auto s = file->getLine(location->line);
         s.trim();
         g_Log.setColor(LogColor::Yellow);
+        g_Log.print("          ");
         if (s.empty())
             g_Log.print("<blank>");
         else
             g_Log.print(s);
+
+        g_Log.setColor(LogColor::Gray);
+        g_Log.print(format("  (%s:%d)", file->name.c_str(), location->line + 1));
+
         g_Log.print("\n");
     }
 }

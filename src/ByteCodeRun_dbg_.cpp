@@ -22,20 +22,30 @@ static void printContext(ByteCodeRunContext* context)
 
     g_Log.unlock();
     g_Log.eol();
+
     g_Log.messageHeaderDot("bytecode name", bc->name, LogColor::Gray, LogColor::Gray, " ");
-    if (bc->sourceFile && bc->node)
-        g_Log.messageHeaderDot("bytecode location", format("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
-    else if (bc->sourceFile)
-        g_Log.messageHeaderDot("bytecode source file", bc->sourceFile->path, LogColor::Gray, LogColor::Gray, " ");
 
-    if (ipNode && ipNode->sourceFile)
-        g_Log.messageHeaderDot("instruction location", format("%s:%u:%u", ipNode->sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
-
-    if (ipNode && ipNode->ownerFct)
+    if (bc->sourceFile)
     {
-        ipNode->ownerFct->typeInfo->computeScopedName();
-        g_Log.messageHeaderDot("function", ipNode->ownerFct->typeInfo->scopedName, LogColor::Gray, LogColor::Gray, " ");
+        if (bc->node)
+            g_Log.messageHeaderDot("bytecode location", format("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
+        else
+            g_Log.messageHeaderDot("bytecode source file", bc->sourceFile->path, LogColor::Gray, LogColor::Gray, " ");
     }
+
+    if (ipNode)
+    {
+        if (ipNode->sourceFile)
+            g_Log.messageHeaderDot("instruction location", format("%s:%u:%u", ipNode->sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
+
+        if (ipNode->ownerFct)
+        {
+            ipNode->ownerFct->typeInfo->computeScopedName();
+            g_Log.messageHeaderDot("function", ipNode->ownerFct->typeInfo->scopedName, LogColor::Gray, LogColor::Gray, " ");
+        }
+    }
+
+    g_Log.messageHeaderDot("stack level", format("%u", context->debugStackLevel), LogColor::Gray, LogColor::Gray, " ");
 
     g_Log.eol();
     g_Log.lock();
@@ -43,28 +53,32 @@ static void printContext(ByteCodeRunContext* context)
 
 static void printFullRegister(Register& regP)
 {
+    auto col = LogColor::Magenta;
+
     // clang-format off
-    g_Log.printColor("s8 ", LogColor::Cyan); g_Log.printColor(format("%lld ", regP.s8));
-    g_Log.printColor("s16 ", LogColor::Cyan); g_Log.printColor(format("%lld ", regP.s16));
-    g_Log.printColor("s32 ", LogColor::Cyan); g_Log.printColor(format("%lld ", regP.s32));
-    g_Log.printColor("s64 ", LogColor::Cyan); g_Log.printColor(format("%lld ", regP.s64));
+    g_Log.printColor("s8  ", col); g_Log.printColor(format("%d ", regP.s8));
+    g_Log.printColor("u8 ", col); g_Log.printColor(format("%u ", regP.u8));
+    g_Log.printColor("x8 ", col); g_Log.printColor(format("%02x ", regP.u8));
     g_Log.eol();
 
-    g_Log.printColor("u8 ", LogColor::Cyan); g_Log.printColor(format("%llu ", regP.u8));
-    g_Log.printColor("u16 ", LogColor::Cyan); g_Log.printColor(format("%llu ", regP.u16));
-    g_Log.printColor("u32 ", LogColor::Cyan); g_Log.printColor(format("%llu ", regP.u32));
-    g_Log.printColor("u64 ", LogColor::Cyan); g_Log.printColor(format("%llu ", regP.u64));
+    g_Log.printColor("s16 ", col); g_Log.printColor(format("%d ", regP.s16));
+    g_Log.printColor("u16 ", col); g_Log.printColor(format("%u ", regP.u16));
+    g_Log.printColor("x16 ", col); g_Log.printColor(format("%04x ", regP.u16));
     g_Log.eol();
 
-    g_Log.printColor("x8 ", LogColor::Cyan); g_Log.printColor(format("%02llx ", regP.u8));
-    g_Log.printColor("x16 ", LogColor::Cyan); g_Log.printColor(format("%04llx ", regP.u16));
-    g_Log.printColor("x32 ", LogColor::Cyan); g_Log.printColor(format("%08llx ", regP.u32));
-    g_Log.printColor("x64 ", LogColor::Cyan); g_Log.printColor(format("%016llx ", regP.u64));
+    g_Log.printColor("s32 ", col); g_Log.printColor(format("%d ", regP.s32));
+    g_Log.printColor("u32 ", col); g_Log.printColor(format("%u ", regP.u32));
+    g_Log.printColor("x32 ", col); g_Log.printColor(format("%08x ", regP.u32));
+    g_Log.eol();
+
+    g_Log.printColor("s64 ", col); g_Log.printColor(format("%lld ", regP.s64));
+    g_Log.printColor("u64 ", col); g_Log.printColor(format("%llu ", regP.u64));
+    g_Log.printColor("x64 ", col); g_Log.printColor(format("%016llx ", regP.u64));
     g_Log.eol();
     
-    g_Log.printColor("f32 ", LogColor::Cyan); g_Log.printColor(format("%lf", regP.f32));
+    g_Log.printColor("f32 ", col); g_Log.printColor(format("%lf", regP.f32));
     g_Log.eol();
-    g_Log.printColor("f64 ", LogColor::Cyan); g_Log.printColor(format("%lf", regP.f64));
+    g_Log.printColor("f64 ", col); g_Log.printColor(format("%lf", regP.f64));
     g_Log.eol();
     // clang-format on
 }
@@ -95,12 +109,12 @@ static void computeCxt(ByteCodeRunContext* context)
     context->debugCxtBc = context->bc;
     context->debugCxtIp = context->ip;
     context->debugCxtRc = context->curRC;
-    if (context->debugStackContext == 0 || g_byteCodeStack.steps.empty())
+    if (context->debugStackLevel == 0 || g_byteCodeStack.steps.empty())
         return;
 
     context->debugCxtRc--;
-    context->debugStackContext = min(context->debugStackContext, (uint32_t) g_byteCodeStack.steps.size());
-    auto ns                    = context->debugStackContext - 1;
+    context->debugStackLevel = min(context->debugStackLevel, (uint32_t) g_byteCodeStack.steps.size());
+    auto ns                  = context->debugStackLevel - 1;
     for (int i = (int) g_byteCodeStack.steps.size() - 1; i >= 0; i--)
     {
         auto& step = g_byteCodeStack.steps[i];
@@ -136,7 +150,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         context->debugStepMode         = ByteCodeRunContext::DebugStepMode::None;
         context->debugStepLastLocation = nullptr;
         context->debugStepLastFile     = nullptr;
-        context->debugStackContext     = 0;
+        context->debugStackLevel       = 0;
     }
 
     // Step to the next line
@@ -210,7 +224,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 g_Log.print("f                  runs until the current function is done\n");
                 g_Log.print("i                  print the current instruction\n");
                 g_Log.print("i<num>             print the current instruction and <num> instructions before\n");
-                g_Log.print("x<num>             set stack context <num>\n");
+                g_Log.print("x<num>             set stack level context <num>\n");
                 g_Log.print("cxt, context       print contextual informations\n");
                 g_Log.print("r                  print all registers\n");
                 g_Log.print("r<num>             print register <num>\n");
@@ -224,8 +238,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
             if (cmd[0] == 'x' && cmd.length() > 1 && isdigit(cmd[1]))
             {
-                int regN                   = atoi(cmd.c_str() + 1);
-                context->debugStackContext = regN;
+                int regN                 = atoi(cmd.c_str() + 1);
+                context->debugStackLevel = regN;
                 computeCxt(context);
                 printInstruction(context, context->debugCxtBc, context->debugCxtIp);
                 continue;
@@ -307,8 +321,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Step to next line
             if (cmd == "s")
             {
-                context->debugStackContext = 0;
-                context->debugStepMode     = ByteCodeRunContext::DebugStepMode::NextLine;
+                context->debugStackLevel = 0;
+                context->debugStepMode   = ByteCodeRunContext::DebugStepMode::NextLine;
                 ByteCode::getLocation(context->bc, ip, &context->debugStepLastFile, &context->debugStepLastLocation);
                 break;
             }
@@ -316,8 +330,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Step to next line, step out
             if (cmd == "n")
             {
-                context->debugStackContext = 0;
-                context->debugStepMode     = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
+                context->debugStackLevel = 0;
+                context->debugStepMode   = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
                 ByteCode::getLocation(context->bc, ip, &context->debugStepLastFile, &context->debugStepLastLocation);
                 context->debugStepRC = context->curRC;
                 break;
@@ -326,17 +340,17 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Exit current function
             if (cmd == "f")
             {
-                context->debugStackContext = 0;
-                context->debugStepMode     = ByteCodeRunContext::DebugStepMode::FinishedFunction;
-                context->debugStepRC       = context->curRC - 1;
+                context->debugStackLevel = 0;
+                context->debugStepMode   = ByteCodeRunContext::DebugStepMode::FinishedFunction;
+                context->debugStepRC     = context->curRC - 1;
                 break;
             }
 
             // Debug off
             if (cmd == "c")
             {
-                context->debugStackContext = 0;
-                context->debugOn           = false;
+                context->debugStackLevel = 0;
+                context->debugOn         = false;
                 break;
             }
 
