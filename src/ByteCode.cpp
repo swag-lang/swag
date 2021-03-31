@@ -428,6 +428,12 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     case ByteCodeOp::JumpIfEqual16:
     case ByteCodeOp::JumpIfEqual32:
     case ByteCodeOp::JumpIfEqual64:
+    case ByteCodeOp::JumpIfLowerU32:
+    case ByteCodeOp::JumpIfLowerU64:
+    case ByteCodeOp::JumpIfLowerS32:
+    case ByteCodeOp::JumpIfLowerS64:
+    case ByteCodeOp::JumpIfLowerF32:
+    case ByteCodeOp::JumpIfLowerF64:
         wprintf(bcNum, ip->b.s32 + i + 1);
         break;
 
@@ -530,6 +536,12 @@ void ByteCode::markLabels()
         case ByteCodeOp::JumpIfEqual16:
         case ByteCodeOp::JumpIfEqual32:
         case ByteCodeOp::JumpIfEqual64:
+        case ByteCodeOp::JumpIfLowerU32:
+        case ByteCodeOp::JumpIfLowerU64:
+        case ByteCodeOp::JumpIfLowerS32:
+        case ByteCodeOp::JumpIfLowerS64:
+        case ByteCodeOp::JumpIfLowerF32:
+        case ByteCodeOp::JumpIfLowerF64:
             ip[ip->b.s32 + 1].flags |= BCI_JUMP_DEST;
             ip[1].flags |= BCI_JUMP_DEST;
             count--;

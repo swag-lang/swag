@@ -485,3 +485,55 @@
         BackendX64Inst::emit_Cmp64(pp, RAX, RCX);                                            \
     }                                                                                        \
     BackendX64Inst::emit_Jump(pp, __op, i, ip->b.s32);
+
+#define MK_JMPCMP_F32(__op)                                                             \
+    if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))                           \
+    {                                                                                   \
+        BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);     \
+        BackendX64Inst::emit_CmpF32_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);      \
+    }                                                                                   \
+    else                                                                                \
+    {                                                                                   \
+        if (ip->flags & BCI_IMM_A)                                                      \
+        {                                                                               \
+            BackendX64Inst::emit_Load32_Immediate(pp, ip->a.u32, RAX);                  \
+            BackendX64Inst::emit_CopyF32(pp, RAX, XMM0);                                \
+        }                                                                               \
+        else                                                                            \
+            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI); \
+        if (ip->flags & BCI_IMM_C)                                                      \
+        {                                                                               \
+            BackendX64Inst::emit_Load32_Immediate(pp, ip->c.u32, RAX);                  \
+            BackendX64Inst::emit_CopyF32(pp, RAX, XMM1);                                \
+        }                                                                               \
+        else                                                                            \
+            BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->c.u32), XMM1, RDI); \
+        BackendX64Inst::emit_CmpF32(pp, XMM0, XMM1);                                    \
+    }                                                                                   \
+    BackendX64Inst::emit_Jump(pp, __op, i, ip->b.s32);
+
+#define MK_JMPCMP_F64(__op)                                                             \
+    if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))                           \
+    {                                                                                   \
+        BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);     \
+        BackendX64Inst::emit_CmpF64_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);      \
+    }                                                                                   \
+    else                                                                                \
+    {                                                                                   \
+        if (ip->flags & BCI_IMM_A)                                                      \
+        {                                                                               \
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);                  \
+            BackendX64Inst::emit_CopyF64(pp, RAX, XMM0);                                \
+        }                                                                               \
+        else                                                                            \
+            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI); \
+        if (ip->flags & BCI_IMM_C)                                                      \
+        {                                                                               \
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u64, RAX);                  \
+            BackendX64Inst::emit_CopyF64(pp, RAX, XMM1);                                \
+        }                                                                               \
+        else                                                                            \
+            BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->c.u32), XMM1, RDI); \
+        BackendX64Inst::emit_CmpF64(pp, XMM0, XMM1);                                    \
+    }                                                                                   \
+    BackendX64Inst::emit_Jump(pp, __op, i, ip->b.s32);

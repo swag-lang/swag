@@ -2758,6 +2758,73 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::JumpIfLowerS32:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_32();
+            auto r1         = MK_IMMC_32();
+            auto b0         = builder.CreateICmpSLT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfLowerS64:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_64();
+            auto r1         = MK_IMMC_64();
+            auto b0         = builder.CreateICmpSLT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfLowerU32:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_32();
+            auto r1         = MK_IMMC_32();
+            auto b0         = builder.CreateICmpULT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfLowerU64:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_64();
+            auto r1         = MK_IMMC_64();
+            auto b0         = builder.CreateICmpULT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfLowerF32:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_F32();
+            auto r1         = MK_IMMC_F32();
+            auto b0         = builder.CreateFCmpULT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+        case ByteCodeOp::JumpIfLowerF64:
+        {
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto r0         = MK_IMMA_F64();
+            auto r1         = MK_IMMC_F64();
+            auto b0         = builder.CreateFCmpULT(r0, r1);
+            builder.CreateCondBr(b0, labelTrue, labelFalse);
+            blockIsClosed = true;
+            break;
+        }
+
         case ByteCodeOp::Ret:
         {
             // Hack thanks to llvm in debug mode : we need to force the usage of function parameters until the very end of the function (i.e. each return),

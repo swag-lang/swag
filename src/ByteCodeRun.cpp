@@ -13,35 +13,37 @@
 #define IMMA_B(ip) ((ip->flags & BCI_IMM_A) ? ip->a.b : registersRC[ip->a.u32].b)
 #define IMMB_B(ip) ((ip->flags & BCI_IMM_B) ? ip->b.b : registersRC[ip->b.u32].b)
 
-#define IMMA_F32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.f32 : registersRC[ip->a.u32].f32)
-#define IMMA_F64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.f64 : registersRC[ip->a.u32].f64)
-
-#define IMMB_F32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.f32 : registersRC[ip->b.u32].f32)
-#define IMMB_F64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.f64 : registersRC[ip->b.u32].f64)
-
-#define IMMA_S8(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s8 : registersRC[ip->a.u32].s8)
-#define IMMA_S32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s32 : registersRC[ip->a.u32].s32)
-#define IMMA_S64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s64 : registersRC[ip->a.u32].s64)
-
-#define IMMB_S8(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s8 : registersRC[ip->b.u32].s8)
-#define IMMB_S16(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s16 : registersRC[ip->b.u32].s16)
-#define IMMB_S32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s32 : registersRC[ip->b.u32].s32)
-#define IMMB_S64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s64 : registersRC[ip->b.u32].s64)
-
 #define IMMA_U8(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u8 : registersRC[ip->a.u32].u8)
 #define IMMA_U16(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u16 : registersRC[ip->a.u32].u16)
 #define IMMA_U32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u32 : registersRC[ip->a.u32].u32)
 #define IMMA_U64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u64 : registersRC[ip->a.u32].u64)
+#define IMMA_S8(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s8 : registersRC[ip->a.u32].s8)
+#define IMMA_S32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s32 : registersRC[ip->a.u32].s32)
+#define IMMA_S64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s64 : registersRC[ip->a.u32].s64)
+#define IMMA_F32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.f32 : registersRC[ip->a.u32].f32)
+#define IMMA_F64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.f64 : registersRC[ip->a.u32].f64)
 
 #define IMMB_U8(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u8 : registersRC[ip->b.u32].u8)
 #define IMMB_U16(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u16 : registersRC[ip->b.u32].u16)
 #define IMMB_U32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u32 : registersRC[ip->b.u32].u32)
 #define IMMB_U64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.u64 : registersRC[ip->b.u32].u64)
+#define IMMB_S8(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s8 : registersRC[ip->b.u32].s8)
+#define IMMB_S16(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s16 : registersRC[ip->b.u32].s16)
+#define IMMB_S32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s32 : registersRC[ip->b.u32].s32)
+#define IMMB_S64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.s64 : registersRC[ip->b.u32].s64)
+#define IMMB_F32(ip) ((ip->flags & BCI_IMM_B) ? ip->b.f32 : registersRC[ip->b.u32].f32)
+#define IMMB_F64(ip) ((ip->flags & BCI_IMM_B) ? ip->b.f64 : registersRC[ip->b.u32].f64)
 
 #define IMMC_U8(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u8 : registersRC[ip->c.u32].u8)
 #define IMMC_U16(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u16 : registersRC[ip->c.u32].u16)
 #define IMMC_U32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u32 : registersRC[ip->c.u32].u32)
 #define IMMC_U64(ip) ((ip->flags & BCI_IMM_C) ? ip->c.u64 : registersRC[ip->c.u32].u64)
+#define IMMC_S8(ip) ((ip->flags & BCI_IMM_C) ? ip->c.s8 : registersRC[ip->c.u32].s8)
+#define IMMC_S16(ip) ((ip->flags & BCI_IMM_C) ? ip->c.s16 : registersRC[ip->c.u32].s16)
+#define IMMC_S32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.s32 : registersRC[ip->c.u32].s32)
+#define IMMC_S64(ip) ((ip->flags & BCI_IMM_C) ? ip->c.s64 : registersRC[ip->c.u32].s64)
+#define IMMC_F32(ip) ((ip->flags & BCI_IMM_C) ? ip->c.f32 : registersRC[ip->c.u32].f32)
+#define IMMC_F64(ip) ((ip->flags & BCI_IMM_C) ? ip->c.f64 : registersRC[ip->c.u32].f64)
 
 #define IMMD_U8(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u8 : registersRC[ip->d.u32].u8)
 #define IMMD_U16(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u16 : registersRC[ip->d.u32].u16)
@@ -891,6 +893,42 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::JumpIfEqual64:
     {
         if (IMMA_U64(ip) == IMMC_U64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerU32:
+    {
+        if (IMMA_U32(ip) < IMMC_U32(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerU64:
+    {
+        if (IMMA_U64(ip) < IMMC_U64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerS32:
+    {
+        if (IMMA_S32(ip) < IMMC_S32(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerS64:
+    {
+        if (IMMA_S64(ip) < IMMC_S64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerF32:
+    {
+        if (IMMA_F32(ip) < IMMC_F32(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerF64:
+    {
+        if (IMMA_F64(ip) < IMMC_F64(ip))
             context->ip += ip->b.s32;
         break;
     }

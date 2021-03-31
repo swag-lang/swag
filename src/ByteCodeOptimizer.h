@@ -32,6 +32,12 @@ struct ByteCodeOptimizer
                inst->op == ByteCodeOp::JumpIfZero16 ||
                inst->op == ByteCodeOp::JumpIfZero32 ||
                inst->op == ByteCodeOp::JumpIfZero64 ||
+               inst->op == ByteCodeOp::JumpIfLowerU32 ||
+               inst->op == ByteCodeOp::JumpIfLowerU64 ||
+               inst->op == ByteCodeOp::JumpIfLowerS32 ||
+               inst->op == ByteCodeOp::JumpIfLowerS64 ||
+               inst->op == ByteCodeOp::JumpIfLowerF32 ||
+               inst->op == ByteCodeOp::JumpIfLowerF64 ||
                inst->op == ByteCodeOp::JumpIfNotEqual8 ||
                inst->op == ByteCodeOp::JumpIfNotEqual16 ||
                inst->op == ByteCodeOp::JumpIfNotEqual32 ||

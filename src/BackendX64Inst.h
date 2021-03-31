@@ -63,6 +63,8 @@ namespace BackendX64Inst
     {
         JNZ,
         JZ,
+        JL,
+        JB,
         JUMP,
     };
 
@@ -1213,6 +1215,59 @@ namespace BackendX64Inst
     }
 
     /////////////////////////////////////////////////////////////////////
+    inline void emit_NearJumpOp(X64PerThread& pp, JumpType jumpType)
+    {
+        switch (jumpType)
+        {
+        case JB:
+            pp.concat.addU8(0x72);
+            break;
+        case JZ:
+            pp.concat.addU8(0x74);
+            break;
+        case JNZ:
+            pp.concat.addU8(0x75);
+            break;
+        case JL:
+            pp.concat.addU8(0x7C);
+            break;
+        case JUMP:
+            pp.concat.addU8(0xEB);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
+
+    inline void emit_LongJumpOp(X64PerThread& pp, JumpType jumpType)
+    {
+        switch (jumpType)
+        {
+        case JB:
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8(0x82);
+            break;
+        case JZ:
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8(0x84);
+            break;
+        case JNZ:
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8(0x85);
+            break;
+        case JL:
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8(0x8C);
+            break;
+        case JUMP:
+            pp.concat.addU8(0xE9);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
 
     inline void emit_Jump(X64PerThread& pp, JumpType jumpType, int32_t instructionCount, int32_t jumpOffset)
     {
@@ -1223,45 +1278,18 @@ namespace BackendX64Inst
         auto it = pp.labels.find(label.ipDest);
         if (it != pp.labels.end())
         {
-            // Estimate jump
             label.currentOffset = (int32_t) pp.concat.totalCount() + 1;
             int relOffset       = it->second - (label.currentOffset + 1);
             if (relOffset >= -127 && relOffset <= 128)
             {
-                switch (jumpType)
-                {
-                case JNZ:
-                    pp.concat.addU8(0x75);
-                    break;
-                case JZ:
-                    pp.concat.addU8(0x74);
-                    break;
-                case JUMP:
-                    pp.concat.addU8(0xEB);
-                    break;
-                }
-
+                emit_NearJumpOp(pp, jumpType);
                 int8_t offset8 = (int8_t) relOffset;
                 SWAG_ASSERT(offset8 >= -127 && offset8 <= 128);
                 pp.concat.addU8(*(uint8_t*) &offset8);
             }
             else
             {
-                switch (jumpType)
-                {
-                case JNZ:
-                    pp.concat.addU8(0x0F);
-                    pp.concat.addU8(0x85);
-                    break;
-                case JZ:
-                    pp.concat.addU8(0x0F);
-                    pp.concat.addU8(0x84);
-                    break;
-                case JUMP:
-                    pp.concat.addU8(0xE9);
-                    break;
-                }
-
+                emit_LongJumpOp(pp, jumpType);
                 label.currentOffset = (int32_t) pp.concat.totalCount();
                 relOffset           = it->second - (label.currentOffset + 4);
                 pp.concat.addU32(*(uint32_t*) &relOffset);
@@ -1271,21 +1299,7 @@ namespace BackendX64Inst
         }
 
         // Here we do not know the destination label, so we assume 32 bits of offset
-        switch (jumpType)
-        {
-        case JNZ:
-            pp.concat.addU8(0x0F);
-            pp.concat.addU8(0x85);
-            break;
-        case JZ:
-            pp.concat.addU8(0x0F);
-            pp.concat.addU8(0x84);
-            break;
-        case JUMP:
-            pp.concat.addU8(0xE9);
-            break;
-        }
-
+        emit_LongJumpOp(pp, jumpType);
         label.currentOffset = (int32_t) pp.concat.totalCount();
         pp.concat.addU32(0);
         label.patch = pp.concat.getSeekPtr() - 4;

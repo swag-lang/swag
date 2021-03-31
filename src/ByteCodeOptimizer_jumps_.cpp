@@ -159,6 +159,12 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             ip->op != ByteCodeOp::JumpIfEqual16 &&
             ip->op != ByteCodeOp::JumpIfEqual32 &&
             ip->op != ByteCodeOp::JumpIfEqual64 &&
+            ip->op != ByteCodeOp::JumpIfLowerU32 &&
+            ip->op != ByteCodeOp::JumpIfLowerU64 &&
+            ip->op != ByteCodeOp::JumpIfLowerS32 &&
+            ip->op != ByteCodeOp::JumpIfLowerS64 &&
+            ip->op != ByteCodeOp::JumpIfLowerF32 &&
+            ip->op != ByteCodeOp::JumpIfLowerF64 &&
             (ip->flags & BCI_IMM_A))
         {
             switch (ip->op)
