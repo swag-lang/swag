@@ -5,12 +5,8 @@ func(T) test1()
     var x: T = 0b11110000
     x >>= 1
     @assert(@bitcounttz(x) == 3)
-    @print(cast(s64) x)
     x >>%= 1
     x >>%= 7
-    @print(" ")
-    @print(cast(s64) x)
-    @print("\n")
     @assert(@bitcounttz(x) == @sizeof(T) * 8)
 }
 
