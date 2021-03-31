@@ -314,13 +314,15 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
     g_Log.print(str);
 }
 
-void ByteCode::printInstruction(ByteCodeInstruction* ip)
+void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp)
 {
     static const wchar_t* bcNum = L"%08d ";
     int                   i     = (int) (ip - out);
 
     // Instruction rank
-    if (ip->node && ip->node->ownerInline)
+    if (ip == curIp)
+        g_Log.setColor(LogColor::Red);
+    else if (ip->node && ip->node->ownerInline)
         g_Log.setColor(LogColor::DarkCyan);
     else
         g_Log.setColor(LogColor::Cyan);
@@ -458,7 +460,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip)
     g_Log.eol();
 }
 
-void ByteCode::print()
+void ByteCode::print(ByteCodeInstruction* curIp)
 {
     g_Log.lock();
 
@@ -491,7 +493,7 @@ void ByteCode::print()
     for (int i = 0; i < (int) numInstructions; i++)
     {
         printSourceCode(ip, &lastLine, &lastFile);
-        printInstruction(ip++);
+        printInstruction(ip++, curIp);
     }
 
     g_Log.setDefaultColor();

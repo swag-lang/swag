@@ -99,15 +99,20 @@ struct ByteCodeRunContext : public JobContext
         FinishedFunction,
     };
 
-    uint32_t             debugLastCurRC        = 0;
-    ByteCodeInstruction* debugLastIp           = nullptr;
+    const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
+    Job*                           currentCompilerJob     = nullptr;
+
+    // Debugger
     bool                 debugEntry            = false;
     bool                 debugOn               = false;
+    uint32_t             debugLastCurRC        = 0;
+    ByteCodeInstruction* debugLastIp           = nullptr;
     int32_t              debugStepRC           = 0;
     DebugStepMode        debugStepMode         = DebugStepMode::None;
     SourceFile*          debugStepLastFile     = nullptr;
     SourceLocation*      debugStepLastLocation = nullptr;
-
-    const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
-    Job*                           currentCompilerJob     = nullptr;
+    uint32_t             debugStackContext     = 0;
+    ByteCode*            debugCxtBc            = nullptr;
+    uint32_t             debugCxtRc            = 0;
+    ByteCodeInstruction* debugCxtIp            = nullptr;
 };

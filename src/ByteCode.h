@@ -49,8 +49,8 @@ struct ByteCode
 
     void              printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
     void              printPrettyInstruction(ByteCodeInstruction* ip);
-    void              printInstruction(ByteCodeInstruction* ip);
-    void              print();
+    void              printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp = nullptr);
+    void              print(ByteCodeInstruction* curIp = nullptr);
     Utf8              callName();
     TypeInfoFuncAttr* callType();
     static void       getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force = false);
