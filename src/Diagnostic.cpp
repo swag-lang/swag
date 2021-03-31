@@ -180,14 +180,27 @@ void Diagnostic::report(bool verboseMode) const
                     range = (int) backLine.length() - startLocation.column;
                 range = max(1, range);
 
-                // Special case for a range == 1. If this is a word, than take the whole word
+                // Special case for a range == 1.
                 if (range == 1)
                 {
-                    int  decal   = startLocation.column;
+                    int decal = startLocation.column;
+
+                    // If this is a word, than take the whole word
                     bool isCWord = isalpha(backLine[decal]) || backLine[decal] == '_' || backLine[decal] == '#' || backLine[decal] == '@';
                     if (isCWord)
                     {
                         while (isalnum(backLine[decal + 1]) || backLine[decal + 1] == '_')
+                        {
+                            decal += 1;
+                            range += 1;
+                        }
+                    }
+
+                    // If this is an operator
+#define ISOP(__c) __c == '>' || __c == '<' || __c == '=' || __c == '-' || __c == '+' || __c == '*' || __c == '/' || __c == '%'
+                    if (ISOP(backLine[decal]))
+                    {
+                        while (ISOP(backLine[decal + 1]))
                         {
                             decal += 1;
                             range += 1;
