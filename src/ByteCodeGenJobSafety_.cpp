@@ -77,26 +77,29 @@ void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r
         emitInstruction(context, ByteCodeOp::ClearMaskU32, re)->b.u64 = 0xFF;
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, re, r1, re);
         emitInstruction(context, ByteCodeOp::CompareOpEqual8, re, r0, re1);
+        emitAssert(context, re1, "[safety] (8 bits) left shift overflow");
         break;
     case 2:
         emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, re);
         emitInstruction(context, ByteCodeOp::ClearMaskU32, re)->b.u64 = 0xFFFF;
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, re, r1, re);
         emitInstruction(context, ByteCodeOp::CompareOpEqual16, re, r0, re1);
+        emitAssert(context, re1, "[safety] (16 bits) left shift overflow");
         break;
     case 4:
         emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, re);
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, re, r1, re);
         emitInstruction(context, ByteCodeOp::CompareOpEqual32, re, r0, re1);
+        emitAssert(context, re1, "[safety] (32 bits) left shift overflow");
         break;
     case 8:
         emitInstruction(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, re);
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU64, re, r1, re);
         emitInstruction(context, ByteCodeOp::CompareOpEqual64, re, r0, re1);
+        emitAssert(context, re1, "[safety] (64 bits) left shift overflow");
         break;
     }
 
-    emitAssert(context, re1, "[safety] left shift overflow");
     freeRegisterRC(context, re);
     freeRegisterRC(context, re1);
 }
@@ -116,25 +119,28 @@ void ByteCodeGenJob::emitSafetyRightShift(ByteCodeGenContext* context, uint32_t 
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, re);
         emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, re, r1, re);
         emitInstruction(context, ByteCodeOp::CompareOpEqual8, re, r0, re1);
+        emitAssert(context, re1, "[safety] (8 bits) right shift overflow");
         break;
     case 2:
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, re);
         emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, re, r1, re);
         emitInstruction(context, ByteCodeOp::CompareOpEqual16, re, r0, re1);
+        emitAssert(context, re1, "[safety] (16 bits) right shift overflow");
         break;
     case 4:
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, r0, r1, re);
         emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, re, r1, re);
         emitInstruction(context, ByteCodeOp::CompareOpEqual32, re, r0, re1);
+        emitAssert(context, re1, "[safety] (32 bits) right shift overflow");
         break;
     case 8:
         emitInstruction(context, ByteCodeOp::BinOpShiftRightU64, r0, r1, re);
         emitInstruction(context, ByteCodeOp::BinOpShiftLeftU64, re, r1, re);
         emitInstruction(context, ByteCodeOp::CompareOpEqual64, re, r0, re1);
+        emitAssert(context, re1, "[safety] (64 bits) right shift overflow");
         break;
     }
 
-    emitAssert(context, re1, "[safety] right shift overflow");
     freeRegisterRC(context, re);
     freeRegisterRC(context, re1);
 }

@@ -5,7 +5,8 @@ func(T) test1()
     var x: T = 0b11110000
     x >>= 1
     @assert(@bitcounttz(x) == 3)
-    x >>%= 10
+    x >>%= 1
+    x >>%= 7
     @assert(@bitcounttz(x) == @sizeof(T) * 8)
 }
 
@@ -18,7 +19,8 @@ func(T) test2()
     x >>= 1
     x <<= 1
     @assert(@bitcountlz(x) == Total - 8)
-    x >>%= 10
+    x >>%= 1
+    x >>%= 7
     @assert(@bitcountlz(x) == Total)
 }
 

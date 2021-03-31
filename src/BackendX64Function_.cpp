@@ -328,7 +328,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     return true;
 }
 
-void BackendX64::emitOverflowSigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node)
+void BackendX64::emitOverflowSigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node, const char* msg)
 {
     if (!module->mustEmitSafetyOF(node))
         return;
@@ -336,11 +336,11 @@ void BackendX64::emitOverflowSigned(const BuildParameters& buildParameters, Conc
     concat.addU32(0);
     auto addr      = (uint32_t*) concat.getSeekPtr() - 1;
     auto prevCount = concat.totalCount();
-    emitInternalPanic(buildParameters, node, "[safety] integer overflow");
+    emitInternalPanic(buildParameters, node, msg);
     *addr = concat.totalCount() - prevCount;
 }
 
-void BackendX64::emitOverflowUnsigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node)
+void BackendX64::emitOverflowUnsigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node, const char* msg)
 {
     if (!module->mustEmitSafetyOF(node))
         return;
@@ -348,7 +348,7 @@ void BackendX64::emitOverflowUnsigned(const BuildParameters& buildParameters, Co
     concat.addU32(0);
     auto addr      = (uint32_t*) concat.getSeekPtr() - 1;
     auto prevCount = concat.totalCount();
-    emitInternalPanic(buildParameters, node, "[safety] integer overflow");
+    emitInternalPanic(buildParameters, node, msg);
     *addr = concat.totalCount() - prevCount;
 }
 
@@ -759,19 +759,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpMulS32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::IMUL);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s32) '*' integer overflow");
             break;
         case ByteCodeOp::BinOpMulU32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::MUL);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u32) '*' integer overflow");
             break;
         case ByteCodeOp::BinOpMulS64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::IMUL);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s64) '*' integer overflow");
             break;
         case ByteCodeOp::BinOpMulU64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::MUL);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u64) '*' integer overflow");
             break;
         case ByteCodeOp::BinOpMulF32:
             BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FMUL);
@@ -814,19 +814,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpPlusS32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::ADD);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s32) '+' integer overflow");
             break;
         case ByteCodeOp::BinOpPlusU32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::ADD);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u32) '+' integer overflow");
             break;
         case ByteCodeOp::BinOpPlusS64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::ADD);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s64) '+' integer overflow");
             break;
         case ByteCodeOp::BinOpPlusU64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::ADD);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u64) '+' integer overflow");
             break;
         case ByteCodeOp::BinOpPlusF32:
             BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FADD);
@@ -837,19 +837,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpMinusS32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::SUB);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s32) '-' integer overflow");
             break;
         case ByteCodeOp::BinOpMinusU32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::SUB);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u32) '-' integer overflow");
             break;
         case ByteCodeOp::BinOpMinusS64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::SUB);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s64) '-' integer overflow");
             break;
         case ByteCodeOp::BinOpMinusU64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::SUB);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u64) '-' integer overflow");
             break;
         case ByteCodeOp::BinOpMinusF32:
             BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FSUB);
@@ -958,7 +958,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf6\xe9"); // imul cl
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s8) '*=' integer overflow");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store8_Indirect(pp, 0, RAX, RCX);
             break;
@@ -967,7 +967,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf6\xe1"); // mul cl
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u8) '*=' integer overflow");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store8_Indirect(pp, 0, RAX, RCX);
             break;
@@ -976,7 +976,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x66\xf7\xe9"); // imul cx
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s16) '*=' integer overflow");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store16_Indirect(pp, 0, RAX, RCX);
             break;
@@ -985,7 +985,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x66\xf7\xe1"); // mul cx
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u16) '*=' integer overflow");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store16_Indirect(pp, 0, RAX, RCX);
             break;
@@ -994,7 +994,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf7\xe9"); // imul ecx
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s32) '*=' integer overflow");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store32_Indirect(pp, 0, RAX, RCX);
             break;
@@ -1003,7 +1003,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString2("\xf7\xe1"); // mul ecx
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u32) '*=' integer overflow");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store32_Indirect(pp, 0, RAX, RCX);
             break;
@@ -1012,7 +1012,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x48\xf7\xe9"); // imul rcx
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s64) '*=' integer overflow");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
             break;
@@ -1021,7 +1021,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
             concat.addString3("\x48\xf7\xe1"); // mul rcx
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u64) '*=' integer overflow");
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
             break;
@@ -1207,35 +1207,35 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::AffectOpMinusEqS8:
             MK_BINOPEQ8_CAB(X64Op::SUB);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s8) '-=' integer overflow");
             break;
         case ByteCodeOp::AffectOpMinusEqU8:
             MK_BINOPEQ8_CAB(X64Op::SUB);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u8) '-=' integer overflow");
             break;
         case ByteCodeOp::AffectOpMinusEqS16:
             MK_BINOPEQ16_CAB(X64Op::SUB);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (u16) '-=' integer overflow");
             break;
         case ByteCodeOp::AffectOpMinusEqU16:
             MK_BINOPEQ16_CAB(X64Op::SUB);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u16) '-=' integer overflow");
             break;
         case ByteCodeOp::AffectOpMinusEqS32:
             MK_BINOPEQ32_CAB(X64Op::SUB);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s32) '-=' integer overflow");
             break;
         case ByteCodeOp::AffectOpMinusEqU32:
             MK_BINOPEQ32_CAB(X64Op::SUB);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u32) '-=' integer overflow");
             break;
         case ByteCodeOp::AffectOpMinusEqS64:
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s64) '-=' integer overflow");
             MK_BINOPEQ64_CAB(X64Op::SUB);
             break;
         case ByteCodeOp::AffectOpMinusEqU64:
             MK_BINOPEQ64_CAB(X64Op::SUB);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u64) '-=' integer overflow");
             break;
         case ByteCodeOp::AffectOpMinusEqF32:
             MK_BINOPEQF32_CAB(X64Op::FSUB);
@@ -1246,35 +1246,35 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::AffectOpPlusEqS8:
             MK_BINOPEQ8_CAB(X64Op::ADD);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s8) '+=' integer overflow");
             break;
         case ByteCodeOp::AffectOpPlusEqU8:
             MK_BINOPEQ8_CAB(X64Op::ADD);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u8) '+=' integer overflow");
             break;
         case ByteCodeOp::AffectOpPlusEqS16:
             MK_BINOPEQ16_CAB(X64Op::ADD);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s16) '+=' integer overflow");
             break;
         case ByteCodeOp::AffectOpPlusEqU16:
             MK_BINOPEQ16_CAB(X64Op::ADD);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u16) '+=' integer overflow");
             break;
         case ByteCodeOp::AffectOpPlusEqS32:
             MK_BINOPEQ32_CAB(X64Op::ADD);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s32) '+=' integer overflow");
             break;
         case ByteCodeOp::AffectOpPlusEqU32:
             MK_BINOPEQ32_CAB(X64Op::ADD);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u32) '+=' integer overflow");
             break;
         case ByteCodeOp::AffectOpPlusEqS64:
             MK_BINOPEQ64_CAB(X64Op::ADD);
-            emitOverflowSigned(buildParameters, concat, ip->node);
+            emitOverflowSigned(buildParameters, concat, ip->node, "[safety] (s64) '+=' integer overflow");
             break;
         case ByteCodeOp::AffectOpPlusEqU64:
             MK_BINOPEQ64_CAB(X64Op::ADD);
-            emitOverflowUnsigned(buildParameters, concat, ip->node);
+            emitOverflowUnsigned(buildParameters, concat, ip->node, "[safety] (u64) '+=' integer overflow");
             break;
         case ByteCodeOp::AffectOpPlusEqF32:
             MK_BINOPEQF32_CAB(X64Op::FADD);
