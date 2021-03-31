@@ -53,7 +53,7 @@ void Utf8::reserve(int newSize)
     allocated      = (int) Allocator::alignSize(allocated);
     auto newBuffer = (char*) g_Allocator.alloc(allocated);
     if (count)
-        Memcpy(newBuffer, buffer, count + 1);
+        memcpy(newBuffer, buffer, count + 1);
     if (g_CommandLine.stats)
         g_Stats.memUtf8 += allocated;
 
@@ -103,7 +103,7 @@ Utf8::Utf8(const char* from)
         return;
 
     reserve(len + 1);
-    Memcpy(buffer, from, len + 1);
+    memcpy(buffer, from, len + 1);
     count = len;
 }
 
@@ -118,7 +118,7 @@ Utf8::Utf8(const char* from, uint32_t len)
         return;
 
     reserve(len + 1);
-    Memcpy(buffer, from, len + 1);
+    memcpy(buffer, from, len + 1);
     count = len;
 }
 
@@ -134,7 +134,7 @@ Utf8::Utf8(const string& from)
         return;
 
     reserve(len + 1);
-    Memcpy(buffer, from.c_str(), len + 1);
+    memcpy(buffer, from.c_str(), len + 1);
     count = len;
 }
 
@@ -150,7 +150,7 @@ Utf8::Utf8(const Utf8& from)
         return;
 
     reserve(len + 1);
-    Memcpy(buffer, from.buffer, len + 1);
+    memcpy(buffer, from.buffer, len + 1);
     count = len;
 }
 
@@ -524,7 +524,7 @@ void Utf8::append(const char* txt, int len)
         return;
     SWAG_ASSERT(txt);
     reserve(count + len + 1);
-    Memcpy(buffer + count, txt, len + 1);
+    memcpy(buffer + count, txt, len + 1);
     count += len;
     buffer[count] = 0;
 }
@@ -537,7 +537,7 @@ void Utf8::append(const char* txt)
     if (!len)
         return;
     reserve(count + len + 1);
-    Memcpy(buffer + count, txt, len + 1);
+    memcpy(buffer + count, txt, len + 1);
     count += len;
 }
 
@@ -547,7 +547,7 @@ void Utf8::append(const Utf8& txt)
     if (!len)
         return;
     reserve(count + len + 1);
-    Memcpy(buffer + count, txt.buffer, len + 1);
+    memcpy(buffer + count, txt.buffer, len + 1);
     count += len;
 }
 

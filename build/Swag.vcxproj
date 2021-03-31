@@ -265,7 +265,6 @@
     <ClCompile Include="../src/CompilerItf.cpp" />
     <ClCompile Include="../src/LLVMSetup.cpp" />
     <ClCompile Include="../src/LoadFileJob.cpp" />
-    <ClCompile Include="../src/Memcpy.cpp" />
     <ClCompile Include="../src/ModuleManager.cpp" />
     <ClCompile Include="../src/ByteCodeRun.cpp" />
     <ClCompile Include="../src/ByteCodeRunContext.cpp" />

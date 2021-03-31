@@ -237,7 +237,7 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str)
     auto strLen = (uint32_t) str.length() + 1;
     auto offset = reserveNoLock(strLen);
     auto addr   = addressNoLock(offset);
-    Memcpy(addr, str.c_str(), strLen);
+    memcpy(addr, str.c_str(), strLen);
     mapString[str] = offset;
 
     return offset;
@@ -377,7 +377,7 @@ void DataSegment::saveValue(void* address, uint32_t size, bool zero)
         break;
     default:
         auto buf = g_Allocator.alloc(Allocator::alignSize(size));
-        Memcpy(buf, address, size);
+        memcpy(buf, address, size);
         savedValues[address] = {buf, size};
         break;
     }
@@ -409,7 +409,7 @@ void DataSegment::restoreAllValues()
             *(uint64_t*) one.first = (uint64_t) * (uint64_t*) &one.second.ptr;
             break;
         default:
-            Memcpy(one.first, one.second.ptr, one.second.size);
+            memcpy(one.first, one.second.ptr, one.second.size);
             g_Allocator.free(one.second.ptr, Allocator::alignSize(one.second.size));
             break;
         }

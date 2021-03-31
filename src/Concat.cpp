@@ -229,7 +229,7 @@ void Concat::addString(const Utf8& v)
 {
     auto len = (int) v.length();
     ensureSpace(len);
-    Memcpy(currentSP, v.c_str(), len);
+    memcpy(currentSP, v.c_str(), len);
     currentSP += len;
 }
 
@@ -273,7 +273,7 @@ void Concat::addString5(const char* v)
 void Concat::addString(const char* v, int len)
 {
     ensureSpace(len);
-    Memcpy(currentSP, v, len);
+    memcpy(currentSP, v, len);
     currentSP += len;
 }
 
@@ -281,7 +281,7 @@ void Concat::addString(const char* v)
 {
     auto len = (int) strlen(v);
     ensureSpace(len);
-    Memcpy(currentSP, v, len);
+    memcpy(currentSP, v, len);
     currentSP += len;
 }
 

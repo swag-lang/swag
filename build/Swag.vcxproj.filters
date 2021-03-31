@@ -416,9 +416,6 @@
     <ClCompile Include="../src/SemanticJobCollect_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Memcpy.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="../src/ByteCodeOptimizer_retcopy_.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>

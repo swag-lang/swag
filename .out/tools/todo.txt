@@ -50,6 +50,8 @@ virer MemCpy ?
 OPTIMS
 ****************************************
 -------------------------------------
+jump if < > <= >=
+-------------------------------------
 x64 passe reduction instructions
 -------------------------------------
 passer/retourner des structs par value si <= 64 bits
@@ -57,6 +59,7 @@ passer/retourner des structs par value si <= 64 bits
 detecter les exit (ret) de fonctions dupliquées et faire des jumps (reduction code size)
 -------------------------------------
 BinOpModuloS32/div immediate mode
+-------------------------------------
 AffectOpShiftLeftEqU8
 -------------------------------------
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?
