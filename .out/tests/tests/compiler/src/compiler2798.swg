@@ -1,6 +1,6 @@
 #global testerror
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
     x := 0'u32
@@ -9,5 +9,6 @@
     y := 31'u32
     y += 1
     x >>= y
+    @dbgbreak()
     @print(cast(s64) x)
 }

@@ -12,7 +12,7 @@ void ByteCodeStack::log()
     if (steps.empty())
         return;
 
-    auto stackLevel = 0;
+    auto stackLevel = currentContext ? 0 : -1;
     int  maxSteps   = min((int) steps.size() - 1, 20);
     for (int i = maxSteps + 1; i >= 0; i--)
     {
