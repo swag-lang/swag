@@ -414,15 +414,15 @@ BYTECODE_OP(AffectOpXorEqS16, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra
 BYTECODE_OP(AffectOpXorEqS32, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ ^= _rbs32_")
 BYTECODE_OP(AffectOpXorEqS64, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ ^= _rbs64_")
 
-BYTECODE_OP(AffectOpShiftLeftEqU8, OPFLAG_READ_A | OPFLAG_READ_B, "_ra_ <<= _rb_")
-BYTECODE_OP(AffectOpShiftLeftEqU16, OPFLAG_READ_A | OPFLAG_READ_B, "_ra_ <<= _rb_")
-BYTECODE_OP(AffectOpShiftLeftEqU32, OPFLAG_READ_A | OPFLAG_READ_B, "_ra_ <<= _rb_")
-BYTECODE_OP(AffectOpShiftLeftEqU64, OPFLAG_READ_A | OPFLAG_READ_B, "_ra_ <<= _rb_")
+BYTECODE_OP(AffectOpShiftLeftEqU8, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ <<= _rb_")
+BYTECODE_OP(AffectOpShiftLeftEqU16, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ <<= _rb_")
+BYTECODE_OP(AffectOpShiftLeftEqU32, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ <<= _rb_")
+BYTECODE_OP(AffectOpShiftLeftEqU64, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ <<= _rb_")
 
-BYTECODE_OP(AffectOpShiftRightEqU8, OPFLAG_READ_A | OPFLAG_READ_B, "_ra_ >>= _rb_")
-BYTECODE_OP(AffectOpShiftRightEqU16, OPFLAG_READ_A | OPFLAG_READ_B, "_ra_ >>= _rb_")
-BYTECODE_OP(AffectOpShiftRightEqU32, OPFLAG_READ_A | OPFLAG_READ_B, "_ra_ >>= _rb_")
-BYTECODE_OP(AffectOpShiftRightEqU64, OPFLAG_READ_A | OPFLAG_READ_B, "_ra_ >>= _rb_")
+BYTECODE_OP(AffectOpShiftRightEqU8, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ >>= _rb_")
+BYTECODE_OP(AffectOpShiftRightEqU16, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ >>= _rb_")
+BYTECODE_OP(AffectOpShiftRightEqU32, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ >>= _rb_")
+BYTECODE_OP(AffectOpShiftRightEqU64, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_IMM_B, "_ra_ >>= _rb_")
 
 BYTECODE_OP(AffectOpModuloEqS8, OPFLAG_READ_A | OPFLAG_READ_B, "_ra_ %= _rb_")
 BYTECODE_OP(AffectOpModuloEqS16, OPFLAG_READ_A | OPFLAG_READ_B, "_ra_ %= _rb_")
