@@ -66,6 +66,30 @@ struct ByteCode
         return 0;
     }
 
+    inline static uint32_t isSetZeroStack(ByteCodeInstruction* inst, uint32_t& offset)
+    {
+        switch (inst->op)
+        {
+        case ByteCodeOp::SetZeroStack8:
+            offset = inst->a.u32;
+            return 1;
+        case ByteCodeOp::SetZeroStack16:
+            offset = inst->a.u32;
+            return 2;
+        case ByteCodeOp::SetZeroStack32:
+            offset = inst->a.u32;
+            return 4;
+        case ByteCodeOp::SetZeroStack64:
+            offset = inst->a.u32;
+            return 8;
+        case ByteCodeOp::SetZeroStackX:
+            offset = inst->a.u32;
+            return inst->b.u32;
+        }
+
+        return 0;
+    }
+
     inline static bool isMemCpy(ByteCodeInstruction* inst)
     {
         return inst->op == ByteCodeOp::MemCpy8 ||
