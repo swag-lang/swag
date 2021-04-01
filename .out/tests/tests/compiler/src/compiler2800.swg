@@ -21,5 +21,4 @@ struct AA
     @assert(x.xx[0] == 0)
     @assert(x.xx[1] == 0)
     @assert(x.xx[2] == 0)
-    @print(x.x)
 }
