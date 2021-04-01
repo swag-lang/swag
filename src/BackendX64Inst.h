@@ -1359,4 +1359,61 @@ namespace BackendX64Inst
         label.patch = pp.concat.getSeekPtr() - 4;
         pp.labelsToSolve.push_back(label);
     }
+
+    inline void emitClearX(X64PerThread& pp, uint32_t toClear, uint32_t offset, uint8_t reg)
+    {
+        if (!toClear)
+            return;
+        SWAG_ASSERT(reg == RAX || reg == RDI);
+
+        if (toClear >= 16)
+        {
+            pp.concat.addString3("\x0F\x57\xC0"); // xorps xmm0, xmm0
+            while (toClear >= 16)
+            {
+                if (offset <= 0x7F)
+                {
+                    pp.concat.addString2("\x0F\x11"); // movups [reg + ??], xmm0
+                    pp.concat.addU8(0x40 | reg);
+                    pp.concat.addU8((uint8_t) offset);
+                }
+                else
+                {
+                    pp.concat.addString2("\x0F\x11"); // movups [reg + ????????], xmm0
+                    pp.concat.addU8(0x80 | reg);
+                    pp.concat.addU32(offset);
+                }
+                toClear -= 16;
+                offset += 16;
+            }
+        }
+
+        while (toClear >= 8)
+        {
+            emit_Store64_Immediate(pp, offset, 0, reg);
+            toClear -= 8;
+            offset += 8;
+        }
+
+        while (toClear >= 4)
+        {
+            emit_Store32_Immediate(pp, offset, 0, reg);
+            toClear -= 4;
+            offset += 4;
+        }
+
+        while (toClear >= 2)
+        {
+            emit_Store16_Immediate(pp, offset, 0, reg);
+            toClear -= 2;
+            offset += 2;
+        }
+
+        while (toClear >= 1)
+        {
+            emit_Store8_Immediate(pp, offset, 0, reg);
+            toClear -= 1;
+            offset += 1;
+        }
+    }
 }; // namespace BackendX64Inst
