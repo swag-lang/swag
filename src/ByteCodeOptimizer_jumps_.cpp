@@ -150,22 +150,7 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         }
 
         // Evaluate the jump if the condition is constant
-        if (ip->op != ByteCodeOp::Jump &&
-            ip->op != ByteCodeOp::JumpIfNotEqual8 &&
-            ip->op != ByteCodeOp::JumpIfNotEqual16 &&
-            ip->op != ByteCodeOp::JumpIfNotEqual32 &&
-            ip->op != ByteCodeOp::JumpIfNotEqual64 &&
-            ip->op != ByteCodeOp::JumpIfEqual8 &&
-            ip->op != ByteCodeOp::JumpIfEqual16 &&
-            ip->op != ByteCodeOp::JumpIfEqual32 &&
-            ip->op != ByteCodeOp::JumpIfEqual64 &&
-            ip->op != ByteCodeOp::JumpIfLowerU32 &&
-            ip->op != ByteCodeOp::JumpIfLowerU64 &&
-            ip->op != ByteCodeOp::JumpIfLowerS32 &&
-            ip->op != ByteCodeOp::JumpIfLowerS64 &&
-            ip->op != ByteCodeOp::JumpIfLowerF32 &&
-            ip->op != ByteCodeOp::JumpIfLowerF64 &&
-            (ip->flags & BCI_IMM_A))
+        if (ip->flags & BCI_IMM_A)
         {
             switch (ip->op)
             {

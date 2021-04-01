@@ -402,39 +402,15 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
 
     g_Log.setColor(LogColor::Gray);
     g_Log.print(" ");
+
+    if (ByteCode::isJump(ip))
+        wprintf(bcNum, ip->b.s32 + i + 1);
+
     switch (ip->op)
     {
     case ByteCodeOp::InternalPanic:
         if (ip->d.pointer)
             g_Log.print((const char*) ip->d.pointer);
-        break;
-
-    case ByteCodeOp::Jump:
-    case ByteCodeOp::JumpIfZero8:
-    case ByteCodeOp::JumpIfZero16:
-    case ByteCodeOp::JumpIfZero32:
-    case ByteCodeOp::JumpIfZero64:
-    case ByteCodeOp::JumpIfNotZero8:
-    case ByteCodeOp::JumpIfNotZero16:
-    case ByteCodeOp::JumpIfNotZero32:
-    case ByteCodeOp::JumpIfNotZero64:
-    case ByteCodeOp::JumpIfFalse:
-    case ByteCodeOp::JumpIfTrue:
-    case ByteCodeOp::JumpIfNotEqual8:
-    case ByteCodeOp::JumpIfNotEqual16:
-    case ByteCodeOp::JumpIfNotEqual32:
-    case ByteCodeOp::JumpIfNotEqual64:
-    case ByteCodeOp::JumpIfEqual8:
-    case ByteCodeOp::JumpIfEqual16:
-    case ByteCodeOp::JumpIfEqual32:
-    case ByteCodeOp::JumpIfEqual64:
-    case ByteCodeOp::JumpIfLowerU32:
-    case ByteCodeOp::JumpIfLowerU64:
-    case ByteCodeOp::JumpIfLowerS32:
-    case ByteCodeOp::JumpIfLowerS64:
-    case ByteCodeOp::JumpIfLowerF32:
-    case ByteCodeOp::JumpIfLowerF64:
-        wprintf(bcNum, ip->b.s32 + i + 1);
         break;
 
     case ByteCodeOp::MakeLambda:
@@ -515,37 +491,11 @@ void ByteCode::markLabels()
     auto     ip    = out;
     for (uint32_t i = 0; i < numInstructions && count; i++, ip++)
     {
-        switch (ip->op)
+        if (ByteCode::isJump(ip))
         {
-        case ByteCodeOp::Jump:
-        case ByteCodeOp::JumpIfTrue:
-        case ByteCodeOp::JumpIfFalse:
-        case ByteCodeOp::JumpIfNotZero8:
-        case ByteCodeOp::JumpIfNotZero16:
-        case ByteCodeOp::JumpIfNotZero32:
-        case ByteCodeOp::JumpIfNotZero64:
-        case ByteCodeOp::JumpIfZero8:
-        case ByteCodeOp::JumpIfZero16:
-        case ByteCodeOp::JumpIfZero32:
-        case ByteCodeOp::JumpIfZero64:
-        case ByteCodeOp::JumpIfNotEqual8:
-        case ByteCodeOp::JumpIfNotEqual16:
-        case ByteCodeOp::JumpIfNotEqual32:
-        case ByteCodeOp::JumpIfNotEqual64:
-        case ByteCodeOp::JumpIfEqual8:
-        case ByteCodeOp::JumpIfEqual16:
-        case ByteCodeOp::JumpIfEqual32:
-        case ByteCodeOp::JumpIfEqual64:
-        case ByteCodeOp::JumpIfLowerU32:
-        case ByteCodeOp::JumpIfLowerU64:
-        case ByteCodeOp::JumpIfLowerS32:
-        case ByteCodeOp::JumpIfLowerS64:
-        case ByteCodeOp::JumpIfLowerF32:
-        case ByteCodeOp::JumpIfLowerF64:
             ip[ip->b.s32 + 1].flags |= BCI_JUMP_DEST;
             ip[1].flags |= BCI_JUMP_DEST;
             count--;
-            break;
         }
     }
 }

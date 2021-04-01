@@ -10,47 +10,9 @@ struct Job;
 
 struct ByteCodeOptimizer
 {
-    inline static bool isMemCpy(ByteCodeInstruction* inst)
-    {
-        return inst->op == ByteCodeOp::MemCpy8 ||
-               inst->op == ByteCodeOp::MemCpy16 ||
-               inst->op == ByteCodeOp::MemCpy32 ||
-               inst->op == ByteCodeOp::MemCpy64 ||
-               inst->op == ByteCodeOp::MemCpyX;
-    }
-
-    inline static bool isJump(ByteCodeInstruction* inst)
-    {
-        return inst->op == ByteCodeOp::Jump ||
-               inst->op == ByteCodeOp::JumpIfTrue ||
-               inst->op == ByteCodeOp::JumpIfFalse ||
-               inst->op == ByteCodeOp::JumpIfNotZero8 ||
-               inst->op == ByteCodeOp::JumpIfNotZero16 ||
-               inst->op == ByteCodeOp::JumpIfNotZero32 ||
-               inst->op == ByteCodeOp::JumpIfNotZero64 ||
-               inst->op == ByteCodeOp::JumpIfZero8 ||
-               inst->op == ByteCodeOp::JumpIfZero16 ||
-               inst->op == ByteCodeOp::JumpIfZero32 ||
-               inst->op == ByteCodeOp::JumpIfZero64 ||
-               inst->op == ByteCodeOp::JumpIfLowerU32 ||
-               inst->op == ByteCodeOp::JumpIfLowerU64 ||
-               inst->op == ByteCodeOp::JumpIfLowerS32 ||
-               inst->op == ByteCodeOp::JumpIfLowerS64 ||
-               inst->op == ByteCodeOp::JumpIfLowerF32 ||
-               inst->op == ByteCodeOp::JumpIfLowerF64 ||
-               inst->op == ByteCodeOp::JumpIfNotEqual8 ||
-               inst->op == ByteCodeOp::JumpIfNotEqual16 ||
-               inst->op == ByteCodeOp::JumpIfNotEqual32 ||
-               inst->op == ByteCodeOp::JumpIfNotEqual64 ||
-               inst->op == ByteCodeOp::JumpIfEqual8 ||
-               inst->op == ByteCodeOp::JumpIfEqual16 ||
-               inst->op == ByteCodeOp::JumpIfEqual32 ||
-               inst->op == ByteCodeOp::JumpIfEqual64;
-    }
-
     inline static bool isJumpBlock(ByteCodeInstruction* inst)
     {
-        if (!isJump(inst))
+        if (!ByteCode::isJump(inst))
             return false;
         if (inst->op == ByteCodeOp::JumpIfNotZero8 && inst->b.s32 == 1 && inst[1].op == ByteCodeOp::InternalPanic)
             return false;
@@ -94,7 +56,10 @@ struct ByteCodeOptimizer
     static void optimizePassRetCopyLocal(ByteCodeOptContext* context);
     static void optimizePassRetCopyGlobal(ByteCodeOptContext* context);
     static void optimizePassRetCopyInline(ByteCodeOptContext* context);
+
+    static void reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void optimizePassReduce(ByteCodeOptContext* context);
+
     static void optimizePassErr(ByteCodeOptContext* context);
 
     static bool optimize(Job* job, Module* module, bool& done);

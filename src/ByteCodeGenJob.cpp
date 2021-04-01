@@ -221,36 +221,11 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     else
         ins.location = &node->token.startLocation;
 
+    if (ByteCode::isJump(&ins))
+        bc->numJumps++;
+
     switch (op)
     {
-    case ByteCodeOp::Jump:
-    case ByteCodeOp::JumpIfTrue:
-    case ByteCodeOp::JumpIfFalse:
-    case ByteCodeOp::JumpIfNotZero8:
-    case ByteCodeOp::JumpIfNotZero16:
-    case ByteCodeOp::JumpIfNotZero32:
-    case ByteCodeOp::JumpIfNotZero64:
-    case ByteCodeOp::JumpIfZero8:
-    case ByteCodeOp::JumpIfZero16:
-    case ByteCodeOp::JumpIfZero32:
-    case ByteCodeOp::JumpIfZero64:
-    case ByteCodeOp::JumpIfNotEqual8:
-    case ByteCodeOp::JumpIfNotEqual16:
-    case ByteCodeOp::JumpIfNotEqual32:
-    case ByteCodeOp::JumpIfNotEqual64:
-    case ByteCodeOp::JumpIfEqual8:
-    case ByteCodeOp::JumpIfEqual16:
-    case ByteCodeOp::JumpIfEqual32:
-    case ByteCodeOp::JumpIfEqual64:
-    case ByteCodeOp::JumpIfLowerU32:
-    case ByteCodeOp::JumpIfLowerU64:
-    case ByteCodeOp::JumpIfLowerS32:
-    case ByteCodeOp::JumpIfLowerS64:
-    case ByteCodeOp::JumpIfLowerF32:
-    case ByteCodeOp::JumpIfLowerF64:
-        bc->numJumps++;
-        break;
-
     case ByteCodeOp::IntrinsicPrintS64:
     case ByteCodeOp::IntrinsicPrintF64:
         context->bc->maxCallParams = max(context->bc->maxCallParams, 1); // Runtime call

@@ -27,7 +27,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
 {
     ByteCodeOptTreeNode* node = &context->tree[nodeIdx];
     node->end                 = node->start;
-    while (node->end->op != ByteCodeOp::Ret && !isJump(node->end))
+    while (node->end->op != ByteCodeOp::Ret && !ByteCode::isJump(node->end))
         node->end++;
     if (node->end->op == ByteCodeOp::Ret)
         return;
@@ -158,7 +158,7 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
             continue;
         }
 
-        if (isJump(ip))
+        if (ByteCode::isJump(ip))
         {
             auto srcJump = (int) (ip - context->bc->out);
             auto dstJump = srcJump + ip->b.s32 + 1;
@@ -197,7 +197,7 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         ip->flags &= ~BCI_START_STMT;
-        if (isJump(ip))
+        if (ByteCode::isJump(ip))
             context->jumps.push_back(ip);
     }
 

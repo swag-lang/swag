@@ -1,4 +1,4 @@
-#[swag.printbc]
+//#[swag.printbc]
 struct AA
 {
     x, y: s32

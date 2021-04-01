@@ -5,6 +5,7 @@
 #include "Register.h"
 #include "Assert.h"
 #include "VectorNative.h"
+#include "ByteCodeOp.h"
 
 enum class ByteCodeOp : uint16_t;
 struct AstNode;
@@ -41,6 +42,50 @@ struct ByteCodeInstruction
 
 struct ByteCode
 {
+    inline static bool isMemCpy(ByteCodeInstruction* inst)
+    {
+        return inst->op == ByteCodeOp::MemCpy8 ||
+               inst->op == ByteCodeOp::MemCpy16 ||
+               inst->op == ByteCodeOp::MemCpy32 ||
+               inst->op == ByteCodeOp::MemCpy64 ||
+               inst->op == ByteCodeOp::MemCpyX;
+    }
+
+    inline static bool isJump(ByteCodeInstruction* inst)
+    {
+        return inst->op == ByteCodeOp::Jump ||
+               inst->op == ByteCodeOp::JumpIfTrue ||
+               inst->op == ByteCodeOp::JumpIfFalse ||
+               inst->op == ByteCodeOp::JumpIfNotZero8 ||
+               inst->op == ByteCodeOp::JumpIfNotZero16 ||
+               inst->op == ByteCodeOp::JumpIfNotZero32 ||
+               inst->op == ByteCodeOp::JumpIfNotZero64 ||
+               inst->op == ByteCodeOp::JumpIfZero8 ||
+               inst->op == ByteCodeOp::JumpIfZero16 ||
+               inst->op == ByteCodeOp::JumpIfZero32 ||
+               inst->op == ByteCodeOp::JumpIfZero64 ||
+               inst->op == ByteCodeOp::JumpIfLowerU32 ||
+               inst->op == ByteCodeOp::JumpIfLowerU64 ||
+               inst->op == ByteCodeOp::JumpIfLowerS32 ||
+               inst->op == ByteCodeOp::JumpIfLowerS64 ||
+               inst->op == ByteCodeOp::JumpIfLowerF32 ||
+               inst->op == ByteCodeOp::JumpIfLowerF64 ||
+               inst->op == ByteCodeOp::JumpIfGreaterEqU32 ||
+               inst->op == ByteCodeOp::JumpIfGreaterEqU64 ||
+               inst->op == ByteCodeOp::JumpIfGreaterEqS32 ||
+               inst->op == ByteCodeOp::JumpIfGreaterEqS64 ||
+               inst->op == ByteCodeOp::JumpIfGreaterEqF32 ||
+               inst->op == ByteCodeOp::JumpIfGreaterEqF64 ||
+               inst->op == ByteCodeOp::JumpIfNotEqual8 ||
+               inst->op == ByteCodeOp::JumpIfNotEqual16 ||
+               inst->op == ByteCodeOp::JumpIfNotEqual32 ||
+               inst->op == ByteCodeOp::JumpIfNotEqual64 ||
+               inst->op == ByteCodeOp::JumpIfEqual8 ||
+               inst->op == ByteCodeOp::JumpIfEqual16 ||
+               inst->op == ByteCodeOp::JumpIfEqual32 ||
+               inst->op == ByteCodeOp::JumpIfEqual64;
+    }
+
     void addCallStack(ByteCodeRunContext* context);
     void enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnReg = UINT32_MAX);
     void leaveByteCode(ByteCodeRunContext* context, bool popCallStack = true);

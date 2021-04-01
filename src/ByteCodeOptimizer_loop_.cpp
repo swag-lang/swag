@@ -21,7 +21,7 @@ void ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             while (ipScan != ip)
             {
                 // Do not optimize if complex context
-                if (isJump(ipScan) || ipScan->flags & BCI_START_STMT || ipScan->flags & BCI_JUMP_DEST)
+                if (ByteCode::isJump(ipScan) || ipScan->flags & BCI_START_STMT || ipScan->flags & BCI_JUMP_DEST)
                 {
                     mapRA.clear();
                     mapRB.clear();

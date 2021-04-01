@@ -1740,6 +1740,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::Jump:
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JUMP, i, ip->b.s32);
             break;
+
         case ByteCodeOp::JumpIfNotEqual8:
             MK_JMPCMP_8(BackendX64Inst::JNZ);
             break;
@@ -1752,6 +1753,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::JumpIfNotEqual64:
             MK_JMPCMP_64(BackendX64Inst::JNZ);
             break;
+
         case ByteCodeOp::JumpIfEqual8:
             MK_JMPCMP_8(BackendX64Inst::JZ);
             break;
@@ -1764,6 +1766,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::JumpIfEqual64:
             MK_JMPCMP_64(BackendX64Inst::JZ);
             break;
+
         case ByteCodeOp::JumpIfLowerS32:
             MK_JMPCMP_32(BackendX64Inst::JL);
             break;
@@ -1781,6 +1784,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::JumpIfLowerF64:
             MK_JMPCMP_F64(BackendX64Inst::JB);
+            break;
+
+        case ByteCodeOp::JumpIfGreaterEqS32:
+            MK_JMPCMP_32(BackendX64Inst::JGE);
+            break;
+        case ByteCodeOp::JumpIfGreaterEqS64:
+            MK_JMPCMP_64(BackendX64Inst::JGE);
+            break;
+        case ByteCodeOp::JumpIfGreaterEqU32:
+            MK_JMPCMP_32(BackendX64Inst::JAE);
+            break;
+        case ByteCodeOp::JumpIfGreaterEqU64:
+            MK_JMPCMP_64(BackendX64Inst::JAE);
+            break;
+        case ByteCodeOp::JumpIfGreaterEqF32:
+            MK_JMPCMP_F32(BackendX64Inst::JAE);
+            break;
+        case ByteCodeOp::JumpIfGreaterEqF64:
+            MK_JMPCMP_F64(BackendX64Inst::JAE);
             break;
 
         case ByteCodeOp::IncrementRA32:
