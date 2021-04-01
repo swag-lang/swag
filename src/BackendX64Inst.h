@@ -1366,20 +1366,20 @@ namespace BackendX64Inst
             return;
         SWAG_ASSERT(reg == RAX || reg == RDI);
 
+        // SSE 16 octets
         if (toClear >= 16)
         {
             pp.concat.addString3("\x0F\x57\xC0"); // xorps xmm0, xmm0
             while (toClear >= 16)
             {
+                pp.concat.addString2("\x0F\x11"); // movups [reg + ????????], xmm0
                 if (offset <= 0x7F)
                 {
-                    pp.concat.addString2("\x0F\x11"); // movups [reg + ??], xmm0
                     pp.concat.addU8(0x40 | reg);
                     pp.concat.addU8((uint8_t) offset);
                 }
                 else
                 {
-                    pp.concat.addString2("\x0F\x11"); // movups [reg + ????????], xmm0
                     pp.concat.addU8(0x80 | reg);
                     pp.concat.addU32(offset);
                 }
