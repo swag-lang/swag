@@ -70,6 +70,12 @@ struct ByteCode
                inst->op == ByteCodeOp::JumpIfLowerS64 ||
                inst->op == ByteCodeOp::JumpIfLowerF32 ||
                inst->op == ByteCodeOp::JumpIfLowerF64 ||
+               inst->op == ByteCodeOp::JumpIfGreaterU32 ||
+               inst->op == ByteCodeOp::JumpIfGreaterU64 ||
+               inst->op == ByteCodeOp::JumpIfGreaterS32 ||
+               inst->op == ByteCodeOp::JumpIfGreaterS64 ||
+               inst->op == ByteCodeOp::JumpIfGreaterF32 ||
+               inst->op == ByteCodeOp::JumpIfGreaterF64 ||
                inst->op == ByteCodeOp::JumpIfGreaterEqU32 ||
                inst->op == ByteCodeOp::JumpIfGreaterEqU64 ||
                inst->op == ByteCodeOp::JumpIfGreaterEqS32 ||

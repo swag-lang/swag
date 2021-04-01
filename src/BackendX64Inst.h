@@ -67,6 +67,8 @@ namespace BackendX64Inst
         JB,
         JGE,
         JAE,
+        JG,
+        JA,
         JUMP,
     };
 
@@ -1233,11 +1235,17 @@ namespace BackendX64Inst
         case JNZ:
             pp.concat.addU8(0x75);
             break;
+        case JA:
+            pp.concat.addU8(0x77);
+            break;
         case JL:
             pp.concat.addU8(0x7C);
             break;
         case JGE:
             pp.concat.addU8(0x7D);
+            break;
+        case JG:
+            pp.concat.addU8(0x7F);
             break;
         case JUMP:
             pp.concat.addU8(0xEB);
@@ -1268,6 +1276,10 @@ namespace BackendX64Inst
             pp.concat.addU8(0x0F);
             pp.concat.addU8(0x85);
             break;
+        case JA:
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8(0x87);
+            break;
         case JL:
             pp.concat.addU8(0x0F);
             pp.concat.addU8(0x8C);
@@ -1275,6 +1287,10 @@ namespace BackendX64Inst
         case JGE:
             pp.concat.addU8(0x0F);
             pp.concat.addU8(0x8D);
+            break;
+        case JG:
+            pp.concat.addU8(0x0F);
+            pp.concat.addU8(0x8F);
             break;
         case JUMP:
             pp.concat.addU8(0xE9);
