@@ -322,7 +322,7 @@ BYTECODE_OP(SetZeroAtPointer8, OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "[_ra_ + _rb
 BYTECODE_OP(SetZeroAtPointer16, OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "[_ra_ + _rbu32_] = 0")
 BYTECODE_OP(SetZeroAtPointer32, OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "[_ra_ + _rbu32_] = 0")
 BYTECODE_OP(SetZeroAtPointer64, OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "[_ra_ + _rbu32_] = 0")
-BYTECODE_OP(SetZeroAtPointerX, OPFLAG_READ_A | OPFLAG_READ_VAL64_B | OPFLAG_READ_VAL32_C, "clear(_ra_ + _rcu32_, _rbu64_)")
+BYTECODE_OP(SetZeroAtPointerX, OPFLAG_READ_A | OPFLAG_READ_VAL64_B | OPFLAG_READ_VAL64_C, "clear(_ra_ + _rcs64_, _rbu64_)")
 BYTECODE_OP(SetZeroAtPointerXRB, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_VAL64_C, "clear(_ra_, _rb_ * _rcu64_)")
 
 BYTECODE_OP(SetAtPointer8, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_IMM_B | OPFLAG_READ_VAL32_C, "[_ra_ + _rcu32_] = _rbu8_")

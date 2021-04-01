@@ -1990,7 +1990,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::SetZeroAtPointerX:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Add64_Immediate(pp, ip->c.u32, RCX);
+            SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
+            BackendX64Inst::emit_Add64_Immediate(pp, ip->c.u64, RCX);
             BackendX64Inst::emit_Clear64(pp, RDX);
             BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, R8);
             emitCall(pp, "memset");

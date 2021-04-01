@@ -189,13 +189,27 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
     if (ip->op == ByteCodeOp::IncPointer64 &&
         ip[1].op == ByteCodeOp::DeRefStringSlice &&
         (ip->flags & BCI_IMM_B) &&
-        (ip->b.s64 >= 0) &&          // constraint on offset in x64 DeRefStringSlice
-        (ip->b.s64 <= 0x7FFFFFFF) && // constraint on offset in x64 DeRefStringSlice
+        (ip->b.s64 + ip[1].c.s64 >= 0) &&          // constraint on offset in x64 DeRefStringSlice
+        (ip->b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) && // constraint on offset in x64 DeRefStringSlice
         !(ip[1].flags & BCI_START_STMT) &&
         ip->a.u32 == ip->c.u32 &&
         ip->c.u32 == ip[1].a.u32)
     {
         ip[1].c.s64 += ip->b.s64;
+        setNop(context, ip);
+    }
+
+    // IncPtr followed by SetZeroAtPointerX
+    if (ip[0].op == ByteCodeOp::IncPointer64 &&
+        ip[1].op == ByteCodeOp::SetZeroAtPointerX &&
+        (ip[0].flags & BCI_IMM_B) &&
+        (ip->b.s64 + ip[1].c.s64 >= 0) &&          // constraint on offset in x64 SetZeroAtPointerX
+        (ip->b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) && // constraint on offset in x64 SetZeroAtPointerX
+        ip[0].c.u32 == ip[1].a.u32 &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        ip[1].a.u32 = ip[0].a.u32;
+        ip[1].c.s64 += ip[0].b.s64;
         setNop(context, ip);
     }
 

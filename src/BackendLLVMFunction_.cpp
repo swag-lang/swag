@@ -852,9 +852,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::DeRefStringSlice:
         {
-            auto r0   = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            auto r1   = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
-            auto ptr  = builder.CreateLoad(r0);
+            auto r0  = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1  = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
+            auto ptr = builder.CreateLoad(r0);
+            SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
             auto ptr0 = builder.CreateInBoundsGEP(ptr, builder.getInt32(ip->c.u32 + 0));
             auto ptr8 = builder.CreateInBoundsGEP(ptr, builder.getInt32(ip->c.u32 + 8));
             auto v0   = builder.CreateLoad(TO_PTR_PTR_I8(ptr0));
@@ -955,6 +956,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetZeroAtPointerX:
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
             auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RC32);
             builder.CreateMemSet(v0, pp.cst0_i8, ip->b.u64, llvm::Align{});
             break;

@@ -798,18 +798,24 @@ namespace BackendX64Inst
     {
         if (!value)
             return;
-        SWAG_ASSERT(reg == RAX);
+        SWAG_ASSERT(reg == RAX || reg == RCX);
         SWAG_ASSERT(value <= 0x7FFFFFFF);
         pp.concat.addU8(0x48);
         if (value <= 0x7F)
         {
             pp.concat.addU8(0x83);
-            pp.concat.addU8(0xC0);
+            pp.concat.addU8(0xC0 | reg);
             pp.concat.addU8((uint8_t) value);
         }
-        else
+        else if (reg == RAX)
         {
             pp.concat.addU8(0x05);
+            pp.concat.addU32((uint32_t) value);
+        }
+        else if (reg == RCX)
+        {
+            pp.concat.addU8(0x81);
+            pp.concat.addU8(0xC1);
             pp.concat.addU32((uint32_t) value);
         }
     }
