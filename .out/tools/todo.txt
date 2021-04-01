@@ -52,8 +52,6 @@ si le jump est un jump compare
 -------------------------------------
 opInit, batcher les clear
 -------------------------------------
-jump if > <= >=
--------------------------------------
 x64 passe reduction instructions
 -------------------------------------
 passer/retourner des structs par value si <= 64 bits

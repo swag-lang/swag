@@ -1786,6 +1786,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_JMPCMP_F64(BackendX64Inst::JB);
             break;
 
+        case ByteCodeOp::JumpIfLowerEqS32:
+            MK_JMPCMP_32(BackendX64Inst::JLE);
+            break;
+        case ByteCodeOp::JumpIfLowerEqS64:
+            MK_JMPCMP_64(BackendX64Inst::JLE);
+            break;
+        case ByteCodeOp::JumpIfLowerEqU32:
+            MK_JMPCMP_32(BackendX64Inst::JBE);
+            break;
+        case ByteCodeOp::JumpIfLowerEqU64:
+            MK_JMPCMP_64(BackendX64Inst::JBE);
+            break;
+        case ByteCodeOp::JumpIfLowerEqF32:
+            MK_JMPCMP_F32(BackendX64Inst::JBE);
+            break;
+        case ByteCodeOp::JumpIfLowerEqF64:
+            MK_JMPCMP_F64(BackendX64Inst::JBE);
+            break;
+
         case ByteCodeOp::JumpIfGreaterS32:
             MK_JMPCMP_32(BackendX64Inst::JG);
             break;

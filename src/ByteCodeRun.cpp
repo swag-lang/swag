@@ -934,6 +934,43 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::JumpIfLowerEqU32:
+    {
+        if (IMMA_U32(ip) <= IMMC_U32(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerEqU64:
+    {
+        if (IMMA_U64(ip) <= IMMC_U64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerEqS32:
+    {
+        if (IMMA_S32(ip) <= IMMC_S32(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerEqS64:
+    {
+        if (IMMA_S64(ip) <= IMMC_S64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerEqF32:
+    {
+        if (IMMA_F32(ip) <= IMMC_F32(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::JumpIfLowerEqF64:
+    {
+        if (IMMA_F64(ip) <= IMMC_F64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
+
     case ByteCodeOp::JumpIfGreaterU32:
     {
         if (IMMA_U32(ip) > IMMC_U32(ip))
