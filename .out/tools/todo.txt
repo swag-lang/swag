@@ -4,11 +4,14 @@ LANGUAGE
 -------------------------------------
 #premain ?
 -------------------------------------
-ca serait cool que les methods, en reflections, aient une value qui peut etre castee en lambda, et donc appel�es
+ca serait cool que les methods, en reflections, aient une value qui peut etre castee en lambda, et donc appelées
 -------------------------------------
 char => rune ?
 -------------------------------------
-
+global opVisit in namespace, comment on les reference sans faire un using ?
+-------------------------------------
+macro & alias comme visit ? macro i, x: funcmacro() ?
+-------------------------------------
 
 
 ****************************************
@@ -24,10 +27,6 @@ BIG BIG BIG BIG BIG CHIANT CHIANT CHIANT CHIANT CHIANT
 llvm/x64 compatibilité
 si llvm appel une lambda local x64 ou l'inverse, abi non compatible => marche si on passe la lambda en #[swag.callback]
 que faire ?
--------------------------------------
-global opVisit in namespace, comment on les reference sans faire un using ?
--------------------------------------
-macro & alias comme visit ? macro i, x: funcmacro() ?
 -------------------------------------
 slice/cstrings and foreign
 -------------------------------------
@@ -48,7 +47,9 @@ cast interface vers struct (avec safety)
 OPTIMS
 ****************************************
 -------------------------------------
-jump if < > <= >=
+opInit, batcher les clear
+-------------------------------------
+jump if > <= >=
 -------------------------------------
 x64 passe reduction instructions
 -------------------------------------

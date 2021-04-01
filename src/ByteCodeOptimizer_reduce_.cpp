@@ -181,7 +181,6 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::SetZeroStack8 &&
             ip[1].op == ByteCodeOp::SetZeroStack8 &&
             ip->a.u32 + sizeof(uint8_t) == ip[1].a.u32 &&
-            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip->op = ByteCodeOp::SetZeroStack16;
@@ -191,7 +190,6 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::SetZeroStack16 &&
             ip[1].op == ByteCodeOp::SetZeroStack16 &&
             ip->a.u32 + sizeof(uint16_t) == ip[1].a.u32 &&
-            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip->op = ByteCodeOp::SetZeroStack32;
@@ -201,7 +199,6 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::SetZeroStack32 &&
             ip[1].op == ByteCodeOp::SetZeroStack32 &&
             ip->a.u32 + sizeof(uint32_t) == ip[1].a.u32 &&
-            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip->op = ByteCodeOp::SetZeroStack64;
@@ -211,7 +208,6 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::SetZeroStack64 &&
             ip[1].op == ByteCodeOp::SetZeroStack64 &&
             ip->a.u32 + sizeof(uint64_t) == ip[1].a.u32 &&
-            !(ip[0].flags & BCI_START_STMT) &&
             !(ip[1].flags & BCI_START_STMT))
         {
             ip->op    = ByteCodeOp::SetZeroStackX;
@@ -226,6 +222,37 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             !(ip[1].flags & BCI_START_STMT))
         {
             ip->b.u32 += ip[1].b.u32;
+            setNop(context, ip + 1);
+        }
+
+        // Reduce SetZeroAtPointer
+        if (ip->op == ByteCodeOp::SetZeroAtPointer8 &&
+            ip[1].op == ByteCodeOp::SetZeroAtPointer8 &&
+            ip->b.u32 + sizeof(uint8_t) == ip[1].b.u32 &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip->op = ByteCodeOp::SetZeroAtPointer16;
+            setNop(context, ip + 1);
+        }
+
+        if (ip->op == ByteCodeOp::SetZeroAtPointer16 &&
+            ip[1].op == ByteCodeOp::SetZeroAtPointer16 &&
+            ip->b.u32 + sizeof(uint16_t) == ip[1].b.u32 &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip->op = ByteCodeOp::SetZeroAtPointer32;
+            setNop(context, ip + 1);
+        }
+
+        if (ip->op == ByteCodeOp::SetZeroAtPointer32 &&
+            ip[1].op == ByteCodeOp::SetZeroAtPointer32 &&
+            ip->b.u32 + sizeof(uint32_t) == ip[1].b.u32 &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip->op = ByteCodeOp::SetZeroAtPointer64;
             setNop(context, ip + 1);
         }
 
@@ -1030,44 +1057,6 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         {
             setNop(context, ip + 1);
         }
-
-        // Cast to bool, followed by a bool negation : replace with cast to inverse bool
-        // and remove the negation
-        /*if (ip[0].op == ByteCodeOp::CastBool8 &&
-            ip[1].op == ByteCodeOp::NegBool &&
-            !(ip[1].flags & BCI_JUMP_DEST) &&
-            ip[0].a.u32 == ip[1].a.u32)
-        {
-            ip[0].op = ByteCodeOp::CastInvBool8;
-            setNop(context, ip + 1);
-        }
-
-        if (ip[0].op == ByteCodeOp::CastBool16 &&
-            ip[1].op == ByteCodeOp::NegBool &&
-            !(ip[1].flags & BCI_JUMP_DEST) &&
-            ip[0].a.u32 == ip[1].a.u32)
-        {
-            ip[0].op = ByteCodeOp::CastInvBool16;
-            setNop(context, ip + 1);
-        }
-
-        if (ip[0].op == ByteCodeOp::CastBool32 &&
-            ip[1].op == ByteCodeOp::NegBool &&
-            !(ip[1].flags & BCI_JUMP_DEST) &&
-            ip[0].a.u32 == ip[1].a.u32)
-        {
-            ip[0].op = ByteCodeOp::CastInvBool32;
-            setNop(context, ip + 1);
-        }
-
-        if (ip[0].op == ByteCodeOp::CastBool64 &&
-            ip[1].op == ByteCodeOp::NegBool &&
-            !(ip[1].flags & BCI_JUMP_DEST) &&
-            ip[0].a.u32 == ip[1].a.u32)
-        {
-            ip[0].op = ByteCodeOp::CastInvBool64;
-            setNop(context, ip + 1);
-        }*/
 
         if (ip[0].op == ByteCodeOp::NegBool &&
             ip[1].op == ByteCodeOp::JumpIfFalse &&
