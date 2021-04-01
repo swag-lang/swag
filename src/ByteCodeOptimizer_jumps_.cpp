@@ -243,77 +243,39 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         // Evaluate the jump if the condition is constant
         if (ip->flags & BCI_IMM_A)
         {
+#define OPT_JMPA0(__op, __val)            \
+    context->passHasDoneSomething = true; \
+    if (ip->a.__val __op 0)               \
+        ip->op = ByteCodeOp::Jump;        \
+    else                                  \
+        setNop(context, ip);
             switch (ip->op)
             {
             case ByteCodeOp::JumpIfFalse:
-                context->passHasDoneSomething = true;
-                if (ip->a.u8)
-                    setNop(context, ip);
-                else
-                    ip->op = ByteCodeOp::Jump;
+            case ByteCodeOp::JumpIfZero8:
+                OPT_JMPA0(==, u8);
                 break;
             case ByteCodeOp::JumpIfTrue:
-                context->passHasDoneSomething = true;
-                if (!ip->a.u8)
-                    setNop(context, ip);
-                else
-                    ip->op = ByteCodeOp::Jump;
-                break;
-            case ByteCodeOp::JumpIfZero8:
-                context->passHasDoneSomething = true;
-                if (ip->a.u8)
-                    setNop(context, ip);
-                else
-                    ip->op = ByteCodeOp::Jump;
+            case ByteCodeOp::JumpIfNotZero8:
+                OPT_JMPA0(!=, u8);
                 break;
             case ByteCodeOp::JumpIfZero16:
-                context->passHasDoneSomething = true;
-                if (ip->a.u16)
-                    setNop(context, ip);
-                else
-                    ip->op = ByteCodeOp::Jump;
+                OPT_JMPA0(==, u16);
                 break;
             case ByteCodeOp::JumpIfZero32:
-                context->passHasDoneSomething = true;
-                if (ip->a.u32)
-                    setNop(context, ip);
-                else
-                    ip->op = ByteCodeOp::Jump;
+                OPT_JMPA0(==, u32);
                 break;
             case ByteCodeOp::JumpIfZero64:
-                context->passHasDoneSomething = true;
-                if (ip->a.u64)
-                    setNop(context, ip);
-                else
-                    ip->op = ByteCodeOp::Jump;
-                break;
-            case ByteCodeOp::JumpIfNotZero8:
-                context->passHasDoneSomething = true;
-                if (!ip->a.u8)
-                    setNop(context, ip);
-                else
-                    ip->op = ByteCodeOp::Jump;
+                OPT_JMPA0(==, u64);
                 break;
             case ByteCodeOp::JumpIfNotZero16:
-                context->passHasDoneSomething = true;
-                if (!ip->a.u16)
-                    setNop(context, ip);
-                else
-                    ip->op = ByteCodeOp::Jump;
+                OPT_JMPA0(!=, u16);
                 break;
             case ByteCodeOp::JumpIfNotZero32:
-                context->passHasDoneSomething = true;
-                if (!ip->a.u32)
-                    setNop(context, ip);
-                else
-                    ip->op = ByteCodeOp::Jump;
+                OPT_JMPA0(!=, u32);
                 break;
             case ByteCodeOp::JumpIfNotZero64:
-                context->passHasDoneSomething = true;
-                if (!ip->a.u64)
-                    setNop(context, ip);
-                else
-                    ip->op = ByteCodeOp::Jump;
+                OPT_JMPA0(!=, u64);
                 break;
             }
         }

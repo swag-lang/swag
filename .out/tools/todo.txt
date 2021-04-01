@@ -47,9 +47,6 @@ cast interface vers struct (avec safety)
 OPTIMS
 ****************************************
 -------------------------------------
-// Evaluate the jump if the condition is constant
-si le jump est un jump compare
--------------------------------------
 opInit, batcher les clear
 -------------------------------------
 x64 passe reduction instructions
