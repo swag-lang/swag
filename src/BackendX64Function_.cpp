@@ -2031,32 +2031,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // Expand
             if (ip->b.u32 <= 128)
             {
-                auto toClear = ip->b.u32;
-                auto offset  = ip->a.u32;
-                while (toClear >= 8)
-                {
-                    BackendX64Inst::emit_Store64_Immediate(pp, offsetStack + offset, 0, RDI);
-                    toClear -= 8;
-                    offset += 8;
-                }
-                while (toClear >= 4)
-                {
-                    BackendX64Inst::emit_Store32_Immediate(pp, offsetStack + offset, 0, RDI);
-                    toClear -= 4;
-                    offset += 4;
-                }
-                while (toClear >= 2)
-                {
-                    BackendX64Inst::emit_Store16_Immediate(pp, offsetStack + offset, 0, RDI);
-                    toClear -= 2;
-                    offset += 2;
-                }
-                while (toClear >= 1)
-                {
-                    BackendX64Inst::emit_Store8_Immediate(pp, offsetStack + offset, 0, RDI);
-                    toClear -= 1;
-                    offset += 1;
-                }
+                BackendX64Inst::emitClearX(pp, ip->b.u32, offsetStack + ip->a.u32, RDI);
             }
             else
             {
