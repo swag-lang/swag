@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
+#include "AstNode.h"
+#include "SourceFile.h"
 
 // Eliminate unnecessary jumps
 void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
@@ -147,6 +149,95 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             ip->op    = ByteCodeOp::JumpIfFalse;
             ip->b.s32 = ip[1].b.s32 + 1;
             setNop(context, ip + 1);
+        }
+
+        if (ip->flags & BCI_IMM_A && ip->flags & BCI_IMM_C)
+        {
+#define OPT_JMPAC(__op, __val)            \
+    context->passHasDoneSomething = true; \
+    if (ip->a.__val __op ip->c.__val)     \
+        ip->op = ByteCodeOp::Jump;        \
+    else                                  \
+        setNop(context, ip);
+
+            switch (ip->op)
+            {
+            case ByteCodeOp::JumpIfGreaterS32:
+                OPT_JMPAC(>, s32);
+                break;
+            case ByteCodeOp::JumpIfGreaterS64:
+                OPT_JMPAC(>, s64);
+                break;
+            case ByteCodeOp::JumpIfGreaterU32:
+                OPT_JMPAC(>, u32);
+                break;
+            case ByteCodeOp::JumpIfGreaterU64:
+                OPT_JMPAC(>, u64);
+                break;
+            case ByteCodeOp::JumpIfGreaterF32:
+                OPT_JMPAC(>, f32);
+                break;
+            case ByteCodeOp::JumpIfGreaterF64:
+                OPT_JMPAC(>, f64);
+                break;
+
+            case ByteCodeOp::JumpIfGreaterEqS32:
+                OPT_JMPAC(>=, s32);
+                break;
+            case ByteCodeOp::JumpIfGreaterEqS64:
+                OPT_JMPAC(>=, s64);
+                break;
+            case ByteCodeOp::JumpIfGreaterEqU32:
+                OPT_JMPAC(>=, u32);
+                break;
+            case ByteCodeOp::JumpIfGreaterEqU64:
+                OPT_JMPAC(>=, u64);
+                break;
+            case ByteCodeOp::JumpIfGreaterEqF32:
+                OPT_JMPAC(>=, f32);
+                break;
+            case ByteCodeOp::JumpIfGreaterEqF64:
+                OPT_JMPAC(>=, f64);
+                break;
+
+            case ByteCodeOp::JumpIfLowerS32:
+                OPT_JMPAC(<, s32);
+                break;
+            case ByteCodeOp::JumpIfLowerS64:
+                OPT_JMPAC(<, s64);
+                break;
+            case ByteCodeOp::JumpIfLowerU32:
+                OPT_JMPAC(<, u32);
+                break;
+            case ByteCodeOp::JumpIfLowerU64:
+                OPT_JMPAC(<, u64);
+                break;
+            case ByteCodeOp::JumpIfLowerF32:
+                OPT_JMPAC(<, f32);
+                break;
+            case ByteCodeOp::JumpIfLowerF64:
+                OPT_JMPAC(<, f64);
+                break;
+
+            case ByteCodeOp::JumpIfLowerEqS32:
+                OPT_JMPAC(<=, s32);
+                break;
+            case ByteCodeOp::JumpIfLowerEqS64:
+                OPT_JMPAC(<=, s64);
+                break;
+            case ByteCodeOp::JumpIfLowerEqU32:
+                OPT_JMPAC(<=, u32);
+                break;
+            case ByteCodeOp::JumpIfLowerEqU64:
+                OPT_JMPAC(<=, u64);
+                break;
+            case ByteCodeOp::JumpIfLowerEqF32:
+                OPT_JMPAC(<=, f32);
+                break;
+            case ByteCodeOp::JumpIfLowerEqF64:
+                OPT_JMPAC(<=, f64);
+                break;
+            }
         }
 
         // Evaluate the jump if the condition is constant
