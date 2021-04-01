@@ -955,7 +955,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::SetZeroAtPointerX:
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-            builder.CreateMemSet(builder.CreateLoad(r0), pp.cst0_i8, ip->b.u64, llvm::Align{});
+            auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RC32);
+            builder.CreateMemSet(v0, pp.cst0_i8, ip->b.u64, llvm::Align{});
             break;
         }
         case ByteCodeOp::SetZeroAtPointerXRB:
@@ -2827,66 +2828,66 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::JumpIfLowerEqS32:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_32();
-            auto r1 = MK_IMMC_32();
-            auto b0 = builder.CreateICmpSLE(r0, r1);
+            auto r0         = MK_IMMA_32();
+            auto r1         = MK_IMMC_32();
+            auto b0         = builder.CreateICmpSLE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfLowerEqS64:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_64();
-            auto r1 = MK_IMMC_64();
-            auto b0 = builder.CreateICmpSLE(r0, r1);
+            auto r0         = MK_IMMA_64();
+            auto r1         = MK_IMMC_64();
+            auto b0         = builder.CreateICmpSLE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfLowerEqU32:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_32();
-            auto r1 = MK_IMMC_32();
-            auto b0 = builder.CreateICmpULE(r0, r1);
+            auto r0         = MK_IMMA_32();
+            auto r1         = MK_IMMC_32();
+            auto b0         = builder.CreateICmpULE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfLowerEqU64:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_64();
-            auto r1 = MK_IMMC_64();
-            auto b0 = builder.CreateICmpULE(r0, r1);
+            auto r0         = MK_IMMA_64();
+            auto r1         = MK_IMMC_64();
+            auto b0         = builder.CreateICmpULE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfLowerEqF32:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_F32();
-            auto r1 = MK_IMMC_F32();
-            auto b0 = builder.CreateFCmpULE(r0, r1);
+            auto r0         = MK_IMMA_F32();
+            auto r1         = MK_IMMC_F32();
+            auto b0         = builder.CreateFCmpULE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfLowerEqF64:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_F64();
-            auto r1 = MK_IMMC_F64();
-            auto b0 = builder.CreateFCmpULE(r0, r1);
+            auto r0         = MK_IMMA_F64();
+            auto r1         = MK_IMMC_F64();
+            auto b0         = builder.CreateFCmpULE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -2894,66 +2895,66 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::JumpIfGreaterEqS32:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_32();
-            auto r1 = MK_IMMC_32();
-            auto b0 = builder.CreateICmpSGE(r0, r1);
+            auto r0         = MK_IMMA_32();
+            auto r1         = MK_IMMC_32();
+            auto b0         = builder.CreateICmpSGE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfGreaterEqS64:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_64();
-            auto r1 = MK_IMMC_64();
-            auto b0 = builder.CreateICmpSGE(r0, r1);
+            auto r0         = MK_IMMA_64();
+            auto r1         = MK_IMMC_64();
+            auto b0         = builder.CreateICmpSGE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfGreaterEqU32:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_32();
-            auto r1 = MK_IMMC_32();
-            auto b0 = builder.CreateICmpUGE(r0, r1);
+            auto r0         = MK_IMMA_32();
+            auto r1         = MK_IMMC_32();
+            auto b0         = builder.CreateICmpUGE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfGreaterEqU64:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_64();
-            auto r1 = MK_IMMC_64();
-            auto b0 = builder.CreateICmpUGE(r0, r1);
+            auto r0         = MK_IMMA_64();
+            auto r1         = MK_IMMC_64();
+            auto b0         = builder.CreateICmpUGE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfGreaterEqF32:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_F32();
-            auto r1 = MK_IMMC_F32();
-            auto b0 = builder.CreateFCmpUGE(r0, r1);
+            auto r0         = MK_IMMA_F32();
+            auto r1         = MK_IMMC_F32();
+            auto b0         = builder.CreateFCmpUGE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfGreaterEqF64:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_F64();
-            auto r1 = MK_IMMC_F64();
-            auto b0 = builder.CreateFCmpUGE(r0, r1);
+            auto r0         = MK_IMMA_F64();
+            auto r1         = MK_IMMC_F64();
+            auto b0         = builder.CreateFCmpUGE(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
@@ -2961,66 +2962,66 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::JumpIfGreaterS32:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_32();
-            auto r1 = MK_IMMC_32();
-            auto b0 = builder.CreateICmpSGT(r0, r1);
+            auto r0         = MK_IMMA_32();
+            auto r1         = MK_IMMC_32();
+            auto b0         = builder.CreateICmpSGT(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfGreaterS64:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_64();
-            auto r1 = MK_IMMC_64();
-            auto b0 = builder.CreateICmpSGT(r0, r1);
+            auto r0         = MK_IMMA_64();
+            auto r1         = MK_IMMC_64();
+            auto b0         = builder.CreateICmpSGT(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfGreaterU32:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_32();
-            auto r1 = MK_IMMC_32();
-            auto b0 = builder.CreateICmpUGT(r0, r1);
+            auto r0         = MK_IMMA_32();
+            auto r1         = MK_IMMC_32();
+            auto b0         = builder.CreateICmpUGT(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfGreaterU64:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_64();
-            auto r1 = MK_IMMC_64();
-            auto b0 = builder.CreateICmpUGT(r0, r1);
+            auto r0         = MK_IMMA_64();
+            auto r1         = MK_IMMC_64();
+            auto b0         = builder.CreateICmpUGT(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfGreaterF32:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_F32();
-            auto r1 = MK_IMMC_F32();
-            auto b0 = builder.CreateFCmpUGT(r0, r1);
+            auto r0         = MK_IMMA_F32();
+            auto r1         = MK_IMMC_F32();
+            auto b0         = builder.CreateFCmpUGT(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
         }
         case ByteCodeOp::JumpIfGreaterF64:
         {
-            auto labelTrue = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
             auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-            auto r0 = MK_IMMA_F64();
-            auto r1 = MK_IMMC_F64();
-            auto b0 = builder.CreateFCmpUGT(r0, r1);
+            auto r0         = MK_IMMA_F64();
+            auto r1         = MK_IMMC_F64();
+            auto b0         = builder.CreateFCmpUGT(r0, r1);
             builder.CreateCondBr(b0, labelTrue, labelFalse);
             blockIsClosed = true;
             break;
