@@ -42,6 +42,30 @@ struct ByteCodeInstruction
 
 struct ByteCode
 {
+    inline static uint32_t isSetZeroAtPointer(ByteCodeInstruction* inst, uint32_t& offset)
+    {
+        switch (inst->op)
+        {
+        case ByteCodeOp::SetZeroAtPointer8:
+            offset = inst->b.u32;
+            return 1;
+        case ByteCodeOp::SetZeroAtPointer16:
+            offset = inst->b.u32;
+            return 2;
+        case ByteCodeOp::SetZeroAtPointer32:
+            offset = inst->b.u32;
+            return 4;
+        case ByteCodeOp::SetZeroAtPointer64:
+            offset = inst->b.u32;
+            return 8;
+        case ByteCodeOp::SetZeroAtPointerX:
+            offset = inst->c.u32;
+            return inst->b.u32;
+        }
+
+        return 0;
+    }
+
     inline static bool isMemCpy(ByteCodeInstruction* inst)
     {
         return inst->op == ByteCodeOp::MemCpy8 ||

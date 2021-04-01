@@ -521,34 +521,35 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
     }
 
     // Reduce SetZeroAtPointer
-    if (ip->op == ByteCodeOp::SetZeroAtPointer8 &&
-        ip[1].op == ByteCodeOp::SetZeroAtPointer8 &&
-        ip->b.u32 + sizeof(uint8_t) == ip[1].b.u32 &&
-        ip->a.u32 == ip[1].a.u32 &&
-        !(ip[1].flags & BCI_START_STMT))
+    if (!(ip[1].flags & BCI_START_STMT))
     {
-        ip->op = ByteCodeOp::SetZeroAtPointer16;
-        setNop(context, ip + 1);
-    }
+        uint32_t offset0, offset1;
+        auto     size0 = ByteCode::isSetZeroAtPointer(ip, offset0);
+        auto     size1 = ByteCode::isSetZeroAtPointer(ip + 1, offset1);
+        if (size0 && size1 && offset0 + size0 == offset1)
+        {
+            auto totalSize = size0 + size1;
+            switch (totalSize)
+            {
+            case 2:
+                ip->op = ByteCodeOp::SetZeroAtPointer16;
+                break;
+            case 4:
+                ip->op = ByteCodeOp::SetZeroAtPointer32;
+                break;
+            case 8:
+                ip->op = ByteCodeOp::SetZeroAtPointer64;
+                break;
+            default:
+                ip->op    = ByteCodeOp::SetZeroAtPointerX;
+                ip->c.s64 = offset0;
+                SWAG_ASSERT(totalSize <= 0x7FFFFFFF);
+                ip->b.s64 = totalSize;
+                break;
+            }
 
-    if (ip->op == ByteCodeOp::SetZeroAtPointer16 &&
-        ip[1].op == ByteCodeOp::SetZeroAtPointer16 &&
-        ip->b.u32 + sizeof(uint16_t) == ip[1].b.u32 &&
-        ip->a.u32 == ip[1].a.u32 &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        ip->op = ByteCodeOp::SetZeroAtPointer32;
-        setNop(context, ip + 1);
-    }
-
-    if (ip->op == ByteCodeOp::SetZeroAtPointer32 &&
-        ip[1].op == ByteCodeOp::SetZeroAtPointer32 &&
-        ip->b.u32 + sizeof(uint32_t) == ip[1].b.u32 &&
-        ip->a.u32 == ip[1].a.u32 &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        ip->op = ByteCodeOp::SetZeroAtPointer64;
-        setNop(context, ip + 1);
+            setNop(context, ip + 1);
+        }
     }
 
     // Reduce SetAtStackPointer
