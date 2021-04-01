@@ -125,6 +125,74 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, uint32_t startNod
     parseTree(context, parseCxt);
 }
 
+void ByteCodeOptimizer::replaceRegister(ByteCodeOptContext* context, ByteCodeInstruction* from, uint32_t srcReg, uint32_t dstReg)
+{
+    auto flags = g_ByteCodeOpFlags[(int) from->op];
+    if (flags & OPFLAG_WRITE_A && from->a.u32 == srcReg)
+        from->a.u32 = dstReg;
+    if (flags & OPFLAG_WRITE_B && from->b.u32 == srcReg)
+        from->b.u32 = dstReg;
+    if (flags & OPFLAG_WRITE_C && from->c.u32 == srcReg)
+        from->c.u32 = dstReg;
+    if (flags & OPFLAG_WRITE_D && from->d.u32 == srcReg)
+        from->d.u32 = dstReg;
+
+    set<ByteCodeInstruction*>          done;
+    VectorNative<ByteCodeInstruction*> toScan;
+    toScan.push_back(from);
+    done.insert(from);
+    while (!toScan.empty())
+    {
+        auto ip = toScan.back();
+        toScan.pop_back();
+
+        while (true)
+        {
+            flags = g_ByteCodeOpFlags[(int) ip->op];
+            if (flags & OPFLAG_READ_A && !(ip->flags & BCI_IMM_A) && ip->a.u32 == srcReg)
+                ip->a.u32 = dstReg;
+            if (flags & OPFLAG_READ_B && !(ip->flags & BCI_IMM_B) && ip->b.u32 == srcReg)
+                ip->b.u32 = dstReg;
+            if (flags & OPFLAG_READ_C && !(ip->flags & BCI_IMM_C) && ip->c.u32 == srcReg)
+                ip->c.u32 = dstReg;
+            if (flags & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D) && ip->d.u32 == srcReg)
+                ip->d.u32 = dstReg;
+
+            if (flags & OPFLAG_WRITE_A && ip->a.u32 == srcReg)
+                break;
+            if (flags & OPFLAG_WRITE_B && ip->b.u32 == srcReg)
+                break;
+            if (flags & OPFLAG_WRITE_C && ip->c.u32 == srcReg)
+                break;
+            if (flags & OPFLAG_WRITE_D && ip->d.u32 == srcReg)
+                break;
+
+            if (ip->op == ByteCodeOp::Ret)
+                break;
+
+            if (ByteCode::isJump(ip))
+            {
+                if (done.find(ip + ip->b.s32 + 1) == done.end())
+                {
+                    toScan.push_back(ip + ip->b.s32 + 1);
+                    done.insert(ip + ip->b.s32 + 1);
+                }
+
+                if (ip->op != ByteCodeOp::Jump)
+                {
+                    if (done.find(ip + 1) != done.end())
+                        break;
+                    done.insert(ip + 1);
+                }
+            }
+
+            ip++;
+            if (ip == from)
+                break;
+        }
+    }
+}
+
 void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     if (ip->op == ByteCodeOp::Nop || (ip->flags & BCI_UNPURE))

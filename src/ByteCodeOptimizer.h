@@ -39,6 +39,7 @@ struct ByteCodeOptimizer
     static void     parseTree(ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt);
     static void     parseTree(ByteCodeOptContext* context, uint32_t startNode, ByteCodeInstruction* startIp, uint32_t doneFlag, function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb);
 
+    static void replaceRegister(ByteCodeOptContext* context, ByteCodeInstruction* from, uint32_t srcReg, uint32_t dstReg);
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void setJumps(ByteCodeOptContext* context);
     static void removeNops(ByteCodeOptContext* context);
@@ -56,6 +57,7 @@ struct ByteCodeOptimizer
     static void optimizePassRetCopyLocal(ByteCodeOptContext* context);
     static void optimizePassRetCopyGlobal(ByteCodeOptContext* context);
     static void optimizePassRetCopyInline(ByteCodeOptContext* context);
+    static void optimizePassLea(ByteCodeOptContext* context);
 
     static void reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstruction* ip);
