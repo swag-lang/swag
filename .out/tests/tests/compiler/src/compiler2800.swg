@@ -7,3 +7,16 @@ struct AA
     w1: s64
     xx: [3] s64
 }
+
+#test
+{
+    var x: AA
+    @assert(x.x == 0)
+    @assert(x.y == 0)
+    @assert(x.z == 1)
+    @assert(x.w == 0)
+    @assert(x.w1 == 0)
+    @assert(x.xx[0] == 0)
+    @assert(x.xx[1] == 0)
+    @assert(x.xx[2] == 0)
+}

@@ -1989,12 +1989,46 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Immediate(pp, ip->b.u32, 0, RAX);
             break;
         case ByteCodeOp::SetZeroAtPointerX:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            // Expand
             SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
-            BackendX64Inst::emit_Add64_Immediate(pp, ip->c.u64, RCX);
-            BackendX64Inst::emit_Clear64(pp, RDX);
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, R8);
-            emitCall(pp, "memset");
+            if (ip->b.u32 <= 128)
+            {
+                auto toClear = ip->b.u32;
+                auto offset  = ip->c.u32;
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                while (toClear >= 8)
+                {
+                    BackendX64Inst::emit_Store64_Immediate(pp, offset, 0, RAX);
+                    toClear -= 8;
+                    offset += 8;
+                }
+                while (toClear >= 4)
+                {
+                    BackendX64Inst::emit_Store32_Immediate(pp, offset, 0, RAX);
+                    toClear -= 4;
+                    offset += 4;
+                }
+                while (toClear >= 2)
+                {
+                    BackendX64Inst::emit_Store16_Immediate(pp, offset, 0, RAX);
+                    toClear -= 2;
+                    offset += 2;
+                }
+                while (toClear >= 1)
+                {
+                    BackendX64Inst::emit_Store8_Immediate(pp, offset, 0, RAX);
+                    toClear -= 1;
+                    offset += 1;
+                }
+            }
+            else
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+                BackendX64Inst::emit_Add64_Immediate(pp, ip->c.u64, RCX);
+                BackendX64Inst::emit_Clear64(pp, RDX);
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, R8);
+                emitCall(pp, "memset");
+            }
             break;
         case ByteCodeOp::SetZeroAtPointerXRB:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
