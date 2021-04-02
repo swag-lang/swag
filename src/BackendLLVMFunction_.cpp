@@ -1274,7 +1274,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::SetAtPointer16:
         {
-            auto r0 = TO_PTR_PTR_I16(GEP_I32(allocR, ip->a.u32));
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
             r0      = TO_PTR_I16(builder.CreateInBoundsGEP(builder.CreateLoad(r0), CST_RC32));
             llvm::Value* r1;
             if (ip->flags & BCI_IMM_B)

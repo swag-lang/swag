@@ -185,81 +185,125 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
 
 void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    // IncPointer immb followed by DeRefStringSlice, set constant to deref
-    if (ip->op == ByteCodeOp::IncPointer64 &&
-        ip[1].op == ByteCodeOp::DeRefStringSlice &&
-        (ip->flags & BCI_IMM_B) &&
-        (ip->b.s64 + ip[1].c.s64 >= 0) &&          // constraint on offset in x64 DeRefStringSlice
-        (ip->b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) && // constraint on offset in x64 DeRefStringSlice
-        !(ip[1].flags & BCI_START_STMT) &&
-        ip->a.u32 == ip->c.u32 &&
-        ip->c.u32 == ip[1].a.u32)
-    {
-        ip[1].c.s64 += ip->b.s64;
-        setNop(context, ip);
-    }
-
-    // IncPtr followed by SetZeroAtPointerX
     if (ip[0].op == ByteCodeOp::IncPointer64 &&
-        ip[1].op == ByteCodeOp::SetZeroAtPointerX &&
-        (ip[0].flags & BCI_IMM_B) &&
-        (ip->b.s64 + ip[1].c.s64 >= 0) &&          // constraint on offset in x64 SetZeroAtPointerX
-        (ip->b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) && // constraint on offset in x64 SetZeroAtPointerX
-        ip[0].c.u32 == ip[1].a.u32 &&
+        ip[0].flags & BCI_IMM_B &&
+        ip[0].b.s64 > 0 && // Offset cannot be negative, so zap if incpointer is negative
         !(ip[1].flags & BCI_START_STMT))
     {
-        ip[1].a.u32 = ip[0].a.u32;
-        ip[1].c.s64 += ip[0].b.s64;
-        setNop(context, ip);
-    }
+        // followed by DeRefStringSlice, set constant to deref
+        if (ip[1].op == ByteCodeOp::DeRefStringSlice &&
+            (ip->b.s64 + ip[1].c.s64 >= 0) &&
+            (ip->b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) &&
+            ip->a.u32 == ip->c.u32 &&
+            ip->c.u32 == ip[1].a.u32)
+        {
+            ip[1].c.s64 += ip->b.s64;
+            setNop(context, ip);
+        }
 
-    // Make DeRef with an offset
-    if (ip[0].op == ByteCodeOp::IncPointer64 &&
-        ip[1].op == ByteCodeOp::DeRef8 &&
-        (ip[0].flags & BCI_IMM_B) &&
-        ip[0].c.u32 == ip[1].b.u32 &&
-        ip[1].a.u32 == ip[1].b.u32 &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        ip[1].b.u32 = ip[0].a.u32;
-        ip[1].c.s64 += ip[0].b.s64;
-        setNop(context, ip);
-    }
+        // followed by SetZeroAtPointerX
+        if (ip[1].op == ByteCodeOp::SetZeroAtPointerX &&
+            (ip->b.s64 + ip[1].c.s64 >= 0) &&
+            (ip->b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) &&
+            ip[0].c.u32 == ip[1].a.u32)
+        {
+            ip[1].a.u32 = ip[0].a.u32;
+            ip[1].c.s64 += ip[0].b.s64;
+            setNop(context, ip);
+        }
 
-    if (ip[0].op == ByteCodeOp::IncPointer64 &&
-        ip[1].op == ByteCodeOp::DeRef16 &&
-        (ip[0].flags & BCI_IMM_B) &&
-        ip[0].c.u32 == ip[1].b.u32 &&
-        ip[1].a.u32 == ip[1].b.u32 &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        ip[1].b.u32 = ip[0].a.u32;
-        ip[1].c.s64 += ip[0].b.s64;
-        setNop(context, ip);
-    }
+        // Make DeRef with an offset
+        if (ip[1].op == ByteCodeOp::DeRef8 &&
+            (ip[0].b.s64 + ip[1].c.s64 >= 0) &&
+            (ip[0].b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) &&
+            ip[0].c.u32 == ip[1].b.u32 &&
+            ip[1].a.u32 == ip[1].b.u32)
+        {
+            ip[1].b.u32 = ip[0].a.u32;
+            ip[1].c.s64 += ip[0].b.s64;
+            setNop(context, ip);
+        }
 
-    if (ip[0].op == ByteCodeOp::IncPointer64 &&
-        ip[1].op == ByteCodeOp::DeRef32 &&
-        (ip[0].flags & BCI_IMM_B) &&
-        ip[0].c.u32 == ip[1].b.u32 &&
-        ip[1].a.u32 == ip[1].b.u32 &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        ip[1].b.u32 = ip[0].a.u32;
-        ip[1].c.s64 += ip[0].b.s64;
-        setNop(context, ip);
-    }
+        if (ip[1].op == ByteCodeOp::DeRef16 &&
+            (ip[0].b.s64 + ip[1].c.s64 >= 0) &&
+            (ip[0].b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) &&
+            ip[0].c.u32 == ip[1].b.u32 &&
+            ip[1].a.u32 == ip[1].b.u32)
+        {
+            ip[1].b.u32 = ip[0].a.u32;
+            ip[1].c.s64 += ip[0].b.s64;
+            setNop(context, ip);
+        }
 
-    if (ip[0].op == ByteCodeOp::IncPointer64 &&
-        ip[1].op == ByteCodeOp::DeRef64 &&
-        (ip[0].flags & BCI_IMM_B) &&
-        ip[0].c.u32 == ip[1].b.u32 &&
-        ip[1].a.u32 == ip[1].b.u32 &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        ip[1].b.u32 = ip[0].a.u32;
-        ip[1].c.s64 += ip[0].b.s64;
-        setNop(context, ip);
+        if (ip[1].op == ByteCodeOp::DeRef32 &&
+            (ip[0].b.s64 + ip[1].c.s64 >= 0) &&
+            (ip[0].b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) &&
+            ip[0].c.u32 == ip[1].b.u32 &&
+            ip[1].a.u32 == ip[1].b.u32)
+        {
+            ip[1].b.u32 = ip[0].a.u32;
+            ip[1].c.s64 += ip[0].b.s64;
+            setNop(context, ip);
+        }
+
+        if (ip[1].op == ByteCodeOp::DeRef64 &&
+            (ip[0].b.s64 + ip[1].c.s64 >= 0) &&
+            (ip[0].b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) &&
+            ip[0].c.u32 == ip[1].b.u32 &&
+            ip[1].a.u32 == ip[1].b.u32)
+        {
+            ip[1].b.u32 = ip[0].a.u32;
+            ip[1].c.s64 += ip[0].b.s64;
+            setNop(context, ip);
+        }
+
+        // IncPointer with src != dst, followed by one SetAtPointer
+        // No need to to a nop, the optimizer will remove instruction if unused
+        // (safer that the version below)
+        if ((ip[1].op == ByteCodeOp::SetAtPointer8 ||
+             ip[1].op == ByteCodeOp::SetAtPointer16 ||
+             ip[1].op == ByteCodeOp::SetAtPointer32 ||
+             ip[1].op == ByteCodeOp::SetAtPointer64) &&
+            ip[0].a.u32 != ip[0].c.u32 &&
+            ip[0].c.u32 == ip[1].a.u32 &&
+            (ip[0].b.s64 + ip[1].c.s64 >= 0) &&
+            (ip[0].b.s64 + ip[1].c.s64 <= 0x7FFFFFFF))
+        {
+            ip[1].a.u32 = ip[0].a.u32;
+            ip[1].c.s64 += ip[0].b.s64;
+        }
+
+        // followed by one or two SetAtPointer
+        // Is this safe ?
+        if ((ip[1].op == ByteCodeOp::SetAtPointer8 ||
+             ip[1].op == ByteCodeOp::SetAtPointer16 ||
+             ip[1].op == ByteCodeOp::SetAtPointer32 ||
+             ip[1].op == ByteCodeOp::SetAtPointer64) &&
+            ip[0].a.u32 == ip[0].c.u32 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            ip[1].c.s64 += ip[0].b.s64;
+            if (ip[2].op == ip[1].op && ip[0].a.u32 == ip[2].a.u32)
+            {
+                SWAG_ASSERT(!(ip[2].flags & BCI_START_STMT));
+                ip[2].c.s64 += ip[0].b.s64;
+            }
+            setNop(context, ip);
+        }
+
+        if ((ip[1].op == ByteCodeOp::SetZeroAtPointer8 ||
+             ip[1].op == ByteCodeOp::SetZeroAtPointer16 ||
+             ip[1].op == ByteCodeOp::SetZeroAtPointer32 ||
+             ip[1].op == ByteCodeOp::SetZeroAtPointer64) &&
+            ip[0].a.u32 == ip[0].c.u32 &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            (ip[0].b.s64 + ip[1].b.s64 >= 0) &&
+            (ip[0].b.s64 + ip[1].b.s64 <= 0x7FFFFFFF))
+
+        {
+            ip[1].b.s64 += ip[0].b.s64;
+            setNop(context, ip);
+        }
     }
 
     // Occurs when setting a string.
@@ -268,62 +312,12 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
         ip[3].op == ByteCodeOp::SetAtPointer64 &&
         ip[0].a.u32 == ip[2].a.u32 &&
         ip[2].c.u32 == ip[3].a.u32 &&
-        ip[2].flags & BCI_IMM_B)
+        ip[2].flags & BCI_IMM_B &&
+        ip[2].b.s64 > 0)
     {
         ip[3].op                      = ByteCodeOp::SetAtStackPointer64;
         ip[3].a.u32                   = ip[0].b.u32 + ip[2].b.u32;
         context->passHasDoneSomething = true;
-    }
-
-    // IncPointer with src != dst, followed by one SetAtPointer
-    // No need to to a nop, the optimizer will remove instruction if unused
-    // (safer that the version below)
-    if (ip[0].op == ByteCodeOp::IncPointer64 &&
-        (ip[1].op == ByteCodeOp::SetAtPointer8 ||
-         ip[1].op == ByteCodeOp::SetAtPointer16 ||
-         ip[1].op == ByteCodeOp::SetAtPointer32 ||
-         ip[1].op == ByteCodeOp::SetAtPointer64) &&
-        ip[0].flags & BCI_IMM_B &&
-        ip[0].a.u32 != ip[0].c.u32 &&
-        ip[0].c.u32 == ip[1].a.u32 &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        ip[1].a.u32 = ip[0].a.u32;
-        ip[1].c.u32 += ip[0].b.u32;
-    }
-
-    // IncPointer followed by one or two SetAtPointer
-    // Is this safe ?
-    if (ip[0].op == ByteCodeOp::IncPointer64 &&
-        (ip[1].op == ByteCodeOp::SetAtPointer8 ||
-         ip[1].op == ByteCodeOp::SetAtPointer16 ||
-         ip[1].op == ByteCodeOp::SetAtPointer32 ||
-         ip[1].op == ByteCodeOp::SetAtPointer64) &&
-        ip[0].flags & BCI_IMM_B &&
-        ip[0].a.u32 == ip[0].c.u32 &&
-        ip[0].a.u32 == ip[1].a.u32 &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        ip[1].c.u32 += ip[0].b.u32;
-        if (ip[2].op == ip[1].op && ip[0].a.u32 == ip[2].a.u32)
-        {
-            SWAG_ASSERT(!(ip[2].flags & BCI_START_STMT));
-            ip[2].c.u32 += ip[0].b.u32;
-        }
-        setNop(context, ip);
-    }
-
-    if (ip[0].op == ByteCodeOp::IncPointer64 &&
-        (ip[1].op == ByteCodeOp::SetZeroAtPointer8 ||
-         ip[1].op == ByteCodeOp::SetZeroAtPointer16 ||
-         ip[1].op == ByteCodeOp::SetZeroAtPointer32 ||
-         ip[1].op == ByteCodeOp::SetZeroAtPointer64) &&
-        ip[0].flags & BCI_IMM_B &&
-        ip[0].a.u32 == ip[0].c.u32 &&
-        ip[0].a.u32 == ip[1].a.u32)
-    {
-        ip[1].b.u32 += ip[0].b.u32;
-        setNop(context, ip);
     }
 
     // MakeStackPointer Reg, ImmB
@@ -333,7 +327,8 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
         ip[1].op == ByteCodeOp::IncPointer64 &&
         ip[1].c.u32 == ip[0].a.u32 &&
         ip[1].c.u32 == ip[1].a.u32 &&
-        ip[1].flags & BCI_IMM_B)
+        ip[1].flags & BCI_IMM_B &&
+        ip[1].b.s64 > 0)
     {
         ip[0].b.u32 += ip[1].b.u32;
         setNop(context, ip + 1);
