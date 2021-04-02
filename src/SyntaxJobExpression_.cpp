@@ -1061,7 +1061,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     return syntaxError(node->token, format("invalid variable name '%s', cannot start with '@'", node->token.text.c_str()));
 }
 
-bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result)
+bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, bool immutable, AstNode** result)
 {
     bool acceptDeref = true;
     if (currentScope->kind == ScopeKind::Struct || currentScope->kind == ScopeKind::File)
@@ -1092,6 +1092,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
 
             ScopedLocation scopedLoc(this, &identifier->token);
             AstVarDecl*    varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
+            varNode->immutable     = immutable;
             varNode->kind          = kind;
             varNode->token         = identifier->token;
             varNode->flags |= AST_R_VALUE;
@@ -1141,6 +1142,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         auto           tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
         AstVarDecl*    orgVarNode = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind          = kind;
+        orgVarNode->immutable     = immutable;
 
         orgVarNode->token.startLocation = leftNode->childs.front()->token.startLocation;
         orgVarNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
@@ -1186,6 +1188,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
 
             ScopedLocation scopedLoc1(this, &identifier->token);
             auto           varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
+            varNode->immutable     = immutable;
             varNode->kind          = kind;
             varNode->token         = identifier->token;
             varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
@@ -1208,6 +1211,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         SWAG_CHECK(checkIsValidVarName(identifier));
         AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parent, this);
         varNode->kind       = kind;
+        varNode->immutable  = immutable;
         varNode->inheritTokenLocation(leftNode->token);
 
         if (result)
@@ -1235,9 +1239,17 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymColonEqual)
     {
         AstNode* assign;
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
+
+        bool immutable = false;
+        if (token.id == TokenId::KwdConst)
+        {
+            SWAG_CHECK(eatToken());
+            immutable = true;
+        }
+
         SWAG_CHECK(doInitializationExpression(nullptr, &assign));
-        SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, AstNodeKind::VarDecl, result));
+        SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, AstNodeKind::VarDecl, immutable, result));
     }
 
     // Affect operator

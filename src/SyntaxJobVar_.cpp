@@ -44,7 +44,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         if (!type && !assign)
             return error(leftNode->token, "variable must have a type or must be initialized");
 
-        SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, kind, result));
+        SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, kind, false, result));
 
         // If we have a type, and that type has parameters (struct construction), then we need to evaluate and push the parameters
         if (type && type->kind == AstNodeKind::TypeExpression)

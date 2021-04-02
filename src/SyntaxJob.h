@@ -100,7 +100,7 @@ struct SyntaxJob : public Job
     bool doDefer(AstNode* parent, AstNode** result = nullptr);
     bool checkIsValidUserName(AstNode* node);
     bool checkIsValidVarName(AstNode* node);
-    bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result);
+    bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, bool immutable, AstNode** result);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint32_t identifierFlags = 0);

@@ -17,11 +17,11 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         return true;
 
     auto resolved = node->resolvedSymbolOverload;
-
     resolved->flags |= OVERLOAD_EMITTED;
 
-    auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
-    bool retVal   = resolved->flags & OVERLOAD_RETVAL;
+    auto typeInfo    = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
+    bool retVal      = resolved->flags & OVERLOAD_RETVAL;
+    bool isImmutable = resolved->flags & OVERLOAD_IMMUTABLE;
 
     context->job->waitStructGenerated(typeInfo);
     if (context->result == ContextResult::Pending)
@@ -31,6 +31,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     bool mustDropLeft = false;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
+        SWAG_ASSERT(!isImmutable);
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
         // Generate initialization
@@ -98,7 +99,18 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         if (context->result == ContextResult::Pending)
             return true;
 
-        freeRegisterRC(context, node);
+        if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_IMMUTABLE)
+        {
+            node->resolvedSymbolOverload->registers         = node->resultRegisterRC;
+            node->resolvedSymbolOverload->registers.canFree = false;
+            node->ownerScope->owner->allocateExtension();
+            for (int i = 0; i < node->resultRegisterRC.size(); i++)
+                node->ownerScope->owner->extension->registersToRelease.push_back(node->resultRegisterRC[i]);
+            freeRegisterRC(context, node->additionalRegisterRC);
+        }
+        else
+            freeRegisterRC(context, node);
+
         return true;
     }
 

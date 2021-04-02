@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
-#include "SymTable.h"
-#include "ByteCodeOp.h"
 #include "ByteCode.h"
-#include "ByteCodeGenJob.h"
 #include "TypeManager.h"
 #include "Ast.h"
 #include "Module.h"
@@ -324,6 +321,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         RegisterList r0 = reserveRegisterRC(context);
         emitRetValRef(context, r0, true, 0);
         identifier->resultRegisterRC                = r0;
+        identifier->identifierRef->resultRegisterRC = identifier->resultRegisterRC;
+        identifier->parent->resultRegisterRC        = node->resultRegisterRC;
+        return true;
+    }
+
+    // If this is immutable, then the register must have been initialized already
+    if (resolved->flags & OVERLOAD_IMMUTABLE)
+    {
+        SWAG_ASSERT(resolved->registers.size());
+        identifier->resultRegisterRC                = resolved->registers;
         identifier->identifierRef->resultRegisterRC = identifier->resultRegisterRC;
         identifier->parent->resultRegisterRC        = node->resultRegisterRC;
         return true;

@@ -445,6 +445,7 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     newNode->copyFrom(context, this);
     newNode->publicName  = publicName;
     newNode->constAssign = constAssign;
+    newNode->immutable   = immutable;
     newNode->attributes  = attributes;
 
     newNode->type       = (AstTypeExpression*) findChildRef(type, newNode);

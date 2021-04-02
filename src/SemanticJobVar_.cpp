@@ -466,6 +466,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         isLocalConstant = true;
     if (node->constAssign)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
+    if (node->immutable)
+        symbolFlags |= OVERLOAD_IMMUTABLE | OVERLOAD_CONST_ASSIGN;
 
     auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_ALIAS) : nullptr;
 
@@ -683,6 +685,18 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // We should have a type here !
     SWAG_VERIFY(node->typeInfo, context->report({node, node->token, format("unable to deduce type of %s '%s'", AstNode::getKindName(node).c_str(), node->token.text.c_str())}));
+
+    // An immutable value, check that type can be stored in registers
+    if (symbolFlags & OVERLOAD_IMMUTABLE)
+    {
+        auto realType = TypeManager::concreteType(node->typeInfo);
+        if (realType->kind == TypeInfoKind::Struct)
+            return context->report({node, node->token, "an immutable local variable cannot be of type struct or tuple"});
+        if (realType->kind != TypeInfoKind::Native && realType->kind != TypeInfoKind::Pointer && realType->kind != TypeInfoKind::Reference)
+            return context->report({node, node->token, format("an immutable local variable cannot be of type '%s'", realType->name.c_str())});
+        if (realType->isNative(NativeTypeKind::Void))
+            return context->report({node, node->token, format("an immutable local variable cannot be of type '%s'", realType->name.c_str())});
+    }
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
