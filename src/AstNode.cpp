@@ -401,6 +401,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     token.text              = from->token.text;
     sourceFile              = from->sourceFile;
     castOffset              = from->castOffset;
+    stackOffset             = from->stackOffset;
     concreteTypeInfoStorage = from->concreteTypeInfoStorage;
 
     attributeFlags = from->attributeFlags;

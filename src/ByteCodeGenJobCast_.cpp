@@ -23,9 +23,21 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     }
     else if (exprNode->resultRegisterRC.size() == 2)
     {
-        // Be sure registers are contiguous, as we address the first of them
-        SWAG_ASSERT(exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
-        emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, r0[0], exprNode->resultRegisterRC[0], exprNode->resultRegisterRC[1]);
+        // If inside a function, we copy the value to the stack, and address the stack as the any value.
+        // That way, even if registers are changed, the memory layout remains correct.
+        // In other words, CopyRBAddrToRA2 is satanic, but don't know how to do that in another way for now.
+        if (exprNode->ownerFct)
+        {
+            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, exprNode->stackOffset, exprNode->resultRegisterRC[0]);
+            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, exprNode->stackOffset + 8, exprNode->resultRegisterRC[1]);
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0[0], exprNode->stackOffset);
+        }
+        else
+        {
+            // Be sure registers are contiguous, as we address the first of them
+            SWAG_ASSERT(exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
+            emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, r0[0], exprNode->resultRegisterRC[0], exprNode->resultRegisterRC[1]);
+        }
     }
     else
     {
@@ -87,7 +99,20 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
         auto r0                    = reserveRegisterRC(context);
         node->additionalRegisterRC = exprNode->resultRegisterRC;
         node->resultRegisterRC     = r0;
-        emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, r0, node->additionalRegisterRC[0], node->additionalRegisterRC[1]);
+
+        // Like 'any', we go to the stack inside a function, to not rely on register order.
+        // That way, we can reallocate registers.
+        // See ByteCodeGenJob::emitCastToNativeAny
+        if (node->ownerFct)
+        {
+            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, node->stackOffset, node->additionalRegisterRC[0]);
+            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, node->stackOffset + 8, node->additionalRegisterRC[1]);
+            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0, node->stackOffset);
+        }
+        else
+        {
+            emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, r0, node->additionalRegisterRC[0], node->additionalRegisterRC[1]);
+        }
     }
 
     // Otherwise we emit the interface in 2 separate registers

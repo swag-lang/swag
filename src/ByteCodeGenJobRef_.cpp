@@ -237,28 +237,28 @@ bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, uint32
 bool ByteCodeGenJob::emitUnwrapRelativePointer(ByteCodeGenContext* context, uint32_t rr, uint32_t sizeOf)
 {
     auto r0 = reserveRegisterRC(context);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, rr);
     switch (sizeOf)
     {
     case 1:
-        emitInstruction(context, ByteCodeOp::DeRef8, r0, rr);
-        emitInstruction(context, ByteCodeOp::CastS8S64, r0);
+        emitInstruction(context, ByteCodeOp::DeRef8, rr, rr);
+        emitInstruction(context, ByteCodeOp::CastS8S64, rr);
         break;
     case 2:
-        emitInstruction(context, ByteCodeOp::DeRef16, r0, rr);
-        emitInstruction(context, ByteCodeOp::CastS16S64, r0);
+        emitInstruction(context, ByteCodeOp::DeRef16, rr, rr);
+        emitInstruction(context, ByteCodeOp::CastS16S64, rr);
         break;
     case 4:
-        emitInstruction(context, ByteCodeOp::DeRef32, r0, rr);
-        emitInstruction(context, ByteCodeOp::CastS32S64, r0);
+        emitInstruction(context, ByteCodeOp::DeRef32, rr, rr);
+        emitInstruction(context, ByteCodeOp::CastS32S64, rr);
         break;
     case 8:
-        emitInstruction(context, ByteCodeOp::DeRef64, r0, rr);
+        emitInstruction(context, ByteCodeOp::DeRef64, rr, rr);
         break;
     }
 
-    emitInstruction(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = 1;
-    emitInstruction(context, ByteCodeOp::ClearRA, rr);
-    emitInstruction(context, ByteCodeOp::BinOpPlusS64, r0, rr, rr);
+    emitInstruction(context, ByteCodeOp::JumpIfZero64, rr)->b.s32 = 1;
+    emitInstruction(context, ByteCodeOp::BinOpPlusS64, rr, r0, rr);
     freeRegisterRC(context, r0);
     return true;
 }

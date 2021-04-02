@@ -419,6 +419,7 @@ struct AstNode
     uint32_t semFlags;
 
     uint32_t castOffset;
+    uint32_t stackOffset;
     uint32_t concreteTypeInfoStorage;
 
     uint32_t            childParentIdx;

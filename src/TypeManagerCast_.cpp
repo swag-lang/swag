@@ -2050,6 +2050,16 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
         {
             if (toNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
+                // When casting something complexe to any, we will copy the value to the stack to be sure
+                // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
+                // See ByteCodeGenJob::emitCastToNativeAny
+                if (toNode->ownerFct && toType->numRegisters() > 1)
+                {
+                    toNode->stackOffset = toNode->ownerScope->startStackSize;
+                    toNode->ownerScope->startStackSize += toType->numRegisters() * sizeof(Register);
+                    toNode->ownerFct->stackSize = max(toNode->ownerFct->stackSize, toNode->ownerScope->startStackSize);
+                }
+
                 toNode->castedTypeInfo = toType;
                 toNode->typeInfo       = fromType;
                 auto& typeTable        = context->sourceFile->module->typeTable;
@@ -2061,6 +2071,16 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
+            // When casting something complexe to any, we will copy the value to the stack to be sure
+            // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
+            // See ByteCodeGenJob::emitCastToNativeAny
+            if (fromNode->ownerFct && fromType->numRegisters() > 1)
+            {
+                fromNode->stackOffset = fromNode->ownerScope->startStackSize;
+                fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
+                fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
+            }
+
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
             auto& typeTable          = context->sourceFile->module->typeTable;
@@ -2071,6 +2091,16 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
+            // When casting something complexe to any, we will copy the value to the stack to be sure
+            // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
+            // See ByteCodeGenJob::emitCastToNativeAny
+            if (fromNode->ownerFct && fromType->numRegisters() > 1)
+            {
+                fromNode->stackOffset = fromNode->ownerScope->startStackSize;
+                fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
+                fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
+            }
+
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
             auto& typeTable          = context->sourceFile->module->typeTable;
@@ -2335,6 +2365,17 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
+            // We will copy the value to the stack to be sure that the memory layout is correct, without relying on
+            // registers being contiguous, and not being reallocated (by an optimize pass).
+            // This is the same problem when casting to 'any'.
+            // See ByteCodeGenJob::emitCastToInterface
+            if (fromNode->ownerFct)
+            {
+                fromNode->stackOffset = fromNode->ownerScope->startStackSize;
+                fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
+                fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
+            }
+
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toTypeItf;
         }
@@ -2414,6 +2455,17 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
+            // We will copy the value to the stack to be sure/ that the memory layout is correct, without relying on
+            // registers being contiguous, and not being reallocated (by an optimize pass).
+            // This is the same problem when casting to 'any'.
+            // See ByteCodeGenJob::emitCastToNativeAny
+            if (fromNode->ownerFct)
+            {
+                fromNode->stackOffset = fromNode->ownerScope->startStackSize;
+                fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
+                fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
+            }
+
             fromNode->castedTypeInfo = fromNode->typeInfo;
             fromNode->typeInfo       = toType;
         }
