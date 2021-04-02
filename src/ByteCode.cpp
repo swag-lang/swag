@@ -325,8 +325,6 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     // Instruction rank
     if (ip == curIp)
         g_Log.setColor(LogColor::Red);
-    else if (ip->node && ip->node->ownerInline)
-        g_Log.setColor(LogColor::DarkCyan);
     else
         g_Log.setColor(LogColor::Cyan);
     wprintf(bcNum, i);
@@ -334,12 +332,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     g_Log.setCountLength(true);
 
     // Instruction
-    if (ip->flags & BCI_SAFETY)
-        g_Log.setColor(LogColor::DarkGreen);
-    else if (ip->flags & BCI_TRYCATCH)
-        g_Log.setColor(LogColor::DarkRed);
-    else
-        g_Log.setColor(LogColor::White);
+    g_Log.setColor(LogColor::White);
     int len = (int) strlen(g_ByteCodeOpNames[(int) ip->op]);
     while (len++ < ALIGN_RIGHT_OPCODE)
         g_Log.print(" ");
@@ -385,7 +378,15 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     else if (opFlags & OPFLAG_READ_VAL64_D || (ip->flags & BCI_IMM_D))
         g_Log.print(format("D {0x%llx} ", ip->d.u64));
 
+    // Flags 1
     while (g_Log.length < 60)
+        g_Log.print(" ");
+    g_Log.print(ip->flags & BCI_SAFETY ? "S" : ".");
+    g_Log.print(ip->flags & BCI_TRYCATCH ? "E" : ".");
+    g_Log.print(ip->node && ip->node->ownerInline ? "I" : ".");
+
+    // Flags 2
+    while (g_Log.length < 64)
         g_Log.print(" ");
     g_Log.setColor(LogColor::Gray);
     g_Log.print(ip->flags & BCI_IMM_A ? "A" : ".");
@@ -396,7 +397,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     g_Log.print(ip->flags & BCI_UNPURE ? "U" : ".");
 
     g_Log.setColor(LogColor::White);
-    while (g_Log.length < 69)
+    while (g_Log.length < 73)
         g_Log.print(" ");
     printPrettyInstruction(ip);
 

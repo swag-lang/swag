@@ -57,7 +57,6 @@ struct ByteCodeOptimizer
     static void optimizePassRetCopyLocal(ByteCodeOptContext* context);
     static void optimizePassRetCopyGlobal(ByteCodeOptContext* context);
     static void optimizePassRetCopyInline(ByteCodeOptContext* context);
-    static void optimizePassLea(ByteCodeOptContext* context);
 
     static void reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstruction* ip);
