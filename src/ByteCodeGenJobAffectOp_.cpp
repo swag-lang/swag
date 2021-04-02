@@ -29,9 +29,11 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
         SWAG_CHECK(emitUnwrapRelativePointer(context, rtmp, finalType->relative));
         SWAG_CHECK(emitWrapRelativePointer(context, toReg, rtmp, finalType->relative, finalType));
 
+        ensureCanBeChangedRC(context, toReg);
         inst        = emitInstruction(context, ByteCodeOp::IncPointer64, toReg, 0, toReg);
         inst->b.u64 = finalType->sizeOf;
         inst->flags |= BCI_IMM_B;
+        ensureCanBeChangedRC(context, fromReg);
         inst        = emitInstruction(context, ByteCodeOp::IncPointer64, fromReg, 0, fromReg);
         inst->b.u64 = finalType->sizeOf;
         inst->flags |= BCI_IMM_B;

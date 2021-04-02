@@ -766,6 +766,8 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     auto node = context->node;
     if (fromTypeInfo->isNative(NativeTypeKind::Any) || fromTypeInfo->kind == TypeInfoKind::TypeSet)
     {
+        ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
+
         // Check that the type is correct
         if (isExplicit)
             emitSafetyCastAny(context, exprNode);
@@ -797,6 +799,8 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     // When casting from one struct to another, with a 'using' on a field
     if (exprNode->semFlags & AST_SEM_USING)
     {
+        ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
+
         truncRegisterRC(context, exprNode->resultRegisterRC, 1);
         node->resultRegisterRC   = exprNode->resultRegisterRC;
         exprNode->castedTypeInfo = nullptr;
@@ -817,6 +821,8 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Reference)
     {
+        ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
+
         if (fromTypeInfo->kind == TypeInfoKind::Array ||
             fromTypeInfo->kind == TypeInfoKind::Pointer ||
             fromTypeInfo->kind == TypeInfoKind::Struct ||
@@ -845,6 +851,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
+        ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
         SWAG_CHECK(emitCastToSlice(context, exprNode, typeInfo, fromTypeInfo));
         exprNode->castedTypeInfo = nullptr;
         return true;
@@ -852,6 +859,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     if (typeInfo->kind == TypeInfoKind::Interface)
     {
+        ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
         SWAG_CHECK(emitCastToInterface(context, exprNode, typeInfo, fromTypeInfo));
         exprNode->castedTypeInfo = nullptr;
         return true;
@@ -859,6 +867,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     if (typeInfo->kind == TypeInfoKind::TypeSet)
     {
+        ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
         SWAG_CHECK(emitCastToNativeAny(context, exprNode, fromTypeInfo));
         exprNode->castedTypeInfo = nullptr;
         return true;
@@ -868,6 +877,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return internalError(context, "emitCast, cast type not native");
 
     emitSafetyCast(context, typeInfo, fromTypeInfo, exprNode);
+    ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
 
     switch (typeInfo->nativeType)
     {

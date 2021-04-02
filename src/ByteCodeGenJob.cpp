@@ -154,6 +154,19 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
     freeRegisterRC(context, node->additionalRegisterRC);
 }
 
+void ByteCodeGenJob::ensureCanBeChangedRC(ByteCodeGenContext* context, RegisterList& r0)
+{
+    if (!r0.canFree)
+    {
+        RegisterList re;
+        reserveRegisterRC(context, re, r0.size());
+        for (int i = 0; i < r0.size(); i++)
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, re[i], r0[i]);
+        freeRegisterRC(context, r0);
+        r0 = re;
+    }
+}
+
 bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
 {
     auto node  = context->node;

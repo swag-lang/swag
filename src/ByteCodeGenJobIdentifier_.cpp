@@ -650,6 +650,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         emitSafetyNullPointer(context, node->resultRegisterRC);
         if (node->resolvedSymbolOverload->storageOffset > 0)
         {
+            ensureCanBeChangedRC(context, node->resultRegisterRC);
             auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
             inst->b.u64 = node->resolvedSymbolOverload->storageOffset;
             inst->flags |= BCI_IMM_B;
