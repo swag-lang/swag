@@ -1,4 +1,3 @@
-#[swag.printbc]
 func(T) sort(values: [..] T, cb: func(T, T)->s32)
 {
     buffer := @dataof(values)

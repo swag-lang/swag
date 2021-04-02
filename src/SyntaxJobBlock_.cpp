@@ -180,7 +180,6 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
     Ast::addChildBack(node, node->boolExpression);
 
     SWAG_CHECK(doEmbeddedStatement(node, &node->block));
-
     return true;
 }
 

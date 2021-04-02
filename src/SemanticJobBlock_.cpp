@@ -186,11 +186,16 @@ bool SemanticJob::resolveFor(SemanticContext* context)
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression));
     node->byteCodeFct = ByteCodeGenJob::emitLoop;
+    node->allocateExtension();
+    node->extension->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+
     node->boolExpression->allocateExtension();
     node->boolExpression->extension->byteCodeBeforeFct = ByteCodeGenJob::emitForBeforeExpr;
     node->boolExpression->extension->byteCodeAfterFct  = ByteCodeGenJob::emitForAfterExpr;
+
     node->postExpression->allocateExtension();
     node->postExpression->extension->byteCodeBeforeFct = ByteCodeGenJob::emitForBeforePost;
+
     node->block->allocateExtension();
     node->block->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
     return true;
