@@ -439,7 +439,6 @@ struct AstVarDecl : public AstNode
     AstNode* assignment;
 
     bool constAssign;
-    bool immutable;
 };
 
 struct AstIdentifierRef : public AstNode

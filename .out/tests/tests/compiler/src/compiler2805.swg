@@ -5,7 +5,7 @@ func toto(stmt: code)
 {
     #macro
     {
-        x := const 0's64
+        x := 0's64
         defer G = 1
         #mixin `stmt
     }

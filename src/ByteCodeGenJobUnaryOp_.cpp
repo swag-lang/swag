@@ -68,8 +68,7 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0)
 bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
-    auto     r0            = node->childs[0]->resultRegisterRC;
-    node->resultRegisterRC = r0;
+    node->resultRegisterRC = node->childs[0]->resultRegisterRC;
 
     if (!(node->doneFlags & AST_DONE_CAST1))
     {
@@ -99,10 +98,12 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
         return true;
     }
     case TokenId::SymMinus:
-        SWAG_CHECK(emitUnaryOpMinus(context, r0));
+        ensureCanBeChangedRC(context, node->resultRegisterRC);
+        SWAG_CHECK(emitUnaryOpMinus(context, node->resultRegisterRC));
         return true;
     case TokenId::SymTilde:
-        SWAG_CHECK(emitUnaryOpInvert(context, r0));
+        ensureCanBeChangedRC(context, node->resultRegisterRC);
+        SWAG_CHECK(emitUnaryOpInvert(context, node->resultRegisterRC));
         return true;
     default:
         return internalError(context, "emitUnaryOp, invalid token op");

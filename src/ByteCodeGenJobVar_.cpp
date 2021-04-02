@@ -19,9 +19,8 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     auto resolved = node->resolvedSymbolOverload;
     resolved->flags |= OVERLOAD_EMITTED;
 
-    auto typeInfo    = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
-    bool retVal      = resolved->flags & OVERLOAD_RETVAL;
-    bool isImmutable = resolved->flags & OVERLOAD_IMMUTABLE;
+    auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_ALIAS);
+    bool retVal   = resolved->flags & OVERLOAD_RETVAL;
 
     context->job->waitStructGenerated(typeInfo);
     if (context->result == ContextResult::Pending)
@@ -31,7 +30,6 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     bool mustDropLeft = false;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_ASSERT(!isImmutable);
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
         // Generate initialization
@@ -78,15 +76,29 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         }
     }
 
+    // Allocate a scoped register to the variable
+    if (resolved->flags & OVERLOAD_VAR_REGISTER && resolved->registers.size() == 0)
+    {
+        SWAG_ASSERT(resolved->typeInfo->numRegisters() == 1);
+        resolved->registers         = reserveRegisterRC(context);
+        resolved->registers.canFree = false;
+        node->ownerScope->owner->allocateExtension();
+        for (int i = 0; i < resolved->registers.size(); i++)
+            node->ownerScope->owner->extension->registersToRelease.push_back(resolved->registers[i]);
+    }
+
     // User specific initialization with a right side
     if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
         if (!(node->doneFlags & AST_DONE_PRE_CAST))
         {
             node->additionalRegisterRC = reserveRegisterRC(context);
-            node->doneFlags |= AST_DONE_PRE_CAST;
-            emitRetValRef(context, node->additionalRegisterRC, retVal, resolved->storageOffset);
+            if (resolved->flags & OVERLOAD_VAR_REGISTER)
+                emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, node->additionalRegisterRC, resolved->registers);
+            else
+                emitRetValRef(context, node->additionalRegisterRC, retVal, resolved->storageOffset);
             node->resultRegisterRC = node->assignment->resultRegisterRC;
+            node->doneFlags |= AST_DONE_PRE_CAST;
         }
 
         SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));
@@ -99,18 +111,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         if (context->result == ContextResult::Pending)
             return true;
 
-        if (isImmutable)
-        {
-            node->resolvedSymbolOverload->registers         = node->resultRegisterRC;
-            node->resolvedSymbolOverload->registers.canFree = false;
-            node->ownerScope->owner->allocateExtension();
-            for (int i = 0; i < node->resultRegisterRC.size(); i++)
-                node->ownerScope->owner->extension->registersToRelease.push_back(node->resultRegisterRC[i]);
-            freeRegisterRC(context, node->additionalRegisterRC);
-        }
-        else
-            freeRegisterRC(context, node);
-
+        freeRegisterRC(context, node);
         return true;
     }
 
@@ -168,6 +169,12 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             emitRetValRef(context, r0, true, 0);
             emitSetZeroAtPointer(context, typeInfo->sizeOf, r0);
             freeRegisterRC(context, r0);
+        }
+        else if (resolved->flags & OVERLOAD_VAR_REGISTER)
+        {
+            SWAG_ASSERT(resolved->registers.size());
+            for (int i = 0; i < resolved->registers.size(); i++)
+                emitInstruction(context, ByteCodeOp::ClearRA)->a.u32 = resolved->registers[i];
         }
         else
         {

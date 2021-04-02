@@ -1,4 +1,4 @@
-var G32: s32
+/*var G32: s32
 var G64: s64
 
 #test
@@ -13,4 +13,4 @@ var G64: s64
 
     #assert(@offsetof(G32) & (@alignof(G32) - 1) == 0)
     #assert(@offsetof(G64) & (@alignof(G64) - 1) == 0)
-}
+}*/

@@ -326,16 +326,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         return true;
     }
 
-    // If this is immutable, then the register must have been initialized already
-    if (resolved->flags & OVERLOAD_IMMUTABLE)
-    {
-        SWAG_ASSERT(resolved->registers.size());
-        identifier->resultRegisterRC                = resolved->registers;
-        identifier->identifierRef->resultRegisterRC = identifier->resultRegisterRC;
-        identifier->parent->resultRegisterRC        = node->resultRegisterRC;
-        return true;
-    }
-
     // Will be done in the variable declaration
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
@@ -543,6 +533,25 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC              = node->resultRegisterRC;
+        return true;
+    }
+
+    // Register value
+    if (resolved->flags & OVERLOAD_VAR_REGISTER)
+    {
+        SWAG_ASSERT(resolved->registers.size());
+        if (node->forceTakeAddress())
+        {
+            node->resultRegisterRC = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, node->resultRegisterRC, resolved->registers);
+        }
+        else
+        {
+            node->resultRegisterRC = resolved->registers;
+        }
+
+        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        identifier->parent->resultRegisterRC        = node->resultRegisterRC;
         return true;
     }
 

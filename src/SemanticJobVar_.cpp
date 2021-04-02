@@ -466,8 +466,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         isLocalConstant = true;
     if (node->constAssign)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
-    if (node->immutable)
-        symbolFlags |= OVERLOAD_IMMUTABLE | OVERLOAD_CONST_ASSIGN;
 
     auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_ALIAS) : nullptr;
 
@@ -686,18 +684,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // We should have a type here !
     SWAG_VERIFY(node->typeInfo, context->report({node, node->token, format("unable to deduce type of %s '%s'", AstNode::getKindName(node).c_str(), node->token.text.c_str())}));
 
-    // An immutable value, check that type can be stored in registers
-    if (symbolFlags & OVERLOAD_IMMUTABLE)
-    {
-        auto realType = TypeManager::concreteType(node->typeInfo);
-        if (realType->kind == TypeInfoKind::Struct)
-            return context->report({node, node->token, "an immutable local variable cannot be of type struct or tuple"});
-        if (realType->kind != TypeInfoKind::Native && realType->kind != TypeInfoKind::Pointer && realType->kind != TypeInfoKind::Reference)
-            return context->report({node, node->token, format("an immutable local variable cannot be of type '%s'", realType->name.c_str())});
-        if (realType->isNative(NativeTypeKind::Void))
-            return context->report({node, node->token, format("an immutable local variable cannot be of type '%s'", realType->name.c_str())});
-    }
-
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
     if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
@@ -869,12 +855,20 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Reserse room on the stack, except for a retval
         else if (!(symbolFlags & OVERLOAD_RETVAL))
         {
-            auto alignOf                     = SemanticJob::alignOf(node);
-            node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
-            storageOffset                    = node->ownerScope->startStackSize;
-            node->ownerScope->startStackSize += typeInfo->sizeOf;
-            node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
-            node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1); // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
+            /*if (typeInfo->isNative(NativeTypeKind::U32))
+            {
+                symbolFlags &= ~OVERLOAD_VAR_LOCAL;
+                symbolFlags |= OVERLOAD_VAR_REGISTER;
+            }
+            else*/
+            {
+                auto alignOf                     = SemanticJob::alignOf(node);
+                node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
+                storageOffset                    = node->ownerScope->startStackSize;
+                node->ownerScope->startStackSize += typeInfo->sizeOf;
+                node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+                node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1); // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
+            }
         }
 
         node->byteCodeFct = ByteCodeGenJob::emitLocalVarDecl;

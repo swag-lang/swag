@@ -1,8 +1,8 @@
 //#[swag.printbc]
 #test
 {
-    x := const 666's64
-    y := 666
+    x := 666'u16
+    var y: u32 = cast(u32) x
     @assert(x == y)
     @assert(x == y)
     @assert(x == y)
