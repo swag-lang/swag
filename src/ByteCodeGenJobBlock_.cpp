@@ -873,6 +873,25 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope, V
 bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context)
 {
     auto node = context->node;
-    SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+
+    switch (node->kind)
+    {
+    case AstNodeKind::CompilerMacro:
+    {
+        auto macroNode = CastAst<AstCompilerMacro>(node, AstNodeKind::CompilerMacro);
+        SWAG_CHECK(emitLeaveScope(context, macroNode->scope));
+        break;
+    }
+    case AstNodeKind::CompilerInline:
+    {
+        auto inlineNode = CastAst<AstCompilerInline>(node, AstNodeKind::CompilerInline);
+        SWAG_CHECK(emitLeaveScope(context, inlineNode->scope));
+        break;
+    }
+    default:
+        SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+        break;
+    }
+
     return true;
 }

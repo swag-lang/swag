@@ -1241,6 +1241,7 @@ AstNode* AstCompilerInline::clone(CloneContext& context)
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Inline, context.parentScope ? context.parentScope : ownerScope);
+    newNode->scope           = cloneContext.parentScope;
     childs.back()->clone(cloneContext);
 
     return newNode;
@@ -1254,6 +1255,7 @@ AstNode* AstCompilerMacro::clone(CloneContext& context)
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Macro, context.parentScope ? context.parentScope : ownerScope);
+    newNode->scope           = cloneContext.parentScope;
     childs.back()->clone(cloneContext);
 
     return newNode;

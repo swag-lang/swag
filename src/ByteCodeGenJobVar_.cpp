@@ -99,7 +99,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         if (context->result == ContextResult::Pending)
             return true;
 
-        if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_IMMUTABLE)
+        if (isImmutable)
         {
             node->resolvedSymbolOverload->registers         = node->resultRegisterRC;
             node->resolvedSymbolOverload->registers.canFree = false;

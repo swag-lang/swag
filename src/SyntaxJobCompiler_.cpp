@@ -125,6 +125,7 @@ bool SyntaxJob::doCompilerMacro(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     auto newScope = Ast::newScope(node, "", ScopeKind::Macro, node->ownerScope);
+    node->scope   = newScope;
 
     Scoped scoped(this, newScope);
     SWAG_CHECK(doCurlyStatement(node));
@@ -141,6 +142,7 @@ bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     auto newScope = Ast::newScope(node, "", ScopeKind::Inline, node->ownerScope);
+    node->scope   = newScope;
 
     Scoped scoped(this, newScope);
     SWAG_CHECK(doCurlyStatement(node));

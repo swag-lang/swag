@@ -831,11 +831,15 @@ struct AstReturn : public AstNode
 struct AstCompilerInline : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
+
+    Scope* scope;
 };
 
 struct AstCompilerMacro : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
+
+    Scope* scope;
 };
 
 struct AstCompilerMixin : public AstNode

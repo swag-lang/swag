@@ -151,6 +151,9 @@ bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
     auto scope            = node->childs.back()->ownerScope;
     scope->startStackSize = node->ownerScope->startStackSize;
 
+    node->allocateExtension();
+    node->extension->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+
     // Be sure #macro is used inside a macro
     if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
         return context->report({node, node->token, "'#macro' can only be used inside a 'swag.macro' function"});
@@ -163,6 +166,10 @@ bool SemanticJob::resolveCompilerInline(SemanticContext* context)
     auto node             = CastAst<AstCompilerInline>(context->node, AstNodeKind::CompilerInline);
     auto scope            = node->childs.back()->ownerScope;
     scope->startStackSize = node->ownerScope->startStackSize;
+
+    node->allocateExtension();
+    node->extension->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+
     return true;
 }
 
