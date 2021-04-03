@@ -22,6 +22,7 @@ bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg,
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
     rc.clear();
+    rc.canFree = true;
     if (num == 0)
         return;
     if (num == 1)
@@ -144,6 +145,7 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& r
     for (int i = 0; i < rc.size(); i++)
         freeRegisterRC(context, rc[i]);
     rc.clear();
+    rc.canFree = true;
 }
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)

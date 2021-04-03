@@ -81,9 +81,10 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     {
         if (!(resolved->flags & OVERLOAD_CAN_CHANGE) && resolved->registers.size() == 0)
         {
-            if (resolved->typeInfo->numRegisters() == 1)
+            if (resolved->typeInfo->numRegisters() == 1 && !(resolved->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
             {
                 //if (node->ownerFct->token.text == "convertArgcArgv1")
+                if (node->sourceFile->name == "compiler751.swg")
                 {
                     resolved->flags |= OVERLOAD_REGISTER;
                     resolved->registers         = reserveRegisterRC(context);
@@ -101,16 +102,11 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     {
         if (!(node->doneFlags & AST_DONE_PRE_CAST))
         {
+            node->additionalRegisterRC = reserveRegisterRC(context);
             if (resolved->flags & OVERLOAD_REGISTER)
-            {
-                node->additionalRegisterRC = resolved->registers;
                 emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, node->additionalRegisterRC, resolved->registers);
-            }
             else
-            {
-                node->additionalRegisterRC = reserveRegisterRC(context);
                 emitRetValRef(context, node->additionalRegisterRC, retVal, resolved->storageOffset);
-            }
 
             node->resultRegisterRC = node->assignment->resultRegisterRC;
             node->doneFlags |= AST_DONE_PRE_CAST;

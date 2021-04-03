@@ -47,6 +47,9 @@ cast interface vers struct (avec safety)
 OPTIMS
 ****************************************
 -------------------------------------
+makestackpointer suivi de copyrctort, faire un copy address stack to rt
+copyrbaddrtora suivi de setatpointer, c'est une affectation de registre
+-------------------------------------
 x64 passe reduction instructions
 -------------------------------------
 passer/retourner des structs par value si <= 64 bits
