@@ -47,6 +47,8 @@ cast interface vers struct (avec safety)
 OPTIMS
 ****************************************
 -------------------------------------
+Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)
+-------------------------------------
 makestackpointer suivi de copyrctort, faire un copy address stack to rt
 copyrbaddrtora suivi de setatpointer, c'est une affectation de registre
 -------------------------------------

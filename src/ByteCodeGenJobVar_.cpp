@@ -85,8 +85,8 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 !(resolved->typeInfo->flags & TYPEINFO_RETURN_BY_COPY) &&
                 !(resolved->typeInfo->flags & TYPEINFO_RELATIVE))
             {
-                //if (node->ownerFct->token.text == "append")
-                //if (node->sourceFile->name == "compiler2807.swg")
+                //if(node->ownerFct->token.text == "quick")
+                //if (node->sourceFile->name == "compiler2808.swg")
                 /*{
                     resolved->flags |= OVERLOAD_REGISTER;
                     resolved->registers         = reserveRegisterRC(context);
@@ -98,7 +98,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             }
         }
     }
-    
+
     // User specific initialization with a right side
     if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {

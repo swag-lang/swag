@@ -45,8 +45,18 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
-            emitInstruction(context, ByteCodeOp::Mul64byVB64, r1)->b.u64 = sizeOf;
-        emitInstruction(context, ByteCodeOp::IncPointer64, r0, r1, r2);
+        {
+            auto rt = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, rt, r1);
+            emitInstruction(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
+            emitInstruction(context, ByteCodeOp::IncPointer64, r0, rt, r2);
+            freeRegisterRC(context, rt);
+        }
+        else
+        {
+            emitInstruction(context, ByteCodeOp::IncPointer64, r0, r1, r2);
+        }
+
         return true;
     }
 
@@ -107,8 +117,18 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
-            emitInstruction(context, ByteCodeOp::Mul64byVB64, r1)->b.s64 = sizeOf;
-        emitInstruction(context, ByteCodeOp::DecPointer64, r0, r1, r2);
+        {
+            auto rt = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, rt, r1);
+            emitInstruction(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
+            emitInstruction(context, ByteCodeOp::DecPointer64, r0, rt, r2);
+            freeRegisterRC(context, rt);
+        }
+        else
+        {
+            emitInstruction(context, ByteCodeOp::DecPointer64, r0, r1, r2);
+        }
+
         return true;
     }
 
