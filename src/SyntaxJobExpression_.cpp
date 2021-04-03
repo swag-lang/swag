@@ -873,6 +873,8 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
 void SyntaxJob::forceTakeAddress(AstNode* node)
 {
     node->flags |= AST_TAKE_ADDRESS;
+    if (node->resolvedSymbolOverload)
+        node->resolvedSymbolOverload->flags |= OVERLOAD_CAN_CHANGE;
     switch (node->kind)
     {
     case AstNodeKind::IdentifierRef:

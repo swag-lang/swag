@@ -537,19 +537,11 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     }
 
     // Register value
-    if (resolved->flags & OVERLOAD_VAR_REGISTER)
+    if (resolved->flags & OVERLOAD_REGISTER)
     {
         SWAG_ASSERT(resolved->registers.size());
-        if (node->forceTakeAddress())
-        {
-            node->resultRegisterRC = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, node->resultRegisterRC, resolved->registers);
-        }
-        else
-        {
-            node->resultRegisterRC = resolved->registers;
-        }
-
+        SWAG_ASSERT(!node->forceTakeAddress());
+        node->resultRegisterRC                      = resolved->registers;
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         identifier->parent->resultRegisterRC        = node->resultRegisterRC;
         return true;

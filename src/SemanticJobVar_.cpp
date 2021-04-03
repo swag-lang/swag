@@ -855,20 +855,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Reserse room on the stack, except for a retval
         else if (!(symbolFlags & OVERLOAD_RETVAL))
         {
-            /*if (typeInfo->isNative(NativeTypeKind::U32))
-            {
-                symbolFlags &= ~OVERLOAD_VAR_LOCAL;
-                symbolFlags |= OVERLOAD_VAR_REGISTER;
-            }
-            else*/
-            {
-                auto alignOf                     = SemanticJob::alignOf(node);
-                node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
-                storageOffset                    = node->ownerScope->startStackSize;
-                node->ownerScope->startStackSize += typeInfo->sizeOf;
-                node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
-                node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1); // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
-            }
+            auto alignOf                     = SemanticJob::alignOf(node);
+            node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
+            storageOffset                    = node->ownerScope->startStackSize;
+            node->ownerScope->startStackSize += typeInfo->sizeOf;
+            node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+            node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1); // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
         }
 
         node->byteCodeFct = ByteCodeGenJob::emitLocalVarDecl;

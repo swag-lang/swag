@@ -120,6 +120,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             caseNode->block                         = statement;
             if (isDefault)
                 defaultStatement = statement;
+            newScope->owner = statement;
 
             // Instructions
             ScopedBreakable scopedBreakable(this, switchNode);

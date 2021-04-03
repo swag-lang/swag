@@ -86,11 +86,14 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                 {
                     if (overload->flags & OVERLOAD_VAR_INLINE)
                     {
-                        overload->registers         = callParam->resultRegisterRC;
-                        overload->registers.canFree = false;
-                        node->allocateExtension();
-                        for (int r = 0; r < overload->registers.size(); r++)
-                            node->extension->registersToRelease.push_back(overload->registers[r]);
+                        overload->registers = callParam->resultRegisterRC;
+                        if (overload->registers.canFree)
+                        {
+                            overload->registers.canFree = false;
+                            node->allocateExtension();
+                            for (int r = 0; r < overload->registers.size(); r++)
+                                node->extension->registersToRelease.push_back(overload->registers[r]);
+                        }
                         break;
                     }
                 }
@@ -120,11 +123,14 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                         {
                             if (overload->flags & OVERLOAD_VAR_INLINE)
                             {
-                                overload->registers         = callParam->resultRegisterRC;
-                                overload->registers.canFree = false;
-                                node->allocateExtension();
-                                for (int r = 0; r < overload->registers.size(); r++)
-                                    node->extension->registersToRelease.push_back(overload->registers[r]);
+                                overload->registers = callParam->resultRegisterRC;
+                                if (overload->registers.canFree)
+                                {
+                                    overload->registers.canFree = false;
+                                    node->allocateExtension();
+                                    for (int r = 0; r < overload->registers.size(); r++)
+                                        node->extension->registersToRelease.push_back(overload->registers[r]);
+                                }
                                 covered = true;
                                 break;
                             }

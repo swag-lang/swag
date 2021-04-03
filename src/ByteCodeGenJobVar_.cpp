@@ -77,26 +77,41 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     }
 
     // Allocate a scoped register to the variable
-    if (resolved->flags & OVERLOAD_VAR_REGISTER && resolved->registers.size() == 0)
+    /*if (node->ownerFct && node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
-        SWAG_ASSERT(resolved->typeInfo->numRegisters() == 1);
-        resolved->registers         = reserveRegisterRC(context);
-        resolved->registers.canFree = false;
-        node->ownerScope->owner->allocateExtension();
-        for (int i = 0; i < resolved->registers.size(); i++)
-            node->ownerScope->owner->extension->registersToRelease.push_back(resolved->registers[i]);
-    }
+        if (!(resolved->flags & OVERLOAD_CAN_CHANGE) && resolved->registers.size() == 0)
+        {
+            if (resolved->typeInfo->numRegisters() == 1)
+            {
+                //if (node->ownerFct->token.text == "convertArgcArgv1")
+                {
+                    resolved->flags |= OVERLOAD_REGISTER;
+                    resolved->registers         = reserveRegisterRC(context);
+                    resolved->registers.canFree = false;
+                    node->ownerScope->owner->allocateExtension();
+                    for (int i = 0; i < resolved->registers.size(); i++)
+                        node->ownerScope->owner->extension->registersToRelease.push_back(resolved->registers[i]);
+                }
+            }
+        }
+    }*/
 
     // User specific initialization with a right side
     if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
         if (!(node->doneFlags & AST_DONE_PRE_CAST))
         {
-            node->additionalRegisterRC = reserveRegisterRC(context);
-            if (resolved->flags & OVERLOAD_VAR_REGISTER)
+            if (resolved->flags & OVERLOAD_REGISTER)
+            {
+                node->additionalRegisterRC = resolved->registers;
                 emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, node->additionalRegisterRC, resolved->registers);
+            }
             else
+            {
+                node->additionalRegisterRC = reserveRegisterRC(context);
                 emitRetValRef(context, node->additionalRegisterRC, retVal, resolved->storageOffset);
+            }
+
             node->resultRegisterRC = node->assignment->resultRegisterRC;
             node->doneFlags |= AST_DONE_PRE_CAST;
         }
@@ -170,7 +185,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             emitSetZeroAtPointer(context, typeInfo->sizeOf, r0);
             freeRegisterRC(context, r0);
         }
-        else if (resolved->flags & OVERLOAD_VAR_REGISTER)
+        else if (resolved->flags & OVERLOAD_REGISTER)
         {
             SWAG_ASSERT(resolved->registers.size());
             for (int i = 0; i < resolved->registers.size(); i++)

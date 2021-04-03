@@ -40,9 +40,11 @@ bool ByteCodeGenJob::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
     auto countNode = node->childs.back();
 
     SWAG_CHECK(emitCast(context, countNode, countNode->typeInfo, countNode->castedTypeInfo));
-    node->resultRegisterRC = ptrNode->resultRegisterRC;
-    node->resultRegisterRC += countNode->resultRegisterRC;
-    transformResultToLinear2(context, node);
+    reserveRegisterRC(context, node->resultRegisterRC, 2);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[0], ptrNode->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[1], countNode->resultRegisterRC);
+    freeRegisterRC(context, ptrNode);
+    freeRegisterRC(context, countNode);
     return true;
 }
 
