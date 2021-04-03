@@ -539,6 +539,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Register value
     if (resolved->flags & OVERLOAD_REGISTER)
     {
+        SWAG_CHECK(sameStackFrame(context, resolved));
         SWAG_ASSERT(resolved->registers.size());
         SWAG_ASSERT(!node->forceTakeAddress());
         node->resultRegisterRC = resolved->registers;

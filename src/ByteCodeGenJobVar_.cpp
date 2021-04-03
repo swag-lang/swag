@@ -85,9 +85,9 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 !(resolved->typeInfo->flags & TYPEINFO_RETURN_BY_COPY) &&
                 !(resolved->typeInfo->flags & TYPEINFO_RELATIVE))
             {
-                //if(node->ownerFct->token.text == "quick")
-                /*if (node->sourceFile->name == "compiler2809.swg")
-                {
+                //if(node->ownerFct->token.text == "reserve")
+                //if (node->sourceFile->name == "hashtable.swg")
+                /*{
                     resolved->flags |= OVERLOAD_REGISTER;
                     resolved->registers         = reserveRegisterRC(context);
                     resolved->registers.canFree = false;
@@ -105,7 +105,13 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         if (!(node->doneFlags & AST_DONE_PRE_CAST))
         {
             node->additionalRegisterRC = reserveRegisterRC(context);
-            emitRetValRef(context, node->additionalRegisterRC, retVal, resolved->storageOffset);
+            if (resolved->flags & OVERLOAD_REGISTER)
+            {
+                emitInstruction(context, ByteCodeOp::ClearRA, resolved->registers);
+                emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, node->additionalRegisterRC, resolved->registers);
+            }
+            else
+                emitRetValRef(context, node->additionalRegisterRC, retVal, resolved->storageOffset);
             node->resultRegisterRC = node->assignment->resultRegisterRC;
             node->doneFlags |= AST_DONE_PRE_CAST;
         }
@@ -122,19 +128,19 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 
         if (resolved->flags & OVERLOAD_REGISTER)
         {
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, resolved->registers, node->resultRegisterRC);
             switch (resolved->typeInfo->sizeOf)
             {
             case 1:
-                emitInstruction(context, ByteCodeOp::ClearMaskU32, resolved->registers)->b.u32 = 0xFF;
+                emitInstruction(context, ByteCodeOp::SetAtStackPointer8, resolved->storageOffset, resolved->registers);
                 break;
             case 2:
-                emitInstruction(context, ByteCodeOp::ClearMaskU32, resolved->registers)->b.u32 = 0xFFFF;
+                emitInstruction(context, ByteCodeOp::SetAtStackPointer16, resolved->storageOffset, resolved->registers);
                 break;
             case 4:
-                emitInstruction(context, ByteCodeOp::ClearMaskU64, resolved->registers)->b.u64 = 0xFFFFFFFF;
+                emitInstruction(context, ByteCodeOp::SetAtStackPointer32, resolved->storageOffset, resolved->registers);
                 break;
             case 8:
+                emitInstruction(context, ByteCodeOp::SetAtStackPointer64, resolved->storageOffset, resolved->registers);
                 break;
             }
         }
