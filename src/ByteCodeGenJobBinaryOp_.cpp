@@ -464,8 +464,10 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             // So we take it as the result register.
             if (node->token.id == TokenId::SymAmpersandAmpersand || node->token.id == TokenId::SymVerticalVertical)
             {
-                r2 = node->childs[0]->additionalRegisterRC;
-                node->childs[0]->additionalRegisterRC.clear();
+                auto front = node->childs[0];
+                ensureCanBeChangedRC(context, front->additionalRegisterRC);
+                r2 = front->additionalRegisterRC;
+                front->additionalRegisterRC.clear();
             }
             else
                 r2 = reserveRegisterRC(context);

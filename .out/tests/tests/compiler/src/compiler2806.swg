@@ -1,0 +1,15 @@
+func isDirectorySeparator()->bool
+{
+    return false
+}
+
+//#[swag.printbc]
+func getRootLength(fullname: string)->u32
+{
+    extendedUncSyntax := false
+    if extendedUncSyntax || isDirectorySeparator()
+    {
+    }
+
+    return 0
+}

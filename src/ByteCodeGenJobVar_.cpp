@@ -86,7 +86,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 !(resolved->typeInfo->flags & TYPEINFO_RELATIVE))
             {
                 //if (node->ownerFct->token.text == "entry")
-                //if (node->sourceFile->name == "compiler1958.swg")
+                //if (node->sourceFile->name == "compiler2806.swg")
                 {
                     resolved->flags |= OVERLOAD_REGISTER;
                     resolved->registers         = reserveRegisterRC(context);
@@ -98,7 +98,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             }
         }
     }*/
-
+    
     // User specific initialization with a right side
     if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
