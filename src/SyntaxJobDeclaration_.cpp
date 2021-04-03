@@ -254,6 +254,7 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
     statement->allocateExtension();
     statement->extension->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
     statement->flags |= AST_NEED_SCOPE;
+    newScope->owner = statement;
     SWAG_CHECK(doEmbeddedInstruction(statement));
     return true;
 }

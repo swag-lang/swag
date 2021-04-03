@@ -541,7 +541,17 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         SWAG_ASSERT(resolved->registers.size());
         SWAG_ASSERT(!node->forceTakeAddress());
-        node->resultRegisterRC                      = resolved->registers;
+        node->resultRegisterRC = resolved->registers;
+
+        if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
+        {
+            node->resultRegisterRC = reserveRegisterRC(context);
+            if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, resolved->registers)->c.u64 = sizeof(void*);
+            else if (node->flags & AST_TO_UFCS) // Get the structure pointer
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, resolved->registers);
+        }
+
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         identifier->parent->resultRegisterRC        = node->resultRegisterRC;
         return true;

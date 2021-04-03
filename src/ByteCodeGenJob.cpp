@@ -122,6 +122,7 @@ void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, Regis
 
 void ByteCodeGenJob::truncRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int count)
 {
+    SWAG_ASSERT(rc.canFree);
     if (rc.size() == count)
         return;
 

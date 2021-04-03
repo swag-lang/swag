@@ -81,10 +81,12 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     {
         if (!(resolved->flags & OVERLOAD_CAN_CHANGE) && resolved->registers.size() == 0)
         {
-            if (resolved->typeInfo->numRegisters() == 1 && !(resolved->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
+            if (resolved->typeInfo->numRegisters() == 1 &&
+                !(resolved->typeInfo->flags & TYPEINFO_RETURN_BY_COPY) &&
+                !(resolved->typeInfo->flags & TYPEINFO_RELATIVE))
             {
-                //if (node->ownerFct->token.text == "convertArgcArgv1")
-                //if (node->sourceFile->name == "compiler1311.swg")
+                //if (node->ownerFct->token.text == "entry")
+                //if (node->sourceFile->name == "compiler1958.swg")
                 {
                     resolved->flags |= OVERLOAD_REGISTER;
                     resolved->registers         = reserveRegisterRC(context);
@@ -103,11 +105,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         if (!(node->doneFlags & AST_DONE_PRE_CAST))
         {
             node->additionalRegisterRC = reserveRegisterRC(context);
-            if (resolved->flags & OVERLOAD_REGISTER)
-                emitInstruction(context, ByteCodeOp::CopyRBAddrToRA, node->additionalRegisterRC, resolved->registers);
-            else
-                emitRetValRef(context, node->additionalRegisterRC, retVal, resolved->storageOffset);
-
+            emitRetValRef(context, node->additionalRegisterRC, retVal, resolved->storageOffset);
             node->resultRegisterRC = node->assignment->resultRegisterRC;
             node->doneFlags |= AST_DONE_PRE_CAST;
         }
@@ -121,6 +119,25 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         emitAffectEqual(context, node->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
         if (context->result == ContextResult::Pending)
             return true;
+
+        if (resolved->flags & OVERLOAD_REGISTER)
+        {
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA, resolved->registers, node->resultRegisterRC);
+            switch (resolved->typeInfo->sizeOf)
+            {
+            case 1:
+                emitInstruction(context, ByteCodeOp::ClearMaskU32, resolved->registers)->b.u32 = 0xFF;
+                break;
+            case 2:
+                emitInstruction(context, ByteCodeOp::ClearMaskU32, resolved->registers)->b.u32 = 0xFFFF;
+                break;
+            case 4:
+                emitInstruction(context, ByteCodeOp::ClearMaskU64, resolved->registers)->b.u64 = 0xFFFFFFFF;
+                break;
+            case 8:
+                break;
+            }
+        }
 
         freeRegisterRC(context, node);
         return true;

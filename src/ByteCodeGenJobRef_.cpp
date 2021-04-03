@@ -24,7 +24,11 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     {
         auto sizeOf = node->typeInfo->sizeOf;
         if (sizeOf > 1)
+        {
+            ensureCanBeChangedRC(context, node->access->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+        }
+
         ensureCanBeChangedRC(context, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     }
@@ -79,7 +83,11 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     // Pointer increment
     auto sizeOf = node->typeInfo->sizeOf;
     if (sizeOf > 1)
+    {
+        ensureCanBeChangedRC(context, node->access->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+    }
+
     ensureCanBeChangedRC(context, node->array->resultRegisterRC);
     emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
@@ -110,7 +118,10 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     // Pointer increment
     auto sizeOf = node->typeInfo->sizeOf;
     if (sizeOf > 1)
+    {
+        ensureCanBeChangedRC(context, node->access->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+    }
     ensureCanBeChangedRC(context, node->array->resultRegisterRC);
     emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
@@ -123,6 +134,8 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto typeInfo = node->typeInfo;
+
+    ensureCanBeChangedRC(context, node->resultRegisterRC);
 
     if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
     {
@@ -383,7 +396,11 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             auto sizeOf = typeInfoSlice->pointedType->sizeOf;
             if (sizeOf > 1)
+            {
+                ensureCanBeChangedRC(context, node->access->resultRegisterRC);
                 emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+            }
+
             ensureCanBeChangedRC(context, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
@@ -409,7 +426,10 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             auto sizeOf = typeInfoPointer->pointedType->sizeOf;
             if (sizeOf > 1)
+            {
+                ensureCanBeChangedRC(context, node->access->resultRegisterRC);
                 emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+            }
             ensureCanBeChangedRC(context, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
@@ -437,7 +457,10 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             auto sizeOf = typeInfoArray->pointedType->sizeOf;
             if (sizeOf > 1)
+            {
+                ensureCanBeChangedRC(context, node->access->resultRegisterRC);
                 emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+            }
             ensureCanBeChangedRC(context, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
@@ -462,6 +485,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
         {
+            ensureCanBeChangedRC(context, node->access->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = 2 * sizeof(Register); // 2 is sizeof(any)
             ensureCanBeChangedRC(context, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
@@ -482,6 +506,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
         {
+            ensureCanBeChangedRC(context, node->access->resultRegisterRC);
             if (rawType->kind == TypeInfoKind::Native && rawType->sizeOf < sizeof(Register))
                 emitInstruction(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = rawType->sizeOf;
             else
@@ -617,7 +642,10 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     if (node->lowerBound)
     {
         if (sizeOf > 1)
+        {
+            ensureCanBeChangedRC(context, node->lowerBound->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::Mul64byVB64, node->lowerBound->resultRegisterRC)->b.u64 = sizeOf;
+        }
         emitInstruction(context, ByteCodeOp::IncPointer64, r0[0], node->lowerBound->resultRegisterRC, r0[0]);
     }
 
@@ -734,6 +762,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
                 inst->b.u64 = numToInit;
             }
 
+            ensureCanBeChangedRC(context, rExpr);
             auto startLoop = context->bc->numInstructions;
             emitInstruction(context, ByteCodeOp::PushRAParam, rExpr);
             SWAG_ASSERT(typeStruct->opInit);
@@ -742,7 +771,6 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             // Dynamic loop
             if (numToInit == 0)
             {
-                ensureCanBeChangedRC(context, rExpr);
                 auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
                 inst->flags |= BCI_IMM_B;
                 inst->b.u64 = typeStruct->sizeOf;
@@ -754,7 +782,6 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             // Constant loop
             else if (numToInit > 1)
             {
-                ensureCanBeChangedRC(context, rExpr);
                 auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
                 inst->flags |= BCI_IMM_B;
                 inst->b.u64 = typeStruct->sizeOf;
@@ -767,13 +794,13 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
     }
     else if (!typeStruct)
     {
-        auto child     = parameters->childs.front();
+        auto child = parameters->childs.front();
+        ensureCanBeChangedRC(context, rExpr);
         auto startLoop = context->bc->numInstructions;
         SWAG_CHECK(emitAffectEqual(context, rExpr, child->resultRegisterRC, child->typeInfo, child));
         SWAG_ASSERT(context->result == ContextResult::Done);
         if (numToInit != 1)
         {
-            ensureCanBeChangedRC(context, rExpr);
             auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = typeExpression->pointedType->sizeOf;
@@ -787,6 +814,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         RegisterList r1;
         reserveRegisterRC(context, r1, 1);
 
+        ensureCanBeChangedRC(context, rExpr);
         auto startLoop = context->bc->numInstructions;
         for (auto child : parameters->childs)
         {
@@ -801,7 +829,6 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
 
         if (numToInit != 1)
         {
-            ensureCanBeChangedRC(context, rExpr);
             auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
             inst->b.u64 = typeExpression->pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
@@ -935,6 +962,7 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
 
     if (somethingToDo)
     {
+        ensureCanBeChangedRC(context, node->expression->resultRegisterRC);
         auto startLoop = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
         auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
@@ -959,7 +987,6 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
 
         if (numToDo != 1)
         {
-            ensureCanBeChangedRC(context, node->expression->resultRegisterRC);
             inst        = emitInstruction(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
             inst->b.u64 = typeExpression->pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
