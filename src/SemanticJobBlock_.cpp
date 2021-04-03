@@ -384,6 +384,11 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
     node->byteCodeFct = ByteCodeGenJob::emitLoop;
     node->expression->allocateExtension();
     node->expression->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterExpr;
+
+    node->allocateExtension();
+    SWAG_ASSERT(!node->extension->byteCodeAfterFct);
+    node->extension->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+
     node->block->allocateExtension();
     node->block->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
     return true;

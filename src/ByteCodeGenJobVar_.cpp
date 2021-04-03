@@ -84,7 +84,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             if (resolved->typeInfo->numRegisters() == 1 && !(resolved->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
             {
                 //if (node->ownerFct->token.text == "convertArgcArgv1")
-                if (node->sourceFile->name == "compiler751.swg")
+                //if (node->sourceFile->name == "compiler1908.swg")
                 {
                     resolved->flags |= OVERLOAD_REGISTER;
                     resolved->registers         = reserveRegisterRC(context);

@@ -46,12 +46,14 @@ struct RegisterList
 
     void operator+=(const RegisterList& other)
     {
+        SWAG_ASSERT(canFree == other.canFree);
         for (int i = 0; i < (int) other.size(); i++)
             *this += other[i];
     }
 
     void operator+=(uint32_t r)
     {
+        SWAG_ASSERT(canFree);
         SWAG_ASSERT(r <= 255);
         SWAG_ASSERT(countResults < MAX_STATIC);
         oneResult[countResults++] = (uint8_t) r;
@@ -60,6 +62,7 @@ struct RegisterList
     void clear()
     {
         countResults = 0;
+        canFree = true;
     }
 
     operator uint32_t()

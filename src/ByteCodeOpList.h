@@ -278,7 +278,7 @@ BYTECODE_OP(CompareOpNotEqual32, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C 
 BYTECODE_OP(CompareOpNotEqual64, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C | OPFLAG_IMM_A | OPFLAG_IMM_B, "_rc_ = _rau64_ != _rbu64_")
 
 BYTECODE_OP(IntrinsicStrCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_READ_D | OPFLAG_WRITE_D, "_rd_ = @strcmp(_ra_, _rb_, _rc_, _rd_)")
-BYTECODE_OP(IntrinsicTypeCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_IMM_C | OPFLAG_WRITE_D, "_rd_ = @typecmp(_ra_, _rb_, _rc_, _rd_)")
+BYTECODE_OP(IntrinsicTypeCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_IMM_C | OPFLAG_WRITE_D, "_rd_ = @typecmp(_ra_, _rb_, _rcu64_)")
 
 BYTECODE_OP(CompareOp3WayS32, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C | OPFLAG_IMM_A | OPFLAG_IMM_B, "_rc_ = _ras32_ <=> _rbs32_")
 BYTECODE_OP(CompareOp3WayS64, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C | OPFLAG_IMM_A | OPFLAG_IMM_B, "_rc_ = _ras64_ <=> _rbs64_")

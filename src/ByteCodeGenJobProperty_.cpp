@@ -7,10 +7,14 @@
 
 bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 {
-    auto node              = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    node->resultRegisterRC = node->childs.front()->resultRegisterRC;
-    node->resultRegisterRC += node->childs.back()->resultRegisterRC;
-    transformResultToLinear2(context, node);
+    auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto front = node->childs.front();
+    auto back  = node->childs.back();
+    reserveRegisterRC(context, node->resultRegisterRC, 2);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[0], front->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[1], back->resultRegisterRC);
+    freeRegisterRC(context, front);
+    freeRegisterRC(context, back);
     return true;
 }
 

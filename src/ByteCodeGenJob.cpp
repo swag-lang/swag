@@ -103,6 +103,7 @@ void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, Regis
     bool onlyOne = false;
     if (resultRegisterRC.size() == 1)
     {
+        SWAG_ASSERT(resultRegisterRC.canFree);
         onlyOne = true;
         resultRegisterRC += reserveRegisterRC(context);
     }
