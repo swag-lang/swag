@@ -77,7 +77,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     }
 
     // Allocate a scoped register to the variable
-    /*if (node->ownerFct && node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+    if (node->ownerFct && node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
         if (!(resolved->flags & OVERLOAD_CAN_CHANGE) && resolved->registers.size() == 0)
         {
@@ -85,19 +85,19 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 !(resolved->typeInfo->flags & TYPEINFO_RETURN_BY_COPY) &&
                 !(resolved->typeInfo->flags & TYPEINFO_RELATIVE))
             {
-                //if (node->ownerFct->token.text == "entry")
-                //if (node->sourceFile->name == "compiler2806.swg")
-                {
+                //if (node->ownerFct->token.text == "append")
+                //if (node->sourceFile->name == "compiler2807.swg")
+                /*{
                     resolved->flags |= OVERLOAD_REGISTER;
                     resolved->registers         = reserveRegisterRC(context);
                     resolved->registers.canFree = false;
                     node->ownerScope->owner->allocateExtension();
                     for (int i = 0; i < resolved->registers.size(); i++)
                         node->ownerScope->owner->extension->registersToRelease.push_back(resolved->registers[i]);
-                }
+                }*/
             }
         }
-    }*/
+    }
     
     // User specific initialization with a right side
     if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))

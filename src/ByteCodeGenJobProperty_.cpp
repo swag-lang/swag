@@ -164,6 +164,7 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
         typeInfo->kind == TypeInfoKind::Variadic ||
         typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
+        ensureCanBeChangedRC(context, expr->resultRegisterRC);
         node->resultRegisterRC = expr->resultRegisterRC[1];
         SWAG_ASSERT(expr->resultRegisterRC.size() <= 2);
         freeRegisterRC(context, expr->resultRegisterRC[0]);
@@ -193,6 +194,7 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
         typeInfo->kind == TypeInfoKind::Interface ||
         typeInfo->kind == TypeInfoKind::Array)
     {
+        ensureCanBeChangedRC(context, front->resultRegisterRC);
         truncRegisterRC(context, front->resultRegisterRC, 1);
         node->resultRegisterRC         = front->resultRegisterRC;
         node->parent->resultRegisterRC = node->resultRegisterRC;
