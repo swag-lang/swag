@@ -257,6 +257,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     node->semanticFct                  = SemanticJob::resolveLoop;
     if (result)
         *result = node;
+    newScope->owner = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
 
