@@ -86,8 +86,8 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
                 !(resolved->typeInfo->flags & TYPEINFO_RELATIVE))
             {
                 //if(node->ownerFct->token.text == "quick")
-                //if (node->sourceFile->name == "compiler2808.swg")
-                /*{
+                /*if (node->sourceFile->name == "compiler2809.swg")
+                {
                     resolved->flags |= OVERLOAD_REGISTER;
                     resolved->registers         = reserveRegisterRC(context);
                     resolved->registers.canFree = false;

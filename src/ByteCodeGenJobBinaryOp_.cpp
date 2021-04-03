@@ -387,6 +387,7 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     // If the left expression is false, then we copy the result to the && operator, and we jump right after it
     // (the jump offset will be updated later). That way, we do not evaluate B in 'A && B' if A is false.
     // left->additionalRegisterRC will be used as the result register for the '&&' operation in 'emitBinaryOp'
+    ensureCanBeChangedRC(context, left->resultRegisterRC);
     left->additionalRegisterRC     = left->resultRegisterRC;
     left->resultRegisterRC.canFree = false;
     binNode->seekJumpExpression    = context->bc->numInstructions;
@@ -422,6 +423,7 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     // If the left expression is true, then we copy the result to the || operator, and we jump right after it
     // (the jump offset will be updated later). That way, we do not evaluate B in 'A || B' if B is true.
     // left->additionalRegisterRC will be used as the result register for the '||' operation in 'emitBinaryOp'
+    ensureCanBeChangedRC(context, left->resultRegisterRC);
     left->additionalRegisterRC     = left->resultRegisterRC;
     left->resultRegisterRC.canFree = false;
     binNode->seekJumpExpression    = context->bc->numInstructions;
@@ -485,7 +487,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             if (node->token.id == TokenId::SymAmpersandAmpersand || node->token.id == TokenId::SymVerticalVertical)
             {
                 auto front = node->childs[0];
-                ensureCanBeChangedRC(context, front->additionalRegisterRC);
+                SWAG_ASSERT(front->additionalRegisterRC.canFree);
                 r2 = front->additionalRegisterRC;
                 front->additionalRegisterRC.clear();
             }
