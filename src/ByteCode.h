@@ -174,8 +174,6 @@ struct ByteCode
     TypeInfoFuncAttr* callType();
     static void       getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force = false);
 
-    static const int ALIGN_RIGHT_OPCODE = 25;
-
     VectorNative<uint32_t>            availableRegistersRC;
     bool                              dirtyRegistersRC = false;
     VectorNative<pair<void*, size_t>> autoFree;

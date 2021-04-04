@@ -138,6 +138,8 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
 
     if (!lastLine || !lastFile || location->line != *lastLine || file != *lastFile)
     {
+        g_Log.eol();
+
         if (lastLine)
             *lastLine = location->line;
         if (lastFile)
@@ -154,7 +156,8 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
         g_Log.setColor(LogColor::Gray);
         g_Log.print(format("  (%s:%d)", file->name.c_str(), location->line + 1));
 
-        g_Log.print("\n");
+        g_Log.eol();
+        g_Log.eol();
     }
 }
 
@@ -319,6 +322,11 @@ void ByteCode::printPrettyInstruction(ByteCodeInstruction* ip)
 
 void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp)
 {
+    static const int ALIGN_OPCODE = 25;
+    static const int ALIGN_FLAGS1 = 65;
+    static const int ALIGN_FLAGS2 = 70;
+    static const int ALIGN_PRETTY = 80;
+
     static const wchar_t* bcNum = L"%08d ";
     int                   i     = (int) (ip - out);
 
@@ -334,7 +342,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     // Instruction
     g_Log.setColor(LogColor::White);
     int len = (int) strlen(g_ByteCodeOpNames[(int) ip->op]);
-    while (len++ < ALIGN_RIGHT_OPCODE)
+    while (len++ < ALIGN_OPCODE)
         g_Log.print(" ");
     g_Log.print(g_ByteCodeOpNames[(int) ip->op]);
     g_Log.print("   ");
@@ -379,14 +387,14 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
         g_Log.print(format("D {0x%llx} ", ip->d.u64));
 
     // Flags 1
-    while (g_Log.length < 60)
+    while (g_Log.length < ALIGN_FLAGS1)
         g_Log.print(" ");
     g_Log.print(ip->flags & BCI_SAFETY ? "S" : ".");
     g_Log.print(ip->flags & BCI_TRYCATCH ? "E" : ".");
     g_Log.print(ip->node && ip->node->ownerInline ? "I" : ".");
 
     // Flags 2
-    while (g_Log.length < 64)
+    while (g_Log.length < ALIGN_FLAGS2)
         g_Log.print(" ");
     g_Log.setColor(LogColor::Gray);
     g_Log.print(ip->flags & BCI_IMM_A ? "A" : ".");
@@ -397,7 +405,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     g_Log.print(ip->flags & BCI_UNPURE ? "U" : ".");
 
     g_Log.setColor(LogColor::White);
-    while (g_Log.length < 73)
+    while (g_Log.length < ALIGN_PRETTY)
         g_Log.print(" ");
     printPrettyInstruction(ip);
 
@@ -450,6 +458,7 @@ void ByteCode::print(ByteCodeInstruction* curIp)
 {
     g_Log.lock();
 
+    g_Log.eol();
     g_Log.setColor(LogColor::Magenta);
     g_Log.print(sourceFile->path);
     g_Log.print(", ");
