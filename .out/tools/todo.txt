@@ -51,6 +51,13 @@ Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)
 -------------------------------------
 makestackpointer suivi de copyrctort, faire un copy address stack to rt
 -------------------------------------
+copyrbra64 r0 = r1 
+pushstack r0 => pushstack r1
+-------------------------------------
+getfromstackparam8/16/32 pour eviter le cast d'après
+-------------------------------------
+deref8 => 16/32/64 etc... pour eviter le cast
+-------------------------------------
 x64 passe reduction instructions
 -------------------------------------
 passer/retourner des structs par value si <= 64 bits

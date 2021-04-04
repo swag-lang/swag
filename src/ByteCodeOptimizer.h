@@ -68,7 +68,6 @@ struct ByteCodeOptimizer
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void setJumps(ByteCodeOptContext* context);
     static void removeNops(ByteCodeOptContext* context);
-    static void optimizePassDupCopy(ByteCodeOptContext* context, ByteCodeOp op);
 
     static void optimizePassJumps(ByteCodeOptContext* context);
     static void optimizePassLoop(ByteCodeOptContext* context);
@@ -77,12 +76,15 @@ struct ByteCodeOptimizer
     static void optimizePassDeadStore(ByteCodeOptContext* context);
     static void optimizePassImmediate(ByteCodeOptContext* context);
     static void optimizePassConst(ByteCodeOptContext* context);
-    static void optimizePassDupCopyRBRA(ByteCodeOptContext* context);
-    static void optimizePassDupCopyRA(ByteCodeOptContext* context);
     static void optimizePassRetCopyLocal(ByteCodeOptContext* context);
     static void optimizePassRetCopyGlobal(ByteCodeOptContext* context);
     static void optimizePassRetCopyInline(ByteCodeOptContext* context);
     static void optimizePassSwap(ByteCodeOptContext* context);
+
+    static void optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, ByteCodeOp op);
+    static void optimizePassDupCopyRBRA(ByteCodeOptContext* context);
+    static void optimizePassDupCopyOp(ByteCodeOptContext* context, ByteCodeOp op);
+    static void optimizePassDupCopy(ByteCodeOptContext* context);
 
     static void reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstruction* ip);

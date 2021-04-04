@@ -6,7 +6,7 @@
 
 // If a CopyRBRA is followed by the same CopyRBRA, and between them there's no write to RA or RB,
 // then the second CopyRBRA is useless
-void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
+void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, ByteCodeOp op)
 {
     auto& mapCopyRA = context->mapU32InstA;
     auto& mapCopyRB = context->mapU32InstB;
@@ -24,19 +24,19 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
         auto flags = g_ByteCodeOpFlags[(int) ip->op];
 
         // CopyRBRA X, X
-        if (ByteCode::isCopyRBtoRA(ip) && ip->a.u32 == ip->b.u32)
+        if (ip->op == op && ip->a.u32 == ip->b.u32)
             setNop(context, ip);
 
         // CopyRBRA X, Y followed by CopyRBRA Y, X
-        if (ByteCode::isCopyRBtoRA(ip) &&
-            ip[1].op == ip[0].op &&
+        if (ip->op == op &&
+            ip[1].op == op &&
             ip->a.u32 == ip[1].b.u32 &&
             ip->b.u32 == ip[1].a.u32)
         {
             setNop(context, ip + 1);
         }
 
-        if (ByteCode::isCopyRBtoRA(ip))
+        if (ip->op == op)
         {
             auto it = mapCopyRA.find(ip->a.u32);
             if (it != mapCopyRA.end())
@@ -45,7 +45,9 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
                 if (it1 != mapCopyRB.end())
                 {
                     if (it1->second == it->second)
+                    {
                         setNop(context, ip);
+                    }
                 }
             }
 
@@ -60,64 +62,68 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
 
         // If we use a register that comes from a CopyRBRA, then use the initial
         // register instead (that way, the Copy can become deadstore and removed later)
+        // Do it only for CopyRBtoRA64, as other copy have an implicit cast
         // *NOT* for PushRAParam, because the register numbers are important in case of variadic parameters.
-        if (ip->op != ByteCodeOp::PushRAParam &&
-            ip->op != ByteCodeOp::PushRAParam2 &&
-            ip->op != ByteCodeOp::PushRAParam3 &&
-            ip->op != ByteCodeOp::PushRAParam4)
+        if (op == ByteCodeOp::CopyRBtoRA64)
         {
-            if ((flags & OPFLAG_READ_A) && !(ip->flags & BCI_IMM_A) && !(flags & OPFLAG_WRITE_A))
+            if (ip->op != ByteCodeOp::PushRAParam &&
+                ip->op != ByteCodeOp::PushRAParam2 &&
+                ip->op != ByteCodeOp::PushRAParam3 &&
+                ip->op != ByteCodeOp::PushRAParam4)
             {
-                auto it = mapCopyRA.find(ip->a.u32);
-                if (it != mapCopyRA.end())
+                if ((flags & OPFLAG_READ_A) && !(ip->flags & BCI_IMM_A) && !(flags & OPFLAG_WRITE_A))
                 {
-                    auto it1 = mapCopyRB.find(it->second->b.u32);
-                    if (it1 != mapCopyRB.end() && it->second == it1->second)
+                    auto it = mapCopyRA.find(ip->a.u32);
+                    if (it != mapCopyRA.end())
                     {
-                        ip->a.u32                     = it->second->b.u32;
-                        context->passHasDoneSomething = true;
+                        auto it1 = mapCopyRB.find(it->second->b.u32);
+                        if (it1 != mapCopyRB.end() && it->second == it1->second)
+                        {
+                            ip->a.u32                     = it->second->b.u32;
+                            context->passHasDoneSomething = true;
+                        }
                     }
                 }
-            }
 
-            if ((flags & OPFLAG_READ_B) && !(ip->flags & BCI_IMM_B) && !(flags & OPFLAG_WRITE_B))
-            {
-                auto it = mapCopyRA.find(ip->b.u32);
-                if (it != mapCopyRA.end())
+                if ((flags & OPFLAG_READ_B) && !(ip->flags & BCI_IMM_B) && !(flags & OPFLAG_WRITE_B))
                 {
-                    auto it1 = mapCopyRB.find(it->second->b.u32);
-                    if (it1 != mapCopyRB.end() && it->second == it1->second)
+                    auto it = mapCopyRA.find(ip->b.u32);
+                    if (it != mapCopyRA.end())
                     {
-                        ip->b.u32                     = it->second->b.u32;
-                        context->passHasDoneSomething = true;
+                        auto it1 = mapCopyRB.find(it->second->b.u32);
+                        if (it1 != mapCopyRB.end() && it->second == it1->second)
+                        {
+                            ip->b.u32                     = it->second->b.u32;
+                            context->passHasDoneSomething = true;
+                        }
                     }
                 }
-            }
 
-            if ((flags & OPFLAG_READ_C) && !(ip->flags & BCI_IMM_C) && !(flags & OPFLAG_WRITE_C))
-            {
-                auto it = mapCopyRA.find(ip->c.u32);
-                if (it != mapCopyRA.end())
+                if ((flags & OPFLAG_READ_C) && !(ip->flags & BCI_IMM_C) && !(flags & OPFLAG_WRITE_C))
                 {
-                    auto it1 = mapCopyRB.find(it->second->b.u32);
-                    if (it1 != mapCopyRB.end() && it->second == it1->second)
+                    auto it = mapCopyRA.find(ip->c.u32);
+                    if (it != mapCopyRA.end())
                     {
-                        ip->c.u32                     = it->second->b.u32;
-                        context->passHasDoneSomething = true;
+                        auto it1 = mapCopyRB.find(it->second->b.u32);
+                        if (it1 != mapCopyRB.end() && it->second == it1->second)
+                        {
+                            ip->c.u32                     = it->second->b.u32;
+                            context->passHasDoneSomething = true;
+                        }
                     }
                 }
-            }
 
-            if ((flags & OPFLAG_READ_D) && !(ip->flags & BCI_IMM_D) && !(flags & OPFLAG_WRITE_D))
-            {
-                auto it = mapCopyRA.find(ip->d.u32);
-                if (it != mapCopyRA.end())
+                if ((flags & OPFLAG_READ_D) && !(ip->flags & BCI_IMM_D) && !(flags & OPFLAG_WRITE_D))
                 {
-                    auto it1 = mapCopyRB.find(it->second->b.u32);
-                    if (it1 != mapCopyRB.end() && it->second == it1->second)
+                    auto it = mapCopyRA.find(ip->d.u32);
+                    if (it != mapCopyRA.end())
                     {
-                        ip->d.u32                     = it->second->b.u32;
-                        context->passHasDoneSomething = true;
+                        auto it1 = mapCopyRB.find(it->second->b.u32);
+                        if (it1 != mapCopyRB.end() && it->second == it1->second)
+                        {
+                            ip->d.u32                     = it->second->b.u32;
+                            context->passHasDoneSomething = true;
+                        }
                     }
                 }
             }
@@ -193,7 +199,15 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
     }
 }
 
-void ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context, ByteCodeOp op)
+void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
+{
+    optimizePassDupCopyRBRAOp(context, ByteCodeOp::CopyRBtoRA8);
+    optimizePassDupCopyRBRAOp(context, ByteCodeOp::CopyRBtoRA16);
+    optimizePassDupCopyRBRAOp(context, ByteCodeOp::CopyRBtoRA32);
+    optimizePassDupCopyRBRAOp(context, ByteCodeOp::CopyRBtoRA64);
+}
+
+void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteCodeOp op)
 {
     auto& mapRA = context->mapU32InstA;
     mapRA.clear();
@@ -254,15 +268,15 @@ void ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context, ByteCod
 }
 
 // Remove duplicated pure instructions (set RA to a constant)
-void ByteCodeOptimizer::optimizePassDupCopyRA(ByteCodeOptContext* context)
+void ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context)
 {
-    optimizePassDupCopy(context, ByteCodeOp::CopyRRtoRC);
-    optimizePassDupCopy(context, ByteCodeOp::MakeStackPointerParam);
-    optimizePassDupCopy(context, ByteCodeOp::MakeBssSegPointer);
-    optimizePassDupCopy(context, ByteCodeOp::MakeConstantSegPointer);
-    optimizePassDupCopy(context, ByteCodeOp::MakeMutableSegPointer);
-    optimizePassDupCopy(context, ByteCodeOp::MakeTypeSegPointer);
-    optimizePassDupCopy(context, ByteCodeOp::GetFromStackParam64);
-    optimizePassDupCopy(context, ByteCodeOp::SetImmediate32);
-    optimizePassDupCopy(context, ByteCodeOp::SetImmediate64);
+    optimizePassDupCopyOp(context, ByteCodeOp::CopyRRtoRC);
+    optimizePassDupCopyOp(context, ByteCodeOp::MakeStackPointerParam);
+    optimizePassDupCopyOp(context, ByteCodeOp::MakeBssSegPointer);
+    optimizePassDupCopyOp(context, ByteCodeOp::MakeConstantSegPointer);
+    optimizePassDupCopyOp(context, ByteCodeOp::MakeMutableSegPointer);
+    optimizePassDupCopyOp(context, ByteCodeOp::MakeTypeSegPointer);
+    optimizePassDupCopyOp(context, ByteCodeOp::GetFromStackParam64);
+    optimizePassDupCopyOp(context, ByteCodeOp::SetImmediate32);
+    optimizePassDupCopyOp(context, ByteCodeOp::SetImmediate64);
 }
