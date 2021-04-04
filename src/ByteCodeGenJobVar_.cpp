@@ -87,14 +87,14 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             {
                 //if(node->ownerFct->token.text == "reserve")
                 //if (node->sourceFile->name == "hashtable.swg")
-                /*{
+                {
                     resolved->flags |= OVERLOAD_REGISTER;
                     resolved->registers         = reserveRegisterRC(context);
                     resolved->registers.canFree = false;
                     node->ownerScope->owner->allocateExtension();
                     for (int i = 0; i < resolved->registers.size(); i++)
                         node->ownerScope->owner->extension->registersToRelease.push_back(resolved->registers[i]);
-                }*/
+                }
             }
         }
     }

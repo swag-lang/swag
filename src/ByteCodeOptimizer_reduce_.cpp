@@ -3,9 +3,26 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "Log.h"
+#include "AstNode.h"
 
 void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
+    if (ip[0].op == ByteCodeOp::ClearRA &&
+        ip[1].op == ByteCodeOp::CopyRBAddrToRA &&
+        ip[2].op == ByteCodeOp::SetAtPointer64 &&
+        !(ip[1].flags & BCI_START_STMT) &&
+        !(ip[2].flags & BCI_START_STMT) &&
+        !(ip[2].flags & BCI_IMM_B) &&
+        ip[2].c.u32 == 0 &&
+        ip[0].a.u32 == ip[1].b.u32 &&
+        ip[1].a.u32 == ip[2].a.u32)
+    {
+        /*ip[2].op    = ByteCodeOp::CopyRBtoRA;
+        ip[2].a.u32 = ip[0].a.u32;
+        setNop(context, ip);
+        setNop(context, ip + 1);*/
+    }
+
     // Replace GetFromStack with SetImmediate
     if (ip[0].op == ByteCodeOp::SetAtStackPointer8 &&
         ip[1].op == ByteCodeOp::GetFromStack8 &&
@@ -2051,9 +2068,28 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             !(ip[0].flags & BCI_IMM_A) &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            auto s      = ip[1].a.u32;
-            ip[1]       = ip[0];
-            ip[1].a.u32 = s;
+            // List can be extended, as long as the instruction does not have side effects when called twice
+            switch (ip->op)
+            {
+            case ByteCodeOp::CopyRBtoRA:
+            case ByteCodeOp::CopyRTtoRC:
+            case ByteCodeOp::MakeStackPointer:
+            case ByteCodeOp::GetFromStackParam64:
+            case ByteCodeOp::NegBool:
+            case ByteCodeOp::CastBool8:
+            case ByteCodeOp::CastBool16:
+            case ByteCodeOp::CastBool32:
+            case ByteCodeOp::CastBool64:
+            case ByteCodeOp::MakeConstantSegPointer:
+            case ByteCodeOp::MakeTypeSegPointer:
+            case ByteCodeOp::MakeMutableSegPointer:
+            case ByteCodeOp::MakeBssSegPointer:
+            case ByteCodeOp::MakeLambda:
+                auto s      = ip[1].a.u32;
+                ip[1]       = ip[0];
+                ip[1].a.u32 = s;
+                break;
+            }
         }
 
         reduceStack(context, ip);
