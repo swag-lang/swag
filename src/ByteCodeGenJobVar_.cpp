@@ -4,6 +4,33 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "TypeManager.h"
+#include "Module.h"
+
+bool ByteCodeGenJob::emitLocalVarDeclBefore(ByteCodeGenContext* context)
+{
+    auto node = static_cast<AstVarDecl*>(context->node);
+
+    // No need to generate a local variable if it is never used
+    if (context->sourceFile->module->mustOptimizeBC(node))
+    {
+        if (node->resolvedSymbolOverload && !(node->resolvedSymbolOverload->flags & OVERLOAD_USED))
+        {
+            // Keep structs, because of opDrop
+            auto typeInfo = TypeManager::concreteType(node->resolvedSymbolOverload->typeInfo);
+            if (typeInfo->kind != TypeInfoKind::Struct && !typeInfo->isArrayOfStruct())
+            {
+                if (!node->assignment)
+                    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+                else if (node->assignment->flags & AST_VALUE_COMPUTED)
+                    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+                else if (!(node->assignment->flags & AST_SIDE_EFFECTS))
+                    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+            }
+        }
+    }
+
+    return true;
+}
 
 bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
 {

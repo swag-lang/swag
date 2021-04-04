@@ -53,8 +53,6 @@ makestackpointer suivi de copyrctort, faire un copy address stack to rt
 -------------------------------------
 getfromstackparam8/16/32 pour eviter le cast d'après
 -------------------------------------
-deref8 => 16/32/64 etc... pour eviter le cast
--------------------------------------
 x64 passe reduction instructions
 -------------------------------------
 passer/retourner des structs par value si <= 64 bits

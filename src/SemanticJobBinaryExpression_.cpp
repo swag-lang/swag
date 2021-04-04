@@ -735,6 +735,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
+    node->inheritOrFlag(AST_SIDE_EFFECTS);
     TypeManager::promote(left, right);
 
     // Must do move and not copy
@@ -1022,6 +1023,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
+    node->inheritOrFlag(AST_SIDE_EFFECTS);
 
     switch (node->token.id)
     {
@@ -1090,6 +1092,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     }
 
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
+    node->inheritOrFlag(AST_SIDE_EFFECTS);
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {

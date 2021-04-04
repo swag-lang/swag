@@ -8,6 +8,7 @@ struct A
 }
 
 //#[swag.printbc]
+#[swag.optim("", false)]
 #test
 {
     var x : A

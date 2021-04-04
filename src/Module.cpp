@@ -786,7 +786,17 @@ bool Module::mustOptimizeBC(AstNode* node)
 {
     if (!node)
         return buildCfg.byteCodeOptimize;
-    return (buildCfg.byteCodeOptimize || (node->attributeFlags & ATTRIBUTE_OPTIM_BC_ON)) && !(node->attributeFlags & ATTRIBUTE_OPTIM_BC_OFF);
+
+    while (node)
+    {
+        if (node->attributeFlags & ATTRIBUTE_OPTIM_BC_OFF)
+            return false;
+        if (node->attributeFlags & ATTRIBUTE_OPTIM_BC_ON)
+            return true;
+        node = node->ownerFct;
+    }
+
+    return buildCfg.byteCodeOptimize;
 }
 
 bool Module::mustOptimizeBK(AstNode* node)

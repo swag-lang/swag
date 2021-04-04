@@ -2,6 +2,7 @@
 #global testerror
 
 //#[swag.printbc]
+#[swag.optim("", false)]
 #test
 {
     x := "64"

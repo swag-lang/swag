@@ -1,4 +1,4 @@
-using swag;
+/*using swag;
 
 //#[printbc]
 #test
@@ -13,3 +13,4 @@ using swag;
 	d -= 1;
 	@assert(d[0] == 666);
 }
+*/

@@ -2,6 +2,7 @@
 
 //#[swag.printbc]
 #[swag.safety("", true)]
+#[swag.optim("", false)]
 #test
 {
     x := -1's16

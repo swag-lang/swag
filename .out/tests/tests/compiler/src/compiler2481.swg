@@ -7,6 +7,7 @@ func panic(msg: string, loc: swag.CompilerSourceLocation)
 }
 
 #[safety("of", true)]
+#[optim("", false)]
 //#[printbc, optim("bc", false)]
 #test
 {

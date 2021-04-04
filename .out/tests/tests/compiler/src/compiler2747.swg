@@ -4,6 +4,7 @@
 #global testerror
 
 #[swag.safety("", true)]
+#[swag.optim("", false)]
 #test
 {
     x := 512'f32
@@ -11,6 +12,7 @@
 }
 
 #[swag.safety("", true)]
+#[swag.optim("", false)]
 #test
 {
     x := -1'f32
@@ -18,6 +20,7 @@
 }
 
 #[swag.safety("", true)]
+#[swag.optim("", false)]
 #test
 {
     x := 512'f64
@@ -25,6 +28,7 @@
 }
 
 #[swag.safety("", true)]
+#[swag.optim("", false)]
 #test
 {
     x := -1'f64

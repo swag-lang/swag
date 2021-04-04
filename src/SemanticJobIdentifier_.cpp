@@ -35,7 +35,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 
     if (childBack->flags & AST_VALUE_COMPUTED)
         node->inheritComputedValue(childBack);
-    node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_TYPEINFO);
+    node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_TYPEINFO | AST_SIDE_EFFECTS);
 
     if (childBack->flags & AST_IS_CONST_ASSIGN)
         node->flags |= AST_IS_CONST;
@@ -801,6 +801,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Variable:
     {
+        overload->flags |= OVERLOAD_USED;
+
         // Be sure usage is valid
         auto ownerFct = identifier->ownerFct;
         if (ownerFct)
@@ -892,6 +894,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
+        identifier->flags |= AST_SIDE_EFFECTS;
+
         // Be sure it's () and not {}
         if (identifier->callParameters && (identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
             return context->report({identifier->callParameters, identifier->callParameters->token, format("function '%s' must be called with '()' and not curlies (this is reserved for struct initialization)", identifier->token.text.c_str())});

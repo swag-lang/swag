@@ -361,6 +361,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     node->byteCodeFct = ByteCodeGenJob::emitCompareOp;
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
+    node->inheritOrFlag(AST_SIDE_EFFECTS);
 
     switch (node->token.id)
     {

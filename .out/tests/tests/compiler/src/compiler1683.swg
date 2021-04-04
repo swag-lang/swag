@@ -9,6 +9,7 @@ struct TT
 }
 
 //#[swag.printbc]
+#[swag.optim("", false)]
 func C(x: any)
 {
     #[swag.safety("", true)]

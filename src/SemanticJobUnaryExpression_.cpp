@@ -169,7 +169,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     node->typeInfo    = op->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitUnaryOp;
 
-    node->inheritOrFlag(op, AST_CONST_EXPR);
+    node->inheritOrFlag(op, AST_CONST_EXPR | AST_SIDE_EFFECTS);
     SWAG_CHECK(checkIsConcrete(context, op));
     node->flags |= AST_R_VALUE;
 

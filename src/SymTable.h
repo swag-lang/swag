@@ -38,6 +38,7 @@ static const uint32_t OVERLOAD_STORE_SYMBOLS      = 0x00010000;
 static const uint32_t OVERLOAD_VAR_COMPILER       = 0x00020000;
 static const uint32_t OVERLOAD_REGISTER           = 0x00040000;
 static const uint32_t OVERLOAD_CAN_CHANGE         = 0x00080000;
+static const uint32_t OVERLOAD_USED               = 0x00100000;
 
 struct SymbolOverload
 {

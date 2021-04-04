@@ -1,4 +1,4 @@
-//#[swag.printbc]
+/*//#[swag.printbc]
 #test
 {
 	var a: s32 = 666;
@@ -9,3 +9,4 @@
 	var d = c - 1;
 	@assert(d[0] == 666);
 }
+*/
