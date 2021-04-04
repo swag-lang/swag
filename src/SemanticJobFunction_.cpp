@@ -460,12 +460,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    // The function wants to return something, but has the 'swag.noreturn' attribute
-    if (!typeNode->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
-        return context->report({typeNode, "function cannot have a return type because it is flagged with the 'swag.noreturn' attribute"});
-    if (typeNode->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_AUTO_DISCARD)
-        return context->report({funcNode, funcNode->token, "function cannot have the 'swag.autodiscard' attribute because it returns nothing"});
-
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
         // Determine if function is generic
@@ -589,7 +583,16 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags)
 {
     if (!(symbolFlags & OVERLOAD_INCOMPLETE))
+    {
         SWAG_CHECK(checkFuncPrototype(context, funcNode));
+
+        // The function wants to return something, but has the 'swag.noreturn' attribute
+        if (!funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
+            return context->report({funcNode->returnType, "function cannot have a return type because it is flagged with the 'swag.noreturn' attribute"});
+        // The function returns nothing but has the 'swag.autodiscard' attribute
+        if (funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_AUTO_DISCARD)
+            return context->report({funcNode, funcNode->token, "function cannot have the 'swag.autodiscard' attribute because it returns 'void'"});
+    }
 
     if (funcNode->flags & AST_IS_GENERIC)
         symbolFlags |= OVERLOAD_GENERIC;
@@ -600,14 +603,11 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
 
     // If the function returns a struct, register a type alias "retval". This way we can resolve an identifier
     // named retval for "var result: retval{xx, xxx}" syntax
-    if (funcNode->returnType && funcNode->returnType->typeInfo)
+    auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
+    if (returnType->kind == TypeInfoKind::Struct)
     {
-        auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
-        if (returnType->kind == TypeInfoKind::Struct)
-        {
-            Utf8 retVal = "retval";
-            funcNode->ownerScope->symTable.addSymbolTypeInfo(context, funcNode->returnType, returnType, SymbolKind::TypeAlias, nullptr, symbolFlags | OVERLOAD_RETVAL, nullptr, 0, &retVal);
-        }
+        Utf8 retVal = "retval";
+        funcNode->ownerScope->symTable.addSymbolTypeInfo(context, funcNode->returnType, returnType, SymbolKind::TypeAlias, nullptr, symbolFlags | OVERLOAD_RETVAL, nullptr, 0, &retVal);
     }
 
     // Register method
