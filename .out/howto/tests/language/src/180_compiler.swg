@@ -8,4 +8,30 @@
 #assert #defined(Global)
 var Global = 0
 
-// ...
+// static #if/#else, with an expression that can be evaluated at compiler time
+const DEBUG = 1
+#if DEBUG
+{
+}
+#else
+{
+}
+
+// 'isThisDebug' is marked with 'constexpr', so it can be automatically evaluated
+// at compile time
+#[swag.constexpr]
+func isThisDebug() => true
+
+#if isThisDebug() == false
+{
+    #assert(false, "this should not be called !")
+}
+
+#[swag.constexpr]
+func factorial(x: s32)->s32
+{
+    if x == 1 return 1
+    return x * factorial(x - 1)
+}
+
+#assert factorial(4) == 24

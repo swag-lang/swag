@@ -82,3 +82,18 @@
         @assert(v.z == 3)
     }
 }
+
+// #ast can also be called on the global scope
+#ast
+{
+    const value = 666
+    return "const myGeneratedConst = " ~value
+}
+
+// You can use '#placeholder' in case you are generating symbols that can be
+// used by something else in the code.
+#placeholder myGeneratedConst
+
+// Here the #assert will wait for the symbol 'myGeneratedConst' to be replaced with its
+// real content.
+#assert myGeneratedConst == 666
