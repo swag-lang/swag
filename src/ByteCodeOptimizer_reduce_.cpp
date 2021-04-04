@@ -30,6 +30,24 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         }
     }
 
+    if (ip[0].op == ByteCodeOp::CopyRBtoRA64 &&
+        ip[1].op == ByteCodeOp::ClearMaskU32 &&
+        ip[0].a.u32 == ip[1].a.u32 &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        switch (ip[1].b.u64)
+        {
+        case 0xFF:
+            ip[0].op = ByteCodeOp::CopyRBtoRA8;
+            setNop(context, ip + 1);
+            break;
+        case 0xFFFF:
+            ip[0].op = ByteCodeOp::CopyRBtoRA16;
+            setNop(context, ip + 1);
+            break;
+        }
+    }
+
     // Indirect assign to register. Make it direct
     if (ip[0].op == ByteCodeOp::ClearRA &&
         ip[1].op == ByteCodeOp::CopyRBAddrToRA &&
