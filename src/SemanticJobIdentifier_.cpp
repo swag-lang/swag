@@ -479,6 +479,10 @@ static bool isStatementIdentifier(AstIdentifier* identifier)
     if (checkParent->kind == AstNodeKind::Statement || checkParent->kind == AstNodeKind::StatementNoScope)
     {
         if (identifier->childParentIdx == identifier->identifierRef->childs.size() - 1)
+            return true;
+
+        auto back = identifier->identifierRef->childs.back();
+        if (back->kind == AstNodeKind::Identifier && !((AstIdentifier*) back)->callParameters)
         {
             return true;
         }
