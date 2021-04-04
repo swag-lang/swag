@@ -522,10 +522,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Immediate(pp, regOffset(ip->a.u32), 0, RDI);
             break;
 
+        case ByteCodeOp::CopyRBtoRA8:
+            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            BackendX64Inst::emit_UnsignedExtend_8_To_64(pp, RAX);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CopyRBtoRA16:
+            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            BackendX64Inst::emit_UnsignedExtend_16_To_64(pp, RAX);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::CopyRBtoRA32:
+            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
         case ByteCodeOp::CopyRBtoRA64:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
+
         case ByteCodeOp::CopyRBAddrToRA:
         case ByteCodeOp::CopyRBAddrToRA2:
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
@@ -1935,12 +1950,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::ClearMaskU32:
             if (ip->b.u32 == 0xFF)
             {
-                concat.addString2("\x0F\xB6"); // movzx
+                concat.addString2("\x0F\xB6"); // movzx eax, byte ptr [rdi + ??]
                 BackendX64Inst::emit_ModRM(pp, regOffset(ip->a.u32), RAX, RDI);
             }
             else if (ip->b.u32 == 0xFFFF)
             {
-                concat.addString2("\x0F\xB7"); // movzx
+                concat.addString2("\x0F\xB7"); // movzx eax, word ptr [rdi + ??]
                 BackendX64Inst::emit_ModRM(pp, regOffset(ip->a.u32), RAX, RDI);
             }
             else
@@ -1953,12 +1968,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::ClearMaskU64:
             if (ip->b.u32 == 0xFF)
             {
-                concat.addString3("\x48\x0F\xB6"); // movzx
+                concat.addString3("\x48\x0F\xB6"); // movzx rax, byte ptr [rdi + ??]
                 BackendX64Inst::emit_ModRM(pp, regOffset(ip->a.u32), RAX, RDI);
             }
             else if (ip->b.u32 == 0xFFFF)
             {
-                concat.addString3("\x48\x0F\xB7"); // movzx
+                concat.addString3("\x48\x0F\xB7"); // movzx rax, word ptr [rdi + ??]
                 BackendX64Inst::emit_ModRM(pp, regOffset(ip->a.u32), RAX, RDI);
             }
             else if (ip->b.u32 == 0xFFFFFFFF)

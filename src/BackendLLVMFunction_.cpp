@@ -1193,6 +1193,30 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::CopyRBtoRA8:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = TO_PTR_I8(GEP_I32(allocR, ip->b.u32));
+            auto v1 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            builder.CreateStore(v1, r0);
+            break;
+        }
+        case ByteCodeOp::CopyRBtoRA16:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = TO_PTR_I16(GEP_I32(allocR, ip->b.u32));
+            auto v1 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            builder.CreateStore(v1, r0);
+            break;
+        }
+        case ByteCodeOp::CopyRBtoRA32:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->b.u32));
+            auto v1 = builder.CreateIntCast(builder.CreateLoad(r1), builder.getInt64Ty(), false);
+            builder.CreateStore(v1, r0);
+            break;
+        }
         case ByteCodeOp::CopyRBtoRA64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
@@ -1200,6 +1224,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
         }
+
         case ByteCodeOp::CopyRBAddrToRA:
         case ByteCodeOp::CopyRBAddrToRA2:
         {

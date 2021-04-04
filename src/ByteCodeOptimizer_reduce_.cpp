@@ -7,20 +7,86 @@
 
 void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
+    // Indirect assign to register. Make it direct
     if (ip[0].op == ByteCodeOp::ClearRA &&
         ip[1].op == ByteCodeOp::CopyRBAddrToRA &&
         ip[2].op == ByteCodeOp::SetAtPointer64 &&
         !(ip[1].flags & BCI_START_STMT) &&
         !(ip[2].flags & BCI_START_STMT) &&
-        !(ip[2].flags & BCI_IMM_B) &&
         ip[2].c.u32 == 0 &&
         ip[0].a.u32 == ip[1].b.u32 &&
         ip[1].a.u32 == ip[2].a.u32)
     {
-        /*ip[2].op    = ByteCodeOp::CopyRBtoRA64;
+        if (ip[2].flags & BCI_IMM_B)
+            ip[2].op = ByteCodeOp::SetImmediate64;
+        else
+            ip[2].op = ByteCodeOp::CopyRBtoRA64;
         ip[2].a.u32 = ip[0].a.u32;
         setNop(context, ip);
-        setNop(context, ip + 1);*/
+        setNop(context, ip + 1);
+    }
+
+    if (ip[0].op == ByteCodeOp::ClearRA &&
+        ip[1].op == ByteCodeOp::CopyRBAddrToRA &&
+        ip[2].op == ByteCodeOp::SetAtPointer32 &&
+        !(ip[1].flags & BCI_START_STMT) &&
+        !(ip[2].flags & BCI_START_STMT) &&
+        ip[2].c.u32 == 0 &&
+        ip[0].a.u32 == ip[1].b.u32 &&
+        ip[1].a.u32 == ip[2].a.u32)
+    {
+        if (ip[2].flags & BCI_IMM_B)
+        {
+            ip[2].b.u64 = ip[2].b.u32;
+            ip[2].op = ByteCodeOp::SetImmediate64;
+        }
+        else
+            ip[2].op = ByteCodeOp::CopyRBtoRA32;
+        ip[2].a.u32 = ip[0].a.u32;
+        setNop(context, ip);
+        setNop(context, ip + 1);
+    }
+
+    if (ip[0].op == ByteCodeOp::ClearRA &&
+        ip[1].op == ByteCodeOp::CopyRBAddrToRA &&
+        ip[2].op == ByteCodeOp::SetAtPointer16 &&
+        !(ip[1].flags & BCI_START_STMT) &&
+        !(ip[2].flags & BCI_START_STMT) &&
+        ip[2].c.u32 == 0 &&
+        ip[0].a.u32 == ip[1].b.u32 &&
+        ip[1].a.u32 == ip[2].a.u32)
+    {
+        if (ip[2].flags & BCI_IMM_B)
+        {
+            ip[2].b.u64 = ip[2].b.u16;
+            ip[2].op = ByteCodeOp::SetImmediate64;
+        }
+        else
+            ip[2].op = ByteCodeOp::CopyRBtoRA16;
+        ip[2].a.u32 = ip[0].a.u32;
+        setNop(context, ip);
+        setNop(context, ip + 1);
+    }
+
+    if (ip[0].op == ByteCodeOp::ClearRA &&
+        ip[1].op == ByteCodeOp::CopyRBAddrToRA &&
+        ip[2].op == ByteCodeOp::SetAtPointer8 &&
+        !(ip[1].flags & BCI_START_STMT) &&
+        !(ip[2].flags & BCI_START_STMT) &&
+        ip[2].c.u32 == 0 &&
+        ip[0].a.u32 == ip[1].b.u32 &&
+        ip[1].a.u32 == ip[2].a.u32)
+    {
+        if (ip[2].flags & BCI_IMM_B)
+        {
+            ip[2].b.u64 = ip[2].b.u8;
+            ip[2].op = ByteCodeOp::SetImmediate64;
+        }
+        else
+            ip[2].op = ByteCodeOp::CopyRBtoRA8;
+        ip[2].a.u32 = ip[0].a.u32;
+        setNop(context, ip);
+        setNop(context, ip + 1);
     }
 
     // Replace GetFromStack with SetImmediate

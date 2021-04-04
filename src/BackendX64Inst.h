@@ -919,7 +919,7 @@ namespace BackendX64Inst
 
     inline void emit_UnsignedExtend_8_To_32(X64PerThread& pp, uint8_t reg)
     {
-        // movzx
+        // movzx eax, al
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0xB6);
         pp.concat.addU8(modRM(REGREG, reg, reg));
@@ -927,7 +927,25 @@ namespace BackendX64Inst
 
     inline void emit_UnsignedExtend_16_To_32(X64PerThread& pp, uint8_t reg)
     {
-        // movzx
+        // movzx rax, ax
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0xB7);
+        pp.concat.addU8(modRM(REGREG, reg, reg));
+    }
+
+    inline void emit_UnsignedExtend_8_To_64(X64PerThread& pp, uint8_t reg)
+    {
+        // movzx rax, al
+        pp.concat.addU8(0x48);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0xB6);
+        pp.concat.addU8(modRM(REGREG, reg, reg));
+    }
+
+    inline void emit_UnsignedExtend_16_To_64(X64PerThread& pp, uint8_t reg)
+    {
+        // movzx rax, al
+        pp.concat.addU8(0x48);
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0xB7);
         pp.concat.addU8(modRM(REGREG, reg, reg));
