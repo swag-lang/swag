@@ -35,4 +35,38 @@
         @assert(pt.x == 1)
         @assert(pt.y == 1)
     }
+
+    // using can be used with a field inside a struct
+    {
+        struct Point2
+        {
+            x, y: s32
+        }
+
+        struct Point3
+        {
+            using base: Point2
+            z: s32
+        }
+
+        // That way the content of the field can be referenced directly
+        var value: Point3
+        value.x = 0 // equivalent to value.base.x = 0
+        value.y = 0 // equivalent to value.base.y = 0
+        value.z = 0
+        @assert(&value.x == &value.base.x)
+        @assert(&value.y == &value.base.y)
+
+        // The compiler can then cast automatically 'Point3' to 'Point2'
+        func set1(using ptr: *Point2)
+        {
+            x, y = 1
+        }
+
+        set1(&value) // Here the cast is automatic thanks to the using
+        @assert(value.x == 1)
+        @assert(value.y == 1)
+        @assert(value.base.x == 1)
+        @assert(value.base.y == 1)
+    }
 }

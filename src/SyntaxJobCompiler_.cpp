@@ -438,6 +438,12 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
+    else if (token.text == "skip")
+    {
+        sourceFile->buildPass = BuildPass::Lexer;
+    }
+
+    /////////////////////////////////
     else if (token.text == "testpass")
     {
         SWAG_CHECK(tokenizer.getToken(token));
