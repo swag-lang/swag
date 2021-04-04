@@ -179,6 +179,7 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
         freeRegisterRC(context, child);
     else
         node->resultRegisterRC = child->resultRegisterRC;
+    freeRegisterRC(context, child->additionalRegisterRC);
     return true;
 }
 
