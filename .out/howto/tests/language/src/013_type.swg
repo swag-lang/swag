@@ -69,4 +69,11 @@
         @assert(a == "C"'char)
         @assert(@sizeof(a) == 4)
     }
+
+    // You can use '@typeof' or '@kindof' to get the type of another expression
+    {
+        var a = 0
+        var b: @typeof(a) = 1
+        @assert(@typeof(a) == @typeof(b))
+    }
 }

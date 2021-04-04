@@ -41,6 +41,8 @@ struct struct1
         type := @typeof(function2)
         @assert(@countof(type.attributes) == 1)
         firstOne := type.attributes[0]
-        @assert(firstOne.name == "__attribute.attributeD") // Full scoped name
+        // Full scoped name. '__182_attribute' is the name of the current file private scope.
+        // All test files are inside a private scope by default.
+        @assert(firstOne.name == "__182_attribute.attributeD")
     }
 }
