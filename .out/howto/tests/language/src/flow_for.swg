@@ -32,7 +32,7 @@
         @assert(cpt == 10)
     }
 
-    // Like 'loop' and 'while', you have access to '@index', the current loop index as an 'u32'
+    // Like 'loop' and 'while', you have access to '@index', the current loop index
     {
         cpt := 0'uint
         for var i: u32 = 10; i < 15; i += 1;

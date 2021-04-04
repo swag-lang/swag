@@ -71,7 +71,7 @@
         @assert(@typeof(d) == string)
     }
 
-    // 'var' or 'let' are optional if you use ':='
+    // 'var' is optional if you use ':='
     {
         a := 1.5
         @assert(a == 1.5)
@@ -86,7 +86,7 @@
         @assert(@typeof(c) == f64)
     }
 
-    // If you use 'const' instead of 'var', the value is known by the compiler
+    // If you use 'const' instead of 'var', the value must be known by the compiler
     // (no memory footprint)
     {
         const a = 666
@@ -94,12 +94,6 @@
 
         const b: string = "string"
         #assert(b == "string")
-    }
-
-    // If you use 'let' instead of 'var', the variable is immutable and cannot be changed after
-    {
-        var a = 666
-        // 'a = 0'  would raise en error
     }
 
     // You can use '@typeof' or '@kindof' to get the type of another expression

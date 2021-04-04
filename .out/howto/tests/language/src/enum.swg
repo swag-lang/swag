@@ -192,7 +192,8 @@
         var y: Values = Values.A
     }
 
-    // The type of the enum is not necessary on the assignement expression
+    // The type of the enum is not necessary on the assignement expression when declaring
+    // a variable
     {
         enum Values { A; B; }
         var x: Values = Values.A
@@ -215,5 +216,20 @@
         case Values.A: break
         case Values.B: break
         }
+    }
+
+    // In an expression, and if the enum name can be deduced, you can omit it and use the '.Value' syntax
+    {
+        enum Values { A; B; }
+        x := Values.A
+        @assert(x == .A) // Short version, because 'Values' can be deduced from type of x
+        @assert(x != .B)
+    }
+
+    {
+        #[swag.enumflags]
+        enum Values { A; B; }
+        x := Values.A | Values.B
+        @assert((x & .A) && (x & .B))
     }
 }
