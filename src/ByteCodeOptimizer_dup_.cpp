@@ -36,6 +36,15 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             setNop(context, ip + 1);
         }
 
+        // CopyRBRA followed by one single pushraparam, take the original register
+        if (ip->op == ByteCodeOp::CopyRBtoRA64 &&
+            ip[1].op == ByteCodeOp::PushRAParam &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[1].a.u32 = ip[0].b.u32;
+        }
+
         if (ip->op == op)
         {
             auto it = mapCopyRA.find(ip->a.u32);
@@ -60,12 +69,12 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             continue;
         }
 
-        // If we use a register that comes from a CopyRBRA, then use the initial
-        // register instead (that way, the Copy can become deadstore and removed later)
-        // Do it only for CopyRBtoRA64, as other copy have an implicit cast
-        // *NOT* for PushRAParam, because the register numbers are important in case of variadic parameters.
         if (op == ByteCodeOp::CopyRBtoRA64)
         {
+            // If we use a register that comes from a CopyRBRA, then use the initial
+            // register instead (that way, the Copy can become deadstore and removed later)
+            // Do it only for CopyRBtoRA64, as other copy have an implicit cast
+            // *NOT* for PushRAParam, because the register numbers are important in case of variadic parameters.
             if (ip->op != ByteCodeOp::PushRAParam &&
                 ip->op != ByteCodeOp::PushRAParam2 &&
                 ip->op != ByteCodeOp::PushRAParam3 &&
