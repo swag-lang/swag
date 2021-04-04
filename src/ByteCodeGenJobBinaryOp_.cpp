@@ -47,7 +47,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
         if (sizeOf > 1)
         {
             auto rt = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, rt, r1);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rt, r1);
             emitInstruction(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
             emitInstruction(context, ByteCodeOp::IncPointer64, r0, rt, r2);
             freeRegisterRC(context, rt);
@@ -119,7 +119,7 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
         if (sizeOf > 1)
         {
             auto rt = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, rt, r1);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rt, r1);
             emitInstruction(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
             emitInstruction(context, ByteCodeOp::DecPointer64, r0, rt, r2);
             freeRegisterRC(context, rt);
@@ -402,7 +402,7 @@ bool ByteCodeGenJob::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, ui
     // Because of the shortcuts, there's no need to actually do a || here, as we are sure that the
     // expression on the left is true
     // Se we just need to propagate the result
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
 
     auto inst   = &context->bc->out[node->seekJumpExpression];
     inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;
@@ -438,7 +438,7 @@ bool ByteCodeGenJob::emitLogicalOr(ByteCodeGenContext* context, uint32_t r0, uin
     // Because of the shortcuts, there's no need to actually do a && here, as we are sure that the
     // expression on the left is true
     // Se we just need to propagate the result
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
 
     auto inst   = &context->bc->out[node->seekJumpExpression];
     inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;

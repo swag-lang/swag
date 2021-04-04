@@ -692,7 +692,7 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
         ownerBreakable = ownerBreakable->ownerBreakable;
     SWAG_ASSERT(ownerBreakable);
 
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC, ownerBreakable->registerIndex);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, ownerBreakable->registerIndex);
     return true;
 }
 

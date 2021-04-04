@@ -11,8 +11,8 @@ bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
     auto front = node->childs.front();
     auto back  = node->childs.back();
     reserveRegisterRC(context, node->resultRegisterRC, 2);
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[0], front->resultRegisterRC);
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[1], back->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], front->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[1], back->resultRegisterRC);
     freeRegisterRC(context, front);
     freeRegisterRC(context, back);
     return true;
@@ -45,8 +45,8 @@ bool ByteCodeGenJob::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 
     SWAG_CHECK(emitCast(context, countNode, countNode->typeInfo, countNode->castedTypeInfo));
     reserveRegisterRC(context, node->resultRegisterRC, 2);
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[0], ptrNode->resultRegisterRC);
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[1], countNode->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], ptrNode->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[1], countNode->resultRegisterRC);
     freeRegisterRC(context, ptrNode);
     freeRegisterRC(context, countNode);
     return true;
@@ -67,7 +67,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::MakeTypeSegPointer, r0)->b.u64 = childItf->computedValue.reg.u32;
 
     // Copy object pointer to first result register
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[0], params->childs[0]->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], params->childs[0]->resultRegisterRC);
 
     // Get interface itable pointer in the second result register
     emitInstruction(context, ByteCodeOp::IntrinsicInterfaceOf, params->childs[1]->resultRegisterRC, r0, node->resultRegisterRC[1]);

@@ -112,9 +112,9 @@ void ByteCodeGenJob::transformResultToLinear2(ByteCodeGenContext* context, Regis
     {
         RegisterList r0;
         reserveLinearRegisterRC2(context, r0);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], resultRegisterRC[0])->flags |= BCI_UNPURE;
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0[0], resultRegisterRC[0])->flags |= BCI_UNPURE;
         if (!onlyOne)
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], resultRegisterRC[1])->flags |= BCI_UNPURE;
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0[1], resultRegisterRC[1])->flags |= BCI_UNPURE;
         freeRegisterRC(context, resultRegisterRC);
         resultRegisterRC = r0;
     }
@@ -165,7 +165,7 @@ void ByteCodeGenJob::ensureCanBeChangedRC(ByteCodeGenContext* context, RegisterL
         RegisterList re;
         reserveRegisterRC(context, re, r0.size());
         for (int i = 0; i < r0.size(); i++)
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, re[i], r0[i]);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, re[i], r0[i]);
         freeRegisterRC(context, r0);
         r0 = re;
     }

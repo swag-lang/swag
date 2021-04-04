@@ -43,7 +43,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             }
             else
             {
-                emitInstruction(context, ByteCodeOp::CopyRBtoRA, r2, r1[1]);
+                emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r2, r1[1]);
                 emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r0[0], r0[1], r1[0], r2);
             }
             return true;
@@ -130,7 +130,7 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
             else
             {
                 auto rt = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::CopyRBtoRA, rt, r1[1]);
+                emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rt, r1[1]);
                 emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r0[0], r0[1], r1[0], rt);
                 emitInstruction(context, ByteCodeOp::NegBool, r2, rt);
                 freeRegisterRC(context, rt);

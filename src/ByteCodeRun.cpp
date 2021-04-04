@@ -1316,7 +1316,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::CopyRBtoRA:
+    case ByteCodeOp::CopyRBtoRA64:
     {
         registersRC[ip->a.u32] = registersRC[ip->b.u32];
         break;

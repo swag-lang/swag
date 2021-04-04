@@ -162,7 +162,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         if (typeInfo->flags & TYPEINFO_RELATIVE)
         {
             auto r0 = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, node->resultRegisterRC[0]);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0, node->resultRegisterRC[0]);
             SWAG_CHECK(emitUnwrapRelativePointer(context, node->resultRegisterRC[0], typeInfo->relative));
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[1], r0)->c.u64 = 8;
             freeRegisterRC(context, r0);
@@ -254,7 +254,7 @@ bool ByteCodeGenJob::emitWrapRelativePointer(ByteCodeGenContext* context, uint32
 bool ByteCodeGenJob::emitUnwrapRelativePointer(ByteCodeGenContext* context, uint32_t rr, uint32_t sizeOf)
 {
     auto r0 = reserveRegisterRC(context);
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0, rr);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0, rr);
     switch (sizeOf)
     {
     case 1:
@@ -640,10 +640,10 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     if (node->lowerBound)
         emitInstruction(context, ByteCodeOp::BinOpMinusS64, node->upperBound->resultRegisterRC, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC);
     emitInstruction(context, ByteCodeOp::Add64byVB64, node->upperBound->resultRegisterRC)->b.u64 = 1;
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[1], node->upperBound->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0[1], node->upperBound->resultRegisterRC);
 
     // Increment start pointer
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA, r0[0], node->array->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r0[0], node->array->resultRegisterRC);
     if (node->lowerBound)
     {
         if (sizeOf > 1)
@@ -825,7 +825,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         {
             auto param     = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
             auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, r1, rExpr);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r1, rExpr);
             if (typeParam->offset)
                 emitInstruction(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = typeParam->offset;
             emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);

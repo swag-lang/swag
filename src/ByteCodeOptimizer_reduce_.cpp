@@ -17,7 +17,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         ip[0].a.u32 == ip[1].b.u32 &&
         ip[1].a.u32 == ip[2].a.u32)
     {
-        /*ip[2].op    = ByteCodeOp::CopyRBtoRA;
+        /*ip[2].op    = ByteCodeOp::CopyRBtoRA64;
         ip[2].a.u32 = ip[0].a.u32;
         setNop(context, ip);
         setNop(context, ip + 1);*/
@@ -469,7 +469,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             {
                 if (ip->a.u32 != ip->c.u32)
                 {
-                    ip->op    = ByteCodeOp::CopyRBtoRA;
+                    ip->op    = ByteCodeOp::CopyRBtoRA64;
                     auto s    = ip->a.u32;
                     ip->a.u32 = ip->c.u32;
                     ip->b.u32 = s;
@@ -2058,7 +2058,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 
         // A = something followed by B = A
         // make B = something, this gives the opportunity to remove one of them
-        if (ip[1].op == ByteCodeOp::CopyRBtoRA &&
+        if (ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
             (opFlags & OPFLAG_WRITE_A) &&
             !(opFlags & OPFLAG_READ_A) &&
             (!(opFlags & OPFLAG_READ_B) || ip->flags & BCI_IMM_B || ip->b.u32 != ip->a.u32) &&
@@ -2071,7 +2071,7 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             // List can be extended, as long as the instruction does not have side effects when called twice
             switch (ip->op)
             {
-            case ByteCodeOp::CopyRBtoRA:
+            case ByteCodeOp::CopyRBtoRA64:
             case ByteCodeOp::CopyRTtoRC:
             case ByteCodeOp::MakeStackPointer:
             case ByteCodeOp::GetFromStackParam64:

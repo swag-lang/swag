@@ -1193,7 +1193,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::CopyRBtoRA:
+        case ByteCodeOp::CopyRBtoRA64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = GEP_I32(allocR, ip->b.u32);

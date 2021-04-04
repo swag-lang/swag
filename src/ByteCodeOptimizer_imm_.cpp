@@ -104,7 +104,7 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 regs[ip->b.u32] = nullptr;
                 ip->b.u64       = regsRW[ip->b.u32];
             }
-            else if (ip->op == ByteCodeOp::CopyRBtoRA)
+            else if (ip->op == ByteCodeOp::CopyRBtoRA64)
             {
                 context->passHasDoneSomething = true;
                 ip->op                        = ByteCodeOp::SetImmediate64;

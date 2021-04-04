@@ -123,7 +123,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
                 {
                     reserveRegisterRC(context, node->regInit, 1);
                     if (node->ownerInline)
-                        emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->regInit, node->ownerInline->resultRegisterRC);
+                        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->regInit, node->ownerInline->resultRegisterRC);
                     else
                         emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
                     node->doneFlags |= AST_DONE_TRY_2;
@@ -689,7 +689,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
         for (int i = 0; i < node->resultRegisterRC.size(); i++)
-            emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[i], resolved->registers[i]);
+            emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[i], resolved->registers[i]);
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC              = node->resultRegisterRC;

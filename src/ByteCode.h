@@ -42,6 +42,20 @@ struct ByteCodeInstruction
 
 struct ByteCode
 {
+    inline static uint32_t isCopyRBtoRA(ByteCodeInstruction* inst)
+    {
+        switch (inst->op)
+        {
+        case ByteCodeOp::CopyRBtoRA8:
+        case ByteCodeOp::CopyRBtoRA16:
+        case ByteCodeOp::CopyRBtoRA32:
+        case ByteCodeOp::CopyRBtoRA64:
+            return true;
+        }
+
+        return false;
+    }
+
     inline static uint32_t isSetZeroAtPointer(ByteCodeInstruction* inst, uint32_t& offset)
     {
         switch (inst->op)

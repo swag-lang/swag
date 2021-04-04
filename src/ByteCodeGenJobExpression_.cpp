@@ -64,12 +64,12 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
 
     // If not null
     for (int r = 0; r < node->resultRegisterRC.size(); r++)
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[r], child0->resultRegisterRC[r]);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[r], child0->resultRegisterRC[r]);
     emitInstruction(context, ByteCodeOp::Jump)->b.s32 = node->resultRegisterRC.size(); // After the if null
 
     // If null
     for (int r = 0; r < node->resultRegisterRC.size(); r++)
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[r], child1->resultRegisterRC[r]);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[r], child1->resultRegisterRC[r]);
 
     freeRegisterRC(context, child0);
     freeRegisterRC(context, child1);
@@ -102,7 +102,7 @@ bool ByteCodeGenJob::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
     // Reserve registers in the main node to copy the result
     reserveRegisterRC(context, binNode->resultRegisterRC, ifTrue->resultRegisterRC.size());
     for (int r = 0; r < ifTrue->resultRegisterRC.size(); r++)
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, binNode->resultRegisterRC[r], ifTrue->resultRegisterRC[r]);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, binNode->resultRegisterRC[r], ifTrue->resultRegisterRC[r]);
 
     // Jump after ifFalse block
     binNode->seekJumpAfterIfFalse = context->bc->numInstructions;
@@ -124,7 +124,7 @@ bool ByteCodeGenJob::emitConditionalOp(ByteCodeGenContext* context)
 
     // Copy If false result
     for (int r = 0; r < node->resultRegisterRC.size(); r++)
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, node->resultRegisterRC[r], ifFalse->resultRegisterRC[r]);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[r], ifFalse->resultRegisterRC[r]);
 
     // Update jump after the IfTrue block
     auto inst   = &context->bc->out[node->seekJumpAfterIfFalse];

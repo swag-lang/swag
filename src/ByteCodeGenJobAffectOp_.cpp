@@ -18,14 +18,14 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
         RegisterList fromReg = reserveRegisterRC(context);
         RegisterList rtmp    = reserveRegisterRC(context);
 
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, toReg, dstReg);
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, fromReg, srcReg);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, toReg, dstReg);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, fromReg, srcReg);
 
         auto inst     = emitInstruction(context, ByteCodeOp::SetImmediate64, rloop);
         inst->b.u64   = typeArray->totalCount;
         auto seekJump = context->bc->numInstructions;
 
-        emitInstruction(context, ByteCodeOp::CopyRBtoRA, rtmp, fromReg);
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, rtmp, fromReg);
         SWAG_CHECK(emitUnwrapRelativePointer(context, rtmp, finalType->relative));
         SWAG_CHECK(emitWrapRelativePointer(context, toReg, rtmp, finalType->relative, finalType));
 
