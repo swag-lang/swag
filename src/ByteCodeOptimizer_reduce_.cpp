@@ -38,7 +38,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         if (ip[2].flags & BCI_IMM_B)
         {
             ip[2].b.u64 = ip[2].b.u32;
-            ip[2].op = ByteCodeOp::SetImmediate64;
+            ip[2].op    = ByteCodeOp::SetImmediate64;
         }
         else
             ip[2].op = ByteCodeOp::CopyRBtoRA32;
@@ -59,7 +59,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         if (ip[2].flags & BCI_IMM_B)
         {
             ip[2].b.u64 = ip[2].b.u16;
-            ip[2].op = ByteCodeOp::SetImmediate64;
+            ip[2].op    = ByteCodeOp::SetImmediate64;
         }
         else
             ip[2].op = ByteCodeOp::CopyRBtoRA16;
@@ -80,7 +80,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         if (ip[2].flags & BCI_IMM_B)
         {
             ip[2].b.u64 = ip[2].b.u8;
-            ip[2].op = ByteCodeOp::SetImmediate64;
+            ip[2].op    = ByteCodeOp::SetImmediate64;
         }
         else
             ip[2].op = ByteCodeOp::CopyRBtoRA8;
@@ -2140,6 +2140,10 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             case ByteCodeOp::CopyRBtoRA64:
             case ByteCodeOp::CopyRTtoRC:
             case ByteCodeOp::MakeStackPointer:
+            case ByteCodeOp::GetFromStack8:
+            case ByteCodeOp::GetFromStack16:
+            case ByteCodeOp::GetFromStack32:
+            case ByteCodeOp::GetFromStack64:
             case ByteCodeOp::GetFromStackParam64:
             case ByteCodeOp::NegBool:
             case ByteCodeOp::CastBool8:
@@ -2150,10 +2154,20 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
             case ByteCodeOp::MakeTypeSegPointer:
             case ByteCodeOp::MakeMutableSegPointer:
             case ByteCodeOp::MakeBssSegPointer:
+            case ByteCodeOp::MakeCompilerSegPointer:
             case ByteCodeOp::MakeLambda:
+            case ByteCodeOp::DeRef8:
+            case ByteCodeOp::DeRef16:
+            case ByteCodeOp::DeRef32:
+            case ByteCodeOp::DeRef64:
+            {
                 auto s      = ip[1].a.u32;
                 ip[1]       = ip[0];
                 ip[1].a.u32 = s;
+                break;
+            }
+            default:
+                //printf("%s\n", g_ByteCodeOpNames[(int) ip->op]);
                 break;
             }
         }
