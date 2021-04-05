@@ -37,7 +37,6 @@ func myFunc1() throw
 // This can be disabled in release builds (in that case behaviour is undefined).
 func myFunc2()
 {
-    // Here the program will stop with a panic message if 'count()'
-    // throws an error
+    // Here the program will stop with a panic message if 'count()' throws an error
     cpt := assume count("filename")
 }
