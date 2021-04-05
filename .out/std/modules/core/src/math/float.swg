@@ -25,7 +25,7 @@ struct(T) Const
 alias ConstF32 = Const'f32
 alias ConstF64 = Const'f64
 
-#[swag.constexpr]
+#[swag.constexpr, swag.inline]
 {
     func sign(x: f32) => x < 0 ? -1 : 1
     func sign(x: f64) => x < 0 ? -1 : 1
