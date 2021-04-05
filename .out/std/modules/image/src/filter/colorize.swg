@@ -27,18 +27,14 @@ impl Image
         {
             params := cast(*@typeof(f)) userData
 
-            p0 := pix[0]
-            p1 := pix[1]
-            p2 := pix[2]
-
-            min := math.min(p0, p1, p2)
-            max := math.max(p0, p1, p2)
+            min := math.min(pix[0], pix[1], pix[2])
+            max := math.max(pix[0], pix[1], pix[2])
             lum := cast(u8) ((max + min) * 0.5)
 
             precalc := params.item0 + (lum * 3)
-            pix[0] = cast(u8) math.lerp(cast(f32) p0, precalc[0], params.st)
-            pix[1] = cast(u8) math.lerp(cast(f32) p1, precalc[1], params.st)
-            pix[2] = cast(u8) math.lerp(cast(f32) p2, precalc[2], params.st)
+            pix[0] = cast(u8) math.lerp(cast(f32) pix[0], precalc[0], params.st)
+            pix[1] = cast(u8) math.lerp(cast(f32) pix[1], precalc[1], params.st)
+            pix[2] = cast(u8) math.lerp(cast(f32) pix[2], precalc[2], params.st)
         }
     }
 }
