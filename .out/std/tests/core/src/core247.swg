@@ -1,6 +1,6 @@
 using core, hash
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     digest := Md5.compute("toto la foule")

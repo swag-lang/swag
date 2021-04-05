@@ -168,7 +168,7 @@ private func encode(output: *u8, input: *u32, len: u32)
 
 private func decode(output: *u32, input: const *u8, len: u32)
 {
-    var i, j: u32
+    i, j := 0
     while j < len
     {
         output[i] = (cast(u32) input[j]) |
@@ -183,14 +183,14 @@ private func decode(output: *u32, input: const *u8, len: u32)
 public struct Md5
 {
     padding:    [64] u8
-    state:      [4] u32
-    count:      [2] u32
+    state:      [4]  u32
+    count:      [2]  u32
     buffer:     [64] u8
 }
 
 public impl Md5
 {
-    // Call to finalize the computation, when your done
+    // Call to finalize the computation, when you are done
     func final(using self, digest: [16] u8)
     {
         var bits: [8] u8
@@ -225,13 +225,11 @@ public impl Md5
         inputLen := cast(u32) @countof(data)
 
         index := (count[0] >> 3) & 0x3F
-        count[0] += (inputLen << 3)
-        if count[0] < (inputLen << 3)
-            count[1] += 1
+        count[0] += inputLen << 3
+        if count[0] < inputLen << 3 count[1] += 1
         count[1] += inputLen >> 29
 
-        var i: u32
-
+        i := 0'u32
         partLen := 64 - index
         if inputLen >= partLen
         {
@@ -247,7 +245,7 @@ public impl Md5
             index = 0
         }
 
-        memory.copy(&buffer[index], &input[i], cast(uint) inputLen - i)
+        memory.copy(&buffer[index], input + i, cast(uint) inputLen - i)
     }
 
     // Returns the md5 value for the given buffer
