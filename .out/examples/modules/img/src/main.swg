@@ -3,7 +3,7 @@ using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
 var imageIdx: u32
-var effectIdx: u32 = 19
+var effectIdx: u32 = 40
 var myImage: image.Image
 const W = 1024
 const H = 1024
@@ -107,6 +107,9 @@ func loadImg()
     case 35: myImage.setChannel(ChannelMode.RGB, ChannelValueMode.MinRGB)
     case 36: myImage.setChannel(ChannelMode.RGB, ChannelValueMode.MaxRGB)
     case 37: myImage.setChannel(ChannelMode.RGB, ChannelValueMode.MeanRGB)
+    case 38: myImage.gamma(0.5)
+    case 39: myImage.gamma(1.0)
+    case 40: myImage.gamma(2.2)
     default: effectIdx = 0
     }
 
