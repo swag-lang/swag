@@ -62,9 +62,15 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
+    if (!(left->flags & AST_L_VALUE))
+    {
+        if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
+            return context->report({left, "affect operation not allowed, left expression is const"});
+        return context->report({left, "affect operation not allowed, left expression is not an l-value"});
+    }
+
     SWAG_VERIFY(left->resolvedSymbolName, context->report({left, "affect operation not allowed"}));
-    SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report({left, "affect operation not allowed"}));
-    SWAG_VERIFY(left->flags & AST_L_VALUE, context->report({left, "affect operation not allowed, left expression is not a l-value"}));
+    SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report({left, "affect operation not allowed, left expression is not a variable"}));
     SWAG_VERIFY(!(left->flags & AST_IS_CONST), context->report({left, "affect operation not allowed, left expression is immutable"}));
 
     // Special case for enum : nothing is possible, except for flags

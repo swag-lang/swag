@@ -609,6 +609,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (derefLiteralStruct(context, parent, overload, &sourceFile->module->constantSegment))
         {
             parent->previousResolvedNode = context->node;
+            identifier->resolvedSymbolName = overload->symbol;
+            identifier->resolvedSymbolOverload = overload;
             return true;
         }
 
@@ -632,7 +634,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 ptr += arrayNode->access->computedValue.reg.u64 * typePtr->finalType->sizeOf;
                 if (derefLiteralStruct(context, ptr, overload, &sourceFile->module->constantSegment))
                 {
-                    parent->previousResolvedNode = context->node;
+                    parent->previousResolvedNode       = context->node;
+                    identifier->resolvedSymbolName     = overload->symbol;
+                    identifier->resolvedSymbolOverload = overload;
                     return true;
                 }
 
