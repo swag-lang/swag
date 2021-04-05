@@ -29,7 +29,7 @@ impl Image
 
             min := math.min(pix[0], pix[1], pix[2])
             max := math.max(pix[0], pix[1], pix[2])
-            lum := cast(u8) ((max + min) * 0.5)
+            lum := cast(u8) ((max + min) / 2)
 
             precalc := params.item0 + (lum * 3)
             pix[0] = cast(u8) math.lerp(cast(f32) pix[0], precalc[0], params.st)
