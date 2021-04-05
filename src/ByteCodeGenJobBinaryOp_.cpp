@@ -177,6 +177,35 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* type
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitBinaryOpDiv, type not native");
 
+    // Divide by a constant. We just deal with powers of two.
+    // The optimizer will transform instructions in their immediate mode if possible.
+    auto right = context->node->childs[1];
+    if (right->flags & AST_VALUE_COMPUTED)
+    {
+        if (typeInfo->nativeType == NativeTypeKind::U32 || typeInfo->nativeType == NativeTypeKind::Char)
+        {
+            if (isPowerOfTwo(right->computedValue.reg.u32))
+            {
+                auto shift  = (int) log2(right->computedValue.reg.u32);
+                auto inst   = emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, r0, 0, r2);
+                inst->b.u32 = shift;
+                inst->flags |= BCI_IMM_B;
+                return true;
+            }
+        }
+        else if (typeInfo->nativeType == NativeTypeKind::U64 || typeInfo->nativeType == NativeTypeKind::UInt)
+        {
+            if (isPowerOfTwo(right->computedValue.reg.u64))
+            {
+                auto shift  = (int) log2(right->computedValue.reg.u64);
+                auto inst   = emitInstruction(context, ByteCodeOp::BinOpShiftRightU64, r0, 0, r2);
+                inst->b.u32 = shift;
+                inst->flags |= BCI_IMM_B;
+                return true;
+            }
+        }
+    }
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S32:

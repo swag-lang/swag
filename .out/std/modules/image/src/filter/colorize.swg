@@ -4,6 +4,7 @@ impl Image
 {
     // Colorize the image by setting the hue and saturation.
     #[swag.safety("", false)]
+    //#[swag.printbc]
     public func colorize(using self, hue, saturation: f32, strength = 1.0)
     {
         debug.assert(pf == .BGR8 || pf == .BGRA8)
