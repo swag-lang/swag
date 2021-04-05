@@ -49,6 +49,13 @@
         @assert(d == "they are 4 apples in 4 baskets")
     }
 
+    // You can also use '@stringof' to return the result of a constant expression as a string
+    {
+        const x = 1
+        @assert(@stringof(x) == "1")
+        @assert(@stringof(x + 10) == "11")
+    }
+
     // A string and a character can contain escape sequences for special characters
     // An escape sequence starts with '\'
     {
@@ -67,9 +74,9 @@
 
     // An escape sequence can be used to specify an ascii or unicode value
     {
-        const a = "\x26"        // 1 byte, extended ascii
-        const b = "\u2626"      // 2 bytes, unicode 16 bits
-        const c = "\U26262626"  // 4 bytes, unicode 32 bits
+        const a = "\x26"        // 1 byte, hexadecimal, extended ascii
+        const b = "\u2626"      // 2 bytes, hexadecimal, unicode 16 bits
+        const c = "\U26262626"  // 4 bytes, hexadecimal, unicode 32 bits
 
         const d = "\u2F46"
         @assert(d == "⽆")

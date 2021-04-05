@@ -6,6 +6,7 @@
         var b: s16 = -2
         var c: s32 = -3
         var d: s64 = -4
+        var e: int = -4
 
         @assert(a == -1)
         @assert(b == -2)
@@ -15,6 +16,7 @@
         @assert(@sizeof(b) == 2)
         @assert(@sizeof(c) == 4)
         @assert(@sizeof(d) == 8)
+        @assert(@sizeof(e) == 8)
     }
 
     // This are all unsigned integers types
@@ -23,6 +25,7 @@
         var b: u16 = 2
         var c: u32 = 3
         var d: u64 = 4
+        var e: uint = 4
 
         @assert(a == 1)
         @assert(b == 2)
@@ -32,6 +35,7 @@
         @assert(@sizeof(b) == 2)
         @assert(@sizeof(c) == 4)
         @assert(@sizeof(d) == 8)
+        @assert(@sizeof(e) == 8)
     }
 
     // This are all float types
@@ -63,7 +67,7 @@
         @assert(@sizeof(a) == 16)
     }
 
-    // The character type use the string syntax, postfix with the type 'char'. It's a 32 bits (unicode 32)
+    // The 'char' type uses the string syntax, postfix with the type 'char'. It's a 32 bits (unicode 32)
     {
         var a: char = "C"'char
         @assert(a == "C"'char)

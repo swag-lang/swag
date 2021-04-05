@@ -25,7 +25,6 @@
         @assert(array[1] == 2)
     }
 
-
     // An array literal has the form @[...]
     {
         arr := @[1, 2, 3, 4]
@@ -52,7 +51,7 @@
         @assert(array[1] == 0)
     }
 
-    // To optimize, you can force the array not to be initialized
+    // For speed, you can force the array not to be initialized with '?'
     {
         var array: [100] s32 = ?
     }
@@ -79,7 +78,7 @@
         #assert(array[3] == 4)
     }
 
-    // The type of the first literal value will be used for all
+    // The type of the first literal value will be used for all other members
     {
         arr := @[1'f64, 2, 3, 4]
         @assert(@countof(arr) == 4)
