@@ -212,6 +212,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicKindOf:
     case TokenId::IntrinsicCountOf:
     case TokenId::IntrinsicDataOf:
+    case TokenId::IntrinsicStringOf:
     case TokenId::IntrinsicMakeAny:
     case TokenId::IntrinsicMakeSlice:
     case TokenId::IntrinsicMakeString:

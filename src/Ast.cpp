@@ -9,7 +9,112 @@
 namespace Ast
 {
     thread_local AstNode* lastGeneratedNode = nullptr;
-    ;
+
+    Utf8 enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg)
+    {
+        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Enum);
+
+        Utf8 result;
+
+        bool found    = false;
+        auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+
+        if (typeEnum->declNode->attributeFlags & ATTRIBUTE_ENUM_FLAGS)
+        {
+            SWAG_ASSERT(typeEnum->rawType->kind == TypeInfoKind::Native);
+            for (int i = 0; i < typeEnum->values.size(); i++)
+            {
+                auto value = typeEnum->values[i];
+                bool ok    = false;
+                switch (typeEnum->rawType->nativeType)
+                {
+                case NativeTypeKind::U8:
+                    if (value->value.reg.u8 & reg.u8)
+                        ok = true;
+                    break;
+                case NativeTypeKind::U16:
+                    if (value->value.reg.u16 & reg.u16)
+                        ok = true;
+                    break;
+                case NativeTypeKind::U32:
+                    if (value->value.reg.u32 & reg.u32)
+                        ok = true;
+                    break;
+                case NativeTypeKind::U64:
+                case NativeTypeKind::UInt:
+                    if (value->value.reg.u64 & reg.u64)
+                        ok = true;
+                    break;
+                }
+
+                if (ok)
+                {
+                    found = true;
+                    if (!result.empty())
+                        result += "|";
+                    result += typeInfo->name;
+                    result += ".";
+                    result += value->namedParam;
+                }
+            }
+        }
+        else
+        {
+            result = typeInfo->name;
+            result += ".";
+            for (int i = 0; i < typeEnum->values.size(); i++)
+            {
+                auto value = typeEnum->values[i];
+                bool ok    = false;
+                if (typeEnum->rawType->kind == TypeInfoKind::Native)
+                {
+                    switch (typeEnum->rawType->nativeType)
+                    {
+                    case NativeTypeKind::S8:
+                    case NativeTypeKind::U8:
+                        if (value->value.reg.u8 == reg.u8)
+                            ok = true;
+                        break;
+                    case NativeTypeKind::S16:
+                    case NativeTypeKind::U16:
+                        if (value->value.reg.u16 == reg.u16)
+                            ok = true;
+                        break;
+                    case NativeTypeKind::S32:
+                    case NativeTypeKind::U32:
+                    case NativeTypeKind::Char:
+                    case NativeTypeKind::F32:
+                        if (value->value.reg.u32 == reg.u32)
+                            ok = true;
+                        break;
+                    case NativeTypeKind::S64:
+                    case NativeTypeKind::U64:
+                    case NativeTypeKind::Int:
+                    case NativeTypeKind::UInt:
+                    case NativeTypeKind::F64:
+                        if (value->value.reg.u64 == reg.u64)
+                            ok = true;
+                        break;
+                    case NativeTypeKind::String:
+                        if (value->value.text == text)
+                            ok = true;
+                        break;
+                    }
+
+                    if (ok)
+                    {
+                        found = true;
+                        result += value->namedParam;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!found)
+            result += "?";
+        return result;
+    }
 
     Utf8 literalToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg)
     {

@@ -82,6 +82,7 @@ namespace Ast
     extern int      findChildIndex(AstNode* parent, AstNode* child);
     extern void     visit(AstNode* root, const function<void(AstNode*)>& fctor);
     extern void     setForceConstType(AstNode* node);
+    extern Utf8     enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg);
     extern Utf8     literalToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg);
     extern void     normalizeIdentifierName(Utf8& name);
     extern AstNode* cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0);

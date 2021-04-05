@@ -200,6 +200,38 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     return true;
 }
 
+bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
+{
+    auto node = context->node;
+    auto expr = node->childs.front();
+
+    if (!(expr->flags & AST_VALUE_COMPUTED))
+    {
+        SWAG_CHECK(resolveTypeAsExpression(context, expr, nullptr, CONCRETE_FORCE_NO_SCOPE));
+        if (context->result != ContextResult::Done)
+            return true;
+    }
+
+    auto typeInfo = expr->typeInfo;
+    SWAG_VERIFY(typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
+    SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, context->report({expr, "expression cannot be evaluated at compile time"}));
+
+    if (expr->flags & AST_VALUE_IS_TYPEINFO)
+        node->computedValue.text = typeInfo->name;
+    else if (typeInfo->isNative(NativeTypeKind::String))
+        node->computedValue.text = expr->computedValue.text;
+    else if (typeInfo->kind == TypeInfoKind::Native)
+        node->computedValue.text = Ast::literalToString(typeInfo, expr->computedValue.text, expr->computedValue.reg);
+    else if (typeInfo->kind == TypeInfoKind::Enum)
+        node->computedValue.text = Ast::enumToString(typeInfo, expr->computedValue.text, expr->computedValue.reg);
+    else
+        node->computedValue.text = typeInfo->name;
+
+    node->setFlagsValueIsComputed();
+    node->typeInfo = g_TypeMgr.typeInfoString;
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     typeInfo = TypeManager::concreteReferenceType(typeInfo);
@@ -504,6 +536,10 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
     case TokenId::IntrinsicKindOf:
         SWAG_CHECK(resolveIntrinsicKindOf(context));
+        return true;
+
+    case TokenId::IntrinsicStringOf:
+        SWAG_CHECK(resolveIntrinsicStringOf(context));
         return true;
 
     case TokenId::IntrinsicCountOf:

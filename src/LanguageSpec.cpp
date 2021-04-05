@@ -128,6 +128,7 @@ void LanguageSpec::setup()
     keywords.add("@typeof", TokenId::IntrinsicTypeOf);
     keywords.add("@kindof", TokenId::IntrinsicKindOf);
     keywords.add("@countof", TokenId::IntrinsicCountOf);
+    keywords.add("@stringof", TokenId::IntrinsicStringOf);
     keywords.add("@dataof", TokenId::IntrinsicDataOf);
     keywords.add("@mkslice", TokenId::IntrinsicMakeSlice);
     keywords.add("@mkstring", TokenId::IntrinsicMakeString);

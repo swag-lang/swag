@@ -12,6 +12,37 @@ func @setcontext(context: const *swag.Context);
 func @isbytecode()->bool;
 func @compiler()->swag.ICompiler;
 
+func @args()->const [..] string;
+func @seterr(err: string);
+@panic()
+@errormsg()
+
+// Buildin
+
+@spread()
+@init()
+@drop()
+@postmove()
+@postcopy()
+@reloc()
+@sizeof()
+@alignof()
+@offsetof()
+@typeof()
+@kindof()
+@countof()
+@stringof()
+@dataof()
+@mkslice()
+@mkstring()
+@mkany()
+@mkinterface()
+@mkcallback()
+@mkforeign()
+@index
+@isconstexpr
+@err
+
 // Memory related
 
 func @alloc(size: uint)->*void;
@@ -22,6 +53,8 @@ func @memcpy(dst: *void, src: const *void, size: uint);
 func @memmove(dst: *void, src: const *void, size: uint);
 func @memcmp(dst, src: const *void, size: uint)->s32;
 func @cstrlen(value: const *u8)->uint;
+@strcmp()
+@typecmp()
 
 // Atomic operations
 
