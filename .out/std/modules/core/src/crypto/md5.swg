@@ -152,7 +152,7 @@ private func transform(state: [4] u32, block: const *u8)
     state[3] += d
 }
 
-func encode(output: *u8, input: *u32, len: u32)
+private func encode(output: *u8, input: *u32, len: u32)
 {
     i, j := 0
     while j < len
@@ -218,6 +218,9 @@ public impl Md5
     // Update the hash value with 'buffer' content
     func update(using self, data: const [..] u8)
     {
+        // Only deal with 32 bits size
+        debug.assert(@countof(data) <= swag.MaxU32)
+
         input := @dataof(data)
         inputLen := cast(u32) @countof(data)
 
@@ -225,7 +228,7 @@ public impl Md5
         count[0] += (inputLen << 3)
         if count[0] < (inputLen << 3)
             count[1] += 1
-        count[1] += inputLen >>% 29
+        count[1] += inputLen >> 29
 
         var i: u32
 
@@ -248,12 +251,15 @@ public impl Md5
     }
 
     // Returns the md5 value for the given buffer
-    func compute(digest: [16] u8, buffer: const [..] u8)
+    func compute(buffer: const [..] u8)->[16] u8
     {
         var v: Md5
         v.init()
         v.update(buffer)
-        v.final(digest)
+
+        var result: retval
+        v.final(result)
+        return result
     }
 }
 }
