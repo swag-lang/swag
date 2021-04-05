@@ -17,7 +17,7 @@
         @assert(type.rawType == @typeof(s32))
     }
 
-    // You can specify your own type
+    // You can specify your own type after the enum name
     {
         enum Value1: s64
         {
@@ -192,16 +192,15 @@
         var y: Values = Values.A
     }
 
-    // The type of the enum is not necessary on the assignement expression when declaring
-    // a variable
+    // The type of the enum is not necessary in the assignement expression when declaring a variable
     {
         enum Values { A; B; }
         var x: Values = Values.A
-        var y: Values = A
+        var y: Values = A       // Here Values.A is replaces with just A
         @assert(x == y)
     }
 
-    // The enum type is not necessary in a case expression of a switch block
+    // The enum type is not necessary in a case expression of a switch block (it is deduced from the switch expression)
     {
         enum Values { A; B; }
         x := Values.A

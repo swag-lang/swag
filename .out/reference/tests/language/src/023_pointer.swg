@@ -31,4 +31,10 @@
         var ptr: const *u8 = @dataof(str)
         @assert(ptr[0] == "s"'u8)
     }
+
+    {
+        var ptr:  *const *u8        // Normal pointer to a const pointer
+        var ptr1: const *const *u8  // Const pointer to a const pointer
+        var ptr2: const **u8        // Const pointer to a normal pointer
+    }
 }
