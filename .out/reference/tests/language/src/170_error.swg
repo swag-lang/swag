@@ -2,8 +2,7 @@
 
 // A function that can return an error must be marked with 'throw'
 // It must then raise an error with the 'throw' keyword, passing an error message.
-// Note that when an error is raised by a function, the return value is
-// always equal to the default value, depending on the return type.
+// Note that when an error is raised by a function, the return value is always equal to the default value, depending on the return type.
 func count(name: string)->uint throw
 {
     // This function will return 0 in case of an error.
@@ -26,8 +25,7 @@ func myFunc()
     }
 }
 
-// The caller can stop the execution with 'try', and return to its own caller with the same
-// error raised. The function must then also be marked with 'throw'.
+// The caller can stop the execution with 'try', and return to its own caller with the same error raised. The function must then also be marked with 'throw'.
 // Here the caller of 'myFunc1' will have to deal with the error at its turn.
 func myFunc1() throw
 {

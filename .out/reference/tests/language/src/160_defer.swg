@@ -1,7 +1,7 @@
 #test
 {
     // defer is used to call an expression when the current scope is left
-    // it's purely compile time, so it does not evaluate until the block is self
+    // it's purely compile time, so it does not evaluate until the block is left
     {
         v := 0
         defer @assert(v == 1)

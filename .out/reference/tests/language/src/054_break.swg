@@ -17,7 +17,7 @@
         {
             loop 10
             {
-                break
+                break   // Exit the inner loop
             }
 
             cpt += 1

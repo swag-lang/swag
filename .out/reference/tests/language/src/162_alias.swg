@@ -1,6 +1,6 @@
 #test
 {
-    // alias is used to make a shortcut to another name or type
+    // 'alias' is used to make a shortcut to another name or type
     {
         enum RGB { R; G; B; }
         @assert(RGB.R == 0)
@@ -9,7 +9,7 @@
         @assert(Color.G == 1)
     }
 
-    // types alias
+    // Types alias
     {
         alias Float32 = f32
         alias Float64 = f64
@@ -19,7 +19,7 @@
         @assert(@typeof(Float64) == f64)
     }
 
-    // a type alias can be marked with the 'swag.strict' attribute
+    // A type alias can be marked with the 'swag.strict' attribute
     // in that case, implicit cast is not done, but explicit cast is
     // still possible
     {
@@ -29,14 +29,14 @@
         var x: MyType = cast(MyType) 0
     }
 
-    // you can also alias a function
+    // You can also alias a function
     {
         func thisIsABigFunctionName(x: s32) => x * x
         alias myFunc = thisIsABigFunctionName
         @assert(myFunc(4) == 16)
     }
 
-    // you can also alias a variable
+    // You can also alias a variable
     {
         var myLongVariableName: s32 = 0
         alias short = myLongVariableName

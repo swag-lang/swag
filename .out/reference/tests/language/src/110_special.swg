@@ -18,3 +18,17 @@ var G: f32 = ?
 #main
 {
 }
+
+// #init will be called at runtime, during the module initialization
+// You can have as many #init as you want
+// Order of #init in the same module is undefined.
+#init
+{
+}
+
+// #drop will be called at runtime, when module is unloaded
+// You can have as many #drop as you want
+// Order of #drop in the same module is undefined (but is always the inverse order of #init)
+#drop
+{
+}

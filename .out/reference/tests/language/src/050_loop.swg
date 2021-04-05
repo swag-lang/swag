@@ -1,6 +1,7 @@
 #test
 {
     // loop are used to iterate a given amount of time
+    // The loop expression value is evaluated once.
     {
         cpt := 0
         loop 10 cpt += 1
@@ -8,7 +9,6 @@
     }
 
     // The intrinsic @index returns the current index of the loop.
-    // Its return type is 'u32'
     {
         cpt := 0'uint
         loop 5
