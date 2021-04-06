@@ -1,123 +1,174 @@
 #global namespace hash
 #global #[swag.safety("of", false)]
 
+func ROTLEFT(a,b: u32)  => (((a) << (b)) | ((a) >> (32-(b))))
+func ROTRIGHT(a,b: u32) => (((a) >> (b)) | ((a) << (32-(b))))
+func CH(x,y,z: u32)     => (((x) & (y)) ^ (~(x) & (z)))
+func MAJ(x,y,z: u32)    => (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))
+func EP0(x: u32)        => (ROTRIGHT(x,2) ^ ROTRIGHT(x,13) ^ ROTRIGHT(x,22))
+func EP1(x: u32)        => (ROTRIGHT(x,6) ^ ROTRIGHT(x,11) ^ ROTRIGHT(x,25))
+func SIG0(x: u32)       => (ROTRIGHT(x,7) ^ ROTRIGHT(x,18) ^ ((x) >> 3))
+func SIG1(x: u32)       => (ROTRIGHT(x,17) ^ ROTRIGHT(x,19) ^ ((x) >> 10))
+
+const k: [64] u32 = @[
+	0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+	0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+	0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+	0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+	0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+	0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+	0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+	0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+]
+
 public struct Sha256
 {
+    data:       [64] u8
+    state:      [8] u32
+    datalen:    u32
+    bitlen:     u64
 }
 
 public impl Sha256
 {
-    #[swag.inline]
-    private func rotr32(x, n: u32) => (x >> n) | (x << (32 - n))
-
-    // Returns the sha256 value for the given buffer
-    func compute(buffer: const [..] u8)->[8] u32
+    private func transform(using self, buf: const *u8)
     {
-        var result: retval
+        var m: [64] u32
 
-        result[0] = 0x6A09E667
-        result[1] = 0xBB67AE85
-        result[2] = 0x3C6EF372
-        result[3] = 0xA54FF53A
-        result[4] = 0x510E527F
-        result[5] = 0x9B05688C
-        result[6] = 0x1F83D9AB
-        result[7] = 0x5BE0CD19
+        i, j := 0'u32
+        while i < 16
+        {
+            m[i] = (buf[j] << 24) | (buf[j + 1] << 16) | (buf[j + 2] << 8) | (buf[j + 3])
+            i += 1
+            j += 4
+        }
 
-        const k: [64] u32 = @[
-            0x428A2F98, 0x71374491, 0xB5C0FBCF, 0xE9B5DBA5, 0x3956C25B, 0x59F111F1, 0x923F82A4, 0xAB1C5ED5,
-            0xD807AA98, 0x12835B01, 0x243185BE, 0x550C7DC3, 0x72BE5D74, 0x80DEB1FE, 0x9BDC06A7, 0xC19BF174,
-            0xE49B69C1, 0xEFBE4786, 0x0FC19DC6, 0x240CA1CC, 0x2DE92C6F, 0x4A7484AA, 0x5CB0A9DC, 0x76F988DA,
-            0x983E5152, 0xA831C66D, 0xB00327C8, 0xBF597FC7, 0xC6E00BF3, 0xD5A79147, 0x06CA6351, 0x14292967,
-            0x27B70A85, 0x2E1B2138, 0x4D2C6DFC, 0x53380D13, 0x650A7354, 0x766A0ABB, 0x81C2C92E, 0x92722C85,
-            0xA2BFE8A1, 0xA81A664B, 0xC24B8B70, 0xC76C51A3, 0xD192E819, 0xD6990624, 0xF40E3585, 0x106AA070,
-            0x19A4C116, 0x1E376C08, 0x2748774C, 0x34B0BCB5, 0x391C0CB3, 0x4ED8AA4A, 0x5B9CCA4F, 0x682E6FF3,
-            0x748F82EE, 0x78A5636F, 0x84C87814, 0x8CC70208, 0x90BEFFFA, 0xA4506CEB, 0xBEF9A3F7, 0xC67178F2
-        ]
+        while i < 64
+        {
+            m[i] = SIG1(m[i - 2]) + m[i - 7] + SIG0(m[i - 15]) + m[i - 16]
+            i += 1
+        }
 
+        a := state[0]
+        b := state[1]
+        c := state[2]
+        d := state[3]
+        e := state[4]
+        f := state[5]
+        g := state[6]
+        h := state[7]
+
+        i = 0
+        while i < 64
+        {
+            t1 := h + EP1(e) + CH(e,f,g) + k[i] + m[i]
+            t2 := EP0(a) + MAJ(a,b,c)
+            h = g
+            g = f
+            f = e
+            e = d + t1
+            d = c
+            c = b
+            b = a
+            a = t1 + t2
+            i += 1
+        }
+
+        state[0] += a
+        state[1] += b
+        state[2] += c
+        state[3] += d
+        state[4] += e
+        state[5] += f
+        state[6] += g
+        state[7] += h
+    }
+
+    func init(using self)
+    {
+        @init(self)
+        state[0] = 0x6a09e667
+        state[1] = 0xbb67ae85
+        state[2] = 0x3c6ef372
+        state[3] = 0xa54ff53a
+        state[4] = 0x510e527f
+        state[5] = 0x9b05688c
+        state[6] = 0x1f83d9ab
+        state[7] = 0x5be0cd19
+    }
+
+    func final(using self, hash: *u32)
+    {
+        i := datalen
+
+        // Pad whatever data is left in the buffer.
+        if (datalen < 56)
+        {
+            data[i] = 0x80
+            i += 1
+            while i < 56
+            {
+                data[i] = 0x00
+                i += 1
+            }
+        }
+        else
+        {
+            data[i] = 0x80
+            i += 1
+            while i < 64
+            {
+                data[i] = 0x00
+                i += 1
+            }
+
+            transform(data)
+        }
+
+        // Append to the padding the total message's length in bits and transform.
+        bitlen += datalen * 8
+        data[63] = bitcast(u8) (bitlen)
+        data[62] = bitcast(u8) (bitlen >> 8)
+        data[61] = bitcast(u8) (bitlen >> 16)
+        data[60] = bitcast(u8) (bitlen >> 24)
+        data[59] = bitcast(u8) (bitlen >> 32)
+        data[58] = bitcast(u8) (bitlen >> 40)
+        data[57] = bitcast(u8) (bitlen >> 48)
+        data[56] = bitcast(u8) (bitlen >> 56)
+        transform(data)
+
+        // Copy the result
+        memory.copy(hash, &state[0], @sizeof(state))
+    }
+
+    func update(using self, buffer: const [..] u8)
+    {
         debug.assert(@countof(buffer) <= swag.MaxU32)
         buf := @dataof(buffer)
         len := cast(u32) @countof(buffer)
 
-        messageBits  := len * 8
-        adjustedBits := messageBits + 1 + 64
-        paddedBits   := adjustedBits + (512 - (adjustedBits % 512))
-        paddedLength := paddedBits / 8
-
-        rounds := paddedLength / 64
-        appendedOne := false
-
-        loop round: rounds
+        loop i: len
         {
-            var w: [64] u32
-            w8 := cast(*u8) &w[0]
-
-            offset := round * 64
-            if offset < len
-                memory.copy(&w[0], buf + offset, cast(uint) math.min(len - offset, 64))
-
-            if !appendedOne && len < offset + 64
+            data[datalen] = buf[i]
+            datalen += 1
+            if datalen == 64
             {
-                if offset < len
-                    w8[len - offset] = 0x80
-                else
-                    w[0] = 0x80000000
-                appendedOne = true
+                transform(data)
+                bitlen += 512
+                datalen = 0
             }
-
-            if round == rounds - 1
-            {
-                w8[63] = cast(u8) (messageBits & 0xFF)
-                w8[62] = cast(u8) ((messageBits >> 8) & 0xFF)
-                w8[61] = cast(u8) ((messageBits >> 16) & 0xFF)
-                w8[60] = cast(u8) ((messageBits >> 24) & 0xFF)
-            }
-
-            for i := 16; i < 64; i += 1
-            {
-                s0 := rotr32(w[i - 15], 7) ^ rotr32(w[i - 15], 18) ^ (w[i - 15] >> 3)
-                s1 := rotr32(w[i - 2], 17) ^ rotr32(w[i - 2], 19) ^ (w[i - 2] >> 10)
-                w[i] = w[i - 16] + s0 + w[i - 7] + s1
-            }
-
-            a := result[0]
-            b := result[1]
-            c := result[2]
-            d := result[3]
-            e := result[4]
-            f := result[5]
-            g := result[6]
-            h := result[7]
-
-            loop i: 64
-            {
-                s1   := rotr32(e, 6) ^ rotr32(e, 11) ^ rotr32(e, 25)
-                ch   := (e & f) ^ ((~e) & g)
-                tmp1 := h + s1 + ch + k[i] + w[i]
-                s0   := rotr32(a, 2) ^ rotr32(a, 13) ^ rotr32(a, 22)
-                maj  := (a & b) ^ (a & c) ^ (b & c)
-                tmp2 := s0 + maj
-
-                h = g
-                g = f
-                f = e
-                e = d + tmp1
-                d = c
-                c = b
-                b = a
-                a = tmp1 + tmp2
-            }
-
-            result[0] += a
-            result[1] += b
-            result[2] += c
-            result[3] += d
-            result[4] += e
-            result[5] += f
-            result[6] += g
-            result[7] += h
         }
+    }
 
+    // Returns the sha256 value for the given buffer
+    func compute(buffer: const [..] u8)->[8] u32
+    {
+        var v: Sha256
+        v.init()
+        v.update(buffer)
+
+        var result: retval
+        v.final(&result[0])
         return result
     }
 }
