@@ -190,7 +190,7 @@ public struct Md5
 
 public impl Md5
 {
-    // Call to finalize the computation, when you are done
+    // Finalize the computation
     func final(using self, digest: [16] u8)
     {
         var bits: [8] u8

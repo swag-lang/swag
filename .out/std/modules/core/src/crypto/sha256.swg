@@ -3,14 +3,14 @@
 
 #[swag.inline]
 {
-    func rotLeft(a, b: u32)  => (((a) << (b)) | ((a) >> (32-(b))))
-    func rotRight(a, b: u32) => (((a) >> (b)) | ((a) << (32-(b))))
-    func ch(x, y, z: u32)    => (((x) & (y)) ^ (~(x) & (z)))
-    func maj(x, y, z: u32)   => (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))
-    func ep0(x: u32)         => (rotRight(x,2) ^ rotRight(x,13) ^ rotRight(x,22))
-    func ep1(x: u32)         => (rotRight(x,6) ^ rotRight(x,11) ^ rotRight(x,25))
-    func sig0(x: u32)        => (rotRight(x,7) ^ rotRight(x,18) ^ ((x) >> 3))
-    func sig1(x: u32)        => (rotRight(x,17) ^ rotRight(x,19) ^ ((x) >> 10))
+    func rotLeft(a, b: u32)  => ((a << b) | (a >> (32 - b)))
+    func rotRight(a, b: u32) => ((a >> b) | (a << (32 - b)))
+    func ch(x, y, z: u32)    => ((x & y) ^ (~x & z))
+    func maj(x, y, z: u32)   => ((x & y) ^ (x & z) ^ (y & z))
+    func ep0(x: u32)         => (rotRight(x, 2) ^ rotRight(x, 13) ^ rotRight(x, 22))
+    func ep1(x: u32)         => (rotRight(x, 6) ^ rotRight(x, 11) ^ rotRight(x, 25))
+    func sig0(x: u32)        => (rotRight(x, 7) ^ rotRight(x, 18) ^ (x >> 3))
+    func sig1(x: u32)        => (rotRight(x, 17) ^ rotRight(x, 19) ^ (x >> 10))
 }
 
 const k: [64] u32 = @[
@@ -64,8 +64,8 @@ public impl Sha256
         i = 0
         while i < 64
         {
-            t1 := h + ep1(e) + ch(e,f,g) + k[i] + m[i]
-            t2 := ep0(a) + maj(a,b,c)
+            t1 := h + ep1(e) + ch(e, f, g) + k[i] + m[i]
+            t2 := ep0(a) + maj(a, b, c)
             h = g
             g = f
             f = e
@@ -87,24 +87,10 @@ public impl Sha256
         state[7] += h
     }
 
-    func init(using self)
-    {
-        @init(self)
-        state[0] = 0x6a09e667
-        state[1] = 0xbb67ae85
-        state[2] = 0x3c6ef372
-        state[3] = 0xa54ff53a
-        state[4] = 0x510e527f
-        state[5] = 0x9b05688c
-        state[6] = 0x1f83d9ab
-        state[7] = 0x5be0cd19
-    }
-
+    // Finalize the computation
     func final(using self, hash: *u32)
     {
         i := datalen
-
-        // Pad whatever data is left in the buffer.
         if (datalen < 56)
         {
             data[i] = 0x80
@@ -128,7 +114,6 @@ public impl Sha256
             transform(data)
         }
 
-        // Append to the padding the total message's length in bits and transform.
         bitlen += datalen * 8
         data[63] = bitcast(u8) (bitlen)
         data[62] = bitcast(u8) (bitlen >> 8)
@@ -140,10 +125,24 @@ public impl Sha256
         data[56] = bitcast(u8) (bitlen >> 56)
         transform(data)
 
-        // Copy the result
         memory.copy(hash, &state[0], @sizeof(state))
     }
 
+    // Initialize the hashing sequence
+    func init(using self)
+    {
+        @init(self)
+        state[0] = 0x6a09e667
+        state[1] = 0xbb67ae85
+        state[2] = 0x3c6ef372
+        state[3] = 0xa54ff53a
+        state[4] = 0x510e527f
+        state[5] = 0x9b05688c
+        state[6] = 0x1f83d9ab
+        state[7] = 0x5be0cd19
+    }
+
+    // Update the hash value with 'buffer' content
     func update(using self, buffer: const [..] u8)
     {
         debug.assert(@countof(buffer) <= swag.MaxU32)
