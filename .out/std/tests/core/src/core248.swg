@@ -15,4 +15,11 @@ using core, hash
         visit c, i: digest
             @assert(c == r[i])
     }
+
+    {
+        digest := Sha256.compute("toto la foule")
+        const r = @[0x4BA03FC6, 0x097E1248, 0x0C33D8C8, 0x8962F167, 0xD5CBF6D9, 0xA6CC0023, 0xBCD76B89, 0xE89B48F5]
+        visit c, i: digest
+            @assert(c == r[i])
+    }
 }
