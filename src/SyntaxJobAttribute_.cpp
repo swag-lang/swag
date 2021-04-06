@@ -137,7 +137,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
     return true;
 }
 
-bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
+bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result, bool single)
 {
     auto attrBlockNode = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
     if (result)
@@ -160,6 +160,8 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+        if (single)
+            break;
     }
 
     SWAG_VERIFY(!attrBlockNode->childs.empty(), syntaxError(attrBlockNode, "empty attribute"));

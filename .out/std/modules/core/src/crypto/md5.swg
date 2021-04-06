@@ -1,6 +1,6 @@
 #global namespace hash
-#[swag.safety("of", false)]
-{
+#global #[swag.safety("of", false)]
+
 #[swag.inline]
 private func f1(x, y, z: u32)->u32
 {
@@ -259,5 +259,4 @@ public impl Md5
         v.final(result)
         return result
     }
-}
 }

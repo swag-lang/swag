@@ -143,7 +143,7 @@ struct SyntaxJob : public Job
     bool doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false);
     bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false);
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);
-    bool doAttrUse(AstNode* parent, AstNode** result = nullptr);
+    bool doAttrUse(AstNode*parent, AstNode**result = nullptr, bool single = false);
     void registerSubDecl(AstNode* subDecl);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedStatement(AstNode* parent, AstNode** result = nullptr);
@@ -183,7 +183,7 @@ struct SyntaxJob : public Job
     Scope*              currentStructScope     = nullptr;
     Scope*              currentSelfStructScope = nullptr;
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
-    AstTryCatchAssume*        currentTryCatchAssume       = nullptr;
+    AstTryCatchAssume*  currentTryCatchAssume  = nullptr;
     Token*              currentTokenLocation   = nullptr;
     AstNode*            currentMainNode        = nullptr;
     AstInline*          currentInline          = nullptr;
@@ -204,7 +204,7 @@ struct SyntaxJob : public Job
         currentCompilerIfBlock = nullptr;
         currentMainNode        = nullptr;
         currentInline          = nullptr;
-        currentTryCatchAssume       = nullptr;
+        currentTryCatchAssume  = nullptr;
         currentTokenLocation   = nullptr;
         currentFlags           = 0;
         moduleSpecified        = false;

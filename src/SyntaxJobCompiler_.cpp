@@ -505,7 +505,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("after '#global testerror"));
+        SWAG_CHECK(eatSemiCol("after '#global testerror'"));
     }
 
     /////////////////////////////////
@@ -536,19 +536,20 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("after '#global testwarning"));
+        SWAG_CHECK(eatSemiCol("after '#global testwarning'"));
     }
 
     /////////////////////////////////
     else if (token.text == "#[")
     {
         AstNode* resultNode;
-        SWAG_CHECK(doAttrUse(sourceFile->astRoot, &resultNode));
+        SWAG_CHECK(doAttrUse(sourceFile->astRoot, &resultNode, true));
         auto attrUse          = (AstAttrUse*) resultNode;
         attrUse->isGlobal     = true;
         attrUse->ownerAttrUse = sourceFile->astAttrUse;
         attrUse->flags |= AST_GLOBAL_NODE;
         sourceFile->astAttrUse = attrUse;
+        SWAG_CHECK(eatSemiCol("after '#global attribute'"));
     }
 
     /////////////////////////////////
