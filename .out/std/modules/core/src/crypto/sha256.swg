@@ -1,14 +1,17 @@
 #global namespace hash
 #global #[swag.safety("of", false)]
 
-func ROTLEFT(a,b: u32)  => (((a) << (b)) | ((a) >> (32-(b))))
-func ROTRIGHT(a,b: u32) => (((a) >> (b)) | ((a) << (32-(b))))
-func CH(x,y,z: u32)     => (((x) & (y)) ^ (~(x) & (z)))
-func MAJ(x,y,z: u32)    => (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))
-func EP0(x: u32)        => (ROTRIGHT(x,2) ^ ROTRIGHT(x,13) ^ ROTRIGHT(x,22))
-func EP1(x: u32)        => (ROTRIGHT(x,6) ^ ROTRIGHT(x,11) ^ ROTRIGHT(x,25))
-func SIG0(x: u32)       => (ROTRIGHT(x,7) ^ ROTRIGHT(x,18) ^ ((x) >> 3))
-func SIG1(x: u32)       => (ROTRIGHT(x,17) ^ ROTRIGHT(x,19) ^ ((x) >> 10))
+#[swag.inline]
+{
+    func rotLeft(a, b: u32)  => (((a) << (b)) | ((a) >> (32-(b))))
+    func rotRight(a, b: u32) => (((a) >> (b)) | ((a) << (32-(b))))
+    func ch(x, y, z: u32)    => (((x) & (y)) ^ (~(x) & (z)))
+    func maj(x, y, z: u32)   => (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))
+    func ep0(x: u32)         => (rotRight(x,2) ^ rotRight(x,13) ^ rotRight(x,22))
+    func ep1(x: u32)         => (rotRight(x,6) ^ rotRight(x,11) ^ rotRight(x,25))
+    func sig0(x: u32)        => (rotRight(x,7) ^ rotRight(x,18) ^ ((x) >> 3))
+    func sig1(x: u32)        => (rotRight(x,17) ^ rotRight(x,19) ^ ((x) >> 10))
+}
 
 const k: [64] u32 = @[
 	0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
@@ -45,7 +48,7 @@ public impl Sha256
 
         while i < 64
         {
-            m[i] = SIG1(m[i - 2]) + m[i - 7] + SIG0(m[i - 15]) + m[i - 16]
+            m[i] = sig1(m[i - 2]) + m[i - 7] + sig0(m[i - 15]) + m[i - 16]
             i += 1
         }
 
@@ -61,8 +64,8 @@ public impl Sha256
         i = 0
         while i < 64
         {
-            t1 := h + EP1(e) + CH(e,f,g) + k[i] + m[i]
-            t2 := EP0(a) + MAJ(a,b,c)
+            t1 := h + ep1(e) + ch(e,f,g) + k[i] + m[i]
+            t2 := ep0(a) + maj(a,b,c)
             h = g
             g = f
             f = e
