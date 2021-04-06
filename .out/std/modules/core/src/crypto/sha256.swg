@@ -163,7 +163,8 @@ public impl Sha256
     }
 
     // Returns the sha256 value for the given buffer
-    func compute(buffer: const [..] u8)->[8] u32
+    public alias Digest = [8] u32
+    func compute(buffer: const [..] u8)->Digest
     {
         var v: Sha256
         v.init()
