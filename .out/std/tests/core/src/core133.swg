@@ -9,7 +9,7 @@ using core
 
     loop 10
     {
-        result := sort.find(@mkslice(arr.buffer, arr.count), cast(u32) @index)
+        result := search.sorted(@mkslice(arr.buffer, arr.count), @index)
         @assert(result.success)
         @assert(result.index == @index)
     }
