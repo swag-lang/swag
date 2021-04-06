@@ -22,8 +22,8 @@ func(T) contains(slice: const [..] T, value: T)->bool
 {
     visit v: slice
     {
-        if(v == value)
-            return true;
+        if v == value
+            return true
     }
 
     return false

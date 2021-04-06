@@ -631,8 +631,8 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         return;
     }
 
-    // If function is a generic instantation, then we do not authorize CASTFLAG_AUTO_OPCAST (opCast), because
-    // it can lead to ambiguities depending on the instantation order :
+    // If function is a generic instantiation, then we do not authorize CASTFLAG_AUTO_OPCAST (opCast), because
+    // it can lead to ambiguities depending on the instantiation order :
     // First we instantate A, then B, then we call A which has an opCast to B (2558)
     uint32_t castFlags = CASTFLAG_AUTO_OPCAST;
     if (declNode && declNode->flags & AST_IS_GENERIC)

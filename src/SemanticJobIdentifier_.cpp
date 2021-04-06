@@ -1766,7 +1766,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         return cannotMatchIdentifierError(context, overloads, node);
     }
 
-    // Multi instantation in case of #selectif
+    // Multi instantiation in case of #selectif
     if (genericMatchesSI.size() && matches.empty() && !prevMatchesCount)
     {
         if (justCheck)

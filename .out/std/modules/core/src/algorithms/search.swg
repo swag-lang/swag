@@ -38,11 +38,11 @@ func(T) sorted(values: const [..] T, value: T) -> {index: uint, success: bool}
 func(T) linear(values: const [..] T, value: T) -> {index: uint, success: bool}
 {
     var result: retval
-    visit v: values
+    visit v, i: values
     {
         if v == value
         {
-            result.index = mid
+            result.index = i
             result.success = true
             return result
         }
