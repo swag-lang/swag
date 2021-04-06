@@ -66,12 +66,16 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         ptrType->computeName();
 
         // Type is constant if we take address of a readonly variable
-        if (child->resolvedSymbolOverload &&
-            (child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN) &&
-            (child->resolvedSymbolOverload->typeInfo->kind != TypeInfoKind::Array))
-            ptrType->setConst();
-        if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->typeInfo->isNative(NativeTypeKind::String))
-            ptrType->setConst();
+        if (child->resolvedSymbolOverload)
+        {
+            auto typeResolved = TypeManager::concreteType(child->resolvedSymbolOverload->typeInfo, CONCRETE_ALIAS);
+
+            if ((child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN) && (typeResolved->kind != TypeInfoKind::Array))
+                ptrType->setConst();
+
+            if (typeResolved->isNative(NativeTypeKind::String))
+                ptrType->setConst();
+        }
 
         node->typeInfo = ptrType;
     }
