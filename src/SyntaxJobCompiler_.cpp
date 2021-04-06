@@ -543,7 +543,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     else if (token.text == "#[")
     {
         AstNode* resultNode;
-        SWAG_CHECK(doAttrUse(sourceFile->astRoot, &resultNode, true));
+        SWAG_CHECK(doAttrUse(parent, &resultNode, true));
         auto attrUse          = (AstAttrUse*) resultNode;
         attrUse->isGlobal     = true;
         attrUse->ownerAttrUse = sourceFile->astAttrUse;
