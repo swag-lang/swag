@@ -91,9 +91,9 @@ func(T) sort(values: [..] T, cb: func(T, T)->s32 = null)
 {
     lambda := cb ?? @(x, y: T)->s32 => x <=> y
     if(@countof(values) <= 10)
-        sortInsertion(values, lambda)
+        insertionSort(values, lambda)
     else
-        sortQuick(values, lambda)
+        quickSort(values, lambda)
 }
 
 // Returns true if the slice is sorted
