@@ -190,8 +190,10 @@ public struct Md5
 
 public impl Md5
 {
+    public alias Digest = [16] u8
+
     // Finalize the computation
-    func final(using self, digest: [16] u8)
+    func final(using self, digest: Digest)
     {
         var bits: [8] u8
         encode(&bits[0], count, 8)
@@ -249,7 +251,7 @@ public impl Md5
     }
 
     // Returns the md5 value for the given buffer
-    func compute(buffer: const [..] u8)->[16] u8
+    func compute(buffer: const [..] u8)->Digest
     {
         var v: Md5
         v.init()

@@ -34,6 +34,8 @@ public struct Sha256
 
 public impl Sha256
 {
+    public alias Digest = [8] u32
+
     private func transform(using self, buf: const *u8)
     {
         var m: [64] u32
@@ -88,7 +90,7 @@ public impl Sha256
     }
 
     // Finalize the computation
-    func final(using self, hash: *u32)
+    func final(using self, hash: Digest)
     {
         i := datalen
         if datalen < 56
@@ -163,7 +165,6 @@ public impl Sha256
     }
 
     // Returns the sha256 value for the given buffer
-    public alias Digest = [8] u32
     func compute(buffer: const [..] u8)->Digest
     {
         var v: Sha256
@@ -171,7 +172,7 @@ public impl Sha256
         v.update(buffer)
 
         var result: retval
-        v.final(&result[0])
+        v.final(result)
         return result
     }
 }
