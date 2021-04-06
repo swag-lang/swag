@@ -1113,7 +1113,17 @@ namespace Ast
             if (typeNode->arrayDim == UINT8_MAX)
                 CONCAT_FIXED_STR(concat, "[] ");
             else if (typeNode->arrayDim)
-                concat.addStringFormat("[%u] ", typeNode->arrayDim);
+            {
+                CONCAT_FIXED_STR(concat, "[");
+                for (int i = 0; i < typeNode->arrayDim; i++)
+                {
+                    if (i)
+                        CONCAT_FIXED_STR(concat, ", ");
+                    SWAG_CHECK(output(context, concat, node->childs[i]));
+                }
+
+                CONCAT_FIXED_STR(concat, "] ");
+            }
 
             for (int i = 0; i < typeNode->ptrCount; i++)
                 concat.addChar('*');
