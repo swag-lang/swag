@@ -91,7 +91,7 @@ public impl Sha256
     func final(using self, hash: *u32)
     {
         i := datalen
-        if (datalen < 56)
+        if datalen < 56
         {
             data[i] = 0x80
             i += 1
