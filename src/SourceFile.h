@@ -46,7 +46,8 @@ struct SourceFile : public File
     Utf8           externalContent;
     Utf8           scopeName;
     Utf8           forceNamespace;
-    bool           isExternal = false;
+    bool           isExternal            = false;
+    SourceFile*    fileForSourceLocation = nullptr;
 
     uint64_t    writeTime            = 0;
     int         numErrors            = 0;

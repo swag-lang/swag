@@ -267,7 +267,8 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     }
     else
     {
-        tokenizer.location = parent->token.startLocation;
+        sourceFile->fileForSourceLocation = parent->sourceFile;
+        tokenizer.location                = parent->token.startLocation;
     }
 
     ScopedFlags scopedFlags(this, AST_GENERATED | (parent->flags & (AST_RUN_BLOCK | AST_NO_BACKEND)));

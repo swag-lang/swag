@@ -34,7 +34,12 @@ const char* g_ByteCodeOpDisplay[] = {
 
 void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force)
 {
-    *file     = ip && ip->node && ip->node->sourceFile ? ip->node->sourceFile : bc->sourceFile;
+    *file = ip && ip->node && ip->node->sourceFile ? ip->node->sourceFile : bc->sourceFile;
+
+    // When generated private code, without logging to generated file, then we must take the original source file
+    if ((*file) && (*file)->fileForSourceLocation)
+        *file = (*file)->fileForSourceLocation;
+
     *location = force ? ip->location : nullptr;
 
     if (!ip || !ip->node || !ip->node->ownerScope || ip->node->kind == AstNodeKind::FuncDecl)
