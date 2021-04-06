@@ -1,9 +1,9 @@
 #global export
-#global namespace search
+#global namespace slice
 
 // Find 'value' in a slice by performing a binary search.
 // The slice must be sorted in ascending order
-func(T) sorted(values: const [..] T, value: T) -> {index: uint, success: bool}
+func(T) findSorted(values: const [..] T, value: T) -> {index: uint, success: bool}
 {
     var result: retval
 
@@ -35,7 +35,7 @@ func(T) sorted(values: const [..] T, value: T) -> {index: uint, success: bool}
 
 // Find 'value' in a slice by performing a linear search.
 // O^n, but slice does not have to be sorted
-func(T) linear(values: const [..] T, value: T) -> {index: uint, success: bool}
+func(T) findLinear(values: const [..] T, value: T) -> {index: uint, success: bool}
 {
     var result: retval
     visit v, i: values
@@ -49,4 +49,16 @@ func(T) linear(values: const [..] T, value: T) -> {index: uint, success: bool}
     }
 
     return result
+}
+
+// Returns true if the given slice contains the 'value'
+func(T) contains(slice: const [..] T, value: T)->bool
+{
+    visit v: slice
+    {
+        if v == value
+            return true
+    }
+
+    return false
 }

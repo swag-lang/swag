@@ -5,7 +5,7 @@ using core
 {
     var arr: Array'u32
     loop 100 arr.add(cast(u32) @index)
-    sort.quick(@mkslice(arr.buffer, cast(uint) arr.count), @(x, y) => y <=> x)
+    slice.quickSort(@mkslice(arr.buffer, cast(uint) arr.count), @(x, y) => y <=> x)
     loop i: arr
     {
         if i != @countof(arr) - 1

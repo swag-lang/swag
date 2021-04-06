@@ -129,7 +129,7 @@ func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'uint)
         res := utf8.decodeChar(@mkslice(scan, remain))
         if !res.eat
             break
-        if contains(what, res.c)
+        if slice.contains(what, res.c)
             return idx
         scan, idx += res.eat
         remain -= res.eat
@@ -185,13 +185,13 @@ func lastIndexOf(src: const [..] u8, what: const [..] char)->uint
     byteIdx := length
     while true
     {
-        slice := @mkslice(dataof, byteIdx)
-        (c, eat) := decodeLastChar(slice)
+        sl := @mkslice(dataof, byteIdx)
+        (c, eat) := decodeLastChar(sl)
         if eat == 0
             return swag.MaxUINT
 
         byteIdx -= eat
-        if contains(what, c)
+        if slice.contains(what, c)
             return byteIdx
     }
 
@@ -300,9 +300,9 @@ func split(src: const [..] u8, separators: const [..] char) -> Array'string
         // Remove separator at the start
         while true
         {
-            slice := @mkslice(ptr, count)
-            (c, eat) = utf8.decodeChar(slice)
-            if eat == 0 || !contains(separators, c)
+            sl := @mkslice(ptr, count)
+            (c, eat) = utf8.decodeChar(sl)
+            if eat == 0 || !slice.contains(separators, c)
                 break
             startbyteIdx += eat
             ptr += eat
@@ -315,9 +315,9 @@ func split(src: const [..] u8, separators: const [..] char) -> Array'string
         endbyteIdx := startbyteIdx
         while true
         {
-            slice := @mkslice(ptr, count)
-            (c, eat) = utf8.decodeChar(slice)
-            if eat == 0 || contains(separators, c)
+            sl := @mkslice(ptr, count)
+            (c, eat) = utf8.decodeChar(sl)
+            if eat == 0 || slice.contains(separators, c)
                 break
             endbyteIdx += eat
             ptr += eat

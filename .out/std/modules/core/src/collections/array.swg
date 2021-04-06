@@ -397,7 +397,7 @@ impl Array
     func sort(using self, cb: func(T, T)->s32 = null)
     {
         lambda := cb ?? @(x, y: T)->s32 => x <=> y
-        sort.slice(@mkslice(buffer, count), lambda)
+        slice.sort(@mkslice(buffer, count), lambda)
     }
 
     // Returns the frist element

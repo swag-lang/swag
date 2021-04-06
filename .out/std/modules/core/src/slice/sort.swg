@@ -1,8 +1,8 @@
 #global export
-#global namespace sort
+#global namespace slice
 
 // Insertion sort algorithm (slow)
-func(T) insertion(values: [..] T, cb: func(T, T)->s32)
+func(T) insertionSort(values: [..] T, cb: func(T, T)->s32)
 {
     buffer := @dataof(values)
     count := @countof(values)
@@ -17,7 +17,7 @@ func(T) insertion(values: [..] T, cb: func(T, T)->s32)
 }
 
 // Quick sort algorithm
-func(T) quick(values: [..] T, cb: func(T, T)->s32)
+func(T) quickSort(values: [..] T, cb: func(T, T)->s32)
 {
     count := @countof(values)
     if(count == 0)
@@ -32,7 +32,7 @@ func(T) quick(values: [..] T, cb: func(T, T)->s32)
         // If range is too small, simple sort
         if end - begin <= 10
         {
-            insertion(@mkslice(buffer + begin, (end - begin) + 1), cb)
+            insertionSort(@mkslice(buffer + begin, (end - begin) + 1), cb)
             return
         }
 
@@ -65,14 +65,14 @@ func(T) quick(values: [..] T, cb: func(T, T)->s32)
             {
                 first := begin
                 last := low - 1
-                sort.quick(@mkslice(buffer + first, 1 + (last - first)), cb);
+                quickSort(@mkslice(buffer + first, 1 + (last - first)), cb);
                 begin = high + 1
             }
             else
             {
                 first := high + 1
                 last := end
-                sort.quick(@mkslice(buffer + first, 1 + (last - first)), cb);
+                quickSort(@mkslice(buffer + first, 1 + (last - first)), cb);
                 end = low - 1
             }
         }
@@ -87,13 +87,13 @@ func(T) quick(values: [..] T, cb: func(T, T)->s32)
 
 // Sort the slice, by picking the right algorithm depending on the type and the
 // number of elements
-func(T) slice(values: [..] T, cb: func(T, T)->s32 = null)
+func(T) sort(values: [..] T, cb: func(T, T)->s32 = null)
 {
     lambda := cb ?? @(x, y: T)->s32 => x <=> y
     if(@countof(values) <= 10)
-        insertion(values, lambda)
+        sortInsertion(values, lambda)
     else
-        quick(values, lambda)
+        sortQuick(values, lambda)
 }
 
 // Returns true if the slice is sorted
