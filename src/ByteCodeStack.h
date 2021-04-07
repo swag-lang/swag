@@ -36,6 +36,7 @@ struct ByteCodeStack
 
     void     reportError(const Utf8& msg);
     uint32_t maxLevel(ByteCodeRunContext* context);
+    void     logStep(int level, bool current, ByteCodeStackStep& step);
     void     log();
 
     vector<ByteCodeStackStep> steps;

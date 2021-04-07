@@ -95,11 +95,8 @@ static void printInstruction(ByteCodeRunContext* context, ByteCode* bc, ByteCode
         ip--;
     }
 
-    uint32_t    lastLine = UINT32_MAX;
-    SourceFile* lastFile = nullptr;
     for (int i = 0; i < cpt; i++)
     {
-        bc->printSourceCode(ip, &lastLine, &lastFile);
         bc->printInstruction(ip, count == 1 ? nullptr : context->debugCxtIp);
         ip++;
     }
@@ -197,7 +194,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
     if (!zapCurrentIp)
     {
-        g_Log.eol();
         computeCxt(context);
         printInstruction(context, context->bc, ip);
 
@@ -215,11 +211,15 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             line.trim();
 
             // Split in command + parameters
+            Utf8         cmd;
             vector<Utf8> cmds;
-            tokenize(line, ' ', cmds);
-            for (auto& c : cmds)
-                c.trim();
-            auto cmd = cmds[0];
+            if (!line.empty())
+            {
+                tokenize(line, ' ', cmds);
+                for (auto& c : cmds)
+                    c.trim();
+                cmd = cmds[0];
+            }
 
             // Help
             if (cmd == "?")
@@ -250,6 +250,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 g_Log.print("?                  print this list of commands\n");
                 g_Log.print("q, quit            quit the compiler\n");
                 g_Log.eol();
+                continue;
+            }
+
+            if (cmd == "list" && cmds.size() == 1)
+            {
+                context->debugCxtBc->printSourceCode(context->debugCxtIp);
                 continue;
             }
 

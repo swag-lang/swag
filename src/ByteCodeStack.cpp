@@ -22,96 +22,95 @@ uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* context)
     return (uint32_t) steps.size();
 }
 
+void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
+{
+    auto bc = step.bc;
+    auto ip = step.ip;
+
+    if (!ip)
+    {
+        Diagnostic diag{"<foreign code>", DiagnosticLevel::CallStack};
+        diag.stackLevel        = level;
+        diag.currentStackLevel = current;
+        diag.report();
+        return;
+    }
+
+    if (!ip->node)
+        return;
+
+    // Current ip
+    auto sourceFile = ip->node->sourceFile;
+    auto location   = ip->location;
+    auto fct        = ip->node->ownerInline && ip->node->ownerInline->ownerFct == ip->node->ownerFct ? ip->node->ownerInline->func : ip->node->ownerFct;
+    if (fct)
+    {
+        Diagnostic diag{sourceFile, *location, fct->getNameForMessage().c_str(), DiagnosticLevel::CallStack};
+        diag.stackLevel        = level;
+        diag.currentStackLevel = current;
+        diag.report();
+    }
+    else
+    {
+        Diagnostic diag{sourceFile, *location, bc->name, DiagnosticLevel::CallStack};
+        diag.stackLevel        = level;
+        diag.currentStackLevel = current;
+        diag.report();
+    }
+
+    // #mixin
+    if (ip->node->flags & AST_IN_MIXIN)
+    {
+        auto owner = ip->node->parent;
+        while (owner && owner->kind != AstNodeKind::CompilerMixin)
+            owner = owner->parent;
+        if (owner)
+        {
+            fct = owner->ownerInline && owner->ownerInline->ownerFct == ip->node->ownerFct ? owner->ownerInline->func : owner->ownerFct;
+            Diagnostic diag{owner->sourceFile, owner->token.startLocation, fct->getNameForMessage().c_str(), DiagnosticLevel::CallStackInlined};
+            diag.report();
+        }
+    }
+
+    // Inline chain
+    auto parent = ip->node->ownerInline;
+    while (parent && parent->ownerFct == ip->node->ownerFct)
+    {
+        fct = parent->ownerInline && parent->ownerInline->ownerFct == ip->node->ownerFct ? parent->ownerInline->func : parent->ownerFct;
+        Diagnostic diag{parent->sourceFile, parent->token.startLocation, fct->getNameForMessage().c_str(), DiagnosticLevel::CallStackInlined};
+        diag.report();
+        parent = parent->ownerInline;
+    }
+}
+
 void ByteCodeStack::log()
 {
     if (steps.empty())
         return;
 
-    int maxSteps = min((int) steps.size() - 1, 20);
-    for (int i = maxSteps + 1; i >= 0; i--)
+    // Add one step for the current context if necessary
+    auto copySteps = steps;
+    if (currentContext)
     {
-        ByteCodeInstruction* ip;
-        ByteCode*            bc;
-        if (i == maxSteps + 1)
+        auto& back = copySteps.back();
+        if (back.bc != currentContext->bc || back.ip != currentContext->ip)
         {
-            if (!currentContext)
-                continue;
-            bc = currentContext->bc;
-            ip = currentContext->ip;
+            ByteCodeStackStep step;
+            step.bc = currentContext->bc;
+            step.ip = currentContext->ip;
+            copySteps.push_back(step);
         }
-        else
-        {
-            bc = steps[i].bc;
-            ip = steps[i].ip;
+    }
 
-            // Remove that step if it's the same as the current context
-            if (i == maxSteps)
-            {
-                if (currentContext && bc == currentContext->bc && ip == currentContext->ip)
-                {
-                    steps.pop_back();
-                    continue;
-                }
-            }
-        }
+    int maxSteps = 20;
+    for (int i = (int) copySteps.size() - 1; i >= 0; i--)
+    {
+        maxSteps--;
+        if (maxSteps == 0)
+            break;
 
-        if (!ip)
-        {
-            Diagnostic diag{"<foreign code>", DiagnosticLevel::CallStack};
-            diag.stackLevel = i;
-            if (currentContext && currentContext->debugOn)
-                diag.currentStackLevel = diag.stackLevel == steps.size() - currentContext->debugStackFrameOffset;
-            diag.report();
-            continue;
-        }
-
-        if (!ip->node)
-            continue;
-
-        // Current ip
-        auto sourceFile = ip->node->sourceFile;
-        auto location   = ip->location;
-        auto fct        = ip->node->ownerInline && ip->node->ownerInline->ownerFct == ip->node->ownerFct ? ip->node->ownerInline->func : ip->node->ownerFct;
-        if (fct)
-        {
-            Diagnostic diag{sourceFile, *location, fct->getNameForMessage().c_str(), DiagnosticLevel::CallStack};
-            diag.stackLevel = i;
-            if (currentContext && currentContext->debugOn)
-                diag.currentStackLevel = diag.stackLevel == steps.size() - currentContext->debugStackFrameOffset;
-            diag.report();
-        }
-        else
-        {
-            Diagnostic diag{sourceFile, *location, bc->name, DiagnosticLevel::CallStack};
-            diag.stackLevel = i;
-            if (currentContext && currentContext->debugOn)
-                diag.currentStackLevel = diag.stackLevel == steps.size() - currentContext->debugStackFrameOffset;
-            diag.report();
-        }
-
-        // #mixin
-        if (ip->node->flags & AST_IN_MIXIN)
-        {
-            auto owner = ip->node->parent;
-            while (owner && owner->kind != AstNodeKind::CompilerMixin)
-                owner = owner->parent;
-            if (owner)
-            {
-                fct = owner->ownerInline && owner->ownerInline->ownerFct == ip->node->ownerFct ? owner->ownerInline->func : owner->ownerFct;
-                Diagnostic diag{owner->sourceFile, owner->token.startLocation, fct->getNameForMessage().c_str(), DiagnosticLevel::CallStackInlined};
-                diag.report();
-            }
-        }
-
-        // Inline chain
-        auto parent = ip->node->ownerInline;
-        while (parent && parent->ownerFct == ip->node->ownerFct)
-        {
-            fct = parent->ownerInline && parent->ownerInline->ownerFct == ip->node->ownerFct ? parent->ownerInline->func : parent->ownerFct;
-            Diagnostic diag{parent->sourceFile, parent->token.startLocation, fct->getNameForMessage().c_str(), DiagnosticLevel::CallStackInlined};
-            diag.report();
-            parent = parent->ownerInline;
-        }
+        bool current = i == (copySteps.size() - 1) - currentContext->debugStackFrameOffset;
+        logStep(i, current, copySteps[i]);
     }
 }
 
