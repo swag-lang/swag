@@ -22,9 +22,14 @@ var lazy evaluation ?
 TODO
 ****************************************
 -------------------------------------
-debugger : print/list gdb
+debugger : print/list 
+gdb frame/up/down au lieu de x ?
+frame affiche la frame courante
+inverser les numeros de stack (0 est le plus haut)
+afficher, avec stack, le niveau courant
+changer couleur instruction courante (pas rouge)
 -------------------------------------
-generic & type literla (4'T, T non reconnu)
+generic & type literal (4'T, T non reconnu)
 -------------------------------------
 BIG BIG BIG BIG BIG CHIANT CHIANT CHIANT CHIANT CHIANT
 llvm/x64 compatibilité

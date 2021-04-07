@@ -1,9 +1,9 @@
-/*
+#global skip
 
-This is the list of all keywords:
+// This is the list of all keywords:
 
-Compiler keywords
------------------
+// Compiler keywords
+// -----------------
 
 #abi
 #arch
@@ -47,8 +47,8 @@ Compiler keywords
 #tagval
 #test
 
-Intrinsics
-----------
+// Intrinsics
+// ----------
 
 @abs
 @acos
@@ -64,6 +64,7 @@ Intrinsics
 @atomor
 @atomxchg
 @atomxor
+@bcdbg
 @bitcountlz
 @bitcountnz
 @bitcounttz
@@ -75,7 +76,6 @@ Intrinsics
 @countof
 @cstrlen
 @dataof
-@dbgbreak
 @drop
 @err
 @errormsg
@@ -128,8 +128,8 @@ Intrinsics
 @typecmp
 @typeof
 
-Language keywords
------------------
+// Language keywords
+// -----------------
 
 alias
 assume
@@ -181,8 +181,8 @@ var
 visit
 while
 
-Basic types
------------
+// Basic types
+// -----------
 
 any
 bool
@@ -201,5 +201,3 @@ u64
 uint
 void
 string
-
-*/

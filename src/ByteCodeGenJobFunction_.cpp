@@ -261,9 +261,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0);
         break;
     }
-    case TokenId::IntrinsicDbgBreak:
+    case TokenId::IntrinsicBcDbg:
     {
-        emitInstruction(context, ByteCodeOp::IntrinsicDbgBreak);
+        emitInstruction(context, ByteCodeOp::IntrinsicBcDbg);
         break;
     }
     case TokenId::IntrinsicAlloc:

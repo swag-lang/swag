@@ -3132,7 +3132,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
         registersRC[ip->d.u32].s64 = OS::atomicCmpXchg((int64_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s64, registersRC[ip->c.u32].s64);
         break;
-    case ByteCodeOp::IntrinsicDbgBreak:
+    case ByteCodeOp::IntrinsicBcDbg:
         context->debugEntry = !context->debugOn;
         context->debugOn    = true;
         break;

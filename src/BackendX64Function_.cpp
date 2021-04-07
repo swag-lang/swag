@@ -476,7 +476,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::DecSPBP:
         case ByteCodeOp::PushRR:
         case ByteCodeOp::PopRR:
-        case ByteCodeOp::IntrinsicDbgBreak:
+        case ByteCodeOp::IntrinsicBcDbg:
             continue;
         }
 
