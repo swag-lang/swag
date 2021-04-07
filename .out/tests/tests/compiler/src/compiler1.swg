@@ -1,6 +1,5 @@
 func level0()
 {
-    @bcdbg()
 }
 
 //#[swag.printbc]
@@ -8,6 +7,7 @@ func test(level: int)
 {
     if (level > 0)
     {
+        @bcdbg()
         prevLevel := level - 1;
         test(prevLevel);
     }

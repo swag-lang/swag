@@ -95,9 +95,11 @@ static void printInstruction(ByteCodeRunContext* context, ByteCode* bc, ByteCode
         ip--;
     }
 
-    for (int i = 0; i < cpt; i++)
+    for (int i = 0; i < (cpt + count - 1); i++)
     {
         bc->printInstruction(ip, count == 1 ? nullptr : context->debugCxtIp);
+        if (ip->op == ByteCodeOp::End)
+            break;
         ip++;
     }
 }
@@ -240,10 +242,11 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 g_Log.eol();
 
                 g_Log.print("i                  print the current instruction\n");
-                g_Log.print("i <num>            print the current instruction and <num> instructions before\n");
+                g_Log.print("i <num>            print the current instruction and <num> instructions around\n");
                 g_Log.print("cxt, context       print contextual informations\n");
                 g_Log.print("r                  print all registers\n");
                 g_Log.print("r <num>            print register <num>\n");
+                g_Log.print("list               print current source code line\n");
                 g_Log.print("bc, printbc        print current function bytecode\n");
                 g_Log.eol();
 
@@ -253,6 +256,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 continue;
             }
 
+            // Print current instruction
             if (cmd == "list" && cmds.size() == 1)
             {
                 context->debugCxtBc->printSourceCode(context->debugCxtIp);
@@ -324,7 +328,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
             if (cmd == "i" && cmds.size() == 2)
             {
-                int regN = atoi(cmds[1].c_str() + 1);
+                int regN = atoi(cmds[1].c_str());
                 printInstruction(context, context->debugCxtBc, context->debugCxtIp, regN + 1);
                 continue;
             }
@@ -349,7 +353,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             if (cmd == "r" && cmds.size() == 2)
             {
                 g_Log.setColor(LogColor::Gray);
-                int regN = atoi(cmds[1].c_str() + 1);
+                int regN = atoi(cmds[1].c_str());
                 if (regN >= context->registersRC[context->debugCxtRc]->size())
                     g_Log.print(format("invalid register number, maximum value is '%u'\n", (uint32_t) context->registersRC[context->debugCxtRc]->size()));
                 else
@@ -420,7 +424,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             g_Log.setColor(LogColor::Red);
-            g_Log.print("undefined command, type '?' for help\n");
+            g_Log.print("invalid command, type '?' for help\n");
         }
     }
 
