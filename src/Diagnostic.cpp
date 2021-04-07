@@ -144,7 +144,7 @@ void Diagnostic::report(bool verboseMode) const
                            errorLevel != DiagnosticLevel::CallStack &&
                            errorLevel != DiagnosticLevel::CallStackInlined &&
                            errorLevel != DiagnosticLevel::TraceError;
-        auto codeColor = !verboseMode && reportRange && errorLevel == DiagnosticLevel::Error;
+        auto codeColor = !verboseMode && reportRange;
 
         // Print all lines
         for (int i = 0; i < lines.size(); i++)

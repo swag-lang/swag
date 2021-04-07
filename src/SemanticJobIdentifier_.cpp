@@ -608,8 +608,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     {
         if (derefLiteralStruct(context, parent, overload, &sourceFile->module->constantSegment))
         {
-            parent->previousResolvedNode = context->node;
-            identifier->resolvedSymbolName = overload->symbol;
+            parent->previousResolvedNode       = context->node;
+            identifier->resolvedSymbolName     = overload->symbol;
             identifier->resolvedSymbolOverload = overload;
             return true;
         }
@@ -1376,6 +1376,60 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     }
 }
 
+void SemanticJob::symbolNotFoundNotes(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes)
+{
+    if (!node)
+        return;
+    if (node->kind != AstNodeKind::Identifier && node->kind != AstNodeKind::FuncCall)
+        return;
+    auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+
+    // Additional error if the first parameter does not match, or if nothing matches
+    bool badUfcs = overloads.empty();
+    for (auto over : overloads)
+    {
+        if (over->symMatchContext.result == MatchResult::BadSignature && over->symMatchContext.badSignatureInfos.badSignatureParameterIdx == 0)
+        {
+            badUfcs = true;
+            break;
+        }
+    }
+
+    if (badUfcs && !identifier->identifierRef->startScope)
+    {
+        // There's something before (identifier is not the only one in the identifierref).
+        if (identifier->childParentIdx)
+        {
+            auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
+            if (prev->resolvedSymbolName)
+            {
+                if (prev->typeInfo)
+                {
+                    auto note = new Diagnostic{prev,
+                                               format("'%s' is %s of type '%s' which does not contain a subscope",
+                                                      prev->token.text.c_str(),
+                                                      SymTable::getArticleKindName(prev->resolvedSymbolName->kind),
+                                                      prev->typeInfo->name.c_str()),
+                                               DiagnosticLevel::Note};
+                    notes.push_back(note);
+                }
+                else
+                {
+                    auto note = new Diagnostic{prev,
+                                               format("'%s' is %s", prev->token.text.c_str(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind)),
+                                               DiagnosticLevel::Note};
+                    notes.push_back(note);
+                }
+
+                auto note = new Diagnostic{prev->resolvedSymbolOverload->node,
+                                           "this is its declaration",
+                                           DiagnosticLevel::Note};
+                notes.push_back(note);
+            }
+        }
+    }
+}
+
 void SemanticJob::symbolNotFoundRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag)
 {
     if (!node)
@@ -1384,34 +1438,31 @@ void SemanticJob::symbolNotFoundRemarks(SemanticContext* context, VectorNative<O
         return;
 
     auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-    if (!identifier->identifierRef->startScope)
-        return;
-
-    // If we have an ufcs call, and the match does not come from its symtable, then that means that we have not found the
-    // symbol in the original struct also.
-    int notFound = 0;
-    for (auto overload : overloads)
+    if (identifier->identifierRef->startScope)
     {
-        if (overload->overload->symbol->ownerTable != &identifier->identifierRef->startScope->symTable && overload->ufcs)
-            notFound++;
-    }
-
-    if (notFound && notFound == overloads.size())
-    {
-        diag->remarks.push_back(format("symbol '%s' was not found in %s '%s'",
-                                       node->token.text.c_str(),
-                                       TypeInfo::getNakedKindName(identifier->identifierRef->typeInfo),
-                                       identifier->identifierRef->typeInfo->name.c_str()));
-
-        for (auto s : identifier->identifierRef->startScope->childScopes)
+        // If we have an ufcs call, and the match does not come from its symtable, then that means that we have not found the
+        // symbol in the original struct also.
+        int notFound = 0;
+        for (auto overload : overloads)
         {
-            if (s->kind == ScopeKind::Impl)
+            if (overload->overload->symbol->ownerTable != &identifier->identifierRef->startScope->symTable && overload->ufcs)
+                notFound++;
+        }
+
+        if (notFound && notFound == overloads.size())
+        {
+            diag->remarks.push_back(format("symbol '%s' was not found in %s '%s'",
+                                           node->token.text.c_str(),
+                                           TypeInfo::getNakedKindName(identifier->identifierRef->typeInfo),
+                                           identifier->identifierRef->typeInfo->name.c_str()));
+            for (auto s : identifier->identifierRef->startScope->childScopes)
             {
-                if (s->symTable.find(node->token.text))
+                if (s->kind == ScopeKind::Impl)
                 {
-                    diag->remarks.push_back(format("symbol '%s' exists in interface scope '%s'",
-                                                   node->token.text.c_str(),
-                                                   s->getFullName().c_str()));
+                    if (s->symTable.find(node->token.text))
+                    {
+                        diag->remarks.push_back(format("symbol '%s' exists in interface scope '%s'", node->token.text.c_str(), s->getFullName().c_str()));
+                    }
                 }
             }
         }
@@ -1523,6 +1574,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         getDiagnosticForMatch(context, *overloads[0], errs0, errs1);
         SWAG_ASSERT(!errs0.empty());
         symbolNotFoundRemarks(context, overloads, node, const_cast<Diagnostic*>(errs0[0]));
+        symbolNotFoundNotes(context, overloads, node, const_cast<Diagnostic*>(errs0[0]), errs1);
         return context->report(*errs0[0], errs1);
     }
 
@@ -1531,24 +1583,29 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     symbolNotFoundRemarks(context, overloads, node, &diag);
 
     vector<const Diagnostic*> notes;
+    int                       overIdx = 1;
     for (auto& one : overloads)
     {
         vector<const Diagnostic*> errs0, errs1;
         getDiagnosticForMatch(context, *one, errs0, errs1);
 
+        SWAG_ASSERT(!errs0.empty());
+        auto note     = const_cast<Diagnostic*>(errs0[0]);
+        note->textMsg = format("[overload %d] %s", overIdx++, note->textMsg.c_str());
+
         // Get the overload site
         if (!errs1.empty())
         {
-            const_cast<Diagnostic*>(errs0[0])->sourceFile    = errs1[0]->sourceFile;
-            const_cast<Diagnostic*>(errs0[0])->startLocation = errs1[0]->startLocation;
-            const_cast<Diagnostic*>(errs0[0])->endLocation   = errs1[0]->startLocation;
+            note->sourceFile    = errs1[0]->sourceFile;
+            note->startLocation = errs1[0]->startLocation;
+            note->endLocation   = errs1[0]->startLocation;
         }
 
-        SWAG_ASSERT(!errs0.empty());
-        const_cast<Diagnostic*>(errs0[0])->errorLevel = DiagnosticLevel::Note;
+        note->errorLevel = DiagnosticLevel::Note;
         notes.push_back(errs0[0]);
     }
 
+    symbolNotFoundNotes(context, overloads, node, &diag, notes);
     return context->report(diag, notes);
 }
 
@@ -2220,8 +2277,10 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             }
 
             VectorNative<OneTryMatch*> v;
+            vector<const Diagnostic*>  notes;
             symbolNotFoundRemarks(context, v, node, diag);
-            return context->report(*diag);
+            symbolNotFoundNotes(context, v, node, diag, notes);
+            return context->report(*diag, notes);
         }
 
         node->flags |= AST_FORCE_UFCS;
