@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "ByteCodeStack.h"
 #include "AstNode.h"
+#include "Ast.h"
 
 static void printRegister(ByteCodeRunContext* context, uint32_t curRC, uint32_t reg, bool read)
 {
@@ -113,13 +114,16 @@ static void computeCxt(ByteCodeRunContext* context)
     if (context->debugStackFrameOffset == 0 || g_byteCodeStack.steps.empty())
         return;
 
-    context->debugCxtRc--;
     uint32_t maxLevel              = g_byteCodeStack.maxLevel(context);
     context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
     uint32_t ns                    = 0;
-    for (int i = (int) g_byteCodeStack.steps.size() - 1; i >= 0; i--)
+
+    vector<ByteCodeStackStep> steps;
+    g_byteCodeStack.getSteps(steps);
+
+    for (int i = (int) maxLevel; i >= 0; i--)
     {
-        auto& step = g_byteCodeStack.steps[i];
+        auto& step = steps[i];
         if (ns == context->debugStackFrameOffset)
         {
             context->debugCxtBc = step.bc;
@@ -131,12 +135,19 @@ static void computeCxt(ByteCodeRunContext* context)
         ns++;
         if (!step.ip)
             continue;
-        context->debugCxtRc--;
+        if (context->debugCxtRc)
+            context->debugCxtRc--;
     }
 }
 
 static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr)
 {
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        str += format("0x%016llx", *(void**) addr);
+        return;
+    }
+
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
@@ -303,12 +314,17 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 g_Log.print("bc, printbc        print current function bytecode\n");
                 g_Log.eol();
 
+                g_Log.print("info locals        print local variables\n");
+                g_Log.print("info args          print function arguments\n");
+                g_Log.eol();
+
                 g_Log.print("?                  print this list of commands\n");
                 g_Log.print("q, quit            quit the compiler\n");
                 g_Log.eol();
                 continue;
             }
 
+            // Info locals
             if (cmd == "info" && cmds.size() == 2 && cmds[1] == "locals")
             {
                 if (context->debugCxtBc->localVars.empty())
@@ -316,6 +332,31 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 else
                 {
                     for (auto l : context->debugCxtBc->localVars)
+                    {
+                        auto over = l->resolvedSymbolOverload;
+                        if (!over)
+                            continue;
+
+                        Utf8 str;
+                        str = format("%s (%s) = ", over->symbol->name.c_str(), over->typeInfo->name.c_str());
+                        appendValue(str, over->typeInfo, context->debugCxtBp + over->storageOffset);
+                        g_Log.printColor(str);
+                        g_Log.eol();
+                    }
+                }
+
+                continue;
+            }
+
+            // Info args
+            if (cmd == "info" && cmds.size() == 2 && cmds[1] == "args")
+            {
+                auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
+                if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
+                    g_Log.printColor("no arguments\n");
+                else
+                {
+                    for (auto l : funcDecl->parameters->childs)
                     {
                         auto over = l->resolvedSymbolOverload;
                         if (!over)

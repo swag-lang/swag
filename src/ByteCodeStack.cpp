@@ -83,10 +83,10 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
     }
 }
 
-void ByteCodeStack::log()
+void ByteCodeStack::getSteps(vector<ByteCodeStackStep>& copySteps)
 {
     // Add one step for the current context if necessary
-    auto copySteps = steps;
+    copySteps = steps;
     if (currentContext)
     {
         auto& back = copySteps.back();
@@ -95,10 +95,17 @@ void ByteCodeStack::log()
             ByteCodeStackStep step;
             step.bc = currentContext->bc;
             step.ip = currentContext->ip;
+            step.bp = currentContext->bp;
             copySteps.push_back(step);
         }
     }
+}
 
+void ByteCodeStack::log()
+{
+    // Add one step for the current context if necessary
+    vector<ByteCodeStackStep> copySteps;
+    getSteps(copySteps);
     if (copySteps.empty())
         return;
 

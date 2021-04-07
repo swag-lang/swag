@@ -5,9 +5,11 @@ func level0()
 }
 
 //#[swag.printbc]
+#[swag.optim("", false)]
 func test(level: int)
 {
     @bcdbg()
+    ptr := &level
     level0()
     toto := level
     @print(cast(s64) toto)
