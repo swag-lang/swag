@@ -1,7 +1,7 @@
 func level0()
 {
     titi := 666's64
-    @print(titi)
+    //@print(titi)
 }
 
 
@@ -9,11 +9,11 @@ func level0()
 #[swag.optim("", false)]
 func test(level: int)
 {
-    @bcdbg()
+    //@bcdbg()
     ptr := &level
     level0()
     toto := level
-    @print(cast(s64) toto)
+    //@print(cast(s64) toto)
 }
 
 #test
