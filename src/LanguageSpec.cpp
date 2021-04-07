@@ -56,7 +56,6 @@ void LanguageSpec::setup()
     keywords.add("private", TokenId::KwdPrivate);
     keywords.add("alias", TokenId::KwdAlias);
     keywords.add("enum", TokenId::KwdEnum);
-    keywords.add("enumvalue", TokenId::KwdEnumValue);
     keywords.add("impl", TokenId::KwdImpl);
     keywords.add("struct", TokenId::KwdStruct);
     keywords.add("union", TokenId::KwdUnion);
