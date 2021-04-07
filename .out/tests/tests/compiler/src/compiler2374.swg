@@ -1,3 +1,5 @@
+using swag
+
 struct AA
 {
 
@@ -10,6 +12,7 @@ impl AA
         return other == "toto"
     }
 
+    #[implicit]
     func opCast(using self)->string
     {
         return "toto"

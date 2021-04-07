@@ -5,6 +5,7 @@ struct AA
 
 impl AA
 {
+    #[swag.implicit]
     func opCast(using self)->s32 => 666
 }
 

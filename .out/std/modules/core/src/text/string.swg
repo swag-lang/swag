@@ -49,11 +49,13 @@ impl String
         return buffer
     }
 
+    #[implicit]
     func opCast(using self)->string
     {
         return @mkstring(buffer, length)
     }
 
+    #[implicit]
     func opCast(using self)->const [..] u8
     {
         return @mkslice(buffer, length)

@@ -115,7 +115,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
             auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc->flags & TYPEINFO_GENERIC)
                 continue;
-            if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT))
+            if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
                 continue;
             if (typeFunc->parameters.size() > 1 && typeFunc->parameters[1]->typeInfo->isSame(fromType, ISSAME_EXACT))
                 toAffect.push_back(over);
@@ -183,6 +183,8 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
             auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc->flags & TYPEINFO_GENERIC || typeFunc->returnType->flags & TYPEINFO_GENERIC)
                 continue;
+            if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
+                continue;
             if (typeFunc->returnType->isSame(toType, ISSAME_EXACT))
                 toCast.push_back(over);
         }
@@ -231,7 +233,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
                 Diagnostic diag{fromNode, format("cannot cast implicitly from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str())};
-                diag.remarks.push_back(format("'cast(%s)' can be used in that context", toType->name.c_str()));
+                diag.remarks.push_back(format("an explicit 'cast(%s)' can be used in that context", toType->name.c_str()));
                 context->report(diag);
                 done = true;
             }

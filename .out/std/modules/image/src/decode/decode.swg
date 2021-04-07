@@ -54,7 +54,7 @@ public func load(fileName: string)->Image throw
 
     // Decode
     itf := @mkinterface(ptrDecoder, found.type, IDecoder)
-    return try itf.decode(bytes)
+    return try itf.decode(bytes.toSlice())
 }
 
 // Initialize predefined decoders
