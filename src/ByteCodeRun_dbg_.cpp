@@ -111,18 +111,23 @@ static void computeCxt(ByteCodeRunContext* context)
     context->debugCxtIp = context->ip;
     context->debugCxtRc = context->curRC;
     context->debugCxtBp = context->bp;
-    if (context->debugStackFrameOffset == 0 || g_byteCodeStack.steps.empty())
+    if (context->debugStackFrameOffset == 0)
+        return;
+
+    vector<ByteCodeStackStep> steps;
+    g_byteCodeStack.getSteps(steps);
+    if (steps.empty())
         return;
 
     uint32_t maxLevel              = g_byteCodeStack.maxLevel(context);
     context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
     uint32_t ns                    = 0;
 
-    vector<ByteCodeStackStep> steps;
-    g_byteCodeStack.getSteps(steps);
-
     for (int i = (int) maxLevel; i >= 0; i--)
     {
+        if (i >= steps.size())
+            continue;
+
         auto& step = steps[i];
         if (ns == context->debugStackFrameOffset)
         {
