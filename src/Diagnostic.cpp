@@ -67,7 +67,10 @@ void Diagnostic::report(bool verboseMode) const
     {
         if (!verboseMode)
             g_Log.setColor(LogColor::DarkYellow);
-        g_Log.print(format("callstack:%03u: ", stackLevel));
+        if (currentStackLevel)
+            g_Log.print(format("callstack:[%03u]: ", stackLevel));
+        else
+            g_Log.print(format("callstack:%03u: ", stackLevel));
         headerSize += 7;
         break;
     }

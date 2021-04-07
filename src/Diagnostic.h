@@ -112,6 +112,7 @@ struct Diagnostic
     Utf8            textMsg;
     vector<Utf8>    remarks;
     DiagnosticLevel errorLevel;
+    bool            currentStackLevel     = false;
     uint32_t        stackLevel            = 0;
     bool            hasFile               = false;
     bool            hasLocation           = false;

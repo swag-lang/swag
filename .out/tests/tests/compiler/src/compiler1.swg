@@ -3,6 +3,7 @@ func level0()
     @bcdbg()
 }
 
+//#[swag.printbc]
 func test(level: int)
 {
     if (level > 0)

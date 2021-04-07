@@ -45,7 +45,7 @@ static void printContext(ByteCodeRunContext* context)
         }
     }
 
-    g_Log.messageHeaderDot("stack level", format("%u", context->debugStackLevel), LogColor::Gray, LogColor::Gray, " ");
+    g_Log.messageHeaderDot("stack level", format("%u", context->debugStackFrameOffset), LogColor::Gray, LogColor::Gray, " ");
 
     g_Log.eol();
     g_Log.lock();
@@ -85,7 +85,8 @@ static void printFullRegister(Register& regP)
 
 static void printInstruction(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num = 1)
 {
-    int cpt = 1;
+    int count = num;
+    int cpt   = 1;
     while (--num)
     {
         if (ip == bc->out)
@@ -99,7 +100,7 @@ static void printInstruction(ByteCodeRunContext* context, ByteCode* bc, ByteCode
     for (int i = 0; i < cpt; i++)
     {
         bc->printSourceCode(ip, &lastLine, &lastFile);
-        bc->printInstruction(ip, context->debugCxtIp);
+        bc->printInstruction(ip, count == 1 ? nullptr : context->debugCxtIp);
         ip++;
     }
 }
@@ -109,25 +110,26 @@ static void computeCxt(ByteCodeRunContext* context)
     context->debugCxtBc = context->bc;
     context->debugCxtIp = context->ip;
     context->debugCxtRc = context->curRC;
-    if (context->debugStackLevel == 0 || g_byteCodeStack.steps.empty())
+    if (context->debugStackFrameOffset == 0 || g_byteCodeStack.steps.empty())
         return;
 
     context->debugCxtRc--;
-    context->debugStackLevel = min(context->debugStackLevel, (uint32_t) g_byteCodeStack.steps.size());
-    auto ns                  = context->debugStackLevel - 1;
+    uint32_t maxLevel              = g_byteCodeStack.maxLevel(context);
+    context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
+    uint32_t ns                    = 0;
     for (int i = (int) g_byteCodeStack.steps.size() - 1; i >= 0; i--)
     {
         auto& step = g_byteCodeStack.steps[i];
-        if (ns == 0)
+        if (ns == context->debugStackFrameOffset)
         {
             context->debugCxtBc = step.bc;
             context->debugCxtIp = step.ip;
             break;
         }
 
+        ns++;
         if (!step.ip)
             continue;
-        ns--;
         context->debugCxtRc--;
     }
 }
@@ -150,7 +152,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         context->debugStepMode         = ByteCodeRunContext::DebugStepMode::None;
         context->debugStepLastLocation = nullptr;
         context->debugStepLastFile     = nullptr;
-        context->debugStackLevel       = 0;
+        context->debugStackFrameOffset = 0;
     }
 
     // Step to the next line
@@ -207,10 +209,17 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Get command from user
             char az[1024];
             fgets(az, 1024, stdin);
-            Utf8 cmd = az;
-            if (cmd.length() > 0 && cmd.back() == '\n')
-                cmd.count--;
-            cmd.trim();
+            Utf8 line = az;
+            if (line.length() > 0 && line.back() == '\n')
+                line.count--;
+            line.trim();
+
+            // Split in command + parameters
+            vector<Utf8> cmds;
+            tokenize(line, ' ', cmds);
+            for (auto& c : cmds)
+                c.trim();
+            auto cmd = cmds[0];
 
             // Help
             if (cmd == "?")
@@ -220,28 +229,76 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 g_Log.print("<return>           runs the current instruction\n");
                 g_Log.print("s                  runs to the next line\n");
                 g_Log.print("n                  like s, but does not step into functions\n");
-                g_Log.print("c                  runs until a debug break is reached\n");
+                g_Log.print("c                  runs until another break is reached\n");
                 g_Log.print("f                  runs until the current function is done\n");
+                g_Log.eol();
+
+                g_Log.print("stk, stack         print callstack\n");
+                g_Log.print("up [num]           move stack frame <num> level up\n");
+                g_Log.print("down [num]         move stack frame <num> level down\n");
+                g_Log.print("frame <num>        move stack frame to level <num>\n");
+                g_Log.eol();
+
                 g_Log.print("i                  print the current instruction\n");
-                g_Log.print("i<num>             print the current instruction and <num> instructions before\n");
-                g_Log.print("x<num>             set stack level context <num>\n");
+                g_Log.print("i <num>            print the current instruction and <num> instructions before\n");
                 g_Log.print("cxt, context       print contextual informations\n");
                 g_Log.print("r                  print all registers\n");
-                g_Log.print("r<num>             print register <num>\n");
-                g_Log.print("stk, stack         print callstack\n");
+                g_Log.print("r <num>            print register <num>\n");
                 g_Log.print("bc, printbc        print current function bytecode\n");
+                g_Log.eol();
+
                 g_Log.print("?                  print this list of commands\n");
                 g_Log.print("q, quit            quit the compiler\n");
                 g_Log.eol();
                 continue;
             }
 
-            if (cmd[0] == 'x' && cmd.length() > 1 && isdigit(cmd[1]))
+            // Stack frame up
+            if (cmd == "frame" && cmds.size() == 2)
             {
-                int regN                 = atoi(cmd.c_str() + 1);
-                context->debugStackLevel = regN;
+                uint32_t off                   = atoi(cmds[1].c_str());
+                uint32_t maxLevel              = g_byteCodeStack.maxLevel(context);
+                off                            = min(off, maxLevel);
+                context->debugStackFrameOffset = maxLevel - off;
                 computeCxt(context);
                 printInstruction(context, context->debugCxtBc, context->debugCxtIp);
+                continue;
+            }
+
+            // Stack frame up
+            if (cmd == "up")
+            {
+                uint32_t off = 1;
+                if (cmds.size() == 2)
+                    off = atoi(cmds[1].c_str());
+                uint32_t maxLevel = g_byteCodeStack.maxLevel(context);
+                if (context->debugStackFrameOffset == maxLevel)
+                    g_Log.printColor("initial frame selected; you cannot go up.\n");
+                else
+                {
+                    context->debugStackFrameOffset += off;
+                    computeCxt(context);
+                    printInstruction(context, context->debugCxtBc, context->debugCxtIp);
+                }
+
+                continue;
+            }
+
+            // Stack frame down
+            if (cmd == "down")
+            {
+                uint32_t off = 1;
+                if (cmds.size() == 2)
+                    off = atoi(cmds[1].c_str());
+                if (context->debugStackFrameOffset == 0)
+                    g_Log.printColor("bottom(innermost) frame selected; you cannot go down.\n");
+                else
+                {
+                    context->debugStackFrameOffset -= min(context->debugStackFrameOffset, off);
+                    computeCxt(context);
+                    printInstruction(context, context->debugCxtBc, context->debugCxtIp);
+                }
+
                 continue;
             }
 
@@ -253,15 +310,15 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print current instruction
-            if (cmd == "i")
+            if (cmd == "i" && cmds.size() == 1)
             {
                 printInstruction(context, context->debugCxtBc, context->debugCxtIp);
                 continue;
             }
 
-            if (cmd[0] == 'i' && cmd.length() > 1 && isdigit(cmd[1]))
+            if (cmd == "i" && cmds.size() == 2)
             {
-                int regN = atoi(cmd.c_str() + 1);
+                int regN = atoi(cmds[1].c_str() + 1);
                 printInstruction(context, context->debugCxtBc, context->debugCxtIp, regN + 1);
                 continue;
             }
@@ -274,7 +331,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print all registers
-            if (cmd == "r")
+            if (cmd == "r" && cmds.size() == 1)
             {
                 g_Log.setColor(LogColor::White);
                 for (int i = 0; i < context->registersRC[context->debugCxtRc]->size(); i++)
@@ -283,10 +340,10 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print one register
-            if (cmd[0] == 'r' && cmd.length() > 1 && isdigit(cmd[1]))
+            if (cmd == "r" && cmds.size() == 2)
             {
                 g_Log.setColor(LogColor::Gray);
-                int regN = atoi(cmd.c_str() + 1);
+                int regN = atoi(cmds[1].c_str() + 1);
                 if (regN >= context->registersRC[context->debugCxtRc]->size())
                     g_Log.print(format("invalid register number, maximum value is '%u'\n", (uint32_t) context->registersRC[context->debugCxtRc]->size()));
                 else
@@ -301,7 +358,9 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Stack
             if (cmd == "stk" || cmd == "stack")
             {
+                g_byteCodeStack.currentContext = context;
                 g_byteCodeStack.log();
+                g_byteCodeStack.currentContext = nullptr;
                 continue;
             }
 
@@ -321,8 +380,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Step to next line
             if (cmd == "s")
             {
-                context->debugStackLevel = 0;
-                context->debugStepMode   = ByteCodeRunContext::DebugStepMode::NextLine;
+                context->debugStackFrameOffset = 0;
+                context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLine;
                 ByteCode::getLocation(context->bc, ip, &context->debugStepLastFile, &context->debugStepLastLocation);
                 break;
             }
@@ -330,8 +389,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Step to next line, step out
             if (cmd == "n")
             {
-                context->debugStackLevel = 0;
-                context->debugStepMode   = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
+                context->debugStackFrameOffset = 0;
+                context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
                 ByteCode::getLocation(context->bc, ip, &context->debugStepLastFile, &context->debugStepLastLocation);
                 context->debugStepRC = context->curRC;
                 break;
@@ -340,17 +399,17 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Exit current function
             if (cmd == "f")
             {
-                context->debugStackLevel = 0;
-                context->debugStepMode   = ByteCodeRunContext::DebugStepMode::FinishedFunction;
-                context->debugStepRC     = context->curRC - 1;
+                context->debugStackFrameOffset = 0;
+                context->debugStepMode         = ByteCodeRunContext::DebugStepMode::FinishedFunction;
+                context->debugStepRC           = context->curRC - 1;
                 break;
             }
 
             // Debug off
             if (cmd == "c")
             {
-                context->debugStackLevel = 0;
-                context->debugOn         = false;
+                context->debugStackFrameOffset = 0;
+                context->debugOn               = false;
                 break;
             }
 

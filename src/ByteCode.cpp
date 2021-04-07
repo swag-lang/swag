@@ -332,15 +332,20 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     static const int ALIGN_FLAGS2 = 70;
     static const int ALIGN_PRETTY = 80;
 
-    static const wchar_t* bcNum = L"%08d ";
+    static const wchar_t* bcNum = L"%08d";
     int                   i     = (int) (ip - out);
 
     // Instruction rank
+    g_Log.setColor(LogColor::Cyan);
     if (ip == curIp)
-        g_Log.setColor(LogColor::Red);
+        g_Log.print("[");
     else
-        g_Log.setColor(LogColor::Cyan);
+        g_Log.print(" ");
     wprintf(bcNum, i);
+    if (ip == curIp)
+        g_Log.print("]");
+    else
+        g_Log.print(" ");
 
     g_Log.setCountLength(true);
 

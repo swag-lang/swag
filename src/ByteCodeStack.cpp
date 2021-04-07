@@ -7,13 +7,27 @@
 
 thread_local ByteCodeStack g_byteCodeStack;
 
+uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* context)
+{
+    if (!context)
+        return (uint32_t) steps.size() - 1;
+
+    // The last stack step can be the same as the current context. If it's not the case,
+    // then it's like we have one more step.
+    auto& back = steps.back();
+    if (back.bc == context->bc && back.ip == context->ip)
+        return (uint32_t) steps.size() - 1;
+
+    // Not the case. One more step.
+    return (uint32_t) steps.size();
+}
+
 void ByteCodeStack::log()
 {
     if (steps.empty())
         return;
 
-    auto stackLevel = currentContext ? 0 : -1;
-    int  maxSteps   = min((int) steps.size() - 1, 20);
+    int maxSteps = min((int) steps.size() - 1, 20);
     for (int i = maxSteps + 1; i >= 0; i--)
     {
         ByteCodeInstruction* ip;
@@ -39,14 +53,14 @@ void ByteCodeStack::log()
                     continue;
                 }
             }
-
-            stackLevel++;
         }
 
         if (!ip)
         {
             Diagnostic diag{"<foreign code>", DiagnosticLevel::CallStack};
-            diag.stackLevel = stackLevel;
+            diag.stackLevel = i;
+            if (currentContext && currentContext->debugOn)
+                diag.currentStackLevel = diag.stackLevel == steps.size() - currentContext->debugStackFrameOffset;
             diag.report();
             continue;
         }
@@ -61,13 +75,17 @@ void ByteCodeStack::log()
         if (fct)
         {
             Diagnostic diag{sourceFile, *location, fct->getNameForMessage().c_str(), DiagnosticLevel::CallStack};
-            diag.stackLevel = stackLevel;
+            diag.stackLevel = i;
+            if (currentContext && currentContext->debugOn)
+                diag.currentStackLevel = diag.stackLevel == steps.size() - currentContext->debugStackFrameOffset;
             diag.report();
         }
         else
         {
             Diagnostic diag{sourceFile, *location, bc->name, DiagnosticLevel::CallStack};
-            diag.stackLevel = stackLevel;
+            diag.stackLevel = i;
+            if (currentContext && currentContext->debugOn)
+                diag.currentStackLevel = diag.stackLevel == steps.size() - currentContext->debugStackFrameOffset;
             diag.report();
         }
 

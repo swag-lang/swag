@@ -34,8 +34,9 @@ struct ByteCodeStack
         currentContext = nullptr;
     }
 
-    void reportError(const Utf8& msg);
-    void log();
+    void     reportError(const Utf8& msg);
+    uint32_t maxLevel(ByteCodeRunContext* context);
+    void     log();
 
     vector<ByteCodeStackStep> steps;
     ByteCodeRunContext*       currentContext = nullptr;
