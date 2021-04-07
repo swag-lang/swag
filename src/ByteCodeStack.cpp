@@ -85,9 +85,6 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
 
 void ByteCodeStack::log()
 {
-    if (steps.empty())
-        return;
-
     // Add one step for the current context if necessary
     auto copySteps = steps;
     if (currentContext)
@@ -101,6 +98,9 @@ void ByteCodeStack::log()
             copySteps.push_back(step);
         }
     }
+
+    if (copySteps.empty())
+        return;
 
     int maxSteps = 20;
     for (int i = (int) copySteps.size() - 1; i >= 0; i--)
