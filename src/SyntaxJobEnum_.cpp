@@ -142,6 +142,6 @@ bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(enumValue));
     }
 
-    SWAG_CHECK(eatSemiCol("after enum value"));
+    SWAG_CHECK(eatSemiCol("enum value"));
     return true;
 }

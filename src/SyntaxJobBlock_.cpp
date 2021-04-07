@@ -167,7 +167,7 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
 
     // Boolean expression
     SWAG_CHECK(doExpression(node, &node->boolExpression));
-    SWAG_CHECK(eatSemiCol("after 'for' boolean expression"));
+    SWAG_CHECK(eatSemiCol("'for' boolean expression"));
 
     // Post expression
     if (token.id == TokenId::SymLeftCurly)

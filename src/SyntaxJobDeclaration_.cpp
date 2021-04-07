@@ -46,7 +46,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
             continue;
         }
 
-        SWAG_CHECK(eatSemiCol("after 'using' declaration"));
+        SWAG_CHECK(eatSemiCol("'using' declaration"));
         break;
     }
 
@@ -140,7 +140,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
 
     if (forGlobal)
     {
-        SWAG_CHECK(eatSemiCol());
+        SWAG_CHECK(eatSemiCol("'#global namespace'"));
         Scoped scoped(this, newScope);
         while (token.id != TokenId::EndOfFile)
         {
@@ -325,7 +325,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdReturn:
         SWAG_CHECK(doReturn(parent, result));
-        SWAG_CHECK(eatSemiCol("after return expression"));
+        SWAG_CHECK(eatSemiCol("return expression"));
         break;
     case TokenId::KwdUsing:
         SWAG_CHECK(doUsing(parent, result));

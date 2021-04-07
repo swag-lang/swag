@@ -20,26 +20,14 @@ bool SyntaxJob::verifyError(const Token& tk, bool expr, const Utf8& msg)
 
 bool SyntaxJob::syntaxError(const Token& tk, const Utf8& msg)
 {
-    Utf8 full = "syntax error";
-    if (!msg.empty())
-    {
-        full += ", ";
-        full += msg;
-    }
-
+    Utf8 full = "[syntax] " + msg;
     error(tk, full);
     return false;
 }
 
 bool SyntaxJob::syntaxError(AstNode* node, const Utf8& msg)
 {
-    Utf8 full = "syntax error";
-    if (!msg.empty())
-    {
-        full += ", ";
-        full += msg;
-    }
-
+    Utf8 full = "[syntax] " + msg;
     error(node, full);
     return false;
 }
@@ -180,7 +168,7 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     {
         if (!msg)
             msg = "";
-        SWAG_CHECK(syntaxError(token, format("';' or a end of line is expected instead of '%s' %s", token.text.c_str(), msg)));
+        SWAG_CHECK(syntaxError(token, format("a line break or ';' is expected before '%s' to close the %s", token.text.c_str(), msg)));
     }
 
     if (token.id == TokenId::SymSemiColon)

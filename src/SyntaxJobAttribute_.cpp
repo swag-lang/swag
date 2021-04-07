@@ -34,7 +34,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }
 
-    SWAG_CHECK(eatSemiCol("after attribute definition"));
+    SWAG_CHECK(eatSemiCol("attribute definition"));
 
     return true;
 }

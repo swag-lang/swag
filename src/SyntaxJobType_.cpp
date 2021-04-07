@@ -21,7 +21,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 
     AstNode* expr;
     SWAG_CHECK(doPrimaryExpression(node, &expr));
-    SWAG_CHECK(eatSemiCol("after 'alias' expression"));
+    SWAG_CHECK(eatSemiCol("'alias' expression"));
 
     // This is a type alias
     if (expr->kind == AstNodeKind::TypeExpression || expr->kind == AstNodeKind::TypeLambda)

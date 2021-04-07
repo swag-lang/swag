@@ -1426,7 +1426,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid affect operator '==', did you mean '=' ?"));
 
     if (token.id != TokenId::SymLeftCurly)
-        SWAG_CHECK(eatSemiCol("after left expression"));
+        SWAG_CHECK(eatSemiCol("left expression"));
     return true;
 }
 
