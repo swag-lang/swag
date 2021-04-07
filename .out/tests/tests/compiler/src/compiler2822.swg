@@ -5,8 +5,9 @@
     }
 }*/
 
-func toto(x: bool)
+func toto(x: s32)
 {
+    @assert(false)
 }
 
 func toto(x: string)

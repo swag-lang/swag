@@ -71,22 +71,21 @@ void Diagnostic::report(bool verboseMode) const
     {
         if (!verboseMode)
             g_Log.setColor(LogColor::DarkYellow);
-        auto str = format("callstack:%03u: ", stackLevel);
-        g_Log.print(str);
-        headerSize += str.length();
+        g_Log.print(format("callstack:%03u: ", stackLevel));
+        headerSize += 7;
         break;
     }
     case DiagnosticLevel::CallStackInlined:
         if (!verboseMode)
             g_Log.setColor(LogColor::DarkYellow);
         g_Log.print("inlined: ");
-        headerSize += 9;
+        headerSize += 7;
         break;
     case DiagnosticLevel::TraceError:
         if (!verboseMode)
             g_Log.setColor(LogColor::DarkYellow);
         g_Log.print("trace error: ");
-        headerSize += 13;
+        headerSize += 7;
         break;
     }
 
