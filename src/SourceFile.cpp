@@ -391,8 +391,6 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
                 diag1.report();
             }
         }
-
-        g_Log.eol();
     }
 
     if (g_CommandLine.errorNoteOut)

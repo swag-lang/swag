@@ -12,61 +12,16 @@ void Diagnostic::defaultColor(bool verboseMode) const
         g_Log.setColor(LogColor::White);
 }
 
-void Diagnostic::report(bool verboseMode) const
+void Diagnostic::printSourceLine(int headerSize) const
 {
-    defaultColor(verboseMode);
-
-    // Message level
-    switch (errorLevel)
-    {
-    case DiagnosticLevel::Error:
-        if (!verboseMode)
-            g_Log.setColor(LogColor::Red);
-        g_Log.print("error: ");
-        break;
-    case DiagnosticLevel::Warning:
-        if (g_CommandLine.warningsAsErrors)
-        {
-            if (!verboseMode)
-                g_Log.setColor(LogColor::Red);
-            g_Log.print("error: (from warning): ");
-        }
-        else
-        {
-            if (!verboseMode)
-                g_Log.setColor(LogColor::Magenta);
-            g_Log.print("warning: ");
-        }
-        break;
-    case DiagnosticLevel::Note:
-        if (!verboseMode)
-            g_Log.setColor(LogColor::White);
-        g_Log.print("note: ");
-        break;
-    case DiagnosticLevel::CallStack:
-        if (!verboseMode)
-            g_Log.setColor(LogColor::DarkYellow);
-        g_Log.print(format("callstack:%03u: ", stackLevel));
-        break;
-    case DiagnosticLevel::CallStackInlined:
-        if (!verboseMode)
-            g_Log.setColor(LogColor::DarkYellow);
-        g_Log.print("inlined: ");
-        break;
-    case DiagnosticLevel::TraceError:
-        if (!verboseMode)
-            g_Log.setColor(LogColor::DarkYellow);
-        g_Log.print("trace error: ");
-        break;
-    }
-
     // Source file and location
     if (hasFile && !sourceFile->path.empty())
     {
+        for (int i = 0; i < headerSize; i++)
+            g_Log.print(" ");
         SWAG_ASSERT(sourceFile);
         fs::path path = sourceFile->path;
         g_Log.print(normalizePath(path).c_str());
-
         if (hasRangeLocation)
             g_Log.print(format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
         else if (hasLocation)
@@ -74,28 +29,107 @@ void Diagnostic::report(bool verboseMode) const
         else
             g_Log.print(": ");
     }
+}
+
+void Diagnostic::report(bool verboseMode) const
+{
+    defaultColor(verboseMode);
+
+    // Message level
+    int headerSize = 0;
+    switch (errorLevel)
+    {
+    case DiagnosticLevel::Error:
+        if (!verboseMode)
+            g_Log.setColor(LogColor::Red);
+        g_Log.print("error: ");
+        headerSize += 7;
+        break;
+    case DiagnosticLevel::Warning:
+        if (g_CommandLine.warningsAsErrors)
+        {
+            if (!verboseMode)
+                g_Log.setColor(LogColor::Red);
+            g_Log.print("error: (from warning): ");
+            headerSize += 7;
+        }
+        else
+        {
+            if (!verboseMode)
+                g_Log.setColor(LogColor::Magenta);
+            g_Log.print("warning: ");
+            headerSize += 9;
+        }
+        break;
+    case DiagnosticLevel::Note:
+        if (!verboseMode)
+            g_Log.setColor(LogColor::White);
+        g_Log.print("note: ");
+        headerSize += 6;
+        break;
+    case DiagnosticLevel::CallStack:
+    {
+        if (!verboseMode)
+            g_Log.setColor(LogColor::DarkYellow);
+        auto str = format("callstack:%03u: ", stackLevel);
+        g_Log.print(str);
+        headerSize += str.length();
+        break;
+    }
+    case DiagnosticLevel::CallStackInlined:
+        if (!verboseMode)
+            g_Log.setColor(LogColor::DarkYellow);
+        g_Log.print("inlined: ");
+        headerSize += 9;
+        break;
+    case DiagnosticLevel::TraceError:
+        if (!verboseMode)
+            g_Log.setColor(LogColor::DarkYellow);
+        g_Log.print("trace error: ");
+        headerSize += 13;
+        break;
+    }
+
+    // Source line right after the header
+    if (!g_CommandLine.errorSourceOut)
+    {
+        headerSize = 0;
+        printSourceLine(headerSize);
+    }
 
     // User message
     g_Log.print(textMsg);
     g_Log.eol();
 
-    // Code comment
-    if (!remarks.empty())
+    // Code remarks
+    if (g_CommandLine.errorSourceOut && g_CommandLine.errorNoteOut)
     {
-        if (!verboseMode)
-            g_Log.setColor(LogColor::DarkYellow);
-        for (auto& r : remarks)
+        if (!remarks.empty())
         {
-            if (r.empty())
-                continue;
-            g_Log.print("remark: ");
-            g_Log.print(r);
-            g_Log.eol();
+            if (!verboseMode)
+                g_Log.setColor(LogColor::White);
+            for (auto& r : remarks)
+            {
+                if (r.empty())
+                    continue;
+                for (int i = 0; i < headerSize; i++)
+                    g_Log.print(" ");
+                g_Log.print("=> ");
+                g_Log.print(r);
+                g_Log.eol();
+            }
         }
     }
 
     if (!verboseMode)
         g_Log.setColor(LogColor::Cyan);
+
+    // Source file and location on their own line
+    if (g_CommandLine.errorSourceOut)
+    {
+        printSourceLine(headerSize);
+        g_Log.eol();
+    }
 
     // Source code
     if (hasFile && !sourceFile->path.empty() && hasLocation && printSource && g_CommandLine.errorSourceOut)
@@ -152,7 +186,9 @@ void Diagnostic::report(bool verboseMode) const
             const char* pz = lines[i].c_str();
             if (*pz && *pz != '\n' && *pz != '\r')
             {
-                g_Log.print("   >  ");
+                for (int j = 0; j < headerSize; j++)
+                    g_Log.print(" ");
+                g_Log.print(">  ");
                 if (codeColor && i == lines.size() - 1)
                     break;
                 g_Log.print(lines[i].c_str() + minBlanks);
@@ -230,7 +266,7 @@ void Diagnostic::report(bool verboseMode) const
                 // Display markers
                 else
                 {
-                    for (int i = 0; i < 6; i++)
+                    for (int i = 0; i < headerSize + 3; i++)
                         g_Log.print(" ");
 
                     for (uint32_t i = minBlanks; i < startLocation.column; i++)

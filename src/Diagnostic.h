@@ -101,6 +101,7 @@ struct Diagnostic
     {
     }
 
+    void printSourceLine(int headerSize) const;
     void report(bool verboseMode = false) const;
     void defaultColor(bool verboseMode) const;
 
