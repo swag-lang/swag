@@ -3184,13 +3184,13 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 ByteCode::getLocation(context->bc, ip, &sourceFile, &location);
                 if (location || !ip->node)
                 {
-                    Diagnostic diag{sourceFile, *location, "error during bytecode execution, " + context->errorMsg};
+                    Diagnostic diag{sourceFile, *location, "bytecode execution, " + context->errorMsg};
                     errorContext->sourceFile = sourceFile;
                     errorContext->report(diag);
                 }
                 else
                 {
-                    Diagnostic diag{ip->node, ip->node->token, "error during bytecode execution, " + context->errorMsg};
+                    Diagnostic diag{ip->node, ip->node->token, "bytecode execution, " + context->errorMsg};
                     errorContext->sourceFile = ip->node->sourceFile;
                     errorContext->report(diag);
                 }

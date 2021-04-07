@@ -5,13 +5,9 @@
     }
 }*/
 
-func toto(x: s32)
+func toto()
 {
     @assert(false)
-}
-
-func toto(x: string)
-{
 }
 
 #test

@@ -247,7 +247,7 @@ namespace OS
                                     startLoc.column       = atoi(tokens[tokens.size() - 2]) - 1;
                                     SourceLocation endLoc = startLoc;
                                     auto           msg    = tokens.back();
-                                    msg                   = "error during native execution, " + msg;
+                                    msg                   = "runtime execution, " + msg;
                                     Diagnostic diag({sourceFile, startLoc, endLoc, msg});
                                     sourceFile->report(diag);
                                 }
