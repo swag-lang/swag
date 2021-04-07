@@ -478,14 +478,14 @@ static bool isStatementIdentifier(AstIdentifier* identifier)
         checkParent = checkParent->parent;
     if (checkParent->kind == AstNodeKind::Statement || checkParent->kind == AstNodeKind::StatementNoScope)
     {
+        // If this is the last identifier
         if (identifier->childParentIdx == identifier->identifierRef->childs.size() - 1)
             return true;
 
+        // If this is not the last identifier, and it's not a function call
         auto back = identifier->identifierRef->childs.back();
         if (back->kind == AstNodeKind::Identifier && !((AstIdentifier*) back)->callParameters)
-        {
             return true;
-        }
     }
 
     return false;
@@ -902,6 +902,20 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
+        // Be sure that we didn't use a variable as a 'scope'
+        if (identifier->childParentIdx)
+        {
+            auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
+            if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !(prev->flags & AST_FROM_UFCS))
+            {
+                return context->report({prev,
+                                        format("%s '%s' has not been used as the first parameter to call '%s'",
+                                               AstNode::getKindName(prev->resolvedSymbolOverload->node).c_str(),
+                                               prev->token.text.c_str(),
+                                               identifier->token.text.c_str())});
+            }
+        }
+
         identifier->flags |= AST_SIDE_EFFECTS;
 
         // Be sure it's () and not {}

@@ -1,17 +1,11 @@
-/*namespace a
-{
-    func toto1()
-    {
-    }
-}*/
+#global testerror
 
 func toto()
 {
-    @assert(false)
 }
 
 #test
 {
-    a := 0
-    a.toto()
+    aaa := 0
+    aaa.toto()
 }
