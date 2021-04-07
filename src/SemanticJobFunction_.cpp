@@ -435,6 +435,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == "opAffect" || funcNode->token.text == "opCast", context->report({funcNode, funcNode->token, format("function '%s' cannot have the 'swag.implicit' attribute, this is reserved for 'opAffect' and 'opCast'", funcNode->token.text.c_str())}));
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, funcNode->token, format("function '%s' cannot have the 'swag.noreturn' attribute without 'swag.macro' or 'swag.mixin'", funcNode->token.text.c_str())}));
 
+    // implicit attribute cannot be used on a generic function
+    if (funcNode->attributeFlags & ATTRIBUTE_IMPLICIT && (funcNode->flags & (AST_IS_GENERIC | AST_FROM_GENERIC)))
+        return context->report({funcNode, funcNode->token, format("function '%s' cannot have the 'swag.implicit' attribute because it's generic", funcNode->token.text.c_str())});
+
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
