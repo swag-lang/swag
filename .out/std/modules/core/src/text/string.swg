@@ -200,8 +200,8 @@ impl String
         label up
         while true
         {
-            slice := @mkslice(scan, count)
-            var (c, eat) = utf8.decodeChar(slice)
+            sl := @mkslice(scan, count)
+            var (c, eat) = utf8.decodeChar(sl)
             if eat == 0
                 break
 
@@ -407,8 +407,8 @@ impl String
         ptr := buffer
         while true
         {
-            slice := @mkslice(ptr, length)
-            (c, eat) := utf8.decodeChar(slice)
+            sl := @mkslice(ptr, length)
+            (c, eat) := utf8.decodeChar(sl)
             if !unicode.isSpace(c)
                 break
             length -= eat
@@ -427,8 +427,8 @@ impl String
 
         while true
         {
-            slice := @mkslice(buffer, length)
-            (c, eat) := utf8.decodeLastChar(slice)
+            sl := @mkslice(buffer, length)
+            (c, eat) := utf8.decodeLastChar(sl)
             if !unicode.isSpace(c)
                 break
             length -= eat

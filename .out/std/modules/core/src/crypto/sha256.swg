@@ -90,7 +90,7 @@ public impl Sha256
     }
 
     // Finalize the computation
-    func final(using self, hash: Digest)
+    func final(using self, result: Digest)
     {
         i := datalen
         if datalen < 56
@@ -127,7 +127,7 @@ public impl Sha256
         data[56] = bitcast(u8) (bitlen >> 56)
         transform(data)
 
-        memory.copy(hash, &state[0], @sizeof(state))
+        memory.copy(result, &state[0], @sizeof(state))
     }
 
     // Initialize the hashing sequence

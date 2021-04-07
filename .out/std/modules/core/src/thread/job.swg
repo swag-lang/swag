@@ -180,14 +180,14 @@ public func waitJob(job: *Job)
     }
 }
 
-// Operate on a slice in parallel chunks
+// Operate on a range in parallel chunks
 // Exposed variables:
-// - buffer: address of the element of the slice to process
+// - buffer: address of the element of the range to process
 // - data:   userData as passed to the macro
 #[swag.macro]
-public func(T) parallelVisit(slice: [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
+public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
 {
-    if(!@countof(slice)) return
+    if(!@countof(range)) return
     debug.assert(offset != 0)
 
     func jobEntry(jobData: *void)
@@ -213,12 +213,12 @@ public func(T) parallelVisit(slice: [..] T, offset: u32 = 1, userData: *void = n
         }
     }
 
-    // Force synchrone execution if slice is too small
-    wh := @countof(slice) / offset
+    // Force synchrone execution if range is too small
+    wh := @countof(range) / offset
     numWorkers := math.min(getNumWorkers(), cast(u32) wh)
     if isSynchrone() || numWorkers <= 1
     {
-        visitSlice(slice, offset, userData)
+        visitSlice(range, offset, userData)
         return
     }
 
@@ -232,7 +232,7 @@ public func(T) parallelVisit(slice: [..] T, offset: u32 = 1, userData: *void = n
     var sliceJobs: Array'(SliceJob'T)
     sliceJobs.resize(cast(uint) numWorkers)
 
-    ptr := @dataof(slice)
+    ptr := @dataof(range)
     visit *j: sliceJobs
     {
         sizeSlice := @index == sliceJobs.count - 1 ? lastSplitSize : splitSize
@@ -282,7 +282,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
         }
     }
 
-    // Force synchrone execution if slice is too small
+    // Force synchrone execution if range is too small
     numWorkers := math.min(getNumWorkers(), count)
     if isSynchrone() || numWorkers <= 1
     {

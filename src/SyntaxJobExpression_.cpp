@@ -3,6 +3,7 @@
 #include "SemanticJob.h"
 #include "LanguageSpec.h"
 #include "Scoped.h"
+#include "Module.h"
 
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 {

@@ -270,8 +270,8 @@ func fromUnicode(dest: [..] u8, src: const [..] char)->uint
     visit ch: src
     {
         debug.assert(remain >= 4, "destination buffer is too small")
-        slice := @mkslice(dataof + total, remain)
-        cpt := encodeChar(slice, ch)
+        sl := @mkslice(dataof + total, remain)
+        cpt := encodeChar(sl, ch)
         total += cpt
         remain -= cpt
     }

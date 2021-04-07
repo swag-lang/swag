@@ -10,8 +10,8 @@ using core
 	cpt := 0
 	while true
 	{
-        slice := @mkslice(ptr, cast(uint) count)
-		(c, eat) := core.utf8.decodeChar(slice)
+        sl := @mkslice(ptr, cast(uint) count)
+		(c, eat) := core.utf8.decodeChar(sl)
 		if !eat
 			break
         ptr += eat

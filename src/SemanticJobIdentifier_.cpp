@@ -1952,14 +1952,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             node = context->node;
 
         auto                      symbol = overloads[0]->overload->symbol;
-        Diagnostic                diag{node, node->token, format("ambiguous resolution of %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+        Diagnostic                diag{node, node->token, format("ambiguous resolution of symbol '%s'", symbol->name.c_str())};
         vector<const Diagnostic*> notes;
         for (auto match : matches)
         {
             auto overload               = match->symbolOverload;
             auto couldBe                = "could be: " + Ast::computeTypeDisplay(overload->node->token.text, overload->typeInfo);
             auto note                   = new Diagnostic{overload->node, overload->node->token, couldBe, DiagnosticLevel::Note};
-            note->showRange             = false;
             note->showMultipleCodeLines = false;
 
             if (overload->typeInfo->kind == TypeInfoKind::FuncAttr)
@@ -2678,19 +2677,6 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             }
 
             break;
-        }
-
-        // Namespace versus non namespace
-        if (over->symbol->kind == SymbolKind::Namespace)
-        {
-            for (int j = 0; j < matches.size(); j++)
-            {
-                if (matches[j]->symbolOverload->symbol->kind != SymbolKind::Namespace)
-                {
-                    matches[i]->remove = true;
-                    break;
-                }
-            }
         }
 
         // Priority to a non empty function

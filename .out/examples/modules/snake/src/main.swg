@@ -62,7 +62,7 @@ func main()
     var rand: random.Rng
     var keyb: keyboard.Keyboard
 
-    var snake: Array'SnakeSegment = @[ @{60,15}, @{61,15}, @{62,15}, @{63,15}, @{64,15}, @{65,15}, @{66,15}, @{67,15}, @{68,15}, @{69,15} ]
+    var snakeArr: Array'SnakeSegment = @[ @{60,15}, @{61,15}, @{62,15}, @{63,15}, @{64,15}, @{65,15}, @{66,15}, @{67,15}, @{68,15}, @{69,15} ]
 
     bDead := false
     while !bDead
@@ -91,17 +91,17 @@ func main()
         switch nSnakeDirection
         {
         case 0: // UP
-            snake.insertAt(0, @{ snake.front().x, snake.front().y - 1 })
+            snakeArr.insertAt(0, @{ snakeArr.front().x, snakeArr.front().y - 1 })
         case 1: // RIGHT
-            snake.insertAt(0, @{ snake.front().x + 1, snake.front().y })
+            snakeArr.insertAt(0, @{ snakeArr.front().x + 1, snakeArr.front().y })
         case 2: // DOWN
-            snake.insertAt(0, @{ snake.front().x, snake.front().y + 1 })
+            snakeArr.insertAt(0, @{ snakeArr.front().x, snakeArr.front().y + 1 })
         case 3: // LEFT
-            snake.insertAt(0, @{ snake.front().x - 1, snake.front().y })
+            snakeArr.insertAt(0, @{ snakeArr.front().x - 1, snakeArr.front().y })
         }
 
         // Collision Detect Snake V Food
-        if snake.front().x == nFoodX && snake.front().y == nFoodY
+        if snakeArr.front().x == nFoodX && snakeArr.front().y == nFoodY
         {
             nScore += 1
             while screen[nFoodY * nScreenWidth + nFoodX] != " "'u8
@@ -111,22 +111,22 @@ func main()
             }
 
             for i := 0; i < 5; i += 1
-                snake.add(@{snake.back().x, snake.back().y})
+                snakeArr.add(@{snakeArr.back().x, snakeArr.back().y})
         }
 
         // Collision Detect Snake V World
-        if snake.front().x < 0 || snake.front().x >= nScreenWidth
+        if snakeArr.front().x < 0 || snakeArr.front().x >= nScreenWidth
             bDead = true
-        if snake.front().y < 3 || snake.front().y >= nScreenHeight
+        if snakeArr.front().y < 3 || snakeArr.front().y >= nScreenHeight
             bDead = true
 
         // Collision Detect Snake V Snake
-        visit *i: snake
-            if @index && i.x == snake.front().x && i.y == snake.front().y
+        visit *i: snakeArr
+            if @index && i.x == snakeArr.front().x && i.y == snakeArr.front().y
                 bDead = true
 
     	// Chop off Snakes tail :-/
-		snake.removeBack()
+		snakeArr.removeBack()
 
         // ==== Presentation
 
@@ -142,11 +142,11 @@ func main()
         }
 
         // Draw Snake Body
-        visit *s: snake
+        visit *s: snakeArr
             screen[s.y * nScreenWidth + s.x] = bDead ? "+"'u8 : "O"'u8
 
         // Draw Snake Head
-        screen[snake.front().y * nScreenWidth + snake.front().x] = bDead ? "X"'u8 : "@"'u8
+        screen[snakeArr.front().y * nScreenWidth + snakeArr.front().x] = bDead ? "X"'u8 : "@"'u8
 
         // Draw Food
         screen[nFoodY * nScreenWidth + nFoodX] = "%"'u8

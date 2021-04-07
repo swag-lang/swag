@@ -6,6 +6,7 @@
 #include "SymTable.h"
 #include "Allocator.h"
 #include "Ast.h"
+#include "Module.h"
 
 SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 {
@@ -287,7 +288,16 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         // If they are not in the same scope, then this is fine for now.
         // The identifier resolution will deal with ambiguities later, if necessary
         if (node->ownerScope && &node->ownerScope->symTable != this)
-            return true;
+        {
+            // We do not accept, right away, a conflict with a namespace
+            if (kind != SymbolKind::Namespace && symbol->kind != SymbolKind::Namespace)
+                return true;
+            // Except if the namespace name is the name of the current module
+            if (symbol->kind != SymbolKind::Namespace && node->sourceFile->module->name == symbol->name)
+                return true;
+            if (kind != SymbolKind::Namespace && node->sourceFile->module->name == node->token.text)
+                return true;
+        }
 
         auto       firstOverload = &symbol->defaultOverload;
         Utf8       msg           = format("symbol '%s' already defined as %s in an accessible scope", symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));

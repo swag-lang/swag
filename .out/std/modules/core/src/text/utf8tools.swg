@@ -445,8 +445,8 @@ func(ptr: bool) opVisitChars(buffer: const [..] u8, stmt: code)
     scan := @dataof(buffer)
     while count
     {
-        slice := @mkslice(scan, count)
-        (c, eat) := decodeChar(slice)
+        sl := @mkslice(scan, count)
+        (c, eat) := decodeChar(sl)
         if eat == 0
             break
         #macro

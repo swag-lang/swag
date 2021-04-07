@@ -68,7 +68,7 @@ namespace gdi32priv
     #[foreign("gdi32")]
     {
         func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32;
-        func SetPixelFormat(hdc: HDC, format: s32, ppfd: const *PIXELFORMATDESCRIPTOR)->BOOL;
+        func SetPixelFormat(hdc: HDC, fmt: s32, ppfd: const *PIXELFORMATDESCRIPTOR)->BOOL;
         func SwapBuffers(arg1: HDC)->BOOL;
         func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: *PIXELFORMATDESCRIPTOR)->s32;
     }
@@ -84,9 +84,9 @@ namespace gdi32priv
         return res
     }
 
-    func SetPixelFormat(hdc: HDC, format: s32, ppfd: const *PIXELFORMATDESCRIPTOR) throw
+    func SetPixelFormat(hdc: HDC, fmt: s32, ppfd: const *PIXELFORMATDESCRIPTOR) throw
     {
-        if !gdi32priv.SetPixelFormat(hdc, format, ppfd)
+        if !gdi32priv.SetPixelFormat(hdc, fmt, ppfd)
             try setError(GetLastError())
     }
 

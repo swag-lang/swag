@@ -26,10 +26,10 @@ impl NumericArray
     }
 
     #[safety("bc", false), complete]
-    func opAffect(using self, slice: const [..] T)
+    func opAffect(using self, what: const [..] T)
     {
-        debug.assert(@countof(slice) == N)
-        loop N buf[@index] = slice[@index]
+        debug.assert(@countof(what) == N)
+        loop N buf[@index] = what[@index]
     }
 
     #[safety("bc", false)]

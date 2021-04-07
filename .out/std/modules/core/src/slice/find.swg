@@ -52,9 +52,9 @@ func(T) findLinear(values: const [..] T, value: T) -> {index: uint, success: boo
 }
 
 // Returns true if the given slice contains the 'value'
-func(T) contains(slice: const [..] T, value: T)->bool
+func(T) contains(values: const [..] T, value: T)->bool
 {
-    visit v: slice
+    visit v: values
     {
         if v == value
             return true

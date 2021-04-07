@@ -166,9 +166,9 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         ptrSlice := cast(const *TypeInfoSlice) type
         buf.addBytes("[")
 
-        slice := cast(const [..] u8) @dataof(value)
-        bufSlice := @dataof(slice)
-        loop @countof(slice)
+        sl := cast(const [..] u8) @dataof(value)
+        bufSlice := @dataof(sl)
+        loop @countof(sl)
         {
             if @index buf.addBytes(",")
             v := @mkany(bufSlice, ptrSlice.pointedType)

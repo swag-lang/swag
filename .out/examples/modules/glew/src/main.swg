@@ -130,12 +130,12 @@ func swapParams(what: string)->String
 
         ///////////////////
         idx := line1.indexOf("(") + 1
-        glew := String.from(cast(string) line1.eatTo(")"'u8, idx, includeDelimiter: false))
-        #if LOG console.print("glew: %\n", glew)
-        glew += ";"'u8
+        glewStr := String.from(cast(string) line1.eatTo(")"'u8, idx, includeDelimiter: false))
+        #if LOG console.print("glewStr: %\n", glewStr)
+        glewStr += ";"'u8
 
         ///////////////////
-        line2 := findLine(glew)
+        line2 := findLine(glewStr)
         idx = line2.indexOf(" ") + 1
         proc := cast(string) line2.eatTo(" "'u8, idx, includeDelimiter: false)
         #if LOG console.print("proc: %\n", proc)
