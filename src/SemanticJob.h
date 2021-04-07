@@ -193,6 +193,7 @@ struct SemanticJob : public Job
     static void     setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload);
     static void     getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
     static void     symbolNotFoundRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag);
+    static void     symbolNotFoundHint(SemanticContext* context, AstNode* node, VectorNative<Scope*>& scopeHierarchy, vector<const Diagnostic*>& notes);
     static void     symbolNotFoundNotes(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes);
     static bool     cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node);
     static bool     matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, bool justCheck = false);

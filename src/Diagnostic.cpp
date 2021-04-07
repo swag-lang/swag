@@ -14,21 +14,17 @@ void Diagnostic::defaultColor(bool verboseMode) const
 
 void Diagnostic::printSourceLine(int headerSize) const
 {
-    // Source file and location
-    if (hasFile && !sourceFile->path.empty())
-    {
-        for (int i = 0; i < headerSize; i++)
-            g_Log.print(" ");
-        SWAG_ASSERT(sourceFile);
-        fs::path path = sourceFile->path;
-        g_Log.print(normalizePath(path).c_str());
-        if (hasRangeLocation)
-            g_Log.print(format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
-        else if (hasLocation)
-            g_Log.print(format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, startLocation.line + 1, startLocation.column + 1));
-        else
-            g_Log.print(": ");
-    }
+    for (int i = 0; i < headerSize; i++)
+        g_Log.print(" ");
+    SWAG_ASSERT(sourceFile);
+    fs::path path = sourceFile->path;
+    g_Log.print(normalizePath(path).c_str());
+    if (hasRangeLocation)
+        g_Log.print(format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
+    else if (hasLocation)
+        g_Log.print(format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, startLocation.line + 1, startLocation.column + 1));
+    else
+        g_Log.print(": ");
 }
 
 void Diagnostic::report(bool verboseMode) const
@@ -90,7 +86,7 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     // Source line right after the header
-    if (!g_CommandLine.errorSourceOut)
+    if (!g_CommandLine.errorSourceOut && hasFile && !sourceFile->path.empty())
     {
         headerSize = 0;
         printSourceLine(headerSize);
@@ -124,7 +120,7 @@ void Diagnostic::report(bool verboseMode) const
         g_Log.setColor(LogColor::Cyan);
 
     // Source file and location on their own line
-    if (g_CommandLine.errorSourceOut)
+    if (g_CommandLine.errorSourceOut && hasFile && !sourceFile->path.empty())
     {
         printSourceLine(headerSize);
         g_Log.eol();

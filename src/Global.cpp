@@ -164,3 +164,49 @@ Utf8 toNiceSize(size_t size)
         return format("%.1f Mb", size / (1024.0f * 1024.0f));
     return format("%.1f Gb", size / (1024.0f * 1024.0f * 1024.0f));
 }
+
+uint32_t fuzzyCompare(const Utf8& str1, const Utf8& str2)
+{
+    int32_t  i, j, diagonal;
+    uint32_t cost = 0;
+
+    auto s1len = str1.length();
+    auto s2len = str2.length();
+
+    if (s1len + s2len == 0)
+        return UINT32_MAX;
+    if (s1len * s2len == 0)
+        return UINT32_MAX;
+
+    j              = s1len + 1;
+    auto allocSize = Allocator::alignSize(j * sizeof(uint32_t));
+    auto arr       = (uint32_t*) g_Allocator.alloc(allocSize);
+
+    for (i = 0; i < j; i++)
+        arr[i] = i + 1;
+
+    for (i = 0; i < s2len; i++)
+    {
+        diagonal = arr[0] - 1;
+        arr[0]   = i + 1;
+        j        = 0;
+        while (j < s1len)
+        {
+            cost = diagonal;
+            if (str1[j] != str2[i])
+                cost++;
+            if (cost > arr[j])
+                cost = arr[j];
+            j++;
+            if (cost > arr[j])
+                cost = arr[j];
+            diagonal = arr[j] - 1;
+            arr[j]   = cost + 1;
+        }
+    }
+
+    cost = arr[j] - 1;
+    g_Allocator.free(arr, allocSize);
+
+    return cost; // (s1len + s2len - cost) / (float)(s1len + s2len);
+}

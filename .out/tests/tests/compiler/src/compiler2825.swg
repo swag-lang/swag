@@ -1,3 +1,5 @@
+#global testerror
+
 namespace titi
 {
 
@@ -5,5 +7,6 @@ namespace titi
 
 func toto()
 {
-    ti ti := 0
+    a := 0
+    A = 1
 }

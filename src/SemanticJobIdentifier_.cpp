@@ -1390,6 +1390,56 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     }
 }
 
+void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, VectorNative<Scope*>& scopeHierarchy, vector<const Diagnostic*>& notes)
+{
+    // Do not take some time if file is supposed to fail, in test mode
+    if (context->sourceFile->numTestErrors)
+        return;
+
+    uint32_t                  bestScore = UINT32_MAX;
+    VectorNative<SymbolName*> bests;
+
+    bool isFct = false;
+    if (node->kind == AstNodeKind::Identifier)
+    {
+        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        isFct           = identifier->callParameters;
+    }
+
+    for (auto s : scopeHierarchy)
+    {
+        for (uint32_t i = 0; i < s->symTable.mapNames.allocated; i++)
+        {
+            auto one = s->symTable.mapNames.buffer[i];
+            if (!one.symbolName)
+                continue;
+            if (isFct && one.symbolName->kind != SymbolKind::Function)
+                continue;
+            if (!isFct && one.symbolName->kind == SymbolKind::Function)
+                continue;
+
+            auto score = fuzzyCompare(node->token.text, one.symbolName->name);
+            if (score < bestScore)
+                bests.clear();
+            if (score <= bestScore)
+            {
+                bests.push_back(one.symbolName);
+                bestScore = score;
+            }
+        }
+    }
+
+    if (!bests.empty() && bests.size() <= 3)
+    {
+        for (int i = 0; i < bests.size(); i++)
+        {
+            auto sym  = bests[i];
+            auto note = new Diagnostic{format("did you mean '%s' ?", sym->name.c_str()), DiagnosticLevel::Note};
+            notes.push_back(note);
+        }
+    }
+}
+
 void SemanticJob::symbolNotFoundNotes(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes)
 {
     if (!node)
@@ -2293,6 +2343,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             vector<const Diagnostic*>  notes;
             symbolNotFoundRemarks(context, v, node, diag);
             symbolNotFoundNotes(context, v, node, diag, notes);
+            symbolNotFoundHint(context, node, scopeHierarchy, notes);
+
             return context->report(*diag, notes);
         }
 

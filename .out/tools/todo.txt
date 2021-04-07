@@ -22,10 +22,9 @@ var lazy evaluation ?
 TODO
 ****************************************
 -------------------------------------
-generic & type literla (4'T, T non reconnu)
+debugger : print/list gdb
 -------------------------------------
-did you mean message : ex in swift
-break outerloop // expected-error {{cannot find label 'outerloop' in scope; did you mean 'outerLoop'?}} {{9-18=outerLoop}}
+generic & type literla (4'T, T non reconnu)
 -------------------------------------
 BIG BIG BIG BIG BIG CHIANT CHIANT CHIANT CHIANT CHIANT
 llvm/x64 compatibilité
