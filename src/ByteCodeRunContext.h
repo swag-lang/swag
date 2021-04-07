@@ -111,8 +111,9 @@ struct ByteCodeRunContext : public JobContext
     DebugStepMode        debugStepMode         = DebugStepMode::None;
     SourceFile*          debugStepLastFile     = nullptr;
     SourceLocation*      debugStepLastLocation = nullptr;
-    uint32_t             debugStackFrameOffset     = 0;
+    uint32_t             debugStackFrameOffset = 0;
     ByteCode*            debugCxtBc            = nullptr;
     uint32_t             debugCxtRc            = 0;
     ByteCodeInstruction* debugCxtIp            = nullptr;
+    uint8_t*             debugCxtBp            = nullptr;
 };

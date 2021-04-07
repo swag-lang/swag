@@ -109,6 +109,7 @@ static void computeCxt(ByteCodeRunContext* context)
     context->debugCxtBc = context->bc;
     context->debugCxtIp = context->ip;
     context->debugCxtRc = context->curRC;
+    context->debugCxtBp = context->bp;
     if (context->debugStackFrameOffset == 0 || g_byteCodeStack.steps.empty())
         return;
 
@@ -123,6 +124,7 @@ static void computeCxt(ByteCodeRunContext* context)
         {
             context->debugCxtBc = step.bc;
             context->debugCxtIp = step.ip;
+            context->debugCxtBp = step.bp;
             break;
         }
 
@@ -131,6 +133,57 @@ static void computeCxt(ByteCodeRunContext* context)
             continue;
         context->debugCxtRc--;
     }
+}
+
+static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr)
+{
+    if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::Bool:
+            str += format("%s", *(bool*) addr ? "true" : "false");
+            return;
+
+        case NativeTypeKind::S8:
+            str += format("%d", *(int8_t*) addr);
+            return;
+        case NativeTypeKind::S16:
+            str += format("%d", *(int16_t*) addr);
+            return;
+        case NativeTypeKind::S32:
+            str += format("%d", *(int32_t*) addr);
+            return;
+        case NativeTypeKind::Int:
+        case NativeTypeKind::S64:
+            str += format("%lld", *(int64_t*) addr);
+            return;
+
+        case NativeTypeKind::U8:
+            str += format("%u", *(uint8_t*) addr);
+            return;
+        case NativeTypeKind::U16:
+            str += format("%u", *(uint16_t*) addr);
+            return;
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
+            str += format("%u", *(uint32_t*) addr);
+            return;
+        case NativeTypeKind::UInt:
+        case NativeTypeKind::U64:
+            str += format("%llu", *(uint64_t*) addr);
+            return;
+
+        case NativeTypeKind::F32:
+            str += format("%f", *(float*) addr);
+            return;
+        case NativeTypeKind::F64:
+            str += format("%lf", *(double*) addr);
+            return;
+        }
+    }
+
+    str += "?";
 }
 
 bool ByteCodeRun::debugger(ByteCodeRunContext* context)
@@ -256,6 +309,28 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 continue;
             }
 
+            if (cmd == "info" && cmds.size() == 2 && cmds[1] == "locals")
+            {
+                if (context->debugCxtBc->localVars.empty())
+                    g_Log.printColor("no locals\n");
+                else
+                {
+                    for (auto l : context->debugCxtBc->localVars)
+                    {
+                        auto over = l->resolvedSymbolOverload;
+                        if (!over)
+                            continue;
+                        Utf8 str;
+                        str = format("%s (%s) = ", over->symbol->name.c_str(), over->typeInfo->name.c_str());
+                        appendValue(str, over->typeInfo, context->debugCxtBp + over->storageOffset);
+                        g_Log.printColor(str);
+                        g_Log.eol();
+                    }
+                }
+
+                continue;
+            }
+
             // Print current instruction
             if (cmd == "list" && cmds.size() == 1)
             {
@@ -283,7 +358,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     off = atoi(cmds[1].c_str());
                 uint32_t maxLevel = g_byteCodeStack.maxLevel(context);
                 if (context->debugStackFrameOffset == maxLevel)
-                    g_Log.printColor("initial frame selected; you cannot go up.\n");
+                    g_Log.printColor("initial frame selected; you cannot go up\n");
                 else
                 {
                     context->debugStackFrameOffset += off;
@@ -301,7 +376,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 if (cmds.size() == 2)
                     off = atoi(cmds[1].c_str());
                 if (context->debugStackFrameOffset == 0)
-                    g_Log.printColor("bottom(innermost) frame selected; you cannot go down.\n");
+                    g_Log.printColor("bottom(innermost) frame selected; you cannot go down\n");
                 else
                 {
                     context->debugStackFrameOffset -= min(context->debugStackFrameOffset, off);

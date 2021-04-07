@@ -8,6 +8,7 @@ struct ByteCodeStackStep
 {
     ByteCode*            bc = nullptr;
     ByteCodeInstruction* ip = nullptr;
+    uint8_t*             bp = nullptr;
 };
 
 struct ByteCodeStack
