@@ -1395,6 +1395,8 @@ void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, Ve
     // Do not take some time if file is supposed to fail, in test mode
     if (context->sourceFile->numTestErrors)
         return;
+    if (node->token.text.length() <= 4)
+        return;
 
     uint32_t                  bestScore = UINT32_MAX;
     VectorNative<SymbolName*> bests;
@@ -1428,6 +1430,9 @@ void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, Ve
             }
         }
     }
+
+    if (bestScore > 2)
+        return;
 
     if (!bests.empty() && bests.size() <= 3)
     {
