@@ -300,6 +300,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doLambdaExpression(parent, result));
         break;
 
+    case TokenId::KwdCast:
+        SWAG_CHECK(doCast(parent, result));
+        break;
+
     default:
         return invalidTokenError(InvalidTokenError::PrimaryExpression);
     }

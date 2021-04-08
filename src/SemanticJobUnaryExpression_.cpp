@@ -17,6 +17,12 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
     case NativeTypeKind::F64:
     case NativeTypeKind::Int:
         break;
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
+    case NativeTypeKind::UInt:
+        return context->report({op, op->token, format("negate an unsigned type ('%s') is not allowed", typeInfo->name.c_str())});
     default:
         return context->report({op, op->token, format("minus operation not allowed on type '%s'", typeInfo->name.c_str())});
     }
