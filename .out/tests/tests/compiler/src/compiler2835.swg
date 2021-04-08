@@ -1,4 +1,4 @@
-#global skip
+//#[swag.printbc]
 #test
 {
     x := 0'u8

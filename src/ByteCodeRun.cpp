@@ -1884,32 +1884,60 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::BinOpBitmaskAnd8:
+    {
+        auto val1                 = IMMA_U8(ip);
+        auto val2                 = IMMB_U8(ip);
+        registersRC[ip->c.u32].u8 = val1 & val2;
+        break;
+    }
+    case ByteCodeOp::BinOpBitmaskAnd16:
+    {
+        auto val1                  = IMMA_U16(ip);
+        auto val2                  = IMMB_U16(ip);
+        registersRC[ip->c.u32].u16 = val1 & val2;
+        break;
+    }
     case ByteCodeOp::BinOpBitmaskAnd32:
     {
-        auto val1                  = IMMA_S32(ip);
-        auto val2                  = IMMB_S32(ip);
-        registersRC[ip->c.u32].s32 = val1 & val2;
+        auto val1                  = IMMA_U32(ip);
+        auto val2                  = IMMB_U32(ip);
+        registersRC[ip->c.u32].u32 = val1 & val2;
         break;
     }
     case ByteCodeOp::BinOpBitmaskAnd64:
     {
-        auto val1                  = IMMA_S64(ip);
-        auto val2                  = IMMB_S64(ip);
-        registersRC[ip->c.u32].s64 = val1 & val2;
+        auto val1                  = IMMA_U64(ip);
+        auto val2                  = IMMB_U64(ip);
+        registersRC[ip->c.u32].u64 = val1 & val2;
+        break;
+    }
+    case ByteCodeOp::BinOpBitmaskOr8:
+    {
+        auto val1                 = IMMA_U8(ip);
+        auto val2                 = IMMB_U8(ip);
+        registersRC[ip->c.u32].u8 = val1 | val2;
+        break;
+    }
+    case ByteCodeOp::BinOpBitmaskOr16:
+    {
+        auto val1                  = IMMA_U16(ip);
+        auto val2                  = IMMB_U16(ip);
+        registersRC[ip->c.u32].u16 = val1 | val2;
         break;
     }
     case ByteCodeOp::BinOpBitmaskOr32:
     {
-        auto val1                  = IMMA_S32(ip);
-        auto val2                  = IMMB_S32(ip);
-        registersRC[ip->c.u32].s32 = val1 | val2;
+        auto val1                  = IMMA_U32(ip);
+        auto val2                  = IMMB_U32(ip);
+        registersRC[ip->c.u32].u32 = val1 | val2;
         break;
     }
     case ByteCodeOp::BinOpBitmaskOr64:
     {
-        auto val1                  = IMMA_S64(ip);
-        auto val2                  = IMMB_S64(ip);
-        registersRC[ip->c.u32].s64 = val1 | val2;
+        auto val1                  = IMMA_U64(ip);
+        auto val2                  = IMMB_U64(ip);
+        registersRC[ip->c.u32].u64 = val1 | val2;
         break;
     }
 

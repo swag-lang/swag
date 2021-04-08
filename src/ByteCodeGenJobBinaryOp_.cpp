@@ -314,6 +314,15 @@ bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeI
 
     switch (typeInfo->nativeType)
     {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::Bool:
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd8, r0, r1, r2);
+        return true;
+    case NativeTypeKind::S16:
+    case NativeTypeKind::U16:
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd16, r0, r1, r2);
+        return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
@@ -339,7 +348,15 @@ bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeIn
 
     switch (typeInfo->nativeType)
     {
+    case NativeTypeKind::S8:
+    case NativeTypeKind::U8:
     case NativeTypeKind::Bool:
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskOr8, r0, r1, r2);
+        return true;
+    case NativeTypeKind::S16:
+    case NativeTypeKind::U16:
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskOr16, r0, r1, r2);
+        return true;
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
