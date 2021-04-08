@@ -1709,14 +1709,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::BinOpBitmaskAndS32:
+        case ByteCodeOp::BinOpBitmaskAnd32:
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateAnd(r1, r2);
             builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
-        case ByteCodeOp::BinOpBitmaskAndS64:
+        case ByteCodeOp::BinOpBitmaskAnd64:
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateAnd(r1, r2);
@@ -1724,14 +1724,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::BinOpBitmaskOrS32:
+        case ByteCodeOp::BinOpBitmaskOr32:
         {
             MK_BINOP32_CAB();
             auto v0 = builder.CreateOr(r1, r2);
             builder.CreateStore(v0, TO_PTR_I32(r0));
             break;
         }
-        case ByteCodeOp::BinOpBitmaskOrS64:
+        case ByteCodeOp::BinOpBitmaskOr64:
         {
             MK_BINOP64_CAB();
             auto v0 = builder.CreateOr(r1, r2);

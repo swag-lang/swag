@@ -52,7 +52,7 @@ void ByteCodeGenJob::emitSafetyNullLambda(ByteCodeGenContext* context, uint32_t 
 
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CopyRBtoRA64, re, r);
-    auto inst = emitInstruction(context, ByteCodeOp::BinOpBitmaskAndS64, re, 0, re);
+    auto inst = emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd64, re, 0, re);
     inst->flags |= BCI_IMM_B;
     inst->b.u64 = ~SWAG_LAMBDA_MARKER_MASK;
 

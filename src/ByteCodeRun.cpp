@@ -1884,28 +1884,28 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::BinOpBitmaskAndS32:
+    case ByteCodeOp::BinOpBitmaskAnd32:
     {
         auto val1                  = IMMA_S32(ip);
         auto val2                  = IMMB_S32(ip);
         registersRC[ip->c.u32].s32 = val1 & val2;
         break;
     }
-    case ByteCodeOp::BinOpBitmaskAndS64:
+    case ByteCodeOp::BinOpBitmaskAnd64:
     {
         auto val1                  = IMMA_S64(ip);
         auto val2                  = IMMB_S64(ip);
         registersRC[ip->c.u32].s64 = val1 & val2;
         break;
     }
-    case ByteCodeOp::BinOpBitmaskOrS32:
+    case ByteCodeOp::BinOpBitmaskOr32:
     {
         auto val1                  = IMMA_S32(ip);
         auto val2                  = IMMB_S32(ip);
         registersRC[ip->c.u32].s32 = val1 | val2;
         break;
     }
-    case ByteCodeOp::BinOpBitmaskOrS64:
+    case ByteCodeOp::BinOpBitmaskOr64:
     {
         auto val1                  = IMMA_S64(ip);
         auto val2                  = IMMB_S64(ip);

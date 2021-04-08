@@ -138,17 +138,17 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpDivF64:
                 BINOP_F64(/);
                 break;
-            case ByteCodeOp::BinOpBitmaskAndS32:
-                BINOP_S32(&);
+            case ByteCodeOp::BinOpBitmaskAnd32:
+                BINOP_U32(&);
                 break;
-            case ByteCodeOp::BinOpBitmaskAndS64:
-                BINOP_S64(&);
+            case ByteCodeOp::BinOpBitmaskAnd64:
+                BINOP_U64(&);
                 break;
-            case ByteCodeOp::BinOpBitmaskOrS32:
-                BINOP_S32(|);
+            case ByteCodeOp::BinOpBitmaskOr32:
+                BINOP_U32(|);
                 break;
-            case ByteCodeOp::BinOpBitmaskOrS64:
-                BINOP_S64(|);
+            case ByteCodeOp::BinOpBitmaskOr64:
+                BINOP_U64(|);
                 break;
             case ByteCodeOp::BinOpXorU32:
                 BINOP_U32(^);

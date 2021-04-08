@@ -873,17 +873,17 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, X64Op::FSUB);
             break;
 
-        case ByteCodeOp::BinOpBitmaskAndS32:
+        case ByteCodeOp::BinOpBitmaskAnd32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::AND);
             break;
-        case ByteCodeOp::BinOpBitmaskAndS64:
+        case ByteCodeOp::BinOpBitmaskAnd64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::AND);
             break;
 
-        case ByteCodeOp::BinOpBitmaskOrS32:
+        case ByteCodeOp::BinOpBitmaskOr32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::OR);
             break;
-        case ByteCodeOp::BinOpBitmaskOrS64:
+        case ByteCodeOp::BinOpBitmaskOr64:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::OR);
             break;
 

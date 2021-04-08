@@ -317,13 +317,13 @@ bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeI
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::BinOpBitmaskAndS32, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
     case NativeTypeKind::Int:
     case NativeTypeKind::UInt:
-        emitInstruction(context, ByteCodeOp::BinOpBitmaskAndS64, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd64, r0, r1, r2);
         return true;
     default:
         return internalError(context, "emitBitmaskAnd, type not supported");
@@ -343,13 +343,13 @@ bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeIn
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::BinOpBitmaskOrS32, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskOr32, r0, r1, r2);
         return true;
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
     case NativeTypeKind::Int:
     case NativeTypeKind::UInt:
-        emitInstruction(context, ByteCodeOp::BinOpBitmaskOrS64, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::BinOpBitmaskOr64, r0, r1, r2);
         return true;
     default:
         return internalError(context, "emitBitmaskOr, type not supported");
