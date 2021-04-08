@@ -79,7 +79,9 @@ func parseU64(str: const [..] u8) -> {value: u64, eat: u32} throw
     while cpt < countof && latin1.isDigit(:buffer)
     {
         value *= 10
-        value += cast(u64) (:buffer - "0"'u8)
+        add := cast(u64) (:buffer - "0"'u8)
+        if value +% add < value throw "overflow"
+        value += add
         buffer, cpt += 1
     }
 

@@ -6,6 +6,8 @@ using core, core.strconv
     @assert(@err == null)
     discard catch parseX64("ffffffffffffffff")
     @assert(@err == null)
+    discard catch parseX64("c0deC0DEc0deC0DE")
+    @assert(@err == null)
     discard catch parseX64("ffffffffffffffff0")
     @assert(@err != null)
     discard catch parseX64("toto")
@@ -21,6 +23,10 @@ using core, core.strconv
     @assert(@err != null)
 
     discard catch parseU64("toto")
+    @assert(@err != null)
+    discard catch parseU64("18446744073709551615")
+    @assert(@err == null)
+    discard catch parseU64("18446744073709551616")
     @assert(@err != null)
 
     discard catch parseS64("toto")
