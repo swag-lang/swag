@@ -26,6 +26,10 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
             {
                 switch (child->kind)
                 {
+                case AstNodeKind::AttrUse:
+                    if (((AstAttrUse*) child)->isGlobal)
+                        break;
+                    return error(node->token, "global 'using' must be defined at the top of the file");
                 case AstNodeKind::CompilerImport:
                 case AstNodeKind::CompilerAssert:
                 case AstNodeKind::CompilerForeignLib:
