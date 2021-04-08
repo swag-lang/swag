@@ -3457,12 +3457,17 @@ bool SemanticJob::checkCanCatch(SemanticContext* context)
 {
     auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Catch, AstNodeKind::Assume);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
-    auto lastChild     = identifierRef->childs.back();
 
-    if (lastChild->resolvedSymbolName->kind != SymbolKind::Function && lastChild->resolvedSymbolOverload->typeInfo->kind != TypeInfoKind::Lambda)
-        return context->report({node, format("'%s' can only be used before a function call, and '%s' is %s", node->token.text.c_str(), lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))});
+    for (auto c : identifierRef->childs)
+    {
+        if (!c->resolvedSymbolOverload)
+            continue;
+        if (c->resolvedSymbolOverload->symbol->kind == SymbolKind::Function || c->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::Lambda)
+            return true;
+    }
 
-    return true;
+    auto lastChild = identifierRef->childs.back();
+    return context->report({node, format("'%s' can only be used before a function call, and '%s' is %s", node->token.text.c_str(), lastChild->token.text.c_str(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))});
 }
 
 bool SemanticJob::resolveTryBlock(SemanticContext* context)
