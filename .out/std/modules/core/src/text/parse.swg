@@ -114,7 +114,7 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32}
     while cpt < countof && latin1.isDigit(:buffer)
     {
         hasDigits = true
-        value *= 10
+        value *%= 10
         value +%= cast(s64) (:buffer - "0"'u8)
         buffer, cpt += 1
     }
