@@ -3,12 +3,12 @@ using core, core.strconv
 
 #test
 {
-    @assert(parseU64("255").value == 255)
-    @assert(parseU64("123456").value == 123456)
+    @assert(assume parseU64("255").value == 255)
+    @assert(assume parseU64("123456").value == 123456)
 
-    @assert(parseS64("255").value == 255)
-    @assert(parseS64("-255").value == -255)
-    @assert(parseS64("+255").value == 255)
+    @assert(assume parseS64("255").value == 255)
+    @assert(assume parseS64("-255").value == -255)
+    @assert(assume parseS64("+255").value == 255)
 
     @assert(assume parseX64("ff").value == 255)
     @assert(assume parseX64("0A").value == 10)

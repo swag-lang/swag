@@ -2,31 +2,6 @@
 #global namespace strconv
 using globalization
 
-// Convert an utf8 buffer in decimal to an unsigned integer value
-// Returns the value and the number of bytes used to make the conversion
-func parseU64(str: const [..] u8) -> {value: u64, eat: u32}
-{
-    var result: retval
-
-    countof := @countof(str)
-    if !countof return result
-
-    buffer := @dataof(str)
-    cpt := 0'u32
-    value := 0'u64
-
-    while cpt < countof && latin1.isDigit(:buffer)
-    {
-        value *= 10
-        value += cast(u64) (:buffer - "0"'u8)
-        buffer, cpt += 1
-    }
-
-    result.value = value
-    result.eat = cpt
-    return result
-}
-
 // Convert an utf8 buffer in hexadecimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
 func parseX64(str: const [..] u8) -> {value: u64, eat: u32} throw
@@ -40,6 +15,7 @@ func parseX64(str: const [..] u8) -> {value: u64, eat: u32} throw
     cpt := 0'u32
     value := 0'u64
 
+    if !latin1.isHexDigit(:buffer) throw "invalid"
     while cpt < countof && latin1.isHexDigit(:buffer)
     {
         if value & 0xF0000000_00000000 throw "overflow"
@@ -72,6 +48,7 @@ func parseB64(str: const [..] u8) -> {value: u64, eat: u32} throw
     cpt := 0'u32
     value := 0'u64
 
+    if !latin1.isBinDigit(:buffer) throw "invalid"
     while cpt < countof && latin1.isBinDigit(:buffer)
     {
         if value & 0x80000000_00000000 throw "overflow"
@@ -85,9 +62,35 @@ func parseB64(str: const [..] u8) -> {value: u64, eat: u32} throw
     return result
 }
 
+// Convert an utf8 buffer in decimal to an unsigned integer value
+// Returns the value and the number of bytes used to make the conversion
+func parseU64(str: const [..] u8) -> {value: u64, eat: u32} throw
+{
+    var result: retval
+
+    countof := @countof(str)
+    if !countof return result
+
+    buffer := @dataof(str)
+    cpt := 0'u32
+    value := 0'u64
+
+    if !latin1.isDigit(:buffer) throw "invalid"
+    while cpt < countof && latin1.isDigit(:buffer)
+    {
+        value *= 10
+        value += cast(u64) (:buffer - "0"'u8)
+        buffer, cpt += 1
+    }
+
+    result.value = value
+    result.eat = cpt
+    return result
+}
+
 // Convert an utf8 buffer to an signed integer value
 // Returns the value and the number of bytes used to make the conversion
-func parseS64(str: const [..] u8) -> {value: s64, eat: u32}
+func parseS64(str: const [..] u8) -> {value: s64, eat: u32} throw
 {
     var result: retval
 
@@ -112,17 +115,14 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32}
     }
 
     // Parse the rest
-    hasDigits := false
+    if !latin1.isDigit(:buffer) throw "invalid"
     while cpt < countof && latin1.isDigit(:buffer)
     {
-        hasDigits = true
         value *%= 10
         value +%= cast(s64) (:buffer - "0"'u8)
         buffer, cpt += 1
     }
 
-    if !hasDigits
-        return result
     if signed
         value = -value
 

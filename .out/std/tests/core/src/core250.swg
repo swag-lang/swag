@@ -69,7 +69,7 @@ const tests: [] Test = @[
             (value, eat) := assume strconv.parseB64(c.out)
             @assert(value == c.in)
         case 10:
-            (value, eat) := strconv.parseS64(c.out)
+            (value, eat) := assume strconv.parseS64(c.out)
             @assert(value == c.in)
         case 16:
             (value, eat) := assume strconv.parseX64(c.out)
