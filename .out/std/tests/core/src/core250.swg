@@ -44,7 +44,7 @@ const tests: [] Test = @[
         {
         case 2:
             (value, eat) := strconv.parseB64(c.out)
-            console.print("% %\n", value)//, c.in)
+            console.print("% %\n", value, c.in)
             @assert(value == c.in)
         case 10:
             (value, eat) := strconv.parseS64(c.out)
