@@ -29,7 +29,7 @@ func parseU64(str: const [..] u8) -> {value: u64, eat: u32}
 
 // Convert an utf8 buffer in hexadecimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-func parseX64(str: const [..] u8) -> {value: u64, eat: u32}
+func parseX64(str: const [..] u8) -> {value: u64, eat: u32} throw
 {
     var result: retval
 
@@ -42,6 +42,7 @@ func parseX64(str: const [..] u8) -> {value: u64, eat: u32}
 
     while cpt < countof && latin1.isHexDigit(:buffer)
     {
+        if value & 0xF0000000_00000000 throw "overflow"
         value <<= 4
         c := :buffer
         if latin1.isDigit(c)
@@ -60,7 +61,7 @@ func parseX64(str: const [..] u8) -> {value: u64, eat: u32}
 
 // Convert an utf8 buffer in binary to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-func parseB64(str: const [..] u8) -> {value: u64, eat: u32}
+func parseB64(str: const [..] u8) -> {value: u64, eat: u32} throw
 {
     var result: retval
 
@@ -73,6 +74,7 @@ func parseB64(str: const [..] u8) -> {value: u64, eat: u32}
 
     while cpt < countof && latin1.isBinDigit(:buffer)
     {
+        if value & 0x80000000_00000000 throw "overflow"
         value <<= 1
         value += cast(u64) (:buffer - "0"'u8)
         buffer, cpt += 1
