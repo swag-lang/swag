@@ -365,7 +365,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         case NativeTypeKind::S32:
             if (right->computedValue.reg.s32 == 0)
                 return context->report({right, right->token, "division by zero"});
-            node->computedValue.reg.s32 = left->computedValue.reg.s32 / right->computedValue.reg.s32;
+            node->computedValue.reg.s64 = left->computedValue.reg.s32 / right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
@@ -377,7 +377,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         case NativeTypeKind::Char:
             if (right->computedValue.reg.u32 == 0)
                 return context->report({right, right->token, "division by zero"});
-            node->computedValue.reg.u32 = left->computedValue.reg.u32 / right->computedValue.reg.u32;
+            node->computedValue.reg.u64 = left->computedValue.reg.u32 / right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
@@ -445,7 +445,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         case NativeTypeKind::S32:
             if (right->computedValue.reg.s32 == 0)
                 return context->report({right, right->token, "division by zero"});
-            node->computedValue.reg.s32 = left->computedValue.reg.s32 % right->computedValue.reg.s32;
+            node->computedValue.reg.s64 = left->computedValue.reg.s32 % right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
@@ -457,7 +457,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         case NativeTypeKind::Char:
             if (right->computedValue.reg.u32 == 0)
                 return context->report({right, right->token, "division by zero"});
-            node->computedValue.reg.u32 = left->computedValue.reg.u32 % right->computedValue.reg.u32;
+            node->computedValue.reg.u64 = left->computedValue.reg.u32 % right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
@@ -516,7 +516,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            node->computedValue.reg.s32 = left->computedValue.reg.s32 | right->computedValue.reg.s32;
+            node->computedValue.reg.s64 = left->computedValue.reg.s32 | right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
@@ -585,7 +585,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            node->computedValue.reg.s32 = left->computedValue.reg.s32 & right->computedValue.reg.s32;
+            node->computedValue.reg.s64 = left->computedValue.reg.s32 & right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
@@ -659,7 +659,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            node->computedValue.reg.s32 = left->computedValue.reg.s32 ^ right->computedValue.reg.s32;
+            node->computedValue.reg.s64 = left->computedValue.reg.s32 ^ right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
@@ -850,11 +850,21 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
+            if (right->computedValue.reg.u32 >= 32)
+                return context->report({node, "[safety] (32 bits) '<<' shift operand is greater than '31'"});
+            node->computedValue.reg.s64 = left->computedValue.reg.s32 << right->computedValue.reg.u32;
+            if (module->mustEmitSafetyOF(node))
+            {
+                if (node->computedValue.reg.u32 >> right->computedValue.reg.u32 != left->computedValue.reg.u32)
+                    return context->report({node, "[safety] (32 bits) '<<' shift overflow"});
+            }
+            break;
+
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
             if (right->computedValue.reg.u32 >= 32)
                 return context->report({node, "[safety] (32 bits) '<<' shift operand is greater than '31'"});
-            node->computedValue.reg.u32 = left->computedValue.reg.u32 << right->computedValue.reg.u32;
+            node->computedValue.reg.u64 = left->computedValue.reg.u32 << right->computedValue.reg.u32;
             if (module->mustEmitSafetyOF(node))
             {
                 if (node->computedValue.reg.u32 >> right->computedValue.reg.u32 != left->computedValue.reg.u32)
@@ -939,11 +949,21 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
+            if (right->computedValue.reg.u32 >= 32)
+                return context->report({node, "[safety] (32 bits) '>>' shift operand is greater than '31'"});
+            node->computedValue.reg.s64 = left->computedValue.reg.u32 >> right->computedValue.reg.u32;
+            if (module->mustEmitSafetyOF(node))
+            {
+                if (node->computedValue.reg.u32 << right->computedValue.reg.u32 != left->computedValue.reg.u32)
+                    return context->report({node, "[safety] (32 bits) '>>' shift overflow"});
+            }
+            break;
+
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
             if (right->computedValue.reg.u32 >= 32)
                 return context->report({node, "[safety] (32 bits) '>>' shift operand is greater than '31'"});
-            node->computedValue.reg.u32 = left->computedValue.reg.u32 >> right->computedValue.reg.u32;
+            node->computedValue.reg.u64 = left->computedValue.reg.u32 >> right->computedValue.reg.u32;
             if (module->mustEmitSafetyOF(node))
             {
                 if (node->computedValue.reg.u32 << right->computedValue.reg.u32 != left->computedValue.reg.u32)
