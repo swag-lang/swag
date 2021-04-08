@@ -57,7 +57,6 @@ const tests: [] Test = @[
 	{12345678901234567's64, 10, "12345678901234567"},
 	{123456789012345678's64, 10, "123456789012345678"},
 	{1234567890123456789's64, 10, "1234567890123456789"},
-	{12345678901234567890's64, 10, "12345678901234567890"},
 ]
 
 #test
@@ -75,6 +74,22 @@ const tests: [] Test = @[
         case 16:
             (value, eat) := strconv.parseX64(c.out)
             @assert(value == c.in)
+        }
+    }
+
+    visit c: tests
+    {
+        switch c.base
+        {
+        case 2:
+            value := format.toString("%{B}", c.in)
+            @assert(value == c.out)
+        case 10:
+            value := format.toString("%", c.in)
+            @assert(value == c.out)
+        case 16:
+            value := format.toString("%{X}", c.in)
+            @assert(value == c.out)
         }
     }
 }

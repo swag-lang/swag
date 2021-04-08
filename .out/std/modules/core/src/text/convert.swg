@@ -325,23 +325,55 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     var signedValue: s64
     var signed: bool
 
+    overflowS64 := false
     switch kindof
     {
-        case s8:    signedValue = cast(s64) :cast(*s8) dataof; value = cast(u64) math.abs(signedValue)
-        case s16:   signedValue = cast(s64) :cast(*s16) dataof; value = cast(u64) math.abs(signedValue)
-        case s32:   signedValue = cast(s64) :cast(*s32) dataof; value = cast(u64) math.abs(signedValue)
-        case s64:   signedValue = :cast(*s64) dataof; value = cast(u64) math.abs(signedValue)
-        case int:   signedValue = :cast(*s64) dataof; value = cast(u64) math.abs(signedValue)
-        case u8:    value = cast(u64) :cast(*u8) dataof
-        case u16:   value = cast(u64) :cast(*u16) dataof
-        case u32:   value = cast(u64) :cast(*u32) dataof
-        case u64:   value = :cast(*u64) dataof
-        case uint:  value = :cast(*u64) dataof
+        case s8:
+            signedValue = cast(s64) :cast(*s8) dataof
+            value = cast(u64) math.abs(signedValue)
+        case s16:
+            signedValue = cast(s64) :cast(*s16) dataof
+            value = cast(u64) math.abs(signedValue)
+        case s32:
+            signedValue = cast(s64) :cast(*s32) dataof
+            value = cast(u64) math.abs(signedValue)
+        case s64, int:
+            signedValue = :cast(*s64) dataof
+            // Cannot take the absolute value of swag.MinS64
+            if signedValue == swag.MinS64
+                overflowS64 = true
+            else
+                value = cast(u64) math.abs(signedValue)
+        case u8:
+            value = cast(u64) :cast(*u8) dataof
+        case u16:
+            value = cast(u64) :cast(*u16) dataof
+        case u32:
+            value = cast(u64) :cast(*u32) dataof
+        case u64, uint:
+            value = :cast(*u64) dataof
     }
 
     const tbl = "0123456789ABCDEF"
     var tmp: [64] u8
     cpt := 63'u32
+
+    // Special case for the lower digit of swag.MinS64
+    // We have 9_223_372_036_854_775_807, and we want -9_223_372_036_854_775_808
+    // So use '8' instead of '7'
+    if overflowS64
+    {
+        c := tbl[8 % fmt.base]
+        tmp[cpt] = c
+        cpt, bits -= 1
+        switch fmt.base
+        {
+        case 2:  value = 4611686018427387904
+        case 10: value = 922337203685477580
+        case 16: value = 576460752303423488
+        }
+    }
+
     loop bits
     {
         c := tbl[value % fmt.base]

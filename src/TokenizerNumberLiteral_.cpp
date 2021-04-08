@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "LanguageSpec.h"
 #include "TypeManager.h"
+#include "SourceFile.h"
 
 bool Tokenizer::errorNumberSyntax(Token& token, const Utf8& msg)
 {
@@ -75,8 +76,6 @@ bool Tokenizer::doNumberSuffix(Token& token)
             break;
         case LiteralType::TT_S64:
         case LiteralType::TT_INT:
-            if (token.literalValue.s64 < INT64_MIN || token.literalValue.s64 > INT64_MAX)
-                return error(token, format("literal number '%I64d' is not in the range of 's64'", token.literalValue.s64));
             break;
 
         case LiteralType::TT_CHAR:
@@ -144,6 +143,8 @@ bool Tokenizer::doNumberSuffix(Token& token)
             break;
         case LiteralType::TT_S64:
         case LiteralType::TT_INT:
+            if (token.literalValue.u64 > (uint64_t) INT64_MAX + 1)
+                return error(token, format("literal number '%I64u' is not in the range of 's64'", token.literalValue.u64));
             break;
 
         case LiteralType::TT_CHAR:
@@ -224,8 +225,8 @@ bool Tokenizer::doBinLiteral(Token& token)
         hasSuffix = true;
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
-        SWAG_VERIFY(token.literalType != LiteralType::TT_F32, error(token, "can't convert a binary literal number to 'f32'"));
-        SWAG_VERIFY(token.literalType != LiteralType::TT_F64, error(token, "can't convert a binary literal number to 'f64'"));
+        SWAG_VERIFY(token.literalType != LiteralType::TT_F32, error(token, "cannot convert a binary literal number to 'f32'"));
+        SWAG_VERIFY(token.literalType != LiteralType::TT_F64, error(token, "cannot convert a binary literal number to 'f64'"));
     }
 
     if (!hasSuffix)
@@ -506,7 +507,11 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
     }
     else if (token.literalValue.s64 < INT32_MIN || token.literalValue.s64 > INT32_MAX)
     {
-        token.literalType = LiteralType::TT_S64;
+        // Can be a negative number ?
+        if (token.literalValue.u64 > (uint64_t) INT64_MAX + 1)
+            token.literalType = LiteralType::TT_U64;
+        else
+            token.literalType = LiteralType::TT_S64;
     }
 
     bool hasSuffix = false;
