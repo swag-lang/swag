@@ -33,4 +33,8 @@ using core, core.strconv
     @assert(@err != null)
     discard catch parseS64("-")
     @assert(@err != null)
+    discard catch parseS64("-9223372036854775808")
+    @assert(@err == null)
+    discard catch parseS64("9223372036854775808")
+    @assert(@err != null)
 }

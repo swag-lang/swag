@@ -100,16 +100,18 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32} throw
     if !countof return result
 
     buffer := @dataof(str)
-    value := 0's64
+    value := 0'u64
     cpt := 0'u32
 
     // Does the number starts with the negative/positive sign ?
     signed := false
     c := :str
+    maxValue := cast(u64) swag.MaxS64
     if c == g_CultureInfo.numberFormat.negativeSign
     {
         buffer, cpt += 1
         signed = true
+        maxValue += 1
     }
     else if c == g_CultureInfo.numberFormat.positiveSign
     {
@@ -120,15 +122,25 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32} throw
     if !latin1.isDigit(:buffer) throw "invalid"
     while cpt < countof && latin1.isDigit(:buffer)
     {
-        value *%= 10
-        value +%= cast(s64) (:buffer - "0"'u8)
+        value *= 10
+        value += cast(u64) (:buffer - "0"'u8)
+        if value > maxValue throw "overflow"
         buffer, cpt += 1
     }
 
     if signed
-        value = -value
+    {
+        if value == maxValue
+           result.value = swag.MinS64
+        else
+        {
+            result.value = cast(s64) value
+            result.value = -result.value
+        }
+    }
+    else
+        result.value = cast(s64) value
 
-    result.value = value
     result.eat = cpt
     return result
 }
