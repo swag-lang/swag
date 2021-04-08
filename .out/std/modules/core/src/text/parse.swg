@@ -131,12 +131,9 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32} throw
     if signed
     {
         if value == maxValue
-           result.value = swag.MinS64
+            result.value = swag.MinS64
         else
-        {
-            result.value = cast(s64) value
-            result.value = -result.value
-        }
+            result.value = -cast(s64) value
     }
     else
         result.value = cast(s64) value
