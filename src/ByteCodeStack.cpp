@@ -115,7 +115,10 @@ void ByteCodeStack::log()
         if (maxSteps == 0)
             break;
 
-        bool current = i == (copySteps.size() - 1) - currentContext->debugStackFrameOffset;
+        SWAG_ASSERT(currentContext);
+        bool current = false;
+        if (currentContext->debugOn)
+            current = i == (copySteps.size() - 1) - currentContext->debugStackFrameOffset;
         logStep(i, current, copySteps[i]);
     }
 }

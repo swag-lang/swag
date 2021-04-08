@@ -32,14 +32,12 @@ void Diagnostic::report(bool verboseMode) const
     defaultColor(verboseMode);
 
     // Message level
-    int headerSize = 0;
     switch (errorLevel)
     {
     case DiagnosticLevel::Error:
         if (!verboseMode)
             g_Log.setColor(LogColor::Red);
         g_Log.print("error: ");
-        headerSize += 7;
         break;
     case DiagnosticLevel::Warning:
         if (g_CommandLine.warningsAsErrors)
@@ -47,21 +45,18 @@ void Diagnostic::report(bool verboseMode) const
             if (!verboseMode)
                 g_Log.setColor(LogColor::Red);
             g_Log.print("error: (from warning): ");
-            headerSize += 7;
         }
         else
         {
             if (!verboseMode)
                 g_Log.setColor(LogColor::Magenta);
             g_Log.print("warning: ");
-            headerSize += 9;
         }
         break;
     case DiagnosticLevel::Note:
         if (!verboseMode)
             g_Log.setColor(LogColor::White);
         g_Log.print("note: ");
-        headerSize += 6;
         break;
     case DiagnosticLevel::CallStack:
     {
@@ -71,28 +66,27 @@ void Diagnostic::report(bool verboseMode) const
             g_Log.print(format("callstack:[%03u]: ", stackLevel));
         else
             g_Log.print(format("callstack:%03u: ", stackLevel));
-        headerSize += 7;
         break;
     }
     case DiagnosticLevel::CallStackInlined:
         if (!verboseMode)
             g_Log.setColor(LogColor::DarkYellow);
         g_Log.print("inlined: ");
-        headerSize += 7;
         break;
     case DiagnosticLevel::TraceError:
         if (!verboseMode)
             g_Log.setColor(LogColor::DarkYellow);
         g_Log.print("trace error: ");
-        headerSize += 7;
         break;
     }
+
+    int headerSize = 0;
 
     // Source line right after the header
     if (!g_CommandLine.errorSourceOut && hasFile && !sourceFile->path.empty())
     {
         headerSize = 0;
-        printSourceLine(headerSize);
+        printSourceLine(headerSize + 3);
     }
 
     // User message
@@ -125,7 +119,7 @@ void Diagnostic::report(bool verboseMode) const
     // Source file and location on their own line
     if (g_CommandLine.errorSourceOut && hasFile && !sourceFile->path.empty())
     {
-        printSourceLine(headerSize);
+        printSourceLine(headerSize + 3);
         g_Log.eol();
     }
 
