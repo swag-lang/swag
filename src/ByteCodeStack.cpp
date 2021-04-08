@@ -89,8 +89,7 @@ void ByteCodeStack::getSteps(vector<ByteCodeStackStep>& copySteps)
     copySteps = steps;
     if (currentContext)
     {
-        auto& back = copySteps.back();
-        if (back.bc != currentContext->bc || back.ip != currentContext->ip)
+        if (copySteps.empty() || copySteps.back().bc != currentContext->bc || copySteps.back().ip != currentContext->ip)
         {
             ByteCodeStackStep step;
             step.bc = currentContext->bc;

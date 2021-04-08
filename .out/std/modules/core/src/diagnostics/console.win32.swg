@@ -75,6 +75,12 @@ public func resetColor() throw
 
 // Write a message to the console
 public func print(message: string, params: ...)
+    #checkif
+    {
+        if !@isconstexpr(message) || !@isconstexpr(params) return true
+        format.checkFormat(#function, message, params)
+        return true
+    }
 {
     if g_silentMode
         return
@@ -97,5 +103,5 @@ public func println(message: string, params: ...)
 {
     print(message, params)
     if @countof(message) && message[@countof(message) - 1] != "\n"'u8
-        print("\n", params)
+        print("\n")
 }

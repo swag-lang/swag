@@ -562,6 +562,14 @@ bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction
     auto paramIdx   = ip->c.u32;
     auto callParams = context->callerContext->selectIfParameters;
 
+    // Nothing
+    if (!callParams)
+    {
+        if (regCount)
+            regCount->u64 = 0;
+        return true;
+    }
+
     if (regPtr)
         regPtr->pointer = nullptr;
 
@@ -615,7 +623,10 @@ bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInst
 
     uint32_t paramIdx   = ip->c.u32;
     auto     callParams = context->callerContext->selectIfParameters;
-    SWAG_ASSERT(callParams && paramIdx < callParams->childs.size());
+    if (!callParams)
+        return true;
+
+    SWAG_ASSERT(paramIdx < callParams->childs.size());
     auto child = callParams->childs[paramIdx];
 
     // Slice
@@ -647,10 +658,16 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         return;
     }
 
-    auto paramIdx   = ip->c.u32;
-    auto callParams = context->callerContext->selectIfParameters;
-    SWAG_ASSERT(callParams);
+    auto paramIdx    = ip->c.u32;
+    auto callParams  = context->callerContext->selectIfParameters;
     auto registersRC = context->registersRC[context->curRC]->buffer;
+
+    if (!callParams)
+    {
+        registersRC[ip->a.u32].pointer = nullptr;
+        registersRC[ip->b.u32].u64     = 0;
+        return;
+    }
 
     // Variadic
     /////////////////////////////////////////

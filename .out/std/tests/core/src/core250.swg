@@ -30,6 +30,10 @@ const tests: [] Test = @[
 	{(1's64<<63) - 1, 10, "9223372036854775807"},
 	{(-1's64<<63) + 1, 10, "-9223372036854775807"},
 	{-1's64 << 63, 10, "-9223372036854775808"},
+
+	{0, 2, "0"},
+	{10, 2, "1010"},
+	{1 << 15, 2, "1000000000000000"},
 ]
 
 #test
@@ -38,6 +42,10 @@ const tests: [] Test = @[
     {
         switch c.base
         {
+        case 2:
+            (value, eat) := strconv.parseB64(c.out)
+            console.print("% %\n", value)//, c.in)
+            @assert(value == c.in)
         case 10:
             (value, eat) := strconv.parseS64(c.out)
             @assert(value == c.in)
