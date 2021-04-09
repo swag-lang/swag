@@ -1035,11 +1035,11 @@ namespace BackendX64Inst
 
     inline void emit_BinOpInt8(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
-        SWAG_ASSERT(op != X64Op::MUL && op != X64Op::IMUL);
+        SWAG_ASSERT(op == X64Op::AND || op == X64Op::OR);
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
         {
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            pp.concat.addU8((uint8_t) op | 1);
+            pp.concat.addU8((uint8_t) op + 1);
             emit_ModRM(pp, regOffset(ip->b.u32), RCX, RDI); // cl, [rdi+?]
         }
         else
@@ -1058,7 +1058,7 @@ namespace BackendX64Inst
 
     inline void emit_BinOpInt16(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
-        SWAG_ASSERT(op != X64Op::MUL && op != X64Op::IMUL);
+        SWAG_ASSERT(op == X64Op::AND || op == X64Op::OR);
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
         {
             BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);

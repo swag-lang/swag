@@ -50,6 +50,8 @@ cast interface vers struct (avec safety)
 OPTIMS
 ****************************************
 -------------------------------------
+x64 emit_BinOpInt8 etc.. faire un more immediat pour le côté droit 'and cl, 5'
+-------------------------------------
 Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)
 -------------------------------------
 makestackpointer suivi de copyrctort, faire un copy address stack to rt

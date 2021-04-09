@@ -491,8 +491,12 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::Bool:
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
     case NativeTypeKind::S32:
     case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::Char:
@@ -513,16 +517,24 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
             node->computedValue.reg.b = left->computedValue.reg.b || right->computedValue.reg.b;
             break;
 
+        case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
+            node->computedValue.reg.u64 = left->computedValue.reg.u8 | right->computedValue.reg.u8;
+            break;
+        case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
+            node->computedValue.reg.u64 = left->computedValue.reg.u16 | right->computedValue.reg.u16;
+            break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            node->computedValue.reg.s64 = left->computedValue.reg.s32 | right->computedValue.reg.s32;
+            node->computedValue.reg.u64 = left->computedValue.reg.u32 | right->computedValue.reg.u32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::Int:
         case NativeTypeKind::UInt:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 | right->computedValue.reg.s64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 | right->computedValue.reg.u64;
             break;
         default:
             return internalError(context, "resolveBitmaskOr, type not supported");
@@ -564,8 +576,13 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
 
     switch (leftTypeInfo->nativeType)
     {
+    case NativeTypeKind::Bool:
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
     case NativeTypeKind::S32:
     case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
     case NativeTypeKind::Char:
@@ -582,16 +599,28 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
 
         switch (leftTypeInfo->nativeType)
         {
+        case NativeTypeKind::Bool:
+            node->computedValue.reg.b = left->computedValue.reg.b && right->computedValue.reg.b;
+            break;
+
+        case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
+            node->computedValue.reg.u64 = left->computedValue.reg.u8 & right->computedValue.reg.u8;
+            break;
+        case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
+            node->computedValue.reg.u64 = left->computedValue.reg.u16 & right->computedValue.reg.u16;
+            break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            node->computedValue.reg.s64 = left->computedValue.reg.s32 & right->computedValue.reg.s32;
+            node->computedValue.reg.u64 = left->computedValue.reg.u32 & right->computedValue.reg.u32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::Int:
         case NativeTypeKind::UInt:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 & right->computedValue.reg.s64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 & right->computedValue.reg.u64;
             break;
         default:
             return internalError(context, "resolveBitmaskAnd, type not supported");
@@ -688,6 +717,16 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
+    // Determin if we must promote to 32/64 bits.
+    // Bit manipulations to not promote.
+    bool mustPromote = true;
+    if (node->token.id == TokenId::SymVertical ||
+        node->token.id == TokenId::SymAmpersand ||
+        node->token.id == TokenId::SymCircumflex)
+    {
+        mustPromote = false;
+    }
+
     // Special case for enum : nothing is possible, except for flags
     bool isEnumFlags   = false;
     auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_ALIAS);
@@ -729,14 +768,12 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     if (rightTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
         return context->report({right, format("invalid operation '%s' on a tuple type", node->token.text.c_str())});
 
-    // Remember left type info before promotion, because for enum flags, we should
-    // not transform them to an u32
-    auto leftTypeInfoBeforePromote = left->typeInfo;
-
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
     node->inheritOrFlag(AST_SIDE_EFFECTS);
-    TypeManager::promote(left, right);
+
+    if (mustPromote)
+        TypeManager::promote(left, right);
 
     // Must do move and not copy
     if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
@@ -789,8 +826,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         {
             SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
             SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
-            node->typeInfo       = isEnumFlags ? leftTypeInfoBeforePromote : TypeManager::concreteType(leftTypeInfoBeforePromote);
-            node->castedTypeInfo = TypeManager::concreteType(left->typeInfo);
+            node->typeInfo = left->typeInfo;
         }
 
         if (node->token.id == TokenId::SymVertical)

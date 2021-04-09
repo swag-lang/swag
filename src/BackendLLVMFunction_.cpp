@@ -3591,9 +3591,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::MakeStackPointerParam:
         {
-            auto r0     = TO_PTR_PTR_I64(GEP_I32(allocR, ip->a.u32));
             auto offArg = ip->c.u32 + typeFunc->numReturnRegisters();
             auto r1     = func->getArg(offArg);
+            auto r0     = builder.CreatePointerCast(GEP_I32(allocR, ip->a.u32), r1->getType()->getPointerTo());
             builder.CreateStore(r1, r0);
             break;
         }
