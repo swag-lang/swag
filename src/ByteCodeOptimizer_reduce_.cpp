@@ -7,6 +7,42 @@
 
 void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
+    // CopyRBToRa, by convention, clear the remaining bits. So no need for a cast just after
+    if ((ip[0].op == ByteCodeOp::CopyRBtoRA8) &&
+        (ip[1].op == ByteCodeOp::ClearMaskU32 || ip[1].op == ByteCodeOp::ClearMaskU64) &&
+        ip[0].a.u32 == ip[1].a.u32 &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        setNop(context, ip + 1);
+    }
+
+    if ((ip[0].op == ByteCodeOp::CopyRBtoRA16) &&
+        (ip[1].op == ByteCodeOp::ClearMaskU32) &&
+        ip[1].b.u32 >= 0xFFFF &&
+        ip[0].a.u32 == ip[1].a.u32 &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        setNop(context, ip + 1);
+    }
+
+    if ((ip[0].op == ByteCodeOp::CopyRBtoRA16) &&
+        (ip[1].op == ByteCodeOp::ClearMaskU64) &&
+        ip[1].b.u64 >= 0xFFFF &&
+        ip[0].a.u32 == ip[1].a.u32 &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        setNop(context, ip + 1);
+    }
+
+    if ((ip[0].op == ByteCodeOp::CopyRBtoRA32) &&
+        (ip[1].op == ByteCodeOp::ClearMaskU64) &&
+        ip[1].b.u64 == 0xFFFFFFFF &&
+        ip[0].a.u32 == ip[1].a.u32 &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        setNop(context, ip + 1);
+    }
+
     // DeRef, by convention, clear the remaining bits. So no need for a cast just after
     if (ip[0].op == ByteCodeOp::DeRef8 &&
         (ip[1].op == ByteCodeOp::ClearMaskU32 || ip[1].op == ByteCodeOp::ClearMaskU64) &&
@@ -17,7 +53,17 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
     }
 
     if (ip[0].op == ByteCodeOp::DeRef16 &&
-        (ip[1].op == ByteCodeOp::ClearMaskU32 || ip[1].op == ByteCodeOp::ClearMaskU64) &&
+        (ip[1].op == ByteCodeOp::ClearMaskU32) &&
+        (ip[1].b.u32 >= 0xFFFF) &&
+        ip[0].a.u32 == ip[1].a.u32 &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        setNop(context, ip + 1);
+    }
+
+    if (ip[0].op == ByteCodeOp::DeRef16 &&
+        (ip[1].op == ByteCodeOp::ClearMaskU64) &&
+        (ip[1].b.u64 >= 0xFFFF) &&
         ip[0].a.u32 == ip[1].a.u32 &&
         !(ip[1].flags & BCI_START_STMT))
     {
@@ -25,7 +71,8 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
     }
 
     if (ip[0].op == ByteCodeOp::DeRef32 &&
-        (ip[1].op == ByteCodeOp::ClearMaskU32 || ip[1].op == ByteCodeOp::ClearMaskU64) &&
+        ip[1].op == ByteCodeOp::ClearMaskU64 &&
+        ip[1].b.u64 >= 0xFFFFFFFF &&
         ip[0].a.u32 == ip[1].a.u32 &&
         !(ip[1].flags & BCI_START_STMT))
     {

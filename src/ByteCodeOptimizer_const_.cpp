@@ -453,6 +453,17 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
         {
             switch (ip->op)
             {
+            case ByteCodeOp::BinOpBitmaskAnd8:
+                if (ip->b.u8 == 0xFF)
+                {
+                    ip->op    = ByteCodeOp::CopyRBtoRA8;
+                    ip->b.u32 = ip->a.u32;
+                    ip->a.u32 = ip->c.u32;
+                    ip->flags &= ~BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                }
+                break;
+
             case ByteCodeOp::LowerZeroToTrue:
                 ip->op  = ByteCodeOp::SetImmediate32;
                 ip->b.b = ip->c.s32 < 0 ? true : false;
