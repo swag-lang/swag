@@ -11,7 +11,7 @@ struct FloatInfo
 const float32info: FloatInfo = @{23, 8, -127}
 const float64info: FloatInfo = @{52, 11, -1023}
 
-func toF64Exact(mantissa: u64, exponent: s32, neg: bool) -> {f: f64, ok: bool}
+func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 {
     const Float64Pow10: [] f64 = @[
         1e0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9,
@@ -66,7 +66,7 @@ func toF64Exact(mantissa: u64, exponent: s32, neg: bool) -> {f: f64, ok: bool}
     return result
 }
 
-func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, eat: u32} throw
+func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat: u32} throw
 {
     var result: retval
 
@@ -186,7 +186,7 @@ func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, e
 #test
 {
 	{
-		x := assume readFloat("1.0")
+		x := assume readF64("1.0")
 		@assert(x.mantissa == 10)
 		@assert(x.exp == -1)
 		@assert(x.neg == false)
@@ -194,7 +194,7 @@ func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, e
 	}
 
 	{
-		x := assume readFloat("-11.1")
+		x := assume readF64("-11.1")
 		@assert(x.mantissa == 111)
 		@assert(x.exp == -1)
 		@assert(x.neg == true)
@@ -202,7 +202,7 @@ func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, e
 	}
 
 	{
-		x := assume readFloat("66e-1")
+		x := assume readF64("66e-1")
 		@assert(x.mantissa == 66)
 		@assert(x.exp == -1)
 		@assert(x.neg == false)
@@ -210,7 +210,7 @@ func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, e
 	}
 }
 
-func atof64(s: string)-> { value: f64, eat: u32 }
+func atoF64(s: string)-> { value: f64, eat: u32 }
 {
     var result: retval
     countof := @countof(s)
@@ -220,12 +220,12 @@ func atof64(s: string)-> { value: f64, eat: u32 }
 		return val, n, nil
 	}*/
 
-	read := assume readFloat(s)
+	read := assume readF64(s)
     result.eat = read.eat
 
     if !read.trunc
     {
-        (f, ok) := toF64Exact(read.mantissa, read.exp, read.neg)
+        (f, ok) := atoF64Exact(read.neg, read.mantissa, read.exp)
         if ok
         {
             result.value = f
@@ -263,7 +263,7 @@ func atof64(s: string)-> { value: f64, eat: u32 }
 
 #test
 {
-    x := atof64("1.0")
+    x := atoF64("1.0")
     @assert(x.value == 1.0)
     @assert(x.eat == 3)
 }
