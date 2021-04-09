@@ -1,3 +1,4 @@
+#global #[swag.safety("of", false)]
 // https://github.com/golang/go/blob/master/src/strconv/atof.go
 
 struct FloatInfo
@@ -135,7 +136,6 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
         1e20, 1e21, 1e22,
     ]
 
-
     var result: retval
 
 	if mantissa >>% f64info.mantbits != 0
@@ -192,7 +192,7 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
 		return val, n, nil
 	}*/
 
-	read := assume readF64(s)
+	read := try readF64(s)
     result.eat = read.eat
 
     if !read.trunc
@@ -236,7 +236,7 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
     return result
 }
 
-var detailedPowersOfTen: [696,2] u64 = @[
+var PowersOfTen: [696,2] u64 = @[
 	[0x1732C869CD60E453, 0xFA8FD5A0081C0288], // 1e-348
 	[0x0E7FBD42205C8EB4, 0x9C99E58405118195], // 1e-347
 	[0x521FAC92A873B261, 0xC3C05EE50655E1FA], // 1e-346
@@ -937,8 +937,8 @@ var detailedPowersOfTen: [696,2] u64 = @[
 
 func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 {
-    const detailedPowersOfTenMinExp10 = -348
-	const detailedPowersOfTenMaxExp10 = 347
+    const PowersOfTenMinExp10 = -348
+	const PowersOfTenMaxExp10 = 347
 
     var result: retval
 
@@ -954,24 +954,24 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 		return result
 	}
 
-	if exp10 < detailedPowersOfTenMinExp10 || detailedPowersOfTenMaxExp10 < exp10
+	if exp10 < PowersOfTenMinExp10 || PowersOfTenMaxExp10 < exp10
 		return result
 
 	// Normalization.
 	clz := @bitcountlz(man)
 	man <<= cast(u32) clz
 
-	const f64ExponentBias = 1023
-	retExp2 := cast(u64) (217706 * (exp10 >> 16) + 64 + f64ExponentBias) - cast(u64) clz
+	const ExponentBias = 1023
+	retExp2 := cast(u64) ((((217706's64 * exp10) >> 16) | bitcast(s64) 0xFFFF0000_00000000) + 64 + ExponentBias) - clz
 
 	// Multiplication.
-    v := detailedPowersOfTen[exp10-detailedPowersOfTenMinExp10, 1]
+    v := PowersOfTen[exp10-PowersOfTenMinExp10, 1]
 	(xHi, xLo) := mul64(man, v)
 
 	// Wider Approximation.
-	if xHi&0x1FF == 0x1FF && xLo+man < man
+	if xHi & 0x1FF == 0x1FF && xLo + man < man
     {
-        v = detailedPowersOfTen[exp10-detailedPowersOfTenMinExp10, 0]
+        v = PowersOfTen[exp10-PowersOfTenMinExp10, 0]
 		(yHi, yLo) := mul64(man, v)
 
 		mergedHi := xHi
@@ -1022,19 +1022,19 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 
 func mul64(x, y: u64) -> {hi: u64, lo: u64}
 {
-	const mask32 = (1'u64<<32) - 1
+	const mask32 = (1'u64 << 32) - 1
 	x0 := x & mask32
 	x1 := x >> 32
 	y0 := y & mask32
 	y1 := y >> 32
 	w0 := x0 * y0
-	t := x1*y0 + w0>>32
+	t := (x1 * y0) + (w0 >> 32)
 	w1 := t & mask32
 	w2 := t >> 32
 	w1 += x0 * y1
 
     var result: retval
-	result.hi = x1*y1 + w2 + w1>>32
+	result.hi = (x1 * y1) + w2 + (w1 >> 32)
 	result.lo = x * y
 	return result
 }
@@ -1069,8 +1069,14 @@ func mul64(x, y: u64) -> {hi: u64, lo: u64}
 #test
 {
     {
-        x := assume atoF64("1.0")
+        /*x := assume atoF64("1.0")
         @assert(x.value == 1.0)
-        @assert(x.eat == 3)
+        @assert(x.eat == 3)*/
+    }
+
+    {
+        x := assume atoF64("1.7976931348623157e308")
+        //@assert(x.value == 1.0)
+        //@assert(x.eat == 3)
     }
 }
