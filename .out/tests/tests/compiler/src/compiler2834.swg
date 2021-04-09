@@ -11,61 +11,6 @@ struct FloatInfo
 const float32info: FloatInfo = @{23, 8, -127}
 const float64info: FloatInfo = @{52, 11, -1023}
 
-func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
-{
-    const Float64Pow10: [] f64 = @[
-        1e0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9,
-        1e10, 1e11, 1e12, 1e13, 1e14, 1e15, 1e16, 1e17, 1e18, 1e19,
-        1e20, 1e21, 1e22,
-    ]
-
-
-    var result: retval
-
-	if mantissa >>% float64info.mantbits != 0
-     	return result
-
-    exp := exponent
-	f := cast(f64) mantissa
-	if neg f = -f
-
-	switch
-    {
-    // Integer
-	case exp == 0:
-        result.f = f
-        result.ok = true
-		return result
-
-	// Exact integers are <= 10^15.
-	// Exact powers of ten are <= 10^22.
-	case exp > 0 && exp <= 15+22:
-		// If exponent is big but number of digits is not, can move a few zeros
-        // into the integer part.
-		if exp > 22
-        {
-			f *= Float64Pow10[exp-22]
-			exp = 22
-		}
-
-        // The exponent was really too large.
-		if f > 1e15 || f < -1e15
-			return result
-
-        result.f = f * Float64Pow10[exp]
-        result.ok = true
-		return result
-
-    // Integer / 10^k
-    case exp < 0 && exp >= -22:
-        result.f = f / Float64Pow10[-exp]
-        result.ok = true
-        return result
-	}
-
-    return result
-}
-
 func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat: u32} throw
 {
     var result: retval
@@ -183,31 +128,59 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
     return result
 }
 
-#test
+func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 {
-	{
-		x := assume readF64("1.0")
-		@assert(x.mantissa == 10)
-		@assert(x.exp == -1)
-		@assert(x.neg == false)
-        @assert(x.eat == 3)
+    const Float64Pow10: [] f64 = @[
+        1e0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9,
+        1e10, 1e11, 1e12, 1e13, 1e14, 1e15, 1e16, 1e17, 1e18, 1e19,
+        1e20, 1e21, 1e22,
+    ]
+
+
+    var result: retval
+
+	if mantissa >>% float64info.mantbits != 0
+     	return result
+
+    exp := exponent
+	f := cast(f64) mantissa
+	if neg f = -f
+
+	switch
+    {
+    // Integer
+	case exp == 0:
+        result.f = f
+        result.ok = true
+		return result
+
+	// Exact integers are <= 10^15.
+	// Exact powers of ten are <= 10^22.
+	case exp > 0 && exp <= 15+22:
+		// If exponent is big but number of digits is not, can move a few zeros
+        // into the integer part.
+		if exp > 22
+        {
+			f *= Float64Pow10[exp-22]
+			exp = 22
+		}
+
+        // The exponent was really too large.
+		if f > 1e15 || f < -1e15
+			return result
+
+        result.f = f * Float64Pow10[exp]
+        result.ok = true
+		return result
+
+    // Integer / 10^k
+    case exp < 0 && exp >= -22:
+        result.f = f / Float64Pow10[-exp]
+        result.ok = true
+        return result
 	}
 
-	{
-		x := assume readF64("-11.1")
-		@assert(x.mantissa == 111)
-		@assert(x.exp == -1)
-		@assert(x.neg == true)
-        @assert(x.eat == 5)
-	}
-
-	{
-		x := assume readF64("66e-1")
-		@assert(x.mantissa == 66)
-		@assert(x.exp == -1)
-		@assert(x.neg == false)
-        @assert(x.eat == 5)
-	}
+    return result
 }
 
 func atoF64(s: string)-> { value: f64, eat: u32 }
@@ -263,7 +236,36 @@ func atoF64(s: string)-> { value: f64, eat: u32 }
 
 #test
 {
-    x := atoF64("1.0")
-    @assert(x.value == 1.0)
-    @assert(x.eat == 3)
+	{
+		x := assume readF64("1.0")
+		@assert(x.mantissa == 10)
+		@assert(x.exp == -1)
+		@assert(x.neg == false)
+        @assert(x.eat == 3)
+	}
+
+	{
+		x := assume readF64("-11.1")
+		@assert(x.mantissa == 111)
+		@assert(x.exp == -1)
+		@assert(x.neg == true)
+        @assert(x.eat == 5)
+	}
+
+	{
+		x := assume readF64("66e-1")
+		@assert(x.mantissa == 66)
+		@assert(x.exp == -1)
+		@assert(x.neg == false)
+        @assert(x.eat == 5)
+	}
+}
+
+#test
+{
+    {
+        x := atoF64("1.0")
+        @assert(x.value == 1.0)
+        @assert(x.eat == 3)
+    }
 }
