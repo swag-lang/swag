@@ -1054,13 +1054,16 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
 bool BackendX64::dbgEmitScope(X64PerThread& pp, Concat& concat, CoffFunction& f, Scope* scope)
 {
+    // Empty scope
+    if (!scope->backendEnd)
+        return true;
+
     // Header
     /////////////////////////////////
     dbgStartRecord(pp, concat, S_BLOCK32);
-    concat.addU32(0); // Parent = 0;
-    concat.addU32(0); // End = 0;
-    auto endOffset = scope->backendEnd == 0 ? f.endAddress : scope->backendEnd;
-    concat.addU32(endOffset - scope->backendStart); // CodeSize = 0;
+    concat.addU32(0);                                       // Parent = 0;
+    concat.addU32(0);                                       // End = 0;
+    concat.addU32(scope->backendEnd - scope->backendStart); // CodeSize;
     dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, scope->backendStart);
     dbgEmitTruncatedString(concat, "");
     dbgEndRecord(pp, concat);

@@ -1075,7 +1075,8 @@ func mul64(x, y: u64) -> {hi: u64, lo: u64}
     }
 
     {
-        x := assume atoF64("1.7976931348623157e308")
+        x := assume atoF64("1.79")
+        @print(x.value)
         //@assert(x.value == 1.0)
         //@assert(x.eat == 3)
     }
