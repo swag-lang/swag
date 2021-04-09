@@ -1046,7 +1046,7 @@ namespace BackendX64Inst
         {
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             pp.concat.addU8((uint8_t) 0x80);
-            if(op == X64Op::AND)
+            if (op == X64Op::AND)
                 pp.concat.addU8(modRM(REGREG, 4, RCX));
             else
                 pp.concat.addU8(modRM(REGREG, 1, RCX));
@@ -1075,6 +1075,23 @@ namespace BackendX64Inst
             pp.concat.addU8(0x66);
             pp.concat.addU8((uint8_t) op | 2);
             emit_ModRM(pp, regOffset(ip->b.u32), RCX, RDI); // cx, [rdi+?]
+        }
+        else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
+        {
+            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            pp.concat.addU8((uint8_t) 0x66);
+            if (ip->b.u16 <= 0x7F)
+                pp.concat.addU8((uint8_t) 0x83);
+            else
+                pp.concat.addU8((uint8_t) 0x81);
+            if (op == X64Op::AND)
+                pp.concat.addU8(modRM(REGREG, 4, RCX));
+            else
+                pp.concat.addU8(modRM(REGREG, 1, RCX));
+            if (ip->b.u16 <= 0xFF)
+                pp.concat.addU8(ip->b.u8);
+            else
+                pp.concat.addU16(ip->b.u16);
         }
         else
         {
