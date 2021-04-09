@@ -463,6 +463,76 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     context->passHasDoneSomething = true;
                 }
                 break;
+            case ByteCodeOp::BinOpBitmaskAnd16:
+                if (ip->b.u16 == 0xFFFF)
+                {
+                    ip->op    = ByteCodeOp::CopyRBtoRA16;
+                    ip->b.u32 = ip->a.u32;
+                    ip->a.u32 = ip->c.u32;
+                    ip->flags &= ~BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                }
+                break;
+            case ByteCodeOp::BinOpBitmaskAnd32:
+                if (ip->b.u32 == 0xFFFFFFFF)
+                {
+                    ip->op    = ByteCodeOp::CopyRBtoRA32;
+                    ip->b.u32 = ip->a.u32;
+                    ip->a.u32 = ip->c.u32;
+                    ip->flags &= ~BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                }
+                break;
+            case ByteCodeOp::BinOpBitmaskAnd64:
+                if (ip->b.u64 == 0xFFFFFFFFFFFFFFFF)
+                {
+                    ip->op    = ByteCodeOp::CopyRBtoRA64;
+                    ip->b.u32 = ip->a.u32;
+                    ip->a.u32 = ip->c.u32;
+                    ip->flags &= ~BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                }
+                break;
+            case ByteCodeOp::BinOpBitmaskOr8:
+                if (ip->b.u8 == 0)
+                {
+                    ip->op    = ByteCodeOp::CopyRBtoRA8;
+                    ip->b.u32 = ip->a.u32;
+                    ip->a.u32 = ip->c.u32;
+                    ip->flags &= ~BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                }
+                break;
+            case ByteCodeOp::BinOpBitmaskOr16:
+                if (ip->b.u16 == 0)
+                {
+                    ip->op    = ByteCodeOp::CopyRBtoRA16;
+                    ip->b.u32 = ip->a.u32;
+                    ip->a.u32 = ip->c.u32;
+                    ip->flags &= ~BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                }
+                break;
+            case ByteCodeOp::BinOpBitmaskOr32:
+                if (ip->b.u32 == 0)
+                {
+                    ip->op    = ByteCodeOp::CopyRBtoRA32;
+                    ip->b.u32 = ip->a.u32;
+                    ip->a.u32 = ip->c.u32;
+                    ip->flags &= ~BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                }
+                break;
+            case ByteCodeOp::BinOpBitmaskOr64:
+                if (ip->b.u64 == 0)
+                {
+                    ip->op    = ByteCodeOp::CopyRBtoRA64;
+                    ip->b.u32 = ip->a.u32;
+                    ip->a.u32 = ip->c.u32;
+                    ip->flags &= ~BCI_IMM_B;
+                    context->passHasDoneSomething = true;
+                }
+                break;
 
             case ByteCodeOp::LowerZeroToTrue:
                 ip->op  = ByteCodeOp::SetImmediate32;

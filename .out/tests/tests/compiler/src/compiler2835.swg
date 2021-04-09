@@ -19,7 +19,7 @@ func toto(x: u8)
     }
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 func toto1(x: u8)
 {
     if (x&0xFF) == "e"'u8
