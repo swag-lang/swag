@@ -210,14 +210,14 @@ struct ByteCodeGenJob : public Job
     static bool sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload);
     static bool emitIdentifier(ByteCodeGenContext* context);
     static bool emitLocalFuncDecl(ByteCodeGenContext* context);
-    static bool emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0);
+    static bool emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0);
+    static bool emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0);
     static bool emitUnaryOp(ByteCodeGenContext* context);
     static bool emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
-    static bool emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0);
     static bool emitExplicitCast(ByteCodeGenContext* context);
     static bool emitExplicitAutoCast(ByteCodeGenContext* context);
     static bool emitCastToNativeBool(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);

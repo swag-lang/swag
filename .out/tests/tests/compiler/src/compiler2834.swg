@@ -210,7 +210,7 @@ func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, e
 	}
 }
 
-func atof64(s: string)-> { f: f64, eat: u32 }
+func atof64(s: string)-> { value: f64, eat: u32 }
 {
     var result: retval
     countof := @countof(s)
@@ -223,15 +223,15 @@ func atof64(s: string)-> { f: f64, eat: u32 }
 	read := assume readFloat(s)
     result.eat = read.eat
 
-    /*if !read.trunc
+    if !read.trunc
     {
         (f, ok) := toF64Exact(read.mantissa, read.exp, read.neg)
         if ok
         {
-            result.f = f
+            result.value = f
             return result
         }
-    }*/
+    }
 
     /*f, ok := eiselLemire64(mantissa, exp, neg)
     if ok {
@@ -264,4 +264,6 @@ func atof64(s: string)-> { f: f64, eat: u32 }
 #test
 {
     x := atof64("1.0")
+    @assert(x.value == 1.0)
+    @assert(x.eat == 3)
 }

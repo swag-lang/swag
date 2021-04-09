@@ -542,7 +542,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
         node->doneFlags |= AST_DONE_CAST2;
     }
 
-    if (!(node->doneFlags & AST_DONE_EMIT_BINOP))
+    if (!(node->doneFlags & AST_DONE_EMIT_OP))
     {
         auto r0 = node->childs[0]->resultRegisterRC;
         auto r1 = node->childs[1]->resultRegisterRC;
@@ -553,7 +553,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             SWAG_CHECK(emitUserOp(context));
             if (context->result != ContextResult::Done)
                 return true;
-            node->doneFlags |= AST_DONE_EMIT_BINOP;
+            node->doneFlags |= AST_DONE_EMIT_OP;
         }
         else
         {
@@ -624,7 +624,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 
             freeRegisterRC(context, r0);
             freeRegisterRC(context, r1);
-            node->doneFlags |= AST_DONE_EMIT_BINOP;
+            node->doneFlags |= AST_DONE_EMIT_OP;
         }
     }
 

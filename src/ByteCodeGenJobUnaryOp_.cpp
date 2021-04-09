@@ -3,11 +3,11 @@
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
 #include "ByteCodeOp.h"
+#include "SourceFile.h"
 
-bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0)
+bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteReferenceType(node->childs[0]->typeInfo);
+    auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitUnaryOpMinus, type not native");
 
@@ -33,10 +33,9 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0)
     }
 }
 
-bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0)
+bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteReferenceType(node->childs[0]->typeInfo);
+    auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitUnaryOpInvert, type not native");
 
@@ -68,7 +67,53 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0)
 bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
-    node->resultRegisterRC = node->childs[0]->resultRegisterRC;
+    auto     front         = node->childs[0];
+    node->resultRegisterRC = front->resultRegisterRC;
+
+    if (!(node->doneFlags & AST_DONE_EMIT_OP))
+    {
+        // User special function
+        if (node->hasSpecialFuncCall())
+        {
+            SWAG_CHECK(emitUserOp(context));
+            if (context->result != ContextResult::Done)
+                return true;
+            node->doneFlags |= AST_DONE_EMIT_OP;
+        }
+        else
+        {
+            auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
+
+            switch (node->token.id)
+            {
+            case TokenId::SymExclam:
+            {
+                SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
+                node->doneFlags |= AST_DONE_CAST2;
+                auto rt = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::NegBool, rt, node->resultRegisterRC);
+                freeRegisterRC(context, node->resultRegisterRC);
+                node->resultRegisterRC = rt;
+                break;
+            }
+
+            case TokenId::SymMinus:
+                ensureCanBeChangedRC(context, node->resultRegisterRC);
+                SWAG_CHECK(emitUnaryOpMinus(context, typeInfoExpr, node->resultRegisterRC));
+                break;
+
+            case TokenId::SymTilde:
+                ensureCanBeChangedRC(context, node->resultRegisterRC);
+                SWAG_CHECK(emitUnaryOpInvert(context, typeInfoExpr, node->resultRegisterRC));
+                break;
+
+            default:
+                return internalError(context, "emitUnaryOp, invalid token op");
+            }
+
+            node->doneFlags |= AST_DONE_EMIT_OP;
+        }
+    }
 
     if (!(node->doneFlags & AST_DONE_CAST1))
     {
@@ -78,34 +123,5 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
         node->doneFlags |= AST_DONE_CAST1;
     }
 
-    // User special function
-    if (node->hasSpecialFuncCall())
-    {
-        SWAG_CHECK(emitUserOp(context));
-        if (context->result != ContextResult::Done)
-            return true;
-        return true;
-    }
-
-    switch (node->token.id)
-    {
-    case TokenId::SymExclam:
-    {
-        auto rt = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::NegBool, rt, node->resultRegisterRC);
-        freeRegisterRC(context, node->resultRegisterRC);
-        node->resultRegisterRC = rt;
-        return true;
-    }
-    case TokenId::SymMinus:
-        ensureCanBeChangedRC(context, node->resultRegisterRC);
-        SWAG_CHECK(emitUnaryOpMinus(context, node->resultRegisterRC));
-        return true;
-    case TokenId::SymTilde:
-        ensureCanBeChangedRC(context, node->resultRegisterRC);
-        SWAG_CHECK(emitUnaryOpInvert(context, node->resultRegisterRC));
-        return true;
-    default:
-        return internalError(context, "emitUnaryOp, invalid token op");
-    }
+    return true;
 }
