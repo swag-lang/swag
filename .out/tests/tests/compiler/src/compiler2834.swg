@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 // https://github.com/golang/go/blob/master/src/strconv/atof.go
 
 struct FloatInfo
@@ -11,7 +11,7 @@ struct FloatInfo
 const float32info: FloatInfo = @{23, 8, -127}
 const float64info: FloatInfo = @{52, 11, -1023}
 
-func parseF64Exact(mantissa: u64, exponent: s32, neg: bool) -> {f: f64, ok: bool}
+func toF64Exact(mantissa: u64, exponent: s32, neg: bool) -> {f: f64, ok: bool}
 {
     const Float64Pow10: [] f64 = @[
         1e0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9,
@@ -22,7 +22,7 @@ func parseF64Exact(mantissa: u64, exponent: s32, neg: bool) -> {f: f64, ok: bool
 
     var result: retval
 
-	if mantissa >> float64info.mantbits != 0
+	if mantissa >>% float64info.mantbits != 0
      	return result
 
     exp := exponent
@@ -57,8 +57,8 @@ func parseF64Exact(mantissa: u64, exponent: s32, neg: bool) -> {f: f64, ok: bool
 		return result
 
     // Integer / 10^k
-	case exp < 0 && exp >= -22:
-		result.f = f / Float64Pow10[-exp]
+    case exp < 0 && exp >= -22:
+        result.f = f / Float64Pow10[-exp]
         result.ok = true
         return result
 	}
@@ -66,21 +66,25 @@ func parseF64Exact(mantissa: u64, exponent: s32, neg: bool) -> {f: f64, ok: bool
     return result
 }
 
-func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, eat: s32} throw
+func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, eat: u32} throw
 {
     var result: retval
 
-    cpt := 0
+    cpt := 0'u32
     countof := @countof(str)
     buffer := @dataof(str)
 
+    negSign := "-"'u8 // g_CultureInfo.numberFormat.negativeSign
+    plusSign := "+"'u8 // g_CultureInfo.numberFormat.positiveSign
+    dotSign := "."'u8 // g_CultureInfo.numberFormat.decimalSeparator
+
     c := :buffer
-    if c == "-"'u8 //g_CultureInfo.numberFormat.negativeSign
+    if c == negSign
     {
         buffer, cpt += 1
         result.neg = true
     }
-    else if c == "+"'u8 //g_CultureInfo.numberFormat.positiveSign
+    else if c == plusSign
     {
         buffer, cpt += 1
     }
@@ -88,7 +92,7 @@ func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, e
 	// digits
 	maxMantDigits := 19 // 10^19 fits in u64
 	sawdot    := false
-	sawdigits := false
+	sawDigits := false
 	nd := 0
 	ndMant := 0
 	dp := 0
@@ -96,7 +100,7 @@ func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, e
     while cpt < countof
     {
         c = :buffer
-		if c == "."'u8
+		if c == dotSign
         {
 			if sawdot break
 			sawdot = true
@@ -104,8 +108,8 @@ func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, e
         }
         else if "0"'u8 <= c && c <= "9"'u8
         {
-			sawdigits = true
-			if c == "0"'u8 && nd == 0 // ignore leading zeros
+			sawDigits = true
+			if c == "0"'u8 && nd == 0
 				dp -= 1
             else
             {
@@ -128,16 +132,12 @@ func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, e
         cpt, buffer += 1
 	}
 
-	if !sawdigits
+	if !sawDigits
 		return result
 	if !sawdot
 		dp = nd
 
-	// optional exponent moves decimal point.
-	// if we read a very large, very long number,
-	// just be sure to move the decimal point by
-	// a lot (say, 100000).  it doesn't matter if it's
-	// not the exact number.
+	// Exponent
     c = :buffer
 	if cpt < countof && (c|32) == "e"'u8
     {
@@ -146,17 +146,19 @@ func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, e
 			throw "invalid"
 
 		esign := 1
-        if c == "-"'u8 //g_CultureInfo.numberFormat.negativeSign
+		c = :buffer
+        if c == negSign
         {
             buffer, cpt += 1
             esign = -1
+	        c = :buffer
         }
-        else if c == "+"'u8 //g_CultureInfo.numberFormat.positiveSign
+        else if c == plusSign
         {
             buffer, cpt += 1
+		    c = :buffer
         }
 
-        c = :buffer
 		if cpt >= countof || c < "0"'u8 || c > "9"'u8
 			throw "invalid"
 
@@ -176,10 +178,39 @@ func readFloat(str: string)->{mantissa: u64, exp: s32, neg: bool, trunc: bool, e
 
 	if result.mantissa != 0
 		result.exp = dp - ndMant
+
+    result.eat = cpt
     return result
 }
 
-func atof64(s: string)-> { f64, eat: u32 }
+#test
+{
+	{
+		x := assume readFloat("1.0")
+		@assert(x.mantissa == 10)
+		@assert(x.exp == -1)
+		@assert(x.neg == false)
+        @assert(x.eat == 3)
+	}
+
+	{
+		x := assume readFloat("-11.1")
+		@assert(x.mantissa == 111)
+		@assert(x.exp == -1)
+		@assert(x.neg == true)
+        @assert(x.eat == 5)
+	}
+
+	{
+		x := assume readFloat("66e-1")
+		@assert(x.mantissa == 66)
+		@assert(x.exp == -1)
+		@assert(x.neg == false)
+        @assert(x.eat == 5)
+	}
+}
+
+func atof64(s: string)-> { f: f64, eat: u32 }
 {
     var result: retval
     countof := @countof(s)
@@ -189,30 +220,32 @@ func atof64(s: string)-> { f64, eat: u32 }
 		return val, n, nil
 	}*/
 
-	(mantissa, exp, neg, trunc, n) := assume readFloat(s)
+	read := assume readFloat(s)
+    result.eat = read.eat
 
-/*	if optimize {
-		// Try pure floating-point arithmetic conversion, and if that fails,
-		// the Eisel-Lemire algorithm.
-		if !trunc {
-			if f, ok := atof64exact(mantissa, exp, neg); ok {
-				return f, n, nil
-			}
-		}
-		f, ok := eiselLemire64(mantissa, exp, neg)
-		if ok {
-			if !trunc {
-				return f, n, nil
-			}
-			// Even if the mantissa was truncated, we may
-			// have found the correct result. Confirm by
-			// converting the upper mantissa bound.
-			fUp, ok := eiselLemire64(mantissa+1, exp, neg)
-			if ok && f == fUp {
-				return f, n, nil
-			}
-		}
-	}*/
+    /*if !read.trunc
+    {
+        (f, ok) := toF64Exact(read.mantissa, read.exp, read.neg)
+        if ok
+        {
+            result.f = f
+            return result
+        }
+    }*/
+
+    /*f, ok := eiselLemire64(mantissa, exp, neg)
+    if ok {
+        if !trunc {
+            return f, n, nil
+        }
+        // Even if the mantissa was truncated, we may
+        // have found the correct result. Confirm by
+        // converting the upper mantissa bound.
+        fUp, ok := eiselLemire64(mantissa+1, exp, neg)
+        if ok && f == fUp {
+            return f, n, nil
+        }
+    }*/
 
 	// Slow fallback.
 	/*var d decimal
@@ -226,4 +259,9 @@ func atof64(s: string)-> { f64, eat: u32 }
 	}
 	return f, n, err*/
     return result
+}
+
+#test
+{
+    x := atof64("1.0")
 }
