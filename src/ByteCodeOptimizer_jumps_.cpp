@@ -162,6 +162,32 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 
             switch (ip->op)
             {
+            case ByteCodeOp::JumpIfEqual8:
+                OPT_JMPAC(==, u8);
+                break;
+            case ByteCodeOp::JumpIfEqual16:
+                OPT_JMPAC(==, u16);
+                break;
+            case ByteCodeOp::JumpIfEqual32:
+                OPT_JMPAC(==, u32);
+                break;
+            case ByteCodeOp::JumpIfEqual64:
+                OPT_JMPAC(==, u64);
+                break;
+
+            case ByteCodeOp::JumpIfNotEqual8:
+                OPT_JMPAC(!=, u8);
+                break;
+            case ByteCodeOp::JumpIfNotEqual16:
+                OPT_JMPAC(!=, u16);
+                break;
+            case ByteCodeOp::JumpIfNotEqual32:
+                OPT_JMPAC(!=, u32);
+                break;
+            case ByteCodeOp::JumpIfNotEqual64:
+                OPT_JMPAC(!=, u64);
+                break;
+
             case ByteCodeOp::JumpIfGreaterS32:
                 OPT_JMPAC(>, s32);
                 break;

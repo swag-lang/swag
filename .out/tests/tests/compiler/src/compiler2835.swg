@@ -1,4 +1,4 @@
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     x := 0'u8
