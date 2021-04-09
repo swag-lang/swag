@@ -556,6 +556,30 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
             Ast::removeFromParent(right);
             Ast::releaseNode(right);
         }
+        // something | 0xff (type) => 0xff (type)
+        else if (right->flags & AST_VALUE_COMPUTED)
+        {
+            if ((leftTypeInfo->sizeOf == 1 && right->computedValue.reg.u8 == 0xFF) ||
+                (leftTypeInfo->sizeOf == 2 && right->computedValue.reg.u16 == 0xFFFF) ||
+                (leftTypeInfo->sizeOf == 4 && right->computedValue.reg.u32 == 0xFFFFFFFF) ||
+                (leftTypeInfo->sizeOf == 8 && right->computedValue.reg.u64 == 0xFFFFFFFFFFFFFFFF))
+            {
+                node->setFlagsValueIsComputed();
+                node->computedValue.reg.u64 = 0xFFFFFFFFFFFFFFFF;
+            }
+        }
+        // 0xff (type) | something => 0xff (type)
+        else if (left->flags & AST_VALUE_COMPUTED)
+        {
+            if ((leftTypeInfo->sizeOf == 1 && left->computedValue.reg.u8 == 0xFF) ||
+                (leftTypeInfo->sizeOf == 2 && left->computedValue.reg.u16 == 0xFFFF) ||
+                (leftTypeInfo->sizeOf == 4 && left->computedValue.reg.u32 == 0xFFFFFFFF) ||
+                (leftTypeInfo->sizeOf == 8 && left->computedValue.reg.u64 == 0xFFFFFFFFFFFFFFFF))
+            {
+                node->setFlagsValueIsComputed();
+                node->computedValue.reg.u64 = 0xFFFFFFFFFFFFFFFF;
+            }
+        }
     }
 
     return true;
@@ -634,6 +658,34 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
         {
             node->setFlagsValueIsComputed();
             node->computedValue.reg.s64 = 0;
+        }
+
+        // something & 0xFF (type) => something
+        else if (right->flags & AST_VALUE_COMPUTED)
+        {
+            if ((leftTypeInfo->sizeOf == 1 && right->computedValue.reg.u8 == 0xFF) ||
+                (leftTypeInfo->sizeOf == 2 && right->computedValue.reg.u16 == 0xFFFF) ||
+                (leftTypeInfo->sizeOf == 4 && right->computedValue.reg.u32 == 0xFFFFFFFF) ||
+                (leftTypeInfo->sizeOf == 8 && right->computedValue.reg.u64 == 0xFFFFFFFFFFFFFFFF))
+            {
+                node->setPassThrough();
+                Ast::removeFromParent(right);
+                Ast::releaseNode(right);
+            }
+        }
+
+        // 0xFF (type) & something => something
+        else if (left->flags & AST_VALUE_COMPUTED)
+        {
+            if ((leftTypeInfo->sizeOf == 1 && left->computedValue.reg.u8 == 0xFF) ||
+                (leftTypeInfo->sizeOf == 2 && left->computedValue.reg.u16 == 0xFFFF) ||
+                (leftTypeInfo->sizeOf == 4 && left->computedValue.reg.u32 == 0xFFFFFFFF) ||
+                (leftTypeInfo->sizeOf == 8 && left->computedValue.reg.u64 == 0xFFFFFFFFFFFFFFFF))
+            {
+                node->setPassThrough();
+                Ast::removeFromParent(left);
+                Ast::releaseNode(left);
+            }
         }
     }
 
