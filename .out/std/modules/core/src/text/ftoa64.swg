@@ -366,7 +366,7 @@ public func f64ToA(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
 	var bits: u64 = bitcast(u64) val
 
 	neg  := bits >> (infoF64.expbits + infoF64.mantbits) != 0
-	exp  := cast(s32) (bits >> infoF64.mantbits) & ((1 << infoF64.expbits) - 1)
+	exp  := cast(s64) (bits >> infoF64.mantbits) & ((1 << infoF64.expbits) - 1)
 	mant := bits & ((1'u64 << infoF64.mantbits) - 1)
 
 	switch exp
@@ -450,29 +450,34 @@ struct decimalSlice
 	neg:    bool
 }
 
-func bigFtoa(dst: *ConcatBuffer, prec: s64, fmt: u8, neg: bool, mant: u64, exp: s32)
+func bigFtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg: bool, mant: u64, exp: s64)
 {
+    prec := precision
+
 	var d: Decimal
 	d.assign(mant)
-	d.shift(exp - cast(s32) infoF64.mantbits)
+	d.shift(cast(s32) exp - cast(s32) infoF64.mantbits)
 
 	var digs: decimalSlice
 	shortest := prec < 0
-	/*if shortest
+	if shortest
     {
-		roundShortest(d, mant, exp, flt)
-		digs = decimalSlice{d: d.d[:], nd: d.nd, dp: d.dp}
+		roundShortest(&d, mant, exp)
+		digs.d = d.d
+        digs.nd = d.nd
+        digs.dp = d.dp
 		// Precision for shortest representation mode.
-		switch fmt {
-		case 'e', 'E':
+		switch fmt
+        {
+		case "e"'u8, "E"'u8:
 			prec = digs.nd - 1
-		case 'f':
-			prec = max(digs.nd-digs.dp, 0)
-		case 'g', 'G':
+		case "f"'u8:
+			prec = math.max(digs.nd-digs.dp, 0)
+		case "g"'u8, "G"'u8:
 			prec = digs.nd
 		}
 	}
-    else */
+    else
     {
 		// Round appropriately.
 		switch fmt
@@ -624,5 +629,153 @@ func fmtF(dst: *ConcatBuffer, neg: bool, d: decimalSlice, prec: s64)
 				ch = d.d[j]
 			dst.addByte(ch)
 		}
+	}
+}
+
+// roundShortest rounds d (= mant * 2^exp) to the shortest number of digits
+// that will let the original floating point value be precisely reconstructed.
+func roundShortest(d: *Decimal, mant: u64, exp: s64)
+{
+	// If mantissa is zero, the number is zero; stop now.
+	if mant == 0
+    {
+		d.nd = 0
+		return
+	}
+
+	// Compute upper and lower such that any decimal number
+	// between upper and lower (possibly inclusive)
+	// will round to the original floating point number.
+
+	// We may see at once that the number is already shortest.
+	//
+	// Suppose d is not denormal, so that 2^exp <= d < 10^dp.
+	// The closest shorter number is at least 10^(dp-nd) away.
+	// The lower/upper bounds computed below are at distance
+	// at most 2^(exp-mantbits).
+	//
+	// So the number is already shortest if 10^(dp-nd) > 2^(exp-mantbits),
+	// or equivalently log2(10)*(dp-nd) > exp-mantbits.
+	// It is true if 332/100*(dp-nd) >= exp-mantbits (log2(10) > 3.32).
+	minexp := infoF64.bias + 1 // minimum possible exponent
+	if exp > minexp && 332*(d.dp-d.nd) >= 100*(exp-cast(s64)(infoF64.mantbits))
+    {
+		// The number is already shortest.
+		return
+	}
+
+	// d = mant << (exp - mantbits)
+	// Next highest floating point number is mant+1 << exp-mantbits.
+	// Our upper bound is halfway between, mant*2+1 << exp-mantbits-1.
+	var upper: Decimal
+	upper.assign(mant*2 + 1)
+	upper.shift(cast(s32) exp - cast(s32) (infoF64.mantbits) - 1)
+
+	// d = mant << (exp - mantbits)
+	// Next lowest floating point number is mant-1 << exp-mantbits,
+	// unless mant-1 drops the significant bit and exp is not the minimum exp,
+	// in which case the next lowest is mant*2-1 << exp-mantbits-1.
+	// Either way, call it mantlo << explo-mantbits.
+	// Our lower bound is halfway between, mantlo*2+1 << explo-mantbits-1.
+	var mantlo: u64
+	var explo: s64
+	if mant > (1'u64 << infoF64.mantbits) || exp == minexp
+    {
+		mantlo = mant - 1
+		explo = exp
+	} else
+    {
+		mantlo = mant*2 - 1
+		explo = exp - 1
+	}
+
+	var lower: Decimal
+	lower.assign(mantlo*2 + 1)
+	lower.shift(cast(s32) explo - cast(s32)(infoF64.mantbits) - 1)
+
+	// The upper and lower bounds are possible outputs only if
+	// the original mantissa is even, so that IEEE round-to-even
+	// would round to the original mantissa and not the neighbors.
+	inclusive := mant % 2 == 0
+
+	// As we walk the digits we want to know whether rounding up would fall
+	// within the upper bound. This is tracked by upperdelta:
+	//
+	// If upperdelta == 0, the digits of d and upper are the same so far.
+	//
+	// If upperdelta == 1, we saw a difference of 1 between d and upper on a
+	// previous digit and subsequently only 9s for d and 0s for upper.
+	// (Thus rounding up may fall outside the bound, if it is exclusive.)
+	//
+	// If upperdelta == 2, then the difference is greater than 1
+	// and we know that rounding up falls within the bound.
+	var upperdelta: u8
+
+	// Now we can figure out the minimum number of digits required.
+	// Walk along until d has distinguished itself from upper and lower.
+    ui := 0
+    while true
+	{
+		// lower, d, and upper may have the decimal points at different
+		// places. In this case upper is the longest, so we iterate from
+		// ui==0 and start li and mi at (possibly) -1.
+		mi := ui - upper.dp + d.dp
+		if mi >= d.nd
+			break
+		li := ui - upper.dp + lower.dp
+		l := "0"'u8 // lower digit
+		if li >= 0 && li < lower.nd
+			l = lower.d[li]
+		m := "0"'u8 // middle digit
+		if mi >= 0
+			m = d.d[mi]
+		u := "0"'u8 // upper digit
+		if ui < upper.nd
+			u = upper.d[ui]
+
+		// Okay to round down (truncate) if lower has a different digit
+		// or if lower is inclusive and is exactly the result of rounding
+		// down (i.e., and we have reached the final digit of lower).
+		okdown := l != m || inclusive && li+1 == lower.nd
+
+		switch
+        {
+		case upperdelta == 0 && m+1 < u:
+			// Example:
+			// m = 12345xxx
+			// u = 12347xxx
+			upperdelta = 2
+		case upperdelta == 0 && m != u:
+			// Example:
+			// m = 12345xxx
+			// u = 12346xxx
+			upperdelta = 1
+		case upperdelta == 1 && (m != "9"'u8 || u != "0"'u8):
+			// Example:
+			// m = 1234598x
+			// u = 1234600x
+			upperdelta = 2
+		}
+
+		// Okay to round up if upper has a different digit and either upper
+		// is inclusive or upper is bigger than the result of rounding up.
+		okup := upperdelta > 0 && (inclusive || upperdelta > 1 || ui+1 < upper.nd)
+
+		// If it's okay to do either, then round to the nearest one.
+		// If it's okay to do only one, do it.
+		switch
+        {
+		case okdown && okup:
+			d.round(mi + 1)
+			return
+		case okdown:
+			d.roundDown(mi + 1)
+			return
+		case okup:
+			d.roundUp(mi + 1)
+			return
+		}
+
+        ui += 1
 	}
 }
