@@ -914,10 +914,11 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     {
     case NativeTypeKind::S32:
     case NativeTypeKind::S64:
+    case NativeTypeKind::Int:
     case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
-    case NativeTypeKind::Char:
         break;
     default:
         return context->report({left, format("operator '<<' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -940,14 +941,8 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         case NativeTypeKind::S32:
             if (right->computedValue.reg.u32 >= 32)
                 return context->report({node, "[safety] (32 bits) '<<' shift operand is greater than '31'"});
-            node->computedValue.reg.s64 = left->computedValue.reg.s32 << right->computedValue.reg.u32;
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (node->computedValue.reg.u32 >> right->computedValue.reg.u32 != left->computedValue.reg.u32)
-                    return context->report({node, "[safety] (32 bits) '<<' shift overflow"});
-            }
+            node->computedValue.reg.u64 = left->computedValue.reg.s32 << right->computedValue.reg.u32;
             break;
-
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
             if (right->computedValue.reg.u32 >= 32)
@@ -960,6 +955,11 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             }
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
+            if (right->computedValue.reg.u32 >= 64)
+                return context->report({node, "[safety] (64 bits) '<<' shift operand is greater than '64'"});
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 << right->computedValue.reg.u32;
+            break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (right->computedValue.reg.u32 >= 64)
@@ -1013,10 +1013,11 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     {
     case NativeTypeKind::S32:
     case NativeTypeKind::S64:
+    case NativeTypeKind::Int:
     case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
-    case NativeTypeKind::Char:
         break;
     default:
         return context->report({left, format("operator '>>' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -1039,14 +1040,8 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         case NativeTypeKind::S32:
             if (right->computedValue.reg.u32 >= 32)
                 return context->report({node, "[safety] (32 bits) '>>' shift operand is greater than '31'"});
-            node->computedValue.reg.s64 = left->computedValue.reg.u32 >> right->computedValue.reg.u32;
-            if (module->mustEmitSafetyOF(node))
-            {
-                if (node->computedValue.reg.u32 << right->computedValue.reg.u32 != left->computedValue.reg.u32)
-                    return context->report({node, "[safety] (32 bits) '>>' shift overflow"});
-            }
+            node->computedValue.reg.s64 = left->computedValue.reg.s32 >> right->computedValue.reg.u32;
             break;
-
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
             if (right->computedValue.reg.u32 >= 32)
@@ -1059,6 +1054,11 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             }
             break;
         case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
+            if (right->computedValue.reg.u32 >= 64)
+                return context->report({node, "[safety] (64 bits) '>>' shift operand is greater then '63'"});
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 >> right->computedValue.reg.u32;
+            break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (right->computedValue.reg.u32 >= 64)

@@ -962,7 +962,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 	man <<= cast(u32) clz
 
 	const ExponentBias = 1023
-	retExp2 := cast(u64) ((((217706's64 * exp10) >> 16) | bitcast(s64) 0xFFFF0000_00000000) + 64 + ExponentBias) - clz
+	retExp2 := cast(u64) (((217706's64 * exp10) >> 16) + 64 + ExponentBias) - clz
 
 	// Multiplication.
     v := PowersOfTen[exp10-PowersOfTenMinExp10, 1]
@@ -1074,9 +1074,10 @@ func mul64(x, y: u64) -> {hi: u64, lo: u64}
         @assert(x.eat == 3)*/
     }
 
+
     {
-        x := assume atoF64("1.79")
-        @print(x.value)
+        x := assume atoF64("1.7976931348623157e308")
+        //@print(x.value)
         //@assert(x.value == 1.0)
         //@assert(x.eat == 3)
     }

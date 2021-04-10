@@ -740,6 +740,31 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
 
+        case ByteCodeOp::BinOpShiftRightS32:
+            if (ip->flags & BCI_IMM_A)
+                BackendX64Inst::emit_Load32_Immediate(pp, ip->a.u32, RAX);
+            else
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8, RCX);
+            else
+                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            concat.addString2("\xd3\xf8"); // sar eax, cl
+            BackendX64Inst::emit_Store32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+        case ByteCodeOp::BinOpShiftRightS64:
+            if (ip->flags & BCI_IMM_A)
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);
+            else
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8, RCX);
+            else
+                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            concat.addString3("\x48\xd3\xf8"); // sar rax, cl
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
+            break;
+
         case ByteCodeOp::BinOpShiftRightU32:
             if (ip->flags & BCI_IMM_A)
                 BackendX64Inst::emit_Load32_Immediate(pp, ip->a.u32, RAX);
@@ -949,6 +974,59 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             {
                 BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
                 concat.addString3("\x48\xd3\x20"); // sal qword ptr [rax], cl
+            }
+            break;
+
+        case ByteCodeOp::AffectOpShiftRightEqS8:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+            {
+                concat.addString2("\xC0\x38"); // sar byte ptr [rax], ??
+                concat.addU8(ip->b.u8);
+            }
+            else
+            {
+                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString2("\xd2\x38"); // sar byte ptr [rax], cl
+            }
+            break;
+        case ByteCodeOp::AffectOpShiftRightEqS16:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+            {
+                concat.addString3("\x66\xC1\x38"); // sar byte ptr [rax], ??
+                concat.addU8(ip->b.u8);
+            }
+            else
+            {
+                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x66\xd3\x38"); // sar word ptr [rax], cl
+            }
+            break;
+        case ByteCodeOp::AffectOpShiftRightEqS32:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+            {
+                concat.addString2("\xC1\x38"); // sar dword [rax], ??
+                concat.addU8(ip->b.u8);
+            }
+            else
+            {
+                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString2("\xd3\x38"); // sar dword ptr [rax], cl
+            }
+            break;
+        case ByteCodeOp::AffectOpShiftRightEqS64:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if (ip->flags & BCI_IMM_B)
+            {
+                concat.addString3("\x48\xC1\x38"); // sar qword [rax], ??
+                concat.addU8(ip->b.u8);
+            }
+            else
+            {
+                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x48\xd3\x38"); // sar qword ptr [rax], cl
             }
             break;
 

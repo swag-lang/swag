@@ -579,26 +579,38 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectShiftLeftEqual, type not native");
 
-    emitSafetyLeftShiftEq(context, r0, r1, typeInfo);
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-    case NativeTypeKind::U8:
         emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU8, r0, r1);
         return true;
     case NativeTypeKind::S16:
-    case NativeTypeKind::U16:
         emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU16, r0, r1);
         return true;
     case NativeTypeKind::S32:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::Char:
         emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU32, r0, r1);
         return true;
     case NativeTypeKind::S64:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU64, r0, r1);
+        return true;
+
+    case NativeTypeKind::U8:
+        emitSafetyLeftShiftEq(context, r0, r1, typeInfo);
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU8, r0, r1);
+        return true;
+    case NativeTypeKind::U16:
+        emitSafetyLeftShiftEq(context, r0, r1, typeInfo);
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU16, r0, r1);
+        return true;
+    case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
+        emitSafetyLeftShiftEq(context, r0, r1, typeInfo);
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU32, r0, r1);
+        return true;
     case NativeTypeKind::Int:
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
+        emitSafetyLeftShiftEq(context, r0, r1, typeInfo);
         emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU64, r0, r1);
         return true;
     default:
@@ -613,26 +625,38 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectShiftRightEqual, type not native");
 
-    emitSafetyRightShiftEq(context, r0, r1, typeInfo);
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
-    case NativeTypeKind::U8:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU8, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS8, r0, r1);
         return true;
     case NativeTypeKind::S16:
-    case NativeTypeKind::U16:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU16, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS16, r0, r1);
         return true;
     case NativeTypeKind::S32:
-    case NativeTypeKind::U32:
-    case NativeTypeKind::Char:
-        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU32, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS32, r0, r1);
         return true;
     case NativeTypeKind::S64:
-    case NativeTypeKind::U64:
     case NativeTypeKind::Int:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS64, r0, r1);
+        return true;
+
+    case NativeTypeKind::U8:
+        emitSafetyRightShiftEq(context, r0, r1, typeInfo);
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU8, r0, r1);
+        return true;
+    case NativeTypeKind::U16:
+        emitSafetyRightShiftEq(context, r0, r1, typeInfo);
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU16, r0, r1);
+        return true;
+    case NativeTypeKind::U32:
+    case NativeTypeKind::Char:
+        emitSafetyRightShiftEq(context, r0, r1, typeInfo);
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU32, r0, r1);
+        return true;
+    case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
+        emitSafetyRightShiftEq(context, r0, r1, typeInfo);
         emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU64, r0, r1);
         return true;
     default:

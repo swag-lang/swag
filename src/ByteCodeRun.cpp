@@ -1956,6 +1956,21 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::BinOpShiftRightS32:
+    {
+        auto val1                  = IMMA_S32(ip);
+        auto val2                  = IMMB_U32(ip);
+        registersRC[ip->c.u32].s32 = val1 >> val2;
+        break;
+    }
+    case ByteCodeOp::BinOpShiftRightS64:
+    {
+        auto val1                  = IMMA_S64(ip);
+        auto val2                  = IMMB_U32(ip);
+        registersRC[ip->c.u32].s64 = val1 >> val2;
+        break;
+    }
+
     case ByteCodeOp::BinOpShiftRightU32:
     {
         auto val1                  = IMMA_U32(ip);
@@ -3022,6 +3037,27 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::AffectOpShiftLeftEqU64:
     {
         *(uint64_t*) registersRC[ip->a.u32].pointer <<= IMMB_U32(ip);
+        break;
+    }
+
+    case ByteCodeOp::AffectOpShiftRightEqS8:
+    {
+        *(int8_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftRightEqS16:
+    {
+        *(int16_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftRightEqS32:
+    {
+        *(int32_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftRightEqS64:
+    {
+        *(int64_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
         break;
     }
 
