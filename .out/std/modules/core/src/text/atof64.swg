@@ -185,35 +185,6 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
     return result
 }
 
-protected func atoF64(s: const [..] u8)-> { value: f64, eat: u32 } throw
-{
-    var result: retval
-    countof := @countof(s)
-    if !countof return result
-
-	/*if val, n, ok := special(s); ok {
-		return val, n, nil
-	}*/
-
-	read := try readF64(s)
-    result.eat = read.eat
-
-    if !read.trunc
-    {
-        (f, ok) := atoF64Exact(read.neg, read.mantissa, read.exp)
-        if ok
-        {
-            result.value = f
-            return result
-        }
-    }
-
-    (f, ok) := eiselLemire64(read.neg, read.mantissa, read.exp)
-    if !ok throw "invalid"
-    result.value = f
-    return result
-}
-
 var PowersOfTen: [696,2] u64 = @[
 	[0x1732C869CD60E453, 0xFA8FD5A0081C0288], // 1e-348
 	[0x0E7FBD42205C8EB4, 0x9C99E58405118195], // 1e-347
@@ -995,5 +966,34 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 		retBits |= 0x8000000000000000
 	result.f = bitcast(f64) retBits
     result.ok = true
+    return result
+}
+
+protected func atoF64(s: const [..] u8)-> { value: f64, eat: u32 } throw
+{
+    var result: retval
+    countof := @countof(s)
+    if !countof return result
+
+	/*if val, n, ok := special(s); ok {
+		return val, n, nil
+	}*/
+
+	read := try readF64(s)
+    result.eat = read.eat
+
+    if !read.trunc
+    {
+        (f, ok) := atoF64Exact(read.neg, read.mantissa, read.exp)
+        if ok
+        {
+            result.value = f
+            return result
+        }
+    }
+
+    (f, ok) := eiselLemire64(read.neg, read.mantissa, read.exp)
+    if !ok throw "invalid"
+    result.value = f
     return result
 }
