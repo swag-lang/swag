@@ -449,7 +449,7 @@ struct decimalSlice
 	neg:    bool
 }
 
-func bigFtoa(dst: *u8, prec: s64, fmt: u8, neg: bool, mant: u64, exp: s32)
+func bigFtoa(dst: *ConcatBuffer, prec: s64, fmt: u8, neg: bool, mant: u64, exp: s32)
 {
 	var d: Decimal
 	d.assign(mant)
@@ -484,8 +484,141 @@ func bigFtoa(dst: *u8, prec: s64, fmt: u8, neg: bool, mant: u64, exp: s32)
 			d.round(prec == 0 ? 1 : prec)
 		}
 
-		//digs = decimalSlice{d: d.d[:], nd: d.nd, dp: d.dp}
+        digs.d = d.d
+        digs.nd = d.nd
+        digs.dp = d.dp
 	}
 
-	//return formatDigits(dst, shortest, neg, digs, prec, fmt)
+	formatDigits(dst, shortest, neg, digs, prec, fmt)
+}
+
+func formatDigits(dst: *ConcatBuffer, shortest: bool, neg: bool, digs: decimalSlice, precision: s64, fmt: u8)
+{
+    prec := precision
+	switch fmt
+    {
+	case "e"'u8, "E"'u8:
+		return fmtE(dst, neg, digs, prec, fmt)
+
+	case "f"'u8:
+		return fmtF(dst, neg, digs, prec)
+
+	case "g"'u8, "G"'u8:
+		// trailing fractional zeros in 'e' form will be trimmed.
+		eprec := prec
+		if eprec > digs.nd && digs.nd >= digs.dp
+			eprec = digs.nd
+		// %e is used if the exponent from the conversion
+		// is less than -4 or greater than or equal to the precision.
+		// if precision was the shortest possible, use precision 6 for this decision.
+		if shortest eprec = 6
+		exp := digs.dp - 1
+		if exp < -4 || exp >= eprec
+        {
+			if prec > digs.nd
+				prec = digs.nd
+			return fmtE(dst, neg, digs, prec - 1, cast(u8) (fmt + "e"'u8 - "g"'u8))
+		}
+		if prec > digs.dp
+			prec = digs.nd
+		return fmtF(dst, neg, digs, math.max(prec - digs.dp, 0))
+	}
+}
+
+func fmtE(dst: *ConcatBuffer, neg: bool, d: decimalSlice, prec: s64, fmt: u8)
+{
+	// sign
+	if neg
+		dst.addBytes("-")
+
+	// first digit
+	ch := "0"'u8
+	if d.nd != 0
+		ch = d.d[0]
+	dst.addByte(ch)
+
+	// .moredigits
+	if prec > 0
+    {
+		dst.addBytes(".")
+		i := 1's64
+		m := math.min(d.nd, prec + 1)
+		if i < m
+        {
+			dst.addBytes(@mkslice(&d.d[i], m - i + 1))
+			i = m
+		}
+
+		while i <= prec
+        {
+			dst.addBytes("0")
+            i += 1
+		}
+	}
+
+	// e±
+	dst.addByte(fmt)
+	exp := d.dp - 1
+	if d.nd == 0 // special case: 0 has exponent 0
+		exp = 0
+	if exp < 0
+    {
+		ch = "-"'u8
+		exp = -exp
+	} else
+    {
+		ch = "+"'u8
+	}
+
+	dst.addByte(ch)
+
+	// dd or ddd
+	switch {
+	case exp < 10:
+		dst.addBytes("0")
+        dst.addByte(cast(u8) (exp + "0"'u8))
+	case exp < 100:
+        dst.addByte(cast(u8) ((exp/10) + "0"'u8))
+        dst.addByte(cast(u8) ((exp/100) + "0"'u8))
+	default:
+        dst.addByte(cast(u8) ((exp/100) + "0"'u8))
+        dst.addByte(cast(u8) (((exp/10)%10) + "0"'u8))
+        dst.addByte(cast(u8) ((exp%10) + "0"'u8))
+	}
+}
+
+// %f: -ddddddd.ddddd
+func fmtF(dst: *ConcatBuffer, neg: bool, d: decimalSlice, prec: s64)
+{
+	// sign
+	if neg
+		dst.addByte("-"'u8)
+
+	// integer, padded with zeros as needed.
+	if d.dp > 0
+    {
+		m := math.min(d.nd, d.dp)
+		dst.addBytes(@mkslice(&d.d[0], m))
+		while m < d.dp
+        {
+			dst.addByte("0"'u8)
+            m += 1
+		}
+	}
+    else
+		dst.addByte("0"'u8)
+
+	// fraction
+	if prec > 0
+    {
+		dst.addByte("."'u8)
+		for i := 0; i < prec; i += 1
+        {
+			ch := "0"'u8
+            j := d.dp + i
+			if 0 <= j && j < d.nd
+				ch = d.d[j]
+			dst.addByte(ch)
+		}
+	}
 }
