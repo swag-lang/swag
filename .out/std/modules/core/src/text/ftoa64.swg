@@ -517,11 +517,12 @@ func formatDigits(dst: *ConcatBuffer, shortest: bool, neg: bool, digs: decimalSl
 		if exp < -4 || exp >= eprec
         {
 			if prec > digs.nd
-				prec = digs.nd
+                prec = digs.nd
 			return fmtE(dst, neg, digs, prec - 1, cast(u8) (fmt + "e"'u8 - "g"'u8))
 		}
+
 		if prec > digs.dp
-			prec = digs.nd
+            prec = digs.nd
 		return fmtF(dst, neg, digs, math.max(prec - digs.dp, 0))
 	}
 }
@@ -530,7 +531,7 @@ func fmtE(dst: *ConcatBuffer, neg: bool, d: decimalSlice, prec: s64, fmt: u8)
 {
 	// sign
 	if neg
-		dst.addBytes("-")
+		dst.addByte("-"'u8)
 
 	// first digit
 	ch := "0"'u8
@@ -541,7 +542,7 @@ func fmtE(dst: *ConcatBuffer, neg: bool, d: decimalSlice, prec: s64, fmt: u8)
 	// .moredigits
 	if prec > 0
     {
-		dst.addBytes(".")
+		dst.addByte("."'u8)
 		i := 1's64
 		m := math.min(d.nd, prec + 1)
 		if i < m
@@ -566,7 +567,8 @@ func fmtE(dst: *ConcatBuffer, neg: bool, d: decimalSlice, prec: s64, fmt: u8)
     {
 		ch = "-"'u8
 		exp = -exp
-	} else
+	}
+    else
     {
 		ch = "+"'u8
 	}
@@ -574,9 +576,10 @@ func fmtE(dst: *ConcatBuffer, neg: bool, d: decimalSlice, prec: s64, fmt: u8)
 	dst.addByte(ch)
 
 	// dd or ddd
-	switch {
+	switch
+    {
 	case exp < 10:
-		dst.addBytes("0")
+		dst.addByte("0"'u8)
         dst.addByte(cast(u8) (exp + "0"'u8))
 	case exp < 100:
         dst.addByte(cast(u8) ((exp/10) + "0"'u8))
