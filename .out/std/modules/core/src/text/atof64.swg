@@ -1,5 +1,9 @@
-#global #[swag.safety("of", false)]
 // https://github.com/golang/go/blob/master/src/strconv/atof.go
+
+#global namespace strconv
+#global #[swag.safety("of", false)]
+#global private
+using globalization
 
 struct FloatInfo
 {
@@ -8,10 +12,9 @@ struct FloatInfo
 	bias:     s32
 }
 
-const float32info: FloatInfo = @{23, 8, -127}
-const f64info: FloatInfo = @{52, 11, -1023}
+const infoF64: FloatInfo = @{52, 11, -1023}
 
-func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat: u32} throw
+func readF64(str: const [..] u8)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat: u32} throw
 {
     var result: retval
 
@@ -19,9 +22,9 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
     countof := @countof(str)
     buffer := @dataof(str)
 
-    negSign := "-"'u8 // g_CultureInfo.numberFormat.negativeSign
-    plusSign := "+"'u8 // g_CultureInfo.numberFormat.positiveSign
-    dotSign := "."'u8 // g_CultureInfo.numberFormat.decimalSeparator
+    negSign := g_CultureInfo.numberFormat.negativeSign
+    plusSign := g_CultureInfo.numberFormat.positiveSign
+    dotSign := g_CultureInfo.numberFormat.decimalSeparator
 
     c := :buffer
     if c == negSign
@@ -138,7 +141,7 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 
     var result: retval
 
-	if mantissa >>% f64info.mantbits != 0
+	if mantissa >>% infoF64.mantbits != 0
      	return result
 
     exp := exponent
@@ -182,7 +185,7 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
     return result
 }
 
-func atoF64(s: string)-> { value: f64, eat: u32 } throw
+func atoF64(s: const [..] u8)-> { value: f64, eat: u32 } throw
 {
     var result: retval
     countof := @countof(s)
@@ -208,31 +211,6 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
     (f, ok) := eiselLemire64(read.neg, read.mantissa, read.exp)
     if !ok throw "invalid"
     result.value = f
-
-    /*if ok {
-        if !trunc {
-            return f, n, nil
-        }
-        // Even if the mantissa was truncated, we may
-        // have found the correct result. Confirm by
-        // converting the upper mantissa bound.
-        fUp, ok := eiselLemire64(mantissa+1, exp, neg)
-        if ok && f == fUp {
-            return f, n, nil
-        }
-    }*/
-
-	// Slow fallback.
-	/*var d decimal
-	if !d.set(s[:n]) {
-		return 0, n, syntaxError(fnParseFloat, s)
-	}
-	b, ovf := d.floatBits(&f64info)
-	f = math.f64frombits(b)
-	if ovf {
-		err = rangeError(fnParseFloat, s)
-	}
-	return f, n, err*/
     return result
 }
 
@@ -1037,56 +1015,4 @@ func mul64(x, y: u64) -> {hi: u64, lo: u64}
 	result.hi = (x1 * y1) + w2 + (w1 >> 32)
 	result.lo = x * y
 	return result
-}
-
-#test
-{
-	{
-		x := assume readF64("1.0")
-		@assert(x.mantissa == 10)
-		@assert(x.exp == -1)
-		@assert(x.neg == false)
-        @assert(x.eat == 3)
-	}
-
-	{
-		x := assume readF64("-11.1")
-		@assert(x.mantissa == 111)
-		@assert(x.exp == -1)
-		@assert(x.neg == true)
-        @assert(x.eat == 5)
-	}
-
-	{
-		x := assume readF64("66e-1")
-		@assert(x.mantissa == 66)
-		@assert(x.exp == -1)
-		@assert(x.neg == false)
-        @assert(x.eat == 5)
-	}
-}
-
-#test
-{
-    {
-        x := assume atoF64("1.0")
-        @assert(x.value == 1.0)
-        @assert(x.eat == 3)
-    }
-
-
-    {
-        x := assume atoF64("1.7976931348623157e308")
-        //@print(x.value)
-        //@assert(x.value == 1.0)
-        //@assert(x.eat == 3)
-    }
-
-    {
-        x := assume atoF64("100000000000000016777216")
-        //@print(x.value)
-        //@assert(x.value == 1.0)
-        //@assert(x.eat == 3)
-    }
-
 }
