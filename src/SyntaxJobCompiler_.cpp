@@ -544,12 +544,25 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     {
         AstNode* resultNode;
 
+        SWAG_CHECK(doAttrUse(nullptr, &resultNode, true));
+
         // We need to be sure that our parent is in the sourceFile->astAttrUse hierarchy.
         // If #global #[???] has a #global protected before (for example), this is not the case.
-        while (parent->kind != AstNodeKind::File && parent != sourceFile->astAttrUse)
-            parent = parent->parent;
+        if (sourceFile->astAttrUse)
+        {
+            parent = sourceFile->astAttrUse;
+            Ast::addChildBack(parent, resultNode);
+        }
+        else
+        {
+            parent = sourceFile->astRoot;
 
-        SWAG_CHECK(doAttrUse(parent, &resultNode, true));
+            // Add front in case astRoot already has some childs (if the #global comes after another one).
+            // We need #global attributes to be first in the file, before other #globals (namespaces, public/protected etc...).
+            // Otherwise we can have a race condition between multiple globals.
+            Ast::addChildFront(parent, resultNode);
+        }
+
         auto attrUse          = (AstAttrUse*) resultNode;
         attrUse->isGlobal     = true;
         attrUse->ownerAttrUse = sourceFile->astAttrUse;

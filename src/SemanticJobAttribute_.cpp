@@ -182,6 +182,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 if (result && result->isHere.contains(typeInfo))
                 {
+                    SWAG_ASSERT(context->sourceFile->name != "md5.swg");
                     Diagnostic diag{forNode, forNode->token, format("attribute '%s' assigned twice to '%s' ('swag.attributeMulti' is not present in the declaration of '%s')", child->token.text.c_str(), forNode->token.text.c_str(), child->token.text.c_str())};
                     Diagnostic note{child, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
                     return context->report(diag, &note);
