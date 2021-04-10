@@ -4,6 +4,15 @@
 #global private
 #global #[swag.safety("of", false)]
 
+struct FloatInfo
+{
+	mantbits: u32
+	expbits:  u32
+	bias:     s32
+}
+
+const infoF64: FloatInfo = @{52, 11, -1023}
+
 struct leftCheat
 {
 	delta:  s64    // number of new digits
@@ -73,13 +82,6 @@ var leftcheats: []leftCheat = @[
 	{18, "173472347597680709441192448139190673828125"}, // * 576460752303423488
 	{19, "867361737988403547205962240695953369140625"}, // * 1152921504606846976
 ]
-
-struct FloatInfo
-{
-	mantbits: u32
-	expbits:  u32
-	bias:     s32
-}
 
 struct Decimal
 {
@@ -352,8 +354,6 @@ impl Decimal
     }
 }
 
-const infoF64: FloatInfo = @{52, 11, -1023}
-
 // The format fmt is one of
 // 'e' (-d.dddde±dd, a decimal exponent),
 // 'E' (-d.ddddE±dd, a decimal exponent),
@@ -361,7 +361,7 @@ const infoF64: FloatInfo = @{52, 11, -1023}
 // 'g' ('e' for large exponents, 'f' otherwise),
 // 'G' ('E' for large exponents, 'f' otherwise),
 
-public func f64ToA(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
+public func ftoa64(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
 {
 	var bits: u64 = bitcast(u64) val
 
