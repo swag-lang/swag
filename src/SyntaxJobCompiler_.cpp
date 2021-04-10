@@ -543,6 +543,12 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     else if (token.text == "#[")
     {
         AstNode* resultNode;
+
+        // We need to be sure that our parent is in the sourceFile->astAttrUse hierarchy.
+        // If #global #[???] has a #global protected before (for example), this is not the case.
+        while (parent->kind != AstNodeKind::File && parent != sourceFile->astAttrUse)
+            parent = parent->parent;
+
         SWAG_CHECK(doAttrUse(parent, &resultNode, true));
         auto attrUse          = (AstAttrUse*) resultNode;
         attrUse->isGlobal     = true;
