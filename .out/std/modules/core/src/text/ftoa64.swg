@@ -361,7 +361,7 @@ const infoF64: FloatInfo = @{52, 11, -1023}
 // 'g' ('e' for large exponents, 'f' otherwise),
 // 'G' ('E' for large exponents, 'f' otherwise),
 
-func f64ToA(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s32)
+public func f64ToA(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
 {
 	var bits: u64 = bitcast(u64) val
 
@@ -440,6 +440,7 @@ func f64ToA(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s32)
 		return bigFtoa(dst, prec, fmt, neg, mant, exp, flt)
 	}
 	return formatDigits(dst, shortest, neg, digs, prec, fmt)*/
+    bigFtoa(buf, prec, fmt, neg, mant, exp)
 }
 
 struct decimalSlice
