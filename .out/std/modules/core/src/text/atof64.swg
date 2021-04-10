@@ -1,8 +1,8 @@
 // https://github.com/golang/go/blob/master/src/strconv/atof.go
 
 #global namespace strconv
-#global #[swag.safety("of", false)]
 #global private
+#global #[swag.safety("of", false)]
 using globalization
 
 struct FloatInfo
@@ -944,13 +944,13 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 
 	// Multiplication.
     v := PowersOfTen[exp10-PowersOfTenMinExp10, 1]
-	(xHi, xLo) := mul64(man, v)
+	(xHi, xLo) := math.mul64(man, v)
 
 	// Wider Approximation.
 	if xHi & 0x1FF == 0x1FF && xLo + man < man
     {
         v = PowersOfTen[exp10-PowersOfTenMinExp10, 0]
-		(yHi, yLo) := mul64(man, v)
+		(yHi, yLo) := math.mul64(man, v)
 
 		mergedHi := xHi
         mergedLo := xLo + yHi
@@ -996,23 +996,4 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 	result.f = bitcast(f64) retBits
     result.ok = true
     return result
-}
-
-func mul64(x, y: u64) -> {hi: u64, lo: u64}
-{
-	const mask32 = (1'u64 << 32) - 1
-	x0 := x & mask32
-	x1 := x >> 32
-	y0 := y & mask32
-	y1 := y >> 32
-	w0 := x0 * y0
-	t := (x1 * y0) + (w0 >> 32)
-	w1 := t & mask32
-	w2 := t >> 32
-	w1 += x0 * y1
-
-    var result: retval
-	result.hi = (x1 * y1) + w2 + (w1 >> 32)
-	result.lo = x * y
-	return result
 }
