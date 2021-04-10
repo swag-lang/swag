@@ -52,26 +52,25 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
         newScope = Ast::newPrivateScope(parent, parent->sourceFile, currentScope);
         SWAG_CHECK(tokenizer.getToken(token));
         break;
+
     case TokenId::KwdPublic:
-        attr = ATTRIBUTE_PUBLIC;
-        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, "a public definition must appear at file or namespace scope"));
-        SWAG_VERIFY(!sourceFile->forceExport, error(token, "'public' attribute cannot be used in a file marked with '#global export', because the whole file is implicitly public"));
-        if (sourceFile->fromTests && currentScope->kind == ScopeKind::File)
-            newScope = currentScope->parentScope;
-        else
-            SWAG_VERIFY(!(currentScope->flags & SCOPE_PRIVATE), error(token, "cannot declare a public symbol in a private scope"));
-        SWAG_CHECK(tokenizer.getToken(token));
-        break;
     case TokenId::KwdProtected:
-        attr = ATTRIBUTE_PROTECTED;
-        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, "a protected definition must appear at file or namespace scope"));
-        SWAG_VERIFY(!sourceFile->forceExport, error(token, "'protected' attribute cannot be used in a file marked with '#global export'"));
-        if (sourceFile->fromTests && currentScope->kind == ScopeKind::File)
-            newScope = currentScope->parentScope;
+        if (token.id == TokenId::KwdPublic)
+            attr = ATTRIBUTE_PUBLIC;
         else
-            SWAG_VERIFY(!(currentScope->flags & SCOPE_PRIVATE), error(token, "cannot declare a protected symbol in a private scope"));
+            attr = ATTRIBUTE_PROTECTED;
+
+        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, format("a %s definition must appear at file or namespace scope", token.text.c_str())));
+        SWAG_VERIFY(!sourceFile->forceExport, error(token, format("'%s' attribute cannot be used in a file marked with '#global export', because the whole file is implicitly public", token.text.c_str())));
+        if (newScope->flags & SCOPE_PRIVATE)
+        {
+            SWAG_VERIFY(newScope->isTopLevel(), error(token, format("cannot declare a %s symbol in a private scope (%s '%s' is private)", token.text.c_str(), Scope::getNakedKindName(newScope->kind), newScope->name.c_str())));
+            while (newScope->flags & SCOPE_PRIVATE)
+                newScope = newScope->parentScope;
+        }
         SWAG_CHECK(tokenizer.getToken(token));
         break;
+
     default:
         break;
     }

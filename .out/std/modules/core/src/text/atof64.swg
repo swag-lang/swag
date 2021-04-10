@@ -185,7 +185,7 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
     return result
 }
 
-func atoF64(s: const [..] u8)-> { value: f64, eat: u32 } throw
+protected func atoF64(s: const [..] u8)-> { value: f64, eat: u32 } throw
 {
     var result: retval
     countof := @countof(s)

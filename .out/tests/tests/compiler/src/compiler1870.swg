@@ -1,9 +1,8 @@
-
 #global testerror
 
 namespace SS
 {
-    public func toto()
+    public func toto1870()
     {
     }
 }
