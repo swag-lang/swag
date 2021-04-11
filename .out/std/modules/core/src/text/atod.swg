@@ -960,15 +960,38 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
     return result
 }
 
-public func atod(s: const [..] u8)-> { value: f64, eat: u32 } throw
+func special(s: const [..] u8)->{ value: f64, eat: u32 }
+{
+    var result: retval
+
+    switch
+    {
+    case !latin1.compare(s, "nan", ignoreCase: true):
+        result.value = swag.NanF64
+        result.eat = 3
+    case !latin1.compare(s, "inf", ignoreCase: true):
+        result.value = swag.InfF64
+        result.eat = 3
+    case !latin1.compare(s, "+inf", ignoreCase: true):
+        result.value = swag.InfF64
+        result.eat = 3
+    case !latin1.compare(s, "-inf", ignoreCase: true):
+        result.value = swag.NegInfF64
+        result.eat = 3
+    }
+
+    return result
+}
+
+public func atod(s: const [..] u8) -> { value: f64, eat: u32 } throw
 {
     var result: retval
     countof := @countof(s)
     if !countof return result
 
-	/*if val, n, ok := special(s); ok {
-		return val, n, nil
-	}*/
+    // Special values, like infinity, nan
+    (result.value, result.eat) = special(s)
+    if result.eat return result
 
 	read := try readF64(s)
     result.eat = read.eat

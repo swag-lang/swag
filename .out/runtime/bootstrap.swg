@@ -124,6 +124,7 @@ namespace swag
     const MaxF32        = 3.40282346638528859812e+38'f32
     const NanF32        = bitcast(f32) 0x7F800001
     const InfF32        = bitcast(f32) 0x7F800000
+    const NegInfF32     = bitcast(f32) 0xFF800000
     const MantBitsF32   = 23
     const ExpBitsF32    = 8
     const BiasF32       = -127
@@ -132,6 +133,7 @@ namespace swag
     const MaxF64        = 1.79769313486231570815e+308'f64
     const NanF64        = bitcast(f64) 0x7ff8000000000001
     const InfF64        = bitcast(f64) 0x7ff0000000000000
+    const NegInfF64     = bitcast(f64) 0xfff0000000000000
     const MantBitsF64   = 52
     const ExpBitsF64    = 11
     const BiasF64       = -1023
