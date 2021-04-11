@@ -908,6 +908,9 @@ public func atod(s: const [..] u8) -> { value: f64, eat: u32 } throw
 		}
 	}
 
-    throw "invalid float format"
+    // Slow fallback.
+    (b, ovf) := read.floatBits()
+    if ovf throw "overflow"
+    result.value = bitcast(f64) b
     return result
 }

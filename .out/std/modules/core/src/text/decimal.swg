@@ -472,4 +472,137 @@ impl Decimal
 
         return cpt
     }
+
+    func floatBits(using self) -> {b: u64, overflow: bool}
+    {
+        const PowTab: [] s64 = @[1, 3, 6, 9, 13, 16, 19, 23, 26]
+        var mant: u64
+
+        // Zero is always a special case.
+        overflow := false
+        while true
+        {
+            if nd == 0
+            {
+                mant = 0
+                exp = swag.F64.Bias
+                break
+            }
+
+            // Obvious overflow/underflow.
+            // These bounds are for 64-bit floats.
+            // Will have to change if we want to support 80-bit floats in the future.
+            if dp > 310
+            {
+                overflow = true
+                break
+            }
+
+            if dp < -330
+            {
+                // zero
+                mant = 0
+                exp = swag.F64.Bias
+                break
+            }
+
+            // Scale by powers of two until in range [0.5, 1.0)
+            exp = 0
+            while dp > 0
+            {
+                var n: s64
+                if dp >= @countof(PowTab)
+                    n = 27
+                else
+                    n = PowTab[dp]
+                shift(-cast(s32)n)
+                exp += n
+            }
+
+            while dp < 0 || dp == 0 && d[0] < "5"'u8
+            {
+                var n: s64
+                if -dp >= @countof(PowTab)
+                    n = 27
+                else
+                    n = PowTab[-dp]
+                shift(cast(s32) n)
+                exp -= n
+            }
+
+            // Our range is [0.5,1) but floating point range is [1,2).
+            exp -= 1
+
+            // Minimum representable exponent is flt.bias+1.
+            // If the exponent is smaller, move it up and
+            // adjust d accordingly.
+            if exp < swag.F64.Bias + 1
+            {
+                n := swag.F64.Bias + 1 - exp
+                shift(-cast(s32) n)
+                exp += n
+            }
+
+            if exp - swag.F64.Bias >= (1'u64 << swag.F64.ExpBits) - 1
+            {
+                overflow = true
+                break
+            }
+
+            // Extract 1 + swag.F64.MantBits bits.
+            shift(cast(s32) (1 + swag.F64.MantBits))
+            mant = roundedInteger()
+
+            // Rounding might have added a bit; shift down.
+            if mant == 2'u64 << swag.F64.MantBits
+            {
+                mant >>= 1
+                exp += 1
+                if exp - swag.F64.Bias >= (1 << swag.F64.ExpBits) - 1
+                {
+                    overflow = true
+                    break
+                }
+            }
+
+            // Denormalized?
+            if mant & (1'u64 << swag.F64.MantBits) == 0
+                exp = swag.F64.Bias
+            break
+        }
+
+        if overflow
+        {
+            mant = 0
+            exp = cast(s64) ((1'u64 << swag.F64.MantBits) - 1 + swag.F64.Bias)
+        }
+
+        // Assemble bits.
+        var result: retval
+        bits := mant & ((1'u64 << swag.F64.MantBits) - 1)
+        bits |= cast(u64) ((exp - swag.F64.Bias) & ((1's64 << swag.F64.MantBits) - 1)) << swag.F64.MantBits
+        if neg bits |= (1'u64 << 63)
+        result.b = bits
+        result.overflow = overflow
+        return result
+    }
+
+    func roundedInteger(using self)->u64
+    {
+        if dp > 20
+            return 0xFFFFFFFFFFFFFFFF
+        var i: s64
+        n := 0'u64
+        for i = 0; i < dp && i < nd; i += 1
+            n = (n*10) + cast(u64) (d[i] - "0"'u8)
+        while i < dp
+        {
+            n *= 10
+            i += 1
+        }
+
+        if shouldRoundUp(dp)
+            n += 1
+        return n
+    }
 }
