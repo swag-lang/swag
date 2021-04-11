@@ -9,6 +9,5 @@ using core, core.strconv
     fmt.value = -3.1415
     convertAny(&buf, fmt, null)
     str := buf.toString()
-    //@print(cast(string) str)
     @assert(str == "-3.14150")
 }

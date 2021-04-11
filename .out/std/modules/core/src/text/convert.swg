@@ -12,7 +12,7 @@ struct ConvertFormatFloat
 {
     using val:  ConvertFormat
     precision:  u8 = 5
-    fmt:        u8
+    fmt:        u8 = "f"'u8
     forceSign:  bool
 }
 
@@ -307,42 +307,10 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
     }
 
     neg := value < 0
-
-    if(neg)
-    {
-        value = -value
-        buf.addByte(cast(u8) g_CultureInfo.numberFormat.negativeSign)
-    }
-    else if(fmt.forceSign)
-    {
+    if !neg && fmt.forceSign
         buf.addByte(cast(u8) g_CultureInfo.numberFormat.positiveSign)
-    }
 
-    // Round with precision
-    var roundValue: f64 = 0.5
-    precision := math.min(fmt.precision, 100)
-    if precision
-        roundValue = 0.5'f64 / math.pow(cast(f64) precision, 10'f64)
-    value += roundValue
-
-    // Convert integer part
-    intPart := cast(u64) value
-    var fmtInt: ConvertFormatInt
-    fmtInt.value = intPart
-    convertInt(buf, fmtInt)
-
-    // Decimal part
-    value -= cast(f64) intPart
-    if precision
-        buf.addByte(cast(u8) g_CultureInfo.numberFormat.decimalSeparator);
-
-    loop autocast precision
-    {
-        value *= 10
-        c := cast(u32) value
-        buf.addByte(cast(u8) (c + "0"'u8))
-        value -= cast(f64) c
-    }
+    dtoa(buf, value, fmt.fmt, cast(s64) fmt.precision)
 }
 
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
