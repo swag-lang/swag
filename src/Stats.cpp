@@ -52,7 +52,7 @@ void Stats::print()
     g_Log.messageHeaderDot("optim bc time", format("%.3fs", OS::timerToSeconds(optimBCTime.load())));
     g_Log.print("\n");
 
-    g_Log.messageHeaderDot("allocator memory", format("%s", toNiceSize(allocatorMemory.load()).c_str()));
+    g_Log.messageHeaderDot("mem total", format("%s", toNiceSize(allocatorMemory.load()).c_str()));
     g_Log.messageHeaderDot("mem wasted", format("%s", toNiceSize(wastedMemory.load()).c_str()));
     g_Log.messageHeaderDot("mem nodes", format("%s", toNiceSize(memNodes.load()).c_str()));
     g_Log.messageHeaderDot("mem scopes", format("%s", toNiceSize(memScopes.load()).c_str()));
@@ -65,6 +65,12 @@ void Stats::print()
     g_Log.messageHeaderDot("mem symname", format("%s", toNiceSize(memSymName.load()).c_str()));
     g_Log.messageHeaderDot("mem symover", format("%s", toNiceSize(memSymOver.load()).c_str()));
     g_Log.messageHeaderDot("mem utf8", format("%s", toNiceSize(memUtf8.load()).c_str()));
+
+    if (g_CommandLine.backendType == BackendType::X64)
+    {
+        g_Log.print("\n");
+        g_Log.messageHeaderDot("x64 size backend dbg", format("%s", toNiceSize(sizeBackendDbg.load()).c_str()));
+    }
 
     g_Log.setDefaultColor();
 }

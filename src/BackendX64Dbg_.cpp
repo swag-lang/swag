@@ -1146,6 +1146,7 @@ bool BackendX64::emitDebug(const BuildParameters& buildParameters)
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
+    auto  beforeCount     = concat.totalCount();
 
     // .debug$S
     alignConcat(concat, 16);
@@ -1177,5 +1178,6 @@ bool BackendX64::emitDebug(const BuildParameters& buildParameters)
         emitRelocationTable(pp.concat, pp.relocTableDBGSSection, pp.patchDBGSSectionFlags, pp.patchDBGSSectionRelocTableCount);
     }
 
+    g_Stats.sizeBackendDbg += concat.totalCount() - beforeCount;
     return true;
 }

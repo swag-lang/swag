@@ -31,6 +31,7 @@ struct Stats
     atomic<uint64_t> optimBCTime        = 0;
     atomic<uint64_t> bootstrapTime      = 0;
     atomic<uint64_t> runtimeTime        = 0;
+    atomic<uint64_t> outputDbgTime      = 0;
 
     atomic<size_t> allocatorMemory = 0;
     atomic<size_t> wastedMemory    = 0;
@@ -45,6 +46,8 @@ struct Stats
     atomic<size_t> memSymOver      = 0;
     atomic<size_t> memSymTable     = 0;
     atomic<size_t> memUtf8         = 0;
+
+    atomic<size_t> sizeBackendDbg = 0;
 
     void print();
 };

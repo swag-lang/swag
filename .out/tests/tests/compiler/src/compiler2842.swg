@@ -1,4 +1,7 @@
-const XYZ = @[10, 11, 12]
+namespace NNN
+{
+    const XYZ = @[10, 11, 12]
+}
 
 //#[swag.printbc]
 //#[swag.optim("", false)]
