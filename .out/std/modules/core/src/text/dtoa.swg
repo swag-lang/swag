@@ -145,7 +145,7 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
         dst.addByte(cast(u8) (exp + "0"'u8))
 	case exp < 100:
         dst.addByte(cast(u8) ((exp/10) + "0"'u8))
-        dst.addByte(cast(u8) ((exp/100) + "0"'u8))
+        dst.addByte(cast(u8) ((exp%10) + "0"'u8))
 	default:
         dst.addByte(cast(u8) ((exp/100) + "0"'u8))
         dst.addByte(cast(u8) (((exp/10)%10) + "0"'u8))

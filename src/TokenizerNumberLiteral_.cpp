@@ -489,6 +489,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
         tokenExponent.startLocation = location;
         SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenExponent, "a digit separator cannot start an exponent part"));
         SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, "floating point number exponent must have at least one digit"));
+        token.text += c;
         treatChar(c, offset);
         SWAG_CHECK(doIntLiteral(c, tokenExponent));
         token.text += tokenExponent.text;
@@ -501,9 +502,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
     // Really compute the floating point value, with as much precision as we can
     if (token.literalType == LiteralType::TT_F32 || token.literalType == LiteralType::TT_F64)
     {
-        token.literalValue.f64 = (double) (token.literalValue.u64) + tokenFrac.literalValue.f64;
-        if (tokenExponent.literalValue.s64)
-            token.literalValue.f64 *= std::pow(10, tokenExponent.literalValue.s64);
+        token.literalValue.f64 = atof(token.text.c_str());
     }
     else if (token.literalValue.s64 < INT32_MIN || token.literalValue.s64 > INT32_MAX)
     {
