@@ -144,77 +144,7 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32} throw
 
 // Convert an utf8 buffer to a floating point value
 // Returns the value and the number of bytes used to make the conversion
-func parseF64(str: const [..] u8) -> {value: f64, eat: u32}
+func parseF64(str: const [..] u8) -> {value: f64, eat: u32} throw
 {
-    var result: retval
-
-    countof := @countof(str)
-    if !countof return result
-
-    buffer := @dataof(str)
-    value := 0'f64
-    cpt := 0'u32
-
-    // Does the number starts with the negative/positive sign ?
-    signed := false
-    c := :buffer
-    if c == g_CultureInfo.numberFormat.negativeSign
-    {
-        // Skip negative sign
-        buffer, cpt += 1
-        countof -= 1
-        signed = true
-    }
-    else if c == g_CultureInfo.numberFormat.positiveSign
-    {
-        // Skip positive sign
-        buffer, cpt += 1
-        countof -= 1
-    }
-
-    // Integer part
-    hasDigits := false
-    while countof && latin1.isDigit(:buffer)
-    {
-        hasDigits = true
-        value *= 10
-        value += cast(f64) (:buffer - "0"'u8)
-        buffer, cpt += 1
-        countof -= 1
-    }
-
-    // Fractional part
-    if countof
-    {
-        c = :buffer
-        if c == g_CultureInfo.numberFormat.decimalSeparator
-        {
-            // Skip decimal separator
-            buffer, cpt += 1
-            countof -= 1
-
-            fract := 0'u64
-            divisor := 1.0'f64
-            while countof && latin1.isDigit(:buffer)
-            {
-                hasDigits = true
-                fract *= 10
-                divisor *= 0.1'f64
-                fract += cast(u64) (:buffer - "0"'u8)
-                buffer, cpt += 1
-                countof -= 1
-            }
-
-            value += fract * divisor
-        }
-    }
-
-    if !hasDigits
-        return result
-    if signed
-        value = -value
-
-    result.value = value
-    result.eat = cpt
-    return result
+    return try atof64(str)
 }
