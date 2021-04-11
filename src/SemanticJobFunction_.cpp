@@ -906,11 +906,6 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             funcNode->returnType->typeInfo = typeInfoFunc->returnType;
             lateRegister                   = true;
         }
-        else
-        {
-            // This is fine to return void
-            node->byteCodeFct = nullptr;
-        }
     }
 
     SWAG_VERIFY(!node->childs.empty(), context->report({node, node->token, format("missing return value of type '%s'", funcNode->returnType->typeInfo->name.c_str())}));

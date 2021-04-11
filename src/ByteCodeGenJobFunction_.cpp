@@ -52,7 +52,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_ALIAS);
 
     // Copy result to RR0... registers
-    if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED) && !node->childs.empty())
+    if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED) && !node->childs.empty() && !returnType->isNative(NativeTypeKind::Void))
     {
         auto returnExpression = node->childs.front();
         auto backExpression   = node->childs.back();
