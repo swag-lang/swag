@@ -82,7 +82,7 @@ func readF64(str: const [..] u8)->{neg: bool, mantissa: u64, exp: s32, trunc: bo
     {
 		cpt, buffer += 1
 		if cpt >= countof
-			throw "invalid"
+			throw "invalid float format"
 
 		esign := 1
 		c = :buffer
@@ -99,7 +99,7 @@ func readF64(str: const [..] u8)->{neg: bool, mantissa: u64, exp: s32, trunc: bo
         }
 
 		if cpt >= countof || c < "0"'u8 || c > "9"'u8
-			throw "invalid"
+			throw "invalid float format"
 
 		e := 0
         while cpt < countof
@@ -974,10 +974,10 @@ func special(s: const [..] u8)->{ value: f64, eat: u32 }
         result.eat = 3
     case !latin1.compare(s, "+inf", ignoreCase: true):
         result.value = swag.F64.Inf
-        result.eat = 3
+        result.eat = 4
     case !latin1.compare(s, "-inf", ignoreCase: true):
         result.value = swag.F64.NegInf
-        result.eat = 3
+        result.eat = 4
     }
 
     return result
@@ -989,7 +989,7 @@ public func atod(s: const [..] u8) -> { value: f64, eat: u32 } throw
     countof := @countof(s)
     if !countof return result
 
-    // Special values, like infinity, nan
+    // Special values, infinity, nan
     (result.value, result.eat) = special(s)
     if result.eat return result
 
@@ -1007,7 +1007,7 @@ public func atod(s: const [..] u8) -> { value: f64, eat: u32 } throw
     }
 
     (f, ok) := eiselLemire64(read.neg, read.mantissa, read.exp)
-    if !ok throw "invalid"
+    if !ok throw "invalid float format"
     result.value = f
     return result
 }
