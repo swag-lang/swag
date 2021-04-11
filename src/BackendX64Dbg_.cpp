@@ -805,7 +805,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
 
 void BackendX64::dbgEmitConstant(X64PerThread& pp, Concat& concat, AstNode* node)
 {
-/*    dbgStartRecord(pp, concat, S_CONSTANT);
+    /*    dbgStartRecord(pp, concat, S_CONSTANT);
     concat.addU32(dbgGetOrCreateType(pp, node->typeInfo));
     dbgEmitEmbeddedValue(concat, node->typeInfo, node->computedValue);
     dbgEmitTruncatedString(concat, node->token.text);
@@ -817,14 +817,6 @@ void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNat
     concat.addU32(SUBSECTION_SYMBOL);
     auto patchSCount  = concat.addU32Addr(0);
     auto patchSOffset = concat.totalCount();
-
-    // Fake symbol, because lld linker (since v12) generates a warning if this subsection is empty (wtf)
-    dbgStartRecord(pp, concat, S_LDATA32);
-    concat.addU32(dbgGetOrCreateType(pp, g_TypeMgr.typeInfoBool));
-    concat.addU32(0);
-    dbgEmitTruncatedString(concat, "__fake__");
-    concat.addU16(0);
-    dbgEndRecord(pp, concat);
 
     for (auto& p : gVars)
     {
@@ -840,14 +832,14 @@ void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNat
 
         CoffRelocation reloc;
 
-        // Function symbol index relocation
+        // symbol index relocation inside segment
         reloc.type           = IMAGE_REL_AMD64_SECREL;
         reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
         reloc.symbolIndex    = segSymIndex;
         pp.relocTableDBGSSection.table.push_back(reloc);
         concat.addU32(p->resolvedSymbolOverload->storageOffset);
 
-        // .text relocation
+        // segment relocation
         reloc.type           = IMAGE_REL_AMD64_SECTION;
         reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
         reloc.symbolIndex    = segSymIndex;
@@ -855,6 +847,17 @@ void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNat
         concat.addU16(0);
 
         dbgEmitTruncatedString(concat, p->token.text);
+        dbgEndRecord(pp, concat);
+    }
+
+    // Fake symbol, because lld linker (since v12) generates a warning if this subsection is empty (wtf)
+    if (patchSOffset == concat.totalCount())
+    {
+        dbgStartRecord(pp, concat, S_LDATA32);
+        concat.addU32(dbgGetOrCreateType(pp, g_TypeMgr.typeInfoBool));
+        concat.addU32(0);
+        dbgEmitTruncatedString(concat, "__fake__");
+        concat.addU16(0);
         dbgEndRecord(pp, concat);
     }
 
