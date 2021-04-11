@@ -304,11 +304,7 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
         case f64: value = :cast(*f64) dataof
     }
 
-    neg := value < 0
-    if !neg && fmt.forceSign
-        buf.addByte(cast(u8) g_CultureInfo.numberFormat.positiveSign)
-
-    dtoa(buf, value, fmt.fmt, cast(s64) fmt.precision)
+    dtoa(buf, value, fmt.fmt, cast(s64) fmt.precision, fmt.forceSign)
 }
 
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
