@@ -805,11 +805,11 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
 
 void BackendX64::dbgEmitConstant(X64PerThread& pp, Concat& concat, AstNode* node)
 {
-    dbgStartRecord(pp, concat, S_CONSTANT);
+/*    dbgStartRecord(pp, concat, S_CONSTANT);
     concat.addU32(dbgGetOrCreateType(pp, node->typeInfo));
     dbgEmitEmbeddedValue(concat, node->typeInfo, node->computedValue);
     dbgEmitTruncatedString(concat, node->token.text);
-    dbgEndRecord(pp, concat);
+    dbgEndRecord(pp, concat);*/
 }
 
 void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
