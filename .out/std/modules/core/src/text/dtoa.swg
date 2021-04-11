@@ -351,7 +351,7 @@ struct DecimalSlice
 	neg:    bool
 }
 
-func bigFtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg: bool, mant: u64, exp: s64)
+func dtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg: bool, mant: u64, exp: s64)
 {
     prec := precision
 
@@ -733,7 +733,7 @@ public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
 		digs.d = buf[:]
 		ok = f.ShortestDecimal(&digs, &lower, &upper)
 		if !ok {
-			return bigFtoa(dst, prec, fmt, neg, mant, exp, flt)
+			return dtoa(dst, prec, fmt, neg, mant, exp, flt)
 		}
 		// Precision for shortest representation mode.
 		switch fmt {
@@ -765,8 +765,8 @@ public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
 		}
 	}
 	if !ok {
-		return bigFtoa(dst, prec, fmt, neg, mant, exp, flt)
+		return dtoa(dst, prec, fmt, neg, mant, exp, flt)
 	}
 	return formatDigits(dst, shortest, neg, digs, prec, fmt)*/
-    bigFtoa(buf, prec, fmt, neg, mant, exp)
+    dtoa(buf, prec, fmt, neg, mant, exp)
 }

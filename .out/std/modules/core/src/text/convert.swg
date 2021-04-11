@@ -12,6 +12,7 @@ struct ConvertFormatFloat
 {
     using val:  ConvertFormat
     precision:  u8 = 5
+    fmt:        u8
     forceSign:  bool
 }
 
@@ -19,9 +20,20 @@ impl ConvertFormatFloat
 {
     // Set some format options with a given user string
     // Format is :
-    // [+][precision]
-    // => force the positive sign if number is positive
-    // => precision of the fractional part
+    //
+    // [+][fmt][precision]
+    //
+    // [+]
+    //      force the positive sign if number is positive
+    // [fmt]
+    //      output format:
+    //      'e' (-d.dddde±dd, a decimal exponent)
+    //      'E' (-d.ddddE±dd, a decimal exponent)
+    //      'f' (-ddd.dddd, no exponent)
+    //      'g' ('e' for large exponents, 'f' otherwise)
+    //      'G' ('E' for large exponents, 'f' otherwise)
+    // [precision]
+    //      integer, precision of the fractional part
     func setFormat(using self, strFormat: string)
     {
         buffer := @dataof(strFormat)
@@ -38,10 +50,26 @@ impl ConvertFormatFloat
             cpt += 1
         }
 
+        // Format
+        if cpt < countof
+        {
+            switch buffer[cpt]
+            {
+            case "e"'u8, "E"'u8, "f"'u8, "g"'u8, "G"'u8:
+                fmt = buffer[cpt]
+                cpt += 1
+            default:
+                debug.assert(false, "invalid format")
+            }
+        }
+
         // Precision
-        (userWidth, eatCount) := assume parseU64(@mkslice(buffer + cpt, cast(uint) (countof - cpt)))
-        debug.assert(userWidth <= 255, "precision overflow")
-        if eatCount precision = cast(u8) userWidth
+        if cpt < countof
+        {
+            (userWidth, eatCount) := assume parseU64(@mkslice(buffer + cpt, cast(uint) (countof - cpt)))
+            debug.assert(userWidth <= 255, "precision overflow")
+            if eatCount precision = cast(u8) userWidth
+        }
     }
 }
 
@@ -61,11 +89,17 @@ impl ConvertFormatInt
 {
     // Set some format options with a given user string
     // Format is :
+    //
     // [+][B|D|X][padding][width]
-    // => force sign for positive numbers
-    // => binary, decimal, hexadecimal
-    // => padding character, in ascii, mandatory before the next field
-    // => width of the output, in characters
+    //
+    // [+]
+    //      force sign for positive numbers
+    // [B|D|X]
+    //      binary, decimal, hexadecimal
+    // [padding]
+    //      padding character, in ascii, mandatory before the next field
+    // [width]
+    //      width of the output, in characters
     func setFormat(using self, strFormat: string)
     {
         buffer := @dataof(strFormat)
