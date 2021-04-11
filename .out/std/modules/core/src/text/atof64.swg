@@ -5,15 +5,6 @@
 #global #[swag.safety("of", false)]
 using globalization
 
-struct FloatInfo
-{
-	mantbits: u32
-	expbits:  u32
-	bias:     s32
-}
-
-const infoF64: FloatInfo = @{52, 11, -1023}
-
 func readF64(str: const [..] u8)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat: u32} throw
 {
     var result: retval
@@ -141,7 +132,7 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 
     var result: retval
 
-	if mantissa >>% infoF64.mantbits != 0
+	if mantissa >>% swag.MantBitsF64 != 0
      	return result
 
     exp := exponent
@@ -969,7 +960,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
     return result
 }
 
-protected func atoF64(s: const [..] u8)-> { value: f64, eat: u32 } throw
+public func atof64(s: const [..] u8)-> { value: f64, eat: u32 } throw
 {
     var result: retval
     countof := @countof(s)

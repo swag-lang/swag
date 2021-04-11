@@ -3,6 +3,7 @@
 using swag
 
 // https://github.com/golang/go/blob/master/src/math/bits/bits.go
+#[swag.safety("of", false)]
 func mul64(x, y: u64) -> {hi: u64, lo: u64}
 {
 	const mask32 = (1'u64 << 32) - 1
