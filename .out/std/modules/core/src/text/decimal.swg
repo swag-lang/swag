@@ -10,9 +10,9 @@ struct Decimal
 	nd:         s64       // number of digits used
 	dp:         s64       // decimal point
 	neg:        bool      // negative flag
-	bigtrunc:   bool      // discarded nonzero digits beyond d[:nd]
+	bigtrunc:   bool
     mantissa:   u64
-	trunc:      bool      // discarded nonzero digits beyond d[:nd]
+	trunc:      bool
     exp:        s64
 }
 
