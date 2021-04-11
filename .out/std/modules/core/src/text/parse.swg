@@ -146,5 +146,5 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32} throw
 // Returns the value and the number of bytes used to make the conversion
 func parseF64(str: const [..] u8) -> {value: f64, eat: u32} throw
 {
-    return try atof64(str)
+    return try atod(str)
 }

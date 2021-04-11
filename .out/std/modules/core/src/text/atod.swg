@@ -960,7 +960,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
     return result
 }
 
-public func atof64(s: const [..] u8)-> { value: f64, eat: u32 } throw
+public func atod(s: const [..] u8)-> { value: f64, eat: u32 } throw
 {
     var result: retval
     countof := @countof(s)

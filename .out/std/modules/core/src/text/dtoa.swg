@@ -689,7 +689,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 // 'g' ('e' for large exponents, 'f' otherwise)
 // 'G' ('E' for large exponents, 'f' otherwise)
 
-public func ftoa64(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
+public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
 {
 	var bits: u64 = bitcast(u64) val
 
