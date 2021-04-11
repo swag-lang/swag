@@ -1,3 +1,5 @@
+// https://github.com/golang/go/blob/master/src/unicode/utf8/utf8.go
+
 #global public
 #global namespace utf8
 
@@ -6,7 +8,6 @@ const MaxChars      = 0x10FFFF'char
 const SurrogateMin  = 0xD800'char
 const SurrogateMax  = 0xDFFF'char
 
-// https://github.com/golang/go/blob/master/src/unicode/utf8/utf8.go
 protected
 {
 	const MaskX = 0b00111111

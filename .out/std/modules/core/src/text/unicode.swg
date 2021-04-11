@@ -1,3 +1,5 @@
+// https://golang.org/src/unicode/letter.go
+
 #global namespace unicode
 
 #[swag.inline, swag.constexpr]
@@ -213,7 +215,6 @@ enum WantedCase
 	TitleCase
 }
 
-// https://golang.org/src/unicode/letter.go
 func isInTable(ranges: const [..] Range, r: char)->bool
 {
     // linear search for a small array or a latin1 character
@@ -247,7 +248,6 @@ func isInTable(ranges: const [..] Range, r: char)->bool
     return false
 }
 
-// https://golang.org/src/unicode/letter.go
 func caseChangeTo(wCase: WantedCase, r: char, caseRange: const [..] CaseRange) -> {mappedRune: char, foundMapping: bool}
 {
     var result: retval

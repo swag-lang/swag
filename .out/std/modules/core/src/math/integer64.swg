@@ -1,8 +1,9 @@
+// https://github.com/golang/go/blob/master/src/math/bits/bits.go
+
 #global public
 #global namespace math
 using swag
 
-// https://github.com/golang/go/blob/master/src/math/bits/bits.go
 #[swag.safety("of", false)]
 func mul64(x, y: u64) -> {hi: u64, lo: u64}
 {

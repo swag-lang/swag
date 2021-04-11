@@ -1,4 +1,4 @@
-// https://github.com/golang/go/blob/11f159456b1dba3ec499da916852dd188d1e04a7/src/strconv/decimal.go
+// https://github.com/golang/go/blob/master/src/strconv/decimal.go
 
 #global namespace strconv
 #global #[swag.safety("of", false)]

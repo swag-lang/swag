@@ -1,4 +1,5 @@
-﻿
+﻿// https://github.com/golang/go/blob/master/src/hash/crc32/crc32_test.go
+
 using core.hash
 
 struct ValidTest
@@ -10,7 +11,6 @@ struct ValidTest
     in3: string
 }
 
-// https://github.com/golang/go/blob/master/src/hash/crc32/crc32_test.go
 const validTests: [] ValidTest = @[
 	{0x0, 0x0, "", "crc\x01ʇ\x91M\x00\x00\x00\x00", "crc\x01wB\x84\x81\x00\x00\x00\x00"},
 	{0xe8b7be43, 0xc1d04330, "a", "crc\x01ʇ\x91M\x00\x00\x00\x00", "crc\x01wB\x84\x81\x00\x00\x00\x00"},
