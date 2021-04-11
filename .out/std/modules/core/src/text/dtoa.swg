@@ -497,7 +497,6 @@ func fmtE(dst: *ConcatBuffer, neg: bool, d: DecimalSlice, prec: s64, fmt: u8)
 	}
 }
 
-// %f: -ddddddd.ddddd
 func fmtF(dst: *ConcatBuffer, neg: bool, d: DecimalSlice, prec: s64)
 {
 	// sign
@@ -681,14 +680,12 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 	}
 }
 
-
-// The format fmt is one of
+// The format 'fmt' is one of
 // 'e' (-d.dddde±dd, a decimal exponent)
 // 'E' (-d.ddddE±dd, a decimal exponent)
 // 'f' (-ddd.dddd, no exponent)
 // 'g' ('e' for large exponents, 'f' otherwise)
 // 'G' ('E' for large exponents, 'f' otherwise)
-
 public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
 {
 	var bits: u64 = bitcast(u64) val
@@ -706,7 +703,7 @@ public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
         {
 		case mant != 0: s = "nan"
 		case neg:       s = "-inf"
-		default:        s = "inf"
+		default:        s = "+inf"
 		}
 
 		buf.addBytes(s)
