@@ -29,6 +29,7 @@ const uint16_t S_DEFRANGE                  = 0x113F;
 const uint16_t S_DEFRANGE_REGISTER         = 0x1141;
 const uint16_t S_DEFRANGE_FRAMEPOINTER_REL = 0x1142;
 const uint16_t S_DEFRANGE_REGISTER_REL     = 0x1145;
+const uint16_t S_CONSTANT                  = 0x1107;
 const uint16_t S_LDATA32                   = 0x110C;
 
 const uint16_t LF_POINTER      = 0x1002;
@@ -802,6 +803,15 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     return (DbgTypeIndex) SimpleTypeKind::UInt64;
 }
 
+void BackendX64::dbgEmitConstant(X64PerThread& pp, Concat& concat, AstNode* node)
+{
+    dbgStartRecord(pp, concat, S_CONSTANT);
+    concat.addU32(dbgGetOrCreateType(pp, node->typeInfo));
+    dbgEmitEmbeddedValue(concat, node->typeInfo, node->computedValue);
+    dbgEmitTruncatedString(concat, node->token.text);
+    dbgEndRecord(pp, concat);
+}
+
 void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
 {
     concat.addU32(SUBSECTION_SYMBOL);
@@ -820,7 +830,10 @@ void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNat
     {
         // Compile time constant
         if (p->flags & AST_VALUE_COMPUTED)
+        {
+            dbgEmitConstant(pp, concat, p);
             continue;
+        }
 
         dbgStartRecord(pp, concat, S_LDATA32);
         concat.addU32(dbgGetOrCreateType(pp, p->typeInfo));
