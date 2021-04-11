@@ -122,9 +122,9 @@ func readF64(str: const [..] u8)->{neg: bool, mantissa: u64, exp: s32, trunc: bo
     return result
 }
 
-func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
+func exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 {
-    const f64Pow10: [] f64 = @[
+    const Pow10: [] f64 = @[
         1e0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9,
         1e10, 1e11, 1e12, 1e13, 1e14, 1e15, 1e16, 1e17, 1e18, 1e19,
         1e20, 1e21, 1e22,
@@ -154,7 +154,7 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
         // into the integer part.
 		if exp > 22
         {
-			f *= f64Pow10[exp-22]
+			f *= Pow10[exp-22]
 			exp = 22
 		}
 
@@ -162,13 +162,13 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 		if f > 1e15 || f < -1e15
 			return result
 
-        result.f = f * f64Pow10[exp]
+        result.f = f * Pow10[exp]
         result.ok = true
 		return result
 
     // Integer / 10^k
     case exp < 0 && exp >= -22:
-        result.f = f / f64Pow10[-exp]
+        result.f = f / Pow10[-exp]
         result.ok = true
         return result
 	}
@@ -975,7 +975,7 @@ public func atof64(s: const [..] u8)-> { value: f64, eat: u32 } throw
 
     if !read.trunc
     {
-        (f, ok) := atoF64Exact(read.neg, read.mantissa, read.exp)
+        (f, ok) := exact(read.neg, read.mantissa, read.exp)
         if ok
         {
             result.value = f

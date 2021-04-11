@@ -4,13 +4,13 @@
 #global private
 #global #[swag.safety("of", false)]
 
-struct leftCheat
+struct LeftCheat
 {
 	delta:  s64    // number of new digits
 	cutoff: string // minus one digit if original < a.
 }
 
-var leftcheats: []leftCheat = @[
+var LeftCheats: [] LeftCheat = @[
 	{0, ""},
 	{1, "5"},                                           // * 2
 	{1, "25"},                                          // * 4
@@ -186,8 +186,7 @@ impl Decimal
         if nd == 0 dp = 0
     }
 
-    const maxShift: u32 = 64 - 4
-
+    const MaxShift: u32 = 64 - 4
     func rightShift(using self, k: u32)
     {
         r := 0 // read pointer
@@ -272,8 +271,8 @@ impl Decimal
 
     func leftShift(using self, k: u32)
     {
-        delta := leftcheats[k].delta
-        if prefixIsLessThan(@mkslice(&d[0], nd), leftcheats[k].cutoff)
+        delta := LeftCheats[k].delta
+        if prefixIsLessThan(@mkslice(&d[0], nd), LeftCheats[k].cutoff)
             delta -= 1
 
         r := nd         // read index
@@ -325,19 +324,19 @@ impl Decimal
             break
 
         case k > 0:
-            while k > maxShift
+            while k > MaxShift
             {
-                leftShift(maxShift)
-                k -= maxShift
+                leftShift(MaxShift)
+                k -= MaxShift
             }
 
             leftShift(cast(u32) k)
 
         case k < 0:
-            while k < -cast(s32)maxShift
+            while k < -cast(s32)MaxShift
             {
-                rightShift(maxShift)
-                k += maxShift
+                rightShift(MaxShift)
+                k += MaxShift
             }
 
             rightShift(cast(u32) (-k))
@@ -345,7 +344,7 @@ impl Decimal
     }
 }
 
-struct decimalSlice
+struct DecimalSlice
 {
 	d:      [..] u8
 	nd, dp: s64
@@ -358,9 +357,9 @@ func bigFtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg: bool, mant: u64, 
 
 	var d: Decimal
 	d.assign(mant)
-	d.shift(cast(s32) exp - cast(s32) swag.MantBitsF64)
+	d.shift(cast(s32) exp - swag.MantBitsF64)
 
-	var digs: decimalSlice
+	var digs: DecimalSlice
 	shortest := prec < 0
 	if shortest
     {
@@ -400,7 +399,7 @@ func bigFtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg: bool, mant: u64, 
 	formatDigits(dst, shortest, neg, digs, prec, fmt)
 }
 
-func formatDigits(dst: *ConcatBuffer, shortest: bool, neg: bool, digs: decimalSlice, precision: s64, fmt: u8)
+func formatDigits(dst: *ConcatBuffer, shortest: bool, neg: bool, digs: DecimalSlice, precision: s64, fmt: u8)
 {
     prec := precision
 	switch fmt
@@ -434,7 +433,7 @@ func formatDigits(dst: *ConcatBuffer, shortest: bool, neg: bool, digs: decimalSl
 	}
 }
 
-func fmtE(dst: *ConcatBuffer, neg: bool, d: decimalSlice, prec: s64, fmt: u8)
+func fmtE(dst: *ConcatBuffer, neg: bool, d: DecimalSlice, prec: s64, fmt: u8)
 {
 	// sign
 	if neg
@@ -499,7 +498,7 @@ func fmtE(dst: *ConcatBuffer, neg: bool, d: decimalSlice, prec: s64, fmt: u8)
 }
 
 // %f: -ddddddd.ddddd
-func fmtF(dst: *ConcatBuffer, neg: bool, d: decimalSlice, prec: s64)
+func fmtF(dst: *ConcatBuffer, neg: bool, d: DecimalSlice, prec: s64)
 {
 	// sign
 	if neg
@@ -684,11 +683,11 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 
 
 // The format fmt is one of
-// 'e' (-d.dddde±dd, a decimal exponent),
-// 'E' (-d.ddddE±dd, a decimal exponent),
-// 'f' (-ddd.dddd, no exponent),
-// 'g' ('e' for large exponents, 'f' otherwise),
-// 'G' ('E' for large exponents, 'f' otherwise),
+// 'e' (-d.dddde±dd, a decimal exponent)
+// 'E' (-d.ddddE±dd, a decimal exponent)
+// 'f' (-ddd.dddd, no exponent)
+// 'g' ('e' for large exponents, 'f' otherwise)
+// 'G' ('E' for large exponents, 'f' otherwise)
 
 public func ftoa64(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
 {
@@ -722,7 +721,7 @@ public func ftoa64(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
 
 	exp += swag.BiasF64
 
-/*	var digs decimalSlice
+/*	var digs DecimalSlice
 	ok := false
 	// Negative precision means "only as much as needed to be exact."
 	shortest := prec < 0
