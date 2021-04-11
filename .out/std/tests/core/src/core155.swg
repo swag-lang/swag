@@ -13,10 +13,10 @@ using core, utf8
     @assert(result == 4)
 
     result = indexOf(res.toString(), "C")
-    @assert(result == swag.MaxUINT)
+    @assert(result == swag.MaxUInt)
 
     result = indexOf(res.toString(), "CCCCCCCCC")
-    @assert(result == swag.MaxUINT)
+    @assert(result == swag.MaxUInt)
 
     result = indexOf(res.toString(), "XXABAB")
     @assert(result == 0)

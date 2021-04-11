@@ -102,28 +102,39 @@ namespace swag
     // Constants
     // #########################################################
 
-    const MinS8  = bitcast(s8) (-127's8 - 1)
-    const MinS16 = bitcast(s16) (-32767's16 - 1)
-    const MinS32 = -2147483647's32 - 1
-    const MinS64 = -9223372036854775807's64 - 1
+    const MinS8  = bitcast(s8)  0x80
+    const MinS16 = bitcast(s16) 0x8000
+    const MinS32 = bitcast(s32) 0x80000000
+    const MinS64 = bitcast(s64) 0x80000000_00000000
     const MinInt = MinS64
 
-    const MaxS8  = 127's8
-    const MaxS16 = 32767's16
-    const MaxS32 = 2147483647's32
-    const MaxS64 = 9223372036854775807's64
+    const MaxS8  = bitcast(s8)  0x7F
+    const MaxS16 = bitcast(s16) 0x7FFF
+    const MaxS32 = bitcast(s32) 0x7FFFFFFF
+    const MaxS64 = bitcast(s64) 0x7FFFFFFF_FFFFFFFF
     const MaxInt = MaxS64
 
     const MaxU8   = 0xFF'u8
     const MaxU16  = 0xFFFF'u16
-    const MaxU32  = 0xFFFF_FFFF'u32
-    const MaxU64  = 0xFFFF_FFFF_FFFF_FFFF'u64
-    const MaxUINT = MaxU64
+    const MaxU32  = 0xFFFFFFFF'u32
+    const MaxU64  = 0xFFFFFFFF_FFFFFFFF'u64
+    const MaxUInt = MaxU64
 
-    const MinF32 = 1.175494e-38'f32
-    const MaxF32 = 3.402822e+38'f32
-    const MinF64 = 2.22507e-308'f64
-    const MaxF64 = 1.79769e+308'f64
+    const MinF32        = 1.17549435082228750797e-38'f32
+    const MaxF32        = 3.40282346638528859812e+38'f32
+    const NanF32        = bitcast(f32) 0x7F800001
+    const InfF32        = bitcast(f32) 0x7F800000
+    const MantBitsF32   = 23
+    const ExpBitsF32    = 8
+    const BiasF32       = -127
+
+    const MinF64        = 2.2250738585072014e-308'f64
+    const MaxF64        = 1.79769313486231570815e+308'f64
+    const NanF64        = bitcast(f64) 0x7ff8000000000001
+    const InfF64        = bitcast(f64) 0x7ff0000000000000
+    const MantBitsF64   = 52
+    const ExpBitsF64    = 11
+    const BiasF64       = -1023
 
     // #########################################################
     // Context & allocators
