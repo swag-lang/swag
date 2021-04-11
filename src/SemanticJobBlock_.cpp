@@ -556,7 +556,10 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     loopNode->block->token.endLocation = node->block->token.endLocation;
 
     // Re-root the parent scope of the user block so that it points to the scope of the loop block
-    node->block->ownerScope->parentScope = loopNode->block->childs.front()->ownerScope;
+    auto ownerScope = node->block->ownerScope;
+    ownerScope->parentScope->removeChildNoLock(ownerScope);
+    ownerScope->parentScope = loopNode->block->childs.front()->ownerScope;
+    ownerScope->parentScope->addChildNoLock(ownerScope);
 
     job->nodes.pop_back();
     job->nodes.push_back(newExpression);
