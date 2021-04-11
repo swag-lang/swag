@@ -11,7 +11,7 @@ struct ConvertFormat
 struct ConvertFormatFloat
 {
     using val:  ConvertFormat
-    precision:  u8 = 5
+    precision:  s8 = -1 // -1 is for 'most possible precision'
     fmt:        u8 = "f"'u8
     forceSign:  bool
 }
@@ -58,8 +58,6 @@ impl ConvertFormatFloat
             case "e"'u8, "E"'u8, "f"'u8, "g"'u8, "G"'u8:
                 fmt = buffer[cpt]
                 cpt += 1
-            default:
-                debug.assert(false, "invalid format")
             }
         }
 
@@ -68,7 +66,7 @@ impl ConvertFormatFloat
         {
             (userWidth, eatCount) := assume parseU64(@mkslice(buffer + cpt, cast(uint) (countof - cpt)))
             debug.assert(userWidth <= 255, "precision overflow")
-            if eatCount precision = cast(u8) userWidth
+            if eatCount precision = cast(s8) userWidth
         }
     }
 }
