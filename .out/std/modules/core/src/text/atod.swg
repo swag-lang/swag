@@ -132,7 +132,7 @@ func exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 
     var result: retval
 
-	if mantissa >>% swag.MantBitsF64 != 0
+	if mantissa >>% swag.F64.MantBits != 0
      	return result
 
     exp := exponent
@@ -967,16 +967,16 @@ func special(s: const [..] u8)->{ value: f64, eat: u32 }
     switch
     {
     case !latin1.compare(s, "nan", ignoreCase: true):
-        result.value = swag.NanF64
+        result.value = swag.F64.Nan
         result.eat = 3
     case !latin1.compare(s, "inf", ignoreCase: true):
-        result.value = swag.InfF64
+        result.value = swag.F64.Inf
         result.eat = 3
     case !latin1.compare(s, "+inf", ignoreCase: true):
-        result.value = swag.InfF64
+        result.value = swag.F64.Inf
         result.eat = 3
     case !latin1.compare(s, "-inf", ignoreCase: true):
-        result.value = swag.NegInfF64
+        result.value = swag.F64.NegInf
         result.eat = 3
     }
 

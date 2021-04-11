@@ -268,7 +268,7 @@ impl String
         growSize := byLength > whatLength ? (byLength - whatLength) + 1 : 0
 
         idx := utf8.indexOf(toString(), what, 0, comparisonType)
-        while idx != swag.MaxUInt
+        while idx != swag.UInt.Max
         {
             grow(length + growSize)
             memory.copyOver(buffer + idx + byLength, buffer + idx + whatLength, length - idx + 1)

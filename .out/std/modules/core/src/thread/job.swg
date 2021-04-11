@@ -16,7 +16,7 @@ public struct Job
 
     // Internal state
     state:          JobState = Zero
-    pendingIndex:   u32 = swag.MaxU32
+    pendingIndex:   u32 = swag.U32.Max
 }
 
 public struct(T) SliceJob
@@ -91,7 +91,7 @@ func removeJobNoLock(job: *Job)
     g_pendingJobs.removeAt(cast(uint) job.pendingIndex)
     if job.pendingIndex < g_pendingJobs.count
         g_pendingJobs[job.pendingIndex].pendingIndex = job.pendingIndex
-    job.pendingIndex = swag.MaxU32
+    job.pendingIndex = swag.U32.Max
     job.clearState(JobState.InPending)
 }
 

@@ -1,2 +1,2 @@
 #global testerror
-var x: [swag.MaxU64] u32
+var x: [swag.U64.Max] u32

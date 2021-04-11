@@ -221,7 +221,7 @@ public impl Md5
     func update(using self, data: const [..] u8)
     {
         // Only deal with 32 bits size
-        debug.assert(@countof(data) <= swag.MaxU32)
+        debug.assert(@countof(data) <= swag.U32.Max)
 
         input := @dataof(data)
         inputLen := cast(u32) @countof(data)

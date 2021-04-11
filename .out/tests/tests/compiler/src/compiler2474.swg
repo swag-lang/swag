@@ -4,13 +4,13 @@
 #[swag.safety("of", true)]
 #test
 {
-    var x: u32 = swag.MaxU32
+    var x: u32 = swag.U32.Max
     x = x * 2
 }
 
 #[swag.safety("of", true)]
 #test
 {
-    var x: u64 = swag.MaxU64
+    var x: u64 = swag.U64.Max
     x = x * 2
 }

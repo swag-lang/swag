@@ -17,36 +17,36 @@ func panic(msg: string, loc: swag.CompilerSourceLocation)
         defer cxt.panic = null
 
         {
-            x := swag.MinS16
+            x := swag.S16.Min
             x0 := cast(s8) x
         }
 
         {
-            x := swag.MaxS16
+            x := swag.S16.Max
             x0 := cast(s8) x
         }
 
         {
-            x := swag.MinS32
-            x0 := cast(s8) x
-            x1 := cast(s16) x
-        }
-
-        {
-            x := swag.MaxS32
+            x := swag.S32.Min
             x0 := cast(s8) x
             x1 := cast(s16) x
         }
 
         {
-            x := swag.MinS64
+            x := swag.S32.Max
+            x0 := cast(s8) x
+            x1 := cast(s16) x
+        }
+
+        {
+            x := swag.S64.Min
             x0 := cast(s8) x
             x1 := cast(s16) x
             x2 := cast(s32) x
         }
 
         {
-            x := swag.MaxS64
+            x := swag.S64.Max
             x0 := cast(s8) x
             x1 := cast(s16) x
             x2 := cast(s32) x

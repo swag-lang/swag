@@ -106,7 +106,7 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32} throw
     // Does the number starts with the negative/positive sign ?
     signed := false
     c := :str
-    maxValue := cast(u64) swag.MaxS64
+    maxValue := cast(u64) swag.S64.Max
     if c == g_CultureInfo.numberFormat.negativeSign
     {
         buffer, cpt += 1
@@ -131,7 +131,7 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32} throw
     if signed
     {
         if value == maxValue
-            result.value = swag.MinS64
+            result.value = swag.S64.Min
         else
             result.value = -cast(s64) value
     }

@@ -102,41 +102,84 @@ namespace swag
     // Constants
     // #########################################################
 
-    const MinS8  = bitcast(s8)  0x80
-    const MinS16 = bitcast(s16) 0x8000
-    const MinS32 = bitcast(s32) 0x80000000
-    const MinS64 = bitcast(s64) 0x80000000_00000000
-    const MinInt = MinS64
+    namespace S8
+    {
+        const Min  = bitcast(s8) 0x80
+        const Max  = bitcast(s8) 0x7F
+    }
 
-    const MaxS8  = bitcast(s8)  0x7F
-    const MaxS16 = bitcast(s16) 0x7FFF
-    const MaxS32 = bitcast(s32) 0x7FFFFFFF
-    const MaxS64 = bitcast(s64) 0x7FFFFFFF_FFFFFFFF
-    const MaxInt = MaxS64
+    namespace S16
+    {
+        const Min = bitcast(s16) 0x8000
+        const Max = bitcast(s16) 0x7FFF
+    }
 
-    const MaxU8   = 0xFF'u8
-    const MaxU16  = 0xFFFF'u16
-    const MaxU32  = 0xFFFFFFFF'u32
-    const MaxU64  = 0xFFFFFFFF_FFFFFFFF'u64
-    const MaxUInt = MaxU64
+    namespace S32
+    {
+        const Min = bitcast(s32) 0x80000000
+        const Max = bitcast(s32) 0x7FFFFFFF
+    }
 
-    const MinF32        = 1.17549435082228750797e-38'f32
-    const MaxF32        = 3.40282346638528859812e+38'f32
-    const NanF32        = bitcast(f32) 0x7F800001
-    const InfF32        = bitcast(f32) 0x7F800000
-    const NegInfF32     = bitcast(f32) 0xFF800000
-    const MantBitsF32   = 23
-    const ExpBitsF32    = 8
-    const BiasF32       = -127
+    namespace S64
+    {
+        const Min = bitcast(s64) 0x80000000_00000000
+        const Max = bitcast(s64) 0x7FFFFFFF_FFFFFFFF
+    }
 
-    const MinF64        = 2.2250738585072014e-308'f64
-    const MaxF64        = 1.79769313486231570815e+308'f64
-    const NanF64        = bitcast(f64) 0x7ff8000000000001
-    const InfF64        = bitcast(f64) 0x7ff0000000000000
-    const NegInfF64     = bitcast(f64) 0xfff0000000000000
-    const MantBitsF64   = 52
-    const ExpBitsF64    = 11
-    const BiasF64       = -1023
+    namespace Int
+    {
+        const Min = bitcast(s64) 0x80000000_00000000
+        const Max = bitcast(s64) 0x7FFFFFFF_FFFFFFFF
+    }
+
+    namespace U8
+    {
+        const Max = 0xFF'u8
+    }
+
+    namespace U16
+    {
+        const Max = 0xFFFF'u16
+    }
+
+    namespace U32
+    {
+        const Max = 0xFFFFFFFF'u32
+    }
+
+    namespace U64
+    {
+        const Max = 0xFFFFFFFF_FFFFFFFF'u64
+    }
+
+    namespace UInt
+    {
+        const Max = 0xFFFFFFFF_FFFFFFFF'u64
+    }
+
+    namespace F32
+    {
+        const Min        = 1.17549435082228750797e-38'f32
+        const Max        = 3.40282346638528859812e+38'f32
+        const Nan        = bitcast(f32) 0x7F800001
+        const Inf        = bitcast(f32) 0x7F800000
+        const NegInf     = bitcast(f32) 0xFF800000
+        const MantBits   = 23
+        const ExpBits    = 8
+        const Bias       = -127
+    }
+
+    namespace F64
+    {
+        const Min        = 2.2250738585072014e-308'f64
+        const Max        = 1.79769313486231570815e+308'f64
+        const Nan        = bitcast(f64) 0x7ff8000000000001
+        const Inf        = bitcast(f64) 0x7ff0000000000000
+        const NegInf     = bitcast(f64) 0xfff0000000000000
+        const MantBits   = 52
+        const ExpBits    = 11
+        const Bias       = -1023
+    }
 
     // #########################################################
     // Context & allocators

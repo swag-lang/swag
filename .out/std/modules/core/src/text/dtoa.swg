@@ -357,7 +357,7 @@ func dtoa(dst: *ConcatBuffer, precision: s64, fmt: u8, neg: bool, mant: u64, exp
 
 	var d: Decimal
 	d.assign(mant)
-	d.shift(cast(s32) exp - swag.MantBitsF64)
+	d.shift(cast(s32) exp - swag.F64.MantBits)
 
 	var digs: DecimalSlice
 	shortest := prec < 0
@@ -558,8 +558,8 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 	// So the number is already shortest if 10^(dp-nd) > 2^(exp-mantbits),
 	// or equivalently log2(10)*(dp-nd) > exp-mantbits.
 	// It is true if 332/100*(dp-nd) >= exp-mantbits (log2(10) > 3.32).
-	minexp := swag.BiasF64 + 1 // minimum possible exponent
-	if exp > minexp && 332*(d.dp-d.nd) >= 100*(exp-cast(s64)(swag.MantBitsF64))
+	minexp := swag.F64.Bias + 1 // minimum possible exponent
+	if exp > minexp && 332*(d.dp-d.nd) >= 100*(exp-cast(s64)(swag.F64.MantBits))
     {
 		// The number is already shortest.
 		return
@@ -570,7 +570,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 	// Our upper bound is halfway between, mant*2+1 << exp-mantbits-1.
 	var upper: Decimal
 	upper.assign(mant*2 + 1)
-	upper.shift(cast(s32) exp - cast(s32) (swag.MantBitsF64) - 1)
+	upper.shift(cast(s32) exp - cast(s32) (swag.F64.MantBits) - 1)
 
 	// d = mant << (exp - mantbits)
 	// Next lowest floating point number is mant-1 << exp-mantbits,
@@ -580,7 +580,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 	// Our lower bound is halfway between, mantlo*2+1 << explo-mantbits-1.
 	var mantlo: u64
 	var explo: s64
-	if mant > (1'u64 << swag.MantBitsF64) || exp == minexp
+	if mant > (1'u64 << swag.F64.MantBits) || exp == minexp
     {
 		mantlo = mant - 1
 		explo = exp
@@ -592,7 +592,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 
 	var lower: Decimal
 	lower.assign(mantlo*2 + 1)
-	lower.shift(cast(s32) explo - cast(s32)(swag.MantBitsF64) - 1)
+	lower.shift(cast(s32) explo - cast(s32)(swag.F64.MantBits) - 1)
 
 	// The upper and lower bounds are possible outputs only if
 	// the original mantissa is even, so that IEEE round-to-even
@@ -693,14 +693,14 @@ public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
 {
 	var bits: u64 = bitcast(u64) val
 
-	neg  := bits >> (swag.ExpBitsF64 + swag.MantBitsF64) != 0
-	exp  := cast(s64) (bits >> swag.MantBitsF64) & ((1 << swag.ExpBitsF64) - 1)
-	mant := bits & ((1'u64 << swag.MantBitsF64) - 1)
+	neg  := bits >> (swag.F64.ExpBits + swag.F64.MantBits) != 0
+	exp  := cast(s64) (bits >> swag.F64.MantBits) & ((1 << swag.F64.ExpBits) - 1)
+	mant := bits & ((1'u64 << swag.F64.MantBits) - 1)
 
 	switch exp
     {
     // Inf, NaN
-	case (1 << swag.ExpBitsF64) - 1:
+	case (1 << swag.F64.ExpBits) - 1:
 		var s: string
 		switch
         {
@@ -716,10 +716,10 @@ public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64)
 		exp += 1
 
 	default:
-		mant |= 1'u64 << swag.MantBitsF64
+		mant |= 1'u64 << swag.F64.MantBits
 	}
 
-	exp += swag.BiasF64
+	exp += swag.F64.Bias
 
 /*	var digs DecimalSlice
 	ok := false

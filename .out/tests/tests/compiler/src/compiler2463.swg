@@ -3,6 +3,6 @@
 #[swag.safety("of", true)]
 #test
 {
-    var x: s64 = swag.MaxS64
+    var x: s64 = swag.S64.Max
     x += 1
 }

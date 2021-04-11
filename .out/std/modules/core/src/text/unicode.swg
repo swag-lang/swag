@@ -191,7 +191,7 @@ func compare(src, dst: const [..] char, ignoreCase = false)->s32
 }
 
 ////////// TABLES ////////
-const UpperLower = swag.MaxS32
+const UpperLower = swag.S32.Max
 
 struct Range
 {
@@ -262,7 +262,7 @@ func caseChangeTo(wCase: WantedCase, r: char, caseRange: const [..] CaseRange) -
 		if cr.lo <= r && r <= cr.hi
         {
 			delta := cr.delta[wCase]
-			if delta == swag.MaxS32
+			if delta == swag.S32.Max
             {
 				// In an Upper-Lower sequence, which always starts with
 				// an UpperCase letter, the real deltas always look like:

@@ -49,18 +49,18 @@ func panic(msg: string, loc: swag.CompilerSourceLocation)
         }
 
         {
-            x := swag.MaxS16
+            x := swag.S16.Max
             x0 := cast(u8) x
         }
 
         {
-            x := swag.MaxS32
+            x := swag.S32.Max
             x0 := cast(u8) x
             x1 := cast(u16) x
         }
 
         {
-            x := swag.MaxS64
+            x := swag.S64.Max
             x0 := cast(u8) x
             x1 := cast(u16) x
             x2 := cast(u32) x

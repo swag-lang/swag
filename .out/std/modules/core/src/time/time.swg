@@ -18,7 +18,7 @@ protected
     const DaysPer400Years = (DaysPer100Years * 4) + 1
     const DaysToMonth365  = @[0'u16, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365]
     const DaysToMonth366  = @[0'u16, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366]
-    const MaxMilliSeconds = swag.MaxU64 / TicksPerMilliSecond
+    const MaxMilliSeconds = swag.U64.Max / TicksPerMilliSecond
 
     const DaysTo1601: u64  = (DaysPer400Years * 4) // Number of days from 1/1/0001 to 12/31/1600
     const DaysTo1899: u64  = ((DaysPer400Years * 4) + (DaysPer100Years * 3)) - 367 // Number of days from 1/1/0001 to 12/30/1899

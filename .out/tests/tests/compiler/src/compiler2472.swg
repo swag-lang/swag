@@ -6,27 +6,27 @@
 #[swag.safety("of", true)]
 #test
 {
-    var x: s8 = swag.MaxS8
+    var x: s8 = swag.S8.Max
     x *= 2
 }
 
 #[swag.safety("of", true)]
 #test
 {
-    var x: s16 = swag.MaxS16
+    var x: s16 = swag.S16.Max
     x *= 2
 }
 
 #[swag.safety("of", true)]
 #test
 {
-    var x: s32 = swag.MaxS32
+    var x: s32 = swag.S32.Max
     x *= 2
 }
 
 #[swag.safety("of", true)]
 #test
 {
-    var x: s64 = swag.MaxS64
+    var x: s64 = swag.S64.Max
     x *= 2
 }

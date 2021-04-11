@@ -8,6 +8,6 @@ using swag
         var x: s8 = 1
         x >>%= 1
         #assert 1 >>% 1 == 0
-        #assert swag.MaxU32 <<% 1 == 0xFFFFFFFE
+        #assert swag.U32.Max <<% 1 == 0xFFFFFFFE
     }
 }

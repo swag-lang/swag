@@ -16,7 +16,7 @@ func panic(msg: string, loc: swag.CompilerSourceLocation)
         defer cxt.panic = null
 
         {
-            var x: u8 = swag.MaxU8
+            var x: u8 = swag.U8.Max
             x <<= 1
         }
 
@@ -26,17 +26,17 @@ func panic(msg: string, loc: swag.CompilerSourceLocation)
         }
 
         {
-            var x: u16 = swag.MaxU16
+            var x: u16 = swag.U16.Max
             x <<= 1
         }
 
         {
-            var x: u32 = swag.MaxU32
+            var x: u32 = swag.U32.Max
             x <<= 1
         }
 
         {
-            var x: u64 = swag.MaxU64
+            var x: u64 = swag.U64.Max
             x <<= 1
             x = 1'u64 << 63
             x <<= 1
