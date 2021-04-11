@@ -11,6 +11,7 @@ var atoftests: [] atofTest = @[
 	{"1", "1", false},
 	{"1e23", "1e+23", false},
 	{"1E23", "1e+23", false},
+    //{"100000000000000000000000", "1e+23", false},
 ]
 
 #test

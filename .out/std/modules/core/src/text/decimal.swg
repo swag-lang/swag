@@ -2,14 +2,18 @@
 
 #global namespace strconv
 #global #[swag.safety("of", false)]
+using globalization
 
 struct Decimal
 {
-	d:     [800] u8  // digits, big-endian representation
-	nd:    s64       // number of digits used
-	dp:    s64       // decimal point
-	neg:   bool      // negative flag
-	trunc: bool      // discarded nonzero digits beyond d[:nd]
+	d:          [800] u8  // digits, big-endian representation
+	nd:         s64       // number of digits used
+	dp:         s64       // decimal point
+	neg:        bool      // negative flag
+	bigtrunc:   bool      // discarded nonzero digits beyond d[:nd]
+    mantissa:   u64
+	trunc:      bool      // discarded nonzero digits beyond d[:nd]
+    exp:        s64
 }
 
 struct DecimalSlice
@@ -347,5 +351,125 @@ impl Decimal
 
             rightShift(cast(u32) (-k))
         }
+    }
+
+    func readF64(using self, str: const [..] u8)->u32 throw
+    {
+        cpt := 0'u32
+        countof := @countof(str)
+        buffer := @dataof(str)
+
+        negSign := g_CultureInfo.numberFormat.negativeSign
+        plusSign := g_CultureInfo.numberFormat.positiveSign
+        dotSign := g_CultureInfo.numberFormat.decimalSeparator
+
+        c := :buffer
+        if c == negSign
+        {
+            buffer, cpt += 1
+            neg = true
+        }
+        else if c == plusSign
+        {
+            buffer, cpt += 1
+        }
+
+        // digits
+        maxMantDigits := 19 // 10^19 fits in u64
+        sawdot    := false
+        sawDigits := false
+        ndMant := 0
+
+        nd = 0
+        dp = 0
+
+        while cpt < countof
+        {
+            c = :buffer
+            if c == dotSign
+            {
+                if sawdot break
+                sawdot = true
+                dp = nd
+            }
+            else if "0"'u8 <= c && c <= "9"'u8
+            {
+                sawDigits = true
+                if c == "0"'u8 && nd == 0
+                    dp -= 1
+                else
+                {
+                    if nd < @countof(d)
+                    {
+                        d[nd] = c
+                        nd += 1
+
+                        if ndMant < maxMantDigits
+                        {
+                            mantissa *= 10
+                            mantissa += cast(u64) (c - "0"'u8)
+                            ndMant += 1
+                        }
+                        else if c != "0"'u8
+                            trunc = true
+                    }
+                    else if c != "0"'u8
+                        bigtrunc = true
+                }
+            }
+            else
+                break
+
+            cpt, buffer += 1
+        }
+
+        if !sawDigits
+            throw "invalid float format"
+        if !sawdot
+            dp = nd
+
+        // Exponent
+        c = :buffer
+        if cpt < countof && (c|32) == "e"'u8
+        {
+            cpt, buffer += 1
+            if cpt >= countof
+                throw "invalid float format"
+
+            esign := 1
+            c = :buffer
+            if c == negSign
+            {
+                buffer, cpt += 1
+                esign = -1
+                c = :buffer
+            }
+            else if c == plusSign
+            {
+                buffer, cpt += 1
+                c = :buffer
+            }
+
+            if cpt >= countof || c < "0"'u8 || c > "9"'u8
+                throw "invalid float format"
+
+            e := 0
+            while cpt < countof
+            {
+                c = :buffer
+                if c < "0"'u8 || c > "9"'u8
+                    break
+                if e < 10000
+                    e = e*10 + (c - "0"'u8)
+                buffer, cpt += 1
+            }
+
+            dp += e * esign
+        }
+
+        if mantissa != 0
+            exp = dp - ndMant
+
+        return cpt
     }
 }

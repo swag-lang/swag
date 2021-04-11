@@ -5,124 +5,7 @@
 #global #[swag.safety("of", false)]
 using globalization
 
-func readF64(str: const [..] u8)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat: u32} throw
-{
-    var result: retval
-
-    cpt := 0'u32
-    countof := @countof(str)
-    buffer := @dataof(str)
-
-    negSign := g_CultureInfo.numberFormat.negativeSign
-    plusSign := g_CultureInfo.numberFormat.positiveSign
-    dotSign := g_CultureInfo.numberFormat.decimalSeparator
-
-    c := :buffer
-    if c == negSign
-    {
-        buffer, cpt += 1
-        result.neg = true
-    }
-    else if c == plusSign
-    {
-        buffer, cpt += 1
-    }
-
-	// digits
-	maxMantDigits := 19 // 10^19 fits in u64
-	sawdot    := false
-	sawDigits := false
-	nd := 0
-	ndMant := 0
-	dp := 0
-
-    while cpt < countof
-    {
-        c = :buffer
-		if c == dotSign
-        {
-			if sawdot break
-			sawdot = true
-			dp = nd
-        }
-        else if "0"'u8 <= c && c <= "9"'u8
-        {
-			sawDigits = true
-			if c == "0"'u8 && nd == 0
-				dp -= 1
-            else
-            {
-                nd += 1
-                if ndMant < maxMantDigits
-                {
-                    result.mantissa *= 10
-                    result.mantissa += cast(u64) (c - "0"'u8)
-                    ndMant += 1
-                }
-                else if c != "0"'u8
-                {
-                    result.trunc = true
-                }
-            }
-		}
-        else
-            break
-
-        cpt, buffer += 1
-	}
-
-	if !sawDigits
-		return result
-	if !sawdot
-		dp = nd
-
-	// Exponent
-    c = :buffer
-	if cpt < countof && (c|32) == "e"'u8
-    {
-		cpt, buffer += 1
-		if cpt >= countof
-			throw "invalid float format"
-
-		esign := 1
-		c = :buffer
-        if c == negSign
-        {
-            buffer, cpt += 1
-            esign = -1
-	        c = :buffer
-        }
-        else if c == plusSign
-        {
-            buffer, cpt += 1
-		    c = :buffer
-        }
-
-		if cpt >= countof || c < "0"'u8 || c > "9"'u8
-			throw "invalid float format"
-
-		e := 0
-        while cpt < countof
-        {
-            c = :buffer
-            if c < "0"'u8 || c > "9"'u8
-                break
-			if e < 10000
-				e = e*10 + (c - "0"'u8)
-            buffer, cpt += 1
-		}
-
-		dp += e * esign
-	}
-
-	if result.mantissa != 0
-		result.exp = dp - ndMant
-
-    result.eat = cpt
-    return result
-}
-
-func exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
+func exact(neg: bool, mantissa: u64, exponent: s64) -> {f: f64, ok: bool}
 {
     const Pow10: [] f64 = @[
         1e0'f64, 1e1'f64, 1e2'f64, 1e3'f64, 1e4'f64, 1e5'f64, 1e6'f64, 1e7'f64, 1e8'f64, 1e9'f64,
@@ -875,7 +758,7 @@ var PowersOfTen: [696,2] u64 = @[
 	[0x4B7195F2D2D1A9FB, 0xD13EB46469447567], // 1e347
 ]
 
-func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
+func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{f: f64, ok: bool}
 {
     const PowersOfTenMinExp10 = -348
 	const PowersOfTenMaxExp10 = 347
@@ -993,8 +876,8 @@ public func atod(s: const [..] u8) -> { value: f64, eat: u32 } throw
     (result.value, result.eat) = special(s)
     if result.eat return result
 
-	read := try readF64(s)
-    result.eat = read.eat
+    var read: Decimal
+    result.eat = try read.readF64(s)
 
     if !read.trunc
     {
@@ -1007,7 +890,24 @@ public func atod(s: const [..] u8) -> { value: f64, eat: u32 } throw
     }
 
     (f, ok) := eiselLemire64(read.neg, read.mantissa, read.exp)
-    if !ok throw "invalid float format"
-    result.value = f
+	if ok
+	{
+		if !read.trunc
+		{
+            result.value = f
+            return result
+		}
+
+		// Even if the mantissa was truncated, we may have found the correct result.
+		// Confirm by converting the upper mantissa bound.
+	    (f1, ok1) := eiselLemire64(read.neg, read.mantissa + 1, read.exp)
+		if ok1 && f == f1
+		{
+	        result.value = f
+		    return result
+		}
+	}
+
+    throw "invalid float format"
     return result
 }
