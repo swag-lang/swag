@@ -909,6 +909,7 @@ public func atod(s: const [..] u8) -> { value: f64, eat: u32 } throw
 	}
 
     // Slow fallback.
+	read.trunc = read.bigtrunc
     (b, ovf) := read.floatBits()
     if ovf throw "overflow"
     result.value = bitcast(f64) b

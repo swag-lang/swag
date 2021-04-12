@@ -591,10 +591,15 @@ impl Decimal
     {
         if dp > 20
             return 0xFFFFFFFFFFFFFFFF
-        var i: s64
+
+        i := 0's64
         n := 0'u64
-        for i = 0; i < dp && i < nd; i += 1
+        while i < dp && i < nd
+        {
             n = (n*10) + cast(u64) (d[i] - "0"'u8)
+            i += 1
+        }
+
         while i < dp
         {
             n *= 10
