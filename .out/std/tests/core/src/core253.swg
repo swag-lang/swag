@@ -132,6 +132,11 @@ var atoftests: [] atofTest = @[
         cb.clear()
         dtoa(&cb, v.value, "g"'u8, -1, false)
 
-        console.print("% %\n", t.out, cb.toString())
+        res := cb.toString()
+        if t.out != res
+        {
+            console.print("% %\n", t.out, res)
+            @assert(false)
+        }
     }
 }
