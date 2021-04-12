@@ -155,14 +155,12 @@ impl FloatExt
 
     // Normalize normalizes f so that the highest bit of the mantissa is
     // set, and returns the number by which the mantissa was left-shifted.
-    func normalize(using self)->u64
+    func normalize(using self)
     {
-        // bits.LeadingZeros64 would return 64
-        if mant == 0 return 0
+        if mant == 0 return
         shift := @bitcountlz(mant)
         mant <<= cast(u32) shift
         exp -= cast(s64) shift
-        return shift
     }
 
     // Multiply sets f to the product f*g: the result is correctly rounded,
@@ -262,11 +260,9 @@ impl FloatExt
             return true
         }
 
-        debug.assert(n != 0, "strconv: internal error: extFloat.FixedDecimal called with n == 0")
-
         // Multiply by an appropriate power of ten to have a reasonable
         // number to process.
-        discard normalize()
+        normalize()
         (exp10, ?) := frexp10()
 
         shift := cast(u32) -exp
@@ -326,8 +322,6 @@ impl FloatExt
 
         if needed > 0
         {
-            debug.assert(rest == 0 && pow10 == 1, "strconv: internal error, rest != 0 but needed > 0")
-
             // Emit digits for the fractional part. Each time, 10*fraction
             // fits in a uint64 without overflow.
             while needed > 0
@@ -391,13 +385,6 @@ impl FloatExt
     // that no correct answer can be given.
     func adjustLastDigitFixed(d: *DecimalSlice, num, den: u64, shift: u32, e: u64)->bool
     {
-        /*if num > den << shift {
-            panic("strconv: num > den<<shift in adjustLastDigitFixed")
-        }
-        if 2*e > den<<shift {
-            panic("strconv: e > (den<<shift)/2")
-        }*/
-
         if 2*(num+e) < (den << shift)
             return true
 
@@ -476,7 +463,7 @@ impl FloatExt
             return true
         }
 
-        discard upper.normalize()
+        upper.normalize()
 
         // Uniformize exponents.
         if exp > upper.exp
