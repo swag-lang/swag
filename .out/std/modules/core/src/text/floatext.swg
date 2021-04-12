@@ -133,7 +133,7 @@ impl FloatExt
         mant = mantp
         exp = expp - swag.F64.MantBits
         neg = negp
-        if exp <= 0 && mant == (mant >> cast(u32) (-exp)) << cast(u32)(-exp)
+        if exp <= 0 && exp >= -63 && mant == (mant >> cast(u32) (-exp)) << cast(u32)(-exp)
         {
             // An exact integer
             mant >>= cast(u32) (-exp)

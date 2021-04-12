@@ -109,7 +109,7 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
 		m := math.min(d.nd, prec + 1)
 		if i < m
         {
-			dst.addBytes(@mkslice(&d.d[i], m - i + 1))
+			dst.addBytes(@mkslice(&d.d[i], m - i))
 			i = m
 		}
 
@@ -344,6 +344,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 // 'f' (-ddd.dddd, no exponent)
 // 'g' ('e' for large exponents, 'f' otherwise)
 // 'G' ('E' for large exponents, 'f' otherwise)
+// Negative precision means "only as much as needed to be exact."
 public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSign: bool)
 {
 	var bits: u64 = bitcast(u64) val
@@ -378,8 +379,8 @@ public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSig
 	exp += swag.F64.Bias
 
 	var digs: DecimalSlice
+
 	ok := false
-	// Negative precision means "only as much as needed to be exact."
 	shortest := prec < 0
 	if shortest
     {

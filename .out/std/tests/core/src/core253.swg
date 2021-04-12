@@ -9,7 +9,7 @@ struct atofTest
 
 var atoftests: [] atofTest = @[
 	{"1", "1", false},
-/*	{"1e23", "1e+23", false},
+	{"1e23", "1e+23", false},
 	{"1E23", "1e+23", false},
     {"100000000000000000000000", "1e+23", false},
     {"1e-100", "1e-100", false},
@@ -23,7 +23,7 @@ var atoftests: [] atofTest = @[
 	{"-0.1", "-0.1", false},
 	{"-0", "-0", false},
 	{"1e-20", "1e-20", false},
-	{"625e-3", "0.625", false},*/
+	{"625e-3", "0.625", false},
 ]
 
 #test

@@ -434,6 +434,7 @@ DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
         case NativeTypeKind::S32:
             return SimpleTypeKind::Int32;
         case NativeTypeKind::S64:
+        case NativeTypeKind::Int:
             return SimpleTypeKind::Int64;
         case NativeTypeKind::U8:
             return SimpleTypeKind::Byte;
@@ -442,6 +443,7 @@ DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
         case NativeTypeKind::U32:
             return SimpleTypeKind::UInt32;
         case NativeTypeKind::U64:
+        case NativeTypeKind::UInt:
             return SimpleTypeKind::UInt64;
         case NativeTypeKind::F32:
             return SimpleTypeKind::Float32;
