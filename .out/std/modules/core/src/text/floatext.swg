@@ -1,6 +1,7 @@
 //https://github.com/golang/go/blob/master/src/strconv/extfloat.go
 
 #global namespace strconv
+#global #[swag.safety("of", false)]
 
 // An extFloat represents an extended floating-point number, with more
 // precision than a float64. It does not try to save bits: the
@@ -240,11 +241,12 @@ impl FloatExt
     }
 
     // frexp10Many applies a common shift by a power of ten to a, b, c.
-    func frexp10Many(a, b, c: *FloatExt)
+    func frexp10Many(a, b, c: *FloatExt)->s64
     {
         (exp10, i) := c.frexp10()
         a.multiply(powersOfTen[i])
         b.multiply(powersOfTen[i])
+        return exp10
     }
 
     // FixedDecimal stores in d the first n significant digits
@@ -424,5 +426,184 @@ impl FloatExt
         }
 
         return false
+    }
+
+    func opEquals(using self, other: Self)->bool
+    {
+        return mant == other.mant && exp == other.exp && neg == other.neg
+    }
+
+    // ShortestDecimal stores in d the shortest decimal representation of f
+    // which belongs to the open interval (lower, upper), where f is supposed
+    // to lie. It returns false whenever the result is unsure. The implementation
+    // uses the Grisu3 algorithm.
+    func shortestDecimal(using self, d: *DecimalSlice, lower, upper: *FloatExt)->bool
+    {
+        if mant == 0
+        {
+            d.nd = 0
+            d.dp = 0
+            d.neg = neg
+            return true
+        }
+
+        if exp == 0 && :lower == :self && :lower == :upper
+        {
+            // an exact integer.
+            var buf: [24] u8
+            n := @countof(buf) - 1
+            v := mant
+            while v > 0
+            {
+                v1 := v / 10
+                v -= 10 * v1
+                buf[n] = cast(u8) (v + "0"'u8)
+                n -= 1
+                v = v1
+            }
+
+            nd := cast(s64) (@countof(buf) - n - 1)
+            for i := 0; i < nd; i += 1
+                d.d[i] = buf[n+1+i]
+
+            d.nd = nd
+            d.dp = nd
+            while d.nd > 0 && d.d[d.nd-1] == "0"'u8
+                d.nd -= 1
+
+            if d.nd == 0 d.dp = 0
+            d.neg = neg
+            return true
+        }
+
+        discard upper.normalize()
+
+        // Uniformize exponents.
+        if exp > upper.exp
+        {
+            mant <<= cast(u32) (exp - upper.exp)
+            exp = upper.exp
+        }
+
+        if lower.exp > upper.exp
+        {
+            lower.mant <<= cast(u32) (lower.exp - upper.exp)
+            lower.exp = upper.exp
+        }
+
+        exp10 := frexp10Many(lower, self, upper)
+
+        // Take a safety margin due to rounding in frexp10Many, but we lose precision.
+        upper.mant += 1
+        lower.mant -= 1
+
+        // The shortest representation of f is either rounded up or down, but
+        // in any case, it is a truncation of upper.
+        shift := cast(u32) -upper.exp
+        integer := cast(u32) (upper.mant >> shift)
+        fraction := upper.mant - (cast(u64) (integer) << shift)
+
+        // How far we can go down from upper until the result is wrong.
+        allowance := upper.mant - lower.mant
+
+        // How far we should go to get a very precise result.
+        targetDiff := upper.mant - mant
+
+        // Count integral digits: there are at most 10.
+        var integerDigits: s64
+        pow := 1'u64
+        loop i: 20
+        {
+            if pow > cast(u64) integer
+            {
+                integerDigits = i
+                break
+            }
+
+            pow *= 10
+        }
+
+        loop i: integerDigits
+        {
+            pow = uint64pow10[integerDigits-i-1]
+            digit := integer / cast(u32) pow
+            d.d[i] = cast(u8) (digit + "0"'u8)
+            integer -= digit * cast(u32) pow
+
+            // evaluate whether we should stop.
+            currentDiff := (cast(u64) integer << shift) + fraction
+            if currentDiff < allowance
+            {
+                d.nd = i + 1
+                d.dp = integerDigits + exp10
+                d.neg = neg
+                // Sometimes allowance is so large the last digit might need to be
+                // decremented to get closer to f.
+                return adjustLastDigit(d, currentDiff, targetDiff, allowance, pow << shift, 2)
+            }
+        }
+
+        d.nd = integerDigits
+        d.dp = d.nd + exp10
+        d.neg = neg
+
+        // Compute digits of the fractional part. At each step fraction does not
+        // overflow. The choice of minExp implies that fraction is less than 2^60.
+        var digit: s64
+        multiplier := 1'u64
+        while true
+        {
+            fraction *= 10
+            multiplier *= 10
+            digit = cast(s64) (fraction >> shift)
+            d.d[d.nd] = cast(u8) (digit + "0"'u8)
+            d.nd += 1
+            fraction -= cast(u64) digit << shift
+            if fraction < allowance * multiplier
+            {
+                // We are in the admissible range. Note that if allowance is about to
+                // overflow, that is, allowance > 2^64/10, the condition is automatically
+                // true due to the limited range of fraction.
+                return adjustLastDigit(d, fraction, targetDiff*multiplier, allowance*multiplier, 1'u64 << shift, multiplier*2)
+            }
+        }
+
+        return false
+    }
+
+    // adjustLastDigit modifies d = x-currentDiff*ε, to get closest to
+    // d = x-targetDiff*ε, without becoming smaller than x-maxDiff*ε.
+    // It assumes that a decimal digit is worth ulpDecimal*ε, and that
+    // all data is known with an error estimate of ulpBinary*ε.
+    func adjustLastDigit(d: *DecimalSlice, cdiff, targetDiff, maxDiff, ulpDecimal, ulpBinary: u64)->bool
+    {
+        currentDiff := cdiff
+
+        // Approximation is too wide.
+        if ulpDecimal < 2*ulpBinary
+            return false
+
+        while currentDiff + (ulpDecimal / 2) + ulpBinary < targetDiff
+        {
+            d.d[d.nd-1] -= 1
+            currentDiff += ulpDecimal
+        }
+
+        // we have two choices, and don't know what to do.
+        if currentDiff+ulpDecimal <= targetDiff+ulpDecimal/2+ulpBinary
+            return false
+
+        // we went too far
+        if currentDiff < ulpBinary || currentDiff > maxDiff-ulpBinary
+            return false
+
+        if d.nd == 1 && d.d[0] == "0"'u8
+        {
+            // the number has actually reached zero.
+            d.nd = 0
+            d.dp = 0
+        }
+
+        return true
     }
 }

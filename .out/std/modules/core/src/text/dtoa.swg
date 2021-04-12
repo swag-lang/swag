@@ -344,10 +344,11 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 // 'f' (-ddd.dddd, no exponent)
 // 'g' ('e' for large exponents, 'f' otherwise)
 // 'G' ('E' for large exponents, 'f' otherwise)
-public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64, forceSign: bool)
+public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSign: bool)
 {
 	var bits: u64 = bitcast(u64) val
 
+    prec := precision
 	neg  := bits >> (swag.F64.ExpBits + swag.F64.MantBits) != 0
 	exp  := cast(s64) (bits >> swag.F64.MantBits) & ((1 << swag.F64.ExpBits) - 1)
 	mant := bits & ((1'u64 << swag.F64.MantBits) - 1)
@@ -376,52 +377,61 @@ public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, prec: s64, forceSign: bo
 
 	exp += swag.F64.Bias
 
-/*	var digs DecimalSlice
+	var digs: DecimalSlice
 	ok := false
 	// Negative precision means "only as much as needed to be exact."
 	shortest := prec < 0
-	if shortest {
+	if shortest
+    {
 		// Try Grisu3 algorithm.
-		f := new(extFloat)
-		lower, upper := f.AssignComputeBounds(mant, exp, neg, flt)
-		var buf [32]byte
-		digs.d = buf[:]
-		ok = f.ShortestDecimal(&digs, &lower, &upper)
-		if !ok {
-			return dtoa(dst, prec, fmt, neg, mant, exp, flt)
-		}
-		// Precision for shortest representation mode.
-		switch fmt {
-		case 'e', 'E':
-			prec = max(digs.nd-1, 0)
-		case 'f':
-			prec = max(digs.nd-digs.dp, 0)
-		case 'g', 'G':
-			prec = digs.nd
-		}
-	} else if fmt != 'f' {
+		var f: FloatExt
+		(lower, upper) := f.assignComputeBounds(mant, exp, neg)
+		var tmp: [32] u8
+		digs.d = tmp
+
+		ok = f.shortestDecimal(&digs, &lower, &upper)
+		if ok
+        {
+            // Precision for shortest representation mode.
+            switch fmt
+            {
+            case "e"'u8, "E"'u8:
+                prec = math.max(digs.nd-1, 0)
+            case "f"'u8:
+                prec = math.max(digs.nd-digs.dp, 0)
+            case "g"'u8, "G"'u8:
+                prec = digs.nd
+            }
+
+            return formatDigits(buf, shortest, neg, forceSign, digs, prec, fmt)
+        }
+	}
+    else if fmt != "f"'u8
+    {
 		// Fixed number of digits.
 		digits := prec
-		switch fmt {
-		case 'e', 'E':
-			digits++
-		case 'g', 'G':
-			if prec == 0 {
-				prec = 1
-			}
+		switch fmt
+        {
+		case "e"'u8, "E"'u8:
+			digits += 1
+		case "g"'u8, "G"'u8:
+			if prec == 0 prec = 1
 			digits = prec
 		}
-		if digits <= 15 {
-			// try fast algorithm when the number of digits is reasonable.
-			var buf [24]byte
-			digs.d = buf[:]
-			f := extFloat{mant, exp - int(flt.mantbits), neg}
-			ok = f.FixedDecimal(&digs, digits)
+
+        // try fast algorithm when the number of digits is reasonable.
+		if digits <= 15
+        {
+			var tmp: [24] u8
+			digs.d = tmp
+			f := FloatExt{mant, exp - cast(s64) swag.F64.MantBits, neg}
+			ok = f.fixedDecimal(&digs, digits)
+            if ok
+            {
+                return formatDigits(buf, shortest, neg, forceSign, digs, prec, fmt)
+            }
 		}
 	}
-	if !ok {
-		return dtoa(dst, prec, fmt, neg, mant, exp, flt)
-	}
-	return formatDigits(dst, shortest, neg, digs, prec, fmt)*/
-    dtoa(buf, prec, fmt, neg, forceSign, mant, exp)
+
+    return dtoa(buf, prec, fmt, neg, forceSign, mant, exp)
 }
