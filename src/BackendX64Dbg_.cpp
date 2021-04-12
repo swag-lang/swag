@@ -805,11 +805,35 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
 
 void BackendX64::dbgEmitConstant(X64PerThread& pp, Concat& concat, AstNode* node)
 {
-    /*    dbgStartRecord(pp, concat, S_CONSTANT);
-    concat.addU32(dbgGetOrCreateType(pp, node->typeInfo));
-    dbgEmitEmbeddedValue(concat, node->typeInfo, node->computedValue);
-    dbgEmitTruncatedString(concat, node->token.text);
-    dbgEndRecord(pp, concat);*/
+    if (node->typeInfo->kind == TypeInfoKind::Native && node->typeInfo->sizeOf <= 8)
+    {
+        dbgStartRecord(pp, concat, S_CONSTANT);
+        concat.addU32(dbgGetOrCreateType(pp, node->typeInfo));
+        switch (node->typeInfo->sizeOf)
+        {
+        case 1:
+            concat.addU16(LF_CHAR);
+            concat.addU8(node->computedValue.reg.u8);
+            break;
+        case 2:
+            concat.addU16(LF_USHORT);
+            concat.addU16(node->computedValue.reg.u16);
+            break;
+        case 4:
+            concat.addU16(LF_ULONG);
+            concat.addU32(node->computedValue.reg.u32);
+            break;
+        case 8:
+            concat.addU16(LF_QUADWORD);
+            concat.addU64(node->computedValue.reg.u64);
+            break;
+        }
+
+        auto nn = node->getScopedName();
+        nn.replace(".", "::");
+        dbgEmitTruncatedString(concat, nn);
+        dbgEndRecord(pp, concat);
+    }
 }
 
 void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
@@ -846,7 +870,9 @@ void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNat
         pp.relocTableDBGSSection.table.push_back(reloc);
         concat.addU16(0);
 
-        dbgEmitTruncatedString(concat, p->token.text);
+        auto nn = p->getScopedName();
+        nn.replace(".", "::");
+        dbgEmitTruncatedString(concat, nn);
         dbgEndRecord(pp, concat);
     }
 
@@ -909,7 +935,9 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             concat.addU32(tr.index);                      // @FunctionType; TODO
             dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None;
-            dbgEmitTruncatedString(concat, f.node->token.text);
+            auto nn = f.node->getScopedName();
+            nn.replace(".", "::");
+            dbgEmitTruncatedString(concat, nn);
             dbgEndRecord(pp, concat);
 
             // Frame Proc
