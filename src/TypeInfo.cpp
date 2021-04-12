@@ -19,6 +19,11 @@ void TypeInfo::getScopedName(Utf8& newName)
     }
 }
 
+Utf8 TypeInfo::getDisplayName()
+{
+    return name;
+}
+
 const Utf8& TypeInfo::computeWhateverName(uint32_t nameType)
 {
     scoped_lock lk(mutex);

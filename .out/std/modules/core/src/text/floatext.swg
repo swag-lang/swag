@@ -125,18 +125,18 @@ impl FloatExt
     // defined by mant, exp and precision given by flt. It returns
     // lower, upper such that any number in the closed interval
     // [lower, upper] is converted back to the same floating point number.
-    func assignComputeBounds(self, mant: u64, exp: int, neg: bool)->{lower: FloatExt, upper: FloatExt}
+    func assignComputeBounds(using self, mantp: u64, expp: int, negp: bool)->{lower: FloatExt, upper: FloatExt}
     {
         var result: retval
 
-        self.mant = mant
-        self.exp = exp - swag.F64.MantBits
-        self.neg = neg
-        if self.exp <= 0 && mant == (mant >> cast(u32) (-self.exp)) << cast(u32)(-self.exp)
+        mant = mantp
+        exp = expp - swag.F64.MantBits
+        neg = negp
+        if exp <= 0 && mant == (mant >> cast(u32) (-exp)) << cast(u32)(-exp)
         {
             // An exact integer
-            self.mant >>= cast(u32) (-self.exp)
-            self.exp = 0
+            mant >>= cast(u32) (-exp)
+            exp = 0
             result.lower = :self
             result.upper = :self
             return result
@@ -144,11 +144,285 @@ impl FloatExt
 
         expBiased := exp - swag.F64.Bias
 
-        result.upper = FloatExt{mant: 2*self.mant + 1, exp: self.exp - 1, neg: self.neg}
+        result.upper = FloatExt{2*mant + 1, exp - 1, neg}
         if mant != 1'u64 << swag.F64.MantBits || expBiased == 1
-            result.lower = FloatExt{mant: 2*self.mant - 1, exp: self.exp - 1, neg: self.neg}
+            result.lower = FloatExt{2*mant - 1, exp - 1, neg}
         else
-            result.lower = FloatExt{mant: 4*self.mant - 1, exp: self.exp - 2, neg: self.neg}
+            result.lower = FloatExt{4*mant - 1, exp - 2, neg}
         return result
+    }
+
+    // Normalize normalizes f so that the highest bit of the mantissa is
+    // set, and returns the number by which the mantissa was left-shifted.
+    func normalize(using self)->u64
+    {
+        // bits.LeadingZeros64 would return 64
+        if mant == 0 return 0
+        shift := @bitcountlz(mant)
+        mant <<= cast(u32) shift
+        exp -= cast(s64) shift
+        return shift
+    }
+
+    // Multiply sets f to the product f*g: the result is correctly rounded,
+    // but not normalized.
+    func multiply(using self, g: FloatExt)
+    {
+        (hi, lo) := math.mul64(mant, g.mant)
+        // Round up.
+        mant = hi + (lo >> 63)
+        exp = exp + g.exp + 64
+    }
+
+    const uint64pow10: [] u64 = @[
+        bitcast(u64) 1'f64,
+        bitcast(u64) 1e1'f64,
+        bitcast(u64) 1e2'f64,
+        bitcast(u64) 1e3'f64,
+        bitcast(u64) 1e4'f64,
+        bitcast(u64) 1e5'f64,
+        bitcast(u64) 1e6'f64,
+        bitcast(u64) 1e7'f64,
+        bitcast(u64) 1e8'f64,
+        bitcast(u64) 1e9'f64,
+        bitcast(u64) 1e10'f64,
+        bitcast(u64) 1e11'f64,
+        bitcast(u64) 1e12'f64,
+        bitcast(u64) 1e13'f64,
+        bitcast(u64) 1e14'f64,
+        bitcast(u64) 1e15'f64,
+        bitcast(u64) 1e16'f64,
+        bitcast(u64) 1e17'f64,
+        bitcast(u64) 1e18'f64,
+        bitcast(u64) 1e19'f64,
+    ]
+
+    // Frexp10 is an analogue of math.Frexp for decimal powers. It scales
+    // f by an approximate power of ten 10^-exp, and returns exp10, so
+    // that f*10^exp10 has the same value as the old f, up to an ulp,
+    // as well as the index of 10^-exp in the powersOfTen table.
+    func frexp10(using self)->{exp10: s64, index: s64}
+    {
+        // The constants expMin and expMax constrain the final value of the
+        // binary exponent of f. We want a small integral part in the result
+        // because finding digits of an integer requires divisions, whereas
+        // digits of the fractional part can be found by repeatedly multiplying
+        // by 10.
+        const expMin = -60
+        const expMax = -32
+
+        // Find power of ten such that x * 10^n has a binary exponent
+        // between expMin and expMax.
+        approxExp10 := ((expMin+expMax)/2 - exp) * 28 / 93 // log(10)/log(2) is close to 93/28.
+        i := (approxExp10 - firstPowerOfTen) / stepPowerOfTen
+        label Loop while true
+        {
+            exp1 := exp + powersOfTen[i].exp + 64
+            switch
+            {
+            case exp1 < expMin:
+                i += 1
+            case exp1 > expMax:
+                i -= 1
+            default:
+                break Loop
+            }
+        }
+
+        // Apply the desired decimal shift on f. It will have exponent
+        // in the desired range. This is multiplication by 10^-exp10.
+        multiply(powersOfTen[i])
+
+        var result: retval
+        result.exp10 = -(firstPowerOfTen + i*stepPowerOfTen)
+        result.index = i
+        return result
+    }
+
+    // frexp10Many applies a common shift by a power of ten to a, b, c.
+    func frexp10Many(a, b, c: *FloatExt)
+    {
+        (exp10, i) := c.frexp10()
+        a.multiply(powersOfTen[i])
+        b.multiply(powersOfTen[i])
+    }
+
+    // FixedDecimal stores in d the first n significant digits
+    // of the decimal representation of f. It returns false
+    // if it cannot be sure of the answer.
+    func fixedDecimal(using self, d: *DecimalSlice, n: s64)->bool
+    {
+        if mant == 0
+        {
+            d.nd = 0
+            d.dp = 0
+            d.neg = neg
+            return true
+        }
+
+        debug.assert(n != 0, "strconv: internal error: extFloat.FixedDecimal called with n == 0")
+
+        // Multiply by an appropriate power of ten to have a reasonable
+        // number to process.
+        discard normalize()
+        (exp10, ?) := frexp10()
+
+        shift := cast(u32) -exp
+        integer := cast(u32) (mant >> shift)
+        fraction := mant - (cast(u64) integer << shift)
+        e := 1'u64 // e is the uncertainty we have on the mantissa of f.
+
+        // Write exactly n digits to d.
+        needed := n        // how many digits are left to write.
+        integerDigits := 0 // the number of decimal digits of integer.
+        pow10 := 1'u64     // the power of ten by which f was scaled.
+
+        pow := 1'u64
+        loop i: 20
+        {
+            if pow > cast(u64) integer
+            {
+                integerDigits = i
+                break
+            }
+
+            pow *= 10
+        }
+
+        rest := integer
+        if integerDigits > needed
+        {
+            // the integral part is already large, trim the last digits.
+            pow10 = uint64pow10[integerDigits-needed]
+            integer /= cast(u32) pow10
+            rest -= integer * cast(u32) pow10
+        }
+        else
+            rest = 0
+
+        // Write the digits of integer: the digits of rest are omitted.
+        var buf: [32] u8
+        pos := @countof(buf)
+
+        v := integer
+        while v > 0
+        {
+            v1 := v / 10
+            v -= 10 * v1
+            pos -= 1
+            buf[pos] = cast(u8) (v + "0"'u8)
+            v = v1
+        }
+
+        for i := pos; i < @countof(buf); i += 1
+            d.d[i-pos] = buf[i]
+
+        nd := cast(s64) (@countof(buf) - pos)
+        d.nd = nd
+        d.dp = integerDigits + exp10
+        needed -= nd
+
+        if needed > 0
+        {
+            debug.assert(rest == 0 && pow10 == 1, "strconv: internal error, rest != 0 but needed > 0")
+
+            // Emit digits for the fractional part. Each time, 10*fraction
+            // fits in a uint64 without overflow.
+            while needed > 0
+            {
+                fraction *= 10
+                e *= 10 // the uncertainty scales as we multiply by ten.
+                if 2*e > (1<<shift)
+                {
+                    // the error is so large it could modify which digit to write, abort.
+                    return false
+                }
+
+                digit := fraction >> shift
+                d.d[nd] = cast(u8) (digit + "0"'u8)
+                fraction -= digit << shift
+                nd += 1
+                needed -= 1
+            }
+            d.nd = nd
+        }
+
+        // We have written a truncation of f (a numerator / 10^d.dp). The remaining part
+        // can be interpreted as a small number (< 1) to be added to the last digit of the
+        // numerator.
+        //
+        // If rest > 0, the amount is:
+        //    (rest<<shift | fraction) / (pow10 << shift)
+        //    fraction being known with a ±e uncertainty.
+        //    The fact that n > 0 guarantees that pow10 << shift does not overflow a uint64.
+        //
+        // If rest = 0, pow10 == 1 and the amount is
+        //    fraction / (1 << shift)
+        //    fraction being known with a ±e uncertainty.
+        //
+        // We pass this information to the rounding routine for adjustment.
+
+        ok := adjustLastDigitFixed(d, (cast(u64)(rest) << shift) | fraction, pow10, shift, e)
+        if !ok
+            return false
+
+        // Trim trailing zeros.
+        for i := d.nd - 1; i >= 0; i -= 1
+        {
+            if d.d[i] != "0"'u8
+            {
+                d.nd = i + 1
+                break
+            }
+        }
+
+        return true
+    }
+
+    // adjustLastDigitFixed assumes d contains the representation of the integral part
+    // of some number, whose fractional part is num / (den << shift). The numerator
+    // num is only known up to an uncertainty of size e, assumed to be less than
+    // (den << shift)/2.
+    //
+    // It will increase the last digit by one to account for correct rounding, typically
+    // when the fractional part is greater than 1/2, and will return false if e is such
+    // that no correct answer can be given.
+    func adjustLastDigitFixed(d: *DecimalSlice, num, den: u64, shift: u32, e: u64)->bool
+    {
+        /*if num > den << shift {
+            panic("strconv: num > den<<shift in adjustLastDigitFixed")
+        }
+        if 2*e > den<<shift {
+            panic("strconv: e > (den<<shift)/2")
+        }*/
+
+        if 2*(num+e) < (den << shift)
+            return true
+
+        if 2*(num-e) > (den << shift)
+        {
+            // increment d by 1.
+            i := d.nd - 1
+            while i >= 0
+            {
+                if d.d[i] == "9"'u8
+                    d.nd -= 1
+                else
+                    break
+                i -= 1
+            }
+
+            if i < 0
+            {
+                d.d[0] = "1"'u8
+                d.nd = 1
+                d.dp += 1
+            }
+            else
+                d.d[i] += 1
+            return true
+        }
+
+        return false
     }
 }

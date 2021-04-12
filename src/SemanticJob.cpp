@@ -22,7 +22,7 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftType
     if (leftTypeInfo->kind == TypeInfoKind::Native && rightTypeInfo->kind == TypeInfoKind::Native)
         return true;
     auto node = context->node;
-    return context->report({node, node->token, format("operation '%s' not allowed, left type is '%s' and right type is '%s'", node->token.text.c_str(), leftTypeInfo->name.c_str(), rightTypeInfo->name.c_str())});
+    return context->report({node, node->token, format("operation '%s' not allowed, left type is '%s' and right type is '%s'", node->token.text.c_str(), leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str())});
 }
 
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)

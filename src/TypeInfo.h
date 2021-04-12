@@ -139,6 +139,7 @@ struct TypeInfo
     virtual TypeInfo* clone() = 0;
     void              forceComputeName();
     void              getScopedName(Utf8& name);
+    virtual Utf8      getDisplayName();
 
     // clang-format off
     void            computeName() { computeWhateverName(COMPUTE_NAME); }
@@ -518,7 +519,7 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName);
     TypeInfoParam* hasInterface(TypeInfoStruct* itf);
     TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);
-    Utf8           getDisplayName();
+    Utf8           getDisplayName() override;
     bool           canRawCopy();
 
     VectorNative<TypeInfoParam*> genericParameters;
