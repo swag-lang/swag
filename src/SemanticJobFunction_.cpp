@@ -908,7 +908,13 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         }
     }
 
-    SWAG_VERIFY(!node->childs.empty(), context->report({node, node->token, format("missing return value of type '%s'", funcNode->returnType->typeInfo->name.c_str())}));
+    if (node->childs.empty())
+    {
+        if (funcNode->returnType->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
+            return context->report({node, node->token, "missing return value (tuple)"});
+        return context->report({node, node->token, format("missing return value (type '%s')", funcNode->returnType->typeInfo->name.c_str())});
+    }
+
     auto returnType = funcNode->returnType->typeInfo;
 
     // Check types
