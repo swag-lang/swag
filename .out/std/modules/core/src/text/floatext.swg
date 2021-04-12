@@ -501,7 +501,7 @@ impl FloatExt
         // in any case, it is a truncation of upper.
         shift := cast(u32) -upper.exp
         integer := cast(u32) (upper.mant >> shift)
-        fraction := upper.mant - (cast(u64) (integer) << shift)
+        fraction := upper.mant - ((cast(u64) integer) << shift)
 
         // How far we can go down from upper until the result is wrong.
         allowance := upper.mant - lower.mant
@@ -590,16 +590,16 @@ impl FloatExt
         }
 
         // we have two choices, and don't know what to do.
-        if currentDiff+ulpDecimal <= targetDiff+ulpDecimal/2+ulpBinary
+        if currentDiff + ulpDecimal <= targetDiff + (ulpDecimal / 2) + ulpBinary
             return false
 
         // we went too far
-        if currentDiff < ulpBinary || currentDiff > maxDiff-ulpBinary
+        if currentDiff < ulpBinary || currentDiff > maxDiff - ulpBinary
             return false
 
+        // the number has actually reached zero.
         if d.nd == 1 && d.d[0] == "0"'u8
         {
-            // the number has actually reached zero.
             d.nd = 0
             d.dp = 0
         }

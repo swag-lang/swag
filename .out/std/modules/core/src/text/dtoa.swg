@@ -361,9 +361,9 @@ public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSig
 		var s: string
 		switch
         {
-		case mant != 0: s = "nan"
-		case neg:       s = "-inf"
-		default:        s = "+inf"
+		case mant != 0: s = "NaN"
+		case neg:       s = "-Inf"
+		default:        s = "+Inf"
 		}
 
 		buf.addBytes(s)
