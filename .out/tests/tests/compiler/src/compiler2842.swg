@@ -10,7 +10,7 @@ namespace NN
 
     func titi()
     {
-        @print("titi\n")
+        //@print("titi\n")
     }
 }
 

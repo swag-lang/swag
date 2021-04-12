@@ -683,43 +683,47 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         identifier->flags |= AST_IS_GENERIC;
 
     // Symbol is linked to a using var : insert the variable name before the symbol
-    if (dependentVar && parent->kind == AstNodeKind::IdentifierRef && symbol->kind != SymbolKind::Function)
+    // Except if symbol is a constant !
+    if (!(overload->flags & OVERLOAD_COMPUTED_VALUE))
     {
-        auto idRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
-        if (dependentVar->kind == AstNodeKind::IdentifierRef)
+        if (dependentVar && parent->kind == AstNodeKind::IdentifierRef && symbol->kind != SymbolKind::Function)
         {
-            for (int i = (int) dependentVar->childs.size() - 1; i >= 0; i--)
+            auto idRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
+            if (dependentVar->kind == AstNodeKind::IdentifierRef)
             {
-                auto child  = dependentVar->childs[i];
-                auto idNode = Ast::newIdentifier(dependentVar->sourceFile, child->token.text, idRef, nullptr);
-                idNode->inheritTokenLocation(idRef->token);
-                Ast::addChildFront(idRef, idNode);
-                context->job->nodes.push_back(idNode);
-                if (i == 0)
-                    idNode->flags |= identifier->flags & AST_IDENTIFIER_BACKTICK;
+                for (int i = (int) dependentVar->childs.size() - 1; i >= 0; i--)
+                {
+                    auto child  = dependentVar->childs[i];
+                    auto idNode = Ast::newIdentifier(dependentVar->sourceFile, child->token.text, idRef, nullptr);
+                    idNode->inheritTokenLocation(idRef->token);
+                    Ast::addChildFront(idRef, idNode);
+                    context->job->nodes.push_back(idNode);
+                    if (i == 0)
+                        idNode->flags |= identifier->flags & AST_IDENTIFIER_BACKTICK;
+                }
             }
+            else
+            {
+                auto idNode = Ast::newIdentifier(dependentVar->sourceFile, dependentVar->token.text, idRef, nullptr);
+                idNode->inheritTokenLocation(identifier->token);
+
+                // We need to insert at the right place, but the identifier 'childParentIdx' can be the wrong one
+                // if it's not a direct child of 'idRef'. So we need to find the direct child of 'idRef', which is
+                // also a parent if 'identifier', in order to get the right child index, and insert the 'using'
+                // just before.
+                AstNode* newParent = identifier;
+                while (newParent->parent != idRef)
+                    newParent = newParent->parent;
+
+                idNode->flags |= identifier->flags & AST_IDENTIFIER_BACKTICK;
+                Ast::insertChild(idRef, idNode, newParent->childParentIdx);
+                context->job->nodes.push_back(idNode);
+            }
+
+            context->node->semanticState = AstNodeResolveState::Enter;
+            context->result              = ContextResult::NewChilds;
+            return true;
         }
-        else
-        {
-            auto idNode = Ast::newIdentifier(dependentVar->sourceFile, dependentVar->token.text, idRef, nullptr);
-            idNode->inheritTokenLocation(identifier->token);
-
-            // We need to insert at the right place, but the identifier 'childParentIdx' can be the wrong one
-            // if it's not a direct child of 'idRef'. So we need to find the direct child of 'idRef', which is
-            // also a parent if 'identifier', in order to get the right child index, and insert the 'using'
-            // just before.
-            AstNode* newParent = identifier;
-            while (newParent->parent != idRef)
-                newParent = newParent->parent;
-
-            idNode->flags |= identifier->flags & AST_IDENTIFIER_BACKTICK;
-            Ast::insertChild(idRef, idNode, newParent->childParentIdx);
-            context->job->nodes.push_back(idNode);
-        }
-
-        context->node->semanticState = AstNodeResolveState::Enter;
-        context->result              = ContextResult::NewChilds;
-        return true;
     }
 
     // If this is a typealias, find the right thing
@@ -820,6 +824,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 return context->report({identifier, identifier->token, format("cannot reference 'swag.compiler' variable '%s' from runtime function '%s'", overload->node->token.text.c_str(), ownerFct->token.text.c_str())});
         }
 
+        if (identifier->token.text == "uint64pow10")
+            identifier = identifier;
+
         // Transform the variable to a constant node
         if (overload->flags & OVERLOAD_COMPUTED_VALUE)
         {
@@ -827,6 +834,33 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 identifier->flags |= AST_VALUE_IS_TYPEINFO;
             identifier->computedValue = overload->computedValue;
             identifier->setFlagsValueIsComputed();
+
+            // If constant is inside an expression, everything before should be constant too.
+            // Otherwise that means that we reference a constant threw a variable
+            //
+            // x := y.Constant where y is a variable
+            //
+            auto checkParent = identifier->parent;
+            auto child       = (AstNode*) identifier;
+            while (checkParent->kind == AstNodeKind::ArrayPointerIndex)
+            {
+                child       = checkParent;
+                checkParent = checkParent->parent;
+            }
+
+            // In that case, we should not generate bytecode for everything before the constant,
+            // as we have the scope, and this is enough.
+            SWAG_ASSERT(checkParent->kind == AstNodeKind::IdentifierRef);
+            for (int i = 0; i < (int) child->childParentIdx; i++)
+            {
+                auto brother = checkParent->childs[i];
+                if (!(brother->flags & AST_VALUE_COMPUTED) &&
+                    brother->resolvedSymbolOverload &&
+                    brother->resolvedSymbolOverload->symbol->kind == SymbolKind::Variable)
+                {
+                    brother->flags |= AST_NO_BYTECODE;
+                }
+            }
         }
 
         // Setup parent if necessary
