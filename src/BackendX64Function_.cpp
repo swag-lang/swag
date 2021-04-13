@@ -729,9 +729,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                     BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8, RCX);
                 else
                 {
-                    BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                    concat.addString2("\x80\xF9"); // cmp cl, 32
-                    pp.concat.addU8(32);
+                    BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                    concat.addString3("\x83\xF9\x20"); // cmp ecx, 32
                     BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                     pp.concat.addU8(2); // clear below
                     BackendX64Inst::emit_Clear32(pp, RAX);
@@ -756,9 +755,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                     BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8, RCX);
                 else
                 {
-                    BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                    concat.addString2("\x80\xF9"); // cmp cl, 64
-                    pp.concat.addU8(64);
+                    BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                    concat.addString3("\x83\xF9\x40"); // cmp ecx, 64
                     BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                     pp.concat.addU8(3); // clear below
                     BackendX64Inst::emit_Clear64(pp, RAX);
@@ -783,9 +781,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                     BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8, RCX);
                 else
                 {
-                    BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                    concat.addString2("\x80\xF9"); // cmp cl, 32
-                    pp.concat.addU8(32);
+                    BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                    concat.addString3("\x83\xF9\x20"); // cmp ecx, 32
                     BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                     pp.concat.addU8(2); // clear below
                     BackendX64Inst::emit_Clear32(pp, RAX);
@@ -810,9 +807,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                     BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8, RCX);
                 else
                 {
-                    BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                    concat.addString2("\x80\xF9"); // cmp cl, 64
-                    pp.concat.addU8(64);
+                    BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                    concat.addString3("\x83\xF9\x40"); // cmp ecx, 64
                     BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                     pp.concat.addU8(3); // clear below
                     BackendX64Inst::emit_Clear64(pp, RAX);
@@ -1034,9 +1030,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString2("\x80\xF9"); // cmp cl, 8
-                pp.concat.addU8(8);
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x83\xF9\x08"); // cmp ecx, 8
                 BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                 pp.concat.addU8(4); // clear + store below
                 BackendX64Inst::emit_Clear8(pp, RCX);
@@ -1059,9 +1054,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString2("\x80\xF9"); // cmp cl, 16
-                pp.concat.addU8(16);
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x83\xF9\x10"); // cmp ecx, 16
                 BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                 pp.concat.addU8(6); // clear + store below
                 BackendX64Inst::emit_Clear16(pp, RCX);
@@ -1084,9 +1078,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString2("\x80\xF9"); // cmp cl, 32
-                pp.concat.addU8(32);
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x83\xF9\x20"); // cmp ecx, 32
                 BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                 pp.concat.addU8(4); // clear + store below
                 BackendX64Inst::emit_Clear32(pp, RCX);
@@ -1109,9 +1102,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString2("\x80\xF9"); // cmp cl, 64
-                pp.concat.addU8(64);
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x83\xF9\x40"); // cmp ecx, 64
                 BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                 pp.concat.addU8(6); // clear + store below
                 BackendX64Inst::emit_Clear64(pp, RCX);
@@ -1134,9 +1126,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString2("\x80\xF9"); // cmp cl, 8
-                pp.concat.addU8(8);
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x83\xF9\x08"); // cmp ecx, 8
                 BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                 pp.concat.addU8(4); // clear + store below
                 BackendX64Inst::emit_Clear8(pp, RCX);
@@ -1158,9 +1149,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString2("\x80\xF9"); // cmp cl, 16
-                pp.concat.addU8(16);
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x83\xF9\x10"); // cmp ecx, 16
                 BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                 pp.concat.addU8(6); // clear + store below
                 BackendX64Inst::emit_Clear16(pp, RCX);
@@ -1182,9 +1172,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString2("\x80\xF9"); // cmp cl, 32
-                pp.concat.addU8(32);
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x83\xF9\x20"); // cmp ecx, 32
                 BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                 pp.concat.addU8(4); // clear + store below
                 BackendX64Inst::emit_Clear32(pp, RCX);
@@ -1206,9 +1195,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString2("\x80\xF9"); // cmp cl, 64
-                pp.concat.addU8(64);
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x83\xF9\x40"); // cmp ecx, 64
                 BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                 pp.concat.addU8(6); // clear + store below
                 BackendX64Inst::emit_Clear64(pp, RCX);
@@ -1231,9 +1219,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString2("\x80\xF9"); // cmp cl, 8
-                pp.concat.addU8(8);
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x83\xF9\x08"); // cmp ecx, 8
                 BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                 pp.concat.addU8(5);                // sar + move below
                 concat.addString3("\xC0\x38\x07"); // sar byte ptr [rax], 7
@@ -1255,9 +1242,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString2("\x80\xF9"); // cmp cl, 16
-                pp.concat.addU8(16);
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x83\xF9\x10"); // cmp ecx, 16
                 BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                 pp.concat.addU8(6);                    // sar + move below
                 concat.addString4("\x66\xC1\x38\x0F"); // sar word [rax], 15
@@ -1279,9 +1265,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString2("\x80\xF9"); // cmp cl, 32
-                pp.concat.addU8(32);
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x83\xF9\x20"); // cmp ecx, 32
                 BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                 pp.concat.addU8(5);                // sar + move below
                 concat.addString3("\xC1\x38\x1F"); // sar dword ptr [rax], 31
@@ -1303,9 +1288,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString2("\x80\xF9"); // cmp cl, 64
-                pp.concat.addU8(64);
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                concat.addString3("\x83\xF9\x40"); // cmp ecx, 64
                 BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
                 pp.concat.addU8(6);                    // sar + move below
                 concat.addString4("\x48\xC1\x38\x3F"); // sar qword ptr [rax], 63
