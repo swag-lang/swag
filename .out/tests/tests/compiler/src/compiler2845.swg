@@ -3,4 +3,6 @@
 {
     x := -1's32 >>% 320
     @print(cast(s64) x)
+    x = x >>% 100
+    @print(cast(s64) x)
 }

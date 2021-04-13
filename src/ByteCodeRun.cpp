@@ -2017,46 +2017,52 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::BinOpShiftLeftU32:
     {
-        auto val1 = IMMA_U32(ip);
-        auto val2 = IMMB_U32(ip);
-        registersRC[ip->c.u32].u32 = val1 << val2;
+        Register r1, r2;
+        r1.u32 = IMMA_U32(ip);
+        r2.u32 = IMMB_U32(ip);
+        executeShiftLeft(context, registersRC + ip->c.u32, r1, r2, 32);
         break;
     }
     case ByteCodeOp::BinOpShiftLeftU64:
     {
-        auto val1                  = IMMA_U64(ip);
-        auto val2                  = IMMB_U32(ip);
-        registersRC[ip->c.u32].u64 = val1 << val2;
+        Register r1, r2;
+        r1.u64 = IMMA_U64(ip);
+        r2.u32 = IMMB_U32(ip);
+        executeShiftLeft(context, registersRC + ip->c.u32, r1, r2, 64);
         break;
     }
 
     case ByteCodeOp::BinOpShiftRightS32:
     {
-        auto val1                  = IMMA_S32(ip);
-        auto val2                  = IMMB_U32(ip);
-        registersRC[ip->c.u32].s32 = val1 >> val2;
+        Register r1, r2;
+        r1.s32 = IMMA_S32(ip);
+        r2.u32 = IMMB_U32(ip);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 32, true);
         break;
     }
     case ByteCodeOp::BinOpShiftRightS64:
     {
-        auto val1                  = IMMA_S64(ip);
-        auto val2                  = IMMB_U32(ip);
-        registersRC[ip->c.u32].s64 = val1 >> val2;
+        Register r1, r2;
+        r1.s64 = IMMA_S64(ip);
+        r2.u32 = IMMB_U32(ip);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 64, true);
         break;
     }
 
     case ByteCodeOp::BinOpShiftRightU32:
     {
-        auto val1                  = IMMA_U32(ip);
-        auto val2                  = IMMB_U32(ip);
-        registersRC[ip->c.u32].u32 = val1 >> val2;
+        Register r1, r2;
+        r1.u32 = IMMA_U32(ip);
+        r2.u32 = IMMB_U32(ip);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 32, false);
         break;
     }
     case ByteCodeOp::BinOpShiftRightU64:
     {
-        auto val1                  = IMMA_U64(ip);
-        auto val2                  = IMMB_U32(ip);
-        registersRC[ip->c.u32].u64 = val1 >> val2;
+        Register r1, r2;
+        r1.u64 = IMMA_U64(ip);
+        r2.u32 = IMMB_U32(ip);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 64, false);
         break;
     }
 
