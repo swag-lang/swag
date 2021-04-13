@@ -3,6 +3,7 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
+#include "Module.h"
 
 bool SemanticJob::resolveMove(SemanticContext* context)
 {
@@ -264,12 +265,15 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         // Shift operand too big
         if (right->flags & AST_VALUE_COMPUTED)
         {
-            if (right->computedValue.reg.u32 >= left->typeInfo->sizeOf * 8)
+            if (node->sourceFile->module->mustEmitSafetyOF(node))
             {
-                if (tokenId == TokenId::SymLowerLowerEqual || tokenId == TokenId::SymLowerLowerPercentEqual)
-                    return context->report({right, format("[safety] '<<' shift operand is greater than '%u'", (left->typeInfo->sizeOf * 8) - 1)});
-                else
-                    return context->report({right, format("[safety] '>>' shift operand is greater than '%u'", (left->typeInfo->sizeOf * 8) - 1)});
+                if (right->computedValue.reg.u32 >= left->typeInfo->sizeOf * 8)
+                {
+                    if (tokenId == TokenId::SymLowerLowerEqual || tokenId == TokenId::SymLowerLowerPercentEqual)
+                        return context->report({right, format("[safety] '<<' shift operand is greater than '%u'", (left->typeInfo->sizeOf * 8) - 1)});
+                    else
+                        return context->report({right, format("[safety] '>>' shift operand is greater than '%u'", (left->typeInfo->sizeOf * 8) - 1)});
+                }
             }
         }
 

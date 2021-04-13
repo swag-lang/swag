@@ -3101,64 +3101,124 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::AffectOpShiftLeftEqU8:
     {
-        *(uint8_t*) registersRC[ip->a.u32].pointer <<= IMMB_U32(ip);
+        Register r1, rr;
+        auto     ptr = registersRC[ip->a.u32].pointer;
+        rr.u8        = *(uint8_t*) ptr;
+        r1.u32       = IMMB_U32(ip);
+        executeShiftLeft(context, &rr, rr, r1, 8);
+        *(uint8_t*) ptr = rr.u8;
         break;
     }
     case ByteCodeOp::AffectOpShiftLeftEqU16:
     {
-        *(uint16_t*) registersRC[ip->a.u32].pointer <<= IMMB_U32(ip);
+        Register r1, rr;
+        auto     ptr = registersRC[ip->a.u32].pointer;
+        rr.u16       = *(uint16_t*) ptr;
+        r1.u32       = IMMB_U32(ip);
+        executeShiftLeft(context, &rr, rr, r1, 16);
+        *(uint16_t*) ptr = rr.u16;
         break;
     }
     case ByteCodeOp::AffectOpShiftLeftEqU32:
     {
-        *(uint32_t*) registersRC[ip->a.u32].pointer <<= IMMB_U32(ip);
+        Register r1, rr;
+        auto     ptr = registersRC[ip->a.u32].pointer;
+        rr.u32       = *(uint32_t*) ptr;
+        r1.u32       = IMMB_U32(ip);
+        executeShiftLeft(context, &rr, rr, r1, 32);
+        *(uint32_t*) ptr = rr.u32;
         break;
     }
     case ByteCodeOp::AffectOpShiftLeftEqU64:
     {
-        *(uint64_t*) registersRC[ip->a.u32].pointer <<= IMMB_U32(ip);
+        Register r1, rr;
+        auto     ptr = registersRC[ip->a.u32].pointer;
+        rr.u64       = *(uint64_t*) ptr;
+        r1.u32       = IMMB_U32(ip);
+        executeShiftLeft(context, &rr, rr, r1, 64);
+        *(uint64_t*) ptr = rr.u64;
         break;
     }
 
     case ByteCodeOp::AffectOpShiftRightEqS8:
     {
-        *(int8_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
+        Register r1, rr;
+        auto     ptr = registersRC[ip->a.u32].pointer;
+        rr.u8        = *(uint8_t*) ptr;
+        r1.u32       = IMMB_U32(ip);
+        executeShiftRight(context, &rr, rr, r1, 8, true);
+        *(uint8_t*) ptr = rr.u8;
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqS16:
     {
-        *(int16_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
+        Register r1, rr;
+        auto     ptr = registersRC[ip->a.u32].pointer;
+        rr.u16       = *(uint16_t*) ptr;
+        r1.u32       = IMMB_U32(ip);
+        executeShiftRight(context, &rr, rr, r1, 16, true);
+        *(uint16_t*) ptr = rr.u16;
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqS32:
     {
-        *(int32_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
+        Register r1, rr;
+        auto     ptr = registersRC[ip->a.u32].pointer;
+        rr.u32       = *(uint32_t*) ptr;
+        r1.u32       = IMMB_U32(ip);
+        executeShiftRight(context, &rr, rr, r1, 32, true);
+        *(uint32_t*) ptr = rr.u32;
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqS64:
     {
-        *(int64_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
+        Register r1, rr;
+        auto     ptr = registersRC[ip->a.u32].pointer;
+        rr.u64       = *(uint64_t*) ptr;
+        r1.u32       = IMMB_U32(ip);
+        executeShiftRight(context, &rr, rr, r1, 64, true);
+        *(uint64_t*) ptr = rr.u64;
         break;
     }
 
     case ByteCodeOp::AffectOpShiftRightEqU8:
     {
-        *(uint8_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
+        Register r1, rr;
+        auto     ptr = registersRC[ip->a.u32].pointer;
+        rr.u8        = *(uint8_t*) ptr;
+        r1.u32       = IMMB_U32(ip);
+        executeShiftRight(context, &rr, rr, r1, 8, false);
+        *(uint8_t*) ptr = rr.u8;
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqU16:
     {
-        *(uint16_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
+        Register r1, rr;
+        auto     ptr = registersRC[ip->a.u32].pointer;
+        rr.u16       = *(uint16_t*) ptr;
+        r1.u32       = IMMB_U32(ip);
+        executeShiftRight(context, &rr, rr, r1, 16, false);
+        *(uint16_t*) ptr = rr.u16;
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqU32:
     {
-        *(uint32_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
+        Register r1, rr;
+        auto     ptr = registersRC[ip->a.u32].pointer;
+        rr.u32       = *(uint32_t*) ptr;
+        r1.u32       = IMMB_U32(ip);
+        executeShiftRight(context, &rr, rr, r1, 32, false);
+        *(uint32_t*) ptr = rr.u32;
         break;
     }
     case ByteCodeOp::AffectOpShiftRightEqU64:
     {
-        *(uint64_t*) registersRC[ip->a.u32].pointer >>= IMMB_U32(ip);
+        Register r1, rr;
+        auto     ptr = registersRC[ip->a.u32].pointer;
+        rr.u64       = *(uint64_t*) ptr;
+        r1.u32       = IMMB_U32(ip);
+        executeShiftRight(context, &rr, rr, r1, 64, false);
+        *(uint64_t*) ptr = rr.u64;
         break;
     }
 
