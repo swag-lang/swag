@@ -16,11 +16,29 @@
     }
 
     {
+        x := 0xFF'u8
+        x <<%= 8
+        @assert(x == 0)
+    }
+
+    {
+        x := 0xFF'u16
+        x <<%= 16
+        @assert(x == 0)
+    }
+
+    {
         x := 0xFFFFFFFF'u32
         x <<%= 100
         @assert(x == 0)
     }
 
+    {
+        x := 0xFFFFFFFF_FFFFFFFF'u64
+        x <<%= 100
+        @assert(x == 0)
+    }
+/*
     {
         x := 0xFFFFFFFF_FFFFFFFF'u64
         x <<%= 100
@@ -62,4 +80,5 @@
         x >>%= 100
         @assert(x == 0)
     }
+    */
 }
