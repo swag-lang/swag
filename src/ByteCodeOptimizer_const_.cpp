@@ -162,34 +162,41 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::BinOpShiftLeftU32:
-                BINOP_U32(<<);
+                ip->op = ByteCodeOp::SetImmediate32;
+                ByteCodeRun::executeShiftLeft(context->semContext, &ip->b, ip->a, ip->b, 32);
+                ip->a.u32 = ip->c.u32;
+                OK();
                 break;
+
             case ByteCodeOp::BinOpShiftLeftU64:
-                ip->op    = ByteCodeOp::SetImmediate64;
-                ip->b.u64 = ip->a.u64 << ip->b.u32;
+                ip->op = ByteCodeOp::SetImmediate64;
+                ByteCodeRun::executeShiftLeft(context->semContext, &ip->b, ip->a, ip->b, 64);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::BinOpShiftRightS32:
-                ip->op    = ByteCodeOp::SetImmediate32;
-                ip->b.s64 = ip->a.s32 >> ip->b.u32;
+                ip->op = ByteCodeOp::SetImmediate32;
+                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 32, true);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS64:
-                ip->op    = ByteCodeOp::SetImmediate64;
-                ip->b.s64 = ip->a.s64 >> ip->b.u32;
+                ip->op = ByteCodeOp::SetImmediate64;
+                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 64, true);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::BinOpShiftRightU32:
-                BINOP_U32(>>);
+                ip->op = ByteCodeOp::SetImmediate32;
+                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 32, false);
+                ip->a.u32 = ip->c.u32;
+                OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU64:
-                ip->op    = ByteCodeOp::SetImmediate64;
-                ip->b.u64 = ip->a.u64 >> ip->b.u32;
+                ip->op = ByteCodeOp::SetImmediate64;
+                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 64, false);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;

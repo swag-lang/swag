@@ -939,7 +939,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            node->computedValue.reg.u64 = left->computedValue.reg.s32 << right->computedValue.reg.u32;
+            ByteCodeRun::executeShiftLeft(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 32);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 32)
@@ -950,7 +950,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            node->computedValue.reg.u64 = left->computedValue.reg.u32 << right->computedValue.reg.u32;
+            ByteCodeRun::executeShiftLeft(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 32);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 32)
@@ -961,7 +961,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 << right->computedValue.reg.u32;
+            ByteCodeRun::executeShiftLeft(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 64);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 64)
@@ -972,7 +972,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 << right->computedValue.reg.u32;
+            ByteCodeRun::executeShiftLeft(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 64);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 64)
@@ -1048,7 +1048,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S32:
-            node->computedValue.reg.s64 = left->computedValue.reg.s32 >> right->computedValue.reg.u32;
+            ByteCodeRun::executeShiftRight(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 32, true);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 32)
@@ -1057,7 +1057,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
-            node->computedValue.reg.u64 = left->computedValue.reg.u32 >> right->computedValue.reg.u32;
+            ByteCodeRun::executeShiftRight(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 32, false);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 32)
@@ -1068,7 +1068,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 >> right->computedValue.reg.u32;
+            ByteCodeRun::executeShiftRight(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 64, true);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 64)
@@ -1077,7 +1077,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 >> right->computedValue.reg.u32;
+            ByteCodeRun::executeShiftRight(context, &node->computedValue.reg, left->computedValue.reg, right->computedValue.reg, 64, false);
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 64)
