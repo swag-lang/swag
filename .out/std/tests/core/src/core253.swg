@@ -135,7 +135,7 @@ var atoftests: [] atofTest = @[
         res := cb.toString()
         if t.out != res
         {
-            console.print("% %\n", t.out, res)
+            console.printf("% %\n", t.out, res)
             @assert(false)
         }
     }

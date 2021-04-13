@@ -351,3 +351,12 @@ public func tcf_toto22(v: s8, w: s16, x: s32, y: string, z: s64, fct: func(s8, s
 
     fct(v,w,x,y,z)
 }
+
+public func tcf_print(params: ...)
+{
+    visit c: params
+    {
+        //@print(cast(string) c)
+        @assert(cast(string) c == "this is a string")
+    }
+}

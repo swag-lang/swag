@@ -196,7 +196,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCall(ByteCodeGenContext* context);
     static void emitPushRAParams(ByteCodeGenContext* context, VectorNative<uint32_t>& accParams);
     static bool checkCatchError(ByteCodeGenContext* context, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc);
-    static bool emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool freeRegistersParams = true);
+    static bool emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool lambda, bool freeRegistersParams);
     static bool emitLambdaCall(ByteCodeGenContext* context);
     static bool emitForeignCall(ByteCodeGenContext* context);
     static bool emitIntrinsic(ByteCodeGenContext* context);

@@ -73,11 +73,6 @@ public func resetColor() throw
     try SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
 }
 
-// Write parameters to the console
-public func print(params: ...)
-{
-}
-
 // Write a formatted message to the console
 public func printf(message: string, params: ...)
     #checkif
@@ -101,11 +96,4 @@ public func printf(message: string, params: ...)
         len := cast(u32) @countof(message)
         catch WriteFile(g_stdOutputHandle, @dataof(message), len, null, null)
     }
-}
-
-// Write a line  to the console
-public func println(params: ...)
-{
-    print(params)
-    print("\n")
 }

@@ -749,5 +749,5 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
         }
     }
 
-    return emitCall(context, allParams ? allParams : node, funcDecl, nullptr, funcDecl->resultRegisterRC, foreign, freeRegisterParams);
+    return emitCall(context, allParams ? allParams : node, funcDecl, nullptr, funcDecl->resultRegisterRC, foreign, false, freeRegisterParams);
 }

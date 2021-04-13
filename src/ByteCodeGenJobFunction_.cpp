@@ -851,7 +851,7 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     auto allParams             = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
 
-    SWAG_CHECK(emitCall(context, allParams, nullptr, (AstVarDecl*) overload->node, node->additionalRegisterRC, false));
+    SWAG_CHECK(emitCall(context, allParams, nullptr, (AstVarDecl*) overload->node, node->additionalRegisterRC, false, true, true));
     SWAG_ASSERT(context->result == ContextResult::Done);
     freeRegisterRC(context, node->additionalRegisterRC);
     return true;
@@ -865,7 +865,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
 
     auto allParams = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
-    SWAG_CHECK(emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRC, false));
+    SWAG_CHECK(emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRC, false, false, true));
     return true;
 }
 
@@ -977,7 +977,7 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
     return true;
 }
 
-bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool freeRegistersParams)
+bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool lambda, bool freeRegistersParams)
 {
     AstNode*          node         = context->node;
     TypeInfoFuncAttr* typeInfoFunc = nullptr;
@@ -1322,7 +1322,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
         auto inst       = emitInstruction(context, ByteCodeOp::CopySPVaargs, r0[0]);
         inst->b.u32     = (uint32_t) offset * sizeof(Register);
-        inst->c.b       = foreign;
+        inst->c.b       = foreign || lambda;
         inst->d.pointer = (uint8_t*) typeInfoFunc;
 
         emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
@@ -1344,7 +1344,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
         auto inst       = emitInstruction(context, ByteCodeOp::CopySPVaargs, r0[0]);
         inst->b.u32     = (uint32_t) offset * sizeof(Register);
-        inst->c.b       = foreign;
+        inst->c.b       = foreign || lambda;
         inst->d.pointer = (uint8_t*) typeInfoFunc;
 
         emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
@@ -1500,6 +1500,6 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
     auto     funcNode  = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
     auto     allParams = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
-    emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRC, true);
+    emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRC, true, false, true);
     return true;
 }
