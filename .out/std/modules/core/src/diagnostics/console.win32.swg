@@ -73,8 +73,13 @@ public func resetColor() throw
     try SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
 }
 
-// Write a message to the console
-public func print(message: string, params: ...)
+// Write parameters to the console
+public func print(params: ...)
+{
+}
+
+// Write a formatted message to the console
+public func printf(message: string, params: ...)
     #checkif
     {
         if !@isconstexpr(message) || !@isconstexpr(params) return true
@@ -99,9 +104,8 @@ public func print(message: string, params: ...)
 }
 
 // Write a line  to the console
-public func println(message: string, params: ...)
+public func println(params: ...)
 {
-    print(message, params)
-    if @countof(message) && message[@countof(message) - 1] != "\n"'u8
-        print("\n")
+    print(params)
+    print("\n")
 }

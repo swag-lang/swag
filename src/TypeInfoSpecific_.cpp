@@ -655,7 +655,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
     return true;
 }
 
-// argIdx is the argument index of an llvm function, starting after the return arguments
+// argIdx is the argument index of a function, starting after the return arguments
 uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(int argIdx)
 {
     if (flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
@@ -668,6 +668,12 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(int argIdx)
     int argNo = 0;
     while (true)
     {
+        if (argNo >= parameters.size())
+        {
+            SWAG_ASSERT(flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC));
+            return (uint32_t)parameters.size() - 1;
+        }
+
         auto typeParam = TypeManager::concreteReferenceType(parameters[argNo]->typeInfo);
         auto n         = typeParam->numRegisters();
         if (argIdx < n)
