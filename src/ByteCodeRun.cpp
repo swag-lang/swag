@@ -102,6 +102,80 @@ void* ByteCodeRun::makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCo
     }
 }
 
+void ByteCodeRun::executeShiftLeft(JobContext* context, Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits)
+{
+    if (rright.u32 >= numBits)
+        rdest->u64 = 0;
+    else
+        rdest->u64 = rleft.u64 << rright.u32;
+}
+
+void ByteCodeRun::executeShiftRight(JobContext* context, Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned)
+{
+    // Overflow, too many bits to shift
+    if (rright.u32 >= numBits)
+    {
+        if (isSigned)
+        {
+            switch (numBits)
+            {
+            case 8:
+                rdest->s64 = rleft.s8 < 0 ? -1 : 0;
+                break;
+            case 16:
+                rdest->s64 = rleft.s16 < 0 ? -1 : 0;
+                break;
+            case 32:
+                rdest->s64 = rleft.s32 < 0 ? -1 : 0;
+                break;
+            case 64:
+                rdest->s64 = rleft.s64 < 0 ? -1 : 0;
+                break;
+            }
+        }
+        else
+        {
+            rdest->u64 = 0;
+        }
+    }
+    else if (isSigned)
+    {
+        switch (numBits)
+        {
+        case 8:
+            rdest->s64 = rleft.s8 >> rright.u32;
+            break;
+        case 16:
+            rdest->s64 = rleft.s16 >> rright.u32;
+            break;
+        case 32:
+            rdest->s64 = rleft.s32 >> rright.u32;
+            break;
+        case 64:
+            rdest->s64 = rleft.s64 >> rright.u32;
+            break;
+        }
+    }
+    else
+    {
+        switch (numBits)
+        {
+        case 8:
+            rdest->u64 = rleft.u8 >> rright.u32;
+            break;
+        case 16:
+            rdest->u64 = rleft.u16 >> rright.u32;
+            break;
+        case 32:
+            rdest->u64 = rleft.u32 >> rright.u32;
+            break;
+        case 64:
+            rdest->u64 = rleft.u64 >> rright.u32;
+            break;
+        }
+    }
+}
+
 bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction* ip, Register& ra, const Register& rb, const Register& rc)
 {
     switch (ip->op)
@@ -1943,8 +2017,8 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::BinOpShiftLeftU32:
     {
-        auto val1                  = IMMA_U32(ip);
-        auto val2                  = IMMB_U32(ip);
+        auto val1 = IMMA_U32(ip);
+        auto val2 = IMMB_U32(ip);
         registersRC[ip->c.u32].u32 = val1 << val2;
         break;
     }
