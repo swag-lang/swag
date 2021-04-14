@@ -27,8 +27,6 @@ x := -128's8 parse pas cause 128 pas s8 (neg est pas inclu dans le parse du lite
 -------------------------------------
 safety @abs => example abs(-128'u8)
 -------------------------------------
-pourquoi y'a pas de safety left shift signed ?
--------------------------------------
 ,mask pour shifts (mask operand, no safety, no branch)
 -------------------------------------
 debugger : print

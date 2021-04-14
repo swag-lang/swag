@@ -609,31 +609,33 @@ namespace BackendX64Inst
     {
         pp.concat.addU8(0x66);
         if (value <= 0x7F)
+        {
             pp.concat.addU8(0x83);
-        else
-            pp.concat.addU8(0x81);
-
-        emit_ModRM(pp, offsetStack, RDI, RDI);
-
-        if (value <= 0x7F)
+            emit_ModRM(pp, offsetStack, RDI, RDI);
             pp.concat.addU8((uint8_t) value);
+        }
         else
+        {
+            pp.concat.addU8(0x81);
+            emit_ModRM(pp, offsetStack, RDI, RDI);
             pp.concat.addU16((uint16_t) value);
+        }
     }
 
     inline void emit_Cmp32_IndirectDst(X64PerThread& pp, uint32_t offsetStack, uint32_t value)
     {
         if (value <= 0x7F)
+        {
             pp.concat.addU8(0x83);
-        else
-            pp.concat.addU8(0x81);
-
-        emit_ModRM(pp, offsetStack, RDI, RDI);
-
-        if (value <= 0x7F)
+            emit_ModRM(pp, offsetStack, RDI, RDI);
             pp.concat.addU8((uint8_t) value);
+        }
         else
+        {
+            pp.concat.addU8(0x81);
+            emit_ModRM(pp, offsetStack, RDI, RDI);
             pp.concat.addU32((uint32_t) value);
+        }
     }
 
     inline void emit_Cmp64_IndirectDst(X64PerThread& pp, uint32_t offsetStack, uint32_t value)
