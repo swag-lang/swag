@@ -60,6 +60,8 @@ void CodeViewDebug::emitStaticConstMemberList()
 OPTIMS
 ****************************************
 -------------------------------------
+binaryop div/mul, transformer en shift si U8/U16
+-------------------------------------
 x64 emit_BinOpInt32/64 etc.. faire un mode immediat pour le côté droit 'and cl, 5'
 -------------------------------------
 Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)
