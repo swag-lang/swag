@@ -2093,7 +2093,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::BinOpShiftRightU16:
     {
         Register r1, r2;
-        r1.u16 = IMMA_U8(ip);
+        r1.u16 = IMMA_U16(ip);
         r2.u32 = IMMB_U32(ip);
         executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 16, false);
         break;
