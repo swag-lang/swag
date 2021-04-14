@@ -1603,6 +1603,58 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::BinOpShiftLeftU8:
+        {
+            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
+            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 8)
+                builder.CreateStore(pp.cst0_i8, r0);
+            else
+            {
+                llvm::Value* r1 = MK_IMMA_8();
+                llvm::Value* r2 = MK_IMMB_32();
+                auto         c2 = builder.CreateIntCast(r2, builder.getInt8Ty(), false);
+                if (!(ip->flags & BCI_IMM_B))
+                {
+                    auto cond    = builder.CreateICmpULT(r2, builder.getInt32(8));
+                    auto iftrue  = builder.CreateShl(r1, c2);
+                    auto iffalse = pp.cst0_i8;
+                    auto v0      = builder.CreateSelect(cond, iftrue, iffalse);
+                    builder.CreateStore(v0, r0);
+                }
+                else
+                {
+                    auto v0 = builder.CreateShl(r1, c2);
+                    builder.CreateStore(v0, r0);
+                }
+            }
+            break;
+        }
+        case ByteCodeOp::BinOpShiftLeftU16:
+        {
+            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->c.u32));
+            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 16)
+                builder.CreateStore(pp.cst0_i16, r0);
+            else
+            {
+                llvm::Value* r1 = MK_IMMA_16();
+                llvm::Value* r2 = MK_IMMB_32();
+                auto         c2 = builder.CreateIntCast(r2, builder.getInt16Ty(), false);
+                if (!(ip->flags & BCI_IMM_B))
+                {
+                    auto cond    = builder.CreateICmpULT(r2, builder.getInt32(16));
+                    auto iftrue  = builder.CreateShl(r1, c2);
+                    auto iffalse = pp.cst0_i16;
+                    auto v0      = builder.CreateSelect(cond, iftrue, iffalse);
+                    builder.CreateStore(v0, r0);
+                }
+                else
+                {
+                    auto v0 = builder.CreateShl(r1, c2);
+                    builder.CreateStore(v0, r0);
+                }
+            }
+            break;
+        }
         case ByteCodeOp::BinOpShiftLeftU32:
         {
             if (ip->flags & BCI_IMM_B && ip->b.u32 >= 32)
@@ -1656,6 +1708,58 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::BinOpShiftRightU8:
+        {
+            auto r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
+            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 8)
+                builder.CreateStore(pp.cst0_i8, r0);
+            else
+            {
+                llvm::Value* r1 = MK_IMMA_8();
+                llvm::Value* r2 = MK_IMMB_32();
+                auto         c2 = builder.CreateIntCast(r2, builder.getInt8Ty(), false);
+                if (!(ip->flags & BCI_IMM_B))
+                {
+                    auto cond    = builder.CreateICmpULT(r2, builder.getInt32(8));
+                    auto iftrue  = builder.CreateLShr(r1, c2);
+                    auto iffalse = pp.cst0_i8;
+                    auto v0      = builder.CreateSelect(cond, iftrue, iffalse);
+                    builder.CreateStore(v0, r0);
+                }
+                else
+                {
+                    auto v0 = builder.CreateLShr(r1, c2);
+                    builder.CreateStore(v0, r0);
+                }
+            }
+            break;
+        }
+        case ByteCodeOp::BinOpShiftRightU16:
+        {
+            auto r0 = TO_PTR_I16(GEP_I32(allocR, ip->c.u32));
+            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 16)
+                builder.CreateStore(pp.cst0_i16, r0);
+            else
+            {
+                llvm::Value* r1 = MK_IMMA_16();
+                llvm::Value* r2 = MK_IMMB_32();
+                auto         c2 = builder.CreateIntCast(r2, builder.getInt16Ty(), false);
+                if (!(ip->flags & BCI_IMM_B))
+                {
+                    auto cond    = builder.CreateICmpULT(r2, builder.getInt32(16));
+                    auto iftrue  = builder.CreateLShr(r1, c2);
+                    auto iffalse = pp.cst0_i16;
+                    auto v0      = builder.CreateSelect(cond, iftrue, iffalse);
+                    builder.CreateStore(v0, r0);
+                }
+                else
+                {
+                    auto v0 = builder.CreateLShr(r1, c2);
+                    builder.CreateStore(v0, r0);
+                }
+            }
+            break;
+        }
         case ByteCodeOp::BinOpShiftRightU32:
         {
             if (ip->flags & BCI_IMM_B && ip->b.u32 >= 32)
@@ -1709,6 +1813,46 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::BinOpShiftRightS8:
+        {
+            auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
+            llvm::Value* r1 = MK_IMMA_8();
+            llvm::Value* r2 = MK_IMMB_32();
+            auto         c2 = builder.CreateIntCast(r2, builder.getInt8Ty(), false);
+            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 8)
+                c2 = builder.getInt8(7);
+            else if (!(ip->flags & BCI_IMM_B))
+            {
+                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(8));
+                auto iftrue  = c2;
+                auto iffalse = builder.getInt8(7);
+                c2           = builder.CreateSelect(cond, iftrue, iffalse);
+            }
+
+            auto v0 = builder.CreateAShr(r1, c2);
+            builder.CreateStore(v0, TO_PTR_I8(r0));
+            break;
+        }
+        case ByteCodeOp::BinOpShiftRightS16:
+        {
+            auto         r0 = TO_PTR_I16(GEP_I32(allocR, ip->c.u32));
+            llvm::Value* r1 = MK_IMMA_16();
+            llvm::Value* r2 = MK_IMMB_32();
+            auto         c2 = builder.CreateIntCast(r2, builder.getInt16Ty(), false);
+            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 16)
+                c2 = builder.getInt16(15);
+            else if (!(ip->flags & BCI_IMM_B))
+            {
+                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(16));
+                auto iftrue  = c2;
+                auto iffalse = builder.getInt16(15);
+                c2           = builder.CreateSelect(cond, iftrue, iffalse);
+            }
+
+            auto v0 = builder.CreateAShr(r1, c2);
+            builder.CreateStore(v0, TO_PTR_I16(r0));
+            break;
+        }
         case ByteCodeOp::BinOpShiftRightS32:
         {
             MK_BINOP32_CAB();
