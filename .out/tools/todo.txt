@@ -5,6 +5,7 @@ LANGUAGE
 #premain ?
 -------------------------------------
 ca serait cool que les methods, en reflections, aient une value qui peut etre castee en lambda, et donc appelées
+post pass, par patch
 -------------------------------------
 char => rune ?
 -------------------------------------
@@ -22,7 +23,13 @@ var lazy evaluation ?
 TODO
 ****************************************
 -------------------------------------
+x := -128's8 parse pas cause 128 pas s8 (neg est pas inclu dans le parse du literal)
+-------------------------------------
+safety @abs => example abs(-128'u8)
+-------------------------------------
 pourquoi y'a pas de safety left shift signed ?
+-------------------------------------
+,mask pour shifts (mask operand, no safety, no branch)
 -------------------------------------
 debugger : print
 -------------------------------------
@@ -40,13 +47,11 @@ y'a forcement des merdes avec les typeinfo compiler dans leur propre segment
 -------------------------------------
 attributes flags qui sont a la fois on et off => error
 -------------------------------------
-x := -128's8
--------------------------------------
 cast any avec struct, ca fait quoi (et avec les using ?)
 -------------------------------------
 cast interface vers struct (avec safety)
 -------------------------------------
-x64 debug, mettre les constants, les enums
+x64/llvm debug, mettre les constants, les enums
 void CodeViewDebug::emitStaticConstMemberList()
 -------------------------------------
 
@@ -55,7 +60,7 @@ void CodeViewDebug::emitStaticConstMemberList()
 OPTIMS
 ****************************************
 -------------------------------------
-x64 emit_BinOpInt32/64 etc.. faire un more immediat pour le côté droit 'and cl, 5'
+x64 emit_BinOpInt32/64 etc.. faire un mode immediat pour le côté droit 'and cl, 5'
 -------------------------------------
 Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)
 -------------------------------------

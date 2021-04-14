@@ -12,7 +12,8 @@
         // Operators that can overflow are :
         // + - * << >> and their equivalent += -= *= <<= >>=
         //
-        // If you know what your are doing, you can use a special version of those operators, which will not panic. Add '%' after the operation.
+        // If you know what your are doing, you can use a special version of those operators, which will not panic.
+        // Add ',safe' after the operation. This will disable safety checks.
 
         x := 255'u8
         x +=,safe 1     // wrap around

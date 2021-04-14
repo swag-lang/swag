@@ -8,6 +8,7 @@
     { "include": "#keywords" },
     { "include": "#keywords-control" },
     { "include": "#keywords-decl" },
+    { "include": "#operator-modifier" },
     { "include": "#op" },
     { "include": "#op-invalid" },
     { "include": "#function-call" },
@@ -37,7 +38,6 @@
     { "include": "#literal-integer" },
     { "include": "#characters" },
     { "include": "#operator-character" },
-    { "include": "#operator-modifier" },
     { "include": "#code" }
   ],
   "repository": {
@@ -371,7 +371,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "\\b(safe,wrap)\\b"
+          "match": "\\,(safe|wrap)\\b"
         }
       ]
     }
