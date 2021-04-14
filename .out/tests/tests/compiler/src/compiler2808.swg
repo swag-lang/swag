@@ -55,8 +55,8 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
         @print(cast(s64) high)
         @print("\n")*/
 
-        //set1 := cast(int) ((low -% 1) - begin)
-        //set2 := cast(int) (end -% (high +% 1))
+        //set1 := cast(int) ((low -,safe 1) - begin)
+        //set2 := cast(int) (end -,safe (high +,safe 1))
         //if set1 > 0 && set2 > 0
         {
             /*if set1 <= set2

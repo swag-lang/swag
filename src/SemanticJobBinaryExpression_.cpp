@@ -837,9 +837,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         switch (node->token.id)
         {
         case TokenId::SymPlus:
-        case TokenId::SymPlusPercent:
         case TokenId::SymAsterisk:
-        case TokenId::SymAsteriskPercent:
             swap(left, right);
             swap(leftTypeInfo, rightTypeInfo);
             node->semFlags |= AST_SEM_INVERSE_PARAMS;
@@ -850,15 +848,12 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     switch (node->token.id)
     {
     case TokenId::SymPlus:
-    case TokenId::SymPlusPercent:
         SWAG_CHECK(resolveBinaryOpPlus(context, left, right));
         break;
     case TokenId::SymMinus:
-    case TokenId::SymMinusPercent:
         SWAG_CHECK(resolveBinaryOpMinus(context, left, right));
         break;
     case TokenId::SymAsterisk:
-    case TokenId::SymAsteriskPercent:
         SWAG_CHECK(resolveBinaryOpMul(context, left, right));
         break;
     case TokenId::SymSlash:
@@ -1237,11 +1232,9 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     switch (node->token.id)
     {
     case TokenId::SymLowerLower:
-    case TokenId::SymLowerLowerPercent:
         SWAG_CHECK(resolveShiftLeft(context, left, right));
         break;
     case TokenId::SymGreaterGreater:
-    case TokenId::SymGreaterGreaterPercent:
         SWAG_CHECK(resolveShiftRight(context, left, right));
         break;
     default:

@@ -917,3 +917,11 @@ struct AstCast : public AstNode
 
     TypeInfo* toCastTypeInfo;
 };
+
+static const uint32_t OPFLAG_SAFE = 0x00000001;
+
+struct AstOp : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+    uint32_t opFlags;
+};

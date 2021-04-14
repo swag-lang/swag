@@ -80,7 +80,7 @@ func parseU64(str: const [..] u8) -> {value: u64, eat: u32} throw
     {
         value *= 10
         add := cast(u64) (:buffer - "0"'u8)
-        if value +% add < value throw "overflow"
+        if value +,safe add < value throw "overflow"
         value += add
         buffer, cpt += 1
     }

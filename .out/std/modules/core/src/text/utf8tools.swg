@@ -28,7 +28,7 @@ func countBytesAt(buffer: const [..] u8)->u32
 	if countof < sz
         return 1
 
-	accept := AcceptRanges[x >>% 4]
+	accept := AcceptRanges[x >>,safe 4]
 
 	b1 := dataof[1]
 	if !(accept.lo <= b1 && b1 <= accept.hi)
@@ -505,7 +505,7 @@ func isValid(buffer: const [..] u8)->bool
         if countof < sz
             return false
 
-        accept := AcceptRanges[x >>% 4]
+        accept := AcceptRanges[x >>,safe 4]
 
         b1 := p[1]
         if !(accept.lo <= b1 && b1 <= accept.hi)

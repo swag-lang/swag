@@ -101,7 +101,7 @@ namespace Ast
     extern AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
-    extern AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    extern AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, uint32_t opFlags, uint64_t attributeFlags, SyntaxJob* syntaxJob = nullptr);
 
     struct OutputContext
     {

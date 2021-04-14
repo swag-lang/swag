@@ -1053,21 +1053,40 @@ namespace Ast
             SWAG_CHECK(output(context, concat, node->childs[0]));
             break;
 
-        case AstNodeKind::AffectOp:
-            SWAG_CHECK(output(context, concat, node->childs[0]));
-            concat.addChar(' ');
-            concat.addString(node->token.text);
-            concat.addChar(' ');
-            SWAG_CHECK(output(context, concat, node->childs[1]));
-            break;
-
         case AstNodeKind::NullConditionalExpression:
             SWAG_CHECK(output(context, concat, node->childs[0]));
             concat.addString(" ?? ");
             SWAG_CHECK(output(context, concat, node->childs[1]));
             break;
 
+        case AstNodeKind::AffectOp:
+        {
+            auto opNode = CastAst<AstOp>(node, AstNodeKind::AffectOp);
+            SWAG_CHECK(output(context, concat, node->childs[0]));
+            concat.addChar(' ');
+            concat.addString(node->token.text);
+            if (opNode->opFlags & OPFLAG_SAFE)
+                CONCAT_FIXED_STR(concat, ",safe");
+            concat.addChar(' ');
+            SWAG_CHECK(output(context, concat, node->childs[1]));
+            break;
+        }
+
         case AstNodeKind::FactorOp:
+        {
+            auto opNode = CastAst<AstOp>(node, AstNodeKind::FactorOp);
+            concat.addChar('(');
+            SWAG_CHECK(output(context, concat, node->childs[0]));
+            concat.addChar(' ');
+            concat.addString(node->token.text);
+            if (opNode->opFlags & OPFLAG_SAFE)
+                CONCAT_FIXED_STR(concat, ",safe");
+            concat.addChar(' ');
+            SWAG_CHECK(output(context, concat, node->childs[1]));
+            concat.addChar(')');
+            break;
+        }
+
         case AstNodeKind::BinaryOp:
             concat.addChar('(');
             SWAG_CHECK(output(context, concat, node->childs[0]));

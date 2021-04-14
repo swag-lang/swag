@@ -82,7 +82,7 @@ func dateToTicks(year, month, day: u16)->Ticks
 
     days := isLeapYear(year) ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
     y := cast(u64) (year - 1)
-    n := y*365 +% y/4 +% y/400 +% days[month-1] +% day-1 -% y/100
+    n := y*365 +,safe y/4 +,safe y/400 +,safe days[month-1] +,safe day-1 -,safe y/100
     return n * TicksPerDay
 }
 
@@ -118,7 +118,7 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     days := leapYear ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
     // All months have less than 32 days, so n >> 5 is a good conservative
     // estimate for the month
-    m := (n >>% 5) + 1
+    m := (n >>,safe 5) + 1
     // m = 1-based month number
     while n >= days[m] m += 1
 

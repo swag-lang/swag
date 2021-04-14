@@ -15,11 +15,11 @@
         // If you know what your are doing, you can use a special version of those operators, which will not panic. Add '%' after the operation.
 
         x := 255'u8
-        x +%= 1     // wrap around
+        x +=,safe 1     // wrap around
         @assert(x == 0)
 
         y := 255'u8
-        y >>%= 1
+        y >>=,safe 1
         @assert(y == 127)
     }
 

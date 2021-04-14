@@ -392,22 +392,12 @@ namespace Ast
         return node;
     }
 
-    AstNode* newAffectOp(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    AstNode* newAffectOp(SourceFile* sourceFile, AstNode* parent, uint32_t opFlags, uint64_t attributeFlags, SyntaxJob* syntaxJob)
     {
-        auto node         = Ast::newNode<AstNode>(syntaxJob, AstNodeKind::AffectOp, sourceFile, parent, 2);
+        auto node         = Ast::newNode<AstOp>(syntaxJob, AstNodeKind::AffectOp, sourceFile, parent, 2);
         node->semanticFct = SemanticJob::resolveAffect;
-
-        switch (node->token.id)
-        {
-        case TokenId::SymGreaterGreaterPercentEqual:
-        case TokenId::SymLowerLowerPercentEqual:
-        case TokenId::SymPlusPercentEqual:
-        case TokenId::SymMinusPercentEqual:
-        case TokenId::SymAsteriskPercentEqual:
-            node->attributeFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
-            break;
-        }
-
+        node->opFlags |= opFlags;
+        node->attributeFlags |= attributeFlags;
         return node;
     }
 

@@ -99,7 +99,7 @@ func decodeLastChar(buffer: const [..] u8) -> {c: char, eat: u32}
     while true
     {
         c = :ptr
-        if c >>% 6 != 2
+        if c >>,safe 6 != 2
             break
         if ptr == dataof
         {
@@ -172,7 +172,7 @@ func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
         return result
     }
 
-	accept := AcceptRanges[x >>% 4]
+	accept := AcceptRanges[x >>,safe 4]
 
     // Length == 2
 	b1 := dataof[1]
@@ -234,27 +234,27 @@ func encodeChar(dest: [..] u8, src: char)->u32
         return 1
 
     case src <= 0x07FF:
-        dest[0] = cast(u8) (((src >>% 6) & 0x1F) | 0xC0)
-        dest[1] = cast(u8) (((src >>% 0) & 0x3F) | 0x80)
+        dest[0] = cast(u8) (((src >>,safe 6) & 0x1F) | 0xC0)
+        dest[1] = cast(u8) (((src >>,safe 0) & 0x3F) | 0x80)
         return 2
 
     case !isValidChar(src):
-        dest[0] = cast(u8) (((CharError >>% 12) & 0x0F) | 0xE0)
-        dest[1] = cast(u8) (((CharError >>% 6) & 0x3F) | 0x80)
-        dest[2] = cast(u8) (((CharError >>% 0) & 0x3F) | 0x80)
+        dest[0] = cast(u8) (((CharError >>,safe 12) & 0x0F) | 0xE0)
+        dest[1] = cast(u8) (((CharError >>,safe 6) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((CharError >>,safe 0) & 0x3F) | 0x80)
         return 3
 
     case src <= 0xFFFF:
-        dest[0] = cast(u8) (((src >>% 12) & 0x0F) | 0xE0)
-        dest[1] = cast(u8) (((src >>% 6) & 0x3F) | 0x80)
-        dest[2] = cast(u8) (((src >>% 0) & 0x3F) | 0x80)
+        dest[0] = cast(u8) (((src >>,safe 12) & 0x0F) | 0xE0)
+        dest[1] = cast(u8) (((src >>,safe 6) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((src >>,safe 0) & 0x3F) | 0x80)
         return 3
 
     default:
-        dest[0] = cast(u8) (((src >>% 18) & 0x07) | 0xF0)
-        dest[1] = cast(u8) (((src >>% 12) & 0x3F) | 0x80)
-        dest[2] = cast(u8) (((src >>% 6) & 0x3F) | 0x80)
-        dest[3] = cast(u8) (((src >>% 0) & 0x3F) | 0x80)
+        dest[0] = cast(u8) (((src >>,safe 18) & 0x07) | 0xF0)
+        dest[1] = cast(u8) (((src >>,safe 12) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((src >>,safe 6) & 0x3F) | 0x80)
+        dest[3] = cast(u8) (((src >>,safe 0) & 0x3F) | 0x80)
         return 4
     }
 }

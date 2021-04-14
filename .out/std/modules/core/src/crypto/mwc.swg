@@ -20,17 +20,17 @@ impl Mwc
 
     public func next(using self)->u32
     {
-        xhi := x >>% 16
+        xhi := x >>,safe 16
         xlo := x & 0xFFFF
 
-        chi := carry >>% 16
+        chi := carry >>,safe 16
         clo := carry & 0xFFFF
 
         x = (xlo * mlo) + clo
-        axc := (xlo * mhi) + (xhi * mlo) + chi + (x >>% 16)
-        carry = (xhi * mhi) + (axc >>% 16)
+        axc := (xlo * mhi) + (xhi * mlo) + chi + (x >>,safe 16)
+        carry = (xhi * mhi) + (axc >>,safe 16)
 
-        x = (x & 0xFFFF) + (axc <<% 16)
+        x = (x & 0xFFFF) + (axc <<,safe 16)
         return x
     }
 }

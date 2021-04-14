@@ -27,7 +27,7 @@ impl Adler32
     func update(using self, buffer: const [..] u8)
     {
         s1 := adler & 0xffff
-        s2 := (adler >>% 16) & 0xffff
+        s2 := (adler >>,safe 16) & 0xffff
 
         countof := @countof(buffer)
         if !countof return

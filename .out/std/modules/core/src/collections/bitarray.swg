@@ -67,7 +67,7 @@ public impl BitArray
     {
         len := @countof(what)
         reserve(len)
-        buffer[len >>% 5] = 0
+        buffer[len >>,safe 5] = 0
         visit value, index: what
             set(index, value)
     }
@@ -78,7 +78,7 @@ public impl BitArray
         if count != other.count
             return false
 
-        loop math.max(count >>% 5, 1)
+        loop math.max(count >>,safe 5, 1)
         {
             if buffer[@index] != other.buffer[@index]
                 return false
@@ -97,7 +97,7 @@ public impl BitArray
         countBits := 0'uint
 
         label up
-        loop idx: math.max(count >>% 5, 1)
+        loop idx: math.max(count >>,safe 5, 1)
         {
             var shift: u32 = 1
             loop math.min(remainingBits, 32)
@@ -128,7 +128,7 @@ public impl BitArray
         }
 
         count = maxBits
-        capacity = maxBits >>% 5
+        capacity = maxBits >>,safe 5
         if capacity << 5 < maxBits
             capacity += 1
 
@@ -153,7 +153,7 @@ public impl BitArray
     func set(using self, index: uint, value: bool)
     {
         debug.assert(index < count)
-        val := index >>% 5
+        val := index >>,safe 5
         bit := index - (val << 5)
         var shift = 1'u32 << cast(u32) bit
         if value
@@ -166,7 +166,7 @@ public impl BitArray
     func get(using self, index: uint)->bool
     {
         debug.assert(index < count)
-        val := index >>% 5
+        val := index >>,safe 5
         bit := index - (val << 5)
         var shift = 1'u32 << cast(u32) bit
         return cast(bool) (buffer[val] & shift)
@@ -176,7 +176,7 @@ public impl BitArray
     func invert(using self, index: uint)
     {
         debug.assert(index < count)
-        val := index >>% 5
+        val := index >>,safe 5
         bit := index - (val << 5)
         var shift = 1'u32 << cast(u32) bit
         if buffer[val] & shift
@@ -191,7 +191,7 @@ public impl BitArray
     {
         debug.assert(count == other.count)
         if !count return
-        loop math.max(count >>% 5, 1)
+        loop math.max(count >>,safe 5, 1)
             buffer[@index] &= other.buffer[@index]
     }
 
@@ -201,7 +201,7 @@ public impl BitArray
     {
         debug.assert(count == other.count)
         if !count return
-        loop math.max(count >>% 5, 1)
+        loop math.max(count >>,safe 5, 1)
             buffer[@index] |= other.buffer[@index]
     }
 
@@ -211,7 +211,7 @@ public impl BitArray
     {
         debug.assert(count == other.count)
         if !count return
-        loop math.max(count >>% 5, 1)
+        loop math.max(count >>,safe 5, 1)
             buffer[@index] ^= other.buffer[@index]
     }
 
@@ -219,7 +219,7 @@ public impl BitArray
     func not(using self)
     {
         if !count return
-        loop math.max(count >>% 5, 1)
+        loop math.max(count >>,safe 5, 1)
             buffer[@index] = ~buffer[@index]
     }
 }

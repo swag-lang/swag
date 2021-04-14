@@ -411,19 +411,14 @@ static int getPrecedence(TokenId id)
     case TokenId::SymTilde:
         return 0;
     case TokenId::SymAsterisk:
-    case TokenId::SymAsteriskPercent:
     case TokenId::SymSlash:
     case TokenId::SymPercent:
         return 1;
     case TokenId::SymPlus:
-    case TokenId::SymPlusPercent:
     case TokenId::SymMinus:
-    case TokenId::SymMinusPercent:
         return 2;
     case TokenId::SymGreaterGreater:
-    case TokenId::SymGreaterGreaterPercent:
     case TokenId::SymLowerLower:
-    case TokenId::SymLowerLowerPercent:
         return 3;
     case TokenId::SymAmpersand:
         return 4;
@@ -451,9 +446,7 @@ static bool isAssociative(TokenId id)
     switch (id)
     {
     case TokenId::SymPlus:
-    case TokenId::SymPlusPercent:
     case TokenId::SymAsterisk:
-    case TokenId::SymAsteriskPercent:
     case TokenId::SymVertical:
     case TokenId::SymCircumflex:
     case TokenId::SymTilde:
@@ -533,47 +526,54 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, AstNode** result)
 
     bool isBinary = false;
     if ((token.id == TokenId::SymPlus) ||
-        (token.id == TokenId::SymPlusPercent) ||
         (token.id == TokenId::SymMinus) ||
-        (token.id == TokenId::SymMinusPercent) ||
         (token.id == TokenId::SymAsterisk) ||
-        (token.id == TokenId::SymAsteriskPercent) ||
         (token.id == TokenId::SymSlash) ||
         (token.id == TokenId::SymPercent) ||
         (token.id == TokenId::SymAmpersand) ||
         (token.id == TokenId::SymVertical) ||
         (token.id == TokenId::SymGreaterGreater) ||
-        (token.id == TokenId::SymGreaterGreaterPercent) ||
         (token.id == TokenId::SymLowerLower) ||
-        (token.id == TokenId::SymLowerLowerPercent) ||
         (token.id == TokenId::SymTilde) ||
         (token.id == TokenId::SymCircumflex))
     {
-        auto binaryNode = Ast::newNode<AstNode>(this, AstNodeKind::FactorOp, sourceFile, parent ? *parent : nullptr, 2);
-        if (token.id == TokenId::SymGreaterGreater ||
-            token.id == TokenId::SymGreaterGreaterPercent ||
-            token.id == TokenId::SymLowerLower ||
-            token.id == TokenId::SymLowerLowerPercent)
+        auto binaryNode = Ast::newNode<AstOp>(this, AstNodeKind::FactorOp, sourceFile, parent ? *parent : nullptr, 2);
+
+        if (token.id == TokenId::SymGreaterGreater || token.id == TokenId::SymLowerLower)
             binaryNode->semanticFct = SemanticJob::resolveShiftExpression;
         else
             binaryNode->semanticFct = SemanticJob::resolveFactorExpression;
         binaryNode->token = move(token);
+        SWAG_CHECK(tokenizer.getToken(token));
 
-        switch (binaryNode->token.id)
+        // Modifiers
+        if (token.id == TokenId::SymComma)
         {
-        case TokenId::SymGreaterGreaterPercent:
-        case TokenId::SymLowerLowerPercent:
-        case TokenId::SymPlusPercent:
-        case TokenId::SymMinusPercent:
-        case TokenId::SymAsteriskPercent:
-            binaryNode->attributeFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
-            break;
+            SWAG_CHECK(tokenizer.getToken(token));
+            if (token.text == "safe")
+            {
+                if (binaryNode->token.id != TokenId::SymPlus &&
+                    binaryNode->token.id != TokenId::SymMinus &&
+                    binaryNode->token.id != TokenId::SymAsterisk &&
+                    binaryNode->token.id != TokenId::SymLowerLower &&
+                    binaryNode->token.id != TokenId::SymGreaterGreater)
+                {
+                    return error(token, format("'safe' modifier is not valid for operator '%s'", binaryNode->token.text.c_str()));
+                }
+
+                binaryNode->opFlags |= OPFLAG_SAFE;
+                binaryNode->attributeFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
+                SWAG_CHECK(eatToken());
+            }
+            else
+            {
+                return error(token, format("invalid operator modifier '%s'", binaryNode->token.text.c_str()));
+            }
         }
 
         Ast::addChildBack(binaryNode, leftNode);
-        SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doFactorExpression(&binaryNode));
-        SWAG_CHECK(doOperatorPrecedence(&binaryNode));
+        SWAG_CHECK(doFactorExpression((AstNode**) &binaryNode));
+        SWAG_CHECK(doOperatorPrecedence((AstNode**) &binaryNode));
         leftNode = binaryNode;
         isBinary = true;
     }
@@ -1251,21 +1251,46 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     // Affect operator
     else if (token.id == TokenId::SymEqual ||
              token.id == TokenId::SymPlusEqual ||
-             token.id == TokenId::SymPlusPercentEqual ||
              token.id == TokenId::SymMinusEqual ||
-             token.id == TokenId::SymMinusPercentEqual ||
              token.id == TokenId::SymAsteriskEqual ||
-             token.id == TokenId::SymAsteriskPercentEqual ||
              token.id == TokenId::SymSlashEqual ||
              token.id == TokenId::SymAmpersandEqual ||
              token.id == TokenId::SymVerticalEqual ||
              token.id == TokenId::SymCircumflexEqual ||
              token.id == TokenId::SymPercentEqual ||
              token.id == TokenId::SymLowerLowerEqual ||
-             token.id == TokenId::SymLowerLowerPercentEqual ||
-             token.id == TokenId::SymGreaterGreaterEqual ||
-             token.id == TokenId::SymGreaterGreaterPercentEqual)
+             token.id == TokenId::SymGreaterGreaterEqual)
     {
+        uint32_t opFlags     = 0;
+        uint64_t opAttrFlags = 0;
+        auto     savedtoken  = token;
+        SWAG_CHECK(tokenizer.getToken(token));
+
+        // Modifiers
+        if (token.id == TokenId::SymComma)
+        {
+            SWAG_CHECK(tokenizer.getToken(token));
+            if (token.text == "safe")
+            {
+                if (savedtoken.id != TokenId::SymPlusEqual &&
+                    savedtoken.id != TokenId::SymMinusEqual &&
+                    savedtoken.id != TokenId::SymAsteriskEqual &&
+                    savedtoken.id != TokenId::SymLowerLowerEqual &&
+                    savedtoken.id != TokenId::SymGreaterGreaterEqual)
+                {
+                    return error(token, format("'safe' modifier is not valid for operator '%s'", savedtoken.text.c_str()));
+                }
+
+                opFlags |= OPFLAG_SAFE;
+                opAttrFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
+                SWAG_CHECK(eatToken());
+            }
+            else
+            {
+                return error(token, format("invalid operator modifier '%s'", token.text.c_str()));
+            }
+        }
+
         // Multiple affectation
         // like in a, b, c = 0
         if (leftNode->kind == AstNodeKind::MultiIdentifier)
@@ -1274,7 +1299,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             if (result)
                 *result = parentNode;
 
-            ScopedLocation lk(this, &token);
+            ScopedLocation lk(this, &savedtoken);
 
             // Generate an expression of the form "var firstVar = assignment", and "secondvar = firstvar" for the rest
             // This avoid to do the right expression multiple times (if this is a function call for example).
@@ -1282,13 +1307,12 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             // If this is not '=' operator, then we have to duplicate the affectation for each variable
             AstNode* affectExpression = nullptr;
             bool     firstDone        = false;
-            auto     savedtoken       = token;
             auto     front            = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
             front->computeName();
             while (!leftNode->childs.empty())
             {
                 auto child        = leftNode->childs.front();
-                auto affectNode   = Ast::newAffectOp(sourceFile, parentNode);
+                auto affectNode   = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
                 affectNode->token = savedtoken;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
@@ -1298,7 +1322,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 if (!firstDone)
                 {
                     firstDone = true;
-                    SWAG_CHECK(tokenizer.getToken(token));
                     if (affectNode->token.id == TokenId::SymEqual)
                         SWAG_CHECK(doMoveExpression(affectNode, &affectExpression));
                     else
@@ -1327,10 +1350,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             if (result)
                 *result = parentNode;
 
-            ScopedLocation lk(this, &token);
-
-            auto savedtoken = token;
-            SWAG_CHECK(tokenizer.getToken(token));
+            ScopedLocation lk(this, &savedtoken);
 
             // Get right side
             AstNode* assignment;
@@ -1344,7 +1364,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 while (!leftNode->childs.empty())
                 {
                     auto child             = leftNode->childs.front();
-                    auto affectNode        = Ast::newAffectOp(sourceFile, parentNode);
+                    auto affectNode        = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
                     affectNode->token.id   = savedtoken.id;
                     affectNode->token.text = savedtoken.text;
                     Ast::removeFromParent(child);
@@ -1388,7 +1408,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                         continue;
                     }
 
-                    auto affectNode        = Ast::newAffectOp(sourceFile, parentNode);
+                    auto affectNode        = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
                     affectNode->token.id   = savedtoken.id;
                     affectNode->token.text = savedtoken.text;
                     Ast::removeFromParent(child);
@@ -1405,13 +1425,12 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         // One normal simple affectation
         else
         {
-            auto affectNode   = Ast::newAffectOp(sourceFile, parent, this);
-            affectNode->token = move(token);
+            auto affectNode   = Ast::newAffectOp(sourceFile, parent, opFlags, opAttrFlags, this);
+            affectNode->token = move(savedtoken);
 
             Ast::addChildBack(affectNode, leftNode);
             forceTakeAddress(leftNode);
 
-            SWAG_CHECK(tokenizer.getToken(token));
             if (affectNode->token.id == TokenId::SymEqual)
                 SWAG_CHECK(doMoveExpression(affectNode));
             else

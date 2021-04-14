@@ -274,12 +274,12 @@ func caseChangeTo(wCase: WantedCase, r: char, caseRange: const [..] CaseRange) -
 				// bit in the sequence offset.
 				// The constants UpperCase and TitleCase are even while LowerCase
 				// is odd so we take the low bit from _case.
-				result.mappedRune = cr.lo +% ((r - cr.lo) & ~1'u32 | (cast(char) wCase & 1))
+				result.mappedRune = cr.lo +,safe ((r - cr.lo) & ~1'u32 | (cast(char) wCase & 1))
                 result.foundMapping = true
                 return result
 			}
 
-            result.mappedRune = r +% bitcast(char) delta
+            result.mappedRune = r +,safe bitcast(char) delta
             result.foundMapping = true
             return result
 		}

@@ -37,6 +37,7 @@
     { "include": "#literal-integer" },
     { "include": "#characters" },
     { "include": "#operator-character" },
+    { "include": "#operator-modifier" },
     { "include": "#code" }
   ],
   "repository": {
@@ -363,6 +364,14 @@
         {
           "name": "keyword.operator",
           "match": "[\\/=\\-+!*%<>&|^~.`'!:]"
+        }
+      ]
+    },
+    "operator-modifier": {
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "\\b(safe,wrap)\\b"
         }
       ]
     }

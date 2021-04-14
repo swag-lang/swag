@@ -138,7 +138,7 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 
     var result: retval
 
-	if mantissa >>% f64info.mantbits != 0
+	if mantissa >>,safe f64info.mantbits != 0
      	return result
 
     exp := exponent

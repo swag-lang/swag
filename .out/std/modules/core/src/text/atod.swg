@@ -15,7 +15,7 @@ func exact(neg: bool, mantissa: u64, exponent: s64) -> {f: f64, ok: bool}
 
     var result: retval
 
-	if mantissa >>% swag.F64.MantBits != 0
+	if mantissa >>,safe swag.F64.MantBits != 0
      	return result
 
     exp := exponent

@@ -1393,3 +1393,13 @@ AstNode* AstCast::clone(CloneContext& context)
     newNode->toCastTypeInfo = toCastTypeInfo;
     return newNode;
 }
+
+static const uint32_t OPFLAG_WRAP = 0x00000001;
+
+AstNode* AstOp::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstOp>();
+    newNode->copyFrom(context, this);
+    newNode->opFlags = opFlags;
+    return newNode;
+}
