@@ -201,7 +201,7 @@ func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
 
 	if sz <= 3
     {
-        result.c = (p0 & Mask3) << 12 | (b1 & MaskX) << 6 | (b2 & MaskX)
+        result.c = (p0 & Mask3) << 12 | cast(char) (b1 & MaskX) << 6 | (b2 & MaskX)
         result.eat = 3
         return result
     }
@@ -215,7 +215,7 @@ func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
         return result
     }
 
-	result.c = (p0 & Mask4) << 18 | (b1 & MaskX) << 12 | (b2 & MaskX) << 6 | (b3 & MaskX)
+	result.c = (p0 & Mask4) << 18 | cast(char) (b1 & MaskX) << 12 | cast(char) (b2 & MaskX) << 6 | (b3 & MaskX)
     result.eat = 4
     return result
 }

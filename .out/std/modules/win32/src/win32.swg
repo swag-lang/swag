@@ -8,7 +8,7 @@ func setError(errorMessageID: u32) throw
     var errorMsg: [swag.MaxLenErrorMsg] u8
     var len: u32
 
-    lang := MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)
+    lang := cast(DWORD) MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)
     len = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, null, errorMessageID, lang, cast(LPCSTR) &errorMsg[0], cast(DWORD) swag.MaxLenErrorMsg, null);
     if !len return
 

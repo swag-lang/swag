@@ -5,7 +5,7 @@
 {
     {
         x := 1'u8
-        x = bitcast(u8) (x <<% 8)
+        x = x <<% 8
         @assert(x == 0)
     }
 
@@ -31,6 +31,30 @@
         x := 0xFFFFFFFF_FFFFFFFF'u64
         x = x <<% 100
         @assert(x == 0)
+    }
+
+    {
+        x := 1's8
+        x = x >>% 32
+        @assert(x == 0)
+    }
+
+    {
+        x := -1's8
+        x = x >>% 32
+        @assert(x == -1)
+    }
+
+    {
+        x := 1's16
+        x = x >>% 32
+        @assert(x == 0)
+    }
+
+    {
+        x := -1's16
+        x = x >>% 32
+        @assert(x == -1)
     }
 
     {

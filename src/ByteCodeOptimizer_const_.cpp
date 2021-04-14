@@ -161,6 +161,18 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 BINOP_U64(^);
                 break;
 
+            case ByteCodeOp::BinOpShiftLeftU8:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ByteCodeRun::executeShiftLeft(context->semContext, &ip->b, ip->a, ip->b, 8);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::BinOpShiftLeftU16:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ByteCodeRun::executeShiftLeft(context->semContext, &ip->b, ip->a, ip->b, 16);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
             case ByteCodeOp::BinOpShiftLeftU32:
                 ip->op = ByteCodeOp::SetImmediate32;
                 ByteCodeRun::executeShiftLeft(context->semContext, &ip->b, ip->a, ip->b, 32);
@@ -175,6 +187,18 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
 
+            case ByteCodeOp::BinOpShiftRightS8:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 8, true);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::BinOpShiftRightS16:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 16, true);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
             case ByteCodeOp::BinOpShiftRightS32:
                 ip->op = ByteCodeOp::SetImmediate32;
                 ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 32, true);
@@ -188,6 +212,18 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 OK();
                 break;
 
+            case ByteCodeOp::BinOpShiftRightU8:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 8, false);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
+            case ByteCodeOp::BinOpShiftRightU16:
+                ip->op = ByteCodeOp::SetImmediate32;
+                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 16, false);
+                ip->a.u32 = ip->c.u32;
+                OK();
+                break;
             case ByteCodeOp::BinOpShiftRightU32:
                 ip->op = ByteCodeOp::SetImmediate32;
                 ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 32, false);

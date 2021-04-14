@@ -155,7 +155,7 @@ public impl BitArray
         debug.assert(index < count)
         val := index >>% 5
         bit := index - (val << 5)
-        var shift = 1 << cast(u32) bit
+        var shift = 1'u32 << cast(u32) bit
         if value
             buffer[val] |= shift
         else
@@ -168,7 +168,7 @@ public impl BitArray
         debug.assert(index < count)
         val := index >>% 5
         bit := index - (val << 5)
-        var shift = 1 << cast(u32) bit
+        var shift = 1'u32 << cast(u32) bit
         return cast(bool) (buffer[val] & shift)
     }
 
@@ -178,7 +178,7 @@ public impl BitArray
         debug.assert(index < count)
         val := index >>% 5
         bit := index - (val << 5)
-        var shift = 1 << cast(u32) bit
+        var shift = 1'u32 << cast(u32) bit
         if buffer[val] & shift
             buffer[val] ^= shift
         else

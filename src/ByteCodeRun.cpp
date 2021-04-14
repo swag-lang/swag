@@ -18,6 +18,7 @@
 #define IMMA_U32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u32 : registersRC[ip->a.u32].u32)
 #define IMMA_U64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.u64 : registersRC[ip->a.u32].u64)
 #define IMMA_S8(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s8 : registersRC[ip->a.u32].s8)
+#define IMMA_S16(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s16 : registersRC[ip->a.u32].s16)
 #define IMMA_S32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s32 : registersRC[ip->a.u32].s32)
 #define IMMA_S64(ip) ((ip->flags & BCI_IMM_A) ? ip->a.s64 : registersRC[ip->a.u32].s64)
 #define IMMA_F32(ip) ((ip->flags & BCI_IMM_A) ? ip->a.f32 : registersRC[ip->a.u32].f32)
@@ -2015,6 +2016,22 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::BinOpShiftLeftU8:
+    {
+        Register r1, r2;
+        r1.u8  = IMMA_U8(ip);
+        r2.u32 = IMMB_U32(ip);
+        executeShiftLeft(context, registersRC + ip->c.u32, r1, r2, 8);
+        break;
+    }
+    case ByteCodeOp::BinOpShiftLeftU16:
+    {
+        Register r1, r2;
+        r1.u16 = IMMA_U16(ip);
+        r2.u32 = IMMB_U32(ip);
+        executeShiftLeft(context, registersRC + ip->c.u32, r1, r2, 16);
+        break;
+    }
     case ByteCodeOp::BinOpShiftLeftU32:
     {
         Register r1, r2;
@@ -2032,6 +2049,22 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::BinOpShiftRightS8:
+    {
+        Register r1, r2;
+        r1.s8  = IMMA_S8(ip);
+        r2.u32 = IMMB_U32(ip);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 8, true);
+        break;
+    }
+    case ByteCodeOp::BinOpShiftRightS16:
+    {
+        Register r1, r2;
+        r1.s16 = IMMA_S16(ip);
+        r2.u32 = IMMB_U32(ip);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 16, true);
+        break;
+    }
     case ByteCodeOp::BinOpShiftRightS32:
     {
         Register r1, r2;
@@ -2049,6 +2082,22 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::BinOpShiftRightU8:
+    {
+        Register r1, r2;
+        r1.u8  = IMMA_U8(ip);
+        r2.u32 = IMMB_U32(ip);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 8, false);
+        break;
+    }
+    case ByteCodeOp::BinOpShiftRightU16:
+    {
+        Register r1, r2;
+        r1.u16 = IMMA_U8(ip);
+        r2.u32 = IMMB_U32(ip);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 16, false);
+        break;
+    }
     case ByteCodeOp::BinOpShiftRightU32:
     {
         Register r1, r2;

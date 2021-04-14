@@ -22,6 +22,8 @@ var lazy evaluation ?
 TODO
 ****************************************
 -------------------------------------
+pourquoi y'a pas de safety left shift signed ?
+-------------------------------------
 debugger : print
 -------------------------------------
 generic & type literal (4'T, T non reconnu)
