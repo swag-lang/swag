@@ -109,3 +109,4 @@ static const uint32_t AST_SEM_AUTO_CODE_PARAM        = 0x00020000;
 static const uint32_t AST_SEM_ONCE                   = 0x00040000;
 static const uint32_t AST_SEM_USER_CAST              = 0x00080000;
 static const uint32_t AST_SEM_TUPLE_CONVERT          = 0x00100000;
+static const uint32_t AST_DONE_NEG_EATEN             = 0x00200000;

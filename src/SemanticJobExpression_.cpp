@@ -10,6 +10,39 @@ bool SemanticJob::convertTokenLiteral(SemanticContext* context, Token& token)
         return true;
 
     auto node = context->node;
+
+    // Check if this is in fact a negative literal. This is important to know now, in order
+    // to be able to correctly check bounds.
+    bool negApplied = false;
+    if (node->parent->kind == AstNodeKind::SingleOp && node->parent->token.id == TokenId::SymMinus)
+    {
+        switch (token.literalCastedType)
+        {
+        case LiteralType::TT_S8:
+        case LiteralType::TT_S16:
+        case LiteralType::TT_S32:
+        case LiteralType::TT_S64:
+            token.literalValue.s64 = -token.literalValue.s64;
+            node->doneFlags |= AST_DONE_NEG_EATEN;
+            negApplied = true;
+            break;
+        }
+
+        if (negApplied)
+        {
+            switch (token.literalType)
+            {
+            case LiteralType::TT_U32:
+                token.literalType = LiteralType::TT_S32;
+                break;
+            case LiteralType::TT_U64:
+            case LiteralType::TT_UINT:
+                token.literalType = LiteralType::TT_S64;
+                break;
+            }
+        }
+    }
+
     switch (token.literalType)
     {
     case LiteralType::TT_F32:

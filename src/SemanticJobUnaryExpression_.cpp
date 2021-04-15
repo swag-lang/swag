@@ -27,7 +27,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
         return context->report({op, op->token, format("minus operation not allowed on type '%s'", typeInfo->name.c_str())});
     }
 
-    if (op->flags & AST_VALUE_COMPUTED)
+    if (op->flags & AST_VALUE_COMPUTED && !(op->doneFlags & AST_DONE_NEG_EATEN))
     {
         switch (typeInfo->nativeType)
         {

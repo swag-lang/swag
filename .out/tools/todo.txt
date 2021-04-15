@@ -38,8 +38,6 @@ x(10) => x.opCall(10)
 TODO
 ****************************************
 -------------------------------------
-x := -128's8 parse pas cause 128 pas s8 (neg est pas inclu dans le parse du literal)
--------------------------------------
 safety @abs => example abs(-128'u8)
 -------------------------------------
 ,mask pour shifts (mask operand, no safety, no branch)
