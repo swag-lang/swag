@@ -465,7 +465,7 @@ TypeInfo* TypeManager::literalTypeToType(LiteralType literalType)
 
 TypeInfo* TypeManager::literalTypeToType(const Token& token)
 {
-    auto result = literalTypeToType(token.literalType);
+    auto result = literalTypeToType(token.literalCastedType != LiteralType::TT_MAX ? token.literalCastedType : token.literalType);
     SWAG_ASSERT(result);
     result = makeUntypedType(result, token.literalValue.u32);
     return result;

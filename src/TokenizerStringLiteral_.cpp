@@ -164,9 +164,10 @@ void Tokenizer::postProcessRawString(Utf8& text)
 bool Tokenizer::doStringLiteral(Token& token, bool raw)
 {
     unsigned offset;
-    token.id            = TokenId::LiteralString;
-    token.literalType   = LiteralType::TT_STRING;
-    token.startLocation = location;
+    token.id                = TokenId::LiteralString;
+    token.literalType       = LiteralType::TT_STRING;
+    token.literalCastedType = LiteralType::TT_MAX;
+    token.startLocation     = location;
 
     while (true)
     {
@@ -319,9 +320,10 @@ bool Tokenizer::doCharLiteral(Token& token)
     unsigned offset;
     token.id = TokenId::LiteralCharacter;
 
-    auto c              = getCharNoSeek(offset);
-    token.startLocation = location;
-    token.literalType   = LiteralType::TT_CHAR;
+    auto c                  = getCharNoSeek(offset);
+    token.startLocation     = location;
+    token.literalType       = LiteralType::TT_CHAR;
+    token.literalCastedType = LiteralType::TT_MAX;
 
     // Can't have a newline inside a character
     if (c == '\n')

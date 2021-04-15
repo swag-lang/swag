@@ -4,15 +4,168 @@
 #include "Ast.h"
 #include "TypeManager.h"
 
-bool SemanticJob::resolveLiteral(SemanticContext* context)
+bool SemanticJob::convertTokenLiteral(SemanticContext* context, Token& token)
 {
-    auto node         = context->node;
-    node->byteCodeFct = ByteCodeGenJob::emitLiteral;
-    node->setFlagsValueIsComputed();
-    node->flags |= AST_R_VALUE;
+    if (token.literalCastedType == LiteralType::TT_MAX)
+        return true;
+
+    auto node = context->node;
+    switch (token.literalType)
+    {
+    case LiteralType::TT_F32:
+    case LiteralType::TT_F64:
+        switch (token.literalCastedType)
+        {
+        case LiteralType::TT_F32:
+        case LiteralType::TT_F64:
+            break;
+        default:
+            return context->report({node, format("can't convert floating point number '%Lf'", token.literalValue.f64)});
+        }
+        break;
+
+    case LiteralType::TT_S32:
+    case LiteralType::TT_S64:
+    case LiteralType::TT_INT:
+        switch (token.literalCastedType)
+        {
+        case LiteralType::TT_U8:
+            if (token.literalValue.u64 > UINT8_MAX)
+                return context->report({node, format("literal number '%I64u' is not in the range of 'u8'", token.literalValue.u64)});
+            break;
+        case LiteralType::TT_U16:
+            if (token.literalValue.u64 > UINT16_MAX)
+                return context->report({node, format("literal number '%I64u' is not in the range of 'u16'", token.literalValue.u64)});
+            break;
+        case LiteralType::TT_U32:
+            if (token.literalValue.u64 > UINT32_MAX)
+                return context->report({node, format("literal number '%I64u' is not in the range of 'u32'", token.literalValue.u64)});
+            break;
+        case LiteralType::TT_U64:
+        case LiteralType::TT_UINT:
+            break;
+
+        case LiteralType::TT_S8:
+            if (token.literalValue.s64 < INT8_MIN || token.literalValue.s64 > INT8_MAX)
+                return context->report({node, format("literal number '%I64d' is not in the range of 's8'", token.literalValue.s64)});
+            break;
+        case LiteralType::TT_S16:
+            if (token.literalValue.s64 < INT16_MIN || token.literalValue.s64 > INT16_MAX)
+                return context->report({node, format("literal number '%I64d' is not in the range of 's16'", token.literalValue.s64)});
+            break;
+        case LiteralType::TT_S32:
+            if (token.literalValue.s64 < INT32_MIN || token.literalValue.s64 > INT32_MAX)
+                return context->report({node, format("literal number '%I64d' is not in the range of 's32'", token.literalValue.s64)});
+            break;
+        case LiteralType::TT_S64:
+        case LiteralType::TT_INT:
+            break;
+
+        case LiteralType::TT_CHAR:
+            if (token.literalValue.u64 > UINT32_MAX)
+                return context->report({node, format("literal number '%I64u' is not in the range of 'char'", token.literalValue.u64)});
+            break;
+
+        case LiteralType::TT_F32:
+        {
+            float   tmpF = static_cast<float>(token.literalValue.s64);
+            int64_t tmp  = static_cast<int64_t>(tmpF);
+            if (tmp != token.literalValue.s64)
+                return context->report({node, format("value '%I64d' is truncated in 'f32'", token.literalValue.s64)});
+            token.literalValue.f64 = tmpF;
+            break;
+        }
+        case LiteralType::TT_F64:
+        {
+            double  tmpF = static_cast<double>(token.literalValue.s64);
+            int64_t tmp  = static_cast<int64_t>(tmpF);
+            if (tmp != token.literalValue.s64)
+                return context->report({node, format("value '%I64d' is truncated in 'f64'", token.literalValue.s64)});
+            token.literalValue.f64 = tmpF;
+            break;
+        }
+
+        default:
+            return context->report({node, format("invalid literal number conversion of '%I64u'", token.literalValue.u64)});
+        }
+
+        break;
+
+    case LiteralType::TT_U32:
+    case LiteralType::TT_U64:
+    case LiteralType::TT_UINT:
+        switch (token.literalCastedType)
+        {
+        case LiteralType::TT_U8:
+            if (token.literalValue.u64 > UINT8_MAX)
+                return context->report({node, format("literal number '%I64u' is not in the range of 'u8'", token.literalValue.u64)});
+            break;
+        case LiteralType::TT_U16:
+            if (token.literalValue.u64 > UINT16_MAX)
+                return context->report({node, format("literal number '%I64u' is not in the range of 'u16'", token.literalValue.u64)});
+            break;
+        case LiteralType::TT_U32:
+            if (token.literalValue.u64 > UINT32_MAX)
+                return context->report({node, format("literal number '%I64u' is not in the range of 'u32'", token.literalValue.u64)});
+            break;
+        case LiteralType::TT_U64:
+        case LiteralType::TT_UINT:
+            break;
+
+        case LiteralType::TT_S8:
+            if (token.literalValue.u64 > UINT8_MAX)
+                return context->report({node, format("literal number '%I64u' is not in the range of 's8'", token.literalValue.u64)});
+            break;
+        case LiteralType::TT_S16:
+            if (token.literalValue.u64 > UINT16_MAX)
+                return context->report({node, format("literal number '%I64u' is not in the range of 's16'", token.literalValue.u64)});
+            break;
+        case LiteralType::TT_S32:
+            if (token.literalValue.u64 > UINT32_MAX)
+                return context->report({node, format("literal number '%I64u' is not in the range of 's32'", token.literalValue.u64)});
+            break;
+        case LiteralType::TT_S64:
+        case LiteralType::TT_INT:
+            if (token.literalValue.u64 > (uint64_t) INT64_MAX + 1)
+                return context->report({node, format("literal number '%I64u' is not in the range of 's64'", token.literalValue.u64)});
+            break;
+
+        case LiteralType::TT_CHAR:
+            if (token.literalValue.u64 > UINT32_MAX)
+                return context->report({node, format("literal number '%I64u' is not in the range of 'char'", token.literalValue.u64)});
+            break;
+
+        default:
+            return context->report({node, format("invalid literal number conversion of '%I64u'", token.literalValue.u64)});
+        }
+
+        break;
+    }
+
+    token.literalType       = token.literalCastedType;
+    token.literalCastedType = LiteralType::TT_MAX;
+    return true;
+}
+
+void SemanticJob::putLiteralInNode(AstNode* node)
+{
     node->typeInfo           = TypeManager::literalTypeToType(node->token);
     node->computedValue.reg  = node->token.literalValue;
     node->computedValue.text = node->token.text;
+    node->setFlagsValueIsComputed();
+
+    // Convert to 32 bits now
+    if (node->token.literalType == LiteralType::TT_F32 || node->token.literalType == LiteralType::TT_UNTYPED_FLOAT)
+        node->computedValue.reg.f32 = (float) node->computedValue.reg.f64;
+}
+
+bool SemanticJob::resolveLiteral(SemanticContext* context)
+{
+    auto node = context->node;
+    SWAG_CHECK(convertTokenLiteral(context, node->token));
+    node->byteCodeFct = ByteCodeGenJob::emitLiteral;
+    putLiteralInNode(node);
+    node->flags |= AST_R_VALUE;
     return true;
 }
 

@@ -1,6 +1,7 @@
-#test
+public struct(T) Const2852
 {
-    /*x := 1'u8
-    y := 8'u32
-    x <<=,small y*/
+    const Pi: T           = 3.1415927410125732421875
 }
+
+public alias Const2852F32 = Const2852'f32
+public alias Const2852F64 = Const2852'f64

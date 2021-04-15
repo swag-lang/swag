@@ -1,3 +1,2 @@
 #global testerror
-#global testpass lexer
-0xFFFFFFFF'u8
+var x = 0xFFFFFFFF'u8

@@ -6,7 +6,7 @@ struct TypeInfo;
 struct TypeInfoNative;
 struct TypeInfoVariadic;
 struct SemanticContext;
-enum class LiteralType;
+enum class LiteralType : uint8_t;
 struct Token;
 
 static const uint32_t CASTFLAG_NO_ERROR        = 0x00000001;

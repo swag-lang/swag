@@ -1168,7 +1168,8 @@ namespace Ast
         }
 
         case AstNodeKind::Literal:
-            SWAG_CHECK(outputLiteral(context, concat, node, TypeManager::literalTypeToType(node->token), node->token.text, node->token.literalValue));
+            SemanticJob::putLiteralInNode(node);
+            SWAG_CHECK(outputLiteral(context, concat, node, node->typeInfo, node->computedValue.text, node->computedValue.reg));
             break;
 
         case AstNodeKind::LabelBreakable:

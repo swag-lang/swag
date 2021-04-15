@@ -246,6 +246,8 @@ struct SemanticJob : public Job
     static bool resolveIntrinsicSpread(SemanticContext* context);
     static bool resolveIntrinsicKindOf(SemanticContext* context);
     static bool makeIntrinsicTypeOf(SemanticContext* context);
+    static void putLiteralInNode(AstNode* node);
+    static bool convertTokenLiteral(SemanticContext* context, Token& token);
     static bool resolveIntrinsicTypeOf(SemanticContext* context);
     static bool resolveIntrinsicProperty(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
