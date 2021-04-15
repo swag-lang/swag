@@ -32,12 +32,18 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
+            if (op->computedValue.reg.s8 <= INT8_MIN)
+                return context->report({op, format("cannot negate number '%d' because '%u' is not in the range of 's8'", op->computedValue.reg.s8, -op->computedValue.reg.s8)});
             op->computedValue.reg.s64 = -op->computedValue.reg.s8;
             break;
         case NativeTypeKind::S16:
+            if (op->computedValue.reg.s16 <= INT16_MIN)
+                return context->report({op, format("cannot negate number '%d' because '%u' is not in the range of 's16'", op->computedValue.reg.s16, -op->computedValue.reg.s16)});
             op->computedValue.reg.s64 = -op->computedValue.reg.s16;
             break;
         case NativeTypeKind::S32:
+            if (op->computedValue.reg.s32 <= INT32_MIN)
+                return context->report({op, format("cannot negate number '%d' because '%u' is not in the range of 's32'", op->computedValue.reg.s32, -op->computedValue.reg.s32)});
             op->computedValue.reg.s64 = -op->computedValue.reg.s32;
             if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
             {
@@ -47,6 +53,8 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
+            if (op->computedValue.reg.s64 <= INT64_MIN)
+                return context->report({op, format("cannot negate number '%I64d' because '%I64u' is not in the range of 's64'", op->computedValue.reg.s64, -op->computedValue.reg.s64)});
             op->computedValue.reg.s64 = -op->computedValue.reg.s64;
             break;
 
