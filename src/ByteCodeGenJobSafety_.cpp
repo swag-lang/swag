@@ -350,6 +350,53 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, u
     freeRegisterRC(context, re);
 }
 
+void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeInfo* typeInfo)
+{
+    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))
+        return;
+
+    PushICFlags ic(context, BCI_SAFETY);
+
+    auto re = reserveRegisterRC(context);
+    switch (typeInfo->nativeType)
+    {
+    case NativeTypeKind::S8:
+    {
+        auto inst   = emitInstruction(context, ByteCodeOp::CompareOpNotEqual8, r0, 0, re);
+        inst->b.s64 = INT8_MIN;
+        inst->flags |= BCI_IMM_B;
+        emitAssert(context, re, "[safety] (8 bits) '-' integer overflow");
+        break;
+    }
+    case NativeTypeKind::S16:
+    {
+        auto inst   = emitInstruction(context, ByteCodeOp::CompareOpNotEqual16, r0, 0, re);
+        inst->b.s64 = INT16_MIN;
+        inst->flags |= BCI_IMM_B;
+        emitAssert(context, re, "[safety] (16 bits) '-' integer overflow");
+        break;
+    }
+    case NativeTypeKind::S32:
+    {
+        auto inst   = emitInstruction(context, ByteCodeOp::CompareOpNotEqual32, r0, 0, re);
+        inst->b.s64 = INT32_MIN;
+        inst->flags |= BCI_IMM_B;
+        emitAssert(context, re, "[safety] (32 bits) '-' integer overflow");
+        break;
+    }
+    case NativeTypeKind::S64:
+    {
+        auto inst   = emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, 0, re);
+        inst->b.s64 = INT64_MIN;
+        inst->flags |= BCI_IMM_B;
+        emitAssert(context, re, "[safety] (64 bits) '-' integer overflow");
+        break;
+    }
+    }
+
+    freeRegisterRC(context, re);
+}
+
 void ByteCodeGenJob::emitSafetyRelativePointerS64(ByteCodeGenContext* context, uint32_t r0, int offsetSize)
 {
     if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_BC_ON, ATTRIBUTE_SAFETY_BC_OFF))
