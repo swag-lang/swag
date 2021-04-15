@@ -594,7 +594,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         if (!funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
             return context->report({funcNode->returnType, "function cannot have a return type because it is flagged with the 'swag.noreturn' attribute"});
         // The function returns nothing but has the 'swag.autodiscard' attribute
-        if (funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_AUTO_DISCARD)
+        if (funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
             return context->report({funcNode, funcNode->token, "function cannot have the 'swag.autodiscard' attribute because it returns 'void'"});
     }
 

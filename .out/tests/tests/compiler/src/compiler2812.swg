@@ -1,2 +1,2 @@
-#[swag.autodiscard]
+#[swag.discardable]
 func toto() => 666

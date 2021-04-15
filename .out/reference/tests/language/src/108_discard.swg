@@ -11,9 +11,9 @@
     discard sum(2, 3)
 
     // If a function authorizes the caller to not use its return value, because
-    // it's not that important, it can be marked with 'swag.autodiscard'
+    // it's not that important, it can be marked with 'swag.discardable'
 
-    #[swag.autodiscard]
+    #[swag.discardable]
     func mul(x, y: s32)->s32 => x * y
 
     // This is fine to ignore the return value of 'mul'

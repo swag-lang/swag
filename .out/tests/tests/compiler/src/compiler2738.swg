@@ -1,7 +1,7 @@
 var G = 0
 var G1 = 0
 
-#[swag.autodiscard]
+#[swag.discardable]
 func tata()->s32 throw
 {
     G += 1

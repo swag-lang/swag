@@ -486,7 +486,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    if (node->attributeFlags & ATTRIBUTE_AUTO_DISCARD && concreteNodeType->kind != TypeInfoKind::Lambda)
+    if (node->attributeFlags & ATTRIBUTE_DISCARDABLE && concreteNodeType->kind != TypeInfoKind::Lambda)
         return context->report({node, format("attribute 'swag.autodiscard' can only be used on a lambda variable (provided type is '%s')", concreteNodeType->name.c_str())});
 
     // Check for missing initialization

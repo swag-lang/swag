@@ -408,7 +408,7 @@ struct PAINTSTRUCT
     func GetDC(hWnd: HWND)->HDC;
 }
 
-#[foreign("user32"), autodiscard]
+#[foreign("user32"), discardable]
 {
     func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
 
@@ -449,7 +449,7 @@ namespace user32priv
             try setError(GetLastError())
     }
 
-    #[autodiscard]
+    #[discardable]
     func RegisterClassA(lpWndClass: const *WNDCLASSA)->ATOM throw
     {
         res := user32priv.RegisterClassA(lpWndClass)
@@ -458,7 +458,7 @@ namespace user32priv
         return res
     }
 
-    #[autodiscard]
+    #[discardable]
     func RegisterClassW(lpWndClass: const *WNDCLASSW)->ATOM throw
     {
         res := user32priv.RegisterClassW(lpWndClass)

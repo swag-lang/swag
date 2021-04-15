@@ -882,7 +882,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 if (isStatementIdentifier(identifier))
                 {
-                    if (!(overload->node->attributeFlags & ATTRIBUTE_AUTO_DISCARD) && !(identifier->flags & AST_DISCARD))
+                    if (!(overload->node->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                     {
                         Diagnostic diag(identifier, identifier->token, format("unused return value of lambda '%s'", overload->node->token.text.c_str()));
                         Diagnostic note(overload->node, overload->node->token, "this is the variable declaration", DiagnosticLevel::Note);
@@ -1029,7 +1029,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             if (isStatementIdentifier(identifier))
             {
-                if (!(overload->node->attributeFlags & ATTRIBUTE_AUTO_DISCARD) && !(identifier->flags & AST_DISCARD))
+                if (!(overload->node->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                 {
                     Diagnostic diag(identifier, identifier->token, format("unused return value of function '%s'", overload->node->token.text.c_str()));
                     Diagnostic note(overload->node, overload->node->token, "this is the function", DiagnosticLevel::Note);

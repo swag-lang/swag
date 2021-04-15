@@ -5,5 +5,5 @@ func titi()
 
 }
 
-#[swag.autodiscard]
+#[swag.discardable]
 func toto() => titi()

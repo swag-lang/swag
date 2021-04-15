@@ -2,6 +2,6 @@
 
 #test
 {
-    #[swag.autodiscard]
+    #[swag.discardable]
     var x: s32
 }
