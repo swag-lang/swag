@@ -199,6 +199,14 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             return true;
     }
 
+    // Some safety checks depending on the intrinsic
+    switch (node->token.id)
+    {
+    case TokenId::IntrinsicAbs:
+        emitSafetyNeg(context, callParams->childs[0]->resultRegisterRC, TypeManager::concreteReferenceType(callParams->childs[0]->typeInfo), true);
+        break;
+    }
+
     switch (node->token.id)
     {
     case TokenId::IntrinsicPrint:
@@ -772,6 +780,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         break;
     }
 
+    case TokenId::IntrinsicAbs:
     case TokenId::IntrinsicSqrt:
     case TokenId::IntrinsicSin:
     case TokenId::IntrinsicCos:
@@ -789,7 +798,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicCeil:
     case TokenId::IntrinsicTrunc:
     case TokenId::IntrinsicRound:
-    case TokenId::IntrinsicAbs:
     case TokenId::IntrinsicExp:
     case TokenId::IntrinsicExp2:
     {

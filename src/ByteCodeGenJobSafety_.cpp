@@ -350,7 +350,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, u
     freeRegisterRC(context, re);
 }
 
-void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeInfo* typeInfo)
+void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeInfo* typeInfo, bool forAbs)
 {
     if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OF_ON, ATTRIBUTE_SAFETY_OF_OFF))
         return;
@@ -365,7 +365,10 @@ void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, Typ
         auto inst   = emitInstruction(context, ByteCodeOp::CompareOpNotEqual8, r0, 0, re);
         inst->b.s64 = INT8_MIN;
         inst->flags |= BCI_IMM_B;
-        emitAssert(context, re, "[safety] (8 bits) '-' integer overflow");
+        if (forAbs)
+            emitAssert(context, re, "[safety] (8 bits) '@abs' integer overflow");
+        else
+            emitAssert(context, re, "[safety] (8 bits) '-' integer overflow");
         break;
     }
     case NativeTypeKind::S16:
@@ -373,7 +376,10 @@ void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, Typ
         auto inst   = emitInstruction(context, ByteCodeOp::CompareOpNotEqual16, r0, 0, re);
         inst->b.s64 = INT16_MIN;
         inst->flags |= BCI_IMM_B;
-        emitAssert(context, re, "[safety] (16 bits) '-' integer overflow");
+        if (forAbs)
+            emitAssert(context, re, "[safety] (16 bits) '@abs' integer overflow");
+        else
+            emitAssert(context, re, "[safety] (16 bits) '-' integer overflow");
         break;
     }
     case NativeTypeKind::S32:
@@ -381,7 +387,10 @@ void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, Typ
         auto inst   = emitInstruction(context, ByteCodeOp::CompareOpNotEqual32, r0, 0, re);
         inst->b.s64 = INT32_MIN;
         inst->flags |= BCI_IMM_B;
-        emitAssert(context, re, "[safety] (32 bits) '-' integer overflow");
+        if (forAbs)
+            emitAssert(context, re, "[safety] (32 bits) '@abs' integer overflow");
+        else
+            emitAssert(context, re, "[safety] (32 bits) '-' integer overflow");
         break;
     }
     case NativeTypeKind::S64:
@@ -389,7 +398,10 @@ void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, Typ
         auto inst   = emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, 0, re);
         inst->b.s64 = INT64_MIN;
         inst->flags |= BCI_IMM_B;
-        emitAssert(context, re, "[safety] (64 bits) '-' integer overflow");
+        if (forAbs)
+            emitAssert(context, re, "[safety] (64 bits) '@abs' integer overflow");
+        else
+            emitAssert(context, re, "[safety] (64 bits) '-' integer overflow");
         break;
     }
     }
