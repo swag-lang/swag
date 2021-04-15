@@ -119,7 +119,7 @@ func loadImg()
 
     t.stop()
     elapsed := t.elapsedMilliseconds()
-    console.println("%: img: % (% x % %) time: %ms", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, elapsed)
+    console.printf("%: img: % (% x % %) time: %ms\n", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, elapsed)
 
     fmt := GL_BGR
     if myImage.bpp == 32 fmt = GL_BGRA

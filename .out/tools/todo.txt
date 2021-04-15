@@ -38,7 +38,7 @@ x(10) => x.opCall(10)
 TODO
 ****************************************
 -------------------------------------
-,mask pour shifts (mask operand, no safety, no branch)
+,small pour shifts (mask operand, no safety, no branch)
 -------------------------------------
 debugger : print
 -------------------------------------
@@ -69,7 +69,7 @@ void CodeViewDebug::emitStaticConstMemberList()
 OPTIMS
 ****************************************
 -------------------------------------
-binaryop div/mul, transformer en shift si U8/U16
+x64 binaryop div/mul, transformer en shift si log2
 -------------------------------------
 x64 emit_BinOpInt32/64 etc.. faire un mode immediat pour le côté droit 'and cl, 5'
 -------------------------------------

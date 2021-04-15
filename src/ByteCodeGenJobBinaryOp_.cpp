@@ -142,37 +142,6 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* type
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitBinaryOpMul, type not native");
 
-    // Multiply by a constant. We just deal with powers of two.
-    // The optimizer will transform instructions in their immediate mode if possible.
-    auto right = context->node->childs[1];
-    if (right->flags & AST_VALUE_COMPUTED)
-    {
-        if (typeInfo->nativeType == NativeTypeKind::U32 || typeInfo->nativeType == NativeTypeKind::Char)
-        {
-            if (isPowerOfTwo(right->computedValue.reg.u32))
-            {
-                auto shift = (int) log2(right->computedValue.reg.u32);
-
-                emitInstruction(context, ByteCodeOp::SetImmediate32, r1)->b.u32 = shift;
-                emitSafetyLeftShift(context, r0, r1, typeInfo);
-                emitInstruction(context, ByteCodeOp::BinOpShiftLeftU32, r0, r1, r2);
-                return true;
-            }
-        }
-        else if (typeInfo->nativeType == NativeTypeKind::U64 || typeInfo->nativeType == NativeTypeKind::UInt)
-        {
-            if (isPowerOfTwo(right->computedValue.reg.u64))
-            {
-                auto shift = (int) log2(right->computedValue.reg.u64);
-
-                emitInstruction(context, ByteCodeOp::SetImmediate32, r1)->b.u32 = shift;
-                emitSafetyLeftShift(context, r0, r1, typeInfo);
-                emitInstruction(context, ByteCodeOp::BinOpShiftLeftU64, r0, r1, r2);
-                return true;
-            }
-        }
-    }
-
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S32:
@@ -207,57 +176,6 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* type
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitBinaryOpDiv, type not native");
-
-    // Divide by a constant. We just deal with powers of two.
-    // The optimizer will transform instructions in their immediate mode if possible.
-    auto right = context->node->childs[1];
-    if (right->flags & AST_VALUE_COMPUTED)
-    {
-        if (typeInfo->nativeType == NativeTypeKind::U32 || typeInfo->nativeType == NativeTypeKind::Char)
-        {
-            if (isPowerOfTwo(right->computedValue.reg.u32))
-            {
-                auto shift  = (int) log2(right->computedValue.reg.u32);
-                auto inst   = emitInstruction(context, ByteCodeOp::BinOpShiftRightU32, r0, 0, r2);
-                inst->b.u32 = shift;
-                inst->flags |= BCI_IMM_B;
-                return true;
-            }
-        }
-        else if (typeInfo->nativeType == NativeTypeKind::U64 || typeInfo->nativeType == NativeTypeKind::UInt)
-        {
-            if (isPowerOfTwo(right->computedValue.reg.u64))
-            {
-                auto shift  = (int) log2(right->computedValue.reg.u64);
-                auto inst   = emitInstruction(context, ByteCodeOp::BinOpShiftRightU64, r0, 0, r2);
-                inst->b.u32 = shift;
-                inst->flags |= BCI_IMM_B;
-                return true;
-            }
-        }
-        else if (typeInfo->nativeType == NativeTypeKind::S32)
-        {
-            if (isPowerOfTwo(right->computedValue.reg.u32))
-            {
-                auto shift  = (int) log2(right->computedValue.reg.u32);
-                auto inst   = emitInstruction(context, ByteCodeOp::BinOpShiftRightS32, r0, 0, r2);
-                inst->b.u32 = shift;
-                inst->flags |= BCI_IMM_B;
-                return true;
-            }
-        }
-        else if (typeInfo->nativeType == NativeTypeKind::S64 || typeInfo->nativeType == NativeTypeKind::Int)
-        {
-            if (isPowerOfTwo(right->computedValue.reg.u64))
-            {
-                auto shift  = (int) log2(right->computedValue.reg.u64);
-                auto inst   = emitInstruction(context, ByteCodeOp::BinOpShiftRightS64, r0, 0, r2);
-                inst->b.u32 = shift;
-                inst->flags |= BCI_IMM_B;
-                return true;
-            }
-        }
-    }
 
     switch (typeInfo->nativeType)
     {
