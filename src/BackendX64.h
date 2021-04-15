@@ -298,6 +298,7 @@ struct BackendX64 : public Backend
     bool     emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc);
     void     emitOverflowSigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node, const char* msg);
     void     emitOverflowUnsigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node, const char* msg);
+    void     emitShiftArithmetic(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits);
     void     emitShiftLogical(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op);
     void     emitInternalPanic(const BuildParameters& buildParameters, AstNode* node, const char* msg);
     bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
