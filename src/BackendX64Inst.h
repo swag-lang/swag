@@ -149,6 +149,28 @@ namespace BackendX64Inst
         emit_ModRM(pp, stackOffset, (reg & 0b111), memReg);
     }
 
+    inline void emit_LoadN_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t numBits)
+    {
+        switch (numBits)
+        {
+        case 8:
+            emit_Load8_Indirect(pp, stackOffset, reg, memReg);
+            break;
+        case 16:
+            emit_Load16_Indirect(pp, stackOffset, reg, memReg);
+            break;
+        case 32:
+            emit_Load32_Indirect(pp, stackOffset, reg, memReg);
+            break;
+        case 64:
+            emit_Load64_Indirect(pp, stackOffset, reg, memReg);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
+
     inline void emit_LoadF32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);
@@ -194,6 +216,28 @@ namespace BackendX64Inst
         pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1) | ((memReg & 0b1000) >> 3));
         pp.concat.addU8(0x89);
         emit_ModRM(pp, stackOffset, (reg & 0b111), (memReg & 0b111));
+    }
+
+    inline void emit_StoreN_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t numBits)
+    {
+        switch (numBits)
+        {
+        case 8:
+            emit_Store8_Indirect(pp, stackOffset, reg, memReg);
+            break;
+        case 16:
+            emit_Store16_Indirect(pp, stackOffset, reg, memReg);
+            break;
+        case 32:
+            emit_Store32_Indirect(pp, stackOffset, reg, memReg);
+            break;
+        case 64:
+            emit_Store64_Indirect(pp, stackOffset, reg, memReg);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
     }
 
     inline void emit_StoreF32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
@@ -274,6 +318,24 @@ namespace BackendX64Inst
         pp.concat.addU8(modRM(3, (reg & 0b111), (reg & 0b111)));
     }
 
+    inline void emit_ClearN(X64PerThread& pp, uint8_t reg, uint8_t numBits)
+    {
+        switch (numBits)
+        {
+        case 8:
+        case 16:
+        case 32:
+            emit_Clear32(pp, reg);
+            break;
+        case 64:
+            emit_Clear64(pp, reg);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
+
     inline void emit_Load8_Immediate(X64PerThread& pp, uint8_t val, uint8_t reg)
     {
         if (val == 0)
@@ -344,6 +406,28 @@ namespace BackendX64Inst
         {
             pp.concat.addU8(0xB8 | reg);
             pp.concat.addU64(val);
+        }
+    }
+
+    inline void emit_LoadN_Immediate(X64PerThread& pp, Register& val, uint8_t reg, uint8_t numBits)
+    {
+        switch (numBits)
+        {
+        case 8:
+            emit_Load8_Immediate(pp, val.u8, reg);
+            break;
+        case 16:
+            emit_Load16_Immediate(pp, val.u16, reg);
+            break;
+        case 32:
+            emit_Load32_Immediate(pp, val.u32, reg);
+            break;
+        case 64:
+            emit_Load64_Immediate(pp, val.u64, reg);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
         }
     }
 
