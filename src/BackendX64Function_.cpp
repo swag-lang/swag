@@ -439,6 +439,59 @@ void BackendX64::emitShiftLogical(X64PerThread& pp, Concat& concat, ByteCodeInst
     BackendX64Inst::emit_StoreN_Indirect(pp, regOffset(ip->c.u32), RAX, RDI, numBits);
 }
 
+void BackendX64::emitShiftEqArithmetic(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits)
+{
+    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+    if (ip->flags & BCI_IMM_B)
+    {
+        switch (numBits)
+        {
+        case 8:
+            concat.addString2("\xC0\x38");
+            break;
+        case 16:
+            concat.addString3("\x66\xC1\x38");
+            break;
+        case 32:
+            concat.addString2("\xC1\x38");
+            break;
+        case 64:
+            concat.addString3("\x48\xC1\x38");
+            break;
+        }
+
+        concat.addU8(min(ip->b.u8, numBits - 1));
+    }
+    else
+    {
+        BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+        concat.addString2("\x83\xF9"); // cmp ecx, ??
+        concat.addU8(numBits);
+        BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
+        pp.concat.addU8(0); // move below
+        auto seekPtr = pp.concat.getSeekPtr() - 1;
+        auto seekJmp = pp.concat.totalCount();
+        BackendX64Inst::emit_Load8_Immediate(pp, numBits - 1, RCX);
+        *seekPtr = (uint8_t)(concat.totalCount() - seekJmp);
+
+        switch (numBits)
+        {
+        case 8:
+            concat.addString2("\xd2\x38");
+            break;
+        case 16:
+            concat.addString3("\x66\xd3\x38");
+            break;
+        case 32:
+            concat.addString2("\xd3\x38");
+            break;
+        case 64:
+            concat.addString3("\x48\xd3\x38");
+            break;
+        }
+    }
+}
+
 void BackendX64::emitShiftEqLogical(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op)
 {
     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -1067,11 +1120,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpShiftLeftEqU16:
             emitShiftEqLogical(pp, concat, ip, 16, 0x20);
             break;
-
         case ByteCodeOp::AffectOpShiftLeftEqU32:
             emitShiftEqLogical(pp, concat, ip, 32, 0x20);
             break;
-
         case ByteCodeOp::AffectOpShiftLeftEqU64:
             emitShiftEqLogical(pp, concat, ip, 64, 0x20);
             break;
@@ -1090,88 +1141,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 8)
-            {
-                concat.addString3("\xC0\x38\x07"); // sar byte ptr [rax], 7
-            }
-            else if (ip->flags & BCI_IMM_B)
-            {
-                concat.addString2("\xC0\x38"); // sar byte ptr [rax], ??
-                concat.addU8(ip->b.u8);
-            }
-            else
-            {
-                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString3("\x83\xF9\x08"); // cmp ecx, 8
-                BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
-                pp.concat.addU8(2);            // sar + move below
-                concat.addString2("\xB1\x07"); // mov cl, 7
-                concat.addString2("\xd2\x38"); // sar byte ptr [rax], cl
-            }
+            emitShiftEqArithmetic(pp, concat, ip, 8);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS16:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 16)
-            {
-                concat.addString4("\x66\xC1\x38\x0F"); // sar word ptr [rax], 15
-            }
-            else if (ip->flags & BCI_IMM_B)
-            {
-                concat.addString3("\x66\xC1\x38"); // sar byte ptr [rax], ??
-                concat.addU8(ip->b.u8);
-            }
-            else
-            {
-                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString3("\x83\xF9\x10"); // cmp ecx, 16
-                BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
-                pp.concat.addU8(2);                // sar + move below
-                concat.addString2("\xB1\x0F");     // mov cl, 15
-                concat.addString3("\x66\xd3\x38"); // sar word ptr [rax], cl
-            }
+            emitShiftEqArithmetic(pp, concat, ip, 16);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS32:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 32)
-            {
-                concat.addString3("\xC1\x38\x1F"); // sar dword ptr [rax], 31
-            }
-            else if (ip->flags & BCI_IMM_B)
-            {
-                concat.addString2("\xC1\x38"); // sar dword [rax], ??
-                concat.addU8(ip->b.u8);
-            }
-            else
-            {
-                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString3("\x83\xF9\x20"); // cmp ecx, 32
-                BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
-                pp.concat.addU8(2);            // sar + move below
-                concat.addString2("\xB1\x1F"); // mov cl, 31
-                concat.addString2("\xd3\x38"); // sar dword ptr [rax], cl
-            }
+            emitShiftEqArithmetic(pp, concat, ip, 32);
             break;
         case ByteCodeOp::AffectOpShiftRightEqS64:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 64)
-            {
-                concat.addString4("\x48\xC1\x38\x3F"); // sar qword [rax], 63
-            }
-            else if (ip->flags & BCI_IMM_B)
-            {
-                concat.addString3("\x48\xC1\x38"); // sar qword [rax], ??
-                concat.addU8(ip->b.u8);
-            }
-            else
-            {
-                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-                concat.addString3("\x83\xF9\x40"); // cmp ecx, 64
-                BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
-                pp.concat.addU8(2);                // sar + move below
-                concat.addString2("\xB1\x3F");     // mov cl, 63
-                concat.addString3("\x48\xd3\x38"); // sar qword ptr [rax], cl
-            }
+            emitShiftEqArithmetic(pp, concat, ip, 64);
             break;
 
         case ByteCodeOp::AffectOpXorEqS8:
