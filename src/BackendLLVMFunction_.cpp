@@ -323,6 +323,32 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
     }
 }
 
+void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left)
+{
+    auto         iType = getIntType(context, numBits);
+    auto         r0    = GEP_I32(allocR, ip->a.u32);
+    auto         r1    = builder.CreateLoad(TO_PTR_PTR_I_N(r0, numBits));
+    llvm::Value* r2    = MK_IMMB_32();
+    auto         c2    = builder.CreateIntCast(r2, iType, false);
+    auto         zero  = llvm::ConstantInt::get(iType, 0);
+    auto         v1    = builder.CreateLoad(r1);
+    llvm::Value* v0;
+
+    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits)
+        v0 = zero;
+    else if (ip->flags & BCI_IMM_B)
+        v0 = left ? builder.CreateShl(v1, c2) : builder.CreateLShr(v1, c2);
+    else
+    {
+        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
+        auto iftrue  = left ? builder.CreateShl(v1, c2) : builder.CreateLShr(v1, c2);
+        auto iffalse = zero;
+        v0           = builder.CreateSelect(cond, iftrue, iffalse);
+    }
+
+    builder.CreateStore(v0, r1);
+}
+
 bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc)
 {
     int   ct              = buildParameters.compileType;
@@ -2209,196 +2235,30 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::AffectOpShiftLeftEqU8:
-        {
-            auto         r0 = GEP_I32(allocR, ip->a.u32);
-            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0));
-            llvm::Value* r2 = MK_IMMB_32();
-            auto         c2 = builder.CreateIntCast(r2, builder.getInt8Ty(), false);
-            llvm::Value* v0;
-
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 8)
-                v0 = pp.cst0_i8;
-            else if (ip->flags & BCI_IMM_B)
-                v0 = builder.CreateShl(builder.CreateLoad(r1), c2);
-            else
-            {
-                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(8));
-                auto iftrue  = builder.CreateShl(builder.CreateLoad(r1), c2);
-                auto iffalse = pp.cst0_i8;
-                v0           = builder.CreateSelect(cond, iftrue, iffalse);
-            }
-
-            builder.CreateStore(v0, r1);
+            emitShiftEqLogical(context, builder, allocR, ip, 8, true);
             break;
-        }
-
         case ByteCodeOp::AffectOpShiftLeftEqU16:
-        {
-            auto         r0 = GEP_I32(allocR, ip->a.u32);
-            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I16(r0));
-            llvm::Value* r2 = MK_IMMB_32();
-            auto         c2 = builder.CreateIntCast(r2, builder.getInt16Ty(), false);
-            llvm::Value* v0;
-
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 16)
-                v0 = pp.cst0_i16;
-            else if (ip->flags & BCI_IMM_B)
-                v0 = builder.CreateShl(builder.CreateLoad(r1), c2);
-            else
-            {
-                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(16));
-                auto iftrue  = builder.CreateShl(builder.CreateLoad(r1), c2);
-                auto iffalse = pp.cst0_i16;
-                v0           = builder.CreateSelect(cond, iftrue, iffalse);
-            }
-
-            builder.CreateStore(v0, r1);
+            emitShiftEqLogical(context, builder, allocR, ip, 16, true);
             break;
-        }
-
         case ByteCodeOp::AffectOpShiftLeftEqU32:
-        {
-            auto         r0 = GEP_I32(allocR, ip->a.u32);
-            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0));
-            llvm::Value* r2 = MK_IMMB_32();
-            auto         c2 = builder.CreateIntCast(r2, builder.getInt32Ty(), false);
-            llvm::Value* v0;
-
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 32)
-                v0 = pp.cst0_i32;
-            else if (ip->flags & BCI_IMM_B)
-                v0 = builder.CreateShl(builder.CreateLoad(r1), c2);
-            else
-            {
-                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(32));
-                auto iftrue  = builder.CreateShl(builder.CreateLoad(r1), c2);
-                auto iffalse = pp.cst0_i32;
-                v0           = builder.CreateSelect(cond, iftrue, iffalse);
-            }
-
-            builder.CreateStore(v0, r1);
+            emitShiftEqLogical(context, builder, allocR, ip, 32, true);
             break;
-        }
-
         case ByteCodeOp::AffectOpShiftLeftEqU64:
-        {
-            auto         r0 = GEP_I32(allocR, ip->a.u32);
-            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0));
-            llvm::Value* r2 = MK_IMMB_32();
-            auto         c2 = builder.CreateIntCast(r2, builder.getInt64Ty(), false);
-            llvm::Value* v0;
-
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 64)
-                v0 = pp.cst0_i64;
-            else if (ip->flags & BCI_IMM_B)
-                v0 = builder.CreateShl(builder.CreateLoad(r1), c2);
-            else
-            {
-                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(64));
-                auto iftrue  = builder.CreateShl(builder.CreateLoad(r1), c2);
-                auto iffalse = pp.cst0_i64;
-                v0           = builder.CreateSelect(cond, iftrue, iffalse);
-            }
-
-            builder.CreateStore(v0, r1);
+            emitShiftEqLogical(context, builder, allocR, ip, 64, true);
             break;
-        }
 
         case ByteCodeOp::AffectOpShiftRightEqU8:
-        {
-            auto         r0 = GEP_I32(allocR, ip->a.u32);
-            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I8(r0));
-            llvm::Value* r2 = MK_IMMB_32();
-            auto         c2 = builder.CreateIntCast(r2, builder.getInt8Ty(), false);
-            llvm::Value* v0;
-
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 8)
-                v0 = pp.cst0_i8;
-            else if (ip->flags & BCI_IMM_B)
-                v0 = builder.CreateLShr(builder.CreateLoad(r1), c2);
-            else
-            {
-                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(8));
-                auto iftrue  = builder.CreateLShr(builder.CreateLoad(r1), c2);
-                auto iffalse = pp.cst0_i8;
-                v0           = builder.CreateSelect(cond, iftrue, iffalse);
-            }
-
-            builder.CreateStore(v0, r1);
+            emitShiftEqLogical(context, builder, allocR, ip, 8, false);
             break;
-        }
-
         case ByteCodeOp::AffectOpShiftRightEqU16:
-        {
-            auto         r0 = GEP_I32(allocR, ip->a.u32);
-            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I16(r0));
-            llvm::Value* r2 = MK_IMMB_32();
-            auto         c2 = builder.CreateIntCast(r2, builder.getInt16Ty(), false);
-            llvm::Value* v0;
-
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 16)
-                v0 = pp.cst0_i16;
-            else if (ip->flags & BCI_IMM_B)
-                v0 = builder.CreateLShr(builder.CreateLoad(r1), c2);
-            else
-            {
-                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(16));
-                auto iftrue  = builder.CreateLShr(builder.CreateLoad(r1), c2);
-                auto iffalse = pp.cst0_i16;
-                v0           = builder.CreateSelect(cond, iftrue, iffalse);
-            }
-
-            builder.CreateStore(v0, r1);
+            emitShiftEqLogical(context, builder, allocR, ip, 16, false);
             break;
-        }
-
         case ByteCodeOp::AffectOpShiftRightEqU32:
-        {
-            auto         r0 = GEP_I32(allocR, ip->a.u32);
-            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I32(r0));
-            llvm::Value* r2 = MK_IMMB_32();
-            auto         c2 = builder.CreateIntCast(r2, builder.getInt32Ty(), false);
-            llvm::Value* v0;
-
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 32)
-                v0 = pp.cst0_i32;
-            else if (ip->flags & BCI_IMM_B)
-                v0 = builder.CreateLShr(builder.CreateLoad(r1), c2);
-            else
-            {
-                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(32));
-                auto iftrue  = builder.CreateLShr(builder.CreateLoad(r1), c2);
-                auto iffalse = pp.cst0_i32;
-                v0           = builder.CreateSelect(cond, iftrue, iffalse);
-            }
-
-            builder.CreateStore(v0, r1);
+            emitShiftEqLogical(context, builder, allocR, ip, 32, false);
             break;
-        }
-
         case ByteCodeOp::AffectOpShiftRightEqU64:
-        {
-            auto         r0 = GEP_I32(allocR, ip->a.u32);
-            auto         r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0));
-            llvm::Value* r2 = MK_IMMB_32();
-            auto         c2 = builder.CreateIntCast(r2, builder.getInt64Ty(), false);
-            llvm::Value* v0;
-
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 64)
-                v0 = pp.cst0_i64;
-            else if (ip->flags & BCI_IMM_B)
-                v0 = builder.CreateLShr(builder.CreateLoad(r1), c2);
-            else
-            {
-                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(64));
-                auto iftrue  = builder.CreateLShr(builder.CreateLoad(r1), c2);
-                auto iffalse = pp.cst0_i64;
-                v0           = builder.CreateSelect(cond, iftrue, iffalse);
-            }
-
-            builder.CreateStore(v0, r1);
+            emitShiftEqLogical(context, builder, allocR, ip, 64, false);
             break;
-        }
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
         {
