@@ -328,7 +328,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
     return true;
 }
 
-void BackendX64::emitShiftLeft(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits)
+void BackendX64::emitShiftLogical(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op)
 {
     if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits)
         BackendX64Inst::emit_ClearN(pp, RAX, numBits);
@@ -357,18 +357,20 @@ void BackendX64::emitShiftLeft(X64PerThread& pp, Concat& concat, ByteCodeInstruc
         switch (numBits)
         {
         case 8:
-            concat.addString2("\xD2\xE0"); // shl al, cl
+            concat.addString1("\xD2");
             break;
         case 16:
-            concat.addString3("\x66\xD3\xE0"); // shl ax, cl
+            concat.addString2("\x66\xD3");
             break;
         case 32:
-            concat.addString2("\xD3\xE0"); // shl eax, cl
+            concat.addString1("\xD3");
             break;
         case 64:
-            concat.addString3("\x48\xD3\xE0"); // shl rax, cl
+            concat.addString2("\x48\xD3");
             break;
         }
+
+        concat.addU8(op);
     }
 
     BackendX64Inst::emit_StoreN_Indirect(pp, regOffset(ip->c.u32), RAX, RDI, numBits);
@@ -762,16 +764,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::BinOpShiftLeftU8:
-            emitShiftLeft(pp, concat, ip, 8);
+            emitShiftLogical(pp, concat, ip, 8, 0xE0);
             break;
         case ByteCodeOp::BinOpShiftLeftU16:
-            emitShiftLeft(pp, concat, ip, 16);
+            emitShiftLogical(pp, concat, ip, 16, 0xE0);
             break;
         case ByteCodeOp::BinOpShiftLeftU32:
-            emitShiftLeft(pp, concat, ip, 32);
+            emitShiftLogical(pp, concat, ip, 32, 0xE0);
             break;
         case ByteCodeOp::BinOpShiftLeftU64:
-            emitShiftLeft(pp, concat, ip, 64);
+            emitShiftLogical(pp, concat, ip, 64, 0xE0);
             break;
 
         case ByteCodeOp::BinOpShiftRightU8:
