@@ -71,25 +71,31 @@ void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r
     auto re  = reserveRegisterRC(context);
     auto re1 = reserveRegisterRC(context);
 
+    auto opNode = CastAst<AstOp>(context->node, AstNodeKind::AffectOp, AstNodeKind::FactorOp);
+
     // Check operand size
-    switch (typeInfo->sizeOf)
+    if (!(opNode->opFlags & OPFLAG_SMALL))
     {
-    case 1:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 8, re)->flags |= BCI_IMM_B;
-        emitAssert(context, re, "[safety] (8 bits) '<<' shift operand is greater than '7'");
-        break;
-    case 2:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 16, re)->flags |= BCI_IMM_B;
-        emitAssert(context, re, "[safety] (16 bits) '<<' shift operand is greater than '15'");
-        break;
-    case 4:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 32, re)->flags |= BCI_IMM_B;
-        emitAssert(context, re, "[safety] (32 bits) '<<' operand is greater than '31'");
-        break;
-    case 8:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 64, re)->flags |= BCI_IMM_B;
-        emitAssert(context, re, "[safety] (64 bits) '<<' shift operand is greater than '63'");
-        break;
+        PushLocation lc(context, &context->node->childs[1]->token.startLocation);
+        switch (typeInfo->sizeOf)
+        {
+        case 1:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 8, re)->flags |= BCI_IMM_B;
+            emitAssert(context, re, "[safety] (8 bits) '<<' shift operand is greater than '7'");
+            break;
+        case 2:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 16, re)->flags |= BCI_IMM_B;
+            emitAssert(context, re, "[safety] (16 bits) '<<' shift operand is greater than '15'");
+            break;
+        case 4:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 32, re)->flags |= BCI_IMM_B;
+            emitAssert(context, re, "[safety] (32 bits) '<<' operand is greater than '31'");
+            break;
+        case 8:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 64, re)->flags |= BCI_IMM_B;
+            emitAssert(context, re, "[safety] (64 bits) '<<' shift operand is greater than '63'");
+            break;
+        }
     }
 
     // Check if we lose bits
@@ -169,25 +175,31 @@ void ByteCodeGenJob::emitSafetyRightShift(ByteCodeGenContext* context, uint32_t 
     auto re  = reserveRegisterRC(context);
     auto re1 = reserveRegisterRC(context);
 
+    auto opNode = CastAst<AstOp>(context->node, AstNodeKind::AffectOp, AstNodeKind::FactorOp);
+
     // Check operand size
-    switch (typeInfo->sizeOf)
+    if (!(opNode->opFlags & OPFLAG_SMALL))
     {
-    case 1:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 8, re)->flags |= BCI_IMM_B;
-        emitAssert(context, re, "[safety] (8 bits) '>>' shift operand is greater than '7'");
-        break;
-    case 2:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 16, re)->flags |= BCI_IMM_B;
-        emitAssert(context, re, "[safety] (16 bits) '>>' shift operand is greater than '15'");
-        break;
-    case 4:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 32, re)->flags |= BCI_IMM_B;
-        emitAssert(context, re, "[safety] (32 bits) '>>' shift operand is greater than '31'");
-        break;
-    case 8:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 64, re)->flags |= BCI_IMM_B;
-        emitAssert(context, re, "[safety] (64 bits) '>>' shift operand is greater than '63'");
-        break;
+        PushLocation lc(context, &context->node->childs[1]->token.startLocation);
+        switch (typeInfo->sizeOf)
+        {
+        case 1:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 8, re)->flags |= BCI_IMM_B;
+            emitAssert(context, re, "[safety] (8 bits) '>>' shift operand is greater than '7'");
+            break;
+        case 2:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 16, re)->flags |= BCI_IMM_B;
+            emitAssert(context, re, "[safety] (16 bits) '>>' shift operand is greater than '15'");
+            break;
+        case 4:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 32, re)->flags |= BCI_IMM_B;
+            emitAssert(context, re, "[safety] (32 bits) '>>' shift operand is greater than '31'");
+            break;
+        case 8:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r1, 64, re)->flags |= BCI_IMM_B;
+            emitAssert(context, re, "[safety] (64 bits) '>>' shift operand is greater than '63'");
+            break;
+        }
     }
 
     if (typeInfo->isNativeUnsignedOrChar())

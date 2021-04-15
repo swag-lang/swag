@@ -17,6 +17,21 @@ var tsl storage ?
 -------------------------------------
 var lazy evaluation ?
 -------------------------------------
+frozen/non frozen enum
+https://github.com/apple/swift-evolution/blob/master/proposals/0192-non-exhaustive-enums.md
+-------------------------------------
+callable
+https://github.com/apple/swift-evolution/blob/master/proposals/0216-dynamic-callable.md
+impl AA
+{
+	func opCall(...)
+	{
+	}
+}
+var x: AA
+x(10) => x.opCall(10)
+-------------------------------------
+
 
 
 ****************************************

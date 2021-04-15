@@ -1394,8 +1394,6 @@ AstNode* AstCast::clone(CloneContext& context)
     return newNode;
 }
 
-static const uint32_t OPFLAG_WRAP = 0x00000001;
-
 AstNode* AstOp::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstOp>();

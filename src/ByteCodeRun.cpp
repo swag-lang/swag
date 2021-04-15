@@ -103,18 +103,26 @@ void* ByteCodeRun::makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCo
     }
 }
 
-void ByteCodeRun::executeShiftLeft(JobContext* context, Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits)
+void ByteCodeRun::executeShiftLeft(JobContext* context, Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSmall)
 {
-    if (rright.u32 >= numBits)
+    auto shift = rright.u32;
+    if (isSmall)
+        shift &= numBits - 1;
+
+    if (shift >= numBits)
         rdest->u64 = 0;
     else
-        rdest->u64 = rleft.u64 << rright.u32;
+        rdest->u64 = rleft.u64 << shift;
 }
 
-void ByteCodeRun::executeShiftRight(JobContext* context, Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned)
+void ByteCodeRun::executeShiftRight(JobContext* context, Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned, bool isSmall)
 {
+    auto shift = rright.u32;
+    if (isSmall)
+        shift &= numBits - 1;
+
     // Overflow, too many bits to shift
-    if (rright.u32 >= numBits)
+    if (shift >= numBits)
     {
         if (isSigned)
         {
@@ -144,16 +152,16 @@ void ByteCodeRun::executeShiftRight(JobContext* context, Register* rdest, const 
         switch (numBits)
         {
         case 8:
-            rdest->s64 = rleft.s8 >> rright.u32;
+            rdest->s64 = rleft.s8 >> shift;
             break;
         case 16:
-            rdest->s64 = rleft.s16 >> rright.u32;
+            rdest->s64 = rleft.s16 >> shift;
             break;
         case 32:
-            rdest->s64 = rleft.s32 >> rright.u32;
+            rdest->s64 = rleft.s32 >> shift;
             break;
         case 64:
-            rdest->s64 = rleft.s64 >> rright.u32;
+            rdest->s64 = rleft.s64 >> shift;
             break;
         }
     }
@@ -162,16 +170,16 @@ void ByteCodeRun::executeShiftRight(JobContext* context, Register* rdest, const 
         switch (numBits)
         {
         case 8:
-            rdest->u64 = rleft.u8 >> rright.u32;
+            rdest->u64 = rleft.u8 >> shift;
             break;
         case 16:
-            rdest->u64 = rleft.u16 >> rright.u32;
+            rdest->u64 = rleft.u16 >> shift;
             break;
         case 32:
-            rdest->u64 = rleft.u32 >> rright.u32;
+            rdest->u64 = rleft.u32 >> shift;
             break;
         case 64:
-            rdest->u64 = rleft.u64 >> rright.u32;
+            rdest->u64 = rleft.u64 >> shift;
             break;
         }
     }
@@ -2021,7 +2029,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Register r1, r2;
         r1.u8  = IMMA_U8(ip);
         r2.u32 = IMMB_U32(ip);
-        executeShiftLeft(context, registersRC + ip->c.u32, r1, r2, 8);
+        executeShiftLeft(context, registersRC + ip->c.u32, r1, r2, 8, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
     case ByteCodeOp::BinOpShiftLeftU16:
@@ -2029,7 +2037,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Register r1, r2;
         r1.u16 = IMMA_U16(ip);
         r2.u32 = IMMB_U32(ip);
-        executeShiftLeft(context, registersRC + ip->c.u32, r1, r2, 16);
+        executeShiftLeft(context, registersRC + ip->c.u32, r1, r2, 16, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
     case ByteCodeOp::BinOpShiftLeftU32:
@@ -2037,7 +2045,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Register r1, r2;
         r1.u32 = IMMA_U32(ip);
         r2.u32 = IMMB_U32(ip);
-        executeShiftLeft(context, registersRC + ip->c.u32, r1, r2, 32);
+        executeShiftLeft(context, registersRC + ip->c.u32, r1, r2, 32, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
     case ByteCodeOp::BinOpShiftLeftU64:
@@ -2045,7 +2053,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Register r1, r2;
         r1.u64 = IMMA_U64(ip);
         r2.u32 = IMMB_U32(ip);
-        executeShiftLeft(context, registersRC + ip->c.u32, r1, r2, 64);
+        executeShiftLeft(context, registersRC + ip->c.u32, r1, r2, 64, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
 
@@ -2054,7 +2062,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Register r1, r2;
         r1.s8  = IMMA_S8(ip);
         r2.u32 = IMMB_U32(ip);
-        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 8, true);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 8, true, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
     case ByteCodeOp::BinOpShiftRightS16:
@@ -2062,7 +2070,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Register r1, r2;
         r1.s16 = IMMA_S16(ip);
         r2.u32 = IMMB_U32(ip);
-        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 16, true);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 16, true, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
     case ByteCodeOp::BinOpShiftRightS32:
@@ -2070,7 +2078,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Register r1, r2;
         r1.s32 = IMMA_S32(ip);
         r2.u32 = IMMB_U32(ip);
-        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 32, true);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 32, true, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
     case ByteCodeOp::BinOpShiftRightS64:
@@ -2078,7 +2086,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Register r1, r2;
         r1.s64 = IMMA_S64(ip);
         r2.u32 = IMMB_U32(ip);
-        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 64, true);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 64, true, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
 
@@ -2087,7 +2095,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Register r1, r2;
         r1.u8  = IMMA_U8(ip);
         r2.u32 = IMMB_U32(ip);
-        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 8, false);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 8, false, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
     case ByteCodeOp::BinOpShiftRightU16:
@@ -2095,7 +2103,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Register r1, r2;
         r1.u16 = IMMA_U16(ip);
         r2.u32 = IMMB_U32(ip);
-        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 16, false);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 16, false, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
     case ByteCodeOp::BinOpShiftRightU32:
@@ -2103,7 +2111,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Register r1, r2;
         r1.u32 = IMMA_U32(ip);
         r2.u32 = IMMB_U32(ip);
-        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 32, false);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 32, false, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
     case ByteCodeOp::BinOpShiftRightU64:
@@ -2111,7 +2119,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         Register r1, r2;
         r1.u64 = IMMA_U64(ip);
         r2.u32 = IMMB_U32(ip);
-        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 64, false);
+        executeShiftRight(context, registersRC + ip->c.u32, r1, r2, 64, false, ip->flags & BCI_SHIFT_SMALL);
         break;
     }
 
@@ -3154,7 +3162,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u8        = *(uint8_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        executeShiftLeft(context, &rr, rr, r1, 8);
+        executeShiftLeft(context, &rr, rr, r1, 8, ip->flags & BCI_SHIFT_SMALL);
         *(uint8_t*) ptr = rr.u8;
         break;
     }
@@ -3164,7 +3172,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u16       = *(uint16_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        executeShiftLeft(context, &rr, rr, r1, 16);
+        executeShiftLeft(context, &rr, rr, r1, 16, ip->flags & BCI_SHIFT_SMALL);
         *(uint16_t*) ptr = rr.u16;
         break;
     }
@@ -3174,7 +3182,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u32       = *(uint32_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        executeShiftLeft(context, &rr, rr, r1, 32);
+        executeShiftLeft(context, &rr, rr, r1, 32, ip->flags & BCI_SHIFT_SMALL);
         *(uint32_t*) ptr = rr.u32;
         break;
     }
@@ -3184,7 +3192,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u64       = *(uint64_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        executeShiftLeft(context, &rr, rr, r1, 64);
+        executeShiftLeft(context, &rr, rr, r1, 64, ip->flags & BCI_SHIFT_SMALL);
         *(uint64_t*) ptr = rr.u64;
         break;
     }
@@ -3195,7 +3203,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u8        = *(uint8_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        executeShiftRight(context, &rr, rr, r1, 8, true);
+        executeShiftRight(context, &rr, rr, r1, 8, true, ip->flags & BCI_SHIFT_SMALL);
         *(uint8_t*) ptr = rr.u8;
         break;
     }
@@ -3205,7 +3213,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u16       = *(uint16_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        executeShiftRight(context, &rr, rr, r1, 16, true);
+        executeShiftRight(context, &rr, rr, r1, 16, true, ip->flags & BCI_SHIFT_SMALL);
         *(uint16_t*) ptr = rr.u16;
         break;
     }
@@ -3215,7 +3223,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u32       = *(uint32_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        executeShiftRight(context, &rr, rr, r1, 32, true);
+        executeShiftRight(context, &rr, rr, r1, 32, true, ip->flags & BCI_SHIFT_SMALL);
         *(uint32_t*) ptr = rr.u32;
         break;
     }
@@ -3225,7 +3233,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u64       = *(uint64_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        executeShiftRight(context, &rr, rr, r1, 64, true);
+        executeShiftRight(context, &rr, rr, r1, 64, true, ip->flags & BCI_SHIFT_SMALL);
         *(uint64_t*) ptr = rr.u64;
         break;
     }
@@ -3236,7 +3244,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u8        = *(uint8_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        executeShiftRight(context, &rr, rr, r1, 8, false);
+        executeShiftRight(context, &rr, rr, r1, 8, false, ip->flags & BCI_SHIFT_SMALL);
         *(uint8_t*) ptr = rr.u8;
         break;
     }
@@ -3246,7 +3254,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u16       = *(uint16_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        executeShiftRight(context, &rr, rr, r1, 16, false);
+        executeShiftRight(context, &rr, rr, r1, 16, false, ip->flags & BCI_SHIFT_SMALL);
         *(uint16_t*) ptr = rr.u16;
         break;
     }
@@ -3256,7 +3264,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u32       = *(uint32_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        executeShiftRight(context, &rr, rr, r1, 32, false);
+        executeShiftRight(context, &rr, rr, r1, 32, false, ip->flags & BCI_SHIFT_SMALL);
         *(uint32_t*) ptr = rr.u32;
         break;
     }
@@ -3266,7 +3274,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto     ptr = registersRC[ip->a.u32].pointer;
         rr.u64       = *(uint64_t*) ptr;
         r1.u32       = IMMB_U32(ip);
-        executeShiftRight(context, &rr, rr, r1, 64, false);
+        executeShiftRight(context, &rr, rr, r1, 64, false, ip->flags & BCI_SHIFT_SMALL);
         *(uint64_t*) ptr = rr.u64;
         break;
     }

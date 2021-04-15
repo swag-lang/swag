@@ -27,6 +27,8 @@ static const uint16_t BCI_START_STMT    = 0x0200;
 static const uint16_t BCI_POST_COPYMOVE = 0x0400;
 static const uint16_t BCI_UNPURE        = 0x0800;
 static const uint16_t BCI_TRYCATCH      = 0x1000;
+// Depends on instruction
+static const uint16_t BCI_SHIFT_SMALL = 0x8000;
 
 struct ByteCodeInstruction
 {

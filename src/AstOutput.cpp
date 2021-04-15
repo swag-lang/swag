@@ -1067,6 +1067,8 @@ namespace Ast
             concat.addString(node->token.text);
             if (opNode->opFlags & OPFLAG_SAFE)
                 CONCAT_FIXED_STR(concat, ",safe");
+            if (opNode->opFlags & OPFLAG_SMALL)
+                CONCAT_FIXED_STR(concat, ",small");
             concat.addChar(' ');
             SWAG_CHECK(output(context, concat, node->childs[1]));
             break;
@@ -1081,6 +1083,8 @@ namespace Ast
             concat.addString(node->token.text);
             if (opNode->opFlags & OPFLAG_SAFE)
                 CONCAT_FIXED_STR(concat, ",safe");
+            if (opNode->opFlags & OPFLAG_SMALL)
+                CONCAT_FIXED_STR(concat, ",small");
             concat.addChar(' ');
             SWAG_CHECK(output(context, concat, node->childs[1]));
             concat.addChar(')');

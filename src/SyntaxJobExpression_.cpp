@@ -519,6 +519,28 @@ bool SyntaxJob::doOperatorPrecedence(AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doModifier(Token& mdfToken)
+{
+    if (token.id == TokenId::SymComma)
+    {
+        SWAG_CHECK(tokenizer.getToken(mdfToken));
+        if (mdfToken.text == "safe")
+        {
+            SWAG_CHECK(eatToken());
+        }
+        else if (mdfToken.text == "small")
+        {
+            SWAG_CHECK(eatToken());
+        }
+        else
+        {
+            return error(mdfToken, format("invalid modifier '%s'", mdfToken.text.c_str()));
+        }
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doFactorExpression(AstNode** parent, AstNode** result)
 {
     AstNode* leftNode;
@@ -547,28 +569,31 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
 
         // Modifiers
-        if (token.id == TokenId::SymComma)
+        Token mdfToken;
+        SWAG_CHECK(doModifier(mdfToken));
+        if (mdfToken.text == "safe")
         {
-            SWAG_CHECK(tokenizer.getToken(token));
-            if (token.text == "safe")
+            if (binaryNode->token.id != TokenId::SymPlus &&
+                binaryNode->token.id != TokenId::SymMinus &&
+                binaryNode->token.id != TokenId::SymAsterisk &&
+                binaryNode->token.id != TokenId::SymLowerLower &&
+                binaryNode->token.id != TokenId::SymGreaterGreater)
             {
-                if (binaryNode->token.id != TokenId::SymPlus &&
-                    binaryNode->token.id != TokenId::SymMinus &&
-                    binaryNode->token.id != TokenId::SymAsterisk &&
-                    binaryNode->token.id != TokenId::SymLowerLower &&
-                    binaryNode->token.id != TokenId::SymGreaterGreater)
-                {
-                    return error(token, format("'safe' modifier is not valid for operator '%s'", binaryNode->token.text.c_str()));
-                }
+                return error(mdfToken, format("'%s' modifier is not valid for operator '%s'", mdfToken.text.c_str(), binaryNode->token.text.c_str()));
+            }
 
-                binaryNode->opFlags |= OPFLAG_SAFE;
-                binaryNode->attributeFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
-                SWAG_CHECK(eatToken());
-            }
-            else
+            binaryNode->opFlags |= OPFLAG_SAFE;
+            binaryNode->attributeFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
+        }
+        else if (mdfToken.text == "small")
+        {
+            if (binaryNode->token.id != TokenId::SymLowerLower &&
+                binaryNode->token.id != TokenId::SymGreaterGreater)
             {
-                return error(token, format("invalid operator modifier '%s'", binaryNode->token.text.c_str()));
+                return error(mdfToken, format("'%s' modifier is not valid for operator '%s'", mdfToken.text.c_str(), binaryNode->token.text.c_str()));
             }
+
+            binaryNode->opFlags |= OPFLAG_SMALL;
         }
 
         Ast::addChildBack(binaryNode, leftNode);
@@ -1267,28 +1292,31 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
 
         // Modifiers
-        if (token.id == TokenId::SymComma)
+        Token mdfToken;
+        SWAG_CHECK(doModifier(mdfToken));
+        if (mdfToken.text == "safe")
         {
-            SWAG_CHECK(tokenizer.getToken(token));
-            if (token.text == "safe")
+            if (savedtoken.id != TokenId::SymPlusEqual &&
+                savedtoken.id != TokenId::SymMinusEqual &&
+                savedtoken.id != TokenId::SymAsteriskEqual &&
+                savedtoken.id != TokenId::SymLowerLowerEqual &&
+                savedtoken.id != TokenId::SymGreaterGreaterEqual)
             {
-                if (savedtoken.id != TokenId::SymPlusEqual &&
-                    savedtoken.id != TokenId::SymMinusEqual &&
-                    savedtoken.id != TokenId::SymAsteriskEqual &&
-                    savedtoken.id != TokenId::SymLowerLowerEqual &&
-                    savedtoken.id != TokenId::SymGreaterGreaterEqual)
-                {
-                    return error(token, format("'safe' modifier is not valid for operator '%s'", savedtoken.text.c_str()));
-                }
+                return error(mdfToken, format("'%s' modifier is not valid for operator '%s'", mdfToken.text.c_str(), savedtoken.text.c_str()));
+            }
 
-                opFlags |= OPFLAG_SAFE;
-                opAttrFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
-                SWAG_CHECK(eatToken());
-            }
-            else
+            opFlags |= OPFLAG_SAFE;
+            opAttrFlags |= ATTRIBUTE_SAFETY_OFF_OPERATOR;
+        }
+        else if (mdfToken.text == "small")
+        {
+            if (savedtoken.id != TokenId::SymLowerLowerEqual &&
+                savedtoken.id != TokenId::SymGreaterGreaterEqual)
             {
-                return error(token, format("invalid operator modifier '%s'", token.text.c_str()));
+                return error(mdfToken, format("'%s' modifier is not valid for operator '%s'", mdfToken.text.c_str(), savedtoken.text.c_str()));
             }
+
+            opFlags |= OPFLAG_SMALL;
         }
 
         // Multiple affectation
