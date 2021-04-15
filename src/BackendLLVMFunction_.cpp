@@ -271,11 +271,35 @@ llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Functio
     return it->second;
 }
 
+void BackendLLVM::emitShiftArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
+{
+    auto         iType = getIntType(context, numBits);
+    auto         r0    = TO_PTR_I_N(GEP_I32(allocR, ip->c.u32), numBits);
+    llvm::Value* r1    = getImmediateConstantA(context, builder, allocR, ip, numBits);
+    llvm::Value* r2    = MK_IMMB_32();
+    auto         c2    = builder.CreateIntCast(r2, iType, false);
+    auto         shift = llvm::ConstantInt::get(iType, numBits - 1);
+
+    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits)
+        c2 = shift;
+    else if (!(ip->flags & BCI_IMM_B))
+    {
+        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
+        auto iftrue  = c2;
+        auto iffalse = shift;
+        c2           = builder.CreateSelect(cond, iftrue, iffalse);
+    }
+
+    auto v0 = builder.CreateAShr(r1, c2);
+    builder.CreateStore(v0, TO_PTR_I_N(r0, numBits));
+}
+
 void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left)
 {
     auto iType = getIntType(context, numBits);
     auto r0    = TO_PTR_I_N(GEP_I32(allocR, ip->c.u32), numBits);
     auto zero  = llvm::ConstantInt::get(iType, 0);
+
     if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits)
         builder.CreateStore(zero, r0);
     else
@@ -1704,87 +1728,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::BinOpShiftRightS8:
-        {
-            auto         r0 = TO_PTR_I8(GEP_I32(allocR, ip->c.u32));
-            llvm::Value* r1 = MK_IMMA_8();
-            llvm::Value* r2 = MK_IMMB_32();
-            auto         c2 = builder.CreateIntCast(r2, builder.getInt8Ty(), false);
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 8)
-                c2 = builder.getInt8(7);
-            else if (!(ip->flags & BCI_IMM_B))
-            {
-                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(8));
-                auto iftrue  = c2;
-                auto iffalse = builder.getInt8(7);
-                c2           = builder.CreateSelect(cond, iftrue, iffalse);
-            }
-
-            auto v0 = builder.CreateAShr(r1, c2);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
+            emitShiftArithmetic(context, builder, allocR, ip, 8);
             break;
-        }
         case ByteCodeOp::BinOpShiftRightS16:
-        {
-            auto         r0 = TO_PTR_I16(GEP_I32(allocR, ip->c.u32));
-            llvm::Value* r1 = MK_IMMA_16();
-            llvm::Value* r2 = MK_IMMB_32();
-            auto         c2 = builder.CreateIntCast(r2, builder.getInt16Ty(), false);
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 16)
-                c2 = builder.getInt16(15);
-            else if (!(ip->flags & BCI_IMM_B))
-            {
-                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(16));
-                auto iftrue  = c2;
-                auto iffalse = builder.getInt16(15);
-                c2           = builder.CreateSelect(cond, iftrue, iffalse);
-            }
-
-            auto v0 = builder.CreateAShr(r1, c2);
-            builder.CreateStore(v0, TO_PTR_I16(r0));
+            emitShiftArithmetic(context, builder, allocR, ip, 16);
             break;
-        }
         case ByteCodeOp::BinOpShiftRightS32:
-        {
-            MK_BINOP32_CAB();
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 32)
-                r2 = builder.getInt32(31);
-            else if (!(ip->flags & BCI_IMM_B))
-            {
-                auto cond    = builder.CreateICmpULT(r2, builder.getInt32(32));
-                auto iftrue  = r2;
-                auto iffalse = builder.getInt32(31);
-                r2           = builder.CreateSelect(cond, iftrue, iffalse);
-            }
-
-            auto v0 = builder.CreateAShr(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I32(r0));
+            emitShiftArithmetic(context, builder, allocR, ip, 32);
             break;
-        }
         case ByteCodeOp::BinOpShiftRightS64:
-        {
-            MK_BINOP64_CAB();
-            if (ip->flags & BCI_IMM_B && ip->b.u32 >= 64)
-                r2 = builder.getInt64(63);
-            else
-            {
-                // Need to do that in order to be sure that r2 is only valid in the 32 bits part
-                // Should be removed when the shift operand will be 32 or 64 bits.
-                r2 = builder.CreateIntCast(r2, builder.getInt32Ty(), false);
-                r2 = builder.CreateIntCast(r2, builder.getInt64Ty(), false);
-
-                if (!(ip->flags & BCI_IMM_B))
-                {
-                    auto cond    = builder.CreateICmpULT(r2, builder.getInt64(63));
-                    auto iftrue  = r2;
-                    auto iffalse = builder.getInt64(63);
-                    r2           = builder.CreateSelect(cond, iftrue, iffalse);
-                }
-            }
-
-            auto v0 = builder.CreateAShr(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I64(r0));
+            emitShiftArithmetic(context, builder, allocR, ip, 64);
             break;
-        }
 
         case ByteCodeOp::BinOpModuloS32:
         {
