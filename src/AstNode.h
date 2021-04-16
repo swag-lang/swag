@@ -647,7 +647,8 @@ struct AstSwitch : public AstBreakable
 
     VectorNative<AstSwitchCase*> cases;
 
-    AstNode* expression;
+    AstNode*  expression;
+    TypeInfo* beforeAutoCastType;
 };
 
 struct AstSwitchCase : public AstNode

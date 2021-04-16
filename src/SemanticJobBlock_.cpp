@@ -230,7 +230,7 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
         }
 
         // Remember original type
-        switchNode->typeInfo = node->typeInfo;
+        switchNode->beforeAutoCastType = node->typeInfo;
 
         node->byteCodeFct = ByteCodeGenJob::emitImplicitKindOf;
         auto& typeTable   = node->sourceFile->module->typeTable;
@@ -263,8 +263,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     node->expression->extension->byteCodeAfterFct = ByteCodeGenJob::emitSwitchAfterExpr;
 
     SWAG_CHECK(checkIsConcrete(context, node->expression));
-    auto originalSwitchType = node->typeInfo;
-    node->typeInfo          = node->expression->typeInfo;
+    node->typeInfo = node->expression->typeInfo;
 
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
 
@@ -324,8 +323,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     if (node->attributeFlags & ATTRIBUTE_COMPLETE)
     {
         // For typeset, we need to test originalSwitchType, because the type of the switch is now to @kindof(originalType)
-        if (node->typeInfo->kind != TypeInfoKind::Enum && (!originalSwitchType || originalSwitchType->kind != TypeInfoKind::TypeSet))
-            return context->report({node, format("'swag.complete' attribute cannot be used on a switch with type '%s'", node->typeInfo->getDisplayName().c_str())});
+        if (node->typeInfo->kind != TypeInfoKind::Enum && (!node->beforeAutoCastType || node->beforeAutoCastType->kind != TypeInfoKind::TypeSet))
+            return context->report({node, node->token, format("'swag.complete' attribute cannot be used on a switch with type '%s'", node->typeInfo->getDisplayName().c_str())});
 
         if (node->typeInfo->kind == TypeInfoKind::Enum)
         {
@@ -361,9 +360,9 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 }
             }
         }
-        else if (originalSwitchType && originalSwitchType->kind == TypeInfoKind::TypeSet)
+        else if (node->beforeAutoCastType && node->beforeAutoCastType->kind == TypeInfoKind::TypeSet)
         {
-            auto typeSet = CastTypeInfo<TypeInfoStruct>(originalSwitchType, TypeInfoKind::TypeSet);
+            auto typeSet = CastTypeInfo<TypeInfoStruct>(node->beforeAutoCastType, TypeInfoKind::TypeSet);
             if (val64.size() != typeSet->fields.size())
             {
                 for (auto one : typeSet->fields)
