@@ -250,7 +250,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
 
     // Be sure it's the NAME{} syntax
     if (!(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
-        return context->report({callP, callP->token, format("struct '%s' must be initialized in place with '{}' and not parenthesis (this is reserved for function calls)", identifier->typeInfo->name.c_str())});
+        return context->report({callP, callP->token, format("struct '%s' must be initialized in place with '{}' and not parenthesis (this is reserved for function calls)", identifier->typeInfo->getDisplayName().c_str())});
 
     auto varParent = identifier->identifierRef->parent;
     while (varParent->kind == AstNodeKind::ExpressionList)
@@ -569,7 +569,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Pointer &&
         parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Struct)
     {
-        return context->report({parent->previousResolvedNode, format("identifier '%s' cannot be dereferenced like a struct (type is '%s')", parent->previousResolvedNode->token.text.c_str(), parent->previousResolvedNode->typeInfo->name.c_str())});
+        return context->report({parent->previousResolvedNode, format("identifier '%s' cannot be dereferenced like a struct (type is '%s')", parent->previousResolvedNode->token.text.c_str(), parent->previousResolvedNode->typeInfo->getDisplayName().c_str())});
     }
 
     // If a variable on the left has only been used for scoping, and not evaluated as an ufcs source, then this is an
@@ -793,7 +793,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
-            return context->report({identifier, identifier->token, format("struct '%s' must be initialized in place with '{}' and not parenthesis (this is reserved for function calls)", identifier->typeInfo->name.c_str())});
+            return context->report({identifier, identifier->token, format("struct '%s' must be initialized in place with '{}' and not parenthesis (this is reserved for function calls)", identifier->typeInfo->getDisplayName().c_str())});
 
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters)
@@ -1357,9 +1357,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   format("bad type of parameter '%d' for %s ('%s' is expected for field '%s', '%s' provided)",
                                          badParamIdx,
                                          refNiceName.c_str(),
-                                         bi.badSignatureRequestedType->name.c_str(),
+                                         bi.badSignatureRequestedType->getDisplayName().c_str(),
                                          typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
-                                         bi.badSignatureGivenType->name.c_str())};
+                                         bi.badSignatureGivenType->getDisplayName().c_str())};
         }
         else
         {
@@ -1367,8 +1367,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   format("bad type of parameter '%d' for %s ('%s' expected, '%s' provided)",
                                          badParamIdx,
                                          refNiceName.c_str(),
-                                         bi.badSignatureRequestedType->name.c_str(),
-                                         bi.badSignatureGivenType->name.c_str())};
+                                         bi.badSignatureRequestedType->getDisplayName().c_str(),
+                                         bi.badSignatureGivenType->getDisplayName().c_str())};
         }
         if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             diag->remarks.push_back(format("an explicit 'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str()));
@@ -1410,8 +1410,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   format("bad type of generic parameter '%d' for %s ('%s' expected, '%s' provided)",
                                          badParamIdx,
                                          refNiceName.c_str(),
-                                         bi.badSignatureRequestedType->name.c_str(),
-                                         bi.badSignatureGivenType->name.c_str())};
+                                         bi.badSignatureRequestedType->getDisplayName().c_str(),
+                                         bi.badSignatureGivenType->getDisplayName().c_str())};
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
                 diag->remarks.push_back(format("an explicit 'cast(%s)' can be used in that context", bi.badSignatureRequestedType->name.c_str()));
             note = new Diagnostic{overload->node, overload->node->token, format("this is %s", refNiceName.c_str()), DiagnosticLevel::Note};
@@ -1512,7 +1512,7 @@ void SemanticJob::symbolNotFoundNotes(SemanticContext* context, VectorNative<One
                                                format("'%s' is %s of type '%s' which does not contain a subscope",
                                                       prev->token.text.c_str(),
                                                       SymTable::getArticleKindName(prev->resolvedSymbolName->kind),
-                                                      prev->typeInfo->name.c_str()),
+                                                      prev->typeInfo->getDisplayName().c_str()),
                                                DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
@@ -1557,7 +1557,7 @@ void SemanticJob::symbolNotFoundRemarks(SemanticContext* context, VectorNative<O
             diag->remarks.push_back(format("symbol '%s' was not found in %s '%s'",
                                            node->token.text.c_str(),
                                            TypeInfo::getNakedKindName(identifier->identifierRef->typeInfo),
-                                           identifier->identifierRef->typeInfo->name.c_str()));
+                                           identifier->identifierRef->typeInfo->getDisplayName().c_str()));
             for (auto s : identifier->identifierRef->startScope->childScopes)
             {
                 if (s->kind == ScopeKind::Impl)
@@ -2589,7 +2589,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
         {
             if (symbolKind == SymbolKind::Variable)
             {
-                Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is a variable of type '%s' and not a function", node->token.text.c_str(), symbol->overloads[0]->typeInfo->name.c_str())};
+                Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is a variable of type '%s' and not a function", node->token.text.c_str(), symbol->overloads[0]->typeInfo->getDisplayName().c_str())};
                 Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is '%s'", node->token.text.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }

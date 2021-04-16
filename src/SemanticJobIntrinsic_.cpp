@@ -38,7 +38,7 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
         return context->report({node, format("callback type not supported, too many parameters (maximum is '%d')", SWAG_LIMIT_CB_MAX_PARAMS)});
     if (typeFunc->numReturnRegisters() > 1)
-        return context->report({node, format("callback return type '%s' not supported", typeFunc->returnType->name.c_str())});
+        return context->report({node, format("callback return type '%s' not supported", typeFunc->returnType->getDisplayName().c_str())});
 
     node->typeInfo    = g_TypeMgr.typeInfoPVoid;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;
@@ -90,14 +90,14 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
     if (second->flags & AST_VALUE_IS_TYPEINFO)
     {
         if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            return context->report({node, format("'pointer to value and type are not related (first parameter is a pointer to type '%s' but second parameter is type '%s')", ptrPointer->pointedType->name.c_str(), second->typeInfo->name.c_str())});
+            return context->report({node, format("'pointer to value and type are not related (first parameter is a pointer to type '%s' but second parameter is type '%s')", ptrPointer->pointedType->getDisplayName().c_str(), second->typeInfo->getDisplayName().c_str())});
     }
 
     SWAG_CHECK(checkIsConcreteOrType(context, second));
     if (context->result != ContextResult::Done)
         return true;
     if (!(second->typeInfo->isPointerToTypeInfo()))
-        return context->report({node, format("'@mkany' must have a 'typeinfo' or a type value as a second parameter ('%s' provided)", second->typeInfo->name.c_str())});
+        return context->report({node, format("'@mkany' must have a 'typeinfo' or a type value as a second parameter ('%s' provided)", second->typeInfo->getDisplayName().c_str())});
 
     node->typeInfo    = g_TypeMgr.typeInfoAny;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeAny;
@@ -194,7 +194,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else
     {
-        return context->report({node, format("'@dataof' cannot be applied to expression of type '%s'", typeInfo->name.c_str())});
+        return context->report({node, format("'@dataof' cannot be applied to expression of type '%s'", typeInfo->getDisplayName().c_str())});
     }
 
     return true;
@@ -286,7 +286,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else
     {
-        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({node, format("expression should be of type integer, but is '%s'", typeInfo->name.c_str())}));
+        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({node, format("expression should be of type integer, but is '%s'", typeInfo->getDisplayName().c_str())}));
         if (node->flags & AST_VALUE_COMPUTED)
         {
             if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
@@ -359,7 +359,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     }
     else
     {
-        return context->report({expr, format("expression of type '%s' cannot be spreaded", typeInfo->name.c_str())});
+        return context->report({expr, format("expression of type '%s' cannot be spreaded", typeInfo->getDisplayName().c_str())});
     }
 
     auto typeVar     = allocType<TypeInfoVariadic>();

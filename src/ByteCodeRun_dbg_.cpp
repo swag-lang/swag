@@ -343,7 +343,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                             continue;
 
                         Utf8 str;
-                        str = format("%s (%s) = ", over->symbol->name.c_str(), over->typeInfo->name.c_str());
+                        str = format("%s (%s) = ", over->symbol->name.c_str(), over->typeInfo->getDisplayName().c_str());
                         appendValue(str, over->typeInfo, context->debugCxtBp + over->storageOffset);
                         g_Log.printColor(str);
                         g_Log.eol();
@@ -367,7 +367,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         if (!over)
                             continue;
                         Utf8 str;
-                        str = format("%s (%s) = ", over->symbol->name.c_str(), over->typeInfo->name.c_str());
+                        str = format("%s (%s) = ", over->symbol->name.c_str(), over->typeInfo->getDisplayName().c_str());
                         appendValue(str, over->typeInfo, context->debugCxtBp + over->storageOffset);
                         g_Log.printColor(str);
                         g_Log.eol();

@@ -246,7 +246,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             if (!typeResult)
             {
                 context->hasError = true;
-                context->errorMsg = format("ffi failed to convert return type '%s'", typeInfoFunc->returnType->name.c_str());
+                context->errorMsg = format("ffi failed to convert return type '%s'", typeInfoFunc->returnType->getDisplayName().c_str());
                 return;
             }
         }
@@ -275,7 +275,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             break;
         default:
             context->hasError = true;
-            context->errorMsg = format("ffi failed to get return result of type '%s'", typeInfoFunc->returnType->name.c_str());
+            context->errorMsg = format("ffi failed to get return result of type '%s'", typeInfoFunc->returnType->getDisplayName().c_str());
             return;
         }
     }

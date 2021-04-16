@@ -175,9 +175,9 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         // First parameter in the impl block must be a pointer to the struct
         SWAG_VERIFY(typeFunc->parameters.size(), context->report({child, child->token, format("missing first parameter 'self' for interface function '%s'", child->token.text.c_str())}));
         auto firstParamType = typeFunc->parameters[0]->typeInfo;
-        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->declNode, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->declNode, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->getDisplayName().c_str())}));
         auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->getDisplayName().c_str())}));
 
         // use resolvedUserOpSymbolOverload to store the match
         mapItToFunc[symbolName]           = child;
@@ -562,7 +562,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         if (child->flags & AST_DECL_USING && child->kind == AstNodeKind::ConstDecl)
             return context->report({child, "'using' is invalid on a constant"});
         if (child->flags & AST_DECL_USING && child->typeInfo->kind != TypeInfoKind::Struct && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
-            return context->report({child, format("'using' on a field is only valid for a struct type ('%s' provided)", child->typeInfo->name.c_str())});
+            return context->report({child, format("'using' on a field is only valid for a struct type ('%s' provided)", child->typeInfo->getDisplayName().c_str())});
 
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC) || !(child->flags & AST_STRUCT_REGISTERED))
@@ -674,8 +674,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 if (varDecl->type)
                     child = varDecl->type;
                 if (!node->genericParameters)
-                    return context->report({child, format("type '%s' is generic, but struct '%s' does not declare generic parameters", child->typeInfo->name.c_str(), node->token.text.c_str())});
-                return context->report({child, format("cannot resolve struct '%s' because type '%s' is generic", node->token.text.c_str(), child->typeInfo->name.c_str())});
+                    return context->report({child, format("type '%s' is generic, but struct '%s' does not declare generic parameters", child->typeInfo->getDisplayName().c_str(), node->token.text.c_str())});
+                return context->report({child, format("cannot resolve struct '%s' because type '%s' is generic", node->token.text.c_str(), child->typeInfo->getDisplayName().c_str())});
             }
         }
 
@@ -880,13 +880,13 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
             // Verify signature
             typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
-            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, format("an interface can only contain members of type 'lambda' ('%s' provided)", child->typeInfo->name.c_str())}));
+            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, format("an interface can only contain members of type 'lambda' ('%s' provided)", child->typeInfo->getDisplayName().c_str())}));
             auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
             SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({child, format("missing parameters for interface member '%s' ('self' expected as first parameter)", child->token.text.c_str())}));
             auto firstParamType = typeLambda->parameters[0]->typeInfo;
-            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->declNode, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->declNode, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->getDisplayName().c_str())}));
             auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->getDisplayName().c_str())}));
         }
 
         typeParam           = typeITable->fields[storageIndex];
@@ -898,7 +898,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot resolve interface because type '%s' is generic", child->typeInfo->name.c_str())}));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot resolve interface because type '%s' is generic", child->typeInfo->getDisplayName().c_str())}));
         }
 
         if (typeParam->attributes.hasAttribute("swag.offset"))
@@ -1024,7 +1024,7 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot resolve typeset because type '%s' is generic", child->typeInfo->name.c_str())}));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot resolve typeset because type '%s' is generic", child->typeInfo->getDisplayName().c_str())}));
         }
 
         if (typeParam->attributes.hasAttribute("swag.offset"))

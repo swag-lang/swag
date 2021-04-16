@@ -35,9 +35,9 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
     }
 
     if (wanted != g_TypeMgr.typeInfoVoid && returnType == g_TypeMgr.typeInfoVoid)
-        return context->report({node, node->token, format("missing return type for special function '%s' ('%s' expected)", node->token.text.c_str(), wanted->name.c_str())});
+        return context->report({node, node->token, format("missing return type for special function '%s' ('%s' expected)", node->token.text.c_str(), wanted->getDisplayName().c_str())});
     if (!returnType->isSame(wanted, ISSAME_CAST))
-        return context->report({node->returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", node->token.text.c_str(), wanted->name.c_str(), returnType->name.c_str())});
+        return context->report({node->returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", node->token.text.c_str(), wanted->name.c_str(), returnType->getDisplayName().c_str())});
     return true;
 }
 
@@ -45,7 +45,7 @@ bool SemanticJob::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDec
 {
     auto typeParam = TypeManager::concreteType(parameters->childs[index]->typeInfo, CONCRETE_ALIAS);
     if (!typeParam->isSame(wanted, ISSAME_CAST))
-        return context->report({parameters->childs[index], format("invalid parameter '%d' for special function '%s' ('%s' expected, '%s' provided)", index + 1, node->token.text.c_str(), wanted->name.c_str(), typeParam->name.c_str())});
+        return context->report({parameters->childs[index], format("invalid parameter '%d' for special function '%s' ('%s' expected, '%s' provided)", index + 1, node->token.text.c_str(), wanted->getDisplayName().c_str(), typeParam->getDisplayName().c_str())});
     return true;
 }
 
@@ -83,9 +83,9 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         // First parameter must be be struct
         SWAG_VERIFY(node->parameters, context->report({node, node->token, format("missing parameters for special function '%s'", name.c_str())}));
         auto firstType = node->parameters->childs.front()->typeInfo;
-        SWAG_VERIFY(firstType->kind == TypeInfoKind::Pointer, context->report({node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+        SWAG_VERIFY(firstType->kind == TypeInfoKind::Pointer, context->report({node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->getDisplayName().c_str(), firstType->getDisplayName().c_str())}));
         auto firstTypePtr = CastTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
-        SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, ISSAME_CAST), context->report({node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+        SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, ISSAME_CAST), context->report({node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->getDisplayName().c_str(), firstType->getDisplayName().c_str())}));
     }
 
     // Generic operator must have one generic parameter of type string
@@ -285,7 +285,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
             return false;
 
         auto leftType = TypeManager::concreteType(left->typeInfo);
-        return context->report({left->parent, format("cannot find special function '%s' in '%s'", name, leftType->name.c_str())});
+        return context->report({left->parent, format("cannot find special function '%s' in '%s'", name, leftType->getDisplayName().c_str())});
     }
 
     if (context->result != ContextResult::Done)

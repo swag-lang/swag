@@ -35,7 +35,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
     SWAG_ASSERT(oneAttribute->typeInfo);
     if (oneAttribute->typeInfo->kind != TypeInfoKind::FuncAttr)
-        return context->report({oneAttribute, format("'%s' is not a valid attribute, it's %s", oneAttribute->typeInfo->name.c_str(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
+        return context->report({oneAttribute, format("'%s' is not a valid attribute, it's %s", oneAttribute->typeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
 
     auto kind     = checkNode->kind;
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);

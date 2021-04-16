@@ -681,7 +681,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
                  !(typeInfo->flags & TYPEINFO_FLOAT) &&
                  typeInfo->kind != TypeInfoKind::Lambda)
         {
-            return context->report({expression, format("cannot use operator '??' on type '%s'", typeInfo->name.c_str())});
+            return context->report({expression, format("cannot use operator '??' on type '%s'", typeInfo->getDisplayName().c_str())});
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));

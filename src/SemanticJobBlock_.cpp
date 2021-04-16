@@ -252,7 +252,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     case TypeInfoKind::Array:
     case TypeInfoKind::Interface:
     case TypeInfoKind::TypeSet:
-        return context->report({node->expression, format("invalid switch type '%s'", typeSwitch->name.c_str())});
+        return context->report({node->expression, format("invalid switch type '%s'", typeSwitch->getDisplayName().c_str())});
     }
 
     SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, "switch body is empty"}));
@@ -296,7 +296,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     {
         if (node->typeInfo->kind != TypeInfoKind::Enum)
         {
-            return context->report({node, format("'swag.complete' attribute on a switch can only be used for an enum type ('%s' provided)", node->typeInfo->name.c_str())});
+            return context->report({node, format("'swag.complete' attribute on a switch can only be used for an enum type ('%s' provided)", node->typeInfo->getDisplayName().c_str())});
         }
 
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
@@ -537,7 +537,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
     else
     {
-        return context->report({node->expression, format("invalid type '%s' for visit", typeInfo->name.c_str())});
+        return context->report({node->expression, format("invalid type '%s' for visit", typeInfo->getDisplayName().c_str())});
     }
 
     SyntaxJob syntaxJob;

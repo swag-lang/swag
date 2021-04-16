@@ -334,7 +334,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 }
 
                 SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, "array dimension cannot be evaluated at compile time"}));
-                SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->report({child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
+                SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->report({child, format("array dimension is '%s' and should be integer", child->typeInfo->getDisplayName().c_str())}));
                 SWAG_CHECK(checkSizeOverflow(context, "array", child->computedValue.reg.u32 * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
                 SWAG_VERIFY(!child->isConstant0(), context->report({child, "array dimension is 0"}));
 
@@ -576,13 +576,13 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
 
     if (!(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
         (!typeInfo->isNative(NativeTypeKind::Char)))
-        return context->report({typeNode, format("invalid bitcast type '%s' (should be native integer, char or float)", typeInfo->name.c_str())});
+        return context->report({typeNode, format("invalid bitcast type '%s' (should be native integer, char or float)", typeInfo->getDisplayName().c_str())});
 
     if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
         (!exprTypeInfo->isNative(NativeTypeKind::Char)))
-        return context->report({exprNode, format("cannot bitcast from type '%s' (should be native integer, char or float)", exprTypeInfo->name.c_str())});
+        return context->report({exprNode, format("cannot bitcast from type '%s' (should be native integer, char or float)", exprTypeInfo->getDisplayName().c_str())});
 
-    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, format("cannot bitcast to a type with a bigger size ('%s' from '%s')", typeInfo->name.c_str(), exprTypeInfo->name.c_str())}));
+    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, format("cannot bitcast to a type with a bigger size ('%s' from '%s')", typeInfo->getDisplayName().c_str(), exprTypeInfo->getDisplayName().c_str())}));
 
     node->typeInfo = typeNode->typeInfo;
     node->setPassThrough();

@@ -72,7 +72,7 @@ bool SemanticJob::resolveCompilerSelectIfExpression(SemanticContext* context)
 
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::Bool), context->report({expression, format("'#selectif' expression is not 'bool' ('%s' provided)", expression->typeInfo->name.c_str())}));
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::Bool), context->report({expression, format("'#selectif' expression is not 'bool' ('%s' provided)", expression->typeInfo->getDisplayName().c_str())}));
 
     return true;
 }
@@ -86,7 +86,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     auto job        = context->job;
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, format("'#ast' expression is not 'string' ('%s' provided)", expression->typeInfo->name.c_str())}));
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, format("'#ast' expression is not 'string' ('%s' provided)", expression->typeInfo->getDisplayName().c_str())}));
 
     SWAG_CHECK(executeNode(context, expression, true));
     if (context->result != ContextResult::Done)
@@ -186,7 +186,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     node->doneFlags |= AST_DONE_COMPILER_INSERT;
 
     auto expr = node->childs[0];
-    SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, format("expression should be of type 'code' ('%s' provided)", expr->typeInfo->name.c_str())}));
+    SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, format("expression should be of type 'code' ('%s' provided)", expr->typeInfo->getDisplayName().c_str())}));
 
     node->allocateExtension();
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitDebugNop;
@@ -324,13 +324,13 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
             g_Log.print(expr->computedValue.text);
             break;
         default:
-            g_Log.print(format("<%s>", typeInfo->name.c_str()));
+            g_Log.print(format("<%s>", typeInfo->getDisplayName().c_str()));
             break;
         }
     }
     else
     {
-        g_Log.print(format("<%s>", typeInfo->name.c_str()));
+        g_Log.print(format("<%s>", typeInfo->getDisplayName().c_str()));
     }
 
     g_Log.eol();
@@ -437,7 +437,7 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
     auto back   = node->childs[0];
 
     SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, "filename cannot be evaluated at compile time"}));
-    SWAG_VERIFY(back->typeInfo == g_TypeMgr.typeInfoString, context->report({back, format("'#load' parameter should be of type string ('%s' provided)", back->typeInfo->name.c_str())}));
+    SWAG_VERIFY(back->typeInfo == g_TypeMgr.typeInfoString, context->report({back, format("'#load' parameter should be of type string ('%s' provided)", back->typeInfo->getDisplayName().c_str())}));
 
     if (!(node->doneFlags & AST_DONE_LOAD))
     {
@@ -544,7 +544,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         if (context->result == ContextResult::Pending)
             return true;
         SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, "'#hastag' name cannot be evaluated at compile time"}));
-        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, format("'#hastag' parameter must be a string ('%s' provided)", front->typeInfo->name.c_str())}));
+        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, format("'#hastag' parameter must be a string ('%s' provided)", front->typeInfo->getDisplayName().c_str())}));
         auto tag                  = g_Workspace.hasTag(front->computedValue.text);
         node->typeInfo            = g_TypeMgr.typeInfoBool;
         node->computedValue.reg.b = tag ? true : false;
@@ -560,14 +560,14 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         if (context->result == ContextResult::Pending)
             return true;
         SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, "'#tagval' name cannot be evaluated at compile time"}));
-        SWAG_VERIFY(back->typeInfo->isNative(NativeTypeKind::String), context->report({back, format("'#tagval' parameter must be a string ('%s' provided)", back->typeInfo->name.c_str())}));
+        SWAG_VERIFY(back->typeInfo->isNative(NativeTypeKind::String), context->report({back, format("'#tagval' parameter must be a string ('%s' provided)", back->typeInfo->getDisplayName().c_str())}));
         node->typeInfo = front->typeInfo;
         auto tag       = g_Workspace.hasTag(back->computedValue.text);
         if (tag)
         {
             if (!TypeManager::makeCompatibles(context, front->typeInfo, tag->type, nullptr, front, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                Diagnostic diag(front, front->token, format("type '%s' and type '%s' defined in the command line for '%s' are incompatible", front->typeInfo->name.c_str(), tag->type->name.c_str(), tag->name.c_str()));
+                Diagnostic diag(front, front->token, format("type '%s' and type '%s' defined in the command line for '%s' are incompatible", front->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str()));
                 Diagnostic note(front, front->token, format("this is the related command line option: '%s'", tag->cmdLine.c_str()), DiagnosticLevel::Note);
                 note.hasFile     = false;
                 note.printSource = false;

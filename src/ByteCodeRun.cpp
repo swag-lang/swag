@@ -759,7 +759,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         if (!getVariadicSI(context, ip, &registersRC[ip->a.u32], &registersRC[ip->b.u32]))
         {
             context->hasError = true;
-            context->errorMsg = format("cannot evaluate function parameter at compile time (type is '%s')", solved->typeInfo->name.c_str());
+            context->errorMsg = format("cannot evaluate function parameter at compile time (type is '%s')", solved->typeInfo->getDisplayName().c_str());
         }
 
         return;
@@ -788,7 +788,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         }
 
         context->hasError = true;
-        context->errorMsg = format("cannot evaluate function parameter at compile time (type is '%s')", solved->typeInfo->name.c_str());
+        context->errorMsg = format("cannot evaluate function parameter at compile time (type is '%s')", solved->typeInfo->getDisplayName().c_str());
         return;
     }
 
@@ -824,7 +824,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     }
 
     context->hasError = true;
-    context->errorMsg = format("evaluation of a function parameter of type '%s' is not supported at compile time", solved->typeInfo->name.c_str());
+    context->errorMsg = format("evaluation of a function parameter of type '%s' is not supported at compile time", solved->typeInfo->getDisplayName().c_str());
 }
 
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)

@@ -253,7 +253,7 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
         }
     }
 
-    return moduleToGen->internalError(format("swagTypeToLLVMType, invalid type '%s'", typeInfo->name.c_str()));
+    return moduleToGen->internalError(format("swagTypeToLLVMType, invalid type '%s'", typeInfo->getDisplayName().c_str()));
 }
 
 llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int32_t ip)
@@ -614,7 +614,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
         }
         else
         {
-            return moduleToGen->internalError(format("emitFuncWrapperPublic, invalid return type '%s'", returnType->name.c_str()));
+            return moduleToGen->internalError(format("emitFuncWrapperPublic, invalid return type '%s'", returnType->getDisplayName().c_str()));
         }
     }
     else

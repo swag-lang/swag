@@ -80,8 +80,8 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
         {
-            SWAG_VERIFY(funcParam->typeInfo->kind == TypeInfoKind::Native || funcParam->typeInfo->kind == TypeInfoKind::Enum, context->report({nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->name.c_str())}));
-            SWAG_VERIFY(funcParam->typeInfo->nativeType != NativeTypeKind::Any, context->report({nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->name.c_str())}));
+            SWAG_VERIFY(funcParam->typeInfo->kind == TypeInfoKind::Native || funcParam->typeInfo->kind == TypeInfoKind::Enum, context->report({nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(funcParam->typeInfo->nativeType != NativeTypeKind::Any, context->report({nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->getDisplayName().c_str())}));
         }
 
         parameters->inheritOrFlag(nodeParam->type, AST_IS_GENERIC);
@@ -532,7 +532,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Reference &&
         typeInfo->returnType->kind != TypeInfoKind::Array &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
-        return context->report({typeNode->childs.front(), format("a function cannot return a value of type '%s'", typeInfo->returnType->name.c_str())});
+        return context->report({typeNode->childs.front(), format("a function cannot return a value of type '%s'", typeInfo->returnType->getDisplayName().c_str())});
 
     typeInfo->forceComputeName();
 
@@ -912,7 +912,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     {
         if (funcNode->returnType->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
             return context->report({node, node->token, "missing return value (tuple)"});
-        return context->report({node, node->token, format("missing return value (type '%s')", funcNode->returnType->typeInfo->name.c_str())});
+        return context->report({node, node->token, format("missing return value (type '%s')", funcNode->returnType->typeInfo->getDisplayName().c_str())});
     }
 
     auto returnType = funcNode->returnType->typeInfo;
@@ -925,7 +925,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // (better error message than just letting the makeCompatibles do its job)
     auto concreteType = TypeManager::concreteType(child->typeInfo);
     if (returnType->isNative(NativeTypeKind::Void) && !concreteType->isNative(NativeTypeKind::Void))
-        return context->report({child, format("returning a value of type '%s', but the function does not declare a return type", concreteType->name.c_str())});
+        return context->report({child, format("returning a value of type '%s', but the function does not declare a return type", concreteType->getDisplayName().c_str())});
 
     // If returning retval, then returning nothing, as we will change the return parameter value in place
     if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_RETVAL)

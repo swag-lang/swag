@@ -97,7 +97,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     {
         auto typeInfoArray = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         if (typeInfoArray->totalCount != typeInfoArray->count)
-            return context->report({node->array, format("slicing operator cannot be applied on an array with multiple dimensions", node->array->typeInfo->name.c_str())});
+            return context->report({node->array, format("slicing operator cannot be applied on an array with multiple dimensions", node->array->typeInfo->getDisplayName().c_str())});
 
         auto ptrSlice         = allocType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoArray->finalType;
@@ -151,12 +151,12 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         {
             if (node->array->token.text.empty())
             {
-                Utf8 msg = format("cannot slice because special function 'opSlice' cannot be found in type '%s'", typeInfo->name.c_str());
+                Utf8 msg = format("cannot slice because special function 'opSlice' cannot be found in type '%s'", typeInfo->getDisplayName().c_str());
                 return context->report({node->array, msg});
             }
             else
             {
-                Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", node->array->token.text.c_str(), typeInfo->name.c_str());
+                Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", node->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
                 return context->report({node->array, msg});
             }
         }
@@ -165,7 +165,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     }
     else
     {
-        return context->report({node->array, format("slicing operator cannot be applied on type '%s'", node->array->typeInfo->name.c_str())});
+        return context->report({node->array, format("slicing operator cannot be applied on type '%s'", node->array->typeInfo->getDisplayName().c_str())});
     }
 
     // startBound <= endBound
@@ -257,12 +257,12 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     // (or it will be done later on a pointer, and it will be const too)
     if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
     {
-        SWAG_VERIFY(!arrayType->isConst(), context->report({arrayNode->access, format("type '%s' is immutable and cannot be changed", arrayType->name.c_str())}));
+        SWAG_VERIFY(!arrayType->isConst(), context->report({arrayNode->access, format("type '%s' is immutable and cannot be changed", arrayType->getDisplayName().c_str())}));
     }
 
     auto accessType = TypeManager::concreteReferenceType(arrayNode->access->typeInfo);
     if (!(accessType->flags & TYPEINFO_INTEGER) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
-        return context->report({arrayNode->access, format("array access type should be integer ('%s' provided)", arrayNode->access->typeInfo->name.c_str())});
+        return context->report({arrayNode->access, format("array access type should be integer ('%s' provided)", arrayNode->access->typeInfo->getDisplayName().c_str())});
 
     switch (arrayType->kind)
     {
@@ -288,7 +288,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         }
         else
         {
-            return context->report({arrayNode->array, format("cannot dereference type '%s'", arrayType->name.c_str())});
+            return context->report({arrayNode->array, format("cannot dereference type '%s'", arrayType->getDisplayName().c_str())});
         }
 
         break;
@@ -342,7 +342,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     default:
     {
-        return context->report({arrayNode->array, format("cannot dereference type '%s'", arrayType->name.c_str())});
+        return context->report({arrayNode->array, format("cannot dereference type '%s'", arrayType->getDisplayName().c_str())});
     }
     }
 
@@ -366,7 +366,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     auto accessType = TypeManager::concreteReferenceType(arrayNode->access->typeInfo);
     if (!(accessType->flags & TYPEINFO_INTEGER) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
-        return context->report({arrayNode->access, format("array access type should be integer ('%s' provided)", arrayNode->access->typeInfo->name.c_str())});
+        return context->report({arrayNode->access, format("array access type should be integer ('%s' provided)", arrayNode->access->typeInfo->getDisplayName().c_str())});
 
     // Do not set resolvedSymbolOverload !
     arrayNode->resolvedSymbolName = arrayNode->array->resolvedSymbolName;
@@ -518,12 +518,12 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         {
             if (arrayNode->array->token.text.empty())
             {
-                Utf8 msg = format("cannot access by index because special function 'opIndex' cannot be found in type '%s'", typeInfo->name.c_str());
+                Utf8 msg = format("cannot access by index because special function 'opIndex' cannot be found in type '%s'", typeInfo->getDisplayName().c_str());
                 return context->report({arrayNode->access, msg});
             }
             else
             {
-                Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", arrayNode->array->token.text.c_str(), typeInfo->name.c_str());
+                Utf8 msg = format("cannot access '%s' by index because special function 'opIndex' cannot be found in type '%s'", arrayNode->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
                 return context->report({arrayNode->access, msg});
             }
         }
@@ -533,7 +533,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     }
 
     default:
-        return context->report({arrayNode->array, format("%s '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->name.c_str())});
+        return context->report({arrayNode->array, format("%s '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->getDisplayName().c_str())});
     }
 
     return true;
@@ -545,12 +545,12 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'@init' first parameter should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'@init' first parameter should be a pointer, but is '%s'", expressionTypeInfo->getDisplayName().c_str())}));
 
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'@init' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str())}));
+        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'@init' count parameter should be an integer, but is '%s'", countTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_COERCE_FULL));
     }
 
@@ -561,7 +561,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
 
         if (pointedType->kind == TypeInfoKind::Native || pointedType->kind == TypeInfoKind::Pointer)
         {
-            SWAG_VERIFY(node->parameters->childs.size() == 1, context->report({node->count, format("too many initialization parameters for type '%s'", pointedType->name.c_str())}));
+            SWAG_VERIFY(node->parameters->childs.size() == 1, context->report({node->count, format("too many initialization parameters for type '%s'", pointedType->getDisplayName().c_str())}));
             auto child = node->parameters->childs.front();
             SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
         }
@@ -618,7 +618,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'%s' first parameter should be a pointer, but is '%s'", node->token.text.c_str(), expressionTypeInfo->name.c_str())}));
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format("'%s' first parameter should be a pointer, but is '%s'", node->token.text.c_str(), expressionTypeInfo->getDisplayName().c_str())}));
 
     // Be sure struct if not marked as nocopy
     if (node->kind == AstNodeKind::PostCopy)
@@ -627,14 +627,14 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
         auto pointedType = TypeManager::concreteType(ptrType->pointedType);
         if (pointedType->flags & TYPEINFO_STRUCT_NO_COPY)
         {
-            return context->report({node->expression, format("cannot call '@postcopy' on type '%s' because it is marked with the 'swag.nocopy' attribute", pointedType->name.c_str())});
+            return context->report({node->expression, format("cannot call '@postcopy' on type '%s' because it is marked with the 'swag.nocopy' attribute", pointedType->getDisplayName().c_str())});
         }
     }
 
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'%s' count parameter should be an integer, but is '%s'", node->token.text.c_str(), countTypeInfo->name.c_str())}));
+        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'%s' count parameter should be an integer, but is '%s'", node->token.text.c_str(), countTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_COERCE_FULL));
     }
 
@@ -648,16 +648,16 @@ bool SemanticJob::resolveReloc(SemanticContext* context)
     auto expression1TypeInfo = TypeManager::concreteType(node->expression1->typeInfo);
     auto expression2TypeInfo = TypeManager::concreteType(node->expression2->typeInfo);
 
-    SWAG_VERIFY(expression1TypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression1, format("'%s' first parameter should be a pointer, but is '%s'", node->token.text.c_str(), expression1TypeInfo->name.c_str())}));
-    SWAG_VERIFY(expression2TypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression2, format("'%s' second parameter should be a pointer, but is '%s'", node->token.text.c_str(), expression2TypeInfo->name.c_str())}));
+    SWAG_VERIFY(expression1TypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression1, format("'%s' first parameter should be a pointer, but is '%s'", node->token.text.c_str(), expression1TypeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(expression2TypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression2, format("'%s' second parameter should be a pointer, but is '%s'", node->token.text.c_str(), expression2TypeInfo->getDisplayName().c_str())}));
     auto ptrType1 = CastTypeInfo<TypeInfoPointer>(expression1TypeInfo, TypeInfoKind::Pointer);
     auto ptrType2 = CastTypeInfo<TypeInfoPointer>(expression2TypeInfo, TypeInfoKind::Pointer);
-    SWAG_VERIFY(ptrType1->pointedType == ptrType2->pointedType, context->report({node->expression2, format("'%s' second parameter should be a pointer to type '%s', but points to '%s'", node->token.text.c_str(), expression1TypeInfo->name.c_str(), expression2TypeInfo->name.c_str())}));
+    SWAG_VERIFY(ptrType1->pointedType == ptrType2->pointedType, context->report({node->expression2, format("'%s' second parameter should be a pointer to type '%s', but points to '%s'", node->token.text.c_str(), expression1TypeInfo->getDisplayName().c_str(), expression2TypeInfo->getDisplayName().c_str())}));
 
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'%s' count parameter should be an integer, but is '%s'", node->token.text.c_str(), countTypeInfo->name.c_str())}));
+        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'%s' count parameter should be an integer, but is '%s'", node->token.text.c_str(), countTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_COERCE_FULL));
     }
 

@@ -357,7 +357,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         typeStruct = swagScope.regTypeInfoAlias;
         break;
     default:
-        context->report({node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
+        context->report({node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->getDisplayName().c_str())});
         return false;
     }
 

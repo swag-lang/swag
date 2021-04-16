@@ -163,7 +163,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->kind != TypeInfoKind::TypeSet &&
             leftTypeInfo->kind != TypeInfoKind::Array &&
             leftTypeInfo->kind != TypeInfoKind::Enum)
-            return context->report({left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
+            return context->report({left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
             rightTypeInfo->kind != TypeInfoKind::Pointer &&
             rightTypeInfo->kind != TypeInfoKind::Reference &&
@@ -176,7 +176,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Array &&
             rightTypeInfo->kind != TypeInfoKind::TypeListTuple &&
             rightTypeInfo->kind != TypeInfoKind::TypeListArray)
-            return context->report({right, format("affect not allowed, '%s' is %s", rightTypeInfo->name.c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
+            return context->report({right, format("affect not allowed, '%s' is %s", rightTypeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
 
         if (forStruct)
         {
@@ -196,7 +196,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 {
                     if (!hasUserOp(context, "opIndexAffect", left))
                     {
-                        Utf8 msg = format("'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'", leftTypeInfo->name.c_str(), rightTypeInfo->name.c_str(), leftTypeInfo->name.c_str());
+                        Utf8 msg = format("'%s[index] = %s' is impossible because special function 'opIndexAffect' cannot be found in '%s'", leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
                         return context->report({node, msg});
                     }
 
@@ -222,7 +222,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
                     if (!hasUserOp(context, "opAffect", left))
                     {
-                        Utf8 msg = format("'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'", leftTypeInfo->name.c_str(), rightTypeInfo->name.c_str(), leftTypeInfo->name.c_str());
+                        Utf8 msg = format("'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'", leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
                         return context->report({node, msg});
                     }
 
@@ -325,7 +325,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, "pointer arithmetic not allowed on 'typeinfo'"}));
             rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
-            SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format("pointer arithmetic not allowed with operand type '%s'", rightTypeInfo->name.c_str())}));
+            SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format("pointer arithmetic not allowed with operand type '%s'", rightTypeInfo->getDisplayName().c_str())}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_COERCE_SAMESIGN));
             SWAG_CHECK(checkRelativePointerOverflow(context, leftTypeInfo, right));
             break;

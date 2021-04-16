@@ -79,7 +79,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
         auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (!(concreteType->flags & TYPEINFO_INTEGER) || !(concreteType->flags & TYPEINFO_UNSIGNED))
-            return context->report({typeNode->childs[0], format("invalid type '%s' for enum flags (should be unsigned integer)", rawTypeInfo->name.c_str())});
+            return context->report({typeNode->childs[0], format("invalid type '%s' for enum flags (should be unsigned integer)", rawTypeInfo->getDisplayName().c_str())});
     }
 
     if (enumNode->attributeFlags & ATTRIBUTE_ENUM_INDEX)
@@ -87,7 +87,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         typeInfo->flags |= TYPEINFO_ENUM_INDEX;
         auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (!(concreteType->flags & TYPEINFO_INTEGER))
-            return context->report({typeNode->childs[0], format("invalid type '%s' for enum index (should be integer)", rawTypeInfo->name.c_str())});
+            return context->report({typeNode->childs[0], format("invalid type '%s' for enum index (should be integer)", rawTypeInfo->getDisplayName().c_str())});
     }
 
     rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
@@ -98,12 +98,12 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     case TypeInfoKind::Array:
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
-        SWAG_VERIFY(typeArray->count != UINT32_MAX, context->report({typeNode, format("dimension of enum array type '%s' must be specified", rawTypeInfo->name.c_str())}));
-        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format("enum array type '%s' must be const", rawTypeInfo->name.c_str())}));
+        SWAG_VERIFY(typeArray->count != UINT32_MAX, context->report({typeNode, format("dimension of enum array type '%s' must be specified", rawTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format("enum array type '%s' must be const", rawTypeInfo->getDisplayName().c_str())}));
         return true;
     }
     case TypeInfoKind::Slice:
-        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format("enum slice type '%s' must be const", rawTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format("enum slice type '%s' must be const", rawTypeInfo->getDisplayName().c_str())}));
         return true;
 
     case TypeInfoKind::Native:
@@ -112,7 +112,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         break;
     }
 
-    return context->report({typeNode, format("invalid enum type '%s'", rawTypeInfo->name.c_str())});
+    return context->report({typeNode, format("invalid enum type '%s'", rawTypeInfo->getDisplayName().c_str())});
 }
 
 bool SemanticJob::resolveEnumValue(SemanticContext* context)
@@ -170,12 +170,12 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             case NativeTypeKind::String:
             case NativeTypeKind::F32:
             case NativeTypeKind::F64:
-                return context->report({valNode, valNode->token, format("enum value '%s' of type '%s' must be initialized", valNode->token.text.c_str(), rawTypeInfo->name.c_str())});
+                return context->report({valNode, valNode->token, format("enum value '%s' of type '%s' must be initialized", valNode->token.text.c_str(), rawTypeInfo->getDisplayName().c_str())});
             }
             break;
 
         case TypeInfoKind::Slice:
-            return context->report({valNode, valNode->token, format("enum value '%s' of type '%s' must be initialized", valNode->token.text.c_str(), rawTypeInfo->name.c_str())});
+            return context->report({valNode, valNode->token, format("enum value '%s' of type '%s' must be initialized", valNode->token.text.c_str(), rawTypeInfo->getDisplayName().c_str())});
         }
     }
 

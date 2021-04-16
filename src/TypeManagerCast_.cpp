@@ -2130,7 +2130,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             // Ambiguous ! Two fields with a 'using' on the same struct
             if (done)
             {
-                Diagnostic diag{fromNode, fromNode->token, format("cannot cast from '%s' to '%s' because structure '%s' has multiple fields of type '%s' with 'using'", fromType->name.c_str(), toType->name.c_str(), fromStruct->name.c_str(), toStruct->name.c_str())};
+                Diagnostic diag{fromNode, fromNode->token, format("cannot cast from '%s' to '%s' because '%s' has multiple fields of type '%s' with 'using'", fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
                 Diagnostic note1{done->declNode, "this is one", DiagnosticLevel::Note};
                 Diagnostic note2{field->declNode, "this is another", DiagnosticLevel::Note};
                 return context->report(diag, &note1, &note2);

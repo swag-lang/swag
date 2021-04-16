@@ -434,7 +434,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
     else
     {
-        return internalError(context, format("emitLiteral, unsupported type '%s'", typeInfo->name.c_str()).c_str());
+        return internalError(context, format("emitLiteral, unsupported type '%s'", typeInfo->getDisplayName().c_str()).c_str());
     }
 
     return true;

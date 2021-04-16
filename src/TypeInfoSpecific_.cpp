@@ -671,7 +671,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(int argIdx)
         if (argNo >= parameters.size())
         {
             SWAG_ASSERT(flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC));
-            return (uint32_t)parameters.size() - 1;
+            return (uint32_t) parameters.size() - 1;
         }
 
         auto typeParam = TypeManager::concreteReferenceType(parameters[argNo]->typeInfo);
@@ -852,12 +852,15 @@ bool TypeInfoStruct::canRawCopy()
 
 Utf8 TypeInfoStruct::getDisplayName()
 {
-    Utf8 typeName;
     if (flags & TYPEINFO_STRUCT_IS_TUPLE)
-        typeName = "tuple";
-    else
-        typeName = format("struct '%s'", name.c_str());
-    return typeName;
+        return "tuple";
+    if (declNode && declNode->kind == AstNodeKind::InterfaceDecl)
+        return format("interface %s", name.c_str());
+    if (declNode && declNode->kind == AstNodeKind::TypeSet)
+        return format("typeset %s", name.c_str());
+    if (declNode && declNode->kind == AstNodeKind::StructDecl && ((AstStruct*) declNode)->structFlags & STRUCTFLAG_UNION)
+        return format("union %s", name.c_str());
+    return format("struct %s", name.c_str());
 }
 
 void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)

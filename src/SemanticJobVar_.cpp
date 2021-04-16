@@ -40,8 +40,8 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     SWAG_VERIFY(typeVar->kind == TypeInfoKind::Struct, context->report({varDecl, varDecl->token, format("cannot unpack type '%s' which is not a struct", typeVar->name.c_str())}));
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
     auto numUnpack  = scopeNode->childs.size() - 1;
-    SWAG_VERIFY(typeStruct->fields.size(), context->report({varDecl, varDecl->token, format("cannot unpack %s because it does not contain any field", typeStruct->getDisplayName().c_str())}));
-    SWAG_VERIFY(numUnpack <= typeStruct->fields.size(), context->report({varDecl, varDecl->token, format("attempt to unpack '%u' variables, but %s contains only '%u' field(s)", numUnpack, typeStruct->getDisplayName().c_str(), typeStruct->fields.size())}));
+    SWAG_VERIFY(typeStruct->fields.size(), context->report({varDecl, varDecl->token, format("cannot unpack '%s' because it does not contain any field", typeStruct->getDisplayName().c_str())}));
+    SWAG_VERIFY(numUnpack <= typeStruct->fields.size(), context->report({varDecl, varDecl->token, format("attempt to unpack '%u' variables, but '%s' contains only '%u' field(s)", numUnpack, typeStruct->getDisplayName().c_str(), typeStruct->fields.size())}));
     return true;
 }
 
@@ -161,7 +161,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
         break;
     }
     default:
-        context->report({assignment, format("type to tuple conversion is not (yet?) supported for type '%s'", orgType->name.c_str()).c_str()});
+        context->report({assignment, format("type to tuple conversion is not (yet?) supported for type '%s'", orgType->getDisplayName().c_str()).c_str()});
         return nullptr;
     }
 
@@ -487,7 +487,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     if (node->attributeFlags & ATTRIBUTE_DISCARDABLE && concreteNodeType->kind != TypeInfoKind::Lambda)
-        return context->report({node, format("attribute 'swag.autodiscard' can only be used on a lambda variable (provided type is '%s')", concreteNodeType->name.c_str())});
+        return context->report({node, format("attribute 'swag.autodiscard' can only be used on a lambda variable (provided type is '%s')", concreteNodeType->getDisplayName().c_str())});
 
     // Check for missing initialization
     // This is ok to not have an initialization for structs, as they are initialized by default
@@ -564,7 +564,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             typeArray->count      = (uint32_t) node->assignment->childs.size();
             typeArray->totalCount = typeArray->count;
             typeArray->sizeOf     = typeArray->count * typeArray->pointedType->sizeOf;
-            typeArray->name       = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
+            typeArray->name       = format("[%d] %s", typeArray->count, typeArray->pointedType->getDisplayName().c_str());
         }
     }
 
@@ -607,7 +607,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             {
                 if (!hasUserOp(context, "opAffect", node->type))
                 {
-                    Utf8 msg = format("'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'", leftConcreteType->name.c_str(), rightConcreteType->name.c_str(), node->type->typeInfo->name.c_str());
+                    Utf8 msg = format("'%s = %s' is impossible because special function 'opAffect' cannot be found in '%s'", leftConcreteType->getDisplayName().c_str(), rightConcreteType->getDisplayName().c_str(), node->type->typeInfo->getDisplayName().c_str());
                     return context->report({node, msg});
                 }
 
@@ -738,7 +738,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
         if (!isGeneric)
         {
-            SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, format("cannot create constant because type '%s' is generic", node->typeInfo->name.c_str())}));
+            SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, format("cannot create constant because type '%s' is generic", node->typeInfo->getDisplayName().c_str())}));
 
             // A constant does nothing on backend, except if it can't be stored in a ComputedValue struct
             if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::Struct)
@@ -764,7 +764,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
     else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
-        SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, format("cannot create variable because type '%s' is generic", node->typeInfo->name.c_str())}));
+        SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, format("cannot create variable because type '%s' is generic", node->typeInfo->getDisplayName().c_str())}));
         SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({node, "a global variable cannot be declared as 'public'"}));
 
         node->flags |= AST_R_VALUE;
