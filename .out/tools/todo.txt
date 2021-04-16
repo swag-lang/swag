@@ -40,8 +40,6 @@ TODO
 -------------------------------------
 debugger : print
 -------------------------------------
-generic & type literal (4'T, T non reconnu)
--------------------------------------
 BIG BIG BIG BIG BIG CHIANT CHIANT CHIANT CHIANT CHIANT
 llvm/x64 compatibilité
 si llvm appel une lambda local x64 ou l'inverse, abi non compatible => marche si on passe la lambda en #[swag.callback]
