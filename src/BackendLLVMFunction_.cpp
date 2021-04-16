@@ -276,19 +276,32 @@ void BackendLLVM::emitShiftArithmetic(llvm::LLVMContext& context, llvm::IRBuilde
     auto         iType = getIntType(context, numBits);
     auto         r0    = TO_PTR_I_N(GEP_I32(allocR, ip->c.u32), numBits);
     llvm::Value* r1    = getImmediateConstantA(context, builder, allocR, ip, numBits);
-    llvm::Value* r2    = MK_IMMB_32();
-    auto         c2    = builder.CreateIntCast(r2, iType, false);
-    auto         shift = llvm::ConstantInt::get(iType, numBits - 1);
 
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits)
+    llvm::Value* r2;
+    if (ip->flags & BCI_IMM_B)
+        r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
+    else
+        r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+
+    auto c2    = builder.CreateIntCast(r2, iType, false);
+    auto shift = llvm::ConstantInt::get(iType, numBits - 1);
+
+    // Smart shift, imm mode overflow
+    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
         c2 = shift;
-    else if (!(ip->flags & BCI_IMM_B))
+
+    // Smart shift, dyn mode
+    else if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
     {
         auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
         auto iftrue  = c2;
         auto iffalse = shift;
         c2           = builder.CreateSelect(cond, iftrue, iffalse);
     }
+
+    // Small shift, dyn mode, we mask the operand
+    else if (!(ip->flags & BCI_IMM_B))
+        c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
 
     auto v0 = builder.CreateAShr(r1, c2);
     builder.CreateStore(v0, TO_PTR_I_N(r0, numBits));
@@ -300,14 +313,22 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
     auto r0    = TO_PTR_I_N(GEP_I32(allocR, ip->c.u32), numBits);
     auto zero  = llvm::ConstantInt::get(iType, 0);
 
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits)
+    // Smart shift, imm mode overflow
+    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
         builder.CreateStore(zero, r0);
     else
     {
         llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
-        llvm::Value* r2 = MK_IMMB_32();
-        auto         c2 = builder.CreateIntCast(r2, iType, false);
-        if (!(ip->flags & BCI_IMM_B))
+
+        llvm::Value* r2;
+        if (ip->flags & BCI_IMM_B)
+            r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
+        else
+            r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+        auto c2 = builder.CreateIntCast(r2, iType, false);
+
+        // Smart shift, dyn mode
+        if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
         {
             auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
             auto iftrue  = left ? builder.CreateShl(r1, c2) : builder.CreateLShr(r1, c2);
@@ -317,6 +338,9 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
         }
         else
         {
+            // Small shift, dyn mode, we mask the operand
+            if (!(ip->flags & BCI_IMM_B))
+                c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
             auto v0 = left ? builder.CreateShl(r1, c2) : builder.CreateLShr(r1, c2);
             builder.CreateStore(v0, r0);
         }
@@ -325,16 +349,25 @@ void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>
 
 void BackendLLVM::emitShiftEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
 {
-    auto         iType = getIntType(context, numBits);
-    auto         r0    = GEP_I32(allocR, ip->a.u32);
-    auto         r1    = builder.CreateLoad(TO_PTR_PTR_I_N(r0, numBits));
-    llvm::Value* r2    = MK_IMMB_32();
-    auto         c2    = builder.CreateIntCast(r2, iType, false);
-    auto         shift = llvm::ConstantInt::get(iType, numBits - 1);
+    auto iType = getIntType(context, numBits);
+    auto r0    = GEP_I32(allocR, ip->a.u32);
+    auto r1    = builder.CreateLoad(TO_PTR_PTR_I_N(r0, numBits));
 
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits)
+    llvm::Value* r2;
+    if (ip->flags & BCI_IMM_B)
+        r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
+    else
+        r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+
+    auto c2    = builder.CreateIntCast(r2, iType, false);
+    auto shift = llvm::ConstantInt::get(iType, numBits - 1);
+
+    // Smart shift, imm mode overflow
+    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
         c2 = shift;
-    else if (!(ip->flags & BCI_IMM_B))
+
+    // Smart shift, dyn mode
+    else if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
     {
         auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
         auto iftrue  = c2;
@@ -342,31 +375,51 @@ void BackendLLVM::emitShiftEqArithmetic(llvm::LLVMContext& context, llvm::IRBuil
         c2           = builder.CreateSelect(cond, iftrue, iffalse);
     }
 
+    // Small shift, dyn mode, we mask the operand
+    else if (!(ip->flags & BCI_IMM_B))
+        c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
+
     auto v0 = builder.CreateAShr(builder.CreateLoad(r1), c2);
     builder.CreateStore(v0, r1);
 }
 
 void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left)
 {
-    auto         iType = getIntType(context, numBits);
-    auto         r0    = GEP_I32(allocR, ip->a.u32);
-    auto         r1    = builder.CreateLoad(TO_PTR_PTR_I_N(r0, numBits));
-    llvm::Value* r2    = MK_IMMB_32();
-    auto         c2    = builder.CreateIntCast(r2, iType, false);
-    auto         zero  = llvm::ConstantInt::get(iType, 0);
-    auto         v1    = builder.CreateLoad(r1);
+    auto iType = getIntType(context, numBits);
+    auto r0    = GEP_I32(allocR, ip->a.u32);
+    auto r1    = builder.CreateLoad(TO_PTR_PTR_I_N(r0, numBits));
+
+    llvm::Value* r2;
+    if (ip->flags & BCI_IMM_B)
+        r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
+    else
+        r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+
+    auto         c2   = builder.CreateIntCast(r2, iType, false);
+    auto         zero = llvm::ConstantInt::get(iType, 0);
+    auto         v1   = builder.CreateLoad(r1);
     llvm::Value* v0;
 
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits)
+    // Smart shift, imm mode overflow
+    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
         v0 = zero;
-    else if (ip->flags & BCI_IMM_B)
-        v0 = left ? builder.CreateShl(v1, c2) : builder.CreateLShr(v1, c2);
-    else
+
+    // Smart shift, dyn mode
+    else if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
     {
         auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
         auto iftrue  = left ? builder.CreateShl(v1, c2) : builder.CreateLShr(v1, c2);
         auto iffalse = zero;
         v0           = builder.CreateSelect(cond, iftrue, iffalse);
+    }
+
+    // Imm mode
+    else
+    {
+        // Small shift, dyn mode, we mask the operand
+        if (!(ip->flags & BCI_IMM_B))
+            c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
+        v0 = left ? builder.CreateShl(v1, c2) : builder.CreateLShr(v1, c2);
     }
 
     builder.CreateStore(v0, r1);

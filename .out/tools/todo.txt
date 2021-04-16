@@ -38,8 +38,6 @@ x(10) => x.opCall(10)
 TODO
 ****************************************
 -------------------------------------
-,small pour shifts (mask operand, no safety, no branch)
--------------------------------------
 debugger : print
 -------------------------------------
 generic & type literal (4'T, T non reconnu)
