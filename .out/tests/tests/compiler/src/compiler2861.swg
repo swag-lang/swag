@@ -1,3 +1,5 @@
+#global testerror
+
 #test
 {
     typeset XX
@@ -7,16 +9,11 @@
     }
 
     var x: XX = Bool{true}
-    G := 0
+
+    #[swag.complete]
     switch x
     {
     case Bool:
-        G = 1
-        break
-    case Int:
-        @assert(false)
         break
     }
-
-    @assert(G == 1)
 }

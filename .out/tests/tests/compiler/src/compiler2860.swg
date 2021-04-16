@@ -1,3 +1,5 @@
+#global testerror
+
 #test
 {
     typeset XX
@@ -10,6 +12,8 @@
     G := 0
     switch x
     {
+    case Bool:
+        break
     case Bool:
         G = 1
         break

@@ -229,6 +229,9 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
             switchCase->extension->alternativeScopes.push_back(typeEnum->scope);
         }
 
+        // Remember original type
+        switchNode->typeInfo = node->typeInfo;
+
         node->byteCodeFct = ByteCodeGenJob::emitImplicitKindOf;
         auto& typeTable   = node->sourceFile->module->typeTable;
         SWAG_CHECK(checkIsConcrete(context, node));
@@ -260,7 +263,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     node->expression->extension->byteCodeAfterFct = ByteCodeGenJob::emitSwitchAfterExpr;
 
     SWAG_CHECK(checkIsConcrete(context, node->expression));
-    node->typeInfo = node->expression->typeInfo;
+    auto originalSwitchType = node->typeInfo;
+    node->typeInfo          = node->expression->typeInfo;
 
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
 
@@ -271,7 +275,6 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     case TypeInfoKind::Slice:
     case TypeInfoKind::Array:
     case TypeInfoKind::Interface:
-        //case TypeInfoKind::TypeSet:
         return context->report({node->expression, format("invalid switch type '%s'", typeSwitch->getDisplayName().c_str())});
     }
 
@@ -294,8 +297,14 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 }
                 else
                 {
-                    if (val64.find(expr->computedValue.reg.u64) != val64.end())
+                    auto value = expr->computedValue.reg.u64;
+                    if (expr->flags & AST_VALUE_IS_TYPEINFO)
+                        value = expr->computedValue.reg.offset;
+
+                    if (val64.find(value) != val64.end())
                     {
+                        if (expr->flags & AST_VALUE_IS_TYPEINFO)
+                            return context->report({expr, format("switch value '%s' already defined", expr->token.text.c_str())});
                         if (typeSwitch->flags & TYPEINFO_INTEGER)
                             return context->report({expr, format("switch value '%d' already defined", expr->computedValue.reg.u64)});
                         return context->report({expr, format("switch value '%f' already defined", expr->computedValue.reg.f64)});
@@ -314,33 +323,68 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     // When a switch is marked as complete, be sure every definitions have been covered
     if (node->attributeFlags & ATTRIBUTE_COMPLETE)
     {
-        if (node->typeInfo->kind != TypeInfoKind::Enum)
-        {
-            return context->report({node, format("'swag.complete' attribute on a switch can only be used for an enum type ('%s' provided)", node->typeInfo->getDisplayName().c_str())});
-        }
+        // For typeset, we need to test originalSwitchType, because the type of the switch is now to @kindof(originalType)
+        if (node->typeInfo->kind != TypeInfoKind::Enum && (!originalSwitchType || originalSwitchType->kind != TypeInfoKind::TypeSet))
+            return context->report({node, format("'swag.complete' attribute cannot be used on a switch with type '%s'", node->typeInfo->getDisplayName().c_str())});
 
-        auto typeEnum = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-        if (typeSwitch->isNative(NativeTypeKind::String))
+        if (node->typeInfo->kind == TypeInfoKind::Enum)
         {
-            if (valText.size() != typeEnum->values.size())
+            auto typeEnum = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+            if (typeSwitch->isNative(NativeTypeKind::String))
             {
-                for (auto one : typeEnum->values)
+                if (valText.size() != typeEnum->values.size())
                 {
-                    if (valText.find(one->value.text) == valText.end())
-                        return context->report({node, node->token, format("switch is incomplete (missing '%s.%s')", typeEnum->name.c_str(), one->namedParam.c_str())});
+                    for (auto one : typeEnum->values)
+                    {
+                        if (valText.find(one->value.text) == valText.end())
+                        {
+                            Diagnostic diag{node, node->token, format("switch is incomplete (missing '%s.%s')", typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic note{one->declNode, one->declNode->token, "this is the missing value", DiagnosticLevel::Note};
+                            return context->report(diag, &note);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (val64.size() != typeEnum->values.size())
+                {
+                    for (auto one : typeEnum->values)
+                    {
+                        if (val64.find(one->value.reg.u64) == val64.end())
+                        {
+                            Diagnostic diag{node, node->token, format("switch is incomplete (missing '%s.%s')", typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic note{one->declNode, one->declNode->token, "this is the missing value", DiagnosticLevel::Note};
+                            return context->report(diag, &note);
+                        }
+                    }
+                }
+            }
+        }
+        else if (originalSwitchType && originalSwitchType->kind == TypeInfoKind::TypeSet)
+        {
+            auto typeSet = CastTypeInfo<TypeInfoStruct>(originalSwitchType, TypeInfoKind::TypeSet);
+            if (val64.size() != typeSet->fields.size())
+            {
+                for (auto one : typeSet->fields)
+                {
+                    uint32_t offset;
+                    auto&    typeTable = node->sourceFile->module->typeTable;
+                    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, one->typeInfo, nullptr, &offset, CONCRETE_SHOULD_WAIT));
+                    if (context->result != ContextResult::Done)
+                        return true;
+                    if (val64.find(offset) == val64.end())
+                    {
+                        Diagnostic diag{node, node->token, format("switch is incomplete (missing '%s.%s')", typeSet->name.c_str(), one->namedParam.c_str())};
+                        Diagnostic note{one->declNode, one->declNode->token, "this is the missing value", DiagnosticLevel::Note};
+                        return context->report(diag, &note);
+                    }
                 }
             }
         }
         else
         {
-            if (val64.size() != typeEnum->values.size())
-            {
-                for (auto one : typeEnum->values)
-                {
-                    if (val64.find(one->value.reg.u64) == val64.end())
-                        return context->report({node, node->token, format("switch is incomplete (missing '%s.%s')", typeEnum->name.c_str(), one->namedParam.c_str())});
-                }
-            }
+            SWAG_ASSERT(false);
         }
     }
 
