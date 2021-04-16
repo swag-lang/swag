@@ -25,6 +25,8 @@ enum class LiteralType : uint8_t
     TT_S64,
     TT_BOOL,
     TT_STRING,
+    TT_RAW_STRING,
+    TT_ESCAPE_STRING,
     TT_CHAR,
     TT_F32,
     TT_F64,
@@ -47,8 +49,7 @@ struct Token
     SourceLocation endLocation;
     Register       literalValue;
     LiteralType    literalType;
-    LiteralType    literalCastedType = LiteralType::TT_MAX;
-    TokenId        id                = TokenId::Invalid;
+    TokenId        id = TokenId::Invalid;
 };
 
 struct Tokenizer
@@ -65,7 +66,6 @@ struct Tokenizer
     bool     doNumberLiteral(uint32_t c, Token& token);
     bool     doHexLiteral(Token& token);
     bool     doBinLiteral(Token& token);
-    bool     doNumberSuffix(Token& token);
     bool     doIntFloatLiteral(uint32_t c, Token& token);
     bool     doIntLiteral(uint32_t c, Token& token);
     bool     doFloatLiteral(uint32_t c, Token& token);
@@ -74,9 +74,6 @@ struct Tokenizer
     bool     doSymbol(uint32_t c, Token& token);
     void     postProcessRawString(Utf8& text);
     bool     doStringLiteral(Token& token, bool raw);
-    bool     isEscape(uint32_t& c, Token& token, bool& asIs);
-    bool     getDigitHexa(Token& token, int& result, const char* errMsg);
-    bool     doCharLiteral(Token& token);
 
     SourceFile*    sourceFile         = nullptr;
     uint32_t       cacheChar[2]       = {0};

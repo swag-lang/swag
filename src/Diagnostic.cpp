@@ -214,24 +214,27 @@ void Diagnostic::report(bool verboseMode) const
                     int decal = startLocation.column;
 
                     // If this is a word, than take the whole word
-                    bool isCWord = isalpha(backLine[decal]) || backLine[decal] == '_' || backLine[decal] == '#' || backLine[decal] == '@';
-                    if (isCWord)
+                    if ((backLine[decal] & 0x7F) == 0)
                     {
-                        while (isalnum(backLine[decal + 1]) || backLine[decal + 1] == '_')
+                        bool isCWord = isalpha(backLine[decal]) || backLine[decal] == '_' || backLine[decal] == '#' || backLine[decal] == '@';
+                        if (isCWord)
                         {
-                            decal += 1;
-                            range += 1;
+                            while (isalnum(backLine[decal + 1]) || backLine[decal + 1] == '_')
+                            {
+                                decal += 1;
+                                range += 1;
+                            }
                         }
-                    }
 
-                    // If this is an operator
+                        // If this is an operator
 #define ISOP(__c) __c == '>' || __c == '<' || __c == '=' || __c == '-' || __c == '+' || __c == '*' || __c == '/' || __c == '%'
-                    if (ISOP(backLine[decal]))
-                    {
-                        while (ISOP(backLine[decal + 1]))
+                        if (ISOP(backLine[decal]))
                         {
-                            decal += 1;
-                            range += 1;
+                            while (ISOP(backLine[decal + 1]))
+                            {
+                                decal += 1;
+                                range += 1;
+                            }
                         }
                     }
                 }

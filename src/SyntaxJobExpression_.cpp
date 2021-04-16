@@ -14,6 +14,12 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
+    if (token.id == TokenId::SymQuote)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doTypeExpression(node));
+    }
+
     return true;
 }
 

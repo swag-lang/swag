@@ -393,7 +393,10 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
 
         AstNode* literal;
         SWAG_CHECK(doLiteral(node, &literal));
-        SWAG_VERIFY(literal->token.literalType == LiteralType::TT_STRING, syntaxError(literal->token, "'#global foreignlib' must be followed by a string"));
+        if (literal->token.literalType != LiteralType::TT_STRING && 
+            literal->token.literalType != LiteralType::TT_RAW_STRING && 
+            literal->token.literalType != LiteralType::TT_ESCAPE_STRING)
+            return syntaxError(literal->token, "'#global foreignlib' must be followed by a string");
         SWAG_CHECK(eatSemiCol("'#global foreignlib'"));
     }
 

@@ -1168,8 +1168,23 @@ namespace Ast
         }
 
         case AstNodeKind::Literal:
-            SemanticJob::putLiteralInNode(node);
-            SWAG_CHECK(outputLiteral(context, concat, node, node->typeInfo, node->computedValue.text, node->computedValue.reg));
+            if (node->token.literalType == LiteralType::TT_RAW_STRING)
+                CONCAT_FIXED_STR(concat, "@\"");
+            else if (node->token.literalType == LiteralType::TT_STRING || node->token.literalType == LiteralType::TT_ESCAPE_STRING)
+                CONCAT_FIXED_STR(concat, "\"");
+
+            concat.addString(node->token.text);
+
+            if (node->token.literalType == LiteralType::TT_RAW_STRING)
+                CONCAT_FIXED_STR(concat, "\"@");
+            else if (node->token.literalType == LiteralType::TT_STRING || node->token.literalType == LiteralType::TT_ESCAPE_STRING)
+                CONCAT_FIXED_STR(concat, "\"");
+
+            if (!node->childs.empty())
+            {
+                CONCAT_FIXED_STR(concat, "'");
+                SWAG_CHECK(output(context, concat, node->childs[0]));
+            }
             break;
 
         case AstNodeKind::LabelBreakable:

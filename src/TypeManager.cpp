@@ -96,6 +96,8 @@ void TypeManager::setup()
     g_LiteralTypeToType[(int) LiteralType::TT_BOOL]            = typeInfoBool;
     g_LiteralTypeToType[(int) LiteralType::TT_CHAR]            = typeInfoChar;
     g_LiteralTypeToType[(int) LiteralType::TT_STRING]          = typeInfoString;
+    g_LiteralTypeToType[(int) LiteralType::TT_RAW_STRING]      = typeInfoString;
+    g_LiteralTypeToType[(int) LiteralType::TT_ESCAPE_STRING]   = typeInfoString;
     g_LiteralTypeToType[(int) LiteralType::TT_VOID]            = typeInfoVoid;
     g_LiteralTypeToType[(int) LiteralType::TT_NULL]            = typeInfoNull;
     g_LiteralTypeToType[(int) LiteralType::TT_ANY]             = typeInfoAny;
@@ -465,7 +467,7 @@ TypeInfo* TypeManager::literalTypeToType(LiteralType literalType)
 
 TypeInfo* TypeManager::literalTypeToType(const Token& token)
 {
-    auto result = literalTypeToType(token.literalCastedType != LiteralType::TT_MAX ? token.literalCastedType : token.literalType);
+    auto result = literalTypeToType(token.literalType);
     SWAG_ASSERT(result);
     result = makeUntypedType(result, token.literalValue.u32);
     return result;

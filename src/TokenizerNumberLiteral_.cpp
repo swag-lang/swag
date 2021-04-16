@@ -12,25 +12,6 @@ bool Tokenizer::errorNumberSyntax(Token& token, const Utf8& msg)
     return false;
 }
 
-bool Tokenizer::doNumberSuffix(Token& token)
-{
-    Token tokenSuffix;
-    tokenSuffix.startLocation = location;
-
-    unsigned offset;
-    auto     c = getCharNoSeek(offset);
-    if (!c)
-        return error(tokenSuffix, "missing literal number suffix");
-    getIdentifier(tokenSuffix, c, offset);
-
-    SWAG_CHECK(tokenSuffix.id == TokenId::NativeType || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
-    SWAG_CHECK(tokenSuffix.literalType != LiteralType::TT_BOOL || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
-    SWAG_CHECK(tokenSuffix.literalType != LiteralType::TT_STRING || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
-
-    token.literalCastedType = tokenSuffix.literalType;
-    return true;
-}
-
 bool Tokenizer::doBinLiteral(Token& token)
 {
     token.literalValue.u64 = 0;
@@ -83,25 +64,9 @@ bool Tokenizer::doBinLiteral(Token& token)
     // Suffix
     token.id = TokenId::LiteralNumber;
     if (token.literalValue.u64 <= UINT32_MAX)
-        token.literalType = LiteralType::TT_U32;
+        token.literalType = LiteralType::TT_UNTYPED_BINHEXA;
     else
         token.literalType = LiteralType::TT_U64;
-
-    bool hasSuffix = false;
-    if (c == '\'')
-    {
-        hasSuffix = true;
-        treatChar(c, offset);
-        SWAG_CHECK(doNumberSuffix(token));
-        SWAG_VERIFY(token.literalCastedType != LiteralType::TT_F32, error(token, "cannot convert a binary literal number to 'f32'"));
-        SWAG_VERIFY(token.literalCastedType != LiteralType::TT_F64, error(token, "cannot convert a binary literal number to 'f64'"));
-    }
-
-    if (!hasSuffix)
-    {
-        if (token.literalType == LiteralType::TT_U32)
-            token.literalType = LiteralType::TT_UNTYPED_BINHEXA;
-    }
 
     return true;
 }
@@ -163,25 +128,9 @@ bool Tokenizer::doHexLiteral(Token& token)
     // Suffix
     token.id = TokenId::LiteralNumber;
     if (token.literalValue.u64 <= UINT32_MAX)
-        token.literalType = LiteralType::TT_U32;
+        token.literalType = LiteralType::TT_UNTYPED_BINHEXA;
     else
         token.literalType = LiteralType::TT_U64;
-
-    bool hasSuffix = false;
-    if (c == '\'')
-    {
-        hasSuffix = true;
-        treatChar(c, offset);
-        SWAG_CHECK(doNumberSuffix(token));
-        SWAG_VERIFY(token.literalCastedType != LiteralType::TT_F32, error(token, "can't convert an hexadecimal literal number to 'f32'"));
-        SWAG_VERIFY(token.literalCastedType != LiteralType::TT_F64, error(token, "can't convert an hexadecimal literal number to 'f64'"));
-    }
-
-    if (!hasSuffix)
-    {
-        if (token.literalType == LiteralType::TT_U32)
-            token.literalType = LiteralType::TT_UNTYPED_BINHEXA;
-    }
 
     return true;
 }
@@ -310,7 +259,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
     // If there's a dot, then this is a floating point number
     if (hasDot)
     {
-        token.literalType = LiteralType::TT_F32;
+        token.literalType = LiteralType::TT_UNTYPED_FLOAT;
         token.text += c;
         treatChar(c, offset);
 
@@ -331,7 +280,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
     // If there's an exponent, then this is a floating point number
     if (c == 'e' || c == 'E')
     {
-        token.literalType = LiteralType::TT_F32;
+        token.literalType = LiteralType::TT_UNTYPED_FLOAT;
         token.text += c;
         treatChar(c, offset);
         tokenExponent.startLocation = location;
@@ -368,7 +317,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
     }
 
     // Really compute the floating point value, with as much precision as we can
-    if (token.literalType == LiteralType::TT_F32 || token.literalType == LiteralType::TT_F64)
+    if (token.literalType == LiteralType::TT_UNTYPED_FLOAT)
     {
         token.literalValue.f64 = atof(token.text.c_str());
     }
@@ -381,30 +330,15 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
             token.literalType = LiteralType::TT_S64;
     }
 
-    bool hasSuffix = false;
-    if (c == '\'')
-    {
-        hasSuffix = true;
-        treatChar(c, offset);
-        SWAG_CHECK(doNumberSuffix(token));
-    }
-
-    // A type with flag TYPEINFO_UNTYPED_INTEGER of FLOAT has no real type yet, and can be casted automaticly when used
-    if (!hasSuffix)
-    {
-        if (token.literalType == LiteralType::TT_S32)
-            token.literalType = LiteralType::TT_UNTYPED_INT;
-        else if (token.literalType == LiteralType::TT_F32)
-            token.literalType = LiteralType::TT_UNTYPED_FLOAT;
-    }
+    if (token.literalType == LiteralType::TT_S32)
+        token.literalType = LiteralType::TT_UNTYPED_INT;
 
     return true;
 }
 
 bool Tokenizer::doNumberLiteral(uint32_t c, Token& token)
 {
-    token.literalCastedType = LiteralType::TT_MAX;
-    token.text              = c;
+    token.text = c;
     if (c == '0')
     {
         unsigned offset;

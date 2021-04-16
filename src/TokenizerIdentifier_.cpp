@@ -28,7 +28,6 @@ void Tokenizer::getIdentifier(Token& token, uint32_t c, unsigned offset)
         token.id = TokenId::Identifier;
 
     // Special keywords, replace with literal, except in 'docMode'
-    token.literalCastedType = LiteralType::TT_MAX;
     switch (token.id)
     {
     case TokenId::KwdTrue:
