@@ -259,6 +259,14 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     // Declare a variable
     auto varNode = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), varParent);
 
+    // Inherit alternative scopes.
+    // This is necessary for typeset for example, when we have var x: TypeSet = Toto{}.
+    if (identifier->parent->extension)
+    {
+        varNode->allocateExtension();
+        varNode->extension->alternativeScopes.append(identifier->parent->extension->alternativeScopes);
+    }
+
     // At global scope, this should be a constant declaration, not a variable, as we cannot assign a global variable to
     // another global variable at compile time
     if (identifier->ownerScope->isGlobalOrImpl())
@@ -2280,6 +2288,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             startScope = node->ownerScope;
             SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags));
 
+            // :AutoScope
             // Auto scoping depending on the context
             // We scan the parent hierarchy for an already defined type that can be used for scoping
             if (identifierRef->autoScope)
@@ -2296,6 +2305,10 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                             {
                             case TypeInfoKind::Enum:
                                 scopeHierarchy.push_back(((TypeInfoEnum*) c->typeInfo)->scope);
+                                done = true;
+                                break;
+                            case TypeInfoKind::TypeSet:
+                                scopeHierarchy.push_back(((TypeInfoStruct*) c->typeInfo)->scope);
                                 done = true;
                                 break;
                             }

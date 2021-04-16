@@ -299,7 +299,8 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
     if (!varDecl->type || !varDecl->assignment)
         return true;
 
-    // Resolution of an affectation to an enum, without having to specific the enum name before
+    // :AutoScope
+    // Resolution of an affectation to an enum, without having to specify the enum name before
     // 'using', but just for affectation
     auto typeInfo = TypeManager::concreteType(varDecl->type->typeInfo, CONCRETE_ALIAS);
     if (typeInfo->kind == TypeInfoKind::Enum)
@@ -316,6 +317,25 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
             auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeArr->finalType, TypeInfoKind::Enum);
             varDecl->assignment->allocateExtension();
             varDecl->assignment->extension->alternativeScopes.push_front(typeEnum->scope);
+        }
+    }
+
+    // :AutoScope
+    // Same for typeset
+    else if (typeInfo->kind == TypeInfoKind::TypeSet)
+    {
+        auto typeSet = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::TypeSet);
+        varDecl->assignment->allocateExtension();
+        varDecl->assignment->extension->alternativeScopes.push_front(typeSet->scope);
+    }
+    else if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        if (typeArr->finalType->kind == TypeInfoKind::TypeSet)
+        {
+            auto typeSet = CastTypeInfo<TypeInfoStruct>(typeArr->finalType, TypeInfoKind::TypeSet);
+            varDecl->assignment->allocateExtension();
+            varDecl->assignment->extension->alternativeScopes.push_front(typeSet->scope);
         }
     }
 

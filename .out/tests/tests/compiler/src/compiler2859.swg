@@ -1,4 +1,4 @@
-/*#test
+#test
 {
     typeset XX
     {
@@ -6,8 +6,13 @@
         Int  {int}
     }
 
-    var x: XX
+    var x: XX = Bool{true}
     switch x
     {
+    case Bool:
+        @print("true")
+        break
+    case Int:
+        break
     }
-}*/
+}

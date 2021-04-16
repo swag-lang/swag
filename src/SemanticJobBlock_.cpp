@@ -209,12 +209,32 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
     // For a switch on an enum, force a 'using' for each case
     if (node->typeInfo->kind == TypeInfoKind::Enum)
     {
+        // :AutoScope
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
         for (auto switchCase : switchNode->cases)
         {
             switchCase->allocateExtension();
             switchCase->extension->alternativeScopes.push_back(typeEnum->scope);
         }
+    }
+
+    // Same for a typeset
+    if (node->typeInfo->kind == TypeInfoKind::TypeSet)
+    {
+        // :AutoScope
+        auto typeEnum = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::TypeSet);
+        for (auto switchCase : switchNode->cases)
+        {
+            switchCase->allocateExtension();
+            switchCase->extension->alternativeScopes.push_back(typeEnum->scope);
+        }
+
+        node->byteCodeFct = ByteCodeGenJob::emitImplicitKindOf;
+        auto& typeTable   = node->sourceFile->module->typeTable;
+        SWAG_CHECK(checkIsConcrete(context, node));
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, node->typeInfo, &node->typeInfo, &node->computedValue.reg.u32, CONCRETE_SHOULD_WAIT));
+        if (context->result != ContextResult::Done)
+            return true;
     }
 
     return true;
@@ -244,14 +264,14 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
 
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
 
-    // Verify type is vlaid
+    // Verify switch expression type is valid
     SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, "invalid switch type 'any', you need to cast to a concrete type"}));
     switch (typeSwitch->kind)
     {
     case TypeInfoKind::Slice:
     case TypeInfoKind::Array:
     case TypeInfoKind::Interface:
-    case TypeInfoKind::TypeSet:
+        //case TypeInfoKind::TypeSet:
         return context->report({node->expression, format("invalid switch type '%s'", typeSwitch->getDisplayName().c_str())});
     }
 

@@ -121,6 +121,16 @@ bool ByteCodeGenJob::emitIntrinsicIsConstExpr(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitImplicitKindOf(ByteCodeGenContext* context)
+{
+    auto node = context->node;
+    SWAG_ASSERT(node->resultRegisterRC.size() == 2);
+    auto rc = node->resultRegisterRC[1];
+    freeRegisterRC(context, node->resultRegisterRC[0]);
+    node->resultRegisterRC = rc;
+    return true;
+}
+
 bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
 {
     auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);

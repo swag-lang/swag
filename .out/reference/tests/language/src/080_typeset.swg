@@ -47,16 +47,16 @@
         // You can use a switch to test the sub type
         func testV(variant: Variant)
         {
-            switch @kindof(variant)
+            switch variant
             {
-            case Variant.S32:
+            case S32:
                 v := cast(Variant.S32) variant
                 @assert(v.item0 == 100)
-            case Variant.F32:
+            case F32:
                 v := cast(Variant.F32) variant
                 @assert(v.item0 == 3.14)
                 @assert(v.f == 3.14)
-            case Variant.Bool:
+            case Bool:
                 v := cast(Variant.Bool) variant
                 @assert(v.item0 == true)
             }
@@ -69,5 +69,12 @@
         testV(variant)
         variant = Variant.Bool{true}
         testV(variant)
+
+        // Like enums, the shorter syntax with '.' is available
+        // No need to specify the typeset name when it can be deduced.
+        var variant1: Variant
+        variant = .S32{100}
+        variant = .F32{3.14}
+        variant = .Bool{true}
     }
 }
