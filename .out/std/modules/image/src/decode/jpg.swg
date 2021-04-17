@@ -16,6 +16,13 @@ const YH2V1             = 2
 const YH1V2             = 3
 const YH2V2             = 4
 
+public struct huff_tables_t
+{
+    look_up:    [256] u32
+    code_size:  [256] u8
+    tree:       [512] u32
+}
+
 public struct Decoder
 {
     stream:             const *u8
@@ -71,6 +78,7 @@ public struct Decoder
     comp_h_blocks:      [MAXCOMPONENTS] s32
     comp_v_blocks:      [MAXCOMPONENTS] s32
     mcu_org:            [MAXBLOCKSPERMCU] s32
+    h:                  [MAXHUFFTABLES] huff_tables_t
     crr:                [256] s32
     cbb:                [256] s32
     crg:                [256] s32
@@ -271,8 +279,8 @@ impl Decoder
         if !res return false
 
         calc_mcu_block_order()
-        /*check_huff_tables();
-        check_quant_tables();
+        try check_huff_tables()
+        /*check_quant_tables();
         sMemory::Set(last_dc_val, 0, comps_in_frame * sizeof(uint));
         eob_run = 0;
         if (restart_interval)
@@ -284,6 +292,125 @@ impl Decoder
         fix_in_buffer();*/
 
         return true
+    }
+
+    func make_huff_table(using self, _index: s32, _hs: *huff_tables_t)
+    {
+        var huffsize: [257] u8
+        var huffcode: [257] u32
+
+        p := 0
+        for l := 1; l <= 16; l += 1
+        {
+            for i := 1; i <= huff_num[_index].buffer[l]; i += 1
+            {
+                huffsize[p] = cast(u8) l
+                p += 1
+            }
+        }
+
+        huffsize[p] = 0
+        lastp := p
+        cde := 0'u32
+        si := huffsize[0]
+        p = 0
+
+        while huffsize[p]
+        {
+            while huffsize[p] == si
+            {
+                huffcode[p] = cde
+                p, cde += 1
+            }
+
+            cde <<=,safe 1
+            si += 1
+        }
+
+        memory.clear(_hs.look_up, @sizeof(_hs.look_up))
+        memory.clear(_hs.tree, @sizeof(_hs.tree))
+        memory.clear(_hs.code_size, @sizeof(_hs.code_size))
+
+        nextfreeentry := -1
+        p = 0
+
+        while p < lastp
+        {
+            /*i                 = huff_val[_index][p];
+            code              = huffcode[p];
+            code_size         = huffsize[p];
+            _hs->code_size[i] = (uint8) code_size;
+            if (code_size <= 8)
+            {
+                code <<= (8 - code_size);
+                for (l = 1 << (8 - code_size); l > 0; l--)
+                {
+                    _hs->look_up[code] = i;
+                    code++;
+                }
+            }
+            else
+            {
+                subtree      = (code >> (code_size - 8)) & 0xFF;
+                currententry = _hs->look_up[subtree];
+                if (currententry == 0)
+                {
+                    _hs->look_up[subtree] = currententry = nextfreeentry;
+                    nextfreeentry -= 2;
+                }
+
+                code <<= (16 - (code_size - 8));
+                for (l = code_size; l > 9; l--)
+                {
+                    if ((code & 0x8000) == 0)
+                        currententry--;
+
+                    if (_hs->tree[-currententry - 1] == 0)
+                    {
+                        _hs->tree[-currententry - 1] = nextfreeentry;
+                        currententry                 = nextfreeentry;
+                        nextfreeentry -= 2;
+                    }
+                    else
+                        currententry = _hs->tree[-currententry - 1];
+
+                    code <<= 1;
+                }
+
+                if ((code & 0x8000) == 0)
+                    currententry--;
+                _hs->tree[-currententry - 1] = i;
+            }*/
+
+            p += 1
+        }
+    }
+
+    func check_huff_tables(using self) throw
+    {
+        loop i: comps_in_scan
+        {
+            if (spectral_start == 0) && (huff_num[comp_dc_tab[comp_list[i]]].count == 0)
+                throw "undefined huff table"
+
+            if (spectral_end > 0) && (huff_num[comp_ac_tab[comp_list[i]]].count == 0)
+                throw "undefined huff table"
+        }
+
+        loop i: MAXHUFFTABLES
+        {
+            if huff_num[i].count
+            {
+                make_huff_table(i, &h[i])
+            }
+        }
+
+        /*for (i = 0; i < blocks_per_mcu; i++)
+        {
+            dc_huff_seg[i] = h[comp_dc_tab[mcu_org[i]]];
+            ac_huff_seg[i] = h[comp_ac_tab[mcu_org[i]]];
+            component[i]   = &last_dc_val[mcu_org[i]];
+        }*/
     }
 
     func calc_mcu_block_order(using self)
@@ -493,8 +620,8 @@ impl Decoder
             index = (index & 0x0F) + ((index & 0x10) >> 4) * (MAXHUFFTABLES >> 1)
             if index >= MAXHUFFTABLES throw "bad dht index"
 
-            huff_num[index].reserve(17)
-            huff_val[index].reserve(256)
+            huff_num[index].resize(17)
+            huff_val[index].resize(256)
             memory.copy(huff_num[index].buffer, huff_numt, 17)
             memory.copy(huff_val[index].buffer, huff_valt, 256)
         }
