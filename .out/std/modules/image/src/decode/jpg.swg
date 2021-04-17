@@ -18,9 +18,9 @@ const YH2V2             = 4
 
 public struct huff_tables_t
 {
-    look_up:    [256] u32
+    look_up:    [256] s32
     code_size:  [256] u8
-    tree:       [512] u32
+    tree:       [512] s32
 }
 
 public struct Decoder
@@ -331,56 +331,57 @@ impl Decoder
         memory.clear(_hs.tree, @sizeof(_hs.tree))
         memory.clear(_hs.code_size, @sizeof(_hs.code_size))
 
-        nextfreeentry := -1
+        nextfreeentry := -1's32
         p = 0
 
         while p < lastp
         {
-            /*i                 = huff_val[_index][p];
-            code              = huffcode[p];
-            code_size         = huffsize[p];
-            _hs->code_size[i] = (uint8) code_size;
-            if (code_size <= 8)
+            i := huff_val[_index].buffer[p]
+            cde = huffcode[p];
+            code_size := huffsize[p]
+            _hs.code_size[i] = cast(u8) code_size
+            if code_size <= 8
             {
-                code <<= (8 - code_size);
-                for (l = 1 << (8 - code_size); l > 0; l--)
+                cde <<= (8 - code_size)
+                for l := 1 << (8 - code_size); l > 0; l -= 1
                 {
-                    _hs->look_up[code] = i;
-                    code++;
+                    _hs.look_up[cde] = cast(s32) i
+                    cde += 1
                 }
             }
             else
             {
-                subtree      = (code >> (code_size - 8)) & 0xFF;
-                currententry = _hs->look_up[subtree];
-                if (currententry == 0)
+                subtree := (cde >>,safe (code_size - 8)) & 0xFF
+                currententry := _hs.look_up[subtree]
+                if currententry == 0
                 {
-                    _hs->look_up[subtree] = currententry = nextfreeentry;
-                    nextfreeentry -= 2;
+                    _hs.look_up[subtree] = nextfreeentry
+                    currententry = nextfreeentry
+                    nextfreeentry -= 2
                 }
 
-                code <<= (16 - (code_size - 8));
-                for (l = code_size; l > 9; l--)
+                cde <<= (16 - (code_size - 8))
+                for l := code_size; l > 9; l -= 1
                 {
-                    if ((code & 0x8000) == 0)
-                        currententry--;
+                    if (cde & 0x8000) == 0
+                        currententry -= 1
 
-                    if (_hs->tree[-currententry - 1] == 0)
+                    if _hs.tree[-currententry - 1] == 0
                     {
-                        _hs->tree[-currententry - 1] = nextfreeentry;
-                        currententry                 = nextfreeentry;
-                        nextfreeentry -= 2;
+                        _hs.tree[-currententry - 1] = nextfreeentry
+                        currententry = nextfreeentry
+                        nextfreeentry -= 2
                     }
                     else
-                        currententry = _hs->tree[-currententry - 1];
+                        currententry = _hs.tree[-currententry - 1]
 
-                    code <<= 1;
+                    cde <<= 1
                 }
 
-                if ((code & 0x8000) == 0)
-                    currententry--;
-                _hs->tree[-currententry - 1] = i;
-            }*/
+                if (cde & 0x8000) == 0
+                    currententry -= 1
+                _hs.tree[-currententry - 1] = cast(s32) i
+            }
 
             p += 1
         }
