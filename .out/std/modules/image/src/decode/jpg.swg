@@ -15,6 +15,9 @@ const YH1V1             = 1
 const YH2V1             = 2
 const YH1V2             = 3
 const YH2V2             = 4
+const FAILED            = -1
+const DONE              = 1
+const OKAY              = 0
 
 public struct huff_tables_t
 {
@@ -175,8 +178,54 @@ impl Decoder
             try init_sequential()
     }
 
-    func decode_process(pdest: *u8) throw
+    func decode_process(using self, buf: *u8)
     {
+        var scan_line_ofs: *void
+        var scan_line_len: u32
+
+        // Gray scale (1BPP)
+        if comps_in_frame == 1
+        {
+            pdest := buf
+            pdest += cast(uint) ((image_y_size - 1) * image_x_size * 3)
+            while true
+            {
+                if decode(&scan_line_ofs, &scan_line_len)
+                    break
+
+                pdest1 := pdest
+                psrc := cast(*u8) scan_line_ofs
+                loop image_x_size
+                {
+                    pdest1[0] = :psrc
+                    pdest1[1] = :psrc
+                    pdest1[2] = :psrc
+                    pdest1 += 3
+                    psrc += 1
+                }
+
+                pdest -= cast(uint) (image_x_size * 3)
+            }
+        }
+
+        // 3 BPP
+        else
+        {
+            pdest := buf
+            pdest += cast(uint) ((image_y_size - 1) * image_x_size * 3)
+            while true
+            {
+                if decode(&scan_line_ofs, &scan_line_len)
+                    break
+                memory.copy(pdest, scan_line_ofs, cast(uint) image_x_size * 3)
+                pdest -= cast(uint) (image_x_size * 3)
+            }
+        }
+    }
+
+    func decode(scan_line_ofs: **void, scan_line_len: *u32)->s32
+    {
+        return DONE
     }
 
     func init_frame(using self) throw
@@ -947,7 +996,7 @@ public impl IDecoder for Decoder
         try decode_start()
 
         var result: retval = create(image_x_size, image_y_size, PixelFormat.BGR8)
-        try decode_process(result.pixels)
+        decode_process(result.pixels)
 
         return result
     }

@@ -2,6 +2,8 @@
 LANGUAGE
 ****************************************
 -------------------------------------
+pointer arithmetic, cool sur le type (coerce, pas juste uint)
+-------------------------------------
 #premain ?
 -------------------------------------
 ca serait cool que les methods, en reflections, aient une value qui peut etre castee en lambda, et donc appelées
