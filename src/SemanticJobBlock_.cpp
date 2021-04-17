@@ -322,6 +322,10 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     // When a switch is marked as complete, be sure every definitions have been covered
     if (node->attributeFlags & ATTRIBUTE_COMPLETE)
     {
+        // No default for a complete switch
+        auto back = node->cases.back();
+        SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, "'default' is invalid in a switch marked with 'swag.complete'"}));
+
         // For typeset, we need to test originalSwitchType, because the type of the switch is now to @kindof(originalType)
         if (node->typeInfo->kind != TypeInfoKind::Enum && (!node->beforeAutoCastType || node->beforeAutoCastType->kind != TypeInfoKind::TypeSet))
             return context->report({node, node->token, format("'swag.complete' attribute cannot be used on a switch with type '%s'", node->typeInfo->getDisplayName().c_str())});
