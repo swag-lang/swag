@@ -79,6 +79,11 @@ public struct Decoder
     comp_v_blocks:      [MAXCOMPONENTS] s32
     mcu_org:            [MAXBLOCKSPERMCU] s32
     h:                  [MAXHUFFTABLES] huff_tables_t
+    dc_huff_seg:        [MAXBLOCKSPERMCU] *huff_tables_t
+    ac_huff_seg:        [MAXBLOCKSPERMCU] *huff_tables_t
+    component:          [MAXBLOCKSPERMCU] *u32
+    last_dc_val:        [MAXCOMPONENTS] u32
+
     crr:                [256] s32
     cbb:                [256] s32
     crg:                [256] s32
@@ -280,8 +285,8 @@ impl Decoder
 
         calc_mcu_block_order()
         try check_huff_tables()
-        /*check_quant_tables();
-        sMemory::Set(last_dc_val, 0, comps_in_frame * sizeof(uint));
+        try check_quant_tables()
+        /*sMemory::Set(last_dc_val, 0, comps_in_frame * sizeof(uint));
         eob_run = 0;
         if (restart_interval)
         {
@@ -292,6 +297,15 @@ impl Decoder
         fix_in_buffer();*/
 
         return true
+    }
+
+    func check_quant_tables(using self) throw
+    {
+        loop i: comps_in_scan
+        {
+            if quant[comp_quant[comp_list[i]]].count == 0
+                throw "undefined quant table"
+        }
     }
 
     func make_huff_table(using self, _index: s32, _hs: *huff_tables_t)
@@ -406,12 +420,12 @@ impl Decoder
             }
         }
 
-        /*for (i = 0; i < blocks_per_mcu; i++)
+        loop i: blocks_per_mcu
         {
-            dc_huff_seg[i] = h[comp_dc_tab[mcu_org[i]]];
-            ac_huff_seg[i] = h[comp_ac_tab[mcu_org[i]]];
-            component[i]   = &last_dc_val[mcu_org[i]];
-        }*/
+            dc_huff_seg[i] = &h[comp_dc_tab[mcu_org[i]]]
+            ac_huff_seg[i] = &h[comp_ac_tab[mcu_org[i]]]
+            component[i]   = &last_dc_val[mcu_org[i]]
+        }
     }
 
     func calc_mcu_block_order(using self)
@@ -641,7 +655,7 @@ impl Decoder
             n &= 0x0F
             if n >= MAXQUANTTABLES throw "bad dqt table"
 
-            quant[n].reserve(64)
+            quant[n].resize(64)
             loop i: 64
             {
                 temp := get_bits_1(8)
