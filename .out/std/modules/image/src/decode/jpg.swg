@@ -5,6 +5,8 @@ const INBUFSIZE      = 4096
 const MAX_HEIGHT     = 8192
 const MAX_WIDTH      = 8192
 const MAXCOMPONENTS  = 4
+const MAXQUANTTABLES = 4
+const MAXHUFFTABLES  = 8
 
 public struct Decoder
 {
@@ -29,6 +31,9 @@ public struct Decoder
     comp_v_samp:        [MAXCOMPONENTS] s32
     comp_quant:         [MAXCOMPONENTS] s32
     comp_ident:         [MAXCOMPONENTS] s32
+    huff_num:           [MAXHUFFTABLES] Array'u8
+    huff_val:           [MAXHUFFTABLES] Array'u8
+    quant:              [MAXQUANTTABLES] Array's16
 }
 
 enum Marker
@@ -95,18 +100,6 @@ impl Decoder
         try locate_sof_marker()
     }
 
-    func init_frame()
-    {
-    }
-
-    func init_progressive()
-    {
-    }
-
-    func init_sequential()
-    {
-    }
-
     func decode_start(using self) throw
     {
         init_frame()
@@ -117,6 +110,18 @@ impl Decoder
     }
 
     func decode_process(pdest: *u8) throw
+    {
+    }
+
+    func init_frame()
+    {
+    }
+
+    func init_progressive()
+    {
+    }
+
+    func init_sequential()
     {
     }
 
@@ -160,27 +165,6 @@ impl Decoder
         return c
     }
 
-    func locate_soi_marker(using self) throw
-    {
-        lastchar := get_bits_1(8)
-        thischar := get_bits_1(8)
-        if (lastchar == 0xFF) && (thischar == Marker.M_SOI)
-            return
-        bytesleft := 512
-        while true
-        {
-            bytesleft -= 1
-            if bytesleft == 0 throw "not a jpeg"
-            lastchar = thischar
-            thischar = get_bits_1(8)
-            if (lastchar == 0xFF) && (thischar == Marker.M_SOI)
-                break
-        }
-
-        thischar = (bit_buf >> 8) & 0xFF
-        if thischar != 0xFF throw "not a jpeg"
-    }
-
     func next_marker(using self)->Marker
     {
         bytes := 0
@@ -221,11 +205,16 @@ impl Decoder
             case M_JPG, M_RST0, M_RST1, M_RST2, M_RST3, M_RST4,
                  M_RST5, M_RST6, M_RST7, M_TEM:
                 throw "unexpected marker"
-            case M_DHT: try read_dht_marker()
-            case M_DQT: try read_dqt_marker()
-            case M_DRI: try read_dri_marker()
-            default:    try read_variable_marker(c)
-            case M_DAC: throw "no arithmetic support"
+            case M_DAC:
+                throw "no arithmetic support"
+            case M_DHT:
+                try read_dht_marker()
+            case M_DQT:
+                try read_dqt_marker()
+            case M_DRI:
+                try read_dri_marker()
+            default:
+                try read_variable_marker(c)
             }
         }
 
@@ -248,12 +237,72 @@ impl Decoder
 
     func read_dht_marker(using self) throw
     {
+        var huff_numt: [17] u8
+        var huff_valt: [256] u8
 
+        left := get_bits_1(16)
+        if left < 2 throw "bad dht marker"
+        left -= 2
+
+        while left
+        {
+            index := get_bits_1(8);
+            count := 0
+            huff_numt[0] = 0
+            for i := 1; i <= 16; i += 1
+            {
+                huff_numt[i] = cast(u8) get_bits_1(8)
+                count += cast(s32) huff_numt[i]
+            }
+
+            if count > 255 throw "bad dht counts"
+            loop i: count
+            {
+                huff_valt[i] = cast(u8) get_bits_1(8)
+            }
+
+            i := 1 + 16 + count
+            if left < i throw "bad dht marker"
+
+            left -= cast(u32) i
+            if (index & 0x10) > 0x10 throw "bad dht index"
+
+            index = (index & 0x0F) + ((index & 0x10) >> 4) * (MAXHUFFTABLES >> 1)
+            if index >= MAXHUFFTABLES throw "bad dht index"
+
+            huff_num[index].reserve(17)
+            huff_val[index].reserve(256)
+            memory.copy(huff_num[index].buffer, huff_numt, 17)
+            memory.copy(huff_val[index].buffer, huff_valt, 256)
+        }
     }
 
     func read_dqt_marker(using self) throw
     {
+        left := get_bits_1(16)
+        if left < 2 throw "bad dqt marker"
+        left -= 2
 
+        while left
+        {
+            n    := get_bits_1(8)
+            prec := n >>,safe 4
+            n &= 0x0F
+            if n >= MAXQUANTTABLES throw "bad dqt table"
+
+            quant[n].reserve(64)
+            loop i: 64
+            {
+                temp := get_bits_1(8)
+                if prec temp = (temp << 8) + get_bits_1(8)
+                quant[n].buffer[i] = cast(s16) temp
+            }
+
+            i := 64'u32 + 1
+            if prec i += 64
+            if left < i throw "bad dqt length"
+            left -= i
+        }
     }
 
     func read_dri_marker(using self) throw
@@ -286,6 +335,27 @@ impl Decoder
         }
     }
 
+    func locate_soi_marker(using self) throw
+    {
+        lastchar := get_bits_1(8)
+        thischar := get_bits_1(8)
+        if (lastchar == 0xFF) && (thischar == Marker.M_SOI)
+            return
+        bytesleft := 512
+        while true
+        {
+            bytesleft -= 1
+            if bytesleft == 0 throw "not a jpeg"
+            lastchar = thischar
+            thischar = get_bits_1(8)
+            if (lastchar == 0xFF) && (thischar == Marker.M_SOI)
+                break
+        }
+
+        thischar = (bit_buf >> 8) & 0xFF
+        if thischar != 0xFF throw "not a jpeg"
+    }
+
     func locate_sof_marker(using self) throw
     {
         try locate_soi_marker()
@@ -294,12 +364,11 @@ impl Decoder
         {
         case M_SOF2:
             progressive_flag = true
-            fallthrough
+            try read_sof_marker()
         case M_SOF0, M_SOF1:
             try read_sof_marker()
         case M_SOF9:
             throw "no arithmetic support"
-
         default:
             throw "unsupported marker"
         }
