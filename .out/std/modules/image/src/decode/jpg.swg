@@ -7,6 +7,7 @@ const MAX_WIDTH         = 8192
 const MAXCOMPONENTS     = 4
 const MAXQUANTTABLES    = 4
 const MAXHUFFTABLES     = 8
+const MAXBLOCKSPERMCU   = 10
 const MAXBLOCKSPERROW   = 6144
 const MAXCOMPSINSCAN    = 4
 const GRAYSCALE         = 0
@@ -37,6 +38,7 @@ public struct Decoder
     max_blocks_per_mcu: s32
     max_mcu_x_size:     s32
     max_mcu_y_size:     s32
+    blocks_per_mcu:     s32
     max_mcus_per_row:   s32
     max_mcus_per_col:   s32
     max_blocks_per_row: s32
@@ -46,6 +48,8 @@ public struct Decoder
     spectral_end:       s32
     successive_low:     s32
     successive_high:    s32
+    mcus_per_row:       s32
+    mcus_per_col:       s32
 
     dest_bytes_per_pixel:           s32
     real_dest_bytes_per_scan_line:  s32
@@ -64,6 +68,9 @@ public struct Decoder
     comp_list:          [MAXCOMPSINSCAN] s32
     comp_dc_tab:        [MAXCOMPONENTS] s32
     comp_ac_tab:        [MAXCOMPONENTS] s32
+    comp_h_blocks:      [MAXCOMPONENTS] s32
+    comp_v_blocks:      [MAXCOMPONENTS] s32
+    mcu_org:            [MAXBLOCKSPERMCU] s32
     crr:                [256] s32
     cbb:                [256] s32
     crg:                [256] s32
@@ -263,8 +270,8 @@ impl Decoder
         res := try locate_sos_marker()
         if !res return false
 
-        /*calc_mcu_block_order()
-        check_huff_tables();
+        calc_mcu_block_order()
+        /*check_huff_tables();
         check_quant_tables();
         sMemory::Set(last_dc_val, 0, comps_in_frame * sizeof(uint));
         eob_run = 0;
@@ -277,6 +284,58 @@ impl Decoder
         fix_in_buffer();*/
 
         return true
+    }
+
+    func calc_mcu_block_order(using self)
+    {
+        max_h_samp := 0
+        max_v_samp := 0
+
+        loop cid: comps_in_frame
+        {
+            if comp_h_samp[cid] > max_h_samp
+                max_h_samp = comp_h_samp[cid]
+            if comp_v_samp[cid] > max_v_samp
+                max_v_samp = comp_v_samp[cid]
+        }
+
+        loop cid: comps_in_frame
+        {
+            comp_h_blocks[cid] = ((((image_x_size * comp_h_samp[cid]) + (max_h_samp - 1)) / max_h_samp) + 7) / 8
+            comp_v_blocks[cid] = ((((image_y_size * comp_v_samp[cid]) + (max_v_samp - 1)) / max_v_samp) + 7) / 8
+        }
+
+        if (comps_in_scan == 1)
+        {
+            mcus_per_row = comp_h_blocks[comp_list[0]]
+            mcus_per_col = comp_v_blocks[comp_list[0]]
+        }
+        else
+        {
+            mcus_per_row = (((image_x_size + 7) / 8) + (max_h_samp - 1)) / max_h_samp
+            mcus_per_col = (((image_y_size + 7) / 8) + (max_v_samp - 1)) / max_v_samp
+        }
+
+        if comps_in_scan == 1
+        {
+            mcu_org[0] = comp_list[0]
+            blocks_per_mcu = 1
+        }
+        else
+        {
+            blocks_per_mcu = 0
+            loop component_num: comps_in_scan
+            {
+                cid := comp_list[component_num]
+                num_blocks := comp_h_samp[cid] * comp_v_samp[cid]
+                while num_blocks
+                {
+                    mcu_org[blocks_per_mcu] = cid
+                    blocks_per_mcu += 1
+                    num_blocks -= 1
+                }
+            }
+        }
     }
 
     func init_progressive(using self)
