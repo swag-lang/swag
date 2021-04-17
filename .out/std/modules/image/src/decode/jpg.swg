@@ -8,6 +8,7 @@ const MAXCOMPONENTS     = 4
 const MAXQUANTTABLES    = 4
 const MAXHUFFTABLES     = 8
 const MAXBLOCKSPERROW   = 6144
+const MAXCOMPSINSCAN    = 4
 const GRAYSCALE         = 0
 const YH1V1             = 1
 const YH2V1             = 2
@@ -41,11 +42,17 @@ public struct Decoder
     max_blocks_per_row: s32
     total_lines_left:   s32
     mcu_lines_left:     s32
+    spectral_start:     s32
+    spectral_end:       s32
+    successive_low:     s32
+    successive_high:    s32
+
     dest_bytes_per_pixel:           s32
     real_dest_bytes_per_scan_line:  s32
     dest_bytes_per_scan_line:       s32
     accept_meta:        bool
     progressive_flag:   bool
+    comps_in_scan:      s32
 
     in_buf:             [INBUFSIZE + 128] u8
     comp_h_samp:        [MAXCOMPONENTS] s32
@@ -54,6 +61,9 @@ public struct Decoder
     comp_ident:         [MAXCOMPONENTS] s32
     block_max_zag_set:  [MAXBLOCKSPERROW] s32
     block_seg:          [MAXBLOCKSPERROW] *s16
+    comp_list:          [MAXCOMPSINSCAN] s32
+    comp_dc_tab:        [MAXCOMPONENTS] s32
+    comp_ac_tab:        [MAXCOMPONENTS] s32
     crr:                [256] s32
     cbb:                [256] s32
     crg:                [256] s32
@@ -139,7 +149,7 @@ impl Decoder
         if progressive_flag
             init_progressive()
         else
-            init_sequential()
+            try init_sequential()
     }
 
     func decode_process(pdest: *u8) throw
@@ -248,12 +258,35 @@ impl Decoder
         }
     }
 
-    func init_progressive()
+    func init_scan(using self)->bool throw
+    {
+        res := try locate_sos_marker()
+        if !res return false
+
+        /*calc_mcu_block_order()
+        check_huff_tables();
+        check_quant_tables();
+        sMemory::Set(last_dc_val, 0, comps_in_frame * sizeof(uint));
+        eob_run = 0;
+        if (restart_interval)
+        {
+            restarts_left    = restart_interval;
+            next_restart_num = 0;
+        }
+
+        fix_in_buffer();*/
+
+        return true
+    }
+
+    func init_progressive(using self)
     {
     }
 
-    func init_sequential()
+    func init_sequential(using self) throw
     {
+        res := try init_scan()
+        if !res throw "unexpected marker"
     }
 
     #[swag.safety("of", false)]
@@ -464,6 +497,68 @@ impl Decoder
             comp_v_samp[i] = cast(s32) get_bits_1(4)
             comp_quant[i]  = cast(s32) get_bits_1(8)
         }
+    }
+
+    func read_sos_marker(using self) throw
+    {
+        left := get_bits_1(16)
+        n    := get_bits_1(8)
+        comps_in_scan = cast(s32) n
+        left -= 3
+
+        if (left != cast(u32)(n * 2 + 3)) || (n < 1) || (n > MAXCOMPSINSCAN)
+            throw "bad sos length"
+
+        loop i: n
+        {
+            cc := get_bits_1(8)
+            c  := get_bits_1(8)
+            left -= 2
+
+            ci := 0
+            while ci < comps_in_frame
+            {
+                if (cc == comp_ident[ci])
+                    break;
+                ci += 1
+            }
+
+            if ci >= comps_in_frame
+                throw "bad sos comp id"
+
+            comp_list[i]    = ci
+            comp_dc_tab[ci] = cast(s32) (c >>,safe 4) & 15
+            comp_ac_tab[ci] = cast(s32) (c & 15) + (MAXHUFFTABLES >> 1)
+        }
+
+        spectral_start  = cast(s32) get_bits_1(8)
+        spectral_end    = cast(s32) get_bits_1(8)
+        successive_high = cast(s32) get_bits_1(4)
+        successive_low  = cast(s32) get_bits_1(4)
+
+        if !progressive_flag
+        {
+            spectral_start = 0
+            spectral_end   = 63
+        }
+
+        left -= 3
+        while left
+        {
+            discard get_bits_1(8)
+            left -= 1
+        }
+    }
+
+    func locate_sos_marker(using self)->bool throw
+    {
+        c := try process_markers()
+        if c == .M_EOI
+            return false
+        else if c != .M_SOS
+            throw "unexpected marker"
+        try read_sos_marker()
+        return true
     }
 
     func locate_soi_marker(using self) throw
