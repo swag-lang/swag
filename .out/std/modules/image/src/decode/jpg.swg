@@ -63,13 +63,14 @@ public struct Decoder
     eob_run:            s32
     restarts_left:      s32
     next_restart_num:   s32
+    comps_in_scan:      s32
 
     dest_bytes_per_pixel:           s32
     real_dest_bytes_per_scan_line:  s32
     dest_bytes_per_scan_line:       s32
+
     accept_meta:        bool
     progressive_flag:   bool
-    comps_in_scan:      s32
 
     in_buf:             [INBUFSIZE + 128] u8
     comp_h_samp:        [MAXCOMPONENTS] s32
@@ -89,6 +90,7 @@ public struct Decoder
     ac_huff_seg:        [MAXBLOCKSPERMCU] *huff_tables_t
     component:          [MAXBLOCKSPERMCU] *u32
     last_dc_val:        [MAXCOMPONENTS] u32
+    temp_block:         [64] s16
 
     crr:                [256] s32
     cbb:                [256] s32
@@ -178,7 +180,7 @@ impl Decoder
             try init_sequential()
     }
 
-    func decode_process(using self, buf: *u8)
+    func decode_process(using self, buf: *u8) throw
     {
         var scan_line_ofs: *void
         var scan_line_len: u32
@@ -190,7 +192,7 @@ impl Decoder
             pdest += cast(uint) ((image_y_size - 1) * image_x_size * 3)
             while true
             {
-                if decode(&scan_line_ofs, &scan_line_len)
+                if try decode(&scan_line_ofs, &scan_line_len)
                     break
 
                 pdest1 := pdest
@@ -215,7 +217,7 @@ impl Decoder
             pdest += cast(uint) ((image_y_size - 1) * image_x_size * 3)
             while true
             {
-                if decode(&scan_line_ofs, &scan_line_len)
+                if try decode(&scan_line_ofs, &scan_line_len)
                     break
                 memory.copy(pdest, scan_line_ofs, cast(uint) image_x_size * 3)
                 pdest -= cast(uint) (image_x_size * 3)
@@ -223,9 +225,123 @@ impl Decoder
         }
     }
 
-    func decode(scan_line_ofs: **void, scan_line_len: *u32)->s32
+    func load_next_row(using self)
     {
+
+    }
+
+    func decode_next_row(using self)
+    {
+
+    }
+
+    func idct(using self, _data: *s16, _pdst_ptr: *u8)
+    {
+    }
+
+    func transform_row(using self)
+    {
+        psrc_ptr := block_seg[0]
+        pdst_ptr := psample_buf
+
+        for i := max_blocks_per_row; i > 0; i -= 1
+        {
+            memory.copy(temp_block, psrc_ptr, 64'uint * @sizeof(s16))
+            idct(temp_block, pdst_ptr)
+            psrc_ptr += 64
+            pdst_ptr += 64
+        }
+    }
+
+    func find_eoi(using self) throw
+    {
+        if !progressive_flag
+        {
+            bits_left = 16
+            discard get_bits_1(16)
+            discard get_bits_1(16)
+            discard try process_markers()
+        }
+
+        total_bytes_read -= in_buf_left
+    }
+
+    func decode(using self, scan_line_ofs: **void, scan_line_len: *u32)->s32 throw
+    {
+        if total_lines_left == 0
+            return DONE
+
+        if mcu_lines_left == 0
+        {
+            if progressive_flag
+                load_next_row()
+            else
+                decode_next_row()
+            if total_lines_left <= max_mcu_y_size
+                try find_eoi()
+            transform_row()
+            mcu_lines_left = max_mcu_y_size
+        }
+
+        switch scan_type
+        {
+        case YH2V2:
+            if (mcu_lines_left & 1) == 0
+            {
+                H2V2Convert()
+                :scan_line_ofs = scan_line_0.buffer
+            }
+            else
+                :scan_line_ofs = scan_line_1.buffer
+
+        case YH2V1:
+            H2V1Convert()
+            :scan_line_ofs = scan_line_0.buffer
+
+        case YH1V2:
+            if (mcu_lines_left & 1) == 0
+            {
+                H1V2Convert()
+                :scan_line_ofs = scan_line_0.buffer
+            }
+            else
+                :scan_line_ofs = scan_line_1.buffer
+
+        case YH1V1:
+            H1V1Convert()
+            :scan_line_ofs = scan_line_0.buffer
+
+        case GRAYSCALE:
+            GrayConvert()
+            :scan_line_ofs = scan_line_0.buffer
+        }
+
+        :scan_line_len = cast(u32) real_dest_bytes_per_scan_line
+        mcu_lines_left -= 1
+        total_lines_left -= 1
+
+        //return OKAY
         return DONE
+    }
+
+    func GrayConvert(using self)
+    {
+    }
+
+    func H1V1Convert(using self)
+    {
+    }
+
+    func H1V2Convert(using self)
+    {
+    }
+
+    func H2V1Convert(using self)
+    {
+    }
+
+    func H2V2Convert(using self)
+    {
     }
 
     func init_frame(using self) throw
@@ -996,7 +1112,7 @@ public impl IDecoder for Decoder
         try decode_start()
 
         var result: retval = create(image_x_size, image_y_size, PixelFormat.BGR8)
-        decode_process(result.pixels)
+        try decode_process(result.pixels)
 
         return result
     }
