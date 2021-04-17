@@ -62,4 +62,5 @@ public func load(fileName: string)->Image throw
 {
     addDecoder'(bmp.Decoder)()
     addDecoder'(tga.Decoder)()
+    addDecoder'(jpg.Decoder)()
 }
