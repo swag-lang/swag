@@ -1,9 +1,10 @@
 #global namespace jpg
 using swag, core
 
-const INBUFSIZE = 4096
-const MAX_HEIGHT = 8192
-const MAX_WIDTH  = 8192
+const INBUFSIZE      = 4096
+const MAX_HEIGHT     = 8192
+const MAX_WIDTH      = 8192
+const MAXCOMPONENTS  = 4
 
 public struct Decoder
 {
@@ -19,8 +20,15 @@ public struct Decoder
     tem_flag:           s32
     eof_flag:           s32
     total_bytes_read:   s32
+    comps_in_frame:     s32
+    restart_interval:   s32
+    accept_meta:        bool
     progressive_flag:   bool
     in_buf:             [INBUFSIZE + 128] u8
+    comp_h_samp:        [MAXCOMPONENTS] s32
+    comp_v_samp:        [MAXCOMPONENTS] s32
+    comp_quant:         [MAXCOMPONENTS] s32
+    comp_ident:         [MAXCOMPONENTS] s32
 }
 
 enum Marker
@@ -87,8 +95,25 @@ impl Decoder
         try locate_sof_marker()
     }
 
-    func decode_start() throw
+    func init_frame()
     {
+    }
+
+    func init_progressive()
+    {
+    }
+
+    func init_sequential()
+    {
+    }
+
+    func decode_start(using self) throw
+    {
+        init_frame()
+        if progressive_flag
+            init_progressive()
+        else
+            init_sequential()
     }
 
     func decode_process(pdest: *u8) throw
@@ -193,33 +218,48 @@ impl Decoder
                  M_SOF7, M_SOF9, M_SOF10, M_SOF11, M_SOF13, M_SOF14,
                  M_SOF15, M_SOI, M_EOI, M_SOS:
                 return c
-
-            case M_DHT:
-                //read_dht_marker()
-                break
-
-            case M_DAC:
-                throw "no arithmetic support"
-
-            case M_DQT:
-                //read_dqt_marker()
-                break
-
-            case M_DRI:
-                //read_dri_marker()
-                break
-
             case M_JPG, M_RST0, M_RST1, M_RST2, M_RST3, M_RST4,
                  M_RST5, M_RST6, M_RST7, M_TEM:
                 throw "unexpected marker"
-
-            default:
-                //get_variable_marker(c)
-                break
+            case M_DHT: try read_dht_marker()
+            case M_DQT: try read_dqt_marker()
+            case M_DRI: try read_dri_marker()
+            default:    try read_variable_marker(c)
+            case M_DAC: throw "no arithmetic support"
             }
         }
 
         return Marker.M_ERROR
+    }
+
+    func read_variable_marker(using self, marker: Marker) throw
+    {
+        left := get_bits_1(16)
+        if left < 2 throw "bad variable marker"
+        left -= 2
+
+        @assert(!accept_meta)
+        while left
+        {
+            discard get_bits_1(8)
+            left -= 1
+        }
+    }
+
+    func read_dht_marker(using self) throw
+    {
+
+    }
+
+    func read_dqt_marker(using self) throw
+    {
+
+    }
+
+    func read_dri_marker(using self) throw
+    {
+        if get_bits_1(16) != 4 throw "bad dri length"
+        restart_interval = cast(s32) get_bits_1(16)
     }
 
     func read_sof_marker(using self) throw
@@ -228,24 +268,22 @@ impl Decoder
         if get_bits_1(8) != 8 throw "bad precision"
 
         image_y_size = cast(s32) get_bits_1(16)
-        if (image_y_size < 1) || (image_y_size > MAX_HEIGHT) throw "bad height"
         image_x_size = cast(s32) get_bits_1(16)
+
+        if (image_y_size < 1) || (image_y_size > MAX_HEIGHT) throw "bad height"
         if (image_x_size < 1) || (image_x_size > MAX_WIDTH) throw "bad width"
 
-/*        comps_in_frame = get_bits_1(8);
+        comps_in_frame = cast(s32) get_bits_1(8)
+        if comps_in_frame > MAXCOMPONENTS throw "too many components"
+        if left != (comps_in_frame * 3 + 8) throw "bad sqf length"
 
-        if (comps_in_frame > MAXCOMPONENTS)
-            terminate("Too many components");
-        if (left != (uint)(comps_in_frame * 3 + 8))
-            terminate("Bad sqf length");
-
-        for (i = 0; i < comps_in_frame; i++)
+        loop i: comps_in_frame
         {
-            comp_ident[i]  = get_bits_1(8);
-            comp_h_samp[i] = get_bits_1(4);
-            comp_v_samp[i] = get_bits_1(4);
-            comp_quant[i]  = get_bits_1(8);
-        }*/
+            comp_ident[i]  = cast(s32) get_bits_1(8)
+            comp_h_samp[i] = cast(s32) get_bits_1(4)
+            comp_v_samp[i] = cast(s32) get_bits_1(4)
+            comp_quant[i]  = cast(s32) get_bits_1(8)
+        }
     }
 
     func locate_sof_marker(using self) throw
