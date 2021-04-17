@@ -54,7 +54,7 @@ impl IAllocator for TempAllocator
             // First block allocation
             if !block
             {
-                if !capacity capacity = 16 * 1024
+                if !capacity capacity = 128 * 1024
                 block = @alloc(capacity)
             }
 

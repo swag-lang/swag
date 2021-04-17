@@ -1,21 +1,29 @@
 #global namespace jpg
 using swag, core
 
-const INBUFSIZE      = 4096
-const MAX_HEIGHT     = 8192
-const MAX_WIDTH      = 8192
-const MAXCOMPONENTS  = 4
-const MAXQUANTTABLES = 4
-const MAXHUFFTABLES  = 8
+const INBUFSIZE         = 4096
+const MAX_HEIGHT        = 8192
+const MAX_WIDTH         = 8192
+const MAXCOMPONENTS     = 4
+const MAXQUANTTABLES    = 4
+const MAXHUFFTABLES     = 8
+const MAXBLOCKSPERROW   = 6144
+const GRAYSCALE         = 0
+const YH1V1             = 1
+const YH2V1             = 2
+const YH1V2             = 3
+const YH2V2             = 4
 
 public struct Decoder
 {
+    stream:             const *u8
+    in_buf_ofs:         *u8
+    psample_buf:        *u8
+
     image_x_size:       s32
     image_y_size:       s32
-    stream:             const *u8
     streamlen:          s32
     streamseek:         s32
-    in_buf_ofs:         *u8
     bit_buf:            u32
     bits_left:          s32
     in_buf_left:        s32
@@ -24,16 +32,40 @@ public struct Decoder
     total_bytes_read:   s32
     comps_in_frame:     s32
     restart_interval:   s32
+    scan_type:          s32
+    max_blocks_per_mcu: s32
+    max_mcu_x_size:     s32
+    max_mcu_y_size:     s32
+    max_mcus_per_row:   s32
+    max_mcus_per_col:   s32
+    max_blocks_per_row: s32
+    total_lines_left:   s32
+    mcu_lines_left:     s32
+    dest_bytes_per_pixel:           s32
+    real_dest_bytes_per_scan_line:  s32
+    dest_bytes_per_scan_line:       s32
     accept_meta:        bool
     progressive_flag:   bool
+
     in_buf:             [INBUFSIZE + 128] u8
     comp_h_samp:        [MAXCOMPONENTS] s32
     comp_v_samp:        [MAXCOMPONENTS] s32
     comp_quant:         [MAXCOMPONENTS] s32
     comp_ident:         [MAXCOMPONENTS] s32
+    block_max_zag_set:  [MAXBLOCKSPERROW] s32
+    block_seg:          [MAXBLOCKSPERROW] *s16
+    crr:                [256] s32
+    cbb:                [256] s32
+    crg:                [256] s32
+    cbg:                [256] s32
+
     huff_num:           [MAXHUFFTABLES] Array'u8
     huff_val:           [MAXHUFFTABLES] Array'u8
     quant:              [MAXQUANTTABLES] Array's16
+    scan_line_0:        Array'u8
+    scan_line_1:        Array'u8
+    q_buf:              Array'u8
+    sample_buf:         Array'u8
 }
 
 enum Marker
@@ -96,13 +128,14 @@ impl Decoder
         bits_left = 16
         discard get_bits_1(16)
         discard get_bits_1(16)
+        loop i: MAXBLOCKSPERROW block_max_zag_set[i] = 64
 
         try locate_sof_marker()
     }
 
     func decode_start(using self) throw
     {
-        init_frame()
+        try init_frame()
         if progressive_flag
             init_progressive()
         else
@@ -113,8 +146,106 @@ impl Decoder
     {
     }
 
-    func init_frame()
+    func init_frame(using self) throw
     {
+        if comps_in_frame == 1
+        {
+            scan_type          = GRAYSCALE
+            max_blocks_per_mcu = 1
+            max_mcu_x_size     = 8
+            max_mcu_y_size     = 8
+        }
+        else if comps_in_frame == 3
+        {
+            if (comp_h_samp[1] != 1) || (comp_v_samp[1] != 1) || (comp_h_samp[2] != 1) || (comp_v_samp[2] != 1)
+                throw "unsupported samp factors"
+
+            if (comp_h_samp[0] == 1) && (comp_v_samp[0] == 1)
+            {
+                scan_type          = YH1V1
+                max_blocks_per_mcu = 3
+                max_mcu_x_size     = 8
+                max_mcu_y_size     = 8
+            }
+            else if (comp_h_samp[0] == 2) && (comp_v_samp[0] == 1)
+            {
+                scan_type          = YH2V1
+                max_blocks_per_mcu = 4
+                max_mcu_x_size     = 16
+                max_mcu_y_size     = 8
+            }
+            else if (comp_h_samp[0] == 1) && (comp_v_samp[0] == 2)
+            {
+                scan_type          = YH1V2
+                max_blocks_per_mcu = 4
+                max_mcu_x_size     = 8
+                max_mcu_y_size     = 16
+            }
+            else if (comp_h_samp[0] == 2) && (comp_v_samp[0] == 2)
+            {
+                scan_type          = YH2V2
+                max_blocks_per_mcu = 6
+                max_mcu_x_size     = 16
+                max_mcu_y_size     = 16
+            }
+            else
+                throw "unsupported samp factors"
+        }
+        else
+            throw "unsupported color space"
+
+        max_mcus_per_row = (image_x_size + (max_mcu_x_size - 1)) / max_mcu_x_size
+        max_mcus_per_col = (image_y_size + (max_mcu_y_size - 1)) / max_mcu_y_size
+
+        if scan_type == GRAYSCALE
+            dest_bytes_per_pixel = 1
+        else
+            dest_bytes_per_pixel = 4
+
+        dest_bytes_per_scan_line      = ((image_x_size + 15) & 0xFFF0) * dest_bytes_per_pixel
+        real_dest_bytes_per_scan_line = (image_x_size * dest_bytes_per_pixel)
+
+        scan_line_0.resize(cast(uint) dest_bytes_per_scan_line + 8)
+        memory.clear(scan_line_0.buffer, cast(uint) dest_bytes_per_scan_line)
+
+        scan_line_1.resize(cast(uint) dest_bytes_per_scan_line + 8)
+        memory.clear(scan_line_1.buffer, cast(uint) dest_bytes_per_scan_line)
+
+        max_blocks_per_row = max_mcus_per_row * max_blocks_per_mcu
+        if max_blocks_per_row > MAXBLOCKSPERROW
+            throw "assertion error"
+
+        q_buf.resize(cast(uint) max_blocks_per_row * 64 * @sizeof(s16) + 8)
+        loop i: max_blocks_per_row
+            block_seg[i] = cast(*s16) (q_buf.buffer + i * 64 * @sizeof(s16))
+        loop i: max_blocks_per_row
+            block_max_zag_set[i] = 64
+
+        sample_buf.resize(cast(uint) max_blocks_per_row * 64 + 8)
+        psample_buf = sample_buf.buffer
+
+        total_lines_left = image_y_size
+        mcu_lines_left   = 0
+        create_look_ups();
+    }
+
+    func create_look_ups(using self)
+    {
+        var fix: [4] s32
+
+        fix[0] = cast(s32) ((1.40200 / 2) * (1'u32 << 16) + 0.5)
+        fix[1] = cast(s32) ((1.77200 / 2) * (1'u32 << 16) + 0.5)
+        fix[2] = cast(s32) -((0.71414 / 2) * (1'u32 << 16) + 0.5)
+        fix[3] = cast(s32) -((0.34414 / 2) * (1'u32 << 16) + 0.5)
+
+        loop i: 255
+        {
+            k := (i * 2) - 256
+            crr[i] = (fix[0] * k + (1's32 << (16 - 1))) >>,safe 16
+            cbb[i] = (fix[1] * k + (1's32 << (16 - 1))) >>,safe 16
+            crg[i] = (fix[2] * k)
+            cbg[i] = (fix[3] * k + (1's32 << (16 - 1)))
+        }
     }
 
     func init_progressive()
