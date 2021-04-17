@@ -57,6 +57,9 @@ public struct Decoder
     successive_high:    s32
     mcus_per_row:       s32
     mcus_per_col:       s32
+    eob_run:            s32
+    restarts_left:      s32
+    next_restart_num:   s32
 
     dest_bytes_per_pixel:           s32
     real_dest_bytes_per_scan_line:  s32
@@ -286,17 +289,40 @@ impl Decoder
         calc_mcu_block_order()
         try check_huff_tables()
         try check_quant_tables()
-        /*sMemory::Set(last_dc_val, 0, comps_in_frame * sizeof(uint));
-        eob_run = 0;
-        if (restart_interval)
+
+        memory.clear(last_dc_val, cast(uint) comps_in_frame * @sizeof(u32))
+
+        eob_run = 0
+        if restart_interval
         {
-            restarts_left    = restart_interval;
-            next_restart_num = 0;
+            restarts_left    = restart_interval
+            next_restart_num = 0
         }
 
-        fix_in_buffer();*/
-
+        fix_in_buffer()
         return true
+    }
+
+    func stuff_char(using self, q: u8)
+    {
+        in_buf_ofs -= 1
+        :in_buf_ofs = q
+        in_buf_left += 1
+    }
+
+    func fix_in_buffer(using self)
+    {
+        if bits_left == 16
+            stuff_char(cast(u8) (bit_buf >>,safe 16) & 0xFF)
+        if bits_left >= 8
+            stuff_char(cast(u8) (bit_buf >>,safe 24) & 0xFF)
+
+        stuff_char(cast(u8) (bit_buf & 0xFF))
+        stuff_char(cast(u8) ((bit_buf >>,safe 8) & 0xFF))
+        bits_left = 16
+
+        discard get_bits_2(16)
+        discard get_bits_2(16)
     }
 
     func check_quant_tables(using self) throw
@@ -508,6 +534,74 @@ impl Decoder
             bit_buf = jpeg_rol(bit_buf, cast(u32) num_bits)
 
         return i
+    }
+
+    func get_bits_2(using self, _numbits: s32)->u32
+    {
+        i := (bit_buf >> cast(u32) (16 - _numbits)) & ((1'u32 << cast(u32) _numbits) - 1)
+        bits_left -= _numbits
+        if bits_left <= 0
+        {
+            bit_buf = jpeg_rol(bit_buf, cast(u32) (_numbits + bits_left))
+            c1      := get_octet();
+            c2      := get_octet();
+            bit_buf = (bit_buf & 0xFFFF) | ((cast(u32) c1) << 24) | ((cast(u32) c2) << 16)
+            bit_buf = jpeg_rol(bit_buf, cast(u32) -bits_left)
+            bits_left += 16
+        }
+        else
+            bit_buf = jpeg_rol(bit_buf, cast(u32) _numbits)
+
+        return i
+    }
+
+    func get_octet(using self)->u8
+    {
+        var padding_flag: bool
+        c := get_char(&padding_flag)
+        if c == 0xFF
+        {
+            if padding_flag
+                return 0xFF
+
+            c = get_char(&padding_flag)
+            if padding_flag
+            {
+                stuff_char(0xFF)
+                return 0xFF
+            }
+
+            if c == 0x00
+                return 0xFF
+
+            stuff_char(cast(u8) c)
+            stuff_char(0xFF)
+            return 0xFF
+        }
+
+        return cast(u8) c
+    }
+
+    func get_char(using self, paddingFlag: *bool)->u32
+    {
+        if !in_buf_left
+        {
+            prep_in_buffer()
+            if !in_buf_left
+            {
+                :paddingFlag = true
+                t := tem_flag
+                tem_flag ^= 1
+                if t return 0xD9
+                return 0xFF
+            }
+        }
+
+        :paddingFlag = false
+        c := :in_buf_ofs
+        in_buf_ofs += 1
+        in_buf_left -= 1
+        return c
     }
 
     func get_char(using self)->u32
