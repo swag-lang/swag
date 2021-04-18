@@ -3,6 +3,7 @@
 #include "CommandLineParser.h"
 #include "Version.h"
 #include "Os.h"
+#include "sImageDecoderJpeg.hpp"
 
 void help(CommandLineParser& cmdParser)
 {
@@ -37,6 +38,9 @@ void help(CommandLineParser& cmdParser)
 
 int main(int argc, const char* argv[])
 {
+    sImageDecoderJpeg dec;
+    dec.Decode();
+
     OS::setup();
     g_Log.setup();
 

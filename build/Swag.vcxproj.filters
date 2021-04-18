@@ -464,6 +464,9 @@
     <ClCompile Include="..\src\ByteCodeOptimizer_swap_.cpp">
       <Filter>ByteCode\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\sImageDecoderJpeg.cpp">
+      <Filter>ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -763,6 +766,9 @@
     </ClInclude>
     <ClInclude Include="..\src\HashTable.h">
       <Filter>Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\sImageDecoderJpeg.hpp">
+      <Filter>ByteCode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

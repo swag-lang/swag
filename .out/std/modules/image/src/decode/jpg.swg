@@ -186,6 +186,9 @@ const zag: [64] u32 = @[
 #[inline, safety("of", false)]
 func jpeg_rol(i, j: u32)->u32 => cast(u32) ((i << j) | (i >> (32 - j)))
 
+#[inline, safety("of", false)]
+func jpeg_clamp(i: u32) => cast(u8) ((i &0xFFFFFF00) ? (((~i) >> 31) & 0xFF) : i)
+
 impl Decoder
 {
     func decode_init(using self, buffer: const [..] u8) throw
@@ -332,7 +335,7 @@ impl Decoder
             {
                 component_id := mcu_org[mcu_block]
                 p            := block_seg[row_block]
-                q            := quant[comp_quant[component_id]]
+                q            := quant[comp_quant[component_id]].buffer
 
                 s := huff_decode(&h[comp_dc_tab[component_id]])
                 if s != 0
@@ -397,7 +400,7 @@ impl Decoder
                                 {
                                     p[zag[kt]] = 0;
                                     n -= 1
-                                    k += 1
+                                    kt += 1
                                 }
                             }
 
@@ -515,8 +518,7 @@ impl Decoder
         mcu_lines_left -= 1
         total_lines_left -= 1
 
-        //return OKAY
-        return DONE
+        return OKAY
     }
 
     func GrayConvert(using self)
@@ -533,6 +535,44 @@ impl Decoder
 
     func H2V1Convert(using self)
     {
+        row := max_mcu_y_size - mcu_lines_left
+        d0 := scan_line_0.buffer
+        y := sample_buf.buffer + row * 8
+        c := sample_buf.buffer + 2 * 64 + row * 8
+
+        for i := max_mcus_per_row; i > 0; i -= 1
+        {
+            loop l: 2
+            {
+                loop j: 4
+                {
+                    cb := c[0]
+                    cr := c[64]
+                    rc := crr[cr]
+                    gc := (crg[cr] + cbg[cb]) >>,safe 16
+                    bc := cbb[cb]
+                    yy := y[j << 1]
+
+                    d0[2] = jpeg_clamp(yy +,safe rc)
+                    d0[1] = jpeg_clamp(yy +,safe gc)
+                    d0[0] = jpeg_clamp(yy +,safe bc)
+
+                    yy    = y[(j << 1) + 1]
+                    d0[5] = jpeg_clamp(yy +,safe rc)
+                    d0[4] = jpeg_clamp(yy +,safe gc)
+                    d0[3] = jpeg_clamp(yy +,safe bc)
+
+                    d0 += 6
+
+                    c += 1
+                }
+
+                y += 64
+            }
+
+            y += 64 * 4 - 64 * 2
+            c += 64 * 4 - 8
+        }
     }
 
     func H2V2Convert(using self)
