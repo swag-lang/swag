@@ -63,11 +63,14 @@ func loadImg()
     default: imageIdx = 0
     }
 
+    var ti: time.Stopwatch
+    ti.start()
     data := imagePath(imgName)
     myImage = assume image.load(data)
+    ti.stop()
 
-    var t: time.Stopwatch
-    t.start()
+    var te: time.Stopwatch
+    te.start()
 
     switch effectIdx
     {
@@ -118,9 +121,9 @@ func loadImg()
     default: effectIdx = 0
     }
 
-    t.stop()
-    elapsed := t.elapsedMilliseconds()
-    console.printf("%: img: % (% x % %) time: %ms\n", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, elapsed)
+    te.stop()
+
+    console.printf("%: img: % (% x % %) time: %ms / %ms\n", effectIdx, imgName, myImage.width, myImage.height, myImage.pf, ti.elapsedMilliseconds(), te.elapsedMilliseconds())
 
     fmt := GL_BGR
     if myImage.bpp == 32 fmt = GL_BGRA

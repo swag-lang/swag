@@ -309,7 +309,7 @@
         if (ip->b.u64 <= 0x7F)                                                \
             pp.concat.addU8(ip->b.u8);                                        \
         else                                                                  \
-            pp.concat.addU32(ip->b.u32);                                      \
+            pp.concat.addU16(ip->b.u32);                                      \
     }                                                                         \
     else                                                                      \
     {                                                                         \

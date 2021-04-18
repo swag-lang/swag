@@ -733,8 +733,8 @@ impl Decoder
     {
         row := max_mcu_y_size - mcu_lines_left
         d0 := scan_line_0.buffer
-        y := sample_buf.buffer + row * 8
-        c := sample_buf.buffer + 2 * 64 + row * 8
+        y := psample_buf + row * 8
+        c := psample_buf + 2 * 64 + row * 8
 
         for i := max_mcus_per_row; i > 0; i -= 1
         {
