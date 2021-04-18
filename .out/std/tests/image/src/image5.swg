@@ -7,5 +7,5 @@ using image
     @assert(img.width == 660)
     @assert(img.height == 441)*/
 
-    img := try image.load(imagePath("h2v2.jpg"))
+    img := try image.load(imagePath("gray.jpg"))
 }

@@ -719,6 +719,23 @@ impl Decoder
 
     func GrayConvert(using self)
     {
+        row := max_mcu_y_size - mcu_lines_left
+        d := scan_line_0.buffer
+        s := psample_buf + row * 8
+        for i := max_mcus_per_row; i > 0; i -= 1
+        {
+            d[0] = s[0]
+            d[1] = s[1]
+            d[2] = s[2]
+            d[3] = s[3]
+            d[4] = s[4]
+            d[5] = s[5]
+            d[6] = s[6]
+            d[7] = s[7]
+
+            s += 64
+            d += 8
+        }
     }
 
     func H1V1Convert(using self)
@@ -1002,9 +1019,9 @@ impl Decoder
     func fix_in_buffer(using self)
     {
         if bits_left == 16
-            stuff_char(cast(u8) (bit_buf >>,safe 16) & 0xFF)
+            stuff_char(cast(u8) ((bit_buf >>,safe 16) & 0xFF))
         if bits_left >= 8
-            stuff_char(cast(u8) (bit_buf >>,safe 24) & 0xFF)
+            stuff_char(cast(u8) ((bit_buf >>,safe 24) & 0xFF))
 
         stuff_char(cast(u8) (bit_buf & 0xFF))
         stuff_char(cast(u8) ((bit_buf >>,safe 8) & 0xFF))
