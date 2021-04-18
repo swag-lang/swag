@@ -214,7 +214,7 @@ void Diagnostic::report(bool verboseMode) const
                     int decal = startLocation.column;
 
                     // If this is a word, than take the whole word
-                    if ((backLine[decal] & 0x7F) == 0)
+                    if ((backLine[decal] & 0x80) == 0)
                     {
                         bool isCWord = isalpha(backLine[decal]) || backLine[decal] == '_' || backLine[decal] == '#' || backLine[decal] == '@';
                         if (isCWord)

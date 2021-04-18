@@ -37,6 +37,16 @@ x(10) => x.opCall(10)
 TODO
 ****************************************
 -------------------------------------
+dbg x64, self doit etre comme this 
+-------------------------------------
+virer coerce same sign, mettre full tout le temps ?
+-------------------------------------
+self merde : invalid usage : 
+var decode_block_func: func(self, s32, s32)
+-------------------------------------
+missing func call parenthesis
+var decode_block_func: @typeof(&decode_block_dc_first)
+-------------------------------------
 debugger : print
 -------------------------------------
 BIG BIG BIG BIG BIG CHIANT CHIANT CHIANT CHIANT CHIANT

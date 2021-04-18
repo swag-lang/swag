@@ -61,8 +61,8 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 
             if (token.text == "self")
             {
+                SWAG_VERIFY(currentScope->kind == ScopeKind::Struct, error(token, "invalid 'self' usage in that context"));
                 SWAG_CHECK(eatToken());
-                SWAG_VERIFY(currentScope->kind == ScopeKind::Struct, sourceFile->report({sourceFile, "invalid 'self' usage in that context"}));
                 auto typeNode         = Ast::newTypeExpression(sourceFile, params);
                 typeNode->ptrCount    = 1;
                 typeNode->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;

@@ -41,6 +41,16 @@ public struct huff_tables_t
     tree:       [512] s32
 }
 
+public struct coeff_buf_t
+{
+    pdata:          Array'u8
+    block_num_x:    s32
+    block_num_y:    s32
+    block_len_x:    s32
+    block_len_y:    s32
+    block_size:     s32
+}
+
 public struct Decoder
 {
     stream:             const *u8
@@ -103,8 +113,11 @@ public struct Decoder
     h:                  [MAXHUFFTABLES] huff_tables_t
     dc_huff_seg:        [MAXBLOCKSPERMCU] *huff_tables_t
     ac_huff_seg:        [MAXBLOCKSPERMCU] *huff_tables_t
+    block_y_mcu:        [MAXCOMPONENTS] s32
     component:          [MAXBLOCKSPERMCU] *u32
     last_dc_val:        [MAXCOMPONENTS] u32
+    dc_coeffs:          [MAXCOMPONENTS] coeff_buf_t
+    ac_coeffs:          [MAXCOMPONENTS] coeff_buf_t
     temp_block:         [64] s16
 
     crr:                [256] s32
@@ -232,7 +245,7 @@ impl Decoder
     {
         try init_frame()
         if progressive_flag
-            init_progressive()
+            try init_progressive()
         else
             try init_sequential()
     }
@@ -282,9 +295,78 @@ impl Decoder
         }
     }
 
-    func load_next_row(using self)
+    func coeff_buf_getp(_cb: coeff_buf_t, _block_x, _block_y: s32)->*s16
     {
+        debug.assert(_block_x < _cb.block_num_x)
+        debug.assert(_block_y < _cb.block_num_y)
+        return cast(*s16) (_cb.pdata.buffer + _block_x * _cb.block_size + _block_y * (_cb.block_size * _cb.block_num_x))
+    }
 
+    func load_next_row(using self) throw
+    {
+        var block_x_mcu: [MAXCOMPONENTS] s32
+        row_block := 0
+        loop mcu_row: mcus_per_row
+        {
+            block_x_mcu_ofs := 0
+            block_y_mcu_ofs := 0
+            loop mcu_block: blocks_per_mcu
+            {
+                component_id := mcu_org[mcu_block]
+
+                p   := block_seg[row_block]
+                q   := quant[comp_quant[component_id]]
+                pAC := coeff_buf_getp(ac_coeffs[component_id], block_x_mcu[component_id] + block_x_mcu_ofs, block_y_mcu[component_id] + block_y_mcu_ofs)
+                pDC := coeff_buf_getp(dc_coeffs[component_id], block_x_mcu[component_id] + block_x_mcu_ofs, block_y_mcu[component_id] + block_y_mcu_ofs)
+
+                p[0] = pDC[0]
+                memory.copy(&p[1], &pAC[1], 63'uint * @sizeof(s16))
+
+                i := 63
+                while i > 0
+                {
+                    if p[zag[i]]
+                        break
+                    i -= 1
+                }
+
+                while i >= 0
+                {
+                    if p[zag[i]]
+                        p[zag[i]] *= q[i]
+                    i -= 1
+                }
+
+                row_block += 1
+                if comps_in_scan == 1
+                    block_x_mcu[component_id] += 1
+                else
+                {
+                    block_x_mcu_ofs += 1
+                    if block_x_mcu_ofs == comp_h_samp[component_id]
+                    {
+                        block_x_mcu_ofs = 0
+                        block_y_mcu_ofs += 1
+                        if block_y_mcu_ofs == comp_v_samp[component_id]
+                        {
+                            block_y_mcu_ofs = 0
+                            block_x_mcu[component_id] += comp_h_samp[component_id]
+                        }
+                    }
+                }
+            }
+        }
+
+        if comps_in_scan == 1
+            block_y_mcu[comp_list[0]] += 1
+        else
+        {
+            loop component_num: comps_in_scan
+            {
+                component_id := comp_list[component_num]
+                block_y_mcu[component_id] += comp_v_samp[component_id]
+            }
+        }
     }
 
     func process_restart(using self) throw
@@ -668,7 +750,7 @@ impl Decoder
         if mcu_lines_left == 0
         {
             if progressive_flag
-                load_next_row()
+                try load_next_row()
             else
                 try decode_next_row()
             if total_lines_left <= max_mcu_y_size
@@ -1231,8 +1313,105 @@ impl Decoder
         }
     }
 
-    func init_progressive(using self)
+    func coeff_buf_open(_block_num_x, _block_num_y, _block_len_x, _block_len_y: s32)->coeff_buf_t
     {
+        var result: retval
+        result.block_num_x = _block_num_x;
+        result.block_num_y = _block_num_y;
+        result.block_len_x = _block_len_x;
+        result.block_len_y = _block_len_y;
+        result.block_size  = (_block_len_x * _block_len_y) * @sizeof(s16)
+        result.pdata.resize(cast(uint) result.block_size * _block_num_x * _block_num_y)
+        return result
+    }
+
+    func decode_block_dc_first(using self, _component_id: s32, _block_x, _block_y: s32)
+    {
+        p := coeff_buf_getp(dc_coeffs[_component_id], _block_x, _block_y)
+        s := huff_decode(&h[comp_dc_tab[_component_id]])
+        if s != 0
+        {
+            r := get_bits_2(s)
+            s = cast(s32) (r < extend_test[s] ? r + extend_off[s] : r)
+        }
+
+        s += cast(s32) last_dc_val[_component_id]
+        last_dc_val[_component_id] = cast(u32) s
+        p[0] = cast(s16) (s << cast(u32) successive_low)
+    }
+
+    func decode_block_dc_refine(using self, _component_id: s32, _block_x, _block_y: s32)
+    {
+        if get_bits_2(1)
+        {
+            p := coeff_buf_getp(dc_coeffs[_component_id], _block_x, _block_y)
+            p[0] |= (1 << cast(u32) successive_low)
+        }
+    }
+
+    func init_progressive(using self) throw
+    {
+        //decode_block_func decode_block_func;
+        if comps_in_frame == 4 throw "unsupported color space"
+
+        loop i: comps_in_frame
+        {
+            dc_coeffs[i] = coeff_buf_open(max_mcus_per_row * comp_h_samp[i], max_mcus_per_col * comp_v_samp[i], 1, 1)
+            ac_coeffs[i] = coeff_buf_open(max_mcus_per_row * comp_h_samp[i], max_mcus_per_col * comp_v_samp[i], 8, 8)
+        }
+
+        while true
+        {
+            res := try init_scan()
+            if (!res) break
+
+            dc_only_scan    := (spectral_start == 0)
+            refinement_scan := (successive_high != 0)
+
+            if (spectral_start > spectral_end) || (spectral_end > 63)
+                throw "bad sos spectral"
+
+            if dc_only_scan
+            {
+                if spectral_end
+                    throw "bad sos spectral"
+            }
+            else if comps_in_scan != 1
+            {
+                throw "bad sos spectral"
+            }
+
+            if refinement_scan && (successive_low != successive_high - 1)
+                throw "bad sos successive"
+
+            var decode_block_func: func(*Decoder, s32, s32)
+            if dc_only_scan
+            {
+                /*if refinement_scan
+                    decode_block_func = &decode_block_dc_refine
+                else
+                    decode_block_func = &decode_block_dc_first*/
+            }
+            else
+            {
+                /*if refinement_scan
+                    decode_block_func = &decode_block_ac_refine
+                else
+                    decode_block_func = &decode_block_ac_first*/
+            }
+
+            //decode_scan(decode_block_func)
+
+            bits_left = 16
+
+            discard get_bits_1(16)
+            discard get_bits_1(16)
+        }
+
+        comps_in_scan = comps_in_frame
+        loop i: comps_in_frame
+            comp_list[i] = i
+        calc_mcu_block_order()
     }
 
     func init_sequential(using self) throw
