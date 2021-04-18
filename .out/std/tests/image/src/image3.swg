@@ -4,12 +4,12 @@ using image
 #test
 {
     {
-        data := imagePath("bmp_24.bmp")
+        data := imagePath("rgb.bmp")
         img := try image.load(data)
     }
 
     {
-        data := imagePath("bmp_32.bmp")
+        data := imagePath("rgba.bmp")
         img := try image.load(data)
     }
 }

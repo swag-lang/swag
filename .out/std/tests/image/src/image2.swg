@@ -2,7 +2,7 @@ using image, core
 
 #test
 {
-    data := imagePath("bmp_24.bmp")
+    data := imagePath("rgb.bmp")
     bytes := catch file.readAllBytes(data)
     @assert(!@err)
 

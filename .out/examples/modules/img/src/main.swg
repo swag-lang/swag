@@ -50,16 +50,16 @@ func loadImg()
 {
     using image.Image, Color
 
-    imgName := "bmp_32.bmp"
+    imgName := "rgba.bmp"
     switch imageIdx
     {
     case 0: break
-    case 1: imgName = "bmp_24.bmp"
-    case 2: imgName = "tga_24.tga"
-    case 3: imgName = "tga_32.tga"
-    case 4: imgName = "tga_rle24.tga"
-    case 5: imgName = "tga_rle32.tga"
-    case 6: imgName = "jpg_24.jpg"
+    case 1: imgName = "rgb.bmp"
+    case 2: imgName = "rgb.tga"
+    case 3: imgName = "rgba.tga"
+    case 4: imgName = "rle24.tga"
+    case 5: imgName = "rle32.tga"
+    case 6: imgName = "yh2v1.jpg"
     default: imageIdx = 0
     }
 
@@ -210,6 +210,7 @@ func messageLoop()
 
     while true
     {
+        @getcontext().tempAllocator.freeAll()
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {
             if msg.message == WM_QUIT
