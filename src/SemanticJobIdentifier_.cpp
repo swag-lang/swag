@@ -1720,6 +1720,25 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     return context->report(diag, notes);
 }
 
+bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol)
+{
+    if (node && node->parent && node->parent->parent && symbol->kind == SymbolKind::Function)
+    {
+        auto grandParent = node->parent->parent;
+        if (grandParent->kind == AstNodeKind::MakePointer ||
+            grandParent->kind == AstNodeKind::MakePointerLambda ||
+            grandParent->kind == AstNodeKind::Alias ||
+            (grandParent->kind == AstNodeKind::CompilerSpecialFunction && grandParent->token.id == TokenId::CompilerLocation) ||
+            (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicTypeOf) ||
+            (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicKindOf))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, bool justCheck)
 {
     auto  job              = context->job;
@@ -1838,26 +1857,18 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
         // For a function, sometime, we do not want call parameters
         bool forcedFine = false;
-        if (node && node->parent && node->parent->parent && symbol->kind == SymbolKind::Function)
+
+        // Be sure this is not because of a generic error
+        if (oneOverload.symMatchContext.result != MatchResult::NotEnoughGenericParameters &&
+            oneOverload.symMatchContext.result != MatchResult::TooManyGenericParameters &&
+            oneOverload.symMatchContext.result != MatchResult::BadGenericSignature)
         {
-            // Be sure this is not because of a generic error
-            if (oneOverload.symMatchContext.result != MatchResult::NotEnoughGenericParameters &&
-                oneOverload.symMatchContext.result != MatchResult::TooManyGenericParameters &&
-                oneOverload.symMatchContext.result != MatchResult::BadGenericSignature)
+            if (isFunctionButNotACall(context, node, symbol))
             {
-                auto grandParent = node->parent->parent;
-                if (grandParent->kind == AstNodeKind::MakePointer ||
-                    grandParent->kind == AstNodeKind::MakePointerLambda ||
-                    grandParent->kind == AstNodeKind::Alias ||
-                    (grandParent->kind == AstNodeKind::CompilerSpecialFunction && grandParent->token.id == TokenId::CompilerLocation) ||
-                    (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicTypeOf) ||
-                    (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicKindOf))
-                {
-                    if (callParameters)
-                        return context->report({callParameters, "cannot take the address of a function with call parameters"});
-                    oneOverload.symMatchContext.result = MatchResult::Ok;
-                    forcedFine                         = true;
-                }
+                if (callParameters)
+                    return context->report({callParameters, "cannot take the address of a function with call parameters"});
+                oneOverload.symMatchContext.result = MatchResult::Ok;
+                forcedFine                         = true;
             }
         }
 
@@ -2469,6 +2480,8 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
         canDoUfcs = true;
     if (symbol->kind == SymbolKind::Variable && overload->typeInfo->kind == TypeInfoKind::Lambda)
         canDoUfcs = node->callParameters;
+    if (isFunctionButNotACall(context, node, symbol))
+        canDoUfcs = false;
 
     if (canDoUfcs)
     {
