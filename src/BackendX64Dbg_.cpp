@@ -380,10 +380,19 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
             }
             break;
 
+        // https://llvm.org/docs/PDB/CodeViewTypes.html#lf-pointer-0x1002
         case LF_POINTER:
+        {
             concat.addU32(f.LF_Pointer.pointeeType);
-            concat.addU32(0x1000C); // attributes (Near64)
+            uint32_t kind      = 0x0C; // Near64
+            uint32_t mode      = 0;
+            uint32_t modifiers = 0;
+            uint32_t size      = 8; // 64 bits
+            uint32_t flags     = 0;
+            uint32_t layout    = (flags << 19) | (size << 13) | (modifiers << 8) | (mode << 5) | kind;
+            concat.addU32(layout); // attributes (Near64)
             break;
+        }
 
         case LF_ENUM:
             concat.addU16(f.LF_Enum.count);
