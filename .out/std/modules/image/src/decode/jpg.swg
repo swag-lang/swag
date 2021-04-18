@@ -150,6 +150,39 @@ enum Marker
     M_ERROR = 0x100
 }
 
+const extend_off: [16] s32 = @[
+    0,
+    ((-1) << 1) + 1,
+    ((-1) << 2) + 1,
+    ((-1) << 3) + 1,
+    ((-1) << 4) + 1,
+    ((-1) << 5) + 1,
+    ((-1) << 6) + 1,
+    ((-1) << 7) + 1,
+    ((-1) << 8) + 1,
+    ((-1) << 9) + 1,
+    ((-1) << 10) + 1,
+    ((-1) << 11) + 1,
+    ((-1) << 12) + 1,
+    ((-1) << 13) + 1,
+    ((-1) << 14) + 1,
+    ((-1) << 15) + 1
+]
+
+const extend_test: [16] s32 = @[
+    0, 0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020,
+    0x0040, 0x0080, 0x0100, 0x0200, 0x0400, 0x0800,
+    0x1000, 0x2000, 0x4000
+]
+
+const zag: [64] u32 = @[
+    0, 1, 8, 16, 9, 2, 3, 10, 17, 24, 32, 25, 18, 11, 4, 5,
+    12, 19, 26, 33, 40, 48, 41, 34, 27, 20, 13, 6, 7, 14, 21,
+    28, 35, 42, 49, 56, 57, 50, 43, 36, 29, 22, 15, 23, 30, 37,
+    44, 51, 58, 59, 52, 45, 38, 31, 39, 46, 53, 60, 61, 54, 47,
+    55, 62, 63,
+]
+
 #[inline, safety("of", false)]
 func jpeg_rol(i, j: u32)->u32 => cast(u32) ((i << j) | (i >> (32 - j)))
 
@@ -230,9 +263,171 @@ impl Decoder
 
     }
 
-    func decode_next_row(using self)
+    func process_restart(using self) throw
     {
+        i := 1536
+        while i > 0
+        {
+            if get_char() == 0xFF
+                break
+            i -= 1
+        }
 
+        if i == 0
+            throw "bad restart marker"
+
+        c := 0'u32
+        while i > 0
+        {
+            c = get_char()
+            if c != 0xFF
+                break;
+            i -= 1
+        }
+
+        if i == 0 throw "bad restart marker"
+        if c != (next_restart_num + cast(u32) Marker.M_RST0) throw "bad restart marker"
+
+        memory.clear(&last_dc_val, cast(uint) comps_in_frame * @sizeof(u32))
+
+        eob_run          = 0
+        restarts_left    = restart_interval
+        next_restart_num = (next_restart_num + 1) & 7
+        bits_left        = 16
+
+        discard get_bits_2(16)
+        discard get_bits_2(16)
+    }
+
+    func huff_decode(using self, _ph: *huff_tables_t)->s32
+    {
+        symbol := _ph.look_up[(bit_buf >>,safe 8) & 0xFF]
+        if symbol < 0
+        {
+            discard get_bits_2(8)
+            while true
+            {
+                symbol = _ph.tree[~symbol + (1 - get_bits_2(1))]
+                if symbol >= 0
+                    break
+            }
+        }
+        else
+        {
+            discard get_bits_2(cast(s32) _ph.code_size[symbol])
+        }
+
+        return symbol
+    }
+
+    func decode_next_row(using self) throw
+    {
+        row_block := 0
+        loop mcu_row: mcus_per_row
+        {
+            if restart_interval && (restarts_left == 0)
+                try process_restart()
+
+            loop mcu_block: blocks_per_mcu
+            {
+                component_id := mcu_org[mcu_block]
+                p            := block_seg[row_block]
+                q            := quant[comp_quant[component_id]]
+
+                s := huff_decode(&h[comp_dc_tab[component_id]])
+                if s != 0
+                {
+                    r := cast(s32) get_bits_2(s)
+                    s = r < extend_test[s] ? r + extend_off[s] : r
+                }
+
+                s += bitcast(s32) last_dc_val[component_id]
+                last_dc_val[component_id] = bitcast(u32) s
+
+                p[0]         = cast(s16) (s * q[0])
+                prev_num_set := block_max_zag_set[row_block]
+                ph           := &h[comp_ac_tab[component_id]]
+
+                k := 1
+                while k < 64
+                {
+                    s = huff_decode(ph)
+                    r := s >>,safe 4
+                    s &= 0x0F
+
+                    if s
+                    {
+                        if r
+                        {
+                            if (k + r) > 63 throw "decode error"
+                            if k < prev_num_set
+                            {
+                                n := math.min(r, prev_num_set - k)
+                                kt := k
+                                while n
+                                {
+                                    p[zag[kt]] = 0;
+                                    n -= 1
+                                    kt += 1
+                                }
+                            }
+
+                            k += r
+                        }
+
+                        r = cast(s32) get_bits_2(s)
+                        if s > 15
+                            throw "decode error"
+
+                        s = (r < extend_test[s] ? r + extend_off[s] : r)
+                        p[zag[k]] = cast(s16)(s * q[k])
+                    }
+                    else
+                    {
+                        if (r == 15)
+                        {
+                            if (k + 15) > 63
+                                throw "decode error"
+
+                            if k < prev_num_set
+                            {
+                                n := math.min(16'u32, cast(u32) (prev_num_set - k))
+                                kt := k
+                                while n
+                                {
+                                    p[zag[kt]] = 0;
+                                    n -= 1
+                                    k += 1
+                                }
+                            }
+
+                            k += 15
+                        }
+                        else
+                        {
+                            break
+                        }
+                    }
+
+                    k += 1
+                }
+
+                if k < prev_num_set
+                {
+                    kt := k
+                    while kt < prev_num_set
+                    {
+                        p[zag[kt]] = 0
+                        kt += 1
+                    }
+                }
+
+                block_max_zag_set[row_block] = k
+                row_block += 1
+            }
+
+            restarts_left -= 1
+        }
     }
 
     func idct(using self, _data: *s16, _pdst_ptr: *u8)
@@ -276,7 +471,7 @@ impl Decoder
             if progressive_flag
                 load_next_row()
             else
-                decode_next_row()
+                try decode_next_row()
             if total_lines_left <= max_mcu_y_size
                 try find_eoi()
             transform_row()
@@ -701,6 +896,7 @@ impl Decoder
         return i
     }
 
+    #[swag.safety("of", false)]
     func get_bits_2(using self, _numbits: s32)->u32
     {
         i := (bit_buf >> cast(u32) (16 - _numbits)) & ((1'u32 << cast(u32) _numbits) - 1)
