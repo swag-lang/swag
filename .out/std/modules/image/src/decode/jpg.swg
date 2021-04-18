@@ -1325,7 +1325,7 @@ impl Decoder
         return result
     }
 
-    func decode_block_dc_first(using self, _component_id: s32, _block_x, _block_y: s32)
+    func decode_block_dc_first(using self, _component_id: s32, _block_x, _block_y: s32) throw
     {
         p := coeff_buf_getp(dc_coeffs[_component_id], _block_x, _block_y)
         s := huff_decode(&h[comp_dc_tab[_component_id]])
@@ -1340,12 +1340,158 @@ impl Decoder
         p[0] = cast(s16) (s << cast(u32) successive_low)
     }
 
-    func decode_block_dc_refine(using self, _component_id: s32, _block_x, _block_y: s32)
+    func decode_block_dc_refine(using self, _component_id: s32, _block_x, _block_y: s32) throw
     {
         if get_bits_2(1)
         {
             p := coeff_buf_getp(dc_coeffs[_component_id], _block_x, _block_y)
             p[0] |= (1 << cast(u32) successive_low)
+        }
+    }
+
+    func decode_block_ac_first(using self, _component_id: s32, _block_x, _block_y: s32) throw
+    {
+        if eob_run
+        {
+            eob_run -= 1
+            return
+        }
+
+        p := coeff_buf_getp(ac_coeffs[_component_id], _block_x, _block_y)
+
+        for k := spectral_start; k <= spectral_end; k += 1
+        {
+            s := huff_decode(&h[comp_ac_tab[_component_id]])
+            r := s >> 4
+            s &= 0x0F;
+
+            if s
+            {
+                k += r
+                if k > 63 throw "decode error"
+                r = cast(s32) get_bits_2(s)
+                if s > 15 throw "decode error"
+
+                s = (r < extend_test[s] ? r + extend_off[s] : r)
+                p[zag[k]] = cast(s16) (s << cast(u32) successive_low)
+            }
+            else
+            {
+                if r == 15
+                {
+                    k += 15
+                    if k > 63
+                        throw "decode error"
+                }
+                else
+                {
+                    eob_run = 1 << cast(u32) r
+                    if r
+                        eob_run += cast(s32) get_bits_2(r)
+                    eob_run -= 1
+                    break
+                }
+            }
+        }
+    }
+
+    func decode_block_ac_refine(using self, _component_id: s32, _block_x, _block_y: s32) throw
+    {
+        p1 := 1 << cast(u32) successive_low
+        m1 := (-1) << cast(u32) successive_low
+        p := coeff_buf_getp(ac_coeffs[_component_id], _block_x, _block_y)
+        k := spectral_start
+        if eob_run == 0
+        {
+            if spectral_end >= 64 throw "decode error"
+
+            /*for (; k <= _pd->spectral_end; k++)
+            {
+                s = _pd->huff_decode(_pd->h[_pd->comp_ac_tab[_component_id]]);
+
+                r = s >> 4;
+                s &= 15;
+
+                if (s)
+                {
+                    if (s != 1)
+                    {
+                        _pd->terminate("Decode error");
+                        sAssert(0);
+                    }
+
+                    if (_pd->get_bits_2(1))
+                        s = p1;
+                    else
+                        s = m1;
+                }
+                else
+                {
+                    if (r != 15)
+                    {
+                        _pd->eob_run = 1 << r;
+                        if (r)
+                            _pd->eob_run += _pd->get_bits_2(r);
+                        break;
+                    }
+                }
+
+                do
+                {
+                    this_coef = p + zag[k];
+                    if (*this_coef != 0)
+                    {
+                        if (_pd->get_bits_2(1))
+                        {
+                            if ((*this_coef & p1) == 0)
+                            {
+                                if (*this_coef >= 0)
+                                    *this_coef += (int16) p1;
+                                else
+                                    *this_coef += (int16) m1;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (--r < 0)
+                            break;
+                    }
+
+                    k++;
+                } while (k <= _pd->spectral_end);
+
+                if ((s) && (k < 64))
+                {
+                    p[zag[k]] = (int16) s;
+                }
+            }*/
+        }
+
+        if eob_run > 0
+        {
+            if spectral_end >= 64 throw "decode error"
+            while k <= spectral_end
+            {
+                this_coef := p + zag[k]
+                if :this_coef != 0
+                {
+                    if get_bits_2(1)
+                    {
+                        if (:this_coef & cast(s16) p1) == 0
+                        {
+                            if :this_coef >= 0
+                                :this_coef += cast(s16) p1
+                            else
+                                :this_coef += cast(s16) m1
+                        }
+                    }
+                }
+
+                k += 1
+            }
+
+            eob_run -= 1
         }
     }
 
@@ -1384,20 +1530,20 @@ impl Decoder
             if refinement_scan && (successive_low != successive_high - 1)
                 throw "bad sos successive"
 
-            var decode_block_func: func(*Decoder, s32, s32)
+            var decode_block_func: func(*Decoder, s32, s32, s32) throw
             if dc_only_scan
             {
-                /*if refinement_scan
+                if refinement_scan
                     decode_block_func = &decode_block_dc_refine
                 else
-                    decode_block_func = &decode_block_dc_first*/
+                    decode_block_func = &decode_block_dc_first
             }
             else
             {
-                /*if refinement_scan
+                if refinement_scan
                     decode_block_func = &decode_block_ac_refine
                 else
-                    decode_block_func = &decode_block_ac_first*/
+                    decode_block_func = &decode_block_ac_first
             }
 
             //decode_scan(decode_block_func)
