@@ -49,8 +49,13 @@ public func load(fileName: string)->Image throw
     bytes := try file.readAllBytes(fileName)
 
     // Create a decoder instance
-    ptrDecoder := memory.new(found.type, @getcontext().tempAllocator)
-    defer { if found.type.opDrop found.type.opDrop(ptrDecoder); }
+    ptrDecoder := memory.new(found.type)
+    defer 
+    { 
+        if found.type.opDrop 
+            found.type.opDrop(ptrDecoder); 
+        memory.free(ptrDecoder, found.type.sizeof)
+    }
 
     // Decode
     itf := @mkinterface(ptrDecoder, found.type, IDecoder)

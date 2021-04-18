@@ -727,6 +727,44 @@ impl Decoder
 
     func H1V2Convert(using self)
     {
+        row := max_mcu_y_size - mcu_lines_left
+        d0 := scan_line_0.buffer
+        d1 := scan_line_1.buffer
+
+        var y: *u8
+        if row < 8
+            y = psample_buf + row * 8
+        else
+            y = psample_buf + 64 * 1 + (row & 7) * 8
+
+        c := psample_buf + 64 * 2 + (row >>,safe 1) * 8
+        for i := max_mcus_per_row; i > 0; i -= 1
+        {
+            loop j: 8
+            {
+                cb := c[0 + j]
+                cr := c[64 + j]
+                rc := crr[cr]
+                gc := ((crg[cr] + cbg[cb]) >>,safe 16)
+                bc := cbb[cb]
+                yy := y[j]
+
+                d0[2] = jpeg_clamp(yy +,safe rc)
+                d0[1] = jpeg_clamp(yy +,safe gc)
+                d0[0] = jpeg_clamp(yy +,safe bc)
+
+                yy    = y[8 + j]
+                d1[2] = jpeg_clamp(yy +,safe rc)
+                d1[1] = jpeg_clamp(yy +,safe gc)
+                d1[0] = jpeg_clamp(yy +,safe bc)
+
+                d0 += 3
+                d1 += 3
+            }
+
+            y += 64 * 4
+            c += 64 * 4
+        }
     }
 
     func H2V1Convert(using self)
@@ -773,6 +811,61 @@ impl Decoder
 
     func H2V2Convert(using self)
     {
+        row := max_mcu_y_size - mcu_lines_left
+        d0 := scan_line_0.buffer
+        d1 := scan_line_1.buffer
+
+        var y: *u8
+        if (row < 8)
+            y = psample_buf + row * 8
+        else
+            y = psample_buf + 64 * 2 + (row & 7) * 8
+        c := psample_buf + 64 * 4 + (row >> 1) * 8
+
+        for i := max_mcus_per_row; i > 0; i -= 1
+        {
+            loop l: 2
+            {
+                for j := 0; j < 8; j += 2
+                {
+                    cb := c[0]
+                    cr := c[64]
+                    rc := crr[cr]
+                    gc := (crg[cr] + cbg[cb]) >>,safe 16
+                    bc := cbb[cb]
+                    yy := y[j]
+
+                    d0[2] = jpeg_clamp(yy +,safe rc)
+                    d0[1] = jpeg_clamp(yy +,safe gc)
+                    d0[0] = jpeg_clamp(yy +,safe bc)
+
+                    yy    = y[j + 1]
+                    d0[5] = jpeg_clamp(yy +,safe rc)
+                    d0[4] = jpeg_clamp(yy +,safe gc)
+                    d0[3] = jpeg_clamp(yy +,safe bc)
+
+                    yy    = y[j + 8]
+                    d1[2] = jpeg_clamp(yy +,safe rc)
+                    d1[1] = jpeg_clamp(yy +,safe gc)
+                    d1[0] = jpeg_clamp(yy +,safe bc)
+
+                    yy    = y[j + 8 + 1]
+                    d1[5] = jpeg_clamp(yy +,safe rc)
+                    d1[4] = jpeg_clamp(yy +,safe gc)
+                    d1[3] = jpeg_clamp(yy +,safe bc)
+
+                    d0 += 6
+                    d1 += 6
+
+                    c += 1
+                }
+
+                y += 64
+            }
+
+            y += 64 * 6 - 64 * 2
+            c += 64 * 6 - 8
+        }
     }
 
     func init_frame(using self) throw

@@ -2,7 +2,7 @@
 using core, win32, ogl, gdi32, drawing
 
 var hDC: HDC
-var imageIdx: u32 = 6
+var imageIdx: u32 = 8
 var effectIdx: u32 = 0
 var myImage: image.Image
 const W = 1024
@@ -59,7 +59,9 @@ func loadImg()
     case 3: imgName = "rgba.tga"
     case 4: imgName = "rle24.tga"
     case 5: imgName = "rle32.tga"
-    case 6: imgName = "yh2v1.jpg"
+    case 6: imgName = "h2v1.jpg"
+    case 7: imgName = "h2v2.jpg"
+    case 8: imgName = "gray.jpg"
     default: imageIdx = 0
     }
 
