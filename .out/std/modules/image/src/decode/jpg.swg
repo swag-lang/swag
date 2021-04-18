@@ -19,6 +19,21 @@ const FAILED            = -1
 const DONE              = 1
 const OKAY              = 0
 
+const CONST_BITS        = 13'u32
+const PASS1_BITS        = 2'u32
+const FIX_0_298631336   = 2446
+const FIX_0_390180644   = 3196
+const FIX_0_541196100   = 4433
+const FIX_0_765366865   = 6270
+const FIX_0_899976223   = 7373
+const FIX_1_175875602   = 9633
+const FIX_1_501321110   = 12299
+const FIX_1_847759065   = 15137
+const FIX_1_961570560   = 16069
+const FIX_2_053119869   = 16819
+const FIX_2_562915447   = 20995
+const FIX_3_072711026   = 25172
+
 public struct huff_tables_t
 {
     look_up:    [256] s32
@@ -184,10 +199,16 @@ const zag: [64] u32 = @[
 ]
 
 #[inline, safety("of", false)]
+func jpeg_descale(x: s32, n: u32) => (x + (1's32 << (n - 1))) >> n
+
+#[inline, safety("of", false)]
 func jpeg_rol(i, j: u32)->u32 => cast(u32) ((i << j) | (i >> (32 - j)))
 
 #[inline, safety("of", false)]
 func jpeg_clamp(i: u32) => cast(u8) ((i &0xFFFFFF00) ? (((~i) >> 31) & 0xFF) : i)
+
+#[inline, safety("of", false)]
+func jpeg_clampd(i: s32)->s32 => (i &0xFF00) ? (((~i) >> 15) & 0xFF) : i
 
 impl Decoder
 {
@@ -433,8 +454,183 @@ impl Decoder
         }
     }
 
-    func idct(using self, _data: *s16, _pdst_ptr: *u8)
+    func idct(using self, _data: *s16, buf: *u8)
     {
+        _pdst_ptr := buf
+        dataptr := _data;
+        for rowctr := 8 - 1; rowctr >= 0; rowctr -= 1
+        {
+            if (dataptr[1] | dataptr[2] | dataptr[3] | dataptr[4] | dataptr[5] | dataptr[6] | dataptr[7]) == 0
+            {
+                dcval := cast(s16) (dataptr[0] << PASS1_BITS)
+                dataptr[0] = dcval
+                dataptr[1] = dcval
+                dataptr[2] = dcval
+                dataptr[3] = dcval
+                dataptr[4] = dcval
+                dataptr[5] = dcval
+                dataptr[6] = dcval
+                dataptr[7] = dcval
+                dataptr += 8
+                continue;
+            }
+
+            z2 := cast(s32) dataptr[2]
+            z3 := cast(s32) dataptr[6]
+
+            z1   := (z2 + z3) * FIX_0_541196100
+            tmp2 := z1 + (z3 * -FIX_1_847759065)
+            tmp3 := z1 + (z2 * FIX_0_765366865)
+
+            tmp0 := (cast(s32) dataptr[0] + cast(s32) dataptr[4]) << CONST_BITS
+            tmp1 := (cast(s32) dataptr[0] - cast(s32) dataptr[4]) << CONST_BITS
+
+            tmp10 := tmp0 + tmp3
+            tmp13 := tmp0 - tmp3
+            tmp11 := tmp1 + tmp2
+            tmp12 := tmp1 - tmp2
+
+            tmp0 = cast(s32) dataptr[7]
+            tmp1 = cast(s32) dataptr[5]
+            tmp2 = cast(s32) dataptr[3]
+            tmp3 = cast(s32) dataptr[1]
+
+            z1 = tmp0 + tmp3
+            z2 = tmp1 + tmp2
+            z3 = tmp0 + tmp2
+            z4 := tmp1 + tmp3
+            z5 := (z3 + z4) * FIX_1_175875602
+
+            tmp0 = (tmp0 * FIX_0_298631336)
+            tmp1 = (tmp1 * FIX_2_053119869)
+            tmp2 = (tmp2 * FIX_3_072711026)
+            tmp3 = (tmp3 * FIX_1_501321110)
+            z1   = (z1 * -FIX_0_899976223)
+            z2   = (z2 * -FIX_2_562915447)
+            z3   = (z3 * -FIX_1_961570560)
+            z4   = (z4 * -FIX_0_390180644)
+
+            z3 += z5
+            z4 += z5
+
+            tmp0 += z1 + z3
+            tmp1 += z2 + z4
+            tmp2 += z2 + z3
+            tmp3 += z1 + z4
+
+            dataptr[0] = cast(s16) jpeg_descale(tmp10 + tmp3, CONST_BITS - PASS1_BITS)
+            dataptr[7] = cast(s16) jpeg_descale(tmp10 - tmp3, CONST_BITS - PASS1_BITS)
+            dataptr[1] = cast(s16) jpeg_descale(tmp11 + tmp2, CONST_BITS - PASS1_BITS)
+            dataptr[6] = cast(s16) jpeg_descale(tmp11 - tmp2, CONST_BITS - PASS1_BITS)
+            dataptr[2] = cast(s16) jpeg_descale(tmp12 + tmp1, CONST_BITS - PASS1_BITS)
+            dataptr[5] = cast(s16) jpeg_descale(tmp12 - tmp1, CONST_BITS - PASS1_BITS)
+            dataptr[3] = cast(s16) jpeg_descale(tmp13 + tmp0, CONST_BITS - PASS1_BITS)
+            dataptr[4] = cast(s16) jpeg_descale(tmp13 - tmp0, CONST_BITS - PASS1_BITS)
+
+            dataptr += 8
+        }
+
+        dataptr = _data
+        for rowctr := 8 - 1; rowctr >= 0; rowctr -= 1
+        {
+            if (dataptr[8 * 1] | dataptr[8 * 2] | dataptr[8 * 3] | dataptr[8 * 4] | dataptr[8 * 5] | dataptr[8 * 6] | dataptr[8 * 7]) == 0
+            {
+                dcval := cast(s16) jpeg_descale(cast(s32) dataptr[0], PASS1_BITS + 3)
+                dcval +=,safe 128
+                dcval = math.clamp(dcval, 0's16, 255's16)
+
+                _pdst_ptr[8 * 0] = cast(u8) dcval
+                _pdst_ptr[8 * 1] = cast(u8) dcval
+                _pdst_ptr[8 * 2] = cast(u8) dcval
+                _pdst_ptr[8 * 3] = cast(u8) dcval
+                _pdst_ptr[8 * 4] = cast(u8) dcval
+                _pdst_ptr[8 * 5] = cast(u8) dcval
+                _pdst_ptr[8 * 6] = cast(u8) dcval
+                _pdst_ptr[8 * 7] = cast(u8) dcval
+
+                dataptr += 1
+                _pdst_ptr += 1
+                continue
+            }
+
+            z2 := cast(s32) dataptr[8 * 2]
+            z3 := cast(s32) dataptr[8 * 6]
+
+            z1   := (z2 + z3) * FIX_0_541196100
+            tmp2 := z1 + (z3 * -FIX_1_847759065)
+            tmp3 := z1 + (z2 * FIX_0_765366865)
+
+            tmp0 := (cast(s32) dataptr[8 * 0] + cast(s32) dataptr[8 * 4]) << CONST_BITS
+            tmp1 := (cast(s32) dataptr[8 * 0] - cast(s32) dataptr[8 * 4]) << CONST_BITS
+
+            tmp10 := tmp0 + tmp3
+            tmp13 := tmp0 - tmp3
+            tmp11 := tmp1 + tmp2
+            tmp12 := tmp1 - tmp2
+
+            tmp0 = cast(s32) dataptr[8 * 7]
+            tmp1 = cast(s32) dataptr[8 * 5]
+            tmp2 = cast(s32) dataptr[8 * 3]
+            tmp3 = cast(s32) dataptr[8 * 1]
+
+            z1 = tmp0 + tmp3
+            z2 = tmp1 + tmp2
+            z3 = tmp0 + tmp2
+            z4 := tmp1 + tmp3
+            z5 := (z3 + z4) * FIX_1_175875602
+
+            tmp0 = (tmp0 * FIX_0_298631336)
+            tmp1 = (tmp1 * FIX_2_053119869)
+            tmp2 = (tmp2 * FIX_3_072711026)
+            tmp3 = (tmp3 * FIX_1_501321110)
+            z1   = (z1 * -FIX_0_899976223)
+            z2   = (z2 * -FIX_2_562915447)
+            z3   = (z3 * -FIX_1_961570560)
+            z4   = (z4 * -FIX_0_390180644)
+
+            z3 += z5
+            z4 += z5
+
+            tmp0 += z1 + z3
+            tmp1 += z2 + z4
+            tmp2 += z2 + z3
+            tmp3 += z1 + z4
+
+            i := cast(s16) jpeg_descale(tmp10 + tmp3, CONST_BITS + PASS1_BITS + 3) + 128
+            i = jpeg_clampd(i)
+            _pdst_ptr[8 * 0] = cast(u8) i
+
+            i = cast(s16) jpeg_descale(tmp10 - tmp3, CONST_BITS + PASS1_BITS + 3) + 128
+            i = jpeg_clampd(i)
+            _pdst_ptr[8 * 7] = cast(u8) i
+
+            i = cast(s16) jpeg_descale(tmp11 + tmp2, CONST_BITS + PASS1_BITS + 3) + 128
+            i = jpeg_clampd(i)
+            _pdst_ptr[8 * 1] = cast(u8) i
+
+            i = cast(s16) jpeg_descale(tmp11 - tmp2, CONST_BITS + PASS1_BITS + 3) + 128
+            i = jpeg_clampd(i)
+            _pdst_ptr[8 * 6] = cast(u8) i
+
+            i = cast(s16) jpeg_descale(tmp12 + tmp1, CONST_BITS + PASS1_BITS + 3) + 128
+            i = jpeg_clampd(i)
+            _pdst_ptr[8 * 2] = cast(u8) i
+
+            i = cast(s16) jpeg_descale(tmp12 - tmp1, CONST_BITS + PASS1_BITS + 3) + 128
+            i = jpeg_clampd(i)
+            _pdst_ptr[8 * 5] = cast(u8) i
+
+            i = cast(s16) jpeg_descale(tmp13 + tmp0, CONST_BITS + PASS1_BITS + 3) + 128
+            i = jpeg_clampd(i)
+            _pdst_ptr[8 * 3] = cast(u8) i
+
+            i = cast(s16) jpeg_descale(tmp13 - tmp0, CONST_BITS + PASS1_BITS + 3) + 128
+            i = jpeg_clampd(i)
+            _pdst_ptr[8 * 4] = cast(u8) i
+
+            dataptr += 1
+            _pdst_ptr += 1
+        }
     }
 
     func transform_row(using self)
