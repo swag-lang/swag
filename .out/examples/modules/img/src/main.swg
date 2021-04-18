@@ -61,7 +61,8 @@ func loadImg()
     case 5: imgName = "rle32.tga"
     case 6: imgName = "h2v1.jpg"
     case 7: imgName = "h2v2.jpg"
-    case 8: imgName = "gray.jpg"
+    case 8: imgName = "h1v1.jpg"
+    case 9: imgName = "gray.jpg"
     default: imageIdx = 0
     }
 

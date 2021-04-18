@@ -68,7 +68,7 @@ bool sImageDecoderJpeg::Decode()
 {
     uint i;
 
-    FILE*    f       = fopen("F:/swag/.out/std/tests/image/datas/gray.jpg", "rb");
+    FILE*    f       = fopen("F:/swag/.out/std/tests/image/datas/h1v1.jpg", "rb");
     uint8_t* _stream = (uint8_t*) malloc(1 * 1024 * 1024);
     auto _streamlen = fread(_stream, 1, 1 * 1024 * 1024, f);
     fclose(f);

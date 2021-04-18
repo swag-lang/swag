@@ -740,6 +740,25 @@ impl Decoder
 
     func H1V1Convert(using self)
     {
+        row := max_mcu_y_size - mcu_lines_left
+        d := scan_line_0.buffer
+        s := psample_buf + row * 8
+        for i := max_mcus_per_row; i > 0; i -= 1
+        {
+            loop j: 8
+            {
+                y  := s[j]
+                cb := s[64 + j]
+                cr := s[128 + j]
+
+                d[2] = jpeg_clamp(y +,safe crr[cr])
+                d[1] = jpeg_clamp(y +,safe ((crg[cr] + cbg[cb]) >>,safe 16))
+                d[0] = jpeg_clamp(y +,safe cbb[cb])
+                d += 3
+            }
+
+            s += 64 * 3
+        }
     }
 
     func H1V2Convert(using self)
