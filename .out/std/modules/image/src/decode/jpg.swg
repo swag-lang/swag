@@ -1108,11 +1108,14 @@ public impl IDecoder for Decoder
 
     func decode(using self, buffer: const [..] u8)->Image throw
     {
-        try decode_init(buffer)
-        try decode_start()
+        try
+        {
+            decode_init(buffer)
+            decode_start()
 
-        var result: retval = create(image_x_size, image_y_size, PixelFormat.BGR8)
-        try decode_process(result.pixels)
+            var result: retval = create(image_x_size, image_y_size, PixelFormat.BGR8)
+            decode_process(result.pixels)
+        }
 
         return result
     }

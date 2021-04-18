@@ -84,11 +84,11 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
         {
             if (node->ownerInline)
                 node->regInit = node->ownerInline->resultRegisterRC;
-            else if (!(node->doneFlags & AST_DONE_TRY_2))
+            else if (!(context->node->doneFlags & AST_DONE_TRY_2))
             {
                 reserveRegisterRC(context, node->regInit, 1);
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
-                node->doneFlags |= AST_DONE_TRY_2;
+                context->node->doneFlags |= AST_DONE_TRY_2;
             }
 
             TypeInfoPointer pt;
@@ -119,14 +119,14 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
             }
             else
             {
-                if (!(node->doneFlags & AST_DONE_TRY_2))
+                if (!(context->node->doneFlags & AST_DONE_TRY_2))
                 {
                     reserveRegisterRC(context, node->regInit, 1);
                     if (node->ownerInline)
                         emitInstruction(context, ByteCodeOp::CopyRBtoRA64, node->regInit, node->ownerInline->resultRegisterRC);
                     else
                         emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->regInit);
-                    node->doneFlags |= AST_DONE_TRY_2;
+                    context->node->doneFlags |= AST_DONE_TRY_2;
                 }
 
                 TypeInfoPointer pt;
