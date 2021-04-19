@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Ast.h"
 #include "SemanticJob.h"
+#include "ByteCodeGenJob.h"
 
 bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
@@ -16,54 +17,56 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     if (!(castFlags & CASTFLAG_EXPLICIT))
         return true;
 
-    bool error = false;
+    auto msg  = ByteCodeGenJob::safetyMsg(SafetyMsg::CastTruncated, toType, fromType);
+    auto msg1 = ByteCodeGenJob::safetyMsg(SafetyMsg::CastNeg, toType, fromType);
+
+    // Negative value to unsigned type
+    if (fromType->isNativeIntegerSigned() && toType->isNativeUnsignedOrChar() && fromNode->computedValue.reg.s64 < 0)
+        return context->report({fromNode ? fromNode : context->node, msg1});
+
     switch (toType->nativeType)
     {
     case NativeTypeKind::U8:
-        error = fromNode->computedValue.reg.u64 > UINT8_MAX;
-        if (error)
-            return context->report({fromNode ? fromNode : context->node, "[safety] (u8) integer cast truncated bits"});
+        if (fromNode->computedValue.reg.u64 > UINT8_MAX)
+            return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::U16:
-        error = fromNode->computedValue.reg.u64 > UINT16_MAX;
-        if (error)
-            return context->report({fromNode ? fromNode : context->node, "[safety] (u16) integer cast truncated bits"});
+        if (fromNode->computedValue.reg.u64 > UINT16_MAX)
+            return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::U32:
     case NativeTypeKind::Char:
-        error = fromNode->computedValue.reg.u64 > UINT32_MAX;
-        if (error)
-            return context->report({fromNode ? fromNode : context->node, "[safety] (u32) integer cast truncated bits"});
+        if (fromNode->computedValue.reg.u64 > UINT32_MAX)
+            return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
         if (fromType->isNativeIntegerSigned())
-            error = fromNode->computedValue.reg.u64 > INT64_MAX;
-        if (error)
-            return context->report({fromNode ? fromNode : context->node, "[safety] (u64) integer cast truncated bits"});
+        {
+            if (fromNode->computedValue.reg.u64 > INT64_MAX)
+                return context->report({fromNode ? fromNode : context->node, msg});
+        }
         break;
 
     case NativeTypeKind::S8:
-        error = fromNode->computedValue.reg.s64 < INT8_MIN || fromNode->computedValue.reg.s64 > INT8_MAX;
-        if (error)
-            return context->report({fromNode ? fromNode : context->node, "[safety] (s8) integer cast truncated bits"});
+        if (fromNode->computedValue.reg.s64 < INT8_MIN || fromNode->computedValue.reg.s64 > INT8_MAX)
+            return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::S16:
-        error = fromNode->computedValue.reg.s64 < INT16_MIN || fromNode->computedValue.reg.s64 > INT16_MAX;
-        if (error)
-            return context->report({fromNode ? fromNode : context->node, "[safety] (s16) integer cast truncated bits"});
+        if (fromNode->computedValue.reg.s64 < INT16_MIN || fromNode->computedValue.reg.s64 > INT16_MAX)
+            return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::S32:
-        error = fromNode->computedValue.reg.s64 < INT32_MIN || fromNode->computedValue.reg.s64 > INT32_MAX;
-        if (error)
-            return context->report({fromNode ? fromNode : context->node, "[safety] (s32) integer cast truncated bits"});
+        if (fromNode->computedValue.reg.s64 < INT32_MIN || fromNode->computedValue.reg.s64 > INT32_MAX)
+            return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::S64:
     case NativeTypeKind::Int:
         if (!fromType->isNativeIntegerSigned())
-            error = fromNode->computedValue.reg.u64 > INT64_MAX;
-        if (error)
-            return context->report({fromNode ? fromNode : context->node, "[safety] (s64) integer cast truncated bits"});
+        {
+            if (fromNode->computedValue.reg.u64 > INT64_MAX)
+                return context->report({fromNode ? fromNode : context->node, msg});
+        }
         break;
     }
 
