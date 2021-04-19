@@ -1,72 +1,71 @@
 #global namespace jpg
 using swag, core
 
-const INBUFSIZE         = 4096
-const MAX_HEIGHT        = 8192
-const MAX_WIDTH         = 8192
-const MAXCOMPONENTS     = 4
-const MAXQUANTTABLES    = 4
-const MAXHUFFTABLES     = 8
-const MAXBLOCKSPERMCU   = 10
-const MAXBLOCKSPERROW   = 6144
-const MAXCOMPSINSCAN    = 4
-const GRAYSCALE         = 0
+const InBufSize         = 4096
+const MaxHeight         = 8192
+const MaxWidth          = 8192
+const MaxComponents     = 4
+const MaxQuantTables    = 4
+const MaxHuffTables     = 8
+const MaxBocksPerMcu    = 10
+const MaxBlocksPerRow   = 6144
+const MaxCompsInScan    = 4
+const GrayScale         = 0
 const YH1V1             = 1
 const YH2V1             = 2
 const YH1V2             = 3
 const YH2V2             = 4
-const FAILED            = -1
-const DONE              = 1
-const OKAY              = 0
+const Failed            = -1
+const Done              = 1
+const Okay              = 0
+const ConstBits         = 13'u32
+const Pass1Bits         = 2'u32
+const Fix_0_298631336   = 2446
+const Fix_0_390180644   = 3196
+const Fix_0_541196100   = 4433
+const Fix_0_765366865   = 6270
+const Fix_0_899976223   = 7373
+const Fix_1_175875602   = 9633
+const Fix_1_501321110   = 12299
+const Fix_1_847759065   = 15137
+const Fix_1_961570560   = 16069
+const Fix_2_053119869   = 16819
+const Fix_2_562915447   = 20995
+const Fix_3_072711026   = 25172
 
-const CONST_BITS        = 13'u32
-const PASS1_BITS        = 2'u32
-const FIX_0_298631336   = 2446
-const FIX_0_390180644   = 3196
-const FIX_0_541196100   = 4433
-const FIX_0_765366865   = 6270
-const FIX_0_899976223   = 7373
-const FIX_1_175875602   = 9633
-const FIX_1_501321110   = 12299
-const FIX_1_847759065   = 15137
-const FIX_1_961570560   = 16069
-const FIX_2_053119869   = 16819
-const FIX_2_562915447   = 20995
-const FIX_3_072711026   = 25172
-
-public struct huff_tables_t
+public struct HuffTables
 {
-    look_up:    [256] s32
-    code_size:  [256] u8
-    tree:       [512] s32
+    lookUp:    [256] s32
+    codeSize:  [256] u8
+    tree:      [512] s32
 }
 
-public struct coeff_buf_t
+public struct CoeffBuf
 {
-    pdata:          Array'u8
-    block_num_x:    s32
-    block_num_y:    s32
-    block_len_x:    s32
-    block_len_y:    s32
-    block_size:     s32
+    pdata:     Array'u8
+    blockNumX: s32
+    blockNumY: s32
+    blockLenX: s32
+    blockLenY: s32
+    blockSize: s32
 }
 
 public struct Decoder
 {
     stream:             const *u8
-    in_buf_ofs:         *u8
-    psample_buf:        *u8
+    inBufOfs:           *u8
+    pSampleBuf:         *u8
 
-    image_x_size:       s32
-    image_y_size:       s32
-    streamlen:          s32
-    streamseek:         s32
+    imageSizeX:         s32
+    imageSizeY:         s32
+    streamLen:          s32
+    streamSeek:         s32
     bit_buf:            u32
     bits_left:          s32
-    in_buf_left:        s32
+    inBufLeft:          s32
     tem_flag:           s32
-    eof_flag:           s32
-    total_bytes_read:   s32
+    eofReached:         s32
+    totalBytesRead:     s32
     comps_in_frame:     s32
     restart_interval:   s32
     scan_type:          s32
@@ -97,27 +96,27 @@ public struct Decoder
     accept_meta:        bool
     progressive_flag:   bool
 
-    in_buf:             [INBUFSIZE + 128] u8
-    comp_h_samp:        [MAXCOMPONENTS] s32
-    comp_v_samp:        [MAXCOMPONENTS] s32
-    comp_quant:         [MAXCOMPONENTS] s32
-    comp_ident:         [MAXCOMPONENTS] s32
-    block_max_zag_set:  [MAXBLOCKSPERROW] s32
-    block_seg:          [MAXBLOCKSPERROW] *s16
-    comp_list:          [MAXCOMPSINSCAN] s32
-    comp_dc_tab:        [MAXCOMPONENTS] s32
-    comp_ac_tab:        [MAXCOMPONENTS] s32
-    comp_h_blocks:      [MAXCOMPONENTS] s32
-    comp_v_blocks:      [MAXCOMPONENTS] s32
-    mcu_org:            [MAXBLOCKSPERMCU] s32
-    h:                  [MAXHUFFTABLES] huff_tables_t
-    dc_huff_seg:        [MAXBLOCKSPERMCU] *huff_tables_t
-    ac_huff_seg:        [MAXBLOCKSPERMCU] *huff_tables_t
-    block_y_mcu:        [MAXCOMPONENTS] s32
-    component:          [MAXBLOCKSPERMCU] *u32
-    last_dc_val:        [MAXCOMPONENTS] u32
-    dc_coeffs:          [MAXCOMPONENTS] coeff_buf_t
-    ac_coeffs:          [MAXCOMPONENTS] coeff_buf_t
+    in_buf:             [InBufSize + 128] u8
+    compSampH:        [MaxComponents] s32
+    compSampV:        [MaxComponents] s32
+    compQuant:         [MaxComponents] s32
+    compIdent:         [MaxComponents] s32
+    blockMaxZagSet:  [MaxBlocksPerRow] s32
+    block_seg:          [MaxBlocksPerRow] *s16
+    comp_list:          [MaxCompsInScan] s32
+    comp_dc_tab:        [MaxComponents] s32
+    comp_ac_tab:        [MaxComponents] s32
+    comp_h_blocks:      [MaxComponents] s32
+    comp_v_blocks:      [MaxComponents] s32
+    mcu_org:            [MaxBocksPerMcu] s32
+    h:                  [MaxHuffTables] HuffTables
+    dc_huff_seg:        [MaxBocksPerMcu] *HuffTables
+    ac_huff_seg:        [MaxBocksPerMcu] *HuffTables
+    block_y_mcu:        [MaxComponents] s32
+    component:          [MaxBocksPerMcu] *u32
+    last_dc_val:        [MaxComponents] u32
+    dc_coeffs:          [MaxComponents] CoeffBuf
+    ac_coeffs:          [MaxComponents] CoeffBuf
     temp_block:         [64] s16
 
     crr:                [256] s32
@@ -125,9 +124,9 @@ public struct Decoder
     crg:                [256] s32
     cbg:                [256] s32
 
-    huff_num:           [MAXHUFFTABLES] Array'u8
-    huff_val:           [MAXHUFFTABLES] Array'u8
-    quant:              [MAXQUANTTABLES] Array's16
+    huff_num:           [MaxHuffTables] Array'u8
+    huff_val:           [MaxHuffTables] Array'u8
+    quant:              [MaxQuantTables] Array's16
     scan_line_0:        Array'u8
     scan_line_1:        Array'u8
     q_buf:              Array'u8
@@ -225,23 +224,23 @@ func jpeg_clampd(i: s32)->s32 => (i &0xFF00) ? (((~i) >> 15) & 0xFF) : i
 
 impl Decoder
 {
-    func decode_init(using self, buffer: const [..] u8) throw
+    func init(using self, buffer: const [..] u8) throw
     {
         @init(self)
         stream = @dataof(buffer)
-        streamlen = cast(s32) @countof(buffer)
+        streamLen = cast(s32) @countof(buffer)
 
-        in_buf_ofs = in_buf
-        prep_in_buffer()
+        inBufOfs = in_buf
+        prepareStreamBuffer()
         bits_left = 16
         discard get_bits_1(16)
         discard get_bits_1(16)
-        loop i: MAXBLOCKSPERROW block_max_zag_set[i] = 64
+        loop i: MaxBlocksPerRow blockMaxZagSet[i] = 64
 
         try locate_sof_marker()
     }
 
-    func decode_start(using self) throw
+    func start(using self) throw
     {
         try init_frame()
         if progressive_flag
@@ -250,7 +249,7 @@ impl Decoder
             try init_sequential()
     }
 
-    func decode_process(using self, buf: *u8) throw
+    func doit(using self, buf: *u8) throw
     {
         var scan_line_ofs: *void
         var scan_line_len: u32
@@ -259,7 +258,7 @@ impl Decoder
         if comps_in_frame == 1
         {
             pdest := buf
-            pdest += cast(uint) ((image_y_size - 1) * image_x_size * 3)
+            pdest += cast(uint) ((imageSizeY - 1) * imageSizeX * 3)
             while true
             {
                 if try decode(&scan_line_ofs, &scan_line_len)
@@ -267,7 +266,7 @@ impl Decoder
 
                 pdest1 := pdest
                 psrc := cast(*u8) scan_line_ofs
-                loop image_x_size
+                loop imageSizeX
                 {
                     pdest1[0] = :psrc
                     pdest1[1] = :psrc
@@ -276,7 +275,7 @@ impl Decoder
                     psrc += 1
                 }
 
-                pdest -= cast(uint) (image_x_size * 3)
+                pdest -= cast(uint) (imageSizeX * 3)
             }
         }
 
@@ -284,27 +283,27 @@ impl Decoder
         else
         {
             pdest := buf
-            pdest += cast(uint) ((image_y_size - 1) * image_x_size * 3)
+            pdest += cast(uint) ((imageSizeY - 1) * imageSizeX * 3)
             while true
             {
                 if try decode(&scan_line_ofs, &scan_line_len)
                     break
-                memory.copy(pdest, scan_line_ofs, cast(uint) image_x_size * 3)
-                pdest -= cast(uint) (image_x_size * 3)
+                memory.copy(pdest, scan_line_ofs, cast(uint) imageSizeX * 3)
+                pdest -= cast(uint) (imageSizeX * 3)
             }
         }
     }
 
-    func coeff_buf_getp(_cb: coeff_buf_t, _block_x, _block_y: s32)->*s16
+    func coeff_buf_getp(_cb: CoeffBuf, _block_x, _block_y: s32)->*s16
     {
-        debug.assert(_block_x < _cb.block_num_x)
-        debug.assert(_block_y < _cb.block_num_y)
-        return cast(*s16) (_cb.pdata.buffer + _block_x * _cb.block_size + _block_y * (_cb.block_size * _cb.block_num_x))
+        debug.assert(_block_x < _cb.blockNumX)
+        debug.assert(_block_y < _cb.blockNumY)
+        return cast(*s16) (_cb.pdata.buffer + _block_x * _cb.blockSize + _block_y * (_cb.blockSize * _cb.blockNumX))
     }
 
     func load_next_row(using self) throw
     {
-        var block_x_mcu: [MAXCOMPONENTS] s32
+        var block_x_mcu: [MaxComponents] s32
         row_block := 0
         loop mcu_row: mcus_per_row
         {
@@ -315,7 +314,7 @@ impl Decoder
                 component_id := mcu_org[mcu_block]
 
                 p   := block_seg[row_block]
-                q   := quant[comp_quant[component_id]]
+                q   := quant[compQuant[component_id]]
                 pAC := coeff_buf_getp(ac_coeffs[component_id], block_x_mcu[component_id] + block_x_mcu_ofs, block_y_mcu[component_id] + block_y_mcu_ofs)
                 pDC := coeff_buf_getp(dc_coeffs[component_id], block_x_mcu[component_id] + block_x_mcu_ofs, block_y_mcu[component_id] + block_y_mcu_ofs)
 
@@ -343,14 +342,14 @@ impl Decoder
                 else
                 {
                     block_x_mcu_ofs += 1
-                    if block_x_mcu_ofs == comp_h_samp[component_id]
+                    if block_x_mcu_ofs == compSampH[component_id]
                     {
                         block_x_mcu_ofs = 0
                         block_y_mcu_ofs += 1
-                        if block_y_mcu_ofs == comp_v_samp[component_id]
+                        if block_y_mcu_ofs == compSampV[component_id]
                         {
                             block_y_mcu_ofs = 0
-                            block_x_mcu[component_id] += comp_h_samp[component_id]
+                            block_x_mcu[component_id] += compSampH[component_id]
                         }
                     }
                 }
@@ -364,7 +363,7 @@ impl Decoder
             loop component_num: comps_in_scan
             {
                 component_id := comp_list[component_num]
-                block_y_mcu[component_id] += comp_v_samp[component_id]
+                block_y_mcu[component_id] += compSampV[component_id]
             }
         }
     }
@@ -405,9 +404,9 @@ impl Decoder
         discard get_bits_2(16)
     }
 
-    func huff_decode(using self, _ph: *huff_tables_t)->s32
+    func huff_decode(using self, _ph: *HuffTables)->s32
     {
-        symbol := _ph.look_up[(bit_buf >>,safe 8) & 0xFF]
+        symbol := _ph.lookUp[(bit_buf >>,safe 8) & 0xFF]
         if symbol < 0
         {
             discard get_bits_2(8)
@@ -420,7 +419,7 @@ impl Decoder
         }
         else
         {
-            discard get_bits_2(cast(s32) _ph.code_size[symbol])
+            discard get_bits_2(cast(s32) _ph.codeSize[symbol])
         }
 
         return symbol
@@ -438,7 +437,7 @@ impl Decoder
             {
                 component_id := mcu_org[mcu_block]
                 p            := block_seg[row_block]
-                q            := quant[comp_quant[component_id]].buffer
+                q            := quant[compQuant[component_id]].buffer
 
                 s := huff_decode(&h[comp_dc_tab[component_id]])
                 if s != 0
@@ -451,7 +450,7 @@ impl Decoder
                 last_dc_val[component_id] = bitcast(u32) s
 
                 p[0]         = cast(s16) (s * q[0])
-                prev_num_set := block_max_zag_set[row_block]
+                prev_num_set := blockMaxZagSet[row_block]
                 ph           := &h[comp_ac_tab[component_id]]
 
                 k := 1
@@ -528,7 +527,7 @@ impl Decoder
                     }
                 }
 
-                block_max_zag_set[row_block] = k
+                blockMaxZagSet[row_block] = k
                 row_block += 1
             }
 
@@ -544,7 +543,7 @@ impl Decoder
         {
             if (dataptr[1] | dataptr[2] | dataptr[3] | dataptr[4] | dataptr[5] | dataptr[6] | dataptr[7]) == 0
             {
-                dcval := cast(s16) (dataptr[0] << PASS1_BITS)
+                dcval := cast(s16) (dataptr[0] << Pass1Bits)
                 dataptr[0] = dcval
                 dataptr[1] = dcval
                 dataptr[2] = dcval
@@ -560,12 +559,12 @@ impl Decoder
             z2 := cast(s32) dataptr[2]
             z3 := cast(s32) dataptr[6]
 
-            z1   := (z2 + z3) * FIX_0_541196100
-            tmp2 := z1 + (z3 * -FIX_1_847759065)
-            tmp3 := z1 + (z2 * FIX_0_765366865)
+            z1   := (z2 + z3) * Fix_0_541196100
+            tmp2 := z1 + (z3 * -Fix_1_847759065)
+            tmp3 := z1 + (z2 * Fix_0_765366865)
 
-            tmp0 := (cast(s32) dataptr[0] + cast(s32) dataptr[4]) << CONST_BITS
-            tmp1 := (cast(s32) dataptr[0] - cast(s32) dataptr[4]) << CONST_BITS
+            tmp0 := (cast(s32) dataptr[0] + cast(s32) dataptr[4]) << ConstBits
+            tmp1 := (cast(s32) dataptr[0] - cast(s32) dataptr[4]) << ConstBits
 
             tmp10 := tmp0 + tmp3
             tmp13 := tmp0 - tmp3
@@ -581,16 +580,16 @@ impl Decoder
             z2 = tmp1 + tmp2
             z3 = tmp0 + tmp2
             z4 := tmp1 + tmp3
-            z5 := (z3 + z4) * FIX_1_175875602
+            z5 := (z3 + z4) * Fix_1_175875602
 
-            tmp0 = (tmp0 * FIX_0_298631336)
-            tmp1 = (tmp1 * FIX_2_053119869)
-            tmp2 = (tmp2 * FIX_3_072711026)
-            tmp3 = (tmp3 * FIX_1_501321110)
-            z1   = (z1 * -FIX_0_899976223)
-            z2   = (z2 * -FIX_2_562915447)
-            z3   = (z3 * -FIX_1_961570560)
-            z4   = (z4 * -FIX_0_390180644)
+            tmp0 = (tmp0 * Fix_0_298631336)
+            tmp1 = (tmp1 * Fix_2_053119869)
+            tmp2 = (tmp2 * Fix_3_072711026)
+            tmp3 = (tmp3 * Fix_1_501321110)
+            z1   = (z1 * -Fix_0_899976223)
+            z2   = (z2 * -Fix_2_562915447)
+            z3   = (z3 * -Fix_1_961570560)
+            z4   = (z4 * -Fix_0_390180644)
 
             z3 += z5
             z4 += z5
@@ -600,14 +599,14 @@ impl Decoder
             tmp2 += z2 + z3
             tmp3 += z1 + z4
 
-            dataptr[0] = cast(s16) jpeg_descale(tmp10 + tmp3, CONST_BITS - PASS1_BITS)
-            dataptr[7] = cast(s16) jpeg_descale(tmp10 - tmp3, CONST_BITS - PASS1_BITS)
-            dataptr[1] = cast(s16) jpeg_descale(tmp11 + tmp2, CONST_BITS - PASS1_BITS)
-            dataptr[6] = cast(s16) jpeg_descale(tmp11 - tmp2, CONST_BITS - PASS1_BITS)
-            dataptr[2] = cast(s16) jpeg_descale(tmp12 + tmp1, CONST_BITS - PASS1_BITS)
-            dataptr[5] = cast(s16) jpeg_descale(tmp12 - tmp1, CONST_BITS - PASS1_BITS)
-            dataptr[3] = cast(s16) jpeg_descale(tmp13 + tmp0, CONST_BITS - PASS1_BITS)
-            dataptr[4] = cast(s16) jpeg_descale(tmp13 - tmp0, CONST_BITS - PASS1_BITS)
+            dataptr[0] = cast(s16) jpeg_descale(tmp10 + tmp3, ConstBits - Pass1Bits)
+            dataptr[7] = cast(s16) jpeg_descale(tmp10 - tmp3, ConstBits - Pass1Bits)
+            dataptr[1] = cast(s16) jpeg_descale(tmp11 + tmp2, ConstBits - Pass1Bits)
+            dataptr[6] = cast(s16) jpeg_descale(tmp11 - tmp2, ConstBits - Pass1Bits)
+            dataptr[2] = cast(s16) jpeg_descale(tmp12 + tmp1, ConstBits - Pass1Bits)
+            dataptr[5] = cast(s16) jpeg_descale(tmp12 - tmp1, ConstBits - Pass1Bits)
+            dataptr[3] = cast(s16) jpeg_descale(tmp13 + tmp0, ConstBits - Pass1Bits)
+            dataptr[4] = cast(s16) jpeg_descale(tmp13 - tmp0, ConstBits - Pass1Bits)
 
             dataptr += 8
         }
@@ -617,7 +616,7 @@ impl Decoder
         {
             if (dataptr[8 * 1] | dataptr[8 * 2] | dataptr[8 * 3] | dataptr[8 * 4] | dataptr[8 * 5] | dataptr[8 * 6] | dataptr[8 * 7]) == 0
             {
-                dcval := cast(s16) jpeg_descale(cast(s32) dataptr[0], PASS1_BITS + 3)
+                dcval := cast(s16) jpeg_descale(cast(s32) dataptr[0], Pass1Bits + 3)
                 dcval +=,safe 128
                 dcval = math.clamp(dcval, 0's16, 255's16)
 
@@ -638,12 +637,12 @@ impl Decoder
             z2 := cast(s32) dataptr[8 * 2]
             z3 := cast(s32) dataptr[8 * 6]
 
-            z1   := (z2 + z3) * FIX_0_541196100
-            tmp2 := z1 + (z3 * -FIX_1_847759065)
-            tmp3 := z1 + (z2 * FIX_0_765366865)
+            z1   := (z2 + z3) * Fix_0_541196100
+            tmp2 := z1 + (z3 * -Fix_1_847759065)
+            tmp3 := z1 + (z2 * Fix_0_765366865)
 
-            tmp0 := (cast(s32) dataptr[8 * 0] + cast(s32) dataptr[8 * 4]) << CONST_BITS
-            tmp1 := (cast(s32) dataptr[8 * 0] - cast(s32) dataptr[8 * 4]) << CONST_BITS
+            tmp0 := (cast(s32) dataptr[8 * 0] + cast(s32) dataptr[8 * 4]) << ConstBits
+            tmp1 := (cast(s32) dataptr[8 * 0] - cast(s32) dataptr[8 * 4]) << ConstBits
 
             tmp10 := tmp0 + tmp3
             tmp13 := tmp0 - tmp3
@@ -659,16 +658,16 @@ impl Decoder
             z2 = tmp1 + tmp2
             z3 = tmp0 + tmp2
             z4 := tmp1 + tmp3
-            z5 := (z3 + z4) * FIX_1_175875602
+            z5 := (z3 + z4) * Fix_1_175875602
 
-            tmp0 = (tmp0 * FIX_0_298631336)
-            tmp1 = (tmp1 * FIX_2_053119869)
-            tmp2 = (tmp2 * FIX_3_072711026)
-            tmp3 = (tmp3 * FIX_1_501321110)
-            z1   = (z1 * -FIX_0_899976223)
-            z2   = (z2 * -FIX_2_562915447)
-            z3   = (z3 * -FIX_1_961570560)
-            z4   = (z4 * -FIX_0_390180644)
+            tmp0 = (tmp0 * Fix_0_298631336)
+            tmp1 = (tmp1 * Fix_2_053119869)
+            tmp2 = (tmp2 * Fix_3_072711026)
+            tmp3 = (tmp3 * Fix_1_501321110)
+            z1   = (z1 * -Fix_0_899976223)
+            z2   = (z2 * -Fix_2_562915447)
+            z3   = (z3 * -Fix_1_961570560)
+            z4   = (z4 * -Fix_0_390180644)
 
             z3 += z5
             z4 += z5
@@ -678,35 +677,35 @@ impl Decoder
             tmp2 += z2 + z3
             tmp3 += z1 + z4
 
-            i := cast(s16) jpeg_descale(tmp10 + tmp3, CONST_BITS + PASS1_BITS + 3) + 128
+            i := cast(s16) jpeg_descale(tmp10 + tmp3, ConstBits + Pass1Bits + 3) + 128
             i = jpeg_clampd(i)
             _pdst_ptr[8 * 0] = cast(u8) i
 
-            i = cast(s16) jpeg_descale(tmp10 - tmp3, CONST_BITS + PASS1_BITS + 3) + 128
+            i = cast(s16) jpeg_descale(tmp10 - tmp3, ConstBits + Pass1Bits + 3) + 128
             i = jpeg_clampd(i)
             _pdst_ptr[8 * 7] = cast(u8) i
 
-            i = cast(s16) jpeg_descale(tmp11 + tmp2, CONST_BITS + PASS1_BITS + 3) + 128
+            i = cast(s16) jpeg_descale(tmp11 + tmp2, ConstBits + Pass1Bits + 3) + 128
             i = jpeg_clampd(i)
             _pdst_ptr[8 * 1] = cast(u8) i
 
-            i = cast(s16) jpeg_descale(tmp11 - tmp2, CONST_BITS + PASS1_BITS + 3) + 128
+            i = cast(s16) jpeg_descale(tmp11 - tmp2, ConstBits + Pass1Bits + 3) + 128
             i = jpeg_clampd(i)
             _pdst_ptr[8 * 6] = cast(u8) i
 
-            i = cast(s16) jpeg_descale(tmp12 + tmp1, CONST_BITS + PASS1_BITS + 3) + 128
+            i = cast(s16) jpeg_descale(tmp12 + tmp1, ConstBits + Pass1Bits + 3) + 128
             i = jpeg_clampd(i)
             _pdst_ptr[8 * 2] = cast(u8) i
 
-            i = cast(s16) jpeg_descale(tmp12 - tmp1, CONST_BITS + PASS1_BITS + 3) + 128
+            i = cast(s16) jpeg_descale(tmp12 - tmp1, ConstBits + Pass1Bits + 3) + 128
             i = jpeg_clampd(i)
             _pdst_ptr[8 * 5] = cast(u8) i
 
-            i = cast(s16) jpeg_descale(tmp13 + tmp0, CONST_BITS + PASS1_BITS + 3) + 128
+            i = cast(s16) jpeg_descale(tmp13 + tmp0, ConstBits + Pass1Bits + 3) + 128
             i = jpeg_clampd(i)
             _pdst_ptr[8 * 3] = cast(u8) i
 
-            i = cast(s16) jpeg_descale(tmp13 - tmp0, CONST_BITS + PASS1_BITS + 3) + 128
+            i = cast(s16) jpeg_descale(tmp13 - tmp0, ConstBits + Pass1Bits + 3) + 128
             i = jpeg_clampd(i)
             _pdst_ptr[8 * 4] = cast(u8) i
 
@@ -718,7 +717,7 @@ impl Decoder
     func transform_row(using self)
     {
         psrc_ptr := block_seg[0]
-        pdst_ptr := psample_buf
+        pdst_ptr := pSampleBuf
 
         for i := max_blocks_per_row; i > 0; i -= 1
         {
@@ -739,13 +738,13 @@ impl Decoder
             discard try process_markers()
         }
 
-        total_bytes_read -= in_buf_left
+        totalBytesRead -= inBufLeft
     }
 
     func decode(using self, scan_line_ofs: **void, scan_line_len: *u32)->s32 throw
     {
         if total_lines_left == 0
-            return DONE
+            return Done
 
         if mcu_lines_left == 0
         {
@@ -787,7 +786,7 @@ impl Decoder
             H1V1Convert()
             :scan_line_ofs = scan_line_0.buffer
 
-        case GRAYSCALE:
+        case GrayScale:
             GrayConvert()
             :scan_line_ofs = scan_line_0.buffer
         }
@@ -796,14 +795,14 @@ impl Decoder
         mcu_lines_left -= 1
         total_lines_left -= 1
 
-        return OKAY
+        return Okay
     }
 
     func GrayConvert(using self)
     {
         row := max_mcu_y_size - mcu_lines_left
         d := scan_line_0.buffer
-        s := psample_buf + row * 8
+        s := pSampleBuf + row * 8
         for i := max_mcus_per_row; i > 0; i -= 1
         {
             d[0] = s[0]
@@ -824,7 +823,7 @@ impl Decoder
     {
         row := max_mcu_y_size - mcu_lines_left
         d := scan_line_0.buffer
-        s := psample_buf + row * 8
+        s := pSampleBuf + row * 8
         for i := max_mcus_per_row; i > 0; i -= 1
         {
             loop j: 8
@@ -851,11 +850,11 @@ impl Decoder
 
         var y: *u8
         if row < 8
-            y = psample_buf + row * 8
+            y = pSampleBuf + row * 8
         else
-            y = psample_buf + 64 * 1 + (row & 7) * 8
+            y = pSampleBuf + 64 * 1 + (row & 7) * 8
 
-        c := psample_buf + 64 * 2 + (row >>,safe 1) * 8
+        c := pSampleBuf + 64 * 2 + (row >>,safe 1) * 8
         for i := max_mcus_per_row; i > 0; i -= 1
         {
             loop j: 8
@@ -889,8 +888,8 @@ impl Decoder
     {
         row := max_mcu_y_size - mcu_lines_left
         d0 := scan_line_0.buffer
-        y := psample_buf + row * 8
-        c := psample_buf + 2 * 64 + row * 8
+        y := pSampleBuf + row * 8
+        c := pSampleBuf + 2 * 64 + row * 8
 
         for i := max_mcus_per_row; i > 0; i -= 1
         {
@@ -935,10 +934,10 @@ impl Decoder
 
         var y: *u8
         if (row < 8)
-            y = psample_buf + row * 8
+            y = pSampleBuf + row * 8
         else
-            y = psample_buf + 64 * 2 + (row & 7) * 8
-        c := psample_buf + 64 * 4 + (row >> 1) * 8
+            y = pSampleBuf + 64 * 2 + (row & 7) * 8
+        c := pSampleBuf + 64 * 4 + (row >> 1) * 8
 
         for i := max_mcus_per_row; i > 0; i -= 1
         {
@@ -990,38 +989,38 @@ impl Decoder
     {
         if comps_in_frame == 1
         {
-            scan_type          = GRAYSCALE
+            scan_type          = GrayScale
             max_blocks_per_mcu = 1
             max_mcu_x_size     = 8
             max_mcu_y_size     = 8
         }
         else if comps_in_frame == 3
         {
-            if (comp_h_samp[1] != 1) || (comp_v_samp[1] != 1) || (comp_h_samp[2] != 1) || (comp_v_samp[2] != 1)
+            if (compSampH[1] != 1) || (compSampV[1] != 1) || (compSampH[2] != 1) || (compSampV[2] != 1)
                 throw "unsupported samp factors"
 
-            if (comp_h_samp[0] == 1) && (comp_v_samp[0] == 1)
+            if (compSampH[0] == 1) && (compSampV[0] == 1)
             {
                 scan_type          = YH1V1
                 max_blocks_per_mcu = 3
                 max_mcu_x_size     = 8
                 max_mcu_y_size     = 8
             }
-            else if (comp_h_samp[0] == 2) && (comp_v_samp[0] == 1)
+            else if (compSampH[0] == 2) && (compSampV[0] == 1)
             {
                 scan_type          = YH2V1
                 max_blocks_per_mcu = 4
                 max_mcu_x_size     = 16
                 max_mcu_y_size     = 8
             }
-            else if (comp_h_samp[0] == 1) && (comp_v_samp[0] == 2)
+            else if (compSampH[0] == 1) && (compSampV[0] == 2)
             {
                 scan_type          = YH1V2
                 max_blocks_per_mcu = 4
                 max_mcu_x_size     = 8
                 max_mcu_y_size     = 16
             }
-            else if (comp_h_samp[0] == 2) && (comp_v_samp[0] == 2)
+            else if (compSampH[0] == 2) && (compSampV[0] == 2)
             {
                 scan_type          = YH2V2
                 max_blocks_per_mcu = 6
@@ -1034,16 +1033,16 @@ impl Decoder
         else
             throw "unsupported color space"
 
-        max_mcus_per_row = (image_x_size + (max_mcu_x_size - 1)) / max_mcu_x_size
-        max_mcus_per_col = (image_y_size + (max_mcu_y_size - 1)) / max_mcu_y_size
+        max_mcus_per_row = (imageSizeX + (max_mcu_x_size - 1)) / max_mcu_x_size
+        max_mcus_per_col = (imageSizeY + (max_mcu_y_size - 1)) / max_mcu_y_size
 
-        if scan_type == GRAYSCALE
+        if scan_type == GrayScale
             dest_bytes_per_pixel = 1
         else
             dest_bytes_per_pixel = 4
 
-        dest_bytes_per_scan_line      = ((image_x_size + 15) & 0xFFF0) * dest_bytes_per_pixel
-        real_dest_bytes_per_scan_line = (image_x_size * dest_bytes_per_pixel)
+        dest_bytes_per_scan_line      = ((imageSizeX + 15) & 0xFFF0) * dest_bytes_per_pixel
+        real_dest_bytes_per_scan_line = (imageSizeX * dest_bytes_per_pixel)
 
         scan_line_0.resize(cast(uint) dest_bytes_per_scan_line + 8)
         memory.clear(scan_line_0.buffer, cast(uint) dest_bytes_per_scan_line)
@@ -1052,19 +1051,19 @@ impl Decoder
         memory.clear(scan_line_1.buffer, cast(uint) dest_bytes_per_scan_line)
 
         max_blocks_per_row = max_mcus_per_row * max_blocks_per_mcu
-        if max_blocks_per_row > MAXBLOCKSPERROW
+        if max_blocks_per_row > MaxBlocksPerRow
             throw "assertion error"
 
         q_buf.resize(cast(uint) max_blocks_per_row * 64 * @sizeof(s16) + 8)
         loop i: max_blocks_per_row
             block_seg[i] = cast(*s16) (q_buf.buffer + i * 64 * @sizeof(s16))
         loop i: max_blocks_per_row
-            block_max_zag_set[i] = 64
+            blockMaxZagSet[i] = 64
 
         sample_buf.resize(cast(uint) max_blocks_per_row * 64 + 8)
-        psample_buf = sample_buf.buffer
+        pSampleBuf = sample_buf.buffer
 
-        total_lines_left = image_y_size
+        total_lines_left = imageSizeY
         mcu_lines_left   = 0
         create_look_ups();
     }
@@ -1112,9 +1111,9 @@ impl Decoder
 
     func stuff_char(using self, q: u8)
     {
-        in_buf_ofs -= 1
-        :in_buf_ofs = q
-        in_buf_left += 1
+        inBufOfs -= 1
+        :inBufOfs = q
+        inBufLeft += 1
     }
 
     func fix_in_buffer(using self)
@@ -1136,12 +1135,12 @@ impl Decoder
     {
         loop i: comps_in_scan
         {
-            if quant[comp_quant[comp_list[i]]].count == 0
+            if quant[compQuant[comp_list[i]]].count == 0
                 throw "undefined quant table"
         }
     }
 
-    func make_huff_table(using self, _index: s32, _hs: *huff_tables_t)
+    func make_huff_table(using self, _index: s32, _hs: *HuffTables)
     {
         var huffsize: [257] u8
         var huffcode: [257] u32
@@ -1174,9 +1173,9 @@ impl Decoder
             si += 1
         }
 
-        memory.clear(_hs.look_up, @sizeof(_hs.look_up))
+        memory.clear(_hs.lookUp, @sizeof(_hs.lookUp))
         memory.clear(_hs.tree, @sizeof(_hs.tree))
-        memory.clear(_hs.code_size, @sizeof(_hs.code_size))
+        memory.clear(_hs.codeSize, @sizeof(_hs.codeSize))
 
         nextfreeentry := -1's32
         p = 0
@@ -1185,30 +1184,30 @@ impl Decoder
         {
             i := huff_val[_index].buffer[p]
             cde = huffcode[p];
-            code_size := huffsize[p]
-            _hs.code_size[i] = cast(u8) code_size
-            if code_size <= 8
+            codeSize := huffsize[p]
+            _hs.codeSize[i] = cast(u8) codeSize
+            if codeSize <= 8
             {
-                cde <<= (8 - code_size)
-                for l := 1 << (8 - code_size); l > 0; l -= 1
+                cde <<= (8 - codeSize)
+                for l := 1 << (8 - codeSize); l > 0; l -= 1
                 {
-                    _hs.look_up[cde] = cast(s32) i
+                    _hs.lookUp[cde] = cast(s32) i
                     cde += 1
                 }
             }
             else
             {
-                subtree := (cde >>,safe (code_size - 8)) & 0xFF
-                currententry := _hs.look_up[subtree]
+                subtree := (cde >>,safe (codeSize - 8)) & 0xFF
+                currententry := _hs.lookUp[subtree]
                 if currententry == 0
                 {
-                    _hs.look_up[subtree] = nextfreeentry
+                    _hs.lookUp[subtree] = nextfreeentry
                     currententry = nextfreeentry
                     nextfreeentry -= 2
                 }
 
-                cde <<= (16 - (code_size - 8))
-                for l := code_size; l > 9; l -= 1
+                cde <<= (16 - (codeSize - 8))
+                for l := codeSize; l > 9; l -= 1
                 {
                     if (cde & 0x8000) == 0
                         currententry -= 1
@@ -1245,7 +1244,7 @@ impl Decoder
                 throw "undefined huff table"
         }
 
-        loop i: MAXHUFFTABLES
+        loop i: MaxHuffTables
         {
             if huff_num[i].count
             {
@@ -1268,16 +1267,16 @@ impl Decoder
 
         loop cid: comps_in_frame
         {
-            if comp_h_samp[cid] > max_h_samp
-                max_h_samp = comp_h_samp[cid]
-            if comp_v_samp[cid] > max_v_samp
-                max_v_samp = comp_v_samp[cid]
+            if compSampH[cid] > max_h_samp
+                max_h_samp = compSampH[cid]
+            if compSampV[cid] > max_v_samp
+                max_v_samp = compSampV[cid]
         }
 
         loop cid: comps_in_frame
         {
-            comp_h_blocks[cid] = ((((image_x_size * comp_h_samp[cid]) + (max_h_samp - 1)) / max_h_samp) + 7) / 8
-            comp_v_blocks[cid] = ((((image_y_size * comp_v_samp[cid]) + (max_v_samp - 1)) / max_v_samp) + 7) / 8
+            comp_h_blocks[cid] = ((((imageSizeX * compSampH[cid]) + (max_h_samp - 1)) / max_h_samp) + 7) / 8
+            comp_v_blocks[cid] = ((((imageSizeY * compSampV[cid]) + (max_v_samp - 1)) / max_v_samp) + 7) / 8
         }
 
         if (comps_in_scan == 1)
@@ -1287,8 +1286,8 @@ impl Decoder
         }
         else
         {
-            mcus_per_row = (((image_x_size + 7) / 8) + (max_h_samp - 1)) / max_h_samp
-            mcus_per_col = (((image_y_size + 7) / 8) + (max_v_samp - 1)) / max_v_samp
+            mcus_per_row = (((imageSizeX + 7) / 8) + (max_h_samp - 1)) / max_h_samp
+            mcus_per_col = (((imageSizeY + 7) / 8) + (max_v_samp - 1)) / max_v_samp
         }
 
         if comps_in_scan == 1
@@ -1302,7 +1301,7 @@ impl Decoder
             loop component_num: comps_in_scan
             {
                 cid := comp_list[component_num]
-                num_blocks := comp_h_samp[cid] * comp_v_samp[cid]
+                num_blocks := compSampH[cid] * compSampV[cid]
                 while num_blocks
                 {
                     mcu_org[blocks_per_mcu] = cid
@@ -1313,15 +1312,15 @@ impl Decoder
         }
     }
 
-    func coeff_buf_open(_block_num_x, _block_num_y, _block_len_x, _block_len_y: s32)->coeff_buf_t
+    func coeff_buf_open(_block_num_x, _block_num_y, _block_len_x, _block_len_y: s32)->CoeffBuf
     {
         var result: retval
-        result.block_num_x = _block_num_x;
-        result.block_num_y = _block_num_y;
-        result.block_len_x = _block_len_x;
-        result.block_len_y = _block_len_y;
-        result.block_size  = (_block_len_x * _block_len_y) * @sizeof(s16)
-        result.pdata.resize(cast(uint) result.block_size * _block_num_x * _block_num_y)
+        result.blockNumX = _block_num_x;
+        result.blockNumY = _block_num_y;
+        result.blockLenX = _block_len_x;
+        result.blockLenY = _block_len_y;
+        result.blockSize  = (_block_len_x * _block_len_y) * @sizeof(s16)
+        result.pdata.resize(cast(uint) result.blockSize * _block_num_x * _block_num_y)
         return result
     }
 
@@ -1500,8 +1499,8 @@ impl Decoder
 
     func decode_scan(using self, fn: func(*Decoder, s32, s32, s32) throw) throw
     {
-        var block_x_mcut: [MAXCOMPONENTS] s32
-        var block_y_mcut: [MAXCOMPONENTS] s32
+        var block_x_mcut: [MaxComponents] s32
+        var block_y_mcut: [MaxComponents] s32
 
         loop mcu_col: mcus_per_col
         {
@@ -1524,14 +1523,14 @@ impl Decoder
                     else
                     {
                         block_x_mcu_ofs += 1
-                        if block_x_mcu_ofs == comp_h_samp[component_id]
+                        if block_x_mcu_ofs == compSampH[component_id]
                         {
                             block_x_mcu_ofs = 0
                             block_y_mcu_ofs += 1
-                            if block_y_mcu_ofs == comp_v_samp[component_id]
+                            if block_y_mcu_ofs == compSampV[component_id]
                             {
                                 block_y_mcu_ofs = 0
-                                block_x_mcut[component_id] += comp_h_samp[component_id]
+                                block_x_mcut[component_id] += compSampH[component_id]
                             }
                         }
                     }
@@ -1547,7 +1546,7 @@ impl Decoder
                 loop component_num: comps_in_scan
                 {
                     component_id := comp_list[component_num]
-                    block_y_mcut[component_id] += comp_v_samp[component_id]
+                    block_y_mcut[component_id] += compSampV[component_id]
                 }
             }
         }
@@ -1560,8 +1559,8 @@ impl Decoder
 
         loop i: comps_in_frame
         {
-            dc_coeffs[i] = coeff_buf_open(max_mcus_per_row * comp_h_samp[i], max_mcus_per_col * comp_v_samp[i], 1, 1)
-            ac_coeffs[i] = coeff_buf_open(max_mcus_per_row * comp_h_samp[i], max_mcus_per_col * comp_v_samp[i], 8, 8)
+            dc_coeffs[i] = coeff_buf_open(max_mcus_per_row * compSampH[i], max_mcus_per_col * compSampV[i], 1, 1)
+            ac_coeffs[i] = coeff_buf_open(max_mcus_per_row * compSampH[i], max_mcus_per_col * compSampV[i], 8, 8)
         }
 
         while true
@@ -1693,10 +1692,10 @@ impl Decoder
 
     func get_char(using self, paddingFlag: *bool)->u32
     {
-        if !in_buf_left
+        if !inBufLeft
         {
-            prep_in_buffer()
-            if !in_buf_left
+            prepareStreamBuffer()
+            if !inBufLeft
             {
                 :paddingFlag = true
                 t := tem_flag
@@ -1707,18 +1706,18 @@ impl Decoder
         }
 
         :paddingFlag = false
-        c := :in_buf_ofs
-        in_buf_ofs += 1
-        in_buf_left -= 1
+        c := :inBufOfs
+        inBufOfs += 1
+        inBufLeft -= 1
         return c
     }
 
     func get_char(using self)->u32
     {
-        if !in_buf_left
+        if !inBufLeft
         {
-            prep_in_buffer()
-            if !in_buf_left
+            prepareStreamBuffer()
+            if !inBufLeft
             {
                 t := tem_flag
                 tem_flag ^= 1
@@ -1727,9 +1726,9 @@ impl Decoder
             }
         }
 
-        c := in_buf_ofs[0]
-        in_buf_ofs += 1
-        in_buf_left -= 1
+        c := inBufOfs[0]
+        inBufOfs += 1
+        inBufLeft -= 1
         return c
     }
 
@@ -1835,8 +1834,8 @@ impl Decoder
             left -= cast(u32) i
             if (index & 0x10) > 0x10 throw "bad dht index"
 
-            index = (index & 0x0F) + ((index & 0x10) >> 4) * (MAXHUFFTABLES >> 1)
-            if index >= MAXHUFFTABLES throw "bad dht index"
+            index = (index & 0x0F) + ((index & 0x10) >> 4) * (MaxHuffTables >> 1)
+            if index >= MaxHuffTables throw "bad dht index"
 
             huff_num[index].resize(17)
             huff_val[index].resize(256)
@@ -1856,7 +1855,7 @@ impl Decoder
             n    := get_bits_1(8)
             prec := n >>,safe 4
             n &= 0x0F
-            if n >= MAXQUANTTABLES throw "bad dqt table"
+            if n >= MaxQuantTables throw "bad dqt table"
 
             quant[n].resize(64)
             loop i: 64
@@ -1884,22 +1883,22 @@ impl Decoder
         left := get_bits_1(16)
         if get_bits_1(8) != 8 throw "bad precision"
 
-        image_y_size = cast(s32) get_bits_1(16)
-        image_x_size = cast(s32) get_bits_1(16)
+        imageSizeY = cast(s32) get_bits_1(16)
+        imageSizeX = cast(s32) get_bits_1(16)
 
-        if (image_y_size < 1) || (image_y_size > MAX_HEIGHT) throw "bad height"
-        if (image_x_size < 1) || (image_x_size > MAX_WIDTH) throw "bad width"
+        if (imageSizeY < 1) || (imageSizeY > MaxHeight) throw "bad height"
+        if (imageSizeX < 1) || (imageSizeX > MaxWidth) throw "bad width"
 
         comps_in_frame = cast(s32) get_bits_1(8)
-        if comps_in_frame > MAXCOMPONENTS throw "too many components"
+        if comps_in_frame > MaxComponents throw "too many components"
         if left != (comps_in_frame * 3 + 8) throw "bad sqf length"
 
         loop i: comps_in_frame
         {
-            comp_ident[i]  = cast(s32) get_bits_1(8)
-            comp_h_samp[i] = cast(s32) get_bits_1(4)
-            comp_v_samp[i] = cast(s32) get_bits_1(4)
-            comp_quant[i]  = cast(s32) get_bits_1(8)
+            compIdent[i]  = cast(s32) get_bits_1(8)
+            compSampH[i] = cast(s32) get_bits_1(4)
+            compSampV[i] = cast(s32) get_bits_1(4)
+            compQuant[i]  = cast(s32) get_bits_1(8)
         }
     }
 
@@ -1910,7 +1909,7 @@ impl Decoder
         comps_in_scan = cast(s32) n
         left -= 3
 
-        if (left != cast(u32)(n * 2 + 3)) || (n < 1) || (n > MAXCOMPSINSCAN)
+        if (left != cast(u32)(n * 2 + 3)) || (n < 1) || (n > MaxCompsInScan)
             throw "bad sos length"
 
         loop i: n
@@ -1922,7 +1921,7 @@ impl Decoder
             ci := 0
             while ci < comps_in_frame
             {
-                if (cc == comp_ident[ci])
+                if (cc == compIdent[ci])
                     break;
                 ci += 1
             }
@@ -1932,7 +1931,7 @@ impl Decoder
 
             comp_list[i]    = ci
             comp_dc_tab[ci] = cast(s32) (c >>,safe 4) & 15
-            comp_ac_tab[ci] = cast(s32) (c & 15) + (MAXHUFFTABLES >> 1)
+            comp_ac_tab[ci] = cast(s32) (c & 15) + (MaxHuffTables >> 1)
         }
 
         spectral_start  = cast(s32) get_bits_1(8)
@@ -2014,31 +2013,31 @@ impl Decoder
         }
     }
 
-    func prep_in_buffer(using self)
+    func prepareStreamBuffer(using self)
     {
-        in_buf_left = 0
-        in_buf_ofs = in_buf
-        if eof_flag return
+        inBufLeft = 0
+        inBufOfs = in_buf
+        if eofReached return
 
         while true
         {
-            size := INBUFSIZE - in_buf_left
-            if size + streamseek > streamlen
+            size := InBufSize - inBufLeft
+            if size + streamSeek > streamLen
             {
-                size     = streamlen - streamseek
-                eof_flag = 1
+                size     = streamLen - streamSeek
+                eofReached = 1
             }
 
             bytes_read := size
-            memory.copy(&in_buf[0] + in_buf_left, stream + streamseek, cast(uint) size)
-            streamseek += size
-            in_buf_left += bytes_read
-            if in_buf_left >= INBUFSIZE || eof_flag
+            memory.copy(&in_buf[0] + inBufLeft, stream + streamSeek, cast(uint) size)
+            streamSeek += size
+            inBufLeft += bytes_read
+            if inBufLeft >= InBufSize || eofReached
                 break
         }
 
-        total_bytes_read += in_buf_left
-        word_clear(in_buf_ofs + in_buf_left, 0xD9FF, 64)
+        totalBytesRead += inBufLeft
+        word_clear(inBufOfs + inBufLeft, 0xD9FF, 64)
     }
 }
 
@@ -2054,11 +2053,11 @@ public impl IDecoder for Decoder
     {
         try
         {
-            decode_init(buffer)
-            decode_start()
+            init(buffer)
+            start()
 
-            var result: retval = create(image_x_size, image_y_size, PixelFormat.BGR8)
-            decode_process(result.pixels)
+            var result: retval = create(imageSizeX, imageSizeY, PixelFormat.BGR8)
+            doit(result.pixels)
         }
 
         return result
