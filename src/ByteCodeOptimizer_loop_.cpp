@@ -2,7 +2,7 @@
 #include "ByteCodeOptimizer.h"
 
 // Try to move some 'constant' assignment outside simple loops
-void ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 {
     auto& mapRA = context->mapU32InstA;
     auto& mapRB = context->mapU32InstB;
@@ -71,4 +71,6 @@ void ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             }
         }
     }
+
+    return true;
 }

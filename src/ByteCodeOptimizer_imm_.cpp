@@ -9,7 +9,7 @@
 
 // If an instruction can have an immediate form, then transform it if the corresponding
 // register is a constant.
-void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 {
     auto  maxReg = context->bc->maxReservedRegisterRC;
     auto& regs   = context->vecInst;
@@ -148,4 +148,6 @@ void ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
         if (isJumpBlock(ip))
             memset(regs.buffer, 0, maxReg * sizeof(void*));
     }
+
+    return true;
 }

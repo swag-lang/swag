@@ -2,7 +2,9 @@
 #include "ByteCodeOptimizer.h"
 #include "ByteCodeGenJob.h"
 #include "ByteCodeRun.h"
+#include "Math.h"
 #include "Log.h"
+#include "Diagnostic.h"
 
 #define OK()                              \
     context->passHasDoneSomething = true; \
@@ -53,7 +55,7 @@
 
 // Make constant folding. If an instruction is purely constant, then compute the result and replace the instruction
 // with that result
-void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
@@ -78,12 +80,21 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpModuloU64:
                 BINOP_U64(%);
                 break;
+
             case ByteCodeOp::BinOpPlusS32:
+                SWAG_VERIFY(!addOverflow(ip->node, ip->a.s32, ip->b.s32), context->report({ip->node, "[safety] (s32) '+' integer overflow"}));
+                BINOP_S32(+);
+                break;
             case ByteCodeOp::BinOpPlusU32:
+                SWAG_VERIFY(!addOverflow(ip->node, ip->a.u32, ip->b.u32), context->report({ip->node, "[safety] (u32) '+' integer overflow"}));
                 BINOP_S32(+);
                 break;
             case ByteCodeOp::BinOpPlusS64:
+                SWAG_VERIFY(!addOverflow(ip->node, ip->a.s64, ip->b.s64), context->report({ip->node, "[safety] (s64) '+' integer overflow"}));
+                BINOP_S64(+);
+                break;
             case ByteCodeOp::BinOpPlusU64:
+                SWAG_VERIFY(!addOverflow(ip->node, ip->a.u64, ip->b.u64), context->report({ip->node, "[safety] (u64) '+' integer overflow"}));
                 BINOP_S64(+);
                 break;
             case ByteCodeOp::BinOpPlusF32:
@@ -92,12 +103,21 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpPlusF64:
                 BINOP_F64(+);
                 break;
+
             case ByteCodeOp::BinOpMinusS32:
+                SWAG_VERIFY(!subOverflow(ip->node, ip->a.s32, ip->b.s32), context->report({ip->node, "[safety] (s32) '-' integer overflow"}));
+                BINOP_S32(-);
+                break;
             case ByteCodeOp::BinOpMinusU32:
+                SWAG_VERIFY(!subOverflow(ip->node, ip->a.u32, ip->b.u32), context->report({ip->node, "[safety] (u32) '-' integer overflow"}));
                 BINOP_S32(-);
                 break;
             case ByteCodeOp::BinOpMinusS64:
+                SWAG_VERIFY(!subOverflow(ip->node, ip->a.s64, ip->b.s64), context->report({ip->node, "[safety] (s64) '-' integer overflow"}));
+                BINOP_S64(-);
+                break;
             case ByteCodeOp::BinOpMinusU64:
+                SWAG_VERIFY(!subOverflow(ip->node, ip->a.u64, ip->b.u64), context->report({ip->node, "[safety] (u64) '-' integer overflow"}));
                 BINOP_S64(-);
                 break;
             case ByteCodeOp::BinOpMinusF32:
@@ -106,12 +126,21 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpMinusF64:
                 BINOP_F64(-);
                 break;
+
             case ByteCodeOp::BinOpMulS32:
+                SWAG_VERIFY(!mulOverflow(ip->node, ip->a.s32, ip->b.s32), context->report({ip->node, "[safety] (s32) '*' integer overflow"}));
+                BINOP_S32(*);
+                break;
             case ByteCodeOp::BinOpMulU32:
+                SWAG_VERIFY(!mulOverflow(ip->node, ip->a.u32, ip->b.u32), context->report({ip->node, "[safety] (u32) '*' integer overflow"}));
                 BINOP_S32(*);
                 break;
             case ByteCodeOp::BinOpMulS64:
+                SWAG_VERIFY(!mulOverflow(ip->node, ip->a.s64, ip->b.s64), context->report({ip->node, "[safety] (s64) '*' integer overflow"}));
+                BINOP_S64(*);
+                break;
             case ByteCodeOp::BinOpMulU64:
+                SWAG_VERIFY(!mulOverflow(ip->node, ip->a.u64, ip->b.u64), context->report({ip->node, "[safety] (u64) '*' integer overflow"}));
                 BINOP_S64(*);
                 break;
             case ByteCodeOp::BinOpMulF32:
@@ -120,6 +149,7 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpMulF64:
                 BINOP_F64(*);
                 break;
+
             case ByteCodeOp::BinOpDivS32:
                 BINOP_S32(/);
                 break;
@@ -138,6 +168,7 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::BinOpDivF64:
                 BINOP_F64(/);
                 break;
+
             case ByteCodeOp::BinOpBitmaskAnd8:
             case ByteCodeOp::BinOpBitmaskAnd16:
             case ByteCodeOp::BinOpBitmaskAnd32:
@@ -487,7 +518,7 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicF32x2:
             {
                 Register result;
-                ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c);
+                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c));
                 ip->b.u32 = result.u32;
                 ip->op    = ByteCodeOp::SetImmediate32;
                 OK();
@@ -499,7 +530,7 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicF64x2:
             {
                 Register result;
-                ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c);
+                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c));
                 ip->b.u64 = result.u64;
                 ip->op    = ByteCodeOp::SetImmediate64;
                 OK();
@@ -852,7 +883,7 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicF32x1:
             {
                 Register result;
-                ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c);
+                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c));
                 ip->b.u32 = result.u32;
                 ip->op    = ByteCodeOp::SetImmediate32;
                 OK();
@@ -863,7 +894,7 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicS64x1:
             {
                 Register result;
-                ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c);
+                SWAG_CHECK(ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c));
                 ip->op    = ByteCodeOp::SetImmediate64;
                 ip->b.u64 = result.u64;
                 OK();
@@ -911,4 +942,6 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             }
         }
     }
+
+    return true;
 }

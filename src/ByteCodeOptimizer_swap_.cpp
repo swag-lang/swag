@@ -5,7 +5,7 @@
 #include "Module.h"
 #include "Log.h"
 
-void ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
@@ -38,4 +38,6 @@ void ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
             context->passHasDoneSomething = true;
         }
     }
+
+    return true;
 }

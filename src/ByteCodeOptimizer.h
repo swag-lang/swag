@@ -69,22 +69,23 @@ struct ByteCodeOptimizer
     static void setJumps(ByteCodeOptContext* context);
     static void removeNops(ByteCodeOptContext* context);
 
-    static void optimizePassJumps(ByteCodeOptContext* context);
-    static void optimizePassLoop(ByteCodeOptContext* context);
-    static void optimizePassDeadCode(ByteCodeOptContext* context);
-    static void optimizePassEmptyFct(ByteCodeOptContext* context);
-    static void optimizePassDeadStore(ByteCodeOptContext* context);
-    static void optimizePassImmediate(ByteCodeOptContext* context);
-    static void optimizePassConst(ByteCodeOptContext* context);
-    static void optimizePassRetCopyLocal(ByteCodeOptContext* context);
-    static void optimizePassRetCopyGlobal(ByteCodeOptContext* context);
-    static void optimizePassRetCopyInline(ByteCodeOptContext* context);
-    static void optimizePassSwap(ByteCodeOptContext* context);
+    static bool optimizePassJumps(ByteCodeOptContext* context);
+    static bool optimizePassLoop(ByteCodeOptContext* context);
+    static bool optimizePassDeadCode(ByteCodeOptContext* context);
+    static bool optimizePassEmptyFct(ByteCodeOptContext* context);
+    static bool optimizePassDeadStore(ByteCodeOptContext* context);
+    static bool optimizePassImmediate(ByteCodeOptContext* context);
+    static bool optimizePassConst(ByteCodeOptContext* context);
+    static bool optimizePassRetCopyLocal(ByteCodeOptContext* context);
+    static bool optimizePassRetCopyGlobal(ByteCodeOptContext* context);
+    static bool optimizePassRetCopyInline(ByteCodeOptContext* context);
+    static bool optimizePassSwap(ByteCodeOptContext* context);
+    static bool optimizePassErr(ByteCodeOptContext* context);
 
     static void optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, ByteCodeOp op);
-    static void optimizePassDupCopyRBRA(ByteCodeOptContext* context);
     static void optimizePassDupCopyOp(ByteCodeOptContext* context, ByteCodeOp op);
-    static void optimizePassDupCopy(ByteCodeOptContext* context);
+    static bool optimizePassDupCopyRBRA(ByteCodeOptContext* context);
+    static bool optimizePassDupCopy(ByteCodeOptContext* context);
 
     static void reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstruction* ip);
@@ -92,9 +93,7 @@ struct ByteCodeOptimizer
     static void reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reducex2(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstruction* ip);
-    static void optimizePassReduce(ByteCodeOptContext* context);
-
-    static void optimizePassErr(ByteCodeOptContext* context);
+    static bool optimizePassReduce(ByteCodeOptContext* context);
 
     static bool optimize(Job* job, Module* module, bool& done);
 };

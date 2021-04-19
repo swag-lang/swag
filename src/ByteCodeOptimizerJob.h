@@ -9,7 +9,7 @@ struct ByteCodeOptimizerJob : public Job
     JobResult execute() override;
     bool      optimize(bool isAsync);
 
-    vector<function<void(ByteCodeOptContext*)>> passes;
+    vector<function<bool(ByteCodeOptContext*)>> passes;
     int                                         startIndex, endIndex;
     ByteCodeOptContext                          optContext;
 

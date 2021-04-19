@@ -208,12 +208,13 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
     }
 }
 
-void ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
 {
     optimizePassDupCopyRBRAOp(context, ByteCodeOp::CopyRBtoRA8);
     optimizePassDupCopyRBRAOp(context, ByteCodeOp::CopyRBtoRA16);
     optimizePassDupCopyRBRAOp(context, ByteCodeOp::CopyRBtoRA32);
     optimizePassDupCopyRBRAOp(context, ByteCodeOp::CopyRBtoRA64);
+    return true;
 }
 
 void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteCodeOp op)
@@ -277,7 +278,7 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
 }
 
 // Remove duplicated pure instructions (set RA to a constant)
-void ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context)
 {
     optimizePassDupCopyOp(context, ByteCodeOp::CopyRRtoRC);
     optimizePassDupCopyOp(context, ByteCodeOp::MakeStackPointerParam);
@@ -288,4 +289,5 @@ void ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context)
     optimizePassDupCopyOp(context, ByteCodeOp::GetFromStackParam64);
     optimizePassDupCopyOp(context, ByteCodeOp::SetImmediate32);
     optimizePassDupCopyOp(context, ByteCodeOp::SetImmediate64);
+    return true;
 }

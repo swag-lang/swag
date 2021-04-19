@@ -3,7 +3,7 @@
 
 // Eliminate all the instructions that can never be called
 // We parse all the branches to see what can be reached for an execution flow
-void ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
 {
     context->vecInst.reserve(context->bc->numInstructions);
     context->vecInst.clear();
@@ -43,4 +43,6 @@ void ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
         else
             ip->flags &= ~BCI_OPT_FLAG;
     }
+
+    return true;
 }

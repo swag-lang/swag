@@ -53,7 +53,8 @@ bool ByteCodeOptimizerJob::optimize(bool isAsync)
                 for (auto pass : passes)
                 {
                     optContext.passHasDoneSomething = false;
-                    pass(&optContext);
+                    if (!pass(&optContext))
+                        return false;
                     optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething;
                 }
 

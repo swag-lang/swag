@@ -5,7 +5,7 @@
 
 // Mark all functions that does nothing
 // Elimite all local calls to such functions
-void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
 {
     if (context->bc->isDoingNothing() && !context->bc->isEmpty)
     {
@@ -51,4 +51,6 @@ void ByteCodeOptimizer::optimizePassEmptyFct(ByteCodeOptContext* context)
             }
         }
     }
+
+    return true;
 }

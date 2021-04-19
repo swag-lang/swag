@@ -102,7 +102,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
 // MakeStackPointer Y
 // MemCpy X to Y
 // ... post move stuff
-void ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
@@ -138,10 +138,12 @@ void ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
                 ip = ipOrg;
         }
     }
+
+    return true;
 }
 
 // Same, but we make the detection before and after a function that has been inlined
-void ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
@@ -172,9 +174,11 @@ void ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
                 ip = ipOrg;
         }
     }
+
+    return true;
 }
 
-void ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
@@ -236,4 +240,6 @@ void ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
             }
         }
     }
+
+    return true;
 }

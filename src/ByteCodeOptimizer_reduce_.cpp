@@ -2151,7 +2151,7 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
     }
 }
 
-void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
@@ -2292,4 +2292,6 @@ void ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceCmpJump(context, ip);
         reducex2(context, ip);
     }
+
+    return true;
 }

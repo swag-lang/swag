@@ -4,7 +4,7 @@
 #include "SourceFile.h"
 
 // Eliminate unnecessary jumps
-void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 {
     for (int idx = 0; idx < context->jumps.size(); idx++)
     {
@@ -306,4 +306,6 @@ void ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             }
         }
     }
+
+    return true;
 }

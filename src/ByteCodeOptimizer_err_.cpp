@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "Log.h"
 
-void ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
@@ -77,4 +77,6 @@ void ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
             }
         }
     }
+
+    return true;
 }

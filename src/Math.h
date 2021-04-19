@@ -1,5 +1,7 @@
 #pragma once
 #include "AstNode.h"
+#include "SourceFile.h"
+#include "Module.h"
 
 inline bool addOverflow(AstNode* node, int8_t x, int8_t y)
 {
