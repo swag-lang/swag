@@ -1758,12 +1758,12 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     {
         if (toType->sizeOf >= fromType->sizeOf)
         {
-            auto leftIsInt       = (toType->flags & TYPEINFO_INTEGER) || toType->isNative(NativeTypeKind::Char);
-            auto rightIsInt      = (fromType->flags & TYPEINFO_INTEGER) || fromType->isNative(NativeTypeKind::Char);
-            auto leftIsFloat     = (toType->flags & TYPEINFO_FLOAT);
-            auto rightIsFloat    = (fromType->flags & TYPEINFO_FLOAT);
-            auto leftIsUnsigned  = (toType->flags & TYPEINFO_UNSIGNED) || toType->isNative(NativeTypeKind::Char);
-            auto rightIsUnsigned = (fromType->flags & TYPEINFO_UNSIGNED) || toType->isNative(NativeTypeKind::Char);
+            auto leftIsInt       = toType->isNativeIntegerOrChar();
+            auto rightIsInt      = fromType->isNativeIntegerOrChar();
+            auto leftIsFloat     = toType->isNativeFloat();
+            auto rightIsFloat    = fromType->isNativeFloat();
+            auto leftIsUnsigned  = toType->isNativeUnsignedOrChar();
+            auto rightIsUnsigned = fromType->isNativeUnsignedOrChar();
 
             if ((leftIsInt && rightIsInt) || (leftIsFloat && rightIsFloat))
             {

@@ -102,6 +102,7 @@ struct TypeInfo
     bool isNativeUnsignedOrChar()           { return (flags & TYPEINFO_UNSIGNED) || isNative(NativeTypeKind::Char); }
     bool isNativeIntegerSigned()            { return !(flags & TYPEINFO_UNSIGNED); }
     bool isNativeIntegerOrChar()            { return (flags & TYPEINFO_INTEGER) || isNative(NativeTypeKind::Char); }
+    bool isNativeFloat()                    { return (flags & TYPEINFO_FLOAT); }
     bool isConst()                          { return (flags & TYPEINFO_CONST); }
     bool isRelative()                       { return (flags & TYPEINFO_RELATIVE); }
     // clang-format on
