@@ -14,7 +14,8 @@ void Diagnostic::defaultColor(bool verboseMode) const
 
 void Diagnostic::printSourceLine(int headerSize) const
 {
-    for (int i = 0; i < headerSize; i++)
+    g_Log.print("-->");
+    for (int i = 0; i < headerSize - 3; i++)
         g_Log.print(" ");
     SWAG_ASSERT(sourceFile);
     fs::path path = sourceFile->path;
@@ -84,10 +85,7 @@ void Diagnostic::report(bool verboseMode) const
 
     // Source line right after the header
     if (!g_CommandLine.errorSourceOut && hasFile && !sourceFile->path.empty())
-    {
-        headerSize = 0;
-        printSourceLine(headerSize + 3);
-    }
+        printSourceLine(headerSize + 4);
 
     // User message
     g_Log.print(textMsg);
@@ -106,7 +104,7 @@ void Diagnostic::report(bool verboseMode) const
                     continue;
                 for (int i = 0; i < headerSize; i++)
                     g_Log.print(" ");
-                g_Log.print("=> ");
+                g_Log.print("==> ");
                 g_Log.print(r);
                 g_Log.eol();
             }
@@ -119,7 +117,7 @@ void Diagnostic::report(bool verboseMode) const
     // Source file and location on their own line
     if (g_CommandLine.errorSourceOut && hasFile && !sourceFile->path.empty())
     {
-        printSourceLine(headerSize + 3);
+        printSourceLine(headerSize + 4);
         g_Log.eol();
     }
 
@@ -173,18 +171,25 @@ void Diagnostic::report(bool verboseMode) const
         auto codeColor = !verboseMode && reportRange;
 
         // Print all lines
-        for (int i = 0; i < lines.size(); i++)
+        if (lines.size())
         {
-            const char* pz = lines[i].c_str();
-            if (*pz && *pz != '\n' && *pz != '\r')
+            for (int j = 0; j < headerSize; j++)
+                g_Log.print(" ");
+            g_Log.print(" |  \n");
+
+            for (int i = 0; i < lines.size(); i++)
             {
-                for (int j = 0; j < headerSize; j++)
-                    g_Log.print(" ");
-                g_Log.print(">  ");
-                if (codeColor && i == lines.size() - 1)
-                    break;
-                g_Log.print(lines[i].c_str() + minBlanks);
-                g_Log.eol();
+                const char* pz = lines[i].c_str();
+                if (*pz && *pz != '\n' && *pz != '\r')
+                {
+                    for (int j = 0; j < headerSize; j++)
+                        g_Log.print(" ");
+                    g_Log.print(" |  ");
+                    if (codeColor && i == lines.size() - 1)
+                        break;
+                    g_Log.print(lines[i].c_str() + minBlanks);
+                    g_Log.eol();
+                }
             }
         }
 
@@ -261,8 +266,9 @@ void Diagnostic::report(bool verboseMode) const
                 // Display markers
                 else
                 {
-                    for (int i = 0; i < headerSize + 3; i++)
+                    for (int j = 0; j < headerSize; j++)
                         g_Log.print(" ");
+                    g_Log.print(" |  ");
 
                     for (uint32_t i = minBlanks; i < startLocation.column; i++)
                     {
