@@ -1325,6 +1325,7 @@ impl Decoder
         return result
     }
 
+    #[swag.safety("of", false)]
     func decode_block_dc_first(using self, _component_id: s32, _block_x, _block_y: s32) throw
     {
         p := coeff_buf_getp(dc_coeffs[_component_id], _block_x, _block_y)
@@ -1340,6 +1341,7 @@ impl Decoder
         p[0] = cast(s16) (s << cast(u32) successive_low)
     }
 
+    #[swag.safety("of", false)]
     func decode_block_dc_refine(using self, _component_id: s32, _block_x, _block_y: s32) throw
     {
         if get_bits_2(1)
@@ -1349,6 +1351,7 @@ impl Decoder
         }
     }
 
+    #[swag.safety("of", false)]
     func decode_block_ac_first(using self, _component_id: s32, _block_x, _block_y: s32) throw
     {
         if eob_run
@@ -1395,6 +1398,7 @@ impl Decoder
         }
     }
 
+    #[swag.safety("of", false)]
     func decode_block_ac_refine(using self, _component_id: s32, _block_x, _block_y: s32) throw
     {
         p1 := 1 << cast(u32) successive_low
@@ -1494,6 +1498,61 @@ impl Decoder
         }
     }
 
+    func decode_scan(using self, fn: func(*Decoder, s32, s32, s32) throw) throw
+    {
+        var block_x_mcut: [MAXCOMPONENTS] s32
+        var block_y_mcut: [MAXCOMPONENTS] s32
+
+        loop mcu_col: mcus_per_col
+        {
+            memory.clear(block_x_mcut, @sizeof(block_x_mcut))
+            loop mcu_row: mcus_per_row
+            {
+                block_x_mcu_ofs := 0
+                block_y_mcu_ofs := 0
+
+                if restart_interval && (restarts_left == 0)
+                    try process_restart()
+
+                loop mcu_block: blocks_per_mcu
+                {
+                    component_id := mcu_org[mcu_block]
+                    try fn(self, component_id, block_x_mcut[component_id] + block_x_mcu_ofs, block_y_mcut[component_id] + block_y_mcu_ofs)
+
+                    if comps_in_scan == 1
+                        block_x_mcut[component_id] += 1
+                    else
+                    {
+                        block_x_mcu_ofs += 1
+                        if block_x_mcu_ofs == comp_h_samp[component_id]
+                        {
+                            block_x_mcu_ofs = 0
+                            block_y_mcu_ofs += 1
+                            if block_y_mcu_ofs == comp_v_samp[component_id]
+                            {
+                                block_y_mcu_ofs = 0
+                                block_x_mcut[component_id] += comp_h_samp[component_id]
+                            }
+                        }
+                    }
+                }
+
+                restarts_left -= 1
+            }
+
+            if comps_in_scan == 1
+                block_y_mcut[comp_list[0]] += 1
+            else
+            {
+                loop component_num: comps_in_scan
+                {
+                    component_id := comp_list[component_num]
+                    block_y_mcut[component_id] += comp_v_samp[component_id]
+                }
+            }
+        }
+    }
+
     func init_progressive(using self) throw
     {
         //decode_block_func decode_block_func;
@@ -1545,7 +1604,7 @@ impl Decoder
                     decode_block_func = &decode_block_ac_first
             }
 
-            //decode_scan(decode_block_func)
+            try decode_scan(decode_block_func)
 
             bits_left = 16
 
