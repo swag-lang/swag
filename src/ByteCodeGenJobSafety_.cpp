@@ -1,10 +1,34 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
 #include "ByteCode.h"
-#include "ByteCodeOp.h"
 #include "Module.h"
 #include "Ast.h"
-#include "Runtime.h"
+
+const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fromType)
+{
+    static Utf8 typedMsg[(int) SafetyMsg::Count][(int) NativeTypeKind::Count][(int) NativeTypeKind::Count];
+
+    int m = (int) msg;
+    int i = toType ? (int) toType->nativeType : 0;
+    int j = fromType ? (int) fromType->nativeType : 0;
+
+    if (typedMsg[m][i][j].empty())
+    {
+        switch (msg)
+        {
+        case SafetyMsg::CastTruncated:
+            SWAG_ASSERT(toType && fromType);
+            typedMsg[m][i][j] = format("[safety] truncated bits when casting expression from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str());
+            break;
+        case SafetyMsg::CastNeg:
+            SWAG_ASSERT(toType && fromType);
+            typedMsg[m][i][j] = format("[safety] cast from a negative value of type '%s' to unsigned type '%s'", fromType->name.c_str(), toType->name.c_str());
+            break;
+        }
+    }
+
+    return typedMsg[m][i][j].c_str();
+}
 
 void ByteCodeGenJob::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg)
 {
@@ -589,11 +613,12 @@ void ByteCodeGenJob::emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeI
     if (fromTypeInfo->kind != TypeInfoKind::Native)
         return;
 
-    PushICFlags        ic(context, BCI_SAFETY);
-    auto               re   = reserveRegisterRC(context);
-    auto               r1   = reserveRegisterRC(context);
-    static const char* msg  = "[safety] integer cast truncated bits";
-    static const char* msg1 = "[safety] cast from negative value to unsigned integer";
+    PushLocation lc(context, &exprNode->token.startLocation);
+    PushICFlags  ic(context, BCI_SAFETY);
+    auto         re   = reserveRegisterRC(context);
+    auto         r1   = reserveRegisterRC(context);
+    auto         msg  = safetyMsg(SafetyMsg::CastTruncated, typeInfo, fromTypeInfo);
+    auto         msg1 = safetyMsg(SafetyMsg::CastNeg, typeInfo, fromTypeInfo);
 
     switch (typeInfo->nativeType)
     {

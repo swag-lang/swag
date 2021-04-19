@@ -28,6 +28,13 @@ enum class ByteCodeOp : uint16_t;
 static const uint32_t BCC_FLAG_NOLOCATION = 0x00000001;
 static const uint32_t BCC_FLAG_NOSAFETY   = 0x00000002;
 
+enum class SafetyMsg
+{
+    CastTruncated,
+    CastNeg,
+    Count,
+};
+
 struct ByteCodeGenContext : public JobContext
 {
     VectorNative<AstNode*>        stackForceNode;
@@ -328,27 +335,28 @@ struct ByteCodeGenJob : public Job
     static void emitMemCpy(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint64_t sizeOf);
     static bool emitDefer(ByteCodeGenContext* context);
 
-    static void emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg = nullptr);
-    static bool mustEmitSafety(ByteCodeGenContext* context, uint64_t whatOn, uint64_t whatOff);
-    static void emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);
-    static void emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message = "[safety] dereferencing a null pointer", int sizeInBits = 64);
-    static void emitSafetyNullLambda(ByteCodeGenContext* context, uint32_t r, const char* message = "[safety] dereferencing a null pointer");
-    static void emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo);
-    static void emitSafetyRightShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo);
-    static void emitSafetyLeftShiftEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo);
-    static void emitSafetyRightShiftEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo);
-    static void emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits);
-    static void emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-    static void emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-    static void emitSafetyRelativePointerS64(ByteCodeGenContext* context, uint32_t r0, int offsetSize);
-    static void emitSafetyBoundCheckLowerEqU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-    static void emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeInfo* typeInfo, bool forAbs = false);
-    static void emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-    static void emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfoArray);
-    static void emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-    static void emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode);
-    static void emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, AstNode* exprNode);
-    static void emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, AstArrayPointerSlicing* node);
+    static const char* safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fromType);
+    static void        emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg = nullptr);
+    static bool        mustEmitSafety(ByteCodeGenContext* context, uint64_t whatOn, uint64_t whatOff);
+    static void        emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);
+    static void        emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message = "[safety] dereferencing a null pointer", int sizeInBits = 64);
+    static void        emitSafetyNullLambda(ByteCodeGenContext* context, uint32_t r, const char* message = "[safety] dereferencing a null pointer");
+    static void        emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo);
+    static void        emitSafetyRightShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo);
+    static void        emitSafetyLeftShiftEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo);
+    static void        emitSafetyRightShiftEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo);
+    static void        emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits);
+    static void        emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void        emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void        emitSafetyRelativePointerS64(ByteCodeGenContext* context, uint32_t r0, int offsetSize);
+    static void        emitSafetyBoundCheckLowerEqU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void        emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeInfo* typeInfo, bool forAbs = false);
+    static void        emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void        emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfoArray);
+    static void        emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static void        emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode);
+    static void        emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, AstNode* exprNode);
+    static void        emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, AstArrayPointerSlicing* node);
 
     static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
