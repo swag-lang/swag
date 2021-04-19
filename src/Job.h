@@ -44,6 +44,7 @@ struct JobContext
         sourceFile         = nullptr;
         selectIfParameters = nullptr;
         result             = ContextResult::Done;
+        hasError           = false;
         expansionNode.clear();
     }
 
@@ -60,6 +61,7 @@ struct JobContext
     AstNode*    node               = nullptr;
     SourceFile* sourceFile         = nullptr;
     AstNode*    selectIfParameters = nullptr;
+    bool        hasError           = false;
 
     ContextResult result = ContextResult::Done;
 };

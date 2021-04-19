@@ -163,76 +163,76 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
 
             case ByteCodeOp::BinOpShiftLeftU8:
                 ip->op = ByteCodeOp::SetImmediate32;
-                ByteCodeRun::executeShiftLeft(context->semContext, &ip->b, ip->a, ip->b, 8, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeShiftLeft(context, &ip->b, ip->a, ip->b, 8, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftU16:
                 ip->op = ByteCodeOp::SetImmediate32;
-                ByteCodeRun::executeShiftLeft(context->semContext, &ip->b, ip->a, ip->b, 16, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeShiftLeft(context, &ip->b, ip->a, ip->b, 16, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftLeftU32:
                 ip->op = ByteCodeOp::SetImmediate32;
-                ByteCodeRun::executeShiftLeft(context->semContext, &ip->b, ip->a, ip->b, 32, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeShiftLeft(context, &ip->b, ip->a, ip->b, 32, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::BinOpShiftLeftU64:
                 ip->op = ByteCodeOp::SetImmediate64;
-                ByteCodeRun::executeShiftLeft(context->semContext, &ip->b, ip->a, ip->b, 64, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeShiftLeft(context, &ip->b, ip->a, ip->b, 64, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::BinOpShiftRightS8:
                 ip->op = ByteCodeOp::SetImmediate32;
-                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 8, true, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 8, true, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS16:
                 ip->op = ByteCodeOp::SetImmediate32;
-                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 16, true, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 16, true, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS32:
                 ip->op = ByteCodeOp::SetImmediate32;
-                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 32, true, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 32, true, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightS64:
                 ip->op = ByteCodeOp::SetImmediate64;
-                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 64, true, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 64, true, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
 
             case ByteCodeOp::BinOpShiftRightU8:
                 ip->op = ByteCodeOp::SetImmediate32;
-                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 8, false, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 8, false, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU16:
                 ip->op = ByteCodeOp::SetImmediate32;
-                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 16, false, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 16, false, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU32:
                 ip->op = ByteCodeOp::SetImmediate32;
-                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 32, false, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 32, false, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
             case ByteCodeOp::BinOpShiftRightU64:
                 ip->op = ByteCodeOp::SetImmediate64;
-                ByteCodeRun::executeShiftRight(context->semContext, &ip->b, ip->a, ip->b, 64, false, ip->flags & BCI_SHIFT_SMALL);
+                ByteCodeRun::executeShiftRight(context, &ip->b, ip->a, ip->b, 64, false, ip->flags & BCI_SHIFT_SMALL);
                 ip->a.u32 = ip->c.u32;
                 OK();
                 break;
@@ -487,9 +487,9 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicF32x2:
             {
                 Register result;
-                context->hasError = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip, result, ip->b, ip->c);
-                ip->b.u32         = result.u32;
-                ip->op            = ByteCodeOp::SetImmediate32;
+                ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c);
+                ip->b.u32 = result.u32;
+                ip->op    = ByteCodeOp::SetImmediate32;
                 OK();
                 break;
             }
@@ -499,9 +499,9 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicF64x2:
             {
                 Register result;
-                context->hasError = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip, result, ip->b, ip->c);
-                ip->b.u64         = result.u64;
-                ip->op            = ByteCodeOp::SetImmediate64;
+                ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c);
+                ip->b.u64 = result.u64;
+                ip->op    = ByteCodeOp::SetImmediate64;
                 OK();
                 break;
             }
@@ -852,9 +852,9 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicF32x1:
             {
                 Register result;
-                context->hasError = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip, result, ip->b, ip->c);
-                ip->b.u32         = result.u32;
-                ip->op            = ByteCodeOp::SetImmediate32;
+                ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c);
+                ip->b.u32 = result.u32;
+                ip->op    = ByteCodeOp::SetImmediate32;
                 OK();
                 break;
             }
@@ -863,9 +863,9 @@ void ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
             case ByteCodeOp::IntrinsicS64x1:
             {
                 Register result;
-                context->hasError = !ByteCodeRun::executeMathIntrinsic(context->semContext, ip, result, ip->b, ip->c);
-                ip->op            = ByteCodeOp::SetImmediate64;
-                ip->b.u64         = result.u64;
+                ByteCodeRun::executeMathIntrinsic(context, ip, result, ip->b, ip->c);
+                ip->op    = ByteCodeOp::SetImmediate64;
+                ip->b.u64 = result.u64;
                 OK();
                 break;
             }

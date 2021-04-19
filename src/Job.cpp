@@ -140,11 +140,16 @@ bool JobContext::report(const Diagnostic& diag, const Diagnostic* note, const Di
         notes.push_back(note);
     if (note1)
         notes.push_back(note1);
+    if (!sourceFile)
+        sourceFile = diag.sourceFile;
     return report(diag, notes);
 }
 
 void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic*>& notes)
 {
+    if (diag.errorLevel == DiagnosticLevel::Error)
+        hasError = true;
+
     if (expansionNode.size())
     {
         auto& exp = expansionNode[0];

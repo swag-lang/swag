@@ -1,6 +1,8 @@
 #pragma once
 #include "ByteCode.h"
 #include "ByteCodeOp.h"
+#include "Job.h"
+
 struct ByteCode;
 struct ByteCodeGenContext;
 struct ByteCodeInstruction;
@@ -29,7 +31,7 @@ struct ByteCodeOptTreeParseContext
     function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb;
 };
 
-struct ByteCodeOptContext
+struct ByteCodeOptContext : public JobContext
 {
     ByteCode*                          bc;
     VectorNative<ByteCodeInstruction*> jumps;
@@ -45,13 +47,12 @@ struct ByteCodeOptContext
     map<uint32_t, ByteCodeInstruction*>                 mapU32InstB;
     map<uint64_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
 
-    bool                allPassesHaveDoneSomething = false;
-    bool                passHasDoneSomething       = false;
-    bool                hasError                   = false;
-    ByteCodeGenContext* semContext                 = nullptr;
+    bool allPassesHaveDoneSomething = false;
+    bool passHasDoneSomething       = false;
 
     void reset()
     {
+        JobContext::reset();
         bc = nullptr;
         jumps.clear();
         nops.clear();
@@ -65,7 +66,5 @@ struct ByteCodeOptContext
         mapInstNode.clear();
         allPassesHaveDoneSomething = false;
         passHasDoneSomething       = false;
-        hasError                   = false;
-        semContext                 = nullptr;
     }
 };
