@@ -97,11 +97,11 @@ public struct Decoder
     progressive_flag:   bool
 
     in_buf:             [InBufSize + 128] u8
-    compSampH:        [MaxComponents] s32
-    compSampV:        [MaxComponents] s32
-    compQuant:         [MaxComponents] s32
-    compIdent:         [MaxComponents] s32
-    blockMaxZagSet:  [MaxBlocksPerRow] s32
+    compSampH:          [MaxComponents] s32
+    compSampV:          [MaxComponents] s32
+    compQuant:          [MaxComponents] s32
+    compIdent:          [MaxComponents] s32
+    blockMaxZagSet:     [MaxBlocksPerRow] s32
     block_seg:          [MaxBlocksPerRow] *s16
     comp_list:          [MaxCompsInScan] s32
     comp_dc_tab:        [MaxComponents] s32
@@ -177,7 +177,7 @@ enum Marker
     M_ERROR = 0x100
 }
 
-const extend_off: [16] s32 = @[
+const ExtendOff: [16] s32 = @[
     0,
     ((-1) << 1) + 1,
     ((-1) << 2) + 1,
@@ -196,13 +196,13 @@ const extend_off: [16] s32 = @[
     ((-1) << 15) + 1
 ]
 
-const extend_test: [16] s32 = @[
+const ExtendTest: [16] s32 = @[
     0, 0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020,
     0x0040, 0x0080, 0x0100, 0x0200, 0x0400, 0x0800,
     0x1000, 0x2000, 0x4000
 ]
 
-const zag: [64] u32 = @[
+const Zag: [64] u32 = @[
     0, 1, 8, 16, 9, 2, 3, 10, 17, 24, 32, 25, 18, 11, 4, 5,
     12, 19, 26, 33, 40, 48, 41, 34, 27, 20, 13, 6, 7, 14, 21,
     28, 35, 42, 49, 56, 57, 50, 43, 36, 29, 22, 15, 23, 30, 37,
@@ -211,16 +211,12 @@ const zag: [64] u32 = @[
 ]
 
 #[inline, safety("of", false)]
-func jpeg_descale(x: s32, n: u32) => (x + (1's32 << (n - 1))) >> n
-
-#[inline, safety("of", false)]
-func jpeg_rol(i, j: u32)->u32 => cast(u32) ((i << j) | (i >> (32 - j)))
-
-#[inline, safety("of", false)]
-func jpeg_clamp(i: u32) => cast(u8) ((i &0xFFFFFF00) ? (((~i) >> 31) & 0xFF) : i)
-
-#[inline, safety("of", false)]
-func jpeg_clampd(i: s32)->s32 => (i &0xFF00) ? (((~i) >> 15) & 0xFF) : i
+{
+    func jpeg_descale(x: s32, n: u32) => (x + (1's32 << (n - 1))) >> n
+    func jpeg_rol(i, j: u32)->u32 => cast(u32) ((i << j) | (i >> (32 - j)))
+    func jpeg_clamp(i: u32) => cast(u8) ((i &0xFFFFFF00) ? (((~i) >> 31) & 0xFF) : i)
+    func jpeg_clampd(i: s32)->s32 => (i &0xFF00) ? (((~i) >> 15) & 0xFF) : i
+}
 
 impl Decoder
 {
@@ -324,15 +320,15 @@ impl Decoder
                 i := 63
                 while i > 0
                 {
-                    if p[zag[i]]
+                    if p[Zag[i]]
                         break
                     i -= 1
                 }
 
                 while i >= 0
                 {
-                    if p[zag[i]]
-                        p[zag[i]] *= q[i]
+                    if p[Zag[i]]
+                        p[Zag[i]] *= q[i]
                     i -= 1
                 }
 
@@ -443,7 +439,7 @@ impl Decoder
                 if s != 0
                 {
                     r := cast(s32) get_bits_2(s)
-                    s = r < extend_test[s] ? r + extend_off[s] : r
+                    s = r < ExtendTest[s] ? r + ExtendOff[s] : r
                 }
 
                 s += bitcast(s32) last_dc_val[component_id]
@@ -471,7 +467,7 @@ impl Decoder
                                 kt := k
                                 while n
                                 {
-                                    p[zag[kt]] = 0;
+                                    p[Zag[kt]] = 0;
                                     n -= 1
                                     kt += 1
                                 }
@@ -484,8 +480,8 @@ impl Decoder
                         if s > 15
                             throw "decode error"
 
-                        s = (r < extend_test[s] ? r + extend_off[s] : r)
-                        p[zag[k]] = cast(s16)(s * q[k])
+                        s = (r < ExtendTest[s] ? r + ExtendOff[s] : r)
+                        p[Zag[k]] = cast(s16)(s * q[k])
                     }
                     else
                     {
@@ -500,7 +496,7 @@ impl Decoder
                                 kt := k
                                 while n
                                 {
-                                    p[zag[kt]] = 0;
+                                    p[Zag[kt]] = 0;
                                     n -= 1
                                     kt += 1
                                 }
@@ -522,7 +518,7 @@ impl Decoder
                     kt := k
                     while kt < prev_num_set
                     {
-                        p[zag[kt]] = 0
+                        p[Zag[kt]] = 0
                         kt += 1
                     }
                 }
@@ -1332,7 +1328,7 @@ impl Decoder
         if s != 0
         {
             r := get_bits_2(s)
-            s = cast(s32) (r < extend_test[s] ? r + extend_off[s] : r)
+            s = cast(s32) (r < ExtendTest[s] ? r + ExtendOff[s] : r)
         }
 
         s += cast(s32) last_dc_val[_component_id]
@@ -1374,8 +1370,8 @@ impl Decoder
                 r = cast(s32) get_bits_2(s)
                 if s > 15 throw "decode error"
 
-                s = (r < extend_test[s] ? r + extend_off[s] : r)
-                p[zag[k]] = cast(s16) (s << cast(u32) successive_low)
+                s = (r < ExtendTest[s] ? r + ExtendOff[s] : r)
+                p[Zag[k]] = cast(s16) (s << cast(u32) successive_low)
             }
             else
             {
@@ -1435,7 +1431,7 @@ impl Decoder
 
                 while true
                 {
-                    this_coef := p + zag[k]
+                    this_coef := p + Zag[k]
                     if :this_coef != 0
                     {
                         if get_bits_2(1)
@@ -1463,7 +1459,7 @@ impl Decoder
 
                 if s && (k < 64)
                 {
-                    p[zag[k]] = cast(s16) s
+                    p[Zag[k]] = cast(s16) s
                 }
 
                 k += 1
@@ -1475,7 +1471,7 @@ impl Decoder
             if spectral_end >= 64 throw "decode error"
             while k <= spectral_end
             {
-                this_coef := p + zag[k]
+                this_coef := p + Zag[k]
                 if :this_coef != 0
                 {
                     if get_bits_2(1)
