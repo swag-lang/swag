@@ -117,7 +117,7 @@ public struct Decoder
     lastDcVal:          [MaxComponents] u32
     dcCoeffs:          [MaxComponents] CoeffBuf
     acCoeffs:          [MaxComponents] CoeffBuf
-    temp_block:         [64] s16
+    tempBlock:         [64] s16
 
     crr:                [256] s32
     cbb:                [256] s32
@@ -531,46 +531,46 @@ impl Decoder
         }
     }
 
-    func idct(using self, _data: *s16, buf: *u8)
+    func idct(using self, data: *s16, buf: *u8)
     {
-        _pdst_ptr := buf
-        dataptr := _data;
+        pdstPtr := buf
+        dataPtr := data
         for rowctr := 8 - 1; rowctr >= 0; rowctr -= 1
         {
-            if (dataptr[1] | dataptr[2] | dataptr[3] | dataptr[4] | dataptr[5] | dataptr[6] | dataptr[7]) == 0
+            if (dataPtr[1] | dataPtr[2] | dataPtr[3] | dataPtr[4] | dataPtr[5] | dataPtr[6] | dataPtr[7]) == 0
             {
-                dcval := cast(s16) (dataptr[0] << Pass1Bits)
-                dataptr[0] = dcval
-                dataptr[1] = dcval
-                dataptr[2] = dcval
-                dataptr[3] = dcval
-                dataptr[4] = dcval
-                dataptr[5] = dcval
-                dataptr[6] = dcval
-                dataptr[7] = dcval
-                dataptr += 8
+                dcval := cast(s16) (dataPtr[0] << Pass1Bits)
+                dataPtr[0] = dcval
+                dataPtr[1] = dcval
+                dataPtr[2] = dcval
+                dataPtr[3] = dcval
+                dataPtr[4] = dcval
+                dataPtr[5] = dcval
+                dataPtr[6] = dcval
+                dataPtr[7] = dcval
+                dataPtr += 8
                 continue;
             }
 
-            z2 := cast(s32) dataptr[2]
-            z3 := cast(s32) dataptr[6]
+            z2 := cast(s32) dataPtr[2]
+            z3 := cast(s32) dataPtr[6]
 
             z1   := (z2 + z3) * Fix_0_541196100
             tmp2 := z1 + (z3 * -Fix_1_847759065)
             tmp3 := z1 + (z2 * Fix_0_765366865)
 
-            tmp0 := (cast(s32) dataptr[0] + cast(s32) dataptr[4]) << ConstBits
-            tmp1 := (cast(s32) dataptr[0] - cast(s32) dataptr[4]) << ConstBits
+            tmp0 := (cast(s32) dataPtr[0] + cast(s32) dataPtr[4]) << ConstBits
+            tmp1 := (cast(s32) dataPtr[0] - cast(s32) dataPtr[4]) << ConstBits
 
             tmp10 := tmp0 + tmp3
             tmp13 := tmp0 - tmp3
             tmp11 := tmp1 + tmp2
             tmp12 := tmp1 - tmp2
 
-            tmp0 = cast(s32) dataptr[7]
-            tmp1 = cast(s32) dataptr[5]
-            tmp2 = cast(s32) dataptr[3]
-            tmp3 = cast(s32) dataptr[1]
+            tmp0 = cast(s32) dataPtr[7]
+            tmp1 = cast(s32) dataPtr[5]
+            tmp2 = cast(s32) dataPtr[3]
+            tmp3 = cast(s32) dataPtr[1]
 
             z1 = tmp0 + tmp3
             z2 = tmp1 + tmp2
@@ -595,60 +595,60 @@ impl Decoder
             tmp2 += z2 + z3
             tmp3 += z1 + z4
 
-            dataptr[0] = cast(s16) descale(tmp10 + tmp3, ConstBits - Pass1Bits)
-            dataptr[7] = cast(s16) descale(tmp10 - tmp3, ConstBits - Pass1Bits)
-            dataptr[1] = cast(s16) descale(tmp11 + tmp2, ConstBits - Pass1Bits)
-            dataptr[6] = cast(s16) descale(tmp11 - tmp2, ConstBits - Pass1Bits)
-            dataptr[2] = cast(s16) descale(tmp12 + tmp1, ConstBits - Pass1Bits)
-            dataptr[5] = cast(s16) descale(tmp12 - tmp1, ConstBits - Pass1Bits)
-            dataptr[3] = cast(s16) descale(tmp13 + tmp0, ConstBits - Pass1Bits)
-            dataptr[4] = cast(s16) descale(tmp13 - tmp0, ConstBits - Pass1Bits)
+            dataPtr[0] = cast(s16) descale(tmp10 + tmp3, ConstBits - Pass1Bits)
+            dataPtr[7] = cast(s16) descale(tmp10 - tmp3, ConstBits - Pass1Bits)
+            dataPtr[1] = cast(s16) descale(tmp11 + tmp2, ConstBits - Pass1Bits)
+            dataPtr[6] = cast(s16) descale(tmp11 - tmp2, ConstBits - Pass1Bits)
+            dataPtr[2] = cast(s16) descale(tmp12 + tmp1, ConstBits - Pass1Bits)
+            dataPtr[5] = cast(s16) descale(tmp12 - tmp1, ConstBits - Pass1Bits)
+            dataPtr[3] = cast(s16) descale(tmp13 + tmp0, ConstBits - Pass1Bits)
+            dataPtr[4] = cast(s16) descale(tmp13 - tmp0, ConstBits - Pass1Bits)
 
-            dataptr += 8
+            dataPtr += 8
         }
 
-        dataptr = _data
+        dataPtr = data
         for rowctr := 8 - 1; rowctr >= 0; rowctr -= 1
         {
-            if (dataptr[8 * 1] | dataptr[8 * 2] | dataptr[8 * 3] | dataptr[8 * 4] | dataptr[8 * 5] | dataptr[8 * 6] | dataptr[8 * 7]) == 0
+            if (dataPtr[8 * 1] | dataPtr[8 * 2] | dataPtr[8 * 3] | dataPtr[8 * 4] | dataPtr[8 * 5] | dataPtr[8 * 6] | dataPtr[8 * 7]) == 0
             {
-                dcval := cast(s16) descale(cast(s32) dataptr[0], Pass1Bits + 3)
+                dcval := cast(s16) descale(cast(s32) dataPtr[0], Pass1Bits + 3)
                 dcval +=,safe 128
                 dcval = math.clamp(dcval, 0's16, 255's16)
 
-                _pdst_ptr[8 * 0] = cast(u8) dcval
-                _pdst_ptr[8 * 1] = cast(u8) dcval
-                _pdst_ptr[8 * 2] = cast(u8) dcval
-                _pdst_ptr[8 * 3] = cast(u8) dcval
-                _pdst_ptr[8 * 4] = cast(u8) dcval
-                _pdst_ptr[8 * 5] = cast(u8) dcval
-                _pdst_ptr[8 * 6] = cast(u8) dcval
-                _pdst_ptr[8 * 7] = cast(u8) dcval
+                pdstPtr[8 * 0] = cast(u8) dcval
+                pdstPtr[8 * 1] = cast(u8) dcval
+                pdstPtr[8 * 2] = cast(u8) dcval
+                pdstPtr[8 * 3] = cast(u8) dcval
+                pdstPtr[8 * 4] = cast(u8) dcval
+                pdstPtr[8 * 5] = cast(u8) dcval
+                pdstPtr[8 * 6] = cast(u8) dcval
+                pdstPtr[8 * 7] = cast(u8) dcval
 
-                dataptr += 1
-                _pdst_ptr += 1
+                dataPtr += 1
+                pdstPtr += 1
                 continue
             }
 
-            z2 := cast(s32) dataptr[8 * 2]
-            z3 := cast(s32) dataptr[8 * 6]
+            z2 := cast(s32) dataPtr[8 * 2]
+            z3 := cast(s32) dataPtr[8 * 6]
 
             z1   := (z2 + z3) * Fix_0_541196100
             tmp2 := z1 + (z3 * -Fix_1_847759065)
             tmp3 := z1 + (z2 * Fix_0_765366865)
 
-            tmp0 := (cast(s32) dataptr[8 * 0] + cast(s32) dataptr[8 * 4]) << ConstBits
-            tmp1 := (cast(s32) dataptr[8 * 0] - cast(s32) dataptr[8 * 4]) << ConstBits
+            tmp0 := (cast(s32) dataPtr[8 * 0] + cast(s32) dataPtr[8 * 4]) << ConstBits
+            tmp1 := (cast(s32) dataPtr[8 * 0] - cast(s32) dataPtr[8 * 4]) << ConstBits
 
             tmp10 := tmp0 + tmp3
             tmp13 := tmp0 - tmp3
             tmp11 := tmp1 + tmp2
             tmp12 := tmp1 - tmp2
 
-            tmp0 = cast(s32) dataptr[8 * 7]
-            tmp1 = cast(s32) dataptr[8 * 5]
-            tmp2 = cast(s32) dataptr[8 * 3]
-            tmp3 = cast(s32) dataptr[8 * 1]
+            tmp0 = cast(s32) dataPtr[8 * 7]
+            tmp1 = cast(s32) dataPtr[8 * 5]
+            tmp2 = cast(s32) dataPtr[8 * 3]
+            tmp3 = cast(s32) dataPtr[8 * 1]
 
             z1 = tmp0 + tmp3
             z2 = tmp1 + tmp2
@@ -675,52 +675,52 @@ impl Decoder
 
             i := cast(s16) descale(tmp10 + tmp3, ConstBits + Pass1Bits + 3) + 128
             i = clampd(i)
-            _pdst_ptr[8 * 0] = cast(u8) i
+            pdstPtr[8 * 0] = cast(u8) i
 
             i = cast(s16) descale(tmp10 - tmp3, ConstBits + Pass1Bits + 3) + 128
             i = clampd(i)
-            _pdst_ptr[8 * 7] = cast(u8) i
+            pdstPtr[8 * 7] = cast(u8) i
 
             i = cast(s16) descale(tmp11 + tmp2, ConstBits + Pass1Bits + 3) + 128
             i = clampd(i)
-            _pdst_ptr[8 * 1] = cast(u8) i
+            pdstPtr[8 * 1] = cast(u8) i
 
             i = cast(s16) descale(tmp11 - tmp2, ConstBits + Pass1Bits + 3) + 128
             i = clampd(i)
-            _pdst_ptr[8 * 6] = cast(u8) i
+            pdstPtr[8 * 6] = cast(u8) i
 
             i = cast(s16) descale(tmp12 + tmp1, ConstBits + Pass1Bits + 3) + 128
             i = clampd(i)
-            _pdst_ptr[8 * 2] = cast(u8) i
+            pdstPtr[8 * 2] = cast(u8) i
 
             i = cast(s16) descale(tmp12 - tmp1, ConstBits + Pass1Bits + 3) + 128
             i = clampd(i)
-            _pdst_ptr[8 * 5] = cast(u8) i
+            pdstPtr[8 * 5] = cast(u8) i
 
             i = cast(s16) descale(tmp13 + tmp0, ConstBits + Pass1Bits + 3) + 128
             i = clampd(i)
-            _pdst_ptr[8 * 3] = cast(u8) i
+            pdstPtr[8 * 3] = cast(u8) i
 
             i = cast(s16) descale(tmp13 - tmp0, ConstBits + Pass1Bits + 3) + 128
             i = clampd(i)
-            _pdst_ptr[8 * 4] = cast(u8) i
+            pdstPtr[8 * 4] = cast(u8) i
 
-            dataptr += 1
-            _pdst_ptr += 1
+            dataPtr += 1
+            pdstPtr += 1
         }
     }
 
-    func transform_row(using self)
+    func transformRow(using self)
     {
-        psrc_ptr := blockSeg[0]
-        pdst_ptr := pSampleBuf
+        psrcPtr := blockSeg[0]
+        pdstPtr := pSampleBuf
 
         for i := maxBlocksPerRow; i > 0; i -= 1
         {
-            memory.copy(temp_block, psrc_ptr, 64'uint * @sizeof(s16))
-            idct(temp_block, pdst_ptr)
-            psrc_ptr += 64
-            pdst_ptr += 64
+            memory.copy(tempBlock, psrcPtr, 64'uint * @sizeof(s16))
+            idct(tempBlock, pdstPtr)
+            psrcPtr += 64
+            pdstPtr += 64
         }
     }
 
@@ -750,7 +750,7 @@ impl Decoder
                 try decodeNextRow()
             if totalLinesLeft <= maxMcuSizeY
                 try findEoi()
-            transform_row()
+            transformRow()
             mcuLinesLeft = maxMcuSizeY
         }
 
