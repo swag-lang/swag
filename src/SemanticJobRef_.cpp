@@ -89,8 +89,8 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     auto     typeVar  = TypeManager::concreteReferenceType(node->array->typeInfo);
     uint64_t maxBound = 0;
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->lowerBound, CASTFLAG_COERCE_FULL));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->upperBound, CASTFLAG_COERCE_FULL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->lowerBound, CASTFLAG_TRY_COERCE));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->upperBound, CASTFLAG_TRY_COERCE));
 
     // Slicing of an array
     if (typeVar->kind == TypeInfoKind::Array)
@@ -268,7 +268,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->pointedType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, "cannot dereference a 'void' pointer"}));
         arrayNode->typeInfo = typePtr->pointedType;
@@ -280,7 +280,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     case TypeInfoKind::Native:
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         if (arrayType->nativeType == NativeTypeKind::String)
         {
             arrayNode->typeInfo    = g_TypeMgr.typeInfoU8;
@@ -296,7 +296,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     case TypeInfoKind::Array:
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = ByteCodeGenJob::emitArrayRef;
@@ -306,7 +306,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     case TypeInfoKind::Slice:
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr           = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = ByteCodeGenJob::emitSliceRef;
@@ -314,7 +314,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     }
 
     case TypeInfoKind::Struct:
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         if (arrayType->flags & TYPEINFO_STRUCT_IS_TUPLE)
             return context->report({arrayNode->array, "cannot dereference a tuple type"});
 
@@ -374,7 +374,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     // Can we dereference the string at compile time ?
     if (arrayType->isNative(NativeTypeKind::String))
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         if (arrayNode->access->flags & AST_VALUE_COMPUTED)
         {
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
@@ -395,7 +395,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->pointedType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, "cannot dereference a 'void' pointer"}));
         arrayNode->typeInfo = typePtr->pointedType;
@@ -405,7 +405,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     case TypeInfoKind::Array:
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr        = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
@@ -450,7 +450,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     case TypeInfoKind::Slice:
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr        = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
@@ -473,13 +473,13 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     }
 
     case TypeInfoKind::Variadic:
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         arrayNode->typeInfo = g_TypeMgr.typeInfoAny;
         break;
 
     case TypeInfoKind::TypedVariadic:
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typeVariadic   = CastTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
         arrayNode->typeInfo = typeVariadic->rawType;
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
@@ -488,7 +488,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     case TypeInfoKind::Struct:
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_COERCE_FULL | CASTFLAG_INDEX));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
 
         // Only the top level ArrayPointerIndex node will deal with the call
         if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)
@@ -551,7 +551,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
         SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'@init' count parameter should be an integer, but is '%s'", countTypeInfo->getDisplayName().c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_COERCE_FULL));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_TRY_COERCE));
     }
 
     if (node->parameters)
@@ -635,7 +635,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
         SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'%s' count parameter should be an integer, but is '%s'", node->token.text.c_str(), countTypeInfo->getDisplayName().c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_COERCE_FULL));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_TRY_COERCE));
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitDropCopyMove;
@@ -658,7 +658,7 @@ bool SemanticJob::resolveReloc(SemanticContext* context)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
         SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format("'%s' count parameter should be an integer, but is '%s'", node->token.text.c_str(), countTypeInfo->getDisplayName().c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_COERCE_FULL));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_TRY_COERCE));
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitReloc;

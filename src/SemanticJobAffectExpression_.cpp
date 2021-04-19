@@ -233,7 +233,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, CASTFLAG_AUTO_BOOL | CASTFLAG_COERCE_SAMESIGN));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE));
         break;
 
     case TokenId::SymLowerLowerEqual:
@@ -250,7 +250,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, left, right, CASTFLAG_COERCE_SAMESIGN));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, left, right, CASTFLAG_TRY_COERCE));
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String ||
@@ -297,7 +297,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_COERCE_SAMESIGN));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
         if (leftTypeInfo->nativeType == NativeTypeKind::String ||
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
             leftTypeInfo->nativeType == NativeTypeKind::F64)
@@ -326,13 +326,13 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, "pointer arithmetic not allowed on 'typeinfo'"}));
             rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
             SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format("pointer arithmetic not allowed with operand type '%s'", rightTypeInfo->getDisplayName().c_str())}));
-            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_COERCE_SAMESIGN));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
             SWAG_CHECK(checkRelativePointerOverflow(context, leftTypeInfo, right));
             break;
         }
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_COERCE_SAMESIGN));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String)
         {
@@ -353,7 +353,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_COERCE_SAMESIGN));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String)
         {
@@ -376,7 +376,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
 
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_COERCE_FULL));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_TRY_COERCE));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::String)
         {

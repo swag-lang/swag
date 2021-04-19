@@ -349,7 +349,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     // a opEquals function
     if (leftTypeInfo->kind != TypeInfoKind::Struct && rightTypeInfo->kind != TypeInfoKind::Struct)
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UNCONST | CASTFLAG_COMPARE | CASTFLAG_COERCE_FULL));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UNCONST | CASTFLAG_COMPARE | CASTFLAG_TRY_COERCE));
     }
 
     // Struct is on the right, so we need to inverse the test

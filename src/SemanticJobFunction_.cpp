@@ -940,7 +940,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
                 return true;
         }
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_COERCE_SAMESIGN));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE));
     }
 
     if (child->kind == AstNodeKind::ExpressionList)

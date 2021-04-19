@@ -677,11 +677,11 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     if (context.result != MatchResult::Ok)
         return;
 
-    matchParameters(context, fields, CASTFLAG_COERCE_FULL);
+    matchParameters(context, fields, CASTFLAG_TRY_COERCE);
     if (context.result != MatchResult::Ok)
         return;
 
-    matchNamedParameters(context, fields, CASTFLAG_COERCE_FULL);
+    matchNamedParameters(context, fields, CASTFLAG_TRY_COERCE);
     if (context.result != MatchResult::Ok)
         return;
 

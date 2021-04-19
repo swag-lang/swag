@@ -253,7 +253,7 @@ impl Decoder
         if compsInFrame == 1
         {
             pdest := buf
-            pdest += cast(uint) ((imageSizeY - 1) * imageSizeX * 3)
+            pdest += (imageSizeY - 1) * imageSizeX * 3
             while true
             {
                 if try decode(&scanLineOfs, &scanLineLen)
@@ -270,7 +270,7 @@ impl Decoder
                     psrc += 1
                 }
 
-                pdest -= cast(uint) (imageSizeX * 3)
+                pdest -= imageSizeX * 3
             }
         }
 
@@ -278,13 +278,13 @@ impl Decoder
         else
         {
             pdest := buf
-            pdest += cast(uint) ((imageSizeY - 1) * imageSizeX * 3)
+            pdest += (imageSizeY - 1) * imageSizeX * 3
             while true
             {
                 if try decode(&scanLineOfs, &scanLineLen)
                     break
                 memory.copy(pdest, scanLineOfs, cast(uint) imageSizeX * 3)
-                pdest -= cast(uint) (imageSizeX * 3)
+                pdest -= imageSizeX * 3
             }
         }
     }
@@ -481,7 +481,7 @@ impl Decoder
                             throw "decode error"
 
                         s = (r < ExtendTest[s] ? r + ExtendOff[s] : r)
-                        p[Zag[k]] = cast(s16)(s * q[k])
+                        p[Zag[k]] = cast(s16) (s * q[k])
                     }
                     else
                     {
@@ -787,7 +787,7 @@ impl Decoder
             :scanLineOfs = scanLine0.buffer
         }
 
-        :scanLineLen = cast(u32) realDestBytesPerScanLine
+        :scanLineLen = realDestBytesPerScanLine
         mcuLinesLeft -= 1
         totalLinesLeft -= 1
 

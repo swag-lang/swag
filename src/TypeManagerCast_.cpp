@@ -1754,22 +1754,16 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
 bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     // Automatic conversions if coerce mode is on (for expressions)
-    if (castFlags & (CASTFLAG_COERCE_SAMESIGN | CASTFLAG_COERCE_FULL))
+    if (castFlags & CASTFLAG_TRY_COERCE)
     {
         if (toType->sizeOf >= fromType->sizeOf)
         {
-            auto leftIsInt       = toType->isNativeIntegerOrChar();
-            auto rightIsInt      = fromType->isNativeIntegerOrChar();
-            auto leftIsFloat     = toType->isNativeFloat();
-            auto rightIsFloat    = fromType->isNativeFloat();
-            auto leftIsUnsigned  = toType->isNativeUnsignedOrChar();
-            auto rightIsUnsigned = fromType->isNativeUnsignedOrChar();
-
+            auto leftIsInt    = toType->isNativeIntegerOrChar();
+            auto rightIsInt   = fromType->isNativeIntegerOrChar();
+            auto leftIsFloat  = toType->isNativeFloat();
+            auto rightIsFloat = fromType->isNativeFloat();
             if ((leftIsInt && rightIsInt) || (leftIsFloat && rightIsFloat))
-            {
-                if ((castFlags & CASTFLAG_COERCE_FULL) || (leftIsUnsigned == rightIsUnsigned))
-                    castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
-            }
+                castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
         }
     }
 
@@ -1882,7 +1876,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 auto oldType = childJ->typeInfo;
                 if (toTypeStruct->fields[j]->typeInfo->isRelative() || childJ->typeInfo->isRelative())
                     return context->report({child, format("relative types are not supported in expression lists")});
-                SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeStruct->fields[j]->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_COERCE_SAMESIGN));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeStruct->fields[j]->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
                 if (childJ->typeInfo != oldType)
                     hasChanged = true;
 
@@ -1922,7 +1916,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
         if (convertTo->isRelative() || fromTypeList->subTypes[i]->typeInfo->isRelative())
             return context->report({child, format("relative types are not supported in expression lists")});
-        SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_COERCE_SAMESIGN));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
         if (child)
         {
             newSizeof += child->typeInfo->sizeOf;
@@ -2639,11 +2633,11 @@ bool TypeManager::promoteOne(SemanticContext* context, AstNode* right)
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::S16:
-        SWAG_CHECK(makeCompatibles(context, g_TypeMgr.typeInfoS32, nullptr, right, CASTFLAG_COERCE_SAMESIGN));
+        SWAG_CHECK(makeCompatibles(context, g_TypeMgr.typeInfoS32, nullptr, right, CASTFLAG_TRY_COERCE));
         break;
     case NativeTypeKind::U8:
     case NativeTypeKind::U16:
-        SWAG_CHECK(makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right, CASTFLAG_COERCE_SAMESIGN));
+        SWAG_CHECK(makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
         break;
     }
 

@@ -434,7 +434,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, expression->typeInfo, nullptr, expression, CASTFLAG_COERCE_FULL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, expression->typeInfo, nullptr, expression, CASTFLAG_TRY_COERCE));
     node->typeInfo = expression->typeInfo;
 
     // Do not evaluate loop if it's constant and 0

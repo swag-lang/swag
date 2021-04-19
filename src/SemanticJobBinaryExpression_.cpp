@@ -29,12 +29,12 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         node->typeInfo = leftTypeInfo;
         SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, "pointer arithmetic not allowed on 'typeinfo'"}));
         SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format("pointer arithmetic not allowed with operand type '%s'", rightTypeInfo->getDisplayName().c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_COERCE_FULL));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
         return true;
     }
 
     SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, format("operator '+' not allowed with operand type '%s'", rightTypeInfo->getDisplayName().c_str())}));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_FULL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
@@ -144,12 +144,12 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         // Pointer arithmetic
         SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, "pointer arithmetic not allowed on 'typeinfo'"}));
         SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format("pointer arithmetic not allowed with operand type '%s'", rightTypeInfo->getDisplayName().c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_COERCE_FULL));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
         return true;
     }
 
     SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, format("operator '-' not allowed with operand type '%s'", rightTypeInfo->getDisplayName().c_str())}));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_FULL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
@@ -238,7 +238,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     }
 
     SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_FULL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     node->typeInfo = TypeManager::concreteType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
@@ -337,7 +337,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     }
 
     SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     node->typeInfo = TypeManager::concreteType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
@@ -419,7 +419,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
     }
 
     SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_FULL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     node->typeInfo = TypeManager::concreteType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
@@ -872,7 +872,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         if (leftTypeInfo->kind != TypeInfoKind::Struct)
         {
             SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
-            SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COERCE_SAMESIGN));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
             node->typeInfo = left->typeInfo;
         }
 
@@ -1181,7 +1181,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
 
     SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right, CASTFLAG_COERCE_SAMESIGN));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
 
     node->typeInfo = left->typeInfo;
 

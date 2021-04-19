@@ -59,7 +59,7 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
         return context->report({first, format("'%s' cannot have 'null' as first parameter", name)});
 
     // Slice count
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, second->typeInfo, nullptr, second, CASTFLAG_COERCE_FULL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, second->typeInfo, nullptr, second, CASTFLAG_TRY_COERCE));
 
     // Create slice type
     auto ptrSlice         = allocType<TypeInfoSlice>();
@@ -314,7 +314,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
             }
         }
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, typeInfo, nullptr, node, CASTFLAG_COERCE_FULL));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, typeInfo, nullptr, node, CASTFLAG_TRY_COERCE));
     }
 
     return true;
