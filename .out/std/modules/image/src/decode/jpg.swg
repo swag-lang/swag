@@ -60,77 +60,76 @@ public struct Decoder
     imageSizeY:         s32
     streamLen:          s32
     streamSeek:         s32
-    bitBuf:            u32
-    bitsLeft:          s32
+    bitBuf:             u32
+    bitsLeft:           s32
     inBufLeft:          s32
-    temFlag:           s32
+    temFlag:            s32
     eofReached:         s32
     totalBytesRead:     s32
-    compsInFrame:     s32
-    restartInterval:   s32
-    scanType:          s32
-    maxBlocksPerMcu: s32
-    maxMcuSizeX:     s32
-    maxMcuSizeY:     s32
-    blocksPerMcu:     s32
-    maxMcusPerRow:   s32
-    maxMcusPerCol:   s32
-    maxBlocksPerRow: s32
-    totalLinesLeft:   s32
-    mcuLinesLeft:     s32
-    spectralStart:     s32
-    spectralEnd:       s32
-    successiveLow:     s32
-    successiveHigh:    s32
-    mcusPerRow:       s32
-    mcusPerCol:       s32
-    eobRun:            s32
-    restartsLeft:      s32
-    nextRestartNum:   s32
-    compsInScan:      s32
+    compsInFrame:       s32
+    restartInterval:    s32
+    scanType:           s32
+    maxBlocksPerMcu:    s32
+    maxMcuSizeX:        s32
+    maxMcuSizeY:        s32
+    blocksPerMcu:       s32
+    maxMcusPerRow:      s32
+    maxMcusPerCol:      s32
+    maxBlocksPerRow:    s32
+    totalLinesLeft:     s32
+    mcuLinesLeft:       s32
+    spectralStart:      s32
+    spectralEnd:        s32
+    successiveLow:      s32
+    successiveHigh:     s32
+    mcusPerRow:         s32
+    mcusPerCol:         s32
+    eobRun:             s32
+    restartsLeft:       s32
+    nextRestartNum:     s32
+    compsInScan:        s32
 
-    destBytesPerPixel:           s32
-    realDestBytesPerScanLine:  s32
-    destBytesPerScanLine:       s32
+    destBytesPerPixel:        s32
+    realDestBytesPerScanLine: s32
+    destBytesPerScanLine:     s32
 
-    acceptMetaDatas:        bool
-    progressiveFlag:   bool
+    acceptMetaDatas: bool
+    progressiveFlag: bool
 
-    in_buf:             [InBufSize + 128] u8
-    compSampH:          [MaxComponents] s32
-    compSampV:          [MaxComponents] s32
-    compQuant:          [MaxComponents] s32
-    compIdent:          [MaxComponents] s32
-    blockMaxZagSet:     [MaxBlocksPerRow] s32
-    blockSeg:          [MaxBlocksPerRow] *s16
-    compList:          [MaxCompsInScan] s32
-    compDcTab:          [MaxComponents] s32
-    compAcTab:          [MaxComponents] s32
-    compBlocksH:      [MaxComponents] s32
-    compBlocksV:      [MaxComponents] s32
-    mcuOrg:            [MaxBocksPerMcu] s32
-    h:                  [MaxHuffTables] HuffTables
-    dcHuffSeg:          [MaxBocksPerMcu] *HuffTables
-    acHuffSeg:          [MaxBocksPerMcu] *HuffTables
-    block_y_mcu:        [MaxComponents] s32
-    component:          [MaxBocksPerMcu] *u32
-    lastDcVal:          [MaxComponents] u32
-    dcCoeffs:          [MaxComponents] CoeffBuf
-    acCoeffs:          [MaxComponents] CoeffBuf
-    tempBlock:         [64] s16
+    inBuf:          [InBufSize + 128] u8
+    compSampH:      [MaxComponents] s32
+    compSampV:      [MaxComponents] s32
+    compQuant:      [MaxComponents] s32
+    compIdent:      [MaxComponents] s32
+    blockMaxZagSet: [MaxBlocksPerRow] s32
+    blockSeg:       [MaxBlocksPerRow] *s16
+    compList:       [MaxCompsInScan] s32
+    compDcTab:      [MaxComponents] s32
+    compAcTab:      [MaxComponents] s32
+    compBlocksH:    [MaxComponents] s32
+    compBlocksV:    [MaxComponents] s32
+    mcuOrg:         [MaxBocksPerMcu] s32
+    h:              [MaxHuffTables] HuffTables
+    dcHuffSeg:      [MaxBocksPerMcu] *HuffTables
+    acHuffSeg:      [MaxBocksPerMcu] *HuffTables
+    blockMcuY:      [MaxComponents] s32
+    component:      [MaxBocksPerMcu] *u32
+    lastDcVal:      [MaxComponents] u32
+    dcCoeffs:       [MaxComponents] CoeffBuf
+    acCoeffs:       [MaxComponents] CoeffBuf
+    tempBlock:      [64] s16
+    crr:            [256] s32
+    cbb:            [256] s32
+    crg:            [256] s32
+    cbg:            [256] s32
 
-    crr:                [256] s32
-    cbb:                [256] s32
-    crg:                [256] s32
-    cbg:                [256] s32
-
-    huffNum:           [MaxHuffTables] Array'u8
-    huffVal:           [MaxHuffTables] Array'u8
-    quant:              [MaxQuantTables] Array's16
-    scanLine0:        Array'u8
-    scanLine1:        Array'u8
-    quantBuf:              Array'u8
-    sampleBuf:         Array'u8
+    huffNum:        [MaxHuffTables] Array'u8
+    huffVal:        [MaxHuffTables] Array'u8
+    quant:          [MaxQuantTables] Array's16
+    scanLine0:      Array'u8
+    scanLine1:      Array'u8
+    quantBuf:       Array'u8
+    sampleBuf:      Array'u8
 }
 
 enum Marker
@@ -226,7 +225,7 @@ impl Decoder
         stream = @dataof(buffer)
         streamLen = cast(s32) @countof(buffer)
 
-        inBufOfs = in_buf
+        inBufOfs = inBuf
         prepareInBuffer()
         bitsLeft = 16
         discard getBits1(16)
@@ -290,29 +289,30 @@ impl Decoder
         }
     }
 
-    func coeffBufGetp(_cb: CoeffBuf, _block_x, _block_y: s32)->*s16
+    func coeffBufGetp(cb: CoeffBuf, blkX, blkY: s32)->*s16
     {
-        debug.assert(_block_x < _cb.blockNumX)
-        debug.assert(_block_y < _cb.blockNumY)
-        return cast(*s16) (_cb.pdata.buffer + _block_x * _cb.blockSize + _block_y * (_cb.blockSize * _cb.blockNumX))
+        debug.assert(blkX < cb.blockNumX)
+        debug.assert(blkY < cb.blockNumY)
+        return cast(*s16) (cb.pdata.buffer + blkX * cb.blockSize + blkY * (cb.blockSize * cb.blockNumX))
     }
 
     func loadNextRow(using self) throw
     {
-        var block_x_mcu: [MaxComponents] s32
-        row_block := 0
+        var blockMcuX: [MaxComponents] s32
+
+        rowBlock := 0
         loop mcu_row: mcusPerRow
         {
             blockMcuOfsX := 0
             blockMcuOfsY := 0
-            loop mcu_block: blocksPerMcu
+            loop mcuBlock: blocksPerMcu
             {
-                componentId := mcuOrg[mcu_block]
+                componentId := mcuOrg[mcuBlock]
 
-                p   := blockSeg[row_block]
+                p   := blockSeg[rowBlock]
                 q   := quant[compQuant[componentId]]
-                pAC := coeffBufGetp(acCoeffs[componentId], block_x_mcu[componentId] + blockMcuOfsX, block_y_mcu[componentId] + blockMcuOfsY)
-                pDC := coeffBufGetp(dcCoeffs[componentId], block_x_mcu[componentId] + blockMcuOfsX, block_y_mcu[componentId] + blockMcuOfsY)
+                pAC := coeffBufGetp(acCoeffs[componentId], blockMcuX[componentId] + blockMcuOfsX, blockMcuY[componentId] + blockMcuOfsY)
+                pDC := coeffBufGetp(dcCoeffs[componentId], blockMcuX[componentId] + blockMcuOfsX, blockMcuY[componentId] + blockMcuOfsY)
 
                 p[0] = pDC[0]
                 memory.copy(&p[1], &pAC[1], 63'uint * @sizeof(s16))
@@ -332,9 +332,9 @@ impl Decoder
                     i -= 1
                 }
 
-                row_block += 1
+                rowBlock += 1
                 if compsInScan == 1
-                    block_x_mcu[componentId] += 1
+                    blockMcuX[componentId] += 1
                 else
                 {
                     blockMcuOfsX += 1
@@ -345,7 +345,7 @@ impl Decoder
                         if blockMcuOfsY == compSampV[componentId]
                         {
                             blockMcuOfsY = 0
-                            block_x_mcu[componentId] += compSampH[componentId]
+                            blockMcuX[componentId] += compSampH[componentId]
                         }
                     }
                 }
@@ -353,13 +353,13 @@ impl Decoder
         }
 
         if compsInScan == 1
-            block_y_mcu[compList[0]] += 1
+            blockMcuY[compList[0]] += 1
         else
         {
             loop component_num: compsInScan
             {
                 componentId := compList[component_num]
-                block_y_mcu[componentId] += compSampV[componentId]
+                blockMcuY[componentId] += compSampV[componentId]
             }
         }
     }
@@ -391,31 +391,31 @@ impl Decoder
 
         memory.clear(&lastDcVal, cast(uint) compsInFrame * @sizeof(u32))
 
-        eobRun          = 0
-        restartsLeft    = restartInterval
+        eobRun         = 0
+        restartsLeft   = restartInterval
         nextRestartNum = (nextRestartNum + 1) & 7
-        bitsLeft        = 16
+        bitsLeft       = 16
 
         discard getBits2(16)
         discard getBits2(16)
     }
 
-    func huffDecode(using self, _ph: *HuffTables)->s32
+    func huffDecode(using self, ph: *HuffTables)->s32
     {
-        symbol := _ph.lookUp[(bitBuf >>,safe 8) & 0xFF]
+        symbol := ph.lookUp[(bitBuf >>,safe 8) & 0xFF]
         if symbol < 0
         {
             discard getBits2(8)
             while true
             {
-                symbol = _ph.tree[~symbol + (1 - getBits2(1))]
+                symbol = ph.tree[~symbol + (1 - getBits2(1))]
                 if symbol >= 0
                     break
             }
         }
         else
         {
-            discard getBits2(cast(s32) _ph.codeSize[symbol])
+            discard getBits2(cast(s32) ph.codeSize[symbol])
         }
 
         return symbol
@@ -423,17 +423,17 @@ impl Decoder
 
     func decodeNextRow(using self) throw
     {
-        row_block := 0
+        rowBlock := 0
         loop mcu_row: mcusPerRow
         {
             if restartInterval && (restartsLeft == 0)
                 try restartProcess()
 
-            loop mcu_block: blocksPerMcu
+            loop mcuBlock: blocksPerMcu
             {
-                componentId := mcuOrg[mcu_block]
-                p            := blockSeg[row_block]
-                q            := quant[compQuant[componentId]].buffer
+                componentId := mcuOrg[mcuBlock]
+                p           := blockSeg[rowBlock]
+                q           := quant[compQuant[componentId]].buffer
 
                 s := huffDecode(&h[compDcTab[componentId]])
                 if s != 0
@@ -445,9 +445,9 @@ impl Decoder
                 s += bitcast(s32) lastDcVal[componentId]
                 lastDcVal[componentId] = bitcast(u32) s
 
-                p[0]         = cast(s16) (s * q[0])
-                prev_num_set := blockMaxZagSet[row_block]
-                ph           := &h[compAcTab[componentId]]
+                p[0] = cast(s16) (s * q[0])
+                prevNumSet := blockMaxZagSet[rowBlock]
+                ph := &h[compAcTab[componentId]]
 
                 k := 1
                 while k < 64
@@ -461,9 +461,9 @@ impl Decoder
                         if r
                         {
                             if (k + r) > 63 throw "decode error"
-                            if k < prev_num_set
+                            if k < prevNumSet
                             {
-                                n := math.min(r, prev_num_set - k)
+                                n := math.min(r, prevNumSet - k)
                                 kt := k
                                 while n
                                 {
@@ -490,9 +490,9 @@ impl Decoder
                             if (k + 15) > 63
                                 throw "decode error"
 
-                            if k < prev_num_set
+                            if k < prevNumSet
                             {
-                                n := math.min(16'u32, cast(u32) (prev_num_set - k))
+                                n := math.min(16'u32, cast(u32) (prevNumSet - k))
                                 kt := k
                                 while n
                                 {
@@ -513,18 +513,18 @@ impl Decoder
                     k += 1
                 }
 
-                if k < prev_num_set
+                if k < prevNumSet
                 {
                     kt := k
-                    while kt < prev_num_set
+                    while kt < prevNumSet
                     {
                         p[Zag[kt]] = 0
                         kt += 1
                     }
                 }
 
-                blockMaxZagSet[row_block] = k
-                row_block += 1
+                blockMaxZagSet[rowBlock] = k
+                rowBlock += 1
             }
 
             restartsLeft -= 1
@@ -1509,9 +1509,9 @@ impl Decoder
                 if restartInterval && (restartsLeft == 0)
                     try restartProcess()
 
-                loop mcu_block: blocksPerMcu
+                loop mcuBlock: blocksPerMcu
                 {
-                    componentId := mcuOrg[mcu_block]
+                    componentId := mcuOrg[mcuBlock]
                     try fn(self, componentId, blockMcutX[componentId] + blockMcuOfsX, blockMcutY[componentId] + blockMcuOfsY)
 
                     if compsInScan == 1
@@ -2014,7 +2014,7 @@ impl Decoder
     func prepareInBuffer(using self)
     {
         inBufLeft = 0
-        inBufOfs = in_buf
+        inBufOfs = inBuf
         if eofReached return
 
         while true
@@ -2022,12 +2022,12 @@ impl Decoder
             size := InBufSize - inBufLeft
             if size + streamSeek > streamLen
             {
-                size     = streamLen - streamSeek
+                size = streamLen - streamSeek
                 eofReached = 1
             }
 
             bytesRead := size
-            memory.copy(&in_buf[0] + inBufLeft, stream + streamSeek, cast(uint) size)
+            memory.copy(&inBuf[0] + inBufLeft, stream + streamSeek, cast(uint) size)
             streamSeek += size
             inBufLeft += bytesRead
             if inBufLeft >= InBufSize || eofReached
