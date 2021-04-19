@@ -1405,67 +1405,66 @@ impl Decoder
         {
             if spectral_end >= 64 throw "decode error"
 
-            /*for (; k <= _pd->spectral_end; k++)
+            while k <= spectral_end
             {
-                s = _pd->huff_decode(_pd->h[_pd->comp_ac_tab[_component_id]]);
+                s := huff_decode(&h[comp_ac_tab[_component_id]])
+                r := s >> 4
+                s &= 15
 
-                r = s >> 4;
-                s &= 15;
-
-                if (s)
+                if s
                 {
-                    if (s != 1)
-                    {
-                        _pd->terminate("Decode error");
-                        sAssert(0);
-                    }
-
-                    if (_pd->get_bits_2(1))
-                        s = p1;
+                    if s != 1 throw "decode error"
+                    if get_bits_2(1)
+                        s = p1
                     else
-                        s = m1;
+                        s = m1
                 }
                 else
                 {
-                    if (r != 15)
+                    if r != 15
                     {
-                        _pd->eob_run = 1 << r;
+                        eob_run = 1 << cast(u32) r
                         if (r)
-                            _pd->eob_run += _pd->get_bits_2(r);
-                        break;
+                            eob_run += cast(s32) get_bits_2(r)
+                        break
                     }
                 }
 
-                do
+                while true
                 {
-                    this_coef = p + zag[k];
-                    if (*this_coef != 0)
+                    this_coef := p + zag[k]
+                    if :this_coef != 0
                     {
-                        if (_pd->get_bits_2(1))
+                        if get_bits_2(1)
                         {
-                            if ((*this_coef & p1) == 0)
+                            if (:this_coef & cast(s16) p1) == 0
                             {
-                                if (*this_coef >= 0)
-                                    *this_coef += (int16) p1;
+                                if :this_coef >= 0
+                                    :this_coef += cast(s16) p1
                                 else
-                                    *this_coef += (int16) m1;
+                                    :this_coef += cast(s16) m1
                             }
                         }
                     }
                     else
                     {
-                        if (--r < 0)
-                            break;
+                        r -= 1
+                        if r < 0
+                            break
                     }
 
-                    k++;
-                } while (k <= _pd->spectral_end);
-
-                if ((s) && (k < 64))
-                {
-                    p[zag[k]] = (int16) s;
+                    k += 1
+                    if k > spectral_end
+                        break
                 }
-            }*/
+
+                if s && (k < 64)
+                {
+                    p[zag[k]] = cast(s16) s
+                }
+
+                k += 1
+            }
         }
 
         if eob_run > 0
