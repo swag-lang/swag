@@ -1153,7 +1153,7 @@ impl Decoder
 
         huffSize[p] = 0
         lastp := p
-        cde := 0'u32
+        cde := 0
         si := huffSize[0]
         p = 0
 
@@ -1173,7 +1173,7 @@ impl Decoder
         memory.clear(_hs.tree, @sizeof(_hs.tree))
         memory.clear(_hs.codeSize, @sizeof(_hs.codeSize))
 
-        nextFreeEntry := -1's32
+        nextFreeEntry := -1
         p = 0
 
         while p < lastp
@@ -1187,7 +1187,7 @@ impl Decoder
                 cde <<= (8 - codeSize)
                 for l := 1 << (8 - codeSize); l > 0; l -= 1
                 {
-                    _hs.lookUp[cde] = cast(s32) i
+                    _hs.lookUp[cde] = i
                     cde += 1
                 }
             }
@@ -1222,7 +1222,7 @@ impl Decoder
 
                 if (cde & 0x8000) == 0
                     currentEntry -= 1
-                _hs.tree[-currentEntry - 1] = cast(s32) i
+                _hs.tree[-currentEntry - 1] = i
             }
 
             p += 1
