@@ -229,6 +229,9 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         if (toType->flags & TYPEINFO_STRUCT_IS_TUPLE)
             toTypeName = "tuple";
 
+        if (fromNode != context->node)
+            context->expansionNode.push_back({context->node, JobContext::ExpansionType::Node});
+
         // Is there an explicit cast possible ?
         bool done = false;
         if (!(castFlags & CASTFLAG_EXPLICIT))

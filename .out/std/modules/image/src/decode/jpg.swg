@@ -228,8 +228,8 @@ impl Decoder
         inBufOfs = inBuf
         prepareInBuffer()
         bitsLeft = 16
-        discard getBits1(16)
-        discard getBits1(16)
+        getBits1(16)
+        getBits1(16)
         loop i: MaxBlocksPerRow blockMaxZagSet[i] = 64
 
         try locateSofMarker()
@@ -396,8 +396,8 @@ impl Decoder
         nextRestartNum = (nextRestartNum + 1) & 7
         bitsLeft       = 16
 
-        discard getBits2(16)
-        discard getBits2(16)
+        getBits2(16)
+        getBits2(16)
     }
 
     func huffDecode(using self, ph: *HuffTables)->s32
@@ -405,7 +405,7 @@ impl Decoder
         symbol := ph.lookUp[(bitBuf >>,safe 8) & 0xFF]
         if symbol < 0
         {
-            discard getBits2(8)
+            getBits2(8)
             while true
             {
                 symbol = ph.tree[~symbol + (1 - getBits2(1))]
@@ -415,7 +415,7 @@ impl Decoder
         }
         else
         {
-            discard getBits2(cast(s32) ph.codeSize[symbol])
+            getBits2(cast(s32) ph.codeSize[symbol])
         }
 
         return symbol
@@ -729,9 +729,9 @@ impl Decoder
         if !progressiveFlag
         {
             bitsLeft = 16
-            discard getBits1(16)
-            discard getBits1(16)
-            discard try processMarkers()
+            getBits1(16)
+            getBits1(16)
+            try processMarkers()
         }
 
         totalBytesRead -= inBufLeft
@@ -1123,8 +1123,8 @@ impl Decoder
         stuffChar(cast(u8) ((bitBuf >>,safe 8) & 0xFF))
         bitsLeft = 16
 
-        discard getBits2(16)
-        discard getBits2(16)
+        getBits2(16)
+        getBits2(16)
     }
 
     func checkQuantTables(using self) throw
@@ -1320,7 +1320,7 @@ impl Decoder
         return result
     }
 
-    #[swag.safety("of", false)]
+    #[safety("of", false)]
     func decodeBlockDcFirst(using self, cmpId: s32, blkX, blkY: s32) throw
     {
         p := coeffBufGetp(dcCoeffs[cmpId], blkX, blkY)
@@ -1328,25 +1328,25 @@ impl Decoder
         if s != 0
         {
             r := getBits2(s)
-            s = cast(s32) (r < ExtendTest[s] ? r + ExtendOff[s] : r)
+            s = (r < ExtendTest[s] ? r + ExtendOff[s] : r)
         }
 
-        s += cast(s32) lastDcVal[cmpId]
-        lastDcVal[cmpId] = cast(u32) s
-        p[0] = cast(s16) (s << cast(u32) successiveLow)
+        s += lastDcVal[cmpId]
+        lastDcVal[cmpId] = s
+        p[0] = cast(s16) (s << successiveLow)
     }
 
-    #[swag.safety("of", false)]
+    #[safety("of", false)]
     func decodeBlockDcRefine(using self, cmpId: s32, blkX, blkY: s32) throw
     {
         if getBits2(1)
         {
             p := coeffBufGetp(dcCoeffs[cmpId], blkX, blkY)
-            p[0] |= (1 << cast(u32) successiveLow)
+            p[0] |= (1 << successiveLow)
         }
     }
 
-    #[swag.safety("of", false)]
+    #[safety("of", false)]
     func decodeBlockAcFirst(using self, cmpId: s32, blkX, blkY: s32) throw
     {
         if eobRun
@@ -1367,11 +1367,11 @@ impl Decoder
             {
                 k += r
                 if k > 63 throw "decode error"
-                r = cast(s32) getBits2(s)
+                r = getBits2(s)
                 if s > 15 throw "decode error"
 
                 s = (r < ExtendTest[s] ? r + ExtendOff[s] : r)
-                p[Zag[k]] = cast(s16) (s << cast(u32) successiveLow)
+                p[Zag[k]] = cast(s16) (s << successiveLow)
             }
             else
             {
@@ -1383,9 +1383,9 @@ impl Decoder
                 }
                 else
                 {
-                    eobRun = 1 << cast(u32) r
+                    eobRun = 1 << r
                     if r
-                        eobRun += cast(s32) getBits2(r)
+                        eobRun += getBits2(r)
                     eobRun -= 1
                     break
                 }
@@ -1393,11 +1393,11 @@ impl Decoder
         }
     }
 
-    #[swag.safety("of", false)]
+    #[safety("of", false)]
     func decodeBlockAcRefine(using self, cmpId: s32, blkX, blkY: s32) throw
     {
-        p1 := 1 << cast(u32) successiveLow
-        m1 := (-1) << cast(u32) successiveLow
+        p1 := 1 << successiveLow
+        m1 := (-1) << successiveLow
         p := coeffBufGetp(acCoeffs[cmpId], blkX, blkY)
         k := spectralStart
         if eobRun == 0
@@ -1422,9 +1422,9 @@ impl Decoder
                 {
                     if r != 15
                     {
-                        eobRun = 1 << cast(u32) r
+                        eobRun = 1 << r
                         if (r)
-                            eobRun += cast(s32) getBits2(r)
+                            eobRun += getBits2(r)
                         break
                     }
                 }
@@ -1602,8 +1602,8 @@ impl Decoder
 
             bitsLeft = 16
 
-            discard getBits1(16)
-            discard getBits1(16)
+            getBits1(16)
+            getBits1(16)
         }
 
         compsInScan = compsInFrame
@@ -1618,7 +1618,7 @@ impl Decoder
         if !res throw "unexpected marker"
     }
 
-    #[swag.safety("of", false)]
+    #[safety("of", false), discardable]
     func getBits1(using self, numBits: s32)->u32
     {
         i := bitBuf >> cast(u32) ((16 - numBits)) & ((1'u32 << cast(u32) numBits) - 1)
@@ -1639,7 +1639,7 @@ impl Decoder
         return i
     }
 
-    #[swag.safety("of", false)]
+    #[safety("of", false), discardable]
     func getBits2(using self, numBits: s32)->u32
     {
         i := (bitBuf >> cast(u32) (16 - numBits)) & ((1'u32 << cast(u32) numBits) - 1)
@@ -1755,6 +1755,7 @@ impl Decoder
         return cast(Marker) c
     }
 
+    #[discardable]
     func processMarkers(using self)->Marker throw
     {
         while true
@@ -1794,7 +1795,7 @@ impl Decoder
         @assert(!acceptMetaDatas)
         while left
         {
-            discard getBits1(8)
+            getBits1(8)
             left -= 1
         }
     }
@@ -1946,7 +1947,7 @@ impl Decoder
         left -= 3
         while left
         {
-            discard getBits1(8)
+            getBits1(8)
             left -= 1
         }
     }

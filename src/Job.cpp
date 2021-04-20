@@ -160,30 +160,35 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
         switch (exp.second)
         {
         case JobContext::ExpansionType::Generic:
-            kindName    = "generic expansion";
-            kindArticle = "of";
+            kindName    = "during generic expansion";
+            kindArticle = "of ";
             break;
         case JobContext::ExpansionType::Inline:
-            kindName    = "inline expansion";
-            kindArticle = "of";
+            kindName    = "during inline expansion";
+            kindArticle = "of ";
             break;
         case JobContext::ExpansionType::SelectIf:
-            kindName    = "'#selectif' validation of function call";
-            kindArticle = "to";
+            kindName    = "during '#selectif' validation of function call";
+            kindArticle = "to ";
+            break;
+        case JobContext::ExpansionType::Node:
+            kindName    = "when solving";
+            kindArticle = "";
             break;
         }
 
-        auto& name = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->token.text;
+        auto name = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->token.text;
         if (name.empty())
             name = first->token.text;
+
         if (!name.empty())
         {
-            auto note = new Diagnostic{first, first->token, format("occurred during %s %s '%s'", kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
+            auto note = new Diagnostic{first, first->token, format("occurred %s %s'%s'", kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
             notes.push_back(note);
         }
         else
         {
-            auto note = new Diagnostic{first, first->token, format("occurred during %s", kindName), DiagnosticLevel::Note};
+            auto note = new Diagnostic{first, first->token, format("occurred %s", kindName), DiagnosticLevel::Note};
             notes.push_back(note);
         }
     }

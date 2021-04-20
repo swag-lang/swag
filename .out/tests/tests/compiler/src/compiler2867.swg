@@ -5,5 +5,6 @@
 #[swag.optim("", false)]
 #test
 {
-    var x: u8 = cast(u8) -1
+    var x: u8 = 0
+    x += 10'f32
 }
