@@ -176,7 +176,7 @@ static int exceptionHandler()
     if (g_CommandLine.devMode)
     {
         g_byteCodeStack.reportError("exception during job execution !");
-        SWAG_ASSERT(false);
+        OS::errorBox("[Developer Mode]", "Exception raised !");
         return EXCEPTION_CONTINUE_EXECUTION;
     }
 

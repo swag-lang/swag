@@ -4,9 +4,10 @@
 #include "Module.h"
 #include "Ast.h"
 
+thread_local Utf8 typedMsg[(int) SafetyMsg::Count][(int) NativeTypeKind::Count][(int) NativeTypeKind::Count];
+
 const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fromType)
 {
-    static Utf8 typedMsg[(int) SafetyMsg::Count][(int) NativeTypeKind::Count][(int) NativeTypeKind::Count];
 
     int m = (int) msg;
     int i = toType ? (int) toType->nativeType : 0;
