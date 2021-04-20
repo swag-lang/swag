@@ -2,8 +2,6 @@
 LANGUAGE
 ****************************************
 -------------------------------------
-pointer arithmetic, cool sur le type (coerce, pas juste uint)
--------------------------------------
 #premain ?
 -------------------------------------
 ca serait cool que les methods, en reflections, aient une value qui peut etre castee en lambda, et donc appelées
@@ -73,6 +71,8 @@ OPTIMS
 -------------------------------------
 x64 binaryop div/mul, transformer en shift si log2
 -------------------------------------
+BinOpModuloS32/div immediate mode
+-------------------------------------
 x64 emit_BinOpInt32/64 etc.. faire un mode immediat pour le côté droit 'and cl, 5'
 -------------------------------------
 Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)
@@ -86,8 +86,6 @@ x64 passe reduction instructions
 passer/retourner des structs par value si <= 64 bits
 -------------------------------------
 detecter les exit (ret) de fonctions dupliquées et faire des jumps (reduction code size)
--------------------------------------
-BinOpModuloS32/div immediate mode
 -------------------------------------
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?
 rc[0] = r12 etc... chiant
