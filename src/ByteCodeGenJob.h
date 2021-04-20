@@ -38,6 +38,10 @@ enum class SafetyMsg
     IFPlusEq,
     IFMinusEq,
     IFMulEq,
+    ShiftLeftOp,
+    ShiftRightOp,
+    ShiftLeftOf,
+    ShiftRightOf,
     Count,
 };
 

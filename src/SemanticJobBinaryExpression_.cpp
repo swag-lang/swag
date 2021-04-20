@@ -915,6 +915,9 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     {
         node->setFlagsValueIsComputed();
 
+        auto msg  = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeftOp, leftTypeInfo);
+        auto msg1 = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeftOf, leftTypeInfo);
+
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -922,9 +925,9 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 8)
-                    return context->report({right, "[safety] (8 bits) '<<' shift operand is greater than '7'"});
+                    return context->report({right, msg});
                 if ((node->computedValue.reg.s8 & 0x80) != (left->computedValue.reg.s8 & 0x80))
-                    return context->report({node, "[safety] (8 bits) '<<' shift overflow"});
+                    return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::S16:
@@ -932,9 +935,9 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 16)
-                    return context->report({right, "[safety] (16 bits) '<<' shift operand is greater than '15'"});
+                    return context->report({right, msg});
                 if ((node->computedValue.reg.s16 & 0x8000) != (left->computedValue.reg.s16 & 0x8000))
-                    return context->report({node, "[safety] (16 bits) '<<' shift overflow"});
+                    return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::S32:
@@ -942,9 +945,9 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 32)
-                    return context->report({right, "[safety] (32 bits) '<<' shift operand is greater than '31'"});
+                    return context->report({right, msg});
                 if ((node->computedValue.reg.s32 & 0x80000000) != (left->computedValue.reg.s32 & 0x80000000))
-                    return context->report({node, "[safety] (32 bits) '<<' shift overflow"});
+                    return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::S64:
@@ -953,9 +956,9 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 64)
-                    return context->report({right, "[safety] (64 bits) '<<' shift operand is greater than '64'"});
+                    return context->report({right, msg});
                 if ((node->computedValue.reg.s64 & 0x80000000'00000000) != (left->computedValue.reg.s64 & 0x80000000'00000000))
-                    return context->report({node, "[safety] (64 bits) '<<' shift overflow"});
+                    return context->report({node, msg1});
             }
             break;
 
@@ -964,9 +967,9 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 8)
-                    return context->report({right, "[safety] (8 bits) '<<' shift operand is greater than '7'"});
+                    return context->report({right, msg});
                 if (node->computedValue.reg.u8 >> right->computedValue.reg.u32 != left->computedValue.reg.u8)
-                    return context->report({node, "[safety] (8 bits) '<<' shift overflow"});
+                    return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::U16:
@@ -974,9 +977,9 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 16)
-                    return context->report({right, "[safety] (16 bits) '<<' shift operand is greater than '15'"});
+                    return context->report({right, msg});
                 if (node->computedValue.reg.u16 >> right->computedValue.reg.u32 != left->computedValue.reg.u16)
-                    return context->report({node, "[safety] (16 bits) '<<' shift overflow"});
+                    return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::U32:
@@ -985,9 +988,9 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 32)
-                    return context->report({right, "[safety] (32 bits) '<<' shift operand is greater than '31'"});
+                    return context->report({right, msg});
                 if (node->computedValue.reg.u32 >> right->computedValue.reg.u32 != left->computedValue.reg.u32)
-                    return context->report({node, "[safety] (32 bits) '<<' shift overflow"});
+                    return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::U64:
@@ -996,9 +999,9 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 64)
-                    return context->report({right, "[safety] (64 bits) '<<' shift operand is greater than '64'"});
+                    return context->report({right, msg});
                 if (node->computedValue.reg.u64 >> right->computedValue.reg.u32 != left->computedValue.reg.u64)
-                    return context->report({node, "[safety] (64 bits) '<<' shift overflow"});
+                    return context->report({node, msg1});
             }
             break;
         default:
@@ -1049,6 +1052,9 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     {
         node->setFlagsValueIsComputed();
 
+        auto msg  = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRightOp, leftTypeInfo);
+        auto msg1 = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRightOf, leftTypeInfo);
+
         switch (leftTypeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -1056,7 +1062,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 8)
-                    return context->report({right, "[safety] (8 bits) '>>' shift operand is greater than '7'"});
+                    return context->report({right, msg});
             }
             break;
         case NativeTypeKind::S16:
@@ -1064,7 +1070,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 16)
-                    return context->report({right, "[safety] (16 bits) '>>' shift operand is greater than '15'"});
+                    return context->report({right, msg});
             }
             break;
         case NativeTypeKind::S32:
@@ -1072,7 +1078,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 32)
-                    return context->report({right, "[safety] (32 bits) '>>' shift operand is greater than '31'"});
+                    return context->report({right, msg});
             }
             break;
         case NativeTypeKind::S64:
@@ -1081,7 +1087,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 64)
-                    return context->report({right, "[safety] (64 bits) '>>' shift operand is greater then '63'"});
+                    return context->report({right, msg});
             }
             break;
 
@@ -1090,9 +1096,9 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 8)
-                    return context->report({right, "[safety] (8 bits) '>>' shift operand is greater than '7'"});
+                    return context->report({right, msg});
                 if (node->computedValue.reg.u8 << right->computedValue.reg.u32 != left->computedValue.reg.u8)
-                    return context->report({node, "[safety] (8 bits) '>>' shift overflow"});
+                    return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::U16:
@@ -1100,9 +1106,9 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 16)
-                    return context->report({right, "[safety] (16 bits) '>>' shift operand is greater than '15'"});
+                    return context->report({right, msg});
                 if (node->computedValue.reg.u16 << right->computedValue.reg.u32 != left->computedValue.reg.u16)
-                    return context->report({node, "[safety] (16 bits) '>>' shift overflow"});
+                    return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::U32:
@@ -1111,9 +1117,9 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 32)
-                    return context->report({right, "[safety] (32 bits) '>>' shift operand is greater than '31'"});
+                    return context->report({right, msg});
                 if (node->computedValue.reg.u32 << right->computedValue.reg.u32 != left->computedValue.reg.u32)
-                    return context->report({node, "[safety] (32 bits) '>>' shift overflow"});
+                    return context->report({node, msg1});
             }
             break;
         case NativeTypeKind::U64:
@@ -1122,9 +1128,9 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
             if (module->mustEmitSafetyOF(node))
             {
                 if (right->computedValue.reg.u32 >= 64)
-                    return context->report({right, "[safety] (64 bits) '>>' shift operand is greater then '63'"});
+                    return context->report({right, msg});
                 if (node->computedValue.reg.u64 << right->computedValue.reg.u32 != left->computedValue.reg.u64)
-                    return context->report({node, "[safety] (64 bits) '>>' shift overflow"});
+                    return context->report({node, msg1});
             }
             break;
         default:

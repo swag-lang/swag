@@ -268,9 +268,15 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (right->computedValue.reg.u32 >= left->typeInfo->sizeOf * 8)
                 {
                     if (tokenId == TokenId::SymLowerLowerEqual)
-                        return context->report({right, format("[safety] '<<' shift operand is greater than '%u'", (left->typeInfo->sizeOf * 8) - 1)});
+                    {
+                        auto msg = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftLeftOp, left->typeInfo);
+                        return context->report({right, msg});
+                    }
                     else
-                        return context->report({right, format("[safety] '>>' shift operand is greater than '%u'", (left->typeInfo->sizeOf * 8) - 1)});
+                    {
+                        auto msg = ByteCodeGenJob::safetyMsg(SafetyMsg::ShiftRightOp, left->typeInfo);
+                        return context->report({right, msg});
+                    }
                 }
             }
         }
