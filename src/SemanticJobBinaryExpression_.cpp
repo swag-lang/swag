@@ -62,25 +62,25 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         {
         case NativeTypeKind::S32:
             if (addOverflow(node, left->computedValue.reg.s32, right->computedValue.reg.s32))
-                return context->report({node, node->token, "[safety] (s32) '+' integer overflow"});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoS32)});
             node->computedValue.reg.s64 = left->computedValue.reg.s32 + right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (addOverflow(node, left->computedValue.reg.s64, right->computedValue.reg.s64))
-                return context->report({node, node->token, "[safety] (s64) '+' integer overflow"});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoS64)});
             node->computedValue.reg.s64 = left->computedValue.reg.s64 + right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
             if (addOverflow(node, left->computedValue.reg.u32, right->computedValue.reg.u32))
-                return context->report({node, node->token, "[safety] (u32) '+' integer overflow"});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoU32)});
             node->computedValue.reg.u64 = left->computedValue.reg.u32 + right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (addOverflow(node, left->computedValue.reg.u64, right->computedValue.reg.u64))
-                return context->report({node, node->token, "[safety] (u64) '+' integer overflow"});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoU64)});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
             break;
         case NativeTypeKind::F32:
@@ -177,25 +177,25 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         {
         case NativeTypeKind::S32:
             if (subOverflow(node, left->computedValue.reg.s32, right->computedValue.reg.s32))
-                return context->report({node, node->token, "[safety] (s32) '-' integer overflow"});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoS32)});
             node->computedValue.reg.s64 = left->computedValue.reg.s32 - right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (subOverflow(node, left->computedValue.reg.s64, right->computedValue.reg.s64))
-                return context->report({node, node->token, "[safety] (s64) '-' integer overflow"});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoS64)});
             node->computedValue.reg.s64 = left->computedValue.reg.s64 - right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
             if (subOverflow(node, left->computedValue.reg.u32, right->computedValue.reg.u32))
-                return context->report({node, node->token, "[safety] (u32) '-' integer overflow"});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoU32)});
             node->computedValue.reg.u64 = left->computedValue.reg.u32 - right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (subOverflow(node, left->computedValue.reg.u64, right->computedValue.reg.u64))
-                return context->report({node, node->token, "[safety] (u64) '-' integer overflow"});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoU64)});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
             break;
         case NativeTypeKind::F32:
@@ -265,25 +265,25 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         {
         case NativeTypeKind::S32:
             if (mulOverflow(node, left->computedValue.reg.s32, right->computedValue.reg.s32))
-                return context->report({node, node->token, "[safety] (s32) '*' integer overflow"});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoS32)});
             node->computedValue.reg.s64 = left->computedValue.reg.s32 * right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (mulOverflow(node, left->computedValue.reg.s64, right->computedValue.reg.s64))
-                return context->report({node, node->token, "[safety] (s64) '*' integer overflow"});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoS64)});
             node->computedValue.reg.s64 = left->computedValue.reg.s64 * right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Char:
             if (mulOverflow(node, left->computedValue.reg.u32, right->computedValue.reg.u32))
-                return context->report({node, node->token, "[safety] (u32) '*' integer overflow"});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoU32)});
             node->computedValue.reg.u64 = left->computedValue.reg.u32 * right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (mulOverflow(node, left->computedValue.reg.u64, right->computedValue.reg.u64))
-                return context->report({node, node->token, "[safety] (u64) '*' integer overflow"});
+                return context->report({node, node->token, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoU64)});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
             break;
         case NativeTypeKind::F32:

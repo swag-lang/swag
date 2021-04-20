@@ -25,6 +25,30 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
             SWAG_ASSERT(toType && fromType);
             typedMsg[m][i][j] = format("[safety] cast from a negative value of type '%s' to unsigned type '%s'", fromType->name.c_str(), toType->name.c_str());
             break;
+        case SafetyMsg::IFPlus:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = format("[safety] integer overflow during '+' operation on type '%s'", toType->name.c_str());
+            break;
+        case SafetyMsg::IFMinus:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = format("[safety] integer overflow during '-' operation on type '%s'", toType->name.c_str());
+            break;
+        case SafetyMsg::IFMul:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = format("[safety] integer overflow during '*' operation on type '%s'", toType->name.c_str());
+            break;
+        case SafetyMsg::IFPlusEq:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = format("[safety] integer overflow during '+=' operation on type '%s'", toType->name.c_str());
+            break;
+        case SafetyMsg::IFMinusEq:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = format("[safety] integer overflow during '-=' operation on type '%s'", toType->name.c_str());
+            break;
+        case SafetyMsg::IFMulEq:
+            SWAG_ASSERT(toType);
+            typedMsg[m][i][j] = format("[safety] integer overflow during '*=' operation on type '%s'", toType->name.c_str());
+            break;
         }
     }
 

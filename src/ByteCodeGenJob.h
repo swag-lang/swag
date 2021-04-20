@@ -32,6 +32,12 @@ enum class SafetyMsg
 {
     CastTruncated,
     CastNeg,
+    IFPlus,
+    IFMinus,
+    IFMul,
+    IFPlusEq,
+    IFMinusEq,
+    IFMulEq,
     Count,
 };
 
@@ -335,7 +341,7 @@ struct ByteCodeGenJob : public Job
     static void emitMemCpy(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint64_t sizeOf);
     static bool emitDefer(ByteCodeGenContext* context);
 
-    static const char* safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fromType);
+    static const char* safetyMsg(SafetyMsg msg, TypeInfo* toType = nullptr, TypeInfo* fromType = nullptr);
     static void        emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg = nullptr);
     static bool        mustEmitSafety(ByteCodeGenContext* context, uint64_t whatOn, uint64_t whatOff);
     static void        emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);

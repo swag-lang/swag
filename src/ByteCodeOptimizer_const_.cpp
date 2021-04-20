@@ -5,6 +5,8 @@
 #include "Math.h"
 #include "Log.h"
 #include "Diagnostic.h"
+#include "ByteCodeGenJob.h"
+#include "TypeManager.h"
 
 #define OK()                              \
     context->passHasDoneSomething = true; \
@@ -82,19 +84,19 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::BinOpPlusS32:
-                SWAG_VERIFY(!addOverflow(ip->node, ip->a.s32, ip->b.s32), context->report({ip->node, "[safety] (s32) '+' integer overflow"}));
+                SWAG_VERIFY(!addOverflow(ip->node, ip->a.s32, ip->b.s32), context->report({ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoS32)}));
                 BINOP_S32(+);
                 break;
             case ByteCodeOp::BinOpPlusU32:
-                SWAG_VERIFY(!addOverflow(ip->node, ip->a.u32, ip->b.u32), context->report({ip->node, "[safety] (u32) '+' integer overflow"}));
+                SWAG_VERIFY(!addOverflow(ip->node, ip->a.u32, ip->b.u32), context->report({ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoU32)}));
                 BINOP_S32(+);
                 break;
             case ByteCodeOp::BinOpPlusS64:
-                SWAG_VERIFY(!addOverflow(ip->node, ip->a.s64, ip->b.s64), context->report({ip->node, "[safety] (s64) '+' integer overflow"}));
+                SWAG_VERIFY(!addOverflow(ip->node, ip->a.s64, ip->b.s64), context->report({ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoS64)}));
                 BINOP_S64(+);
                 break;
             case ByteCodeOp::BinOpPlusU64:
-                SWAG_VERIFY(!addOverflow(ip->node, ip->a.u64, ip->b.u64), context->report({ip->node, "[safety] (u64) '+' integer overflow"}));
+                SWAG_VERIFY(!addOverflow(ip->node, ip->a.u64, ip->b.u64), context->report({ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr.typeInfoU64)}));
                 BINOP_S64(+);
                 break;
             case ByteCodeOp::BinOpPlusF32:
@@ -105,19 +107,19 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::BinOpMinusS32:
-                SWAG_VERIFY(!subOverflow(ip->node, ip->a.s32, ip->b.s32), context->report({ip->node, "[safety] (s32) '-' integer overflow"}));
+                SWAG_VERIFY(!subOverflow(ip->node, ip->a.s32, ip->b.s32), context->report({ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoS32)}));
                 BINOP_S32(-);
                 break;
             case ByteCodeOp::BinOpMinusU32:
-                SWAG_VERIFY(!subOverflow(ip->node, ip->a.u32, ip->b.u32), context->report({ip->node, "[safety] (u32) '-' integer overflow"}));
+                SWAG_VERIFY(!subOverflow(ip->node, ip->a.u32, ip->b.u32), context->report({ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoU32)}));
                 BINOP_S32(-);
                 break;
             case ByteCodeOp::BinOpMinusS64:
-                SWAG_VERIFY(!subOverflow(ip->node, ip->a.s64, ip->b.s64), context->report({ip->node, "[safety] (s64) '-' integer overflow"}));
+                SWAG_VERIFY(!subOverflow(ip->node, ip->a.s64, ip->b.s64), context->report({ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoS64)}));
                 BINOP_S64(-);
                 break;
             case ByteCodeOp::BinOpMinusU64:
-                SWAG_VERIFY(!subOverflow(ip->node, ip->a.u64, ip->b.u64), context->report({ip->node, "[safety] (u64) '-' integer overflow"}));
+                SWAG_VERIFY(!subOverflow(ip->node, ip->a.u64, ip->b.u64), context->report({ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr.typeInfoU64)}));
                 BINOP_S64(-);
                 break;
             case ByteCodeOp::BinOpMinusF32:
@@ -128,19 +130,19 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::BinOpMulS32:
-                SWAG_VERIFY(!mulOverflow(ip->node, ip->a.s32, ip->b.s32), context->report({ip->node, "[safety] (s32) '*' integer overflow"}));
+                SWAG_VERIFY(!mulOverflow(ip->node, ip->a.s32, ip->b.s32), context->report({ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoS32)}));
                 BINOP_S32(*);
                 break;
             case ByteCodeOp::BinOpMulU32:
-                SWAG_VERIFY(!mulOverflow(ip->node, ip->a.u32, ip->b.u32), context->report({ip->node, "[safety] (u32) '*' integer overflow"}));
+                SWAG_VERIFY(!mulOverflow(ip->node, ip->a.u32, ip->b.u32), context->report({ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoU32)}));
                 BINOP_S32(*);
                 break;
             case ByteCodeOp::BinOpMulS64:
-                SWAG_VERIFY(!mulOverflow(ip->node, ip->a.s64, ip->b.s64), context->report({ip->node, "[safety] (s64) '*' integer overflow"}));
+                SWAG_VERIFY(!mulOverflow(ip->node, ip->a.s64, ip->b.s64), context->report({ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoS64)}));
                 BINOP_S64(*);
                 break;
             case ByteCodeOp::BinOpMulU64:
-                SWAG_VERIFY(!mulOverflow(ip->node, ip->a.u64, ip->b.u64), context->report({ip->node, "[safety] (u64) '*' integer overflow"}));
+                SWAG_VERIFY(!mulOverflow(ip->node, ip->a.u64, ip->b.u64), context->report({ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr.typeInfoU64)}));
                 BINOP_S64(*);
                 break;
             case ByteCodeOp::BinOpMulF32:
