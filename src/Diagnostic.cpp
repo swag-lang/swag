@@ -14,9 +14,13 @@ void Diagnostic::defaultColor(bool verboseMode) const
 
 void Diagnostic::printSourceLine(int headerSize) const
 {
-    g_Log.print("-->");
-    for (int i = 0; i < headerSize - 3; i++)
-        g_Log.print(" ");
+    if (g_CommandLine.errorSourceOut)
+    {
+        g_Log.print("-->");
+        for (int i = 0; i < headerSize - 3; i++)
+            g_Log.print(" ");
+    }
+
     SWAG_ASSERT(sourceFile);
     fs::path path = sourceFile->path;
     g_Log.print(normalizePath(path).c_str());
@@ -91,13 +95,19 @@ void Diagnostic::report(bool verboseMode) const
     g_Log.print(textMsg);
     g_Log.eol();
 
+    auto remarkColor      = LogColor::White;
+    auto sourceFileColor  = LogColor::Cyan;
+    auto codeColor        = LogColor::Gray;
+    auto hilightCodeColor = LogColor::White;
+    auto rangeNoteColor   = LogColor::Cyan;
+
     // Code remarks
     if (g_CommandLine.errorSourceOut && g_CommandLine.errorNoteOut)
     {
         if (!remarks.empty())
         {
             if (!verboseMode)
-                g_Log.setColor(LogColor::White);
+                g_Log.setColor(remarkColor);
             for (auto& r : remarks)
             {
                 if (r.empty())
@@ -111,15 +121,17 @@ void Diagnostic::report(bool verboseMode) const
         }
     }
 
-    if (!verboseMode)
-        g_Log.setColor(LogColor::Cyan);
-
     // Source file and location on their own line
     if (g_CommandLine.errorSourceOut && hasFile && !sourceFile->path.empty())
     {
+        if (!verboseMode)
+            g_Log.setColor(sourceFileColor);
         printSourceLine(headerSize + 4);
         g_Log.eol();
     }
+
+    if (!verboseMode)
+        g_Log.setColor(codeColor);
 
     // Source code
     if (hasFile && !sourceFile->path.empty() && hasLocation && printSource && g_CommandLine.errorSourceOut)
@@ -168,7 +180,7 @@ void Diagnostic::report(bool verboseMode) const
                            errorLevel != DiagnosticLevel::CallStack &&
                            errorLevel != DiagnosticLevel::CallStackInlined &&
                            errorLevel != DiagnosticLevel::TraceError;
-        auto codeColor = !verboseMode && reportRange;
+        auto hilightCodeRange = !verboseMode && reportRange;
 
         // Print all lines
         if (lines.size())
@@ -185,7 +197,7 @@ void Diagnostic::report(bool verboseMode) const
                     for (int j = 0; j < headerSize; j++)
                         g_Log.print(" ");
                     g_Log.print(" |  ");
-                    if (codeColor && i == lines.size() - 1)
+                    if (hilightCodeRange && i == lines.size() - 1)
                         break;
                     g_Log.print(lines[i].c_str() + minBlanks);
                     g_Log.eol();
@@ -198,7 +210,7 @@ void Diagnostic::report(bool verboseMode) const
         {
             for (int lastLine = 0; lastLine < 2; lastLine++)
             {
-                if (!codeColor && lastLine == 0)
+                if (!hilightCodeRange && lastLine == 0)
                     continue;
 
                 auto startIndex = minBlanks;
@@ -253,12 +265,12 @@ void Diagnostic::report(bool verboseMode) const
                     g_Log.print(errorMsg);
                     errorMsg.clear();
 
-                    g_Log.setColor(LogColor::Gray);
+                    g_Log.setColor(hilightCodeColor);
                     for (int i = 0; i < range; i++)
                         errorMsg += backLine[startIndex++];
                     g_Log.print(errorMsg);
 
-                    g_Log.setColor(LogColor::Cyan);
+                    g_Log.setColor(codeColor);
                     g_Log.print(backLine.c_str() + startIndex);
                     g_Log.eol();
                 }
@@ -286,7 +298,7 @@ void Diagnostic::report(bool verboseMode) const
                             g_Log.setColor(LogColor::Red);
                             break;
                         case DiagnosticLevel::Note:
-                            g_Log.setColor(LogColor::Blue);
+                            g_Log.setColor(rangeNoteColor);
                             break;
                         }
                     }
