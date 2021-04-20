@@ -170,6 +170,7 @@ struct ByteCode
 
     void              printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
     void              printPrettyInstruction(ByteCodeInstruction* ip);
+    void              printInstructionReg(const char* name, uint32_t sizeOf, const Register& reg, bool regW, bool regR, bool regR32, bool regR64, bool regImm);
     void              printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp = nullptr);
     void              print(ByteCodeInstruction* curIp = nullptr);
     Utf8              callName();
