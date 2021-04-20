@@ -1817,7 +1817,7 @@ impl Decoder
             for i := 1; i <= 16; i += 1
             {
                 huffNumt[i] = cast(u8) getBits1(8)
-                count += cast(s32) huffNumt[i]
+                count += huffNumt[i]
             }
 
             if count > 255 throw "bad dht counts"
@@ -1829,7 +1829,7 @@ impl Decoder
             i := 1 + 16 + count
             if left < i throw "bad dht marker"
 
-            left -= cast(u32) i
+            left -= i
             if (index & 0x10) > 0x10 throw "bad dht index"
 
             index = (index & 0x0F) + ((index & 0x10) >> 4) * (MaxHuffTables >> 1)
@@ -1864,7 +1864,7 @@ impl Decoder
                 quant[n].buffer[i] = cast(s16) temp
             }
 
-            i := 64'u32 + 1
+            i := 64 + 1
             if prec i += 64
             if left < i throw "bad dqt length"
             left -= i
