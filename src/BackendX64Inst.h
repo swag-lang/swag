@@ -1224,6 +1224,7 @@ namespace BackendX64Inst
                 emit_ModRM(pp, regOffset(ip->b.u32), RCX, RDI); // ecx, [rdi+?]
             }
         }
+        // Mul by power of 2 => shift by log2
         else if (op == X64Op::MUL && !(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && isPowerOfTwo(ip->b.u32) && (ip->b.u32 < 32))
         {
             emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -1265,8 +1266,7 @@ namespace BackendX64Inst
                 emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
                 pp.concat.addU8(0x48);
                 pp.concat.addString1("\xF7"); // mul
-                // need to pass rsp here, don't know why, but the encoding should be 0x67 for a small stack offset
-                emit_ModRM(pp, regOffset(ip->b.u32), RSP, RDI);
+                emit_ModRM(pp, regOffset(ip->b.u32), 4, RDI);
             }
             else
             {
@@ -1279,6 +1279,7 @@ namespace BackendX64Inst
                 emit_ModRM(pp, regOffset(ip->b.u32), RCX, RDI);
             }
         }
+        // Mul by power of 2 => shift by log2
         else if (op == X64Op::MUL && !(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && isPowerOfTwo(ip->b.u64) && (ip->b.u64 < 64))
         {
             emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);

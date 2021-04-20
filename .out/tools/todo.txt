@@ -35,9 +35,7 @@ x(10) => x.opCall(10)
 TODO
 ****************************************
 -------------------------------------
-dbg x64, self doit etre comme this 
--------------------------------------
-virer coerce same sign, mettre full tout le temps ?
+dbg x64, self doit etre comme this (possible ?)
 -------------------------------------
 self merde : invalid usage : 
 var decode_block_func: func(self, s32, s32)
@@ -69,7 +67,7 @@ void CodeViewDebug::emitStaticConstMemberList()
 OPTIMS
 ****************************************
 -------------------------------------
-x64 binaryop div/mul, transformer en shift si log2
+x64 binaryop div, transformer en shift si log2
 -------------------------------------
 BinOpModuloS32/div immediate mode
 -------------------------------------
@@ -80,8 +78,6 @@ Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)
 makestackpointer suivi de copyrctort, faire un copy address stack to rt
 -------------------------------------
 getfromstackparam8/16/32 pour eviter le cast d'après
--------------------------------------
-x64 passe reduction instructions
 -------------------------------------
 passer/retourner des structs par value si <= 64 bits
 -------------------------------------
