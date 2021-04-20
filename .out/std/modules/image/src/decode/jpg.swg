@@ -1874,7 +1874,7 @@ impl Decoder
     func readDriMarker(using self) throw
     {
         if getBits1(16) != 4 throw "bad dri length"
-        restartInterval = cast(s32) getBits1(16)
+        restartInterval = getBits1(16)
     }
 
     func readSofMarker(using self) throw
@@ -1882,22 +1882,22 @@ impl Decoder
         left := getBits1(16)
         if getBits1(8) != 8 throw "bad precision"
 
-        imageSizeY = cast(s32) getBits1(16)
-        imageSizeX = cast(s32) getBits1(16)
+        imageSizeY = getBits1(16)
+        imageSizeX = getBits1(16)
 
         if (imageSizeY < 1) || (imageSizeY > MaxHeight) throw "bad height"
         if (imageSizeX < 1) || (imageSizeX > MaxWidth) throw "bad width"
 
-        compsInFrame = cast(s32) getBits1(8)
+        compsInFrame = getBits1(8)
         if compsInFrame > MaxComponents throw "too many components"
         if left != (compsInFrame * 3 + 8) throw "bad sqf length"
 
         loop i: compsInFrame
         {
-            compIdent[i]  = cast(s32) getBits1(8)
-            compSampH[i] = cast(s32) getBits1(4)
-            compSampV[i] = cast(s32) getBits1(4)
-            compQuant[i]  = cast(s32) getBits1(8)
+            compIdent[i] = getBits1(8)
+            compSampH[i] = getBits1(4)
+            compSampV[i] = getBits1(4)
+            compQuant[i] = getBits1(8)
         }
     }
 
@@ -1905,10 +1905,10 @@ impl Decoder
     {
         left := getBits1(16)
         n    := getBits1(8)
-        compsInScan = cast(s32) n
+        compsInScan = n
         left -= 3
 
-        if (left != cast(u32)(n * 2 + 3)) || (n < 1) || (n > MaxCompsInScan)
+        if (left != (n * 2 + 3)) || (n < 1) || (n > MaxCompsInScan)
             throw "bad sos length"
 
         loop i: n
@@ -1929,14 +1929,14 @@ impl Decoder
                 throw "bad sos comp id"
 
             compList[i]   = ci
-            compDcTab[ci] = cast(s32) (c >>,safe 4) & 15
-            compAcTab[ci] = cast(s32) (c & 15) + (MaxHuffTables >> 1)
+            compDcTab[ci] = (c >>,safe 4) & 15
+            compAcTab[ci] = (c & 15) + (MaxHuffTables >> 1)
         }
 
-        spectralStart  = cast(s32) getBits1(8)
-        spectralEnd    = cast(s32) getBits1(8)
-        successiveHigh = cast(s32) getBits1(4)
-        successiveLow  = cast(s32) getBits1(4)
+        spectralStart  = getBits1(8)
+        spectralEnd    = getBits1(8)
+        successiveHigh = getBits1(4)
+        successiveLow  = getBits1(4)
 
         if !progressiveFlag
         {
