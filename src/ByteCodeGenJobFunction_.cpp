@@ -1482,6 +1482,12 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     SWAG_ASSERT(funcNode);
     PushNode pn(context, funcNode->content);
 
+    // Clear stack trace when entering a #<function>
+    if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+    {
+        emitInstruction(context, ByteCodeOp::InternalInitStackTrace);
+    }
+
     // Clear error when entering a #<function> or a function than can raise en error
     if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) || (funcNode->typeInfo->flags & TYPEINFO_CAN_THROW))
     {
