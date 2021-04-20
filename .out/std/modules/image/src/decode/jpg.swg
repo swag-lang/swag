@@ -237,11 +237,14 @@ impl Decoder
 
     func start(using self) throw
     {
-        try initFrame()
-        if progressiveFlag
-            try initProgressive()
-        else
-            try initSequential()
+        try
+        {
+            initFrame()
+            if progressiveFlag
+                initProgressive()
+            else
+                initSequential()
+        }
     }
 
     func doit(using self, buf: *u8) throw
@@ -377,7 +380,7 @@ impl Decoder
         if i == 0
             throw "bad restart marker"
 
-        c := 0'u32
+        c := 0
         while i > 0
         {
             c = getChar()

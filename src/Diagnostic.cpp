@@ -297,6 +297,12 @@ void Diagnostic::report(bool verboseMode) const
                 }
             }
         }
+        else if (lines.size())
+        {
+            for (int j = 0; j < headerSize; j++)
+                g_Log.print(" ");
+            g_Log.print(" |  \n");
+        }
     }
 
     g_Log.setDefaultColor();
