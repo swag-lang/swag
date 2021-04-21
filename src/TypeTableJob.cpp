@@ -57,15 +57,27 @@ bool TypeTableJob::computeStruct()
     concreteType->opPostCopy = nullptr;
     if (realType->opPostCopy)
     {
-        concreteType->opPostCopy = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opPostCopy);
-        segment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->callName(), DataSegment::RelocType::Local);
+        concreteType->opPostCopy = ByteCodeRun::makeLambda(baseContext, realType->opUserPostCopyFct, realType->opPostCopy);
+        if (!realType->opPostCopy)
+        {
+            realType->opUserPostCopyFct->computeFullNameForeign(false);
+            segment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+        else
+            segment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->callName(), DataSegment::RelocType::Local);
     }
 
     concreteType->opPostMove = nullptr;
     if (realType->opPostMove)
     {
-        concreteType->opPostMove = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opPostMove);
-        segment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->callName(), DataSegment::RelocType::Local);
+        concreteType->opPostMove = ByteCodeRun::makeLambda(baseContext, realType->opUserPostMoveFct, realType->opPostMove);
+        if (!realType->opPostMove)
+        {
+            realType->opUserPostMoveFct->computeFullNameForeign(false);
+            segment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+        else
+            segment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->callName(), DataSegment::RelocType::Local);
     }
 
     // First and main pass, by locking only the type segment

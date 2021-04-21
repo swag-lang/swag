@@ -465,28 +465,28 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         return true;
 
     // Need to wait for user function full semantic resolve
-    needDrop = true;
-    askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-    if (context->result == ContextResult::Pending)
-        return true;
-
-    if (!needDrop)
+    if (typeInfoStruct->opUserDropFct)
     {
-        for (auto typeParam : typeInfoStruct->fields)
-        {
-            auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-            if (typeVar->kind != TypeInfoKind::Struct)
-                continue;
-            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-            context->job->waitStructGenerated(typeStructVar);
-            if (context->result == ContextResult::Pending)
-                return true;
-            generateStruct_opDrop(context, typeStructVar);
-            if (context->result == ContextResult::Pending)
-                return true;
-            if (typeStructVar->opDrop)
-                needDrop = true;
-        }
+        needDrop = true;
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
+
+    for (auto typeParam : typeInfoStruct->fields)
+    {
+        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        if (typeVar->kind != TypeInfoKind::Struct)
+            continue;
+        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        context->job->waitStructGenerated(typeStructVar);
+        if (context->result == ContextResult::Pending)
+            return true;
+        generateStruct_opDrop(context, typeStructVar);
+        if (context->result == ContextResult::Pending)
+            return true;
+        if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
+            needDrop = true;
     }
 
     if (!needDrop)
@@ -583,35 +583,33 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         }
     }
 
+    // If user function is foreign, then this is the generated version with everything already done
+    if (typeInfoStruct->opUserPostMoveFct && typeInfoStruct->opUserPostMoveFct->attributeFlags & ATTRIBUTE_FOREIGN)
+        return true;
+
     // Need to wait for function full semantic resolve
     if (typeInfoStruct->opUserPostMoveFct)
     {
         needPostMove = true;
-        if (!(typeInfoStruct->opUserPostMoveFct->attributeFlags & ATTRIBUTE_FOREIGN))
-        {
-            askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-            if (context->result == ContextResult::Pending)
-                return true;
-        }
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+        if (context->result == ContextResult::Pending)
+            return true;
     }
 
-    if (!needPostMove)
+    for (auto typeParam : typeInfoStruct->fields)
     {
-        for (auto typeParam : typeInfoStruct->fields)
-        {
-            auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-            if (typeVar->kind != TypeInfoKind::Struct)
-                continue;
-            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-            context->job->waitStructGenerated(typeStructVar);
-            if (context->result == ContextResult::Pending)
-                return true;
-            generateStruct_opPostMove(context, typeStructVar);
-            if (context->result == ContextResult::Pending)
-                return true;
-            if (typeStructVar->opPostMove)
-                needPostMove = true;
-        }
+        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        if (typeVar->kind != TypeInfoKind::Struct)
+            continue;
+        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        context->job->waitStructGenerated(typeStructVar);
+        if (context->result == ContextResult::Pending)
+            return true;
+        generateStruct_opPostMove(context, typeStructVar);
+        if (context->result == ContextResult::Pending)
+            return true;
+        if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
+            needPostMove = true;
     }
 
     if (!needPostMove)
@@ -629,6 +627,19 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     opPostMove->maxReservedRegisterRC = 3;
     opPostMove->compilerGenerated     = true;
     opPostMove->isPostMove            = true;
+
+    // Export generated function if necessary
+    if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
+    {
+        auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+        funcNode->typeInfo   = opPostMove->typeInfoFunc;
+        funcNode->ownerScope = structNode->scope;
+        funcNode->token.text = "opPostMoveGenerated";
+        funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+        funcNode->allocateExtension();
+        funcNode->extension->bc = opPostMove;
+        opPostMove->node        = funcNode;
+    }
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostMove;
@@ -707,23 +718,20 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         }
     }
 
-    if (!needPostCopy)
+    for (auto typeParam : typeInfoStruct->fields)
     {
-        for (auto typeParam : typeInfoStruct->fields)
-        {
-            auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-            if (typeVar->kind != TypeInfoKind::Struct)
-                continue;
-            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-            context->job->waitStructGenerated(typeStructVar);
-            if (context->result == ContextResult::Pending)
-                return true;
-            generateStruct_opPostCopy(context, typeStructVar);
-            if (context->result == ContextResult::Pending)
-                return true;
-            if (typeStructVar->opPostCopy)
-                needPostCopy = true;
-        }
+        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        if (typeVar->kind != TypeInfoKind::Struct)
+            continue;
+        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        context->job->waitStructGenerated(typeStructVar);
+        if (context->result == ContextResult::Pending)
+            return true;
+        generateStruct_opPostCopy(context, typeStructVar);
+        if (context->result == ContextResult::Pending)
+            return true;
+        if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
+            needPostCopy = true;
     }
 
     if (!needPostCopy)
@@ -740,6 +748,19 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     opPostCopy->name.replaceAll('.', '_');
     opPostCopy->maxReservedRegisterRC = 3;
     opPostCopy->compilerGenerated     = true;
+
+    // Export generated function if necessary
+    if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
+    {
+        auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+        funcNode->typeInfo   = opPostCopy->typeInfoFunc;
+        funcNode->ownerScope = structNode->scope;
+        funcNode->token.text = "opPostCopyGenerated";
+        funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+        funcNode->allocateExtension();
+        funcNode->extension->bc = opPostCopy;
+        opPostCopy->node        = funcNode;
+    }
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostCopy;
@@ -842,10 +863,10 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
             return context->report({context->node, format("copy semantic is forbidden for type '%s' because of 'swag.nocopy' attribute", typeInfo->getDisplayName().c_str())});
 
         PushICFlags sf(context, BCI_POST_COPYMOVE);
-        if (typeInfoStruct->opPostCopy)
+        if (typeInfoStruct->opPostCopy || typeInfoStruct->opUserPostCopyFct)
         {
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-            emitOpCallUser(context, nullptr, typeInfoStruct->opPostCopy, false);
+            emitOpCallUser(context, typeInfoStruct->opUserPostCopyFct, typeInfoStruct->opPostCopy, false);
         }
     }
 
@@ -853,10 +874,10 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     else
     {
         PushICFlags sf(context, BCI_POST_COPYMOVE);
-        if (typeInfoStruct->opPostMove)
+        if (typeInfoStruct->opPostMove || typeInfoStruct->opUserPostMoveFct)
         {
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-            emitOpCallUser(context, nullptr, typeInfoStruct->opPostMove, false);
+            emitOpCallUser(context, typeInfoStruct->opUserPostMoveFct, typeInfoStruct->opPostMove, false);
         }
 
         // If the current scope contains a drop for that variable, then we remove it, because we have
