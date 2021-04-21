@@ -725,7 +725,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         auto one = table.structVarsToDrop[i];
         if (!one.typeStruct)
             continue;
-        if (!one.typeStruct->opDrop)
+        if (!one.typeStruct->opDrop && !one.typeStruct->opUserDropFct)
             continue;
 
         // Overload can be registered as "no drop", because of optimization and move semantic

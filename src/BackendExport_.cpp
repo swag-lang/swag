@@ -610,24 +610,23 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
     {
         for (auto func : publicSet->publicFunc)
         {
-            AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+            AstFuncDecl* node = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+            if (node->isSpecialFunctionGenerated())
+                continue;
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             node->computeFullNameForeign(true);
             bufferSwg.addIndent(indent);
-            bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")]", module->name.c_str(), node->fullnameForeign.c_str());
+
+            // Remape special functions to their generated equivalent
+            auto nf = node->fullnameForeign;
+            if (node->token.text == "opDrop")
+                nf += "Generated";
+
+            bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")]", module->name.c_str(), nf.c_str());
             bufferSwg.addEol();
             SWAG_CHECK(emitAttributes(typeFunc, indent));
             bufferSwg.addIndent(indent);
-
-            // Generated special function
-            if (node->extension && node->extension->bc && node->extension->bc->compilerGenerated)
-            {
-                bufferSwg.addStringFormat("func %s(using self);", node->token.text.c_str());
-                bufferSwg.addEol();
-            }
-            else
-                SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node, indent));
-
+            SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node, indent));
             node->exportForeignLine = bufferSwg.eolCount;
         }
     }

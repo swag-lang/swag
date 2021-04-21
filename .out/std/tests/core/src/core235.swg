@@ -1,4 +1,3 @@
-
 using core
 
 //#[swag.printbc]

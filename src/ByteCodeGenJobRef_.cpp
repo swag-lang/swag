@@ -949,19 +949,19 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
         generateStruct_opDrop(context, typeStruct);
         if (context->result == ContextResult::Pending)
             return true;
-        somethingToDo = typeStruct->opDrop;
+        somethingToDo = typeStruct->opDrop || typeStruct->opUserDropFct;
         break;
     case AstNodeKind::PostCopy:
         generateStruct_opPostCopy(context, typeStruct);
         if (context->result == ContextResult::Pending)
             return true;
-        somethingToDo = typeStruct->opPostCopy;
+        somethingToDo = typeStruct->opPostCopy || typeStruct->opUserPostCopyFct;
         break;
     case AstNodeKind::PostMove:
         generateStruct_opPostMove(context, typeStruct);
         if (context->result == ContextResult::Pending)
             return true;
-        somethingToDo = typeStruct->opPostMove;
+        somethingToDo = typeStruct->opPostMove || typeStruct->opUserPostMoveFct;
         break;
     }
 

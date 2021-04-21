@@ -460,17 +460,15 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         }
     }
 
-    // Need to wait for function full semantic resolve
-    if (typeInfoStruct->opUserDropFct)
-    {
-        needDrop = true;
-        if (!(typeInfoStruct->opUserDropFct->attributeFlags & ATTRIBUTE_FOREIGN))
-        {
-            askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-            if (context->result == ContextResult::Pending)
-                return true;
-        }
-    }
+    // If user function is foreign, then this is the generated version with everything already done
+    if (typeInfoStruct->opUserDropFct && typeInfoStruct->opUserDropFct->attributeFlags & ATTRIBUTE_FOREIGN)
+        return true;
+
+    // Need to wait for user function full semantic resolve
+    needDrop = true;
+    askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
+    if (context->result == ContextResult::Pending)
+        return true;
 
     if (!needDrop)
     {
@@ -546,10 +544,11 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
-    // Revert back function because it's empty
+    // Revert back function because is empty
     if (!canEmitOpCallUser(&cxt, nullptr, cxt.bc))
     {
-        typeInfoStruct->opDrop = nullptr;
+        typeInfoStruct->opDrop        = nullptr;
+        typeInfoStruct->opUserDropFct = nullptr;
         typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
         return true;
     }
@@ -814,13 +813,13 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
     // Need to drop first
-    if (typeInfoStruct->opDrop)
+    if (typeInfoStruct->opDrop || typeInfoStruct->opUserDropFct)
     {
         bool mustDrop = (from->flags & AST_NO_LEFT_DROP) ? false : true;
         if (mustDrop)
         {
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-            emitOpCallUser(context, nullptr, typeInfoStruct->opDrop, false);
+            emitOpCallUser(context, typeInfoStruct->opUserDropFct, typeInfoStruct->opDrop, false);
         }
     }
 
@@ -879,7 +878,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
         // Reinit source struct, except if AST_NO_RIGHT_DROP, because if we do not drop the
         // right expression, then this is not necessary to reinitialize it
         // Note that if we have remove the opDrop in the code above, no need to reinitialize the variable.
-        if (mustReinit && typeInfoStruct->opDrop && !(from->flags & AST_NO_RIGHT_DROP))
+        if (mustReinit && (typeInfoStruct->opDrop || typeInfoStruct->opUserDropFct) && !(from->flags & AST_NO_RIGHT_DROP))
         {
             if (typeInfoStruct->opInit && (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {

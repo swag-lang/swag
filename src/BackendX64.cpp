@@ -192,7 +192,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         // type section
         /////////////////////////////////////////////
         pp.sectionIndexTS = secIndex++;
-        concat.addString(".rdata\0\0", 8);                        // .Name
+        concat.addString(".data\0\0\0", 8);                       // .Name
         concat.addU32(0);                                         // .VirtualSize
         concat.addU32(0);                                         // .VirtualAddress
         pp.patchTSCount                   = concat.addU32Addr(0); // .SizeOfRawData
@@ -201,7 +201,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         concat.addU32(0);                                         // .PointerToLinenumbers
         pp.patchTSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
         concat.addU16(0);                                         // .NumberOfLinenumbers
-        pp.patchTSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_1BYTES);
+        pp.patchTSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
     }
 
     SWAG_ASSERT(precompileIndex != 0 || secIndex == NUM_SECTIONS_0 + 1);

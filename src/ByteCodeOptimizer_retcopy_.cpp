@@ -37,7 +37,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
         {
             if (!toDrop.typeStruct)
                 continue;
-            if (toDrop.storageOffset == orgOffset && toDrop.typeStruct->opDrop)
+            if (toDrop.storageOffset == orgOffset && (toDrop.typeStruct->opDrop || toDrop.typeStruct->opUserDropFct))
             {
                 hasDrop = true;
                 break;
@@ -57,7 +57,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
             if (ipe[0].op == ByteCodeOp::MakeStackPointer && ipe[0].b.u32 == orgOffset)
             {
                 if (ipe[1].op == ByteCodeOp::PushRAParam &&
-                    ipe[2].op == ByteCodeOp::LocalCall &&
+                    (ipe[2].op == ByteCodeOp::LocalCall || ipe[2].op == ByteCodeOp::ForeignCall) &&
                     ipe[3].op == ByteCodeOp::IncSPPostCall)
                 {
                     if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))

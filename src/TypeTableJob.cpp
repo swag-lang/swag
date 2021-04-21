@@ -5,6 +5,7 @@
 #include "TypeTableJob.h"
 #include "Generic.h"
 #include "ByteCode.h"
+#include "AstNode.h"
 
 thread_local Pool<TypeTableJob> g_Pool_typeTableJob;
 
@@ -33,18 +34,24 @@ bool TypeTableJob::computeStruct()
         segment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->callName(), DataSegment::RelocType::Local);
     }
 
-    concreteType->opDrop = nullptr;
-    if (realType->opDrop)
-    {
-        concreteType->opDrop = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opDrop);
-        segment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->callName(), DataSegment::RelocType::Local);
-    }
-
     concreteType->opReloc = nullptr;
     if (realType->opReloc)
     {
         concreteType->opReloc = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opReloc);
         segment->addInitPtrFunc(OFFSETOF(concreteType->opReloc), realType->opReloc->callName(), DataSegment::RelocType::Local);
+    }
+
+    concreteType->opDrop = nullptr;
+    if (realType->opDrop || realType->opUserDropFct)
+    {
+        concreteType->opDrop = ByteCodeRun::makeLambda(baseContext, realType->opUserDropFct, realType->opDrop);
+        if (!realType->opDrop)
+        {
+            realType->opUserDropFct->computeFullNameForeign(false);
+            segment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+        else
+            segment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->callName(), DataSegment::RelocType::Local);
     }
 
     concreteType->opPostCopy = nullptr;
@@ -198,6 +205,13 @@ JobResult TypeTableJob::execute()
     waitStructGenerated(realType);
     if (baseContext->result == ContextResult::Pending)
         return JobResult::KeepJobAlive;
+
+    // We also wait for dependencies, because we need to know the foreign address of special
+    // functions that will be stored in the struct type.
+    // And we cannot retrieve thoses addresses before the dlls have been generated.
+    if (!sourceFile->module->WaitForDependenciesDone(this))
+        return JobResult::KeepJobAlive;
+
     computeStruct();
 
     return JobResult::ReleaseJob;
