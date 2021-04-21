@@ -970,29 +970,23 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
         ensureCanBeChangedRC(context, node->expression->resultRegisterRC);
         auto startLoop = context->bc->numInstructions;
         emitInstruction(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
-        auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
 
         switch (node->kind)
         {
         case AstNodeKind::Drop:
-            inst->a.pointer = (uint8_t*) typeStruct->opDrop;
-            inst->b.pointer = (uint8_t*) typeStruct->opDrop->typeInfoFunc;
+            emitOpCallUser(context, typeStruct->opUserDropFct, typeStruct->opDrop, false);
             break;
         case AstNodeKind::PostCopy:
-            inst->a.pointer = (uint8_t*) typeStruct->opPostCopy;
-            inst->b.pointer = (uint8_t*) typeStruct->opPostCopy->typeInfoFunc;
+            emitOpCallUser(context, typeStruct->opUserPostCopyFct, typeStruct->opPostCopy, false);
             break;
         case AstNodeKind::PostMove:
-            inst->a.pointer = (uint8_t*) typeStruct->opPostMove;
-            inst->b.pointer = (uint8_t*) typeStruct->opPostMove->typeInfoFunc;
+            emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, false);
             break;
         }
 
-        emitInstruction(context, ByteCodeOp::IncSPPostCall, 8);
-
         if (numToDo != 1)
         {
-            inst        = emitInstruction(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
             inst->b.u64 = typeExpression->pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
             emitInstruction(context, ByteCodeOp::DecrementRA64, node->count->resultRegisterRC);
