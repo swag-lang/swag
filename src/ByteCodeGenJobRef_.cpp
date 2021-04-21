@@ -751,11 +751,11 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             if (context->result != ContextResult::Done)
                 return true;
 
-            SWAG_ASSERT(typeStruct->opInit);
+            SWAG_ASSERT(typeStruct->opInit || typeStruct->opUserInitFct);
             if (!generateStruct_opInit(context, typeStruct))
                 return false;
 
-            if (!canEmitOpCallUser(context, nullptr, typeStruct->opInit))
+            if (!canEmitOpCallUser(context, typeStruct->opUserInitFct, typeStruct->opInit))
                 return true;
 
             // Constant loop
@@ -770,8 +770,8 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             ensureCanBeChangedRC(context, rExpr);
             auto startLoop = context->bc->numInstructions;
             emitInstruction(context, ByteCodeOp::PushRAParam, rExpr);
-            SWAG_ASSERT(typeStruct->opInit);
-            emitOpCallUser(context, nullptr, typeStruct->opInit, false);
+            SWAG_ASSERT(typeStruct->opInit || typeStruct->opUserInitFct);
+            emitOpCallUser(context, typeStruct->opUserInitFct, typeStruct->opInit, false);
 
             // Dynamic loop
             if (numToInit == 0)

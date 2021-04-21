@@ -24,21 +24,33 @@ bool TypeTableJob::computeStruct()
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostMove;
     if (realType->opDrop || realType->opUserDropFct)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasDrop;
-    if (realType->opReloc)
+    if (realType->opReloc || realType->opUserRelocFct)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasReloc;
 
     concreteType->opInit = nullptr;
     if (realType->opInit)
     {
-        concreteType->opInit = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opInit);
-        segment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->callName(), DataSegment::RelocType::Local);
+        concreteType->opInit = ByteCodeRun::makeLambda(baseContext, realType->opUserInitFct, realType->opInit);
+        if (!realType->opInit)
+        {
+            realType->opUserInitFct->computeFullNameForeign(false);
+            segment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opUserInitFct->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+        else
+            segment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->callName(), DataSegment::RelocType::Local);
     }
 
     concreteType->opReloc = nullptr;
     if (realType->opReloc)
     {
-        concreteType->opReloc = ByteCodeRun::makeLambda(baseContext, nullptr, realType->opReloc);
-        segment->addInitPtrFunc(OFFSETOF(concreteType->opReloc), realType->opReloc->callName(), DataSegment::RelocType::Local);
+        concreteType->opReloc = ByteCodeRun::makeLambda(baseContext, realType->opUserRelocFct, realType->opReloc);
+        if (!realType->opReloc)
+        {
+            realType->opUserRelocFct->computeFullNameForeign(false);
+            segment->addInitPtrFunc(OFFSETOF(concreteType->opReloc), realType->opUserRelocFct->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+        else
+            segment->addInitPtrFunc(OFFSETOF(concreteType->opReloc), realType->opReloc->callName(), DataSegment::RelocType::Local);
     }
 
     concreteType->opDrop = nullptr;

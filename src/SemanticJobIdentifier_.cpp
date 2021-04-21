@@ -975,8 +975,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
         }
 
+        if (identifier->token.text == "opInit")
+            return context->report({identifier, identifier->token, "cannot reference 'opInit' special function (use '@init' instead)"});
         if (identifier->token.text == "opDrop")
             return context->report({identifier, identifier->token, "cannot reference 'opDrop' special function (use '@drop' instead)"});
+        if (identifier->token.text == "opReloc")
+            return context->report({identifier, identifier->token, "cannot reference 'opReloc' special function (use '@reloc' instead)"});
         if (identifier->token.text == "opPostCopy")
             return context->report({identifier, identifier->token, "cannot reference 'opPostCopy' special function (use '@postcopy' instead)"});
         if (identifier->token.text == "opPostMove")

@@ -65,171 +65,28 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     emitInstruction(context, ByteCodeOp::IncSPPostCall, numParams * 8);
 }
 
-bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
-{
-    scoped_lock lk(typeInfoStruct->mutex);
-    if (typeInfoStruct->opReloc)
-        return true;
-    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
-        return true;
-
-    // Be sure sub structs are generated too
-    for (auto typeParam : typeInfoStruct->fields)
-    {
-        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
-        if (typeVar->kind == TypeInfoKind::Array)
-            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
-        if (typeVar->kind != TypeInfoKind::Struct)
-            continue;
-        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        context->job->waitStructGenerated(typeStructVar);
-        if (context->result == ContextResult::Pending)
-            return true;
-        generateStruct_opReloc(context, typeStructVar);
-        if (context->result == ContextResult::Pending)
-            return true;
-    }
-
-    auto sourceFile = context->sourceFile;
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
-
-    ByteCode* opReloc     = g_Allocator.alloc<ByteCode>();
-    opReloc->sourceFile   = context->sourceFile;
-    opReloc->typeInfoFunc = g_TypeMgr.typeInfoOpCall2;
-    opReloc->name         = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opReloc";
-    opReloc->name.replaceAll('.', '_');
-    opReloc->maxReservedRegisterRC = 3;
-    opReloc->compilerGenerated     = true;
-    sourceFile->module->addByteCodeFunc(opReloc);
-    typeInfoStruct->opReloc = opReloc;
-
-    ByteCodeGenContext cxt{*context};
-    cxt.bc = opReloc;
-
-    for (auto param : typeInfoStruct->fields)
-    {
-        auto typeVar = TypeManager::concreteType(param->typeInfo);
-
-        if (!(typeVar->flags & TYPEINFO_RELATIVE))
-        {
-            if (typeVar->kind == TypeInfoKind::Struct)
-            {
-                auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-                if (!(typeVarStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
-                    continue;
-            }
-            else if (typeVar->kind == TypeInfoKind::Array)
-            {
-                auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
-                auto typeInVar = typeArray->finalType;
-                if (typeInVar->kind == TypeInfoKind::Struct)
-                {
-                    auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeInVar, TypeInfoKind::Struct);
-                    if (!(typeVarStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
-                        continue;
-                }
-                else if (!(typeInVar->flags & TYPEINFO_RELATIVE))
-                    continue;
-            }
-            else
-                continue;
-        }
-
-        // Reference to the field of the other struct
-        auto inst = emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 1, 32, 1);
-        if (param->offset)
-        {
-            inst        = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 1, 0, 1);
-            inst->b.u64 = param->offset;
-            inst->flags |= BCI_IMM_B;
-        }
-
-        // Reference to the field of myself
-        emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 0, 24, 0);
-        if (param->offset)
-        {
-            inst        = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
-            inst->b.u64 = param->offset;
-            inst->flags |= BCI_IMM_B;
-        }
-
-        if (typeVar->kind == TypeInfoKind::Pointer)
-        {
-            emitUnwrapRelativePointer(&cxt, 1, typeVar->relative);
-            emitWrapRelativePointer(&cxt, 0, 1, typeVar->relative, typeVar);
-        }
-        else if (typeVar->kind == TypeInfoKind::Struct)
-        {
-            auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-            emitInstruction(&cxt, ByteCodeOp::PushRAParam2, 1, 0);
-            emitOpCallUser(&cxt, nullptr, typeVarStruct->opReloc, false, 0, 2);
-        }
-        else if (typeVar->kind == TypeInfoKind::Array)
-        {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
-
-            // Need to loop on every element of the array in order to reloc them
-            RegisterList r0 = reserveRegisterRC(&cxt);
-
-            inst          = emitInstruction(&cxt, ByteCodeOp::SetImmediate32, r0);
-            inst->b.u64   = typeArray->totalCount;
-            auto seekJump = cxt.bc->numInstructions;
-
-            if (typeArray->pointedType->kind == TypeInfoKind::Pointer)
-            {
-                emitUnwrapRelativePointer(&cxt, 1, typeArray->finalType->relative);
-                emitWrapRelativePointer(&cxt, 0, 1, typeArray->finalType->relative, typeArray->finalType);
-            }
-            else if (typeArray->pointedType->kind == TypeInfoKind::Struct)
-            {
-                auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
-                emitInstruction(&cxt, ByteCodeOp::PushRAParam2, 1, 0);
-                emitOpCallUser(&cxt, nullptr, typeVarStruct->opReloc, false, 0, 2);
-            }
-            else
-            {
-                internalError(context, "generateStruct_opReloc, unknown array relative type");
-            }
-
-            inst = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
-            inst->flags |= BCI_IMM_B;
-            inst->b.u64 = typeArray->pointedType->sizeOf;
-            inst        = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 1, 0, 1);
-            inst->flags |= BCI_IMM_B;
-            inst->b.u64 = typeArray->pointedType->sizeOf;
-
-            emitInstruction(&cxt, ByteCodeOp::DecrementRA32, r0);
-            emitInstruction(&cxt, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - cxt.bc->numInstructions - 1;
-
-            freeRegisterRC(&cxt, r0);
-        }
-        else if (typeVar->kind == TypeInfoKind::Slice)
-        {
-            emitUnwrapRelativePointer(&cxt, 1, typeVar->relative);
-            emitWrapRelativePointer(&cxt, 0, 1, typeVar->relative, typeVar);
-        }
-        else
-        {
-            internalError(context, "generateStruct_opReloc, unknown relative type");
-        }
-    }
-
-    emitInstruction(&cxt, ByteCodeOp::Ret);
-    emitInstruction(&cxt, ByteCodeOp::End);
-
-    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-    {
-        unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
-        cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
-    }
-
-    return true;
-}
-
 bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     scoped_lock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->opInit)
+        return true;
+
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+
+    // Need to be sure that function has been solved
+    {
+        scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock("opInit");
+        if (symbol && symbol->cptOverloads)
+        {
+            symbol->addDependentJob(context->job);
+            context->job->setPending(symbol, "EMIT_INIT", structNode, nullptr);
+            return true;
+        }
+    }
+
+    // If user function is foreign, then this is the generated version with everything already done
+    if (typeInfoStruct->opUserInitFct && typeInfoStruct->opUserInitFct->attributeFlags & ATTRIBUTE_FOREIGN)
         return true;
 
     // Be sure sub structs are generated too
@@ -250,7 +107,6 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     }
 
     auto sourceFile = context->sourceFile;
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     ByteCode* opInit     = g_Allocator.alloc<ByteCode>();
     opInit->sourceFile   = context->sourceFile;
@@ -259,8 +115,22 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     opInit->name.replaceAll('.', '_');
     opInit->maxReservedRegisterRC = 3;
     opInit->compilerGenerated     = true;
+    typeInfoStruct->opInit        = opInit;
+
+    // Export generated function if necessary
+    if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
+    {
+        auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+        funcNode->typeInfo   = opInit->typeInfoFunc;
+        funcNode->ownerScope = structNode->scope;
+        funcNode->token.text = "opInitGenerated";
+        funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+        funcNode->allocateExtension();
+        funcNode->extension->bc = opInit;
+        opInit->node            = funcNode;
+    }
+
     sourceFile->module->addByteCodeFunc(opInit);
-    typeInfoStruct->opInit = opInit;
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opInit;
@@ -379,7 +249,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 if (typeArray->totalCount == 1)
                 {
                     emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-                    emitOpCallUser(&cxt, nullptr, typeInVarStruct->opInit, false);
+                    emitOpCallUser(&cxt, typeInVarStruct->opUserInitFct, typeInVarStruct->opInit, false);
                 }
                 else
                 {
@@ -391,7 +261,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                     auto seekJump = cxt.bc->numInstructions;
 
                     emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-                    emitOpCallUser(&cxt, nullptr, typeInVarStruct->opInit, false);
+                    emitOpCallUser(&cxt, typeInVarStruct->opUserInitFct, typeInVarStruct->opInit, false);
 
                     inst = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
                     inst->flags |= BCI_IMM_B;
@@ -411,9 +281,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         else if (typeVar->kind == TypeInfoKind::Struct && (typeVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
             auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-            SWAG_ASSERT(typeVarStruct->opInit);
+            SWAG_ASSERT(typeVarStruct->opInit || typeVarStruct->opUserInitFct);
             emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-            emitOpCallUser(&cxt, nullptr, typeVarStruct->opInit, false);
+            emitOpCallUser(&cxt, typeVarStruct->opUserInitFct, typeVarStruct->opInit, false);
         }
         else
         {
@@ -445,9 +315,6 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
-    // Do we need a drop ?
-    bool needDrop = false;
-
     // Need to be sure that function has been solved
     {
         scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
@@ -465,6 +332,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         return true;
 
     // Need to wait for user function full semantic resolve
+    bool needDrop = false;
     if (typeInfoStruct->opUserDropFct)
     {
         needDrop = true;
@@ -554,6 +422,198 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     }
 
     sourceFile->module->addByteCodeFunc(opDrop);
+    return true;
+}
+
+bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+{
+    scoped_lock lk(typeInfoStruct->mutex);
+    if (typeInfoStruct->opReloc)
+        return true;
+    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
+        return true;
+
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+
+    // Need to be sure that function has been solved
+    {
+        scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock("opReloc");
+        if (symbol && symbol->cptOverloads)
+        {
+            symbol->addDependentJob(context->job);
+            context->job->setPending(symbol, "EMIT_RELOC", structNode, nullptr);
+            return true;
+        }
+    }
+
+    // If user function is foreign, then this is the generated version with everything already done
+    if (typeInfoStruct->opUserRelocFct && typeInfoStruct->opUserRelocFct->attributeFlags & ATTRIBUTE_FOREIGN)
+        return true;
+
+    // Be sure sub structs are generated too
+    for (auto typeParam : typeInfoStruct->fields)
+    {
+        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        if (typeVar->kind == TypeInfoKind::Array)
+            typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
+        if (typeVar->kind != TypeInfoKind::Struct)
+            continue;
+        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        context->job->waitStructGenerated(typeStructVar);
+        if (context->result == ContextResult::Pending)
+            return true;
+        generateStruct_opReloc(context, typeStructVar);
+        if (context->result == ContextResult::Pending)
+            return true;
+    }
+
+    auto sourceFile = context->sourceFile;
+
+    ByteCode* opReloc     = g_Allocator.alloc<ByteCode>();
+    opReloc->sourceFile   = context->sourceFile;
+    opReloc->typeInfoFunc = g_TypeMgr.typeInfoOpCall2;
+    opReloc->name         = structNode->ownerScope->getFullName() + "_" + structNode->token.text.c_str() + "_opReloc";
+    opReloc->name.replaceAll('.', '_');
+    opReloc->maxReservedRegisterRC = 3;
+    opReloc->compilerGenerated     = true;
+    typeInfoStruct->opReloc        = opReloc;
+
+    // Export generated function if necessary
+    if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
+    {
+        auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+        funcNode->typeInfo   = opReloc->typeInfoFunc;
+        funcNode->ownerScope = structNode->scope;
+        funcNode->token.text = "opRelocGenerated";
+        funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+        funcNode->allocateExtension();
+        funcNode->extension->bc = opReloc;
+        opReloc->node           = funcNode;
+    }
+
+    sourceFile->module->addByteCodeFunc(opReloc);
+
+    ByteCodeGenContext cxt{*context};
+    cxt.bc = opReloc;
+
+    for (auto param : typeInfoStruct->fields)
+    {
+        auto typeVar = TypeManager::concreteType(param->typeInfo);
+
+        if (!(typeVar->flags & TYPEINFO_RELATIVE))
+        {
+            if (typeVar->kind == TypeInfoKind::Struct)
+            {
+                auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+                if (!(typeVarStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
+                    continue;
+            }
+            else if (typeVar->kind == TypeInfoKind::Array)
+            {
+                auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+                auto typeInVar = typeArray->finalType;
+                if (typeInVar->kind == TypeInfoKind::Struct)
+                {
+                    auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeInVar, TypeInfoKind::Struct);
+                    if (!(typeVarStruct->flags & TYPEINFO_STRUCT_HAS_RELATIVE_POINTERS))
+                        continue;
+                }
+                else if (!(typeInVar->flags & TYPEINFO_RELATIVE))
+                    continue;
+            }
+            else
+                continue;
+        }
+
+        // Reference to the field of the other struct
+        auto inst = emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 1, 32, 1);
+        if (param->offset)
+        {
+            inst        = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 1, 0, 1);
+            inst->b.u64 = param->offset;
+            inst->flags |= BCI_IMM_B;
+        }
+
+        // Reference to the field of myself
+        emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 0, 24, 0);
+        if (param->offset)
+        {
+            inst        = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
+            inst->b.u64 = param->offset;
+            inst->flags |= BCI_IMM_B;
+        }
+
+        if (typeVar->kind == TypeInfoKind::Pointer)
+        {
+            emitUnwrapRelativePointer(&cxt, 1, typeVar->relative);
+            emitWrapRelativePointer(&cxt, 0, 1, typeVar->relative, typeVar);
+        }
+        else if (typeVar->kind == TypeInfoKind::Struct)
+        {
+            auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+            emitInstruction(&cxt, ByteCodeOp::PushRAParam2, 1, 0);
+            emitOpCallUser(&cxt, typeVarStruct->opUserRelocFct, typeVarStruct->opReloc, false, 0, 2);
+        }
+        else if (typeVar->kind == TypeInfoKind::Array)
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+
+            // Need to loop on every element of the array in order to reloc them
+            RegisterList r0 = reserveRegisterRC(&cxt);
+
+            inst          = emitInstruction(&cxt, ByteCodeOp::SetImmediate32, r0);
+            inst->b.u64   = typeArray->totalCount;
+            auto seekJump = cxt.bc->numInstructions;
+
+            if (typeArray->pointedType->kind == TypeInfoKind::Pointer)
+            {
+                emitUnwrapRelativePointer(&cxt, 1, typeArray->finalType->relative);
+                emitWrapRelativePointer(&cxt, 0, 1, typeArray->finalType->relative, typeArray->finalType);
+            }
+            else if (typeArray->pointedType->kind == TypeInfoKind::Struct)
+            {
+                auto typeVarStruct = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
+                emitInstruction(&cxt, ByteCodeOp::PushRAParam2, 1, 0);
+                emitOpCallUser(&cxt, typeVarStruct->opUserRelocFct, typeVarStruct->opReloc, false, 0, 2);
+            }
+            else
+            {
+                internalError(context, "generateStruct_opReloc, unknown array relative type");
+            }
+
+            inst = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = typeArray->pointedType->sizeOf;
+            inst        = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 1, 0, 1);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u64 = typeArray->pointedType->sizeOf;
+
+            emitInstruction(&cxt, ByteCodeOp::DecrementRA32, r0);
+            emitInstruction(&cxt, ByteCodeOp::JumpIfNotZero32, r0)->b.s32 = seekJump - cxt.bc->numInstructions - 1;
+
+            freeRegisterRC(&cxt, r0);
+        }
+        else if (typeVar->kind == TypeInfoKind::Slice)
+        {
+            emitUnwrapRelativePointer(&cxt, 1, typeVar->relative);
+            emitWrapRelativePointer(&cxt, 0, 1, typeVar->relative, typeVar);
+        }
+        else
+        {
+            internalError(context, "generateStruct_opReloc, unknown relative type");
+        }
+    }
+
+    emitInstruction(&cxt, ByteCodeOp::Ret);
+    emitInstruction(&cxt, ByteCodeOp::End);
+
+    if (structNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+    {
+        unique_lock lk1(cxt.bc->sourceFile->module->mutexByteCode);
+        cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
+    }
+
     return true;
 }
 
@@ -848,11 +908,11 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     emitMemCpy(context, r0, r1, typeInfoStruct->sizeOf);
 
     // Reloc
-    if (typeInfoStruct->opReloc)
+    if (typeInfoStruct->opReloc || typeInfoStruct->opUserRelocFct)
     {
         PushICFlags sf(context, BCI_POST_COPYMOVE);
         emitInstruction(context, ByteCodeOp::PushRAParam2, r1, r0);
-        emitOpCallUser(context, nullptr, typeInfoStruct->opReloc, false, 0, 2);
+        emitOpCallUser(context, typeInfoStruct->opUserRelocFct, typeInfoStruct->opReloc, false, 0, 2);
     }
 
     // A copy
@@ -901,10 +961,10 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
         // Note that if we have remove the opDrop in the code above, no need to reinitialize the variable.
         if (mustReinit && (typeInfoStruct->opDrop || typeInfoStruct->opUserDropFct) && !(from->flags & AST_NO_RIGHT_DROP))
         {
-            if (typeInfoStruct->opInit && (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
+            if ((typeInfoStruct->opInit || typeInfoStruct->opUserInitFct) && (typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {
                 emitInstruction(context, ByteCodeOp::PushRAParam, r1);
-                emitOpCallUser(context, nullptr, typeInfoStruct->opInit, false);
+                emitOpCallUser(context, typeInfoStruct->opUserInitFct, typeInfoStruct->opInit, false);
             }
             else
             {
@@ -972,9 +1032,9 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
             emitInstruction(context, ByteCodeOp::IncPointer64, r0, regOffset, r0);
 
         // Then call
-        SWAG_ASSERT(typeInfoStruct->opInit);
+        SWAG_ASSERT(typeInfoStruct->opInit || typeInfoStruct->opUserInitFct);
         emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-        emitOpCallUser(context, nullptr, typeInfoStruct->opInit, false);
+        emitOpCallUser(context, typeInfoStruct->opUserInitFct, typeInfoStruct->opInit, false);
         freeRegisterRC(context, r0);
     }
 

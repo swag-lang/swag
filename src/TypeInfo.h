@@ -536,13 +536,15 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfoStruct* fromGeneric       = nullptr;
     Scope*          scope             = nullptr;
     ByteCode*       opInit            = nullptr;
-    ByteCode*       opReloc           = nullptr;
-    AstFuncDecl*    opUserPostCopyFct = nullptr;
-    ByteCode*       opPostCopy        = nullptr;
-    AstFuncDecl*    opUserPostMoveFct = nullptr;
-    ByteCode*       opPostMove        = nullptr;
-    AstFuncDecl*    opUserDropFct     = nullptr;
+    AstFuncDecl*    opUserInitFct     = nullptr;
     ByteCode*       opDrop            = nullptr;
+    AstFuncDecl*    opUserDropFct     = nullptr;
+    ByteCode*       opReloc           = nullptr;
+    AstFuncDecl*    opUserRelocFct    = nullptr;
+    ByteCode*       opPostCopy        = nullptr;
+    AstFuncDecl*    opUserPostCopyFct = nullptr;
+    ByteCode*       opPostMove        = nullptr;
+    AstFuncDecl*    opUserPostMoveFct = nullptr;
 
     uint32_t alignOf                = 0;
     uint32_t cptRemainingInterfaces = 0;

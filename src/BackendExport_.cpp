@@ -619,7 +619,11 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
 
             // Remape special functions to their generated equivalent
             auto nf = node->fullnameForeign;
-            if (node->token.text == "opDrop" || node->token.text == "opPostCopy" || node->token.text == "opPostMove")
+            if (node->token.text == "opInit" ||
+                node->token.text == "opDrop" ||
+                node->token.text == "opReloc" ||
+                node->token.text == "opPostCopy" ||
+                node->token.text == "opPostMove")
                 nf += "Generated";
 
             bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")]", module->name.c_str(), nf.c_str());

@@ -370,11 +370,11 @@ struct ByteCodeGenJob : public Job
     static void        emitSafetyCast(ByteCodeGenContext* context, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, AstNode* exprNode);
     static void        emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, AstArrayPointerSlicing* node);
 
+    static bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
+    static bool generateStruct_opReloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
-    static bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
-    static bool generateStruct_opReloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
 
     static void     transformResultToLinear2(ByteCodeGenContext* context, AstNode* node);

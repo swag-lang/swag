@@ -539,7 +539,28 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // Special functions registration
     if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
     {
-        if (funcNode->token.text == "opPostCopy")
+        if (funcNode->token.text == "opInit")
+        {
+            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            scoped_lock lk(typeStruct->mutex);
+            typeStruct->opUserInitFct = funcNode;
+        }
+        else if (funcNode->token.text == "opDrop")
+        {
+            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            scoped_lock lk(typeStruct->mutex);
+            typeStruct->opUserDropFct = funcNode;
+        }
+        else if (funcNode->token.text == "opReloc")
+        {
+            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            scoped_lock lk(typeStruct->mutex);
+            typeStruct->opUserRelocFct = funcNode;
+        }
+        else if (funcNode->token.text == "opPostCopy")
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
@@ -553,13 +574,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             scoped_lock lk(typeStruct->mutex);
             typeStruct->opUserPostMoveFct = funcNode;
-        }
-        else if (funcNode->token.text == "opDrop")
-        {
-            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-            scoped_lock lk(typeStruct->mutex);
-            typeStruct->opUserDropFct = funcNode;
         }
     }
 
