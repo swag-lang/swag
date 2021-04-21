@@ -506,6 +506,19 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     opDrop->maxReservedRegisterRC = 3;
     opDrop->compilerGenerated     = true;
 
+    // Export generated function if necessary
+    if (structNode->attributeFlags & ATTRIBUTE_PUBLIC && !(structNode->flags & AST_FROM_GENERIC))
+    {
+        auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+        funcNode->typeInfo   = opDrop->typeInfoFunc;
+        funcNode->ownerScope = structNode->scope;
+        funcNode->token.text = "opDropGenerated";
+        funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+        funcNode->allocateExtension();
+        funcNode->extension->bc = opDrop;
+        opDrop->node            = funcNode;
+    }
+
     ByteCodeGenContext cxt{*context};
     cxt.bc = opDrop;
 

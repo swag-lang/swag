@@ -4,6 +4,7 @@
 #include "Generic.h"
 #include "Module.h"
 #include "Diagnostic.h"
+#include "ByteCode.h"
 
 void AstNode::swap2Childs()
 {
@@ -34,6 +35,13 @@ AstNode* AstNode::inSimpleReturn()
     if (test->kind == AstNodeKind::Catch && test->parent->kind == AstNodeKind::Return)
         return test->parent;
     return nullptr;
+}
+
+bool AstNode::isSpecialFunctionGenerated()
+{
+    if (!extension || !extension->bc || !extension->bc->compilerGenerated)
+        return false;
+    return true;
 }
 
 bool AstNode::isSpecialFunctionName()

@@ -23,7 +23,7 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job
                 continue;
             if (node->attributeFlags & ATTRIBUTE_FOREIGN)
                 continue;
-            if (!node->content)
+            if (!node->content && !node->isSpecialFunctionGenerated())
                 continue;
         }
 

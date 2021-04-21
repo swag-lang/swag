@@ -390,6 +390,9 @@ llvm::DISubprogram* BackendLLVMDbg::startFunction(ByteCode* bc, AstFuncDecl** re
 
 void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
 {
+    if (bc->node && bc->node->isSpecialFunctionGenerated())
+        return;
+
     auto& builder = *pp.builder;
     builder.SetCurrentDebugLocation(llvm::DebugLoc());
     lastDebugLine        = 0;
@@ -530,6 +533,9 @@ void BackendLLVMDbg::startWrapperFunction(LLVMPerThread& pp, ByteCode* bc, AstFu
 
 void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip)
 {
+    if (bc->node && bc->node->isSpecialFunctionGenerated())
+        return;
+
     SWAG_ASSERT(dbgBuilder);
 
     SourceFile*     sourceFile;

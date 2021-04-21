@@ -193,6 +193,9 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         for (int i = 1; i < parameters->childs.size() - 1; i++)
             SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr.typeInfoUInt));
     }
+    else if (name == "opDropGenerated" && node->sourceFile->generated)
+    {
+    }
     else
     {
         return context->report({node, node->token, format("function '%s' does not match a special function/operator overload", name.c_str())});

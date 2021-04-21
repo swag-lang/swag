@@ -367,6 +367,7 @@ struct AstNode
     bool             hasSpecialFuncCall();
     AstNode*         inSimpleReturn();
     bool             isSpecialFunctionName();
+    bool             isSpecialFunctionGenerated();
 
     struct Extension
     {

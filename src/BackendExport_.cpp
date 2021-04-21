@@ -7,6 +7,8 @@
 #include "Module.h"
 #include "Profile.h"
 #include "ModuleSaveExportJob.h"
+#include "AstNode.h"
+#include "ByteCode.h"
 
 bool Backend::emitAttributesUsage(TypeInfoFuncAttr* typeFunc, int indent)
 {
@@ -616,7 +618,16 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
             bufferSwg.addEol();
             SWAG_CHECK(emitAttributes(typeFunc, indent));
             bufferSwg.addIndent(indent);
-            SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node, indent));
+
+            // Generated special function
+            if (node->extension && node->extension->bc && node->extension->bc->compilerGenerated)
+            {
+                bufferSwg.addStringFormat("func %s(using self);", node->token.text.c_str());
+                bufferSwg.addEol();
+            }
+            else
+                SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node, indent));
+
             node->exportForeignLine = bufferSwg.eolCount;
         }
     }

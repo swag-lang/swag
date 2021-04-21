@@ -131,7 +131,7 @@ enum SimpleTypeMode : DbgTypeIndex
 
 void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
 {
-    if (!coffFct->node)
+    if (!coffFct->node || coffFct->node->isSpecialFunctionGenerated())
         return;
 
     if (!ip)
@@ -915,8 +915,9 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
     for (auto& f : pp.functions)
     {
-        if (!f.node)
+        if (!f.node || f.node->isSpecialFunctionGenerated())
             continue;
+
         auto decl     = CastAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
 
