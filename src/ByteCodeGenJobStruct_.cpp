@@ -125,6 +125,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         funcNode->ownerScope = structNode->scope;
         funcNode->token.text = "opInitGenerated";
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+        if (typeInfoStruct->opUserInitFct)
+            typeInfoStruct->opUserInitFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
         funcNode->allocateExtension();
         funcNode->extension->bc = opInit;
         opInit->node            = funcNode;
@@ -380,6 +382,8 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         funcNode->ownerScope = structNode->scope;
         funcNode->token.text = "opDropGenerated";
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+        if (typeInfoStruct->opUserDropFct)
+            typeInfoStruct->opUserDropFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
         funcNode->allocateExtension();
         funcNode->extension->bc = opDrop;
         opDrop->node            = funcNode;
@@ -487,6 +491,8 @@ bool ByteCodeGenJob::generateStruct_opReloc(ByteCodeGenContext* context, TypeInf
         funcNode->ownerScope = structNode->scope;
         funcNode->token.text = "opRelocGenerated";
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+        if (typeInfoStruct->opUserRelocFct)
+            typeInfoStruct->opUserRelocFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
         funcNode->allocateExtension();
         funcNode->extension->bc = opReloc;
         opReloc->node           = funcNode;
@@ -696,6 +702,8 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         funcNode->ownerScope = structNode->scope;
         funcNode->token.text = "opPostMoveGenerated";
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+        if (typeInfoStruct->opUserPostMoveFct)
+            typeInfoStruct->opUserPostMoveFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
         funcNode->allocateExtension();
         funcNode->extension->bc = opPostMove;
         opPostMove->node        = funcNode;
@@ -817,6 +825,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         funcNode->ownerScope = structNode->scope;
         funcNode->token.text = "opPostCopyGenerated";
         funcNode->attributeFlags |= ATTRIBUTE_PUBLIC;
+        if (typeInfoStruct->opUserPostCopyFct)
+            typeInfoStruct->opUserPostCopyFct->attributeFlags &= ~ATTRIBUTE_PUBLIC;
         funcNode->allocateExtension();
         funcNode->extension->bc = opPostCopy;
         opPostCopy->node        = funcNode;

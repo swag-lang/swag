@@ -27,8 +27,9 @@ bool TypeTableJob::computeStruct()
     if (realType->opReloc || realType->opUserRelocFct)
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasReloc;
 
+    // Special functions lambdas
     concreteType->opInit = nullptr;
-    if (realType->opInit)
+    if (realType->opInit || realType->opUserInitFct)
     {
         concreteType->opInit = ByteCodeRun::makeLambda(baseContext, realType->opUserInitFct, realType->opInit);
         if (!realType->opInit)
@@ -41,7 +42,7 @@ bool TypeTableJob::computeStruct()
     }
 
     concreteType->opReloc = nullptr;
-    if (realType->opReloc)
+    if (realType->opReloc || realType->opUserRelocFct)
     {
         concreteType->opReloc = ByteCodeRun::makeLambda(baseContext, realType->opUserRelocFct, realType->opReloc);
         if (!realType->opReloc)

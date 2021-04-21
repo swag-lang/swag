@@ -216,6 +216,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstNode* node, As
         CONCAT_FIXED_STR(bufferSwg, "attr ");
     else
         CONCAT_FIXED_STR(bufferSwg, "func ");
+
     bufferSwg.addString(node->token.text.c_str());
     CONCAT_FIXED_STR(bufferSwg, "(");
 
@@ -610,27 +611,50 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
     {
         for (auto func : publicSet->publicFunc)
         {
-            AstFuncDecl* node = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
-            if (node->isSpecialFunctionGenerated())
+            AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+
+            // Can be removed in case of special functions
+            if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
                 continue;
+
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             node->computeFullNameForeign(true);
             bufferSwg.addIndent(indent);
 
             // Remape special functions to their generated equivalent
-            auto nf = node->fullnameForeign;
-            if (node->token.text == "opInit" ||
-                node->token.text == "opDrop" ||
-                node->token.text == "opReloc" ||
-                node->token.text == "opPostCopy" ||
-                node->token.text == "opPostMove")
-                nf += "Generated";
-
-            bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")]", module->name.c_str(), nf.c_str());
+            bufferSwg.addStringFormat("#[foreign(\"%s\", \"%s\")]", module->name.c_str(), node->fullnameForeign.c_str());
             bufferSwg.addEol();
             SWAG_CHECK(emitAttributes(typeFunc, indent));
             bufferSwg.addIndent(indent);
-            SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node, indent));
+
+            if (node->token.text == "opInitGenerated")
+            {
+                CONCAT_FIXED_STR(bufferSwg, "func opInit(using self);");
+                bufferSwg.addEol();
+            }
+            else if (node->token.text == "opDropGenerated")
+            {
+                CONCAT_FIXED_STR(bufferSwg, "func opDrop(using self);");
+                bufferSwg.addEol();
+            }
+            else if (node->token.text == "opRelocGenerated")
+            {
+                CONCAT_FIXED_STR(bufferSwg, "func opReloc(using self);");
+                bufferSwg.addEol();
+            }
+            else if (node->token.text == "opPostCopyGenerated")
+            {
+                CONCAT_FIXED_STR(bufferSwg, "func opPostCopy(using self);");
+                bufferSwg.addEol();
+            }
+            else if (node->token.text == "opPostMoveGenerated")
+            {
+                CONCAT_FIXED_STR(bufferSwg, "func opPostMove(using self);");
+                bufferSwg.addEol();
+            }
+            else
+                SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node, indent));
+
             node->exportForeignLine = bufferSwg.eolCount;
         }
     }
