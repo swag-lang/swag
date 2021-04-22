@@ -866,12 +866,10 @@ impl Decoder
                 d1[1] = clamp(yy +,safe gc)
                 d1[0] = clamp(yy +,safe bc)
 
-                d0 += 3
-                d1 += 3
+                d0, d1 += 3
             }
 
-            y += 64 * 4
-            c += 64 * 4
+            y, c += 64 * 4
         }
     }
 
