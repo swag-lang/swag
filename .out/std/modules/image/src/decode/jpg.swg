@@ -386,7 +386,7 @@ impl Decoder
         {
             c = getChar()
             if c != 0xFF
-                break;
+                break
             i -= 1
         }
 
@@ -471,7 +471,7 @@ impl Decoder
                                 kt := k
                                 while n
                                 {
-                                    p[Zag[kt]] = 0;
+                                    p[Zag[kt]] = 0
                                     n -= 1
                                     kt += 1
                                 }
@@ -500,7 +500,7 @@ impl Decoder
                                 kt := k
                                 while n
                                 {
-                                    p[Zag[kt]] = 0;
+                                    p[Zag[kt]] = 0
                                     n -= 1
                                     kt += 1
                                 }
@@ -553,7 +553,7 @@ impl Decoder
                 dataPtr[6] = dcval
                 dataPtr[7] = dcval
                 dataPtr += 8
-                continue;
+                continue
             }
 
             z2 := cast(s32) dataPtr[2]
@@ -1172,7 +1172,7 @@ impl Decoder
         while p < lastp
         {
             i := huffVal[_index].buffer[p]
-            cde = huffCode[p];
+            cde = huffCode[p]
             codeSize := huffSize[p]
             _hs.codeSize[i] = cast(u8) codeSize
             if codeSize <= 8
@@ -1354,7 +1354,7 @@ impl Decoder
         {
             s := huffDecode(&h[compAcTab[cmpId]])
             r := s >> 4
-            s &= 0x0F;
+            s &= 0x0F
 
             if s
             {
@@ -1800,7 +1800,7 @@ impl Decoder
 
         while left
         {
-            index := getBits1(8);
+            index := getBits1(8)
             count := 0
             huffNumt[0] = 0
             for i := 1; i <= 16; i += 1
@@ -1910,7 +1910,7 @@ impl Decoder
             while ci < compsInFrame
             {
                 if (cc == compIdent[ci])
-                    break;
+                    break
                 ci += 1
             }
 
