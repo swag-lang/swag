@@ -559,12 +559,18 @@ struct AstBreakContinue : public AstNode
 const uint32_t BREAKABLE_CAN_HAVE_INDEX    = 0x00000001;
 const uint32_t BREAKABLE_CAN_HAVE_CONTINUE = 0x00000002;
 const uint32_t BREAKABLE_NEED_INDEX        = 0x00000004;
+const uint32_t BREAKABLE_NEED_INDEX1       = 0x00000008;
 
 struct AstBreakable : public AstNode
 {
     bool needIndex()
     {
         return breakableFlags & BREAKABLE_NEED_INDEX;
+    }
+
+    bool needIndex1()
+    {
+        return breakableFlags & BREAKABLE_NEED_INDEX1;
     }
 
     void copyFrom(CloneContext& context, AstBreakable* from);
@@ -575,6 +581,7 @@ struct AstBreakable : public AstNode
 
     uint32_t breakableFlags = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
     uint32_t registerIndex;
+    uint32_t registerIndex1;
     int      seekJumpBeforeContinue;
     int      seekJumpBeforeExpression;
     int      seekJumpExpression;
@@ -619,6 +626,7 @@ struct AstLoop : public AstBreakable
 
     AstNode* specificName;
     AstNode* expression;
+    AstNode* expression1;
     AstNode* block;
 };
 

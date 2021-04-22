@@ -280,6 +280,13 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         Ast::addChildBack(node, node->expression);
     }
 
+    // Range
+    if (token.id == TokenId::SymDotDot)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doExpression(node, &node->expression1));
+    }
+
     // Creates a variable if we have a named index
     if (!name.empty())
     {
@@ -297,7 +304,6 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(doEmbeddedStatement(node, &node->block));
-
     return true;
 }
 

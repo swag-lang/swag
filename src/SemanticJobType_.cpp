@@ -7,6 +7,8 @@
 
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 {
+    if (!node)
+        return true;
     if (node->flags & AST_R_VALUE)
         return true;
     if (node->flags & AST_VALUE_COMPUTED && !(node->flags & AST_NO_BYTECODE))

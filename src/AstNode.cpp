@@ -861,6 +861,7 @@ void AstBreakable::copyFrom(CloneContext& context, AstBreakable* from)
     AstNode::copyFrom(context, from, false);
     breakableFlags = from->breakableFlags;
     registerIndex  = from->registerIndex;
+    registerIndex1 = from->registerIndex1;
 }
 
 AstNode* AstBreakContinue::clone(CloneContext& context)
@@ -951,6 +952,7 @@ AstNode* AstLoop::clone(CloneContext& context)
 
     newNode->specificName = findChildRef(specificName, newNode);
     newNode->expression   = findChildRef(expression, newNode);
+    newNode->expression1  = findChildRef(expression1, newNode);
     newNode->block        = findChildRef(block, newNode);
     return newNode;
 }

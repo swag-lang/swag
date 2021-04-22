@@ -272,6 +272,7 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
         {
         case AstNodeKind::Loop:
             freeRegisterRC(context, ((AstLoop*) node)->expression);
+            freeRegisterRC(context, ((AstLoop*) node)->expression1);
             break;
         case AstNodeKind::While:
             freeRegisterRC(context, ((AstWhile*) node)->boolExpression);
@@ -285,6 +286,8 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
     freeRegisterRC(context, node);
     if (node->needIndex())
         freeRegisterRC(context, node->registerIndex);
+    if (node->needIndex1())
+        freeRegisterRC(context, node->registerIndex1);
 
     return true;
 }
@@ -309,25 +312,37 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
 
     // To store the 'index' of the loop
-    if (loopNode->needIndex())
+    loopNode->registerIndex = reserveRegisterRC(context);
+    loopNode->breakableFlags |= BREAKABLE_NEED_INDEX;
+
+    if (!loopNode->expression1)
     {
-        loopNode->registerIndex = reserveRegisterRC(context);
-        auto inst               = emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex);
-        inst->b.s64             = -1;
-    }
+        emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex)->b.s64 = -1;
 
-    loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
-    loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
-    loopNode->seekJumpExpression       = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRC);
-
-    // Decrement the loop variable
-    emitInstruction(context, ByteCodeOp::DecrementRA64, node->resultRegisterRC);
-
-    // Increment the index
-    if (loopNode->needIndex())
-    {
+        loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+        loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
         emitInstruction(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
+        loopNode->seekJumpExpression = context->bc->numInstructions;
+        emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRC);
+    }
+    else
+    {
+        loopNode->registerIndex1 = reserveRegisterRC(context);
+        loopNode->breakableFlags |= BREAKABLE_NEED_INDEX1;
+
+        // registerIndex1 contains the increment to the index (-1 or 1)
+        emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex1)->b.s64 = 1;
+        emitInstruction(context, ByteCodeOp::JumpIfLowerEqS64, loopNode->expression->resultRegisterRC, 1, loopNode->expression1->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::SetImmediate64, loopNode->registerIndex1)->b.s64 = -1;
+
+        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, loopNode->expression->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::BinOpMinusS64, loopNode->registerIndex, loopNode->registerIndex1, loopNode->registerIndex);
+
+        loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+        loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
+        loopNode->seekJumpExpression       = context->bc->numInstructions;
+        emitInstruction(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, loopNode->expression1->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::BinOpPlusS64, loopNode->registerIndex, loopNode->registerIndex1, loopNode->registerIndex);
     }
 
     return true;
@@ -409,9 +424,7 @@ bool ByteCodeGenJob::emitWhileAfterExpr(ByteCodeGenContext* context)
 
     // Increment the index
     if (whileNode->needIndex())
-    {
         emitInstruction(context, ByteCodeOp::IncrementRA64, whileNode->registerIndex);
-    }
 
     return true;
 }
