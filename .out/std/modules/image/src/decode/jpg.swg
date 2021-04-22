@@ -1047,9 +1047,10 @@ impl Decoder
 
         quantBuf.resize(cast(uint) maxBlocksPerRow * 64 * @sizeof(s16) + 8)
         loop i: maxBlocksPerRow
+        {
             blockSeg[i] = cast(*s16) (quantBuf.buffer + i * 64 * @sizeof(s16))
-        loop i: maxBlocksPerRow
             blockMaxZagSet[i] = 64
+        }
 
         sampleBuf.resize(cast(uint) maxBlocksPerRow * 64 + 8)
         pSampleBuf = sampleBuf.buffer
