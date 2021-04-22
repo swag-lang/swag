@@ -848,7 +848,7 @@ impl Decoder
         d0 := scanLine0.buffer
         d1 := scanLine1.buffer
 
-        var y: *u8
+        var y: *u8 = ?
         if row < 8
             y = pSampleBuf + row * 8
         else
@@ -932,7 +932,7 @@ impl Decoder
         d0 := scanLine0.buffer
         d1 := scanLine1.buffer
 
-        var y: *u8
+        var y: *u8 = ?
         if (row < 8)
             y = pSampleBuf + row * 8
         else
@@ -1070,8 +1070,7 @@ impl Decoder
 
     func createLookUps(using self)
     {
-        var fix: [4] s32
-
+        var fix: [4] s32 = ?
         fix[0] = cast(s32) ((1.40200 / 2) * (1 << 16) + 0.5)
         fix[1] = cast(s32) ((1.77200 / 2) * (1 << 16) + 0.5)
         fix[2] = cast(s32) -((0.71414 / 2) * (1 << 16) + 0.5)
@@ -1179,7 +1178,6 @@ impl Decoder
 
         nextFreeEntry := -1
         p = 0
-
         while p < lastp
         {
             i := huffVal[_index].buffer[p]
@@ -1890,7 +1888,7 @@ impl Decoder
 
         compsInFrame = getBits1(8)
         if compsInFrame > MaxComponents throw "too many components"
-        if left != (compsInFrame * 3 + 8) throw "bad sqf length"
+        if left != (compsInFrame * 3 + 8) throw "bad sof length"
 
         loop i: compsInFrame
         {
