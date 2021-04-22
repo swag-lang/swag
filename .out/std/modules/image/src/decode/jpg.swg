@@ -305,7 +305,7 @@ impl Decoder
         var blockMcuX: [MaxComponents] s32
 
         rowBlock := 0
-        loop mcu_row: mcusPerRow
+        loop mcusPerRow
         {
             blockMcuOfsX := 0
             blockMcuOfsY := 0
@@ -428,7 +428,7 @@ impl Decoder
     func decodeNextRow(using self) throw
     {
         rowBlock := 0
-        loop mcu_row: mcusPerRow
+        loop mcusPerRow
         {
             if restartInterval && (restartsLeft == 0)
                 try restartProcess()
@@ -1130,7 +1130,7 @@ impl Decoder
         }
     }
 
-    func makeHuffTable(using self, _index: s32, _hs: *HuffTables)
+    func makeHuffTable(using self, idx: s32, hs: *HuffTables)
     {
         var huffSize: [257] u8
         var huffCode: [257] u32
@@ -1138,7 +1138,7 @@ impl Decoder
         p := 0
         for l := 1; l <= 16; l += 1
         {
-            for i := 1; i <= huffNum[_index].buffer[l]; i += 1
+            for i := 1; i <= huffNum[idx].buffer[l]; i += 1
             {
                 huffSize[p] = cast(u8) l
                 p += 1
@@ -1163,34 +1163,34 @@ impl Decoder
             si += 1
         }
 
-        memory.clear(_hs.lookUp, @sizeof(_hs.lookUp))
-        memory.clear(_hs.tree, @sizeof(_hs.tree))
-        memory.clear(_hs.codeSize, @sizeof(_hs.codeSize))
+        memory.clear(hs.lookUp, @sizeof(hs.lookUp))
+        memory.clear(hs.tree, @sizeof(hs.tree))
+        memory.clear(hs.codeSize, @sizeof(hs.codeSize))
 
         nextFreeEntry := -1
         p = 0
         while p < lastp
         {
-            i := huffVal[_index].buffer[p]
+            i := huffVal[idx].buffer[p]
             cde = huffCode[p]
             codeSize := huffSize[p]
-            _hs.codeSize[i] = cast(u8) codeSize
+            hs.codeSize[i] = cast(u8) codeSize
             if codeSize <= 8
             {
                 cde <<= (8 - codeSize)
                 for l := 1 << (8 - codeSize); l > 0; l -= 1
                 {
-                    _hs.lookUp[cde] = i
+                    hs.lookUp[cde] = i
                     cde += 1
                 }
             }
             else
             {
                 subtree := (cde >>,safe (codeSize - 8)) & 0xFF
-                currentEntry := _hs.lookUp[subtree]
+                currentEntry := hs.lookUp[subtree]
                 if currentEntry == 0
                 {
-                    _hs.lookUp[subtree] = nextFreeEntry
+                    hs.lookUp[subtree] = nextFreeEntry
                     currentEntry = nextFreeEntry
                     nextFreeEntry -= 2
                 }
@@ -1201,21 +1201,21 @@ impl Decoder
                     if (cde & 0x8000) == 0
                         currentEntry -= 1
 
-                    if _hs.tree[-currentEntry - 1] == 0
+                    if hs.tree[-currentEntry - 1] == 0
                     {
-                        _hs.tree[-currentEntry - 1] = nextFreeEntry
+                        hs.tree[-currentEntry - 1] = nextFreeEntry
                         currentEntry = nextFreeEntry
                         nextFreeEntry -= 2
                     }
                     else
-                        currentEntry = _hs.tree[-currentEntry - 1]
+                        currentEntry = hs.tree[-currentEntry - 1]
 
                     cde <<= 1
                 }
 
                 if (cde & 0x8000) == 0
                     currentEntry -= 1
-                _hs.tree[-currentEntry - 1] = i
+                hs.tree[-currentEntry - 1] = i
             }
 
             p += 1
@@ -1287,9 +1287,9 @@ impl Decoder
         else
         {
             blocksPerMcu = 0
-            loop component_num: compsInScan
+            loop cNum: compsInScan
             {
-                cid := compList[component_num]
+                cid := compList[cNum]
                 num_blocks := compSampH[cid] * compSampV[cid]
                 while num_blocks
                 {
@@ -1304,12 +1304,13 @@ impl Decoder
     func coeffBufOpen(blkNumX, blkNumY, blkLenX, blkLenY: s32)->CoeffBuf
     {
         var result: retval
-        result.blockNumX = blkNumX
-        result.blockNumY = blkNumY
-        result.blockLenX = blkLenX
-        result.blockLenY = blkLenY
-        result.blockSize  = (blkLenX * blkLenY) * @sizeof(s16)
-        result.pdata.resize(cast(uint) result.blockSize * blkNumX * blkNumY)
+        using result
+        blockNumX = blkNumX
+        blockNumY = blkNumY
+        blockLenX = blkLenX
+        blockLenY = blkLenY
+        blockSize  = (blkLenX * blkLenY) * @sizeof(s16)
+        pdata.resize(cast(uint) blockSize * blkNumX * blkNumY)
         return result
     }
 
@@ -1491,10 +1492,10 @@ impl Decoder
         var blockMcutX: [MaxComponents] s32
         var blockMcutY: [MaxComponents] s32
 
-        loop mcu_col: mcusPerCol
+        loop mcusPerCol
         {
             memory.clear(blockMcutX, @sizeof(blockMcutX))
-            loop mcu_row: mcusPerRow
+            loop mcusPerRow
             {
                 blockMcuOfsX := 0
                 blockMcuOfsY := 0
