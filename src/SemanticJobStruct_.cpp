@@ -525,6 +525,16 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     else if (typeInfo->attributes.getValue("swag.pack", "value", value))
         node->packing = value.reg.u8;
 
+    // Check 'opaque' attribute
+    if (!sourceFile->generated)
+    {
+        if (node->attributeFlags & ATTRIBUTE_OPAQUE)
+        {
+            SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_PUBLIC, context->report({node, node->token, "struct cannot be marked with 'swag.opaque' because it is not public"}));
+            SWAG_VERIFY(!sourceFile->forceExport, context->report({node, node->token, "struct cannot be marked with 'swag.opaque' because the whole file is exported ('#global export')"}));
+        }
+    }
+
     uint32_t storageOffset     = 0;
     uint32_t storageIndexField = 0;
     uint32_t storageIndexConst = 0;
