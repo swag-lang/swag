@@ -2,6 +2,7 @@
 {
     // loop are used to iterate a given amount of time
     // The loop expression value is evaluated once.
+    // The loop expression must be a positive value.
     {
         cpt := 0
         loop 10 cpt += 1
@@ -24,10 +25,10 @@
         cpt := 0
         cpt1 := 0
 
-        loop i: 5
+        loop i: 5   // index is named 'i'
         {
             cpt += i
-            cpt1 += @index
+            cpt1 += @index  // @index is always available, even when named
         }
 
         @assert(cpt == 0+1+2+3+4)
@@ -79,5 +80,31 @@
         }
 
         @assert(cpt == 9)
+    }
+
+    // Loop can also be used to iterate on a range of signed values
+    // Syntax is <lower bound>..<upper bound>
+    {
+        count := 0
+        sum := 0
+        loop i: -1..1   // loop from -1 to 1 included
+        {
+            count += 1
+            sum += i
+        }
+
+        @assert(sum == 0)
+        @assert(count == 3)
+    }
+
+    // With a range, you can loop in reverse order
+    // Loop from 5 to 0
+    loop 5..0
+    {
+    }
+
+    // Loop from 1 to -1
+    loop 1..-1
+    {
     }
 }
