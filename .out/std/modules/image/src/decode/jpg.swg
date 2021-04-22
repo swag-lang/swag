@@ -1735,25 +1735,21 @@ impl Decoder
 
     func nextMarker(using self)->Marker
     {
-        bytes := 0
         var c: u32
 
-        while true
+        bytes := 0
+        while !c
         {
-            while true
+            while c != 0xFF
             {
                 bytes += 1
                 c = getBits1(8)
-                if c == 0xFF break
             }
 
-            while true
+            while c == 0xFF
             {
                 c = getBits1(8)
-                if c != 0xFF break
             }
-
-            if c break
         }
 
         return cast(Marker) c
