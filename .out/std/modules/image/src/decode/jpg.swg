@@ -33,14 +33,14 @@ const Fix_2_053119869   = 16819
 const Fix_2_562915447   = 20995
 const Fix_3_072711026   = 25172
 
-public struct HuffTables
+struct HuffTables
 {
     lookUp:    [256] s32
     codeSize:  [256] u8
     tree:      [512] s32
 }
 
-public struct CoeffBuf
+struct CoeffBuf
 {
     pdata:     Array'u8
     blockNumX: s32
@@ -50,6 +50,7 @@ public struct CoeffBuf
     blockSize: s32
 }
 
+#[swag.opaque]
 public struct Decoder
 {
     stream:             const *u8

@@ -80,6 +80,9 @@ namespace swag
     #[attributeUsage(AttributeUsage.Struct)]
     attr nocopy()
 
+    #[attributeUsage(AttributeUsage.Struct)]
+    attr opaque()
+
     #[attributeUsage(AttributeUsage.StructVariable)]
     attr offset(name: string)
 

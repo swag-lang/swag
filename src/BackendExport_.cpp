@@ -453,36 +453,75 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node, i
     CONCAT_FIXED_STR(bufferSwg, "{");
     bufferSwg.addEol();
 
-    for (auto p : typeStruct->fields)
+    // Opaque export. Just simulate structure with the correct size.
+    // Simulate also TYPEINFO_STRUCT_HAS_INIT_VALUES and TYPEINFO_STRUCT_ALL_UNINITIALIZED flags.
+    if (node->attributeFlags & ATTRIBUTE_OPAQUE)
     {
-        SWAG_CHECK(emitAttributes(p, indent + 1));
-
-        // Struct/interface content
-        if (p->declNode->kind == AstNodeKind::VarDecl)
+        // We initialize one field with a dummy value to force the compiler to acknowledge that the
+        // struct has some initialized fields (not all to zero)
+        if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
         {
-            auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::VarDecl);
-            SWAG_CHECK(emitVarSwg(nullptr, varDecl, indent + 1));
+            if (typeStruct->sizeOf != 1)
+            {
+                bufferSwg.addIndent(indent + 1);
+                bufferSwg.addStringFormat("padding0: [%llu] u8", typeStruct->sizeOf - 1);
+                bufferSwg.addEol();
+            }
+
+            bufferSwg.addIndent(indent + 1);
+            CONCAT_FIXED_STR(bufferSwg, "padding1: u8 = 1");
             bufferSwg.addEol();
         }
 
-        // Typeset content
+        // Everything in the structure is not initialized
+        else if (typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
+        {
+            bufferSwg.addIndent(indent + 1);
+            bufferSwg.addStringFormat("padding: [%llu] u8 = ?", typeStruct->sizeOf);
+            bufferSwg.addEol();
+        }
+
+        // Everything in the structure is initiaized to zero
         else
         {
-            SWAG_ASSERT(p->declNode->kind == AstNodeKind::StructDecl);
-            SWAG_ASSERT(node->kind == AstNodeKind::TypeSet);
             bufferSwg.addIndent(indent + 1);
-            bufferSwg.addString(p->namedParam);
-            emitTypeTuple(p->typeInfo, indent);
+            bufferSwg.addStringFormat("padding: [%llu] u8", typeStruct->sizeOf);
             bufferSwg.addEol();
         }
     }
-
-    for (auto p : typeStruct->consts)
+    else
     {
-        auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::ConstDecl);
-        SWAG_CHECK(emitAttributes(p, indent + 1));
-        SWAG_CHECK(emitVarSwg("const ", varDecl, indent + 1));
-        bufferSwg.addEol();
+        for (auto p : typeStruct->fields)
+        {
+            SWAG_CHECK(emitAttributes(p, indent + 1));
+
+            // Struct/interface content
+            if (p->declNode->kind == AstNodeKind::VarDecl)
+            {
+                auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::VarDecl);
+                SWAG_CHECK(emitVarSwg(nullptr, varDecl, indent + 1));
+                bufferSwg.addEol();
+            }
+
+            // Typeset content
+            else
+            {
+                SWAG_ASSERT(p->declNode->kind == AstNodeKind::StructDecl);
+                SWAG_ASSERT(node->kind == AstNodeKind::TypeSet);
+                bufferSwg.addIndent(indent + 1);
+                bufferSwg.addString(p->namedParam);
+                emitTypeTuple(p->typeInfo, indent);
+                bufferSwg.addEol();
+            }
+        }
+
+        for (auto p : typeStruct->consts)
+        {
+            auto varDecl = CastAst<AstVarDecl>(p->declNode, AstNodeKind::ConstDecl);
+            SWAG_CHECK(emitAttributes(p, indent + 1));
+            SWAG_CHECK(emitVarSwg("const ", varDecl, indent + 1));
+            bufferSwg.addEol();
+        }
     }
 
     bufferSwg.addIndent(indent);
@@ -611,7 +650,7 @@ bool Backend::emitPublicScopeContentSwg(Module* moduleToGen, Scope* scope, int i
     {
         for (auto func : publicSet->publicFunc)
         {
-            AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+            AstFuncDecl* node = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
 
             // Can be removed in case of special functions
             if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
