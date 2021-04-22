@@ -50,7 +50,7 @@ struct CoeffBuf
     blockSize: s32
 }
 
-#[swag.opaque]
+#[opaque]
 public struct Decoder
 {
     stream:             const *u8
@@ -213,9 +213,9 @@ const Zag: [64] u32 = @[
 #[inline, safety("of", false)]
 {
     func descale(x: s32, n: u32)->s16 => cast(s16) ((x + (1's32 << (n - 1))) >> n)
-    func rol(i, j: u32)->u32 => cast(u32) ((i << j) | (i >> (32 - j)))
-    func clamp(i: u32) => cast(u8) ((i &0xFFFFFF00) ? (((~i) >> 31) & 0xFF) : i)
-    func clampd(i: s32)->u8 => cast(u8) ((i &0xFF00) ? (((~i) >> 15) & 0xFF) : i)
+    func rol(i, j: u32)->u32          => cast(u32) ((i << j) | (i >> (32 - j)))
+    func clamp(i: u32)->u8            => cast(u8) ((i &0xFFFFFF00) ? (((~i) >> 31) & 0xFF) : i)
+    func clampd(i: s32)->u8           => cast(u8) ((i &0xFF00) ? (((~i) >> 15) & 0xFF) : i)
 }
 
 impl Decoder
