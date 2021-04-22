@@ -678,39 +678,30 @@ impl Decoder
             tmp3 += z1 + z4
 
             i := descale(tmp10 + tmp3, ConstBits + Pass1Bits + 3) + 128
-            c := clampd(i)
-            pdstPtr[8 * 0] = c
+            pdstPtr[8 * 0] = clampd(i)
 
             i = descale(tmp10 - tmp3, ConstBits + Pass1Bits + 3) + 128
-            c = clampd(i)
-            pdstPtr[8 * 7] = c
+            pdstPtr[8 * 7] = clampd(i)
 
             i = descale(tmp11 + tmp2, ConstBits + Pass1Bits + 3) + 128
-            c = clampd(i)
-            pdstPtr[8 * 1] = c
+            pdstPtr[8 * 1] = clampd(i)
 
             i = descale(tmp11 - tmp2, ConstBits + Pass1Bits + 3) + 128
-            c = clampd(i)
-            pdstPtr[8 * 6] = c
+            pdstPtr[8 * 6] = clampd(i)
 
             i = descale(tmp12 + tmp1, ConstBits + Pass1Bits + 3) + 128
-            c = clampd(i)
-            pdstPtr[8 * 2] = c
+            pdstPtr[8 * 2] = clampd(i)
 
             i = descale(tmp12 - tmp1, ConstBits + Pass1Bits + 3) + 128
-            c = clampd(i)
-            pdstPtr[8 * 5] = c
+            pdstPtr[8 * 5] = clampd(i)
 
             i = descale(tmp13 + tmp0, ConstBits + Pass1Bits + 3) + 128
-            c = clampd(i)
-            pdstPtr[8 * 3] = c
+            pdstPtr[8 * 3] = clampd(i)
 
             i = descale(tmp13 - tmp0, ConstBits + Pass1Bits + 3) + 128
-            c = clampd(i)
-            pdstPtr[8 * 4] = c
+            pdstPtr[8 * 4] = clampd(i)
 
-            dataPtr += 1
-            pdstPtr += 1
+            dataPtr, pdstPtr += 1
         }
     }
 
