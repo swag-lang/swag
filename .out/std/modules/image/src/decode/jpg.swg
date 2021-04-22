@@ -710,7 +710,7 @@ impl Decoder
         psrcPtr := blockSeg[0]
         pdstPtr := pSampleBuf
 
-        for i := maxBlocksPerRow; i > 0; i -= 1
+        loop i: maxBlocksPerRow..1
         {
             memory.copy(tempBlock, psrcPtr, 64'uint * @sizeof(s16))
             idct(tempBlock, pdstPtr)
@@ -794,7 +794,7 @@ impl Decoder
         row := maxMcuSizeY - mcuLinesLeft
         d := scanLine0.buffer
         s := pSampleBuf + row * 8
-        for i := maxMcusPerRow; i > 0; i -= 1
+        loop i: maxMcusPerRow..1
         {
             d[0] = s[0]
             d[1] = s[1]
@@ -815,7 +815,7 @@ impl Decoder
         row := maxMcuSizeY - mcuLinesLeft
         d := scanLine0.buffer
         s := pSampleBuf + row * 8
-        for i := maxMcusPerRow; i > 0; i -= 1
+        loop i: maxMcusPerRow..1
         {
             loop j: 8
             {
@@ -846,7 +846,7 @@ impl Decoder
             y = pSampleBuf + 64 * 1 + (row & 7) * 8
 
         c := pSampleBuf + 64 * 2 + (row >>,safe 1) * 8
-        for i := maxMcusPerRow; i > 0; i -= 1
+        loop i: maxMcusPerRow..1
         {
             loop j: 8
             {
@@ -880,7 +880,7 @@ impl Decoder
         y := pSampleBuf + row * 8
         c := pSampleBuf + 2 * 64 + row * 8
 
-        for i := maxMcusPerRow; i > 0; i -= 1
+        loop i: maxMcusPerRow..1
         {
             loop l: 2
             {
@@ -928,7 +928,7 @@ impl Decoder
             y = pSampleBuf + 64 * 2 + (row & 7) * 8
         c := pSampleBuf + 64 * 4 + (row >> 1) * 8
 
-        for i := maxMcusPerRow; i > 0; i -= 1
+        loop i: maxMcusPerRow..1
         {
             loop l: 2
             {
@@ -1135,7 +1135,7 @@ impl Decoder
         var huffCode: [257] u32
 
         p := 0
-        for l := 1; l <= 16; l += 1
+        loop l: 1..16
         {
             for i := 1; i <= huffNum[idx].buffer[l]; i += 1
             {
@@ -1803,7 +1803,7 @@ impl Decoder
             index := getBits1(8)
             count := 0
             huffNumt[0] = 0
-            for i := 1; i <= 16; i += 1
+            loop i: 1..16
             {
                 huffNumt[i] = cast(u8) getBits1(8)
                 count += huffNumt[i]
