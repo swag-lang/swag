@@ -489,7 +489,7 @@ impl Decoder
                     }
                     else
                     {
-                        if (r == 15)
+                        if r == 15
                         {
                             if (k + 15) > 63
                                 throw "decode error"
@@ -1268,7 +1268,7 @@ impl Decoder
             compBlocksV[cid] = ((((imageSizeY * compSampV[cid]) + (maxSampV - 1)) / maxSampV) + 7) / 8
         }
 
-        if (compsInScan == 1)
+        if compsInScan == 1
         {
             mcusPerRow = compBlocksH[compList[0]]
             mcusPerCol = compBlocksV[compList[0]]
@@ -1417,7 +1417,7 @@ impl Decoder
                     if r != 15
                     {
                         eobRun = 1 << r
-                        if (r)
+                        if r
                             eobRun += getBits2(r)
                         break
                     }
@@ -1555,7 +1555,7 @@ impl Decoder
         while true
         {
             res := try initScan()
-            if (!res) break
+            if !res break
 
             dcOnlyScan     := (spectralStart == 0)
             refinementScan := (successiveHigh != 0)
@@ -1910,7 +1910,7 @@ impl Decoder
             ci := 0
             while ci < compsInFrame
             {
-                if (cc == compIdent[ci])
+                if cc == compIdent[ci]
                     break
                 ci += 1
             }
