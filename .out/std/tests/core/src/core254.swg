@@ -4,15 +4,19 @@ struct W
 {
 }
 
+var G = 0
+
 impl ILogWriter for W
 {
     func print(using self, text: string)
     {
-        console.lock()
+        @assert(text == "toto")
+        G += 1
+        /*console.lock()
         console.setTextColor(console.Color.Magenta)
         console.println(text)
         console.resetColor()
-        console.unlock()
+        console.unlock()*/
     }
 }
 
@@ -21,7 +25,9 @@ impl ILogWriter for W
     var x: W
 
     logger := Log.create()
-    logger.writers.add(x)
-    logger.writers.add(x)
+    logger.setFlags(LogFlags.None)
+    logger.addWriter(x)
+    logger.addWriter(x)
     logger.print("toto")
+    @assert(G == 2)
 }
