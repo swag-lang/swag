@@ -890,7 +890,8 @@ namespace Ast
                     overload->node->ownerScope->isGlobalOrImpl() &&
                     !overload->node->sourceFile->isBootstrapFile &&
                     !overload->node->sourceFile->isRuntimeFile &&
-                    !overload->node->sourceFile->forceExport)
+                    !overload->node->sourceFile->forceExport &&
+                    !overload->node->sourceFile->imported)
                 {
                     if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
                         (symbol->kind == SymbolKind::Function) ||

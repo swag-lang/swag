@@ -5,7 +5,7 @@ using win32
 
 struct Mutex
 {
-    v: SRWLOCK = null//SRWLOCK_INIT
+    v: SRWLOCK = SRWLOCK_INIT
 }
 
 impl Mutex
