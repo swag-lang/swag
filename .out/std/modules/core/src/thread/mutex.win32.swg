@@ -3,55 +3,28 @@
 #global namespace sync
 using win32
 
+struct Mutex
+{
+    v: SRWLOCK = null//SRWLOCK_INIT
+}
+
 impl Mutex
 {
-    func opDrop(using self)
-    {
-        debug.assert(handle == null, "missing call to release()")
-    }
-
-    // Creates a new mutex
-    func create()->Mutex
-    {
-        var result: retval
-        result.init()
-        return result
-    }
-
-    // Initialize mutex
-    func init(using self)
-    {
-        debug.assert(handle == null)
-        handle = assume CreateMutexA(null, 0, null)
-    }
-
-    // Destroy an existing mutex
-    func release(using self)
-    {
-        if !handle return
-        CloseHandle(handle)
-        handle = null
-    }
-
     // Try to lock the mutex, and return 'true' if it's the case
     func tryLock(using self)->bool
     {
-        debug.assert(isValid())
-        res := assume WaitForSingleObject(handle, 0)
-        return res == WAIT_TIMEOUT
+        return TryAcquireSRWLockExclusive(&v) ? true : false
     }
 
     // Lock mutex
     func lock(using self)
     {
-        debug.assert(isValid())
-        assume WaitForSingleObject(handle, INFINITE)
+        AcquireSRWLockExclusive(&v)
     }
 
     // Unlock mutex
     func unlock(using self)
     {
-        debug.assert(isValid())
-        assume ReleaseMutex(handle)
+        ReleaseSRWLockExclusive(&v)
     }
 }

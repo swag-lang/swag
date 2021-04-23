@@ -97,7 +97,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         case TokenId::SymSemiColon:
             return syntaxError(token, "missing namespace name before ';'");
         default:
-            return syntaxError(token, format("invalid namespace name '%s'", token.text.c_str()));
+            return syntaxError(token, format("namespace name must be an identifier ('%s' provided)", token.text.c_str()));
         }
 
         // Be sure this is not the swag namespace, except for a runtime file

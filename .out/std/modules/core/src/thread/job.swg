@@ -114,7 +114,6 @@ public func setNumWorkers(numWorkers: u32 = 0) throw
     g_workers.allocator = g_Allocator
     g_pendingJobs.allocator = g_Allocator
 
-    g_mutexPendingJobs.init()
     g_eventPendingJobs.init()
     g_eventDone.init(true, true)
 

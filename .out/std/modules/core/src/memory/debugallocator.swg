@@ -55,13 +55,6 @@ public impl DebugAllocator
     func init(using self, allocator: IAllocator = null)
     {
         self.allocator = #scopefct.allocator ?? @getcontext().allocator
-        mutex.init()
-    }
-
-    // Release allocator ressources
-    func release(using self)
-    {
-        mutex.release()
     }
 
     // Returns true if there are some remaining allocations

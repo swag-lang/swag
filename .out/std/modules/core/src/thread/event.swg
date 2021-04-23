@@ -5,7 +5,7 @@ alias EventHandle = const *void
 #[swag.nocopy]
 struct Event
 {
-    handle: MutexHandle
+    handle: EventHandle
 }
 
 impl Event

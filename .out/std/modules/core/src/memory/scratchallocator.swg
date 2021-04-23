@@ -34,9 +34,6 @@ impl ScratchAllocator
     // If 'allocator' is null, the current context allocator will be used
     func init(using self, blockSize: uint, allocator: IAllocator = null)
     {
-        // Mutex
-        mutex.init()
-
         // Allocate the big block to store all allocations
         fallback = allocator ?? @getcontext().allocator
         debug.assert(blockSize > 0)
@@ -53,7 +50,6 @@ impl ScratchAllocator
         freeAll()
         memory.free(block, capacity, fallback)
         block = null
-        mutex.release()
     }
 
     // Free all allocated blocks

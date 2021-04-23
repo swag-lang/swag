@@ -203,7 +203,7 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
                 ptrDest += 2 * sizeof(Register);
                 offset += 2 * sizeof(Register);
             }
-            else if (typeInfo->kind == TypeInfoKind::Native)
+            else
             {
                 switch (typeInfo->sizeOf)
                 {
@@ -226,10 +226,6 @@ bool SemanticJob::collectStructLiteralsNoLock(JobContext* context, SourceFile* s
                 SWAG_ASSERT(typeInfo->sizeOf);
                 ptrDest += typeInfo->sizeOf;
                 offset += typeInfo->sizeOf;
-            }
-            else
-            {
-                return internalError(context, "collectStructLiterals, invalid type");
             }
         }
         else if (typeInfo->kind == TypeInfoKind::Struct)

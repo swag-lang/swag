@@ -208,7 +208,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2)->c.u32 = 8;
             }
-            else if (typeVar->kind == TypeInfoKind::Native)
+            else
             {
                 switch (typeVar->sizeOf)
                 {
@@ -231,10 +231,6 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 default:
                     return internalError(context, "generateStructInit, invalid native type sizeof", varDecl);
                 }
-            }
-            else
-            {
-                return internalError(context, "generateStructInit, invalid assignment type", varDecl);
             }
 
             continue;

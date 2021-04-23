@@ -21,6 +21,4 @@ var g_cxt: swag.Context
         g_dbg.printAllocated()
         @assert(false)
     }
-
-    g_dbg.release()
 }

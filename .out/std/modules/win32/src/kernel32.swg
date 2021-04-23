@@ -135,6 +135,9 @@ const THREAD_PRIORITY_HIGHEST       = 2
 func LOWORD(l: u64) => cast(s32) (l & 0xffff)
 func HIWORD(l: u64) => cast(s32) ((l >>,safe 16) & 0xffff)
 
+alias SRWLOCK = *void
+const SRWLOCK_INIT = cast(SRWLOCK) null
+
 struct COORD
 {
     x: WORD
@@ -343,6 +346,14 @@ struct PROCESS_INFORMATION
     func ExitProcess(uExitCode: UINT);
     func GetCurrentThreadId()->DWORD;
     func GetCurrentThread()->HANDLE;
+
+    func AcquireSRWLockExclusive(SRWLock: *SRWLOCK);
+    func AcquireSRWLockShared(SRWLock: *SRWLOCK);
+    func InitializeSRWLock(SRWLock: *SRWLOCK);
+    func ReleaseSRWLockExclusive(SRWLock: *SRWLOCK);
+    func ReleaseSRWLockShared(SRWLock: *SRWLOCK);
+    func TryAcquireSRWLockExclusive(SRWLock: *SRWLOCK)->BOOL;
+    func TryAcquireSRWLockShared(SRWLock: *SRWLOCK)->BOOL;
 
     func CreateWaitableTimerA(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCSTR)->HANDLE;
     func CreateWaitableTimerW(lpTimerAttributes: *SECURITY_ATTRIBUTES, bManualReset: BOOL, lpTimerName: LPCWSTR)->HANDLE;

@@ -17,12 +17,6 @@ func entry(th: thread.Thread)
 #test
 {
     var th: [N] thread.Thread
-
-    mutex.init()
-    @assert(!@err)
-    @assert(mutex.isValid())
-    defer mutex.release()
-
     visit *t: th catch t.init(&entry)
     visit *t: th catch t.start()
     thread.wait(&th[0], &th[1], &th[2])

@@ -61,6 +61,8 @@ cast interface vers struct (avec safety)
 x64/llvm debug, mettre les constants, les enums
 void CodeViewDebug::emitStaticConstMemberList()
 -------------------------------------
+pointeurs relatifs, mettre le numéro en bits ? *~8 => *~64
+-------------------------------------
 
 
 ****************************************
