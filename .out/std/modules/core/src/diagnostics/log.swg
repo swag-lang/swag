@@ -4,6 +4,7 @@ using time
 #[swag.enumflags]
 enum LogFlags
 {
+    Prefix
     Date
     Time
     ShortFileName   // Exclusive with LongFileName
@@ -12,7 +13,7 @@ enum LogFlags
     FullLoc
 
     None    = 0
-    Default = Date | Time | LongFileName | FullLoc
+    Default = Prefix | Date | Time | LongFileName | FullLoc
 }
 
 interface ILogWriter
@@ -34,6 +35,12 @@ impl Log
 {
     private func buildHeader(using self, loc: swag.CompilerSourceLocation)
     {
+        if flags & .Prefix && @countof(prefix)
+        {
+            buf.appendString(prefix)
+            buf.appendString(" ")
+        }
+
         if flags & .Date
         {
             buf.appendFormat("%/%{D02}/%{D02} ", dt.year, dt.month, dt.day)

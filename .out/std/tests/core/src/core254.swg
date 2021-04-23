@@ -10,13 +10,16 @@ impl ILogWriter for W
 {
     func print(using self, text: string)
     {
-        @assert(text == "toto")
+        @assert(text == "titi toto")
         G += 1
-        /*console.lock()
+
+        console.lock()
+        console.silent(true)
         console.setTextColor(console.Color.Magenta)
         console.println(text)
         console.resetColor()
-        console.unlock()*/
+        console.silent(false)
+        console.unlock()
     }
 }
 
@@ -25,7 +28,8 @@ impl ILogWriter for W
     var x: W
 
     logger := Log.create()
-    logger.setFlags(LogFlags.None)
+    logger.setFlags(LogFlags.Prefix)
+    logger.setPrefix("titi")
     logger.addWriter(x)
     logger.addWriter(x)
     logger.print("toto")
