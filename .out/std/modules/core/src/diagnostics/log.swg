@@ -1,5 +1,4 @@
 #global public
-using time
 
 #[swag.enumflags]
 enum LogFlags
@@ -25,10 +24,10 @@ struct Log
 {
     lock:       sync.Mutex
     buf:        strconv.StringBuilder
-    flags:      LogFlags = Default
-    dt:         DateTime
+    dt:         time.DateTime
     writers:    Array'ILogWriter
     prefix:     string
+    flags:      LogFlags = Default
 }
 
 impl Log
@@ -126,7 +125,7 @@ impl Log
     func print(using self, text: string, loc = #callerlocation)
     {
         // Get this first, to have the time of the call, before the lock
-        if flags & (.Date|.Time) dt = DateTime.now()
+        if flags & (.Date|.Time) dt = time.DateTime.now()
 
         sync.scopedLock(lock)
 
@@ -145,9 +144,10 @@ impl Log
         }
 
         // Otherwise call all writers
+        str := buf.moveToString()
         visit w: writers
         {
-            w.print(buf.toString())
+            w.print(str)
         }
     }
 }

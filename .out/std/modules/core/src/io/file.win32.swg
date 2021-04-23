@@ -22,15 +22,14 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
 
     // Open mode
     var wMode: DWORD
-    using FileMode
     switch mode
     {
-        case Append:       wMode = OPEN_EXISTING
-        case Create:       wMode = CREATE_ALWAYS
-        case CreateNew:    wMode = CREATE_NEW
-        case Open:         wMode = OPEN_EXISTING
-        case OpenOrCreate: wMode = OPEN_ALWAYS
-        case Truncate:     wMode = TRUNCATE_EXISTING
+    case Append:       wMode = OPEN_EXISTING
+    case Create:       wMode = CREATE_ALWAYS
+    case CreateNew:    wMode = CREATE_NEW
+    case Open:         wMode = OPEN_EXISTING
+    case OpenOrCreate: wMode = OPEN_ALWAYS
+    case Truncate:     wMode = TRUNCATE_EXISTING
     }
 
     // Read/Write mode
@@ -129,12 +128,11 @@ func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64) throw
     high  := cast(LONG) (seek >> 32)
 
     var seekMode: DWORD
-    using SeekOrigin
     switch origin
     {
-        case Begin:      seekMode = FILE_BEGIN
-        case Current:    seekMode = FILE_CURRENT
-        case End:        seekMode = FILE_END
+    case Begin:      seekMode = FILE_BEGIN
+    case Current:    seekMode = FILE_CURRENT
+    case End:        seekMode = FILE_END
     }
 
     try SetFilePointer(hFile, low, &high, seekMode)
