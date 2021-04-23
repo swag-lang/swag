@@ -2819,7 +2819,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         {
             for (int j = 0; j < matches.size(); j++)
             {
-                if (matches[j]->symbolOverload->flags & (OVERLOAD_VAR_LOCAL | OVERLOAD_VAR_FUNC_PARAM))
+                if (matches[j]->symbolOverload->flags & (OVERLOAD_VAR_LOCAL | OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_INLINE))
                 {
                     matches[i]->remove = true;
                     break;

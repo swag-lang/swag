@@ -195,6 +195,8 @@ struct VectorNative
 
     void append(const VectorNative& other)
     {
+        if (!other.count)
+            return;
         reserve(count + other.count);
         memcpy(buffer + count, other.buffer, other.count * sizeof(T));
         count += other.count;

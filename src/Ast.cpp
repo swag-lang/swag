@@ -514,7 +514,7 @@ namespace Ast
             }
 
             result += ")";
-            if (typeFunc->returnType != g_TypeMgr.typeInfoVoid)
+            if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
             {
                 result += "->";
                 result += typeFunc->returnType->name;

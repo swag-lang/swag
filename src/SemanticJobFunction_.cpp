@@ -1053,6 +1053,16 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         globalScope = globalScope->parentScope;
     inlineNode->extension->alternativeScopes.push_back(globalScope);
 
+    // We also need to add all alternatives scopes (using), in case the function relies on them to
+    // be solved
+    AstNode* parentNode = funcDecl;
+    while (parentNode)
+    {
+        if (parentNode->extension && !parentNode->extension->alternativeScopes.empty())
+            inlineNode->extension->alternativeScopes.append(parentNode->extension->alternativeScopes);
+        parentNode = parentNode->parent;
+    }
+
     // If function has generic parameters, then the block resolution of identifiers needs to be able to find the generic parameters
     // so we register all those generic parameters in a special scope (we cannot just register the scope of the function because
     // they are other stuff here)

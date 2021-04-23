@@ -93,7 +93,7 @@ impl Log
         }
 
         // Otherwise call all writers
-        visit *w: writers
+        visit w: writers
         {
             w.print(buf.toString())
         }
