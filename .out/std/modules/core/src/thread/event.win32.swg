@@ -3,11 +3,23 @@
 #global namespace sync
 using win32
 
+#[swag.nocopy]
+struct Event
+{
+    handle: HANDLE
+}
+
 impl Event
 {
     func opDrop(using self)
     {
         debug.assert(handle == null, "missing call to release()")
+    }
+
+    // Returns true if the event is valid
+    func isValid(using self)->bool
+    {
+        return handle != null
     }
 
     // Creates a new event
