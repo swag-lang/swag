@@ -83,17 +83,19 @@ impl Log
         buildHeader(loc)
         buf.appendString(text)
 
-        // Output result
+        // Output default result if no writers
         if writers.isEmpty()
         {
+            console.lock()
             console.println(buf.toString())
+            console.unlock()
+            return
         }
-        else
+
+        // Otherwise call all writers
+        visit *w: writers
         {
-            visit *w: writers
-            {
-                w.print(buf.toString())
-            }
+            w.print(buf.toString())
         }
     }
 }

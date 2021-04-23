@@ -1,7 +1,8 @@
+#global public
 #global namespace console
 
 #[swag.enumindex]
-public enum Color
+enum Color
 {
     Black
     White
@@ -20,16 +21,27 @@ public enum Color
     DarkMagenta
 }
 
-var g_silentMode: s32
+protected var g_silentMode:   s32
+protected var g_lock:         sync.Mutex
 
-public func silent(value: bool)
+// Use to access console with multiple threads.
+// No console function is thread safe, so it is the user responsability
+// to lock the console when necessary
+func lock()   = g_lock.lock()
+func unlock() = g_lock.unlock()
+
+// Disable console output. This is a counter, so can be called
+// multiple times with the same 'value'
+// Like any other console functions, this is not thread-safe
+// => call 'lock' before if necessary, and 'unlock' after
+func silent(value: bool)
 {
     debug.assert(value || g_silentMode > 0)
     g_silentMode += value ? 1 : -1
 }
 
-// Write parameters to the console
-public func print(params: ...)
+// Write a bunch of parameters to the console
+func print(params: ...)
 {
     var buf: ConcatBuffer
     visit v: params
@@ -37,8 +49,8 @@ public func print(params: ...)
     printf(buf.toString())
 }
 
-// Write a line  to the console
-public func println(params: ...)
+// Write a line to the console
+func println(params: ...)
 {
     print(params)
     print("\n")

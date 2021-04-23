@@ -46,31 +46,31 @@ var g_stdOutputCurAttr: u16
 
 #drop
 {
-    catch resetColor()
+    resetColor()
 }
 
 // Set the console foreground color
-public func setTextColor(color: Color) throw
+public func setTextColor(color: Color)
 {
     attributes := g_colorToWin[color]
     g_stdOutputCurAttr &= BACKGROUND_MASK
     g_stdOutputCurAttr |= attributes
-    try SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
+    catch SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 }
 
 // Set the console background color
-public func setBackColor(color: Color) throw
+public func setBackColor(color: Color)
 {
     attributes := cast(u16) (g_colorToWin[color] << 4)
     g_stdOutputCurAttr &= FOREGROUND_MASK
     g_stdOutputCurAttr |= attributes
-    try SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
+    catch SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 }
 
 // Restore the console colors to their default values
-public func resetColor() throw
+public func resetColor()
 {
-    try SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
+    catch SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
 }
 
 // Write a formatted message to the console
