@@ -14,20 +14,24 @@ enum LogFlags
     Default = Date | Time | LongFileName | FullLoc
 }
 
+interface ILogWriter
+{
+    print: func(self, string)
+}
+
 struct Log
 {
-    lock:   sync.Mutex
-    buf:    strconv.StringBuilder
-    flags:  LogFlags = Default
-    dt:     DateTime
+    lock:       sync.Mutex
+    buf:        strconv.StringBuilder
+    flags:      LogFlags = Default
+    dt:         DateTime
+    writers:    Array'ILogWriter
 }
 
 impl Log
 {
     private func buildHeader(using self, loc: swag.CompilerSourceLocation)
     {
-        buf.clear()
-
         if flags & .Date
         {
             buf.appendFormat("%/%{D02}/%{D02} ", dt.year, dt.month, dt.day)
@@ -64,13 +68,7 @@ impl Log
     func create()->Log
     {
         var result: retval
-        result.init()
         return result
-    }
-
-    // Initialize logger
-    func init(using self)
-    {
     }
 
     func print(using self, text: string, loc = #callerlocation)
@@ -80,9 +78,22 @@ impl Log
 
         sync.scopedLock(lock)
 
+        // Build log string
+        buf.clear()
         buildHeader(loc)
         buf.appendString(text)
 
-        console.print(buf.toString())
+        // Output result
+        if writers.isEmpty()
+        {
+            console.println(buf.toString())
+        }
+        else
+        {
+            visit *w: writers
+            {
+                w.print(buf.toString())
+            }
+        }
     }
 }
