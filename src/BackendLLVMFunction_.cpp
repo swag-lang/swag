@@ -4970,12 +4970,10 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
         returnType->isNative(NativeTypeKind::Any) ||
         returnType->isNative(NativeTypeKind::String))
     {
-        //CONCAT_FIXED_STR(concat, "&rt[0]");
         params.push_back(TO_PTR_I8(allocRR));
     }
     else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
-        //CONCAT_FIXED_STR(concat, "rt[0].pointer");
         params.push_back(builder.CreateLoad(TO_PTR_PTR_I8(allocRR)));
     }
 
@@ -5008,7 +5006,6 @@ bool BackendLLVM::getForeignCallReturnValue(const BuildParameters& buildParamete
         }
         else if (returnType->kind == TypeInfoKind::Pointer)
         {
-            //CONCAT_FIXED_STR(concat, "rt[0].pointer = (__u8_t*) ");
             builder.CreateStore(TO_PTR_I8(callResult), TO_PTR_PTR_I8(allocRR));
         }
         else if (returnType->kind == TypeInfoKind::Native)
