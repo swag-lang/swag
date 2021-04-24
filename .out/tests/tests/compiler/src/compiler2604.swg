@@ -1,7 +1,9 @@
+#global testerror
+
 namespace tt
 {
     #[swag.macro]
-    func(ptr: bool) opVisitToto(x: string, stmt: code)
+    func(ptr: bool) opVisit(x: string, stmt: code)
     {
         loop x #mixin stmt
     }
@@ -11,7 +13,7 @@ namespace tt
 {
     {
         using tt
-        visit(Toto) "toto"
+        visit "toto"
         {
 
         }

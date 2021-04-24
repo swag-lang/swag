@@ -483,7 +483,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Struct type : convert to a opVisit call
     auto     typeInfo      = node->expression->typeInfo;
     AstNode* newExpression = nullptr;
-    if (typeInfo->kind == TypeInfoKind::Struct || !node->extraNameToken.text.empty())
+    if (typeInfo->kind == TypeInfoKind::Struct)
     {
         SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node, node->token, "cannot visit a tuple"}));
         AstIdentifierRef* identifierRef = nullptr;
@@ -529,6 +529,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         job->nodes.push_back(node);
         return true;
     }
+
+    SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, format("special named visit is only valid for struct ('%s' provided)", typeInfo->getDisplayName().c_str())}));
 
     Utf8 alias0Name = node->aliasNames.empty() ? Utf8("@alias0") : node->aliasNames[0];
     Utf8 alias1Name = node->aliasNames.size() <= 1 ? Utf8("@alias1") : node->aliasNames[1];

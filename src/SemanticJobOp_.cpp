@@ -65,10 +65,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
 
     // Special function outside an impl block. This is valid from some...
     if (!parent)
-    {
-        if (!isOpVisit)
-            return context->report({node, node->token, format("special function '%s' should be defined in a 'impl' scope", name.c_str())});
-    }
+        return context->report({node, node->token, format("special function '%s' should be defined in a 'impl' scope", name.c_str())});
 
     TypeInfo* typeStruct = nullptr;
     if (parent)

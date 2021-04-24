@@ -15,9 +15,9 @@ impl ILogWriter for W
 
         console.lock()
         console.silent(true)
-        console.setTextColor(console.Color.Magenta)
+        //console.setTextColor(console.Color.Magenta)
         console.println(text)
-        console.resetColor()
+        //console.resetColor()
         console.silent(false)
         console.unlock()
     }
