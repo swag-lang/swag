@@ -456,6 +456,17 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
     SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, "cannot evaluate type in that context because it's generic"}));
 
+    // If we have a function, then we transform it to a lambda type, as this makes no sens to
+    // get the real function type with @typeof
+    // i.e.
+    // x := @typeof(func) is equivalent to x := @typeof(&func)
+    if (expr->typeInfo->kind == TypeInfoKind::FuncAttr) 
+    {
+        expr->typeInfo         = expr->typeInfo->clone();
+        expr->typeInfo->kind   = TypeInfoKind::Lambda;
+        expr->typeInfo->sizeOf = sizeof(void*);
+    }
+
     expr->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(makeIntrinsicTypeOf(context));
     return true;
