@@ -596,18 +596,17 @@ void TypeTable::doPatchMethods(JobContext* context, Module* module)
 
         void*     lambdaPtr = nullptr;
         ByteCode* bc        = nullptr;
-        if (funcNode->extension && funcNode->extension->bc)
+        if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+        {
+            funcNode->computeFullNameForeign(false);
+            lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, nullptr);
+            segment->addInitPtrFunc(it.second, funcNode->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+        else if (funcNode->extension && funcNode->extension->bc)
         {
             bc        = funcNode->extension->bc;
             lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, bc);
             segment->addInitPtrFunc(it.second, bc->callName(), DataSegment::RelocType::Local);
-        }
-        else if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
-        {
-            funcNode->computeFullNameForeign(false);
-            lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, nullptr);
-            funcNode->computeFullNameForeign(false);
-            segment->addInitPtrFunc(it.second, funcNode->fullnameForeign, DataSegment::RelocType::Foreign);
         }
 
         if (lambdaPtr)

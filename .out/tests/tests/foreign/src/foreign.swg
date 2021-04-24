@@ -75,6 +75,16 @@ public struct tcf_Point
     x, y, z: s32
 }
 
+public impl tcf_Point
+{
+    func set(using self)
+    {
+        x = 444
+        y = 555
+        z = 666
+    }
+}
+
 //#[swag.printbc]
 public func tcf_toto10()->tcf_Point
 {
