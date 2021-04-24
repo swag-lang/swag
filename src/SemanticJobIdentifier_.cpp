@@ -964,6 +964,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (identifier->callParameters && (identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
             return context->report({identifier->callParameters, identifier->callParameters->token, format("function '%s' must be called with '()' and not curlies (this is reserved for struct initialization)", identifier->token.text.c_str())});
 
+        // Capture syntax
+        if (identifier->callParameters && !identifier->callParameters->captureIdentifiers.empty())
+        {
+            if (!(overload->node->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN)))
+                return context->report({identifier->callParameters, identifier->callParameters->captureIdentifiers[0], format("invalid aliased identifiers because function '%s' is not a macro or a mixin", identifier->token.text.c_str())});
+        }
+
         // Now we need to be sure that the function is now complete
         // If not, we need to wait for it
         {

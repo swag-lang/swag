@@ -255,7 +255,13 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
     case '<':
         token.id = TokenId::SymLower;
         c        = getCharNoSeek(offset);
-        if (c == '=')
+        if (c == '-')
+        {
+            token.id = TokenId::SymLowerMinus;
+            ADDC2(c);
+            treatChar(c, offset);
+        }
+        else if (c == '=')
         {
             token.id = TokenId::SymLowerEqual;
             ADDC2(c);

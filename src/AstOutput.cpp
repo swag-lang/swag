@@ -1051,7 +1051,7 @@ namespace Ast
             if (!funcCallParams->captureIdentifiers.empty())
             {
                 first = true;
-                CONCAT_FIXED_STR(concat, " -> |");
+                CONCAT_FIXED_STR(concat, " <- |");
                 for (auto& t : funcCallParams->captureIdentifiers)
                 {
                     if (!first)

@@ -106,7 +106,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
         SWAG_CHECK(eatToken(closeToken, "to close function call parameters"));
 
     // Capturing
-    if (closeToken == TokenId::SymRightParen && token.id == TokenId::SymMinusGreat)
+    if (closeToken == TokenId::SymRightParen && token.id == TokenId::SymLowerMinus)
     {
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(token.id == TokenId::SymVertical, syntaxError(token, "invalid token after '->' ('|' expected)"));
