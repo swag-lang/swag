@@ -39,6 +39,35 @@ impl MyStruct
     @assert(c.returnZ() == 20)
 }
 
+// All functions (aka methods) in an impl block can be retreived by
+// reflection
+#test
+{
+    alias Lambda = func(MyStruct)->s32
+    var fnX: Lambda
+    var fnY: Lambda
+    var fnZ: Lambda
+
+    t := @typeof(MyStruct)
+    visit p: t.methods
+    {
+        // When visiting 'methods', the 'value' field contains the function pointer,
+        // that can be casted to the correct type
+        switch p.name
+        {
+        case "returnX": fnX = cast(Lambda) p.value
+        case "returnY": fnY = cast(Lambda) p.value
+        case "returnZ": fnZ = cast(Lambda) p.value
+        }
+    }
+
+    // This are now valid functions, that can be called
+    var v: MyStruct
+    @assert(fnX(v) == 5)
+    @assert(fnY(v) == 10)
+    @assert(fnZ(v) == 20)
+}
+
 // 'impl' can also be used for an enum
 enum RGB { R; G; B; }
 impl enum RGB
