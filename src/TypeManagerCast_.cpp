@@ -2497,6 +2497,26 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
+bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    TypeInfoFuncAttr* toTypeLambda = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::Lambda);
+    if (castFlags & CASTFLAG_EXPLICIT)
+    {
+        if (fromType == g_TypeMgr.typeInfoNull || fromType->isPointerConstVoid())
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfo       = toTypeLambda;
+            }
+
+            return true;
+        }
+    }
+
+    return castError(context, toType, fromType, fromNode, castFlags);
+}
+
 bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     TypeInfoSlice* toTypeSlice = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
@@ -3025,7 +3045,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         toType = ((TypeInfoVariadic*) toType)->rawType;
 
     // Const mismatch
-    if (toType->kind != TypeInfoKind::Generic && !(castFlags & CASTFLAG_FORCE_UNCONST))
+    if (toType->kind != TypeInfoKind::Generic && toType->kind != TypeInfoKind::Lambda && !(castFlags & CASTFLAG_FORCE_UNCONST))
     {
         if (!toType->isConst() && fromType->isConst())
         {
@@ -3089,6 +3109,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     // Cast to interface
     case TypeInfoKind::Interface:
         return castToInterface(context, toType, fromType, fromNode, castFlags);
+
+    // Cast to lambda
+    case TypeInfoKind::Lambda:
+        return castToLambda(context, toType, fromType, fromNode, castFlags);
     }
 
     return castError(context, toType, fromType, fromNode, castFlags);

@@ -1,11 +1,9 @@
 #include "pch.h"
 #include "Module.h"
-#include "ThreadManager.h"
-#include "SourceFile.h"
 #include "TypeTableJob.h"
 #include "Generic.h"
 #include "ByteCode.h"
-#include "AstNode.h"
+#include "Ast.h"
 
 thread_local Pool<TypeTableJob> g_Pool_typeTableJob;
 
@@ -155,6 +153,16 @@ bool TypeTableJob::computeStruct()
             for (int param = 0; param < concreteType->methods.count; param++)
             {
                 SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageArray, realType->methods[param], cflags));
+
+                // 'value' will contain a pointer to the lambda.
+                // Register it for later patches
+                if (!(cflags & CONCRETE_FOR_COMPILER))
+                {
+                    uint32_t     fieldOffset = storageArray + offsetof(ConcreteTypeInfoParam, value);
+                    AstFuncDecl* funcNode    = CastAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
+                    patchMethods.push_back({funcNode, fieldOffset});
+                }
+
                 storageArray += sizeof(ConcreteTypeInfoParam);
             }
         }

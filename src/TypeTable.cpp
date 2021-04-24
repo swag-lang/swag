@@ -6,6 +6,7 @@
 #include "TypeTableJob.h"
 #include "TypeManager.h"
 #include "Module.h"
+#include "ByteCode.h"
 
 DataSegment* TypeTable::getSegmentStorage(Module* module, uint32_t flags)
 {
@@ -277,8 +278,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         if (it != storedMap.end())
         {
             if (ptrTypeInfo)
-                *ptrTypeInfo = it->second.first;
-            *storage = it->second.second;
+                *ptrTypeInfo = it->second.newRealType;
+            *storage = it->second.storageOffset;
 
             // A compute job is pending, need to wait
             if (cflags & CONCRETE_SHOULD_WAIT)
@@ -388,8 +389,13 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
 
     // Register type and value
     // Do it now to break recursive references
-    auto typePtr        = allocType<TypeInfoPointer>();
-    storedMap[typeName] = {typePtr, storageOffset};
+    auto    typePtr = allocType<TypeInfoPointer>();
+    MapType mapType;
+    mapType.realType      = typeInfo;
+    mapType.newRealType   = typePtr;
+    mapType.concreteType  = concreteTypeInfoValue;
+    mapType.storageOffset = storageOffset;
+    storedMap[typeName]   = mapType;
 
     // Build pointer type to structure
     typePtr->flags |= TYPEINFO_CONST;
@@ -577,4 +583,37 @@ void TypeTable::tableJobDone(TypeTableJob* job)
     auto  it        = storedMap.find(job->typeName);
     SWAG_ASSERT(it != storedMap.end());
     storedMap.erase(it);
+    for (auto it1 : job->patchMethods)
+        patchMethods.push_back(it1);
+}
+
+void TypeTable::doPatchMethods(JobContext* context, Module* module)
+{
+    auto segment = &module->typeSegment;
+    for (auto it : patchMethods)
+    {
+        auto funcNode = it.first;
+
+        void*     lambdaPtr = nullptr;
+        ByteCode* bc        = nullptr;
+        if (funcNode->extension && funcNode->extension->bc)
+        {
+            bc        = funcNode->extension->bc;
+            lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, bc);
+            segment->addInitPtrFunc(it.second, bc->callName(), DataSegment::RelocType::Local);
+        }
+        else if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+        {
+            funcNode->computeFullNameForeign(false);
+            lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, nullptr);
+            funcNode->computeFullNameForeign(false);
+            segment->addInitPtrFunc(it.second, funcNode->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+
+        if (lambdaPtr)
+        {
+            auto addr      = segment->address(it.second);
+            *(void**) addr = lambdaPtr;
+        }
+    }
 }
