@@ -990,6 +990,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (lateRegister)
     {
         typeInfoFunc->returnType = funcNode->returnType->typeInfo;
+        typeInfoFunc->forceComputeName();
         SWAG_CHECK(registerFuncSymbol(context, funcNode));
     }
 

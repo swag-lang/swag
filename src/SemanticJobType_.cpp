@@ -421,7 +421,19 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     auto node = context->node;
     auto back = node->childs.back();
 
+    // alias x = @typeof
     auto overload = back->resolvedSymbolOverload;
+    if (!overload && back->kind == AstNodeKind::IdentifierRef)
+    {
+        back = back->childs.back();
+        if (back->token.id == TokenId::IntrinsicTypeOf)
+        {
+            node->resolvedSymbolName->kind = SymbolKind::TypeAlias;
+            SWAG_CHECK(resolveTypeAlias(context));
+            return true;
+        }
+    }
+
     SWAG_VERIFY(overload, context->report({back, "alias can only be used with a type or an identifier"}));
     auto symbol       = overload->symbol;
     auto typeResolved = overload->typeInfo;

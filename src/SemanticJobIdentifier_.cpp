@@ -1740,6 +1740,7 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
             grandParent->kind == AstNodeKind::MakePointerLambda ||
             grandParent->kind == AstNodeKind::Alias ||
             (grandParent->kind == AstNodeKind::CompilerSpecialFunction && grandParent->token.id == TokenId::CompilerLocation) ||
+            (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicStringOf) ||
             (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicTypeOf) ||
             (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->token.id == TokenId::IntrinsicKindOf))
         {
