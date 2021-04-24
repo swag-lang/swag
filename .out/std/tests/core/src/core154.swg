@@ -1,12 +1,11 @@
-
-using core, utf8
+using core
 
 //#[swag.printbc]
 #test
 {
     res := "A假CD"
     cpt := 0'u32
-    visit(Chars) c, idx: res
+    utf8.visitRunes(res) <- |c, idx|
     {
         switch(idx)
         {
