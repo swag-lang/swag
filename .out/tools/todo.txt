@@ -4,9 +4,6 @@ LANGUAGE
 -------------------------------------
 #premain ?
 -------------------------------------
-ca serait cool que les methods, en reflections, aient une value qui peut etre castee en lambda, et donc appelées
-post pass, par patch
--------------------------------------
 char => rune ?
 -------------------------------------
 global opVisit in namespace, comment on les reference sans faire un using ?

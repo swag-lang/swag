@@ -22,4 +22,21 @@ using tests_foreign
     @assert(x.x == 444)
     @assert(x.y == 555)
     @assert(x.z == 666)
+
+    visit p: t.methods
+    {
+        if p.name != "opInit"
+            continue
+
+        f := p.value
+        @assert(f != null)
+
+        fn := cast(func(*tcf_Point)) f
+        fn(&x)
+        break
+    }
+
+    @assert(x.x == 0)
+    @assert(x.y == 0)
+    @assert(x.z == 0)
 }
