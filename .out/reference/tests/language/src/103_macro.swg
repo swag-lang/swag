@@ -136,4 +136,23 @@
 
         @assert(a == 10)
     }
+
+    // In a macro, you can use special variables named '@alias<num>'
+    // Note that this is also valid for mixins.
+    {
+        #[swag.macro]
+        func call(stmt: code)
+        {
+            @alias0 := 444
+            @alias1 := 555
+            #mixin stmt
+        }
+
+        // The caller can then name those special variables
+        call() <- |x, y|
+        {
+            @assert(x == 444)   // x is @alias0
+            @assert(y == 555)   // y is @alias1
+        }
+    }
 }
