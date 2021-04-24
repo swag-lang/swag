@@ -1132,6 +1132,16 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                 cloneContext.replaceNames[param->resolvedParameter->namedParam] = idRef->childs.back()->token.text;
             }
         }
+
+        // User capture names
+        if (!id->callParameters->captureIdentifiers.empty())
+        {
+            idx = 0;
+            for (auto& t : id->callParameters->captureIdentifiers)
+            {
+                cloneContext.replaceNames[format("@alias%d", idx++)] = t.text;
+            }
+        }
     }
 
     cloneContext.forceFlags |= identifier->flags & AST_NO_BACKEND;

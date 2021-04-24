@@ -33,6 +33,7 @@ struct AstStruct;
 struct TypeInfoStruct;
 struct AstReturn;
 struct AstCompilerIfBlock;
+struct AstFuncCallParams;
 enum class TypeInfoListKind;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
@@ -458,9 +459,9 @@ struct AstIdentifier : public AstNode
 
     vector<Utf8> aliasNames;
 
-    AstIdentifierRef* identifierRef;
-    AstNode*          genericParameters;
-    AstNode*          callParameters;
+    AstIdentifierRef*  identifierRef;
+    AstNode*           genericParameters;
+    AstFuncCallParams* callParameters;
 };
 
 struct AstFuncDecl : public AstNode
@@ -502,6 +503,12 @@ struct AstAttrUse : public AstNode
     AstNode*         content;
     SymbolAttributes attributes;
     bool             isGlobal = false;
+};
+
+struct AstFuncCallParams : public AstNode
+{
+    AstNode*      clone(CloneContext& context) override;
+    vector<Token> captureIdentifiers;
 };
 
 struct AstFuncCallParam : public AstNode
@@ -806,9 +813,9 @@ struct AstInit : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* expression;
-    AstNode* count;
-    AstNode* parameters;
+    AstNode*           expression;
+    AstNode*           count;
+    AstFuncCallParams* parameters;
 };
 
 struct AstDropCopyMove : public AstNode

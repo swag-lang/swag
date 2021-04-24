@@ -9,9 +9,8 @@
 
 bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
 {
-    auto callParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncCallParams, sourceFile, parent);
-    *result                 = callParams;
-    callParams->semanticFct = SemanticJob::resolveFuncCallParams;
+    auto callParams = Ast::newFuncCallParams(sourceFile, parent, this);
+    *result         = callParams;
 
     bool multi = false;
     if (token.id == TokenId::SymLeftParen)
@@ -22,9 +21,8 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
 
     while (token.id != TokenId::SymRightParen)
     {
-        auto param         = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
-        param->semanticFct = SemanticJob::resolveFuncCallParam;
-        param->token       = token;
+        auto param   = Ast::newFuncCallParam(sourceFile, callParams, this);
+        param->token = token;
         switch (token.id)
         {
         case TokenId::Identifier:
@@ -60,11 +58,10 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result, TokenId closeToken)
+bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken)
 {
-    auto callParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncCallParams, sourceFile, parent);
-    *result                 = callParams;
-    callParams->semanticFct = SemanticJob::resolveFuncCallParams;
+    auto callParams = Ast::newFuncCallParams(sourceFile, parent, this);
+    *result         = callParams;
 
     while (token.id != closeToken)
     {
@@ -107,6 +104,27 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result, TokenId 
         SWAG_CHECK(eatToken(closeToken, "to close struct initialization parameters"));
     else
         SWAG_CHECK(eatToken(closeToken, "to close function call parameters"));
+
+    // Capturing
+    if (closeToken == TokenId::SymRightParen && token.id == TokenId::SymMinusGreat)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_VERIFY(token.id == TokenId::SymVertical, syntaxError(token, "invalid token after '->' ('|' expected)"));
+        SWAG_CHECK(eatToken());
+        while (token.id != TokenId::SymVertical)
+        {
+            SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid token, identifier expected"));
+            callParams->captureIdentifiers.push_back(token);
+            SWAG_CHECK(eatToken());
+            if (token.id == TokenId::SymVertical)
+                break;
+            SWAG_VERIFY(token.id == TokenId::SymComma, syntaxError(token, "invalid token, ',' expected"));
+            SWAG_CHECK(eatToken());
+        }
+
+        SWAG_CHECK(eatToken());
+    }
+
     return true;
 }
 

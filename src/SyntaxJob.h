@@ -18,6 +18,7 @@ struct AstTryCatchAssume;
 struct SyntaxJob;
 struct AstAttrUse;
 struct AstInline;
+struct AstFuncCallParams;
 enum class AstNodeKind : uint8_t;
 
 enum class InvalidTokenError
@@ -67,7 +68,7 @@ struct SyntaxJob : public Job
 
     bool doLabel(AstNode* parent, AstNode** result = nullptr);
     bool doGenericFuncCallParameters(AstNode* parent, AstNode** result = nullptr);
-    bool doFuncCallParameters(AstNode* parent, AstNode** result, TokenId closeToken);
+    bool doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerTag(AstNode* parent, AstNode** result = nullptr);

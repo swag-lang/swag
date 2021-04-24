@@ -1035,8 +1035,9 @@ namespace Ast
 
         case AstNodeKind::FuncCallParams:
         {
-            bool first = true;
-            for (auto child : node->childs)
+            auto funcCallParams = CastAst<AstFuncCallParams>(node, AstNodeKind::FuncCallParams);
+            bool first          = true;
+            for (auto child : funcCallParams->childs)
             {
                 if (child->flags & AST_GENERATED)
                     continue;
@@ -1044,6 +1045,22 @@ namespace Ast
                     CONCAT_FIXED_STR(concat, ", ");
                 first = false;
                 SWAG_CHECK(output(context, concat, child));
+            }
+
+            // Capture parameters
+            if (!funcCallParams->captureIdentifiers.empty())
+            {
+                first = true;
+                CONCAT_FIXED_STR(concat, " -> |");
+                for (auto& t : funcCallParams->captureIdentifiers)
+                {
+                    if (!first)
+                        CONCAT_FIXED_STR(concat, ", ");
+                    concat.addString(t.text);
+                    first = false;
+                }
+
+                CONCAT_FIXED_STR(concat, "|");
             }
 
             break;

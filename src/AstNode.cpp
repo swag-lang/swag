@@ -499,7 +499,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     while (idRef->kind != AstNodeKind::IdentifierRef)
         idRef = idRef->parent;
     newNode->identifierRef     = CastAst<AstIdentifierRef>(idRef, AstNodeKind::IdentifierRef);
-    newNode->callParameters    = findChildRef(callParameters, newNode);
+    newNode->callParameters    = (AstFuncCallParams*) findChildRef(callParameters, newNode);
     newNode->genericParameters = findChildRef(genericParameters, newNode);
     newNode->aliasNames        = aliasNames;
 
@@ -1210,7 +1210,7 @@ AstNode* AstInit::clone(CloneContext& context)
 
     newNode->expression = findChildRef(expression, newNode);
     newNode->count      = findChildRef(count, newNode);
-    newNode->parameters = findChildRef(parameters, newNode);
+    newNode->parameters = (AstFuncCallParams*) findChildRef(parameters, newNode);
     return newNode;
 }
 
@@ -1409,5 +1409,13 @@ AstNode* AstOp::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstOp>();
     newNode->copyFrom(context, this);
     newNode->opFlags = opFlags;
+    return newNode;
+}
+
+AstNode* AstFuncCallParams::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstFuncCallParams>();
+    newNode->copyFrom(context, this);
+    newNode->captureIdentifiers = captureIdentifiers;
     return newNode;
 }

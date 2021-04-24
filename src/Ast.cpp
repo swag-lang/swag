@@ -408,9 +408,9 @@ namespace Ast
         return node;
     }
 
-    AstNode* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    AstFuncCallParams* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        AstNode* node     = Ast::newNode<AstNode>(syntaxJob, AstNodeKind::FuncCallParams, sourceFile, parent);
+        auto node         = Ast::newNode<AstFuncCallParams>(syntaxJob, AstNodeKind::FuncCallParams, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveFuncCallParams;
         return node;
     }
