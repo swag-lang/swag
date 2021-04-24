@@ -1102,10 +1102,14 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     if (identifier->kind == AstNodeKind::Identifier)
     {
         // Replace user aliases of the form @alias?
+        // Can come from the identifier itself (for visit) or from call parameters (for macros/mixins)
         auto id  = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
         int  idx = 0;
-        for (const auto& alias : id->aliasNames)
-            cloneContext.replaceNames[format("@alias%d", idx++)] = alias;
+        for (auto& alias : id->aliasNames)
+            cloneContext.replaceNames[format("@alias%d", idx++)] = alias.text;
+        idx = 0;
+        for (auto& alias : id->callParameters->aliasNames)
+            cloneContext.replaceNames[format("@alias%d", idx++)] = alias.text;
 
         for (auto child : id->callParameters->childs)
         {
@@ -1131,16 +1135,6 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                 auto idRef = CastAst<AstIdentifierRef>(back, AstNodeKind::IdentifierRef);
                 SWAG_VERIFY(idRef->childs.size() == 1, context->report({child, "invalid name alias, should be a single identifier"}));
                 cloneContext.replaceNames[param->resolvedParameter->namedParam] = idRef->childs.back()->token.text;
-            }
-        }
-
-        // User capture names
-        if (!id->callParameters->captureIdentifiers.empty())
-        {
-            idx = 0;
-            for (auto& t : id->callParameters->captureIdentifiers)
-            {
-                cloneContext.replaceNames[format("@alias%d", idx++)] = t.text;
             }
         }
     }

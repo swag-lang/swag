@@ -602,7 +602,7 @@ namespace Ast
                 if (!first)
                     CONCAT_FIXED_STR(concat, ", ");
                 first = false;
-                concat.addString(a);
+                concat.addString(a.text);
             }
 
             if (!visitNode->aliasNames.empty())
@@ -1048,11 +1048,11 @@ namespace Ast
             }
 
             // Capture parameters
-            if (!funcCallParams->captureIdentifiers.empty())
+            if (!funcCallParams->aliasNames.empty())
             {
                 first = true;
                 CONCAT_FIXED_STR(concat, " <- |");
-                for (auto& t : funcCallParams->captureIdentifiers)
+                for (auto& t : funcCallParams->aliasNames)
                 {
                     if (!first)
                         CONCAT_FIXED_STR(concat, ", ");

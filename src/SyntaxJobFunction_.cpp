@@ -114,7 +114,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
         while (token.id != TokenId::SymVertical)
         {
             SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid token, identifier expected"));
-            callParams->captureIdentifiers.push_back(token);
+            callParams->aliasNames.push_back(token);
             SWAG_CHECK(eatToken());
             if (token.id == TokenId::SymVertical)
                 break;

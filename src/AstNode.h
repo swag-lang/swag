@@ -457,7 +457,7 @@ struct AstIdentifier : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    vector<Utf8> aliasNames;
+    vector<Token> aliasNames;
 
     AstIdentifierRef*  identifierRef;
     AstNode*           genericParameters;
@@ -508,7 +508,7 @@ struct AstAttrUse : public AstNode
 struct AstFuncCallParams : public AstNode
 {
     AstNode*      clone(CloneContext& context) override;
-    vector<Token> captureIdentifiers;
+    vector<Token> aliasNames;
 };
 
 struct AstFuncCallParam : public AstNode
@@ -641,9 +641,9 @@ struct AstVisit : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    vector<Utf8> aliasNames;
-    Token        extraNameToken;
-    Token        wantPointerToken;
+    vector<Token> aliasNames;
+    Token         extraNameToken;
+    Token         wantPointerToken;
 
     AstNode* expression;
     AstNode* block;

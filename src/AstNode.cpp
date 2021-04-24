@@ -1416,6 +1416,6 @@ AstNode* AstFuncCallParams::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstFuncCallParams>();
     newNode->copyFrom(context, this);
-    newNode->captureIdentifiers = captureIdentifiers;
+    newNode->aliasNames = aliasNames;
     return newNode;
 }
