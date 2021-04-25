@@ -471,6 +471,20 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
     bool isLocalConstant    = false;
 
+    // Check alias
+    if (node->token.text.find("@alias") == 0 && !(node->flags & AST_GENERATED) && !(node->ownerInline))
+    {
+        auto ownerFct = node->ownerFct;
+        while (ownerFct)
+        {
+            if (ownerFct->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
+                break;
+            ownerFct = ownerFct->ownerFct;
+        }
+        if (!ownerFct)
+            return context->report({node, node->token, format("invalid variable name '%s' because '@alias' can only be used inside a macro or a mixin function", node->token.text.c_str())});
+    }
+
     uint32_t symbolFlags = 0;
     if (node->kind == AstNodeKind::FuncDeclParam)
         symbolFlags |= OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST_ASSIGN;
