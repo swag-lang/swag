@@ -1080,18 +1080,24 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     // @alias must be of the form @aliasNUM
     if (node->token.text.length() >= 6)
     {
-        if (node->token.text == "@alias")
-            return syntaxError(node->token, "'@alias' variable name must be followed by a number");
-
         if (node->token.text.find("@alias") == 0)
         {
-            const char* pz = node->token.text.c_str() + 6;
+            if (node->token.text == "@alias")
+                return syntaxError(node->token, "'@alias' variable name must be followed by a number");
+
+            const char* pz  = node->token.text.c_str() + 6;
+            int         num = 0;
             while (*pz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
                     return syntaxError(node->token, format("invalid '@alias' variable name '%s', '%s' is not a valid number", node->token.text.c_str(), node->token.text.c_str() + 6));
+                num *= 10;
+                num += *pz - '0';
                 pz++;
             }
+
+            if(num >= 32)
+                return error(node->token, format("an '@alias' number must be in the range [0, 31] ('%u' provided)", num));
 
             return true;
         }
