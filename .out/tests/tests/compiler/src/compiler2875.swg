@@ -8,7 +8,7 @@ func toto(stmt: code)
 
 #test
 {
-    toto() <- |x, y|
+    toto(|x, y|)
     {
         @assert(x == 555)
         @assert(y == 666)

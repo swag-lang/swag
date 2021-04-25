@@ -141,18 +141,31 @@
     // Note that this is also valid for mixins.
     {
         #[swag.macro]
-        func call(stmt: code)
+        func call(v: s32, stmt: code)
         {
-            @alias0 := 444
-            @alias1 := 555
+            @alias0 := v
+            @alias1 := v * 2
             #mixin stmt
         }
 
-        // The caller can then name those special variables
-        call() <- |x, y|
+        call(20)
         {
-            @assert(x == 444)   // x is @alias0
-            @assert(y == 555)   // y is @alias1
+            @assert(@alias0 == 20)
+            @assert(@alias1 == 40)
+        }
+
+        // The caller can then name those special variables
+        // Use |name0, name1, ...| before the function call parameters
+        call(|x| 20)
+        {
+            @assert(x == 20)        // x is @alias0
+            @assert(@alias1 == 40)  // @alias1 is not renamed
+        }
+
+        call(|x, y| 20)
+        {
+            @assert(x == 20)   // x is @alias0
+            @assert(y == 40)   // y is @alias1
         }
     }
 }

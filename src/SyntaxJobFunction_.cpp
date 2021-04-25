@@ -63,6 +63,24 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
     auto callParams = Ast::newFuncCallParams(sourceFile, parent, this);
     *result         = callParams;
 
+    // Capturing
+    if (closeToken == TokenId::SymRightParen && token.id == TokenId::SymVertical)
+    {
+        SWAG_CHECK(eatToken());
+        while (token.id != TokenId::SymVertical)
+        {
+            SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid token, identifier expected"));
+            callParams->aliasNames.push_back(token);
+            SWAG_CHECK(eatToken());
+            if (token.id == TokenId::SymVertical)
+                break;
+            SWAG_VERIFY(token.id == TokenId::SymComma, syntaxError(token, "invalid token, ',' expected"));
+            SWAG_CHECK(eatToken());
+        }
+
+        SWAG_CHECK(eatToken());
+    }
+
     while (token.id != closeToken)
     {
         while (true)
@@ -104,26 +122,6 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
         SWAG_CHECK(eatToken(closeToken, "to close struct initialization parameters"));
     else
         SWAG_CHECK(eatToken(closeToken, "to close function call parameters"));
-
-    // Capturing
-    if (closeToken == TokenId::SymRightParen && token.id == TokenId::SymLowerMinus)
-    {
-        SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id == TokenId::SymVertical, syntaxError(token, "invalid token after '->' ('|' expected)"));
-        SWAG_CHECK(eatToken());
-        while (token.id != TokenId::SymVertical)
-        {
-            SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid token, identifier expected"));
-            callParams->aliasNames.push_back(token);
-            SWAG_CHECK(eatToken());
-            if (token.id == TokenId::SymVertical)
-                break;
-            SWAG_VERIFY(token.id == TokenId::SymComma, syntaxError(token, "invalid token, ',' expected"));
-            SWAG_CHECK(eatToken());
-        }
-
-        SWAG_CHECK(eatToken());
-    }
 
     return true;
 }
