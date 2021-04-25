@@ -8,7 +8,19 @@
 const char* g_TokenNames[] =
     {
 #undef DEFINE_TOKEN_ID
-#define DEFINE_TOKEN_ID(__id) #__id,
+#define DEFINE_TOKEN_ID(__id, __flags) #__id,
+#include "TokenIds.h"
+};
+
+const uint32_t TOKEN_SYM       = 0x00000001;
+const uint32_t TOKEN_INTRINSIC = 0x00000002;
+const uint32_t TOKEN_KWD       = 0x00000004;
+const uint32_t TOKEN_COMPILER  = 0x00000008;
+
+const uint32_t g_TokenFlags[] =
+    {
+#undef DEFINE_TOKEN_ID
+#define DEFINE_TOKEN_ID(__id, __flags) __flags,
 #include "TokenIds.h"
 };
 
@@ -303,4 +315,9 @@ bool Tokenizer::getToken(Token& token)
     }
 
     return true;
+}
+
+bool Tokenizer::isSymbol(TokenId id)
+{
+    return g_TokenFlags[(int) id] & TOKEN_SYM;
 }

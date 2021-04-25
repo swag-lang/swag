@@ -7,7 +7,7 @@ enum class Intrisic;
 
 enum class TokenId : uint16_t
 {
-#define DEFINE_TOKEN_ID(__id) __id,
+#define DEFINE_TOKEN_ID(__id, __flags) __id,
 #include "TokenIds.h"
 };
 
@@ -57,23 +57,24 @@ struct Tokenizer
     void setFile(SourceFile* file);
     bool getToken(Token& token);
 
-    uint32_t getChar();
-    uint32_t getCharNoSeek(unsigned& offset);
-    uint32_t getChar(unsigned& offset, bool seek, bool useCache = true);
-    bool     eatCComment(Token& token);
-    void     getIdentifier(Token& token, uint32_t c, unsigned offset);
-    void     treatChar(uint32_t c, unsigned offset);
-    bool     doNumberLiteral(uint32_t c, Token& token);
-    bool     doHexLiteral(Token& token);
-    bool     doBinLiteral(Token& token);
-    bool     doIntFloatLiteral(uint32_t c, Token& token);
-    bool     doIntLiteral(uint32_t c, Token& token);
-    bool     doFloatLiteral(uint32_t c, Token& token);
-    bool     error(Token& token, const Utf8& msg);
-    bool     errorNumberSyntax(Token& token, const Utf8& msg);
-    bool     doSymbol(uint32_t c, Token& token);
-    void     postProcessRawString(Utf8& text);
-    bool     doStringLiteral(Token& token, bool raw);
+    uint32_t    getChar();
+    uint32_t    getCharNoSeek(unsigned& offset);
+    uint32_t    getChar(unsigned& offset, bool seek, bool useCache = true);
+    bool        eatCComment(Token& token);
+    void        getIdentifier(Token& token, uint32_t c, unsigned offset);
+    void        treatChar(uint32_t c, unsigned offset);
+    bool        doNumberLiteral(uint32_t c, Token& token);
+    bool        doHexLiteral(Token& token);
+    bool        doBinLiteral(Token& token);
+    bool        doIntFloatLiteral(uint32_t c, Token& token);
+    bool        doIntLiteral(uint32_t c, Token& token);
+    bool        doFloatLiteral(uint32_t c, Token& token);
+    bool        error(Token& token, const Utf8& msg);
+    bool        errorNumberSyntax(Token& token, const Utf8& msg);
+    bool        doSymbol(uint32_t c, Token& token);
+    void        postProcessRawString(Utf8& text);
+    bool        doStringLiteral(Token& token, bool raw);
+    static bool isSymbol(TokenId id);
 
     SourceFile*    sourceFile         = nullptr;
     uint32_t       cacheChar[2]       = {0};

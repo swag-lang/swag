@@ -75,34 +75,32 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     }
 
     Utf8 msg;
-    switch (token.id)
-    {
-    case TokenId::Identifier:
-        msg = format("identifier '%s' ", token.text.c_str());
-        break;
-    default:
-        msg = format("'%s' ", token.text.c_str());
-        break;
-    }
 
     switch (kind)
     {
     case InvalidTokenError::TopLevelInstruction:
-        msg += "is invalid as a top level instruction";
+        msg += "expected a top level instruction";
         break;
     case InvalidTokenError::EmbeddedInstruction:
-        msg += "is invalid as an embedded instruction";
+        msg += "expected an embedded instruction or a curly block";
         break;
     case InvalidTokenError::LeftExpression:
-        msg += "is invalid as a left expression";
+        msg += "expected a left expression";
         break;
     case InvalidTokenError::LeftExpressionVar:
-        msg += "is invalid as a left expression for variable declaration";
+        msg += "expected a left expression for variable declaration";
         break;
     case InvalidTokenError::PrimaryExpression:
-        msg += "is invalid as an expression";
+        msg += "expected an expression";
         break;
     }
+
+    if (Tokenizer::isSymbol(token.id))
+        msg += format(", found symbol '%s' ", token.text.c_str());
+    else if (token.id == TokenId::Identifier)
+        msg += format(", found identifier '%s' ", token.text.c_str());
+    else
+        msg += format(", found token '%s' ", token.text.c_str());
 
     switch (token.id)
     {
@@ -113,7 +111,7 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
             tokenizer.getToken(nextToken);
             if (nextToken.id == TokenId::SymEqual || nextToken.id == TokenId::SymColonEqual || nextToken.id == TokenId::SymColon)
             {
-                msg += ", do you miss 'var' or 'const' to declare a global variable ?";
+                msg += "; did you miss 'var' or 'const' to declare a global variable ?";
             }
         }
         break;
