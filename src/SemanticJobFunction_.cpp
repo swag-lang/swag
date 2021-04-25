@@ -254,7 +254,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         for (uint32_t n = 0; n < 32 - maxN; n++)
         {
             if ((mask & 1) == 0)
-                return context->report({node, node->token, format("'@alias' names not contiguous in function '%s' (missing '@alias%u')", node->token.text.c_str(), n)});
+                return context->report({node, node->token, format("'@alias' names are not all contiguous in function '%s' (missing '@alias%u')", node->token.text.c_str(), n)});
             mask >>= 1;
         }
     }
@@ -276,20 +276,20 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // Check attributes
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
-        return context->report({node, node->token, "function with the 'swag.foreign' attribute cannot have a body"});
+        return context->report({node, node->token, "a function with the 'swag.foreign' attribute cannot have a body"});
 
     if (!(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
     {
         if (node->flags & AST_SPECIAL_COMPILER_FUNC)
         {
-            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, node->token, "compiler special function cannot have the 'swag.inline' attribute"}));
+            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, node->token, "a compiler special function cannot have the 'swag.inline' attribute"}));
         }
 
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
             SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, node->token, "#test functions can only be used in a test module (in the './tests' folder of the workspace)"}));
-            SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->report({node->returnType, "function with the 'swag.test' attribute cannot have a return value"}));
-            SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, "function with the 'swag.test' attribute cannot have parameters"}));
+            SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->report({node->returnType, "a function with the 'swag.test' attribute cannot have a return value"}));
+            SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, "a function with the 'swag.test' attribute cannot have parameters"}));
         }
 
         if (node->attributeFlags & ATTRIBUTE_PUBLIC)
@@ -314,7 +314,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
                     return context->report({node, node->token, format("not all control paths of %s return a value", node->getNameForMessage().c_str())});
-                return context->report({node, node->token, format("%s must return a value", node->getNameForMessage().c_str())});
+                return context->report({node, node->token, format("%s missing return value", node->getNameForMessage().c_str())});
             }
         }
     }
@@ -938,9 +938,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     if (node->childs.empty())
     {
-        if (funcNode->returnType->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-            return context->report({node, node->token, "missing return value (tuple)"});
-        return context->report({node, node->token, format("missing return value (type '%s')", funcNode->returnType->typeInfo->getDisplayName().c_str())});
+        return context->report({node, node->token, format("missing a return value ('%s')", funcNode->returnType->typeInfo->getDisplayName().c_str())});
     }
 
     auto returnType = funcNode->returnType->typeInfo;
@@ -953,7 +951,10 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // (better error message than just letting the makeCompatibles do its job)
     auto concreteType = TypeManager::concreteType(child->typeInfo);
     if (returnType->isNative(NativeTypeKind::Void) && !concreteType->isNative(NativeTypeKind::Void))
+    {
+        PushErrHint errh("the function should return nothing");
         return context->report({child, format("returning a value of type '%s', but the function does not declare a return type", concreteType->getDisplayName().c_str())});
+    }
 
     // If returning retval, then returning nothing, as we will change the return parameter value in place
     if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_RETVAL)

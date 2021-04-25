@@ -1,4 +1,4 @@
-#test
+func toto()->s32
 {
-    var x: s8 = 4's8 + 10
+    return 0
 }
