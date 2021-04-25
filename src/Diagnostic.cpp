@@ -101,26 +101,6 @@ void Diagnostic::report(bool verboseMode) const
     auto hilightCodeColor = LogColor::White;
     auto rangeNoteColor   = LogColor::Cyan;
 
-    // Code remarks
-    if (g_CommandLine.errorSourceOut && g_CommandLine.errorNoteOut)
-    {
-        if (!remarks.empty())
-        {
-            if (!verboseMode)
-                g_Log.setColor(remarkColor);
-            for (auto& r : remarks)
-            {
-                if (r.empty())
-                    continue;
-                for (int i = 0; i < headerSize; i++)
-                    g_Log.print(" ");
-                g_Log.print("==> ");
-                g_Log.print(r);
-                g_Log.eol();
-            }
-        }
-    }
-
     // Source file and location on their own line
     if (g_CommandLine.errorSourceOut && hasFile && !sourceFile->path.empty())
     {
@@ -337,6 +317,26 @@ void Diagnostic::report(bool verboseMode) const
             for (int j = 0; j < headerSize; j++)
                 g_Log.print(" ");
             g_Log.print(" |  \n");
+        }
+    }
+
+    // Code remarks
+    if (g_CommandLine.errorSourceOut && g_CommandLine.errorNoteOut)
+    {
+        if (!remarks.empty())
+        {
+            if (!verboseMode)
+                g_Log.setColor(remarkColor);
+            for (auto& r : remarks)
+            {
+                if (r.empty())
+                    continue;
+                for (int i = 0; i < headerSize; i++)
+                    g_Log.print(" ");
+                g_Log.print("note: ");
+                g_Log.print(r);
+                g_Log.eol();
+            }
         }
     }
 
