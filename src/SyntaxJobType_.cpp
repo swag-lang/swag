@@ -20,7 +20,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymEqual));
 
     AstNode* expr;
-    SWAG_CHECK(doPrimaryExpression(node, &expr));
+    SWAG_CHECK(doPrimaryExpression(node, EXPR_FLAG_NONE, &expr));
     SWAG_CHECK(eatSemiCol("'alias' expression"));
 
     // This is a type alias
@@ -306,7 +306,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (node->arrayDim == 254)
                 return syntaxError(token, "too many array dimensions (max is 254)");
             node->arrayDim++;
-            SWAG_CHECK(doExpression(node));
+            SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(tokenizer.getToken(token));
@@ -425,7 +425,7 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
     SWAG_CHECK(doTypeExpression(node));
     SWAG_CHECK(eatToken(TokenId::SymRightParen, "after type expression"));
 
-    SWAG_CHECK(doUnaryExpression(node));
+    SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE));
     return true;
 }
 
@@ -441,7 +441,7 @@ bool SyntaxJob::doBitCast(AstNode* parent, AstNode** result)
     SWAG_CHECK(doTypeExpression(node));
     SWAG_CHECK(eatToken(TokenId::SymRightParen, "after type expression"));
 
-    SWAG_CHECK(doUnaryExpression(node));
+    SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE));
     return true;
 }
 
@@ -453,6 +453,6 @@ bool SyntaxJob::doAutoCast(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(doUnaryExpression(node));
+    SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE));
     return true;
 }

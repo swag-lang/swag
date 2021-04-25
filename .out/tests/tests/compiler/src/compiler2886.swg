@@ -1,6 +1,6 @@
 #test
 {
-    loop =
+    loop 4..:5
     {
 
     }

@@ -356,7 +356,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         if (token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doExpression(structFieldNode, &structFieldNode->assignment));
+            SWAG_CHECK(doExpression(structFieldNode, EXPR_FLAG_NONE, &structFieldNode->assignment));
         }
 
         idx++;

@@ -533,7 +533,10 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     }
 
     default:
-        return context->report({arrayNode->array, format("%s '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->getDisplayName().c_str())});
+    {
+        PushErrHint errh("this should be a pointer");
+        return context->report({arrayNode->array, format("%s '%s' cannot be dereferenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->getDisplayName().c_str())});
+    }
     }
 
     return true;

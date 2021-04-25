@@ -28,7 +28,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
     SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
 
     AstNode* firstExpr = nullptr;
-    SWAG_CHECK(doExpression(nullptr, &firstExpr));
+    SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &firstExpr));
 
     // Slicing
     if (token.id == TokenId::SymDotDot)
@@ -41,7 +41,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
         Ast::addChildBack(arrayNode, *exprNode);
         Ast::addChildBack(arrayNode, firstExpr);
         arrayNode->lowerBound = firstExpr;
-        SWAG_CHECK(doExpression(arrayNode, &arrayNode->upperBound));
+        SWAG_CHECK(doExpression(arrayNode, EXPR_FLAG_NONE, &arrayNode->upperBound));
         *exprNode = arrayNode;
     }
 
@@ -64,7 +64,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
             }
             else
             {
-                SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
+                SWAG_CHECK(doExpression(arrayNode, EXPR_FLAG_NONE, &arrayNode->access));
             }
 
             *exprNode = arrayNode;
@@ -96,11 +96,11 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     if (node->token.id == TokenId::IntrinsicMakeInterface)
     {
         AstNode* params = Ast::newFuncCallParams(sourceFile, node, this);
-        SWAG_CHECK(doExpression(params));
+        SWAG_CHECK(doExpression(params, EXPR_FLAG_NONE));
         SWAG_CHECK(eatToken(TokenId::SymComma));
-        SWAG_CHECK(doExpression(params));
+        SWAG_CHECK(doExpression(params, EXPR_FLAG_NONE));
         SWAG_CHECK(eatToken(TokenId::SymComma));
-        SWAG_CHECK(doExpression(params));
+        SWAG_CHECK(doExpression(params, EXPR_FLAG_NONE));
     }
 
     // Two parameters
@@ -108,9 +108,9 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
              node->token.id == TokenId::IntrinsicMakeString ||
              node->token.id == TokenId::IntrinsicMakeAny)
     {
-        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
         SWAG_CHECK(eatToken(TokenId::SymComma));
-        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
     }
 
     // Two parameters
@@ -118,20 +118,20 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(doTypeExpression(node));
         SWAG_CHECK(eatToken(TokenId::SymComma));
-        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
     }
 
     // One single parameter
     else
     {
-        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }
 
-bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     switch (token.id)
     {
@@ -167,7 +167,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, "expression is empty"));
         AstNode* expr;
-        SWAG_CHECK(doExpression(parent, &expr));
+        SWAG_CHECK(doExpression(parent, exprFlags, &expr));
         expr->flags |= AST_IN_ATOMIC_EXPR;
         if (result)
             *result = expr;
@@ -289,20 +289,28 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::SymAsterisk:
     case TokenId::SymLeftSquare:
     case TokenId::SymLeftCurly:
+        if (exprFlags & EXPR_FLAG_SIMPLE)
+            return invalidTokenError(InvalidTokenError::PrimaryExpression);
         SWAG_CHECK(doTypeExpression(parent, result));
         break;
 
     case TokenId::SymLiteralCurly:
+        if (exprFlags & EXPR_FLAG_SIMPLE)
+            return invalidTokenError(InvalidTokenError::PrimaryExpression);
         SWAG_CHECK(eatToken(TokenId::SymLiteralCurly));
         SWAG_CHECK(doExpressionListTuple(parent, result));
         break;
 
     case TokenId::SymLiteralBracket:
+        if (exprFlags & EXPR_FLAG_SIMPLE)
+            return invalidTokenError(InvalidTokenError::PrimaryExpression);
         SWAG_CHECK(eatToken(TokenId::SymLiteralBracket));
         SWAG_CHECK(doExpressionListArray(parent, result));
         break;
 
     case TokenId::SymLiteralParen:
+        if (exprFlags & EXPR_FLAG_SIMPLE)
+            return invalidTokenError(InvalidTokenError::PrimaryExpression);
         SWAG_CHECK(doLambdaExpression(parent, result));
         break;
 
@@ -326,7 +334,16 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
     Token savedToken       = token;
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(doUnaryExpression(arrayNode, &arrayNode->array));
+    if (Tokenizer::isSymbol(token.id) && token.id != TokenId::SymBackTick)
+    {
+        PushErrHint errh("this is seen as a pointer dereference ':'");
+        return syntaxError(arrayNode, format("symbol ':' is interpreted as a pointer dereference, but is followed by a symbol ('%s')", token.text.c_str()));
+    }
+
+    {
+        PushErrHint errh("this should be the expression to dereference");
+        SWAG_CHECK(doUnaryExpression(arrayNode, EXPR_FLAG_SIMPLE, &arrayNode->array));
+    }
 
     auto literal                   = Ast::newNode<AstNode>(this, AstNodeKind::Literal, sourceFile, arrayNode);
     literal->computedValue.reg.u64 = 0;
@@ -341,7 +358,7 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* exprNode;
 
@@ -370,7 +387,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     }
     else
     {
-        SWAG_CHECK(doSinglePrimaryExpression(nullptr, &exprNode));
+        SWAG_CHECK(doSinglePrimaryExpression(nullptr, exprFlags, &exprNode));
     }
 
     if (parent)
@@ -380,7 +397,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     switch (token.id)
     {
@@ -403,11 +420,11 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
         if (result)
             *result = node;
         SWAG_CHECK(tokenizer.getToken(token));
-        return doPrimaryExpression(node);
+        return doPrimaryExpression(node, exprFlags);
     }
     }
 
-    return doPrimaryExpression(parent, result);
+    return doPrimaryExpression(parent, exprFlags, result);
 }
 
 static int getPrecedence(TokenId id)
@@ -547,10 +564,10 @@ bool SyntaxJob::doModifier(Token& mdfToken)
     return true;
 }
 
-bool SyntaxJob::doFactorExpression(AstNode** parent, AstNode** result)
+bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* leftNode;
-    SWAG_CHECK(doUnaryExpression(nullptr, &leftNode));
+    SWAG_CHECK(doUnaryExpression(nullptr, exprFlags, &leftNode));
 
     bool isBinary = false;
     if ((token.id == TokenId::SymPlus) ||
@@ -603,7 +620,7 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, AstNode** result)
         }
 
         Ast::addChildBack(binaryNode, leftNode);
-        SWAG_CHECK(doFactorExpression((AstNode**) &binaryNode));
+        SWAG_CHECK(doFactorExpression((AstNode**) &binaryNode, exprFlags));
         SWAG_CHECK(doOperatorPrecedence((AstNode**) &binaryNode));
         leftNode = binaryNode;
         isBinary = true;
@@ -622,7 +639,7 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, AstNode** result)
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doFactorExpression(&binaryNode));
+        SWAG_CHECK(doFactorExpression(&binaryNode, exprFlags));
         SWAG_CHECK(doOperatorPrecedence(&binaryNode));
         leftNode = binaryNode;
         isBinary = true;
@@ -636,10 +653,10 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* leftNode;
-    SWAG_CHECK(doFactorExpression(nullptr, &leftNode));
+    SWAG_CHECK(doFactorExpression(nullptr, exprFlags, &leftNode));
     SWAG_CHECK(doOperatorPrecedence(&leftNode));
     SWAG_VERIFY(token.id != TokenId::SymEqual, syntaxError(token, "invalid compare operator '=', did you mean '==' ?"));
     Ast::addChildBack(parent, leftNode);
@@ -648,10 +665,10 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* leftNode;
-    SWAG_CHECK(doCompareExpression(nullptr, &leftNode));
+    SWAG_CHECK(doCompareExpression(nullptr, exprFlags, &leftNode));
 
     bool isBinary = false;
     if ((token.id == TokenId::SymVerticalVertical) || (token.id == TokenId::SymAmpersandAmpersand))
@@ -662,7 +679,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doBoolExpression(binaryNode));
+        SWAG_CHECK(doBoolExpression(binaryNode, EXPR_FLAG_NONE));
         leftNode = binaryNode;
         isBinary = true;
     }
@@ -716,11 +733,11 @@ bool SyntaxJob::doMoveExpression(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(doExpression(parent, result));
+    SWAG_CHECK(doExpression(parent, EXPR_FLAG_NONE, result));
     return true;
 }
 
-bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
     AstNode* boolExpression = nullptr;
     switch (token.id)
@@ -730,7 +747,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         boolExpression              = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerRun, sourceFile, nullptr);
         boolExpression->semanticFct = SemanticJob::resolveCompilerRun;
-        SWAG_CHECK(doBoolExpression(boolExpression));
+        SWAG_CHECK(doBoolExpression(boolExpression, exprFlags));
         break;
     }
     case TokenId::CompilerMixin:
@@ -738,7 +755,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         boolExpression              = Ast::newNode<AstCompilerMixin>(nullptr, AstNodeKind::CompilerMixin, sourceFile, nullptr);
         boolExpression->semanticFct = SemanticJob::resolveCompilerMixin;
-        SWAG_CHECK(doExpression(boolExpression));
+        SWAG_CHECK(doExpression(boolExpression, exprFlags));
         break;
     }
     case TokenId::CompilerCode:
@@ -749,7 +766,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
         if (token.id == TokenId::SymLeftCurly)
             SWAG_CHECK(doEmbeddedStatement(boolExpression, &block));
         else
-            SWAG_CHECK(doBoolExpression(boolExpression, &block));
+            SWAG_CHECK(doBoolExpression(boolExpression, exprFlags, &block));
         auto typeCode     = allocType<TypeInfoCode>();
         typeCode->content = boolExpression->childs.front();
         typeCode->content->flags |= AST_NO_SEMANTIC;
@@ -759,7 +776,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     }
 
     default:
-        SWAG_CHECK(doBoolExpression(nullptr, &boolExpression));
+        SWAG_CHECK(doBoolExpression(nullptr, exprFlags, &boolExpression));
         break;
     }
 
@@ -773,9 +790,9 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
             *result = triNode;
         Ast::addChildBack(triNode, boolExpression);
 
-        SWAG_CHECK(doExpression(triNode));
+        SWAG_CHECK(doExpression(triNode, exprFlags));
         SWAG_CHECK(eatToken(TokenId::SymColon));
-        SWAG_CHECK(doExpression(triNode));
+        SWAG_CHECK(doExpression(triNode, exprFlags));
     }
 
     // A ?? B
@@ -787,7 +804,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
         if (result)
             *result = triNode;
         Ast::addChildBack(triNode, boolExpression);
-        SWAG_CHECK(doExpression(triNode));
+        SWAG_CHECK(doExpression(triNode, exprFlags));
     }
     else
     {
@@ -801,7 +818,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
 {
-    return doExpression(parent, result);
+    return doExpression(parent, EXPR_FLAG_NONE, result);
 }
 
 bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
@@ -825,7 +842,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
         else
         {
             AstNode* paramExpression;
-            SWAG_CHECK(doExpression(nullptr, &paramExpression));
+            SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &paramExpression));
 
             // Name
             if (token.id == TokenId::SymColon)
@@ -839,7 +856,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
                 if (token.id == TokenId::SymLeftCurly)
                     SWAG_CHECK(doExpressionListTuple(initNode, &paramExpression));
                 else
-                    SWAG_CHECK(doExpression(initNode, &paramExpression));
+                    SWAG_CHECK(doExpression(initNode, EXPR_FLAG_NONE, &paramExpression));
                 paramExpression->token.startLocation = namedExpression->token.startLocation;
                 paramExpression->token.text          = name;
                 paramExpression->flags |= AST_IS_NAMED;
@@ -878,7 +895,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
         else if (token.id == TokenId::SymLeftCurly)
             SWAG_CHECK(doExpressionListTuple(initNode));
         else
-            SWAG_CHECK(doExpression(initNode));
+            SWAG_CHECK(doExpression(initNode, EXPR_FLAG_NONE));
 
         if (token.id != TokenId::SymComma)
             break;
@@ -1069,9 +1086,9 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     {
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return syntaxError(identifier->genericParameters, "variable name cannot have generic parameters");
+            return syntaxError(identifier->genericParameters, format("unexpected generic parameters for variable '%s'", identifier->token.text.c_str()));
         if (identifier->callParameters)
-            return syntaxError(identifier->callParameters, "variable name cannot have call parameters");
+            return syntaxError(identifier->callParameters, format("unexpected call parameters for variable '%s'", identifier->token.text.c_str()));
     }
 
     if (node->token.text[0] != '@')
@@ -1096,7 +1113,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
                 pz++;
             }
 
-            if(num >= 32)
+            if (num >= 32)
                 return error(node->token, format("an '@alias' number must be in the range [0, 31] ('%u' provided)", num));
             if (node->ownerFct)
                 node->ownerFct->aliasMask |= 1 << num;
@@ -1367,7 +1384,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                     if (affectNode->token.id == TokenId::SymEqual)
                         SWAG_CHECK(doMoveExpression(affectNode, &affectExpression));
                     else
-                        SWAG_CHECK(doExpression(affectNode, &affectExpression));
+                        SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &affectExpression));
                 }
 
                 // This is not an initialization, so we need to duplicate the right expression
@@ -1396,7 +1413,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 
             // Get right side
             AstNode* assignment;
-            SWAG_CHECK(doExpression(nullptr, &assignment));
+            SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &assignment));
 
             // If right side is an expression list, then simply convert to a bunch of affectations without
             // dealing with a tuple...
@@ -1476,7 +1493,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             if (affectNode->token.id == TokenId::SymEqual)
                 SWAG_CHECK(doMoveExpression(affectNode));
             else
-                SWAG_CHECK(doExpression(affectNode));
+                SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE));
             if (result)
                 *result = affectNode;
         }
@@ -1502,12 +1519,12 @@ bool SyntaxJob::doInit(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(doExpression(node, &node->expression));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression));
 
     if (token.id == TokenId::SymComma)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doExpression(node, &node->count));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->count));
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
@@ -1543,12 +1560,12 @@ bool SyntaxJob::doDropCopyMove(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(doExpression(node, &node->expression));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression));
 
     if (token.id == TokenId::SymComma)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doExpression(node, &node->count));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->count));
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
@@ -1563,14 +1580,14 @@ bool SyntaxJob::doReloc(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(doExpression(node, &node->expression1));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression1));
     SWAG_CHECK(eatToken(TokenId::SymComma));
-    SWAG_CHECK(doExpression(node, &node->expression2));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression2));
 
     if (token.id == TokenId::SymComma)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doExpression(node, &node->count));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->count));
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightParen));

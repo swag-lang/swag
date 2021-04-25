@@ -366,6 +366,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     {
         for (auto note : notes)
             note->report();
+        g_Log.eol();
     }
 
     if (errorLevel == DiagnosticLevel::Error)

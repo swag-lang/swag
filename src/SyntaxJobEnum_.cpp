@@ -139,7 +139,7 @@ bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymEqual)
     {
         SWAG_CHECK(eatToken(TokenId::SymEqual));
-        SWAG_CHECK(doExpression(enumValue));
+        SWAG_CHECK(doExpression(enumValue, EXPR_FLAG_NONE));
     }
 
     SWAG_CHECK(eatSemiCol("enum value"));

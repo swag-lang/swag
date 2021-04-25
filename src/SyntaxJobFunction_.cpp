@@ -91,7 +91,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
             AstNode* paramExpression;
 
             inFunCall = true;
-            SWAG_CHECK(doExpression(nullptr, &paramExpression));
+            SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &paramExpression));
             inFunCall = false;
 
             // Name
@@ -102,7 +102,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
                 param->namedParamNode = paramExpression->childs.front();
                 param->namedParam     = param->namedParamNode->token.text;
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(doExpression(param));
+                SWAG_CHECK(doExpression(param, EXPR_FLAG_NONE));
             }
             else
             {
@@ -492,7 +492,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-        SWAG_CHECK(doExpression(funcNode, &funcNode->parameters));
+        SWAG_CHECK(doExpression(funcNode, EXPR_FLAG_NONE, &funcNode->parameters));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
@@ -572,7 +572,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             returnNode->semanticFct = SemanticJob::resolveReturn;
             funcNode->content       = returnNode;
             funcNode->flags |= AST_SHORT_LAMBDA;
-            SWAG_CHECK(doExpression(returnNode));
+            SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
             funcNode->content->token.endLocation = token.startLocation;
         }
 
@@ -612,7 +612,7 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
     if (tokenizer.lastTokenIsEOL)
         return true;
     if (token.id != TokenId::SymSemiColon)
-        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
 
     return true;
 }
@@ -671,7 +671,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
             returnNode->semanticFct = SemanticJob::resolveReturn;
             funcNode->content       = returnNode;
             funcNode->flags |= AST_SHORT_LAMBDA;
-            SWAG_CHECK(doExpression(returnNode));
+            SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
         }
 
         // Normal curly statement

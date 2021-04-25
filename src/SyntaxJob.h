@@ -43,6 +43,9 @@ static const uint32_t IDENTIFIER_NO_GEN_PARAMS = 0x00000002;
 static const uint32_t IDENTIFIER_NO_PARAMS     = IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_GEN_PARAMS;
 static const uint32_t IDENTIFIER_TYPE_DECL     = 0x00000004;
 
+static const uint32_t EXPR_FLAG_NONE   = 0x00000000;
+static const uint32_t EXPR_FLAG_SIMPLE = 0x00000001;
+
 struct SyntaxContext : public JobContext
 {
     SyntaxJob* job = nullptr;
@@ -128,24 +131,24 @@ struct SyntaxJob : public Job
     bool doIntrinsicProp(AstNode* parent, AstNode** result = nullptr);
     bool doGetErr(AstNode* parent, AstNode** result = nullptr);
     bool doIndex(AstNode* parent, AstNode** result = nullptr);
-    bool doSinglePrimaryExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doPrimaryExpression(AstNode* parent, AstNode** result = nullptr);
     bool doDeRef(AstNode* parent, AstNode** result = nullptr);
-    bool doUnaryExpression(AstNode* parent, AstNode** result = nullptr);
     bool doOperatorPrecedence(AstNode** result);
     bool doModifier(Token& mdfToken);
-    bool doFactorExpression(AstNode** parent, AstNode** result = nullptr);
-    bool doCompareExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doBoolExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
+    bool doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
+    bool doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
+    bool doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode** result = nullptr);
+    bool doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
+    bool doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
+    bool doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
     bool doMoveExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doExpression(AstNode* parent, AstNode** result = nullptr);
     bool doGenericDeclParameters(AstNode* parent, AstNode** result = nullptr);
     bool doLambdaFuncDecl(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false);
     bool doFuncDecl(AstNode* parent, AstNode** result = nullptr, TokenId typeFuncId = TokenId::Invalid);
     bool doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false);
     bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false);
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);
-    bool doAttrUse(AstNode*parent, AstNode**result = nullptr, bool single = false);
+    bool doAttrUse(AstNode* parent, AstNode** result = nullptr, bool single = false);
     void registerSubDecl(AstNode* subDecl);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedStatement(AstNode* parent, AstNode** result = nullptr);

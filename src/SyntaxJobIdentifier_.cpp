@@ -243,6 +243,6 @@ bool SyntaxJob::doThrow(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format("invalid 'catch' inside '%s' expression", node->token.text.c_str())));
     SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format("invalid 'assume' inside '%s' expression", node->token.text.c_str())));
     SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format("invalid 'throw' inside '%s' expression", node->token.text.c_str())));
-    SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
     return true;
 }

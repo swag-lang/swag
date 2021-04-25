@@ -122,3 +122,18 @@ struct Diagnostic
     bool            showMultipleCodeLines = true;
     bool            exceptionError        = false;
 };
+
+extern thread_local Utf8 g_ErrorHint;
+
+struct PushErrHint
+{
+    PushErrHint(const char* msg)
+    {
+        g_ErrorHint = msg;
+    }
+
+    ~PushErrHint()
+    {
+        g_ErrorHint = nullptr;
+    }
+};

@@ -4,6 +4,8 @@
 #include "SourceFile.h"
 #include "SymTable.h"
 
+thread_local Utf8 g_ErrorHint;
+
 void Diagnostic::defaultColor(bool verboseMode) const
 {
     if (verboseMode)
@@ -308,6 +310,14 @@ void Diagnostic::report(bool verboseMode) const
 
                     for (int i = 0; i < range; i++)
                         g_Log.print("^");
+
+                    if (!g_ErrorHint.empty())
+                    {
+                        g_Log.print("--- ");
+                        g_Log.setColor(remarkColor);
+                        g_Log.print(g_ErrorHint);
+                    }
+
                     g_Log.eol();
                 }
             }

@@ -15,12 +15,12 @@ bool SyntaxJob::doCompilerTag(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
 
     if (node->token.id == TokenId::CompilerTagVal)
     {
         SWAG_CHECK(eatToken(TokenId::SymComma));
-        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
@@ -41,7 +41,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, "missing '#if' expression"));
-    SWAG_CHECK(doExpression(node, &node->boolExpression));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
     node->boolExpression->allocateExtension();
     node->boolExpression->extension->semanticAfterFct = SemanticJob::resolveCompilerIf;
 
@@ -165,17 +165,17 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
         if (token.id == TokenId::SymComma)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doExpression(node));
+            SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
     else
-        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
 
     SWAG_CHECK(eatSemiCol("'#compiler' expression"));
 
@@ -214,7 +214,7 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
     }
     else
     {
-        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
         SWAG_CHECK(eatSemiCol("'#selectif' expression"));
     }
 
@@ -249,7 +249,7 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
     }
     else
     {
-        SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
         SWAG_CHECK(eatSemiCol("'#ast' expression"));
     }
 
@@ -345,7 +345,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     node->token                        = move(token);
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
     SWAG_CHECK(eatSemiCol("'#print' expression"));
     return true;
 }
@@ -410,7 +410,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
 
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, "missing '#global if' expression"));
-        SWAG_CHECK(doExpression(node, &node->boolExpression));
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         node->boolExpression->allocateExtension();
         node->boolExpression->extension->semanticAfterFct = SemanticJob::resolveCompilerIf;
 
@@ -639,7 +639,7 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
 
     ScopedFlags sc(this, AST_SILENT_CHECK);
-    SWAG_CHECK(doExpression(exprNode, nullptr));
+    SWAG_CHECK(doExpression(exprNode, EXPR_FLAG_NONE, nullptr));
 
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     exprNode->semanticFct = SemanticJob::resolveCompilerLoad;
