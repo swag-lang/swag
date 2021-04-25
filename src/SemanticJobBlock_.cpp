@@ -531,6 +531,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     }
 
     SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, format("special named visit is only valid for struct ('%s' provided)", typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(node->aliasNames.size() <= 2, context->report({node, node->aliasNames[2], format("too many 'visit' alias names (maximum is 2, but %u are provided)", node->aliasNames.size())}));
 
     Utf8 alias0Name = node->aliasNames.empty() ? Utf8("@alias0") : node->aliasNames[0].text;
     Utf8 alias1Name = node->aliasNames.size() <= 1 ? Utf8("@alias1") : node->aliasNames[1].text;

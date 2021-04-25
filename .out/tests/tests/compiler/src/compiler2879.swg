@@ -1,3 +1,5 @@
+#global testerror
+
 #test
 {
     visit a, b, c: "toto"
