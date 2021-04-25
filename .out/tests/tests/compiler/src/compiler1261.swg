@@ -1,1 +1,1 @@
-var x: char = 100
+var x: rune = 100

@@ -589,11 +589,11 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
     auto exprTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
 
     if (!(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
-        (!typeInfo->isNative(NativeTypeKind::Char)))
+        (!typeInfo->isNative(NativeTypeKind::Rune)))
         return context->report({typeNode, format("invalid bitcast type '%s' (should be native integer, char or float)", typeInfo->getDisplayName().c_str())});
 
     if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
-        (!exprTypeInfo->isNative(NativeTypeKind::Char)))
+        (!exprTypeInfo->isNative(NativeTypeKind::Rune)))
         return context->report({exprNode, format("cannot bitcast from type '%s' (should be native integer, char or float)", exprTypeInfo->getDisplayName().c_str())});
 
     SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, format("cannot bitcast to a type with a bigger size ('%s' from '%s')", typeInfo->getDisplayName().c_str(), exprTypeInfo->getDisplayName().c_str())}));

@@ -341,7 +341,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         case NativeTypeKind::F64:
             emitInstruction(context, ByteCodeOp::SetImmediate64, regList)->b.f64 = node->computedValue.reg.f64;
             return true;
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             emitInstruction(context, ByteCodeOp::SetImmediate32, regList)->b.u64 = node->computedValue.reg.u32;
             return true;
         case NativeTypeKind::String:

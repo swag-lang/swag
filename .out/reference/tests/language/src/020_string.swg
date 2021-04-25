@@ -11,8 +11,8 @@
 
     // A character is unicode, and 32 bits
     {
-        const a = "是"'char
-        @assert(a == "是"'char)
+        const a = "是"'rune
+        @assert(a == "是"'rune)
         @assert(@sizeof(a) == @sizeof(u32))
     }
 
@@ -124,9 +124,9 @@
         @assert(d == 51)
         @assert(@typeof(d)== @typeof(u64))
 
-        var e = "4"'char
+        var e = "4"'rune
         @assert(e == 52)
-        @assert(@typeof(e)== @typeof(char))
+        @assert(@typeof(e)== @typeof(rune))
     }
 
     // A string can be null if not defined

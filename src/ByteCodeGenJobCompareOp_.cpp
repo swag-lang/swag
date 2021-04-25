@@ -26,7 +26,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::F32:
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             emitInstruction(context, ByteCodeOp::CompareOpEqual32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
@@ -112,7 +112,7 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::F32:
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             emitInstruction(context, ByteCodeOp::CompareOpNotEqual32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
@@ -213,7 +213,7 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
             emitInstruction(context, ByteCodeOp::CompareOp3WayS32, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             emitInstruction(context, ByteCodeOp::CompareOp3WayU32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
@@ -258,7 +258,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0
             emitInstruction(context, ByteCodeOp::CompareOpLowerS32, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
@@ -303,7 +303,7 @@ bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, uint32_t 
             emitInstruction(context, ByteCodeOp::CompareOpLowerEqS32, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             emitInstruction(context, ByteCodeOp::CompareOpLowerEqU32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
@@ -348,7 +348,7 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
             emitInstruction(context, ByteCodeOp::CompareOpGreaterS32, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
@@ -393,7 +393,7 @@ bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, uint32_
             emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS32, r0, r1, r2);
             return true;
         case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             emitInstruction(context, ByteCodeOp::CompareOpGreaterEqU32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:

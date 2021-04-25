@@ -3,7 +3,7 @@ using core.utf8
 
 struct Utf8Map
 {
-	c:   char
+	c:   rune
 	str: string
 }
 

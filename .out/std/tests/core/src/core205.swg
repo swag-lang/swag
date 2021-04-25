@@ -4,19 +4,19 @@ using core.utf8
 struct ValidTest
 {
 	in:  string
-	out: char
+	out: rune
 }
 
 const validTests: [] ValidTest = @[
 	{"", CharError},
-	{"a", "a"'char},
-	{"abc", "c"'char},
-	{"Ж", "Ж"'char},
-	{"ЖЖ", "Ж"'char},
-	{"брэд-ЛГТМ", "М"'char},
-	{"☺☻☹", "☹"'char},
+	{"a", "a"'rune},
+	{"abc", "c"'rune},
+	{"Ж", "Ж"'rune},
+	{"ЖЖ", "Ж"'rune},
+	{"брэд-ЛГТМ", "М"'rune},
+	{"☺☻☹", "☹"'rune},
 	{"aa\xe2", CharError},
-	{"a\uFFFDb", "b"'char},
+	{"a\uFFFDb", "b"'rune},
 	{"\xF4\x8F\xBF\xF4", CharError},
     {"\xF4\x8F\xBF\xed", CharError},
     {"\xc0\x80", CharError},

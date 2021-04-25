@@ -82,7 +82,7 @@ namespace Ast
                         break;
                     case NativeTypeKind::S32:
                     case NativeTypeKind::U32:
-                    case NativeTypeKind::Char:
+                    case NativeTypeKind::Rune:
                     case NativeTypeKind::F32:
                         if (value->value.reg.u32 == reg.u32)
                             ok = true;
@@ -139,7 +139,7 @@ namespace Ast
         case NativeTypeKind::U32:
             result = format("%u", reg.u32);
             break;
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             if (reg.ch < 32)
                 result += format("\\x%02x", reg.ch);
             else if (reg.ch > 127 && reg.ch <= 255)

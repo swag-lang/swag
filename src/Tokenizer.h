@@ -27,7 +27,7 @@ enum class LiteralType : uint8_t
     TT_STRING,
     TT_RAW_STRING,
     TT_ESCAPE_STRING,
-    TT_CHAR,
+    TT_RUNE,
     TT_F32,
     TT_F64,
     TT_NULL,

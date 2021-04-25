@@ -3,7 +3,7 @@ using core.utf16
 
 var t: [] struct {
     r: [2] u16
-    w: char
+    w: rune
 } = @[
     {[0xd800, 0xdc00], 0x10000},
     {[0xd800, 0xdc01], 0x10001},

@@ -87,8 +87,8 @@ namespace Ast
         case NativeTypeKind::String:
             concat.addString("\"" + str + "\"");
             break;
-        case NativeTypeKind::Char:
-            concat.addString("\"" + str + "\"\'char");
+        case NativeTypeKind::Rune:
+            concat.addString("\"" + str + "\"\'rune");
             break;
         case NativeTypeKind::Bool:
             concat.addString(str);

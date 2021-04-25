@@ -1,6 +1,6 @@
 var t: struct {
-    in:  const [..] char
-} = @{[1'char,2,3,4]}
+    in:  const [..] rune
+} = @{[1'rune,2,3,4]}
 
 #test
 {

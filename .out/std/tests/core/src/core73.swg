@@ -6,7 +6,7 @@ using core
 {
     str := "A⺗B"
     result := utf8.decodeLastChar(str)
-    @assert(result.item0 == "B"'char)
+    @assert(result.item0 == "B"'rune)
     @assert(result.item1 == 1)
 
     @assert(utf8.countChars(str) == 3)

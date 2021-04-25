@@ -11,11 +11,11 @@
         default: @assert(false)
         }
 
-        ch := "A"'char
+        ch := "A"'rune
         switch ch
         {
-        case "B"'char: @assert(false)
-        case "A"'char: break
+        case "B"'rune: @assert(false)
+        case "A"'rune: break
         }
     }
 

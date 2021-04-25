@@ -2,4 +2,4 @@
 alias b = f32;
 alias c = bool;
 alias d = string;
-alias e = char;
+alias e = rune;

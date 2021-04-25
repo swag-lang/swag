@@ -1,3 +1,3 @@
 ﻿#global testerror;
 
-var x = 0xFFFFFFFF_FFFFFFFF'char;
+var x = 0xFFFFFFFF_FFFFFFFF'rune;

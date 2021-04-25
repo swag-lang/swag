@@ -6,7 +6,7 @@ using core, utf8
 {
     var x: String = "This is a list of words, with: a bit of punctuation\tand a tab character."
 
-    sep := @[" "'char, ",", ".", ":", "\t"]
+    sep := @[" "'rune, ",", ".", ":", "\t"]
     arr := x.split(sep)
 
     visit v: arr

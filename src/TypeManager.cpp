@@ -24,7 +24,7 @@ void TypeManager::setup()
     typeInfoBool      = new TypeInfoNative(NativeTypeKind::Bool, "bool", 1, 0);
     typeInfoF32       = new TypeInfoNative(NativeTypeKind::F32, "f32", 4, TYPEINFO_FLOAT);
     typeInfoF64       = new TypeInfoNative(NativeTypeKind::F64, "f64", 8, TYPEINFO_FLOAT);
-    typeInfoChar      = new TypeInfoNative(NativeTypeKind::Char, "char", 4, 0);
+    typeInfoRune      = new TypeInfoNative(NativeTypeKind::Rune, "rune", 4, 0);
     typeInfoVoid      = new TypeInfoNative(NativeTypeKind::Void, "void", 0, 0);
     typeInfoString    = new TypeInfoNative(NativeTypeKind::String, "string", 2 * sizeof(Register), 0);
     typeInfoAny       = new TypeInfoNative(NativeTypeKind::Any, "any", 2 * sizeof(Register), 0);
@@ -94,7 +94,7 @@ void TypeManager::setup()
     g_LiteralTypeToType[(int) LiteralType::TT_F32]             = typeInfoF32;
     g_LiteralTypeToType[(int) LiteralType::TT_F64]             = typeInfoF64;
     g_LiteralTypeToType[(int) LiteralType::TT_BOOL]            = typeInfoBool;
-    g_LiteralTypeToType[(int) LiteralType::TT_CHAR]            = typeInfoChar;
+    g_LiteralTypeToType[(int) LiteralType::TT_RUNE]            = typeInfoRune;
     g_LiteralTypeToType[(int) LiteralType::TT_STRING]          = typeInfoString;
     g_LiteralTypeToType[(int) LiteralType::TT_RAW_STRING]      = typeInfoString;
     g_LiteralTypeToType[(int) LiteralType::TT_ESCAPE_STRING]   = typeInfoString;

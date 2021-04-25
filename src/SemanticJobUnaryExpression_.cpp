@@ -105,7 +105,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
             break;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             op->computedValue.reg.b = op->computedValue.reg.u32 ? false : true;
             break;
         case NativeTypeKind::S64:

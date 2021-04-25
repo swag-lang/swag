@@ -49,7 +49,7 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
     f32Ty   = dbgBuilder->createBasicType("f32", 32, llvm::dwarf::DW_ATE_float);
     f64Ty   = dbgBuilder->createBasicType("f64", 64, llvm::dwarf::DW_ATE_float);
     boolTy  = dbgBuilder->createBasicType("bool", 8, llvm::dwarf::DW_ATE_boolean);
-    charTy  = dbgBuilder->createBasicType("char", 32, llvm::dwarf::DW_ATE_UTF);
+    charTy  = dbgBuilder->createBasicType("rune", 32, llvm::dwarf::DW_ATE_UTF);
     ptrU8Ty = dbgBuilder->createPointerType(u8Ty, 64);
 
     // string
@@ -285,7 +285,7 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
             return f32Ty;
         case NativeTypeKind::F64:
             return f64Ty;
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             return charTy;
         case NativeTypeKind::Bool:
             return boolTy;

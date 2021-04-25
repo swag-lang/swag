@@ -5,74 +5,74 @@
 #[swag.inline, swag.constexpr]
 public
 {
-    func isLatin1(c: char)  => c <= 0xFF
-    func isAscii(c: char)   => c <= 0x7F
+    func isLatin1(c: rune)  => c <= 0xFF
+    func isAscii(c: rune)   => c <= 0x7F
 }
 
 #[swag.constexpr]
 public
 {
-    func isDigit(c: char)->bool
+    func isDigit(c: rune)->bool
     {
         if isLatin1(c) return latin1.isDigit(cast(u8) c)
         return isInTable(TableDigit, c)
     }
 
-    func isNumber(c: char)->bool
+    func isNumber(c: rune)->bool
     {
         if isLatin1(c) return latin1.isNumber(cast(u8) c)
         return isInTable(TableNumber, c)
     }
 
-    func isControl(c: char)->bool
+    func isControl(c: rune)->bool
     {
         if isLatin1(c) return latin1.isControl(cast(u8) c)
         return false
     }
 
-    func isSpace(c: char)->bool
+    func isSpace(c: rune)->bool
     {
         if isLatin1(c) return latin1.isSpace(cast(u8) c)
         return isInTable(TableWhiteSpace, c)
     }
 
-    func isLetter(c: char)->bool
+    func isLetter(c: rune)->bool
     {
         if isLatin1(c) return latin1.isLetter(cast(u8) c)
         return isInTable(TableLetter, c)
     }
 
-    func isSymbol(c: char)->bool
+    func isSymbol(c: rune)->bool
     {
         if isLatin1(c) return latin1.isSymbol(bitcast(u8) c)
         return isInTable(TableSymbol, c)
     }
 
-    func isLetterOrDigit(c: char)->bool
+    func isLetterOrDigit(c: rune)->bool
     {
         if isLatin1(c) return latin1.isLetterOrDigit(cast(u8) c)
         return isDigit(c) || isLetter(c)
     }
 
-    func isTitle(c: char)->bool
+    func isTitle(c: rune)->bool
     {
         if isLatin1(c) return false
         return isInTable(TableTitle, c)
     }
 
-    func isLower(c: char)->bool
+    func isLower(c: rune)->bool
     {
         if isLatin1(c) return latin1.isLower(cast(u8) c)
         return isInTable(TableLower, c)
     }
 
-    func isUpper(c: char)->bool
+    func isUpper(c: rune)->bool
     {
         if isLatin1(c) return latin1.isUpper(cast(u8) c)
         return isInTable(TableUpper, c)
     }
 
-    func toLower(c: char)->char
+    func toLower(c: rune)->rune
     {
         if isLatin1(c) return autocast latin1.toLower(cast(u8) c)
 
@@ -83,7 +83,7 @@ public
         return res.mappedRune
     }
 
-    func toUpper(c: char)->char
+    func toUpper(c: rune)->rune
     {
         if isLatin1(c) return autocast latin1.toUpper(cast(u8) c)
 
@@ -95,7 +95,7 @@ public
         return res.mappedRune
     }
 
-    func toTitle(c: char)->char
+    func toTitle(c: rune)->rune
     {
         if isLatin1(c) return autocast latin1.toUpper(cast(u8) c)
 
@@ -110,7 +110,7 @@ public
 
 // Convert an utf8 buffer to a character sequence, and returns the
 // number of valid elements in the destination buffer
-public func fromUtf8(dest: [..] char, src: const [..] u8)->u32
+public func fromUtf8(dest: [..] rune, src: const [..] u8)->u32
 {
     count := 0'u32
     srcPtr := @dataof(src)
@@ -134,7 +134,7 @@ public func fromUtf8(dest: [..] char, src: const [..] u8)->u32
 }
 
 // Convert an utf8 buffer to a character sequence
-public func fromUtf8(src: const [..] u8)->Array'char
+public func fromUtf8(src: const [..] u8)->Array'rune
 {
     var result: retval
     result.reserve(@countof(src))
@@ -142,8 +142,8 @@ public func fromUtf8(src: const [..] u8)->Array'char
     return result
 }
 
-// Make a char buffer upper case
-public func makeUpper(buffer: [..] char)
+// Make a rune buffer upper case
+public func makeUpper(buffer: [..] rune)
 {
     p := @dataof(buffer)
     loop @countof(buffer)
@@ -153,8 +153,8 @@ public func makeUpper(buffer: [..] char)
     }
 }
 
-// Make a char buffer lower case
-public func makeLower(buffer: [..] char)
+// Make a rune buffer lower case
+public func makeLower(buffer: [..] rune)
 {
     p := @dataof(buffer)
     loop @countof(buffer)
@@ -165,7 +165,7 @@ public func makeLower(buffer: [..] char)
 }
 
 // Compare two unicode strings, and returns -1, 0 or 1
-func compare(src, dst: const [..] char, ignoreCase = false)->s32
+func compare(src, dst: const [..] rune, ignoreCase = false)->s32
 {
     length := @countof(src)
     otherLength := @countof(dst)
@@ -197,13 +197,13 @@ const UpperLower = swag.S32.Max
 
 struct Range
 {
-    lo, hi: char
+    lo, hi: rune
     stride: u32
 }
 
 struct CaseRange
 {
-    lo, hi: char
+    lo, hi: rune
     delta:  [3] s32
 }
 
@@ -215,7 +215,7 @@ enum WantedCase
 	TitleCase
 }
 
-func isInTable(ranges: const [..] Range, r: char)->bool
+func isInTable(ranges: const [..] Range, r: rune)->bool
 {
     // linear search for a small array or a latin1 character
     const LinearLimit = 18
@@ -248,7 +248,7 @@ func isInTable(ranges: const [..] Range, r: char)->bool
     return false
 }
 
-func caseChangeTo(wCase: WantedCase, r: char, caseRange: const [..] CaseRange) -> {mappedRune: char, foundMapping: bool}
+func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange) -> {mappedRune: rune, foundMapping: bool}
 {
     var result: retval
 
@@ -274,12 +274,12 @@ func caseChangeTo(wCase: WantedCase, r: char, caseRange: const [..] CaseRange) -
 				// bit in the sequence offset.
 				// The constants UpperCase and TitleCase are even while LowerCase
 				// is odd so we take the low bit from _case.
-				result.mappedRune = cr.lo +,safe ((r - cr.lo) & ~1'u32 | (cast(char) wCase & 1))
+				result.mappedRune = cr.lo +,safe ((r - cr.lo) & ~1'u32 | (cast(rune) wCase & 1))
                 result.foundMapping = true
                 return result
 			}
 
-            result.mappedRune = r +,safe bitcast(char) delta
+            result.mappedRune = r +,safe bitcast(rune) delta
             result.foundMapping = true
             return result
 		}

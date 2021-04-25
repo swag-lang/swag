@@ -4,8 +4,8 @@ using core
 #test
 {
     var str: String
-    str += "字"'char
-    str += "0"'char
-    str += "字"'char
+    str += "字"'rune
+    str += "0"'rune
+    str += "字"'rune
     @assert(str == "字0字")
 }

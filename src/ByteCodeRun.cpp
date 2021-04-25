@@ -816,7 +816,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
         case NativeTypeKind::Int:
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
         case NativeTypeKind::Bool:
         case NativeTypeKind::F32:
         case NativeTypeKind::F64:

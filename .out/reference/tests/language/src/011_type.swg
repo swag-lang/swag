@@ -67,10 +67,10 @@
         @assert(@sizeof(a) == 16)
     }
 
-    // The 'char' type uses the string syntax, postfix with the type 'char'. It's a 32 bits (unicode 32)
+    // The 'rune' type uses the string syntax, postfix with the type 'rune'. It's a 32 bits (unicode 32)
     {
-        var a: char = "C"'char
-        @assert(a == "C"'char)
+        var a: rune = "C"'rune
+        @assert(a == "C"'rune)
         @assert(@sizeof(a) == 4)
     }
 

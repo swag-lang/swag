@@ -39,7 +39,7 @@ impl StringBuilder
     }
 
     // Append a character
-    func appendChar(using self, value: char)
+    func appendChar(using self, value: rune)
     {
         convertChar(&buffer, value, null)
     }

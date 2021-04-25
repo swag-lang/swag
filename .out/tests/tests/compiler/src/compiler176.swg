@@ -2,5 +2,5 @@
 ;
 
 #global testerror;
-func main ()-> char { return '1'; }
+func main ()-> rune { return '1'; }
 #assert main() / '1';

@@ -104,7 +104,7 @@ impl String
             #assert(false, "invalid binary operator '" ~ op ~ "'")
     }
 
-    func(op: string) opAssign(using self, value: char)
+    func(op: string) opAssign(using self, value: rune)
     {
         #if op == "+="
             append(value)
@@ -305,7 +305,7 @@ impl String
     }
 
     // Append a character to the String
-    func append(using self, value: char)
+    func append(using self, value: rune)
     {
         debug.assert(utf8.isValidChar(value))
         var tmp: [4] u8
@@ -447,7 +447,7 @@ impl String
     }
 
     // Convert string to a 32 bits character array
-    func toCharArray(using self)->Array'char
+    func toCharArray(using self)->Array'rune
     {
         return unicode.fromUtf8(@mkslice(buffer, length))
     }

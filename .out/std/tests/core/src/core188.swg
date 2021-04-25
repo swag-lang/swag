@@ -1,7 +1,7 @@
 ﻿
 using core
 
-var spaceTest: []char = @[
+var spaceTest: []rune = @[
 	0x09,
 	0x0a,
 	0x0b,
@@ -14,7 +14,7 @@ var spaceTest: []char = @[
 	0x3000,
 ]
 
-var letterTest: []char = @[
+var letterTest: []rune = @[
 	0x41,
 	0x61,
 	0xaa,
@@ -49,7 +49,7 @@ var letterTest: []char = @[
 	0x2fa1d,
 ]
 
-var notletterTest: []char = @[
+var notletterTest: []rune = @[
 	0x20,
 	0x35,
 	0x375,
@@ -67,10 +67,10 @@ var notletterTest: []char = @[
     visit c: spaceTest      @assert(unicode.isSpace(c))
     visit c: letterTest     @assert(unicode.isLetter(c))
     visit c: notletterTest  @assert(!unicode.isLetter(c))
-    @assert(unicode.isLetter("是"'char))
-    @assert(!unicode.isLetter("‼"'char))
+    @assert(unicode.isLetter("是"'rune))
+    @assert(!unicode.isLetter("‼"'rune))
 
-    @assert(unicode.isNumber("௧"'char))
-    @assert(unicode.isNumber("൧"'char))
-    @assert(unicode.isNumber("𑄷"'char))
+    @assert(unicode.isNumber("௧"'rune))
+    @assert(unicode.isNumber("൧"'rune))
+    @assert(unicode.isNumber("𑄷"'rune))
 }

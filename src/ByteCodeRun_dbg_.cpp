@@ -182,7 +182,7 @@ static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr)
             str += format("%u", *(uint16_t*) addr);
             return;
         case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             str += format("%u", *(uint32_t*) addr);
             return;
         case NativeTypeKind::UInt:

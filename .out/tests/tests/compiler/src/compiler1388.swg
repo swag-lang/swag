@@ -8,7 +8,7 @@
     @assert(x0 == 1)
     @assert(x2 == 1)
 
-    var xx0: char = autocast b
+    var xx0: rune = autocast b
     @assert(xx0 == 1)
 
     b = false

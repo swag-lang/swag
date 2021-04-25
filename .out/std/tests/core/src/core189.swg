@@ -1,7 +1,7 @@
 ﻿
 using core
 
-var testDigit: []char = @[
+var testDigit: []rune = @[
 	0x0030,
 	0x0039,
 	0x0661,
@@ -63,6 +63,6 @@ var testDigit: []char = @[
 //#[swag.printbc]
 #test
 {
-    loop c: 256'u32 @assert(latin1.isLetter(cast(u8) c) == unicode.isLetter(cast(char) c))
+    loop c: 256'u32 @assert(latin1.isLetter(cast(u8) c) == unicode.isLetter(cast(rune) c))
     visit c: testDigit @assert(unicode.isDigit(c))
 }

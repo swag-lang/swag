@@ -4,5 +4,5 @@
 //#[swag.printbc]
 #test
 {
-    x := "⻨⻨"'char
+    x := "⻨⻨"'rune
 }

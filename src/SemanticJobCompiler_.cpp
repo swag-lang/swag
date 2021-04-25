@@ -317,7 +317,7 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
         case NativeTypeKind::F64:
             g_Log.print(to_string(expr->computedValue.reg.f64));
             break;
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             g_Log.print(to_string(expr->computedValue.reg.ch));
             break;
         case NativeTypeKind::String:

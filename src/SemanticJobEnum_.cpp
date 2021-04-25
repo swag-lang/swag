@@ -166,7 +166,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             switch (rawTypeInfo->nativeType)
             {
             case NativeTypeKind::Bool:
-            case NativeTypeKind::Char:
+            case NativeTypeKind::Rune:
             case NativeTypeKind::String:
             case NativeTypeKind::F32:
             case NativeTypeKind::F64:

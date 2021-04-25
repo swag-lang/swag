@@ -86,7 +86,7 @@ func swapParams(what: string)->String
         #if LOG console.print("type: '%'\n", type)
 
         // Pointer
-        if(type.lastChar() == "*"'char)
+        if(type.lastChar() == "*"'rune)
         {
             idxType = type.length - 2
             while latin1.isSpace(type[idxType]) idxType -= 1

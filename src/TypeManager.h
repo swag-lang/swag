@@ -110,7 +110,7 @@ struct TypeManager
     TypeInfoNative*    typeInfoBool;
     TypeInfoNative*    typeInfoF32;
     TypeInfoNative*    typeInfoF64;
-    TypeInfoNative*    typeInfoChar;
+    TypeInfoNative*    typeInfoRune;
     TypeInfoNative*    typeInfoString;
     TypeInfoNative*    typeInfoAny;
     TypeInfoNative*    typeInfoVoid;

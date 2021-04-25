@@ -10,11 +10,11 @@ using core
         switch i
         {
             case 0:
-                @assert(c == "A"'char)
+                @assert(c == "A"'rune)
             case 1:
-                @assert(c == "⻨"'char)
+                @assert(c == "⻨"'rune)
             case 4:
-                @assert(c == "C"'char)
+                @assert(c == "C"'rune)
             default:
                 @assert(false)
         }

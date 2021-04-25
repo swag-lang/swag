@@ -175,7 +175,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
     case NativeTypeKind::U16:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
-    case NativeTypeKind::Char:
+    case NativeTypeKind::Rune:
     case NativeTypeKind::UInt:
     case NativeTypeKind::F32:
     case NativeTypeKind::F64:
@@ -230,7 +230,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
 
         switch (suffix->typeInfo->nativeType)
         {
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             node->computedValue.reg.ch = uni[0];
             break;
 
@@ -310,9 +310,9 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
         case NativeTypeKind::Int:
             break;
 
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             if (node->computedValue.reg.u64 > UINT32_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 'char'", node->computedValue.reg.u64)});
+                return context->report({node, format("literal number '%I64u' is not in the range of 'rune'", node->computedValue.reg.u64)});
             break;
 
         case NativeTypeKind::F32:
@@ -380,9 +380,9 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
                 return context->report({node, format("literal number '%I64u' is not in the range of 's64'", node->computedValue.reg.u64)});
             break;
 
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             if (node->computedValue.reg.u64 > UINT32_MAX)
-                return context->report({node, format("literal number '%I64u' is not in the range of 'char'", node->computedValue.reg.u64)});
+                return context->report({node, format("literal number '%I64u' is not in the range of 'rune'", node->computedValue.reg.u64)});
             break;
 
         default:
@@ -635,7 +635,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     if (expression->flags & AST_VALUE_COMPUTED)
     {
         bool notNull = true;
-        if ((typeInfo->flags & TYPEINFO_INTEGER) || (typeInfo->flags & TYPEINFO_FLOAT) || typeInfo->isNative(NativeTypeKind::Char))
+        if ((typeInfo->flags & TYPEINFO_INTEGER) || (typeInfo->flags & TYPEINFO_FLOAT) || typeInfo->isNative(NativeTypeKind::Rune))
         {
             switch (typeInfo->sizeOf)
             {
@@ -674,7 +674,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
                 return true;
         }
         else if (!typeInfo->isNative(NativeTypeKind::String) &&
-                 !typeInfo->isNative(NativeTypeKind::Char) &&
+                 !typeInfo->isNative(NativeTypeKind::Rune) &&
                  typeInfo->kind != TypeInfoKind::Pointer &&
                  typeInfo->kind != TypeInfoKind::Interface &&
                  !(typeInfo->flags & TYPEINFO_INTEGER) &&

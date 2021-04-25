@@ -13,7 +13,7 @@ using core
     @assert(buf.toString() == "true")
 
     buf.clear()
-    format.append(&buf, "%", "1"'char)
+    format.append(&buf, "%", "1"'rune)
     @assert(buf.toString() == "1")
 
     //format(&buf, "%", &buf)

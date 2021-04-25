@@ -3,10 +3,10 @@
 #global public
 #global namespace utf8
 
-const CharError     = 0xFFFD'char
-const MaxChars      = 0x10FFFF'char
-const SurrogateMin  = 0xD800'char
-const SurrogateMax  = 0xDFFF'char
+const CharError     = 0xFFFD'rune
+const MaxChars      = 0x10FFFF'rune
+const SurrogateMin  = 0xD800'rune
+const SurrogateMax  = 0xDFFF'rune
 
 protected
 {
@@ -72,7 +72,7 @@ protected
 
 // Get the last unicode character of the utf8 slice, and the number of
 // bytes to encode it
-func decodeLastChar(buffer: const [..] u8) -> {c: char, eat: u32}
+func decodeLastChar(buffer: const [..] u8) -> {c: rune, eat: u32}
 {
     var result: retval
 
@@ -87,7 +87,7 @@ func decodeLastChar(buffer: const [..] u8) -> {c: char, eat: u32}
     ptr := dataof + (countof - 1)
 
     // Ascii
-    c := cast(char) :ptr
+    c := cast(rune) :ptr
     if c & 0x80 == 0
     {
         result.c = c
@@ -130,7 +130,7 @@ func decodeLastChar(buffer: const [..] u8) -> {c: char, eat: u32}
 
 // Get the unicode character pointed by 'buffer', and the number of bytes to encode it
 // Will return 'CharError' for an invalid utf8 sequence
-func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
+func decodeChar(buffer: const [..] u8) -> {c: rune, eat: u32}
 {
     var result: retval
 
@@ -142,7 +142,7 @@ func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
     }
 
     dataof := @dataof(buffer)
-    p0 := cast(char) :dataof
+    p0 := cast(rune) :dataof
 
     // Ascii
     if (p0 & 0x80) == 0
@@ -201,7 +201,7 @@ func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
 
 	if sz <= 3
     {
-        result.c = (p0 & Mask3) << 12 | cast(char) (b1 & MaskX) << 6 | (b2 & MaskX)
+        result.c = (p0 & Mask3) << 12 | cast(rune) (b1 & MaskX) << 6 | (b2 & MaskX)
         result.eat = 3
         return result
     }
@@ -215,7 +215,7 @@ func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
         return result
     }
 
-	result.c = (p0 & Mask4) << 18 | cast(char) (b1 & MaskX) << 12 | cast(char) (b2 & MaskX) << 6 | (b3 & MaskX)
+	result.c = (p0 & Mask4) << 18 | cast(rune) (b1 & MaskX) << 12 | cast(rune) (b2 & MaskX) << 6 | (b3 & MaskX)
     result.eat = 4
     return result
 }
@@ -223,7 +223,7 @@ func decodeChar(buffer: const [..] u8) -> {c: char, eat: u32}
 // Convert unicode character 'src' to an utf8 sequence, and returns
 // the number of bytes that were needed to make the conversion.
 // 'dest' must be at least 4 bytes long
-func encodeChar(dest: [..] u8, src: char)->u32
+func encodeChar(dest: [..] u8, src: rune)->u32
 {
     debug.assert(@countof(dest) >= 4, "destination buffer is too small")
 
@@ -262,7 +262,7 @@ func encodeChar(dest: [..] u8, src: char)->u32
 // Convert a character array (32 bits unicode) to an utf8 buffer
 // Returns the number of bytes written in the destination buffer
 // 'dest' must be at least 4 bytes long
-func fromUnicode(dest: [..] u8, src: const [..] char)->uint
+func fromUnicode(dest: [..] u8, src: const [..] rune)->uint
 {
     dataof := @dataof(dest)
     remain := @countof(dest)
@@ -281,7 +281,7 @@ func fromUnicode(dest: [..] u8, src: const [..] char)->uint
 }
 
 // Convert an unicode buffer to a String
-func fromUnicode(src: const [..] char)->String
+func fromUnicode(src: const [..] rune)->String
 {
     var result: retval
     result.reserve(4 * @countof(src))
@@ -326,7 +326,7 @@ func fromUtf16(src: const [..] u16)->String
 }
 
 // Returns true if the given unicode character can be encoded in utf8
-func isValidChar(c: char)->bool
+func isValidChar(c: rune)->bool
 {
 	switch
     {

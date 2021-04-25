@@ -1,6 +1,6 @@
 struct Utf8Map
 {
-	c:   char
+	c:   rune
 	str: string
 }
 

@@ -35,7 +35,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
             return context->report({fromNode ? fromNode : context->node, msg});
         break;
     case NativeTypeKind::U32:
-    case NativeTypeKind::Char:
+    case NativeTypeKind::Rune:
         if (fromNode->computedValue.reg.u64 > UINT32_MAX)
             return context->report({fromNode ? fromNode : context->node, msg});
         break;
@@ -326,7 +326,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
 
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             if (fromNode)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -393,14 +393,14 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
 
 bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    if (fromType->nativeType == NativeTypeKind::Char)
+    if (fromType->nativeType == NativeTypeKind::Rune)
         return true;
 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -452,7 +452,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
                     if (!(castFlags & CASTFLAG_JUST_CHECK))
                     {
                         fromNode->computedValue.reg.u64 = ch;
-                        fromNode->typeInfo              = g_TypeMgr.typeInfoChar;
+                        fromNode->typeInfo              = g_TypeMgr.typeInfoRune;
                     }
 
                     return true;
@@ -474,7 +474,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
                     if (!(castFlags & CASTFLAG_JUST_CHECK))
                     {
                         fromNode->computedValue.reg.u64 = ch;
-                        fromNode->typeInfo              = g_TypeMgr.typeInfoChar;
+                        fromNode->typeInfo              = g_TypeMgr.typeInfoRune;
                     }
 
                     return true;
@@ -496,7 +496,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
         }
     }
 
-    return castError(context, g_TypeMgr.typeInfoChar, fromType, fromNode, castFlags);
+    return castError(context, g_TypeMgr.typeInfoRune, fromType, fromNode, castFlags);
 }
 
 bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
@@ -508,7 +508,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
     {
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -625,7 +625,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
     {
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -742,7 +742,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
     {
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -852,7 +852,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
     {
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -962,7 +962,7 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
     {
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -1062,7 +1062,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
     {
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -1163,7 +1163,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
     {
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -1262,7 +1262,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
     {
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -1344,7 +1344,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
     {
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -1423,7 +1423,7 @@ bool TypeManager::castToNativeInt(SemanticContext* context, TypeInfo* fromType, 
     {
         switch (fromType->nativeType)
         {
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
         case NativeTypeKind::S8:
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
@@ -1787,7 +1787,7 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     case NativeTypeKind::U32:
         SWAG_CHECK(castToNativeU32(context, fromType, fromNode, castFlags));
         break;
-    case NativeTypeKind::Char:
+    case NativeTypeKind::Rune:
         SWAG_CHECK(castToNativeChar(context, fromType, fromNode, castFlags));
         break;
     case NativeTypeKind::U64:
@@ -2687,7 +2687,7 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
     switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::Bool:
-    case NativeTypeKind::Char:
+    case NativeTypeKind::Rune:
     case NativeTypeKind::String:
         return;
     }

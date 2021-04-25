@@ -1,2 +1,2 @@
 #global testerror
-var x = "\xFFF"'char
+var x = "\xFFF"'rune

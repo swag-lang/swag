@@ -20,7 +20,7 @@
     }
 
     {
-        x := 0'char
+        x := 0'rune
         y := x ?? 1
         @assert(y == 1)
     }

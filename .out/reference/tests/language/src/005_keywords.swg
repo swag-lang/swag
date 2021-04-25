@@ -189,7 +189,7 @@ while
 
 any
 bool
-char
+rune
 f32
 f64
 s8

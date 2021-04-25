@@ -71,7 +71,7 @@ inline llvm::Value* toPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>& b
         return TO_PTR_I16(v);
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
-    case NativeTypeKind::Char:
+    case NativeTypeKind::Rune:
         return TO_PTR_I32(v);
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
@@ -102,7 +102,7 @@ inline llvm::Value* toPtrPtrNative(llvm::LLVMContext& context, llvm::IRBuilder<>
         return TO_PTR_PTR_I16(v);
     case NativeTypeKind::S32:
     case NativeTypeKind::U32:
-    case NativeTypeKind::Char:
+    case NativeTypeKind::Rune:
         return TO_PTR_PTR_I32(v);
     case NativeTypeKind::S64:
     case NativeTypeKind::U64:
@@ -233,7 +233,7 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
             return true;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             *llvmType = llvm::Type::getInt32Ty(context);
             return true;
         case NativeTypeKind::S64:

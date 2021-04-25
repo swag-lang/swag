@@ -4,6 +4,6 @@
 //#[swag.printbc]
 #test
 {
-    x := cast(char) "A"
+    x := cast(rune) "A"
     @assert(x == "AA")
 }

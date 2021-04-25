@@ -4,7 +4,7 @@ using core
 struct CaseT
 {
 	cas:     s32
-	in, out: char
+	in, out: rune
 }
 
 const UpperCase = 1
@@ -13,34 +13,34 @@ const TitleCase = 3
 
 var caseTest: [] CaseT = @[
 	// ASCII (special-cased so test carefully)
-	{UpperCase, "\n"'char, "\n"'char},
-	{UpperCase, "a"'char, "A"'char},
-	{UpperCase, "A"'char, "A"'char},
-	{UpperCase, "7"'char, "7"'char},
-	{LowerCase, "\n"'char, "\n"'char},
-	{LowerCase, "a"'char, "a"'char},
-	{LowerCase, "A"'char, "a"'char},
-	{LowerCase, "7"'char, "7"'char},
-	{TitleCase, "\n"'char, "\n"'char},
-	{TitleCase, "a"'char, "A"'char},
-	{TitleCase, "A"'char, "A"'char},
-	{TitleCase, "7"'char, "7"'char},
+	{UpperCase, "\n"'rune, "\n"'rune},
+	{UpperCase, "a"'rune, "A"'rune},
+	{UpperCase, "A"'rune, "A"'rune},
+	{UpperCase, "7"'rune, "7"'rune},
+	{LowerCase, "\n"'rune, "\n"'rune},
+	{LowerCase, "a"'rune, "a"'rune},
+	{LowerCase, "A"'rune, "a"'rune},
+	{LowerCase, "7"'rune, "7"'rune},
+	{TitleCase, "\n"'rune, "\n"'rune},
+	{TitleCase, "a"'rune, "A"'rune},
+	{TitleCase, "A"'rune, "A"'rune},
+	{TitleCase, "7"'rune, "7"'rune},
 
 	// Latin-1: easy to read the tests!
 	{UpperCase, 0x80, 0x80},
-	{UpperCase, "Å"'char, "Å"'char},
-	{UpperCase, "å"'char, "Å"'char},
+	{UpperCase, "Å"'rune, "Å"'rune},
+	{UpperCase, "å"'rune, "Å"'rune},
 	{LowerCase, 0x80, 0x80},
-	{LowerCase, "Å"'char, "å"'char},
-	{LowerCase, "å"'char, "å"'char},
+	{LowerCase, "Å"'rune, "å"'rune},
+	{LowerCase, "å"'rune, "å"'rune},
 	{TitleCase, 0x80, 0x80},
-	{TitleCase, "Å"'char, "Å"'char},
-	{TitleCase, "å"'char, "Å"'char},
+	{TitleCase, "Å"'rune, "Å"'rune},
+	{TitleCase, "å"'rune, "Å"'rune},
 
 	// 0131;LATIN SMALL LETTER DOTLESS I;Ll;0;L;;;;;N;;;0049;;0049
-	{UpperCase, 0x0131, "I"'char},
+	{UpperCase, 0x0131, "I"'rune},
 	{LowerCase, 0x0131, 0x0131},
-	{TitleCase, 0x0131, "I"'char},
+	{TitleCase, 0x0131, "I"'rune},
 
 	// 0133;LATIN SMALL LIGATURE IJ;Ll;0;L;<compat> 0069 006A;;;;N;LATIN SMALL LETTER I J;;0132;;0132
 	{UpperCase, 0x0133, 0x0132},
@@ -49,7 +49,7 @@ var caseTest: [] CaseT = @[
 
 	// 212A;KELVIN SIGN;Lu;0;L;004B;;;;N;DEGREES KELVIN;;;006B;
 	{UpperCase, 0x212A, 0x212A},
-	{LowerCase, 0x212A, "k"'char},
+	{LowerCase, 0x212A, "k"'rune},
 	{TitleCase, 0x212A, 0x212A},
 
 	// From an UpperLower sequence

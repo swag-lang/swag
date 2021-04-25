@@ -1,7 +1,7 @@
 #global public
 #global namespace utf16
 
-const CharError = 0xFFFD'char
+const CharError = 0xFFFD'rune
 const Surr1     = 0xd800
 const Surr2     = 0xdc00
 const Surr3     = 0xe000
@@ -9,7 +9,7 @@ const SurrSelf  = 0x10000
 
 // Get the unicode character pointed by 'buffer', and the number of u16 to encode it
 // Will return 'CharError' for an invalid utf16 sequence
-func decodeChar(buffer: const [..] u16) -> {c: char, eat: u32}
+func decodeChar(buffer: const [..] u16) -> {c: rune, eat: u32}
 {
     var result: retval
 
@@ -17,7 +17,7 @@ func decodeChar(buffer: const [..] u16) -> {c: char, eat: u32}
     switch
     {
         case r < Surr1, r >= Surr3:
-            result.c = cast(char) r
+            result.c = cast(rune) r
             result.eat = 1
             return result
 
@@ -35,7 +35,7 @@ func decodeChar(buffer: const [..] u16) -> {c: char, eat: u32}
 // Convert unicode character 'src' to an utf16 sequence, and returns
 // the number of u16 that were needed to make the conversion.
 // 'dest' must be at least 2 u16 long
-func encodeChar(dest: [..] u16, src: char)->u32
+func encodeChar(dest: [..] u16, src: rune)->u32
 {
     debug.assert(@countof(dest) >= 2, "destination buffer is too small")
     switch
@@ -94,7 +94,7 @@ func fromUtf8(src: const [..] u8)->Array'u16
 // Convert a character array (32 bits unicode) to an utf16 buffer
 // Returns the number of bytes written in the destination buffer
 // 'dest' must be at least 2 bytes long
-func fromUnicode(dest: [..] u16, src: const [..] char)->uint
+func fromUnicode(dest: [..] u16, src: const [..] rune)->uint
 {
     dataof := @dataof(dest)
     remain := @countof(dest)
@@ -111,7 +111,7 @@ func fromUnicode(dest: [..] u16, src: const [..] char)->uint
 }
 
 // Convert a character array (32 bits unicode) to an utf16 sequence
-func fromUnicode(src: const [..] char)->Array'u16
+func fromUnicode(src: const [..] rune)->Array'u16
 {
     var result: retval
     result.reserve(2 * @countof(src))

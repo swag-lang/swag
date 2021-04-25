@@ -1,6 +1,6 @@
 #[swag.inline]
 func tototata()
 {
-    x := "a"'char
-    y := cast(char) "b"
+    x := "a"'rune
+    y := cast(rune) "b"
 }

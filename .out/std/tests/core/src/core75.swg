@@ -10,11 +10,11 @@ using core
         switch i
         {
             case 0:
-                @assert(c == cast(u8) "A"'char)
+                @assert(c == cast(u8) "A"'rune)
             case 1:
-                @assert(c == cast(u8) "B"'char)
+                @assert(c == cast(u8) "B"'rune)
             case 2:
-                @assert(c == cast(u8) "C"'char)
+                @assert(c == cast(u8) "C"'rune)
             default:
                 @assert(false)
         }

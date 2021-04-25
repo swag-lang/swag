@@ -11,7 +11,7 @@ func countBytesAt(buffer: const [..] u8)->u32
     if !countof
         return 1
 
-    p0 := cast(char) :dataof
+    p0 := cast(rune) :dataof
 
     // Ascii
     if (p0 & 0x80) == 0
@@ -103,14 +103,14 @@ func countChars(buffer: const [..] u8)->uint
 
 // Find the first occurence of character 'what', and returns the byte index of it
 // Returns swag.UInt.Max if not found
-func indexOf(src: const [..] u8, what: char, startByteIndex = 0'uint)->uint
+func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'uint)->uint
 {
     return indexOf(src, @[what], startByteIndex)
 }
 
 // Find one of the characters in 'what', and returns the byte index of it
 // Returns swag.UInt.Max if not found
-func indexOf(src: const [..] u8, what: const [..] char, startByteIndex = 0'uint)->uint
+func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)->uint
 {
     length := @countof(src)
     if !length
@@ -168,14 +168,14 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
 
 // Find the last character occurence of 'what', and returns the byte index of it
 // Returns swag.UInt.Max if not found
-func lastIndexOf(src: const [..] u8, what: char)->uint
+func lastIndexOf(src: const [..] u8, what: rune)->uint
 {
     return lastIndexOf(src, @[what])
 }
 
 // Returns the last index (in bytes) of a character
 // Returns swag.UInt.Max if not found
-func lastIndexOf(src: const [..] u8, what: const [..] char)->uint
+func lastIndexOf(src: const [..] u8, what: const [..] rune)->uint
 {
     length := @countof(src)
     if !length
@@ -247,27 +247,27 @@ func endsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.L
 }
 
 // Returns the first unicode character
-func firstChar(src: const [..] u8)->char
+func firstChar(src: const [..] u8)->rune
 {
     countof := @countof(src)
     if !countof
         return 0
     dataof := @dataof(src)
     if latin1.isAscii(dataof[0])
-        return cast(char) dataof[0]
+        return cast(rune) dataof[0]
     (c, ?) := utf8.decodeChar(src)
     return c
 }
 
 // Returns the last unicode character
-func lastChar(src: const [..] u8)->char
+func lastChar(src: const [..] u8)->rune
 {
     countof := @countof(src)
     if !countof
         return 0
     dataof := @dataof(src)
     if latin1.isAscii(dataof[countof - 1])
-        return cast(char) dataof[countof - 1]
+        return cast(rune) dataof[countof - 1]
     (c, ?) := utf8.decodeLastChar(src)
     return c
 }
@@ -275,7 +275,7 @@ func lastChar(src: const [..] u8)->char
 // Split string into sub strings, given a character separator
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' is destroyed
-func split(src: const [..] u8, separator: char) -> Array'string
+func split(src: const [..] u8, separator: rune) -> Array'string
 {
     return split(src, @[separator])
 }
@@ -283,14 +283,14 @@ func split(src: const [..] u8, separator: char) -> Array'string
 // Split string into sub strings, given an array of character separators
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' String is destroyed
-func split(src: const [..] u8, separators: const [..] char) -> Array'string
+func split(src: const [..] u8, separators: const [..] rune) -> Array'string
 {
     dataof := @dataof(src)
     countof := @countof(src)
 
     var result: retval
     var ptr = dataof
-    var c: char
+    var c: rune
     var eat: uint
 
     startbyteIdx := 0'uint
@@ -394,7 +394,7 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
         otherData := @dataof(dst)
 
         var result: s32
-        var c1, c2: char
+        var c1, c2: rune
         var eat1, eat2: u32
         while true
         {
@@ -483,7 +483,7 @@ func isValid(buffer: const [..] u8)->bool
 
     while countof
     {
-        p0 := cast(char) :p
+        p0 := cast(rune) :p
 
         // Ascii
         if (p0 & 0x80) == 0

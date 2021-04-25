@@ -288,7 +288,7 @@ void BackendX64::dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, Compu
         concat.addS32(val.reg.s32);
         break;
     case NativeTypeKind::U32:
-    case NativeTypeKind::Char:
+    case NativeTypeKind::Rune:
         concat.addU16(LF_ULONG);
         concat.addU32(val.reg.u32);
         break;
@@ -458,7 +458,7 @@ DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
             return SimpleTypeKind::Float32;
         case NativeTypeKind::F64:
             return SimpleTypeKind::Float64;
-        case NativeTypeKind::Char:
+        case NativeTypeKind::Rune:
             return SimpleTypeKind::Character32;
         }
     }

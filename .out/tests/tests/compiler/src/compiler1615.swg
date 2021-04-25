@@ -1,9 +1,9 @@
 //#[swag.printbc]
 #test
 {
-    var c: char = "a"'char
+    var c: rune = "a"'rune
     c = c & ~0x20
-    @assert(c == "A"'char)
+    @assert(c == "A"'rune)
 
     c = c | 1
     c = c + 1
@@ -24,5 +24,5 @@
     c %= 1
     c <<= 1
     c >>= 1
-    c ^= 1    
+    c ^= 1
 }

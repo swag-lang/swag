@@ -184,7 +184,7 @@ enum class NativeTypeKind : uint8_t
     F32,
     F64,
     Bool,
-    Char,
+    Rune,
     String,
     Any,
     Undefined,

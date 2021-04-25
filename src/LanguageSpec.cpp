@@ -109,7 +109,7 @@ void LanguageSpec::setup()
     keywords.add("f32", TokenId::NativeType);
     keywords.add("f64", TokenId::NativeType);
     keywords.add("bool", TokenId::NativeType);
-    keywords.add("char", TokenId::NativeType);
+    keywords.add("rune", TokenId::NativeType);
     keywords.add("string", TokenId::NativeType);
     keywords.add("any", TokenId::NativeType);
     keywords.add("void", TokenId::NativeType);
@@ -207,7 +207,7 @@ void LanguageSpec::setup()
     nativeTypes.add("f32", LiteralType::TT_F32);
     nativeTypes.add("f64", LiteralType::TT_F64);
     nativeTypes.add("bool", LiteralType::TT_BOOL);
-    nativeTypes.add("char", LiteralType::TT_CHAR);
+    nativeTypes.add("rune", LiteralType::TT_RUNE);
     nativeTypes.add("string", LiteralType::TT_STRING);
     nativeTypes.add("any", LiteralType::TT_ANY);
     nativeTypes.add("void", LiteralType::TT_VOID);
