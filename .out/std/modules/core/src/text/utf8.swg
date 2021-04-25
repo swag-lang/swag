@@ -70,9 +70,9 @@ protected
     ]
 }
 
-// Get the last unicode character of the utf8 slice, and the number of
+// Get the last unicode rune of the utf8 slice, and the number of
 // bytes to encode it
-func decodeLastChar(buffer: const [..] u8) -> {c: rune, eat: u32}
+func decodeLastRune(buffer: const [..] u8) -> {c: rune, eat: u32}
 {
     var result: retval
 
@@ -128,7 +128,7 @@ func decodeLastChar(buffer: const [..] u8) -> {c: rune, eat: u32}
     return result
 }
 
-// Get the unicode character pointed by 'buffer', and the number of bytes to encode it
+// Get the unicode rune pointed by 'buffer', and the number of bytes to encode it
 // Will return 'RuneError' for an invalid utf8 sequence
 func decodeRune(buffer: const [..] u8) -> {c: rune, eat: u32}
 {
@@ -220,7 +220,7 @@ func decodeRune(buffer: const [..] u8) -> {c: rune, eat: u32}
     return result
 }
 
-// Convert unicode character 'src' to an utf8 sequence, and returns
+// Convert rune 'src' to an utf8 sequence, and returns
 // the number of bytes that were needed to make the conversion.
 // 'dest' must be at least 4 bytes long
 func encodeRune(dest: [..] u8, src: rune)->u32
@@ -259,7 +259,7 @@ func encodeRune(dest: [..] u8, src: rune)->u32
     }
 }
 
-// Convert a character array (32 bits unicode) to an utf8 buffer
+// Convert a rune array to an utf8 buffer
 // Returns the number of bytes written in the destination buffer
 // 'dest' must be at least 4 bytes long
 func fromUnicode(dest: [..] u8, src: const [..] rune)->uint
@@ -325,7 +325,7 @@ func fromUtf16(src: const [..] u16)->String
     return result
 }
 
-// Returns true if the given unicode character can be encoded in utf8
+// Returns true if the given unicode rune can be encoded in utf8
 func isValidRune(c: rune)->bool
 {
 	switch

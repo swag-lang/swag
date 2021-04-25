@@ -20,6 +20,6 @@ const runecounttests: [] RuneCountTest = @[
 {
     visit it: runecounttests
     {
-        @assert(countChars(it.in) == it.out)
+        @assert(countRunes(it.in) == it.out)
     }
 }

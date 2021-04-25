@@ -5,6 +5,6 @@ using core, utf8
 #test
 {
     var x: String = "ABCDE昨"
-    @assert(x.firstChar() == "A"'rune)
-    @assert(x.lastChar() == "昨"'rune)
+    @assert(x.firstRune() == "A"'rune)
+    @assert(x.lastRune() == "昨"'rune)
 }

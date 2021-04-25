@@ -1954,18 +1954,18 @@ impl Decoder
 
     func locateSoiMarker(using self) throw
     {
-        lastChar := getBits1(8)
+        lastRune := getBits1(8)
         thisChar := getBits1(8)
-        if (lastChar == 0xFF) && (thisChar == Marker.M_SOI)
+        if (lastRune == 0xFF) && (thisChar == Marker.M_SOI)
             return
         bytesLeft := 512
         while true
         {
             bytesLeft -= 1
             if bytesLeft == 0 throw "not a jpeg"
-            lastChar = thisChar
+            lastRune = thisChar
             thisChar = getBits1(8)
-            if (lastChar == 0xFF) && (thisChar == Marker.M_SOI)
+            if (lastRune == 0xFF) && (thisChar == Marker.M_SOI)
                 break
         }
 

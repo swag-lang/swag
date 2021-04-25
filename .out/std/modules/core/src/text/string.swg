@@ -430,7 +430,7 @@ impl String
         while true
         {
             sl := @mkslice(buffer, length)
-            (c, eat) := utf8.decodeLastChar(sl)
+            (c, eat) := utf8.decodeLastRune(sl)
             if !unicode.isSpace(c)
                 break
             length -= eat

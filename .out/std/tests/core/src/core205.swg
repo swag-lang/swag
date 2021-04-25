@@ -36,6 +36,6 @@ const validTests: [] ValidTest = @[
 {
     visit *it: validTests
     {
-        @assert(decodeLastChar(it.in).c == it.out)
+        @assert(decodeLastRune(it.in).c == it.out)
     }
 }

@@ -1,7 +1,7 @@
 #global public
 #global namespace utf8
 
-// Returns the number of bytes to encode the first character of the
+// Returns the number of bytes to encode the first rune of the
 // utf8 buffer.
 // If it's an invalid encoding, returns 1.
 func countBytesAt(buffer: const [..] u8)->u32
@@ -48,7 +48,7 @@ func countBytesAt(buffer: const [..] u8)->u32
 	return 4
 }
 
-// Returns the byte index of the given character index
+// Returns the byte index of the given rune index
 func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success: bool}
 {
     var result: retval
@@ -82,8 +82,8 @@ func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success:
     return result
 }
 
-// Returns the number of unicode characters in an utf8 buffer
-func countChars(buffer: const [..] u8)->uint
+// Returns the number of runes in an utf8 buffer
+func countRunes(buffer: const [..] u8)->uint
 {
     dataof := @dataof(buffer)
     countof := @countof(buffer)
@@ -101,14 +101,14 @@ func countChars(buffer: const [..] u8)->uint
     return cpt
 }
 
-// Find the first occurence of character 'what', and returns the byte index of it
+// Find the first occurence of rune 'what', and returns the byte index of it
 // Returns swag.UInt.Max if not found
 func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'uint)->uint
 {
     return indexOf(src, @[what], startByteIndex)
 }
 
-// Find one of the characters in 'what', and returns the byte index of it
+// Find one of the runes in 'what', and returns the byte index of it
 // Returns swag.UInt.Max if not found
 func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)->uint
 {
@@ -166,14 +166,14 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
     return swag.UInt.Max
 }
 
-// Find the last character occurence of 'what', and returns the byte index of it
+// Find the last rune occurence of 'what', and returns the byte index of it
 // Returns swag.UInt.Max if not found
 func lastIndexOf(src: const [..] u8, what: rune)->uint
 {
     return lastIndexOf(src, @[what])
 }
 
-// Returns the last index (in bytes) of a character
+// Returns the last index (in bytes) of a rune
 // Returns swag.UInt.Max if not found
 func lastIndexOf(src: const [..] u8, what: const [..] rune)->uint
 {
@@ -186,7 +186,7 @@ func lastIndexOf(src: const [..] u8, what: const [..] rune)->uint
     while true
     {
         sl := @mkslice(dataof, byteIdx)
-        (c, eat) := decodeLastChar(sl)
+        (c, eat) := decodeLastRune(sl)
         if eat == 0
             return swag.UInt.Max
 
@@ -246,8 +246,8 @@ func endsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.L
     return compare(@mkslice((buffer + length) - countof, countof), str, comparisonType) == 0
 }
 
-// Returns the first unicode character
-func firstChar(src: const [..] u8)->rune
+// Returns the first rune of the slice
+func firstRune(src: const [..] u8)->rune
 {
     countof := @countof(src)
     if !countof
@@ -259,8 +259,8 @@ func firstChar(src: const [..] u8)->rune
     return c
 }
 
-// Returns the last unicode character
-func lastChar(src: const [..] u8)->rune
+// Returns the last rune of the slice
+func lastRune(src: const [..] u8)->rune
 {
     countof := @countof(src)
     if !countof
@@ -268,11 +268,11 @@ func lastChar(src: const [..] u8)->rune
     dataof := @dataof(src)
     if latin1.isAscii(dataof[countof - 1])
         return cast(rune) dataof[countof - 1]
-    (c, ?) := utf8.decodeLastChar(src)
+    (c, ?) := utf8.decodeLastRune(src)
     return c
 }
 
-// Split string into sub strings, given a character separator
+// Split string into sub strings, given a rune separator
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' is destroyed
 func split(src: const [..] u8, separator: rune) -> Array'string
@@ -280,7 +280,7 @@ func split(src: const [..] u8, separator: rune) -> Array'string
     return split(src, @[separator])
 }
 
-// Split string into sub strings, given an array of character separators
+// Split string into sub strings, given an array of rune separators
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' String is destroyed
 func split(src: const [..] u8, separators: const [..] rune) -> Array'string

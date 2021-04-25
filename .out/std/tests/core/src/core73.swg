@@ -5,9 +5,9 @@ using core
 #test
 {
     str := "A⺗B"
-    result := utf8.decodeLastChar(str)
+    result := utf8.decodeLastRune(str)
     @assert(result.item0 == "B"'rune)
     @assert(result.item1 == 1)
 
-    @assert(utf8.countChars(str) == 3)
+    @assert(utf8.countRunes(str) == 3)
 }
