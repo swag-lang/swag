@@ -61,7 +61,7 @@ const invalidSequenceTests: [] string = @[
 {
     visit it: invalidSequenceTests
     {
-        res := decodeChar(it)
-        @assert(res.c == CharError)
+        res := decodeRune(it)
+        @assert(res.c == RuneError)
     }
 }

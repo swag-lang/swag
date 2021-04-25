@@ -38,10 +38,10 @@ impl StringBuilder
         buffer.addBytes(env.EndLine)
     }
 
-    // Append a character
-    func appendChar(using self, value: rune)
+    // Append a rune
+    func appendRune(using self, value: rune)
     {
-        convertChar(&buffer, value, null)
+        convertRune(&buffer, value, null)
     }
 
     // Append a value

@@ -46,14 +46,14 @@ var utf8Map: [] Utf8Map = @[
 {
     visit *it: utf8Map
     {
-        @assert(isValidChar(it.c))
+        @assert(isValidRune(it.c))
 
         var arr: [4] u8
-        eat := encodeChar(arr, it.c)
+        eat := encodeRune(arr, it.c)
         @assert(eat == @countof(it.str))
         loop i: eat @assert(arr[i] == it.str[i])
 
-        res := decodeChar(it.str)
+        res := decodeRune(it.str)
         @assert(res.eat == @countof(it.str))
         @assert(res.c == it.c)
     }

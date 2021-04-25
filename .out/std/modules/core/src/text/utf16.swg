@@ -1,15 +1,15 @@
 #global public
 #global namespace utf16
 
-const CharError = 0xFFFD'rune
+const RuneError = 0xFFFD'rune
 const Surr1     = 0xd800
 const Surr2     = 0xdc00
 const Surr3     = 0xe000
 const SurrSelf  = 0x10000
 
 // Get the unicode character pointed by 'buffer', and the number of u16 to encode it
-// Will return 'CharError' for an invalid utf16 sequence
-func decodeChar(buffer: const [..] u16) -> {c: rune, eat: u32}
+// Will return 'RuneError' for an invalid utf16 sequence
+func decodeRune(buffer: const [..] u16) -> {c: rune, eat: u32}
 {
     var result: retval
 
@@ -27,7 +27,7 @@ func decodeChar(buffer: const [..] u16) -> {c: rune, eat: u32}
             return result
 
         default:
-            result.c = CharError
+            result.c = RuneError
             return result
     }
 }
@@ -35,7 +35,7 @@ func decodeChar(buffer: const [..] u16) -> {c: rune, eat: u32}
 // Convert unicode character 'src' to an utf16 sequence, and returns
 // the number of u16 that were needed to make the conversion.
 // 'dest' must be at least 2 u16 long
-func encodeChar(dest: [..] u16, src: rune)->u32
+func encodeRune(dest: [..] u16, src: rune)->u32
 {
     debug.assert(@countof(dest) >= 2, "destination buffer is too small")
     switch
@@ -51,7 +51,7 @@ func encodeChar(dest: [..] u16, src: rune)->u32
             return 2
 
         default:
-            dest[0] = cast(u16) CharError
+            dest[0] = cast(u16) RuneError
             return 1
     }
 }
@@ -68,10 +68,10 @@ func fromUtf8(dest: [..] u16, src: const [..] u8)->uint
 
     while srcLength
     {
-        (c, eat) := utf8.decodeChar(@mkslice(srcPtr, srcLength))
+        (c, eat) := utf8.decodeRune(@mkslice(srcPtr, srcLength))
 
         debug.assert(destLength >= 2, "destination buffer is too small")
-        eatDest := encodeChar(@mkslice(destPtr, destLength), c)
+        eatDest := encodeRune(@mkslice(destPtr, destLength), c)
         destPtr, count += eatDest
         destLength -= eatDest
 
@@ -102,7 +102,7 @@ func fromUnicode(dest: [..] u16, src: const [..] rune)->uint
     visit ch: src
     {
         debug.assert(remain >= 2, "destination buffer is too small")
-        cpt := encodeChar(@mkslice(dataof, remain), ch)
+        cpt := encodeRune(@mkslice(dataof, remain), ch)
         dataof += cpt
         remain -= cpt
     }

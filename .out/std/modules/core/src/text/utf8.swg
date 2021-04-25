@@ -3,8 +3,8 @@
 #global public
 #global namespace utf8
 
-const CharError     = 0xFFFD'rune
-const MaxChars      = 0x10FFFF'rune
+const RuneError     = 0xFFFD'rune
+const MaxRunes      = 0x10FFFF'rune
 const SurrogateMin  = 0xD800'rune
 const SurrogateMax  = 0xDFFF'rune
 
@@ -79,7 +79,7 @@ func decodeLastChar(buffer: const [..] u8) -> {c: rune, eat: u32}
     countof := @countof(buffer)
     if !countof
     {
-        result.c = CharError
+        result.c = RuneError
         return result
     }
 
@@ -103,7 +103,7 @@ func decodeLastChar(buffer: const [..] u8) -> {c: rune, eat: u32}
             break
         if ptr == dataof
         {
-            result.c = CharError
+            result.c = RuneError
             result.eat = 1
             return result
         }
@@ -112,16 +112,16 @@ func decodeLastChar(buffer: const [..] u8) -> {c: rune, eat: u32}
         eat += 1
         if eat > 4
         {
-            result.c = CharError
+            result.c = RuneError
             result.eat = 1
             return result
         }
     }
 
-    result = decodeChar(@mkslice(ptr, cast(uint) eat))
+    result = decodeRune(@mkslice(ptr, cast(uint) eat))
     if result.eat != eat
     {
-        result.c = CharError
+        result.c = RuneError
         result.eat = 1
     }
 
@@ -129,15 +129,15 @@ func decodeLastChar(buffer: const [..] u8) -> {c: rune, eat: u32}
 }
 
 // Get the unicode character pointed by 'buffer', and the number of bytes to encode it
-// Will return 'CharError' for an invalid utf8 sequence
-func decodeChar(buffer: const [..] u8) -> {c: rune, eat: u32}
+// Will return 'RuneError' for an invalid utf8 sequence
+func decodeRune(buffer: const [..] u8) -> {c: rune, eat: u32}
 {
     var result: retval
 
     countof := @countof(buffer)
     if countof == 0
     {
-        result.c = CharError
+        result.c = RuneError
         return result
     }
 
@@ -157,7 +157,7 @@ func decodeChar(buffer: const [..] u8) -> {c: rune, eat: u32}
     // Invalid first byte
     if x == XX
     {
-        result.c = CharError
+        result.c = RuneError
         result.eat = 1
         return result
     }
@@ -167,7 +167,7 @@ func decodeChar(buffer: const [..] u8) -> {c: rune, eat: u32}
     sz := x & 7
 	if countof < sz
     {
-        result.c = CharError
+        result.c = RuneError
         result.eat = 1
         return result
     }
@@ -178,7 +178,7 @@ func decodeChar(buffer: const [..] u8) -> {c: rune, eat: u32}
 	b1 := dataof[1]
 	if !(accept.lo <= b1 && b1 <= accept.hi)
     {
-        result.c = CharError
+        result.c = RuneError
         result.eat = 1
         return result
     }
@@ -194,7 +194,7 @@ func decodeChar(buffer: const [..] u8) -> {c: rune, eat: u32}
 	b2 := dataof[2]
     if !(LoCB <= b2 && b2 <= HiCB)
     {
-        result.c = CharError
+        result.c = RuneError
         result.eat = 1
         return result
     }
@@ -210,7 +210,7 @@ func decodeChar(buffer: const [..] u8) -> {c: rune, eat: u32}
 	b3 := dataof[3]
 	if !(LoCB <= b3 && b3 <= HiCB)
     {
-        result.c = CharError
+        result.c = RuneError
         result.eat = 1
         return result
     }
@@ -223,7 +223,7 @@ func decodeChar(buffer: const [..] u8) -> {c: rune, eat: u32}
 // Convert unicode character 'src' to an utf8 sequence, and returns
 // the number of bytes that were needed to make the conversion.
 // 'dest' must be at least 4 bytes long
-func encodeChar(dest: [..] u8, src: rune)->u32
+func encodeRune(dest: [..] u8, src: rune)->u32
 {
     debug.assert(@countof(dest) >= 4, "destination buffer is too small")
 
@@ -238,10 +238,10 @@ func encodeChar(dest: [..] u8, src: rune)->u32
         dest[1] = cast(u8) (((src >>,safe 0) & 0x3F) | 0x80)
         return 2
 
-    case !isValidChar(src):
-        dest[0] = cast(u8) (((CharError >>,safe 12) & 0x0F) | 0xE0)
-        dest[1] = cast(u8) (((CharError >>,safe 6) & 0x3F) | 0x80)
-        dest[2] = cast(u8) (((CharError >>,safe 0) & 0x3F) | 0x80)
+    case !isValidRune(src):
+        dest[0] = cast(u8) (((RuneError >>,safe 12) & 0x0F) | 0xE0)
+        dest[1] = cast(u8) (((RuneError >>,safe 6) & 0x3F) | 0x80)
+        dest[2] = cast(u8) (((RuneError >>,safe 0) & 0x3F) | 0x80)
         return 3
 
     case src <= 0xFFFF:
@@ -272,7 +272,7 @@ func fromUnicode(dest: [..] u8, src: const [..] rune)->uint
     {
         debug.assert(remain >= 4, "destination buffer is too small")
         sl := @mkslice(dataof + total, remain)
-        cpt := encodeChar(sl, ch)
+        cpt := encodeRune(sl, ch)
         total += cpt
         remain -= cpt
     }
@@ -302,10 +302,10 @@ func fromUtf16(dest: [..] u8, src: const [..] u16)->uint
 
     while srcLength
     {
-        (c, eat) := utf16.decodeChar(@mkslice(srcPtr, srcLength))
+        (c, eat) := utf16.decodeRune(@mkslice(srcPtr, srcLength))
 
         debug.assert(destLength >= 4, "destination buffer is too small")
-        eatDest := encodeChar(@mkslice(destPtr, destLength), c)
+        eatDest := encodeRune(@mkslice(destPtr, destLength), c)
         destPtr, count += eatDest
         destLength -= eatDest
 
@@ -326,13 +326,13 @@ func fromUtf16(src: const [..] u16)->String
 }
 
 // Returns true if the given unicode character can be encoded in utf8
-func isValidChar(c: rune)->bool
+func isValidRune(c: rune)->bool
 {
 	switch
     {
 	case 0 <= c && c < SurrogateMin:
 		return true
-	case SurrogateMax < c && c <= MaxChars:
+	case SurrogateMax < c && c <= MaxRunes:
 		return true
 	}
 

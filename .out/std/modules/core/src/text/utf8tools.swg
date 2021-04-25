@@ -126,7 +126,7 @@ func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'uint)
     remain := length - startByteIndex
     while countof <= remain
     {
-        res := utf8.decodeChar(@mkslice(scan, remain))
+        res := utf8.decodeRune(@mkslice(scan, remain))
         if !res.eat
             break
         if slice.contains(what, res.c)
@@ -255,7 +255,7 @@ func firstChar(src: const [..] u8)->rune
     dataof := @dataof(src)
     if latin1.isAscii(dataof[0])
         return cast(rune) dataof[0]
-    (c, ?) := utf8.decodeChar(src)
+    (c, ?) := utf8.decodeRune(src)
     return c
 }
 
@@ -301,7 +301,7 @@ func split(src: const [..] u8, separators: const [..] rune) -> Array'string
         while true
         {
             sl := @mkslice(ptr, count)
-            (c, eat) = utf8.decodeChar(sl)
+            (c, eat) = utf8.decodeRune(sl)
             if eat == 0 || !slice.contains(separators, c)
                 break
             startbyteIdx += eat
@@ -316,7 +316,7 @@ func split(src: const [..] u8, separators: const [..] rune) -> Array'string
         while true
         {
             sl := @mkslice(ptr, count)
-            (c, eat) = utf8.decodeChar(sl)
+            (c, eat) = utf8.decodeRune(sl)
             if eat == 0 || slice.contains(separators, c)
                 break
             endbyteIdx += eat
@@ -398,8 +398,8 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
         var eat1, eat2: u32
         while true
         {
-            (c1, eat1) = decodeChar(@mkslice(data, length))
-            (c2, eat2) = decodeChar(@mkslice(otherData, otherLength))
+            (c1, eat1) = decodeRune(@mkslice(data, length))
+            (c2, eat2) = decodeRune(@mkslice(otherData, otherLength))
             if eat1 == 0 || eat2 == 0
                 break
 
@@ -445,7 +445,7 @@ func visitRunes(buffer: const [..] u8, stmt: code)
     while count
     {
         sl := @mkslice(scan, count)
-        (c, eat) := decodeChar(sl)
+        (c, eat) := decodeRune(sl)
         if eat == 0
             break
         #macro

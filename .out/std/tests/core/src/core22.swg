@@ -11,7 +11,7 @@ using core
 	while true
 	{
         sl := @mkslice(ptr, cast(uint) count)
-		(c, eat) := core.utf8.decodeChar(sl)
+		(c, eat) := core.utf8.decodeRune(sl)
 		if !eat
 			break
         ptr += eat

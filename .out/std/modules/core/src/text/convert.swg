@@ -248,7 +248,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         case bool:
             convertBool(buf, cast(bool) value, strFormat)
         case rune:
-            convertChar(buf, cast(rune) value, strFormat)
+            convertRune(buf, cast(rune) value, strFormat)
         case string:
             buf.addBytes(cast(string) value)
         default:
@@ -436,9 +436,9 @@ func convertBool(buf: *ConcatBuffer, value: bool, strFormat: string)
 }
 
 // Convert a 'rune' to a string, and put the result in a ConcatBuffer
-func convertChar(buf: *ConcatBuffer, value: rune, strFormat: string)
+func convertRune(buf: *ConcatBuffer, value: rune, strFormat: string)
 {
     var arr: [4] u8
-    var count = utf8.encodeChar(arr, value)
+    var count = utf8.encodeRune(arr, value)
     buf.addBytes(@mkslice(&arr[0], cast(uint) count))
 }

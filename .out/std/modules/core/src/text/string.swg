@@ -203,7 +203,7 @@ impl String
         while true
         {
             sl := @mkslice(scan, count)
-            var (c, eat) = utf8.decodeChar(sl)
+            var (c, eat) = utf8.decodeRune(sl)
             if eat == 0
                 break
 
@@ -304,12 +304,12 @@ impl String
         length += 1
     }
 
-    // Append a character to the String
+    // Append a rune to the String
     func append(using self, value: rune)
     {
-        debug.assert(utf8.isValidChar(value))
+        debug.assert(utf8.isValidRune(value))
         var tmp: [4] u8
-        eat := utf8.encodeChar(tmp, value)
+        eat := utf8.encodeRune(tmp, value)
         grow(length + eat + 1)
         loop i: eat
             buffer[length + i] = tmp[i]
@@ -410,7 +410,7 @@ impl String
         while true
         {
             sl := @mkslice(ptr, length)
-            (c, eat) := utf8.decodeChar(sl)
+            (c, eat) := utf8.decodeRune(sl)
             if !unicode.isSpace(c)
                 break
             length -= eat
