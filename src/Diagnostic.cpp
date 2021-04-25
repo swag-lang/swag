@@ -319,6 +319,11 @@ void Diagnostic::report(bool verboseMode) const
                     }
 
                     g_Log.eol();
+
+                    g_Log.setColor(codeColor);
+                    for (int j = 0; j < headerSize; j++)
+                        g_Log.print(" ");
+                    g_Log.print(" |  \n");
                 }
             }
         }
@@ -351,4 +356,5 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     g_Log.setDefaultColor();
+    g_ErrorHint.clear();
 }
