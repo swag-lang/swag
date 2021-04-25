@@ -162,6 +162,7 @@ struct CloneContext
     map<Utf8, TypeInfo*>   replaceTypes;
     map<TokenId, AstNode*> replaceTokens;
     map<Utf8, Utf8>        replaceNames;
+    set<Utf8>              usedReplaceNames;
 
     AstInline*          ownerInline            = nullptr;
     AstBreakable*       replaceTokensBreakable = nullptr;
@@ -178,6 +179,11 @@ struct CloneContext
     uint64_t            forceFlags             = 0;
     uint64_t            removeFlags            = 0;
     bool                rawClone               = false;
+
+    void propageResult(CloneContext& context)
+    {
+        usedReplaceNames.insert(context.usedReplaceNames.begin(), context.usedReplaceNames.end());
+    }
 };
 
 struct AstNode

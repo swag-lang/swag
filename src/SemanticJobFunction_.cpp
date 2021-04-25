@@ -1097,6 +1097,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     cloneContext.ownerFct       = identifier->ownerFct;
     cloneContext.ownerBreakable = identifier->ownerBreakable;
     cloneContext.parentScope    = newScope;
+    cloneContext.forceFlags |= identifier->flags & AST_NO_BACKEND;
+    cloneContext.forceFlags |= identifier->flags & AST_RUN_BLOCK;
 
     // Register all aliases
     if (identifier->kind == AstNodeKind::Identifier)
@@ -1139,10 +1141,38 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         }
     }
 
-    cloneContext.forceFlags |= identifier->flags & AST_NO_BACKEND;
-    cloneContext.forceFlags |= identifier->flags & AST_RUN_BLOCK;
-
+    // Clone !
     auto newContent = funcDecl->content->clone(cloneContext);
+
+    // Check used aliases
+    // Error if an alias has been defined, but not 'eaten' by the function
+    if (identifier->kind == AstNodeKind::Identifier)
+    {
+        if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())
+        {
+            auto id = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+            for (auto& r : cloneContext.replaceNames)
+            {
+                auto it = cloneContext.usedReplaceNames.find(r.second);
+                if (it == cloneContext.usedReplaceNames.end())
+                {
+                    context->expansionNode.push_back({identifier, JobContext::ExpansionType::Inline});
+                    for (auto& alias : id->aliasNames)
+                    {
+                        if (alias.text == r.second)
+                            return context->report({id, alias, format("alias name '%s' is unused and should be removed", alias.text.c_str())});
+                    }
+
+                    for (auto& alias : id->callParameters->aliasNames)
+                    {
+                        if (alias.text == r.second)
+                            return context->report({id, alias, format("alias name '%s' is unused and should be removed", alias.text.c_str())});
+                    }
+                }
+            }
+        }
+    }
+
     if (newContent->extension)
     {
         newContent->extension->byteCodeBeforeFct = nullptr;

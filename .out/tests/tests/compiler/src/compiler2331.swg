@@ -19,7 +19,7 @@ impl AA
 #test
 {
     var v: AA
-    visit c: v
+    visit v
     {
 
     }

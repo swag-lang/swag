@@ -308,6 +308,7 @@ AstNode* AstNode::clone(CloneContext& context)
         auto cloneContext        = context;
         cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
         newNode->copyFrom(cloneContext, this);
+        context.propageResult(cloneContext);
     }
     else
     {
@@ -461,7 +462,10 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     // Is there an alias ?
     auto it = context.replaceNames.find(newNode->token.text);
     if (it != context.replaceNames.end())
+    {
+        context.usedReplaceNames.insert(it->second);
         newNode->token.text = it->second;
+    }
 
     return newNode;
 }
@@ -493,7 +497,10 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     // Is there an alias ?
     auto itn = context.replaceNames.find(newNode->token.text);
     if (itn != context.replaceNames.end())
+    {
+        context.usedReplaceNames.insert(itn->second);
         newNode->token.text = itn->second;
+    }
 
     auto idRef = context.parent;
     while (idRef->kind != AstNodeKind::IdentifierRef)
@@ -772,6 +779,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         newNode->content = nullptr;
     }
 
+    context.propageResult(cloneContext);
     return newNode;
 }
 
@@ -810,8 +818,7 @@ AstNode* AstAttrUse::clone(CloneContext& context)
     newNode->copyFrom(context, this);
 
     newNode->isGlobal = isGlobal;
-    //newNode->attributes = attributes;
-    newNode->content = findChildRef(content, newNode);
+    newNode->content  = findChildRef(content, newNode);
     if (newNode->content)
         newNode->content->setOwnerAttrUse(newNode);
 
@@ -875,7 +882,9 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
         {
             CloneContext cloneContext = context;
             cloneContext.replaceTokens.clear();
-            return it->second->clone(cloneContext);
+            auto result = it->second->clone(cloneContext);
+            context.propageResult(cloneContext);
+            return result;
         }
     }
 
@@ -902,6 +911,7 @@ AstNode* AstLabelBreakable::clone(CloneContext& context)
     auto cloneContext           = context;
     cloneContext.ownerBreakable = newNode;
     newNode->cloneChilds(cloneContext, this);
+    context.propageResult(cloneContext);
 
     newNode->block = findChildRef(block, newNode);
     return newNode;
@@ -915,6 +925,7 @@ AstNode* AstWhile::clone(CloneContext& context)
     auto cloneContext           = context;
     cloneContext.ownerBreakable = newNode;
     newNode->cloneChilds(cloneContext, this);
+    context.propageResult(cloneContext);
 
     newNode->boolExpression = findChildRef(boolExpression, newNode);
     newNode->block          = findChildRef(block, newNode);
@@ -931,11 +942,13 @@ AstNode* AstFor::clone(CloneContext& context)
 
     cloneContext.ownerBreakable = newNode;
     newNode->cloneChilds(cloneContext, this);
+    context.propageResult(cloneContext);
 
     newNode->preExpression  = findChildRef(preExpression, newNode);
     newNode->boolExpression = findChildRef(boolExpression, newNode);
     newNode->postExpression = findChildRef(postExpression, newNode);
     newNode->block          = findChildRef(block, newNode);
+
     return newNode;
 }
 
@@ -949,6 +962,7 @@ AstNode* AstLoop::clone(CloneContext& context)
 
     cloneContext.ownerBreakable = newNode;
     newNode->cloneChilds(cloneContext, this);
+    context.propageResult(cloneContext);
 
     newNode->specificName = findChildRef(specificName, newNode);
     newNode->expression   = findChildRef(expression, newNode);
@@ -980,6 +994,7 @@ AstNode* AstSwitch::clone(CloneContext& context)
     auto cloneContext           = context;
     cloneContext.ownerBreakable = newNode;
     newNode->cloneChilds(cloneContext, this);
+    context.propageResult(cloneContext);
 
     newNode->expression = findChildRef(expression, newNode);
     for (auto expr : cases)
@@ -1007,6 +1022,7 @@ AstNode* AstSwitchCaseBlock::clone(CloneContext& context)
     auto cloneContext        = context;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
     newNode->copyFrom(cloneContext, this);
+    context.propageResult(cloneContext);
 
     newNode->ownerCase = CastAst<AstSwitchCase>(context.parent, AstNodeKind::SwitchCase);
     newNode->isDefault = isDefault;
@@ -1123,6 +1139,7 @@ AstNode* AstStruct::clone(CloneContext& context)
         newNode->typeInfo->forceComputeName();
     }
 
+    context.propageResult(cloneContext);
     return newNode;
 }
 
@@ -1170,6 +1187,7 @@ AstNode* AstImpl::clone(CloneContext& context)
     // Cloning an impl block should be called only for generic interface implementation
     SWAG_ASSERT(newNode->identifierFor);
 
+    context.propageResult(cloneContext);
     return newNode;
 }
 
@@ -1184,6 +1202,7 @@ AstNode* AstEnum::clone(CloneContext& context)
     cloneContext.ownerStructScope = cloneContext.parentScope;
     cloneContext.ownerMainNode    = newNode;
     newNode->cloneChilds(cloneContext, this);
+    context.propageResult(cloneContext);
 
     newNode->scope = cloneContext.parentScope;
 
@@ -1252,6 +1271,7 @@ AstNode* AstCompilerInline::clone(CloneContext& context)
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Inline, context.parentScope ? context.parentScope : ownerScope);
     newNode->scope           = cloneContext.parentScope;
     childs.back()->clone(cloneContext);
+    context.propageResult(cloneContext);
 
     return newNode;
 }
@@ -1266,6 +1286,7 @@ AstNode* AstCompilerMacro::clone(CloneContext& context)
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Macro, context.parentScope ? context.parentScope : ownerScope);
     newNode->scope           = cloneContext.parentScope;
     childs.back()->clone(cloneContext);
+    context.propageResult(cloneContext);
 
     return newNode;
 }
@@ -1291,6 +1312,7 @@ AstNode* AstInline::clone(CloneContext& context)
 
     newNode->scope = cloneContext.parentScope;
     func->content->clone(cloneContext);
+    context.propageResult(cloneContext);
 
     return newNode;
 }
@@ -1304,6 +1326,7 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
     cloneContext.parent               = newNode;
     cloneContext.ownerCompilerIfBlock = newNode;
     newNode->cloneChilds(cloneContext, this);
+    context.propageResult(cloneContext);
 
     SWAG_ASSERT(symbols.empty());
     SWAG_ASSERT(interfacesCount.empty());

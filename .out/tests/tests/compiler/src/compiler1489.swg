@@ -10,6 +10,7 @@ impl S
     #[swag.macro, swag.noreturn]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
+        var @alias0 = 0
         #if `ptr
             G += 1
         #else

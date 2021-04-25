@@ -20,7 +20,7 @@ impl AA1976
 #test
 {
     var x: AA1976's32
-    visit i: x
+    visit x
     {
 
     }
