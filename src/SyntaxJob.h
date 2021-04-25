@@ -38,10 +38,11 @@ enum class SyntaxStructType
     Tuple
 };
 
-static const uint32_t IDENTIFIER_NO_FCT_PARAMS = 0x00000001;
-static const uint32_t IDENTIFIER_NO_GEN_PARAMS = 0x00000002;
-static const uint32_t IDENTIFIER_NO_PARAMS     = IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_GEN_PARAMS;
-static const uint32_t IDENTIFIER_TYPE_DECL     = 0x00000004;
+static const uint32_t IDENTIFIER_NO_FCT_PARAMS   = 0x00000001;
+static const uint32_t IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
+static const uint32_t IDENTIFIER_NO_PARAMS       = IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_GEN_PARAMS;
+static const uint32_t IDENTIFIER_TYPE_DECL       = 0x00000004;
+static const uint32_t IDENTIFIER_ACCEPT_QUESTION = 0x00000008;
 
 static const uint32_t EXPR_FLAG_NONE   = 0x00000000;
 static const uint32_t EXPR_FLAG_SIMPLE = 0x00000001;

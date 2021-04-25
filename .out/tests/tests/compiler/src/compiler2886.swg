@@ -1,7 +1,4 @@
 #test
 {
-    loop 4..:5
-    {
-
-    }
+    var x: bool = 2
 }

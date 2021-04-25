@@ -27,6 +27,18 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     {
         SWAG_CHECK(tokenizer.getToken(token));
         backTick = true;
+        if (token.id == TokenId::SymQuestion)
+            return syntaxError(token, format("expected an identifier, found symbol '%s'", token.text.c_str()));
+    }
+
+    if (token.id == TokenId::SymQuestion)
+    {
+        if (!(identifierFlags & IDENTIFIER_ACCEPT_QUESTION))
+            return syntaxError(token, format("expected an identifier, found symbol '%s'", token.text.c_str()));
+    }
+    else if (Tokenizer::isSymbol(token.id))
+    {
+        return syntaxError(token, format("expected an identifier, found symbol '%s'", token.text.c_str()));
     }
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);

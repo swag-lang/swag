@@ -619,7 +619,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
     else
     {
-        return context->report({node->expression, format("invalid type '%s' for visit", typeInfo->getDisplayName().c_str())});
+        PushErrHint errh("this cannot be visited");
+        return context->report({node->expression, format("invalid type '%s' for 'visit'", typeInfo->getDisplayName().c_str())});
     }
 
     SyntaxJob syntaxJob;

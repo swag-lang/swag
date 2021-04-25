@@ -198,7 +198,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, "opVisit name expected"));
+        SWAG_CHECK(verifyError(token, token.id == TokenId::Identifier, "opVisit special name expected"));
         node->extraNameToken = move(token);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
@@ -212,8 +212,12 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
     }
 
     // Variable to visit
-    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, "missing 'visit' expression before '{'"));
-    SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &node->expression));
+    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, "missing the 'visit' expression to evaluate before '{'"));
+    {
+        PushErrHint errh("this should be a 'visit' variable name or the expression to evaluate");
+        SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));
+    }
+
     if (token.id == TokenId::SymColon || token.id == TokenId::SymComma)
     {
         SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'visit' variable name"));
@@ -221,15 +225,31 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
         node->aliasNames.push_back(node->expression->childs.back()->token);
         while (token.id != TokenId::SymColon)
         {
+            auto prevToken = token;
             SWAG_CHECK(eatToken(TokenId::SymComma));
-            SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
+
+            {
+                PushErrHint errh("this implies another 'visit' variable name");
+                SWAG_CHECK(verifyError(prevToken, token.id != TokenId::SymColon, "missing another 'visit' variable name after ',' and before ':'"));
+            }
+
+            {
+                PushErrHint errh("this should be a 'visit' variable name");
+                SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
+            }
+
             SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'visit' variable name"));
             SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
             node->aliasNames.push_back(node->expression->childs.back()->token);
         }
 
         SWAG_CHECK(eatToken(TokenId::SymColon));
-        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression));
+
+        {
+            SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, "missing the 'visit' expression to evaluate before '{'"));
+            PushErrHint errh("this should be the 'visit' expression to evaluate");
+            SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
+        }
     }
     else
     {
@@ -262,10 +282,10 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
 
     ScopedBreakable scopedBreakable(this, node);
-    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, "missing 'loop' expression before '{'"));
+    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly, "missing the 'loop' expression to evaluate before '{'"));
 
     {
-        PushErrHint errh("this should be the 'loop' variable name or expression to be evaluated");
+        PushErrHint errh("this should be the 'loop' variable name or the expression to evaluate");
         SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));
     }
 
@@ -278,7 +298,12 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
         name = node->expression->childs.back()->token.text;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
+
+        {
+            SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, "missing the 'loop' expression to evaluate before '{'"));
+            PushErrHint errh("this should be the 'loop' expression to evaluate");
+            SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
+        }
     }
     else
     {

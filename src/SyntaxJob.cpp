@@ -99,6 +99,8 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         msg += format(", found symbol '%s' ", token.text.c_str());
     else if (token.id == TokenId::Identifier)
         msg += format(", found identifier '%s' ", token.text.c_str());
+    else if (token.id == TokenId::NativeType)
+        msg += format(", found type '%s' ", token.text.c_str());
     else
         msg += format(", found token '%s' ", token.text.c_str());
 
