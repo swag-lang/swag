@@ -747,6 +747,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstFuncDecl>();
 
     newNode->copyFrom(context, this, false);
+    newNode->aliasMask   = aliasMask;
     newNode->stackSize   = stackSize;
     newNode->methodParam = methodParam;
 

@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "ThreadManager.h"
+#include "Os.h"
 
 bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
@@ -243,6 +244,19 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_GENERATED))
             node->ownerScope->addPublicInlinedFunc(node);
         return true;
+    }
+
+    // Check that there is no 'hole' in alias names
+    if (node->aliasMask && (node->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN)))
+    {
+        auto mask = node->aliasMask;
+        auto maxN = OS::bitcountlz(node->aliasMask);
+        for (uint32_t n = 0; n < 32 - maxN; n++)
+        {
+            if ((mask & 1) == 0)
+                return context->report({node, node->token, format("'@alias' names not contiguous in function '%s' (missing '@alias%u')", node->token.text.c_str(), n)});
+            mask >>= 1;
+        }
     }
 
     if (node->attributeFlags & ATTRIBUTE_MACRO)

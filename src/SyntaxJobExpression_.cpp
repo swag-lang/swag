@@ -1098,6 +1098,8 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
 
             if(num >= 32)
                 return error(node->token, format("an '@alias' number must be in the range [0, 31] ('%u' provided)", num));
+            if (node->ownerFct)
+                node->ownerFct->aliasMask |= 1 << num;
 
             return true;
         }

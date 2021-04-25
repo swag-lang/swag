@@ -491,6 +491,7 @@ struct AstFuncDecl : public AstNode
     TypeInfoParam* methodParam;
     Job*           pendingLambdaJob;
 
+    uint32_t aliasMask;
     uint32_t stackSize;
     int      exportForeignLine;
 };
