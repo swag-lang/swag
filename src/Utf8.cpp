@@ -269,7 +269,8 @@ Utf8::operator const char*()
 
 char Utf8::operator[](int index) const
 {
-    return index < count ? buffer[index] : 0;
+    SWAG_ASSERT(index <= count);
+    return index == count ? 0 : buffer[index];
 }
 
 Utf8 operator+(const Utf8& str1, const char* str2)

@@ -226,7 +226,7 @@ void Diagnostic::report(bool verboseMode) const
                 range = max(1, range);
 
                 // Special case for a range == 1.
-                if (range == 1)
+                if (range == 1 && (int) startLocation.column < backLine.count)
                 {
                     int decal = startLocation.column;
 
@@ -261,17 +261,40 @@ void Diagnostic::report(bool verboseMode) const
                 {
                     Utf8 errorMsg;
                     while (startIndex < (int) startLocation.column)
-                        errorMsg += backLine[startIndex++];
+                    {
+                        if (backLine[startIndex] >= 32)
+                            errorMsg += backLine[startIndex];
+                        else
+                            errorMsg += " ";
+                        startIndex++;
+                    }
+
                     g_Log.print(errorMsg);
                     errorMsg.clear();
 
-                    g_Log.setColor(hilightCodeColor);
-                    for (int i = 0; i < range; i++)
-                        errorMsg += backLine[startIndex++];
-                    g_Log.print(errorMsg);
+                    if (startIndex < (uint32_t) backLine.count)
+                    {
+                        for (int i = 0; i < range; i++)
+                        {
+                            if (backLine[startIndex] >= 32)
+                                errorMsg += backLine[startIndex];
+                            else
+                                errorMsg += " ";
+                            startIndex++;
+                        }
 
-                    g_Log.setColor(codeColor);
-                    g_Log.print(backLine.c_str() + startIndex);
+                        // Print hilighted code
+                        g_Log.setColor(hilightCodeColor);
+                        g_Log.print(errorMsg);
+
+                        // Print the remaining part
+                        if (startIndex < (uint32_t) backLine.count)
+                        {
+                            g_Log.setColor(codeColor);
+                            g_Log.print(backLine.c_str() + startIndex);
+                        }
+                    }
+
                     g_Log.eol();
                 }
 
