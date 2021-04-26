@@ -89,7 +89,7 @@ func read(stream: FileStream, buffer: *void, length: uint)->uint
     return cast(uint) dwRead
 }
 
-// Write to the given file stream, and returns the number of bytes
+// Write to the given file stream, and returns the number of written bytes
 func write(stream: FileStream, buffer: const *void, length: uint)->uint throw
 {
     debug.assert(stream.isOpen())
