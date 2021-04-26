@@ -9,7 +9,7 @@ void Workspace::newCommand()
 
     if (workspacePath.empty())
     {
-        g_Log.error(Msg0816);
+        g_Log.error(Msg0540);
         exit(-1);
     }
 

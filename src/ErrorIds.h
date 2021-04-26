@@ -10,7 +10,6 @@
 #define Msg0000 "fatal error: invalid swag command '%s'"
 #define Msg0542 "fatal error: invalid workspace '%s', subfolders 'modules/' and 'tests/' do not exist"
 #define Msg0540 "fatal error: missing workspace folder '--workspace'"
-#define Msg0816 "fatal error: missing workspace folder '--workspace'"
 #define Msg0552 "fatal error: some problems have been found in compiler bootstrap !!!"
 #define Msg0554 "fatal error: some problems have been found in compiler runtime !!!"
 #define Msg0539 "fatal error: type '%s' for tag '%s' is not a valid tag type"
