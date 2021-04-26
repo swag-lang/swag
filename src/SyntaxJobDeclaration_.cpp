@@ -121,9 +121,9 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
             else if (symbol->kind != SymbolKind::Namespace)
             {
                 auto       firstOverload = &symbol->defaultOverload;
-                Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
+                Utf8       msg           = format(Msg0891, symbol->name.c_str());
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
-                Utf8       note = "this is the other definition";
+                Utf8       note = Msg0884;
                 Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
                 return sourceFile->report(diag, &diagNote);
             }

@@ -7,6 +7,7 @@
 #include "Allocator.h"
 #include "Ast.h"
 #include "Module.h"
+#include "ErrorIds.h"
 
 SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 {
@@ -300,9 +301,9 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         }
 
         auto       firstOverload = &symbol->defaultOverload;
-        Utf8       msg           = format("symbol '%s' already defined as %s in an accessible scope", symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
+        Utf8       msg           = format(Msg0885, symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
         Diagnostic diag{node, token, msg};
-        Utf8       note = "this is the other definition";
+        Utf8       note = Msg0884;
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
@@ -331,9 +332,9 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
             return true;
         }
 
-        Utf8       msg = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
+        Utf8       msg = format(Msg0886, symbol->name.c_str());
         Diagnostic diag{node, token, msg};
-        Utf8       note = "this is the other definition";
+        Utf8       note = Msg0884;
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
@@ -343,9 +344,9 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     if (!canOverload && checkSameName)
     {
         auto       firstOverload = &symbol->defaultOverload;
-        Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
+        Utf8       msg           = format(Msg0887, symbol->name.c_str());
         Diagnostic diag{node, token, msg};
-        Utf8       note = "this is the other definition";
+        Utf8       note = Msg0884;
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
         context->report(diag, &diagNote);
         return false;
@@ -362,9 +363,9 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
             !(overload->node->flags & AST_HAS_SELECT_IF))
         {
             auto       firstOverload = overload;
-            Utf8       msg           = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
+            Utf8       msg           = format(Msg0888, symbol->name.c_str());
             Diagnostic diag{node, token, msg};
-            Utf8       note = "this is the other definition";
+            Utf8       note = Msg0884;
             Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
             if (typeInfo->kind == TypeInfoKind::FuncAttr)
                 diagNote.remarks.push_back(Ast::computeGenericParametersReplacement(((TypeInfoFuncAttr*) typeInfo)->genericParameters));
@@ -404,15 +405,15 @@ bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, Sy
         if (symbol->kind != SymbolKind::Alias)
         {
             auto       firstOverload = symbol->overloads[0];
-            Utf8       msg           = format("symbol '%s' already defined as %s in an accessible scope", symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
+            Utf8       msg           = format(Msg0889, symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
             Diagnostic diag{node, node->token, msg};
-            Utf8       note = "this is the other definition";
+            Utf8       note = Msg0884;
             Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
             context->report(diag, &diagNote);
         }
         else
         {
-            Utf8       msg = format("symbol '%s' already defined as a name alias in an accessible scope", symbol->name.c_str());
+            Utf8       msg = format(Msg0890, symbol->name.c_str());
             Diagnostic diag{node, node->token, msg};
             context->report(diag);
         }

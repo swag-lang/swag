@@ -80,30 +80,30 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     switch (kind)
     {
     case InvalidTokenError::TopLevelInstruction:
-        msg += "expected a top level instruction";
+        msg += Msg0895;
         break;
     case InvalidTokenError::EmbeddedInstruction:
-        msg += "expected an embedded instruction or a curly block";
+        msg += Msg0896;
         break;
     case InvalidTokenError::LeftExpression:
-        msg += "expected a left expression";
+        msg += Msg0897;
         break;
     case InvalidTokenError::LeftExpressionVar:
-        msg += "expected a left expression for variable declaration";
+        msg += Msg0898;
         break;
     case InvalidTokenError::PrimaryExpression:
-        msg += "expected an expression";
+        msg += Msg0899;
         break;
     }
 
     if (Tokenizer::isSymbol(token.id))
-        msg += format(", found symbol '%s' ", token.text.c_str());
+        msg += format(Msg0900, token.text.c_str());
     else if (token.id == TokenId::Identifier)
-        msg += format(", found identifier '%s' ", token.text.c_str());
+        msg += format(Msg0901, token.text.c_str());
     else if (token.id == TokenId::NativeType)
-        msg += format(", found type '%s' ", token.text.c_str());
+        msg += format(Msg0902, token.text.c_str());
     else
-        msg += format(", found token '%s' ", token.text.c_str());
+        msg += format(Msg0903, token.text.c_str());
 
     switch (token.id)
     {
@@ -114,7 +114,7 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
             tokenizer.getToken(nextToken);
             if (nextToken.id == TokenId::SymEqual || nextToken.id == TokenId::SymColonEqual || nextToken.id == TokenId::SymColon)
             {
-                msg += "; did you miss 'var' or 'const' to declare a global variable ?";
+                msg += Msg0904;
             }
         }
         break;

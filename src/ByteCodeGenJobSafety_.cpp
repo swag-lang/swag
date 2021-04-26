@@ -20,59 +20,59 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
         {
         case SafetyMsg::CastTruncated:
             SWAG_ASSERT(toType && fromType);
-            typedMsg[m][i][j] = format(Msg0207                                                            , fromType->name.c_str(), toType->name.c_str());
+            typedMsg[m][i][j] = format(Msg0207, fromType->name.c_str(), toType->name.c_str());
             break;
         case SafetyMsg::CastNeg:
             SWAG_ASSERT(toType && fromType);
-            typedMsg[m][i][j] = format(Msg0208                                                                 , fromType->name.c_str(), toType->name.c_str());
+            typedMsg[m][i][j] = format(Msg0208, fromType->name.c_str(), toType->name.c_str());
             break;
         case SafetyMsg::IFPlus:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0209                                                      , toType->name.c_str());
+            typedMsg[m][i][j] = format(Msg0209, toType->name.c_str());
             break;
         case SafetyMsg::IFMinus:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0210                                                      , toType->name.c_str());
+            typedMsg[m][i][j] = format(Msg0210, toType->name.c_str());
             break;
         case SafetyMsg::IFMul:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0211                                                      , toType->name.c_str());
+            typedMsg[m][i][j] = format(Msg0211, toType->name.c_str());
             break;
         case SafetyMsg::IFPlusEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0212                                                       , toType->name.c_str());
+            typedMsg[m][i][j] = format(Msg0212, toType->name.c_str());
             break;
         case SafetyMsg::IFMinusEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0213                                                       , toType->name.c_str());
+            typedMsg[m][i][j] = format(Msg0213, toType->name.c_str());
             break;
         case SafetyMsg::IFMulEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0214                                                       , toType->name.c_str());
+            typedMsg[m][i][j] = format(Msg0214, toType->name.c_str());
             break;
         case SafetyMsg::ShiftLeftOp:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0215                                                              , toType->name.c_str(), (toType->sizeOf * 8) - 1);
+            typedMsg[m][i][j] = format(Msg0215, toType->name.c_str(), (toType->sizeOf * 8) - 1);
             break;
         case SafetyMsg::ShiftRightOp:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0216                                                              , toType->name.c_str(), (toType->sizeOf * 8) - 1);
+            typedMsg[m][i][j] = format(Msg0216, toType->name.c_str(), (toType->sizeOf * 8) - 1);
             break;
         case SafetyMsg::ShiftLeftOf:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0217                                                       , toType->name.c_str());
+            typedMsg[m][i][j] = format(Msg0217, toType->name.c_str());
             break;
         case SafetyMsg::ShiftRightOf:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0218                                                       , toType->name.c_str());
+            typedMsg[m][i][j] = format(Msg0218, toType->name.c_str());
             break;
         case SafetyMsg::NegAbs:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0219                                        , toType->name.c_str());
+            typedMsg[m][i][j] = format(Msg0219, toType->name.c_str());
             break;
         case SafetyMsg::Neg:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = format(Msg0220                                                                , toType->name.c_str());
+            typedMsg[m][i][j] = format(Msg0220, toType->name.c_str());
             break;
         }
     }
@@ -417,7 +417,7 @@ void ByteCodeGenJob::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, 
     if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_MT_ON, ATTRIBUTE_SAFETY_MT_OFF))
         return;
 
-    emitSafetyNotZero(context, r, bits, Msg0221                    );
+    emitSafetyNotZero(context, r, bits, Msg0221);
 }
 
 void ByteCodeGenJob::emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
@@ -426,7 +426,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, u
 
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r0, r1, re);
-    emitAssert(context, re, Msg0222                      );
+    emitAssert(context, re, Msg0222);
     freeRegisterRC(context, re);
 }
 
@@ -436,7 +436,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, u
 
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, re);
-    emitAssert(context, re, Msg0223                      );
+    emitAssert(context, re, Msg0223);
     freeRegisterRC(context, re);
 }
 
@@ -525,17 +525,17 @@ void ByteCodeGenJob::emitSafetyRelativePointerS64(ByteCodeGenContext* context, u
     }
 
     auto inst = emitInstruction(context, ByteCodeOp::TestNotZero64, re, r0);
-    emitAssert(context, re, Msg0224                                                        );
+    emitAssert(context, re, Msg0224);
 
     inst = emitInstruction(context, ByteCodeOp::CompareOpGreaterEqS64, r0, 0, re);
     inst->flags |= BCI_IMM_B;
     inst->b.s64 = minValue;
-    emitAssert(context, re, Msg0225                                 );
+    emitAssert(context, re, Msg0225);
 
     inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqS64, r0, 0, re);
     inst->flags |= BCI_IMM_B;
     inst->b.s64 = maxValue;
-    emitAssert(context, re, Msg0226                                 );
+    emitAssert(context, re, Msg0226);
 
     freeRegisterRC(context, re);
 }
@@ -546,7 +546,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerEqU64(ByteCodeGenContext* context,
 
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, re);
-    emitAssert(context, re, Msg0227                      );
+    emitAssert(context, re, Msg0227);
     freeRegisterRC(context, re);
 }
 
@@ -594,7 +594,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     inst                = emitInstruction(context, ByteCodeOp::SetImmediate32, result);
     inst->b.u32         = SWAG_COMPARE_CAST_ANY;
     inst                = emitInstruction(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], result, result);
-    emitAssert(context, result, Msg0228                        );
+    emitAssert(context, result, Msg0228);
 
     freeRegisterRC(context, result);
     freeRegisterRC(context, r0);
@@ -633,7 +633,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
         auto re = reserveRegisterRC(context);
         context->pushLocation(&node->lowerBound->token.startLocation);
         emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC, re);
-        emitAssert(context, re, Msg0229                                                        );
+        emitAssert(context, re, Msg0229);
         context->popLocation();
         freeRegisterRC(context, re);
     }
@@ -644,7 +644,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
         auto re = reserveRegisterRC(context);
         context->pushLocation(&node->upperBound->token.startLocation);
         emitInstruction(context, ByteCodeOp::CompareOpLowerU64, node->upperBound->resultRegisterRC, maxBoundReg, re);
-        emitAssert(context, re, Msg0230                                            );
+        emitAssert(context, re, Msg0230);
         context->popLocation();
         freeRegisterRC(context, re);
         if (freeMaxBoundReg)

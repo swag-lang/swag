@@ -496,9 +496,9 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 
         Utf8 msg;
         if (toSolve->kind == SymbolKind::PlaceHolder)
-            msg = format("placeholder identifier '%s' has not been solved", toSolve->name.c_str());
+            msg = format(Msg0892, toSolve->name.c_str());
         else
-            msg = format("identifier '%s' has not been solved (do you have a cycle ?)", toSolve->name.c_str());
+            msg = format(Msg0893, toSolve->name.c_str());
 
         // a := func(a) for example
         if (toSolve->kind == SymbolKind::Variable &&
@@ -506,7 +506,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             declNode->sourceFile == node->sourceFile &&
             declNode->token.startLocation.line == node->token.startLocation.line)
         {
-            msg = format("variable '%s' is used before being declared", toSolve->name.c_str());
+            msg = format(Msg0894, toSolve->name.c_str());
         }
 
         Diagnostic diag{node, node->token, msg};
