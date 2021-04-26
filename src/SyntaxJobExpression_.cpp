@@ -603,7 +603,7 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
                 binaryNode->token.id != TokenId::SymLowerLower &&
                 binaryNode->token.id != TokenId::SymGreaterGreater)
             {
-                return error(mdfToken, format(Msg0265, mdfToken.text.c_str(), binaryNode->token.text.c_str()));
+                return error(mdfToken, format(Msg0280, mdfToken.text.c_str(), binaryNode->token.text.c_str()));
             }
 
             binaryNode->opFlags |= OPFLAG_SAFE;
@@ -614,7 +614,7 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
             if (binaryNode->token.id != TokenId::SymLowerLower &&
                 binaryNode->token.id != TokenId::SymGreaterGreater)
             {
-                return error(mdfToken, format(Msg0266, mdfToken.text.c_str(), binaryNode->token.text.c_str()));
+                return error(mdfToken, format(Msg0280, mdfToken.text.c_str(), binaryNode->token.text.c_str()));
             }
 
             binaryNode->opFlags |= OPFLAG_SMALL;
@@ -1345,7 +1345,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             if (savedtoken.id != TokenId::SymLowerLowerEqual &&
                 savedtoken.id != TokenId::SymGreaterGreaterEqual)
             {
-                return error(mdfToken, format(Msg0281, mdfToken.text.c_str(), savedtoken.text.c_str()));
+                return error(mdfToken, format(Msg0280, mdfToken.text.c_str(), savedtoken.text.c_str()));
             }
 
             opFlags |= OPFLAG_SMALL;

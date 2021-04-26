@@ -801,7 +801,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
-            return context->report({identifier, identifier->token, format(Msg0090, identifier->typeInfo->getDisplayName().c_str())});
+            return context->report({identifier, identifier->token, format(Msg0082, identifier->typeInfo->getDisplayName().c_str())});
 
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters)
@@ -1538,7 +1538,7 @@ void SemanticJob::symbolNotFoundNotes(SemanticContext* context, VectorNative<One
                 else
                 {
                     auto note = new Diagnostic{prev,
-                                               format("'%s' is %s", prev->token.text.c_str(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind)),
+                                               format(Note010, prev->token.text.c_str(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind)),
                                                DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
@@ -2389,7 +2389,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
 
-            Diagnostic* diag = new Diagnostic{node, node->token, format(Msg0089, node->token.text.c_str())};
+            Diagnostic* diag = new Diagnostic{node, node->token, format(Msg0122, node->token.text.c_str())};
             if (identifierRef->startScope)
             {
                 auto typeRef = TypeManager::concreteReferenceType(identifierRef->typeInfo);
@@ -2550,7 +2550,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
             if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
                 displayName = identifierRef->typeInfo->name;
             if (!displayName.empty())
-                return context->report({node, node->token, format(Msg0121, node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
+                return context->report({node, node->token, format(Msg0110, node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
         }
 
         return context->report({node, node->token, format(Msg0122, node->token.text.c_str())});
@@ -2660,7 +2660,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             {
                 if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
                 {
-                    return context->report({oneParam, Msg0129});
+                    return context->report({oneParam, Msg0734});
                 }
             }
         }

@@ -396,7 +396,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         if (literal->token.literalType != LiteralType::TT_STRING &&
             literal->token.literalType != LiteralType::TT_RAW_STRING &&
             literal->token.literalType != LiteralType::TT_ESCAPE_STRING)
-            return error(literal->token, Msg0372);
+            return error(literal->token, Msg0371);
         SWAG_CHECK(eatSemiCol("'#global foreignlib'"));
     }
 

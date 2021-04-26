@@ -39,7 +39,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                     break;
 
                 default:
-                    return error(node->token, Msg0387);
+                    return error(node->token, Msg0386);
                 }
             }
         }

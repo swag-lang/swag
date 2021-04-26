@@ -621,7 +621,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format(Msg0492, node->token.text.c_str(), expressionTypeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, format(Msg0495, node->token.text.c_str(), expressionTypeInfo->getDisplayName().c_str())}));
 
     // Be sure struct if not marked as nocopy
     if (node->kind == AstNodeKind::PostCopy)
@@ -637,7 +637,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format(Msg0494, node->token.text.c_str(), countTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->report({node->count, format(Msg0498, node->token.text.c_str(), countTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, node->count, CASTFLAG_TRY_COERCE));
     }
 

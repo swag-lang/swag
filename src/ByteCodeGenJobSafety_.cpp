@@ -535,7 +535,7 @@ void ByteCodeGenJob::emitSafetyRelativePointerS64(ByteCodeGenContext* context, u
     inst = emitInstruction(context, ByteCodeOp::CompareOpLowerEqS64, r0, 0, re);
     inst->flags |= BCI_IMM_B;
     inst->b.s64 = maxValue;
-    emitAssert(context, re, Msg0226);
+    emitAssert(context, re, Msg0225);
 
     freeRegisterRC(context, re);
 }

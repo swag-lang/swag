@@ -217,7 +217,7 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result)
         SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format(Msg0844, node->token.text.c_str())));
         SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format(Msg0845, node->token.text.c_str())));
         SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format(Msg0846, node->token.text.c_str())));
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0847, node->token.text.c_str())));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0853, node->token.text.c_str())));
         SWAG_CHECK(doIdentifierRef(node));
     }
 

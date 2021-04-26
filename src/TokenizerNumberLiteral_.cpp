@@ -97,7 +97,7 @@ bool Tokenizer::doHexLiteral(Token& token)
 
         acceptSep = true;
         SWAG_VERIFY(!(token.literalValue.u64 & 0xF0000000'00000000), error(token, Msg0464));
-        SWAG_VERIFY(rank != 16, error(token, Msg0462));
+        SWAG_VERIFY(rank != 16, error(token, Msg0459));
         token.literalValue.u64 <<= 4;
         rank++;
 

@@ -908,7 +908,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     if (!leftTypeInfo->isNativeIntegerOrChar())
         return context->report({left, format(Msg0170, leftTypeInfo->getDisplayName().c_str())});
     if (!rightTypeInfo->isNative(NativeTypeKind::U32))
-        return context->report({right, format(Msg0171, rightTypeInfo->getDisplayName().c_str())});
+        return context->report({right, format(Msg0173, rightTypeInfo->getDisplayName().c_str())});
 
     bool isSmall = node->opFlags & OPFLAG_SMALL;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))

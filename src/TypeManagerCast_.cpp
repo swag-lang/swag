@@ -908,7 +908,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0184, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0185, fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -1469,7 +1469,7 @@ bool TypeManager::castToNativeInt(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < INT64_MIN || fromNode->computedValue.reg.s64 > INT64_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format(Msg0190, fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0189, fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -1921,7 +1921,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         }
 
         if (convertTo->isRelative() || fromTypeList->subTypes[i]->typeInfo->isRelative())
-            return context->report({child, format(Msg0199)});
+            return context->report({child, format(Msg0198)});
         SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
         if (child)
         {

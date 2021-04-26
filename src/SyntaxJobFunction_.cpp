@@ -166,7 +166,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         }
         else
         {
-            SWAG_VERIFY(paramNode->ownerStructScope->kind == ScopeKind::Struct, error(token, Msg0407));
+            SWAG_VERIFY(paramNode->ownerStructScope->kind == ScopeKind::Struct, error(token, Msg0406));
             auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->ptrCount    = 1;
             typeNode->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;

@@ -146,7 +146,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymRightCurly, error(curly, Msg0443));
+    SWAG_VERIFY(token.id == TokenId::SymRightCurly, error(curly, Msg0880));
     SWAG_CHECK(tokenizer.getToken(token));
 
     return true;

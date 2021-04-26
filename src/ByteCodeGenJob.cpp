@@ -3,7 +3,6 @@
 #include "ByteCode.h"
 #include "Diagnostic.h"
 #include "ThreadManager.h"
-#include "ByteCodeOp.h"
 #include "Module.h"
 #include "Ast.h"
 #include "TypeManager.h"
