@@ -74,7 +74,7 @@ using core
         {
             //var dst: String = "f:/src1/"
             //dst += path.getFileName(one.fullname)
-            try file.writeAllBytes(one.fullname, b)
+            try file.writeAllBytes(one.fullname, b.toSlice())
         }
     }
 

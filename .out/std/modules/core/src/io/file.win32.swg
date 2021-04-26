@@ -90,7 +90,7 @@ func read(stream: FileStream, buffer: *void, length: uint)->uint
 }
 
 // Write to the given file stream, and returns the number of bytes
-func write(stream: FileStream, buffer: *void, length: uint)->uint throw
+func write(stream: FileStream, buffer: const *void, length: uint)->uint throw
 {
     debug.assert(stream.isOpen())
     debug.assert(stream.canWrite)

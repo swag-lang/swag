@@ -86,7 +86,7 @@ func readAllBytes(fullname: string)->Array'u8 throw
 }
 
 #[swag.discardable]
-func writeAllBytes(fullname: string, buffer: Array'u8)->uint throw
+func writeAllBytes(fullname: string, buffer: const [..] u8)->uint throw
 {
     var result: retval
 
@@ -94,5 +94,5 @@ func writeAllBytes(fullname: string, buffer: Array'u8)->uint throw
     debug.assert(stream.isOpen())
     defer stream.close()
 
-    return try write(stream, buffer.buffer, buffer.count)
+    return try write(stream, @dataof(buffer), @countof(buffer))
 }
