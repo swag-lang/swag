@@ -69,12 +69,12 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymVertical)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, Msg0401));
+            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Msg0401));
             callParams->aliasNames.push_back(token);
             SWAG_CHECK(eatToken());
             if (token.id == TokenId::SymVertical)
                 break;
-            SWAG_VERIFY(token.id == TokenId::SymComma, syntaxError(token, Msg0402));
+            SWAG_VERIFY(token.id == TokenId::SymComma, error(token, Msg0402));
             SWAG_CHECK(eatToken());
         }
 
@@ -138,7 +138,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         paramNode->flags |= AST_DECL_USING;
     }
 
-    SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, syntaxError(token, format(Msg0404, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, error(token, format(Msg0404, token.text.c_str())));
     paramNode->token.text = move(token.text);
 
     // 'self'
@@ -149,7 +149,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         {
             isConst = true;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == "self", syntaxError(token, Msg0405));
+            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == "self", error(token, Msg0405));
         }
 
         SWAG_CHECK(eatToken());
@@ -184,7 +184,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         while (token.id == TokenId::SymComma)
         {
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format(Msg0408, token.text.c_str())));
+            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0408, token.text.c_str())));
 
             AstVarDecl* otherVarNode = Ast::newVarDecl(sourceFile, token.text, parent, this, AstNodeKind::FuncDeclParam);
             SWAG_CHECK(tokenizer.getToken(token));
@@ -276,7 +276,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             if (token.id == TokenId::SymRightParen)
                 break;
             SWAG_CHECK(eatToken(TokenId::SymComma));
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, syntaxError(token, format(Msg0410, token.text.c_str())));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, error(token, format(Msg0410, token.text.c_str())));
         }
     }
 
@@ -292,11 +292,11 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
         *result = allParams;
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_VERIFY(token.id != TokenId::SymRightParen, syntaxError(token, Msg0411));
+    SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Msg0411));
 
     while (token.id != TokenId::SymRightParen)
     {
-        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, Msg0412));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Msg0412));
         auto oneParam = Ast::newVarDecl(sourceFile, token.text, allParams, this, AstNodeKind::FuncDeclParam);
         oneParam->flags |= AST_IS_GENERIC;
         SWAG_CHECK(eatToken());
@@ -425,12 +425,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         isIntrinsic = token.text[0] == '@';
         if (isIntrinsic)
         {
-            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, syntaxError(token, Msg0413));
+            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, error(token, Msg0413));
         }
         else
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format(Msg0414, token.text.c_str())));
-            SWAG_VERIFY(token.text != "drop", syntaxError(token, Msg0415));
+            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0414, token.text.c_str())));
+            SWAG_VERIFY(token.text != "drop", error(token, Msg0415));
         }
 
         funcNode->inheritTokenName(token);
@@ -548,7 +548,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     // If we have now a semi colon, then this is an empty function, like a forward decl in c++
     if (token.id == TokenId::SymSemiColon)
     {
-        SWAG_VERIFY(!funcForCompiler, syntaxError(token, format(Msg0416, funcNode->token.text.c_str())));
+        SWAG_VERIFY(!funcForCompiler, error(token, format(Msg0416, funcNode->token.text.c_str())));
         SWAG_CHECK(eatSemiCol("function declaration"));
         funcNode->flags |= AST_EMPTY_FCT;
         return true;

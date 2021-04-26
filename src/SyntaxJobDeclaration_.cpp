@@ -93,11 +93,11 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         case TokenId::Identifier:
             break;
         case TokenId::SymLeftCurly:
-            return syntaxError(token, Msg0389);
+            return error(token, Msg0389);
         case TokenId::SymSemiColon:
-            return syntaxError(token, Msg0390);
+            return error(token, Msg0390);
         default:
-            return syntaxError(token, format(Msg0391, token.text.c_str()));
+            return error(token, format(Msg0391, token.text.c_str()));
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
@@ -505,8 +505,8 @@ bool SyntaxJob::doLabel(AstNode* parent, AstNode** result)
     labelNode->semanticFct = SemanticJob::resolveLabel;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, syntaxError(labelNode->token, Msg0394));
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format(Msg0395, token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(labelNode->token, Msg0394));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0395, token.text.c_str())));
     labelNode->inheritTokenName(token);
     labelNode->inheritTokenLocation(token);
 

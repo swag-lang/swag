@@ -23,8 +23,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
     {
         SWAG_CHECK(doLeftExpressionVar(&leftNode, IDENTIFIER_NO_PARAMS));
 
-        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, Msg0454));
-        SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, syntaxError(token, format(Msg0455, token.text.c_str())));
+        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Msg0454));
+        SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, error(token, format(Msg0455, token.text.c_str())));
 
         AstNode* type = nullptr;
         if (token.id == TokenId::SymColon)
@@ -34,7 +34,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         }
 
         AstNode* assign = nullptr;
-        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, Msg0456));
+        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Msg0456));
         if (token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());

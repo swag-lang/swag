@@ -15,22 +15,8 @@ thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
 bool SyntaxJob::verifyError(const Token& tk, bool expr, const Utf8& msg)
 {
     if (!expr)
-        return syntaxError(tk, msg);
+        return error(tk, msg);
     return true;
-}
-
-bool SyntaxJob::syntaxError(const Token& tk, const Utf8& msg)
-{
-    Utf8 full = Msg0318 + msg;
-    error(tk, full);
-    return false;
-}
-
-bool SyntaxJob::syntaxError(AstNode* node, const Utf8& msg)
-{
-    Utf8 full = Msg0319 + msg;
-    error(node, full);
-    return false;
 }
 
 bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
@@ -41,13 +27,13 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         {
         case TokenId::KwdNoDrop:
             if (Ast::lastGeneratedNode->token.id == TokenId::KwdMove)
-                return syntaxError(token, Msg0320);
+                return error(token, Msg0320);
             if (Ast::lastGeneratedNode->token.id == TokenId::KwdNoDrop)
-                return syntaxError(token, Msg0321);
+                return error(token, Msg0321);
             break;
         case TokenId::KwdMove:
             if (Ast::lastGeneratedNode->token.id == TokenId::KwdMove)
-                return syntaxError(token, Msg0322);
+                return error(token, Msg0322);
             break;
         }
     }
@@ -56,23 +42,23 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     {
     case TokenId::KwdElse:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return syntaxError(token, Msg0323);
+            return error(token, Msg0323);
         break;
     case TokenId::CompilerElse:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return syntaxError(token, Msg0324);
+            return error(token, Msg0324);
         break;
     case TokenId::CompilerElseIf:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return syntaxError(token, Msg0325);
+            return error(token, Msg0325);
         break;
 
     case TokenId::SymRightParen:
-        return syntaxError(token, Msg0326);
+        return error(token, Msg0326);
     case TokenId::SymRightCurly:
-        return syntaxError(token, Msg0327);
+        return error(token, Msg0327);
     case TokenId::SymRightSquare:
-        return syntaxError(token, Msg0328);
+        return error(token, Msg0328);
     }
 
     Utf8 msg;
@@ -120,7 +106,7 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         break;
     }
 
-    return syntaxError(token, msg);
+    return error(token, msg);
 }
 
 bool SyntaxJob::error(AstNode* node, const Utf8& msg)
@@ -154,9 +140,9 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
         if (!msg)
             msg = "";
         if (token.id == TokenId::EndOfFile)
-            SWAG_CHECK(syntaxError(token, format(Msg0329, g_LangSpec.tokenToName(id).c_str(), msg)));
+            SWAG_CHECK(error(token, format(Msg0329, g_LangSpec.tokenToName(id).c_str(), msg)));
         else
-            SWAG_CHECK(syntaxError(token, format(Msg0330, g_LangSpec.tokenToName(id).c_str(), token.text.c_str(), msg)));
+            SWAG_CHECK(error(token, format(Msg0330, g_LangSpec.tokenToName(id).c_str(), token.text.c_str(), msg)));
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
@@ -169,7 +155,7 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     {
         if (!msg)
             msg = "";
-        SWAG_CHECK(syntaxError(token, format(Msg0331, token.text.c_str(), msg)));
+        SWAG_CHECK(error(token, format(Msg0331, token.text.c_str(), msg)));
     }
 
     if (token.id == TokenId::SymSemiColon)

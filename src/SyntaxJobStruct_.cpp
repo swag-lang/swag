@@ -146,7 +146,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, Msg0443));
+    SWAG_VERIFY(token.id == TokenId::SymRightCurly, error(curly, Msg0443));
     SWAG_CHECK(tokenizer.getToken(token));
 
     return true;
@@ -203,7 +203,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format(Msg0444, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0444, token.text.c_str())));
     structNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(structNode));
 
@@ -337,7 +337,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         if (token.id == TokenId::SymColon)
         {
             typeExpression = CastAst<AstTypeExpression>(expression, AstNodeKind::TypeExpression);
-            SWAG_VERIFY(prevToken.id == TokenId::Identifier, syntaxError(prevToken, Msg0448));
+            SWAG_VERIFY(prevToken.id == TokenId::Identifier, error(prevToken, Msg0448));
             SWAG_ASSERT(typeExpression->identifier);
             SWAG_CHECK(checkIsSingleIdentifier(typeExpression->identifier, "as a tuple field name"));
             SWAG_CHECK(checkIsValidVarName(typeExpression->identifier->childs.back()));
@@ -362,7 +362,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
 
         idx++;
 
-        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, syntaxError(token, format(Msg0449, token.text.c_str())));
+        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, error(token, format(Msg0449, token.text.c_str())));
         if (token.id == TokenId::SymRightCurly)
             break;
         SWAG_CHECK(tokenizer.getToken(token));

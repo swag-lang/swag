@@ -95,7 +95,7 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         if (token.id != TokenId::KwdBreak && token.id != TokenId::KwdContinue)
             return error(token, format(Msg0365, token.text.c_str()));
-        SWAG_VERIFY(token.id != TokenId::SymRightCurly, syntaxError(token, Msg0366));
+        SWAG_VERIFY(token.id != TokenId::SymRightCurly, error(token, Msg0366));
 
         AstNode* stmt;
         while (token.id != TokenId::SymRightCurly)
@@ -389,14 +389,14 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         node->semanticFct = SemanticJob::resolveCompilerForeignLib;
 
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, Msg0371));
+        SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Msg0371));
 
         AstNode* literal;
         SWAG_CHECK(doLiteral(node, &literal));
         if (literal->token.literalType != LiteralType::TT_STRING &&
             literal->token.literalType != LiteralType::TT_RAW_STRING &&
             literal->token.literalType != LiteralType::TT_ESCAPE_STRING)
-            return syntaxError(literal->token, Msg0372);
+            return error(literal->token, Msg0372);
         SWAG_CHECK(eatSemiCol("'#global foreignlib'"));
     }
 
@@ -669,7 +669,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
                 SWAG_VERIFY(tokenLocation.text.empty(), error(token, Msg0380));
-                SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, format(Msg0381, token.text.c_str())));
+                SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, format(Msg0381, token.text.c_str())));
                 tokenLocation = token;
                 SWAG_CHECK(eatToken());
                 continue;
@@ -680,7 +680,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
                 SWAG_VERIFY(tokenVersion.text.empty(), error(token, Msg0382));
-                SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, format(Msg0383, token.text.c_str())));
+                SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, format(Msg0383, token.text.c_str())));
                 tokenVersion = token;
                 SWAG_CHECK(eatToken());
                 continue;

@@ -15,7 +15,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         *result = attrNode;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format(Msg0347, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0347, token.text.c_str())));
 
     attrNode->inheritTokenName(token);
 
@@ -107,10 +107,10 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
 
         default:
             if (attr == ATTRIBUTE_PRIVATE)
-                return syntaxError(token, format(Msg0352, token.text.c_str()));
+                return error(token, format(Msg0352, token.text.c_str()));
             if (attr == ATTRIBUTE_PROTECTED)
-                return syntaxError(token, format(Msg0353, token.text.c_str()));
-            return syntaxError(token, format(Msg0354, token.text.c_str()));
+                return error(token, format(Msg0353, token.text.c_str()));
+            return error(token, format(Msg0354, token.text.c_str()));
         }
 
         SWAG_CHECK(doTopLevelInstruction(attrUse, &topStmt));
@@ -155,7 +155,7 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result, bool single)
             if (token.id != TokenId::SymRightSquare)
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma));
-                SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format(Msg0355, token.text.c_str())));
+                SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0355, token.text.c_str())));
             }
         }
 
@@ -164,7 +164,7 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result, bool single)
             break;
     }
 
-    SWAG_VERIFY(!attrBlockNode->childs.empty(), syntaxError(attrBlockNode, Msg0356));
+    SWAG_VERIFY(!attrBlockNode->childs.empty(), error(attrBlockNode, Msg0356));
     auto back = attrBlockNode->childs.back();
     back->allocateExtension();
     SWAG_ASSERT(!back->extension->semanticAfterFct);

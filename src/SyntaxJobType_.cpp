@@ -13,7 +13,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
         *result = node;
     SWAG_CHECK(tokenizer.getToken(token));
 
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format(Msg0333, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0333, token.text.c_str())));
     node->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(node));
 
@@ -182,11 +182,11 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
 bool SyntaxJob::doRelativePointer(AstNode* parent, AstNode** identifier, uint8_t* value)
 {
     SWAG_CHECK(eatToken(TokenId::SymTilde));
-    SWAG_VERIFY(token.id == TokenId::LiteralNumber || token.id == TokenId::Identifier, syntaxError(token, Msg0335));
+    SWAG_VERIFY(token.id == TokenId::LiteralNumber || token.id == TokenId::Identifier, error(token, Msg0335));
     if (token.id == TokenId::LiteralNumber)
     {
-        SWAG_VERIFY(token.literalType == LiteralType::TT_UNTYPED_INT, syntaxError(token, Msg0336));
-        SWAG_VERIFY(token.literalValue.u64 <= 8, syntaxError(token, Msg0337));
+        SWAG_VERIFY(token.literalType == LiteralType::TT_UNTYPED_INT, error(token, Msg0336));
+        SWAG_VERIFY(token.literalValue.u64 <= 8, error(token, Msg0337));
         *value = token.literalValue.u8;
         SWAG_CHECK(eatToken());
     }
@@ -305,7 +305,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             }
 
             if (node->arrayDim == 254)
-                return syntaxError(token, Msg0338);
+                return error(token, Msg0338);
             node->arrayDim++;
             SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
             if (token.id != TokenId::SymComma)
@@ -325,7 +325,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     {
         isPtrConst = true;
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_VERIFY(token.id == TokenId::SymAsterisk, syntaxError(token, Msg0339));
+        SWAG_VERIFY(token.id == TokenId::SymAsterisk, error(token, Msg0339));
     }
 
     // Pointers
@@ -334,7 +334,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         while (token.id == TokenId::SymAsterisk)
         {
             if (node->ptrCount == AstTypeExpression::MAX_PTR_COUNT)
-                return syntaxError(token, format(Msg0340, AstTypeExpression::MAX_PTR_COUNT));
+                return error(token, format(Msg0340, AstTypeExpression::MAX_PTR_COUNT));
             node->ptrFlags[node->ptrCount] = isPtrConst ? AstTypeExpression::PTR_CONST : 0;
             SWAG_CHECK(tokenizer.getToken(token));
             isPtrConst = false;
@@ -346,7 +346,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (token.id == TokenId::KwdConst)
             {
                 SWAG_CHECK(tokenizer.getToken(token));
-                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, syntaxError(token, Msg0341));
+                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, error(token, Msg0341));
 
                 // Pointer to a const reference
                 if (token.id == TokenId::SymAmpersand)
@@ -367,7 +367,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     {
         node->typeFlags |= TYPEFLAG_ISREF;
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_VERIFY(!node->ptrCount, syntaxError(token, Msg0342));
+        SWAG_VERIFY(!node->ptrCount, error(token, Msg0342));
     }
 
     // This is a @typeof
@@ -411,7 +411,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         return true;
     }
 
-    return syntaxError(token, format(Msg0343, token.text.c_str()));
+    return error(token, format(Msg0343, token.text.c_str()));
 }
 
 bool SyntaxJob::doCast(AstNode* parent, AstNode** result)

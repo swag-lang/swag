@@ -19,7 +19,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     enumNode->semanticFct = SemanticJob::resolveEnum;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format(Msg0396, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0396, token.text.c_str())));
     enumNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(enumNode));
 
@@ -66,7 +66,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         SWAG_CHECK(doTypeExpression(typeNode));
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, syntaxError(token, format(Msg0399, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, error(token, format(Msg0399, token.text.c_str())));
 
     // Content of enum
     Scoped         scoped(this, newScope);
@@ -128,7 +128,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, Msg0400));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Msg0400));
     auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
     if (result)
         *result = enumValue;

@@ -76,7 +76,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-    SWAG_VERIFY(token.id != TokenId::SymLeftSquare, syntaxError(token, Msg0260));
+    SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, Msg0260));
 
     return true;
 }
@@ -338,7 +338,7 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
     if (Tokenizer::isSymbol(token.id) && token.id != TokenId::SymBackTick)
     {
         PushErrHint errh(Msg0261);
-        return syntaxError(arrayNode, format(Msg0262, token.text.c_str()));
+        return error(arrayNode, format(Msg0262, token.text.c_str()));
     }
 
     {
@@ -659,7 +659,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode
     AstNode* leftNode;
     SWAG_CHECK(doFactorExpression(nullptr, exprFlags, &leftNode));
     SWAG_CHECK(doOperatorPrecedence(&leftNode));
-    SWAG_VERIFY(token.id != TokenId::SymEqual, syntaxError(token, Msg0267));
+    SWAG_VERIFY(token.id != TokenId::SymEqual, error(token, Msg0267));
     Ast::addChildBack(parent, leftNode);
     if (result)
         *result = leftNode;
@@ -830,7 +830,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.id == TokenId::SymRightCurly)
-        return syntaxError(token, format(Msg0268));
+        return error(token, format(Msg0268));
     if (result)
         *result = initNode;
 
@@ -848,7 +848,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
             // Name
             if (token.id == TokenId::SymColon)
             {
-                SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, syntaxError(paramExpression, Msg0269));
+                SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, error(paramExpression, Msg0269));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->childs.back()));
                 auto name            = paramExpression->childs.back()->token.text;
@@ -885,7 +885,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.id == TokenId::SymRightSquare)
-        return syntaxError(token, format(Msg0270));
+        return error(token, format(Msg0270));
     if (result)
         *result = initNode;
 
@@ -969,7 +969,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result, uint32_t identifierFlags)
         SWAG_CHECK(eatToken());
         while (true)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, syntaxError(token, Msg0271));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, error(token, Msg0271));
             SWAG_CHECK(doIdentifierRef(multi, nullptr, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
             if (token.id != TokenId::SymComma)
                 break;
@@ -1072,7 +1072,7 @@ bool SyntaxJob::checkIsValidUserName(AstNode* node)
     if (!sourceFile->generated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
     {
         if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
-            return syntaxError(node->token, format(Msg0272, node->token.text.c_str()));
+            return error(node->token, format(Msg0272, node->token.text.c_str()));
     }
 
     return true;
@@ -1087,9 +1087,9 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     {
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return syntaxError(identifier->genericParameters, format(Msg0273, identifier->token.text.c_str()));
+            return error(identifier->genericParameters, format(Msg0273, identifier->token.text.c_str()));
         if (identifier->callParameters)
-            return syntaxError(identifier->callParameters, format(Msg0274, identifier->token.text.c_str()));
+            return error(identifier->callParameters, format(Msg0274, identifier->token.text.c_str()));
     }
 
     if (node->token.text[0] != '@')
@@ -1101,14 +1101,14 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
         if (node->token.text.find("@alias") == 0)
         {
             if (node->token.text == "@alias")
-                return syntaxError(node->token, Msg0275);
+                return error(node->token, Msg0275);
 
             const char* pz  = node->token.text.c_str() + 6;
             int         num = 0;
             while (*pz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return syntaxError(node->token, format(Msg0276, node->token.text.c_str(), node->token.text.c_str() + 6));
+                    return error(node->token, format(Msg0276, node->token.text.c_str(), node->token.text.c_str() + 6));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
@@ -1123,7 +1123,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
         }
     }
 
-    return syntaxError(node->token, format(Msg0278, node->token.text.c_str()));
+    return error(node->token, format(Msg0278, node->token.text.c_str()));
 }
 
 bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result)
@@ -1506,7 +1506,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             *result = leftNode;
     }
 
-    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, Msg0283));
+    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Msg0283));
 
     if (token.id != TokenId::SymLeftCurly)
         SWAG_CHECK(eatSemiCol("left expression"));

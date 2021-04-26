@@ -14,7 +14,7 @@ bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
     {
         Utf8 err = "expected a single identifier ";
         err += msg;
-        return syntaxError(node, err);
+        return error(node, err);
     }
 
     return true;
@@ -29,17 +29,17 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         SWAG_CHECK(tokenizer.getToken(token));
         backTick = true;
         if (token.id == TokenId::SymQuestion)
-            return syntaxError(token, format(Msg0835, token.text.c_str()));
+            return error(token, format(Msg0835, token.text.c_str()));
     }
 
     if (token.id == TokenId::SymQuestion)
     {
         if (!(identifierFlags & IDENTIFIER_ACCEPT_QUESTION))
-            return syntaxError(token, format(Msg0836, token.text.c_str()));
+            return error(token, format(Msg0836, token.text.c_str()));
     }
     else if (Tokenizer::isSymbol(token.id))
     {
-        return syntaxError(token, format(Msg0837, token.text.c_str()));
+        return error(token, format(Msg0837, token.text.c_str()));
     }
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
@@ -176,7 +176,7 @@ bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCatch(parent, result));
         break;
     default:
-        return syntaxError(token, format(Msg0841, token.text.c_str()));
+        return error(token, format(Msg0841, token.text.c_str()));
     }
 
     return true;
