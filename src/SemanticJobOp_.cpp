@@ -83,7 +83,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         auto firstType = node->parameters->childs.front()->typeInfo;
         SWAG_VERIFY(firstType->kind == TypeInfoKind::Pointer, context->report({node->parameters->childs.front(), format(Msg0069, name.c_str(), typeStruct->getDisplayName().c_str(), firstType->getDisplayName().c_str())}));
         auto firstTypePtr = CastTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
-        SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, ISSAME_CAST), context->report({node->parameters->childs.front(), format(Msg0070, name.c_str(), typeStruct->getDisplayName().c_str(), firstType->getDisplayName().c_str())}));
+        SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, ISSAME_CAST), context->report({node->parameters->childs.front(), format(Msg0069, name.c_str(), typeStruct->getDisplayName().c_str(), firstType->getDisplayName().c_str())}));
     }
 
     // Generic operator must have one generic parameter of type string

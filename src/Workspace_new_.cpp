@@ -29,25 +29,25 @@ void Workspace::newCommand()
 
     if (!fs::create_directories(examplesPath, errorCode))
     {
-        g_Log.error(format(Msg0819, examplesPath.string().c_str()));
+        g_Log.error(format(Msg0818, examplesPath.string().c_str()));
         exit(-1);
     }
 
     if (!fs::create_directories(testsPath, errorCode))
     {
-        g_Log.error(format(Msg0820, testsPath.string().c_str()));
+        g_Log.error(format(Msg0818, testsPath.string().c_str()));
         exit(-1);
     }
 
     if (!fs::create_directories(modulesPath, errorCode))
     {
-        g_Log.error(format(Msg0821, modulesPath.string().c_str()));
+        g_Log.error(format(Msg0818, modulesPath.string().c_str()));
         exit(-1);
     }
 
     if (!fs::create_directories(dependenciesPath, errorCode))
     {
-        g_Log.error(format(Msg0822, dependenciesPath.string().c_str()));
+        g_Log.error(format(Msg0818, dependenciesPath.string().c_str()));
         exit(-1);
     }
 
@@ -56,7 +56,7 @@ void Workspace::newCommand()
     modulePath.append(workspacePath.filename());
     if (!fs::create_directories(modulePath, errorCode))
     {
-        g_Log.error(format(Msg0823, modulePath.string().c_str()));
+        g_Log.error(format(Msg0818, modulePath.string().c_str()));
         exit(-1);
     }
 
@@ -88,7 +88,7 @@ void Workspace::newCommand()
     modulePath.append(SWAG_SRC_FOLDER);
     if (!fs::create_directories(modulePath, errorCode))
     {
-        g_Log.error(format(Msg0825, modulePath.string().c_str()));
+        g_Log.error(format(Msg0818, modulePath.string().c_str()));
         exit(-1);
     }
 
@@ -96,7 +96,7 @@ void Workspace::newCommand()
     ofstream file(modulePath);
     if (!file.is_open())
     {
-        g_Log.error(format(Msg0826, modulePath.string().c_str()));
+        g_Log.error(format(Msg0824, modulePath.string().c_str()));
         exit(-1);
     }
 

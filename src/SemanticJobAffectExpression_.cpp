@@ -16,7 +16,7 @@ bool SemanticJob::resolveMove(SemanticContext* context)
 
     if (node->flags & AST_FORCE_MOVE)
     {
-        SWAG_VERIFY(!right->typeInfo->isConst(), context->report({right, Msg0559                                            }));
+        SWAG_VERIFY(!right->typeInfo->isConst(), context->report({right, Msg0559}));
     }
 
     return true;
@@ -35,16 +35,16 @@ bool SemanticJob::checkRelativePointerOverflow(SemanticContext* context, TypeInf
     switch (typeInfo->sizeOf)
     {
     case 1:
-        SWAG_VERIFY(value.reg.s64 >= INT8_MIN && value.reg.s64 <= INT8_MAX, context->report({right, format(Msg0560                                          , right->computedValue.reg.s64)}));
+        SWAG_VERIFY(value.reg.s64 >= INT8_MIN && value.reg.s64 <= INT8_MAX, context->report({right, format(Msg0560, right->computedValue.reg.s64)}));
         break;
     case 2:
-        SWAG_VERIFY(value.reg.s64 >= INT16_MIN && value.reg.s64 <= INT16_MAX, context->report({right, format(Msg0561                                          , right->computedValue.reg.s64)}));
+        SWAG_VERIFY(value.reg.s64 >= INT16_MIN && value.reg.s64 <= INT16_MAX, context->report({right, format(Msg0561, right->computedValue.reg.s64)}));
         break;
     case 4:
-        SWAG_VERIFY(value.reg.s64 >= INT32_MIN && value.reg.s64 <= INT32_MAX, context->report({right, format(Msg0562                                          , right->computedValue.reg.s64)}));
+        SWAG_VERIFY(value.reg.s64 >= INT32_MIN && value.reg.s64 <= INT32_MAX, context->report({right, format(Msg0562, right->computedValue.reg.s64)}));
         break;
     case 8:
-        SWAG_VERIFY(value.reg.s64 >= INT64_MIN && value.reg.s64 <= INT64_MAX, context->report({right, format(Msg0563                                          , right->computedValue.reg.s64)}));
+        SWAG_VERIFY(value.reg.s64 >= INT64_MIN && value.reg.s64 <= INT64_MAX, context->report({right, format(Msg0563, right->computedValue.reg.s64)}));
         break;
     }
 
@@ -66,13 +66,13 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     if (!(left->flags & AST_L_VALUE))
     {
         if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
-            return context->report({left, Msg0564                                                 });
-        return context->report({left, Msg0565                                                          });
+            return context->report({left, Msg0564});
+        return context->report({left, Msg0565});
     }
 
-    SWAG_VERIFY(left->resolvedSymbolName, context->report({left, Msg0566                       }));
-    SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report({left, Msg0567                                                          }));
-    SWAG_VERIFY(!(left->flags & AST_IS_CONST), context->report({left, Msg0568                                                     }));
+    SWAG_VERIFY(left->resolvedSymbolName, context->report({left, Msg0566}));
+    SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report({left, Msg0567}));
+    SWAG_VERIFY(!(left->flags & AST_IS_CONST), context->report({left, Msg0568}));
 
     // Special case for enum : nothing is possible, except for flags
     bool forEnumFlags  = false;
@@ -99,12 +99,12 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
 
-    SWAG_VERIFY(!rightTypeInfo->isNative(NativeTypeKind::Void), context->report({right, Msg0569                                     }));
+    SWAG_VERIFY(!rightTypeInfo->isNative(NativeTypeKind::Void), context->report({right, Msg0569}));
 
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isNative(NativeTypeKind::Any) && node->token.id != TokenId::SymEqual)
     {
-        return context->report({node, format(Msg0570                                   , node->token.text.c_str())});
+        return context->report({node, format(Msg0570, node->token.text.c_str())});
     }
 
     // Is this an array like affectation ?
@@ -163,7 +163,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->kind != TypeInfoKind::TypeSet &&
             leftTypeInfo->kind != TypeInfoKind::Array &&
             leftTypeInfo->kind != TypeInfoKind::Enum)
-            return context->report({left, format(Msg0571                        , TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
+            return context->report({left, format(Msg0571, TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
             rightTypeInfo->kind != TypeInfoKind::Pointer &&
             rightTypeInfo->kind != TypeInfoKind::Reference &&
@@ -176,7 +176,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Array &&
             rightTypeInfo->kind != TypeInfoKind::TypeListTuple &&
             rightTypeInfo->kind != TypeInfoKind::TypeListArray)
-            return context->report({right, format(Msg0572                         , rightTypeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
+            return context->report({right, format(Msg0572, rightTypeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
 
         if (forStruct)
         {
@@ -190,7 +190,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 }
                 else if (forTuple)
                 {
-                    return context->report({node, node->token, Msg0573                            });
+                    return context->report({node, node->token, Msg0573});
                 }
                 else
                 {
@@ -218,7 +218,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 else
                 {
                     if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-                        return context->report({node, Msg0574                                                                     });
+                        return context->report({node, Msg0574});
 
                     if (!hasUserOp(context, "opAffect", left))
                     {
@@ -239,7 +239,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymLowerLowerEqual:
     case TokenId::SymGreaterGreaterEqual:
         if (forTuple)
-            return context->report({node, node->token, Msg0575                            });
+            return context->report({node, node->token, Msg0575});
         else if (forStruct)
         {
             const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
@@ -287,7 +287,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymVerticalEqual:
     case TokenId::SymCircumflexEqual:
         if (forTuple)
-            return context->report({node, node->token, Msg0576                            });
+            return context->report({node, node->token, Msg0576});
         else if (forStruct)
         {
             const char* op = "&=";
@@ -315,7 +315,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymPlusEqual:
     case TokenId::SymMinusEqual:
         if (forTuple)
-            return context->report({node, node->token, Msg0577                            });
+            return context->report({node, node->token, Msg0577});
         else if (forStruct)
         {
             const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
@@ -329,9 +329,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         // Pointer arithmetic
         if (leftTypeInfo->kind == TypeInfoKind::Pointer)
         {
-            SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Msg0578                                       }));
+            SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Msg0578}));
             rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
-            SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format(Msg0579                                                , rightTypeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format(Msg0579, rightTypeInfo->getDisplayName().c_str())}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
             SWAG_CHECK(checkRelativePointerOverflow(context, leftTypeInfo, right));
             break;
@@ -348,7 +348,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     case TokenId::SymSlashEqual:
         if (forTuple)
-            return context->report({node, node->token, Msg0580                            });
+            return context->report({node, node->token, Msg0580});
         else if (forStruct)
         {
             if (arrayNode)
@@ -370,7 +370,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymPercentEqual:
     case TokenId::SymAsteriskEqual:
         if (forTuple)
-            return context->report({node, node->token, Msg0581                            });
+            return context->report({node, node->token, Msg0581});
         else if (forStruct)
         {
             const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";

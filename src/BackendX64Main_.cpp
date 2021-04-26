@@ -49,7 +49,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(format(Msg0057, Backend::GetOsName()));
+        module->error(format(Msg0056, Backend::GetOsName()));
         return false;
     }
 

@@ -344,7 +344,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
     if (!canOverload && checkSameName)
     {
         auto       firstOverload = &symbol->defaultOverload;
-        Utf8       msg           = format(Msg0887, symbol->name.c_str());
+        Utf8       msg           = format(Msg0886, symbol->name.c_str());
         Diagnostic diag{node, token, msg};
         Utf8       note = Msg0884;
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};

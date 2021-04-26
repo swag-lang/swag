@@ -35,11 +35,11 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     if (token.id == TokenId::SymQuestion)
     {
         if (!(identifierFlags & IDENTIFIER_ACCEPT_QUESTION))
-            return error(token, format(Msg0836, token.text.c_str()));
+            return error(token, format(Msg0835, token.text.c_str()));
     }
     else if (Tokenizer::isSymbol(token.id))
     {
-        return error(token, format(Msg0837, token.text.c_str()));
+        return error(token, format(Msg0835, token.text.c_str()));
     }
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);

@@ -121,7 +121,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
             else if (symbol->kind != SymbolKind::Namespace)
             {
                 auto       firstOverload = &symbol->defaultOverload;
-                Utf8       msg           = format(Msg0891, symbol->name.c_str());
+                Utf8       msg           = format(Msg0886, symbol->name.c_str());
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
                 Utf8       note = Msg0884;
                 Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
@@ -181,7 +181,7 @@ bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         SWAG_CHECK(doTopLevelInstruction(node));
 
-    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Msg0881));
+    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Msg0880));
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
@@ -208,7 +208,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Msg0882));
+    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Msg0880));
     node->token.endLocation = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;

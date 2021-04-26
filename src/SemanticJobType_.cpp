@@ -125,7 +125,7 @@ bool SemanticJob::getRelativeSize(SemanticContext* context, AstNode* identifier,
         }
     }
 
-    SWAG_VERIFY(value == 0 || value == 1 || value == 2 || value == 4 || value == 8, context->report({typeNode, Msg0016}));
+    SWAG_VERIFY(value == 0 || value == 1 || value == 2 || value == 4 || value == 8, context->report({typeNode, Msg0015}));
     return true;
 }
 
@@ -289,7 +289,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         auto ptrRef          = allocType<TypeInfoReference>();
         ptrRef->pointedType  = typeNode->typeInfo;
         ptrRef->originalType = nullptr;
-        SWAG_VERIFY(typeNode->typeFlags & TYPEFLAG_ISCONST, context->report({typeNode, Msg0020}));
+        SWAG_VERIFY(typeNode->typeFlags & TYPEFLAG_ISCONST, context->report({typeNode, Msg0019}));
         ptrRef->flags |= TYPEINFO_CONST;
         ptrRef->flags |= (typeNode->typeInfo->flags & TYPEINFO_GENERIC);
         ptrRef->computeName();

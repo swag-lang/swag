@@ -572,5 +572,5 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
         }
     }
 
-    return context->report({node, format(Msg0044, node->typeInfo->getDisplayName().c_str())});
+    return context->report({node, format(Msg0043, node->typeInfo->getDisplayName().c_str())});
 }

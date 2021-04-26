@@ -371,7 +371,7 @@ namespace OS
                                   &si,
                                   &pi))
             {
-                g_Log.error(format(Msg0047, cmdline.c_str(), getLastErrorAsString().c_str()));
+                g_Log.error(format(Msg0046, cmdline.c_str(), getLastErrorAsString().c_str()));
                 return;
             }
         }
@@ -670,7 +670,7 @@ namespace OS
         if (lRes != ERROR_SUCCESS)
         {
             RegCloseKey(hKey);
-            g_Log.error(Msg0050);
+            g_Log.error(Msg0049);
             exit(-1);
         }
 
@@ -742,7 +742,7 @@ namespace OS
             dwChangeHandle = FindFirstChangeNotificationA(p.path().string().c_str(), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE);
             if (dwChangeHandle == INVALID_HANDLE_VALUE)
             {
-                g_Log.error(Msg0053);
+                g_Log.error(Msg0052);
                 exit(-1);
             }
 
@@ -758,7 +758,7 @@ namespace OS
             dwChangeHandle = FindFirstChangeNotificationA(p.path().string().c_str(), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE);
             if (dwChangeHandle == INVALID_HANDLE_VALUE)
             {
-                g_Log.error(Msg0054);
+                g_Log.error(Msg0052);
                 exit(-1);
             }
 

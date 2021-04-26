@@ -128,7 +128,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
             break;
 
         default:
-            return context->report({context->node, format(Msg0002                                     , leftTypeInfo->getDisplayName().c_str())});
+            return context->report({context->node, format(Msg0001                                     , leftTypeInfo->getDisplayName().c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -188,7 +188,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->report({context->node, format(Msg0003                                     , leftTypeInfo->getDisplayName().c_str())});
+            return context->report({context->node, format(Msg0001                                     , leftTypeInfo->getDisplayName().c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -248,7 +248,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             break;
 
         default:
-            return context->report({context->node, format(Msg0004                                     , leftTypeInfo->getDisplayName().c_str())});
+            return context->report({context->node, format(Msg0001                                     , leftTypeInfo->getDisplayName().c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -312,14 +312,14 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
              rightTypeInfo->kind != TypeInfoKind::Pointer &&
              rightTypeInfo->kind != TypeInfoKind::Struct)
     {
-        return context->report({right, format(Msg0006                                , node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->getDisplayName().c_str())});
+        return context->report({right, format(Msg0005                                , node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->getDisplayName().c_str())});
     }
 
     // Cannot compare tuples
     if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
         return context->report({left, Msg0007                                           });
     if (rightTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({right, Msg0008                                           });
+        return context->report({right, Msg0007                                           });
 
     // Slice can only be compared to null
     if (leftTypeInfo->kind == TypeInfoKind::Slice && rightTypeInfo != g_TypeMgr.typeInfoNull)

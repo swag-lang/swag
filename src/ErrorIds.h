@@ -1,12 +1,12 @@
 #define Msg0000 "fatal error: invalid swag command '%s'"
 #define Msg0001 "compare operation not allowed on type '%s'"
-#define Msg0002 "compare operation not allowed on type '%s'"
-#define Msg0003 "compare operation not allowed on type '%s'"
-#define Msg0004 "compare operation not allowed on type '%s'"
+//
+//
+//
 #define Msg0005 "operation '%s' not allowed on %s '%s'"
-#define Msg0006 "operation '%s' not allowed on %s '%s'"
+//
 #define Msg0007 "comparison operations are invalid on tuple types"
-#define Msg0008 "comparison operations are invalid on tuple types"
+//
 #define Msg0009 "a slice can only be compared to 'null'"
 #define Msg0010 "an interface can only be compared to 'null'"
 #define Msg0011 "operation '%s' not allowed on %s '%s'"
@@ -14,11 +14,11 @@
 #define Msg0013 "%s '%s' cannot be referenced in that context because it's not an rvalue"
 #define Msg0014 "cannot evaluate relative size at compile time"
 #define Msg0015 "relative size value must be 0, 1, 2, 4 or 8"
-#define Msg0016 "relative size value must be 0, 1, 2, 4 or 8"
+//
 #define Msg0017 "symbol '%s' is not a type (it's %s)"
 #define Msg0018 "this is the definition of '%s'"
 #define Msg0019 "a reference must be declared as 'const'"
-#define Msg0020 "a reference must be declared as 'const'"
+//
 #define Msg0021 "array dimension cannot be evaluated at compile time"
 #define Msg0022 "array dimension is '%s' and should be integer"
 #define Msg0023 "array dimension is 0"
@@ -42,20 +42,20 @@
 #define Msg0041 "cannot instantiate generic function '%s', missing generic parameters"
 #define Msg0042 "cannot instantiate generic function '%s', missing contextual types replacements"
 #define Msg0043 "cannot instantiate variable because type '%s' is generic"
-#define Msg0044 "cannot instantiate variable because type '%s' is generic"
+//
 #define Msg0045 "cannot create '%s' process (::CreatePipe)"
 #define Msg0046 "cannot create process '%s': %s"
-#define Msg0047 "cannot create process '%s': %s"
+//
 #define Msg0048 "cannot set environment variable 'SWAG_FOLDER' to '%s'\n"
 #define Msg0049 "cannot access environment variable 'PATH'\n"
-#define Msg0050 "cannot access environment variable 'PATH'\n"
+//
 #define Msg0051 "cannot add '%s' to the 'PATH' environment variable\n"
 #define Msg0052 "fail to start watcher service !"
-#define Msg0053 "fail to start watcher service !"
-#define Msg0054 "fail to start watcher service !"
+//
+//
 #define Msg0055 "fail to update watcher service !"
 #define Msg0056 "x64 backend unsupported os '%s'"
-#define Msg0057 "x64 backend unsupported os '%s'"
+//
 #define Msg0058 "[compiler internal] %s"
 #define Msg0059 "[compiler internal] function '%s' does not release all registers; this is fine, but should be reported !"
 #define Msg0060 "[compiler internal] function '%s' releases too many registers !"
@@ -68,7 +68,7 @@
 #define Msg0067 "special function '%s' should be defined in a 'impl' scope"
 #define Msg0068 "missing parameters for special function '%s'"
 #define Msg0069 "invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)"
-#define Msg0070 "invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)"
+//
 #define Msg0071 "invalid number of generic parameters for special function '%s'"
 #define Msg0072 "invalid generic parameter for special function '%s' ('string' expected, '%s' provided)"
 #define Msg0073 "invalid number of generic parameters for special function '%s'"
@@ -108,15 +108,15 @@
 #define Msg0107 "cannot reference 'swag.compiler' function '%s' from runtime function '%s'"
 #define Msg0108 "cannot reference 'swag.test' function '%s' from '%s'"
 #define Msg0109 "unused return value of function '%s'"
-#define Msg0110 "this is the function"
+//
 #define Msg0111 "cannot discard a function call that returns nothing"
-#define Msg0112 "this is the function"
+//#define Msg0106 "this is the function"
 #define Msg0113 "none of the %d overloads could match"
 #define Msg0114 "cannot take the address of a function with call parameters"
 #define Msg0115 "ambiguous resolution of generic %s '%s'"
 #define Msg0116 "ambiguous resolution of symbol '%s'"
 #define Msg0117 "cannot use 'using' on two variables with the same type"
-#define Msg0118 Msg0884
+//
 #define Msg0119 "missing function call parameters"
 #define Msg0120 "field name '%s' cannot be found in tuple"
 #define Msg0121 "identifier '%s' cannot be found in %s '%s'"
@@ -126,13 +126,13 @@
 #define Msg0125 "identifier '%s' has call parameters, but is a variable of type '%s' and not a function"
 #define Msg0126 "this is '%s'"
 #define Msg0127 "identifier '%s' has call parameters, but is %s and not a function"
-#define Msg0128 "this is '%s'"
+//
 #define Msg0129 "variadic argument must be the last one"
 #define Msg0130 "invalid generic parameters, identifier '%s' is %s and not a function or a structure"
-#define Msg0131 "this is '%s'"
+//
 #define Msg0132 "invalid reference to private scope"
 #define Msg0133 "cannot resolve identifier '%s'"
-#define Msg0134 "cannot resolve identifier '%s'"
+//
 #define Msg0135 "backtick can only be used inside an inline/macro block"
 #define Msg0136 "back ticked identifier can only be used inside a 'swag.macro' function or an '#inline' block"
 #define Msg0137 "'%s' cannot be used inside a struct special function"
@@ -149,25 +149,25 @@
 #define Msg0148 "operator '*' not allowed on type '%s'"
 #define Msg0149 "operator '/' not allowed on type '%s'"
 #define Msg0150 "division by zero"
-#define Msg0151 "division by zero"
-#define Msg0152 "division by zero"
-#define Msg0153 "division by zero"
-#define Msg0154 "division by zero"
-#define Msg0155 "division by zero"
-#define Msg0156 "division by zero"
+//
+//
+//
+//
+//
+//
 #define Msg0157 "operator '%' not allowed on type '%s'"
-#define Msg0158 "division by zero"
-#define Msg0159 "division by zero"
-#define Msg0160 "division by zero"
-#define Msg0161 "division by zero"
-#define Msg0162 "division by zero"
+//
+//
+//
+//
+//
 #define Msg0163 "operator '|' not allowed on type '%s'"
 #define Msg0164 "operator '&' not allowed on type '%s'"
-#define Msg0165 "expression cannot be evaluated at compile time"
-#define Msg0166 "expression cannot be evaluated at compile time"
+//
+//
 #define Msg0167 "operator '^' not allowed on type '%s'"
 #define Msg0168 "invalid operation '%s' on a tuple type"
-#define Msg0169 "invalid operation '%s' on a tuple type"
+//
 #define Msg0170 "operator '<<' not allowed on type '%s'"
 #define Msg0171 "shift operand must be 'u32' and not '%s'"
 #define Msg0172 "operator '>>' not allowed on type '%s'"
@@ -230,10 +230,10 @@
 #define Msg0229 "[safety] bad slicing, lower bound is greater than upper bound"
 #define Msg0230 "[safety] bad slicing, upper bound is out of range"
 #define Msg0231 "copy semantic is forbidden for type '%s' because of 'swag.nocopy' attribute"
-#define Msg0232 "expression cannot be evaluated at compile time"
+//
 #define Msg0233 "'#selectif' expression is not 'bool' ('%s' provided)"
 #define Msg0234 "'#ast' expression is not 'string' ('%s' provided)"
-#define Msg0235 "expression cannot be evaluated at compile time"
+//
 #define Msg0236 "message expression is not a string"
 #define Msg0237 "message expression cannot be evaluated at compile time"
 #define Msg0238 "compiler assertion failed"
@@ -638,11 +638,11 @@
 #define Msg0637 "'continue' can only be used inside a breakable loop"
 #define Msg0638 "'continue' can only be used inside a breakable loop"
 #define Msg0639 "label name '%s' already defined in the hierarchy"
-#define Msg0640 Msg0884
-#define Msg0641 "expression cannot be evaluated at compile time"
-#define Msg0642 "expression cannot be evaluated at compile time"
-#define Msg0643 "expression cannot be evaluated at compile time"
-#define Msg0644 "expression cannot be evaluated at compile time"
+//
+//
+//
+//
+//
 #define Msg0645 "variable initialized twice, first with type arguments, and then with this assignment"
 #define Msg0646 "'%s' is %s and should be an interface"
 #define Msg0647 "this is the definition of '%s'"
@@ -738,7 +738,7 @@
 #define Msg0737 "compiler instruction '%s' is invalid as a default parameter value"
 #define Msg0738 "parameter '%d', missing default value"
 #define Msg0739 "#main directive already defined"
-#define Msg0740 Msg0884
+//
 #define Msg0741 "'@alias' names are not all contiguous in function '%s' (missing '@alias%u')"
 #define Msg0742 "a function with the 'swag.foreign' attribute cannot have a body"
 #define Msg0743 "a compiler special function cannot have the 'swag.inline' attribute"
@@ -797,34 +797,34 @@
 #define Msg0796 "'@dataof' cannot be used on a tuple type"
 #define Msg0797 "'@dataof' cannot be applied to expression of type '%s'"
 #define Msg0798 "expression cannot be evaluated at compile time"
-#define Msg0799 "expression cannot be evaluated at compile time"
+//
 #define Msg0800 "'@countof' cannot be used on a tuple type"
 #define Msg0801 "expression should be of type integer, but is '%s'"
 #define Msg0802 "constant value should be unsigned, but is '%d'"
-#define Msg0803 "constant value should be unsigned, but is '%d'"
-#define Msg0804 "constant value should be unsigned, but is '%d'"
+//
+//
 #define Msg0805 "constant value should be unsigned, but is '%I64d'"
 #define Msg0806 "'@spread' can only be called as a function parameter"
 #define Msg0807 "expression of type '%s' cannot be spreaded"
-#define Msg0808 "expression cannot be evaluated at compile time"
-#define Msg0809 "expression cannot be evaluated at compile time"
+//
+//
 #define Msg0810 "cannot evaluate type in that context because it's generic"
-#define Msg0811 "expression cannot be evaluated at compile time"
+//
 #define Msg0812 "size cannot be computed because expression is generic"
-#define Msg0813 "expression cannot be evaluated at compile time"
+//
 #define Msg0814 "alignement cannot be computed because expression is generic"
-#define Msg0815 "expression cannot be evaluated at compile time"
+//
 #define Msg0816 "fatal error: missing workspace folder '--workspace'"
 #define Msg0817 "fatal error: workspace folder '%s' already exists"
 #define Msg0818 "fatal error: cannot create directory '%s'"
-#define Msg0819 "fatal error: cannot create directory '%s'"
-#define Msg0820 "fatal error: cannot create directory '%s'"
-#define Msg0821 "fatal error: cannot create directory '%s'"
-#define Msg0822 "fatal error: cannot create directory '%s'"
-#define Msg0823 "fatal error: cannot create directory '%s'"
+//
+//
+//
+//
+//
 #define Msg0824 "fatal error: cannot create file '%s'"
-#define Msg0825 "fatal error: cannot create directory '%s'"
-#define Msg0826 "fatal error: cannot create file '%s'"
+//
+//
 #define Msg0827 "negate an unsigned type ('%s') is not allowed"
 #define Msg0828 "minus operation not allowed on type '%s'"
 #define Msg0829 "cannot negate number '%d' because '%u' is not in the range of 's8'"
@@ -834,8 +834,8 @@
 #define Msg0833 "bit inversion operation not allowed on type '%s'"
 #define Msg0834 "%s size overflow"
 #define Msg0835 "expected an identifier, found symbol '%s'"
-#define Msg0836 "expected an identifier, found symbol '%s'"
-#define Msg0837 "expected an identifier, found symbol '%s'"
+//
+//
 #define Msg0838 "type 'Self' cannot be used outside an 'impl', 'struct' or 'interface' block"
 #define Msg0839 "a struct initialization must be done with '{}' and not parenthesis (this is reserved for function calls)"
 #define Msg0840 "array size must be defined before the type name"
@@ -879,17 +879,17 @@
 #define Msg0878 "missing '#if' expression"
 #define Msg0879 "missing '#global if' expression"
 #define Msg0880 "no corresponding '}' has been found"
-#define Msg0881 "no corresponding '}' has been found"
-#define Msg0882 "no corresponding '}' has been found"
+//
+//
 #define Msg0883 "missing function parameters before '{'"
 #define Msg0884 "this is the other definition"
 #define Msg0885 "symbol '%s' already defined as %s in an accessible scope"
 #define Msg0886 "symbol '%s' already defined in an accessible scope"
-#define Msg0887 "symbol '%s' already defined in an accessible scope"
+//
 #define Msg0888 "symbol '%s' already defined with the same signature in an accessible scope"
 #define Msg0889 "symbol '%s' already defined as %s in an accessible scope"
 #define Msg0890 "symbol '%s' already defined as a name alias in an accessible scope"
-#define Msg0891 "symbol '%s' already defined in an accessible scope"
+//
 #define Msg0892 "placeholder identifier '%s' has not been solved"
 #define Msg0893 "identifier '%s' has not been solved (do you have a cycle ?)"
 #define Msg0894 "variable '%s' is used before being declared"

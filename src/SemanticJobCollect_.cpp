@@ -112,8 +112,8 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
     {
         if (assignment)
         {
-            SWAG_VERIFY(assignment->kind == AstNodeKind::ExpressionList, context->report({assignment, Msg0641                                         }));
-            SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, Msg0642                                         }));
+            SWAG_VERIFY(assignment->kind == AstNodeKind::ExpressionList, context->report({assignment, Msg0798}));
+            SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, Msg0798}));
 
             // Store value in constant segment
             uint32_t storageOffsetValue;
@@ -131,7 +131,7 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
 
     if (assignment && assignment->kind == AstNodeKind::FuncCallParams)
     {
-        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, Msg0643                                         }));
+        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, Msg0798}));
         auto offset = storageOffset;
         auto result = collectLiteralsToSegmentNoLock(context, storageOffset, offset, assignment, seg);
         SWAG_CHECK(result);
@@ -140,7 +140,7 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
 
     if (assignment && assignment->kind == AstNodeKind::ExpressionList)
     {
-        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, Msg0644                                         }));
+        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, Msg0798}));
         auto offset = storageOffset;
         auto result = collectLiteralsToSegmentNoLock(context, storageOffset, offset, assignment, seg);
         SWAG_CHECK(result);
@@ -307,7 +307,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
         {
             // Do not initialize variable with type arguments, then again with an initialization
             if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
-                return context->report({node->assignment, Msg0645                                                                               });
+                return context->report({node->assignment, Msg0645});
 
             // Copy from a constant
             SWAG_ASSERT(node->assignment->flags & AST_CONST_EXPR);
