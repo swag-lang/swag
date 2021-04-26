@@ -84,3 +84,15 @@ func readAllBytes(fullname: string)->Array'u8 throw
 
     return result
 }
+
+#[swag.discardable]
+func writeAllBytes(fullname: string, buffer: Array'u8)->uint throw
+{
+    var result: retval
+
+    stream := try openWrite(fullname)
+    debug.assert(stream.isOpen())
+    defer stream.close()
+
+    return try write(stream, buffer.buffer, buffer.count)
+}

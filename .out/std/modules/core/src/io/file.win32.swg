@@ -71,6 +71,12 @@ func openRead(fullname: string)->FileStream throw
     return try open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
 }
 
+// Creates a new file stream for writing
+func openWrite(fullname: string)->FileStream throw
+{
+    return try open(fullname, FileMode.Create, FileAccess.Write, FileShare.None)
+}
+
 // Read from the given file stream, and returns the number of bytes
 func read(stream: FileStream, buffer: *void, length: uint)->uint
 {
@@ -81,6 +87,17 @@ func read(stream: FileStream, buffer: *void, length: uint)->uint
     debug.assert(length <= swag.U32.Max)
     rlen := ReadFile(stream.handle, buffer, cast(u32) length, &dwRead, null)
     return cast(uint) dwRead
+}
+
+// Write to the given file stream, and returns the number of bytes
+func write(stream: FileStream, buffer: *void, length: uint)->uint throw
+{
+    debug.assert(stream.isOpen())
+    debug.assert(stream.canWrite)
+
+    var dwWrite: DWORD = 0
+    try WriteFile(stream.handle, buffer, cast(u32) length, &dwWrite, null)
+    return cast(uint) dwWrite
 }
 
 // Close the given file stream
