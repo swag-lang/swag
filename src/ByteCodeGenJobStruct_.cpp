@@ -926,7 +926,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     if (mustCopy)
     {
         if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
-            return context->report({context->node, format(Msg0231                                                                      , typeInfo->getDisplayName().c_str())});
+            return context->report({context->node, format(Msg0231, typeInfo->getDisplayName().c_str())});
 
         PushICFlags sf(context, BCI_POST_COPYMOVE);
         if (typeInfoStruct->opPostCopy || typeInfoStruct->opUserPostCopyFct)

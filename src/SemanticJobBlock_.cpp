@@ -155,7 +155,7 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report({fct, fct->token, format(Msg0605, fct->getNameForMessage().c_str())});
+                    return context->report({fct, fct->token, format(Msg0748, fct->getNameForMessage().c_str())});
                 return context->report({fct, fct->token, format(Msg0606, fct->getNameForMessage().c_str())});
             }
         }

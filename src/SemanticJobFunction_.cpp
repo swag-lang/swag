@@ -818,7 +818,7 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
 
     SWAG_VERIFY(fctDecl, context->report({node, node->token, Msg0769}));
-    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, node->token, Msg0770}));
+    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, node->token, Msg0769}));
 
     auto fct     = CastAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
@@ -1175,7 +1175,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                     for (auto& alias : id->aliasNames)
                     {
                         if (alias.text == r.second)
-                            return context->report({id, alias, format(Msg0779, alias.text.c_str())});
+                            return context->report({id, alias, format(Msg0780, alias.text.c_str())});
                     }
 
                     for (auto& alias : id->callParameters->aliasNames)
