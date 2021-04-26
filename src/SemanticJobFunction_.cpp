@@ -82,7 +82,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         if (param->ownerScope->kind == ScopeKind::Attribute)
         {
             SWAG_VERIFY(funcParam->typeInfo->kind == TypeInfoKind::Native || funcParam->typeInfo->kind == TypeInfoKind::Enum, context->report({nodeParam, format(Msg0731, funcParam->typeInfo->getDisplayName().c_str())}));
-            SWAG_VERIFY(funcParam->typeInfo->nativeType != NativeTypeKind::Any, context->report({nodeParam, format(Msg0732, funcParam->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(funcParam->typeInfo->nativeType != NativeTypeKind::Any, context->report({nodeParam, format(Msg0731, funcParam->typeInfo->getDisplayName().c_str())}));
         }
 
         parameters->inheritOrFlag(nodeParam->type, AST_IS_GENERIC);
@@ -98,11 +98,11 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         }
         else if (paramType->kind == TypeInfoKind::TypedVariadic)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Msg0735}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, Msg0733}));
 
             typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
             if (index != parameters->childs.size())
-                return context->report({nodeParam, Msg0736});
+                return context->report({nodeParam, Msg0734});
         }
 
         // A struct/interface is forced to be a const reference
@@ -408,7 +408,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
         SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, Msg0750}));
         paramType->computeScopedName();
-        SWAG_VERIFY(paramType->scopedName == "swag.CompilerMsgMask", context->report({parameters, Msg0751}));
+        SWAG_VERIFY(paramType->scopedName == "swag.CompilerMsgMask", context->report({parameters, Msg0750}));
         SWAG_CHECK(evaluateConstExpression(context, parameters));
         if (context->result != ContextResult::Done)
             return true;

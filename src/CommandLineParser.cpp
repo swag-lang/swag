@@ -245,7 +245,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         // Be sure the argument is valid for the swag command
         if (!isArgValidFor(swagCmd, arg))
         {
-            g_Log.error(format(Msg0721, command.c_str()));
+            g_Log.error(format(Msg0720, command.c_str()));
             result = false;
             continue;
         }
@@ -297,7 +297,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
 
             if (index == tokens.size())
             {
-                g_Log.error(format(Msg0723, it->first.c_str(), arg->param));
+                g_Log.error(format(Msg0722, it->first.c_str(), arg->param));
                 result = false;
                 continue;
             }
@@ -334,7 +334,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         {
             if (argument.empty())
             {
-                g_Log.error(format(Msg0726, it->first.c_str(), argument.c_str()));
+                g_Log.error(format(Msg0725, it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }

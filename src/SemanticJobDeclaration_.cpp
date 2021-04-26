@@ -45,7 +45,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     }
     else
     {
-        return context->report({node, format(Msg0693, typeInfoVar->name.c_str())});
+        return context->report({node, format(Msg0692, typeInfoVar->name.c_str())});
     }
 
     return true;

@@ -71,7 +71,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(format(Msg0035, Backend::GetOsName()));
+        module->error(format(Msg0034, Backend::GetOsName()));
         return false;
     }
 

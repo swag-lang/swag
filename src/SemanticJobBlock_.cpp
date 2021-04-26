@@ -303,7 +303,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     if (val64.find(value) != val64.end())
                     {
                         if (expr->flags & AST_VALUE_IS_TYPEINFO)
-                            return context->report({expr, format(Msg0612, expr->token.text.c_str())});
+                            return context->report({expr, format(Msg0611, expr->token.text.c_str())});
                         if (typeSwitch->flags & TYPEINFO_INTEGER)
                             return context->report({expr, format(Msg0613, expr->computedValue.reg.u64)});
                         return context->report({expr, format(Msg0614, expr->computedValue.reg.f64)});
@@ -357,7 +357,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                         if (val64.find(one->value.reg.u64) == val64.end())
                         {
                             Diagnostic diag{node, node->token, format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
-                            Diagnostic note{one->declNode, one->declNode->token, Msg0621, DiagnosticLevel::Note};
+                            Diagnostic note{one->declNode, one->declNode->token, Msg0619, DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
                     }
@@ -378,8 +378,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                         return true;
                     if (val64.find(offset) == val64.end())
                     {
-                        Diagnostic diag{node, node->token, format(Msg0622, typeSet->name.c_str(), one->namedParam.c_str())};
-                        Diagnostic note{one->declNode, one->declNode->token, Msg0623, DiagnosticLevel::Note};
+                        Diagnostic diag{node, node->token, format(Msg0620, typeSet->name.c_str(), one->namedParam.c_str())};
+                        Diagnostic note{one->declNode, one->declNode->token, Msg0619, DiagnosticLevel::Note};
                         return context->report(diag, &note);
                     }
                 }
@@ -750,7 +750,7 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
     }
 
     SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, Msg0637}));
-    SWAG_VERIFY(node->ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE, context->report({node, node->token, Msg0638}));
+    SWAG_VERIFY(node->ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE, context->report({node, node->token, Msg0637}));
     node->ownerBreakable->continueList.push_back(node);
 
     SWAG_CHECK(checkUnreachableCode(context));

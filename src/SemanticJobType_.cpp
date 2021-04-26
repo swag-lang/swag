@@ -405,7 +405,7 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
             if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
             {
                 Diagnostic diag(back, back->token, format(Msg0025, back->token.text.c_str()));
-                Diagnostic note(overload->node, overload->node->token, format(Msg0026, node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                Diagnostic note(overload->node, overload->node->token, format(Msg0018, node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
                 return context->report(diag, &note);
             }
 

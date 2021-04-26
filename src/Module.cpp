@@ -691,7 +691,7 @@ bool Module::error(const Utf8& msg)
 {
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
-    g_Log.print(Msg0290);
+    g_Log.print("error: ");
     g_Log.print(format("module %s: ", name.c_str()));
     g_Log.print(msg);
     g_Log.eol();

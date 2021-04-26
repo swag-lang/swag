@@ -234,10 +234,10 @@ bool SyntaxJob::doCatch(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
-    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format(Msg0849, node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format(Msg0850, node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format(Msg0851, node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format(Msg0852, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format(Msg0843, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format(Msg0844, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format(Msg0845, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format(Msg0846, node->token.text.c_str())));
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0853, node->token.text.c_str())));
     SWAG_CHECK(doIdentifierRef(node));
     return true;
@@ -252,10 +252,10 @@ bool SyntaxJob::doThrow(AstNode* parent, AstNode** result)
         *result = node;
     SWAG_CHECK(eatToken());
 
-    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format(Msg0855, node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format(Msg0856, node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format(Msg0857, node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format(Msg0858, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format(Msg0843, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format(Msg0844, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format(Msg0845, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format(Msg0846, node->token.text.c_str())));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
     return true;
 }

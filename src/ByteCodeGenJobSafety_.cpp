@@ -436,7 +436,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, u
 
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, re);
-    emitAssert(context, re, Msg0223);
+    emitAssert(context, re, Msg0222);
     freeRegisterRC(context, re);
 }
 
@@ -546,7 +546,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerEqU64(ByteCodeGenContext* context,
 
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, re);
-    emitAssert(context, re, Msg0227);
+    emitAssert(context, re, Msg0222);
     freeRegisterRC(context, re);
 }
 

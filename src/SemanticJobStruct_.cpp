@@ -65,7 +65,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     if (typeInfo->kind != TypeInfoKind::Interface)
     {
         Diagnostic diag{node->identifier, format(Msg0646, node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0647, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -74,7 +74,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     if (typeInfo->kind != TypeInfoKind::Struct)
     {
         Diagnostic diag{node->identifierFor, format(Msg0648, node->identifierFor->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, node->identifierFor->resolvedSymbolOverload->node->token, format(Msg0649, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, node->identifierFor->resolvedSymbolOverload->node->token, format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -177,7 +177,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         auto firstParamType = typeFunc->parameters[0]->typeInfo;
         SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->declNode, format(Msg0655, firstParamType->getDisplayName().c_str())}));
         auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, format(Msg0656, firstParamType->getDisplayName().c_str())}));
+        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, format(Msg0655, firstParamType->getDisplayName().c_str())}));
 
         // use resolvedUserOpSymbolOverload to store the match
         mapItToFunc[symbolName]           = child;
@@ -276,7 +276,7 @@ bool SemanticJob::CheckImplScopes(SemanticContext* context, AstImpl* node, Scope
     // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
     {
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0658, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         if ((scopeImpl->flags & SCOPE_PRIVATE) && !(scope->flags & SCOPE_PRIVATE))
         {
             Diagnostic diag{node->identifier, format(Msg0659, node->identifier->token.text.c_str())};
@@ -311,7 +311,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum && typeInfo->kind != TypeInfoKind::TypeSet)
     {
         Diagnostic diag{node->identifier, format(Msg0662, node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0663, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0018, node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 

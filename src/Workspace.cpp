@@ -390,7 +390,7 @@ Utf8 Workspace::getPublicPath(Module* module, bool forWrite)
         error_code errorCode;
         if (!fs::create_directories(cfgPublicPath.c_str(), errorCode))
         {
-            module->error(format(Msg0544, cfgPublicPath.c_str()));
+            module->error(format(Msg0543, cfgPublicPath.c_str()));
             return "";
         }
     }
@@ -435,7 +435,7 @@ void Workspace::setupTarget()
     cachePath.append(workspacePath.filename().string() + "-" + g_Workspace.getTargetFolder().c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        g_Log.error(format(Msg0548, cachePath.string().c_str()));
+        g_Log.error(format(Msg0547, cachePath.string().c_str()));
         exit(-1);
     }
 
@@ -636,7 +636,7 @@ bool Workspace::buildTarget()
         // Errors !!!
         if (bootstrapModule->numErrors)
         {
-            g_Log.error(Msg0553);
+            g_Log.error(Msg0552);
             return false;
         }
 
@@ -685,7 +685,7 @@ bool Workspace::buildTarget()
         // Errors !!!
         if (runtimeModule->numErrors)
         {
-            g_Log.error(Msg0555);
+            g_Log.error(Msg0554);
             return false;
         }
 

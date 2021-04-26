@@ -38,13 +38,13 @@ bool SemanticJob::checkRelativePointerOverflow(SemanticContext* context, TypeInf
         SWAG_VERIFY(value.reg.s64 >= INT8_MIN && value.reg.s64 <= INT8_MAX, context->report({right, format(Msg0560, right->computedValue.reg.s64)}));
         break;
     case 2:
-        SWAG_VERIFY(value.reg.s64 >= INT16_MIN && value.reg.s64 <= INT16_MAX, context->report({right, format(Msg0561, right->computedValue.reg.s64)}));
+        SWAG_VERIFY(value.reg.s64 >= INT16_MIN && value.reg.s64 <= INT16_MAX, context->report({right, format(Msg0560, right->computedValue.reg.s64)}));
         break;
     case 4:
-        SWAG_VERIFY(value.reg.s64 >= INT32_MIN && value.reg.s64 <= INT32_MAX, context->report({right, format(Msg0562, right->computedValue.reg.s64)}));
+        SWAG_VERIFY(value.reg.s64 >= INT32_MIN && value.reg.s64 <= INT32_MAX, context->report({right, format(Msg0560, right->computedValue.reg.s64)}));
         break;
     case 8:
-        SWAG_VERIFY(value.reg.s64 >= INT64_MIN && value.reg.s64 <= INT64_MAX, context->report({right, format(Msg0563, right->computedValue.reg.s64)}));
+        SWAG_VERIFY(value.reg.s64 >= INT64_MIN && value.reg.s64 <= INT64_MAX, context->report({right, format(Msg0560, right->computedValue.reg.s64)}));
         break;
     }
 
@@ -239,7 +239,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymLowerLowerEqual:
     case TokenId::SymGreaterGreaterEqual:
         if (forTuple)
-            return context->report({node, node->token, Msg0575});
+            return context->report({node, node->token, Msg0573});
         else if (forStruct)
         {
             const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
@@ -287,7 +287,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymVerticalEqual:
     case TokenId::SymCircumflexEqual:
         if (forTuple)
-            return context->report({node, node->token, Msg0576});
+            return context->report({node, node->token, Msg0573});
         else if (forStruct)
         {
             const char* op = "&=";
@@ -315,7 +315,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymPlusEqual:
     case TokenId::SymMinusEqual:
         if (forTuple)
-            return context->report({node, node->token, Msg0577});
+            return context->report({node, node->token, Msg0573});
         else if (forStruct)
         {
             const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
@@ -348,7 +348,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     case TokenId::SymSlashEqual:
         if (forTuple)
-            return context->report({node, node->token, Msg0580});
+            return context->report({node, node->token, Msg0573});
         else if (forStruct)
         {
             if (arrayNode)
@@ -370,7 +370,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymPercentEqual:
     case TokenId::SymAsteriskEqual:
         if (forTuple)
-            return context->report({node, node->token, Msg0581});
+            return context->report({node, node->token, Msg0573});
         else if (forStruct)
         {
             const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";

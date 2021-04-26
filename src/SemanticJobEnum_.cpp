@@ -135,7 +135,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         if (rawTypeInfo->kind == TypeInfoKind::Array)
         {
             SWAG_ASSERT(!(assignNode->flags & AST_VALUE_COMPUTED));
-            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0703}));
+            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0798}));
             auto module = context->sourceFile->module;
             SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
@@ -143,7 +143,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
         else if (rawTypeInfo->kind == TypeInfoKind::Slice)
         {
-            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0704}));
+            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0798}));
             auto module = context->sourceFile->module;
             SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
@@ -154,7 +154,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
         else
         {
-            SWAG_VERIFY(assignNode->flags & AST_VALUE_COMPUTED, context->report({assignNode, Msg0705}));
+            SWAG_VERIFY(assignNode->flags & AST_VALUE_COMPUTED, context->report({assignNode, Msg0798}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
             enumNode->computedValue = assignNode->computedValue;
         }
@@ -176,7 +176,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             break;
 
         case TypeInfoKind::Slice:
-            return context->report({valNode, valNode->token, format(Msg0707, valNode->token.text.c_str(), rawTypeInfo->getDisplayName().c_str())});
+            return context->report({valNode, valNode->token, format(Msg0706, valNode->token.text.c_str(), rawTypeInfo->getDisplayName().c_str())});
         }
     }
 
@@ -220,7 +220,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 if (isFlags && enumNode->computedValue.reg.u16)
                 {
                     auto n = enumNode->computedValue.reg.u16;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format(Msg0711, valNode->token.text.c_str())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format(Msg0709, valNode->token.text.c_str())}));
                     enumNode->computedValue.reg.u16 <<= 1;
                 }
                 else
@@ -232,7 +232,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 if (isFlags && enumNode->computedValue.reg.u32)
                 {
                     auto n = enumNode->computedValue.reg.u32;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format(Msg0713, valNode->token.text.c_str())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format(Msg0709, valNode->token.text.c_str())}));
                     enumNode->computedValue.reg.u32 <<= 1;
                 }
                 else
@@ -245,7 +245,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 if (isFlags && enumNode->computedValue.reg.u64)
                 {
                     auto n = enumNode->computedValue.reg.u64;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format(Msg0715, valNode->token.text.c_str())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format(Msg0709, valNode->token.text.c_str())}));
                     enumNode->computedValue.reg.u64 <<= 1;
                 }
                 else

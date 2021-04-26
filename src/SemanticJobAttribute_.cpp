@@ -405,7 +405,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         if (resolvedName->kind != SymbolKind::Attribute)
         {
             Diagnostic diag{identifier, format(Msg0598, resolvedName->name.c_str())};
-            Diagnostic note{resolved->node, resolved->node->token, format(Msg0599, resolvedName->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic note{resolved->node, resolved->node->token, format(Msg0018, resolvedName->name.c_str()), DiagnosticLevel::Note};
             context->report(diag, &note);
             return false;
         }
@@ -417,7 +417,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             if (!(typeInfo->attributeUsage & AttributeUsage::File))
             {
                 Diagnostic diag{identifier, format(Msg0600, resolvedName->name.c_str())};
-                Diagnostic note{resolved->node, resolved->node->token, format(Msg0601, resolvedName->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{resolved->node, resolved->node->token, format(Msg0018, resolvedName->name.c_str()), DiagnosticLevel::Note};
                 context->report(diag, &note);
                 return false;
             }
