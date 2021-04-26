@@ -8,6 +8,7 @@
 #include "AstNode.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::resolveEnum(SemanticContext* context)
 {
@@ -20,7 +21,7 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     // Be sure we have only one enum node
     if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
     {
-        Diagnostic  diag({node, node->token, "symbol already defined"});
+        Diagnostic  diag({node, node->token, Msg0696});
         Diagnostic* note = nullptr;
         for (auto p : node->resolvedSymbolName->nodes)
         {
@@ -79,7 +80,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
         auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (!(concreteType->flags & TYPEINFO_INTEGER) || !(concreteType->flags & TYPEINFO_UNSIGNED))
-            return context->report({typeNode->childs[0], format("invalid type '%s' for enum flags (should be unsigned integer)", rawTypeInfo->getDisplayName().c_str())});
+            return context->report({typeNode->childs[0], format(Msg0697, rawTypeInfo->getDisplayName().c_str())});
     }
 
     if (enumNode->attributeFlags & ATTRIBUTE_ENUM_INDEX)
@@ -87,7 +88,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         typeInfo->flags |= TYPEINFO_ENUM_INDEX;
         auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (!(concreteType->flags & TYPEINFO_INTEGER))
-            return context->report({typeNode->childs[0], format("invalid type '%s' for enum index (should be integer)", rawTypeInfo->getDisplayName().c_str())});
+            return context->report({typeNode->childs[0], format(Msg0698, rawTypeInfo->getDisplayName().c_str())});
     }
 
     rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
@@ -98,12 +99,12 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     case TypeInfoKind::Array:
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
-        SWAG_VERIFY(typeArray->count != UINT32_MAX, context->report({typeNode, format("dimension of enum array type '%s' must be specified", rawTypeInfo->getDisplayName().c_str())}));
-        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format("enum array type '%s' must be const", rawTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(typeArray->count != UINT32_MAX, context->report({typeNode, format(Msg0699, rawTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format(Msg0700, rawTypeInfo->getDisplayName().c_str())}));
         return true;
     }
     case TypeInfoKind::Slice:
-        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format("enum slice type '%s' must be const", rawTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({typeNode, format(Msg0701, rawTypeInfo->getDisplayName().c_str())}));
         return true;
 
     case TypeInfoKind::Native:
@@ -112,7 +113,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         break;
     }
 
-    return context->report({typeNode, format("invalid enum type '%s'", rawTypeInfo->getDisplayName().c_str())});
+    return context->report({typeNode, format(Msg0702, rawTypeInfo->getDisplayName().c_str())});
 }
 
 bool SemanticJob::resolveEnumValue(SemanticContext* context)
@@ -134,7 +135,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         if (rawTypeInfo->kind == TypeInfoKind::Array)
         {
             SWAG_ASSERT(!(assignNode->flags & AST_VALUE_COMPUTED));
-            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, "expression cannot be evaluated at compile time"}));
+            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0703}));
             auto module = context->sourceFile->module;
             SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
@@ -142,7 +143,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
         else if (rawTypeInfo->kind == TypeInfoKind::Slice)
         {
-            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, "expression cannot be evaluated at compile time"}));
+            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, Msg0704}));
             auto module = context->sourceFile->module;
             SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &assignNode->computedValue, assignNode->typeInfo, assignNode));
             assignNode->setFlagsValueIsComputed();
@@ -153,7 +154,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
         else
         {
-            SWAG_VERIFY(assignNode->flags & AST_VALUE_COMPUTED, context->report({assignNode, "expression cannot be evaluated at compile time"}));
+            SWAG_VERIFY(assignNode->flags & AST_VALUE_COMPUTED, context->report({assignNode, Msg0705}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
             enumNode->computedValue = assignNode->computedValue;
         }
@@ -170,12 +171,12 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             case NativeTypeKind::String:
             case NativeTypeKind::F32:
             case NativeTypeKind::F64:
-                return context->report({valNode, valNode->token, format("enum value '%s' of type '%s' must be initialized", valNode->token.text.c_str(), rawTypeInfo->getDisplayName().c_str())});
+                return context->report({valNode, valNode->token, format(Msg0706, valNode->token.text.c_str(), rawTypeInfo->getDisplayName().c_str())});
             }
             break;
 
         case TypeInfoKind::Slice:
-            return context->report({valNode, valNode->token, format("enum value '%s' of type '%s' must be initialized", valNode->token.text.c_str(), rawTypeInfo->getDisplayName().c_str())});
+            return context->report({valNode, valNode->token, format(Msg0707, valNode->token.text.c_str(), rawTypeInfo->getDisplayName().c_str())});
         }
     }
 
@@ -203,11 +204,11 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             {
             case NativeTypeKind::U8:
                 if (enumNode->computedValue.reg.u8 == UINT8_MAX)
-                    return context->report({valNode, valNode->token, format("enum value '%s' is out of range of 'u8'", valNode->token.text.c_str())});
+                    return context->report({valNode, valNode->token, format(Msg0708, valNode->token.text.c_str())});
                 if (isFlags && enumNode->computedValue.reg.u8)
                 {
                     auto n = enumNode->computedValue.reg.u8;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format("cannot deduce flag value of '%s' because previous value is not power of two", valNode->token.text.c_str())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format(Msg0709, valNode->token.text.c_str())}));
                     enumNode->computedValue.reg.u8 <<= 1;
                 }
                 else
@@ -215,11 +216,11 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 break;
             case NativeTypeKind::U16:
                 if (enumNode->computedValue.reg.u16 == UINT16_MAX)
-                    return context->report({valNode, valNode->token, format("enum value '%s' is out of range of 'u16'", valNode->token.text.c_str())});
+                    return context->report({valNode, valNode->token, format(Msg0710, valNode->token.text.c_str())});
                 if (isFlags && enumNode->computedValue.reg.u16)
                 {
                     auto n = enumNode->computedValue.reg.u16;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format("cannot deduce flag value of '%s' because previous value is not power of two", valNode->token.text.c_str())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format(Msg0711, valNode->token.text.c_str())}));
                     enumNode->computedValue.reg.u16 <<= 1;
                 }
                 else
@@ -227,11 +228,11 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 break;
             case NativeTypeKind::U32:
                 if (enumNode->computedValue.reg.u32 == UINT32_MAX)
-                    return context->report({valNode, valNode->token, format("enum value '%s' is out of range of 'u32'", valNode->token.text.c_str())});
+                    return context->report({valNode, valNode->token, format(Msg0712, valNode->token.text.c_str())});
                 if (isFlags && enumNode->computedValue.reg.u32)
                 {
                     auto n = enumNode->computedValue.reg.u32;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format("cannot deduce flag value of '%s' because previous value is not power of two", valNode->token.text.c_str())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format(Msg0713, valNode->token.text.c_str())}));
                     enumNode->computedValue.reg.u32 <<= 1;
                 }
                 else
@@ -240,11 +241,11 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             case NativeTypeKind::U64:
             case NativeTypeKind::UInt:
                 if (enumNode->computedValue.reg.u64 == UINT64_MAX)
-                    return context->report({valNode, valNode->token, format("enum value '%s' is out of range of 'u64'", valNode->token.text.c_str())});
+                    return context->report({valNode, valNode->token, format(Msg0714, valNode->token.text.c_str())});
                 if (isFlags && enumNode->computedValue.reg.u64)
                 {
                     auto n = enumNode->computedValue.reg.u64;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format("cannot deduce flag value of '%s' because previous value is not power of two", valNode->token.text.c_str())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, valNode->token, format(Msg0715, valNode->token.text.c_str())}));
                     enumNode->computedValue.reg.u64 <<= 1;
                 }
                 else
@@ -253,23 +254,23 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
             case NativeTypeKind::S8:
                 if (enumNode->computedValue.reg.s8 <= INT8_MIN || enumNode->computedValue.reg.s8 >= INT8_MAX)
-                    return context->report({valNode, valNode->token, format("enum value '%s' is out of range of 's8'", valNode->token.text.c_str())});
+                    return context->report({valNode, valNode->token, format(Msg0716, valNode->token.text.c_str())});
                 enumNode->computedValue.reg.s8++;
                 break;
             case NativeTypeKind::S16:
                 if (enumNode->computedValue.reg.s16 <= INT16_MIN || enumNode->computedValue.reg.s16 >= INT16_MAX)
-                    return context->report({valNode, valNode->token, format("enum value '%s' is out of range of 's16'", valNode->token.text.c_str())});
+                    return context->report({valNode, valNode->token, format(Msg0717, valNode->token.text.c_str())});
                 enumNode->computedValue.reg.s16++;
                 break;
             case NativeTypeKind::S32:
                 if (enumNode->computedValue.reg.s32 <= INT32_MIN || enumNode->computedValue.reg.s32 >= INT32_MAX)
-                    return context->report({valNode, valNode->token, format("enum value '%s' is out of range of 's32'", valNode->token.text.c_str())});
+                    return context->report({valNode, valNode->token, format(Msg0718, valNode->token.text.c_str())});
                 enumNode->computedValue.reg.s32++;
                 break;
             case NativeTypeKind::S64:
             case NativeTypeKind::Int:
                 if (enumNode->computedValue.reg.s64 <= INT64_MIN || enumNode->computedValue.reg.s64 >= INT64_MAX)
-                    return context->report({valNode, valNode->token, format("enum value '%s' is out of range of 's64'", valNode->token.text.c_str())});
+                    return context->report({valNode, valNode->token, format(Msg0719, valNode->token.text.c_str())});
                 enumNode->computedValue.reg.s64++;
                 break;
             }

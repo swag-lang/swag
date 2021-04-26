@@ -40,7 +40,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, "missing '#if' expression"));
+    SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, Msg0878));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
     node->boolExpression->allocateExtension();
     node->boolExpression->extension->semanticAfterFct = SemanticJob::resolveCompilerIf;
@@ -91,11 +91,11 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
     // Replacement parameters
     if (token.id == TokenId::SymLeftCurly)
     {
-        SWAG_VERIFY(node->ownerBreakable, error(token, "'#mixin' replacement block can only be used inside a breakable statement"));
+        SWAG_VERIFY(node->ownerBreakable, error(token, Msg0364));
         SWAG_CHECK(eatToken());
         if (token.id != TokenId::KwdBreak && token.id != TokenId::KwdContinue)
-            return error(token, format("'#mixin' invalid replacement '%s'", token.text.c_str()));
-        SWAG_VERIFY(token.id != TokenId::SymRightCurly, syntaxError(token, "'#mixin' empty replacement block"));
+            return error(token, format(Msg0365, token.text.c_str()));
+        SWAG_VERIFY(token.id != TokenId::SymRightCurly, syntaxError(token, Msg0366));
 
         AstNode* stmt;
         while (token.id != TokenId::SymRightCurly)
@@ -321,9 +321,9 @@ bool SyntaxJob::doCompilerSemError(AstNode* parent, AstNode** result, bool embed
     node->token = move(token);
     SWAG_CHECK(eatToken());
 
-    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#semerror' is invalid outside a test module (in the './tests' folder of the workspace)"}));
+    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Msg0367}));
     SWAG_ASSERT(g_CommandLine.test);
-    SWAG_VERIFY(!currentCompilerIfBlock, sourceFile->report({sourceFile, token, "'#semerror' cannot be in a '#if' block"}));
+    SWAG_VERIFY(!currentCompilerIfBlock, sourceFile->report({sourceFile, token, Msg0368}));
 
     if (embedded)
         SWAG_CHECK(doEmbeddedInstruction(node));
@@ -352,7 +352,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(!afterGlobal, error(token, "'#global' must be defined first, at the top of the file"));
+    SWAG_VERIFY(!afterGlobal, error(token, Msg0369));
 
     SWAG_CHECK(tokenizer.getToken(token));
 
@@ -361,7 +361,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     {
         if (!sourceFile->imported)
         {
-            SWAG_VERIFY(!sourceFile->forceExport, error(token, "'#global export' already defined"));
+            SWAG_VERIFY(!sourceFile->forceExport, error(token, Msg0370));
             sourceFile->forceExport = true;
             sourceFile->module->addExportSourceFile(sourceFile);
         }
@@ -389,14 +389,14 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         node->semanticFct = SemanticJob::resolveCompilerForeignLib;
 
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, "'#global foreignlib' must be followed by a string"));
+        SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, Msg0371));
 
         AstNode* literal;
         SWAG_CHECK(doLiteral(node, &literal));
-        if (literal->token.literalType != LiteralType::TT_STRING && 
-            literal->token.literalType != LiteralType::TT_RAW_STRING && 
+        if (literal->token.literalType != LiteralType::TT_STRING &&
+            literal->token.literalType != LiteralType::TT_RAW_STRING &&
             literal->token.literalType != LiteralType::TT_ESCAPE_STRING)
-            return syntaxError(literal->token, "'#global foreignlib' must be followed by a string");
+            return syntaxError(literal->token, Msg0372);
         SWAG_CHECK(eatSemiCol("'#global foreignlib'"));
     }
 
@@ -409,7 +409,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         node->flags |= AST_GLOBAL_NODE;
 
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, "missing '#global if' expression"));
+        SWAG_CHECK(verifyError(node->token, token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, Msg0879));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         node->boolExpression->allocateExtension();
         node->boolExpression->extension->semanticAfterFct = SemanticJob::resolveCompilerIf;
@@ -472,7 +472,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
         else
         {
-            sourceFile->report({sourceFile, token, format("invalid pass name '%s'", token.text.c_str())});
+            sourceFile->report({sourceFile, token, format(Msg0373, token.text.c_str())});
             return false;
         }
 
@@ -494,7 +494,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             oldModule->addErrorModule(newModule);
         }
 
-        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#global testerror' is invalid outside a test module (in the './tests' folder of the workspace)"}));
+        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Msg0374}));
         SWAG_ASSERT(g_CommandLine.test);
 
         if (token.text == "testerrors")
@@ -525,7 +525,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             oldModule->addErrorModule(newModule);
         }
 
-        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, "'#global testwarning' is invalid outside a test module (in the './tests' folder of the workspace)"}));
+        SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, sourceFile->report({sourceFile, token, Msg0375}));
         SWAG_ASSERT(g_CommandLine.test);
 
         if (token.text == "testwarnings")
@@ -577,7 +577,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else
     {
-        return sourceFile->report({sourceFile, token, format("'#global' invalid token '%s'", token.text.c_str())});
+        return sourceFile->report({sourceFile, token, format(Msg0376, token.text.c_str())});
     }
 
     return true;
@@ -648,12 +648,12 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
-    SWAG_VERIFY(sourceFile->generated || sourceFile->module->kind == ModuleKind::Config, sourceFile->report({sourceFile, token, "'#import' can only be used in the module configuration file"}));
-    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "'#import' can only be declared at the top level scope"}));
+    SWAG_VERIFY(sourceFile->generated || sourceFile->module->kind == ModuleKind::Config, sourceFile->report({sourceFile, token, Msg0377}));
+    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, Msg0378}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerImport, sourceFile, parent);
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, "'#import' must be followed by a string"}));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, Msg0379}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
@@ -668,8 +668,8 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
-                SWAG_VERIFY(tokenLocation.text.empty(), error(token, "'#import' location defined twice"));
-                SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, format("invalid location '%s'", token.text.c_str())));
+                SWAG_VERIFY(tokenLocation.text.empty(), error(token, Msg0380));
+                SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, format(Msg0381, token.text.c_str())));
                 tokenLocation = token;
                 SWAG_CHECK(eatToken());
                 continue;
@@ -679,8 +679,8 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
             {
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
-                SWAG_VERIFY(tokenVersion.text.empty(), error(token, "'#import' version defined twice"));
-                SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, format("invalid version '%s'", token.text.c_str())));
+                SWAG_VERIFY(tokenVersion.text.empty(), error(token, Msg0382));
+                SWAG_VERIFY(token.id == TokenId::LiteralString, syntaxError(token, format(Msg0383, token.text.c_str())));
                 tokenVersion = token;
                 SWAG_CHECK(eatToken());
                 continue;
@@ -697,11 +697,11 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
 
 bool SyntaxJob::doCompilerPlaceHolder(AstNode* parent)
 {
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), sourceFile->report({sourceFile, token, "'#placeholder' can only be declared in a top level scope"}));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), sourceFile->report({sourceFile, token, Msg0384}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerPlaceHolder, sourceFile, parent);
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, "'#placeholder' must be followed by an identifier"}));
+    SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, Msg0385}));
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());

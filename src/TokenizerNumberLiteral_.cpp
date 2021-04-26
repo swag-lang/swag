@@ -3,6 +3,7 @@
 #include "LanguageSpec.h"
 #include "TypeManager.h"
 #include "SourceFile.h"
+#include "ErrorIds.h"
 
 bool Tokenizer::errorNumberSyntax(Token& token, const Utf8& msg)
 {
@@ -36,8 +37,8 @@ bool Tokenizer::doBinLiteral(Token& token)
         }
 
         acceptSep = true;
-        SWAG_VERIFY(!(token.literalValue.u64 & 0x80000000'00000000), error(token, "literal number is too big"));
-        SWAG_VERIFY(rank != 64, error(token, "too many digits in literal number"));
+        SWAG_VERIFY(!(token.literalValue.u64 & 0x80000000'00000000), error(token, Msg0458));
+        SWAG_VERIFY(rank != 64, error(token, Msg0459));
         token.literalValue.u64 <<= 1;
         rank++;
 
@@ -51,7 +52,7 @@ bool Tokenizer::doBinLiteral(Token& token)
     {
         token.startLocation = location;
         token.text          = c;
-        SWAG_CHECK(error(token, format("invalid binary digit '%s'", token.text.c_str())));
+        SWAG_CHECK(error(token, format(Msg0460, token.text.c_str())));
     }
 
     // Be sure we don't have 0x without nothing
@@ -95,8 +96,8 @@ bool Tokenizer::doHexLiteral(Token& token)
         }
 
         acceptSep = true;
-        SWAG_VERIFY(!(token.literalValue.u64 & 0xF0000000'00000000), error(token, "literal number is too big"));
-        SWAG_VERIFY(rank != 16, error(token, "too many digits in literal number"));
+        SWAG_VERIFY(!(token.literalValue.u64 & 0xF0000000'00000000), error(token, Msg0461));
+        SWAG_VERIFY(rank != 16, error(token, Msg0462));
         token.literalValue.u64 <<= 4;
         rank++;
 
@@ -115,7 +116,7 @@ bool Tokenizer::doHexLiteral(Token& token)
     {
         token.startLocation = location;
         token.text          = c;
-        SWAG_CHECK(error(token, format("invalid hexadecimal digit '%s'", token.text.c_str())));
+        SWAG_CHECK(error(token, format(Msg0463, token.text.c_str())));
     }
 
     // Be sure we don't have 0x without nothing
@@ -169,7 +170,7 @@ bool Tokenizer::doFloatLiteral(uint32_t c, Token& token)
         rank++;
 
         auto val = (c - '0');
-        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615 - val, error(token, "literal number is too big"));
+        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615 - val, error(token, Msg0464));
         token.literalValue.f64 += val * fractPart;
         fractPart *= 0.1;
 
@@ -217,7 +218,7 @@ bool Tokenizer::doIntLiteral(uint32_t c, Token& token)
         rank++;
 
         auto val = (c - '0');
-        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615 - val, error(token, "literal number is too big"));
+        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615 - val, error(token, Msg0465));
         token.literalValue.u64 += val;
 
         c = getCharNoSeek(offset);
@@ -305,7 +306,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
 
         tokenExponent.startLocation = location;
         SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenExponent, "a digit separator cannot start an exponent part"));
-        SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, "floating point number exponent must have at least one digit"));
+        SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, Msg0466));
         token.text += c;
         treatChar(c, offset);
         SWAG_CHECK(doIntLiteral(c, tokenExponent));
@@ -369,7 +370,7 @@ bool Tokenizer::doNumberLiteral(uint32_t c, Token& token)
             token.startLocation = location;
             treatChar(c, offset);
             token.text = c;
-            return error(token, format("invalid literal number prefix '%s'", token.text.c_str()));
+            return error(token, format(Msg0467, token.text.c_str()));
         }
     }
 

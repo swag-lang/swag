@@ -299,7 +299,7 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
 {
     if (!context->node->isSameStackFrame(overload))
-        return context->report({context->node, context->node->token, format("cannot reference variable '%s' because it's in another stack frame", overload->symbol->name.c_str())});
+        return context->report({context->node, context->node->token, format(Msg0206                                                             , overload->symbol->name.c_str())});
     return true;
 }
 

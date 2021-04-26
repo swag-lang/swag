@@ -3,6 +3,7 @@
 #include "CommandLineParser.h"
 #include "Version.h"
 #include "Os.h"
+#include "ErrorIds.h"
 
 void help(CommandLineParser& cmdParser)
 {
@@ -64,7 +65,7 @@ int main(int argc, const char* argv[])
         command != "version" &&
         command != "env")
     {
-        g_Log.error(format("fatal error: invalid swag command '%s'", argv[1]));
+        g_Log.error(format(Msg0000, argv[1]));
         exit(-1);
     }
 

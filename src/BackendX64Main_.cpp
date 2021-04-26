@@ -6,6 +6,7 @@
 #include "Context.h"
 #include "BackendX64Inst.h"
 #include "Workspace.h"
+#include "ErrorIds.h"
 
 bool BackendX64::emitOS(const BuildParameters& buildParameters)
 {
@@ -26,7 +27,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        module->error(format("x64 backend unsupported os '%s'", Backend::GetOsName()));
+        module->error(format(Msg0056, Backend::GetOsName()));
         return false;
     }
 }
@@ -48,7 +49,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(format("x64 backend unsupported os '%s'", Backend::GetOsName()));
+        module->error(format(Msg0057, Backend::GetOsName()));
         return false;
     }
 

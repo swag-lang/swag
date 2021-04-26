@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "Runtime.h"
 #include "TypeManager.h"
+#include "ErrorIds.h"
 
 static const uint32_t BUCKET_SIZE = 16 * 1024;
 
@@ -100,7 +101,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
         if (!overflow)
         {
             overflow = true;
-            module->error(format("%s size overflow", name));
+            module->error(format(Msg0834, name));
         }
     }
 

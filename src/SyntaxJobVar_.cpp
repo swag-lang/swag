@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "ErrorIds.h"
 
 bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
 {
@@ -22,8 +23,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
     {
         SWAG_CHECK(doLeftExpressionVar(&leftNode, IDENTIFIER_NO_PARAMS));
 
-        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid affect operator '==', did you mean '=' ?"));
-        SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, syntaxError(token, format("invalid token '%s' in variable declaration, ':' or '=' are expected here", token.text.c_str())));
+        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, Msg0454));
+        SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, syntaxError(token, format(Msg0455, token.text.c_str())));
 
         AstNode* type = nullptr;
         if (token.id == TokenId::SymColon)
@@ -33,7 +34,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         }
 
         AstNode* assign = nullptr;
-        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid affect operator '==', did you mean '=' ?"));
+        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, Msg0456));
         if (token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());
@@ -42,7 +43,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
 
         // Be sure we will be able to have a type
         if (!type && !assign)
-            return error(leftNode->token, "variable must have a type or must be initialized");
+            return error(leftNode->token, Msg0457);
 
         SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, kind, result));
 

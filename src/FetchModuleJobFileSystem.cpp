@@ -5,6 +5,7 @@
 #include "Workspace.h"
 #include "CopyFileJob.h"
 #include "ThreadManager.h"
+#include "ErrorIds.h"
 
 thread_local Pool<FetchModuleJobFileSystem> g_Pool_moduleFetchJobFileSystem;
 
@@ -50,7 +51,7 @@ JobResult FetchModuleJobFileSystem::execute()
             auto n = destPath + f;
             if (!fs::remove(n))
             {
-                module->error(format("cannot delete file '%s': %s", n.c_str(), OS::getLastErrorAsString().c_str()));
+                module->error(format(Msg0603, n.c_str(), OS::getLastErrorAsString().c_str()));
                 return JobResult::ReleaseJob;
             }
         }
@@ -65,7 +66,7 @@ JobResult FetchModuleJobFileSystem::execute()
         auto folder = destFileName.parent_path();
         if (!fs::exists(folder) && !fs::create_directories(folder))
         {
-            module->error(format("cannot create directory '%s': %s", folder.c_str(), OS::getLastErrorAsString().c_str()));
+            module->error(format(Msg0604, folder.c_str(), OS::getLastErrorAsString().c_str()));
             return JobResult::ReleaseJob;
         }
 

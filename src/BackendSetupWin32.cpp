@@ -5,6 +5,7 @@
 #include "Log.h"
 #include "Backend.h"
 #include "ComWin32.hpp"
+#include "ErrorIds.h"
 
 namespace OS
 {
@@ -82,7 +83,7 @@ namespace OS
             string winSdkVersion;
             if (!getWinSdkFolder(winSdkPath, winSdkVersion))
             {
-                g_Log.error("error: backend: cannot locate windows sdk folder");
+                g_Log.error(Msg0036);
                 exit(-1);
             }
 

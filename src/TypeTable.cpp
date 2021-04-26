@@ -7,6 +7,7 @@
 #include "TypeManager.h"
 #include "Module.h"
 #include "ByteCode.h"
+#include "ErrorIds.h"
 
 DataSegment* TypeTable::getSegmentStorage(Module* module, uint32_t flags)
 {
@@ -358,7 +359,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
         typeStruct = swagScope.regTypeInfoAlias;
         break;
     default:
-        context->report({node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->getDisplayName().c_str())});
+        context->report({node, format(Msg0537, typeInfo->getDisplayName().c_str())});
         return false;
     }
 

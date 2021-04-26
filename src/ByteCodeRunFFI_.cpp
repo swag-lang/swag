@@ -10,6 +10,7 @@
 #include "OS.h"
 #include "Module.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 
 void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, ByteCodeInstruction* ip)
 {
@@ -42,7 +43,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
         {
             if (g_CommandLine.devMode)
                 SWAG_ASSERT(false);
-            context->report({format("failed to load module '%s' while resolving foreign function '%s': %s", moduleName.text.c_str(), funcName.c_str(), OS::getLastErrorAsString().c_str())});
+            context->report({format(Msg0257, moduleName.text.c_str(), funcName.c_str(), OS::getLastErrorAsString().c_str())});
             return nullptr;
         }
     }
@@ -58,7 +59,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
     {
         if (g_CommandLine.devMode)
             SWAG_ASSERT(false);
-        context->report({format("cannot resolve foreign function call to '%s'", funcName.c_str())});
+        context->report({format(Msg0258, funcName.c_str())});
         return nullptr;
     }
 

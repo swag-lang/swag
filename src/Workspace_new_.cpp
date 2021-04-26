@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Workspace.h"
 #include "SemanticJob.h"
+#include "ErrorIds.h"
 
 void Workspace::newCommand()
 {
@@ -8,13 +9,13 @@ void Workspace::newCommand()
 
     if (workspacePath.empty())
     {
-        g_Log.error("fatal error: missing workspace folder '--workspace'");
+        g_Log.error(Msg0816);
         exit(-1);
     }
 
     if (fs::exists(workspacePath))
     {
-        g_Log.error(format("fatal error: workspace folder '%s' already exists", workspacePath.string().c_str()));
+        g_Log.error(format(Msg0817, workspacePath.string().c_str()));
         exit(-1);
     }
 
@@ -22,31 +23,31 @@ void Workspace::newCommand()
     error_code errorCode;
     if (!fs::create_directories(workspacePath, errorCode))
     {
-        g_Log.error(format("fatal error: cannot create directory '%s'", workspacePath.string().c_str()));
+        g_Log.error(format(Msg0818, workspacePath.string().c_str()));
         exit(-1);
     }
 
     if (!fs::create_directories(examplesPath, errorCode))
     {
-        g_Log.error(format("fatal error: cannot create directory '%s'", examplesPath.string().c_str()));
+        g_Log.error(format(Msg0819, examplesPath.string().c_str()));
         exit(-1);
     }
 
     if (!fs::create_directories(testsPath, errorCode))
     {
-        g_Log.error(format("fatal error: cannot create directory '%s'", testsPath.string().c_str()));
+        g_Log.error(format(Msg0820, testsPath.string().c_str()));
         exit(-1);
     }
 
     if (!fs::create_directories(modulesPath, errorCode))
     {
-        g_Log.error(format("fatal error: cannot create directory '%s'", modulesPath.string().c_str()));
+        g_Log.error(format(Msg0821, modulesPath.string().c_str()));
         exit(-1);
     }
 
     if (!fs::create_directories(dependenciesPath, errorCode))
     {
-        g_Log.error(format("fatal error: cannot create directory '%s'", dependenciesPath.string().c_str()));
+        g_Log.error(format(Msg0822, dependenciesPath.string().c_str()));
         exit(-1);
     }
 
@@ -55,7 +56,7 @@ void Workspace::newCommand()
     modulePath.append(workspacePath.filename());
     if (!fs::create_directories(modulePath, errorCode))
     {
-        g_Log.error(format("fatal error: cannot create directory '%s'", modulePath.string().c_str()));
+        g_Log.error(format(Msg0823, modulePath.string().c_str()));
         exit(-1);
     }
 
@@ -65,7 +66,7 @@ void Workspace::newCommand()
     ofstream fileCfg(cfgFileName);
     if (!fileCfg.is_open())
     {
-        g_Log.error(format("fatal error: cannot create file '%s'", cfgFileName.string().c_str()));
+        g_Log.error(format(Msg0824, cfgFileName.string().c_str()));
         exit(-1);
     }
 
@@ -87,7 +88,7 @@ void Workspace::newCommand()
     modulePath.append(SWAG_SRC_FOLDER);
     if (!fs::create_directories(modulePath, errorCode))
     {
-        g_Log.error(format("fatal error: cannot create directory '%s'", modulePath.string().c_str()));
+        g_Log.error(format(Msg0825, modulePath.string().c_str()));
         exit(-1);
     }
 
@@ -95,7 +96,7 @@ void Workspace::newCommand()
     ofstream file(modulePath);
     if (!file.is_open())
     {
-        g_Log.error(format("fatal error: cannot create file '%s'", modulePath.string().c_str()));
+        g_Log.error(format(Msg0826, modulePath.string().c_str()));
         exit(-1);
     }
 

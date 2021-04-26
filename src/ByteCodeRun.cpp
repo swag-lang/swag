@@ -435,7 +435,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicPow:
             ra.f32 = powf(rb.f32, rc.f32);
             if (isnan(ra.f32))
-                return context->report({ip->node, ip->node->token, format("'@power' on invalid values '%.3f' and '%.3f'", rb.f32, rc.f32)});
+                return context->report({ip->node, ip->node->token, format(Msg0417                                       , rb.f32, rc.f32)});
             break;
         case TokenId::IntrinsicMin:
             ra.f32 = min(rb.f32, rc.f32);
@@ -457,7 +457,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicPow:
             ra.f64 = pow(rb.f64, rc.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format("'@power' on invalid values '%.3f' and '%.3f'", rb.f64, rc.f64)});
+                return context->report({ip->node, ip->node->token, format(Msg0418                                       , rb.f64, rc.f64)});
             break;
         case TokenId::IntrinsicMin:
             ra.f64 = min(rb.f64, rc.f64);
@@ -478,7 +478,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicSqrt:
             if (rb.f32 < 0)
-                return context->report({ip->node, ip->node->token, format("'@sqrt' on an invalid value '%.3f'", rb.f32)});
+                return context->report({ip->node, ip->node->token, format(Msg0419                             , rb.f32)});
             ra.f32 = sqrtf(rb.f32);
             break;
         case TokenId::IntrinsicSin:
@@ -502,12 +502,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicASin:
             ra.f32 = asinf(rb.f32);
             if (isnan(ra.f32))
-                return context->report({ip->node, ip->node->token, format("'@asin' on an invalid value '%.3f'", rb.f32)});
+                return context->report({ip->node, ip->node->token, format(Msg0420                             , rb.f32)});
             break;
         case TokenId::IntrinsicACos:
             ra.f32 = acosf(rb.f32);
             if (isnan(ra.f32))
-                return context->report({ip->node, ip->node->token, format("'@acos' on an invalid value '%.3f'", rb.f32)});
+                return context->report({ip->node, ip->node->token, format(Msg0421                             , rb.f32)});
             break;
         case TokenId::IntrinsicATan:
             ra.f32 = atanf(rb.f32);
@@ -515,17 +515,17 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicLog:
             ra.f32 = log(rb.f32);
             if (isnan(ra.f32))
-                return context->report({ip->node, ip->node->token, format("'@log' on an invalid value '%.3f'", rb.f32)});
+                return context->report({ip->node, ip->node->token, format(Msg0422                            , rb.f32)});
             break;
         case TokenId::IntrinsicLog2:
             ra.f32 = log2(rb.f32);
             if (isnan(ra.f32))
-                return context->report({ip->node, ip->node->token, format("'@log2' on an invalid value '%.3f'", rb.f32)});
+                return context->report({ip->node, ip->node->token, format(Msg0423                             , rb.f32)});
             break;
         case TokenId::IntrinsicLog10:
             ra.f32 = log10(rb.f32);
             if (isnan(ra.f32))
-                return context->report({ip->node, ip->node->token, format("'@log10' on an invalid value '%.3f'", rb.f32)});
+                return context->report({ip->node, ip->node->token, format(Msg0424                              , rb.f32)});
             break;
         case TokenId::IntrinsicFloor:
             ra.f32 = floorf(rb.f32);
@@ -562,7 +562,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicSqrt:
             ra.f64 = sqrt(rb.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format("'@sqrt' on an invalid value '%.3f'", rb.f64)});
+                return context->report({ip->node, ip->node->token, format(Msg0425                             , rb.f64)});
             break;
         case TokenId::IntrinsicSin:
             ra.f64 = sin(rb.f64);
@@ -585,12 +585,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicASin:
             ra.f64 = asin(rb.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format("'@asin' on an invalid value '%.3f'", rb.f64)});
+                return context->report({ip->node, ip->node->token, format(Msg0426                             , rb.f64)});
             break;
         case TokenId::IntrinsicACos:
             ra.f64 = acos(rb.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format("'@acos' on an invalid value '%.3f'", rb.f64)});
+                return context->report({ip->node, ip->node->token, format(Msg0427                             , rb.f64)});
             break;
         case TokenId::IntrinsicATan:
             ra.f64 = atan(rb.f64);
@@ -598,17 +598,17 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicLog:
             ra.f64 = log(rb.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format("'@lob' on an invalid value '%.3f'", rb.f64)});
+                return context->report({ip->node, ip->node->token, format(Msg0428                            , rb.f64)});
             break;
         case TokenId::IntrinsicLog2:
             ra.f64 = log2(rb.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format("'@log2' on an invalid value '%.3f'", rb.f64)});
+                return context->report({ip->node, ip->node->token, format(Msg0429                             , rb.f64)});
             break;
         case TokenId::IntrinsicLog10:
             ra.f64 = log10(rb.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format("'@log10' on an invalid value '%.3f'", rb.f64)});
+                return context->report({ip->node, ip->node->token, format(Msg0430                              , rb.f64)});
             break;
         case TokenId::IntrinsicFloor:
             ra.f64 = floor(rb.f64);
@@ -1697,7 +1697,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                 else if (module->bssCannotChange)
                 {
                     SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                    context->error(format("variable '%s' is in the bss segment (content is zero) and cannot be changed at compile time. Initialize it with '?' if this is intended", over->node->token.text.c_str()));
+                    context->error(format(Msg0431                                                                                                                                  , over->node->token.text.c_str()));
                 }
             }
         }
@@ -3419,7 +3419,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     default:
         if (ip->op < ByteCodeOp::End)
-            context->error(format("unknown bytecode instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
+            context->error(format(Msg0432                            , g_ByteCodeOpNames[(int) ip->op]));
         break;
     }
 
@@ -3464,13 +3464,13 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 ByteCode::getLocation(context->bc, ip, &sourceFile, &location);
                 if (location || !ip->node)
                 {
-                    Diagnostic diag{sourceFile, *location, "bytecode execution, " + context->errorMsg};
+                    Diagnostic diag{sourceFile, *location, Msg0433                + context->errorMsg};
                     errorContext->sourceFile = sourceFile;
                     errorContext->report(diag);
                 }
                 else
                 {
-                    Diagnostic diag{ip->node, ip->node->token, "bytecode execution, " + context->errorMsg};
+                    Diagnostic diag{ip->node, ip->node->token, Msg0434                + context->errorMsg};
                     errorContext->sourceFile = ip->node->sourceFile;
                     errorContext->report(diag);
                 }
@@ -3553,9 +3553,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
     runContext->ip--;
     auto       ip = runContext->ip;
-    Diagnostic diag{ip->node, ip->node->token, "exception during compile time execution !"};
-    Diagnostic note1{"this is probably a bug in the compile time part of your program", DiagnosticLevel::Note};
-    Diagnostic note2{"you can run swag with --dbgcatch to attach the bytecode debugger when the error occurs", DiagnosticLevel::Note};
+    Diagnostic diag{ip->node, ip->node->token, Msg0435                                    };
+    Diagnostic note1{Msg0436                                                          , DiagnosticLevel::Note};
+    Diagnostic note2{Msg0437                                                                                 , DiagnosticLevel::Note};
     diag.exceptionError            = true;
     g_byteCodeStack.currentContext = runContext;
     runContext->bc->sourceFile->report(diag, &note1, &note2);

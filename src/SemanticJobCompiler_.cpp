@@ -18,7 +18,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     auto sourceFile = context->sourceFile;
     if (onlyconstExpr)
     {
-        SWAG_VERIFY(node->flags & AST_CONST_EXPR, context->report({node, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(node->flags & AST_CONST_EXPR, context->report({node, Msg0232                                         }));
     }
 
     // Request to generate the corresponding bytecode
@@ -72,7 +72,7 @@ bool SemanticJob::resolveCompilerSelectIfExpression(SemanticContext* context)
 
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::Bool), context->report({expression, format("'#selectif' expression is not 'bool' ('%s' provided)", expression->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::Bool), context->report({expression, format(Msg0233                                               , expression->typeInfo->getDisplayName().c_str())}));
 
     return true;
 }
@@ -86,13 +86,13 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     auto job        = context->job;
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, format("'#ast' expression is not 'string' ('%s' provided)", expression->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, format(Msg0234                                            , expression->typeInfo->getDisplayName().c_str())}));
 
     SWAG_CHECK(executeNode(context, expression, true));
     if (context->result != ContextResult::Done)
         return true;
 
-    SWAG_VERIFY(expression->flags & AST_VALUE_COMPUTED, context->report({expression, "expression cannot be evaluated at compile time"}));
+    SWAG_VERIFY(expression->flags & AST_VALUE_COMPUTED, context->report({expression, Msg0235                                         }));
 
     if (!expression->computedValue.text.empty())
     {
@@ -119,8 +119,8 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     if (node->childs.size() > 1)
     {
         auto msg = node->childs[1];
-        SWAG_VERIFY(msg->typeInfo->isNative(NativeTypeKind::String), context->report({msg, "message expression is not a string"}));
-        SWAG_VERIFY(msg->flags & AST_VALUE_COMPUTED, context->report({msg, "message expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(msg->typeInfo->isNative(NativeTypeKind::String), context->report({msg, Msg0236                             }));
+        SWAG_VERIFY(msg->flags & AST_VALUE_COMPUTED, context->report({msg, Msg0237                                                 }));
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
@@ -138,7 +138,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
             context->report({node, node->token, format("%s", msg->computedValue.text.c_str())});
         }
         else
-            context->report({node, node->token, "compiler assertion failed"});
+            context->report({node, node->token, Msg0238                    });
         return false;
     }
 
@@ -156,7 +156,7 @@ bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
 
     // Be sure #macro is used inside a macro
     if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
-        return context->report({node, node->token, "'#macro' can only be used inside a 'swag.macro' function"});
+        return context->report({node, node->token, Msg0239                                                   });
 
     return true;
 }
@@ -186,7 +186,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     node->doneFlags |= AST_DONE_COMPILER_INSERT;
 
     auto expr = node->childs[0];
-    SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, format("expression should be of type 'code' ('%s' provided)", expr->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, format(Msg0240                                              , expr->typeInfo->getDisplayName().c_str())}));
 
     node->allocateExtension();
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitDebugNop;
@@ -262,7 +262,7 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
 bool SemanticJob::resolveCompilerTestError(SemanticContext* context)
 {
     // Should never be reached
-    return context->report({context->node, context->node->token, "'#semerror' has not triggered an error"});
+    return context->report({context->node, context->node->token, Msg0241                                 });
 }
 
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
@@ -436,19 +436,19 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
     auto module = context->sourceFile->module;
     auto back   = node->childs[0];
 
-    SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, "filename cannot be evaluated at compile time"}));
-    SWAG_VERIFY(back->typeInfo == g_TypeMgr.typeInfoString, context->report({back, format("'#load' parameter should be of type string ('%s' provided)", back->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, Msg0242                                       }));
+    SWAG_VERIFY(back->typeInfo == g_TypeMgr.typeInfoString, context->report({back, format(Msg0243                                                     , back->typeInfo->getDisplayName().c_str())}));
 
     if (!(node->doneFlags & AST_DONE_LOAD))
     {
         node->doneFlags |= AST_DONE_LOAD;
 
         auto filename = back->computedValue.text.c_str();
-        SWAG_VERIFY(fs::exists(filename), context->report({back, format("cannot find file '%s'", back->computedValue.text.c_str())}));
+        SWAG_VERIFY(fs::exists(filename), context->report({back, format(Msg0244                , back->computedValue.text.c_str())}));
 
         struct stat stat_buf;
         int         rc = stat(filename, &stat_buf);
-        SWAG_VERIFY(rc == 0, context->report({back, format("cannot open file '%s'", back->computedValue.text.c_str())}));
+        SWAG_VERIFY(rc == 0, context->report({back, format(Msg0245                , back->computedValue.text.c_str())}));
         SWAG_CHECK(checkSizeOverflow(context, "'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
         auto newJob                    = g_Pool_loadFileJob.alloc();
@@ -494,8 +494,8 @@ bool SemanticJob::resolveCompilerScopeFct(SemanticContext* context)
     auto node          = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
     auto identifierRef = node->identifierRef;
 
-    SWAG_VERIFY(!identifierRef->startScope, context->report({node, "an identifier marked with '#scopefct' cannot be used in a scope"}));
-    SWAG_VERIFY(node->ownerFct, context->report({node, "an identifier marked with '#scopefct' can only be used inside a function"}));
+    SWAG_VERIFY(!identifierRef->startScope, context->report({node, Msg0246                                                          }));
+    SWAG_VERIFY(node->ownerFct, context->report({node, Msg0247                                                                   }));
 
     node->semFlags |= AST_SEM_FORCE_SCOPE;
     node->typeInfo = g_TypeMgr.typeInfoVoid;
@@ -543,8 +543,8 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, front));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, "'#hastag' name cannot be evaluated at compile time"}));
-        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, format("'#hastag' parameter must be a string ('%s' provided)", front->typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, Msg0248                                             }));
+        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, format(Msg0249                                               , front->typeInfo->getDisplayName().c_str())}));
         auto tag                  = g_Workspace.hasTag(front->computedValue.text);
         node->typeInfo            = g_TypeMgr.typeInfoBool;
         node->computedValue.reg.b = tag ? true : false;
@@ -559,16 +559,16 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, back));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, "'#tagval' name cannot be evaluated at compile time"}));
-        SWAG_VERIFY(back->typeInfo->isNative(NativeTypeKind::String), context->report({back, format("'#tagval' parameter must be a string ('%s' provided)", back->typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, Msg0250                                             }));
+        SWAG_VERIFY(back->typeInfo->isNative(NativeTypeKind::String), context->report({back, format(Msg0251                                               , back->typeInfo->getDisplayName().c_str())}));
         node->typeInfo = front->typeInfo;
         auto tag       = g_Workspace.hasTag(back->computedValue.text);
         if (tag)
         {
             if (!TypeManager::makeCompatibles(context, front->typeInfo, tag->type, nullptr, front, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                Diagnostic diag(front, front->token, format("type '%s' and type '%s' defined in the command line for '%s' are incompatible", front->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str()));
-                Diagnostic note(front, front->token, format("this is the related command line option: '%s'", tag->cmdLine.c_str()), DiagnosticLevel::Note);
+                Diagnostic diag(front, front->token, format(Msg0252                                                                        , front->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str()));
+                Diagnostic note(front, front->token, format(Msg0253                                        , tag->cmdLine.c_str()), DiagnosticLevel::Note);
                 note.hasFile     = false;
                 note.printSource = false;
                 return context->report(diag, &note);
@@ -599,18 +599,18 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     }
 
     case TokenId::CompilerCallerLocation:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerlocation' can only be set in a function parameter declaration"}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Msg0254                                                                }));
         node->typeInfo = g_Workspace.swagScope.regTypeInfoSourceLoc;
         return true;
 
     case TokenId::CompilerCallerFunction:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerfunction' can only be set in a function parameter declaration"}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Msg0255                                                                }));
         node->typeInfo = g_TypeMgr.typeInfoString;
         return true;
 
     case TokenId::CompilerFunction:
     {
-        SWAG_VERIFY(node->ownerFct, context->report({node, "'#function' can only be called inside a function"}));
+        SWAG_VERIFY(node->ownerFct, context->report({node, Msg0256                                           }));
         node->typeInfo = g_TypeMgr.typeInfoString;
         node->setFlagsValueIsComputed();
         node->computedValue.text = node->ownerFct->getNameForUserCompiler();

@@ -2,6 +2,7 @@
 #include "CommandLine.h"
 #include "CommandLineParser.h"
 #include "Log.h"
+#include "ErrorIds.h"
 
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
@@ -233,7 +234,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
             it = shortNameArgs.find(command);
             if (it == shortNameArgs.end())
             {
-                g_Log.error(format("command line error: invalid argument '%s'", command.c_str()));
+                g_Log.error(format(Msg0720, command.c_str()));
                 result = false;
                 continue;
             }
@@ -244,7 +245,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         // Be sure the argument is valid for the swag command
         if (!isArgValidFor(swagCmd, arg))
         {
-            g_Log.error(format("command line error: invalid argument '%s'", command.c_str()));
+            g_Log.error(format(Msg0721, command.c_str()));
             result = false;
             continue;
         }
@@ -270,7 +271,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
 
             if (index == tokens.size())
             {
-                g_Log.error(format("command line error: argument '%s' must be followed by '%s'", it->first.c_str(), arg->param));
+                g_Log.error(format(Msg0722, it->first.c_str(), arg->param));
                 result = false;
                 continue;
             }
@@ -296,7 +297,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
 
             if (index == tokens.size())
             {
-                g_Log.error(format("command line error: argument '%s' must be followed by '%s'", it->first.c_str(), arg->param));
+                g_Log.error(format(Msg0723, it->first.c_str(), arg->param));
                 result = false;
                 continue;
             }
@@ -310,7 +311,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
                 *(bool*) arg->buffer = false;
             else
             {
-                g_Log.error(format("command line error: argument '%s' must be followed by 'true' or 'false' ('%s')", it->first.c_str(), argument.c_str()));
+                g_Log.error(format(Msg0724, it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -320,7 +321,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         {
             if (argument.empty())
             {
-                g_Log.error(format("command line error: argument '%s' must be followed by a string", it->first.c_str(), argument.c_str()));
+                g_Log.error(format(Msg0725, it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -333,7 +334,7 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
         {
             if (argument.empty())
             {
-                g_Log.error(format("command line error: argument '%s' must be followed by a string", it->first.c_str(), argument.c_str()));
+                g_Log.error(format(Msg0726, it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -361,9 +362,9 @@ bool CommandLineParser::process(const string& swagCmd, int argc, const char* arg
             if (!thisIsAnInt)
             {
                 if (argument.empty())
-                    g_Log.error(format("command line error: argument '%s' must be followed by an integer value", it->first.c_str()));
+                    g_Log.error(format(Msg0727, it->first.c_str()));
                 else
-                    g_Log.error(format("command line error: argument '%s' must be followed by an integer value ('%s')", it->first.c_str(), argument.c_str()));
+                    g_Log.error(format(Msg0728, it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }

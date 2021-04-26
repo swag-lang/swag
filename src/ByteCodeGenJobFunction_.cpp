@@ -304,8 +304,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, "[safety] destination pointer of '@memcpy' is null");
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "[safety] source pointer of '@memcpy' is null");
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, Msg0526                                            );
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, Msg0527                                       );
         emitInstruction(context, ByteCodeOp::IntrinsicMemCpy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
@@ -317,8 +317,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, "[safety] destination pointer of '@memmove' is null");
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "[safety] source pointer of '@memmove' is null");
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, Msg0528                                             );
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, Msg0529                                        );
         emitInstruction(context, ByteCodeOp::IntrinsicMemMove, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
@@ -330,7 +330,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest  = callParams->childs[0];
         auto childValue = callParams->childs[1];
         auto childSize  = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, "[safety] destination pointer of '@memset' is null");
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, Msg0530                                            );
         emitInstruction(context, ByteCodeOp::IntrinsicMemSet, childDest->resultRegisterRC, childValue->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childValue);
@@ -342,8 +342,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
-        emitSafetyNullPointer(context, childDest->resultRegisterRC, "[safety] first pointer of '@memcmp' is null");
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "[safety] second pointer of '@memcmp' is null");
+        emitSafetyNullPointer(context, childDest->resultRegisterRC, Msg0531                                      );
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, Msg0532                                       );
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicMemCmp, node->resultRegisterRC, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
@@ -354,7 +354,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrinsicCStrLen:
     {
         auto childSrc = callParams->childs[0];
-        emitSafetyNullPointer(context, childSrc->resultRegisterRC, "[safety] pointer of '@cstrlen' is null");
+        emitSafetyNullPointer(context, childSrc->resultRegisterRC, Msg0533                                 );
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicCStrLen, node->resultRegisterRC, childSrc->resultRegisterRC);
         freeRegisterRC(context, childSrc);
@@ -970,7 +970,7 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
 {
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
     if (raiseErrors && !callNode->ownerTryCatchAssume)
-        return context->report({callNode, callNode->token, format("uncatched error when calling '%s'", funcNode->token.text.c_str())});
+        return context->report({callNode, callNode->token, format(Msg0534                            , funcNode->token.text.c_str())});
 
     if (!raiseErrors)
     {
@@ -978,7 +978,7 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
             parent->kind == AstNodeKind::Catch ||
             parent->kind == AstNodeKind::Assume)
         {
-            return context->report({parent, format("'%s' can only be used before a call that can raise errors", parent->token.text.c_str())});
+            return context->report({parent, format(Msg0535                                                    , parent->token.text.c_str())});
         }
     }
 
@@ -1500,7 +1500,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     if (funcNode->stackSize)
     {
         if (funcNode->stackSize > g_CommandLine.stackSize)
-            context->sourceFile->report({funcNode, funcNode->token, format("stack overflow (maximum stack size is '--stack-size:%s')", toNiceSize(g_CommandLine.stackSize).c_str())});
+            context->sourceFile->report({funcNode, funcNode->token, format(Msg0536                                                   , toNiceSize(g_CommandLine.stackSize).c_str())});
         emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
     }
 

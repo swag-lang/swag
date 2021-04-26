@@ -13,6 +13,7 @@
 #include "Context.h"
 #include "SemanticJob.h"
 #include "ModuleManager.h"
+#include "ErrorIds.h"
 
 void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
 {
@@ -585,15 +586,15 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                Diagnostic diag{importNode, tokenLocation, format("'#import' location already defined as '%s'", dep->location.c_str())};
-                Diagnostic note{dep->node, "this is the previous definition", DiagnosticLevel::Note};
+                Diagnostic diag{importNode, tokenLocation, format(Msg0284, dep->location.c_str())};
+                Diagnostic note{dep->node, Msg0285, DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                Diagnostic diag{importNode, tokenVersion, format("'#import' version already defined as '%s'", dep->version.c_str())};
-                Diagnostic note{dep->node, "this is the previous definition", DiagnosticLevel::Note};
+                Diagnostic diag{importNode, tokenVersion, format(Msg0286, dep->version.c_str())};
+                Diagnostic note{dep->node, Msg0287, DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
 
@@ -662,8 +663,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
     if (invalidVersion)
     {
-        Diagnostic diag{importNode, tokenVersion, "'#import' invalid version format"};
-        Diagnostic note{dep->node, "version must be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character", DiagnosticLevel::Note};
+        Diagnostic diag{importNode, tokenVersion, Msg0288};
+        Diagnostic note{dep->node, Msg0289, DiagnosticLevel::Note};
         return importNode->sourceFile->report(diag, &note);
         return false;
     }
@@ -690,7 +691,7 @@ bool Module::error(const Utf8& msg)
 {
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
-    g_Log.print("error: ");
+    g_Log.print(Msg0290);
     g_Log.print(format("module %s: ", name.c_str()));
     g_Log.print(msg);
     g_Log.eol();

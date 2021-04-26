@@ -4,6 +4,7 @@
 #include "File.h"
 #include "Stats.h"
 #include "OS.h"
+#include "ErrorIds.h"
 
 void File::openFile(FILE** fileHandle, const char* path, const char* mode)
 {
@@ -11,7 +12,7 @@ void File::openFile(FILE** fileHandle, const char* path, const char* mode)
     fopen_s(fileHandle, path, mode);
     if (*fileHandle == nullptr)
     {
-        g_Log.error(format("cannot open file '%s': %s", path, OS::getLastErrorAsString().c_str()));
+        g_Log.error(format(Msg0502, path, OS::getLastErrorAsString().c_str()));
         return;
     }
 

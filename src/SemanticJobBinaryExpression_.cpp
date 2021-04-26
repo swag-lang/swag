@@ -27,13 +27,13 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     if (leftTypeInfo->kind == TypeInfoKind::Pointer)
     {
         node->typeInfo = leftTypeInfo;
-        SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, "pointer arithmetic not allowed on 'typeinfo'"}));
-        SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format("pointer arithmetic not allowed with operand type '%s'", rightTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Msg0140                                       }));
+        SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format(Msg0141                                                , rightTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
         return true;
     }
 
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, format("operator '+' not allowed with operand type '%s'", rightTypeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, format(Msg0142                                          , rightTypeInfo->getDisplayName().c_str())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
@@ -50,7 +50,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({left, format("operator '+' not allowed on type '%s'", leftTypeInfo->getDisplayName().c_str())});
+        return context->report({left, format(Msg0143                                , leftTypeInfo->getDisplayName().c_str())});
     }
 
     node->typeInfo = leftTypeInfo;
@@ -142,13 +142,13 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         }
 
         // Pointer arithmetic
-        SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, "pointer arithmetic not allowed on 'typeinfo'"}));
-        SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format("pointer arithmetic not allowed with operand type '%s'", rightTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Msg0144                                       }));
+        SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format(Msg0145                                                , rightTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
         return true;
     }
 
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, format("operator '-' not allowed with operand type '%s'", rightTypeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, format(Msg0146                                          , rightTypeInfo->getDisplayName().c_str())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
@@ -165,7 +165,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({left, format("operator '-' not allowed on type '%s'", leftTypeInfo->getDisplayName().c_str())});
+        return context->report({left, format(Msg0147                                , leftTypeInfo->getDisplayName().c_str())});
     }
 
     node->typeInfo = leftTypeInfo;
@@ -254,7 +254,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, format("operator '*' not allowed on type '%s'", leftTypeInfo->getDisplayName().c_str())});
+        return context->report({node, format(Msg0148                                , leftTypeInfo->getDisplayName().c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -353,7 +353,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, format("operator '/' not allowed on type '%s'", leftTypeInfo->getDisplayName().c_str())});
+        return context->report({node, format(Msg0149                                , leftTypeInfo->getDisplayName().c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -364,35 +364,35 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         {
         case NativeTypeKind::S32:
             if (right->computedValue.reg.s32 == 0)
-                return context->report({right, right->token, "division by zero"});
+                return context->report({right, right->token, Msg0150           });
             node->computedValue.reg.s64 = left->computedValue.reg.s32 / right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (right->computedValue.reg.s64 == 0)
-                return context->report({right, right->token, "division by zero"});
+                return context->report({right, right->token, Msg0151           });
             node->computedValue.reg.s64 = left->computedValue.reg.s64 / right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (right->computedValue.reg.u32 == 0)
-                return context->report({right, right->token, "division by zero"});
+                return context->report({right, right->token, Msg0152           });
             node->computedValue.reg.u64 = left->computedValue.reg.u32 / right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (right->computedValue.reg.u64 == 0)
-                return context->report({right, right->token, "division by zero"});
+                return context->report({right, right->token, Msg0153           });
             node->computedValue.reg.u64 = left->computedValue.reg.u64 / right->computedValue.reg.u64;
             break;
         case NativeTypeKind::F32:
             if (right->computedValue.reg.f32 == 0)
-                return context->report({right, right->token, "division by zero"});
+                return context->report({right, right->token, Msg0154           });
             node->computedValue.reg.f32 = left->computedValue.reg.f32 / right->computedValue.reg.f32;
             break;
         case NativeTypeKind::F64:
             if (right->computedValue.reg.f64 == 0)
-                return context->report({right, right->token, "division by zero"});
+                return context->report({right, right->token, Msg0155           });
             node->computedValue.reg.f64 = left->computedValue.reg.f64 / right->computedValue.reg.f64;
             break;
         default:
@@ -400,7 +400,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         }
     }
     else if (right->isConstant0())
-        return context->report({right, right->token, "division by zero"});
+        return context->report({right, right->token, Msg0156           });
 
     return true;
 }
@@ -433,7 +433,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, format("operator '%' not allowed on type '%s'", leftTypeInfo->getDisplayName().c_str())});
+        return context->report({node, format(Msg0157                                , leftTypeInfo->getDisplayName().c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -444,25 +444,25 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         {
         case NativeTypeKind::S32:
             if (right->computedValue.reg.s32 == 0)
-                return context->report({right, right->token, "division by zero"});
+                return context->report({right, right->token, Msg0158           });
             node->computedValue.reg.s64 = left->computedValue.reg.s32 % right->computedValue.reg.s32;
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::Int:
             if (right->computedValue.reg.s64 == 0)
-                return context->report({right, right->token, "division by zero"});
+                return context->report({right, right->token, Msg0159           });
             node->computedValue.reg.s64 = left->computedValue.reg.s64 % right->computedValue.reg.s64;
             break;
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (right->computedValue.reg.u32 == 0)
-                return context->report({right, right->token, "division by zero"});
+                return context->report({right, right->token, Msg0160           });
             node->computedValue.reg.u64 = left->computedValue.reg.u32 % right->computedValue.reg.u32;
             break;
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
             if (right->computedValue.reg.u64 == 0)
-                return context->report({right, right->token, "division by zero"});
+                return context->report({right, right->token, Msg0161           });
             node->computedValue.reg.u64 = left->computedValue.reg.u64 % right->computedValue.reg.u64;
             break;
         default:
@@ -470,7 +470,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         }
     }
     else if (right->isConstant0())
-        return context->report({right, right->token, "division by zero"});
+        return context->report({right, right->token, Msg0162           });
 
     return true;
 }
@@ -504,7 +504,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, format("operator '|' not allowed on type '%s'", leftTypeInfo->getDisplayName().c_str())});
+        return context->report({node, format(Msg0163                                , leftTypeInfo->getDisplayName().c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -614,7 +614,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, format("operator '&' not allowed on type '%s'", leftTypeInfo->getDisplayName().c_str())});
+        return context->report({node, format(Msg0164                                , leftTypeInfo->getDisplayName().c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -695,8 +695,8 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
 bool SemanticJob::resolveTilde(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
-    SWAG_VERIFY(left->flags & AST_VALUE_COMPUTED, context->report({left, "expression cannot be evaluated at compile time"}));
-    SWAG_VERIFY(right->flags & AST_VALUE_COMPUTED, context->report({right, "expression cannot be evaluated at compile time"}));
+    SWAG_VERIFY(left->flags & AST_VALUE_COMPUTED, context->report({left, Msg0165                                         }));
+    SWAG_VERIFY(right->flags & AST_VALUE_COMPUTED, context->report({right, Msg0166                                         }));
     left->computedValue.text  = Ast::literalToString(left->typeInfo, left->computedValue.text, left->computedValue.reg);
     right->computedValue.text = Ast::literalToString(right->typeInfo, right->computedValue.text, right->computedValue.reg);
     node->computedValue.text  = left->computedValue.text + right->computedValue.text.c_str();
@@ -728,7 +728,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({context->node, format("operator '^' not allowed on type '%s'", leftTypeInfo->getDisplayName().c_str())});
+        return context->report({context->node, format(Msg0167                                , leftTypeInfo->getDisplayName().c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -816,9 +816,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 
     // Cannot compare tuples
     if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({left, format("invalid operation '%s' on a tuple type", node->token.text.c_str())});
+        return context->report({left, format(Msg0168                                 , node->token.text.c_str())});
     if (rightTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({right, format("invalid operation '%s' on a tuple type", node->token.text.c_str())});
+        return context->report({right, format(Msg0169                                 , node->token.text.c_str())});
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
@@ -906,9 +906,9 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     }
 
     if (!leftTypeInfo->isNativeIntegerOrChar())
-        return context->report({left, format("operator '<<' not allowed on type '%s'", leftTypeInfo->getDisplayName().c_str())});
+        return context->report({left, format(Msg0170                                 , leftTypeInfo->getDisplayName().c_str())});
     if (!rightTypeInfo->isNative(NativeTypeKind::U32))
-        return context->report({right, format("shift operand must be 'u32' and not '%s'", rightTypeInfo->getDisplayName().c_str())});
+        return context->report({right, format(Msg0171                                   , rightTypeInfo->getDisplayName().c_str())});
 
     bool isSmall = node->opFlags & OPFLAG_SMALL;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -1043,9 +1043,9 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     }
 
     if (!leftTypeInfo->isNativeIntegerOrChar())
-        return context->report({left, format("operator '>>' not allowed on type '%s'", leftTypeInfo->getDisplayName().c_str())});
+        return context->report({left, format(Msg0172                                 , leftTypeInfo->getDisplayName().c_str())});
     if (!rightTypeInfo->isNative(NativeTypeKind::U32))
-        return context->report({right, format("shift operand must be 'u32' and not '%s'", rightTypeInfo->getDisplayName().c_str())});
+        return context->report({right, format(Msg0173                                   , rightTypeInfo->getDisplayName().c_str())});
 
     bool isSmall = node->opFlags & OPFLAG_SMALL;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))

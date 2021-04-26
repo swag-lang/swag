@@ -4,6 +4,7 @@
 #include "Diagnostic.h"
 #include "ByteCodeRunContext.h"
 #include "Ast.h"
+#include "ErrorIds.h"
 
 thread_local ByteCodeStack g_byteCodeStack;
 
@@ -29,7 +30,7 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
 
     if (!ip)
     {
-        Diagnostic diag{"<foreign code>", DiagnosticLevel::CallStack};
+        Diagnostic diag{Msg0259, DiagnosticLevel::CallStack};
         diag.stackLevel        = level;
         diag.currentStackLevel = current;
         diag.report();

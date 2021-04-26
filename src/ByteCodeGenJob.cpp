@@ -15,7 +15,7 @@ bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg,
 {
     if (!node)
         node = context->node;
-    context->sourceFile->report({node, format("[compiler internal] %s", msg)});
+    context->sourceFile->report({node, format(Msg0058                 , msg)});
     return false;
 }
 
@@ -719,9 +719,9 @@ JobResult ByteCodeGenJob::execute()
         !context.bc->node->sourceFile->numTestErrors)
     {
         if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())
-            context.sourceFile->report({context.bc->node, context.bc->node->token, format("[compiler internal] function '%s' does not release all registers; this is fine, but should be reported !", context.bc->node->token.text.c_str()), DiagnosticLevel::Warning});
+            context.sourceFile->report({context.bc->node, context.bc->node->token, format(Msg0059                                                                                                   , context.bc->node->token.text.c_str()), DiagnosticLevel::Warning});
         else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
-            context.sourceFile->report({context.bc->node, context.bc->node->token, format("[compiler internal] function '%s' releases too many registers !", context.bc->node->token.text.c_str())});
+            context.sourceFile->report({context.bc->node, context.bc->node->token, format(Msg0060                                                          , context.bc->node->token.text.c_str())});
     }
 
     return JobResult::ReleaseJob;

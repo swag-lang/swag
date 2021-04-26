@@ -11,6 +11,7 @@
 #include "FetchModuleJobFileSystem.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
+#include "ErrorIds.h"
 
 ModuleCfgManager g_ModuleCfgMgr;
 
@@ -95,7 +96,7 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
         // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
         if (!fs::exists(cfgName))
         {
-            g_Log.error(format("fatal error: invalid module '%s', configuration file '%s' is missing", cfgPath.string().c_str(), SWAG_CFG_FILE));
+            g_Log.error(format(Msg0507, cfgPath.string().c_str(), SWAG_CFG_FILE));
             g_Workspace.numErrors++;
             return;
         }
@@ -123,14 +124,14 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     // No cfg file, we are done, and this is ok, we have found a module without
     // a specific configuration file. This is legit.
     if (!fs::exists(remotePath))
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format("cannot find '%s' in module folder '%s'", SWAG_CFG_FILE, remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0508, SWAG_CFG_FILE, remotePath.c_str())});
 
     // Otherwise we copy the config file to the cache path, with a unique name.
     // Then later we will parse that file to get informations from the module
     FILE* fsrc = nullptr;
     File::openFile(&fsrc, remotePath.c_str(), "rbN");
     if (!fsrc)
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format("cannot access file '%s'", remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0509, remotePath.c_str())});
 
     // Remove source configuration file
     FILE* fdest    = nullptr;
@@ -146,7 +147,7 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     if (!fdest)
     {
         File::closeFile(&fsrc);
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format("cannot fetch file '%s' for module dependency '%s'", SWAG_CFG_FILE, dep->name.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0510, SWAG_CFG_FILE, dep->name.c_str())});
     }
 
     // Copy content
@@ -178,7 +179,7 @@ bool ModuleCfgManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath = fs::canonical(remotePath).string();
     remotePath = normalizePath(fs::path(remotePath.c_str()));
     if (!fs::exists(remotePath))
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format("dependency module folder '%s' does not exist", remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0511, remotePath.c_str())});
     dep->resolvedLocation = remotePath;
 
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);
@@ -195,7 +196,7 @@ bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath = fs::canonical(remotePath).string();
     remotePath = normalizePath(fs::path(remotePath.c_str()));
     if (!fs::exists(remotePath))
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format("dependency module folder '%s' does not exist", remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0512, remotePath.c_str())});
     dep->resolvedLocation = remotePath;
 
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);
@@ -204,16 +205,16 @@ bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
 bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
 {
     if (dep->location.empty())
-        return dep->node->sourceFile->report({dep->node, dep->node->token, format("cannot resolve module dependency '%s' ('location' is empty)", dep->name.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->node->token, format(Msg0513, dep->name.c_str())});
 
     vector<Utf8> tokens;
     tokenize(dep->location.c_str(), '@', tokens);
     if (tokens.size() != 2)
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, "invalid 'location' format; should have the form 'location=\"mode@accesspath\"'"});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Msg0514});
 
     // Check mode
     if (tokens[0] != "swag" && tokens[0] != "disk")
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format("invalid 'location' mode; should be 'swag' or 'disk', not '%s'", tokens[0].c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0515, tokens[0].c_str())});
     dep->locationParam = tokens[1];
 
     cfgFilePath.clear();
@@ -312,8 +313,8 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         case CompareVersionResult::VERSION_GREATER:
         case CompareVersionResult::VERSION_LOWER:
         {
-            Diagnostic diag{dep->node, format("cannot resolve dependency to module '%s' because of two different major versions ('%d' and '%d')", dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
-            Diagnostic note{cfgModule->fetchDep->node, "this is the other '#import'", DiagnosticLevel::Note};
+            Diagnostic diag{dep->node, format(Msg0516, dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
+            Diagnostic note{cfgModule->fetchDep->node, Msg0517, DiagnosticLevel::Note};
             dep->node->sourceFile->report(diag, &note);
             return false;
         }
@@ -449,7 +450,7 @@ bool ModuleCfgManager::execute()
             auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
             if (cmp != CompareVersionResult::EQUAL)
             {
-                Diagnostic diag{dep->node, format("cannot resolve dependency to module '%s', version '%s' cannot be found at location '%s'", dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
+                Diagnostic diag{dep->node, format(Msg0518, dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
                 dep->node->sourceFile->report(diag);
                 ok = false;
             }

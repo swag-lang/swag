@@ -4,6 +4,7 @@
 #include "SemanticJob.h"
 #include "LanguageSpec.h"
 #include "Scoped.h"
+#include "ErrorIds.h"
 
 bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
 {
@@ -28,17 +29,17 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         SWAG_CHECK(tokenizer.getToken(token));
         backTick = true;
         if (token.id == TokenId::SymQuestion)
-            return syntaxError(token, format("expected an identifier, found symbol '%s'", token.text.c_str()));
+            return syntaxError(token, format(Msg0835, token.text.c_str()));
     }
 
     if (token.id == TokenId::SymQuestion)
     {
         if (!(identifierFlags & IDENTIFIER_ACCEPT_QUESTION))
-            return syntaxError(token, format("expected an identifier, found symbol '%s'", token.text.c_str()));
+            return syntaxError(token, format(Msg0836, token.text.c_str()));
     }
     else if (Tokenizer::isSymbol(token.id))
     {
-        return syntaxError(token, format("expected an identifier, found symbol '%s'", token.text.c_str()));
+        return syntaxError(token, format(Msg0837, token.text.c_str()));
     }
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
@@ -57,7 +58,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     // Replace "Self" with the corresponding struct name
     if (identifier->token.text == "Self")
     {
-        SWAG_VERIFY(parent->ownerStructScope, sourceFile->report({identifier, identifier->token, "type 'Self' cannot be used outside an 'impl', 'struct' or 'interface' block"}));
+        SWAG_VERIFY(parent->ownerStructScope, sourceFile->report({identifier, identifier->token, Msg0838}));
         if (currentSelfStructScope)
             identifier->token.text = currentSelfStructScope->name;
         else
@@ -81,7 +82,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         if (token.id == TokenId::SymLeftParen)
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
-                return sourceFile->report({identifier, token, "a struct initialization must be done with '{}' and not parenthesis (this is reserved for function calls)"});
+                return sourceFile->report({identifier, token, Msg0839});
 
             SWAG_CHECK(eatToken(TokenId::SymLeftParen));
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
@@ -100,7 +101,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     if (token.id == TokenId::SymLeftSquare)
     {
         if (identifierFlags & IDENTIFIER_TYPE_DECL)
-            return sourceFile->report({identifier, token, "array size must be defined before the type name"});
+            return sourceFile->report({identifier, token, Msg0840});
 
         if (!(identifierFlags & IDENTIFIER_NO_PARAMS))
             SWAG_CHECK(doArrayPointerIndex(&expr));
@@ -175,7 +176,7 @@ bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCatch(parent, result));
         break;
     default:
-        return syntaxError(token, format("invalid token '%s' after 'discard'", token.text.c_str()));
+        return syntaxError(token, format(Msg0841, token.text.c_str()));
     }
 
     return true;
@@ -197,7 +198,7 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result)
 
     if (result)
         *result = node;
-    SWAG_VERIFY(node->ownerFct, error(node, format("'%s' can only be used inside a function", node->token.text.c_str())));
+    SWAG_VERIFY(node->ownerFct, error(node, format(Msg0842, node->token.text.c_str())));
     SWAG_CHECK(eatToken());
 
     ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
@@ -212,11 +213,11 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result)
     }
     else
     {
-        SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format("invalid 'try' inside '%s' expression", node->token.text.c_str())));
-        SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format("invalid 'catch' inside '%s' expression", node->token.text.c_str())));
-        SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format("invalid 'assume' inside '%s' expression", node->token.text.c_str())));
-        SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format("invalid 'throw' inside '%s' expression", node->token.text.c_str())));
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format("'%s' must be immediatly followed by an identifier", node->token.text.c_str())));
+        SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format(Msg0843, node->token.text.c_str())));
+        SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format(Msg0844, node->token.text.c_str())));
+        SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format(Msg0845, node->token.text.c_str())));
+        SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format(Msg0846, node->token.text.c_str())));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0847, node->token.text.c_str())));
         SWAG_CHECK(doIdentifierRef(node));
     }
 
@@ -226,18 +227,18 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result)
 bool SyntaxJob::doCatch(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Catch, sourceFile, parent);
-    SWAG_VERIFY(node->ownerFct, error(node, "'catch' can only be used inside a function"));
+    SWAG_VERIFY(node->ownerFct, error(node, Msg0848));
     node->semanticFct = SemanticJob::resolveCatch;
     if (result)
         *result = node;
     SWAG_CHECK(eatToken());
 
     ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
-    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format("invalid 'try' inside '%s' expression", node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format("invalid 'catch' inside '%s' expression", node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format("invalid 'assume' inside '%s' expression", node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format("invalid 'throw' inside '%s' expression", node->token.text.c_str())));
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format("'%s' must be immediatly followed by an identifier", node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format(Msg0849, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format(Msg0850, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format(Msg0851, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format(Msg0852, node->token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0853, node->token.text.c_str())));
     SWAG_CHECK(doIdentifierRef(node));
     return true;
 }
@@ -245,16 +246,16 @@ bool SyntaxJob::doCatch(AstNode* parent, AstNode** result)
 bool SyntaxJob::doThrow(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Throw, sourceFile, parent);
-    SWAG_VERIFY(node->ownerFct, error(node, "'throw' can only be used inside a function"));
+    SWAG_VERIFY(node->ownerFct, error(node, Msg0854));
     node->semanticFct = SemanticJob::resolveThrow;
     if (result)
         *result = node;
     SWAG_CHECK(eatToken());
 
-    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format("invalid 'try' inside '%s' expression", node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format("invalid 'catch' inside '%s' expression", node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format("invalid 'assume' inside '%s' expression", node->token.text.c_str())));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format("invalid 'throw' inside '%s' expression", node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, format(Msg0855, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, format(Msg0856, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, format(Msg0857, node->token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, format(Msg0858, node->token.text.c_str())));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
     return true;
 }

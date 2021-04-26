@@ -64,8 +64,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     auto typeInfo = node->identifier->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Interface)
     {
-        Diagnostic diag{node->identifier, format("'%s' is %s and should be an interface", node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{node->identifier, format(Msg0646                                , node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0647                         , node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -73,8 +73,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     typeInfo = node->identifierFor->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Struct)
     {
-        Diagnostic diag{node->identifierFor, format("'%s' is %s and should be a struct", node->identifierFor->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, node->identifierFor->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{node->identifierFor, format(Msg0648                            , node->identifierFor->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
+        Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, node->identifierFor->resolvedSymbolOverload->node->token, format(Msg0649                         , node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -157,8 +157,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         auto symbolName = typeInterface->findChildByNameNoLock(child->token.text); // O(n) !
         if (!symbolName)
         {
-            Diagnostic diag{child, child->token, format("function '%s' is not part of interface '%s'", child->token.text.c_str(), typeBaseInterface->name.c_str())};
-            Diagnostic note{typeBaseInterface->declNode, typeBaseInterface->declNode->token, format("this is the definition of interface '%s'", typeBaseInterface->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic diag{child, child->token, format(Msg0650                                      , child->token.text.c_str(), typeBaseInterface->name.c_str())};
+            Diagnostic note{typeBaseInterface->declNode, typeBaseInterface->declNode->token, format(Msg0651                                   , typeBaseInterface->name.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
@@ -167,17 +167,17 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
         if (!typeLambda->isSame(typeFunc, ISSAME_EXACT | ISSAME_INTERFACE))
         {
-            Diagnostic diag{child, child->token, format("function '%s' has an incorrect signature for interface '%s'", child->token.text.c_str(), typeBaseInterface->name.c_str())};
-            Diagnostic note{symbolName->declNode, symbolName->declNode->token, "should be", DiagnosticLevel::Note};
+            Diagnostic diag{child, child->token, format(Msg0652                                                      , child->token.text.c_str(), typeBaseInterface->name.c_str())};
+            Diagnostic note{symbolName->declNode, symbolName->declNode->token, Msg0653    , DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
         // First parameter in the impl block must be a pointer to the struct
-        SWAG_VERIFY(typeFunc->parameters.size(), context->report({child, child->token, format("missing first parameter 'self' for interface function '%s'", child->token.text.c_str())}));
+        SWAG_VERIFY(typeFunc->parameters.size(), context->report({child, child->token, format(Msg0654                                                     , child->token.text.c_str())}));
         auto firstParamType = typeFunc->parameters[0]->typeInfo;
-        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->declNode, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->getDisplayName().c_str())}));
+        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->declNode, format(Msg0655                                                                                             , firstParamType->getDisplayName().c_str())}));
         auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->getDisplayName().c_str())}));
+        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, format(Msg0656                                                                                             , firstParamType->getDisplayName().c_str())}));
 
         // use resolvedUserOpSymbolOverload to store the match
         mapItToFunc[symbolName]           = child;
@@ -192,7 +192,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     }
 
     // Be sure every functions of the interface has been covered
-    Diagnostic                diag{node, node->token, format("some functions of interface '%s' are not implemented", typeBaseInterface->name.c_str())};
+    Diagnostic                diag{node, node->token, format(Msg0657                                               , typeBaseInterface->name.c_str())};
     vector<const Diagnostic*> notes;
     for (uint32_t idx = 0; idx < numFctInterface; idx++)
     {
@@ -276,22 +276,22 @@ bool SemanticJob::CheckImplScopes(SemanticContext* context, AstImpl* node, Scope
     // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
     {
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0658                         , node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         if ((scopeImpl->flags & SCOPE_PRIVATE) && !(scope->flags & SCOPE_PRIVATE))
         {
-            Diagnostic diag{node->identifier, format("the implementation block for '%s' is private but the corresponding identifier is not", node->identifier->token.text.c_str())};
+            Diagnostic diag{node->identifier, format(Msg0659                                                                               , node->identifier->token.text.c_str())};
             return context->report(diag, &note);
         }
 
         if ((scope->flags & SCOPE_PRIVATE) && !(scopeImpl->flags & SCOPE_PRIVATE))
         {
-            Diagnostic diag{node->identifier, format("the implementation block for '%s' is not private but the corresponding identifier is", node->identifier->token.text.c_str())};
+            Diagnostic diag{node->identifier, format(Msg0660                                                                               , node->identifier->token.text.c_str())};
             return context->report(diag, &note);
         }
 
         Diagnostic diag{node,
                         node->token,
-                        format("implementation block is not defined in the same scope as '%s' ('impl' parent scope is '%s', '%s' parent scope is '%s')",
+                        format(Msg0661                                                                                                                 ,
                                node->token.text.c_str(),
                                scopeImpl->parentScope->getFullName().c_str(),
                                node->token.text.c_str(),
@@ -310,13 +310,13 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     auto typeInfo = node->identifier->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum && typeInfo->kind != TypeInfoKind::TypeSet)
     {
-        Diagnostic diag{node->identifier, format("'%s' is %s and should be a struct or an enum", node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{node->identifier, format(Msg0662                                       , node->identifier->token.text.c_str(), TypeInfo::getArticleKindName(typeInfo))};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format(Msg0663                         , node->identifier->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
     auto typeIdentifier = node->identifier->resolvedSymbolOverload->typeInfo;
-    SWAG_VERIFY(typeIdentifier->kind != TypeInfoKind::Alias, context->report({node->identifier, "unsupported alias as an implementation block name"}));
+    SWAG_VERIFY(typeIdentifier->kind != TypeInfoKind::Alias, context->report({node->identifier, Msg0664                                            }));
 
     switch (typeInfo->kind)
     {
@@ -398,7 +398,7 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
     // Be sure we have only one struct node
     if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
     {
-        Diagnostic  diag({node, node->token, "symbol already defined"});
+        Diagnostic  diag({node, node->token, Msg0665                 });
         Diagnostic* note = nullptr;
         for (auto p : node->resolvedSymbolName->nodes)
         {
@@ -530,8 +530,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     {
         if (node->attributeFlags & ATTRIBUTE_OPAQUE)
         {
-            SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_PUBLIC, context->report({node, node->token, "struct cannot be marked with 'swag.opaque' because it is not public"}));
-            SWAG_VERIFY(!sourceFile->forceExport, context->report({node, node->token, "struct cannot be marked with 'swag.opaque' because the whole file is exported ('#global export')"}));
+            SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_PUBLIC, context->report({node, node->token, Msg0666                                                              }));
+            SWAG_VERIFY(!sourceFile->forceExport, context->report({node, node->token, Msg0667                                                                                           }));
         }
     }
 
@@ -570,9 +570,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         // Using can only be used on a structure
         if (child->flags & AST_DECL_USING && child->kind == AstNodeKind::ConstDecl)
-            return context->report({child, "'using' is invalid on a constant"});
+            return context->report({child, Msg0668                           });
         if (child->flags & AST_DECL_USING && child->typeInfo->kind != TypeInfoKind::Struct && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
-            return context->report({child, format("'using' on a field is only valid for a struct type ('%s' provided)", child->typeInfo->getDisplayName().c_str())});
+            return context->report({child, format(Msg0669                                                             , child->typeInfo->getDisplayName().c_str())});
 
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC) || !(child->flags & AST_STRUCT_REGISTERED))
@@ -655,7 +655,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Var has an initialization
         else if (varDecl->assignment && !(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
         {
-            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->report({varDecl->assignment, "initialization expression cannot be evaluated at compile time"}));
+            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->report({varDecl->assignment, Msg0670                                                        }));
 
             auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ALIAS);
             typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ENUM);
@@ -684,8 +684,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 if (varDecl->type)
                     child = varDecl->type;
                 if (!node->genericParameters)
-                    return context->report({child, format("type '%s' is generic, but struct '%s' does not declare generic parameters", child->typeInfo->getDisplayName().c_str(), node->token.text.c_str())});
-                return context->report({child, format("cannot resolve struct '%s' because type '%s' is generic", node->token.text.c_str(), child->typeInfo->getDisplayName().c_str())});
+                    return context->report({child, format(Msg0671                                                                    , child->typeInfo->getDisplayName().c_str(), node->token.text.c_str())});
+                return context->report({child, format(Msg0672                                                  , node->token.text.c_str(), child->typeInfo->getDisplayName().c_str())});
             }
         }
 
@@ -710,7 +710,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             {
                 auto attr = typeParam->attributes.getAttribute("swag.offset");
                 SWAG_ASSERT(attr);
-                return context->report({attr->node, format("cannot find structure member '%s' to compute variable relocation", forceOffset.text.c_str())});
+                return context->report({attr->node, format(Msg0673                                                           , forceOffset.text.c_str())});
             }
         }
 
@@ -748,7 +748,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             // User cannot name its variables itemX
             if (!(node->flags & AST_GENERATED) && hasItemName)
             {
-                return context->report({child, format("structure member name '%s' starts with 'item', and this is reserved by the language", child->token.text.c_str())});
+                return context->report({child, format(Msg0674                                                                              , child->token.text.c_str())});
             }
 
             if (!hasItemName)
@@ -791,7 +791,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE))
     {
         if (!node->ownerScope->isGlobalOrImpl())
-            return context->report({node, node->token, format("embedded struct '%s' cannot be public", node->token.text.c_str())});
+            return context->report({node, node->token, format(Msg0675                                , node->token.text.c_str())});
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicStruct(node);
     }
@@ -890,13 +890,13 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
             // Verify signature
             typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
-            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, format("an interface can only contain members of type 'lambda' ('%s' provided)", child->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, format(Msg0676                                                                 , child->typeInfo->getDisplayName().c_str())}));
             auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
-            SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({child, format("missing parameters for interface member '%s' ('self' expected as first parameter)", child->token.text.c_str())}));
+            SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({child, format(Msg0677                                                                            , child->token.text.c_str())}));
             auto firstParamType = typeLambda->parameters[0]->typeInfo;
-            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->declNode, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->getDisplayName().c_str())}));
+            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->declNode, format(Msg0678                                                                            , firstParamType->getDisplayName().c_str())}));
             auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->getDisplayName().c_str())}));
+            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, format(Msg0679                                                                            , firstParamType->getDisplayName().c_str())}));
         }
 
         typeParam           = typeITable->fields[storageIndex];
@@ -904,18 +904,18 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         typeParam->declNode = child;
         typeParam->index    = storageIndex;
 
-        SWAG_VERIFY(!varDecl->assignment, context->report({varDecl->assignment, "cannot initialize an interface member"}));
+        SWAG_VERIFY(!varDecl->assignment, context->report({varDecl->assignment, Msg0680                                }));
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot resolve interface because type '%s' is generic", child->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format(Msg0681                                                , child->typeInfo->getDisplayName().c_str())}));
         }
 
         if (typeParam->attributes.hasAttribute("swag.offset"))
         {
             auto attr = typeParam->attributes.getAttribute("swag.offset");
             SWAG_ASSERT(attr);
-            return context->report({attr->node, "cannot relocate an interface member"});
+            return context->report({attr->node, Msg0682                              });
         }
 
         typeParam->offset                            = storageOffset;
@@ -934,7 +934,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         storageIndex++;
     }
 
-    SWAG_VERIFY(!typeITable->fields.empty(), context->report({node, node->token, format("interface '%s' is empty", node->token.text.c_str())}));
+    SWAG_VERIFY(!typeITable->fields.empty(), context->report({node, node->token, format(Msg0683                  , node->token.text.c_str())}));
     typeInterface->itable = typeITable;
 
     // Struct interface, with one pointer for the data, and one pointer for itable
@@ -962,7 +962,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (!node->ownerScope->isGlobal())
-            return context->report({node, node->token, format("embedded interface '%s' cannot be public", node->token.text.c_str())});
+            return context->report({node, node->token, format(Msg0684                                   , node->token.text.c_str())});
 
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicInterface(node);
@@ -1002,7 +1002,7 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (!node->ownerScope->isGlobal())
-            return context->report({node, node->token, format("embedded typeset '%s' cannot be public", node->token.text.c_str())});
+            return context->report({node, node->token, format(Msg0685                                 , node->token.text.c_str())});
 
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicTypeSet(node);
@@ -1034,20 +1034,20 @@ bool SemanticJob::resolveTypeSet(SemanticContext* context)
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot resolve typeset because type '%s' is generic", child->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format(Msg0686                                              , child->typeInfo->getDisplayName().c_str())}));
         }
 
         if (typeParam->attributes.hasAttribute("swag.offset"))
         {
             auto attr = typeParam->attributes.getAttribute("swag.offset");
             SWAG_ASSERT(attr);
-            return context->report({attr->node, "cannot relocate a typeset member"});
+            return context->report({attr->node, Msg0687                           });
         }
 
         storageIndex++;
     }
 
-    SWAG_VERIFY(!typeSet->fields.empty(), context->report({node, node->token, format("typeset '%s' is empty", node->token.text.c_str())}));
+    SWAG_VERIFY(!typeSet->fields.empty(), context->report({node, node->token, format(Msg0688                , node->token.text.c_str())}));
 
     // Register symbol with its type
     node->typeInfo               = typeSet;

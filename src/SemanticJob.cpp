@@ -6,6 +6,7 @@
 #include "AstNode.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "ErrorIds.h"
 
 thread_local Pool<SemanticJob> g_Pool_semanticJob;
 
@@ -13,7 +14,7 @@ bool SemanticJob::internalError(JobContext* context, const char* msg, AstNode* n
 {
     if (!node)
         node = context->node;
-    context->report({node, node->token, format("internal compiler error during semantic (%s)", msg)});
+    context->report({node, node->token, format(Msg0503, msg)});
     return false;
 }
 
@@ -22,7 +23,7 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftType
     if (leftTypeInfo->kind == TypeInfoKind::Native && rightTypeInfo->kind == TypeInfoKind::Native)
         return true;
     auto node = context->node;
-    return context->report({node, node->token, format("operation '%s' not allowed, left type is '%s' and right type is '%s'", node->token.text.c_str(), leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str())});
+    return context->report({node, node->token, format(Msg0504, node->token.text.c_str(), leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str())});
 }
 
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
@@ -35,12 +36,12 @@ bool SemanticJob::checkSizeOverflow(SemanticContext* context, const char* typeOv
 {
     if (value <= maxValue)
         return true;
-    return context->report({context->node, format("%s overflow, maximum size is 0x%I64x bytes", typeOverflow, maxValue)});
+    return context->report({context->node, format(Msg0505, typeOverflow, maxValue)});
 }
 
 bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
-    return context->report({node, node->token, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(typeInfo), typeInfo->getDisplayName().c_str())});
+    return context->report({node, node->token, format(Msg0506, node->token.text.c_str(), TypeInfo::getNakedKindName(typeInfo), typeInfo->getDisplayName().c_str())});
 }
 
 SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run)

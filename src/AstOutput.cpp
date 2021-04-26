@@ -3,6 +3,7 @@
 #include "SourceFile.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
+#include "ErrorIds.h"
 
 namespace Ast
 {
@@ -693,7 +694,7 @@ namespace Ast
                 CONCAT_FIXED_STR(concat, ")");
                 break;
             default:
-                return node->sourceFile->report({node, node->token, "Ast::output, unknown compiler function"});
+                return node->sourceFile->report({node, node->token, Msg0315});
             }
             break;
         }
@@ -898,7 +899,7 @@ namespace Ast
                         (symbol->kind == SymbolKind::Alias) ||
                         (symbol->kind == SymbolKind::TypeAlias))
                     {
-                        SWAG_VERIFY(overload->flags & OVERLOAD_PUBLIC, identifier->sourceFile->report({identifier, identifier->token, format("identifier '%s' should be public", identifier->token.text.c_str())}));
+                        SWAG_VERIFY(overload->flags & OVERLOAD_PUBLIC, identifier->sourceFile->report({identifier, identifier->token, format(Msg0316, identifier->token.text.c_str())}));
                     }
                 }
             }
@@ -1213,7 +1214,7 @@ namespace Ast
             break;
 
         default:
-            return node->sourceFile->report({node, node->token, "Ast::output, unknown node"});
+            return node->sourceFile->report({node, node->token, Msg0317});
         }
 
         return true;

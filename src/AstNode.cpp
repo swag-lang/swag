@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "Diagnostic.h"
 #include "ByteCode.h"
+#include "ErrorIds.h"
 
 void AstNode::swap2Childs()
 {
@@ -719,7 +720,7 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
             auto sym = subFuncScope->symTable.find(subDecl->token.text);
             if (sym)
             {
-                Diagnostic diag{subDecl, subDecl->token, format("symbol '%s' already defined in parent scope", subDecl->token.text.c_str())};
+                Diagnostic diag{subDecl, subDecl->token, format(Msg0346, subDecl->token.text.c_str())};
                 return context->report(diag);
             }
         }

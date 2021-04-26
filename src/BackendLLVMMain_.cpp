@@ -6,6 +6,7 @@
 #include "ByteCode.h"
 #include "Context.h"
 #include "Workspace.h"
+#include "ErrorIds.h"
 
 bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
 {
@@ -47,7 +48,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        module->error(format("llvm backend unsupported os '%s'", Backend::GetOsName()));
+        module->error(format(Msg0034, Backend::GetOsName()));
         return false;
     }
 }
@@ -70,7 +71,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(format("llvm backend unsupported os '%s'", Backend::GetOsName()));
+        module->error(format(Msg0035, Backend::GetOsName()));
         return false;
     }
 

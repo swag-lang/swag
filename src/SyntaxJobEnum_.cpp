@@ -9,6 +9,7 @@
 #include "TypeInfo.h"
 #include "SemanticJob.h"
 #include "LanguageSpec.h"
+#include "ErrorIds.h"
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 {
@@ -18,7 +19,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     enumNode->semanticFct = SemanticJob::resolveEnum;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid enum name '%s'", token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format(Msg0396, token.text.c_str())));
     enumNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(enumNode));
 
@@ -30,8 +31,8 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         if (newScope->kind != ScopeKind::Enum)
         {
             auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-            Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
-            Diagnostic note{enumNode, enumNode->token, format("this is the declaration of '%s'", implNode->token.text.c_str()), DiagnosticLevel::Note};
+            Diagnostic diag{implNode->identifier, implNode->identifier->token, format(Msg0397, Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
+            Diagnostic note{enumNode, enumNode->token, format(Msg0398, implNode->token.text.c_str()), DiagnosticLevel::Note};
             return sourceFile->report(diag, &note);
         }
 
@@ -65,7 +66,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         SWAG_CHECK(doTypeExpression(typeNode));
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, syntaxError(token, format("'{' is expected instead of '%s'", token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, syntaxError(token, format(Msg0399, token.text.c_str())));
 
     // Content of enum
     Scoped         scoped(this, newScope);
@@ -127,7 +128,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, Msg0400));
     auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
     if (result)
         *result = enumValue;

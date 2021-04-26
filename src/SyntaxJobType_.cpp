@@ -3,6 +3,7 @@
 #include "SemanticJob.h"
 #include "Scoped.h"
 #include "TypeManager.h"
+#include "ErrorIds.h"
 
 bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 {
@@ -12,7 +13,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
         *result = node;
     SWAG_CHECK(tokenizer.getToken(token));
 
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid alias name '%s'", token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format(Msg0333, token.text.c_str())));
     node->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(node));
 
@@ -61,7 +62,7 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 
             if (token.text == "self")
             {
-                SWAG_VERIFY(currentScope->kind == ScopeKind::Struct, error(token, "invalid 'self' usage in that context"));
+                SWAG_VERIFY(currentScope->kind == ScopeKind::Struct, error(token, Msg0334));
                 SWAG_CHECK(eatToken());
                 auto typeNode         = Ast::newTypeExpression(sourceFile, params);
                 typeNode->ptrCount    = 1;
@@ -181,11 +182,11 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
 bool SyntaxJob::doRelativePointer(AstNode* parent, AstNode** identifier, uint8_t* value)
 {
     SWAG_CHECK(eatToken(TokenId::SymTilde));
-    SWAG_VERIFY(token.id == TokenId::LiteralNumber || token.id == TokenId::Identifier, syntaxError(token, "relative type must be followed by a number of an identifier"));
+    SWAG_VERIFY(token.id == TokenId::LiteralNumber || token.id == TokenId::Identifier, syntaxError(token, Msg0335));
     if (token.id == TokenId::LiteralNumber)
     {
-        SWAG_VERIFY(token.literalType == LiteralType::TT_UNTYPED_INT, syntaxError(token, "relative type must be followed by an untyped integer"));
-        SWAG_VERIFY(token.literalValue.u64 <= 8, syntaxError(token, "relative type invalid size"));
+        SWAG_VERIFY(token.literalType == LiteralType::TT_UNTYPED_INT, syntaxError(token, Msg0336));
+        SWAG_VERIFY(token.literalValue.u64 <= 8, syntaxError(token, Msg0337));
         *value = token.literalValue.u8;
         SWAG_CHECK(eatToken());
     }
@@ -304,7 +305,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             }
 
             if (node->arrayDim == 254)
-                return syntaxError(token, "too many array dimensions (max is 254)");
+                return syntaxError(token, Msg0338);
             node->arrayDim++;
             SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
             if (token.id != TokenId::SymComma)
@@ -324,7 +325,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     {
         isPtrConst = true;
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_VERIFY(token.id == TokenId::SymAsterisk, syntaxError(token, "missing pointer declaration '*' after 'const'"));
+        SWAG_VERIFY(token.id == TokenId::SymAsterisk, syntaxError(token, Msg0339));
     }
 
     // Pointers
@@ -333,7 +334,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         while (token.id == TokenId::SymAsterisk)
         {
             if (node->ptrCount == AstTypeExpression::MAX_PTR_COUNT)
-                return syntaxError(token, format("too many pointer dimensions (max is %u)", AstTypeExpression::MAX_PTR_COUNT));
+                return syntaxError(token, format(Msg0340, AstTypeExpression::MAX_PTR_COUNT));
             node->ptrFlags[node->ptrCount] = isPtrConst ? AstTypeExpression::PTR_CONST : 0;
             SWAG_CHECK(tokenizer.getToken(token));
             isPtrConst = false;
@@ -345,7 +346,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (token.id == TokenId::KwdConst)
             {
                 SWAG_CHECK(tokenizer.getToken(token));
-                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, syntaxError(token, "missing pointer '*' or reference '&' marker after 'const'"));
+                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, syntaxError(token, Msg0341));
 
                 // Pointer to a const reference
                 if (token.id == TokenId::SymAmpersand)
@@ -366,7 +367,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     {
         node->typeFlags |= TYPEFLAG_ISREF;
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_VERIFY(!node->ptrCount, syntaxError(token, "'&' is invalid for a pointer"));
+        SWAG_VERIFY(!node->ptrCount, syntaxError(token, Msg0342));
     }
 
     // This is a @typeof
@@ -410,7 +411,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         return true;
     }
 
-    return syntaxError(token, format("invalid type declaration '%s'", token.text.c_str()));
+    return syntaxError(token, format(Msg0343, token.text.c_str()));
 }
 
 bool SyntaxJob::doCast(AstNode* parent, AstNode** result)

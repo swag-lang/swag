@@ -764,6 +764,9 @@
     <ClInclude Include="..\src\HashTable.h">
       <Filter>Lexer</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ErrorIds.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

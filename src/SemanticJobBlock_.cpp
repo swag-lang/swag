@@ -155,8 +155,8 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report({fct, fct->token, format("not all control paths of %s return a value", fct->getNameForMessage().c_str())});
-                return context->report({fct, fct->token, format("%s must return a value", fct->getNameForMessage().c_str())});
+                    return context->report({fct, fct->token, format(Msg0605                                     , fct->getNameForMessage().c_str())});
+                return context->report({fct, fct->token, format(Msg0606                 , fct->getNameForMessage().c_str())});
             }
         }
     }
@@ -249,7 +249,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
 
     // Deal with complete
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_COMPLETE) || node->expression, context->report({node, node->token, "a switch without an expression cannot be marked as 'swag.complete'"}));
+    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_COMPLETE) || node->expression, context->report({node, node->token, Msg0607                                                             }));
 
     node->byteCodeFct = ByteCodeGenJob::emitSwitch;
     if (!node->expression)
@@ -268,16 +268,16 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
 
     // Verify switch expression type is valid
-    SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, "invalid switch type 'any', you need to cast to a concrete type"}));
+    SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, Msg0608                                                         }));
     switch (typeSwitch->kind)
     {
     case TypeInfoKind::Slice:
     case TypeInfoKind::Array:
     case TypeInfoKind::Interface:
-        return context->report({node->expression, format("invalid switch type '%s'", typeSwitch->getDisplayName().c_str())});
+        return context->report({node->expression, format(Msg0609                   , typeSwitch->getDisplayName().c_str())});
     }
 
-    SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, "switch body is empty"}));
+    SWAG_VERIFY(!node->cases.empty(), context->report({node, node->token, Msg0610               }));
 
     // Collect constant expressions, to avoid double definitions
     set<uint64_t> val64;
@@ -291,7 +291,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 if (typeSwitch->isNative(NativeTypeKind::String))
                 {
                     if (valText.find(expr->computedValue.text) != valText.end())
-                        return context->report({expr, format("switch value '%s' already defined", expr->computedValue.text.c_str())});
+                        return context->report({expr, format(Msg0611                            , expr->computedValue.text.c_str())});
                     valText.insert(expr->computedValue.text);
                 }
                 else
@@ -303,10 +303,10 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     if (val64.find(value) != val64.end())
                     {
                         if (expr->flags & AST_VALUE_IS_TYPEINFO)
-                            return context->report({expr, format("switch value '%s' already defined", expr->token.text.c_str())});
+                            return context->report({expr, format(Msg0612                            , expr->token.text.c_str())});
                         if (typeSwitch->flags & TYPEINFO_INTEGER)
-                            return context->report({expr, format("switch value '%d' already defined", expr->computedValue.reg.u64)});
-                        return context->report({expr, format("switch value '%f' already defined", expr->computedValue.reg.f64)});
+                            return context->report({expr, format(Msg0613                            , expr->computedValue.reg.u64)});
+                        return context->report({expr, format(Msg0614                            , expr->computedValue.reg.f64)});
                     }
 
                     val64.insert(expr->computedValue.reg.u64);
@@ -314,7 +314,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
             }
             else if (node->attributeFlags & ATTRIBUTE_COMPLETE)
             {
-                return context->report({expr, "expression cannot be evaluated at compile time, and switch is 'swag.complete'"});
+                return context->report({expr, Msg0615                                                                        });
             }
         }
     }
@@ -324,11 +324,11 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     {
         // No default for a complete switch
         auto back = node->cases.back();
-        SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, "'default' is invalid in a switch marked with 'swag.complete'"}));
+        SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, Msg0616                                                       }));
 
         // For typeset, we need to test originalSwitchType, because the type of the switch is now to @kindof(originalType)
         if (node->typeInfo->kind != TypeInfoKind::Enum && (!node->beforeAutoCastType || node->beforeAutoCastType->kind != TypeInfoKind::TypeSet))
-            return context->report({node, node->token, format("'swag.complete' attribute cannot be used on a switch with type '%s'", node->typeInfo->getDisplayName().c_str())});
+            return context->report({node, node->token, format(Msg0617                                                              , node->typeInfo->getDisplayName().c_str())});
 
         if (node->typeInfo->kind == TypeInfoKind::Enum)
         {
@@ -341,8 +341,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (valText.find(one->value.text) == valText.end())
                         {
-                            Diagnostic diag{node, node->token, format("switch is incomplete (missing '%s.%s')", typeEnum->name.c_str(), one->namedParam.c_str())};
-                            Diagnostic note{one->declNode, one->declNode->token, "this is the missing value", DiagnosticLevel::Note};
+                            Diagnostic diag{node, node->token, format(Msg0618                                 , typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic note{one->declNode, one->declNode->token, Msg0619                    , DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
                     }
@@ -356,8 +356,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (val64.find(one->value.reg.u64) == val64.end())
                         {
-                            Diagnostic diag{node, node->token, format("switch is incomplete (missing '%s.%s')", typeEnum->name.c_str(), one->namedParam.c_str())};
-                            Diagnostic note{one->declNode, one->declNode->token, "this is the missing value", DiagnosticLevel::Note};
+                            Diagnostic diag{node, node->token, format(Msg0620                                 , typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic note{one->declNode, one->declNode->token, Msg0621                    , DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
                     }
@@ -378,8 +378,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                         return true;
                     if (val64.find(offset) == val64.end())
                     {
-                        Diagnostic diag{node, node->token, format("switch is incomplete (missing '%s.%s')", typeSet->name.c_str(), one->namedParam.c_str())};
-                        Diagnostic note{one->declNode, one->declNode->token, "this is the missing value", DiagnosticLevel::Note};
+                        Diagnostic diag{node, node->token, format(Msg0622                                 , typeSet->name.c_str(), one->namedParam.c_str())};
+                        Diagnostic note{one->declNode, one->declNode->token, Msg0623                    , DiagnosticLevel::Note};
                         return context->report(diag, &note);
                     }
                 }
@@ -485,7 +485,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     AstNode* newExpression = nullptr;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node, node->token, "cannot visit a tuple"}));
+        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report({node, node->token, Msg0624               }));
         AstIdentifierRef* identifierRef = nullptr;
         bool              cloneParam    = false;
         if (node->expression->kind == AstNodeKind::IdentifierRef)
@@ -530,8 +530,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         return true;
     }
 
-    SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, format("special named visit is only valid for struct ('%s' provided)", typeInfo->getDisplayName().c_str())}));
-    SWAG_VERIFY(node->aliasNames.size() <= 2, context->report({node, node->aliasNames[2], format("too many 'visit' alias names (maximum is 2, but %u are provided)", node->aliasNames.size())}));
+    SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, format(Msg0625                                                       , typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(node->aliasNames.size() <= 2, context->report({node, node->aliasNames[2], format(Msg0626                                                           , node->aliasNames.size())}));
 
     Utf8 alias0Name = node->aliasNames.empty() ? Utf8("@alias0") : node->aliasNames[0].text;
     Utf8 alias1Name = node->aliasNames.size() <= 1 ? Utf8("@alias1") : node->aliasNames[1].text;
@@ -611,7 +611,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
         content += format("{ loop %s { ", (const char*) concat.firstBucket->datas);
-        SWAG_VERIFY(!node->wantPointer, context->report({node, node->token, "cannot visit a type variadic by pointer"}));
+        SWAG_VERIFY(!node->wantPointer, context->report({node, node->token, Msg0627                                  }));
         content += format("var %s = %s[@index]; ", alias0Name.c_str(), (const char*) concat.firstBucket->datas);
         content += format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
@@ -619,8 +619,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
     else
     {
-        PushErrHint errh("this cannot be visited");
-        return context->report({node->expression, format("invalid type '%s' for 'visit'", typeInfo->getDisplayName().c_str())});
+        PushErrHint errh(Msg0628                 );
+        return context->report({node->expression, format(Msg0629                        , typeInfo->getDisplayName().c_str())});
     }
 
     SyntaxJob syntaxJob;
@@ -666,7 +666,7 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     auto ownerBreakable = node->ownerBreakable;
     while (ownerBreakable && !(ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX))
         ownerBreakable = ownerBreakable->ownerBreakable;
-    SWAG_VERIFY(ownerBreakable, context->report({node, node->token, "'@index' can only be used inside a breakable loop"}));
+    SWAG_VERIFY(ownerBreakable, context->report({node, node->token, Msg0630                                            }));
 
     ownerBreakable->breakableFlags |= BREAKABLE_NEED_INDEX;
 
@@ -694,11 +694,11 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
         auto breakable = node->ownerBreakable;
         while (breakable && (breakable->kind != AstNodeKind::LabelBreakable || breakable->token.text != node->label))
             breakable = breakable->ownerBreakable;
-        SWAG_VERIFY(breakable, context->report({node, format("unknown label '%s'", node->label.c_str())}));
+        SWAG_VERIFY(breakable, context->report({node, format(Msg0631             , node->label.c_str())}));
         node->ownerBreakable = breakable;
     }
 
-    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'break' can only be used inside a breakable block"}));
+    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, Msg0632                                            }));
     node->ownerBreakable->breakList.push_back(node);
 
     SWAG_CHECK(checkUnreachableCode(context));
@@ -709,19 +709,19 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
 bool SemanticJob::resolveFallThrough(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);
-    SWAG_VERIFY(node->ownerBreakable && node->ownerBreakable->kind == AstNodeKind::Switch, context->report({node, node->token, "'fallthrough' can only be used inside a 'switch' block"}));
+    SWAG_VERIFY(node->ownerBreakable && node->ownerBreakable->kind == AstNodeKind::Switch, context->report({node, node->token, Msg0633                                                 }));
     node->ownerBreakable->fallThroughList.push_back(node);
 
     // Be sure we are in a case
     auto parent = node->parent;
     while (parent && parent->kind != AstNodeKind::SwitchCase && parent != node->ownerBreakable)
         parent = parent->parent;
-    SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, node->token, "'fallthrough' can only be used inside a 'case' block"}));
+    SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, node->token, Msg0634                                               }));
     node->switchCase = CastAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
 
     // 'fallthrough' cannot be used on the last case, this has no sens
     auto switchBlock = CastAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
-    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, node->token, "'fallthrough' cannot be used in the last 'case' of the swtich"}));
+    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, node->token, Msg0635                                                        }));
 
     SWAG_CHECK(checkUnreachableCode(context));
     node->byteCodeFct = ByteCodeGenJob::emitFallThrough;
@@ -745,12 +745,12 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
             breakable = breakable->ownerBreakable;
         }
 
-        SWAG_VERIFY(breakable, context->report({node, format("unknown label '%s'", node->label.c_str())}));
+        SWAG_VERIFY(breakable, context->report({node, format(Msg0636             , node->label.c_str())}));
         node->ownerBreakable = lastBreakable;
     }
 
-    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'continue' can only be used inside a breakable loop"}));
-    SWAG_VERIFY(node->ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE, context->report({node, node->token, "'continue' can only be used inside a breakable loop"}));
+    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, Msg0637                                              }));
+    SWAG_VERIFY(node->ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE, context->report({node, node->token, Msg0638                                              }));
     node->ownerBreakable->continueList.push_back(node);
 
     SWAG_CHECK(checkUnreachableCode(context));
@@ -769,8 +769,8 @@ bool SemanticJob::resolveLabel(SemanticContext* context)
         {
             if (check->token.text == node->token.text)
             {
-                Diagnostic diag(node, node->token, format("label name '%s' already defined in the hierarchy", node->token.text.c_str()));
-                Diagnostic note(check, check->token, "this is the other definition", DiagnosticLevel::Note);
+                Diagnostic diag(node, node->token, format(Msg0639                                           , node->token.text.c_str()));
+                Diagnostic note(check, check->token, Msg0640                       , DiagnosticLevel::Note);
                 context->report(diag, &note);
             }
         }

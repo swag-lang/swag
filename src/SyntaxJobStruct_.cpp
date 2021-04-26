@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "Scoped.h"
 #include "SemanticJob.h"
+#include "ErrorIds.h"
 
 bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 {
@@ -38,8 +39,8 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto identifierStruct = implNode->identifier;
     if (token.id == TokenId::KwdFor)
     {
-        SWAG_VERIFY(scopeKind != ScopeKind::Enum, sourceFile->report({implNode, token, "'for' is invalid for an enum implementation block"}));
-        SWAG_VERIFY(scopeKind != ScopeKind::TypeSet, sourceFile->report({implNode, token, "'for' is invalid for a typeset implementation block"}));
+        SWAG_VERIFY(scopeKind != ScopeKind::Enum, sourceFile->report({implNode, token, Msg0438}));
+        SWAG_VERIFY(scopeKind != ScopeKind::TypeSet, sourceFile->report({implNode, token, Msg0439}));
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor));
         implNode->semanticFct = SemanticJob::resolveImplFor;
@@ -49,7 +50,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         implInterface                         = true;
 
         auto last = CastAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
-        SWAG_VERIFY(!last->genericParameters, sourceFile->report({last->genericParameters, "invalid generic parameters, should be naked"}));
+        SWAG_VERIFY(!last->genericParameters, sourceFile->report({last->genericParameters, Msg0440}));
     }
     else
     {
@@ -66,8 +67,8 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto newScope        = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
-        Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(scopeKind), implNode->token.text.c_str(), Scope::getNakedKindName(newScope->kind))};
-        Diagnostic note{newScope->owner, newScope->owner->token, format("this is the declaration of '%s'", implNode->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{implNode->identifier, implNode->identifier->token, format(Msg0441, Scope::getNakedKindName(scopeKind), implNode->token.text.c_str(), Scope::getNakedKindName(newScope->kind))};
+        Diagnostic note{newScope->owner, newScope->owner->token, format(Msg0442, implNode->token.text.c_str()), DiagnosticLevel::Note};
         return sourceFile->report(diag, &note);
     }
 
@@ -145,7 +146,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
+    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, Msg0443));
     SWAG_CHECK(tokenizer.getToken(token));
 
     return true;
@@ -202,7 +203,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid name '%s'", token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format(Msg0444, token.text.c_str())));
     structNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(structNode));
 
@@ -220,8 +221,8 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         if (newScope->kind != scopeKind)
         {
             auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-            Diagnostic diag{implNode->identifier, implNode->identifier->token, format("the implementation block kind (%s) does not match the type of '%s' (%s)", Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
-            Diagnostic note{structNode, structNode->token, format("this is the declaration of '%s'", implNode->token.text.c_str()), DiagnosticLevel::Note};
+            Diagnostic diag{implNode->identifier, implNode->identifier->token, format(Msg0445, Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
+            Diagnostic note{structNode, structNode->token, format(Msg0446, implNode->token.text.c_str()), DiagnosticLevel::Note};
             return sourceFile->report(diag, &note);
         }
 
@@ -318,7 +319,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
             return true;
         }
 
-        return sourceFile->report({parent, token, "empty tuple definition"});
+        return sourceFile->report({parent, token, Msg0447});
     }
 
     int idx = 0;
@@ -336,7 +337,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         if (token.id == TokenId::SymColon)
         {
             typeExpression = CastAst<AstTypeExpression>(expression, AstNodeKind::TypeExpression);
-            SWAG_VERIFY(prevToken.id == TokenId::Identifier, syntaxError(prevToken, "identifier expected"));
+            SWAG_VERIFY(prevToken.id == TokenId::Identifier, syntaxError(prevToken, Msg0448));
             SWAG_ASSERT(typeExpression->identifier);
             SWAG_CHECK(checkIsSingleIdentifier(typeExpression->identifier, "as a tuple field name"));
             SWAG_CHECK(checkIsValidVarName(typeExpression->identifier->childs.back()));
@@ -361,7 +362,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
 
         idx++;
 
-        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, syntaxError(token, format("invalid token '%s' in tuple type, ',' or '}' are expected here", token.text.c_str())));
+        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, syntaxError(token, format(Msg0449, token.text.c_str())));
         if (token.id == TokenId::SymRightCurly)
             break;
         SWAG_CHECK(tokenizer.getToken(token));
@@ -437,15 +438,15 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
 
     // A user alias
     case TokenId::KwdAlias:
-        SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, "'alias' is invalid in a typeset definition"}));
+        SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, Msg0450}));
         SWAG_CHECK(doAlias(parent, result));
         break;
 
     // Using on a struct member
     case TokenId::KwdUsing:
     {
-        SWAG_VERIFY(structType != SyntaxStructType::Interface, sourceFile->report({parent, token, "'using' on a member is invalid in an interface definition"}));
-        SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, "'using' on a member is invalid in a typeset definition"}));
+        SWAG_VERIFY(structType != SyntaxStructType::Interface, sourceFile->report({parent, token, Msg0451}));
+        SWAG_VERIFY(structType != SyntaxStructType::TypeSet, sourceFile->report({parent, token, Msg0452}));
         SWAG_CHECK(eatToken());
 
         auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
@@ -465,7 +466,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         break;
 
     case TokenId::KwdVar:
-        return sourceFile->report({parent, token, "'var' is not necessary to declare a field"});
+        return sourceFile->report({parent, token, Msg0453});
 
     // A normal declaration
     default:

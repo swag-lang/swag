@@ -9,6 +9,7 @@
 #include "ByteCodeStack.h"
 #include "Context.h"
 #include "Ast.h"
+#include "ErrorIds.h"
 
 const auto BUF_SIZE = 2048;
 
@@ -55,7 +56,7 @@ bool SourceFile::checkFormat()
         || (c1 == 0x84 && c2 == 0x31 && c3 == 0x95 && c4 == 0x33) // GB-18030
     )
     {
-        report({this, "invalid file format, should be ascii, utf-8 or utf-8-bom"});
+        report({this, Msg0314});
         return false;
     }
 

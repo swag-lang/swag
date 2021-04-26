@@ -4,6 +4,7 @@
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
+#include "ErrorIds.h"
 
 const char* g_TokenNames[] =
     {
@@ -135,7 +136,7 @@ bool Tokenizer::eatCComment(Token& token)
         {
             token.endLocation = token.startLocation;
             token.endLocation.column += 2;
-            sourceFile->report({sourceFile, token, "unexpected end of file found in comment"});
+            sourceFile->report({sourceFile, token, Msg0080});
             return false;
         }
 
@@ -310,7 +311,7 @@ bool Tokenizer::getToken(Token& token)
         token.text        = c;
         token.id          = TokenId::Invalid;
         token.endLocation = location;
-        sourceFile->report({sourceFile, token, format("invalid character '%s'", token.text.c_str())});
+        sourceFile->report({sourceFile, token, format(Msg0081, token.text.c_str())});
         return false;
     }
 

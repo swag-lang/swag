@@ -15,11 +15,11 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         return true;
 
     if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
-        return context->report({node, "cannot reference a type expression"});
+        return context->report({node, Msg0012                             });
 
     if (node->resolvedSymbolName)
     {
-        Diagnostic  diag{node, format("%s '%s' cannot be referenced in that context because it's not an rvalue", SymTable::getNakedKindName(node->resolvedSymbolName->kind), node->resolvedSymbolName->name.c_str())};
+        Diagnostic  diag{node, format(Msg0013                                                                  , SymTable::getNakedKindName(node->resolvedSymbolName->kind), node->resolvedSymbolName->name.c_str())};
         Diagnostic* note = nullptr;
 
         // Missing self ?
@@ -119,13 +119,13 @@ bool SemanticJob::getRelativeSize(SemanticContext* context, AstNode* identifier,
     {
         if (!(identifier->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
         {
-            SWAG_VERIFY(identifier->flags & AST_VALUE_COMPUTED, context->report({typeNode, "cannot evaluate relative size at compile time"}));
-            SWAG_VERIFY(identifier->computedValue.reg.u64 <= 8, context->report({typeNode, "relative size value must be 0, 1, 2, 4 or 8"}));
+            SWAG_VERIFY(identifier->flags & AST_VALUE_COMPUTED, context->report({typeNode, Msg0014                                        }));
+            SWAG_VERIFY(identifier->computedValue.reg.u64 <= 8, context->report({typeNode, Msg0015                                      }));
             value = identifier->computedValue.reg.u8;
         }
     }
 
-    SWAG_VERIFY(value == 0 || value == 1 || value == 2 || value == 4 || value == 8, context->report({typeNode, "relative size value must be 0, 1, 2, 4 or 8"}));
+    SWAG_VERIFY(value == 0 || value == 1 || value == 2 || value == 4 || value == 8, context->report({typeNode, Msg0016                                      }));
     return true;
 }
 
@@ -220,8 +220,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::TypeSet &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type (it's %s)", child->token.text.c_str(), SymTable::getArticleKindName(symName->kind))};
-                    Diagnostic note{symOver->node, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
+                    Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, format(Msg0017                              , child->token.text.c_str(), SymTable::getArticleKindName(symName->kind))};
+                    Diagnostic note{symOver->node, symOver->node->token, format(Msg0018                         , symName->name.c_str()), DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }
             }
@@ -269,7 +269,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 auto ptrRef          = allocType<TypeInfoReference>();
                 ptrRef->pointedType  = ptrPointer1->pointedType;
                 ptrRef->originalType = nullptr;
-                SWAG_VERIFY(typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST, context->report({typeNode, "a reference must be declared as 'const'"}));
+                SWAG_VERIFY(typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST, context->report({typeNode, Msg0019                                  }));
                 ptrRef->flags |= TYPEINFO_CONST;
                 ptrRef->flags |= (firstType->flags & TYPEINFO_GENERIC);
                 ptrRef->computeName();
@@ -289,7 +289,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         auto ptrRef          = allocType<TypeInfoReference>();
         ptrRef->pointedType  = typeNode->typeInfo;
         ptrRef->originalType = nullptr;
-        SWAG_VERIFY(typeNode->typeFlags & TYPEFLAG_ISCONST, context->report({typeNode, "a reference must be declared as 'const'"}));
+        SWAG_VERIFY(typeNode->typeFlags & TYPEFLAG_ISCONST, context->report({typeNode, Msg0020                                  }));
         ptrRef->flags |= TYPEINFO_CONST;
         ptrRef->flags |= (typeNode->typeInfo->flags & TYPEINFO_GENERIC);
         ptrRef->computeName();
@@ -335,10 +335,10 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     continue;
                 }
 
-                SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, "array dimension cannot be evaluated at compile time"}));
-                SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->report({child, format("array dimension is '%s' and should be integer", child->typeInfo->getDisplayName().c_str())}));
+                SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, Msg0021                                              }));
+                SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->report({child, format(Msg0022                                        , child->typeInfo->getDisplayName().c_str())}));
                 SWAG_CHECK(checkSizeOverflow(context, "array", child->computedValue.reg.u32 * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
-                SWAG_VERIFY(!child->isConstant0(), context->report({child, "array dimension is 0"}));
+                SWAG_VERIFY(!child->isConstant0(), context->report({child, Msg0023               }));
 
                 auto ptrArray   = allocType<TypeInfoArray>();
                 ptrArray->count = (uint32_t) child->computedValue.reg.u32;
@@ -386,7 +386,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         if (typePtr->pointedType->flags & TYPEINFO_STRUCT_TYPEINFO)
         {
-            SWAG_VERIFY(typeInfo->isConst(), context->report({typeNode, "pointer to 'swag.TypeInfo' must be const"}));
+            SWAG_VERIFY(typeInfo->isConst(), context->report({typeNode, Msg0024                                   }));
         }
     }
 
@@ -404,8 +404,8 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
             auto overload = back->resolvedSymbolOverload;
             if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
             {
-                Diagnostic diag(back, back->token, format("alias is public but '%s' is not", back->token.text.c_str()));
-                Diagnostic note(overload->node, overload->node->token, format("this is the definition of '%s'", node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                Diagnostic diag(back, back->token, format(Msg0025                          , back->token.text.c_str()));
+                Diagnostic note(overload->node, overload->node->token, format(Msg0026                         , node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
                 return context->report(diag, &note);
             }
 
@@ -434,7 +434,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
         }
     }
 
-    SWAG_VERIFY(overload, context->report({back, "alias can only be used with a type or an identifier"}));
+    SWAG_VERIFY(overload, context->report({back, Msg0027                                              }));
     auto symbol       = overload->symbol;
     auto typeResolved = overload->typeInfo;
 
@@ -449,7 +449,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
 
     // Collect all attributes for the variable
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_STRICT), context->report({node, "'swag.strict' attribute can only be used on a type alias"}));
+    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_STRICT), context->report({node, Msg0028                                                   }));
 
     node->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Alias));
@@ -467,7 +467,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
             {
                 if (c->resolvedSymbolName && c->resolvedSymbolName->kind == SymbolKind::Variable)
                 {
-                    SWAG_VERIFY(cptVar == 0, context->report({back, "cannot alias multiple variables"}));
+                    SWAG_VERIFY(cptVar == 0, context->report({back, Msg0029                          }));
                     cptVar++;
                 }
             }
@@ -483,7 +483,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     case SymbolKind::TypeAlias:
         break;
     default:
-        return context->report({back, back->token, format("alias cannot be used on %s", SymTable::getArticleKindName(symbol->kind))});
+        return context->report({back, back->token, format(Msg0030                     , SymTable::getArticleKindName(symbol->kind))});
     }
 
     SWAG_ASSERT(overload);
@@ -590,13 +590,13 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
 
     if (!(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
         (!typeInfo->isNative(NativeTypeKind::Rune)))
-        return context->report({typeNode, format("invalid bitcast type '%s' (should be native integer, char or float)", typeInfo->getDisplayName().c_str())});
+        return context->report({typeNode, format(Msg0031                                                              , typeInfo->getDisplayName().c_str())});
 
     if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
         (!exprTypeInfo->isNative(NativeTypeKind::Rune)))
-        return context->report({exprNode, format("cannot bitcast from type '%s' (should be native integer, char or float)", exprTypeInfo->getDisplayName().c_str())});
+        return context->report({exprNode, format(Msg0032                                                                  , exprTypeInfo->getDisplayName().c_str())});
 
-    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, format("cannot bitcast to a type with a bigger size ('%s' from '%s')", typeInfo->getDisplayName().c_str(), exprTypeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, format(Msg0033                                                       , typeInfo->getDisplayName().c_str(), exprTypeInfo->getDisplayName().c_str())}));
 
     node->typeInfo = typeNode->typeInfo;
     node->setPassThrough();

@@ -4,6 +4,7 @@
 #include "Workspace.h"
 #include "BackendLinker.h"
 #include "Module.h"
+#include "ErrorIds.h"
 
 bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 {
@@ -302,7 +303,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, error);
     if (!target)
     {
-        g_Log.error(format("llvm backend cannot create target '%s'", targetTriple.c_str()));
+        g_Log.error(format(Msg0558, targetTriple.c_str()));
         return false;
     }
 

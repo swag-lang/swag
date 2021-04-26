@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "ErrorIds.h"
 
 void SemanticJob::propagateAttributes(AstNode* child)
 {
@@ -35,7 +36,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
     SWAG_ASSERT(oneAttribute->typeInfo);
     if (oneAttribute->typeInfo->kind != TypeInfoKind::FuncAttr)
-        return context->report({oneAttribute, format("'%s' is not a valid attribute, it's %s", oneAttribute->typeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
+        return context->report({oneAttribute, format(Msg0582, oneAttribute->typeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
 
     auto kind     = checkNode->kind;
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
@@ -116,9 +117,9 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if (specificMsg)
     {
         auto       nakedName = AstNode::getKindName(checkNode);
-        Diagnostic diag{oneAttribute, format("attribute '%s' can only be applied to %s", oneAttribute->token.text.c_str(), specificMsg)};
-        Diagnostic note1{checkNode, checkNode->token, format("it is applied on this %s", nakedName.c_str()), DiagnosticLevel::Note};
-        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is attribute '%s'", oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{oneAttribute, format(Msg0583, oneAttribute->token.text.c_str(), specificMsg)};
+        Diagnostic note1{checkNode, checkNode->token, format(Msg0584, nakedName.c_str()), DiagnosticLevel::Note};
+        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format(Msg0585, oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note1, &note2);
     }
     else
@@ -126,16 +127,16 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         auto nakedName = AstNode::getArticleKindName(checkNode);
         if (nakedName == "<node>")
         {
-            Diagnostic diag{oneAttribute, format("attribute '%s' cannot be used in that context", oneAttribute->token.text.c_str())};
-            Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is attribute '%s'", oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
+            Diagnostic diag{oneAttribute, format(Msg0586, oneAttribute->token.text.c_str())};
+            Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format(Msg0587, oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note1);
         }
         else
         {
             auto       nakedName1 = AstNode::getKindName(checkNode);
-            Diagnostic diag{oneAttribute, format("attribute '%s' cannot be applied to %s", oneAttribute->token.text.c_str(), nakedName.c_str())};
-            Diagnostic note1{checkNode, checkNode->token, format("this is the %s", nakedName1.c_str()), DiagnosticLevel::Note};
-            Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is attribute '%s'", oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
+            Diagnostic diag{oneAttribute, format(Msg0588, oneAttribute->token.text.c_str(), nakedName.c_str())};
+            Diagnostic note1{checkNode, checkNode->token, format(Msg0589, nakedName1.c_str()), DiagnosticLevel::Note};
+            Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format(Msg0590, oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note1, &note2);
         }
     }
@@ -183,8 +184,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 if (result && result->isHere.contains(typeInfo))
                 {
                     SWAG_ASSERT(context->sourceFile->name != "md5.swg");
-                    Diagnostic diag{forNode, forNode->token, format("attribute '%s' assigned twice to '%s' ('swag.attributeMulti' is not present in the declaration of '%s')", child->token.text.c_str(), forNode->token.text.c_str(), child->token.text.c_str())};
-                    Diagnostic note{child, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
+                    Diagnostic diag{forNode, forNode->token, format(Msg0591, child->token.text.c_str(), forNode->token.text.c_str(), child->token.text.c_str())};
+                    Diagnostic note{child, child->token, Msg0592, DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }
             }
@@ -282,7 +283,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     else if (w == "an")
                         flags |= attrValue.reg.b ? ATTRIBUTE_SAFETY_AN_ON : ATTRIBUTE_SAFETY_AN_OFF;
                     else
-                        return context->report({child, format("'swag.safety' invalid value '%s'", w.c_str())});
+                        return context->report({child, format(Msg0593, w.c_str())});
                 }
             }
             else if (child->token.text == "optim")
@@ -310,7 +311,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     else if (w == "bk")
                         flags |= attrValue.reg.b ? ATTRIBUTE_OPTIM_BK_ON : ATTRIBUTE_OPTIM_BK_OFF;
                     else
-                        return context->report({child, format("'swag.optim' invalid value '%s'", w.c_str())});
+                        return context->report({child, format(Msg0594, w.c_str())});
                 }
             }
             else if (child->token.text == "selectif")
@@ -323,13 +324,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.pack", "value", attrValue);
-                SWAG_VERIFY(!attrValue.reg.u8 || isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.pack' value must be 0 or a power of two ('%d' provided)", attrValue.reg.u8)}));
+                SWAG_VERIFY(!attrValue.reg.u8 || isPowerOfTwo(attrValue.reg.u8), context->report({child, format(Msg0595, attrValue.reg.u8)}));
             }
             else if (child->token.text == "align")
             {
                 ComputedValue attrValue;
                 curAttr->attributes.getValue("swag.align", "value", attrValue);
-                SWAG_VERIFY(isPowerOfTwo(attrValue.reg.u8), context->report({child, format("'swag.align' value must be a power of two ('%d' provided)", attrValue.reg.u8)}));
+                SWAG_VERIFY(isPowerOfTwo(attrValue.reg.u8), context->report({child, format(Msg0596, attrValue.reg.u8)}));
             }
 
             // Append attributes
@@ -382,7 +383,7 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 bool SemanticJob::resolveAttrUse(SemanticContext* context)
 {
     auto node = CastAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
-    SWAG_VERIFY(node->content || node->isGlobal, context->report({node, "invalid attribute usage"}));
+    SWAG_VERIFY(node->content || node->isGlobal, context->report({node, Msg0597}));
 
     for (auto child : node->childs)
     {
@@ -403,8 +404,8 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         auto resolved     = identifier->resolvedSymbolOverload;
         if (resolvedName->kind != SymbolKind::Attribute)
         {
-            Diagnostic diag{identifier, format("invalid attribute '%s'", resolvedName->name.c_str())};
-            Diagnostic note{resolved->node, resolved->node->token, format("this is the definition of '%s'", resolvedName->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic diag{identifier, format(Msg0598, resolvedName->name.c_str())};
+            Diagnostic note{resolved->node, resolved->node->token, format(Msg0599, resolvedName->name.c_str()), DiagnosticLevel::Note};
             context->report(diag, &note);
             return false;
         }
@@ -415,8 +416,8 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeInfo->attributeUsage & AttributeUsage::File))
             {
-                Diagnostic diag{identifier, format("attribute '%s' does not have the 'File' usage, and cannot be used with '#global'", resolvedName->name.c_str())};
-                Diagnostic note{resolved->node, resolved->node->token, format("this is the definition of '%s'", resolvedName->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic diag{identifier, format(Msg0600, resolvedName->name.c_str())};
+                Diagnostic note{resolved->node, resolved->node->token, format(Msg0601, resolvedName->name.c_str()), DiagnosticLevel::Note};
                 context->report(diag, &note);
                 return false;
             }
@@ -435,7 +436,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             for (auto one : identifier->callParameters->childs)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
-                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, "attribute parameter cannot be evaluated at compile time"}));
+                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, Msg0602}));
 
                 AttributeParameter attrParam;
                 attrParam.name     = param->resolvedParameter->namedParam;

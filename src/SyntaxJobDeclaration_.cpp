@@ -29,7 +29,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 case AstNodeKind::AttrUse:
                     if (((AstAttrUse*) child)->isGlobal)
                         break;
-                    return error(node->token, "global 'using' must be defined at the top of the file");
+                    return error(node->token, Msg0386);
                 case AstNodeKind::CompilerImport:
                 case AstNodeKind::CompilerAssert:
                 case AstNodeKind::CompilerForeignLib:
@@ -39,7 +39,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                     break;
 
                 default:
-                    return error(node->token, "global 'using' must be defined at the top of the file");
+                    return error(node->token, Msg0387);
                 }
             }
         }
@@ -59,7 +59,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isGlobal(), error(token, "a namespace definition must appear either at file scope or immediately within another namespace definition"));
+    SWAG_VERIFY(currentScope->isGlobal(), error(token, Msg0388));
     SWAG_CHECK(doNamespace(parent, result, false));
     return true;
 }
@@ -93,17 +93,17 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         case TokenId::Identifier:
             break;
         case TokenId::SymLeftCurly:
-            return syntaxError(token, "missing namespace name before '{'");
+            return syntaxError(token, Msg0389);
         case TokenId::SymSemiColon:
-            return syntaxError(token, "missing namespace name before ';'");
+            return syntaxError(token, Msg0390);
         default:
-            return syntaxError(token, format("namespace name must be an identifier ('%s' provided)", token.text.c_str()));
+            return syntaxError(token, format(Msg0391, token.text.c_str()));
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
-            SWAG_VERIFY(token.text != "swag", error(token, "the 'swag' namespace is reserved by the compiler"));
-        //SWAG_VERIFY(token.text != sourceFile->module->name, error(token, format("a namespace cannot have the same name as the module ('%s')", token.text.c_str())));
+            SWAG_VERIFY(token.text != "swag", error(token, Msg0392));
+        //SWAG_VERIFY(token.text != sourceFile->module->name, error(token, format(Msg0393                                                     , token.text.c_str())));
 
         // Add/Get namespace
         {
@@ -162,7 +162,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
             SWAG_CHECK(doTopLevelInstruction(namespaceNode));
         }
 
-        SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, "no corresponding '}' has been found"));
+        SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Msg0880));
         SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     }
 
@@ -181,7 +181,7 @@ bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         SWAG_CHECK(doTopLevelInstruction(node));
 
-    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, "no corresponding '}' has been found"));
+    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Msg0881));
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
@@ -208,7 +208,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, "no corresponding '}' has been found"));
+    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Msg0882));
     node->token.endLocation = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
@@ -505,8 +505,8 @@ bool SyntaxJob::doLabel(AstNode* parent, AstNode** result)
     labelNode->semanticFct = SemanticJob::resolveLabel;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, syntaxError(labelNode->token, "missing label identifier before '{'"));
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid label identifier '%s'", token.text.c_str())));
+    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, syntaxError(labelNode->token, Msg0394));
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format(Msg0395, token.text.c_str())));
     labelNode->inheritTokenName(token);
     labelNode->inheritTokenLocation(token);
 

@@ -4,6 +4,7 @@
 #include "LanguageSpec.h"
 #include "Scoped.h"
 #include "Module.h"
+#include "ErrorIds.h"
 
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 {
@@ -75,7 +76,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-    SWAG_VERIFY(token.id != TokenId::SymLeftSquare, syntaxError(token, "invalid token '['"));
+    SWAG_VERIFY(token.id != TokenId::SymLeftSquare, syntaxError(token, Msg0260));
 
     return true;
 }
@@ -90,7 +91,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, "intrinsic parameter expression cannot be empty"));
+    SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, Msg0861));
 
     // Three parameters
     if (node->token.id == TokenId::IntrinsicMakeInterface)
@@ -165,7 +166,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     case TokenId::SymLeftParen:
     {
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, "expression is empty"));
+        SWAG_CHECK(verifyError(token, token.id != TokenId::SymRightParen, Msg0862));
         AstNode* expr;
         SWAG_CHECK(doExpression(parent, exprFlags, &expr));
         expr->flags |= AST_IN_ATOMIC_EXPR;
@@ -336,12 +337,12 @@ bool SyntaxJob::doDeRef(AstNode* parent, AstNode** result)
 
     if (Tokenizer::isSymbol(token.id) && token.id != TokenId::SymBackTick)
     {
-        PushErrHint errh("this is seen as a pointer dereference ':'");
-        return syntaxError(arrayNode, format("symbol ':' is interpreted as a pointer dereference, but is followed by a symbol ('%s')", token.text.c_str()));
+        PushErrHint errh(Msg0261);
+        return syntaxError(arrayNode, format(Msg0262, token.text.c_str()));
     }
 
     {
-        PushErrHint errh("this should be the expression to dereference");
+        PushErrHint errh(Msg0263);
         SWAG_CHECK(doUnaryExpression(arrayNode, EXPR_FLAG_SIMPLE, &arrayNode->array));
     }
 
@@ -557,7 +558,7 @@ bool SyntaxJob::doModifier(Token& mdfToken)
         }
         else
         {
-            return error(mdfToken, format("invalid modifier '%s'", mdfToken.text.c_str()));
+            return error(mdfToken, format(Msg0264, mdfToken.text.c_str()));
         }
     }
 
@@ -602,7 +603,7 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
                 binaryNode->token.id != TokenId::SymLowerLower &&
                 binaryNode->token.id != TokenId::SymGreaterGreater)
             {
-                return error(mdfToken, format("'%s' modifier is not valid for operator '%s'", mdfToken.text.c_str(), binaryNode->token.text.c_str()));
+                return error(mdfToken, format(Msg0265, mdfToken.text.c_str(), binaryNode->token.text.c_str()));
             }
 
             binaryNode->opFlags |= OPFLAG_SAFE;
@@ -613,7 +614,7 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
             if (binaryNode->token.id != TokenId::SymLowerLower &&
                 binaryNode->token.id != TokenId::SymGreaterGreater)
             {
-                return error(mdfToken, format("'%s' modifier is not valid for operator '%s'", mdfToken.text.c_str(), binaryNode->token.text.c_str()));
+                return error(mdfToken, format(Msg0266, mdfToken.text.c_str(), binaryNode->token.text.c_str()));
             }
 
             binaryNode->opFlags |= OPFLAG_SMALL;
@@ -658,7 +659,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode
     AstNode* leftNode;
     SWAG_CHECK(doFactorExpression(nullptr, exprFlags, &leftNode));
     SWAG_CHECK(doOperatorPrecedence(&leftNode));
-    SWAG_VERIFY(token.id != TokenId::SymEqual, syntaxError(token, "invalid compare operator '=', did you mean '==' ?"));
+    SWAG_VERIFY(token.id != TokenId::SymEqual, syntaxError(token, Msg0267));
     Ast::addChildBack(parent, leftNode);
     if (result)
         *result = leftNode;
@@ -829,7 +830,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.id == TokenId::SymRightCurly)
-        return syntaxError(token, format("initializer list is empty"));
+        return syntaxError(token, format(Msg0268));
     if (result)
         *result = initNode;
 
@@ -847,7 +848,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
             // Name
             if (token.id == TokenId::SymColon)
             {
-                SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, syntaxError(paramExpression, "identifier expected"));
+                SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, syntaxError(paramExpression, Msg0269));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->childs.back()));
                 auto name            = paramExpression->childs.back()->token.text;
@@ -884,7 +885,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.id == TokenId::SymRightSquare)
-        return syntaxError(token, format("initializer list is empty"));
+        return syntaxError(token, format(Msg0270));
     if (result)
         *result = initNode;
 
@@ -968,7 +969,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode** result, uint32_t identifierFlags)
         SWAG_CHECK(eatToken());
         while (true)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, syntaxError(token, "variable name or '?' expected in tuple unpacking"));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, syntaxError(token, Msg0271));
             SWAG_CHECK(doIdentifierRef(multi, nullptr, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
             if (token.id != TokenId::SymComma)
                 break;
@@ -1071,7 +1072,7 @@ bool SyntaxJob::checkIsValidUserName(AstNode* node)
     if (!sourceFile->generated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
     {
         if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
-            return syntaxError(node->token, format("identifier '%s' starts with '__', and this is reserved by the language", node->token.text.c_str()));
+            return syntaxError(node->token, format(Msg0272, node->token.text.c_str()));
     }
 
     return true;
@@ -1086,9 +1087,9 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     {
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return syntaxError(identifier->genericParameters, format("unexpected generic parameters for variable '%s'", identifier->token.text.c_str()));
+            return syntaxError(identifier->genericParameters, format(Msg0273, identifier->token.text.c_str()));
         if (identifier->callParameters)
-            return syntaxError(identifier->callParameters, format("unexpected call parameters for variable '%s'", identifier->token.text.c_str()));
+            return syntaxError(identifier->callParameters, format(Msg0274, identifier->token.text.c_str()));
     }
 
     if (node->token.text[0] != '@')
@@ -1100,21 +1101,21 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
         if (node->token.text.find("@alias") == 0)
         {
             if (node->token.text == "@alias")
-                return syntaxError(node->token, "'@alias' variable name must be followed by a number");
+                return syntaxError(node->token, Msg0275);
 
             const char* pz  = node->token.text.c_str() + 6;
             int         num = 0;
             while (*pz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return syntaxError(node->token, format("invalid '@alias' variable name '%s', '%s' is not a valid number", node->token.text.c_str(), node->token.text.c_str() + 6));
+                    return syntaxError(node->token, format(Msg0276, node->token.text.c_str(), node->token.text.c_str() + 6));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
             }
 
             if (num >= 32)
-                return error(node->token, format("an '@alias' number must be in the range [0, 31] ('%u' provided)", num));
+                return error(node->token, format(Msg0277, num));
             if (node->ownerFct)
                 node->ownerFct->aliasMask |= 1 << num;
 
@@ -1122,7 +1123,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
         }
     }
 
-    return syntaxError(node->token, format("invalid variable name '%s', cannot start with '@'", node->token.text.c_str()));
+    return syntaxError(node->token, format(Msg0278, node->token.text.c_str()));
 }
 
 bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result)
@@ -1194,7 +1195,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     // Tuple dereference
     else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
     {
-        SWAG_VERIFY(acceptDeref, error(leftNode->token, format("cannot decompose a tuple in %s", Scope::getArticleKindName(currentScope->kind))));
+        SWAG_VERIFY(acceptDeref, error(leftNode->token, format(Msg0279, Scope::getArticleKindName(currentScope->kind))));
 
         auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
         if (result)
@@ -1333,7 +1334,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 savedtoken.id != TokenId::SymLowerLowerEqual &&
                 savedtoken.id != TokenId::SymGreaterGreaterEqual)
             {
-                return error(mdfToken, format("'%s' modifier is not valid for operator '%s'", mdfToken.text.c_str(), savedtoken.text.c_str()));
+                return error(mdfToken, format(Msg0280, mdfToken.text.c_str(), savedtoken.text.c_str()));
             }
 
             opFlags |= OPFLAG_SAFE;
@@ -1344,7 +1345,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             if (savedtoken.id != TokenId::SymLowerLowerEqual &&
                 savedtoken.id != TokenId::SymGreaterGreaterEqual)
             {
-                return error(mdfToken, format("'%s' modifier is not valid for operator '%s'", mdfToken.text.c_str(), savedtoken.text.c_str()));
+                return error(mdfToken, format(Msg0281, mdfToken.text.c_str(), savedtoken.text.c_str()));
             }
 
             opFlags |= OPFLAG_SMALL;
@@ -1419,7 +1420,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             // dealing with a tuple...
             if (assignment->kind == AstNodeKind::ExpressionList)
             {
-                SWAG_VERIFY(leftNode->childs.size() == assignment->childs.size(), error(assignment, format("unpacking '%d' variable(s), but the tuple on the right contains '%d' element(s)", leftNode->childs.size(), assignment->childs.size())));
+                SWAG_VERIFY(leftNode->childs.size() == assignment->childs.size(), error(assignment, format(Msg0282, leftNode->childs.size(), assignment->childs.size())));
                 while (!leftNode->childs.empty())
                 {
                     auto child             = leftNode->childs.front();
@@ -1505,7 +1506,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             *result = leftNode;
     }
 
-    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid affect operator '==', did you mean '=' ?"));
+    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, Msg0283));
 
     if (token.id != TokenId::SymLeftCurly)
         SWAG_CHECK(eatSemiCol("left expression"));

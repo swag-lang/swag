@@ -238,8 +238,8 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                PushErrHint errh(format("an explicit 'cast(%s)' can be used to force the type", toType->name.c_str()));
-                Diagnostic  diag{fromNode, format("cannot cast implicitly from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str())};
+                PushErrHint errh(format(Msg0174                                               , toType->name.c_str()));
+                Diagnostic  diag{fromNode, format(Msg0175                                   , fromTypeName.c_str(), toTypeName.c_str())};
                 context->report(diag);
                 done = true;
             }
@@ -248,13 +248,13 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         // Cast from struct to interface
         if (toType->kind == TypeInfoKind::Interface && fromType->kind == TypeInfoKind::Struct)
         {
-            context->report({fromNode, format("cannot cast, type '%s' does not implement interface '%s'", fromTypeName.c_str(), toTypeName.c_str())});
+            context->report({fromNode, format(Msg0176                                                   , fromTypeName.c_str(), toTypeName.c_str())});
             done = true;
         }
 
         // General cast error
         if (!done)
-            context->report({fromNode, format("cannot cast from '%s' to '%s'", fromTypeName.c_str(), toTypeName.c_str())});
+            context->report({fromNode, format(Msg0177                        , fromTypeName.c_str(), toTypeName.c_str())});
     }
 
     return false;
@@ -566,7 +566,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64d' is negative and not in the range of 'u8'", fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0178                                                 , fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -589,7 +589,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue.reg.u64 > UINT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64u' is not in the range of 'u8'", fromNode->computedValue.reg.u64)});
+                        context->report({fromNode, fromNode->token, format(Msg0179                                    , fromNode->computedValue.reg.u64)});
                     return false;
                 }
 
@@ -683,7 +683,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64d' is negative and not in the range of 'u16'", fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0180                                                  , fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -706,7 +706,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.u64 > UINT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64u' is not in the range of 'u16'", fromNode->computedValue.reg.u64)});
+                        context->report({fromNode, fromNode->token, format(Msg0181                                     , fromNode->computedValue.reg.u64)});
                     return false;
                 }
 
@@ -800,7 +800,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64d' is negative and not in the range of 'u32'", fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0182                                                  , fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -823,7 +823,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.u64 > UINT32_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64u' is not in the range of 'u32'", fromNode->computedValue.reg.u64)});
+                        context->report({fromNode, fromNode->token, format(Msg0183                                     , fromNode->computedValue.reg.u64)});
                     return false;
                 }
 
@@ -908,7 +908,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64d' is negative and not in the range of 'u64'", fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0184                                                  , fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -1018,7 +1018,7 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64d' is negative and not in the range of 'u64'", fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0185                                                  , fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -1127,7 +1127,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue.reg.s64 < INT8_MIN || fromNode->computedValue.reg.s64 > INT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64d' is not in the range of 's8'", fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0186                                    , fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -1226,7 +1226,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < INT16_MIN || fromNode->computedValue.reg.s64 > INT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64d' is not in the range of 's16'", fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0187                                     , fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -1315,7 +1315,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < INT32_MIN || fromNode->computedValue.reg.s64 > INT32_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64d' is not in the range of 's32'", fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0188                                     , fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -1394,7 +1394,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < INT64_MIN || fromNode->computedValue.reg.s64 > INT64_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64d' is not in the range of 's64'", fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0189                                     , fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -1469,7 +1469,7 @@ bool TypeManager::castToNativeInt(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < INT64_MIN || fromNode->computedValue.reg.s64 > INT64_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64d' is not in the range of 's64'", fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0190                                     , fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -1511,7 +1511,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpI != fromNode->computedValue.reg.s64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64d' is truncated in 'f32'", fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0191                              , fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -1568,7 +1568,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpI != fromNode->computedValue.reg.u64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64u' is truncated in 'f32'", fromNode->computedValue.reg.u64)});
+                        context->report({fromNode, fromNode->token, format(Msg0192                              , fromNode->computedValue.reg.u64)});
                     return false;
                 }
             }
@@ -1597,7 +1597,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpD != fromNode->computedValue.reg.f64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%lf' is truncated in 'f32'", fromNode->computedValue.reg.f64)});
+                        context->report({fromNode, fromNode->token, format(Msg0193                            , fromNode->computedValue.reg.f64)});
                     return false;
                 }
             }
@@ -1641,7 +1641,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpI != fromNode->computedValue.reg.s64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64d' is truncated in 'f64'", fromNode->computedValue.reg.s64)});
+                        context->report({fromNode, fromNode->token, format(Msg0194                              , fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -1698,7 +1698,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpI != fromNode->computedValue.reg.u64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, fromNode->token, format("value '%I64u' is truncated in 'f64'", fromNode->computedValue.reg.u64)});
+                        context->report({fromNode, fromNode->token, format(Msg0195                              , fromNode->computedValue.reg.u64)});
                     return false;
                 }
             }
@@ -1871,9 +1871,9 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             bool hasChanged   = false;
 
             if (toTypeStruct->fields.size() > child->childs.size())
-                return context->report({child, format("not enough initializers for '%s' ('%d' expected, '%d' provided)", toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
+                return context->report({child, format(Msg0196                                                          , toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
             if (toTypeStruct->fields.size() < child->childs.size())
-                return context->report({child, format("too many initializers for '%s' ('%d' expected, '%d' provided)", toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
+                return context->report({child, format(Msg0197                                                        , toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
 
             auto count = toTypeStruct->fields.size();
             for (int j = 0; j < count; j++)
@@ -1881,7 +1881,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 auto childJ  = child->childs[j];
                 auto oldType = childJ->typeInfo;
                 if (toTypeStruct->fields[j]->typeInfo->isRelative() || childJ->typeInfo->isRelative())
-                    return context->report({child, format("relative types are not supported in expression lists")});
+                    return context->report({child, format(Msg0198                                               )});
                 SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeStruct->fields[j]->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
                 if (childJ->typeInfo != oldType)
                     hasChanged = true;
@@ -1921,7 +1921,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         }
 
         if (convertTo->isRelative() || fromTypeList->subTypes[i]->typeInfo->isRelative())
-            return context->report({child, format("relative types are not supported in expression lists")});
+            return context->report({child, format(Msg0199                                               )});
         SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
         if (child)
         {
@@ -2130,9 +2130,9 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             // Ambiguous ! Two fields with a 'using' on the same struct
             if (done)
             {
-                Diagnostic diag{fromNode, fromNode->token, format("cannot cast from '%s' to '%s' because '%s' has multiple fields of type '%s' with 'using'", fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
-                Diagnostic note1{done->declNode, "this is one", DiagnosticLevel::Note};
-                Diagnostic note2{field->declNode, "this is another", DiagnosticLevel::Note};
+                Diagnostic diag{fromNode, fromNode->token, format(Msg0200                                                                                   , fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
+                Diagnostic note1{done->declNode, Msg0201      , DiagnosticLevel::Note};
+                Diagnostic note2{field->declNode, Msg0202          , DiagnosticLevel::Note};
                 return context->report(diag, &note1, &note2);
             }
 
@@ -2436,9 +2436,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!(castFlags & CASTFLAG_NO_ERROR))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, format("cannot cast, not enough initializers ('%d' expected, '%d' provided)", toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, format(Msg0203                                                              , toTypeArray->count, fromTypeList->subTypes.size())});
                 else
-                    context->report({fromNode, format("cannot cast, too many initializers ('%d' expected, '%d' provided)", toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, format(Msg0204                                                            , toTypeArray->count, fromTypeList->subTypes.size())});
             }
 
             return false;
@@ -2872,7 +2872,7 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
 
     // For a tuple initialization, every parameters must be covered
     if ((typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE) && countParams != typeStruct->fields.size())
-        return context->report({identifier, format("not enough parameters in tuple initialization ('%d' expected, '%d' provided)", typeStruct->fields.size(), countParams)});
+        return context->report({identifier, format(Msg0205                                                                       , typeStruct->fields.size(), countParams)});
 
     // Add the 2 nodes to the semantic
     auto b = context->job->nodes.back();

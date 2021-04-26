@@ -8,6 +8,7 @@
 #include "Timer.h"
 #include "SemanticJob.h"
 #include "Workspace.h"
+#include "ErrorIds.h"
 
 thread_local Pool<SyntaxJob> g_Pool_syntaxJob;
 
@@ -20,14 +21,14 @@ bool SyntaxJob::verifyError(const Token& tk, bool expr, const Utf8& msg)
 
 bool SyntaxJob::syntaxError(const Token& tk, const Utf8& msg)
 {
-    Utf8 full = "[syntax] " + msg;
+    Utf8 full = Msg0318 + msg;
     error(tk, full);
     return false;
 }
 
 bool SyntaxJob::syntaxError(AstNode* node, const Utf8& msg)
 {
-    Utf8 full = "[syntax] " + msg;
+    Utf8 full = Msg0319 + msg;
     error(node, full);
     return false;
 }
@@ -40,13 +41,13 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         {
         case TokenId::KwdNoDrop:
             if (Ast::lastGeneratedNode->token.id == TokenId::KwdMove)
-                return syntaxError(token, "'nodrop' instruction must be placed before 'move'");
+                return syntaxError(token, Msg0320);
             if (Ast::lastGeneratedNode->token.id == TokenId::KwdNoDrop)
-                return syntaxError(token, "'nodrop' instruction defined twice");
+                return syntaxError(token, Msg0321);
             break;
         case TokenId::KwdMove:
             if (Ast::lastGeneratedNode->token.id == TokenId::KwdMove)
-                return syntaxError(token, "'move' instruction defined twice");
+                return syntaxError(token, Msg0322);
             break;
         }
     }
@@ -55,23 +56,23 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     {
     case TokenId::KwdElse:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return syntaxError(token, "'else' without a corresponding 'if'");
+            return syntaxError(token, Msg0323);
         break;
     case TokenId::CompilerElse:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return syntaxError(token, "'#else' without a corresponding '#if'");
+            return syntaxError(token, Msg0324);
         break;
     case TokenId::CompilerElseIf:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return syntaxError(token, "'#elif' without a corresponding '#if'");
+            return syntaxError(token, Msg0325);
         break;
 
     case TokenId::SymRightParen:
-        return syntaxError(token, "')' without a corresponding opening '('");
+        return syntaxError(token, Msg0326);
     case TokenId::SymRightCurly:
-        return syntaxError(token, "'}' without a corresponding opening '{'");
+        return syntaxError(token, Msg0327);
     case TokenId::SymRightSquare:
-        return syntaxError(token, "']' without a corresponding opening '['");
+        return syntaxError(token, Msg0328);
     }
 
     Utf8 msg;
@@ -153,9 +154,9 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
         if (!msg)
             msg = "";
         if (token.id == TokenId::EndOfFile)
-            SWAG_CHECK(syntaxError(token, format("missing '%s' %s", g_LangSpec.tokenToName(id).c_str(), msg)));
+            SWAG_CHECK(syntaxError(token, format(Msg0329, g_LangSpec.tokenToName(id).c_str(), msg)));
         else
-            SWAG_CHECK(syntaxError(token, format("'%s' is expected instead of '%s' %s", g_LangSpec.tokenToName(id).c_str(), token.text.c_str(), msg)));
+            SWAG_CHECK(syntaxError(token, format(Msg0330, g_LangSpec.tokenToName(id).c_str(), token.text.c_str(), msg)));
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
@@ -168,7 +169,7 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     {
         if (!msg)
             msg = "";
-        SWAG_CHECK(syntaxError(token, format("a line break or ';' is expected before '%s' to close the %s", token.text.c_str(), msg)));
+        SWAG_CHECK(syntaxError(token, format(Msg0331, token.text.c_str(), msg)));
     }
 
     if (token.id == TokenId::SymSemiColon)
@@ -210,7 +211,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
                 fopen_s(&modl->handleGeneratedFile, publicPath.c_str(), "a+N");
             if (!modl->handleGeneratedFile)
             {
-                fromNode->sourceFile->report({fromNode, fromNode->token, format("cannot open file '%s' for writing", publicPath.c_str())});
+                fromNode->sourceFile->report({fromNode, fromNode->token, format(Msg0332, publicPath.c_str())});
                 return false;
             }
         }

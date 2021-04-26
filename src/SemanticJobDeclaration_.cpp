@@ -18,7 +18,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     auto regNode = node->ownerScope ? node->ownerScope->owner : node;
 
     SWAG_ASSERT(regNode);
-    SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, format("'using' on a variable cannot be used in '%s' scope", Scope::getNakedKindName(node->ownerScope->kind))}));
+    SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, format(Msg0689                                             , Scope::getNakedKindName(node->ownerScope->kind))}));
 
     typeInfoVar = TypeManager::concreteReference(typeInfoVar);
     if (typeInfoVar->kind == TypeInfoKind::Struct)
@@ -33,9 +33,9 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::TypeSet, context->report({node, node->token, "'using' cannot be used on a typeset variable"}));
-        SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::Enum, context->report({node, node->token, "'using' cannot be used on an enum variable"}));
-        SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, node->token, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
+        SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::TypeSet, context->report({node, node->token, Msg0690                                       }));
+        SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::Enum, context->report({node, node->token, Msg0691                                     }));
+        SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, node->token, format(Msg0692                                            , typeInfoVar->name.c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct, TypeInfoKind::TypeSet);
         {
             regNode->allocateExtension();
@@ -45,7 +45,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     }
     else
     {
-        return context->report({node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())});
+        return context->report({node, format(Msg0693                                            , typeInfoVar->name.c_str())});
     }
 
     return true;
@@ -61,7 +61,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
 
     if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
     {
-        SWAG_VERIFY(idref->resolvedSymbolOverload, context->report({node, "invalid 'using' type"}));
+        SWAG_VERIFY(idref->resolvedSymbolOverload, context->report({node, Msg0694               }));
         SWAG_CHECK(resolveUsingVar(context, node->childs.front(), idref->resolvedSymbolOverload->typeInfo));
         return true;
     }
@@ -95,7 +95,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         break;
     }
     default:
-        return job->error(context, format("'using' cannot be used on type %s", TypeInfo::getNakedKindName(typeResolved)));
+        return job->error(context, format(Msg0695                            , TypeInfo::getNakedKindName(typeResolved)));
     }
 
     return true;

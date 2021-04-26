@@ -12,6 +12,7 @@
 #include "Backend.h"
 #include "ByteCodeOptimizerJob.h"
 #include "ModuleCfgManager.h"
+#include "ErrorIds.h"
 
 Workspace g_Workspace;
 
@@ -248,7 +249,7 @@ void Workspace::setupUserTags()
                 auto it = g_LangSpec.nativeTypes.find(tokens1[1]);
                 if (!it)
                 {
-                    g_Log.error(format("fatal error: cannot resolve type '%s' of command line tag '%s'", tokens1[1].c_str(), tokens1[0].c_str()));
+                    g_Log.error(format(Msg0538, tokens1[1].c_str(), tokens1[0].c_str()));
                     exit(-1);
                 }
 
@@ -275,7 +276,7 @@ void Workspace::setupUserTags()
                     oneTag.value.text = tokens1[1];
                     break;
                 default:
-                    g_Log.error(format("fatal error: type '%s' for tag '%s' is not a valid tag type", tokens1[1].c_str(), tokens1[0].c_str()));
+                    g_Log.error(format(Msg0539, tokens1[1].c_str(), tokens1[0].c_str()));
                     exit(-1);
                 }
 
@@ -311,19 +312,19 @@ void Workspace::setup()
 
     if (workspacePath.empty())
     {
-        g_Log.error("fatal error: missing workspace folder '--workspace'");
+        g_Log.error(Msg0540);
         exit(-1);
     }
 
     bool invalid = false;
     if (!fs::exists(workspacePath))
     {
-        g_Log.error(format("fatal error: workspace folder '%s' does not exist", workspacePath.string().c_str()));
+        g_Log.error(format(Msg0541, workspacePath.string().c_str()));
         invalid = true;
     }
     else if (!fs::exists(modulesPath) && !fs::exists(testsPath))
     {
-        g_Log.error(format("fatal error: invalid workspace '%s', subfolders 'modules/' and 'tests/' do not exist", workspacePath.string().c_str()));
+        g_Log.error(format(Msg0542, workspacePath.string().c_str()));
         invalid = true;
     }
 
@@ -374,7 +375,7 @@ Utf8 Workspace::getPublicPath(Module* module, bool forWrite)
         error_code errorCode;
         if (!fs::create_directories(publicPath.c_str(), errorCode))
         {
-            module->error(format("cannot create public directory '%s'", publicPath.c_str()));
+            module->error(format(Msg0543, publicPath.c_str()));
             return "";
         }
     }
@@ -389,7 +390,7 @@ Utf8 Workspace::getPublicPath(Module* module, bool forWrite)
         error_code errorCode;
         if (!fs::create_directories(cfgPublicPath.c_str(), errorCode))
         {
-            module->error(format("cannot create public directory '%s'", cfgPublicPath.c_str()));
+            module->error(format(Msg0544, cfgPublicPath.c_str()));
             return "";
         }
     }
@@ -412,7 +413,7 @@ void Workspace::setupTarget()
     error_code errorCode;
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
     {
-        g_Log.error(format("fatal error: cannot create target directory '%s'", targetPath.string().c_str()));
+        g_Log.error(format(Msg0545, targetPath.string().c_str()));
         exit(-1);
     }
 
@@ -420,21 +421,21 @@ void Workspace::setupTarget()
     setupCachePath();
     if (!fs::exists(cachePath))
     {
-        g_Log.error(format("fatal error: cache directory '%s' does not exist", cachePath.string().c_str()));
+        g_Log.error(format(Msg0546, cachePath.string().c_str()));
         exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        g_Log.error(format("fatal error: cannot cache target directory '%s'", cachePath.string().c_str()));
+        g_Log.error(format(Msg0547, cachePath.string().c_str()));
         exit(-1);
     }
 
     cachePath.append(workspacePath.filename().string() + "-" + g_Workspace.getTargetFolder().c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        g_Log.error(format("fatal error: cannot cache target directory '%s'", cachePath.string().c_str()));
+        g_Log.error(format(Msg0548, cachePath.string().c_str()));
         exit(-1);
     }
 
@@ -475,7 +476,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         auto toSolve = pendingJob->waitingSymbolSolved;
         if (!toSolve && !node->token.text.empty())
         {
-            Diagnostic diag{node, node->token, format("module '%s', cannot resolve %s '%s'", pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), name.c_str())};
+            Diagnostic diag{node, node->token, format(Msg0549, pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), name.c_str())};
             diag.remarks.push_back(id);
             sourceFile->report(diag);
             continue;
@@ -483,7 +484,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 
         if (!toSolve)
         {
-            Diagnostic diag{node, node->token, format("module '%s', cannot resolve %s", pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str())};
+            Diagnostic diag{node, node->token, format(Msg0550, pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str())};
             diag.remarks.push_back(id);
             sourceFile->report(diag);
             continue;
@@ -511,7 +512,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         Diagnostic diag{node, node->token, msg};
         diag.remarks.push_back(id);
 
-        Diagnostic note{declNode, declNode->token, "this is the declaration", DiagnosticLevel::Note};
+        Diagnostic note{declNode, declNode->token, Msg0551, DiagnosticLevel::Note};
         sourceFile->report(diag, &note);
     }
 }
@@ -616,7 +617,7 @@ bool Workspace::buildTarget()
 
         if (bootstrapModule->numErrors)
         {
-            g_Log.error("some errors have been found in compiler bootstrap !!! exiting...");
+            g_Log.error(Msg0552);
             return false;
         }
 
@@ -635,7 +636,7 @@ bool Workspace::buildTarget()
         // Errors !!!
         if (bootstrapModule->numErrors)
         {
-            g_Log.error("some errors have been found in compiler bootstrap !!! exiting...");
+            g_Log.error(Msg0553);
             return false;
         }
 
@@ -661,7 +662,7 @@ bool Workspace::buildTarget()
 
         if (runtimeModule->numErrors)
         {
-            g_Log.error("some errors have been found in compiler runtime !!! exiting...");
+            g_Log.error(Msg0554);
             return false;
         }
 
@@ -684,7 +685,7 @@ bool Workspace::buildTarget()
         // Errors !!!
         if (runtimeModule->numErrors)
         {
-            g_Log.error("some errors have been found in compiler runtime !!! exiting...");
+            g_Log.error(Msg0555);
             return false;
         }
 
@@ -723,7 +724,7 @@ bool Workspace::buildTarget()
     {
         if (!filteredModule)
         {
-            g_Log.error(format("module '%s' cannot be found in that workspace", g_CommandLine.moduleFilter.c_str()));
+            g_Log.error(format(Msg0556, g_CommandLine.moduleFilter.c_str()));
             return false;
         }
 
@@ -737,7 +738,7 @@ bool Workspace::buildTarget()
                 auto it = g_Workspace.mapModulesNames.find(dep->name);
                 if (it == g_Workspace.mapModulesNames.end())
                 {
-                    g_Log.error(format("dependency module '%s' cannot be found in that workspace", dep->name.c_str()));
+                    g_Log.error(format(Msg0557, dep->name.c_str()));
                     return false;
                 }
 

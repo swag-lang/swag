@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Workspace.h"
 #include "OS.h"
+#include "ErrorIds.h"
 
 void Workspace::cleanFolderContent(const fs::path& path)
 {
@@ -14,7 +15,7 @@ void Workspace::cleanFolderContent(const fs::path& path)
         std::error_code err;
         if (fs::remove_all(folder, err) == -1)
         {
-            g_Log.error(format("fatal error: cannot delete file '%s' (%s)", folder.c_str(), OS::getLastErrorAsString().c_str()));
+            g_Log.error(format(Msg0344, folder.c_str(), OS::getLastErrorAsString().c_str()));
             exit(-1);
         }
     });
@@ -22,7 +23,7 @@ void Workspace::cleanFolderContent(const fs::path& path)
     std::error_code err;
     if (fs::remove_all(path, err) == -1)
     {
-        g_Log.error(format("fatal error: cannot delete folder '%s' (%s)", path.string().c_str(), OS::getLastErrorAsString().c_str()));
+        g_Log.error(format(Msg0345, path.string().c_str(), OS::getLastErrorAsString().c_str()));
         exit(-1);
     }
 }

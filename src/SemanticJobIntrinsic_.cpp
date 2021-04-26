@@ -13,13 +13,13 @@ bool SemanticJob::resolveIntrinsicMakeForeign(SemanticContext* context)
 
     // Check first parameter
     if (first->typeInfo->kind != TypeInfoKind::Lambda)
-        return context->report({first, "'@mkforeign' must have a lambda type as a first parameter"});
+        return context->report({first, Msg0782                                                    });
     first->flags |= AST_NO_BYTECODE;
 
     // Check expression
     SWAG_CHECK(checkIsConcrete(context, expr));
     if (!expr->typeInfo->isSame(g_TypeMgr.typeInfoConstPVoid, ISSAME_CAST))
-        return context->report({expr, "'@mkforeign' must have a 'const *void' as a second parameter"});
+        return context->report({expr, Msg0783                                                       });
 
     node->typeInfo    = first->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeForeign;
@@ -32,13 +32,13 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
 
     // Check first parameter
     if (first->typeInfo->kind != TypeInfoKind::Lambda)
-        return context->report({node, "'@mkcallback' must have a lambda value as a first parameter"});
+        return context->report({node, Msg0784                                                      });
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(first->typeInfo, TypeInfoKind::Lambda);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
-        return context->report({node, format("callback type not supported, too many parameters (maximum is '%d')", SWAG_LIMIT_CB_MAX_PARAMS)});
+        return context->report({node, format(Msg0785                                                             , SWAG_LIMIT_CB_MAX_PARAMS)});
     if (typeFunc->numReturnRegisters() > 1)
-        return context->report({node, format("callback return type '%s' not supported", typeFunc->returnType->getDisplayName().c_str())});
+        return context->report({node, format(Msg0786                                  , typeFunc->returnType->getDisplayName().c_str())});
 
     node->typeInfo    = g_TypeMgr.typeInfoPVoid;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;
@@ -52,11 +52,11 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
 
     // Must start with a pointer of the same type as the slice
     if (first->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({first, format("'%s' must have a pointer as a first parameter", name)});
+        return context->report({first, format(Msg0787                                        , name)});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)
-        return context->report({first, format("'%s' cannot have 'null' as first parameter", name)});
+        return context->report({first, format(Msg0788                                     , name)});
 
     // Slice count
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, second->typeInfo, nullptr, second, CASTFLAG_TRY_COERCE));
@@ -80,24 +80,24 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
 
     // Check first parameter
     if (first->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({first, "'@mkany' must have a pointer as a first parameter"});
+        return context->report({first, Msg0789                                            });
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)
-        return context->report({first, "'@mkany' cannot have 'null' as first parameter"});
+        return context->report({first, Msg0790                                         });
 
     // Check second parameter
     if (second->flags & AST_VALUE_IS_TYPEINFO)
     {
         if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            return context->report({node, format("'pointer to value and type are not related (first parameter is a pointer to type '%s' but second parameter is type '%s')", ptrPointer->pointedType->getDisplayName().c_str(), second->typeInfo->getDisplayName().c_str())});
+            return context->report({node, format(Msg0791                                                                                                                   , ptrPointer->pointedType->getDisplayName().c_str(), second->typeInfo->getDisplayName().c_str())});
     }
 
     SWAG_CHECK(checkIsConcreteOrType(context, second));
     if (context->result != ContextResult::Done)
         return true;
     if (!(second->typeInfo->isPointerToTypeInfo()))
-        return context->report({node, format("'@mkany' must have a 'typeinfo' or a type value as a second parameter ('%s' provided)", second->typeInfo->getDisplayName().c_str())});
+        return context->report({node, format(Msg0792                                                                                , second->typeInfo->getDisplayName().c_str())});
 
     node->typeInfo    = g_TypeMgr.typeInfoAny;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeAny;
@@ -122,10 +122,10 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
         return true;
 
     auto firstTypeInfo = TypeManager::concreteReferenceType(first->typeInfo, CONCRETE_ALIAS);
-    SWAG_VERIFY(firstTypeInfo->kind == TypeInfoKind::Pointer || firstTypeInfo->kind == TypeInfoKind::Struct, context->report({first, "'@mkinterface' must have a one dimension pointer or a struct as a first parameter"}));
-    SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({second, "'@mkinterface' must have a typeinfo as a second parameter"}));
+    SWAG_VERIFY(firstTypeInfo->kind == TypeInfoKind::Pointer || firstTypeInfo->kind == TypeInfoKind::Struct, context->report({first, Msg0793                                                                            }));
+    SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({second, Msg0794                                                    }));
     auto thirdTypeInfo = TypeManager::concreteReferenceType(third->typeInfo, CONCRETE_ALIAS);
-    SWAG_VERIFY(thirdTypeInfo->kind == TypeInfoKind::Interface, context->report({third, "'@mkinterface' must have an interface as a third parameter"}));
+    SWAG_VERIFY(thirdTypeInfo->kind == TypeInfoKind::Interface, context->report({third, Msg0795                                                     }));
 
     node->typeInfo = third->typeInfo;
     third->flags |= AST_NO_BYTECODE;
@@ -183,7 +183,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
         if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-            return context->report({node, "'@dataof' cannot be used on a tuple type"});
+            return context->report({node, Msg0796                                   });
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, "opData", nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
@@ -194,7 +194,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else
     {
-        return context->report({node, format("'@dataof' cannot be applied to expression of type '%s'", typeInfo->getDisplayName().c_str())});
+        return context->report({node, format(Msg0797                                                 , typeInfo->getDisplayName().c_str())});
     }
 
     return true;
@@ -213,8 +213,8 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     }
 
     auto typeInfo = expr->typeInfo;
-    SWAG_VERIFY(typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
-    SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, context->report({expr, "expression cannot be evaluated at compile time"}));
+    SWAG_VERIFY(typeInfo, context->report({expr, Msg0798                                         }));
+    SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, context->report({expr, Msg0799                                         }));
 
     if (expr->flags & AST_VALUE_IS_TYPEINFO)
         node->computedValue.text = typeInfo->name;
@@ -275,7 +275,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
         if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-            return context->report({node, "'@countof' cannot be used on a tuple type"});
+            return context->report({node, Msg0800                                    });
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, "opCount", nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
@@ -286,7 +286,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else
     {
-        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({node, format("expression should be of type integer, but is '%s'", typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->report({node, format(Msg0801                                            , typeInfo->getDisplayName().c_str())}));
         if (node->flags & AST_VALUE_COMPUTED)
         {
             if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
@@ -295,20 +295,20 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
                 {
                 case NativeTypeKind::S8:
                     if (node->computedValue.reg.s8 < 0)
-                        return context->report({node, format("constant value should be unsigned, but is '%d'", node->computedValue.reg.s8)});
+                        return context->report({node, format(Msg0802                                         , node->computedValue.reg.s8)});
                     break;
                 case NativeTypeKind::S16:
                     if (node->computedValue.reg.s16 < 0)
-                        return context->report({node, format("constant value should be unsigned, but is '%d'", node->computedValue.reg.s16)});
+                        return context->report({node, format(Msg0803                                         , node->computedValue.reg.s16)});
                     break;
                 case NativeTypeKind::S32:
                     if (node->computedValue.reg.s32 < 0)
-                        return context->report({node, format("constant value should be unsigned, but is '%d'", node->computedValue.reg.s32)});
+                        return context->report({node, format(Msg0804                                         , node->computedValue.reg.s32)});
                     break;
                 case NativeTypeKind::S64:
                 case NativeTypeKind::Int:
                     if (node->computedValue.reg.s64 < 0)
-                        return context->report({node, format("constant value should be unsigned, but is '%I64d'", node->computedValue.reg.s64)});
+                        return context->report({node, format(Msg0805                                            , node->computedValue.reg.s64)});
                     break;
                 }
             }
@@ -327,7 +327,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     auto typeInfo     = TypeManager::concreteReferenceType(expr->typeInfo);
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicSpread;
 
-    SWAG_VERIFY(node->parent && node->parent->parent && node->parent->parent->kind == AstNodeKind::FuncCallParam, context->report({node, "'@spread' can only be called as a function parameter"}));
+    SWAG_VERIFY(node->parent && node->parent->parent && node->parent->parent->kind == AstNodeKind::FuncCallParam, context->report({node, Msg0806                                               }));
 
     if (typeInfo->kind == TypeInfoKind::Array)
     {
@@ -359,7 +359,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     }
     else
     {
-        return context->report({expr, format("expression of type '%s' cannot be spreaded", typeInfo->getDisplayName().c_str())});
+        return context->report({expr, format(Msg0807                                     , typeInfo->getDisplayName().c_str())});
     }
 
     auto typeVar     = allocType<TypeInfoVariadic>();
@@ -379,7 +379,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
 
-    SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
+    SWAG_VERIFY(expr->typeInfo, context->report({expr, Msg0808                                         }));
 
     // Will be runtime for an 'any' type, or a typeset
     if (expr->typeInfo->isNative(NativeTypeKind::Any) ||
@@ -453,8 +453,8 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     auto node = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto expr = node->childs.front();
 
-    SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
-    SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, "cannot evaluate type in that context because it's generic"}));
+    SWAG_VERIFY(expr->typeInfo, context->report({expr, Msg0809                                         }));
+    SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, Msg0810                                                    }));
 
     // If we have a function, then we transform it to a lambda type, as this makes no sens to
     // get the real function type with @typeof
@@ -503,8 +503,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicSizeOf:
     {
         auto expr = node->childs.front();
-        SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
-        SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, "size cannot be computed because expression is generic"}));
+        SWAG_VERIFY(expr->typeInfo, context->report({expr, Msg0811                                         }));
+        SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, Msg0812                                                }));
         node->computedValue.reg.u64 = expr->typeInfo->sizeOf;
         node->setFlagsValueIsComputed();
         if (node->computedValue.reg.u64 > 0xFFFFFFFF)
@@ -517,8 +517,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicAlignOf:
     {
         auto expr = node->childs.front();
-        SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
-        SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, "alignement cannot be computed because expression is generic"}));
+        SWAG_VERIFY(expr->typeInfo, context->report({expr, Msg0813                                         }));
+        SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, Msg0814                                                      }));
         node->computedValue.reg.u64 = TypeManager::alignOf(expr->typeInfo);
         node->setFlagsValueIsComputed();
         if (node->computedValue.reg.u64 > 0xFFFFFFFF)
@@ -531,7 +531,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicOffsetOf:
     {
         auto expr = node->childs.front();
-        SWAG_VERIFY(expr->resolvedSymbolOverload, context->report({expr, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(expr->resolvedSymbolOverload, context->report({expr, Msg0815                                         }));
         node->computedValue.reg.u64 = expr->resolvedSymbolOverload->storageOffset;
         node->setFlagsValueIsComputed();
         if (node->computedValue.reg.u64 > 0xFFFFFFFF)

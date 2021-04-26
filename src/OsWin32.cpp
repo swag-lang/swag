@@ -12,6 +12,7 @@
 #include "ProfileWin32.h"
 #include "Module.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 
 namespace OS
 {
@@ -129,7 +130,7 @@ namespace OS
         saAttr.lpSecurityDescriptor = nullptr;
         if (!::CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
         {
-            g_Log.error(format("cannot create '%s' process (::CreatePipe)", cmdline.c_str()));
+            g_Log.error(format(Msg0045, cmdline.c_str()));
             return false;
         }
 
@@ -154,7 +155,7 @@ namespace OS
                                   &si,
                                   &pi))
             {
-                g_Log.error(format("cannot create process '%s': %s", cmdline.c_str(), getLastErrorAsString().c_str()));
+                g_Log.error(format(Msg0046, cmdline.c_str(), getLastErrorAsString().c_str()));
                 return false;
             }
         }
@@ -370,7 +371,7 @@ namespace OS
                                   &si,
                                   &pi))
             {
-                g_Log.error(format("cannot create process '%s': %s", cmdline.c_str(), getLastErrorAsString().c_str()));
+                g_Log.error(format(Msg0047, cmdline.c_str(), getLastErrorAsString().c_str()));
                 return;
             }
         }
@@ -648,7 +649,7 @@ namespace OS
         LONG lRes = RegSetKeyValueA(HKEY_CURRENT_USER, "Environment", "SWAG_FOLDER", REG_SZ, folder.c_str(), (DWORD) folder.size() + 1);
         if (lRes != ERROR_SUCCESS)
         {
-            g_Log.error(format("cannot set environment variable 'SWAG_FOLDER' to '%s'\n", folder.c_str()));
+            g_Log.error(format(Msg0048, folder.c_str()));
             exit(-1);
         }
 
@@ -659,7 +660,7 @@ namespace OS
         lRes = RegOpenKeyExA(HKEY_CURRENT_USER, "Environment", 0, KEY_READ | KEY_WRITE, &hKey);
         if (lRes != ERROR_SUCCESS)
         {
-            g_Log.error("cannot access environment variable 'PATH'\n");
+            g_Log.error(Msg0049);
             exit(-1);
         }
 
@@ -669,7 +670,7 @@ namespace OS
         if (lRes != ERROR_SUCCESS)
         {
             RegCloseKey(hKey);
-            g_Log.error("cannot access environment variable 'PATH'\n");
+            g_Log.error(Msg0050);
             exit(-1);
         }
 
@@ -681,7 +682,7 @@ namespace OS
             if (lRes != ERROR_SUCCESS)
             {
                 RegCloseKey(hKey);
-                g_Log.error(format("cannot add '%s' to the 'PATH' environment variable\n", folder.c_str()));
+                g_Log.error(format(Msg0051, folder.c_str()));
                 exit(-1);
             }
 
@@ -725,7 +726,7 @@ namespace OS
             dwChangeHandle = FindFirstChangeNotificationA(p.path().string().c_str(), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE);
             if (dwChangeHandle == INVALID_HANDLE_VALUE)
             {
-                g_Log.error("fail to start watcher service !");
+                g_Log.error(Msg0052);
                 exit(-1);
             }
 
@@ -741,7 +742,7 @@ namespace OS
             dwChangeHandle = FindFirstChangeNotificationA(p.path().string().c_str(), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE);
             if (dwChangeHandle == INVALID_HANDLE_VALUE)
             {
-                g_Log.error("fail to start watcher service !");
+                g_Log.error(Msg0053);
                 exit(-1);
             }
 
@@ -757,7 +758,7 @@ namespace OS
             dwChangeHandle = FindFirstChangeNotificationA(p.path().string().c_str(), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE);
             if (dwChangeHandle == INVALID_HANDLE_VALUE)
             {
-                g_Log.error("fail to start watcher service !");
+                g_Log.error(Msg0054);
                 exit(-1);
             }
 
@@ -778,7 +779,7 @@ namespace OS
 
             if (FindNextChangeNotification(allHandles[numModule]) == FALSE)
             {
-                g_Log.error("fail to update watcher service !");
+                g_Log.error(Msg0055);
                 exit(-1);
             }
         }
