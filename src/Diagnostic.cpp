@@ -260,8 +260,6 @@ void Diagnostic::report(bool verboseMode) const
                         {
                             if (backLine[startIndex] >= 32)
                                 errorMsg += backLine[startIndex];
-                            else
-                                errorMsg += " ";
                             startIndex++;
                         }
 
@@ -275,6 +273,10 @@ void Diagnostic::report(bool verboseMode) const
                             g_Log.setColor(codeColor);
                             g_Log.print(backLine.c_str() + startIndex);
                         }
+
+                        // Error on multiple lines
+                        if (endLocation.line != startLocation.line)
+                            g_Log.print(" ...");
                     }
 
                     g_Log.eol();
@@ -308,12 +310,16 @@ void Diagnostic::report(bool verboseMode) const
                         }
                     }
 
+                    // Error on multiple lines
+                    if (endLocation.line != startLocation.line)
+                        range += 4; // for the added " ..."
+
                     for (int i = 0; i < range; i++)
                         g_Log.print("^");
 
                     if (!g_ErrorHint.empty())
                     {
-                        g_Log.print("--- ");
+                        g_Log.print(" ");
                         g_Log.setColor(remarkColor);
                         g_Log.print(g_ErrorHint);
                     }

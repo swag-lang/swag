@@ -134,6 +134,12 @@ void Job::setPending(SymbolName* symbolToWait, const char* id, AstNode* node, Ty
     baseContext->result = ContextResult::Pending;
 }
 
+bool JobContext::report(const char* hint, const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
+{
+    PushErrHint errh(hint);
+    return report(diag, note, note1);
+}
+
 bool JobContext::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
 {
     vector<const Diagnostic*> notes;

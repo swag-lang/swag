@@ -435,7 +435,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicPow:
             ra.f32 = powf(rb.f32, rc.f32);
             if (isnan(ra.f32))
-                return context->report({ip->node, ip->node->token, format(Msg0417, rb.f32, rc.f32)});
+                return context->report({ip->node, format(Msg0417, rb.f32, rc.f32)});
             break;
         case TokenId::IntrinsicMin:
             ra.f32 = min(rb.f32, rc.f32);
@@ -457,7 +457,7 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicPow:
             ra.f64 = pow(rb.f64, rc.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format(Msg0417, rb.f64, rc.f64)});
+                return context->report({ip->node, format(Msg0417, rb.f64, rc.f64)});
             break;
         case TokenId::IntrinsicMin:
             ra.f64 = min(rb.f64, rc.f64);
@@ -478,8 +478,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         {
         case TokenId::IntrinsicSqrt:
             if (rb.f32 < 0)
-                return context->report({ip->node, ip->node->token, format(Msg0425, rb.f32)});
+                return context->report(Hnt0001, {ip->node, format(Msg0425, rb.f32)});
             ra.f32 = sqrtf(rb.f32);
+            if (isnan(ra.f32))
+                return context->report({ip->node, format(Msg0425, rb.f32)});
             break;
         case TokenId::IntrinsicSin:
             ra.f32 = sinf(rb.f32);
@@ -502,12 +504,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicASin:
             ra.f32 = asinf(rb.f32);
             if (isnan(ra.f32))
-                return context->report({ip->node, ip->node->token, format(Msg0426, rb.f32)});
+                return context->report({ip->node, format(Msg0426, rb.f32)});
             break;
         case TokenId::IntrinsicACos:
             ra.f32 = acosf(rb.f32);
             if (isnan(ra.f32))
-                return context->report({ip->node, ip->node->token, format(Msg0427, rb.f32)});
+                return context->report({ip->node, format(Msg0427, rb.f32)});
             break;
         case TokenId::IntrinsicATan:
             ra.f32 = atanf(rb.f32);
@@ -515,17 +517,17 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicLog:
             ra.f32 = log(rb.f32);
             if (isnan(ra.f32))
-                return context->report({ip->node, ip->node->token, format(Msg0428, rb.f32)});
+                return context->report({ip->node, format(Msg0428, rb.f32)});
             break;
         case TokenId::IntrinsicLog2:
             ra.f32 = log2(rb.f32);
             if (isnan(ra.f32))
-                return context->report({ip->node, ip->node->token, format(Msg0423, rb.f32)});
+                return context->report({ip->node, format(Msg0423, rb.f32)});
             break;
         case TokenId::IntrinsicLog10:
             ra.f32 = log10(rb.f32);
             if (isnan(ra.f32))
-                return context->report({ip->node, ip->node->token, format(Msg0424, rb.f32)});
+                return context->report({ip->node, format(Msg0424, rb.f32)});
             break;
         case TokenId::IntrinsicFloor:
             ra.f32 = floorf(rb.f32);
@@ -560,9 +562,11 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         switch ((TokenId) ip->d.u32)
         {
         case TokenId::IntrinsicSqrt:
+            if (rb.f64 < 0)
+                return context->report(Hnt0001, {ip->node, format(Msg0425, rb.f64)});
             ra.f64 = sqrt(rb.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format(Msg0425, rb.f64)});
+                return context->report({ip->node, format(Msg0425, rb.f64)});
             break;
         case TokenId::IntrinsicSin:
             ra.f64 = sin(rb.f64);
@@ -585,12 +589,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicASin:
             ra.f64 = asin(rb.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format(Msg0426, rb.f64)});
+                return context->report({ip->node, format(Msg0426, rb.f64)});
             break;
         case TokenId::IntrinsicACos:
             ra.f64 = acos(rb.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format(Msg0427, rb.f64)});
+                return context->report({ip->node, format(Msg0427, rb.f64)});
             break;
         case TokenId::IntrinsicATan:
             ra.f64 = atan(rb.f64);
@@ -598,17 +602,17 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicLog:
             ra.f64 = log(rb.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format(Msg0428, rb.f64)});
+                return context->report({ip->node, format(Msg0428, rb.f64)});
             break;
         case TokenId::IntrinsicLog2:
             ra.f64 = log2(rb.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format(Msg0423, rb.f64)});
+                return context->report({ip->node, format(Msg0423, rb.f64)});
             break;
         case TokenId::IntrinsicLog10:
             ra.f64 = log10(rb.f64);
             if (isnan(ra.f64))
-                return context->report({ip->node, ip->node->token, format(Msg0424, rb.f64)});
+                return context->report({ip->node, format(Msg0424, rb.f64)});
             break;
         case TokenId::IntrinsicFloor:
             ra.f64 = floor(rb.f64);
