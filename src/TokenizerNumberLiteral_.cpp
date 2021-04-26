@@ -37,7 +37,7 @@ bool Tokenizer::doBinLiteral(Token& token)
         }
 
         acceptSep = true;
-        SWAG_VERIFY(!(token.literalValue.u64 & 0x80000000'00000000), error(token, Msg0458));
+        SWAG_VERIFY(!(token.literalValue.u64 & 0x80000000'00000000), error(token, Msg0464));
         SWAG_VERIFY(rank != 64, error(token, Msg0459));
         token.literalValue.u64 <<= 1;
         rank++;
@@ -96,7 +96,7 @@ bool Tokenizer::doHexLiteral(Token& token)
         }
 
         acceptSep = true;
-        SWAG_VERIFY(!(token.literalValue.u64 & 0xF0000000'00000000), error(token, Msg0461));
+        SWAG_VERIFY(!(token.literalValue.u64 & 0xF0000000'00000000), error(token, Msg0464));
         SWAG_VERIFY(rank != 16, error(token, Msg0462));
         token.literalValue.u64 <<= 4;
         rank++;
@@ -218,7 +218,7 @@ bool Tokenizer::doIntLiteral(uint32_t c, Token& token)
         rank++;
 
         auto val = (c - '0');
-        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615 - val, error(token, Msg0465));
+        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615 - val, error(token, Msg0464));
         token.literalValue.u64 += val;
 
         c = getCharNoSeek(offset);

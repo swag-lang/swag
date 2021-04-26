@@ -341,7 +341,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (valText.find(one->value.text) == valText.end())
                         {
-                            Diagnostic diag{node, node->token, format(Msg0618, typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic diag{node, node->token, format(Msg0620, typeEnum->name.c_str(), one->namedParam.c_str())};
                             Diagnostic note{one->declNode, one->declNode->token, Msg0619, DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
@@ -745,7 +745,7 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
             breakable = breakable->ownerBreakable;
         }
 
-        SWAG_VERIFY(breakable, context->report({node, format(Msg0636, node->label.c_str())}));
+        SWAG_VERIFY(breakable, context->report({node, format(Msg0631, node->label.c_str())}));
         node->ownerBreakable = lastBreakable;
     }
 

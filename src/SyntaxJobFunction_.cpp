@@ -138,7 +138,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         paramNode->flags |= AST_DECL_USING;
     }
 
-    SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, error(token, format(Msg0404, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, error(token, format(Msg0410, token.text.c_str())));
     paramNode->token.text = move(token.text);
 
     // 'self'

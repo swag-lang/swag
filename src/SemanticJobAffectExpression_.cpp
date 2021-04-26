@@ -329,7 +329,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         // Pointer arithmetic
         if (leftTypeInfo->kind == TypeInfoKind::Pointer)
         {
-            SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Msg0578}));
+            SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, Msg0144}));
             rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
             SWAG_VERIFY(rightTypeInfo->flags & TYPEINFO_INTEGER, context->report({right, format(Msg0579, rightTypeInfo->getDisplayName().c_str())}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));

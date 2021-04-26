@@ -247,7 +247,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymColon));
 
         {
-            SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Msg0873));
+            SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Msg0871));
             PushErrHint errh(Msg0360);
             SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
         }
@@ -301,7 +301,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
 
         {
-            SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Msg0875));
+            SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Msg0874));
             PushErrHint errh(Msg0362);
             SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
         }

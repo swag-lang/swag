@@ -405,7 +405,7 @@ bool SymTable::registerUsingAliasOverload(JobContext* context, AstNode* node, Sy
         if (symbol->kind != SymbolKind::Alias)
         {
             auto       firstOverload = symbol->overloads[0];
-            Utf8       msg           = format(Msg0889, symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
+            Utf8       msg           = format(Msg0885, symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
             Diagnostic diag{node, node->token, msg};
             Utf8       note = Msg0884;
             Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};

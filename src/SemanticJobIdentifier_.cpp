@@ -754,7 +754,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
         {
             Diagnostic diag{identifier, identifier->token, format(Msg0088, funcDecl->token.text.c_str())};
-            Diagnostic note{funcDecl, funcDecl->token, Msg0089, DiagnosticLevel::Note};
+            Diagnostic note{funcDecl, funcDecl->token, Msg0106, DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
     }
@@ -893,7 +893,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     if (!(overload->node->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                     {
                         Diagnostic diag(identifier, identifier->token, format(Msg0092, overload->node->token.text.c_str()));
-                        Diagnostic note(overload->node, overload->node->token, Msg0093, DiagnosticLevel::Note);
+                        Diagnostic note(overload->node, overload->node->token, Msg0095, DiagnosticLevel::Note);
                         return context->report(diag, &note);
                     }
                     else

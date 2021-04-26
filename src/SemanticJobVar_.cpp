@@ -581,7 +581,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         if (!isGeneric && node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
         {
-            SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->report({node->assignment, Msg0302}));
+            SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->report({node->assignment, Msg0670}));
         }
     }
 

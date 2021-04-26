@@ -34,7 +34,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         }
 
         AstNode* assign = nullptr;
-        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Msg0456));
+        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Msg0454));
         if (token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());

@@ -830,7 +830,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.id == TokenId::SymRightCurly)
-        return error(token, format(Msg0268));
+        return error(token, format(Msg0270));
     if (result)
         *result = initNode;
 
@@ -848,7 +848,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
             // Name
             if (token.id == TokenId::SymColon)
             {
-                SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, error(paramExpression, Msg0269));
+                SWAG_VERIFY(paramExpression->kind == AstNodeKind::IdentifierRef, error(paramExpression, Msg0448));
                 SWAG_CHECK(checkIsSingleIdentifier(paramExpression, "as a tuple field name"));
                 SWAG_CHECK(checkIsValidVarName(paramExpression->childs.back()));
                 auto name            = paramExpression->childs.back()->token.text;
@@ -1506,7 +1506,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             *result = leftNode;
     }
 
-    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Msg0283));
+    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Msg0454));
 
     if (token.id != TokenId::SymLeftCurly)
         SWAG_CHECK(eatSemiCol("left expression"));

@@ -587,7 +587,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
                 Diagnostic diag{importNode, tokenLocation, format(Msg0284, dep->location.c_str())};
-                Diagnostic note{dep->node, Msg0285, DiagnosticLevel::Note};
+                Diagnostic note{dep->node, Msg0287, DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
 

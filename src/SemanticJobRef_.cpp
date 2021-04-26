@@ -262,7 +262,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     auto accessType = TypeManager::concreteReferenceType(arrayNode->access->typeInfo);
     if (!(accessType->flags & TYPEINFO_INTEGER) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
-        return context->report({arrayNode->access, format(Msg0479, arrayNode->access->typeInfo->getDisplayName().c_str())});
+        return context->report({arrayNode->access, format(Msg0485, arrayNode->access->typeInfo->getDisplayName().c_str())});
 
     switch (arrayType->kind)
     {
@@ -270,7 +270,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePtr->pointedType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, Msg0480}));
+        SWAG_VERIFY(typePtr->pointedType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, Msg0486}));
         arrayNode->typeInfo = typePtr->pointedType;
         arrayNode->flags |= AST_ARRAY_POINTER_REF;
         arrayNode->array->flags |= AST_ARRAY_POINTER_REF;
@@ -360,7 +360,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
 
     if (arrayType->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({arrayAccess, Msg0484});
+        return context->report({arrayAccess, Msg0482});
 
     arrayNode->flags |= AST_R_VALUE;
 

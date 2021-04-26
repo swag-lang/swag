@@ -196,7 +196,7 @@ bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath = fs::canonical(remotePath).string();
     remotePath = normalizePath(fs::path(remotePath.c_str()));
     if (!fs::exists(remotePath))
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0512, remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, format(Msg0511, remotePath.c_str())});
     dep->resolvedLocation = remotePath;
 
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);

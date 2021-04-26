@@ -31,7 +31,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         if (newScope->kind != ScopeKind::Enum)
         {
             auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-            Diagnostic diag{implNode->identifier, implNode->identifier->token, format(Msg0397, Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
+            Diagnostic diag{implNode->identifier, implNode->identifier->token, format(Msg0441, Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Enum))};
             Diagnostic note{enumNode, enumNode->token, format(Msg0398, implNode->token.text.c_str()), DiagnosticLevel::Note};
             return sourceFile->report(diag, &note);
         }

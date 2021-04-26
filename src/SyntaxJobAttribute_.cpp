@@ -15,7 +15,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         *result = attrNode;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0347, token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0355, token.text.c_str())));
 
     attrNode->inheritTokenName(token);
 
