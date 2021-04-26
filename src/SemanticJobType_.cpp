@@ -25,7 +25,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         // Missing self ?
         if (node->ownerStructScope && node->ownerStructScope == context->node->ownerStructScope && node->ownerFct)
             if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
-                note = new Diagnostic{node, "is there a missing 'self' ?", DiagnosticLevel::Note};
+                note = new Diagnostic{node, Note005, DiagnosticLevel::Note};
 
         return context->report(diag, note);
     }
