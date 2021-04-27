@@ -155,6 +155,8 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     {
         if (!msg)
             msg = "";
+
+        PushErrHint errh(Hnt0013);
         SWAG_CHECK(error(token, format(Msg0331, token.text.c_str(), msg)));
     }
 

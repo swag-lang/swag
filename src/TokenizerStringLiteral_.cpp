@@ -2,6 +2,7 @@
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
+#include "ErrorIds.h"
 
 // This function is used to 'align' text. This is the same rule as in swift : all blanks before the end mark ("@) will be removed
 // from every other lines.
@@ -66,7 +67,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             {
                 token.startLocation = location;
                 token.endLocation   = token.startLocation;
-                sourceFile->report({sourceFile, token, "unexpected end of line found in string literal"});
+                sourceFile->report({sourceFile, token, Msg0905});
                 return false;
             }
 
@@ -74,7 +75,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             if (!c)
             {
                 token.endLocation = token.startLocation;
-                sourceFile->report({sourceFile, token, "unexpected end of file found in string literal"});
+                sourceFile->report({sourceFile, token, Msg0905});
                 return false;
             }
 

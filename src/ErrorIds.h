@@ -659,6 +659,7 @@
 #define Msg0534 "uncatched error when calling '%s'; missing 'try', 'assume' or 'catch'"
 #define Msg0274 "unexpected call parameters for variable '%s'"
 #define Msg0080 "unexpected end of file found in comment"
+#define Msg0905 "unexpected end of line found in string literal"
 #define Msg0273 "unexpected generic parameters for variable '%s'"
 #define Msg0352 "unexpected token '%s' after 'private' attribute"
 #define Msg0353 "unexpected token '%s' after 'protected' attribute"
@@ -778,3 +779,4 @@
 #define Hnt0011 "this type is '%s'"
 #define Rem0000 "this could be casted with 'cast(%s)'"
 #define Hnt0012 "this return (%s) should have type '%s'"
+#define Hnt0013 "this should be on another line, or separated with ';'"

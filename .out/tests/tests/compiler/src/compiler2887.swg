@@ -1,10 +1,4 @@
-/*#[swag.mixin, swag.noreturn]
-func titi()
-{
-    return true
-}
-
 #test
 {
-    titi()
-}*/
+    x := 0 try
+}
