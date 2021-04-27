@@ -221,16 +221,8 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     if (!(castFlags & CASTFLAG_NO_ERROR))
     {
         SWAG_ASSERT(fromNode);
-
-        auto fromTypeName = fromType->name;
-        if (fromType->flags & TYPEINFO_STRUCT_IS_TUPLE)
-            fromTypeName = "tuple";
-        auto toTypeName = toType->name;
-        if (toType->flags & TYPEINFO_STRUCT_IS_TUPLE)
-            toTypeName = "tuple";
-
         if (fromNode != context->node)
-            context->expansionNode.push_back({context->node, JobContext::ExpansionType::Node});
+            context->expansionNode.push_back({context->node, JobContext::ExpansionType::CastNode});
 
         // Is there an explicit cast possible ?
         bool done = false;
@@ -238,8 +230,8 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                PushErrHint errh(format(Msg0174, toType->name.c_str()));
-                Diagnostic  diag{fromNode, format(Msg0175, fromTypeName.c_str(), toTypeName.c_str())};
+                PushErrHint errh(format(Msg0174, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str()));
+                Diagnostic  diag{fromNode, format(Msg0175, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())};
                 context->report(diag);
                 done = true;
             }
@@ -248,13 +240,13 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         // Cast from struct to interface
         if (toType->kind == TypeInfoKind::Interface && fromType->kind == TypeInfoKind::Struct)
         {
-            context->report({fromNode, format(Msg0176, fromTypeName.c_str(), toTypeName.c_str())});
+            context->report({fromNode, format(Msg0176, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
             done = true;
         }
 
         // General cast error
         if (!done)
-            context->report({fromNode, format(Msg0177, fromTypeName.c_str(), toTypeName.c_str())});
+            context->report({fromNode, format(Msg0177, fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
     }
 
     return false;

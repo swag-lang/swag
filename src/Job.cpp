@@ -164,23 +164,34 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
         auto        first       = exp.first;
         const char* kindName    = nullptr;
         const char* kindArticle = "";
+        Utf8        hint;
         switch (exp.second)
         {
         case JobContext::ExpansionType::Generic:
-            kindName    = "during generic expansion";
+            kindName    = Msg0112;
             kindArticle = "of ";
             break;
         case JobContext::ExpansionType::Inline:
-            kindName    = "during inline expansion";
+            kindName    = Msg0118;
             kindArticle = "of ";
             break;
         case JobContext::ExpansionType::SelectIf:
-            kindName    = "during '#selectif' validation of function call";
+            kindName    = Msg0128;
             kindArticle = "to ";
             break;
-        case JobContext::ExpansionType::Node:
-            kindName    = "when solving";
-            kindArticle = "";
+        case JobContext::ExpansionType::CastNode:
+            if (first->kind == AstNodeKind::AffectOp)
+            {
+                kindName    = Msg0131;
+                first       = first->childs.front();
+                kindArticle = "to ";
+                hint        = format(Hnt0011, first->typeInfo->getDisplayName().c_str());
+            }
+            else
+            {
+                kindName    = Msg0134;
+                kindArticle = "";
+            }
             break;
         }
 
@@ -190,12 +201,14 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
 
         if (!name.empty())
         {
-            auto note = new Diagnostic{first, first->token, format(Note002, kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
+            auto note  = new Diagnostic{first, first->token, format(Note002, kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
+            note->hint = hint;
             notes.push_back(note);
         }
         else
         {
-            auto note = new Diagnostic{first, first->token, format(Note003, kindName), DiagnosticLevel::Note};
+            auto note  = new Diagnostic{first, first->token, format(Note003, kindName), DiagnosticLevel::Note};
+            note->hint = hint;
             notes.push_back(note);
         }
     }

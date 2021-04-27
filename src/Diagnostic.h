@@ -111,6 +111,7 @@ struct Diagnostic
     SourceLocation  endLocation;
     Utf8            textMsg;
     vector<Utf8>    remarks;
+    Utf8            hint;
     DiagnosticLevel errorLevel;
     bool            currentStackLevel     = false;
     uint32_t        stackLevel            = 0;

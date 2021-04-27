@@ -317,7 +317,13 @@ void Diagnostic::report(bool verboseMode) const
                     for (int i = 0; i < range; i++)
                         g_Log.print("^");
 
-                    if (!g_ErrorHint.empty())
+                    if (!hint.empty())
+                    {
+                        g_Log.print(" ");
+                        g_Log.setColor(remarkColor);
+                        g_Log.print(hint);
+                    }
+                    else if (!g_ErrorHint.empty())
                     {
                         g_Log.print(" ");
                         g_Log.setColor(remarkColor);

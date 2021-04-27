@@ -54,7 +54,7 @@ struct JobContext
         Generic,
         Inline,
         SelectIf,
-        Node,
+        CastNode,
     };
 
     VectorNative<pair<AstNode*, ExpansionType>> expansionNode;
