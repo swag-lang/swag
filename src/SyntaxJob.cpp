@@ -62,11 +62,13 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     }
 
     Utf8 msg;
+    Utf8 hint;
 
     switch (kind)
     {
     case InvalidTokenError::TopLevelInstruction:
         msg += Msg0895;
+        hint = Hnt0014;
         break;
     case InvalidTokenError::EmbeddedInstruction:
         msg += Msg0896;
@@ -106,6 +108,7 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         break;
     }
 
+    PushErrHint errh(hint);
     return error(token, msg);
 }
 

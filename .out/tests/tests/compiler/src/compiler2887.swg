@@ -1,4 +1,1 @@
-#test
-{
-    x := 0 try
-}
+  var x: @(coucou)

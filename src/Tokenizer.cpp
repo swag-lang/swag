@@ -276,9 +276,17 @@ bool Tokenizer::getToken(Token& token)
             getIdentifier(token, nc, offset);
             token.endLocation = location;
 
+            if (token.text == "@")
+            {
+                token.startLocation = location;
+                token.endLocation   = location;
+                sourceFile->report({sourceFile, token, format(Msg0141, nc)});
+                return false;
+            }
+
             if (token.id == TokenId::Identifier && token.text[0] == '#')
             {
-                sourceFile->report({sourceFile, token, format("unknown compiler instruction '%s'", token.text.c_str())});
+                sourceFile->report({sourceFile, token, format(Msg0140, token.text.c_str())});
                 return false;
             }
 

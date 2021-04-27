@@ -506,7 +506,7 @@
 #define Msg0731 "invalid type '%s' for attribute parameter"
 #define Msg0697 "invalid type '%s' for enum flags (should be unsigned integer)"
 #define Msg0698 "invalid type '%s' for enum index (should be integer)"
-#define Msg0343 "invalid type declaration '%s'"
+#define Msg0343 "expected a type declaration, found '%s'"
 #define Msg0296 "invalid variable name '%s' because '@alias' can only be used inside a macro or a mixin function"
 #define Msg0410 "invalid variable name '%s'"
 #define Msg0278 "invalid variable name '%s', cannot start with '@'"
@@ -699,6 +699,8 @@
 #define Msg0734 "variadic argument should be the last one"
 #define Msg0289 "version should be of the form 'version.revision.buildnum', with each number >= 0 or the '?' character"
 #define Msg0056 "x64 backend unsupported os '%s'"
+#define Msg0140 "unknown compiler instruction '%s'"
+#define Msg0141 "expected '[', '{', '(', '\"' or an intrinsic name, found character '%c'"
 
 #define Msg0434 "bytecode execution, "
 #define Msg0901 ", found identifier '%s' "
@@ -780,3 +782,4 @@
 #define Rem0000 "this could be casted with 'cast(%s)'"
 #define Hnt0012 "this return (%s) should have type '%s'"
 #define Hnt0013 "this should be on another line, or separated with ';'"
+#define Hnt0014 "this is invalid in global scope"
