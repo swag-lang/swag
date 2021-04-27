@@ -180,18 +180,25 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
             kindArticle = "to ";
             break;
         case JobContext::ExpansionType::CastNode:
+            kindName    = Msg0134;
+            kindArticle = "";
             if (first->kind == AstNodeKind::AffectOp)
             {
                 kindName    = Msg0131;
-                first       = first->childs.front();
                 kindArticle = "to ";
+                first       = first->childs.front();
                 hint        = format(Hnt0011, first->typeInfo->getDisplayName().c_str());
             }
-            else
+            else if (first->kind == AstNodeKind::Return)
             {
-                kindName    = Msg0134;
-                kindArticle = "";
+                auto returnNode = CastAst<AstReturn>(first, AstNodeKind::Return);
+                if (returnNode->resolvedFuncDecl)
+                {
+                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(returnNode->resolvedFuncDecl->typeInfo, TypeInfoKind::FuncAttr);
+                    hint          = format(Hnt0012, returnNode->resolvedFuncDecl->getDisplayName().c_str(), typeFunc->returnType->getDisplayName().c_str());
+                }
             }
+
             break;
         }
 

@@ -475,7 +475,7 @@ struct AstFuncDecl : public AstNode
     AstNode* clone(CloneContext& context) override;
     bool     cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
     void     computeFullNameForeign(bool forExport);
-    Utf8     getNameForMessage();
+    Utf8     getDisplayName();
     Utf8     getNameForUserCompiler();
 
     DependentJobs          dependentJobs;
@@ -848,7 +848,8 @@ struct AstReturn : public AstNode
 
     VectorNative<SymbolOverload*> forceNoDrop;
 
-    int seekJump;
+    AstFuncDecl* resolvedFuncDecl;
+    int          seekJump;
 };
 
 struct AstCompilerInline : public AstNode

@@ -599,7 +599,7 @@
 #define Msg0335 "relative type should be followed by a number or an identifier"
 #define Msg0336 "relative type should be followed by an untyped integer"
 #define Msg0198 "relative types are not supported in expression lists"
-#define Msg0774 "returning a value of type '%s', but the function does not declare a return type"
+#define Msg0774 "returning a value of type '%s', but %s returns nothing"
 #define Msg0752 "returning an array of relative types is not supported"
 #define Msg0173 "shift operand should be 'u32' and not '%s'"
 #define Msg0812 "size cannot be computed because expression is generic"
@@ -747,6 +747,7 @@
 #define Note005 "is there a missing 'self' ?"
 #define Note006 "did you mean '%s' ?"
 #define Note010 "'%s' is %s"
+#define Note011 "%s is marked with 'swag.noreturn', so the return is used inside %s"
 
 // #####################
 // REMARKS
@@ -760,7 +761,7 @@
 // #####################
 
 #define Msg0628 "this cannot be visited"
-#define Msg0773 "this should return nothing"
+#define Msg0773 "this should be removed"
 #define Msg0487 "this should be a pointer"
 #define Msg0357 "this should be a 'visit' variable name or the expression to evaluate"
 #define Msg0359 "this should be a 'visit' variable name"
@@ -776,3 +777,4 @@
 #define Hnt0001 "this '@sqrt' is called with a negative value"
 #define Hnt0011 "this type is '%s'"
 #define Rem0000 "this could be casted with 'cast(%s)'"
+#define Hnt0012 "this return (%s) should have type '%s'"

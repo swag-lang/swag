@@ -294,7 +294,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
         if (node->attributeFlags & ATTRIBUTE_PUBLIC)
         {
-            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl(), context->report({node, node->token, format(Msg0747, node->getNameForMessage().c_str())}));
+            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl(), context->report({node, node->token, format(Msg0747, node->getDisplayName().c_str())}));
         }
     }
 
@@ -313,8 +313,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report({node, node->token, format(Msg0748, node->getNameForMessage().c_str())});
-                return context->report({node, node->token, format(Msg0749, node->getNameForMessage().c_str())});
+                    return context->report({node, node->token, format(Msg0748, node->getDisplayName().c_str())});
+                return context->report({node, node->token, format(Msg0749, node->getDisplayName().c_str())});
             }
         }
     }
@@ -903,7 +903,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         }
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitReturn;
+    node->byteCodeFct      = ByteCodeGenJob::emitReturn;
+    node->resolvedFuncDecl = funcNode;
 
     // Nothing to return
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && node->childs.empty())
@@ -952,8 +953,21 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto concreteType = TypeManager::concreteType(child->typeInfo);
     if (returnType->isNative(NativeTypeKind::Void) && !concreteType->isNative(NativeTypeKind::Void))
     {
+        Diagnostic  diag{child, format(Msg0774, concreteType->getDisplayName().c_str(), funcNode->getDisplayName().c_str())};
         PushErrHint errh(Msg0773);
-        return context->report({child, format(Msg0774, concreteType->getDisplayName().c_str())});
+
+        if (node->ownerInline && !(node->semFlags & AST_SEM_EMBEDDED_RETURN))
+        {
+            Diagnostic note{funcNode,
+                            funcNode->token,
+                            format(Note011,
+                                   node->ownerInline->func->getDisplayName().c_str(),
+                                   funcNode->getDisplayName().c_str()),
+                            DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
+
+        return context->report(diag);
     }
 
     // If returning retval, then returning nothing, as we will change the return parameter value in place

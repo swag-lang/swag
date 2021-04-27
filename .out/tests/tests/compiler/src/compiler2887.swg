@@ -1,10 +1,10 @@
-func titi(f: s32)
+/*#[swag.mixin, swag.noreturn]
+func titi()
 {
-
+    return true
 }
-
 
 #test
 {
-    titi(0)
-}
+    titi()
+}*/

@@ -546,7 +546,7 @@ Utf8 AstFuncDecl::getNameForUserCompiler()
     return getScopedName();
 }
 
-Utf8 AstFuncDecl::getNameForMessage()
+Utf8 AstFuncDecl::getDisplayName()
 {
     if (attributeFlags & ATTRIBUTE_AST_FUNC)
         return "'#ast' block";
