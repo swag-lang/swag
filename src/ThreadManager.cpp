@@ -6,6 +6,9 @@
 #include "Context.h"
 #include "ByteCodeStack.h"
 #include "SymTable.h"
+#include "SourceFile.h"
+#include "Module.h"
+#include "AstNode.h"
 
 ThreadManager g_ThreadMgr;
 
@@ -171,7 +174,32 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         condVarDone.notify_all();
 }
 
-static int exceptionHandler()
+static void exceptionMessage(Job* job, LPEXCEPTION_POINTERS args)
+{
+    g_Log.lock();
+    g_Log.setColor(LogColor::Red);
+    g_Log.print("fatal error: hardware exception during job execution !\n");
+
+    g_Log.setColor(LogColor::White);
+    g_Log.messageHeaderDot("exception code", format("0x%08X\n", args->ExceptionRecord->ExceptionCode), LogColor::White, LogColor::White, " ", false);
+    if (job->baseContext && job->baseContext->sourceFile)
+    {
+        g_Log.messageHeaderDot("current source file", job->baseContext->sourceFile->name, LogColor::White, LogColor::White, " ", false);
+        g_Log.messageHeaderDot("current module", job->baseContext->sourceFile->module->name, LogColor::White, LogColor::White, " ", false);
+    }
+
+    if (job->nodes.size())
+    {
+        auto node = job->nodes.back();
+        g_Log.messageHeaderDot("current node", node->token.text, LogColor::White, LogColor::White, " ", false);
+        if (node->sourceFile)
+            g_Log.messageHeaderDot("current location", format("%s:%d:%d", node->sourceFile->path.c_str(), node->token.startLocation.line + 1, node->token.startLocation.column + 1), LogColor::White, LogColor::White, " ", false);
+    }
+
+    g_Log.unlock();
+}
+
+static int exceptionHandler(Job* job, LPEXCEPTION_POINTERS args)
 {
     if (g_CommandLine.devMode)
     {
@@ -180,6 +208,7 @@ static int exceptionHandler()
         return EXCEPTION_CONTINUE_EXECUTION;
     }
 
+    exceptionMessage(job, args);
     return EXCEPTION_EXECUTE_HANDLER;
 }
 
@@ -192,8 +221,9 @@ void ThreadManager::executeOneJob(Job* job)
         if (result == JobResult::ReleaseJob)
             job->release();
     }
-    __except (exceptionHandler())
+    __except (exceptionHandler(job, GetExceptionInformation()))
     {
+        exit(-1);
     }
 }
 

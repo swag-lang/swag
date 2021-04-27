@@ -1359,7 +1359,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                      bi.badSignatureRequestedType->name.c_str(),
                                      bi.badSignatureGivenType->name.c_str())};
         if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            diag->remarks.push_back(format(Rem0000, bi.badSignatureRequestedType->name.c_str()));
+            diag->hint = format(Rem0000, bi.badSignatureRequestedType->name.c_str());
+
         note = new Diagnostic{overload->node, overload->node->token, format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
@@ -1390,7 +1391,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                          bi.badSignatureGivenType->getDisplayName().c_str())};
         }
         if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            diag->remarks.push_back(format(Rem0000, bi.badSignatureRequestedType->name.c_str()));
+            diag->hint = format(Rem0000, bi.badSignatureRequestedType->name.c_str());
         if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
             note = new Diagnostic{destFuncDecl->parameters->childs[bi.badSignatureParameterIdx], format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};
         else
@@ -1432,7 +1433,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                          bi.badSignatureRequestedType->getDisplayName().c_str(),
                                          bi.badSignatureGivenType->getDisplayName().c_str())};
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-                diag->remarks.push_back(format(Rem0000, bi.badSignatureRequestedType->name.c_str()));
+                diag->hint = format(Rem0000, bi.badSignatureRequestedType->name.c_str());
             note = new Diagnostic{overload->node, overload->node->token, format(Note008, refNiceName.c_str()), DiagnosticLevel::Note};
             result0.push_back(diag);
             result1.push_back(note);

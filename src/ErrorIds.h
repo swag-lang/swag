@@ -752,7 +752,6 @@
 // REMARKS
 // #####################
 
-#define Rem0000 "an explicit 'cast(%s)' can be used in that context"
 #define Rem0001 "symbol '%s' was not found in %s '%s'"
 #define Rem0002 "symbol '%s' exists in interface scope '%s'"
 
@@ -776,3 +775,4 @@
 #define Hnt0000 "this divisor expression is zero"
 #define Hnt0001 "this '@sqrt' is called with a negative value"
 #define Hnt0011 "this type is '%s'"
+#define Rem0000 "this could be casted with 'cast(%s)'"

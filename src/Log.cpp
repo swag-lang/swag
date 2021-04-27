@@ -42,11 +42,12 @@ void Log::messageHeaderCentered(const Utf8& header, const Utf8& message, LogColo
     unlock();
 }
 
-void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot)
+void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot, bool mustLock)
 {
     if (g_CommandLine.silent)
         return;
-    lock();
+    if (mustLock)
+        lock();
 
     setColor(headerColor);
     print(header);
@@ -64,7 +65,8 @@ void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor hea
     if (message.back() != '\n')
         eol();
     setDefaultColor();
-    unlock();
+    if (mustLock)
+        unlock();
 }
 
 void Log::error(const Utf8& message)
