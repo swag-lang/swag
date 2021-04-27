@@ -26,10 +26,6 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
             {
                 switch (child->kind)
                 {
-                case AstNodeKind::AttrUse:
-                    if (((AstAttrUse*) child)->isGlobal)
-                        break;
-                    return error(node->token, Msg0386);
                 case AstNodeKind::CompilerImport:
                 case AstNodeKind::CompilerAssert:
                 case AstNodeKind::CompilerForeignLib:
@@ -37,9 +33,15 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 case AstNodeKind::IdentifierRef:
                 case AstNodeKind::Namespace:
                     break;
-
+                case AstNodeKind::AttrUse:
+                    if (((AstAttrUse*) child)->isGlobal)
+                        break;
                 default:
-                    return error(node->token, Msg0386);
+                {
+                    Diagnostic diag{node, node->token, Msg0386};
+                    Diagnostic note{child, child->token, Msg0158, DiagnosticLevel::Note};
+                    return sourceFile->report(diag, &note);
+                }
                 }
             }
         }

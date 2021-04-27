@@ -5,14 +5,6 @@
 #include "SourceFile.h"
 #include "ErrorIds.h"
 
-bool Tokenizer::errorNumberSyntax(Token& token, const Utf8& msg)
-{
-    Utf8 text = "invalid number syntax, ";
-    text += msg;
-    error(token, text);
-    return false;
-}
-
 bool Tokenizer::doBinLiteral(Token& token)
 {
     token.literalValue.u64 = 0;
@@ -30,7 +22,7 @@ bool Tokenizer::doBinLiteral(Token& token)
         if (SWAG_IS_NUMSEP(c))
         {
             if (!acceptSep)
-                return errorNumberSyntax(token, "forbidden consecutive digit separators");
+                return error(token, Msg0145);
             acceptSep = false;
             c         = getCharNoSeek(offset);
             continue;
@@ -57,10 +49,10 @@ bool Tokenizer::doBinLiteral(Token& token)
 
     // Be sure we don't have 0x without nothing
     if (rank == 0)
-        SWAG_CHECK(errorNumberSyntax(token, "missing at least one digit"));
+        SWAG_CHECK(error(token, Msg0151));
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        SWAG_CHECK(errorNumberSyntax(token, "a digit separator can't end a literal number"));
+        SWAG_CHECK(error(token, Msg0152));
 
     // Suffix
     token.id = TokenId::LiteralNumber;
@@ -89,7 +81,7 @@ bool Tokenizer::doHexLiteral(Token& token)
         if (SWAG_IS_NUMSEP(c))
         {
             if (!acceptSep)
-                return errorNumberSyntax(token, "forbidden consecutive digit separators");
+                return error(token, Msg0145);
             acceptSep = false;
             c         = getCharNoSeek(offset);
             continue;
@@ -121,10 +113,10 @@ bool Tokenizer::doHexLiteral(Token& token)
 
     // Be sure we don't have 0x without nothing
     if (rank == 0)
-        SWAG_CHECK(errorNumberSyntax(token, "missing at least one digit"));
+        SWAG_CHECK(error(token, Msg0151));
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        SWAG_CHECK(errorNumberSyntax(token, "a digit separator can't end a literal number"));
+        SWAG_CHECK(error(token, Msg0152));
 
     // Suffix
     token.id = TokenId::LiteralNumber;
@@ -157,8 +149,8 @@ bool Tokenizer::doFloatLiteral(uint32_t c, Token& token)
         {
             if (!acceptSep)
             {
-                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, "a digit separator cannot start a literal number"));
-                SWAG_CHECK(rank == 0 || errorNumberSyntax(token, "forbidden consecutive digit separators"));
+                SWAG_CHECK(rank != 0 || error(token, Msg0154));
+                SWAG_CHECK(rank == 0 || error(token, Msg0145));
             }
 
             acceptSep = false;
@@ -179,7 +171,7 @@ bool Tokenizer::doFloatLiteral(uint32_t c, Token& token)
 
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        SWAG_CHECK(errorNumberSyntax(token, "a digit separator cannot end a literal number"));
+        SWAG_CHECK(error(token, Msg0152));
 
     return true;
 }
@@ -204,8 +196,8 @@ bool Tokenizer::doIntLiteral(uint32_t c, Token& token)
         {
             if (!acceptSep)
             {
-                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, "a digit separator cannot start a literal number"));
-                SWAG_CHECK(rank == 0 || errorNumberSyntax(token, "forbidden consecutive digit separators"));
+                SWAG_CHECK(rank != 0 || error(token, Msg0154));
+                SWAG_CHECK(rank == 0 || error(token, Msg0145));
             }
 
             acceptSep = false;
@@ -226,7 +218,7 @@ bool Tokenizer::doIntLiteral(uint32_t c, Token& token)
 
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        SWAG_CHECK(errorNumberSyntax(token, "a digit separator cannot end a literal number"));
+        SWAG_CHECK(error(token, Msg0152));
 
     return true;
 }
@@ -267,7 +259,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
         // Fraction part
         tokenFrac.startLocation = location;
         c                       = getCharNoSeek(offset);
-        SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenFrac, "a digit separator cannot start a fractional part"));
+        SWAG_VERIFY(!SWAG_IS_NUMSEP(c), error(tokenFrac, Msg0155));
         if (SWAG_IS_DIGIT(c))
         {
             tokenFrac.text = c;
@@ -305,7 +297,7 @@ bool Tokenizer::doIntFloatLiteral(uint32_t c, Token& token)
         }
 
         tokenExponent.startLocation = location;
-        SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenExponent, "a digit separator cannot start an exponent part"));
+        SWAG_VERIFY(!SWAG_IS_NUMSEP(c), error(tokenExponent, Msg0156));
         SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, Msg0466));
         token.text += c;
         treatChar(c, offset);

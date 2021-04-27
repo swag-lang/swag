@@ -1,1 +1,2 @@
-  var x: @(coucou)
+var x = 0
+//using toto

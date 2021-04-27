@@ -70,7 +70,6 @@ struct Tokenizer
     bool        doIntLiteral(uint32_t c, Token& token);
     bool        doFloatLiteral(uint32_t c, Token& token);
     bool        error(Token& token, const Utf8& msg);
-    bool        errorNumberSyntax(Token& token, const Utf8& msg);
     bool        doSymbol(uint32_t c, Token& token);
     void        postProcessRawString(Utf8& text);
     bool        doStringLiteral(Token& token, bool raw);
