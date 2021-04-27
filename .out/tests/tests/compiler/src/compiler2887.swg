@@ -1,2 +1,1 @@
-var x = 0
-//using toto
+//var g: *&s32
