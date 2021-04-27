@@ -71,6 +71,6 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         SWAG_CHECK(eatToken());
     }
 
-    SWAG_CHECK(eatSemiCol("the end of a variable declation"));
+    SWAG_CHECK(eatSemiCol("end of a variable declation"));
     return true;
 }

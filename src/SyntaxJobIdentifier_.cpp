@@ -100,11 +100,12 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     // Array index
     if (token.id == TokenId::SymLeftSquare)
     {
-        if (identifierFlags & IDENTIFIER_TYPE_DECL)
-            return sourceFile->report({identifier, token, Msg0840});
-
         if (!(identifierFlags & IDENTIFIER_NO_PARAMS))
+        {
+            if (identifierFlags & IDENTIFIER_TYPE_DECL)
+                return sourceFile->report({identifier, token, Msg0840});
             SWAG_CHECK(doArrayPointerIndex(&expr));
+        }
     }
 
     Ast::addChildBack(parent, expr);

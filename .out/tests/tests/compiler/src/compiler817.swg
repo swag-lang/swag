@@ -1,5 +1,3 @@
-
-
 //#[swag.printbc]
 #global testerror
 #test

@@ -6,14 +6,6 @@
 
 thread_local Utf8 g_ErrorHint;
 
-void Diagnostic::defaultColor(bool verboseMode) const
-{
-    if (verboseMode)
-        g_Log.setColor(LogColor::DarkCyan);
-    else
-        g_Log.setColor(LogColor::White);
-}
-
 void Diagnostic::printSourceLine(int headerSize) const
 {
     if (g_CommandLine.errorSourceOut)
@@ -36,39 +28,44 @@ void Diagnostic::printSourceLine(int headerSize) const
 
 void Diagnostic::report(bool verboseMode) const
 {
-    defaultColor(verboseMode);
+    auto verboseColor     = LogColor::DarkCyan;
+    auto errorColor       = verboseMode ? verboseColor : LogColor::Red;
+    auto remarkColor      = verboseMode ? verboseColor : LogColor::White;
+    auto sourceFileColor  = verboseMode ? verboseColor : LogColor::Cyan;
+    auto codeColor        = verboseMode ? verboseColor : LogColor::Gray;
+    auto hilightCodeColor = verboseMode ? verboseColor : LogColor::White;
+    auto rangeNoteColor   = verboseMode ? verboseColor : LogColor::Cyan;
+    auto warningColor     = verboseMode ? verboseColor : LogColor::Magenta;
+    auto noteColor        = verboseMode ? verboseColor : LogColor::White;
+    auto stackColor       = verboseMode ? verboseColor : LogColor::DarkYellow;
+    g_Log.setColor(verboseMode ? verboseColor : LogColor::White);
 
     // Message level
     switch (errorLevel)
     {
     case DiagnosticLevel::Error:
-        if (!verboseMode)
-            g_Log.setColor(LogColor::Red);
+        g_Log.setColor(errorColor);
         g_Log.print("error: ");
         break;
     case DiagnosticLevel::Warning:
         if (g_CommandLine.warningsAsErrors)
         {
-            if (!verboseMode)
-                g_Log.setColor(LogColor::Red);
+            g_Log.setColor(errorColor);
             g_Log.print("error: (from warning): ");
         }
         else
         {
-            if (!verboseMode)
-                g_Log.setColor(LogColor::Magenta);
+            g_Log.setColor(warningColor);
             g_Log.print("warning: ");
         }
         break;
     case DiagnosticLevel::Note:
-        if (!verboseMode)
-            g_Log.setColor(LogColor::White);
+        g_Log.setColor(noteColor);
         g_Log.print("note: ");
         break;
     case DiagnosticLevel::CallStack:
     {
-        if (!verboseMode)
-            g_Log.setColor(LogColor::DarkYellow);
+        g_Log.setColor(stackColor);
         if (currentStackLevel)
             g_Log.print(format("callstack:[%03u]: ", stackLevel));
         else
@@ -76,13 +73,11 @@ void Diagnostic::report(bool verboseMode) const
         break;
     }
     case DiagnosticLevel::CallStackInlined:
-        if (!verboseMode)
-            g_Log.setColor(LogColor::DarkYellow);
+        g_Log.setColor(stackColor);
         g_Log.print("inlined: ");
         break;
     case DiagnosticLevel::TraceError:
-        if (!verboseMode)
-            g_Log.setColor(LogColor::DarkYellow);
+        g_Log.setColor(stackColor);
         g_Log.print("trace error: ");
         break;
     }
@@ -97,23 +92,15 @@ void Diagnostic::report(bool verboseMode) const
     g_Log.print(textMsg);
     g_Log.eol();
 
-    auto remarkColor      = LogColor::White;
-    auto sourceFileColor  = LogColor::Cyan;
-    auto codeColor        = LogColor::Gray;
-    auto hilightCodeColor = LogColor::White;
-    auto rangeNoteColor   = LogColor::Cyan;
-
     // Source file and location on their own line
     if (g_CommandLine.errorSourceOut && hasFile && !sourceFile->path.empty())
     {
-        if (!verboseMode)
-            g_Log.setColor(sourceFileColor);
+        g_Log.setColor(sourceFileColor);
         printSourceLine(headerSize + 4);
         g_Log.eol();
     }
 
-    if (!verboseMode)
-        g_Log.setColor(codeColor);
+    g_Log.setColor(codeColor);
 
     // Source code
     if (hasFile && !sourceFile->path.empty() && hasLocation && printSource && g_CommandLine.errorSourceOut)
@@ -244,7 +231,7 @@ void Diagnostic::report(bool verboseMode) const
                     Utf8 errorMsg;
                     while (startIndex < (int) startLocation.column)
                     {
-                        if (backLine[startIndex] >= 32)
+                        if (backLine[startIndex] >= 32 || backLine[startIndex] == '\t')
                             errorMsg += backLine[startIndex];
                         else
                             errorMsg += " ";
@@ -258,7 +245,7 @@ void Diagnostic::report(bool verboseMode) const
                     {
                         for (int i = 0; i < range; i++)
                         {
-                            if (backLine[startIndex] >= 32)
+                            if (backLine[startIndex] >= 32 || backLine[startIndex] == '\t')
                                 errorMsg += backLine[startIndex];
                             startIndex++;
                         }
@@ -275,7 +262,7 @@ void Diagnostic::report(bool verboseMode) const
                         }
 
                         // Error on multiple lines
-                        if (endLocation.line != startLocation.line)
+                        if ((endLocation.line != startLocation.line) && hasRangeLocation)
                             g_Log.print(" ...");
                     }
 
@@ -297,21 +284,18 @@ void Diagnostic::report(bool verboseMode) const
                             g_Log.print(" ");
                     }
 
-                    if (!verboseMode)
+                    switch (errorLevel)
                     {
-                        switch (errorLevel)
-                        {
-                        case DiagnosticLevel::Error:
-                            g_Log.setColor(LogColor::Red);
-                            break;
-                        case DiagnosticLevel::Note:
-                            g_Log.setColor(rangeNoteColor);
-                            break;
-                        }
+                    case DiagnosticLevel::Error:
+                        g_Log.setColor(errorColor);
+                        break;
+                    case DiagnosticLevel::Note:
+                        g_Log.setColor(rangeNoteColor);
+                        break;
                     }
 
                     // Error on multiple lines
-                    if (endLocation.line != startLocation.line)
+                    if ((endLocation.line != startLocation.line) && hasRangeLocation)
                         range += 4; // for the added " ..."
 
                     for (int i = 0; i < range; i++)
@@ -352,8 +336,7 @@ void Diagnostic::report(bool verboseMode) const
     {
         if (!remarks.empty())
         {
-            if (!verboseMode)
-                g_Log.setColor(remarkColor);
+            g_Log.setColor(remarkColor);
             for (auto& r : remarks)
             {
                 if (r.empty())

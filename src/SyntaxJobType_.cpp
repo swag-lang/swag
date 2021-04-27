@@ -388,7 +388,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
     if (token.id == TokenId::Identifier)
     {
-        SWAG_CHECK(doIdentifierRef(node, &node->identifier, IDENTIFIER_TYPE_DECL));
+        SWAG_CHECK(doIdentifierRef(node, &node->identifier, IDENTIFIER_TYPE_DECL | IDENTIFIER_NO_ARRAY));
         if (inTypeVarDecl)
             node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
         return true;
