@@ -468,7 +468,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
                 emitRelocationTable(pp.postConcat, pp.relocTableTSSection, pp.patchTSSectionFlags, pp.patchTSSectionRelocTableCount);
             }
 
-            uint32_t tlsRelocOffset = tsRelocOffset + pp.postConcat.totalCount();
+            uint32_t tlsRelocOffset = csRelocOffset + pp.postConcat.totalCount();
             if (!pp.relocTableTLSSection.table.empty())
             {
                 *pp.patchTLSSectionRelocTableOffset = tlsRelocOffset;

@@ -2236,7 +2236,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->push(module->tlsSegment.address(0));
         context->push((uint64_t) module->tlsSegment.totalCount);
         context->push(g_tlsThreadLocalId);
-        localCall(context, bc, 2, ip->a.u32);
+        localCall(context, bc, 3, ip->a.u32);
         break;
     }
     case ByteCodeOp::IntrinsicGetContext:
