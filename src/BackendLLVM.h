@@ -20,13 +20,15 @@ struct LLVMPerThread
     string                filename;
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
-    llvm::GlobalVariable* bssSeg            = nullptr;
-    llvm::GlobalVariable* mutableSeg        = nullptr;
-    llvm::GlobalVariable* constantSeg       = nullptr;
-    llvm::GlobalVariable* typeSeg           = nullptr;
-    llvm::GlobalVariable* mainContext       = nullptr;
-    llvm::GlobalVariable* defaultAllocTable = nullptr;
-    llvm::GlobalVariable* processInfos      = nullptr;
+    llvm::GlobalVariable* bssSeg              = nullptr;
+    llvm::GlobalVariable* mutableSeg          = nullptr;
+    llvm::GlobalVariable* constantSeg         = nullptr;
+    llvm::GlobalVariable* typeSeg             = nullptr;
+    llvm::GlobalVariable* tlsSeg              = nullptr;
+    llvm::GlobalVariable* mainContext         = nullptr;
+    llvm::GlobalVariable* defaultAllocTable   = nullptr;
+    llvm::GlobalVariable* processInfos        = nullptr;
+    llvm::GlobalVariable* symTlsThreadLocalId = nullptr;
 
     llvm::Type*         interfaceTy    = nullptr;
     llvm::Type*         contextTy      = nullptr;

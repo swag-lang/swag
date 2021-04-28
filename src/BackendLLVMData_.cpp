@@ -33,6 +33,8 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
             pp.mutableSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__ms");
         else if (dataSegment == &module->typeSegment)
             pp.typeSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__ts");
+        else if (dataSegment == &module->tlsSegment)
+            pp.tlsSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__tls");
         else
             pp.constantSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, nullptr, "__cs");
         return true;
@@ -72,8 +74,12 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
                 pp.dbg->createGlobalVariablesForSegment(buildParameters, arrayType, pp.mutableSeg);
         }
         else if (dataSegment == &module->typeSegment)
-        {
             pp.typeSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__ts");
+        else if (dataSegment == &module->tlsSegment)
+        {
+            pp.tlsSeg = new llvm::GlobalVariable(modu, arrayType, false, llvm::GlobalValue::ExternalLinkage, constArray, "__tls");
+            if (pp.dbg)
+                pp.dbg->createGlobalVariablesForSegment(buildParameters, arrayType, pp.tlsSeg);
         }
         else
         {
@@ -113,6 +119,10 @@ bool BackendLLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegmen
     case SegmentKind::Type:
         name = "initTypeSeg";
         gVar = pp.typeSeg;
+        break;
+    case SegmentKind::Tls:
+        name = "initTlsSeg";
+        gVar = pp.tlsSeg;
         break;
     default:
         SWAG_ASSERT(false);

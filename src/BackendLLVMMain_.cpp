@@ -228,10 +228,17 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
         builder.CreateMemCpy(p0, llvm::Align{}, p1, llvm::Align{}, builder.getInt64(sizeof(SwagProcessInfos)));
     }
 
+    // Init thread local storage id
+    {
+        auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1));
+        localCall(buildParameters, nullptr, allocT, "__tlsAlloc", {UINT32_MAX}, {pp.symTlsThreadLocalId});
+    }
+
     // Initialize data segments
     builder.CreateCall(modu.getFunction("initMutableSeg"));
     builder.CreateCall(modu.getFunction("initTypeSeg"));
     builder.CreateCall(modu.getFunction("initConstantSeg"));
+    builder.CreateCall(modu.getFunction("initTlsSeg"));
 
     // Call to #init functions
     for (auto bc : module->byteCodeInitFunc)
