@@ -1,7 +1,7 @@
 #[swag.tls]
 var G: string = "titi"
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     @assert(G == "titi")
