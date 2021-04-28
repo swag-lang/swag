@@ -703,9 +703,13 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     }
 
     // Lambda sub function will be resolved by the owner function
-    registerSubDecl(lambda);
+    if (lambda->ownerFct)
+        registerSubDecl(lambda);
+    // If the lambda is created at global scope, register it as a normal function
+    else
+        Ast::addChildBack(sourceFile->astRoot, lambda);
 
-    // Retrieve the point of the function
+    // Retrieve the pointer of the function
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::MakePointerLambda, sourceFile, parent);
     exprNode->inheritTokenLocation(lambda->token);
     exprNode->ownerMainNode = lambda;

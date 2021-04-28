@@ -303,6 +303,7 @@ bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
 
 void SyntaxJob::registerSubDecl(AstNode* subDecl)
 {
+    SWAG_ASSERT(subDecl->ownerFct);
     subDecl->ownerFct->subDecls.push_back(subDecl);
     subDecl->attributeFlags |= ATTRIBUTE_PRIVATE;
     subDecl->flags |= AST_NO_SEMANTIC | AST_SUB_DECL;
