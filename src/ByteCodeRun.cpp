@@ -2232,6 +2232,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         auto module = context->sourceFile->module;
         auto bc     = g_Workspace.runtimeModule->getRuntimeFct("__tlsGetPtr");
+        module->tlsSegment.makeLinear(); // be sure init segment is not divided in chunks
         context->push(module->tlsSegment.address(0));
         context->push((uint64_t) module->tlsSegment.totalCount);
         context->push(g_tlsThreadLocalId);

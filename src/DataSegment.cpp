@@ -422,3 +422,27 @@ void DataSegment::restoreAllValues()
 void DataSegment::release()
 {
 }
+
+void DataSegment::makeLinear()
+{
+    unique_lock lk(mutex);
+    if (buckets.size() == 1)
+        return;
+
+    DataSegmentHeader h;
+
+    h.count  = (uint32_t) g_Allocator.alignSize(totalCount);
+    h.size   = h.count;
+    h.buffer = (uint8_t*) g_Allocator.alloc(h.count);
+
+    auto ptr = h.buffer;
+    for (auto& b : buckets)
+    {
+        memcpy(ptr, b.buffer, b.count);
+        ptr += b.count;
+        g_Allocator.free(b.buffer, b.count);
+    }
+
+    buckets.clear();
+    buckets.push_back(h);
+}
