@@ -238,9 +238,15 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
     emitCall(pp, "memcpy");
 
+    // Thread local storage
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symTlsThreadLocalId, 0);
+    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+    emitCall(pp, "__tlsAlloc");
+
     // Reloc functions
     emitPatchForeignPointers(buildParameters, &module->constantSegment, pp.symCSIndex);
     emitPatchForeignPointers(buildParameters, &module->typeSegment, pp.symTSIndex);
+    emitPatchForeignPointers(buildParameters, &module->tlsSegment, pp.symTLSIndex);
 
     // Call to #init functions
     for (auto bc : module->byteCodeInitFunc)

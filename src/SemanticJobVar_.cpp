@@ -500,10 +500,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         isLocalConstant = true;
     if (node->constAssign)
         symbolFlags |= OVERLOAD_CONST_ASSIGN;
+    if (node->attributeFlags & ATTRIBUTE_TLS)
+        symbolFlags |= OVERLOAD_VAR_TLS;
 
     auto concreteNodeType = node->type && node->type->typeInfo ? TypeManager::concreteType(node->type->typeInfo, CONCRETE_ALIAS) : nullptr;
 
     // Check attributes
+    if (node->attributeFlags & ATTRIBUTE_TLS && node->attributeFlags & ATTRIBUTE_COMPILER)
+        return context->report({node, Msg0159});
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
         if (!node->ownerMainNode || (node->ownerMainNode->kind != AstNodeKind::StructDecl &&
@@ -803,7 +807,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         node->flags |= AST_R_VALUE;
 
-        if (node->attributeFlags & ATTRIBUTE_COMPILER)
+        if (node->attributeFlags & ATTRIBUTE_TLS)
+        {
+            SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->tlsSegment));
+        }
+        else if (node->attributeFlags & ATTRIBUTE_COMPILER)
         {
             symbolFlags |= OVERLOAD_VAR_COMPILER;
             SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->compilerSegment));

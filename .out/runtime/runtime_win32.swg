@@ -100,6 +100,17 @@ func __tlsSetValue(id: u64, value: *void)   => TlsSetValue(cast(u32) id, value)
 func __tlsGetValue(id: u64)->*void          => TlsGetValue(cast(u32) id)
 
 ////////////////////////////////////////////////////////////
+func __tlsGetPtr(id: u64, size: u64, init: const *void)->*void
+{
+    ptr := TlsGetValue(cast(u32) id)
+    if ptr return ptr
+    ptr = @alloc(size)
+    @memcpy(ptr, init, size)
+    TlsSetValue(cast(u32) id, ptr)
+    return ptr
+}
+
+////////////////////////////////////////////////////////////
 func __panicBox(msg, title: string)
 {
     result := MessageBoxA(null, @dataof(msg), @dataof(title), MB_ICONERROR | MB_CANCELTRYCONTINUE)

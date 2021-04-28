@@ -19,6 +19,7 @@ enum class SegmentKind
     Data,
     Constant,
     Type,
+    Tls,
 };
 
 struct SegmentInitPtrRef

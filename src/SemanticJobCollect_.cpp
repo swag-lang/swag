@@ -17,7 +17,7 @@ bool SemanticJob::reserveAndStoreToSegment(JobContext* context, uint32_t& storag
     // Need to lock both data and constant segments, as both can be modified if 'seg' is a data
     else
     {
-        SWAG_ASSERT(seg == &module->mutableSegment);
+        SWAG_ASSERT(seg == &module->mutableSegment || seg == &module->tlsSegment);
         seg->mutex.lock();
         module->constantSegment.mutex.lock();
     }

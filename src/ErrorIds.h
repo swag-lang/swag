@@ -756,6 +756,7 @@
 #define Note010 "'%s' is %s"
 #define Note011 "%s is marked with 'swag.noreturn', so the return is used inside %s"
 #define Msg0158 "this was declared before"
+#define Msg0159 "'swag.tls' and 'swag.compiler' attributes are exclusive"
 
 // #####################
 // REMARKS

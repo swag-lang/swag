@@ -12,7 +12,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
     int       precompileIndex = buildParameters.precompileIndex;
     auto&     pp              = *perThread[ct][precompileIndex];
     auto&     concat          = pp.concat;
-    const int NUM_SECTIONS_0  = 12;
+    const int NUM_SECTIONS_0  = 13;
     const int NUM_SECTIONS_X  = 7;
 
     // Coff header
@@ -202,6 +202,20 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
         pp.patchTSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
         concat.addU16(0);                                         // .NumberOfLinenumbers
         pp.patchTSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
+
+        // tls section
+        /////////////////////////////////////////////
+        pp.sectionIndexTLS = secIndex++;
+        concat.addString(".data\0\0\0", 8);                        // .Name
+        concat.addU32(0);                                          // .VirtualSize
+        concat.addU32(0);                                          // .VirtualAddress
+        pp.patchTLSCount                   = concat.addU32Addr(0); // .SizeOfRawData
+        pp.patchTLSOffset                  = concat.addU32Addr(0); // .PointerToRawData
+        pp.patchTLSSectionRelocTableOffset = concat.addU32Addr(0); // .PointerToRelocations
+        concat.addU32(0);                                          // .PointerToLinenumbers
+        pp.patchTLSSectionRelocTableCount = concat.addU16Addr(0);  // .NumberOfRelocations
+        concat.addU16(0);                                          // .NumberOfLinenumbers
+        pp.patchTLSSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_INITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
     }
 
     SWAG_ASSERT(precompileIndex != 0 || secIndex == NUM_SECTIONS_0 + 1);
@@ -221,12 +235,13 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.globalSegment.setup("global segment", module);
         pp.stringSegment.setup("string segment", module);
 
-        pp.symBSIndex = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Custom, 0, pp.sectionIndexBS)->index;
-        pp.symCSIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
-        pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
-        pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Custom, 0, pp.sectionIndexTS)->index;
-        pp.symCOIndex = getOrAddSymbol(pp, format("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
-        pp.symXDIndex = getOrAddSymbol(pp, format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
+        pp.symBSIndex  = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Custom, 0, pp.sectionIndexBS)->index;
+        pp.symCSIndex  = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
+        pp.symMSIndex  = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
+        pp.symTSIndex  = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Custom, 0, pp.sectionIndexTS)->index;
+        pp.symTLSIndex = getOrAddSymbol(pp, "__tls", CoffSymbolKind::Custom, 0, pp.sectionIndexTLS)->index;
+        pp.symCOIndex  = getOrAddSymbol(pp, format("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
+        pp.symXDIndex  = getOrAddSymbol(pp, format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         // This should match the structure SwagContext declared in Runtime.h
         auto offset                         = pp.globalSegment.reserve(sizeof(SwagContext), true);
@@ -240,6 +255,10 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         // defaultAllocTable, an interface itable that contains only one entry
         offset                  = pp.globalSegment.reserve(8, true);
         pp.symDefaultAllocTable = getOrAddSymbol(pp, "swag_default_alloc_table", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+
+        // tls ID
+        offset                 = pp.globalSegment.reserve(8, true);
+        pp.symTlsThreadLocalId = getOrAddSymbol(pp, "swag_tls_thread_local_id", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // This should match the structure swag_process_infos_t declared in Runtime.h
         offset                  = pp.globalSegment.reserve(8, true);
@@ -258,12 +277,13 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
     }
     else
     {
-        pp.symBSIndex = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Extern)->index;
-        pp.symCSIndex = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern)->index;
-        pp.symMSIndex = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern)->index;
-        pp.symTSIndex = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Extern)->index;
-        pp.symCOIndex = getOrAddSymbol(pp, format("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
-        pp.symXDIndex = getOrAddSymbol(pp, format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
+        pp.symBSIndex  = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Extern)->index;
+        pp.symCSIndex  = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern)->index;
+        pp.symMSIndex  = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern)->index;
+        pp.symTSIndex  = getOrAddSymbol(pp, "__ts", CoffSymbolKind::Extern)->index;
+        pp.symTLSIndex = getOrAddSymbol(pp, "__tls", CoffSymbolKind::Extern)->index;
+        pp.symCOIndex  = getOrAddSymbol(pp, format("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
+        pp.symXDIndex  = getOrAddSymbol(pp, format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         pp.symPI_args_addr      = getOrAddSymbol(pp, "swag_process_infos_args_addr", CoffSymbolKind::Extern)->index;
         pp.symPI_args_count     = getOrAddSymbol(pp, "swag_process_infos_args_count", CoffSymbolKind::Extern)->index;
@@ -271,6 +291,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symPI_defaultContext = getOrAddSymbol(pp, "swag_process_infos_defaultContext", CoffSymbolKind::Extern)->index;
         pp.symPI_byteCodeRun    = getOrAddSymbol(pp, "swag_process_infos_byteCodeRun", CoffSymbolKind::Extern)->index;
         pp.symPI_makeCallback   = getOrAddSymbol(pp, "swag_process_infos_makeCallback", CoffSymbolKind::Extern)->index;
+        pp.symTlsThreadLocalId  = getOrAddSymbol(pp, "swag_tls_thread_local_id", CoffSymbolKind::Extern)->index;
     }
 
     return true;
@@ -336,6 +357,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
             buildRelocSegment(buildParameters, &module->constantSegment, pp.relocTableCSSection, SegmentKind::Constant);
             buildRelocSegment(buildParameters, &module->mutableSegment, pp.relocTableMSSection, SegmentKind::Data);
             buildRelocSegment(buildParameters, &module->typeSegment, pp.relocTableTSSection, SegmentKind::Type);
+            buildRelocSegment(buildParameters, &module->tlsSegment, pp.relocTableTLSSection, SegmentKind::Tls);
             module->typeSegment.applyPatchPtr();
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
@@ -382,10 +404,11 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
 
         if (precompileIndex == 0)
         {
-            uint32_t gsOffset = ssOffset + pp.stringSegment.totalCount;
-            uint32_t csOffset = gsOffset + pp.globalSegment.totalCount;
-            uint32_t msOffset = csOffset + module->constantSegment.totalCount;
-            uint32_t tsOffset = msOffset + module->mutableSegment.totalCount;
+            uint32_t gsOffset  = ssOffset + pp.stringSegment.totalCount;
+            uint32_t csOffset  = gsOffset + pp.globalSegment.totalCount;
+            uint32_t msOffset  = csOffset + module->constantSegment.totalCount;
+            uint32_t tsOffset  = msOffset + module->mutableSegment.totalCount;
+            uint32_t tlsOffset = tsOffset + module->typeSegment.totalCount;
 
             // We do not use concat to avoid dummy copies. We will save the segments as they are
             if (pp.globalSegment.totalCount)
@@ -412,10 +435,19 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
                 *pp.patchTSOffset = tsOffset;
             }
 
+            if (module->tlsSegment.totalCount)
+            {
+                *pp.patchTLSCount  = module->tlsSegment.totalCount;
+                *pp.patchTLSOffset = tlsOffset;
+            }
+
             // And we use another concat buffer for relocation tables of segments, because they must be defined after
             // the content
             pp.postConcat.init();
-            uint32_t csRelocOffset = tsOffset + module->typeSegment.totalCount;
+
+            // Warning ! Should be the last segment
+            uint32_t csRelocOffset = tlsOffset + module->tlsSegment.totalCount;
+
             if (!pp.relocTableCSSection.table.empty())
             {
                 *pp.patchCSSectionRelocTableOffset = csRelocOffset;
@@ -434,6 +466,13 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
             {
                 *pp.patchTSSectionRelocTableOffset = tsRelocOffset;
                 emitRelocationTable(pp.postConcat, pp.relocTableTSSection, pp.patchTSSectionFlags, pp.patchTSSectionRelocTableCount);
+            }
+
+            uint32_t tlsRelocOffset = tsRelocOffset + pp.postConcat.totalCount();
+            if (!pp.relocTableTLSSection.table.empty())
+            {
+                *pp.patchTLSSectionRelocTableOffset = tlsRelocOffset;
+                emitRelocationTable(pp.postConcat, pp.relocTableTLSSection, pp.patchTLSSectionFlags, pp.patchTLSSectionRelocTableCount);
             }
         }
     }
@@ -868,6 +907,18 @@ bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
         }
         SWAG_ASSERT(subTotal == *pp.patchTSCount || *pp.patchTSCount == 0);
         SWAG_ASSERT(subTotal == module->typeSegment.totalCount);
+
+        // The tls segment
+        SWAG_ASSERT(totalCount == *pp.patchTLSOffset || *pp.patchTLSOffset == 0);
+        subTotal = 0;
+        for (auto oneB : module->tlsSegment.buckets)
+        {
+            totalCount += oneB.count;
+            subTotal += oneB.count;
+            destFile.save(oneB.buffer, oneB.count, affinity);
+        }
+        SWAG_ASSERT(subTotal == *pp.patchTLSCount || *pp.patchTLSCount == 0);
+        SWAG_ASSERT(subTotal == module->tlsSegment.totalCount);
 
         // The post concat buffer that contains relocation tables for CS and DS
         bucket = pp.postConcat.firstBucket;

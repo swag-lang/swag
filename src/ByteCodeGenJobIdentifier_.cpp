@@ -431,6 +431,31 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         return true;
     }
 
+    // Variable from the tls segment
+    if (resolved->flags & OVERLOAD_VAR_TLS)
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::InternalGetTlsPtr, node->resultRegisterRC);
+
+        SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
+        if (node->resolvedSymbolOverload->storageOffset > 0)
+        {
+            ensureCanBeChangedRC(context, node->resultRegisterRC);
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+            inst->b.u64 = node->resolvedSymbolOverload->storageOffset;
+            inst->flags |= BCI_IMM_B;
+        }
+
+        if (!(node->forceTakeAddress()))
+            emitStructDeRef(context);
+        else if (node->parent->flags & AST_ARRAY_POINTER_REF)
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+
+        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        return true;
+    }
+
     // Variable from the data segment
     if (resolved->flags & OVERLOAD_VAR_GLOBAL)
     {

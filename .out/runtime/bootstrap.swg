@@ -74,6 +74,9 @@ namespace swag
     // Hardcoded for struct and variables
     attr align(value: u8)
 
+    #[attributeUsage(AttributeUsage.GlobalVariable)]
+    attr tls()
+
     #[attributeUsage(AttributeUsage.Struct)]
     attr pack(value: u8)
 

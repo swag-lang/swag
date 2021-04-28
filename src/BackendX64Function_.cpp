@@ -2596,6 +2596,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitInternalPanic(buildParameters, ip->node, (const char*) ip->d.pointer);
             break;
 
+        case ByteCodeOp::InternalGetTlsPtr:
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symTLSIndex, 0);
+            BackendX64Inst::emit_Store64_Indirect(pp, 24, RAX, RSP);
+            BackendX64Inst::emit_Load64_Immediate(pp, module->tlsSegment.totalCount, RAX, true);
+            BackendX64Inst::emit_Store64_Indirect(pp, 16, RAX, RSP);
+            BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symTlsThreadLocalId, 0);
+            BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
+            emitCall(pp, "__tlsGetPtr");
+            break;
+
         case ByteCodeOp::IntrinsicGetContext:
             BackendX64Inst::emit_Symbol_RelocationValue(pp, RAX, pp.symPI_contextTlsId, 0);
             BackendX64Inst::emit_Store64_Indirect(pp, 8, RAX, RSP);

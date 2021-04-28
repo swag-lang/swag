@@ -5,9 +5,10 @@
 #include "Backend.h"
 #include "ByteCodeStack.h"
 
-uint64_t                        g_tlsContextId   = 0;
-SwagContext                     g_defaultContext = {0};
-SwagProcessInfos                g_processInfos   = {0};
+uint64_t                        g_tlsContextId     = 0;
+uint64_t                        g_tlsThreadLocalId = 0;
+SwagContext                     g_defaultContext   = {0};
+SwagProcessInfos                g_processInfos     = {0};
 thread_local ByteCodeRunContext g_runContext;
 
 static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
@@ -225,7 +226,8 @@ void* makeCallback(void* lambda)
 
 void initDefaultContext()
 {
-    g_tlsContextId = OS::tlsAlloc();
+    g_tlsContextId     = OS::tlsAlloc();
+    g_tlsThreadLocalId = OS::tlsAlloc();
     OS::tlsSetValue(g_tlsContextId, &g_defaultContext);
 
     g_processInfos.arguments.buffer = g_CommandLine.userArgumentsSlice.first;

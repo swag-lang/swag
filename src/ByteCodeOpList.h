@@ -48,6 +48,7 @@ BYTECODE_OP(IntrinsicGetErr, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = @get
 BYTECODE_OP(IntrinsicBcDbg, 0, "@bcdbg()")
 BYTECODE_OP(InternalPushErr, 0, "push err")
 BYTECODE_OP(InternalPopErr, 0, "pop err")
+BYTECODE_OP(InternalGetTlsPtr, OPFLAG_WRITE_A, "_ra_ = &tls")
 
 BYTECODE_OP(IntrinsicAtomicAddS8, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C | OPFLAG_UNPURE, "")
 BYTECODE_OP(IntrinsicAtomicAddS16, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C | OPFLAG_UNPURE, "")

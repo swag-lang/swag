@@ -136,6 +136,7 @@ struct Module
     DataSegment constantSegment;
     DataSegment bssSegment;
     DataSegment compilerSegment;
+    DataSegment tlsSegment;
 
     void setBuildPass(BuildPass buildP);
 

@@ -165,6 +165,7 @@ struct X64PerThread
     CoffRelocationTable        relocTableCSSection;
     CoffRelocationTable        relocTableMSSection;
     CoffRelocationTable        relocTableTSSection;
+    CoffRelocationTable        relocTableTLSSection;
     CoffRelocationTable        relocTablePDSection;
     CoffRelocationTable        relocTableDBGSSection;
     vector<CoffSymbol>         allSymbols;
@@ -198,6 +199,10 @@ struct X64PerThread
     uint16_t* patchTSSectionRelocTableCount  = nullptr;
     uint32_t* patchTSSectionFlags            = nullptr;
 
+    uint32_t* patchTLSSectionRelocTableOffset = nullptr;
+    uint16_t* patchTLSSectionRelocTableCount  = nullptr;
+    uint32_t* patchTLSSectionFlags            = nullptr;
+
     uint32_t* patchPDSectionRelocTableOffset = nullptr;
     uint16_t* patchPDSectionRelocTableCount  = nullptr;
     uint32_t* patchPDSectionFlags            = nullptr;
@@ -226,19 +231,23 @@ struct X64PerThread
     uint32_t* patchDBGSOffset = nullptr;
     uint32_t* patchDBGTCount  = nullptr;
     uint32_t* patchDBGTOffset = nullptr;
+    uint32_t* patchTLSOffset  = nullptr;
+    uint32_t* patchTLSCount   = nullptr;
 
-    uint32_t symCOIndex = 0;
-    uint32_t symBSIndex = 0;
-    uint32_t symMSIndex = 0;
-    uint32_t symCSIndex = 0;
-    uint32_t symTSIndex = 0;
-    uint32_t symXDIndex = 0;
+    uint32_t symCOIndex  = 0;
+    uint32_t symBSIndex  = 0;
+    uint32_t symMSIndex  = 0;
+    uint32_t symCSIndex  = 0;
+    uint32_t symTSIndex  = 0;
+    uint32_t symTLSIndex = 0;
+    uint32_t symXDIndex  = 0;
 
     uint32_t symMC_mainContext                  = 0;
     uint32_t symMC_mainContext_allocator_addr   = 0;
     uint32_t symMC_mainContext_allocator_itable = 0;
     uint32_t symMC_mainContext_flags            = 0;
     uint32_t symDefaultAllocTable               = 0;
+    uint32_t symTlsThreadLocalId                = 0;
     uint32_t symPI_processInfos                 = 0;
     uint32_t symPI_args_addr                    = 0;
     uint32_t symPI_args_count                   = 0;
@@ -257,6 +266,7 @@ struct X64PerThread
     uint16_t sectionIndexCS   = 0;
     uint16_t sectionIndexSS   = 0;
     uint16_t sectionIndexTS   = 0;
+    uint16_t sectionIndexTLS  = 0;
     uint16_t sectionIndexDR   = 0;
     uint16_t sectionIndexPD   = 0;
     uint16_t sectionIndexXD   = 0;

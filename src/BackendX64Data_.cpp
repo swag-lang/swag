@@ -33,6 +33,9 @@ bool BackendX64::buildRelocSegment(const BuildParameters& buildParameters, DataS
         case SegmentKind::Type:
             sym = pp.symTSIndex;
             break;
+        case SegmentKind::Tls:
+            sym = pp.symTLSIndex;
+            break;
         default:
             SWAG_ASSERT(false);
             sym = 0;

@@ -2228,6 +2228,16 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         free((void*) registersRC[ip->a.u32].pointer);
         break;
     }
+    case ByteCodeOp::InternalGetTlsPtr:
+    {
+        auto module = context->sourceFile->module;
+        auto bc     = g_Workspace.runtimeModule->getRuntimeFct("__tlsGetPtr");
+        context->push(module->tlsSegment.address(0));
+        context->push((uint64_t) module->tlsSegment.totalCount);
+        context->push(g_tlsThreadLocalId);
+        localCall(context, bc, 2, ip->a.u32);
+        break;
+    }
     case ByteCodeOp::IntrinsicGetContext:
     {
         registersRC[ip->a.u32].pointer = (uint8_t*) OS::tlsGetValue(g_tlsContextId);
