@@ -4,6 +4,7 @@
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
 #include "Module.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::resolveNamespace(SemanticContext* context)
 {

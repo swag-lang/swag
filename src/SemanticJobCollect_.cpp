@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "Generic.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::reserveAndStoreToSegment(JobContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {

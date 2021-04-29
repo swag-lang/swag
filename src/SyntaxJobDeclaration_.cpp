@@ -7,6 +7,7 @@
 #include "Workspace.h"
 #include "Module.h"
 #include "ByteCodeGenJob.h"
+#include "ErrorIds.h"
 
 bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {

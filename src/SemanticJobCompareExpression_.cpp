@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "TypeTable.h"
 #include "Runtime.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {

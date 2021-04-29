@@ -1,7 +1,6 @@
 #pragma once
 #include "Job.h"
 #include "DependentJobs.h"
-#include "ErrorIds.h"
 struct AstNode;
 struct SourceFile;
 struct SemanticContext;
@@ -352,8 +351,8 @@ struct ByteCodeGenJob : public Job
     static void        emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg = nullptr);
     static bool        mustEmitSafety(ByteCodeGenContext* context, uint64_t whatOn, uint64_t whatOff);
     static void        emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message);
-    static void        emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message = Msg0859, int sizeInBits = 64);
-    static void        emitSafetyNullLambda(ByteCodeGenContext* context, uint32_t r, const char* message = Msg0859);
+    static void        emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message, int sizeInBits = 64);
+    static void        emitSafetyNullLambda(ByteCodeGenContext* context, uint32_t r, const char* message);
     static void        emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo);
     static void        emitSafetyRightShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo);
     static void        emitSafetyLeftShiftEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo);

@@ -7,6 +7,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "Context.h"
+#include "ErrorIds.h"
 
 thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 

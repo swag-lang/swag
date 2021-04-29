@@ -9,6 +9,7 @@
 #include "Runtime.h"
 #include "SemanticJob.h"
 #include "TypeTable.h"
+#include "ErrorIds.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
@@ -1378,7 +1379,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     else
     {
         SWAG_ASSERT(varNodeRegisters.size() > 0);
-        emitSafetyNullLambda(context, varNodeRegisters);
+        emitSafetyNullLambda(context, varNodeRegisters, Msg0859);
         auto inst       = emitInstruction(context, ByteCodeOp::LambdaCall, varNodeRegisters);
         inst->b.pointer = (uint8_t*) typeInfoFunc;
     }

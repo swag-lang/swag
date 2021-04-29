@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "Ast.h"
+#include "ErrorIds.h"
 
 thread_local Utf8 typedMsg[(int) SafetyMsg::Count][(int) NativeTypeKind::Count][(int) NativeTypeKind::Count];
 

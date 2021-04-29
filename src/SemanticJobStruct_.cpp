@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "ByteCode.h"
 #include "ModuleManager.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {

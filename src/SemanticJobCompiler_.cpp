@@ -9,6 +9,7 @@
 #include "ByteCode.h"
 #include "Backend.h"
 #include "Os.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {

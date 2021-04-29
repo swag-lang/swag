@@ -4,6 +4,7 @@
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "Ast.h"
+#include "ErrorIds.h"
 
 bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 {
@@ -144,7 +145,7 @@ bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
     // Deref the type from the itable
     if (front->typeInfo->kind == TypeInfoKind::Interface)
     {
-        emitSafetyNullPointer(context, node->resultRegisterRC);
+        emitSafetyNullPointer(context, node->resultRegisterRC, Msg0859);
         auto inst   = emitInstruction(context, ByteCodeOp::DecPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
         inst->b.u64 = sizeof(void*);
         inst->flags |= BCI_IMM_B;

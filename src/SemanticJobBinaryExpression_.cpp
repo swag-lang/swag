@@ -7,6 +7,7 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "Math.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {

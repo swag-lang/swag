@@ -7,6 +7,7 @@
 #include "TypeManager.h"
 #include "ThreadManager.h"
 #include "Module.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {

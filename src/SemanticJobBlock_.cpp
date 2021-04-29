@@ -4,6 +4,7 @@
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::resolveIf(SemanticContext* context)
 {

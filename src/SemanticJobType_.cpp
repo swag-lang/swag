@@ -4,6 +4,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 {

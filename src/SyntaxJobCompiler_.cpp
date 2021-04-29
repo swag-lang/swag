@@ -5,6 +5,7 @@
 #include "Scoped.h"
 #include "Module.h"
 #include "ByteCodeGenJob.h"
+#include "ErrorIds.h"
 
 bool SyntaxJob::doCompilerTag(AstNode* parent, AstNode** result)
 {

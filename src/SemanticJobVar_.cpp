@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "Generic.h"
+#include "ErrorIds.h"
 
 uint32_t SemanticJob::alignOf(AstVarDecl* node)
 {

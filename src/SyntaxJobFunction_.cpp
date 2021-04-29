@@ -6,6 +6,7 @@
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"
+#include "ErrorIds.h"
 
 bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
 {

@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
+#include "ErrorIds.h"
 
 bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {

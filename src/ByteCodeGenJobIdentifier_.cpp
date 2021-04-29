@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 
 bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
@@ -684,7 +685,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
         SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, format("emitIdentifier, cannot reference identifier '%s'", identifier->token.text.c_str()).c_str()));
 
-        emitSafetyNullPointer(context, node->resultRegisterRC);
+        emitSafetyNullPointer(context, node->resultRegisterRC, Msg0859);
         if (node->resolvedSymbolOverload->storageOffset > 0)
         {
             ensureCanBeChangedRC(context, node->resultRegisterRC);

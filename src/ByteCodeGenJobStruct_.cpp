@@ -7,6 +7,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 
 bool ByteCodeGenJob::canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc)
 {

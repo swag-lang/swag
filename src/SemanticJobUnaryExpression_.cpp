@@ -2,6 +2,7 @@
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
 {

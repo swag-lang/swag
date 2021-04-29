@@ -7,6 +7,8 @@
 #include "TypeManager.h"
 #include "ThreadManager.h"
 #include "Os.h"
+#include "ErrorIds.h"
+#include "ErrorIds.h"
 
 bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
