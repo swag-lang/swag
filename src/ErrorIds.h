@@ -8,7 +8,7 @@
 #define Msg0538 "fatal error: cannot resolve type '%s' of command line tag '%s'"
 #define Msg0507 "fatal error: invalid module '%s', configuration file '%s' is missing"
 #define Msg0000 "fatal error: invalid swag command '%s'"
-#define Msg0542 "fatal error: invalid workspace '%s', subfolder 'modules/' does not exist"
+#define Msg0542 "fatal error: invalid workspace '%s', subfolder 'modules/' or 'tests/' does not exist"
 #define Msg0540 "fatal error: missing workspace folder '--workspace'"
 #define Msg0552 "fatal error: some problems have been found in compiler bootstrap !!!"
 #define Msg0554 "fatal error: some problems have been found in compiler runtime !!!"
