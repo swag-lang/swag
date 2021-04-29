@@ -22,6 +22,7 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("clean        clean the specified workspace of cache files, binaries and dependencies (fresh start)\n");
     g_Log.message("new          creates a new workspace\n");
     g_Log.message("watch        spy workspace and check it at each file change (never ends)\n");
+    g_Log.message("get          synchronize dependencies\n");
     g_Log.message("list         list all modules and their dependencies\n");
 
     g_Log.message("\n");
