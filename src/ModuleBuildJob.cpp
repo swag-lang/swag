@@ -132,8 +132,10 @@ JobResult ModuleBuildJob::execute()
         pass = ModuleBuildPass::Syntax;
     }
 
-    // We add all public files that corresponds
-    // to each module we want to import
+    // Syntax pass
+    // By doing it after the dependency pass, we can avoid parsing all
+    // the files if we do not have to recompile because none of our
+    // dependencies have changed (and us neither of course)
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Syntax)
     {
