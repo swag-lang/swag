@@ -156,6 +156,14 @@ bool SemanticJob::storeToSegmentNoLock(JobContext* context, uint32_t storageOffs
         return true;
     }
 
+    if (typeInfo->kind == TypeInfoKind::Lambda)
+    {
+        *(uint64_t*) ptrDest = 0;
+        auto funcDecl        = CastAst<AstFuncDecl>(typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
+        seg->addPatchMethod(funcDecl, storageOffset);
+        return true;
+    }
+
     switch (typeInfo->sizeOf)
     {
     case 1:

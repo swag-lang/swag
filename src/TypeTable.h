@@ -32,10 +32,9 @@ struct TypeTable
 
     bool makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storagetrue, uint32_t cflags);
 
-    void         tableJobDone(TypeTableJob* job);
+    void         tableJobDone(TypeTableJob* job, DataSegment* segment);
     Utf8&        getTypeName(TypeInfo* typeInfo, bool forceNoScope);
     DataSegment* getSegmentStorage(Module* module, uint32_t flags);
-    void         doPatchMethods(JobContext* context, Module* module);
 
     struct MapType
     {
@@ -52,8 +51,6 @@ struct TypeTable
     using mapTypeJob = map<Utf8, TypeTableJob*>;
     mapTypeJob concreteTypesJob;
     mapTypeJob concreteTypesJobCompiler;
-
-    vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
 };
 
 #define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))

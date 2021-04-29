@@ -71,11 +71,15 @@ struct DataSegment
     void     addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocType relocType);
     void     addPatchPtr(int64_t* addr, int64_t value);
     void     applyPatchPtr();
+    void     addPatchMethod(AstFuncDecl* funcDecl, uint32_t storageOffset);
+    void     doPatchMethods(JobContext* context);
 
+    shared_mutex                         mutexPatchMethod;
     shared_mutex                         mutexPtr;
     map<Utf8, uint32_t>                  mapString;
     map<uint32_t, pair<Utf8, RelocType>> initFuncPtr;
     vector<SegmentPatchPtrRef>           patchPtr;
+    vector<pair<AstFuncDecl*, uint32_t>> patchMethods;
 
     const char* name       = nullptr;
     Module*     module     = nullptr;

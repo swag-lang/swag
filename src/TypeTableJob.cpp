@@ -209,7 +209,7 @@ bool TypeTableJob::computeStruct()
     // Job is done, remove it from the map
     {
         unique_lock lk1(segment->mutex);
-        typeTable->tableJobDone(this);
+        typeTable->tableJobDone(this, segment);
     }
 
     return true;

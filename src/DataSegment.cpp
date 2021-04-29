@@ -7,6 +7,8 @@
 #include "Runtime.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "AstNode.h"
+#include "ByteCode.h"
 
 static const uint32_t BUCKET_SIZE = 16 * 1024;
 
@@ -265,6 +267,41 @@ void DataSegment::applyPatchPtr()
 {
     for (auto& it : patchPtr)
         *it.addr = it.value;
+}
+
+void DataSegment::addPatchMethod(AstFuncDecl* funcDecl, uint32_t storageOffset)
+{
+    unique_lock lk(mutexPatchMethod);
+    patchMethods.push_back({funcDecl, storageOffset});
+}
+
+void DataSegment::doPatchMethods(JobContext* context)
+{
+    unique_lock lk(mutexPatchMethod);
+    for (auto it : patchMethods)
+    {
+        auto      funcNode  = it.first;
+        void*     lambdaPtr = nullptr;
+        ByteCode* bc        = nullptr;
+        if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+        {
+            funcNode->computeFullNameForeign(false);
+            lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, nullptr);
+            addInitPtrFunc(it.second, funcNode->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+        else if (funcNode->extension && funcNode->extension->bc)
+        {
+            bc        = funcNode->extension->bc;
+            lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, bc);
+            addInitPtrFunc(it.second, bc->callName(), DataSegment::RelocType::Local);
+        }
+
+        if (lambdaPtr)
+        {
+            auto addr      = address(it.second);
+            *(void**) addr = lambdaPtr;
+        }
+    }
 }
 
 void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg)

@@ -578,42 +578,12 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, TypeInfo* typeIn
     return true;
 }
 
-void TypeTable::tableJobDone(TypeTableJob* job)
+void TypeTable::tableJobDone(TypeTableJob* job, DataSegment* segment)
 {
     auto& storedMap = job->cflags & CONCRETE_FOR_COMPILER ? concreteTypesJobCompiler : concreteTypesJob;
     auto  it        = storedMap.find(job->typeName);
     SWAG_ASSERT(it != storedMap.end());
     storedMap.erase(it);
     for (auto it1 : job->patchMethods)
-        patchMethods.push_back(it1);
-}
-
-void TypeTable::doPatchMethods(JobContext* context, Module* module)
-{
-    auto segment = &module->typeSegment;
-    for (auto it : patchMethods)
-    {
-        auto funcNode = it.first;
-
-        void*     lambdaPtr = nullptr;
-        ByteCode* bc        = nullptr;
-        if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
-        {
-            funcNode->computeFullNameForeign(false);
-            lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, nullptr);
-            segment->addInitPtrFunc(it.second, funcNode->fullnameForeign, DataSegment::RelocType::Foreign);
-        }
-        else if (funcNode->extension && funcNode->extension->bc)
-        {
-            bc        = funcNode->extension->bc;
-            lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, bc);
-            segment->addInitPtrFunc(it.second, bc->callName(), DataSegment::RelocType::Local);
-        }
-
-        if (lambdaPtr)
-        {
-            auto addr      = segment->address(it.second);
-            *(void**) addr = lambdaPtr;
-        }
-    }
+        segment->addPatchMethod(it1.first, it1.second);
 }

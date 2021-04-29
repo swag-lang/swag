@@ -336,7 +336,9 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // Now we can patch all methods pointers in type definitions
-        module->typeTable.doPatchMethods(&context, module);
+        module->mutableSegment.doPatchMethods(&context);
+        module->tlsSegment.doPatchMethods(&context);
+        module->typeSegment.doPatchMethods(&context);
 
         // Timing...
         if (g_CommandLine.stats || g_CommandLine.verbosePass)
