@@ -588,6 +588,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (node->assignment->typeInfo->kind == TypeInfoKind::Lambda)
             {
                 SWAG_VERIFY(!isCompilerConstant, context->report({node->assignment, Msg0160}));
+                auto funcNode = CastAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
+                SWAG_CHECK(checkCanMakeFuncPointer(context, funcNode, node->assignment));
             }
             else
             {

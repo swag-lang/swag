@@ -15,6 +15,38 @@ bool SemanticJob::boundCheck(SemanticContext* context, AstNode* arrayAccess, uin
     return true;
 }
 
+bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* funcNode, AstNode* node)
+{
+    const char* msg  = nullptr;
+    const char* msg1 = nullptr;
+
+    if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
+    {
+        msg  = Msg0471;
+        msg1 = Hnt0015;
+    }
+    else if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
+    {
+        msg  = Msg0472;
+        msg1 = Hnt0016;
+    }
+    else if (funcNode->attributeFlags & ATTRIBUTE_INLINE)
+    {
+        msg  = Msg0473;
+        msg1 = Hnt0017;
+    }
+
+    if (msg)
+    {
+        PushErrHint errh(msg1);
+        Diagnostic  diag{node, msg};
+        Diagnostic  note{funcNode, funcNode->token, format(Msg0018, funcNode->token.text.c_str()), DiagnosticLevel::Note};
+        return context->report(diag, &note);
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveMakePointer(SemanticContext* context)
 {
     auto node     = context->node;
@@ -32,9 +64,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
     {
         auto funcNode = child->resolvedSymbolOverload->node;
-        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({child, Msg0471}));
-        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({child, Msg0472}));
-        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({child, Msg0473}));
+        SWAG_CHECK(checkCanMakeFuncPointer(context, (AstFuncDecl*) funcNode, child));
 
         auto lambdaType    = child->typeInfo->clone();
         lambdaType->kind   = TypeInfoKind::Lambda;

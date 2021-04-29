@@ -367,6 +367,7 @@ struct SemanticJob : public Job
     static bool resolveFor(SemanticContext* context);
     static bool resolveSwitchAfterExpr(SemanticContext* context);
     static bool resolveSwitch(SemanticContext* context);
+    static bool checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* funcNode, AstNode* node);
     static bool resolveCase(SemanticContext* context);
     static bool resolveLoop(SemanticContext* context);
     static bool resolveVisit(SemanticContext* context);
