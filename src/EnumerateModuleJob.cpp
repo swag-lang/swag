@@ -120,10 +120,33 @@ void EnumerateModuleJob::enumerateModules(const fs::path& path)
 
 JobResult EnumerateModuleJob::execute()
 {
-    enumerateModules(g_Workspace.dependenciesPath);
-    enumerateModules(g_Workspace.modulesPath);
-    enumerateModules(g_Workspace.examplesPath);
-    if (g_CommandLine.test)
-        enumerateModules(g_Workspace.testsPath);
+    // Modules in the workspace
+    if (!g_CommandLine.scriptCommand)
+    {
+        enumerateModules(g_Workspace.dependenciesPath);
+        enumerateModules(g_Workspace.modulesPath);
+        enumerateModules(g_Workspace.examplesPath);
+        if (g_CommandLine.test)
+            enumerateModules(g_Workspace.testsPath);
+    }
+
+    // Add all external dependencies
+    for (int i = 0; i < g_Workspace.modules.size(); i++)
+    {
+        auto m = g_Workspace.modules[i];
+        for (auto d : m->moduleDependencies)
+        {
+            if (d->fetchKind != DependencyFetchKind::Swag)
+                continue;
+
+            Utf8       moduleName, moduleFolder;
+            ModuleKind kind;
+            fs::path   modulePath = fs::path(d->resolvedLocation.c_str());
+            g_Workspace.computeModuleName(modulePath, moduleName, moduleFolder, kind);
+            if (!g_Workspace.getModuleByName(moduleName))
+                addModule(modulePath);
+        }
+    }
+
     return JobResult::ReleaseJob;
 }

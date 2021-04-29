@@ -491,7 +491,9 @@ bool ModuleCfgManager::execute()
         {
             if (!m.second->fetchDep)
                 continue;
-            if (!m.second->mustFetchDep && m.second->fetchDep->fetchKind != DependencyFetchKind::Swag)
+            if (m.second->fetchDep->fetchKind == DependencyFetchKind::Swag)
+                continue;
+            if (!m.second->mustFetchDep)
                 continue;
 
             Job* fetchJob = nullptr;
