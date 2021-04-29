@@ -448,8 +448,10 @@ void SourceFile::computePrivateScopeName()
     if (!scopeName.empty())
         return;
     scopeName = "__" + name;
-    SWAG_ASSERT(scopeName.buffer[scopeName.length() - 4] == '.'); // ".swg"
-    scopeName.buffer[scopeName.length() - 4] = 0;
-    scopeName.count -= 4;
+
+    char* pz = strrchr(scopeName.buffer, '.');
+    SWAG_ASSERT(pz);
+    *pz             = 0;
+    scopeName.count = (int) (pz - scopeName.c_str());
     Ast::normalizeIdentifierName(scopeName);
 }

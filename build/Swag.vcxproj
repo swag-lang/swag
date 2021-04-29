@@ -385,6 +385,7 @@
     <ClCompile Include="..\src\FetchModuleJobFileSystem.cpp" />
     <ClCompile Include="..\src\Workspace_clean_.cpp" />
     <ClCompile Include="..\src\Workspace_new_.cpp" />
+    <ClCompile Include="..\src\Workspace_script_.cpp" />
     <ClCompile Include="..\src\Workspace_watch_.cpp" />
   </ItemGroup>
   <ItemGroup>

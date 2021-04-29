@@ -6,13 +6,15 @@
 struct CommandLine
 {
     // Compiler
-    int       numCores  = 0;
-    BuildPass buildPass = BuildPass::Full;
-    bool      rebuild   = false;
-    bool      run       = false;
-    bool      script    = false;
+    int       numCores      = 0;
+    BuildPass buildPass     = BuildPass::Full;
+    bool      rebuild       = false;
+    bool      run           = false;
+    bool      scriptMode    = false;
+    bool      scriptCommand = false;
 
     // Input
+    string scriptName;
     string workspacePath;
     string cachePath;
     string moduleFilter;
@@ -26,7 +28,7 @@ struct CommandLine
 
     bool warningsAsErrors = false;
     bool devMode          = false;
-    bool dbgCatch    = false;
+    bool dbgCatch         = false;
     bool randomize        = false;
     int  randSeed         = 0;
 

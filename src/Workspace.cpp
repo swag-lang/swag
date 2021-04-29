@@ -322,7 +322,7 @@ void Workspace::setup()
         g_Log.error(format(Msg0541, workspacePath.string().c_str()));
         invalid = true;
     }
-    else if (!fs::exists(modulesPath) && !fs::exists(testsPath))
+    else if (!g_CommandLine.scriptCommand && !fs::exists(modulesPath))
     {
         g_Log.error(format(Msg0542, workspacePath.string().c_str()));
         invalid = true;
@@ -330,7 +330,7 @@ void Workspace::setup()
 
     if (invalid)
     {
-        g_Log.message("note: use '-w:path' or '--workspace:path' to specified a valid workspace folder, or launch swag from a valid workspace folder");
+        g_Log.message(Note012);
         exit(-1);
     }
 
@@ -826,13 +826,15 @@ bool Workspace::build()
 
         setup();
 
-        if (g_CommandLine.verbosePath)
-            g_Log.verbose(format("workspace path is '%s'", workspacePath.string().c_str()));
-
-        if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
-            g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
-        else
-            g_Log.messageHeaderCentered("Workspace", format("%s [%s]", workspacePath.filename().string().c_str(), g_Workspace.getTargetFolder().c_str()));
+        if (!g_CommandLine.scriptCommand)
+        {
+            if (g_CommandLine.verbosePath)
+                g_Log.verbose(format("workspace path is '%s'", workspacePath.string().c_str()));
+            if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
+                g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
+            else
+                g_Log.messageHeaderCentered("Workspace", format("%s [%s]", workspacePath.filename().string().c_str(), g_Workspace.getTargetFolder().c_str()));
+        }
 
         addBootstrap();
         addRuntime();
@@ -843,13 +845,15 @@ bool Workspace::build()
     }
 
     // Results
-    if (g_Stats.skippedModules.load() > 0)
-        g_Log.messageHeaderCentered("Skipped modules", format("%d", g_Stats.skippedModules.load()));
-
-    if (g_Workspace.numErrors)
-        g_Log.messageHeaderCentered("Done", format("%d error(s)", g_Workspace.numErrors.load()), LogColor::Green, LogColor::Red);
-    else
-        g_Log.messageHeaderCentered("Done", format("%.3fs", OS::timerToSeconds(g_Stats.totalTime.load())));
+    if (!g_CommandLine.scriptCommand)
+    {
+        if (g_Stats.skippedModules.load() > 0)
+            g_Log.messageHeaderCentered("Skipped modules", format("%d", g_Stats.skippedModules.load()));
+        if (g_Workspace.numErrors)
+            g_Log.messageHeaderCentered("Done", format("%d error(s)", g_Workspace.numErrors.load()), LogColor::Green, LogColor::Red);
+        else
+            g_Log.messageHeaderCentered("Done", format("%.3fs", OS::timerToSeconds(g_Stats.totalTime.load())));
+    }
 
     return result;
 }

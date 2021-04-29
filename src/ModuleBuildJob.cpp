@@ -141,7 +141,7 @@ JobResult ModuleBuildJob::execute()
         module->backend->setMustCompile();
 
         // If we do not need to compile, then exit, we're done with that module
-        if (!module->backend->mustCompile && !g_CommandLine.test && (!g_CommandLine.run || !g_CommandLine.script))
+        if (!module->backend->mustCompile && !g_CommandLine.test && (!g_CommandLine.run || !g_CommandLine.scriptMode))
         {
             pass = ModuleBuildPass::WaitForDependencies;
         }
@@ -294,6 +294,13 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::WaitForDependenciesEffective)
     {
+        // In script mode, be sure to have something to execute
+        if (!module->byteCodeMainFunc && g_CommandLine.scriptCommand && module->kind == ModuleKind::Script)
+        {
+            module->files.front()->report({Msg0223});
+            return JobResult::ReleaseJob;
+        }
+
         // If we will not run some stuff, then no need to wait for dependencies, because we do not
         // have to load the dlls
         if (module->hasBytecodeToRun())
@@ -364,7 +371,7 @@ JobResult ModuleBuildJob::execute()
         PushSwagContext cxt;
 
         // #init functions are only executed in script mode, if the module has a #main
-        bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine.script && module->byteCodeMainFunc;
+        bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine.scriptMode && module->byteCodeMainFunc;
         // OR in a test module, during testing
         callInitDrop |= g_CommandLine.test && g_CommandLine.runByteCodeTests;
         if (callInitDrop)
@@ -437,7 +444,7 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // #main function, in script mode
-        if (module->byteCodeMainFunc && g_CommandLine.script)
+        if (module->byteCodeMainFunc && g_CommandLine.scriptMode)
         {
             module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext);
             if (module->criticalErrors)
@@ -515,7 +522,7 @@ JobResult ModuleBuildJob::execute()
         else
         {
             // Do not run native tests or command in script mode, it's already done in bytecode
-            if (g_CommandLine.script)
+            if (g_CommandLine.scriptMode)
                 pass = ModuleBuildPass::Done;
             else
                 pass = ModuleBuildPass::RunNative;

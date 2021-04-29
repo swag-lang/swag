@@ -158,7 +158,7 @@ bool Module::mustGenerateTestExe()
         return false;
     if (byteCodeTestFunc.empty())
         return false;
-    if (g_CommandLine.script)
+    if (g_CommandLine.scriptMode)
         return false;
     if (g_Workspace.filteredModule && g_Workspace.filteredModule != this)
         return false;
@@ -184,7 +184,7 @@ bool Module::canGenerateLegit()
             return false;
         if (!byteCodeTestFunc.empty())
             return false;
-        if (g_CommandLine.script)
+        if (g_CommandLine.scriptMode)
             return false;
     }
 
@@ -817,7 +817,7 @@ bool Module::hasBytecodeToRun()
     else if (!byteCodeRunFunc.empty())
         runByteCode = true;
     // If we need to run in bytecode mode
-    else if (g_CommandLine.run && g_CommandLine.script)
+    else if (g_CommandLine.run && g_CommandLine.scriptMode)
         runByteCode = true;
     return runByteCode;
 }
@@ -858,7 +858,7 @@ bool Module::mustOutputSomething()
 {
     bool mustOutput = true;
     // do not generate an executable that has been run in script mode
-    if (byteCodeMainFunc && g_CommandLine.script)
+    if (byteCodeMainFunc && g_CommandLine.scriptMode)
         mustOutput = false;
     // bootstrap
     else if (name.empty())

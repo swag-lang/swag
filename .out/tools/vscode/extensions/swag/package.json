@@ -26,7 +26,7 @@
       {
         "id": "swag",
         "aliases": [ "swag" ],
-        "extensions": [ ".swg" ],
+        "extensions": [ ".swg", ".swgs" ],
         "configuration": "./language-configuration.json"
       }
     ],

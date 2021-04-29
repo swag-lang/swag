@@ -65,6 +65,7 @@ struct Workspace
     void cleanCommand();
     void newCommand();
     bool watchCommand();
+    void scriptCommand();
 
     fs::path              workspacePath;
     fs::path              targetPath;

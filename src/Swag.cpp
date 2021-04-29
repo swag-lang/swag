@@ -66,8 +66,18 @@ int main(int argc, const char* argv[])
         command != "version" &&
         command != "env")
     {
-        g_Log.error(format(Msg0000, argv[1]));
-        exit(-1);
+        // Script mode if command is a file with '.swgs' extension
+        fs::path name = command;
+        if (name.extension() == ".swgs")
+        {
+            fs::path pathF           = fs::absolute(command).string();
+            g_CommandLine.scriptName = normalizePath(pathF.string());
+        }
+        else
+        {
+            g_Log.error(format(Msg0000, argv[1]));
+            exit(-1);
+        }
     }
 
     // Verify that the swag folder has been registered
@@ -76,7 +86,7 @@ int main(int argc, const char* argv[])
     {
         if (command != "env")
         {
-            g_Log.message("cannot find 'SWAG_FOLDER' in the environment. You must run 'swag env' first at the swag.exe location to register its path.\n");
+            g_Log.message(Msg0165);
             exit(-1);
         }
     }
@@ -99,7 +109,11 @@ int main(int argc, const char* argv[])
         g_Log.verbose(cmdParser.buildString(true));
 
     // Deal with the main command
-    if (command == "build")
+    if (!g_CommandLine.scriptName.empty())
+    {
+        g_Workspace.scriptCommand();
+    }
+    else if (command == "build")
     {
         g_Workspace.build();
     }
