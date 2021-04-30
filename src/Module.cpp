@@ -879,6 +879,8 @@ bool Module::mustOutputSomething()
     // if all files are exported, then do not generate a module
     else if (areAllFilesExported())
         mustOutput = false;
+    else if (buildCfg.backendEmit == false)
+        mustOutput = false;
 
     return mustOutput;
 }

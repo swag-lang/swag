@@ -72,13 +72,13 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     }
 
     // Add the config file, second pass
-    /*auto cfgModule = g_ModuleCfgMgr.getCfgModule(theModule->name);
+    auto cfgModule = g_ModuleCfgMgr.getCfgModule(theModule->name);
     if (cfgModule)
     {
         auto cfgFile    = cfgModule->files[0];
         auto file       = addFileToModule(theModule, allFiles, fs::path(cfgFile->path).parent_path().string(), cfgFile->name.c_str(), cfgFile->writeTime);
         file->isCfgFile = true;
-    }*/
+    }
 
     // Sort files, and register them in a constant order
     if (!allFiles.empty())

@@ -106,4 +106,8 @@ void SwagScope::registerType(TypeInfo* typeInfo)
         regTypeInfoSourceLoc->flags |= TYPEINFO_STRUCT_TYPEINFO;
         SWAG_ASSERT(typeInfo->sizeOf == sizeof(SwagCompilerSourceLocation));
     }
+    else if (typeInfo->name == "BuildCfg")
+    {
+        SWAG_ASSERT(typeInfo->sizeOf == sizeof(BuildCfg));
+    }
 }

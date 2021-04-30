@@ -130,6 +130,7 @@ struct BuildCfg
     bool byteCodeInline      = true;
 
     // Backend common
+    bool backendEmit              = true;
     bool backendDebugInformations = false;
     bool backendOptimizeSpeed     = false;
     bool backendOptimizeSize      = false;

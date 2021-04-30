@@ -106,7 +106,7 @@ JobResult SemanticJob::execute()
         }
 
         // In configuration pass1, we only treat the #dependencies block
-        if (sourceFile->module->kind == ModuleKind::Config)
+        if (sourceFile->module->kind == ModuleKind::Config && originalNode->kind == AstNodeKind::File)
         {
             for (auto c : originalNode->childs)
             {
