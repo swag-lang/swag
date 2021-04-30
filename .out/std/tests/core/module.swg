@@ -1,2 +1,5 @@
-#import "core"
-#import "zlib"
+#dependencies
+{
+    #import "core"
+    #import "zlib"
+}

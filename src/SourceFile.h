@@ -76,7 +76,7 @@ struct SourceFile : public File
     bool         doneLoading   = false;
     bool         formatDone    = false;
     bool         fromTests     = false;
-    bool         cfgFile       = false;
+    bool         isCfgFile       = false;
     bool         generated     = false;
     bool         forceExport   = false;
     shared_mutex mutex;

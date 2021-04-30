@@ -145,7 +145,7 @@
       "patterns": [
         {
           "name": "entity.name.function",
-          "match": "(#)\\b(run|test|init|drop|main|compiler|ast)\\b"
+          "match": "(#)\\b(run|test|init|drop|main|compiler|ast|dependencies)\\b"
         }
       ]
     },

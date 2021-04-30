@@ -1,2 +1,5 @@
-#import "core"
-#import "mthx"
+#dependencies
+{
+    #import "core"
+    #import "mthx"
+}

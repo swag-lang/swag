@@ -1,1 +1,4 @@
-#import "image"
+#dependencies
+{
+    #import "image"
+}

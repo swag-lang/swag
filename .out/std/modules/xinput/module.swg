@@ -1,1 +1,4 @@
-#import "win32"
+#dependencies
+{
+    #import "win32"
+}

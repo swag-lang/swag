@@ -647,10 +647,32 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doCompilerDependencies(AstNode* parent)
+{
+    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Config, sourceFile->report({sourceFile, token, Msg0377}));
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerDependencies, sourceFile, parent);
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(doCurlyStatement(node));
+    return true;
+}
+
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
     SWAG_VERIFY(sourceFile->generated || sourceFile->module->kind == ModuleKind::Config, sourceFile->report({sourceFile, token, Msg0377}));
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, Msg0378}));
+
+    // Be sure this is in a '#dependencies' block
+    if (sourceFile->module->kind == ModuleKind::Config)
+    {
+        auto scan = parent;
+        while (scan)
+        {
+            if (scan->kind == AstNodeKind::CompilerDependencies)
+                break;
+            scan = scan->parent;
+        }
+        SWAG_VERIFY(scan, sourceFile->report({sourceFile, token, Msg0235}));
+    }
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerImport, sourceFile, parent);
     SWAG_CHECK(tokenizer.getToken(token));
@@ -661,7 +683,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
 
     // Specific dependency stuff
     Token tokenLocation, tokenVersion;
-    if (sourceFile->cfgFile)
+    if (sourceFile->isCfgFile)
     {
         while (true)
         {

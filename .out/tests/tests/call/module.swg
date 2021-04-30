@@ -1,1 +1,4 @@
-#import "tests_foreign"
+#dependencies
+{
+    #import "tests_foreign"
+}

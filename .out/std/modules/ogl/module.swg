@@ -1,2 +1,5 @@
-#import "core"
-#if #os == "windows" #import "gdi32"
+#dependencies
+{
+    #import "core"
+    #if #os == "windows" #import "gdi32"
+}

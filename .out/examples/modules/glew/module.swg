@@ -1,1 +1,4 @@
-#import "core" location="swag@std"
+#dependencies
+{
+    #import "core" location="swag@std"
+}

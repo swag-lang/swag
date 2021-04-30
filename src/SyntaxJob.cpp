@@ -344,7 +344,7 @@ JobResult SyntaxJob::execute()
     sourceFile->scopePrivate->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
 
     // By default, everything is private if it comes from the test folder, or for the configuration file
-    if (sourceFile->fromTests || sourceFile->cfgFile)
+    if (sourceFile->fromTests || sourceFile->isCfgFile)
         currentScope = sourceFile->scopePrivate;
     else
         currentScope = parentScope;

@@ -136,6 +136,7 @@ enum class AstNodeKind : uint8_t
     CompilerSelectIf,
     CompilerCheckIf,
     CompilerCode,
+    CompilerDependencies,
     CompilerImport,
     CompilerPlaceHolder,
     CompilerSpecialFunction,

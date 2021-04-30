@@ -604,6 +604,9 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerPrint:
         SWAG_CHECK(doCompilerPrint(parent, result));
         break;
+    case TokenId::CompilerDependencies:
+        SWAG_CHECK(doCompilerDependencies(parent));
+        break;
     case TokenId::CompilerImport:
         SWAG_CHECK(doCompilerImport(parent));
         break;

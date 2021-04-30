@@ -1,1 +1,4 @@
-#import "core"
+#dependencies
+{
+    #import "core"
+}

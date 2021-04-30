@@ -30,6 +30,7 @@ void LanguageSpec::setup()
     keywords.add("#swagrevision", TokenId::CompilerBuildRevision);
     keywords.add("#swagbuildnum", TokenId::CompilerBuildNum);
     keywords.add("#swagos", TokenId::CompilerSwagOs);
+    keywords.add("#dependencies", TokenId::CompilerDependencies);
     keywords.add("#import", TokenId::CompilerImport);
     keywords.add("#test", TokenId::CompilerFuncTest);
     keywords.add("#init", TokenId::CompilerFuncInit);
