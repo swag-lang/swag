@@ -576,6 +576,21 @@ void Module::addForeignLib(const Utf8& text)
     buildParameters.foreignLibs.insert(text);
 }
 
+bool Module::removeDependency(AstNode* importNode)
+{
+    scoped_lock lk(mutexDependency);
+    for (int i = 0; i < moduleDependencies.size(); i++)
+    {
+        if (moduleDependencies[i]->node == importNode)
+        {
+            moduleDependencies.erase(i);
+            return true;
+        }
+    }
+
+    return true;
+}
+
 bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion)
 {
     Utf8& nameSpaceName = importNode->token.text;

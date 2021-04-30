@@ -900,6 +900,7 @@ struct AstCompilerIfBlock : public AstNode
     VectorNative<TypeInfoStruct*>             interfacesCount;
     VectorNative<pair<TypeInfoStruct*, int>>  methodsCount;
     VectorNative<AstNode*>                    subDecls;
+    VectorNative<AstNode*>                    imports;
     int                                       numTestErrors;
     int                                       numTestWarnings;
 };

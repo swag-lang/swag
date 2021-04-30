@@ -346,10 +346,11 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
     block->flags |= AST_NO_SEMANTIC;
 
     // Revert test errors in case #global testerror is inside a disabled #if branch
-    context->sourceFile->numTestErrors -= block->numTestErrors;
-    context->sourceFile->module->numTestErrors -= block->numTestErrors;
-    context->sourceFile->numTestWarnings -= block->numTestWarnings;
-    context->sourceFile->module->numTestWarnings -= block->numTestWarnings;
+    auto sourceFile = context->sourceFile;
+    sourceFile->numTestErrors -= block->numTestErrors;
+    sourceFile->module->numTestErrors -= block->numTestErrors;
+    sourceFile->numTestWarnings -= block->numTestWarnings;
+    sourceFile->module->numTestWarnings -= block->numTestWarnings;
 
     // Unregister one overload
     for (auto it : block->symbols)
@@ -392,6 +393,10 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
             }
         }
     }
+
+    // Eliminate imports
+    for (auto imp : block->imports)
+        sourceFile->module->removeDependency(imp);
 
     // Do the same for all embedded blocks
     for (auto p : block->blocks)

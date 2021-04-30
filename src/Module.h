@@ -189,6 +189,7 @@ struct Module
 
     void     addForeignLib(const Utf8& text);
     bool     addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
+    bool     removeDependency(AstNode* importNode);
     void     setHasBeenBuilt(uint32_t buildResult);
     uint32_t getHasBeenBuilt();
     bool     areAllFilesExported();

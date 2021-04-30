@@ -724,7 +724,12 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
 
     SWAG_CHECK(eatSemiCol("'#import' expression"));
     if (sourceFile->isGenerated || sourceFile->module->kind == ModuleKind::Config)
+    {
+        if (node->ownerCompilerIfBlock)
+            node->ownerCompilerIfBlock->imports.push_back(node);
         SWAG_CHECK(sourceFile->module->addDependency(node, tokenLocation, tokenVersion));
+    }
+
     return true;
 }
 
