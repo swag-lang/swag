@@ -72,6 +72,7 @@ int main(int argc, const char* argv[])
         {
             fs::path pathF           = fs::absolute(command).string();
             g_CommandLine.scriptName = normalizePath(pathF.string());
+            command                  = "run";
         }
         else
         {
