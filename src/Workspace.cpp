@@ -116,7 +116,11 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& moduleP
 
     // Is this the module we want to build ?
     if (g_CommandLine.moduleFilter == moduleName)
+    {
         filteredModule = module;
+        if (g_CommandLine.run)
+            runModule = filteredModule;
+    }
 
     if (g_CommandLine.stats)
         g_Stats.numModules++;

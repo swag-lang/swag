@@ -151,6 +151,7 @@ JobResult EnumerateModuleJob::execute()
         file->module       = scriptModule;
         file->isScriptFile = true;
         scriptModule->addFile(file);
+        g_Workspace.runModule = scriptModule;
     }
 
     // Add all external dependencies

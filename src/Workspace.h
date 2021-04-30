@@ -78,6 +78,7 @@ struct Workspace
     shared_mutex          mutexModules;
     atomic<int>           numErrors = 0;
     VectorNative<Module*> modules;
+    Module*               runModule = nullptr;
 
     vector<OneTag> tags;
 

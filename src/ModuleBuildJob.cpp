@@ -144,7 +144,17 @@ JobResult ModuleBuildJob::execute()
         module->backend->setMustCompile();
 
         // If we do not need to compile, then exit, we're done with that module
-        if (!module->backend->mustCompile && !g_CommandLine.test && (!g_CommandLine.run || !g_CommandLine.scriptMode))
+        bool mustBuild = true;
+        if (!module->backend->mustCompile && !g_CommandLine.test)
+        {
+            mustBuild = false;
+
+            // Force the build if we will run that module in bytecode mode
+            if (g_CommandLine.scriptMode && g_Workspace.runModule == module)
+                mustBuild = true;
+        }
+
+        if (!mustBuild)
         {
             pass = ModuleBuildPass::WaitForDependencies;
         }
