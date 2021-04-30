@@ -17,6 +17,7 @@ struct AstVarDecl;
 struct Job;
 struct BackendFunctionBodyJob;
 enum class JobResult;
+enum class BuildCfgBackendKind;
 
 static const int MAX_PRECOMPILE_BUFFERS = 16;
 enum class BackendPreCompilePass
@@ -81,7 +82,7 @@ struct Backend
     static bool   passByValue(TypeInfo* typeInfo);
 
     static string         getObjectFileExtension();
-    static string         getOutputFileExtension(BackendOutputType type);
+    static string         getOutputFileExtension(BuildCfgBackendKind type);
     static BackendObjType getObjType(BackendOs os);
     static const char*    GetArchName();
     static const char*    GetOsName();

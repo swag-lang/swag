@@ -105,7 +105,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         auto dep      = moduleDependencies[i];
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
-        auto nameLib = nameDown + Backend::getOutputFileExtension(BackendOutputType::DynamicLib);
+        auto nameLib = nameDown + Backend::getOutputFileExtension(BuildCfgBackendKind::DynamicLib);
         emitGlobalString(pp, precompileIndex, nameLib, RAX);
         BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RSP);
         BackendX64Inst::emit_Load64_Immediate(pp, nameLib.length(), RAX);

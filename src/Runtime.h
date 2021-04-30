@@ -112,6 +112,7 @@ enum class BuildCfgBackendKind
     None,
     Executable,
     DynamicLib,
+    StaticLib,
 };
 
 struct BuildCfg

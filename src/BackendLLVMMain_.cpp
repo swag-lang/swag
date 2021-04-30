@@ -132,7 +132,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         auto dep      = moduleDependencies[i];
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
-        auto nameLib = nameDown + Backend::getOutputFileExtension(BackendOutputType::DynamicLib);
+        auto nameLib = nameDown + Backend::getOutputFileExtension(BuildCfgBackendKind::DynamicLib);
         auto ptrStr  = builder.CreateGlobalStringPtr(nameLib.c_str());
         localCall(buildParameters, nullptr, allocT, "__loaddll", {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.length())});
     }

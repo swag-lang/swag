@@ -137,7 +137,6 @@ JobResult ModuleOutputJob::execute()
             compileJob->dependentJob                   = this;
             compileJob->buildParameters                = module->buildParameters;
             compileJob->buildParameters.outputFileName = module->name;
-            compileJob->buildParameters.outputType     = BackendOutputType::Binary;
             compileJob->buildParameters.compileType    = BackendCompileType::Test;
             jobsToAdd.push_back(compileJob);
         }
@@ -157,13 +156,6 @@ JobResult ModuleOutputJob::execute()
                 compileJob->buildParameters.compileType = BackendCompileType::Example;
             else
                 compileJob->buildParameters.compileType = BackendCompileType::Normal;
-
-            if (module->byteCodeMainFunc)
-                compileJob->buildParameters.outputType = BackendOutputType::Binary;
-            else
-                compileJob->buildParameters.outputType = BackendOutputType::DynamicLib;
-            module->buildParameters.outputType = compileJob->buildParameters.outputType;
-
             compileJob->buildParameters.outputFileName = module->name;
             jobsToAdd.push_back(compileJob);
         }

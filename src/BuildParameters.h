@@ -39,13 +39,6 @@ enum class BackendObjType
     Wasm,
 };
 
-enum class BackendOutputType
-{
-    Binary,
-    DynamicLib,
-    StaticLib,
-};
-
 enum BackendCompileType
 {
     Normal,
@@ -93,6 +86,5 @@ struct BuildParameters
     string             outputFileName;
     BuildCfg*          buildCfg        = nullptr;
     int                precompileIndex = 0;
-    BackendOutputType  outputType      = BackendOutputType::Binary;
     BackendCompileType compileType     = BackendCompileType::Normal;
 };

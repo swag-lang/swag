@@ -461,6 +461,7 @@ namespace swag
         None
         Executable
         DynamicLib
+        StaticLib
     }
 
     struct BuildCfg

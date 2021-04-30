@@ -110,21 +110,21 @@ bool Backend::passByValue(TypeInfo* typeInfo)
     return typeInfo->numRegisters() == 1;
 }
 
-string Backend::getOutputFileExtension(BackendOutputType type)
+string Backend::getOutputFileExtension(BuildCfgBackendKind type)
 {
     switch (type)
     {
-    case BackendOutputType::Binary:
+    case BuildCfgBackendKind::Executable:
         if (g_CommandLine.os == BackendOs::Windows)
             return ".exe";
         return "";
 
-    case BackendOutputType::StaticLib:
+    case BuildCfgBackendKind::StaticLib:
         if (g_CommandLine.os == BackendOs::Windows && !isAbiGnu(g_CommandLine.abi))
             return ".lib";
         return ".a";
 
-    case BackendOutputType::DynamicLib:
+    case BuildCfgBackendKind::DynamicLib:
         if (g_CommandLine.os == BackendOs::Windows && !isAbiGnu(g_CommandLine.abi))
             return ".dll";
         if (isOsDarwin(g_CommandLine.os))
@@ -162,7 +162,7 @@ string Backend::getOutputFileName(const BuildParameters& buildParameters)
 {
     SWAG_ASSERT(!buildParameters.outputFileName.empty());
     string destFile = g_Workspace.targetPath.string() + buildParameters.outputFileName;
-    destFile += getOutputFileExtension(buildParameters.outputType);
+    destFile += getOutputFileExtension(buildParameters.buildCfg->backendKind);
     destFile = normalizePath(fs::path(destFile.c_str()));
     return destFile;
 }
