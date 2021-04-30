@@ -5,12 +5,25 @@
 #include "Timer.h"
 #include "Module.h"
 #include "Stats.h"
+#include "ErrorIds.h"
 
 thread_local Pool<ModulePrepOutputJob> g_Pool_modulePrepOutputJob;
 
 JobResult ModulePrepOutputJob::execute()
 {
     Timer timer{&g_Stats.prepOutputTimeJob};
+
+    // Be sure we have a #main in case of an executable
+    if (module->backend->mustCompile &&
+        module->buildCfg.backendKind == BuildCfgBackendKind::Executable &&
+        buildParameters.compileType != BackendCompileType::Test)
+    {
+        if (!module->mainIsDefined)
+        {
+            module->error(Msg0269);
+            return JobResult::ReleaseJob;
+        }
+    }
 
     timer.start();
     auto result = module->backend->prepareOutput(buildParameters, this);

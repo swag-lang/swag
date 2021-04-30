@@ -33,8 +33,6 @@ maj new pour un module, pas un workspace
 -------------------------------------
 maj to module créé avec le 'swag new'
 -------------------------------------
-erreur si type = executable et pas de #main
--------------------------------------
 #if and #import
 -------------------------------------
 dbg x64, self doit etre comme this (possible ?)
