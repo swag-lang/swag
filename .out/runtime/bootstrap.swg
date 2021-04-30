@@ -456,6 +456,13 @@ namespace swag
         maxFunctionPerFile: u32 = 1024;
     }
 
+    enum BuildCfgBackendKind
+    {
+        None
+        Executable
+        DynamicLib
+    }
+
     struct BuildCfg
     {
         // Module infos
@@ -480,7 +487,7 @@ namespace swag
         byteCodeInline          = true
 
         // Backend common
-        backendEmit               = true
+        backendKind               = BuildCfgBackendKind.Executable
         backendDebugInformations  = false
         backendOptimizeSpeed      = false
         backendOptimizeSize       = false

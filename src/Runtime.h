@@ -107,6 +107,13 @@ struct BuildCfgBackendX64
     uint32_t maxFunctionPerFile = 1024;
 };
 
+enum class BuildCfgBackendKind
+{
+    None,
+    Executable,
+    DynamicLib,
+};
+
 struct BuildCfg
 {
     // Module informations
@@ -130,10 +137,10 @@ struct BuildCfg
     bool byteCodeInline      = true;
 
     // Backend common
-    bool backendEmit              = true;
-    bool backendDebugInformations = false;
-    bool backendOptimizeSpeed     = false;
-    bool backendOptimizeSize      = false;
+    BuildCfgBackendKind backendKind              = BuildCfgBackendKind::Executable;
+    bool                backendDebugInformations = false;
+    bool                backendOptimizeSpeed     = false;
+    bool                backendOptimizeSize      = false;
 
     // Specific backend parameters
     BuildCfgBackendLLVM backendLLVM;
