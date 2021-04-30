@@ -15,5 +15,34 @@ void Workspace::scriptCommand()
     g_CommandLine.run           = true;
     g_CommandLine.scriptMode    = true;
     g_CommandLine.scriptCommand = true;
+
+    // Compute workspace folder and name
+    // Will be shared between all scripts, in the cache folder
+    g_Workspace.setupCachePath();
+    if (!fs::exists(g_Workspace.cachePath))
+    {
+        g_Log.error(format(Msg0546, g_Workspace.cachePath.string().c_str()));
+        exit(-1);
+    }
+
+    auto cacheWorkspace = g_Workspace.cachePath.string();
+    cacheWorkspace.append(SWAG_CACHE_FOLDER);
+    error_code errorCode;
+    if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
+    {
+        g_Log.error(format(Msg0547, cacheWorkspace.c_str()));
+        exit(-1);
+    }
+
+    cacheWorkspace.append("/");
+    cacheWorkspace.append(SWAG_SCRIPT_WORKSPACE);
+    if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
+    {
+        g_Log.error(format(Msg0547, cacheWorkspace.c_str()));
+        exit(-1);
+    }
+
+    // This is it. Build and run !
+    g_CommandLine.workspacePath = cacheWorkspace;
     g_Workspace.build();
 }

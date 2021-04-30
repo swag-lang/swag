@@ -9,6 +9,7 @@ struct AstNode;
 enum class ModuleKind;
 
 #define SWAG_CACHE_FOLDER "swag_cache"
+#define SWAG_SCRIPT_WORKSPACE "script_workspace"
 #define SWAG_TESTS_FOLDER "tests"
 #define SWAG_EXAMPLES_FOLDER "examples"
 #define SWAG_MODULES_FOLDER "modules"
@@ -42,7 +43,6 @@ struct Workspace
     void    checkPendingJobs();
     bool    buildTarget();
     bool    build();
-    void    clearModules();
     Module* createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind);
 
     void        addBootstrap();

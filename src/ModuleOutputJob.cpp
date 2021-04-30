@@ -150,12 +150,14 @@ JobResult ModuleOutputJob::execute()
             compileJob->module          = module;
             compileJob->dependentJob    = this;
             compileJob->buildParameters = module->buildParameters;
+
             if (module->kind == ModuleKind::Test)
                 compileJob->buildParameters.compileType = BackendCompileType::Test;
             else if (module->kind == ModuleKind::Example)
                 compileJob->buildParameters.compileType = BackendCompileType::Example;
             else
                 compileJob->buildParameters.compileType = BackendCompileType::Normal;
+
             if (module->byteCodeMainFunc)
                 compileJob->buildParameters.outputType = BackendOutputType::Binary;
             else

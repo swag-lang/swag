@@ -74,6 +74,13 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     if (module->areAllFilesExported())
         timeToTest = module->moreRecentSourceFile;
 
+    /*if (module->buildCfg.backendEmit)
+    {
+        auto outFileFame = getOutputFileName(module->buildParameters);
+        if (!fs::exists(outFileFame))
+            return false;
+    }*/
+
     if (invert && timeToTest > moreRecentSourceFile)
         return false;
     if (module->areAllFilesExported())
