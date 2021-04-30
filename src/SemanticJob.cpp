@@ -98,10 +98,24 @@ JobResult SemanticJob::execute()
                    originalNode->kind == AstNodeKind::AttrUse ||
                    originalNode->kind == AstNodeKind::CompilerIf;
 
+        // Sub functions attributes inheritance
         if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->ownerFct)
         {
             originalNode->attributeFlags |= originalNode->ownerFct->attributeFlags & ATTRIBUTE_PRINT_BC;
             originalNode->attributeFlags |= originalNode->ownerFct->attributeFlags & ATTRIBUTE_SAFETY_MASK;
+        }
+
+        // In configuration pass1, we only treat the #dependencies block
+        if (sourceFile->module->kind == ModuleKind::ConfigPass1)
+        {
+            for (auto c : originalNode->childs)
+            {
+                if (c->kind != AstNodeKind::CompilerDependencies)
+                {
+                    c->flags |= AST_NO_SEMANTIC;
+                    c->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+                }
+            }
         }
     }
 
