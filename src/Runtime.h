@@ -110,6 +110,7 @@ struct BuildCfgBackendX64
 enum class BuildCfgBackendKind
 {
     None,
+    Export,
     Executable,
     DynamicLib,
     StaticLib,

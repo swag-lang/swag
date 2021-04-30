@@ -75,7 +75,7 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         timeToTest = module->moreRecentSourceFile;
 
     // Be sure the output file is here, and is more recent than the export file
-    if (module->buildCfg.backendKind != BuildCfgBackendKind::None)
+    if (module->buildCfg.backendKind != BuildCfgBackendKind::None && module->buildCfg.backendKind != BuildCfgBackendKind::Export)
     {
         auto outFileFame = getOutputFileName(module->buildParameters);
         if (!fs::exists(outFileFame))

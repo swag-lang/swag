@@ -75,8 +75,9 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     auto cfgModule = g_ModuleCfgMgr.getCfgModule(theModule->name);
     if (cfgModule)
     {
-        auto cfgFile    = cfgModule->files[0];
-        auto file       = addFileToModule(theModule, allFiles, fs::path(cfgFile->path).parent_path().string(), cfgFile->name.c_str(), cfgFile->writeTime);
+        auto cfgFile    = theModule->path + "/" + SWAG_CFG_FILE;
+        auto writeTime  = OS::getFileWriteTime(cfgFile.c_str());
+        auto file       = addFileToModule(theModule, allFiles, fs::path(cfgFile).parent_path().string(), SWAG_CFG_FILE, writeTime);
         file->isCfgFile = true;
     }
 
@@ -143,6 +144,7 @@ JobResult EnumerateModuleJob::execute()
     }
     else
     {
+        // If we are in script mode, then we add one single module with the script file
         auto parentFolder  = fs::path(g_CommandLine.scriptName.c_str()).parent_path().string();
         auto file          = g_Allocator.alloc<SourceFile>();
         file->name         = fs::path(g_CommandLine.scriptName).filename().string();

@@ -459,6 +459,7 @@ namespace swag
     enum BuildCfgBackendKind
     {
         None
+        Export
         Executable
         DynamicLib
         StaticLib

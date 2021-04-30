@@ -867,7 +867,7 @@ bool Module::WaitForDependenciesDone(Job* job)
 
 bool Module::areAllFilesExported()
 {
-    return files.size() - importedSourceFiles.size() == exportSourceFiles.size();
+    return buildCfg.backendKind == BuildCfgBackendKind::Export;
 }
 
 bool Module::mustOutputSomething()
