@@ -31,8 +31,6 @@ TODO
 -------------------------------------
 maj new pour un module, pas un workspace
 -------------------------------------
-maj to module créé avec le 'swag new'
--------------------------------------
 #if and #import
 -------------------------------------
 dbg x64, self doit etre comme this (possible ?)

@@ -70,16 +70,22 @@ void Workspace::newCommand()
         exit(-1);
     }
 
-    const char* oneCfg = R"(
-// setup module build configuration
-#run
+    const char* oneCfg = R"(// Swag generated module
+#dependencies
 {
-    itf := @compiler()
-    cfg := itf.getBuildCfg()
+    // Add external dependencies
+    // #import "core" location="swag@std"
 
-    cfg.moduleVersion  = 0
-    cfg.moduleRevision = 0
-    cfg.moduleBuildNum = 0
+    // Setup the build configuration
+    #run
+    {
+        itf := @compiler()
+        cfg := itf.getBuildCfg()
+        cfg.moduleVersion  = 0
+        cfg.moduleRevision = 0
+        cfg.moduleBuildNum = 0
+        cfg.backendKind    = .Executable
+    }
 }
 )";
     fileCfg << oneCfg;
@@ -108,6 +114,8 @@ void Workspace::newCommand()
 )";
     file << oneMain;
 
-    g_Log.message(format("workspace '%s' has been created", workspacePath.string().c_str()));
+    g_Log.message(format("=> workspace '%s' has been created", workspacePath.string().c_str()));
+    g_Log.message(format("=> a simple executable module '%s' has also been created", workspacePath.filename().string().c_str()));
+    g_Log.message(format("=> type 'swag run -w:%s' to build and run that module", workspacePath.string().c_str()));
     exit(0);
 }
