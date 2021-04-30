@@ -62,6 +62,7 @@ struct SourceFile : public File
     BuildPass   buildPass            = BuildPass::Full;
     bool        isBootstrapFile      = false;
     bool        isRuntimeFile        = false;
+    bool        isScriptFile         = false;
 
     char*    buffer       = nullptr;
     Scope*   scopePrivate = nullptr;

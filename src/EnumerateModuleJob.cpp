@@ -141,6 +141,17 @@ JobResult EnumerateModuleJob::execute()
         if (g_CommandLine.test)
             enumerateModules(g_Workspace.testsPath);
     }
+    else
+    {
+        auto parentFolder  = fs::path(g_CommandLine.scriptName.c_str()).parent_path().string();
+        auto file          = g_Allocator.alloc<SourceFile>();
+        file->name         = fs::path(g_CommandLine.scriptName).filename().string();
+        auto scriptModule  = g_Workspace.createOrUseModule(file->name, parentFolder, ModuleKind::Script);
+        file->path         = g_CommandLine.scriptName;
+        file->module       = scriptModule;
+        file->isScriptFile = true;
+        scriptModule->addFile(file);
+    }
 
     // Add all external dependencies
     for (int i = 0; i < g_Workspace.modules.size(); i++)

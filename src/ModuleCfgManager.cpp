@@ -38,8 +38,16 @@ void ModuleCfgManager::parseCfgFile(Module* cfgModule)
 void ModuleCfgManager::registerCfgFile(SourceFile* file)
 {
     Utf8       moduleName, moduleFolder;
-    ModuleKind kind;
-    g_Workspace.computeModuleName(fs::path(file->path).parent_path(), moduleName, moduleFolder, kind);
+    ModuleKind kind = ModuleKind::Module;
+
+    auto parentFolder = fs::path(file->path).parent_path();
+    if (file->isScriptFile)
+    {
+        moduleName   = file->name;
+        moduleFolder = parentFolder.string();
+    }
+    else
+        g_Workspace.computeModuleName(parentFolder, moduleName, moduleFolder, kind);
 
     auto cfgModule  = g_Allocator.alloc<Module>();
     cfgModule->kind = ModuleKind::Config;
@@ -366,6 +374,7 @@ bool ModuleCfgManager::execute()
     g_Log.verbosePass(LogPassType::PassBegin, "ConfigManager", "");
 
     // Enumerate existing configuration files, and do syntax/semantic for all of them
+    // In this pass, only the #dependencies block will be evaluated
     if (!g_CommandLine.scriptCommand)
     {
         enumerateCfgFiles(g_Workspace.dependenciesPath);
@@ -374,9 +383,16 @@ bool ModuleCfgManager::execute()
         if (g_CommandLine.test || g_CommandLine.listDepCmd || g_CommandLine.fetchDep)
             enumerateCfgFiles(g_Workspace.testsPath);
     }
+
+    // When this is a simple script, then register the script file as the configuration file
     else
     {
-        SWAG_ASSERT(false); // todo
+        auto file          = g_Allocator.alloc<SourceFile>();
+        file->name         = fs::path(g_CommandLine.scriptName.c_str()).filename().string().c_str();
+        file->isCfgFile    = true;
+        file->isScriptFile = true;
+        file->path         = normalizePath(g_CommandLine.scriptName);
+        registerCfgFile(file);
     }
 
     g_ThreadMgr.waitEndJobs();

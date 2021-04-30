@@ -12,19 +12,6 @@ void Workspace::scriptCommand()
         exit(-1);
     }
 
-    // Add one module with the script file
-    auto module = g_Allocator.alloc<Module>();
-    auto file   = g_Allocator.alloc<SourceFile>();
-    file->name  = fs::path(g_CommandLine.scriptName).filename().string();
-
-    module->kind = ModuleKind::Script;
-    module->setup(file->name, "");
-    g_Workspace.modules.push_back(module);
-
-    file->path   = g_CommandLine.scriptName;
-    file->module = module;
-    module->addFile(file);
-
     g_CommandLine.run           = true;
     g_CommandLine.scriptMode    = true;
     g_CommandLine.scriptCommand = true;

@@ -649,7 +649,7 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerDependencies(AstNode* parent)
 {
-    SWAG_VERIFY(sourceFile->isCfgFile, sourceFile->report({sourceFile, token, Msg0377}));
+    SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, sourceFile->report({sourceFile, token, Msg0232}));
     SWAG_VERIFY(parent->kind == AstNodeKind::File, sourceFile->report({sourceFile, token, Msg0268}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerDependencies, sourceFile, parent);
@@ -667,7 +667,7 @@ bool SyntaxJob::doCompilerDependencies(AstNode* parent)
 
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
-    SWAG_VERIFY(sourceFile->isGenerated || sourceFile->isCfgFile, sourceFile->report({sourceFile, token, Msg0377}));
+    SWAG_VERIFY(sourceFile->isGenerated || sourceFile->isCfgFile || sourceFile->isScriptFile, sourceFile->report({sourceFile, token, Msg0377}));
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, Msg0378}));
 
     // Be sure this is in a '#dependencies' block
@@ -692,7 +692,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
 
     // Specific dependency stuff
     Token tokenLocation, tokenVersion;
-    if (sourceFile->isCfgFile)
+    if (sourceFile->isCfgFile || sourceFile->isScriptFile)
     {
         while (true)
         {
