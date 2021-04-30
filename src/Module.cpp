@@ -239,6 +239,7 @@ void Module::release()
     mutableSegment.release();
     typeSegment.release();
     bssSegment.release();
+    tlsSegment.release();
 }
 
 void Module::addExportSourceFile(SourceFile* file)

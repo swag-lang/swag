@@ -83,6 +83,15 @@ Module* Workspace::getModuleByName(const Utf8& moduleName)
     return it->second;
 }
 
+void Workspace::clearModules()
+{
+    mapModulesNames.clear();
+    for (auto m : modules)
+        m->release();
+    modules.clear();
+    g_Stats.numModules = 0;
+}
+
 Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind)
 {
     Module* module = nullptr;

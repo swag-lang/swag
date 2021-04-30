@@ -42,7 +42,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     g_Workspace.computeModuleName(fs::path(file->path).parent_path(), moduleName, moduleFolder, kind);
 
     auto cfgModule  = g_Allocator.alloc<Module>();
-    cfgModule->kind = ModuleKind::ConfigPass1;
+    cfgModule->kind = ModuleKind::Config;
     cfgModule->setup(moduleName, moduleFolder);
     cfgModule->addFile(file);
 
@@ -249,7 +249,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     if (!dep->module)
     {
         dep->module       = g_Allocator.alloc<Module>();
-        dep->module->kind = ModuleKind::ConfigPass1;
+        dep->module->kind = ModuleKind::Config;
         dep->module->setup(dep->name, "");
         allModules[dep->name] = dep->module;
 
@@ -366,11 +366,19 @@ bool ModuleCfgManager::execute()
     g_Log.verbosePass(LogPassType::PassBegin, "ConfigManager", "");
 
     // Enumerate existing configuration files, and do syntax/semantic for all of them
-    enumerateCfgFiles(g_Workspace.dependenciesPath);
-    enumerateCfgFiles(g_Workspace.modulesPath);
-    enumerateCfgFiles(g_Workspace.examplesPath);
-    if (g_CommandLine.test || g_CommandLine.listDepCmd || g_CommandLine.fetchDep)
-        enumerateCfgFiles(g_Workspace.testsPath);
+    if (!g_CommandLine.scriptCommand)
+    {
+        enumerateCfgFiles(g_Workspace.dependenciesPath);
+        enumerateCfgFiles(g_Workspace.modulesPath);
+        enumerateCfgFiles(g_Workspace.examplesPath);
+        if (g_CommandLine.test || g_CommandLine.listDepCmd || g_CommandLine.fetchDep)
+            enumerateCfgFiles(g_Workspace.testsPath);
+    }
+    else
+    {
+        SWAG_ASSERT(false); // todo
+    }
+
     g_ThreadMgr.waitEndJobs();
     g_Workspace.checkPendingJobs();
     if (g_Workspace.numErrors)
@@ -516,6 +524,5 @@ bool ModuleCfgManager::execute()
 
     timer.stop();
     g_Log.verbosePass(LogPassType::PassEnd, "ConfigManager", "", g_Stats.cfgTime.load());
-
     return ok;
 }

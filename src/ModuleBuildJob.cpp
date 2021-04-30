@@ -27,6 +27,7 @@ bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
     if (!depModule)
     {
         depModule = g_Workspace.getModuleByName(dep->name);
+        SWAG_ASSERT(depModule);
         depModule->allocateBackend();
         dep->module = depModule;
     }
@@ -93,7 +94,7 @@ JobResult ModuleBuildJob::execute()
 
         if (fromError)
             pass = ModuleBuildPass::IncludeSwg;
-        else if (module->kind == ModuleKind::ConfigPass1)
+        else if (module->kind == ModuleKind::Config)
             pass = ModuleBuildPass::SemanticModule;
         else
             pass = ModuleBuildPass::Dependencies;
@@ -249,7 +250,7 @@ JobResult ModuleBuildJob::execute()
         if (context.result != ContextResult::Done)
             return JobResult::KeepJobAlive;
 
-        if (module->kind == ModuleKind::ConfigPass1)
+        if (module->kind == ModuleKind::Config)
             pass = ModuleBuildPass::OptimizeBc;
         else
             pass = ModuleBuildPass::WaitForDependencies;
@@ -519,7 +520,7 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        if (module->kind == ModuleKind::ConfigPass1)
+        if (module->kind == ModuleKind::Config)
             pass = ModuleBuildPass::Done;
         else
         {

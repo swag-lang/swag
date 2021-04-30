@@ -42,6 +42,7 @@ struct Workspace
     void    checkPendingJobs();
     bool    buildTarget();
     bool    build();
+    void    clearModules();
     Module* createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind);
 
     void        addBootstrap();

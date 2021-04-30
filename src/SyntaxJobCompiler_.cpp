@@ -649,16 +649,14 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerDependencies(AstNode* parent)
 {
-    if (sourceFile->module->kind != ModuleKind::ConfigPass1 && sourceFile->module->kind != ModuleKind::ConfigPass2)
-        return sourceFile->report({sourceFile, token, Msg0377});
+    SWAG_VERIFY(sourceFile->isCfgFile, sourceFile->report({sourceFile, token, Msg0377}));
     SWAG_VERIFY(parent->kind == AstNodeKind::File, sourceFile->report({sourceFile, token, Msg0268}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerDependencies, sourceFile, parent);
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doCurlyStatement(node));
 
-    // Ignore the dependencies block in pass 2
-    if (sourceFile->module->kind == ModuleKind::ConfigPass2)
+    if (sourceFile->module->kind != ModuleKind::Config)
     {
         node->flags |= AST_NO_SEMANTIC;
         node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
@@ -669,12 +667,11 @@ bool SyntaxJob::doCompilerDependencies(AstNode* parent)
 
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
-    if (!sourceFile->isGenerated && sourceFile->module->kind != ModuleKind::ConfigPass1 && sourceFile->module->kind != ModuleKind::ConfigPass2)
-        return sourceFile->report({sourceFile, token, Msg0377});
+    SWAG_VERIFY(sourceFile->isGenerated || sourceFile->isCfgFile, sourceFile->report({sourceFile, token, Msg0377}));
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, Msg0378}));
 
     // Be sure this is in a '#dependencies' block
-    if (sourceFile->module->kind == ModuleKind::ConfigPass1)
+    if (sourceFile->module->kind == ModuleKind::Config)
     {
         auto scan = parent;
         while (scan)
@@ -726,7 +723,8 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     }
 
     SWAG_CHECK(eatSemiCol("'#import' expression"));
-    SWAG_CHECK(sourceFile->module->addDependency(node, tokenLocation, tokenVersion));
+    if (sourceFile->isGenerated || sourceFile->module->kind == ModuleKind::Config)
+        SWAG_CHECK(sourceFile->module->addDependency(node, tokenLocation, tokenVersion));
     return true;
 }
 
