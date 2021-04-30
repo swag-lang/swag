@@ -9,8 +9,9 @@
 #include "Allocator.h"
 #include "Scope.h"
 #include "Module.h"
+#include "ModuleCfgManager.h"
 
-void EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime)
+SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime)
 {
     auto file         = g_Allocator.alloc<SourceFile>();
     file->fromTests   = theModule->kind == ModuleKind::Test;
@@ -26,6 +27,8 @@ void EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>&
         allFiles.push_back(file);
     else
         theModule->addFile(file);
+
+    return file;
 }
 
 void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module* theModule)
@@ -67,6 +70,15 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
             }
         });
     }
+
+    // Add the config file, second pass
+    /*auto cfgModule = g_ModuleCfgMgr.getCfgModule(theModule->name);
+    if (cfgModule)
+    {
+        auto cfgFile    = cfgModule->files[0];
+        auto file       = addFileToModule(theModule, allFiles, fs::path(cfgFile->path).parent_path().string(), cfgFile->name.c_str(), cfgFile->writeTime);
+        file->isCfgFile = true;
+    }*/
 
     // Sort files, and register them in a constant order
     if (!allFiles.empty())

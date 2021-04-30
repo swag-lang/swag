@@ -191,7 +191,7 @@ struct Module
     bool     addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
     void     setHasBeenBuilt(uint32_t buildResult);
     uint32_t getHasBeenBuilt();
-    bool     isOnlyPublic();
+    bool     areAllFilesExported();
     bool     mustOutputSomething();
 
     shared_mutex                    mutexDependency;

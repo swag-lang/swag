@@ -71,12 +71,12 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         return false;
 
     auto timeToTest = timeExportFile;
-    if (module->isOnlyPublic())
+    if (module->areAllFilesExported())
         timeToTest = module->moreRecentSourceFile;
 
     if (invert && timeToTest > moreRecentSourceFile)
         return false;
-    if (module->isOnlyPublic())
+    if (module->areAllFilesExported())
         return true;
     if (timeToTest < g_Workspace.bootstrapModule->moreRecentSourceFile)
         return false;

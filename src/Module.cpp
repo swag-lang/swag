@@ -850,7 +850,7 @@ bool Module::WaitForDependenciesDone(Job* job)
     return true;
 }
 
-bool Module::isOnlyPublic()
+bool Module::areAllFilesExported()
 {
     return files.size() - importedSourceFiles.size() == exportSourceFiles.size();
 }
@@ -868,9 +868,6 @@ bool Module::mustOutputSomething()
         mustOutput = false;
     else if (files.empty())
         mustOutput = false;
-    // every files are published
-    else if (files.size() == exportSourceFiles.size())
-        mustOutput = false;
     // module must have unittest errors, so no output
     else if (numTestErrors)
         mustOutput = false;
@@ -879,8 +876,8 @@ bool Module::mustOutputSomething()
     // a test module needs swag to be in test mode
     else if (kind == ModuleKind::Test && !g_CommandLine.outputTest)
         mustOutput = false;
-    // if all files are public, then do not generate a module
-    else if (isOnlyPublic())
+    // if all files are exported, then do not generate a module
+    else if (areAllFilesExported())
         mustOutput = false;
 
     return mustOutput;
