@@ -374,7 +374,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else if (token.text == "generated")
     {
-        sourceFile->generated = true;
+        sourceFile->isGenerated = true;
         if (sourceFile->imported)
             sourceFile->imported->isSwag = true;
         SWAG_CHECK(eatToken());
@@ -649,20 +649,32 @@ bool SyntaxJob::doCompilerLoad(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerDependencies(AstNode* parent)
 {
-    SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Config, sourceFile->report({sourceFile, token, Msg0377}));
+    if (sourceFile->module->kind != ModuleKind::ConfigPass1 && sourceFile->module->kind != ModuleKind::ConfigPass2)
+        return sourceFile->report({sourceFile, token, Msg0377});
+    SWAG_VERIFY(parent->kind == AstNodeKind::File, sourceFile->report({sourceFile, token, Msg0268}));
+
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerDependencies, sourceFile, parent);
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doCurlyStatement(node));
+
+    // Ignore the dependencies block in pass 2
+    if (sourceFile->module->kind == ModuleKind::ConfigPass2)
+    {
+        node->flags |= AST_NO_SEMANTIC;
+        node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+    }
+
     return true;
 }
 
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
-    SWAG_VERIFY(sourceFile->generated || sourceFile->module->kind == ModuleKind::Config, sourceFile->report({sourceFile, token, Msg0377}));
+    if (!sourceFile->isGenerated && sourceFile->module->kind != ModuleKind::ConfigPass1 && sourceFile->module->kind != ModuleKind::ConfigPass2)
+        return sourceFile->report({sourceFile, token, Msg0377});
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, Msg0378}));
 
     // Be sure this is in a '#dependencies' block
-    if (sourceFile->module->kind == ModuleKind::Config)
+    if (sourceFile->module->kind == ModuleKind::ConfigPass1)
     {
         auto scan = parent;
         while (scan)

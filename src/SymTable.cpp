@@ -91,7 +91,7 @@ SymbolOverload* SymTable::addSymbolTypeInfo(JobContext*    context,
                                             Utf8*          aliasName)
 {
     unique_lock lk(mutex);
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC || context->sourceFile->generated)
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC || context->sourceFile->isGenerated)
         flags |= OVERLOAD_PUBLIC;
     return addSymbolTypeInfoNoLock(context, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, aliasName);
 }

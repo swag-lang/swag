@@ -93,7 +93,7 @@ JobResult ModuleBuildJob::execute()
 
         if (fromError)
             pass = ModuleBuildPass::IncludeSwg;
-        else if (module->kind == ModuleKind::Config)
+        else if (module->kind == ModuleKind::ConfigPass1)
             pass = ModuleBuildPass::SemanticModule;
         else
             pass = ModuleBuildPass::Dependencies;
@@ -249,7 +249,7 @@ JobResult ModuleBuildJob::execute()
         if (context.result != ContextResult::Done)
             return JobResult::KeepJobAlive;
 
-        if (module->kind == ModuleKind::Config)
+        if (module->kind == ModuleKind::ConfigPass1)
             pass = ModuleBuildPass::OptimizeBc;
         else
             pass = ModuleBuildPass::WaitForDependencies;
@@ -519,7 +519,7 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        if (module->kind == ModuleKind::Config)
+        if (module->kind == ModuleKind::ConfigPass1)
             pass = ModuleBuildPass::Done;
         else
         {

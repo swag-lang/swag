@@ -42,7 +42,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     g_Workspace.computeModuleName(fs::path(file->path).parent_path(), moduleName, moduleFolder, kind);
 
     auto cfgModule  = g_Allocator.alloc<Module>();
-    cfgModule->kind = ModuleKind::Config;
+    cfgModule->kind = ModuleKind::ConfigPass1;
     cfgModule->setup(moduleName, moduleFolder);
     cfgModule->addFile(file);
 
@@ -67,7 +67,7 @@ void ModuleCfgManager::newCfgFile(vector<SourceFile*>& allFiles, const Utf8& dir
 {
     auto file         = g_Allocator.alloc<SourceFile>();
     file->name        = fileName;
-    file->isCfgFile     = true;
+    file->isCfgFile   = true;
     fs::path pathFile = dirName.c_str();
     pathFile.append(fileName.c_str());
     file->path = normalizePath(pathFile);
@@ -249,7 +249,7 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     if (!dep->module)
     {
         dep->module       = g_Allocator.alloc<Module>();
-        dep->module->kind = ModuleKind::Config;
+        dep->module->kind = ModuleKind::ConfigPass1;
         dep->module->setup(dep->name, "");
         allModules[dep->name] = dep->module;
 
@@ -423,7 +423,7 @@ bool ModuleCfgManager::execute()
             cfgModule->files.push_back(file);
 
             file->name        = cfgFileName;
-            file->isCfgFile     = true;
+            file->isCfgFile   = true;
             file->module      = cfgModule;
             fs::path pathFile = cfgFilePath.c_str();
             pathFile.append(cfgFileName.c_str());

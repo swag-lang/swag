@@ -95,6 +95,7 @@
 #define Msg0377 "'#import' can only be used in the module configuration file"
 #define Msg0235 "'#import' can only be used inside a '#dependencies' block"
 #define Msg0232 "'#dependencies' can only be used in the module configuration file"
+#define Msg0268 "'#dependencies' can only be declared at the file level"
 #define Msg0284 "'#import' location already defined as '%s'"
 #define Msg0380 "'#import' location defined twice"
 #define Msg0379 "'#import' should be followed by a string"

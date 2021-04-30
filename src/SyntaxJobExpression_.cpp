@@ -1069,7 +1069,7 @@ bool SyntaxJob::checkIsValidUserName(AstNode* node)
         return true;
 
     // An identifier that starts with '__' is reserved for internal usage !
-    if (!sourceFile->generated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
+    if (!sourceFile->isGenerated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
     {
         if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
             return error(node->token, format(Msg0272, node->token.text.c_str()));

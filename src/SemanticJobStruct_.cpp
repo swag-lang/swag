@@ -527,7 +527,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         node->packing = value.reg.u8;
 
     // Check 'opaque' attribute
-    if (!sourceFile->generated)
+    if (!sourceFile->isGenerated)
     {
         if (node->attributeFlags & ATTRIBUTE_OPAQUE)
         {

@@ -64,7 +64,8 @@ enum class ModuleKind
     Dependency,
     BootStrap,
     Runtime,
-    Config,
+    ConfigPass1,
+    ConfigPass2,
     Script,
 };
 
