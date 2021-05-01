@@ -2,6 +2,20 @@
 #global namespace strconv
 using globalization
 
+// Parse an identifier name
+func parseIdentifier(str: const [..] u8)->string throw
+{
+    countof := @countof(str)
+    if !countof throw "empty"
+
+    if str[0] != "_"'u8 and !latin1.isLetter(str[1]) throw "invalid"
+
+    cpt := 1'uint
+    while cpt < countof and (str[cpt] == "_"'u8 or latin1.isLetterOrDigit(str[cpt]))
+        cpt += 1
+    return @mkstring(@dataof(str), cpt)
+}
+
 // Convert an utf8 buffer in hexadecimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
 func parseX64(str: const [..] u8) -> {value: u64, eat: u32} throw
