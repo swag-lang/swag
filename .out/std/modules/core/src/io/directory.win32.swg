@@ -50,7 +50,7 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(file.FileIn
             mustAdd := false
             if findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
             {
-                if filename != "." && filename != ".."
+                if filename != "." and filename != ".."
                 {
                     mustAdd = options.wantDirectories
                     if options.recurse

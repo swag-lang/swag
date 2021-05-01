@@ -34,7 +34,7 @@ impl Log
 {
     private func buildHeader(using self, loc: swag.CompilerSourceLocation)
     {
-        if flags & .Prefix && @countof(prefix)
+        if flags & .Prefix and @countof(prefix)
         {
             buf.appendString(prefix)
             buf.appendString(" ")

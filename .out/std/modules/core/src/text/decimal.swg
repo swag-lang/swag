@@ -98,14 +98,14 @@ impl Decimal
     // If we chop a at nd digits, should we round up?
     func shouldRoundUp(using self, nd1: s64)->bool
     {
-        if nd1 < 0 || nd1 >= nd
+        if nd1 < 0 or nd1 >= nd
             return false
-        if d[nd1] == "5"'u8 && nd1 + 1 == nd  // exactly halfway - round to even
+        if d[nd1] == "5"'u8 and nd1 + 1 == nd  // exactly halfway - round to even
         {
             // if we truncated, a little higher than what's recorded - always round up
             if trunc
                 return true
-            return nd1 > 0 && (d[nd1-1] -"0"'u8) % 2 != 0
+            return nd1 > 0 and (d[nd1-1] -"0"'u8) % 2 != 0
         }
 
         // not halfway - digit tells all
@@ -118,7 +118,7 @@ impl Decimal
     // 0.09 -> 0.1.
     func round(using self, nd1: s64)
     {
-        if nd1 < 0 || nd1 >= nd
+        if nd1 < 0 or nd1 >= nd
             return
         if shouldRoundUp(nd1)
             roundUp(nd1)
@@ -129,7 +129,7 @@ impl Decimal
     // Round a down to nd digits (or fewer).
     func roundDown(using self, nd1: s64)
     {
-        if nd1 < 0 || nd1 >= nd
+        if nd1 < 0 or nd1 >= nd
             return
         nd = nd1
         trim()
@@ -138,7 +138,7 @@ impl Decimal
     // Round a up to nd digits (or fewer).
     func roundUp(using self, nd1: s64)
     {
-        if nd1 < 0 || nd1 >= nd
+        if nd1 < 0 or nd1 >= nd
             return
         // round up
         for i := nd1 - 1; i >= 0; i -= 1
@@ -191,7 +191,7 @@ impl Decimal
 
     func trim(using self)
     {
-        while nd > 0 && d[nd - 1] == "0"'u8
+        while nd > 0 and d[nd - 1] == "0"'u8
             nd -= 1
         if nd == 0 dp = 0
     }
@@ -392,10 +392,10 @@ impl Decimal
                 sawdot = true
                 dp = nd
             }
-            else if "0"'u8 <= c && c <= "9"'u8
+            else if "0"'u8 <= c and c <= "9"'u8
             {
                 sawDigits = true
-                if c == "0"'u8 && nd == 0
+                if c == "0"'u8 and nd == 0
                     dp -= 1
                 else
                 {
@@ -430,7 +430,7 @@ impl Decimal
 
         // Exponent
         c = :buffer
-        if cpt < countof && (c|32) == "e"'u8
+        if cpt < countof and (c|32) == "e"'u8
         {
             cpt, buffer += 1
             if cpt >= countof
@@ -450,14 +450,14 @@ impl Decimal
                 c = :buffer
             }
 
-            if cpt >= countof || c < "0"'u8 || c > "9"'u8
+            if cpt >= countof or c < "0"'u8 or c > "9"'u8
                 throw "invalid float format"
 
             e := 0
             while cpt < countof
             {
                 c = :buffer
-                if c < "0"'u8 || c > "9"'u8
+                if c < "0"'u8 or c > "9"'u8
                     break
                 if e < 10000
                     e = e*10 + (c - "0"'u8)
@@ -519,7 +519,7 @@ impl Decimal
                 exp += n
             }
 
-            while dp < 0 || dp == 0 && d[0] < "5"'u8
+            while dp < 0 or dp == 0 and d[0] < "5"'u8
             {
                 var n: s64
                 if -dp >= @countof(PowTab)
@@ -594,7 +594,7 @@ impl Decimal
 
         i := 0's64
         n := 0'u64
-        while i < dp && i < nd
+        while i < dp and i < nd
         {
             n = (n*10) + cast(u64) (d[i] - "0"'u8)
             i += 1

@@ -10,7 +10,7 @@ impl Point
 {
 	/*func opEqual(self, other: Point)->bool
 	{
-		return self.x == other.x && self.y == other.y
+		return self.x == other.x and self.y == other.y
 	}*/
 }
 

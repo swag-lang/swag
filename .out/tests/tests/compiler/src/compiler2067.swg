@@ -15,19 +15,19 @@ func init(x: string)
         {
             cmdLine += 1
             start := cmdLine
-            while :cmdLine && :cmdLine != "\""'u8 cmdLine += 1
+            while :cmdLine and :cmdLine != "\""'u8 cmdLine += 1
             g_Argv[g_Argc] = @mkstring(start, cast(uint) (cmdLine - start))
             if :cmdLine cmdLine += 1
         }
         else
         {
             start := cmdLine
-            while :cmdLine && :cmdLine != " "'u8 cmdLine += 1
+            while :cmdLine and :cmdLine != " "'u8 cmdLine += 1
             g_Argv[g_Argc] = @mkstring(start, cast(uint) (cmdLine - start))
         }
 
         g_Argc += 1
-        while :cmdLine && :cmdLine == " "'u8 cmdLine += 1
+        while :cmdLine and :cmdLine == " "'u8 cmdLine += 1
     }
 }
 

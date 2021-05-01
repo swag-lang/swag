@@ -3,7 +3,7 @@
 #[swag.compiler, swag.constexpr]
 func check(T: typeinfo, N: u32)->bool
 {
-    return N > 0 && N <= 4 && T == f32
+    return N > 0 and N <= 4 and T == f32
 }
 
 func(T, N: u32) toto()

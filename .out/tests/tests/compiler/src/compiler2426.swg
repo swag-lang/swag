@@ -4,7 +4,7 @@ func print(f: string)
     #checkif
     {
         @assert(@isconstexpr(f))
-        @assert(f == "tt()" || f == "tt1()")
+        @assert(f == "tt()" or f == "tt1()")
         G += 1
         return true
     }

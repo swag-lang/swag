@@ -10,7 +10,7 @@ const VolumeSeparatorChar       = ":"'u8
 #[inline, constexpr]
 func isDirectorySeparator(c: u8)->bool
 {
-    return c == DirectorySeparatorChar || c == AltDirectorySeparatorChar
+    return c == DirectorySeparatorChar or c == AltDirectorySeparatorChar
 }
 
 // Returns the file name part of the path, null if not found
@@ -26,7 +26,7 @@ func getFileName(fullname: string)->string
     {
         cpt -= 1
         c := fullname[cpt]
-        if isDirectorySeparator(c) || c == VolumeSeparatorChar
+        if isDirectorySeparator(c) or c == VolumeSeparatorChar
         {
             if cpt == countof - 1 return null
             return autocast @mkslice(@dataof(fullname) + cpt + 1, cast(uint) (countof - cpt) - 1)
@@ -54,9 +54,9 @@ func isRooted(fullname: string)->bool
     if fullname == null return false
     debug.assert(isValidPathName(fullname))
     countof := @countof(fullname)
-    if countof >= 1 && isDirectorySeparator(fullname[0])
+    if countof >= 1 and isDirectorySeparator(fullname[0])
         return true
-    if countof >= 2 && fullname[1] == VolumeSeparatorChar
+    if countof >= 2 and fullname[1] == VolumeSeparatorChar
         return true
     return false
 }
@@ -95,9 +95,9 @@ func getFileNameWithoutExtension(fullname: string)->string
     {
         cpt -= 1
         c := fullname[cpt]
-        if c == "."'u8 && last == countof
+        if c == "."'u8 and last == countof
             last = cpt
-        else if isDirectorySeparator(c) || c == VolumeSeparatorChar
+        else if isDirectorySeparator(c) or c == VolumeSeparatorChar
         {
             if cpt == countof - 1 return null
             return autocast @mkslice(@dataof(fullname) + cpt + 1, cast(uint) (last - cpt) - 1)
@@ -122,7 +122,7 @@ func getExtension(fullname: string)->string
         c := fullname[cpt]
         if c == "."'u8
             return autocast @mkslice(@dataof(fullname) + cpt, cast(uint) @countof(fullname) - cpt)
-        if isDirectorySeparator(c) || c == VolumeSeparatorChar
+        if isDirectorySeparator(c) or c == VolumeSeparatorChar
             break
     }
 
@@ -150,7 +150,7 @@ func hasExtension(fullname: string)->bool
         c := fullname[cpt]
         if c == "."'u8
             return true
-        if isDirectorySeparator(c) || c == VolumeSeparatorChar
+        if isDirectorySeparator(c) or c == VolumeSeparatorChar
             break
     }
 
@@ -170,7 +170,7 @@ func combine(fullnames: string...)->String
         if result.length
         {
             c := result[result.length - 1]
-            if !isDirectorySeparator(c) && c != VolumeSeparatorChar
+            if !isDirectorySeparator(c) and c != VolumeSeparatorChar
                 result += DirectorySeparatorChar
         }
 

@@ -15,7 +15,7 @@ const TITI = true
 		@assert(false)
 	}
 }
-#elif TITI && !TOTO
+#elif TITI and !TOTO
 {
 	func toto()
 	{

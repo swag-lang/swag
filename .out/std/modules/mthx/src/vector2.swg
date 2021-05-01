@@ -23,7 +23,7 @@ public impl Vector2
 
     func opEquals(using self, other: Self)->bool
     {
-        return x == other.x && y == other.y
+        return x == other.x and y == other.y
     }
 
     func(op: string) opAssign(using self, other: Self)
@@ -84,13 +84,13 @@ public impl Vector2
     // Returns true if this Vector2 is null
     func isZero(using self)->bool
     {
-        return x == 0 && y == 0
+        return x == 0 and y == 0
     }
 
     // Returns true if this Vector2 is null with an epsilon
     func isZeroEpsilon(using self, eps = cast(Float) ConstF64.Epsilon)->bool
     {
-        return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
+        return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
     // Returns the distance between two vectors

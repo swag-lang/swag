@@ -11,7 +11,7 @@ impl Point
 {
 	func opEquals(self, other: s32)->bool
 	{
-		return self.x == other && self.y == other
+		return self.x == other and self.y == other
 	}
 }
 

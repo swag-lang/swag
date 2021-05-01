@@ -7,7 +7,7 @@ func isDirectorySeparator()->bool
 func getRootLength(fullname: string)->u32
 {
     extendedUncSyntax := false
-    if extendedUncSyntax || isDirectorySeparator()
+    if extendedUncSyntax or isDirectorySeparator()
     {
     }
 

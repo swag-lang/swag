@@ -51,10 +51,10 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 			sawdot = true
 			dp = nd
         }
-        else if "0"'u8 <= c && c <= "9"'u8
+        else if "0"'u8 <= c and c <= "9"'u8
         {
 			sawDigits = true
-			if c == "0"'u8 && nd == 0
+			if c == "0"'u8 and nd == 0
 				dp -= 1
             else
             {
@@ -84,7 +84,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 
 	// Exponent
     c = :buffer
-	if cpt < countof && (c|32) == "e"'u8
+	if cpt < countof and (c|32) == "e"'u8
     {
 		cpt, buffer += 1
 		if cpt >= countof
@@ -104,14 +104,14 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 		    c = :buffer
         }
 
-		if cpt >= countof || c < "0"'u8 || c > "9"'u8
+		if cpt >= countof or c < "0"'u8 or c > "9"'u8
 			throw "invalid"
 
 		e := 0
         while cpt < countof
         {
             c = :buffer
-            if c < "0"'u8 || c > "9"'u8
+            if c < "0"'u8 or c > "9"'u8
                 break
 			if e < 10000
 				e = e*10 + (c - "0"'u8)
@@ -155,7 +155,7 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 
 	// Exact integers are <= 10^15.
 	// Exact powers of ten are <= 10^22.
-	case exp > 0 && exp <= 15+22:
+	case exp > 0 and exp <= 15+22:
 		// If exponent is big but number of digits is not, can move a few zeros
         // into the integer part.
 		if exp > 22
@@ -165,7 +165,7 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 		}
 
         // The exponent was really too large.
-		if f > 1e15 || f < -1e15
+		if f > 1e15 or f < -1e15
 			return result
 
         result.f = f * f64Pow10[exp]
@@ -173,7 +173,7 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32) -> {f: f64, ok: bool}
 		return result
 
     // Integer / 10^k
-    case exp < 0 && exp >= -22:
+    case exp < 0 and exp >= -22:
         result.f = f / f64Pow10[-exp]
         result.ok = true
         return result
@@ -217,7 +217,7 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
         // have found the correct result. Confirm by
         // converting the upper mantissa bound.
         fUp, ok := eiselLemire64(mantissa+1, exp, neg)
-        if ok && f == fUp {
+        if ok and f == fUp {
             return f, n, nil
         }
     }*/
@@ -954,7 +954,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 		return result
 	}
 
-	if exp10 < PowersOfTenMinExp10 || PowersOfTenMaxExp10 < exp10
+	if exp10 < PowersOfTenMinExp10 or PowersOfTenMaxExp10 < exp10
 		return result
 
 	// Normalization.
@@ -969,7 +969,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 	(xHi, xLo) := mul64(man, v)
 
 	// Wider Approximation.
-	if xHi & 0x1FF == 0x1FF && xLo + man < man
+	if xHi & 0x1FF == 0x1FF and xLo + man < man
     {
         v = PowersOfTen[exp10-PowersOfTenMinExp10, 0]
 		(yHi, yLo) := mul64(man, v)
@@ -980,7 +980,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 		if mergedLo < xLo
 			mergedHi += 1
 
-		if mergedHi & 0x1FF == 0x1FF && mergedLo + 1 == 0 && yLo + man < man
+		if mergedHi & 0x1FF == 0x1FF and mergedLo + 1 == 0 and yLo + man < man
 			return result
 
 		xHi = mergedHi
@@ -993,7 +993,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 	retExp2 -= 1'u64 ^ msb
 
 	// Half-way Ambiguity.
-	if xLo == 0 && xHi & 0x1FF == 0 && retMantissa & 3 == 1
+	if xLo == 0 and xHi & 0x1FF == 0 and retMantissa & 3 == 1
 		return result
 
 	// From 54 to 53 Bits.
@@ -1008,7 +1008,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 	// retExp2 is a u64. Zero or underflow means that we're in subnormal
 	// f64 space. 0x7FF or above means that we're in Inf/NaN f64 space.
 	// The if block is equivalent to (but has fewer branches than):
-	//   if retExp2 <= 0 || retExp2 >= 0x7FF { etc }
+	//   if retExp2 <= 0 or retExp2 >= 0x7FF { etc }
 	if retExp2-1 >= 0x7FF-1
 		return result
 

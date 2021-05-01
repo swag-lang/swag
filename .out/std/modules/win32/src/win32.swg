@@ -15,7 +15,7 @@ func setError(errorMessageID: u32) throw
     // Trim right, remove trailing dots, remove trailing non printable characters
     for idx := len - 1; idx >= 0; idx -= 1
     {
-        if errorMsg[idx] > 32 && errorMsg[idx] != "."'u8
+        if errorMsg[idx] > 32 and errorMsg[idx] != "."'u8
             break
         len -= 1
     }

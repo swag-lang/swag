@@ -77,7 +77,7 @@ public func resetColor()
 public func printf(message: string, params: ...)
     #checkif
     {
-        if !@isconstexpr(message) || !@isconstexpr(params) return true
+        if !@isconstexpr(message) or !@isconstexpr(params) return true
         format.checkFormat(#function, message, params)
         return true
     }

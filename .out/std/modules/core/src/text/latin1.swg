@@ -25,13 +25,13 @@ using swag
 {
     private func isLowerUtf8(c: u8)->bool
     {
-        if isAscii(c) && isLower(c) return true
+        if isAscii(c) and isLower(c) return true
         return cast(bool) (CharProperties[c] & CharAttribute.LowerUtf8)
     }
 
     private func isUpperUtf8(c: u8)->bool
     {
-        if isAscii(c) && isUpper(c) return true
+        if isAscii(c) and isUpper(c) return true
         return cast(bool) (CharProperties[c] & CharAttribute.UpperUtf8)
     }
 }

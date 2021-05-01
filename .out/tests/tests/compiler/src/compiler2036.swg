@@ -22,7 +22,7 @@ impl Argb2036
     (a, r, g, b) := color.extract()
     @assert(a == 1)
     @assert(r == 1)
-    @assert(0 < g && g < 1)
+    @assert(0 < g and g < 1)
     /*@print(cast(f64) a); @print(" ")
     @print(cast(f64) r); @print(" ")
     @print(cast(f64) g); @print(" ")

@@ -17,7 +17,7 @@ impl Rect
 
     func opEquals(using self, other: Rect)->bool
     {
-        return x == other.x && y == other.y && width == other.width && height == other.height
+        return x == other.x and y == other.y and width == other.width and height == other.height
     }
 
     #[swag.inline]
@@ -56,19 +56,19 @@ impl Rect
     // Returns true if this instance is null
     func isZero(using self)->bool
     {
-        return x == 0 && y == 0 && width == 0 && height == 0
+        return x == 0 and y == 0 and width == 0 and height == 0
     }
 
     // Returns true if this instance has a surface of zero (width and height are null)
     func isEmpty(using self)->bool
     {
-        return width == 0 && height == 0
+        return width == 0 and height == 0
     }
 
     // Returns true if this instance has a positive surface (width and height greater than zero)
     func isNormalized(using self)->bool
     {
-        return width >= 0 && height >= 0
+        return width >= 0 and height >= 0
     }
 
     // Offset this point by a given value
@@ -102,13 +102,13 @@ impl Rect
     // Returns true if this instance is null with an epsilon
     func isZeroEpsilon(using self, eps = ConstF32.Epsilon)->bool
     {
-        return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps) && isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
+        return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps) and isZeroEpsilon(width, eps) and isZeroEpsilon(height, eps)
     }
 
     // Returns true if this instance has a surface of zero (width and height are null)
     func isEmptyEpsilon(using self, eps = ConstF32.Epsilon)->bool
     {
-        return isZeroEpsilon(width, eps) && isZeroEpsilon(height, eps)
+        return isZeroEpsilon(width, eps) and isZeroEpsilon(height, eps)
     }
 
     // Perform a math.round operation on all the coordinates
@@ -141,7 +141,7 @@ impl Rect
     // Determines if the specfied point is contained within the rectangular region
     func contains(self, x, y: f32)->bool
     {
-        return (self.x >= x && x < self.x + self.width) && (self.y >= y && y < self.y + self.height)
+        return (self.x >= x and x < self.x + self.width) and (self.y >= y and y < self.y + self.height)
     }
 
     // Determines if the specfied point is contained within the rectangular region
@@ -153,7 +153,7 @@ impl Rect
     // Determines if the specfied rectangle is contained within the rectangular region
     func contains(using self, rect: Rect)->bool
     {
-        return (rect.x >= x && rect.right() <= right()) && (rect.y >= y && rect.bottom() <= bottom())
+        return (rect.x >= x and rect.right() <= right()) and (rect.y >= y and rect.bottom() <= bottom())
     }
 
     // Intersect this rectangle with another one
@@ -170,7 +170,7 @@ impl Rect
         x2 := min(a.x + a.width, b.x + b.width)
         y1 := max(a.y, b.y)
         y2 := min(a.y + a.height, b.y + b.height)
-        if x2 >= x1 && y2 >= y1
+        if x2 >= x1 and y2 >= y1
             return Rect{x1, y1, x2 - x1, y2 - y1}
         return Zero;
     }
@@ -178,7 +178,7 @@ impl Rect
     // Determines if this rectangle intersets with 'rect'
     func intersectWith(using self, rect: Rect)->bool
     {
-        return (rect.x < right()) && (x < rect.right()) && (rect.y < bottom()) && (y < rect.bottom())
+        return (rect.x < right()) and (x < rect.right()) and (rect.y < bottom()) and (y < rect.bottom())
     }
 
     // Creates a rectangle that represents the union

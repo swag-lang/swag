@@ -38,7 +38,7 @@ impl ConvertFormatFloat
     {
         buffer := @dataof(strFormat)
         countof := @countof(strFormat)
-        if buffer == null || countof == 0
+        if buffer == null or countof == 0
             return
 
         cpt := 0'u32
@@ -102,7 +102,7 @@ impl ConvertFormatInt
     {
         buffer := @dataof(strFormat)
         countof := @countof(strFormat)
-        if buffer == null || countof == 0
+        if buffer == null or countof == 0
             return
 
         cpt := 0'u32
@@ -312,7 +312,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 {
     kindof := @kindof(fmt.value)
     debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
-    debug.assert(0 < fmt.base && fmt.base <= 16, "invalid convert base")
+    debug.assert(0 < fmt.base and fmt.base <= 16, "invalid convert base")
 
     dataof := @dataof(fmt.value)
     bits := kindof.sizeof * 8
@@ -384,7 +384,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     if fmt.padding
     {
         curWidth := 63 - cpt
-        while curWidth < fmt.width && cpt > 1
+        while curWidth < fmt.width and cpt > 1
         {
             tmp[cpt] = fmt.padding
             curWidth += 1

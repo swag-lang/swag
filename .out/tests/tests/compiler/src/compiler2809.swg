@@ -9,7 +9,7 @@
     x = 1
     y = 0
     z = 4
-    if b && (x & y)
+    if b and (x & y)
     {
         @assert(false)
     }

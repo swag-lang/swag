@@ -55,7 +55,7 @@ impl GamePad
     // Determines whether specified input device button has just been pressed
     func isButtonJustPressed(using self, button: Button)->bool
     {
-        return currentState.pressed[button] && !previousState.pressed[button]
+        return currentState.pressed[button] and !previousState.pressed[button]
     }
 
     // Determines whether specified input device button is released (not pressed)
@@ -67,7 +67,7 @@ impl GamePad
     // Determines whether specified input device button has just been released
     func isButtonJustReleased(using self, button: Button)->bool
     {
-        return !currentState.pressed[button] && previousState.pressed[button]
+        return !currentState.pressed[button] and previousState.pressed[button]
     }
 
     // Get the analog position of the given button

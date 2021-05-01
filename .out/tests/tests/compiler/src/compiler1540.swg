@@ -25,7 +25,7 @@ impl X
 
     visit i: ptr.methods
     {
-        @assert(i.name == "toto" || i.name == "titi")
+        @assert(i.name == "toto" or i.name == "titi")
         ptrFunc := cast(const *TypeInfoFunc) i.pointedType
         @assert(ptrFunc.returnType != null)
     }

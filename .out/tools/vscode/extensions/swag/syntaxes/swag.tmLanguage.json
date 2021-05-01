@@ -6,13 +6,13 @@
     { "include": "#multi-line-comment" },
     { "include": "#attributes" },
     { "include": "#keywords" },
-    { "include": "#keywords-control" },
     { "include": "#keywords-decl" },
     { "include": "#operator-modifier" },
     { "include": "#op" },
     { "include": "#op-invalid" },
     { "include": "#function-call" },
     { "include": "#function-call1" },
+    { "include": "#keywords-control" },
     { "include": "#raw-strings" },
     { "include": "#intrinsics" },
     { "include": "#intrinsics-buildin" },
@@ -81,7 +81,7 @@
       "patterns": [
         {
           "name": "keyword.control",
-          "match": "\\b(if|else|for|while|switch|defer|errdefer|loop|visit|break|fallthrough|return|case|continue|default|label)\\b"
+          "match": "\\b(if|else|for|while|switch|defer|errdefer|loop|visit|break|fallthrough|return|case|continue|default|label|and|or|orelse)\\b"
         }
       ]
     },
@@ -241,7 +241,7 @@
     "function-call": {
       "patterns": [
         {
-          "match": "([A-Za-z_][A-Za-z_0-9]*)\\s*\\(",
+          "match": "([A-Za-z_][A-Za-z_0-9]*)\\(",
           "captures": {
             "1": {
               "name": "entity.name.function"
@@ -253,7 +253,7 @@
     "function-call1": {
       "patterns": [
         {
-          "match": "([A-Za-z_][A-Za-z_0-9]*)\\s*\\b(')\\s*([A-Za-z_][A-Za-z_0-9]*)\\s*\\(",
+          "match": "([A-Za-z_][A-Za-z_0-9]*)\\s*\\b(')\\s*([A-Za-z_][A-Za-z_0-9]*)\\(",
           "captures": {
             "1": {
               "name": "entity.name.function"
@@ -268,7 +268,7 @@
     "function-call2": {
       "patterns": [
         {
-          "match": "([A-Za-z_][A-Za-z_0-9]*)\\s*\\'",
+          "match": "([A-Za-z_][A-Za-z_0-9]*)\\'",
           "captures": {
             "1": {
               "name": "entity.name.function"

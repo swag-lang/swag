@@ -38,7 +38,7 @@ impl Image
     //#[swag.printbc]
     private func doKernel(using self, dstImage: *Image, kernel: const [..] s32)
     {
-        debug.assert(pf == .BGR8 || pf == .BGRA8)
+        debug.assert(pf == .BGR8 or pf == .BGRA8)
 
         f := @{kernel, dstImage}
         visitPixels(&f)
@@ -55,7 +55,7 @@ impl Image
             var bs, gs, rs: s32
 
             // Fast case when we are not around borders
-            if x >= kernelSize && x <= w - kernelSize - 1 && y >= kernelSize && y <= h - kernelSize - 1
+            if x >= kernelSize and x <= w - kernelSize - 1 and y >= kernelSize and y <= h - kernelSize - 1
             {
                 p := px + ((x - kernelSize) * b8) + ((y - kernelSize) * w8)
                 kfull := (kernelSize * 2) + 1

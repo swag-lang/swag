@@ -34,9 +34,9 @@ impl DateTime
     // Returns true if this is a valid datatime
     func isValid(using self)->bool
     {
-        if year == 0 || year > 9999 return false
-        if month == 0 || month > 12 return false
-        if day == 0 || day > daysInMonth(year, month) return false
+        if year == 0 or year > 9999 return false
+        if month == 0 or month > 12 return false
+        if day == 0 or day > daysInMonth(year, month) return false
         if hour >= 24 return false
         if minute >= 60 return false
         if second >= 60 return false

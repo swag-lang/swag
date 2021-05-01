@@ -11,5 +11,5 @@ func inc10(variable: alias)
     //a, b := 0
     inc10(#code a)
     inc10(#code b)
-    @assert(a == b && b == 10)
+    @assert(a == b and b == 10)
 }

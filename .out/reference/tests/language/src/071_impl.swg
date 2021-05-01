@@ -73,7 +73,7 @@ enum RGB { R; G; B; }
 impl enum RGB
 {
     func isRed(self) => self == R
-    func isRedOrBlue(self) => self == R || self == B
+    func isRedOrBlue(self) => self == R or self == B
 }
 
 #test

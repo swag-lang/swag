@@ -33,9 +33,9 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
         high := end
         while true
         {
-            while low < high && cb(buffer[low], buffer[end]) <= 0
+            while low < high and cb(buffer[low], buffer[end]) <= 0
                 low += 1
-            while low < high && cb(buffer[high], buffer[end]) >= 0
+            while low < high and cb(buffer[high], buffer[end]) >= 0
                 high -= 1
             if low >= high
                 break
@@ -57,7 +57,7 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
 
         //set1 := cast(int) ((low -,safe 1) - begin)
         //set2 := cast(int) (end -,safe (high +,safe 1))
-        //if set1 > 0 && set2 > 0
+        //if set1 > 0 and set2 > 0
         {
             /*if set1 <= set2
             {

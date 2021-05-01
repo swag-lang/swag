@@ -17,8 +17,8 @@ public impl Image
     // Resize image
     func resize(using self, newWidth, newHeight: s32, method = ResizeMethod.Raw)
     {
-        debug.assert(newWidth > 0 && newHeight > 0)
-        if newWidth == width && newHeight == height return
+        debug.assert(newWidth > 0 and newHeight > 0)
+        if newWidth == width and newHeight == height return
         allocWorkingBuffer(newWidth, newHeight, pf)
         doResize(self, workingBuffer, method)
         applyWorkingBuffer()
@@ -27,9 +27,9 @@ public impl Image
     // Resize image
     func toResize(using self, newWidth, newHeight: s32, method = ResizeMethod.Raw)->Image
     {
-        debug.assert(newWidth > 0 && newHeight > 0)
+        debug.assert(newWidth > 0 and newHeight > 0)
 
-        if newWidth == width && newHeight == height
+        if newWidth == width and newHeight == height
         {
             var result: retval = :self
             return result

@@ -18,9 +18,9 @@
 
         var pt: Point
         pt.set(10)
-        @assert(pt.x == 10 && pt.y == 10)
+        @assert(pt.x == 10 and pt.y == 10)
 
         set(&pt, 20)
-        @assert(pt.x == 20 && pt.y == 20)
+        @assert(pt.x == 20 and pt.y == 20)
     }
 }

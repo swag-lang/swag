@@ -30,8 +30,8 @@ using swag
 #test
 {
     a := 1
-    if false && a > 0
+    if false and a > 0
         @assert(true)
-    if a > 0 && false
+    if a > 0 and false
         @assert(true)
 }

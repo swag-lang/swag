@@ -63,7 +63,7 @@ impl String
 
     func opSlice(using self, lower, upper: uint)->string
     {
-        debug.assert(lower <= upper && lower < length && upper < length)
+        debug.assert(lower <= upper and lower < length and upper < length)
         return @mkstring(buffer + lower, (upper + 1) - lower)
     }
 
@@ -122,7 +122,7 @@ impl String
 
     func opPostMove(using self)
     {
-        if buffer && capacity <= SmallSize
+        if buffer and capacity <= SmallSize
             buffer = autocast &padding[0]
     }
 
@@ -247,7 +247,7 @@ impl String
     // Returns true if the String is null or empty
     func isNullOrEmpty(using self)->bool
     {
-        return buffer == null || length == 0
+        return buffer == null or length == 0
     }
 
     // Transform a null string in an empty one
@@ -262,7 +262,7 @@ impl String
     func replace(using self, what, by: string, comparisonType = utf8.ComparisonType.Latin1)
     {
         whatLength := @countof(what)
-        if !whatLength || whatLength > length
+        if !whatLength or whatLength > length
             return
         byLength := @countof(by)
         growSize := byLength > whatLength ? (byLength - whatLength) + 1 : 0
@@ -347,7 +347,7 @@ impl String
         var result: String
         loop values
         {
-            if separator && @index
+            if separator and @index
                 result += separator
             result += values[@index]
         }

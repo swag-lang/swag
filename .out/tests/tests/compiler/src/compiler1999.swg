@@ -20,9 +20,9 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
         high := end
         while true
         {
-            while low < high && cb(buffer[low], med) <= 0
+            while low < high and cb(buffer[low], med) <= 0
                 low += 1
-            while low < high && cb(buffer[high], med) >= 0
+            while low < high and cb(buffer[high], med) >= 0
                 high -= 1
             if low >= high
                 break
@@ -41,7 +41,7 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
         #[swag.safety("of", false)]
         set2 := cast(int) (end - (high + 1))
 
-        if set1 > 0 && set2 > 0
+        if set1 > 0 and set2 > 0
         {
             if set1 <= set2
             {

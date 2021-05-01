@@ -58,7 +58,7 @@ impl Array
 
     func opSlice(using self, lower, upper: uint)->[..] T
     {
-        debug.assert(lower <= upper && lower < count && upper < count)
+        debug.assert(lower <= upper and lower < count and upper < count)
         return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
@@ -153,7 +153,7 @@ impl Array
 
         // Need to call opPostMove/opPostCopy on every existing element if the buffer has not been reallocated
         // in place
-        if buffer && newBuffer != buffer
+        if buffer and newBuffer != buffer
         {
             @reloc(newBuffer, buffer, count)
             #if reflection.hasPostMove(@typeof(T))
@@ -312,7 +312,7 @@ impl Array
         #selectif reflection.canCopy(@typeof(T))
     {
         // Do not add myself !
-        debug.assert(@dataof(values) < buffer || @dataof(values) > buffer + capacity)
+        debug.assert(@dataof(values) < buffer or @dataof(values) > buffer + capacity)
 
         sliceCount := @countof(values)
         if !sliceCount

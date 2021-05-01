@@ -18,7 +18,7 @@ struct Point
 	pt1.x = 10
 	@assert(pt1 > pt2)
 	@assert(pt2 < pt1)
-	
+
 	@assert(pt2 <= pt2)
 }
 
@@ -26,10 +26,10 @@ impl Point
 {
 	func opCmp(self, other: Point)->s32
 	{
-		if self.x < other.x || self.y < other.y
+		if self.x < other.x or self.y < other.y
 			return -1
-		if self.x > other.x || self.y > other.y
-			return 1			
+		if self.x > other.x or self.y > other.y
+			return 1
 		return 0
 	}
 }

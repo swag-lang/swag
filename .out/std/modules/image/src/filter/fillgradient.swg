@@ -5,7 +5,7 @@ impl Image
     // Fill with a gradient from 'color0' to 'color1'
     public func fillGradient2(using self, color0, color1: Color)
     {
-        debug.assert(pf == .BGR8 || pf == .BGRA8)
+        debug.assert(pf == .BGR8 or pf == .BGRA8)
 
         pix := pixels
         loop x: width
@@ -27,7 +27,7 @@ impl Image
     // Fill with a gradient with a different color at each corner
     public func fillGradient4(using self, color0, color1, color2, color3: Color)
     {
-        debug.assert(pf == .BGR8 || pf == .BGRA8)
+        debug.assert(pf == .BGR8 or pf == .BGRA8)
 
         f := @{color0, color1, color2, color3}
         visitPixels(&f)

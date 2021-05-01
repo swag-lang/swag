@@ -84,30 +84,30 @@ func getRootLength(fullname: string)->u32
         }
     }
 
-    if (!extendedSyntax || extendedUncSyntax) && pathLength > 0 && isDirectorySeparator(fullname[0])
+    if (!extendedSyntax or extendedUncSyntax) and pathLength > 0 and isDirectorySeparator(fullname[0])
     {
         // UNC or simple rooted path (e.g. "\foo", NOT "\\?\C:\foo")
 
         i = 1; //  Drive rooted (\foo) is one character
-        if (extendedUncSyntax || (pathLength > 1 && isDirectorySeparator(fullname[1])))
+        if (extendedUncSyntax or (pathLength > 1 and isDirectorySeparator(fullname[1])))
         {
             // UNC (\\?\UNC\ or \\), scan past the next two directory separators at most
             // (e.g. to \\?\UNC\Server\Share or \\Server\Share\)
             i = uncRootLength
             n := 1; // Maximum separators to skip
-            while i < pathLength && (!isDirectorySeparator(fullname[i]) || n >= 0)
+            while i < pathLength and (!isDirectorySeparator(fullname[i]) or n >= 0)
             {
                 n -= 1
                 i += 1
             }
         }
     }
-    else if pathLength >= volumeSeparatorLength && fullname[volumeSeparatorLength - 1] == VolumeSeparatorChar
+    else if pathLength >= volumeSeparatorLength and fullname[volumeSeparatorLength - 1] == VolumeSeparatorChar
     {
         // Path is at least longer than where we expect a colon, and has a colon (\\?\A:, A:)
         // If the colon is followed by a directory separator, move past it
         i = volumeSeparatorLength;
-        if pathLength >= volumeSeparatorLength + 1 && isDirectorySeparator(fullname[volumeSeparatorLength])
+        if pathLength >= volumeSeparatorLength + 1 and isDirectorySeparator(fullname[volumeSeparatorLength])
             i += 1;
     }
 

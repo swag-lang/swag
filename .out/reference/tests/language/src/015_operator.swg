@@ -85,8 +85,8 @@
     {
         a := false
 
-        a = (1 > 10) && (10 < 1)    // And
-        a = (1 > 10) || (10 < 1)    // Or
+        a = (1 > 10) and (10 < 1)    // And
+        a = (1 > 10) or (10 < 1)    // Or
     }
 
     // Null conditional operator

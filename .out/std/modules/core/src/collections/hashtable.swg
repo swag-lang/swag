@@ -79,7 +79,7 @@ impl HashTable
             return
 
         // Need to drop every structs
-        #if reflection.hasDrop(@typeof(K)) || reflection.hasDrop(@typeof(V))
+        #if reflection.hasDrop(@typeof(K)) or reflection.hasDrop(@typeof(V))
         {
             loop i: capacity
             {
@@ -97,7 +97,7 @@ impl HashTable
     func grow(using self)
     {
         // We need to trigger the growing of the table is there's not enough room
-        if capacity != 0 && capacity - (count + deleted) > capacity / 4
+        if capacity != 0 and capacity - (count + deleted) > capacity / 4
             return
 
         newCapacity := capacity * 2
@@ -139,7 +139,7 @@ impl HashTable
 
     // Add a new key value pair. If the key already exists, then the value will be replaced
     func add(using self, key: K, value: V)
-        #selectif reflection.canCopy(@typeof(K)) &&
+        #selectif reflection.canCopy(@typeof(K)) and
                   reflection.canCopy(@typeof(V))
     {
         grow()
@@ -149,7 +149,7 @@ impl HashTable
 
         while table[index].hash >= HASH_FIRST
         {
-            if table[index].hash == hashVal && table[index].key == key
+            if table[index].hash == hashVal and table[index].key == key
             {
                 table[index].value = value
                 return
@@ -174,7 +174,7 @@ impl HashTable
 
         while table[index].hash
         {
-            if table[index].hash == hashVal && table[index].key == key
+            if table[index].hash == hashVal and table[index].key == key
             {
                 table[index].hash = HASH_DELETED
                 count -= 1
@@ -196,7 +196,7 @@ impl HashTable
 
         while table[index].hash
         {
-            if table[index].hash == hashVal && table[index].key == key
+            if table[index].hash == hashVal and table[index].key == key
                 return true
             index = (index + 1) % capacity
         }
@@ -215,7 +215,7 @@ impl HashTable
 
         while table[index].hash
         {
-            if table[index].hash == hashVal && table[index].key == key
+            if table[index].hash == hashVal and table[index].key == key
                 return &table[index]
             index = (index + 1) % capacity
         }
@@ -228,12 +228,12 @@ impl HashTable
     {
         // Need to put the 'hash' value of each entry to HASH_FREE
         // Drop the key and the value if necessary
-        if count || deleted
+        if count or deleted
         {
             loop capacity
             {
                 hashval := table[@index].hash
-                #if reflection.hasDrop(@typeof(K)) || reflection.hasDrop(@typeof(V))
+                #if reflection.hasDrop(@typeof(K)) or reflection.hasDrop(@typeof(V))
                 {
                     if hashval >= HASH_FIRST
                     {
@@ -249,7 +249,7 @@ impl HashTable
                 table[@index].hash = HASH_FREE
 
                 // We are done if there's no more valid value, and no more deleted value
-                if !count && !deleted
+                if !count and !deleted
                     break
             }
         }

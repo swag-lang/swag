@@ -6,5 +6,5 @@ using core.math
 {
     x := Point{1, 1}
     y := x + 10
-    @assert(y.x == y.y && y.y == 11)
+    @assert(y.x == y.y and y.y == 11)
 }

@@ -10,6 +10,6 @@ using core
     {
         v := @index
         str := format.toString("%", @index)
-        @assert(str == "0" || str == "1")
+        @assert(str == "0" or str == "1")
     }
 }

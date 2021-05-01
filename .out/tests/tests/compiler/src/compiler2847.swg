@@ -6,7 +6,7 @@
 {
     mant := 0x12345678_12345678
     exp := -385'int
-    if exp <= 0 && mant == (mant >> cast(u32) (-exp)) << cast(u32)(-exp)
+    if exp <= 0 and mant == (mant >> cast(u32) (-exp)) << cast(u32)(-exp)
     {
         @assert(false)
     }

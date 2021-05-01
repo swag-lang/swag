@@ -430,7 +430,7 @@ impl Decoder
         rowBlock := 0
         loop mcusPerRow
         {
-            if restartInterval && (restartsLeft == 0)
+            if restartInterval and (restartsLeft == 0)
                 try restartProcess()
 
             loop mcuBlock: blocksPerMcu
@@ -985,31 +985,31 @@ impl Decoder
         }
         else if compsInFrame == 3
         {
-            if (compSampH[1] != 1) || (compSampV[1] != 1) || (compSampH[2] != 1) || (compSampV[2] != 1)
+            if (compSampH[1] != 1) or (compSampV[1] != 1) or (compSampH[2] != 1) or (compSampV[2] != 1)
                 throw "unsupported samp factors"
 
-            if (compSampH[0] == 1) && (compSampV[0] == 1)
+            if (compSampH[0] == 1) and (compSampV[0] == 1)
             {
                 scanType        = YH1V1
                 maxBlocksPerMcu = 3
                 maxMcuSizeX     = 8
                 maxMcuSizeY     = 8
             }
-            else if (compSampH[0] == 2) && (compSampV[0] == 1)
+            else if (compSampH[0] == 2) and (compSampV[0] == 1)
             {
                 scanType        = YH2V1
                 maxBlocksPerMcu = 4
                 maxMcuSizeX     = 16
                 maxMcuSizeY     = 8
             }
-            else if (compSampH[0] == 1) && (compSampV[0] == 2)
+            else if (compSampH[0] == 1) and (compSampV[0] == 2)
             {
                 scanType        = YH1V2
                 maxBlocksPerMcu = 4
                 maxMcuSizeX     = 8
                 maxMcuSizeY     = 16
             }
-            else if (compSampH[0] == 2) && (compSampV[0] == 2)
+            else if (compSampH[0] == 2) and (compSampV[0] == 2)
             {
                 scanType        = YH2V2
                 maxBlocksPerMcu = 6
@@ -1225,10 +1225,10 @@ impl Decoder
     {
         loop i: compsInScan
         {
-            if (spectralStart == 0) && (huffNum[compDcTab[compList[i]]].count == 0)
+            if (spectralStart == 0) and (huffNum[compDcTab[compList[i]]].count == 0)
                 throw "undefined huff table"
 
-            if (spectralEnd > 0) && (huffNum[compAcTab[compList[i]]].count == 0)
+            if (spectralEnd > 0) and (huffNum[compAcTab[compList[i]]].count == 0)
                 throw "undefined huff table"
         }
 
@@ -1450,7 +1450,7 @@ impl Decoder
                         break
                 }
 
-                if s && (k < 64)
+                if s and (k < 64)
                 {
                     p[Zag[k]] = cast(s16) s
                 }
@@ -1499,7 +1499,7 @@ impl Decoder
                 blockMcuOfsX := 0
                 blockMcuOfsY := 0
 
-                if restartInterval && (restartsLeft == 0)
+                if restartInterval and (restartsLeft == 0)
                     try restartProcess()
 
                 loop mcuBlock: blocksPerMcu
@@ -1559,7 +1559,7 @@ impl Decoder
             dcOnlyScan     := (spectralStart == 0)
             refinementScan := (successiveHigh != 0)
 
-            if (spectralStart > spectralEnd) || (spectralEnd > 63)
+            if (spectralStart > spectralEnd) or (spectralEnd > 63)
                 throw "bad sos spectral"
 
             if dcOnlyScan
@@ -1572,7 +1572,7 @@ impl Decoder
                 throw "bad sos spectral"
             }
 
-            if refinementScan && (successiveLow != successiveHigh - 1)
+            if refinementScan and (successiveLow != successiveHigh - 1)
                 throw "bad sos successive"
 
             var decodeBlockFunc: func(*Decoder, s32, s32, s32) throw
@@ -1874,8 +1874,8 @@ impl Decoder
         imageSizeY = getBits1(16)
         imageSizeX = getBits1(16)
 
-        if (imageSizeY < 1) || (imageSizeY > MaxHeight) throw "bad height"
-        if (imageSizeX < 1) || (imageSizeX > MaxWidth) throw "bad width"
+        if (imageSizeY < 1) or (imageSizeY > MaxHeight) throw "bad height"
+        if (imageSizeX < 1) or (imageSizeX > MaxWidth) throw "bad width"
 
         compsInFrame = getBits1(8)
         if compsInFrame > MaxComponents throw "too many components"
@@ -1897,7 +1897,7 @@ impl Decoder
         compsInScan = n
         left -= 3
 
-        if (left != (n * 2 + 3)) || (n < 1) || (n > MaxCompsInScan)
+        if (left != (n * 2 + 3)) or (n < 1) or (n > MaxCompsInScan)
             throw "bad sos length"
 
         loop i: n
@@ -1956,7 +1956,7 @@ impl Decoder
     {
         lastRune := getBits1(8)
         thisChar := getBits1(8)
-        if (lastRune == 0xFF) && (thisChar == Marker.M_SOI)
+        if (lastRune == 0xFF) and (thisChar == Marker.M_SOI)
             return
         bytesLeft := 512
         while true
@@ -1965,7 +1965,7 @@ impl Decoder
             if bytesLeft == 0 throw "not a jpeg"
             lastRune = thisChar
             thisChar = getBits1(8)
-            if (lastRune == 0xFF) && (thisChar == Marker.M_SOI)
+            if (lastRune == 0xFF) and (thisChar == Marker.M_SOI)
                 break
         }
 
@@ -2020,7 +2020,7 @@ impl Decoder
             memory.copy(&inBuf[0] + inBufLeft, stream + streamSeek, cast(uint) size)
             streamSeek += size
             inBufLeft += bytesRead
-            if inBufLeft >= InBufSize || eofReached
+            if inBufLeft >= InBufSize or eofReached
                 break
         }
 
@@ -2034,7 +2034,7 @@ public impl IDecoder for Decoder
     func canDecode(using self, fileName: string)->bool
     {
         ext := path.getExtensionLowerCase(fileName)
-        return ext == ".jpg" || ext == ".jpeg"
+        return ext == ".jpg" or ext == ".jpeg"
     }
 
     func decode(using self, buffer: const [..] u8)->Image throw

@@ -10,6 +10,6 @@ using core.random
 		v := rng.nextS32(10, 50)
 		//@print(cast(s64) v)
 		//@print("\n")
-		@assert(v >= 10 && v < 50)
+		@assert(v >= 10 and v < 50)
 	}
 }

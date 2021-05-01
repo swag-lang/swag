@@ -9,7 +9,7 @@ func(T) insertionSort(values: [..] T, cb: func(T, T)->s32)
 
     for i := 1'u32; i < count; i += 1
     {
-        for j := i; j > 0 && cb(buffer[j], buffer[j - 1]) < 0; j -= 1
+        for j := i; j > 0 and cb(buffer[j], buffer[j - 1]) < 0; j -= 1
         {
             swap(&buffer[j], &buffer[j - 1])
         }
@@ -44,9 +44,9 @@ func(T) quickSort(values: [..] T, cb: func(T, T)->s32)
         high := end
         while true
         {
-            while low < high && cb(buffer[low], buffer[end]) <= 0
+            while low < high and cb(buffer[low], buffer[end]) <= 0
                 low += 1
-            while low < high && cb(buffer[high], buffer[end]) >= 0
+            while low < high and cb(buffer[high], buffer[end]) >= 0
                 high -= 1
             if low >= high
                 break
@@ -59,7 +59,7 @@ func(T) quickSort(values: [..] T, cb: func(T, T)->s32)
         // To avoid too much recursions, we recurse only for the smaller partition
         set1 := cast(int) ((low -,safe 1) - begin)
         set2 := cast(int) (end -,safe (high +,safe 1))
-        if set1 > 0 && set2 > 0
+        if set1 > 0 and set2 > 0
         {
             if set1 <= set2
             {

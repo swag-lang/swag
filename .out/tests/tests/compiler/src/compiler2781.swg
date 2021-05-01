@@ -1,7 +1,7 @@
 //#[swag.printbc]
 func toto(x: string)
 {
-    if x && x
+    if x and x
     {
         @assert(false)
     }

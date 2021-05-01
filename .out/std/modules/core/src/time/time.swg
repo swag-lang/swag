@@ -49,10 +49,10 @@ alias Ticks = u64
 // Convert a time to a 64 bits value
 func timeToTicks(hour, minute, second, millisecond: u16)->Ticks
 {
-    debug.assert(0 <= hour && hour < 24)
-    debug.assert(0 <= minute && minute < 60)
-    debug.assert(0 <= second && second < 60)
-    debug.assert(0 <= millisecond && millisecond < 1000)
+    debug.assert(0 <= hour and hour < 24)
+    debug.assert(0 <= minute and minute < 60)
+    debug.assert(0 <= second and second < 60)
+    debug.assert(0 <= millisecond and millisecond < 1000)
 
     // totalSeconds is bounded by 2^31 * 2^12 + 2^31 * 2^8 + 2^31,
     // which is less than 2^44, meaning we won't overflow totalSeconds.
@@ -76,9 +76,9 @@ func ticksToTime(ticks: Ticks) -> {hour: u16, minute: u16, second: u16, millisec
 // Convert a date to a 64 bits value
 func dateToTicks(year, month, day: u16)->Ticks
 {
-    debug.assert(1 <= year && year <= 9999)
-    debug.assert(1 <= month && month <= 12)
-    debug.assert(1 <= day && day <= daysInMonth(year, month))
+    debug.assert(1 <= year and year <= 9999)
+    debug.assert(1 <= month and month <= 12)
+    debug.assert(1 <= day and day <= daysInMonth(year, month))
 
     days := isLeapYear(year) ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
     y := cast(u64) (year - 1)
@@ -114,7 +114,7 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
     // dayOfYear = n + 1;
     // Leap year calculation looks different from IsLeapYear since y1, y4,
     // and y100 are relative to year 1, not year 0
-    leapYear := y1 == 3 && (y4 != 24 || y100 == 3)
+    leapYear := y1 == 3 and (y4 != 24 or y100 == 3)
     days := leapYear ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
     // All months have less than 32 days, so n >> 5 is a good conservative
     // estimate for the month
@@ -132,13 +132,13 @@ func ticksToDate(ticks: Ticks) -> {year: u16, month: u16, day: u16}
 // Returns true if the given year is a leap year
 func isLeapYear(year: u16)->bool
 {
-    return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)
+    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
 }
 
 // Returns the number of days of the given month, for the given year
 func daysInMonth(year, month: u16)->u16
 {
-    debug.assert(1 <= month && month <= 12)
+    debug.assert(1 <= month and month <= 12)
     if isLeapYear(year)
         return autocast (DaysToMonth366[month] - DaysToMonth366[month - 1])
     return autocast (DaysToMonth365[month] - DaysToMonth365[month - 1])

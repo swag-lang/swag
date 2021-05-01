@@ -543,7 +543,7 @@ namespace win32priv
         while true
         {
             res := win32priv.DeleteTimerQueueTimer(timerQueue, timer, completionEvent)
-            if res || GetLastError() == ERROR_IO_PENDING return
+            if res or GetLastError() == ERROR_IO_PENDING return
         }
     }
 
@@ -551,7 +551,7 @@ namespace win32priv
     func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL throw
     {
         res := win32priv.WriteFile(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, lpOverlapped)
-        if !res && GetLastError() != ERROR_IO_PENDING
+        if !res and GetLastError() != ERROR_IO_PENDING
             try setError(GetLastError())
         return res
     }
@@ -637,7 +637,7 @@ namespace win32priv
     func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE throw
     {
         res := win32priv.FindFirstFileA(lpFileName, lpFindFileData)
-        if res == INVALID_HANDLE_VALUE && GetLastError() != ERROR_FILE_NOT_FOUND
+        if res == INVALID_HANDLE_VALUE and GetLastError() != ERROR_FILE_NOT_FOUND
             try setError(GetLastError())
         return res
     }
@@ -645,7 +645,7 @@ namespace win32priv
     func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: *WIN32_FIND_DATAW)->HANDLE throw
     {
         res := win32priv.FindFirstFileW(lpFileName, lpFindFileData)
-        if res == INVALID_HANDLE_VALUE && GetLastError() != ERROR_FILE_NOT_FOUND
+        if res == INVALID_HANDLE_VALUE and GetLastError() != ERROR_FILE_NOT_FOUND
             try setError(GetLastError())
         return res
     }
@@ -653,7 +653,7 @@ namespace win32priv
     func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL throw
     {
         res := win32priv.FindNextFileA(hFindFile, lpFindFileData)
-        if !res && GetLastError() != ERROR_NO_MORE_FILES
+        if !res and GetLastError() != ERROR_NO_MORE_FILES
             try setError(GetLastError())
         return res
     }
@@ -661,7 +661,7 @@ namespace win32priv
     func FindNextFileW(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAW)->BOOL throw
     {
         res := win32priv.FindNextFileW(hFindFile, lpFindFileData)
-        if !res && GetLastError() != ERROR_NO_MORE_FILES
+        if !res and GetLastError() != ERROR_NO_MORE_FILES
             try setError(GetLastError())
         return res
     }

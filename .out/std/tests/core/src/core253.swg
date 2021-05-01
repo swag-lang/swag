@@ -126,8 +126,8 @@ var atoftests: [] atofTest = @[
     visit t: atoftests
     {
         v := catch atod(t.in)
-        @assert(!@err || t.error)
-        @assert(!t.error || @err != null)
+        @assert(!@err or t.error)
+        @assert(!t.error or @err != null)
 
         cb.clear()
         dtoa(&cb, v.value, "g"'u8, -1, false)

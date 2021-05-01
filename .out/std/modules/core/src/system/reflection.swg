@@ -131,7 +131,7 @@ using swag
             }
 
             // For a normal enum, stop if this is a match
-            if !isFlags && val1 == val2 && val1s == val2s
+            if !isFlags and val1 == val2 and val1s == val2s
             {
                 result += simpleName
                 result += "."
@@ -140,7 +140,7 @@ using swag
             }
 
             // For a flags enum, just append the name if the bit is set
-            if isFlags && (val1 & val2)
+            if isFlags and (val1 & val2)
             {
                 if !result.isEmpty() result += " | "
                 result += simpleName

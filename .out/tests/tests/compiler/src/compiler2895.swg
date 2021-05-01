@@ -5,5 +5,5 @@ func and() => true
 
 #test
 {
-    @assert(and() && and())
+    @assert(and() and and())
 }

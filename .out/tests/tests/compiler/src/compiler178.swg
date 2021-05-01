@@ -2,4 +2,4 @@
 
 namespace A{}
 
-#assert A && A;
+#assert A and A;

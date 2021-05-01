@@ -762,13 +762,13 @@ func aaa(ptr: *s64)
 
         {
             a, b := 1
-            x := a && b
+            x := a and b
             @print(cast(s64) x)
         }
 
         {
             a, b := 100
-            x := a || b
+            x := a or b
             @print(cast(s64) x)
         }
 

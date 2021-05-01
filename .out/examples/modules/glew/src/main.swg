@@ -78,7 +78,7 @@ func swapParams(what: string)->String
 
         // Isolate parameter type
         idxType := idxName - 1
-        while idxType && what[idxType - 1] != ","'u8 idxType -= 1
+        while idxType and what[idxType - 1] != ","'u8 idxType -= 1
         if idxType idxType += 1
         type := String.from(what[idxType..idxName - 1])
         type.trim()

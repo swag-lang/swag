@@ -112,7 +112,7 @@ public impl IDecoder for Decoder
         }
 
         // Palette
-        if bh.biCompression != FILL_BI_RGB && bh.biCompression != FILL_BI_BITFIELDS
+        if bh.biCompression != FILL_BI_RGB and bh.biCompression != FILL_BI_BITFIELDS
             throw "unsupported compression"
 
         // Decode

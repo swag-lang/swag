@@ -101,7 +101,7 @@ func main()
         }
 
         // Collision Detect Snake V Food
-        if snakeArr.front().x == nFoodX && snakeArr.front().y == nFoodY
+        if snakeArr.front().x == nFoodX and snakeArr.front().y == nFoodY
         {
             nScore += 1
             while screen[nFoodY * nScreenWidth + nFoodX] != " "'u8
@@ -115,14 +115,14 @@ func main()
         }
 
         // Collision Detect Snake V World
-        if snakeArr.front().x < 0 || snakeArr.front().x >= nScreenWidth
+        if snakeArr.front().x < 0 or snakeArr.front().x >= nScreenWidth
             bDead = true
-        if snakeArr.front().y < 3 || snakeArr.front().y >= nScreenHeight
+        if snakeArr.front().y < 3 or snakeArr.front().y >= nScreenHeight
             bDead = true
 
         // Collision Detect Snake V Snake
         visit *i: snakeArr
-            if @index && i.x == snakeArr.front().x && i.y == snakeArr.front().y
+            if @index and i.x == snakeArr.front().x and i.y == snakeArr.front().y
                 bDead = true
 
     	// Chop off Snakes tail :-/

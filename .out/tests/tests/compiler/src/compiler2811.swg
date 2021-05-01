@@ -2,7 +2,7 @@
 #test
 {
     xx := 1
-    if xx && true
+    if xx and true
     {
         xx += 1
     }

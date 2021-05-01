@@ -67,14 +67,14 @@ func formatDigits(dst: *ConcatBuffer, shortest: bool, neg, forceSign: bool, digs
 	case "g"'u8, "G"'u8:
 		// trailing fractional zeros in 'e' form will be trimmed.
 		eprec := prec
-		if eprec > digs.nd && digs.nd >= digs.dp
+		if eprec > digs.nd and digs.nd >= digs.dp
 			eprec = digs.nd
 		// %e is used if the exponent from the conversion
 		// is less than -4 or greater than or equal to the precision.
 		// if precision was the shortest possible, use precision 6 for this decision.
 		if shortest eprec = 6
 		exp := digs.dp - 1
-		if exp < -4 || exp >= eprec
+		if exp < -4 or exp >= eprec
         {
 			if prec > digs.nd
                 prec = digs.nd
@@ -183,7 +183,7 @@ func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
         {
 			ch := "0"'u8
             j := d.dp + i
-			if 0 <= j && j < d.nd
+			if 0 <= j and j < d.nd
 				ch = d.d[j]
 			dst.addByte(ch)
 		}
@@ -216,7 +216,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 	// or equivalently log2(10)*(dp-nd) > exp-mantbits.
 	// It is true if 332/100*(dp-nd) >= exp-mantbits (log2(10) > 3.32).
 	minexp := swag.F64.Bias + 1 // minimum possible exponent
-	if exp > minexp && 332*(d.dp-d.nd) >= 100*(exp-cast(s64)(swag.F64.MantBits))
+	if exp > minexp and 332*(d.dp-d.nd) >= 100*(exp-cast(s64)(swag.F64.MantBits))
     {
 		// The number is already shortest.
 		return
@@ -237,7 +237,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 	// Our lower bound is halfway between, mantlo*2+1 << explo-mantbits-1.
 	var mantlo: u64
 	var explo: s64
-	if mant > (1'u64 << swag.F64.MantBits) || exp == minexp
+	if mant > (1'u64 << swag.F64.MantBits) or exp == minexp
     {
 		mantlo = mant - 1
 		explo = exp
@@ -282,7 +282,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 			break
 		li := ui - upper.dp + lower.dp
 		l := "0"'u8 // lower digit
-		if li >= 0 && li < lower.nd
+		if li >= 0 and li < lower.nd
 			l = lower.d[li]
 		m := "0"'u8 // middle digit
 		if mi >= 0
@@ -294,21 +294,21 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 		// Okay to round down (truncate) if lower has a different digit
 		// or if lower is inclusive and is exactly the result of rounding
 		// down (i.e., and we have reached the final digit of lower).
-		okdown := l != m || inclusive && li+1 == lower.nd
+		okdown := l != m or inclusive and li+1 == lower.nd
 
 		switch
         {
-		case upperdelta == 0 && m+1 < u:
+		case upperdelta == 0 and m+1 < u:
 			// Example:
 			// m = 12345xxx
 			// u = 12347xxx
 			upperdelta = 2
-		case upperdelta == 0 && m != u:
+		case upperdelta == 0 and m != u:
 			// Example:
 			// m = 12345xxx
 			// u = 12346xxx
 			upperdelta = 1
-		case upperdelta == 1 && (m != "9"'u8 || u != "0"'u8):
+		case upperdelta == 1 and (m != "9"'u8 or u != "0"'u8):
 			// Example:
 			// m = 1234598x
 			// u = 1234600x
@@ -317,13 +317,13 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 
 		// Okay to round up if upper has a different digit and either upper
 		// is inclusive or upper is bigger than the result of rounding up.
-		okup := upperdelta > 0 && (inclusive || upperdelta > 1 || ui+1 < upper.nd)
+		okup := upperdelta > 0 and (inclusive or upperdelta > 1 or ui+1 < upper.nd)
 
 		// If it's okay to do either, then round to the nearest one.
 		// If it's okay to do only one, do it.
 		switch
         {
-		case okdown && okup:
+		case okdown and okup:
 			d.round(mi + 1)
 			return
 		case okdown:

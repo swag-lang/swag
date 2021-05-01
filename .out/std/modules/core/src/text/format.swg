@@ -25,7 +25,7 @@ func countPercent(fmt: string)->u32
         if fmt[i] != "%"'u8
             continue
 
-        if i == @countof(fmt) - 1 || fmt[i + 1] != "%"'u8
+        if i == @countof(fmt) - 1 or fmt[i + 1] != "%"'u8
             cptPercent += 1
         else
             i += 1
@@ -53,7 +53,7 @@ func toString(fmt: string, values: ...)->String
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
     #checkif
     {
-        if !@isconstexpr(fmt) || !@isconstexpr(values) return true
+        if !@isconstexpr(fmt) or !@isconstexpr(values) return true
         checkFormat(#function, fmt, values)
         return true
     }
@@ -91,7 +91,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
                 nextIdx += 1
                 ptrFormat := ptr + nextIdx
                 countFormat := 0'u32
-                while ptr[nextIdx] && ptr[nextIdx] != "}"'u8
+                while ptr[nextIdx] and ptr[nextIdx] != "}"'u8
                 {
                     countFormat += 1
                     nextIdx += 1

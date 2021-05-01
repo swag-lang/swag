@@ -31,19 +31,19 @@ func countBytesAt(buffer: const [..] u8)->u32
 	accept := AcceptRanges[x >>,safe 4]
 
 	b1 := dataof[1]
-	if !(accept.lo <= b1 && b1 <= accept.hi)
+	if !(accept.lo <= b1 and b1 <= accept.hi)
         return 1
 	if sz <= 2
         return 2
 
 	b2 := dataof[2]
-    if !(LoCB <= b2 && b2 <= HiCB)
+    if !(LoCB <= b2 and b2 <= HiCB)
         return 1
 	if sz <= 3
         return 3
 
 	b3 := dataof[3]
-	if !(LoCB <= b3 && b3 <= HiCB)
+	if !(LoCB <= b3 and b3 <= HiCB)
         return 1
 	return 4
 }
@@ -67,7 +67,7 @@ func byteIndex(buffer: const [..] u8, charIndex: uint) -> {index: uint, success:
 
     resultChar := 0'uint
     resultByte := 0'uint
-    while countof && resultChar != charIndex
+    while countof and resultChar != charIndex
     {
         val := countBytesAt(@mkslice(dataof, countof))
         debug.assert(val <= countof, "invalid utf8 character")
@@ -148,7 +148,7 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'uint, comparis
     debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
     countof := @countof(what)
-    if !countof || countof > (length - startByteIndex)
+    if !countof or countof > (length - startByteIndex)
         return swag.UInt.Max
 
     idx := startByteIndex
@@ -302,7 +302,7 @@ func split(src: const [..] u8, separators: const [..] rune) -> Array'string
         {
             sl := @mkslice(ptr, count)
             (c, eat) = utf8.decodeRune(sl)
-            if eat == 0 || !slice.contains(separators, c)
+            if eat == 0 or !slice.contains(separators, c)
                 break
             startbyteIdx += eat
             ptr += eat
@@ -317,7 +317,7 @@ func split(src: const [..] u8, separators: const [..] rune) -> Array'string
         {
             sl := @mkslice(ptr, count)
             (c, eat) = utf8.decodeRune(sl)
-            if eat == 0 || slice.contains(separators, c)
+            if eat == 0 or slice.contains(separators, c)
                 break
             endbyteIdx += eat
             ptr += eat
@@ -400,7 +400,7 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
         {
             (c1, eat1) = decodeRune(@mkslice(data, length))
             (c2, eat2) = decodeRune(@mkslice(otherData, otherLength))
-            if eat1 == 0 || eat2 == 0
+            if eat1 == 0 or eat2 == 0
                 break
 
             if c1 != c2
@@ -418,9 +418,9 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
             otherData += eat2
         }
 
-        if !eat1 && eat2
+        if !eat1 and eat2
             return -1
-        if eat1 && !eat2
+        if eat1 and !eat2
             return 1
         return 0
     }
@@ -507,7 +507,7 @@ func isValid(buffer: const [..] u8)->bool
         accept := AcceptRanges[x >>,safe 4]
 
         b1 := p[1]
-        if !(accept.lo <= b1 && b1 <= accept.hi)
+        if !(accept.lo <= b1 and b1 <= accept.hi)
             return false
         if sz <= 2
         {
@@ -517,7 +517,7 @@ func isValid(buffer: const [..] u8)->bool
         }
 
         b2 := p[2]
-        if !(LoCB <= b2 && b2 <= HiCB)
+        if !(LoCB <= b2 and b2 <= HiCB)
             return false
         if sz <= 3
         {
@@ -527,7 +527,7 @@ func isValid(buffer: const [..] u8)->bool
         }
 
         b3 := p[3]
-        if !(LoCB <= b3 && b3 <= HiCB)
+        if !(LoCB <= b3 and b3 <= HiCB)
             return false
         p += 4
         countof -= 4

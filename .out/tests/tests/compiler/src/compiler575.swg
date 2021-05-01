@@ -10,6 +10,6 @@ impl Point
 {
 	func opEquals(self, other: Point, x: s32) -> bool
 	{
-		return self.x == other.x && self.y == other.y
+		return self.x == other.x and self.y == other.y
 	}
 }

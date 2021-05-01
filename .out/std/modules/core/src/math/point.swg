@@ -23,7 +23,7 @@ impl Point
 
     func opEquals(using self, other: Point)->bool
     {
-        return x == other.x && y == other.y
+        return x == other.x and y == other.y
     }
 
     func(op: string) opAssign(using self, other: Point)
@@ -67,13 +67,13 @@ impl Point
     // Returns 'true' if the Point is null
     func isZero(using self)->bool
     {
-        return x == 0 && y == 0
+        return x == 0 and y == 0
     }
 
     // Check for zero with an epsilon
     func isZeroEpsilon(using self, eps = ConstF32.Epsilon)->bool
     {
-        return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
+        return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
     // Offset this Point by a given value

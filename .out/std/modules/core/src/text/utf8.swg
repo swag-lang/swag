@@ -176,7 +176,7 @@ func decodeRune(buffer: const [..] u8) -> {c: rune, eat: u32}
 
     // Length == 2
 	b1 := dataof[1]
-	if !(accept.lo <= b1 && b1 <= accept.hi)
+	if !(accept.lo <= b1 and b1 <= accept.hi)
     {
         result.c = RuneError
         result.eat = 1
@@ -192,7 +192,7 @@ func decodeRune(buffer: const [..] u8) -> {c: rune, eat: u32}
 
     // Length == 3
 	b2 := dataof[2]
-    if !(LoCB <= b2 && b2 <= HiCB)
+    if !(LoCB <= b2 and b2 <= HiCB)
     {
         result.c = RuneError
         result.eat = 1
@@ -208,7 +208,7 @@ func decodeRune(buffer: const [..] u8) -> {c: rune, eat: u32}
 
     // Length == 4
 	b3 := dataof[3]
-	if !(LoCB <= b3 && b3 <= HiCB)
+	if !(LoCB <= b3 and b3 <= HiCB)
     {
         result.c = RuneError
         result.eat = 1
@@ -330,9 +330,9 @@ func isValidRune(c: rune)->bool
 {
 	switch
     {
-	case 0 <= c && c < SurrogateMin:
+	case 0 <= c and c < SurrogateMin:
 		return true
-	case SurrogateMax < c && c <= MaxRunes:
+	case SurrogateMax < c and c <= MaxRunes:
 		return true
 	}
 

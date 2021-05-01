@@ -33,7 +33,7 @@ impl TextReader
         }
 
         // In utf8 and ascii, just read to the buffer, as we do not have do decode
-        else if encodingType == Ascii || encodingType == Utf8
+        else if encodingType == Ascii or encodingType == Utf8
         {
             buffer.count = file.read(stream, buffer.buffer, buffer.capacity)
             return
@@ -47,7 +47,7 @@ impl TextReader
         if checkPreamble
         {
             // Utf8
-            if decode[0] == 0xEF && decode[1] == 0xBB && decode[2] == 0xBF
+            if decode[0] == 0xEF and decode[1] == 0xBB and decode[2] == 0xBF
             {
                 encodingType = Utf8
                 firstRawByte = 3
@@ -100,7 +100,7 @@ public impl TextReader
             if buffer.count == 0
                 return result
 
-            while buffer[byteSeek] != "\n"'u8 && buffer[byteSeek] != "\r"'u8
+            while buffer[byteSeek] != "\n"'u8 and buffer[byteSeek] != "\r"'u8
             {
                 result += buffer[byteSeek]
                 byteSeek += 1
@@ -115,7 +115,7 @@ public impl TextReader
             byteSeek += 1
             if byteSeek == buffer.count
                 readBuffer()
-            if buffer.count && buffer[byteSeek] == "\n"'u8
+            if buffer.count and buffer[byteSeek] == "\n"'u8
                 byteSeek += 1
 
             // Result must be empty, not null, to differenciate an empty line

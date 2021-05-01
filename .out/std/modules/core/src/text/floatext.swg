@@ -133,7 +133,7 @@ impl FloatExt
         mant = mantp
         exp = expp - swag.F64.MantBits
         neg = negp
-        if exp <= 0 && mant == (mant >> cast(u32) (-exp)) << cast(u32)(-exp)
+        if exp <= 0 and mant == (mant >> cast(u32) (-exp)) << cast(u32)(-exp)
         {
             // An exact integer
             mant >>= cast(u32) (-exp)
@@ -146,7 +146,7 @@ impl FloatExt
         expBiased := exp - swag.F64.Bias
 
         result.upper = FloatExt{2*mant + 1, exp - 1, neg}
-        if mant != 1'u64 << swag.F64.MantBits || expBiased == 1
+        if mant != 1'u64 << swag.F64.MantBits or expBiased == 1
             result.lower = FloatExt{2*mant - 1, exp - 1, neg}
         else
             result.lower = FloatExt{4*mant - 1, exp - 2, neg}
@@ -417,7 +417,7 @@ impl FloatExt
 
     func opEquals(using self, other: Self)->bool
     {
-        return mant == other.mant && exp == other.exp && neg == other.neg
+        return mant == other.mant and exp == other.exp and neg == other.neg
     }
 
     // ShortestDecimal stores in d the shortest decimal representation of f
@@ -434,7 +434,7 @@ impl FloatExt
             return true
         }
 
-        if exp == 0 && :lower == :self && :lower == :upper
+        if exp == 0 and :lower == :self and :lower == :upper
         {
             // an exact integer.
             var buf: [24] u8
@@ -455,7 +455,7 @@ impl FloatExt
 
             d.nd = nd
             d.dp = nd
-            while d.nd > 0 && d.d[d.nd-1] == "0"'u8
+            while d.nd > 0 and d.d[d.nd-1] == "0"'u8
                 d.nd -= 1
 
             if d.nd == 0 d.dp = 0
@@ -581,11 +581,11 @@ impl FloatExt
             return false
 
         // we went too far
-        if currentDiff < ulpBinary || currentDiff > maxDiff - ulpBinary
+        if currentDiff < ulpBinary or currentDiff > maxDiff - ulpBinary
             return false
 
         // the number has actually reached zero.
-        if d.nd == 1 && d.d[0] == "0"'u8
+        if d.nd == 1 and d.d[0] == "0"'u8
         {
             d.nd = 0
             d.dp = 0

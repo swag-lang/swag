@@ -16,7 +16,7 @@ func parseX64(str: const [..] u8) -> {value: u64, eat: u32} throw
     value := 0'u64
 
     if !latin1.isHexDigit(:buffer) throw "invalid"
-    while cpt < countof && latin1.isHexDigit(:buffer)
+    while cpt < countof and latin1.isHexDigit(:buffer)
     {
         if value & 0xF0000000_00000000 throw "overflow"
         value <<= 4
@@ -49,7 +49,7 @@ func parseB64(str: const [..] u8) -> {value: u64, eat: u32} throw
     value := 0'u64
 
     if !latin1.isBinDigit(:buffer) throw "invalid"
-    while cpt < countof && latin1.isBinDigit(:buffer)
+    while cpt < countof and latin1.isBinDigit(:buffer)
     {
         if value & 0x80000000_00000000 throw "overflow"
         value <<= 1
@@ -76,7 +76,7 @@ func parseU64(str: const [..] u8) -> {value: u64, eat: u32} throw
     value := 0'u64
 
     if !latin1.isDigit(:buffer) throw "invalid"
-    while cpt < countof && latin1.isDigit(:buffer)
+    while cpt < countof and latin1.isDigit(:buffer)
     {
         value *= 10
         add := cast(u64) (:buffer - "0"'u8)
@@ -120,7 +120,7 @@ func parseS64(str: const [..] u8) -> {value: s64, eat: u32} throw
 
     // Parse the rest
     if !latin1.isDigit(:buffer) throw "invalid"
-    while cpt < countof && latin1.isDigit(:buffer)
+    while cpt < countof and latin1.isDigit(:buffer)
     {
         value *= 10
         value += cast(u64) (:buffer - "0"'u8)

@@ -110,7 +110,7 @@
         value1 := "true"
         switch
         {
-        case value == 6 || value == 7:
+        case value == 6 or value == 7:
             @assert(true)
             fallthrough
         case value1 == "true":

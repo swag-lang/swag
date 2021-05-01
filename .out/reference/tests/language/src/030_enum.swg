@@ -229,6 +229,6 @@
         #[swag.enumflags]
         enum Values { A; B; }
         x := Values.A | Values.B
-        @assert((x & .A) && (x & .B))
+        @assert((x & .A) and (x & .B))
     }
 }

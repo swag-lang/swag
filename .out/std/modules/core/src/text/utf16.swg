@@ -21,7 +21,7 @@ func decodeRune(buffer: const [..] u16) -> {c: rune, eat: u32}
             result.eat = 1
             return result
 
-        case Surr1 <= r && r < Surr2 && @countof(buffer) >= 2 && Surr2 <= buffer[1] && buffer[1] < Surr3:
+        case Surr1 <= r and r < Surr2 and @countof(buffer) >= 2 and Surr2 <= buffer[1] and buffer[1] < Surr3:
             result.c = ((r - Surr1) << 10 | (buffer[1] - Surr2)) + SurrSelf
             result.eat = 2
             return result
@@ -40,11 +40,11 @@ func encodeRune(dest: [..] u16, src: rune)->u32
     debug.assert(@countof(dest) >= 2, "destination buffer is too small")
     switch
     {
-        case 0 <= src && src < Surr1, Surr3 <= src && src < SurrSelf:
+        case 0 <= src and src < Surr1, Surr3 <= src and src < SurrSelf:
             dest[0] = cast(u16) src
             return 1
 
-        case SurrSelf <= src && src <= 0x10FFFF:
+        case SurrSelf <= src and src <= 0x10FFFF:
             r := src - SurrSelf
 	        dest[0] = Surr1 + ((r >>,safe 10) & 0x3ff)
             dest[1] = Surr2 + (r & 0x3ff)

@@ -51,7 +51,7 @@ public
     func isLetterOrDigit(c: rune)->bool
     {
         if isLatin1(c) return latin1.isLetterOrDigit(cast(u8) c)
-        return isDigit(c) || isLetter(c)
+        return isDigit(c) or isLetter(c)
     }
 
     func isTitle(c: rune)->bool
@@ -219,12 +219,12 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
 {
     // linear search for a small array or a latin1 character
     const LinearLimit = 18
-    if @countof(ranges) <= LinearLimit || r <= 255
+    if @countof(ranges) <= LinearLimit or r <= 255
     {
         visit *range: ranges
         {
             if r < range.lo  return false
-            if r <= range.hi return range.stride == 1 || (r - range.lo) % range.stride == 0
+            if r <= range.hi return range.stride == 1 or (r - range.lo) % range.stride == 0
         }
 
         return false
@@ -237,8 +237,8 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
     {
         m := lo + (hi-lo)/2
         range := &ranges[m]
-        if range.lo <= r && r <= range.hi
-            return range.stride == 1 || (r-range.lo) % range.stride == 0
+        if range.lo <= r and r <= range.hi
+            return range.stride == 1 or (r-range.lo) % range.stride == 0
         if r < range.lo
             hi = m
         else
@@ -259,7 +259,7 @@ func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange) -
     {
 		m := lo + (hi-lo) / 2
 		cr := caseRange[m]
-		if cr.lo <= r && r <= cr.hi
+		if cr.lo <= r and r <= cr.hi
         {
 			delta := cr.delta[wCase]
 			if delta == swag.S32.Max

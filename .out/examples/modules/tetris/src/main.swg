@@ -90,13 +90,13 @@ func DoesPieceFit(nTetromino, nRotation, nPosX, nPosY: s32)->bool
 			// not necessarily mean a fail, as the long vertical piece
 			// can have cells that lie outside the boundary, so we'll
 			// just ignore them
-			if nPosX + px >= 0 && nPosX + px < nFieldWidth
+			if nPosX + px >= 0 and nPosX + px < nFieldWidth
 			{
-				if nPosY + py >= 0 && nPosY + py < nFieldHeight
+				if nPosY + py >= 0 and nPosY + py < nFieldHeight
 				{
 					// In Bounds so do collision check
                     str := tetromino[nTetromino]
-					if str[pi] != "."'u8 && pField[fi] != 0
+					if str[pi] != "."'u8 and pField[fi] != 0
 						return false; // fail on first hit
 				}
 			}
@@ -127,7 +127,7 @@ func main()
     pField = @alloc(cast(uint)(nFieldWidth*nFieldHeight)) // Create play field buffer
     loop x: autocast nFieldWidth
         loop y: autocast nFieldHeight
-			pField[y*nFieldWidth + x] = (x == 0 || x == nFieldWidth - 1 || y == nFieldHeight - 1) ? 9 : 0;
+			pField[y*nFieldWidth + x] = (x == 0 or x == nFieldWidth - 1 or y == nFieldHeight - 1) ? 9 : 0;
 
     nCurrentPiece := 0
     nCurrentRotation := 0
@@ -161,17 +161,17 @@ func main()
         // Game Logic ===================
 
         // Handle player movement
-		nCurrentX += (keyb.isKeyPressed(Right) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX + 1, nCurrentY)) ? 1 : 0
-		nCurrentX -= (keyb.isKeyPressed(Left) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX - 1, nCurrentY)) ? 1 : 0
-		nCurrentY += (keyb.isKeyPressed(Down) && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY + 1)) ? 1 : 0
-        nCurrentRotation += (keyb.isKeyJustPressed(Space) && DoesPieceFit(nCurrentPiece, nCurrentRotation + 1, nCurrentX, nCurrentY)) ? 1 : 0
+		nCurrentX += (keyb.isKeyPressed(Right) and DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX + 1, nCurrentY)) ? 1 : 0
+		nCurrentX -= (keyb.isKeyPressed(Left) and DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX - 1, nCurrentY)) ? 1 : 0
+		nCurrentY += (keyb.isKeyPressed(Down) and DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY + 1)) ? 1 : 0
+        nCurrentRotation += (keyb.isKeyJustPressed(Space) and DoesPieceFit(nCurrentPiece, nCurrentRotation + 1, nCurrentX, nCurrentY)) ? 1 : 0
 
 		// Force the piece down the playfield if it's time
 		if (bForceDown)
 		{
             nSpeedCount = 0
 			nPieceCount += 1
-			if nPieceCount % 50 == 0 && nSpeed >= 10
+			if nPieceCount % 50 == 0 and nSpeed >= 10
 				nSpeed -= 1
 
 			// Test if piece can be moved down

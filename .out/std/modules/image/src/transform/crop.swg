@@ -21,7 +21,7 @@ impl Image
         cy := math.clamp(y, 0, height - 1)
         cw := math.min(w, width - cx)
         ch := math.min(h, height - cy)
-        debug.assert(cw > 0 && ch > 0)
+        debug.assert(cw > 0 and ch > 0)
 
         allocWorkingBuffer(cw, ch, pf)
         doCrop(workingBuffer, cx, cy, cw, ch)
@@ -35,7 +35,7 @@ impl Image
         cy := math.clamp(y, 0, height - 1)
         cw := math.min(w, width - cx)
         ch := math.min(h, height - cy)
-        debug.assert(cw > 0 && ch > 0)
+        debug.assert(cw > 0 and ch > 0)
 
         var result: retval = create(cw, ch, pf)
         doCrop(&result, cx, cy, cw, ch)

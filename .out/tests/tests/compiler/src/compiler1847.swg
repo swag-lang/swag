@@ -3,7 +3,7 @@ func test(x: f64)
 {
     //@print(x)
     //@print(" ")
-    @assert(x >= -1 && x < 222)
+    @assert(x >= -1 and x < 222)
 }
 
 //#[swag.printbc]

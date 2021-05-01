@@ -11,7 +11,7 @@ func append(buf: *void, fmt: string, values: ...)
             if fmt[i] != "%"'u8
                 continue
 
-            if i == @countof(fmt) - 1 || fmt[i + 1] != "%"'u8
+            if i == @countof(fmt) - 1 or fmt[i + 1] != "%"'u8
                 cptPercent += 1
             else
                 i += 1

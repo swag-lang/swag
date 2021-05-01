@@ -86,9 +86,9 @@ public impl DebugAllocator
         debug.assert(ptrFooter.magic == MagicAlloc)
         debug.assert(ptrHeader.allocId != 0)
         debug.assert(ptrHeader.userSize != 0)
-        debug.assert(ptrHeader.prev || first == ptrHeader)
-        debug.assert(!ptrHeader.prev || ptrHeader.prev.next == ptrHeader)
-        debug.assert(!ptrHeader.next || ptrHeader.next.prev == ptrHeader)
+        debug.assert(ptrHeader.prev or first == ptrHeader)
+        debug.assert(!ptrHeader.prev or ptrHeader.prev.next == ptrHeader)
+        debug.assert(!ptrHeader.next or ptrHeader.next.prev == ptrHeader)
     }
 }
 
@@ -154,7 +154,7 @@ public impl IAllocator for DebugAllocator
             copyReq := :request
             prevSize := 0'uint
             prevHeader := cast(*Header) request.address
-            if request.mode == AllocatorMode.Realloc && request.address
+            if request.mode == AllocatorMode.Realloc and request.address
             {
                 prevHeader -= 1
                 copyReq.address = prevHeader.allocAddr
@@ -201,7 +201,7 @@ public impl IAllocator for DebugAllocator
             footer.magic = MagicAlloc
 
             // Fill with garbage
-            if request.mode == AllocatorMode.Alloc || !request.address
+            if request.mode == AllocatorMode.Alloc or !request.address
                 memory.set(userAddr, AllocByte, request.size)
             else if prevSize < request.size
                 memory.set(userAddr + prevSize, AllocByte, request.size - prevSize)

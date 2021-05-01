@@ -17,7 +17,7 @@ struct Image
 // Creates a new image surface
 func create(width, height: s32, pf: PixelFormat)->Image
 {
-    debug.assert(width > 0 && height > 0, "invalid dimensions")
+    debug.assert(width > 0 and height > 0, "invalid dimensions")
 
     var result: retval
     result.width = width
@@ -83,9 +83,9 @@ impl Image
     // Allocate a computing buffer with new sizes
     func allocWorkingBuffer(using self, newWidth, newHeight: s32, newPf: PixelFormat)
     {
-        if  workingBuffer &&
-            newWidth == workingBuffer.width &&
-            newHeight == workingBuffer.height &&
+        if  workingBuffer and
+            newWidth == workingBuffer.width and
+            newHeight == workingBuffer.height and
             newPf == workingBuffer.pf
             return
 
