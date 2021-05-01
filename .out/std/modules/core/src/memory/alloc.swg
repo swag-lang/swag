@@ -14,7 +14,7 @@ func free(buffer: *void, size: uint, allocator: IAllocator = null, hint: string 
     req.address     = buffer
     req.hint        = hint
 
-    talloc := allocator ?? @getcontext().allocator
+    talloc := allocator orelse @getcontext().allocator
     talloc.alloc(&req)
 }
 
@@ -26,7 +26,7 @@ func freeAll(allocator: IAllocator, hint: string = null, loc = #callerlocation)
     req.mode        = AllocatorMode.FreeAll
     req.hint        = hint
 
-    talloc := allocator ?? @getcontext().allocator
+    talloc := allocator orelse @getcontext().allocator
     talloc.alloc(&req)
 }
 
@@ -42,7 +42,7 @@ func realloc(buffer: *void, newSize: uint, oldSize: uint, allocator: IAllocator 
     req.oldSize     = oldSize
     req.alignement  = alignement
 
-    talloc := allocator ?? @getcontext().allocator
+    talloc := allocator orelse @getcontext().allocator
     talloc.alloc(&req)
 
     return req.address
@@ -58,7 +58,7 @@ func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: 
     req.size        = size
     req.alignement  = alignement
 
-    talloc := allocator ?? @getcontext().allocator
+    talloc := allocator orelse @getcontext().allocator
     talloc.alloc(&req)
 
     return req.address
@@ -80,7 +80,7 @@ func tempAlloc(size: uint, alignement: u32 = 0, hint: string = null, loc = #call
 // Allocate and initialize the given type
 func new(type: typeinfo, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
 {
-    userHint := hint ?? type.name
+    userHint := hint orelse type.name
     ptr := alloc(type.sizeof, allocator, alignement, userHint, loc)
     if type.kind == swag.TypeInfoKind.Struct
     {
@@ -95,7 +95,7 @@ func new(type: typeinfo, allocator: IAllocator = null, alignement: u32 = 0, hint
 // Allocate and initialize the given type
 func(T) new(allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*T
 {
-    userHint := hint ?? @typeof(T).name
+    userHint := hint orelse @typeof(T).name
     ptr := cast(*T) alloc(@sizeof(T), allocator, alignement, userHint, loc)
     @init(ptr)
     return ptr
@@ -106,7 +106,7 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc =
 {
     if !ptr
         return
-    userHint := hint ?? @typeof(T).name
+    userHint := hint orelse @typeof(T).name
     @drop(ptr)
     free(ptr, @sizeof(T), allocator, userHint, loc)
 }
@@ -116,7 +116,7 @@ func(T) new(num: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: 
 {
     debug.assert(num > 0)
 
-    userHint := hint ?? @typeof(T).name
+    userHint := hint orelse @typeof(T).name
     ptr := cast(*T) alloc(@sizeof(T) * num, allocator, alignement, userHint, loc)
     @init(ptr, num)
     return ptr
@@ -129,7 +129,7 @@ func(T) delete(ptr: *T, num: uint, allocator: IAllocator = null, hint: string = 
         return
     debug.assert(num > 0)
 
-    userHint := hint ?? @typeof(T).name
+    userHint := hint orelse @typeof(T).name
     @drop(ptr, num)
     free(ptr, @sizeof(T) * num, allocator, userHint, loc)
 }

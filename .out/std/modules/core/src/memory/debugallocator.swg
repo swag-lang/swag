@@ -54,7 +54,7 @@ public impl DebugAllocator
     // Initialize the allocator
     func init(using self, allocator: IAllocator = null)
     {
-        self.allocator = #scopefct.allocator ?? @getcontext().allocator
+        self.allocator = #scopefct.allocator orelse @getcontext().allocator
     }
 
     // Returns true if there are some remaining allocations

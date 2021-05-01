@@ -36,7 +36,7 @@ func set(dest: *void, value: u8, size: uint)
 // Align a value to the given amount
 func align(value: uint, alignement: u32)->uint
 {
-    toAlign := alignement ?? @sizeof(*void)
+    toAlign := alignement orelse @sizeof(*void)
     result := value & ~(toAlign - 1)
     if result < value result += toAlign
     return result

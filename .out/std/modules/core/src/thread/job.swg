@@ -117,7 +117,7 @@ public func setNumWorkers(numWorkers: u32 = 0) throw
     g_eventPendingJobs.init()
     g_eventDone.init(true, true)
 
-    g_numWorkers = numWorkers ?? env.getProcessorCount()
+    g_numWorkers = numWorkers orelse env.getProcessorCount()
     g_workers.resize(cast(uint) g_numWorkers)
     loop i: g_numWorkers
         try g_workers[i].init(&workerEntry)

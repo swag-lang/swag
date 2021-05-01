@@ -1074,7 +1074,7 @@ namespace Ast
 
         case AstNodeKind::NullConditionalExpression:
             SWAG_CHECK(output(context, concat, node->childs[0]));
-            concat.addString(" ?? ");
+            concat.addString(" orelse ");
             SWAG_CHECK(output(context, concat, node->childs[1]));
             break;
 

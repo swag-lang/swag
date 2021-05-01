@@ -797,8 +797,8 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
         SWAG_CHECK(doExpression(triNode, exprFlags));
     }
 
-    // A ?? B
-    else if (token.id == TokenId::SymQuestionQuestion)
+    // A orelse B
+    else if (token.id == TokenId::KwdOrElse)
     {
         SWAG_CHECK(eatToken());
         auto triNode         = Ast::newNode<AstNode>(this, AstNodeKind::NullConditionalExpression, sourceFile, parent, 2);

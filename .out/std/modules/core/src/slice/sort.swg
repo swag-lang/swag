@@ -89,7 +89,7 @@ func(T) quickSort(values: [..] T, cb: func(T, T)->s32)
 // number of elements
 func(T) sort(values: [..] T, cb: func(T, T)->s32 = null)
 {
-    lambda := cb ?? @(x, y: T)->s32 => x <=> y
+    lambda := cb orelse @(x, y: T)->s32 => x <=> y
     if(@countof(values) <= 10)
         insertionSort(values, lambda)
     else
@@ -99,7 +99,7 @@ func(T) sort(values: [..] T, cb: func(T, T)->s32 = null)
 // Returns true if the slice is sorted
 func(T) isSorted(values: const [..] T, cb: func(T, T)->s32 = null)->bool
 {
-    lambda := cb ?? @(x, y: T)->s32 => x <=> y
+    lambda := cb orelse @(x, y: T)->s32 => x <=> y
     countof := @countof(values)
     loop i: countof - 1
     {

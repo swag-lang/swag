@@ -396,7 +396,7 @@ impl Array
     // Sort array
     func sort(using self, cb: func(T, T)->s32 = null)
     {
-        lambda := cb ?? @(x, y: T)->s32 => x <=> y
+        lambda := cb orelse @(x, y: T)->s32 => x <=> y
         slice.sort(@mkslice(buffer, count), lambda)
     }
 

@@ -4,7 +4,7 @@ var G = 0
     var lambda: func()
     var lambda1: func() = @() { G = 1; }
 
-    lambda2 := lambda ?? lambda1
+    lambda2 := lambda orelse lambda1
     lambda2()
     @assert(G == 1)
 }

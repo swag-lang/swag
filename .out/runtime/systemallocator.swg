@@ -28,7 +28,7 @@ impl IAllocator for SystemAllocator
             case Realloc:
                 size := request.size
                 size += @sizeof(*void)
-                alignement := request.alignement ?? @sizeof(*void)
+                alignement := request.alignement orelse @sizeof(*void)
                 size += alignement - 1
 
                 storePtr := cast(**void) request.address

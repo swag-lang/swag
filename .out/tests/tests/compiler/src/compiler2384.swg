@@ -5,6 +5,6 @@ func titi() => 55'u8
 //#[swag.printbc]
 #test
 {
-    x := toto() ?? titi()
+    x := toto() orelse titi()
     @assert(x == 55)
 }

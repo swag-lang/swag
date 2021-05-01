@@ -59,7 +59,7 @@ impl IAllocator for TempAllocator
             }
 
             // Deal with alignement
-            toAlign := request.alignement ?? @sizeof(*void)
+            toAlign := request.alignement orelse @sizeof(*void)
             usedAlign := used & ~(toAlign - 1)
             if usedAlign < used usedAlign += toAlign
 

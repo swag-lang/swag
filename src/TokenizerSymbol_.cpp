@@ -69,12 +69,6 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
     case '?':
         token.id = TokenId::SymQuestion;
         c        = getCharNoSeek(offset);
-        if (c == '?')
-        {
-            ADDC2(c);
-            treatChar(c, offset);
-            token.id = TokenId::SymQuestionQuestion;
-        }
         return true;
 
     case '.':

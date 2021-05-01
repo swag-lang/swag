@@ -35,7 +35,7 @@ impl ScratchAllocator
     func init(using self, blockSize: uint, allocator: IAllocator = null)
     {
         // Allocate the big block to store all allocations
-        fallback = allocator ?? @getcontext().allocator
+        fallback = allocator orelse @getcontext().allocator
         debug.assert(blockSize > 0)
         capacity = blockSize
         block = memory.alloc(blockSize, fallback)

@@ -4,10 +4,10 @@
     a := "string1"
     b := "string2"
 
-    c := a ?? b
+    c := a orelse b
     @assert(c == "string1")
 
     a = null
-    c = a ?? b
+    c = a orelse b
     @assert(c == "string2")
 }
