@@ -32,15 +32,12 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             return error(token, format(Msg0835, token.text.c_str()));
     }
 
-    if (token.id == TokenId::SymQuestion)
-    {
-        if (!(identifierFlags & IDENTIFIER_ACCEPT_QUESTION))
-            return error(token, format(Msg0835, token.text.c_str()));
-    }
-    else if (Tokenizer::isSymbol(token.id))
-    {
+    if (token.id == TokenId::SymQuestion && !(identifierFlags & IDENTIFIER_ACCEPT_QUESTION))
         return error(token, format(Msg0835, token.text.c_str()));
-    }
+    else if (token.id != TokenId::SymQuestion && Tokenizer::isSymbol(token.id))
+        return error(token, format(Msg0835, token.text.c_str()));
+    else if (Tokenizer::isLiteral(token.id))
+        return error(token, format(Msg0285, token.text.c_str()));
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
     identifier->inheritTokenLocation(token);

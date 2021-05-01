@@ -393,6 +393,7 @@
 #define Msg0702 "expected an enum type, found '%s'"
 #define Msg0899 "expected an expression"
 #define Msg0835 "expected an identifier, found symbol '%s'"
+#define Msg0285 "expected an identifier, found a literal"
 #define Msg0646 "expected an interface, but '%s' is %s"
 #define Msg0798 "expression cannot be evaluated at compile time"
 #define Msg0615 "expression cannot be evaluated at compile time, and switch is 'swag.complete'"

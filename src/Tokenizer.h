@@ -75,6 +75,7 @@ struct Tokenizer
     void        postProcessRawString(Utf8& text);
     bool        doStringLiteral(Token& token, bool raw);
     static bool isSymbol(TokenId id);
+    static bool isLiteral(TokenId id);
 
     SourceFile*    sourceFile         = nullptr;
     uint32_t       cacheChar[2]       = {0};
