@@ -490,7 +490,7 @@
 #define Msg0467 "invalid literal number prefix '%s'"
 #define Msg0381 "invalid location '%s'"
 #define Msg0264 "invalid modifier '%s'"
-#define Msg0444 "invalid name '%s'"
+#define Msg0444 "expected a struct name, found '%s'"
 #define Msg0776 "invalid name alias"
 #define Msg0778 "invalid name alias, should be a single identifier"
 #define Msg0777 "invalid name alias, should be an identifier"
