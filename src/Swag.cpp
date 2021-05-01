@@ -24,6 +24,7 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("watch        spy workspace and check it at each file change (never ends)\n");
     g_Log.message("get          synchronize dependencies\n");
     g_Log.message("list         list all modules and their dependencies\n");
+    g_Log.message("<file>.swgs  build and run script file <file>.swgs\n");
 
     g_Log.message("\n");
     cmdParser.logArguments();
@@ -35,6 +36,7 @@ void help(CommandLineParser& cmdParser)
     g_Log.message("swag run -w:c:/myWorkspace -m:myModuleToRun\n");
     g_Log.message("swag test -w:c:/myWorkspace --output:false\n");
     g_Log.message("swag new -w:newWorkspace\n");
+    g_Log.message("swag myScript.swgs\n");
 }
 
 int main(int argc, const char* argv[])

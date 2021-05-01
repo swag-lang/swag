@@ -76,7 +76,7 @@ void CommandLineParser::logArguments()
     static const int COL_VALUE      = COL_SHORT_NAME + 7;
     static const int COL_DEFAULT    = COL_VALUE + 25;
     static const int COL_CMD        = COL_DEFAULT + 12;
-    static const int COL_HELP       = COL_CMD + 24;
+    static const int COL_HELP       = COL_CMD + 28;
 
     line0 = "argument";
     line1 = "--------";
