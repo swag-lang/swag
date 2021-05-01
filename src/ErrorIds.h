@@ -462,7 +462,7 @@
 #define Msg0844 "invalid 'catch' inside '%s' expression"
 #define Msg0514 "invalid 'location' format; should have the form 'location=\"mode@accesspath\"'"
 #define Msg0515 "invalid 'location' mode; should be 'swag' or 'disk', not '%s'"
-#define Msg0334 "invalid 'self' usage in that context"
+#define Msg0334 "'self' can only be used inside a struct or 'impl' block"
 #define Msg0846 "invalid 'throw' inside '%s' expression"
 #define Msg0843 "invalid 'try' inside '%s' expression"
 #define Msg0694 "invalid 'using' type"

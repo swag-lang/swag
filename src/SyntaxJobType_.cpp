@@ -62,14 +62,14 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 
             if (token.text == "self")
             {
-                SWAG_VERIFY(currentScope->kind == ScopeKind::Struct, error(token, Msg0334));
+                SWAG_VERIFY(currentStructScope, error(token, Msg0334));
                 SWAG_CHECK(eatToken());
                 auto typeNode         = Ast::newTypeExpression(sourceFile, params);
                 typeNode->ptrCount    = 1;
                 typeNode->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;
                 typeNode->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
                 typeNode->typeFlags |= TYPEFLAG_ISSELF;
-                typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentScope->name, typeNode, this);
+                typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeNode, this);
             }
             else
             {

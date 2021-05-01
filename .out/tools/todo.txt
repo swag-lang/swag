@@ -33,9 +33,6 @@ maj new pour un module, pas un workspace
 -------------------------------------
 dbg x64, self doit etre comme this (possible ?)
 -------------------------------------
-self merde : invalid usage : 
-var decode_block_func: func(self, s32, s32)
--------------------------------------
 debugger : print
 -------------------------------------
 BIG BIG BIG BIG BIG CHIANT CHIANT CHIANT CHIANT CHIANT
