@@ -207,7 +207,7 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
         }
         else if (c == '&')
         {
-            token.id = TokenId::SymAmpersandAmpersand;
+            token.id = TokenId::KwdAnd;
             ADDC2(c);
             treatChar(c, offset);
         }
@@ -224,7 +224,7 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
         }
         else if (c == '|')
         {
-            token.id = TokenId::SymVerticalVertical;
+            token.id = TokenId::KwdOr;
             ADDC2(c);
             treatChar(c, offset);
         }

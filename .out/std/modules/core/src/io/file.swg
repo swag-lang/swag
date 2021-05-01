@@ -85,6 +85,7 @@ func readAllBytes(fullname: string)->Array'u8 throw
     return result
 }
 
+// Write a file with the content of a slice of bytes
 #[swag.discardable]
 func writeAllBytes(fullname: string, buffer: const [..] u8)->uint throw
 {

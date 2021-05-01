@@ -61,6 +61,7 @@ struct Tokenizer
     uint32_t    getCharNoSeek(unsigned& offset);
     uint32_t    getChar(unsigned& offset, bool seek, bool useCache = true);
     bool        eatCComment(Token& token);
+    static void relaxIdentifier(Token& token);
     void        getIdentifier(Token& token, uint32_t c, unsigned offset);
     void        treatChar(uint32_t c, unsigned offset);
     bool        doNumberLiteral(uint32_t c, Token& token);

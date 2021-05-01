@@ -430,8 +430,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         }
         else
         {
+            Tokenizer::relaxIdentifier(token);
             SWAG_VERIFY(token.id == TokenId::Identifier, error(token, format(Msg0414, token.text.c_str())));
-            SWAG_VERIFY(token.text != "drop", error(token, Msg0415));
         }
 
         funcNode->inheritTokenName(token);

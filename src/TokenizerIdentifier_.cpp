@@ -6,6 +6,18 @@
 #include "Version.h"
 #include "Timer.h"
 
+void Tokenizer::relaxIdentifier(Token& token)
+{
+    switch (token.id)
+    {
+    case TokenId::KwdAnd:
+    case TokenId::KwdOr:
+    case TokenId::KwdOrElse:
+        token.id = TokenId::Identifier;
+        return;
+    }
+}
+
 void Tokenizer::getIdentifier(Token& token, uint32_t c, unsigned offset)
 {
     while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')

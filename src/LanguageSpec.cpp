@@ -96,6 +96,9 @@ void LanguageSpec::setup()
     keywords.add("assume", TokenId::KwdAssume);
     keywords.add("throw", TokenId::KwdThrow);
     keywords.add("discard", TokenId::KwdDiscard);
+    keywords.add("and", TokenId::KwdAnd);
+    keywords.add("or", TokenId::KwdOr);
+    keywords.add("orelse", TokenId::KwdOrElse);
 
     keywords.add("uint", TokenId::NativeType);
     keywords.add("int", TokenId::NativeType);

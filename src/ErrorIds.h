@@ -428,7 +428,6 @@
 #define Msg0088 "function '%s' is not declared with the 'swag.mixin' attribute, and this is mandatory for a function call at global scope"
 #define Msg0650 "function '%s' is not part of interface '%s'"
 #define Msg0098 "function '%s' should be called with '()' and not curlies (this is reserved for struct initialization)"
-#define Msg0415 "function cannot be named 'drop' (reserved by the compiler)"
 #define Msg0766 "function cannot have a return type because it is flagged with the 'swag.noreturn' attribute"
 #define Msg0767 "function cannot have the 'swag.discardable' attribute because it returns 'void'"
 #define Msg0764 "function cannot return a value of type '%s'"

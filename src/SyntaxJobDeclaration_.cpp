@@ -323,6 +323,7 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
 
 bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
+    Tokenizer::relaxIdentifier(token);
     switch (token.id)
     {
     case TokenId::SymLeftCurly:

@@ -134,6 +134,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
+    Tokenizer::relaxIdentifier(token);
     switch (token.id)
     {
     case TokenId::CompilerFunction:
@@ -672,7 +673,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     SWAG_CHECK(doCompareExpression(nullptr, exprFlags, &leftNode));
 
     bool isBinary = false;
-    if ((token.id == TokenId::SymVerticalVertical) || (token.id == TokenId::SymAmpersandAmpersand))
+    if ((token.id == TokenId::KwdOr) || (token.id == TokenId::KwdAnd))
     {
         auto binaryNode         = Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent, 2);
         binaryNode->semanticFct = SemanticJob::resolveBoolExpression;

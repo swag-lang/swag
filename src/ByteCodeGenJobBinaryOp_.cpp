@@ -548,7 +548,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 
             // Register for the binary operation has already been allocated in 'additionalRegisterRC' by the left expression in case of a logical test
             // So we take it as the result register.
-            if (node->token.id == TokenId::SymAmpersandAmpersand || node->token.id == TokenId::SymVerticalVertical)
+            if (node->token.id == TokenId::KwdAnd || node->token.id == TokenId::KwdOr)
             {
                 auto front = node->childs[0];
                 SWAG_ASSERT(front->additionalRegisterRC.canFree);
@@ -594,10 +594,10 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             case TokenId::SymCircumflex:
                 SWAG_CHECK(emitXor(context, typeInfoExpr, r0, r1, r2));
                 break;
-            case TokenId::SymAmpersandAmpersand:
+            case TokenId::KwdAnd:
                 emitLogicalAnd(context, r0, r1, r2);
                 break;
-            case TokenId::SymVerticalVertical:
+            case TokenId::KwdOr:
                 emitLogicalOr(context, r0, r1, r2);
                 break;
             default:

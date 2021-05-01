@@ -1249,11 +1249,11 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     // fails. So we need to do some work once the left part has been emitted
     switch (node->token.id)
     {
-    case TokenId::SymAmpersandAmpersand:
+    case TokenId::KwdAnd:
         left->allocateExtension();
         left->extension->byteCodeAfterFct = ByteCodeGenJob::emitLogicalAndAfterLeft;
         break;
-    case TokenId::SymVerticalVertical:
+    case TokenId::KwdOr:
         left->allocateExtension();
         left->extension->byteCodeAfterFct = ByteCodeGenJob::emitLogicalOrAfterLeft;
         break;
@@ -1267,10 +1267,10 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         node->setFlagsValueIsComputed();
         switch (node->token.id)
         {
-        case TokenId::SymAmpersandAmpersand:
+        case TokenId::KwdAnd:
             node->computedValue.reg.b = left->computedValue.reg.b && right->computedValue.reg.b;
             break;
-        case TokenId::SymVerticalVertical:
+        case TokenId::KwdOr:
             node->computedValue.reg.b = left->computedValue.reg.b || right->computedValue.reg.b;
             break;
         default:
@@ -1278,7 +1278,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         }
     }
 
-    else if (node->token.id == TokenId::SymAmpersandAmpersand)
+    else if (node->token.id == TokenId::KwdAnd)
     {
         if (module->mustOptimizeBC(node))
         {
@@ -1311,7 +1311,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         }
     }
 
-    else if (node->token.id == TokenId::SymVerticalVertical)
+    else if (node->token.id == TokenId::KwdOr)
     {
         if (module->mustOptimizeBC(node))
         {
