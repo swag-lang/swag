@@ -257,7 +257,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
 #[swag.macro]
 public func parallelFor(count: u32, userData: *void = null, stmt: code)
 {
-    if(!count) return
+    if !count return
 
     func jobEntry(jobData: *void)
     {
