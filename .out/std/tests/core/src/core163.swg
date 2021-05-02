@@ -8,7 +8,7 @@ using core.file
     res := catch readAllLines(loc.fileName)
     @assert(@err == null)
     @assert(res.count > 5)
-    @assert(res[0] == @""@)
+    @assert(:res[0] == @""@)
 
     /*visit l: res.lines
     {

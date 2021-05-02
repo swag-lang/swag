@@ -62,7 +62,15 @@ impl Array
         return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
-    func opIndex(using self, index: uint)->const &T
+    func opIndex(using self, index: uint)->*T
+        #selectif reflection.isStruct(T)
+    {
+        debug.assert(index < count, "index out of range")
+        return buffer + index
+    }
+
+    func opIndex(using self, index: uint)->T
+        #selectif !reflection.isStruct(T)
     {
         debug.assert(index < count, "index out of range")
         return buffer[index]
@@ -122,7 +130,7 @@ impl Array
                 #if `ptr
                     var @alias0 = `scan
                 #else
-                    var @alias0 = reflection.isStruct(T) ? cast(const &T) `scan[0] : `scan[0]
+                    var @alias0 = reflection.isStruct(T) ? cast(const *T) `scan : `scan[0]
                 var @alias1 = @index
                 #mixin `stmt
             }
@@ -398,20 +406,6 @@ impl Array
     {
         lambda := cb orelse @(x, y: T)->s32 => x <=> y
         slice.sort(@mkslice(buffer, count), lambda)
-    }
-
-    // Returns the frist element
-    func front(using self)->const &T
-    {
-        debug.assert(count > 0)
-        return buffer[0]
-    }
-
-    // Returns the last element
-    func back(using self)->const &T
-    {
-        debug.assert(count > 0)
-        return buffer[count - 1]
     }
 
     // Returns the last element, and remove it from the array

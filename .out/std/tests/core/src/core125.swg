@@ -9,8 +9,8 @@ using core
     arr.addAny("2")
     arr.addAny("3")
     slice.quickSort(@mkslice(arr.buffer, cast(uint) arr.count), @(x, y) => y <=> x)
-    @assert(arr[0] == "3")
-    @assert(arr[1] == "2")
-    @assert(arr[2] == "1")
-    @assert(arr[3] == "0")
+    @assert(:arr[0] == "3")
+    @assert(:arr[1] == "2")
+    @assert(:arr[2] == "1")
+    @assert(:arr[3] == "0")
 }

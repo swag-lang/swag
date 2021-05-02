@@ -91,17 +91,17 @@ func main()
         switch nSnakeDirection
         {
         case 0: // UP
-            snakeArr.insertAt(0, @{ snakeArr.front().x, snakeArr.front().y - 1 })
+            snakeArr.insertAt(0, @{ snakeArr[0].x, snakeArr[0].y - 1 })
         case 1: // RIGHT
-            snakeArr.insertAt(0, @{ snakeArr.front().x + 1, snakeArr.front().y })
+            snakeArr.insertAt(0, @{ snakeArr[0].x + 1, snakeArr[0].y })
         case 2: // DOWN
-            snakeArr.insertAt(0, @{ snakeArr.front().x, snakeArr.front().y + 1 })
+            snakeArr.insertAt(0, @{ snakeArr[0].x, snakeArr[0].y + 1 })
         case 3: // LEFT
-            snakeArr.insertAt(0, @{ snakeArr.front().x - 1, snakeArr.front().y })
+            snakeArr.insertAt(0, @{ snakeArr[0].x - 1, snakeArr[0].y })
         }
 
         // Collision Detect Snake V Food
-        if snakeArr.front().x == nFoodX and snakeArr.front().y == nFoodY
+        if snakeArr[0].x == nFoodX and snakeArr[0].y == nFoodY
         {
             nScore += 1
             while screen[nFoodY * nScreenWidth + nFoodX] != " "'u8
@@ -111,18 +111,21 @@ func main()
             }
 
             for i := 0; i < 5; i += 1
-                snakeArr.add(@{snakeArr.back().x, snakeArr.back().y})
+            {
+                back := snakeArr[snakeArr.count - 1]
+                snakeArr.add(@{back.x, back.y})
+            }
         }
 
         // Collision Detect Snake V World
-        if snakeArr.front().x < 0 or snakeArr.front().x >= nScreenWidth
+        if snakeArr[0].x < 0 or snakeArr[0].x >= nScreenWidth
             bDead = true
-        if snakeArr.front().y < 3 or snakeArr.front().y >= nScreenHeight
+        if snakeArr[0].y < 3 or snakeArr[0].y >= nScreenHeight
             bDead = true
 
         // Collision Detect Snake V Snake
         visit *i: snakeArr
-            if @index and i.x == snakeArr.front().x and i.y == snakeArr.front().y
+            if @index and i.x == snakeArr[0].x and i.y == snakeArr[0].y
                 bDead = true
 
     	// Chop off Snakes tail :-/
@@ -146,7 +149,7 @@ func main()
             screen[s.y * nScreenWidth + s.x] = bDead ? "+"'u8 : "O"'u8
 
         // Draw Snake Head
-        screen[snakeArr.front().y * nScreenWidth + snakeArr.front().x] = bDead ? "X"'u8 : "@"'u8
+        screen[snakeArr[0].y * nScreenWidth + snakeArr[0].x] = bDead ? "X"'u8 : "@"'u8
 
         // Draw Food
         screen[nFoodY * nScreenWidth + nFoodX] = "%"'u8
