@@ -81,6 +81,11 @@ impl TweakFile
             (val, eat) = try parse.getF64(one)
             :cast(*f64) patch = val
 
+        case bool:
+            var val: bool = ?
+            (val, eat) = try parse.getBool(one)
+            :cast(*bool) patch = val
+
         default:
             throw format.toString("unsupported type '%'", field.pointedType.flatName)
         }
@@ -163,6 +168,7 @@ struct Test1
 {
     coucous32: s32
     coucouu64: u64
+    coucoub:   bool
 }
 
 struct Test2

@@ -252,3 +252,30 @@ func getF64(str: string) -> {value: f64, eat: u32} throw
 {
     return try strconv.atod(str)
 }
+
+// Convert an utf8 buffer to a boolean
+// Returns the value and the number of bytes used to make the conversion
+func getBool(str: string) -> {value: bool, eat: u32} throw
+{
+    var result: retval
+
+    countof := @countof(str)
+    if !countof return result
+    if countof < 4 throw "invalid"
+
+    if str[0]|32 == "t"'u8 and str[1]|32 == "r"'u8 and str[2]|32 == "u"'u8 and str[3]|32 == "e"'u8
+    {
+        result.value = true
+        result.eat = 4
+    }
+    else if str[0]|32 == "f"'u8 and str[1]|32 == "a"'u8 and str[2]|32 == "l"'u8 and str[3]|32 == "s"'u8 and str[4]|32 == "e"'u8
+    {
+        result.eat = 5
+    }
+    else
+    {
+        throw "invalid"
+    }
+
+    return result
+}
