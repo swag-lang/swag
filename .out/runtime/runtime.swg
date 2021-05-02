@@ -99,11 +99,11 @@ func @strcmp(str1: string, str2: string)->bool
     num2 := @countof(str2)
     if num1 != num2
         return false
-    if num1 == 0 && num2 == 0
+    if num1 == 0 and num2 == 0
         return true
     data1 := @dataof(str1)
     data2 := @dataof(str2)
-    if data1 == null || data2 == null
+    if data1 == null or data2 == null
         return data1 == data2
     return !@memcmp(data1, data2, num1)
 }
@@ -111,7 +111,7 @@ func @strcmp(str1: string, str2: string)->bool
 ////////////////////////////////////////////////////////////
 private func concreteAlias(type1: typeinfo)->typeinfo
 {
-    if type1.kind != swag.TypeInfoKind.Alias || type1.flags & swag.TypeInfoFlags.Strict
+    if type1.kind != swag.TypeInfoKind.Alias or type1.flags & swag.TypeInfoFlags.Strict
         return type1
     typeAlias := cast(const *swag.TypeInfoAlias) type1
     return concreteAlias(typeAlias.rawType)
@@ -121,9 +121,9 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: swag.TypeCmpFlags)->bool
 {
     if cast(const*u8) typeA == cast(const*u8) typeB
         return true
-    if !typeA && !typeB
+    if !typeA and !typeB
         return true
-    if !typeA || !typeB
+    if !typeA or !typeB
         return false
 
     type1 := concreteAlias(typeA)
@@ -132,20 +132,20 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: swag.TypeCmpFlags)->bool
     // Fine to convert from concrete to ref, or the other way
     if cmpFlags & swag.TypeCmpFlags.CastAny
     {
-        if type1.kind == swag.TypeInfoKind.Reference && type2.kind != swag.TypeInfoKind.Reference
+        if type1.kind == swag.TypeInfoKind.Reference and type2.kind != swag.TypeInfoKind.Reference
         {
             ref := cast(const *swag.TypeInfoReference) type1
             return @typecmp(ref.pointedType, type2, cmpFlags)
         }
 
-        if type1.kind != swag.TypeInfoKind.Reference && type2.kind == swag.TypeInfoKind.Reference
+        if type1.kind != swag.TypeInfoKind.Reference and type2.kind == swag.TypeInfoKind.Reference
         {
             ref := cast(const *swag.TypeInfoReference) type2
             return @typecmp(type1, ref.pointedType, cmpFlags)
         }
     }
 
-    if (type1.kind != type2.kind) || (type1.sizeof != type2.sizeof) || (type1.flags != type2.flags)
+    if (type1.kind != type2.kind) or (type1.sizeof != type2.sizeof) or (type1.flags != type2.flags)
         return false
     return @strcmp(type1.name, type2.name)
 }
@@ -183,21 +183,21 @@ private func convertArgcArgv()
         {
             cmdLine += 1
             start := cmdLine
-            while :cmdLine && :cmdLine != "\""'u8 cmdLine += 1
+            while :cmdLine and :cmdLine != "\""'u8 cmdLine += 1
             g_Argv[g_Argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
             if :cmdLine cmdLine += 1
         }
         else
         {
             start := cmdLine
-            while :cmdLine && :cmdLine != " "'u8 cmdLine += 1
+            while :cmdLine and :cmdLine != " "'u8 cmdLine += 1
             g_Argv[g_Argc] = cast(string) @mkslice(start, cast(uint) (cmdLine - start))
         }
 
         g_Argc += 1
         if g_Argc == MAX_ARGUMENTS
             return
-        while :cmdLine && :cmdLine == " "'u8 cmdLine += 1
+        while :cmdLine and :cmdLine == " "'u8 cmdLine += 1
     }
 }
 

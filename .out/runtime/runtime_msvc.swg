@@ -1,7 +1,7 @@
 // Contains ucrt.lib missing functions from libc
 
 #global if #swagos == "windows"
-#global if #os == "windows" && #abi == "msvc"
+#global if #os == "windows" and #abi == "msvc"
 #global foreignlib "ucrt"
 
 private

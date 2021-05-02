@@ -37,7 +37,7 @@ private
 ////////////////////////////////////////////////////////////
 func __printString(message: string)
 {
-    if !@dataof(message) || !@countof(message)
+    if !@dataof(message) or !@countof(message)
         return
     len := cast(u32) @countof(message)
     wlen := WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), @dataof(message), len, null, null);
