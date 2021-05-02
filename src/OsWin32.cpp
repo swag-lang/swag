@@ -467,11 +467,12 @@ namespace OS
         }
     }
 
-    void visitFolders(const char* folder, function<void(const char*)> user)
+    void visitFolders(const char* folder, function<void(const char*)> user, const char* match)
     {
         WIN32_FIND_DATAA findfile;
         string           searchPath = folder;
-        searchPath += "/*";
+        searchPath += "/";
+        searchPath += match;
         HANDLE h = ::FindFirstFileA(searchPath.c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
         {

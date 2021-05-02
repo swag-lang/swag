@@ -20,7 +20,7 @@ namespace OS
     extern void*    loadLibrary(const char* name);
     extern void*    getProcAddress(void* handle, const char* name);
     extern void     visitFiles(const char* folder, function<void(const char*)> user);
-    extern void     visitFolders(const char* folder, function<void(const char*)> user);
+    extern void     visitFolders(const char* folder, function<void(const char*)> user, const char* match = "*");
     extern void     visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user);
     extern void     visitFilesRec(const char* folder, function<void(const char*)> user);
     extern void     setThreadName(thread* thread, const char* threadName);
