@@ -134,8 +134,12 @@ impl TweakFile
             one = catch setValue(currentFolder.data, field, one)
             if @err throw format.toString("%:%: %", fileName, idx + 1, @err)
 
+            // Be sure there's nothing left
+            if @countof(one) and !latin1.isSpace(one[0]) and one[0] != "#"'u8
+                throw format.toString("%:%: error in value syntax", fileName, idx + 1)
             one = parse.eatSpaces(one)
-            if @countof(one) && one[0] != "#"'u8 throw format.toString("%:%: invalid stuff after value", fileName, idx + 1)
+            if @countof(one) and one[0] != "#"'u8
+                throw format.toString("%:%: invalid stuff after value", fileName, idx + 1)
         }
     }
 }
