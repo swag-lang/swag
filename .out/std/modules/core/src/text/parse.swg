@@ -126,6 +126,15 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
 
 // Convert an utf8 buffer to an signed integer value
 // Returns the value and the number of bytes used to make the conversion
+func getS32(str: string) -> {value: s32, eat: u32} throw
+{
+    (res, eat) := try getS64(str)
+    if res < swag.S32.Min or res > swag.S32.Max throw "out of range"
+    return @{cast(s32) res, eat}
+}
+
+// Convert an utf8 buffer to an signed integer value
+// Returns the value and the number of bytes used to make the conversion
 func getS64(str: string) -> {value: s64, eat: u32} throw
 {
     var result: retval

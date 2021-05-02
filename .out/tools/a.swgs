@@ -37,7 +37,7 @@ impl TweakFile
         switch field.pointedType
         {
         case s32:
-            (val, eat) := try parse.getS64(one)
+            (val, eat) := try parse.getS32(one)
             :cast(*s32) patch = cast(s32) val
             break
         case f32:
