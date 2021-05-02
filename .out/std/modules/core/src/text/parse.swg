@@ -26,7 +26,7 @@ func eatSpaces(str: string)->string
 func getIdentifier(str: string)->string throw
 {
     countof := @countof(str)
-    if !countof throw "empty"
+    if !countof throw "invalid"
 
     if str[0] != "_"'u8 and !latin1.isLetter(str[1]) throw "invalid"
 
@@ -43,7 +43,7 @@ func getX64(str: string) -> {value: u64, eat: u32} throw
     var result: retval
 
     countof := @countof(str)
-    if !countof return result
+    if !countof throw "invalid"
 
     buffer := @dataof(str)
     cpt := 0'u32
@@ -76,7 +76,7 @@ func getB64(str: string) -> {value: u64, eat: u32} throw
     var result: retval
 
     countof := @countof(str)
-    if !countof return result
+    if !countof throw "invalid"
 
     buffer := @dataof(str)
     cpt := 0'u32
@@ -124,7 +124,7 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
     var result: retval
 
     countof := @countof(str)
-    if !countof return result
+    if !countof throw "invalid"
 
     // Detect 0x for hexa, 0b for binary
     if countof > 2 and str[0] == "0"'u8
@@ -194,7 +194,7 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
     var result: retval
 
     countof := @countof(str)
-    if !countof return result
+    if !countof throw "invalid"
 
     buffer := @dataof(str)
     value := 0'u64
@@ -260,7 +260,6 @@ func getBool(str: string) -> {value: bool, eat: u32} throw
     var result: retval
 
     countof := @countof(str)
-    if !countof return result
     if countof < 4 throw "invalid"
 
     if str[0]|32 == "t"'u8 and str[1]|32 == "r"'u8 and str[2]|32 == "u"'u8 and str[3]|32 == "e"'u8
