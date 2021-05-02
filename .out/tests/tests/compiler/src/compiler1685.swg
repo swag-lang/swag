@@ -1,3 +1,4 @@
+#global skip
 func C(value1, value2: const& s64)
 {
     @assert(value1 == value2)

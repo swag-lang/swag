@@ -1,3 +1,4 @@
+#global skip
 func C(value: const& s64)
 {
     @assert(value == 2)

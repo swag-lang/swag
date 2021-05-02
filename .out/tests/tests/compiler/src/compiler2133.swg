@@ -1,3 +1,4 @@
+#global skip
 var G: u64 = 666
 func toto()->const &u64
 {

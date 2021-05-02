@@ -563,7 +563,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         else if (pointedType->kind == TypeInfoKind::Struct)
         {
             pointedType->computeScopedName();
-            content += format("var %s = cast(const &%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
+            content += format("var %s = cast(const *%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
         }
         else
             content += format("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);

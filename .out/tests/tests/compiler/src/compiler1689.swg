@@ -1,3 +1,4 @@
+#global skip
 func C(value1: const& s32)
 {
     v := -value1

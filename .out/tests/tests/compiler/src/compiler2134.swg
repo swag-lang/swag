@@ -1,3 +1,4 @@
+#global skip
 var G: string = "666"
 func toto()->const &string
 {

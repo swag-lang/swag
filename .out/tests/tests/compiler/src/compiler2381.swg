@@ -5,7 +5,7 @@ func isStruct(t: typeinfo) => t.kind == swag.TypeInfoKind.Struct
 func(T) toto()
 {
     var x: T
-    v := isStruct(T) ? cast(const &T) x : x
+    v := isStruct(T) ? cast(const *T) &x : x
     @assert(@typeof(v).name == "s32")
 }
 

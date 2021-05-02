@@ -1,3 +1,4 @@
+#global skip
 func C(value: const& bool)
 {
     if value

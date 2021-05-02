@@ -1,3 +1,4 @@
+#global skip
 struct AA
 {
     x: f64 = 1

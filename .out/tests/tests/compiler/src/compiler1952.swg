@@ -1,3 +1,4 @@
+#global skip
 var GG: s32 = 666
 
 func ref()->const &s32 => GG

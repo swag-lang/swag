@@ -1,3 +1,4 @@
+#global skip
 func(T) toto()
 {
     var x: T

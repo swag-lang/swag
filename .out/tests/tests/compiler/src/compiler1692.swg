@@ -1,3 +1,4 @@
+#global skip
 func C(value: const& s32)
 {
     v := cast(u32) value

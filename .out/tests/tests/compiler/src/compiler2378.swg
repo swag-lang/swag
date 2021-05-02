@@ -1,3 +1,4 @@
+#global skip
 struct AA
 {
     s = "toto"

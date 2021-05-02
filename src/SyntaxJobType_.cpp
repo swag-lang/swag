@@ -362,14 +362,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         }
     }
 
-    // Reference
-    if (token.id == TokenId::SymAmpersand)
-    {
-        node->typeFlags |= TYPEFLAG_ISREF;
-        SWAG_VERIFY(!node->ptrCount, error(token, Msg0342));
-        SWAG_CHECK(tokenizer.getToken(token));
-    }
-
     // This is a @typeof
     if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
     {

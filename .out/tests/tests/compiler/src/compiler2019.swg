@@ -1,3 +1,4 @@
+#global skip
 var arr: [4] s64 = @[10, 20, 30, 40]
 
 func toto()->const& s64 => arr[0]
