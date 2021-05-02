@@ -42,7 +42,7 @@ impl TweakFile
             (val, eat) := try parse.getS32(one)
             :cast(*s32) patch = cast(s32) val
             return parse.moveStart(one, cast(uint) eat)
-        case s64:
+        case s64, int:
             (val, eat) := try parse.getS64(one)
             :cast(*s64) patch = cast(s64) val
             return parse.moveStart(one, cast(uint) eat)
@@ -58,7 +58,7 @@ impl TweakFile
             (val, eat) := try parse.getU32(one)
             :cast(*u32) patch = cast(u32) val
             return parse.moveStart(one, cast(uint) eat)
-        case u64:
+        case u64, uint:
             (val, eat) := try parse.getU64(one)
             :cast(*u64) patch = cast(u64) val
             return parse.moveStart(one, cast(uint) eat)
