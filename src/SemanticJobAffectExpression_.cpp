@@ -67,13 +67,17 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     if (!(left->flags & AST_L_VALUE))
     {
         if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
-            return context->report({left, Msg0564});
+            return context->report(Hnt0018, {left, Msg0564});
         return context->report({left, Msg0565});
     }
 
     SWAG_VERIFY(left->resolvedSymbolName, context->report({left, Msg0566}));
     SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report({left, Msg0567}));
-    SWAG_VERIFY(!(left->flags & AST_IS_CONST), context->report({left, Msg0568}));
+
+    {
+        Utf8 hint = format(Hnt0011, left->typeInfo->getDisplayName().c_str());
+        SWAG_VERIFY(!(left->flags & AST_IS_CONST), context->report(hint, {left, Msg0564}));
+    }
 
     // Special case for enum : nothing is possible, except for flags
     bool forEnumFlags  = false;

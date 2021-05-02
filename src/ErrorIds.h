@@ -206,7 +206,6 @@
 #define Msg0572 "affect not allowed, '%s' is %s"
 #define Msg0566 "affect operation not allowed"
 #define Msg0564 "affect operation not allowed, left expression is const"
-#define Msg0568 "affect operation not allowed, left expression is immutable"
 #define Msg0567 "affect operation not allowed, left expression is not a variable"
 #define Msg0565 "affect operation not allowed, left expression is not an l-value"
 #define Msg0574 "affect to tuple is not possible because right expression is not compatible"
@@ -803,3 +802,4 @@
 #define Hnt0015 "this function is marked with the 'swag.macro' attribute"
 #define Hnt0016 "this function is marked with the 'swag.mixin' attribute"
 #define Hnt0017 "this function is marked with the 'swag.inline' attribute"
+#define Hnt0018 "this is a constant"

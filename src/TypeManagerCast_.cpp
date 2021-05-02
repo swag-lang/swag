@@ -2997,15 +2997,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (!(castFlags & CASTFLAG_STRICT) || (fromType->kind == TypeInfoKind::Reference && toType->kind == TypeInfoKind::Reference))
     {
         if (fromType->kind == TypeInfoKind::Reference)
-        {
-            auto typeRef = CastTypeInfo<TypeInfoReference>(fromType, TypeInfoKind::Reference);
-            fromType     = typeRef->pointedType;
-        }
+            fromType = concreteReference(fromType);
         if (toType->kind == TypeInfoKind::Reference && fromType->kind != TypeInfoKind::Struct && !fromType->isPointerTo(TypeInfoKind::Struct))
-        {
-            auto typeRef = CastTypeInfo<TypeInfoReference>(toType, TypeInfoKind::Reference);
-            toType       = typeRef->pointedType;
-        }
+            toType = concreteReference(toType);
     }
 
     if (toType->kind == TypeInfoKind::Alias)
