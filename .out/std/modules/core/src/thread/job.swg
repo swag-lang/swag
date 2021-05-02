@@ -59,7 +59,7 @@ func runJob(job: *Job)
     job.lambda(job.data)
 
     // Done
-    sync.scopedLock(g_mutexPendingJobs)
+    sync.scopedLock(&g_mutexPendingJobs)
     setState(job, JobState.Done)
     debug.assert(g_totalJobs != 0)
     g_totalJobs -= 1
@@ -77,7 +77,7 @@ func peekExecJob()->bool
 
 func getJobToExec()->*Job
 {
-    sync.scopedLock(g_mutexPendingJobs)
+    sync.scopedLock(&g_mutexPendingJobs)
     if g_pendingJobs.isEmpty()
         return null
     job := g_pendingJobs.popBack()
@@ -119,8 +119,8 @@ public func setNumWorkers(numWorkers: u32 = 0) throw
 
     g_numWorkers = numWorkers orelse env.getProcessorCount()
     g_workers.resize(cast(uint) g_numWorkers)
-    loop i: g_numWorkers
-        try g_workers[i].init(&workerEntry)
+    visit *th: g_workers
+        try th.init(&workerEntry)
     visit *th: g_workers
         try th.start()
 }
@@ -128,7 +128,7 @@ public func setNumWorkers(numWorkers: u32 = 0) throw
 // Schedule a job to execute
 public func scheduleJob(job: *Job)
 {
-    sync.scopedLock(g_mutexPendingJobs)
+    sync.scopedLock(&g_mutexPendingJobs)
     job.setState(JobState.InPending)
     g_totalJobs += 1
     g_eventDone.reset()

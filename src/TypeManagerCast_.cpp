@@ -2996,7 +2996,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     // Cast from a reference to the type of the reference
     if (!(castFlags & CASTFLAG_STRICT) || (fromType->kind == TypeInfoKind::Reference && toType->kind == TypeInfoKind::Reference))
     {
-        if (fromType->kind == TypeInfoKind::Reference)
+        if (fromType->kind == TypeInfoKind::Reference && toType->kind != TypeInfoKind::Pointer)
             fromType = concreteReference(fromType);
         if (toType->kind == TypeInfoKind::Reference && fromType->kind != TypeInfoKind::Struct && !fromType->isPointerTo(TypeInfoKind::Struct))
             toType = concreteReference(toType);

@@ -182,7 +182,7 @@ func combine(fullnames: string...)->String
 
 // Normalize path
 // '\' are replaced with '/' as this is the std norm for paths
-func normalize(fullname: String)
+func normalize(fullname: *String)
 {
     fullname.replace("\\", "/")
 }

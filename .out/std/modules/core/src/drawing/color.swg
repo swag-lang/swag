@@ -78,7 +78,7 @@ impl Color
 
     // Retreive all components as floating point values between 0 and 1
     #[inline]
-    func toArgbf(self) -> {a: f32, r: f32, g: f32, b: f32}
+    func toArgbf(const self) -> {a: f32, r: f32, g: f32, b: f32}
     {
         var result: retval = ?
         result.a = self.a / 255.0'f32
@@ -90,7 +90,7 @@ impl Color
 
     // Retreive all components as floating point values between 0 and 1
     #[inline]
-    func toRgbf(self) -> {r: f32, g: f32, b: f32}
+    func toRgbf(const self) -> {r: f32, g: f32, b: f32}
     {
         var result: retval = ?
         result.r = self.r / 255.0'f32
@@ -203,7 +203,7 @@ impl Color
     }
 
     // Returns hue, saturation, lightness
-    func toHsl(using self) -> {h: f32, s: f32, l: f32}
+    func toHsl(using const self) -> {h: f32, s: f32, l: f32}
     {
         var result: retval = ?
 

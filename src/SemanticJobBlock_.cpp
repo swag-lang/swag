@@ -482,7 +482,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->expression));
 
     // Struct type : convert to a opVisit call
-    auto     typeInfo      = node->expression->typeInfo;
+    auto     typeInfo      = TypeManager::concreteReference(node->expression->typeInfo);
     AstNode* newExpression = nullptr;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {

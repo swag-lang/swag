@@ -135,7 +135,7 @@ func getAbsolute(fullname: string)->String throw
 
     tmpArr.count = res
     result = utf8.fromUtf16(tmpArr.toSlice())
-    normalize(result)
+    normalize(&result)
     return result
 }
 

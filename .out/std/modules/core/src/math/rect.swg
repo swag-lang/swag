@@ -23,7 +23,7 @@ impl Rect
     #[swag.inline]
     {
         // right coordinate (x + width)
-        func right(using self)->f32
+        func right(using const self)->f32
         {
             return x + width
         }
@@ -35,7 +35,7 @@ impl Rect
         }
 
         // bottom coordinate (y + height)
-        func bottom(using self)->f32
+        func bottom(using const self)->f32
         {
             return y + height
         }
@@ -54,7 +54,7 @@ impl Rect
     }
 
     // Returns true if this instance is null
-    func isZero(using self)->bool
+    func isZero(using const self)->bool
     {
         return x == 0 and y == 0 and width == 0 and height == 0
     }
@@ -139,7 +139,7 @@ impl Rect
     }
 
     // Determines if the specfied point is contained within the rectangular region
-    func contains(self, x, y: f32)->bool
+    func contains(const self, x, y: f32)->bool
     {
         return (self.x >= x and x < self.x + self.width) and (self.y >= y and y < self.y + self.height)
     }

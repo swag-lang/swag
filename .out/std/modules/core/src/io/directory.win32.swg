@@ -108,7 +108,7 @@ func getCurrent()->String throw
     arr16.count = try GetCurrentDirectoryW(length + 1, @dataof(arr16))
 
     result = utf8.fromUtf16(arr16.toSlice())
-    path.normalize(result)
+    path.normalize(&result)
     return result
 }
 

@@ -82,42 +82,42 @@ impl Log
     // Set the logger prefix
     func setPrefix(using self, prefix: string)
     {
-        sync.scopedLock(lock)
+        sync.scopedLock(&lock)
         self.prefix = #scopefct.prefix
     }
 
     // Set the logger prefix
     func getPrefix(using self)->string
     {
-        sync.scopedLock(lock)
+        sync.scopedLock(&lock)
         return prefix
     }
 
     // Set the logger flags
     func setFlags(using self, flags: LogFlags)
     {
-        sync.scopedLock(lock)
+        sync.scopedLock(&lock)
         self.flags = #scopefct.flags
     }
 
     // Set the logger prefix
     func getFlags(using self)->LogFlags
     {
-        sync.scopedLock(lock)
+        sync.scopedLock(&lock)
         return flags
     }
 
     // Register a new writer interface
     func addWriter(using self, writer: ILogWriter)
     {
-        sync.scopedLock(lock)
+        sync.scopedLock(&lock)
         writers.add(writer)
     }
 
     // Remove all writers
     func clearWriters(using self)
     {
-        sync.scopedLock(lock)
+        sync.scopedLock(&lock)
         writers.clear()
     }
 
@@ -127,7 +127,7 @@ impl Log
         // Get this first, to have the time of the call, before the lock
         if flags & (.Date|.Time) dt = time.DateTime.now()
 
-        sync.scopedLock(lock)
+        sync.scopedLock(&lock)
 
         // Build log string
         buf.clear()

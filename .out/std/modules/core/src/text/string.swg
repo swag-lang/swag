@@ -29,7 +29,7 @@ impl strconv.IConvert for String
 
 impl hash.IHash32 for String
 {
-    func compute(using self)->u32
+    func compute(using const self)->u32
     {
         return hash.Crc32.compute(@mkslice(buffer, length))
     }
@@ -50,18 +50,18 @@ impl String
     }
 
     #[implicit]
-    func opCast(using self)->string
+    func opCast(using const self)->string
     {
         return @mkstring(buffer, length)
     }
 
     #[implicit]
-    func opCast(using self)->const [..] u8
+    func opCast(using const self)->const [..] u8
     {
         return @mkslice(buffer, length)
     }
 
-    func opSlice(using self, lower, upper: uint)->string
+    func opSlice(using const self, lower, upper: uint)->string
     {
         debug.assert(lower <= upper and lower < length and upper < length)
         return @mkstring(buffer + lower, (upper + 1) - lower)
@@ -233,13 +233,13 @@ impl String
     }
 
     // Returns true if the String has zero length
-    func isEmpty(using self)->bool
+    func isEmpty(using const self)->bool
     {
         return length == 0
     }
 
     // Returns true if the String is null (undefined)
-    func isNull(using self)->bool
+    func isNull(using const self)->bool
     {
         return buffer == null
     }
@@ -447,13 +447,13 @@ impl String
     }
 
     // Convert string to a 32 bits character array
-    func toCharArray(using self)->Array'rune
+    func toCharArray(using const self)->Array'rune
     {
         return unicode.fromUtf8(@mkslice(buffer, length))
     }
 
     // Convert a literal string to a String
-    func from(value: string)->String
+    func from(value: const string)->String
     {
         var val: retval = value
         return val
@@ -461,7 +461,7 @@ impl String
 
     // Returns a string type
     #[swag.inline]
-    func toString(using self)->string
+    func toString(using const self)->string
     {
         return @mkstring(buffer, length)
     }

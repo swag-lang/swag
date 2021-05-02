@@ -3,7 +3,7 @@ using swag
 
 public interface IHash32
 {
-    compute: func(self)->u32
+    compute: func(const self)->u32
 }
 
 // Hash the given value and returns the corresponding u32

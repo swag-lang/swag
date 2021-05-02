@@ -1,3 +1,5 @@
+#global testerror
+
 struct A
 {
 
@@ -7,7 +9,6 @@ impl A
 {
     func trim(using self)
     {
-
     }
 }
 

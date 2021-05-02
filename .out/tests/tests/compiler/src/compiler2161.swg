@@ -9,7 +9,7 @@ struct S
 
 impl S
 {
-    func titi(using self)=>true
+    func titi(using const self)=>true
 }
 
 func tata(x: S)

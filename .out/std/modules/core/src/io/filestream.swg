@@ -21,7 +21,7 @@ impl FileStream
     }
 
     // Returns true if the stream is valid
-    func isOpen(using self)->bool
+    func isOpen(using const self)->bool
     {
         return handle != null
     }

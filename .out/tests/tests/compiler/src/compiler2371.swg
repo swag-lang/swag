@@ -18,7 +18,7 @@ impl AA
 
 impl BB
 {
-    func toto(using self)
+    func toto(using const self)
     {
         @assert(v == 555)
     }
