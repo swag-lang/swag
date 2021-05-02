@@ -103,7 +103,8 @@ impl TweakFile
             {
                 one = parse.moveStart(one, 1)
                 folderName := catch parse.getIdentifier(one)
-                if @err throw format.toString("%:%: invalid folder name", fileName, idx + 1)
+                if @err
+                    throw format.toString("%:%: invalid folder name", fileName, idx + 1)
 
                 visit *folder: folders
                 {
@@ -114,15 +115,18 @@ impl TweakFile
                     }
                 }
 
-                if !currentFolder throw format.toString("%:%: unknown folder '%'", fileName, idx + 1, folderName)
+                if !currentFolder
+                    throw format.toString("%:%: unknown folder '%'", fileName, idx + 1, folderName)
                 continue
             }
 
             // Value
-            if !currentFolder throw format.toString("%:%: value is not associated with a folder", fileName, idx + 1)
+            if !currentFolder
+                throw format.toString("%:%: value is not associated with a folder", fileName, idx + 1)
             one = parse.eatSpaces(one)
             id := catch parse.getIdentifier(one)
-            if @err throw format.toString("%:%: invalid value name", fileName, idx + 1)
+            if @err
+                throw format.toString("%:%: invalid value name", fileName, idx + 1)
 
             // Search value into folder
             field := reflection.getField(currentFolder.type, id)
@@ -132,7 +136,8 @@ impl TweakFile
 
             // Get value and poke it
             one = catch setValue(currentFolder.data, field, one)
-            if @err throw format.toString("%:%: %", fileName, idx + 1, @err)
+            if @err
+                throw format.toString("%:%: %", fileName, idx + 1, @err)
 
             // Be sure there's nothing left
             if @countof(one) and !latin1.isSpace(one[0]) and one[0] != "#"'u8

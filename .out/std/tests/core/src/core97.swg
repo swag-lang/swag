@@ -16,5 +16,5 @@ struct TOTO
     var x: TOTO
     format.append(&buf, "%", x)
     //@print(cast(string) buf.toString())
-    @assert(buf.toString() == "{x=555,y=666}")
+    @assert(buf.toString() == "{x = 555, y = 666}")
 }

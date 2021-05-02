@@ -278,9 +278,9 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     visit field: type.fields
     {
         if(@index != 0)
-            buf.addBytes(",")
+            buf.addBytes(", ")
         buf.addBytes(field.name)
-        buf.addBytes("=")
+        buf.addBytes(" = ")
         val := @mkany(ptr + field.offset, field.pointedType)
         convertAny(buf, val, strFormat)
     }
