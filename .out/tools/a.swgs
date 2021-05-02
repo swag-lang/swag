@@ -24,30 +24,66 @@ struct TweakFile
 
 impl TweakFile
 {
-    func(T) registerFolder(using self, folder: *T)
-    {
-        #assert(reflection.isStruct(T), "type should be a struct")
-        folders.add(@{@typeof(T), folder})
-    }
-
-    private func setValue(addr: *void, field: const *swag.TypeInfoParam, one: string) throw
+    private func setValue(addr: *void, field: const *swag.TypeInfoParam, one: string)->string throw
     {
         patch := cast(*u8) addr + field.offset
 
         switch field.pointedType
         {
+        case s8:
+            (val, eat) := try parse.getS8(one)
+            :cast(*s8) patch = cast(s8) val
+            return parse.moveStart(one, cast(uint) eat)
+        case s16:
+            (val, eat) := try parse.getS16(one)
+            :cast(*s16) patch = cast(s16) val
+            return parse.moveStart(one, cast(uint) eat)
         case s32:
             (val, eat) := try parse.getS32(one)
             :cast(*s32) patch = cast(s32) val
-            break
+            return parse.moveStart(one, cast(uint) eat)
+        case s64:
+            (val, eat) := try parse.getS64(one)
+            :cast(*s64) patch = cast(s64) val
+            return parse.moveStart(one, cast(uint) eat)
+        case u8:
+            (val, eat) := try parse.getU8(one)
+            :cast(*u8) patch = cast(u8) val
+            return parse.moveStart(one, cast(uint) eat)
+        case u16:
+            (val, eat) := try parse.getU16(one)
+            :cast(*u16) patch = cast(u16) val
+            return parse.moveStart(one, cast(uint) eat)
+        case u32:
+            (val, eat) := try parse.getU32(one)
+            :cast(*u32) patch = cast(u32) val
+            return parse.moveStart(one, cast(uint) eat)
+        case u64:
+            (val, eat) := try parse.getU64(one)
+            :cast(*u64) patch = cast(u64) val
+            return parse.moveStart(one, cast(uint) eat)
+
         case f32:
-            (val, eat) := try parse.getF64(one)
+            (val, eat) := try parse.getF32(one)
             :cast(*f32) patch = cast(f32) val
-            break
+            return parse.moveStart(one, cast(uint) eat)
+        case f64:
+            (val, eat) := try parse.getF64(one)
+            :cast(*f64) patch = cast(f64) val
+            return parse.moveStart(one, cast(uint) eat)
 
         default:
             throw format.toString("unsupported type '%'", field.pointedType.flatName)
         }
+
+        return ""
+    }
+
+    // Register a new structure to be parsed
+    func(T) registerFolder(using self, folder: *T)
+    {
+        #assert(reflection.isStruct(T), "type should be a struct")
+        folders.add(@{@typeof(T), folder})
     }
 
     // Parse the tweak file
@@ -86,7 +122,7 @@ impl TweakFile
             if !currentFolder throw format.toString("%:%: value is not associated with a folder", fileName, idx + 1)
             one = parse.eatSpaces(one)
             id := catch parse.getIdentifier(one)
-            if @err throw format.toString("%:%: invalid folder value name", fileName, idx + 1)
+            if @err throw format.toString("%:%: invalid value name", fileName, idx + 1)
 
             // Search value into folder
             field := reflection.getField(currentFolder.type, id)
@@ -95,8 +131,11 @@ impl TweakFile
             one = parse.eatSpaces(one)
 
             // Get value and poke it
-            catch setValue(currentFolder.data, field, one)
+            one = catch setValue(currentFolder.data, field, one)
             if @err throw format.toString("%:%: %", fileName, idx + 1, @err)
+
+            one = parse.eatSpaces(one)
+            if @countof(one) && one[0] != "#"'u8 throw format.toString("%:%: invalid stuff after value", fileName, idx + 1)
         }
     }
 }
@@ -104,12 +143,14 @@ impl TweakFile
 ///////////////////////
 struct Test1
 {
-    coucou: s32
+    coucous32: s32
+    coucouu64: u64
 }
 
 struct Test2
 {
     coucou1: f32
+    coucou2: f64
 }
 
 #main

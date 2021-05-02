@@ -98,12 +98,54 @@ func getB64(str: string) -> {value: u64, eat: u32} throw
 
 // Convert an utf8 buffer in decimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
+func getU8(str: string) -> {value: u8, eat: u32} throw
+{
+    (res, eat) := try getU64(str)
+    if res > swag.U8.Max throw "out of range"
+    return @{cast(u8) res, eat}
+}
+
+func getU16(str: string) -> {value: u16, eat: u32} throw
+{
+    (res, eat) := try getU64(str)
+    if res > swag.U16.Max throw "out of range"
+    return @{cast(u16) res, eat}
+}
+
+func getU32(str: string) -> {value: u32, eat: u32} throw
+{
+    (res, eat) := try getU64(str)
+    if res > swag.U32.Max throw "out of range"
+    return @{cast(u32) res, eat}
+}
+
 func getU64(str: string) -> {value: u64, eat: u32} throw
 {
     var result: retval
 
     countof := @countof(str)
     if !countof return result
+
+    // Detect 0x for hexa, 0b for binary
+    if countof > 2 and str[0] == "0"'u8
+    {
+        c := str[1]|32
+        if c == "x"'u8
+        {
+            one := moveStart(str, 2)
+            (result.value, result.eat) = try getX64(one)
+            result.eat += 2
+            return result
+        }
+
+        if c == "b"'u8
+        {
+            one := moveStart(str, 2)
+            (result.value, result.eat) = try getB64(one)
+            result.eat += 2
+            return result
+        }
+    }
 
     buffer := @dataof(str)
     cpt := 0'u32
@@ -126,6 +168,20 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
 
 // Convert an utf8 buffer to an signed integer value
 // Returns the value and the number of bytes used to make the conversion
+func getS8(str: string) -> {value: s8, eat: u32} throw
+{
+    (res, eat) := try getS64(str)
+    if res < swag.S8.Min or res > swag.S8.Max throw "out of range"
+    return @{cast(s8) res, eat}
+}
+
+func getS16(str: string) -> {value: s16, eat: u32} throw
+{
+    (res, eat) := try getS64(str)
+    if res < swag.S16.Min or res > swag.S16.Max throw "out of range"
+    return @{cast(s16) res, eat}
+}
+
 func getS32(str: string) -> {value: s32, eat: u32} throw
 {
     (res, eat) := try getS64(str)
@@ -133,8 +189,6 @@ func getS32(str: string) -> {value: s32, eat: u32} throw
     return @{cast(s32) res, eat}
 }
 
-// Convert an utf8 buffer to an signed integer value
-// Returns the value and the number of bytes used to make the conversion
 func getS64(str: string) -> {value: s64, eat: u32} throw
 {
     var result: retval
@@ -187,6 +241,13 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
 
 // Convert an utf8 buffer to a floating point value
 // Returns the value and the number of bytes used to make the conversion
+func getF32(str: string) -> {value: f64, eat: u32} throw
+{
+    (res, eat) := try getF64(str)
+    if res < swag.F32.Min or res > swag.F64.Max throw "out of range"
+    return @{cast(f32) res, eat}
+}
+
 func getF64(str: string) -> {value: f64, eat: u32} throw
 {
     return try strconv.atod(str)
