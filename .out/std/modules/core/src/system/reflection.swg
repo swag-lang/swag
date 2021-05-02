@@ -33,6 +33,23 @@ using swag
         return null
     }
 
+    // Get information about a specific field in a given struct
+    // Returns null if the method does not exist
+    func getField(type: typeinfo, name: string)->const* TypeInfoParam
+    {
+        if type.kind != TypeInfoKind.Struct
+            return null
+        typeStruct := cast(const* TypeInfoStruct) type
+
+        visit it: typeStruct.fields
+        {
+            if it.name == name
+                return it
+        }
+
+        return null
+    }
+
     // Helpers functions to know if a struct has a special function
     func hasMethod(type: typeinfo, name: string)->bool => getMethod(type, name) != null
 

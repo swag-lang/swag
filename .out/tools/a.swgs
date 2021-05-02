@@ -1,0 +1,125 @@
+#dependencies
+{
+    #if #os == "windows"
+    {
+        #import "core" location="swag@std"
+    }
+}
+
+using core
+///////////////////////
+
+using swag
+
+struct Folder
+{
+    type: typeinfo
+    data: *void
+}
+
+struct TweakFile
+{
+    folders: Array'Folder
+}
+
+impl TweakFile
+{
+    func(T) registerFolder(using self, folder: *T)
+    {
+        #assert(reflection.isStruct(T), "type should be a struct")
+        folders.add(@{@typeof(T), folder})
+    }
+
+    private func setValue(addr: *void, field: const *swag.TypeInfoParam, one: string) throw
+    {
+        patch := cast(*u8) addr + field.offset
+
+        switch field.pointedType
+        {
+        case s32:
+            (val, eat) := try parse.getS64(one)
+            :cast(*s32) patch = cast(s32) val
+            break
+        case f32:
+            (val, eat) := try parse.getF64(one)
+            :cast(*f32) patch = cast(f32) val
+            break
+
+        default:
+            throw format.toString("unsupported type '%'", field.pointedType.flatName)
+        }
+    }
+
+    // Parse the tweak file
+    func parse(using self, fileName: string) throw
+    {
+        lines := try file.readAllLines(fileName)
+
+        var currentFolder: *Folder
+        visit *line, idx: lines
+        {
+            one := line.toString()
+            if @countof(one) == 0 continue
+            if one[0] == "#"'u8 continue // comment
+
+            // Folder
+            if one[0] == ":"'u8
+            {
+                one = parse.moveStart(one, 1)
+                folderName := catch parse.getIdentifier(one)
+                if @err throw format.toString("%:%: invalid folder name", fileName, idx + 1)
+
+                visit *folder: folders
+                {
+                    if folder.type.flatName == folderName
+                    {
+                        currentFolder = folder
+                        break
+                    }
+                }
+
+                if !currentFolder throw format.toString("%:%: unknown folder '%'", fileName, idx + 1, folderName)
+                continue
+            }
+
+            // Value
+            if !currentFolder throw format.toString("%:%: value is not associated with a folder", fileName, idx + 1)
+            one = parse.eatSpaces(one)
+            id := catch parse.getIdentifier(one)
+            if @err throw format.toString("%:%: invalid folder value name", fileName, idx + 1)
+
+            // Search value into folder
+            field := reflection.getField(currentFolder.type, id)
+            if !field throw format.toString("%:%: value '%' cannot be found in folder '%'", fileName, idx + 1, id, currentFolder.type.flatName)
+            one = parse.moveStart(one, @countof(id))
+            one = parse.eatSpaces(one)
+
+            // Get value and poke it
+            catch setValue(currentFolder.data, field, one)
+            if @err throw format.toString("%:%: %", fileName, idx + 1, @err)
+        }
+    }
+}
+
+///////////////////////
+struct Test1
+{
+    coucou: s32
+}
+
+struct Test2
+{
+    coucou1: f32
+}
+
+#main
+{
+    var tw: TweakFile
+    var t1: Test1
+    var t2: Test2
+    tw.registerFolder(&t1)
+    tw.registerFolder(&t2)
+    assume tw.parse("a.ini")
+    console.println(t1)
+    console.println(t2)
+}

@@ -2,7 +2,27 @@
 #global namespace parse
 using globalization
 
-// Parse an identifier name
+// Remove spaces from the start of the string, and return what's remain
+func moveStart(str: string, count: uint)->string
+{
+    countof := @countof(str)
+    if count >= countof return ""
+    return @mkstring(@dataof(str) + count, countof - count)
+}
+
+// Remove spaces from the start of the string, and return what's remain
+func eatSpaces(str: string)->string
+{
+    countof := @countof(str)
+    if !countof return str
+
+    cpt := 0'uint
+    while cpt < countof and latin1.isSpace(str[cpt])
+        cpt += 1
+    return @mkstring(@dataof(str) + cpt, countof - cpt)
+}
+
+// Parse an identifier name in the sens of swag (ascii)
 func getIdentifier(str: string)->string throw
 {
     countof := @countof(str)
