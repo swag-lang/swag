@@ -34,52 +34,52 @@ impl TweakFile
         case s8:
             var val: s8 = ?
             (val, eat) = try parse.getS8(one)
-            :cast(*s8) patch = cast(s8) val
+            :cast(*s8) patch = val
 
         case s16:
             var val: s16 = ?
             (val, eat) = try parse.getS16(one)
-            :cast(*s16) patch = cast(s16) val
+            :cast(*s16) patch = val
 
         case s32:
             var val: s32 = ?
             (val, eat) = try parse.getS32(one)
-            :cast(*s32) patch = cast(s32) val
+            :cast(*s32) patch = val
 
         case s64, int:
             var val: s64 = ?
             (val, eat) = try parse.getS64(one)
-            :cast(*s64) patch = cast(s64) val
+            :cast(*s64) patch = val
 
         case u8:
             var val: u8 = ?
             (val, eat) = try parse.getU8(one)
-            :cast(*u8) patch = cast(u8) val
+            :cast(*u8) patch = val
 
         case u16:
             var val: u16 = ?
             (val, eat) = try parse.getU16(one)
-            :cast(*u16) patch = cast(u16) val
+            :cast(*u16) patch = val
 
         case u32:
             var val: u32 = ?
             (val, eat) = try parse.getU32(one)
-            :cast(*u32) patch = cast(u32) val
+            :cast(*u32) patch = val
 
         case u64, uint:
             var val: u64 = ?
             (val, eat) = try parse.getU64(one)
-            :cast(*u64) patch = cast(u64) val
+            :cast(*u64) patch = val
 
         case f32:
             var val: f32 = ?
             (val, eat) = try parse.getF32(one)
-            :cast(*f32) patch = cast(f32) val
+            :cast(*f32) patch = val
 
         case f64:
             var val: f64 = ?
             (val, eat) = try parse.getF64(one)
-            :cast(*f64) patch = cast(f64) val
+            :cast(*f64) patch = val
 
         default:
             throw format.toString("unsupported type '%'", field.pointedType.flatName)
@@ -139,7 +139,7 @@ impl TweakFile
 
             // Search value into folder
             field := reflection.getField(currentFolder.type, id)
-            if !field throw format.toString("%:%: value '%' cannot be found in folder '%'", fileName, idx + 1, id, currentFolder.type.flatName)
+            if !field throw format.toString("%:%: value '%' not found in folder '%'", fileName, idx + 1, id, currentFolder.type.flatName)
             one = parse.moveStart(one, @countof(id))
             one = parse.eatSpaces(one)
 
@@ -150,10 +150,10 @@ impl TweakFile
 
             // Be sure there's nothing left
             if @countof(one) and !latin1.isSpace(one[0]) and one[0] != "#"'u8
-                throw format.toString("%:%: syntax error parsing value", fileName, idx + 1)
+                throw format.toString("%:%: syntax error in value", fileName, idx + 1)
             one = parse.eatSpaces(one)
             if @countof(one) and one[0] != "#"'u8
-                throw format.toString("%:%: invalid characters found after value", fileName, idx + 1)
+                throw format.toString("%:%: invalid characters after value", fileName, idx + 1)
         }
     }
 }
