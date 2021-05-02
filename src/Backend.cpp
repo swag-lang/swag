@@ -80,6 +80,9 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         auto outFileFame = getOutputFileName(module->buildParameters);
         if (!fs::exists(outFileFame))
             return false;
+        auto timeOut = OS::getFileWriteTime(outFileFame.c_str());
+        if(timeOut < moreRecentSourceFile)
+            return false;
     }
 
     if (invert && timeToTest > moreRecentSourceFile)
