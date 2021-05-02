@@ -241,7 +241,7 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
 
 // Convert an utf8 buffer to a floating point value
 // Returns the value and the number of bytes used to make the conversion
-func getF32(str: string) -> {value: f64, eat: u32} throw
+func getF32(str: string) -> {value: f32, eat: u32} throw
 {
     (res, eat) := try getF64(str)
     if res < swag.F32.Min or res > swag.F64.Max throw "out of range"

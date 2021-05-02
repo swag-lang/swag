@@ -28,55 +28,64 @@ impl TweakFile
     {
         patch := cast(*u8) addr + field.offset
 
+        eat := 0'u32
         switch field.pointedType
         {
         case s8:
-            (val, eat) := try parse.getS8(one)
+            var val: s8 = ?
+            (val, eat) = try parse.getS8(one)
             :cast(*s8) patch = cast(s8) val
-            return parse.moveStart(one, cast(uint) eat)
+
         case s16:
-            (val, eat) := try parse.getS16(one)
+            var val: s16 = ?
+            (val, eat) = try parse.getS16(one)
             :cast(*s16) patch = cast(s16) val
-            return parse.moveStart(one, cast(uint) eat)
+
         case s32:
-            (val, eat) := try parse.getS32(one)
+            var val: s32 = ?
+            (val, eat) = try parse.getS32(one)
             :cast(*s32) patch = cast(s32) val
-            return parse.moveStart(one, cast(uint) eat)
+
         case s64, int:
-            (val, eat) := try parse.getS64(one)
+            var val: s64 = ?
+            (val, eat) = try parse.getS64(one)
             :cast(*s64) patch = cast(s64) val
-            return parse.moveStart(one, cast(uint) eat)
+
         case u8:
-            (val, eat) := try parse.getU8(one)
+            var val: u8 = ?
+            (val, eat) = try parse.getU8(one)
             :cast(*u8) patch = cast(u8) val
-            return parse.moveStart(one, cast(uint) eat)
+
         case u16:
-            (val, eat) := try parse.getU16(one)
+            var val: u16 = ?
+            (val, eat) = try parse.getU16(one)
             :cast(*u16) patch = cast(u16) val
-            return parse.moveStart(one, cast(uint) eat)
+
         case u32:
-            (val, eat) := try parse.getU32(one)
+            var val: u32 = ?
+            (val, eat) = try parse.getU32(one)
             :cast(*u32) patch = cast(u32) val
-            return parse.moveStart(one, cast(uint) eat)
+
         case u64, uint:
-            (val, eat) := try parse.getU64(one)
+            var val: u64 = ?
+            (val, eat) = try parse.getU64(one)
             :cast(*u64) patch = cast(u64) val
-            return parse.moveStart(one, cast(uint) eat)
 
         case f32:
-            (val, eat) := try parse.getF32(one)
+            var val: f32 = ?
+            (val, eat) = try parse.getF32(one)
             :cast(*f32) patch = cast(f32) val
-            return parse.moveStart(one, cast(uint) eat)
+
         case f64:
-            (val, eat) := try parse.getF64(one)
+            var val: f64 = ?
+            (val, eat) = try parse.getF64(one)
             :cast(*f64) patch = cast(f64) val
-            return parse.moveStart(one, cast(uint) eat)
 
         default:
             throw format.toString("unsupported type '%'", field.pointedType.flatName)
         }
 
-        return ""
+        return parse.moveStart(one, cast(uint) eat)
     }
 
     // Register a new structure to be parsed
