@@ -9,7 +9,7 @@ struct AstNode;
 enum class ModuleKind;
 
 #define SWAG_CACHE_FOLDER "swag_cache"
-#define SWAG_SCRIPT_WORKSPACE "script_workspace"
+#define SWAG_SCRIPT_WORKSPACE "__workspace"
 #define SWAG_TESTS_FOLDER "tests"
 #define SWAG_EXAMPLES_FOLDER "examples"
 #define SWAG_MODULES_FOLDER "modules"

@@ -15,7 +15,7 @@ impl Rect
     // Represents a rectangle with all coordinates to zero
     const Zero: Rect{0, 0, 0, 0}
 
-    func opEquals(using self, other: Rect)->bool
+    func opEquals(using const self, other: Rect)->bool
     {
         return x == other.x and y == other.y and width == other.width and height == other.height
     }
@@ -60,13 +60,13 @@ impl Rect
     }
 
     // Returns true if this instance has a surface of zero (width and height are null)
-    func isEmpty(using self)->bool
+    func isEmpty(using const self)->bool
     {
         return width == 0 and height == 0
     }
 
     // Returns true if this instance has a positive surface (width and height greater than zero)
-    func isNormalized(using self)->bool
+    func isNormalized(using const self)->bool
     {
         return width >= 0 and height >= 0
     }
@@ -100,13 +100,13 @@ impl Rect
     }
 
     // Returns true if this instance is null with an epsilon
-    func isZeroEpsilon(using self, eps = ConstF32.Epsilon)->bool
+    func isZeroEpsilon(using const self, eps = ConstF32.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps) and isZeroEpsilon(width, eps) and isZeroEpsilon(height, eps)
     }
 
     // Returns true if this instance has a surface of zero (width and height are null)
-    func isEmptyEpsilon(using self, eps = ConstF32.Epsilon)->bool
+    func isEmptyEpsilon(using const self, eps = ConstF32.Epsilon)->bool
     {
         return isZeroEpsilon(width, eps) and isZeroEpsilon(height, eps)
     }
@@ -145,13 +145,13 @@ impl Rect
     }
 
     // Determines if the specfied point is contained within the rectangular region
-    func contains(using self, pt: Point)->bool
+    func contains(using const self, pt: Point)->bool
     {
         return contains(pt.x, pt.y)
     }
 
     // Determines if the specfied rectangle is contained within the rectangular region
-    func contains(using self, rect: Rect)->bool
+    func contains(using const self, rect: Rect)->bool
     {
         return (rect.x >= x and rect.right() <= right()) and (rect.y >= y and rect.bottom() <= bottom())
     }
@@ -176,7 +176,7 @@ impl Rect
     }
 
     // Determines if this rectangle intersets with 'rect'
-    func intersectWith(using self, rect: Rect)->bool
+    func intersectWith(using const self, rect: Rect)->bool
     {
         return (rect.x < right()) and (x < rect.right()) and (rect.y < bottom()) and (y < rect.bottom())
     }
