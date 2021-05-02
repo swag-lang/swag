@@ -1,0 +1,1 @@
+swag test -w:../tests --backend:x64 --rebuild %1 %2 %3 %4

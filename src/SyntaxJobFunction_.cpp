@@ -151,6 +151,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
             isConst = true;
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id == TokenId::Identifier && token.text == "self", error(token, Msg0405));
+            paramNode->token.text = "self";
         }
 
         SWAG_CHECK(eatToken());
