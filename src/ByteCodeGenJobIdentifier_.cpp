@@ -587,13 +587,18 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Variable from the stack
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
+        if (node->sourceFile->name == "compiler2901.swg")
+            node = node; // nocheckin
         SWAG_CHECK(sameStackFrame(context, resolved));
         node->resultRegisterRC = reserveRegisterRC(context);
 
         if (resolved->typeInfo->kind == TypeInfoKind::Reference)
         {
             if (node->forceTakeAddress())
+            {
                 emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->storageOffset;
+                //emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+            }
             else
             {
                 auto inst   = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC);

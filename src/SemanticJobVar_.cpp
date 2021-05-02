@@ -544,6 +544,18 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
+    // If this is a reference, be sure we can take address of itb
+    if (node->type && node->type->typeInfo->kind == TypeInfoKind::Reference)
+    {
+        if (node->assignment)
+        {
+            SWAG_VERIFY(node->assignment->flags & AST_L_VALUE, context->report({node->assignment, Msg0469}));
+            if (node->assignment->kind != AstNodeKind::IdentifierRef && node->assignment->kind != AstNodeKind::ArrayPointerIndex)
+                return context->report({node->assignment, Msg0470});
+            SyntaxJob::forceTakeAddress(node->assignment);
+        }
+    }
+
     bool genericType = !node->type && !node->assignment;
     bool isGeneric   = node->ownerMainNode && (node->ownerMainNode->flags & AST_IS_GENERIC);
 

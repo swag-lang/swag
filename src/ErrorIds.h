@@ -608,7 +608,6 @@
 #define Msg0024 "pointer to 'swag.TypeInfo' should be 'const'"
 #define Msg0342 "pointer to reference is not (yet?) supported"
 #define Msg0348 "private definition should appear at file or namespace scope"
-#define Msg0019 "reference should be declared as 'const'"
 #define Msg0300 "reference should be initialized"
 #define Msg0560 "relative pointer arithmetic out of range ('%d')"
 #define Msg0015 "relative size value should be 0, 1, 2, 4 or 8"

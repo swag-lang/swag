@@ -81,8 +81,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     // Special case for enum : nothing is possible, except for flags
     bool forEnumFlags  = false;
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo, CONCRETE_ALIAS);
+    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_ALIAS);
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo, CONCRETE_ALIAS);
     if (node->token.id != TokenId::SymEqual)
     {
         if (leftTypeInfo->kind == TypeInfoKind::Enum || rightTypeInfo->kind == TypeInfoKind::Enum)

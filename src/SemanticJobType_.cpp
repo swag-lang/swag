@@ -270,8 +270,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 auto ptrRef          = allocType<TypeInfoReference>();
                 ptrRef->pointedType  = ptrPointer1->pointedType;
                 ptrRef->originalType = nullptr;
-                SWAG_VERIFY(typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST, context->report({typeNode, Msg0019}));
-                ptrRef->flags |= TYPEINFO_CONST;
+                if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST)
+                    ptrRef->flags |= TYPEINFO_CONST;
                 ptrRef->flags |= (firstType->flags & TYPEINFO_GENERIC);
                 ptrRef->computeName();
                 ptrPointer1->pointedType = ptrRef;
@@ -290,8 +290,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
         auto ptrRef          = allocType<TypeInfoReference>();
         ptrRef->pointedType  = typeNode->typeInfo;
         ptrRef->originalType = nullptr;
-        SWAG_VERIFY(typeNode->typeFlags & TYPEFLAG_ISCONST, context->report({typeNode, Msg0019}));
-        ptrRef->flags |= TYPEINFO_CONST;
+        if (typeNode->typeFlags & TYPEFLAG_ISCONST)
+            ptrRef->flags |= TYPEINFO_CONST;
         ptrRef->flags |= (typeNode->typeInfo->flags & TYPEINFO_GENERIC);
         ptrRef->computeName();
         typeNode->typeInfo = ptrRef;
